@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08E2B703AFE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF8C7039B4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241578AbjEOR6e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:58:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
+        id S244663AbjEORpV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243469AbjEOR6I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEA419F10
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:45 -0700 (PDT)
+        with ESMTP id S244583AbjEORpA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C939147CB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B69662FE0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB61AC4339B;
-        Mon, 15 May 2023 17:55:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 949D762E72
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D4EC433EF;
+        Mon, 15 May 2023 17:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173340;
-        bh=xEI/SGk3dVUjk/+bYPMd8dWbnHNJOerA/s83AmY6AC8=;
+        s=korg; t=1684172550;
+        bh=Z+icY8N2aRF5LTe/XxVIor7FqGgI1m5V8XPsg4cRFpo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MK6xQ9PHZHg1kgR1XHIzu/TPA+fWjyb4VviykDjrC0B8Z2AC10ddRvFbHmjB/jDNR
-         r/R9794vSHAJUxi+LDQFhre+V+jBFYYaP4z2aS2ihC9UZi15ctwLXCfbMKUHfJpZDv
-         VaWYMjaxnYjiDdN6FpmznE3eCgkI8ytJM30sLzA8=
+        b=2Ai3xom5DqRH3t7aXogiwE36/SZNhRxgwptIhD1MNpRjGcxeMv8clz0oPvO9aB7+a
+         SKe6ZzYEQwO+mYACFmlg1N9xiz52iESLAXlvUBdUAzapzOr9oWVvPfBU3lmYx6ObCp
+         vEQvkYIzHKXRKvp9Exll6b9nvfHbwMg8iRuyguU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Brad Spencer <bspencer@blackberry.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/282] media: rcar_fdp1: Fix refcount leak in probe and remove function
+Subject: [PATCH 5.10 189/381] netlink: Use copy_to_user() for optval in netlink_getsockopt().
 Date:   Mon, 15 May 2023 18:27:20 +0200
-Message-Id: <20230515161724.101708306@linuxfoundation.org>
+Message-Id: <20230515161745.355113306@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,68 +56,169 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit c766c90faf93897b77c9c5daa603cffab85ba907 ]
+[ Upstream commit d913d32cc2707e9cd24fe6fa6d7d470e9c728980 ]
 
-rcar_fcp_get() take reference, which should be balanced with
-rcar_fcp_put(). Add missing rcar_fcp_put() in fdp1_remove and
-the error paths of fdp1_probe() to fix this.
+Brad Spencer provided a detailed report [0] that when calling getsockopt()
+for AF_NETLINK, some SOL_NETLINK options set only 1 byte even though such
+options require at least sizeof(int) as length.
 
-Fixes: 4710b752e029 ("[media] v4l: Add Renesas R-Car FDP1 Driver")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-[hverkuil: resolve merge conflict, remove() is now void]
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The options return a flag value that fits into 1 byte, but such behaviour
+confuses users who do not initialise the variable before calling
+getsockopt() and do not strictly check the returned value as char.
+
+Currently, netlink_getsockopt() uses put_user() to copy data to optlen and
+optval, but put_user() casts the data based on the pointer, char *optval.
+As a result, only 1 byte is set to optval.
+
+To avoid this behaviour, we need to use copy_to_user() or cast optval for
+put_user().
+
+Note that this changes the behaviour on big-endian systems, but we document
+that the size of optval is int in the man page.
+
+  $ man 7 netlink
+  ...
+  Socket options
+       To set or get a netlink socket option, call getsockopt(2) to read
+       or setsockopt(2) to write the option with the option level argument
+       set to SOL_NETLINK.  Unless otherwise noted, optval is a pointer to
+       an int.
+
+Fixes: 9a4595bc7e67 ("[NETLINK]: Add set/getsockopt options to support more than 32 groups")
+Fixes: be0c22a46cfb ("netlink: add NETLINK_BROADCAST_ERROR socket option")
+Fixes: 38938bfe3489 ("netlink: add NETLINK_NO_ENOBUFS socket flag")
+Fixes: 0a6a3a23ea6e ("netlink: add NETLINK_CAP_ACK socket option")
+Fixes: 2d4bc93368f5 ("netlink: extended ACK reporting")
+Fixes: 89d35528d17d ("netlink: Add new socket option to enable strict checking on dumps")
+Reported-by: Brad Spencer <bspencer@blackberry.com>
+Link: https://lore.kernel.org/netdev/ZD7VkNWFfp22kTDt@datsun.rim.net/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Link: https://lore.kernel.org/r/20230421185255.94606-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rcar_fdp1.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/netlink/af_netlink.c | 75 ++++++++++++----------------------------
+ 1 file changed, 23 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
-index 0967b10a459b1..af2408b4856e6 100644
---- a/drivers/media/platform/rcar_fdp1.c
-+++ b/drivers/media/platform/rcar_fdp1.c
-@@ -2317,8 +2317,10 @@ static int fdp1_probe(struct platform_device *pdev)
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 2104fbdd63d29..eedb16517f16a 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1744,7 +1744,8 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+-	int len, val, err;
++	unsigned int flag;
++	int len, val;
  
- 	/* Determine our clock rate */
- 	clk = clk_get(&pdev->dev, NULL);
--	if (IS_ERR(clk))
--		return PTR_ERR(clk);
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto put_dev;
-+	}
+ 	if (level != SOL_NETLINK)
+ 		return -ENOPROTOOPT;
+@@ -1756,39 +1757,17 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
  
- 	fdp1->clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
-@@ -2327,7 +2329,7 @@ static int fdp1_probe(struct platform_device *pdev)
- 	ret = v4l2_device_register(&pdev->dev, &fdp1->v4l2_dev);
- 	if (ret) {
- 		v4l2_err(&fdp1->v4l2_dev, "Failed to register video device\n");
--		return ret;
-+		goto put_dev;
+ 	switch (optname) {
+ 	case NETLINK_PKTINFO:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_RECV_PKTINFO ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_RECV_PKTINFO;
+ 		break;
+ 	case NETLINK_BROADCAST_ERROR:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_BROADCAST_SEND_ERROR ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_BROADCAST_SEND_ERROR;
+ 		break;
+ 	case NETLINK_NO_ENOBUFS:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_RECV_NO_ENOBUFS ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_RECV_NO_ENOBUFS;
+ 		break;
+ 	case NETLINK_LIST_MEMBERSHIPS: {
+-		int pos, idx, shift;
++		int pos, idx, shift, err = 0;
+ 
+-		err = 0;
+ 		netlink_lock_table();
+ 		for (pos = 0; pos * 8 < nlk->ngroups; pos += sizeof(u32)) {
+ 			if (len - pos < sizeof(u32))
+@@ -1805,40 +1784,32 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
+ 		if (put_user(ALIGN(nlk->ngroups / 8, sizeof(u32)), optlen))
+ 			err = -EFAULT;
+ 		netlink_unlock_table();
+-		break;
++		return err;
  	}
- 
- 	/* M2M registration */
-@@ -2397,6 +2399,8 @@ static int fdp1_probe(struct platform_device *pdev)
- unreg_dev:
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 
-+put_dev:
-+	rcar_fcp_put(fdp1->fcp);
- 	return ret;
+ 	case NETLINK_CAP_ACK:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_CAP_ACK ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_CAP_ACK;
+ 		break;
+ 	case NETLINK_EXT_ACK:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_EXT_ACK ? 1 : 0;
+-		if (put_user(len, optlen) || put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_EXT_ACK;
+ 		break;
+ 	case NETLINK_GET_STRICT_CHK:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_STRICT_CHK ? 1 : 0;
+-		if (put_user(len, optlen) || put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_STRICT_CHK;
+ 		break;
+ 	default:
+-		err = -ENOPROTOOPT;
++		return -ENOPROTOOPT;
+ 	}
+-	return err;
++
++	if (len < sizeof(int))
++		return -EINVAL;
++
++	len = sizeof(int);
++	val = nlk->flags & flag ? 1 : 0;
++
++	if (put_user(len, optlen) ||
++	    copy_to_user(optval, &val, len))
++		return -EFAULT;
++
++	return 0;
  }
  
-@@ -2408,6 +2412,7 @@ static int fdp1_remove(struct platform_device *pdev)
- 	video_unregister_device(&fdp1->vfd);
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 	pm_runtime_disable(&pdev->dev);
-+	rcar_fcp_put(fdp1->fcp);
- 
- 	return 0;
- }
+ static void netlink_cmsg_recv_pktinfo(struct msghdr *msg, struct sk_buff *skb)
 -- 
 2.39.2
 
