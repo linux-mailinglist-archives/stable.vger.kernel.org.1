@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5AC703A80
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82790703803
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244878AbjEORvk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46480 "EHLO
+        id S244233AbjEOR0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244771AbjEORvQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:51:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7CE176F3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:20 -0700 (PDT)
+        with ESMTP id S243997AbjEOR0R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDBC11636
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C72062F1F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42983C4339C;
-        Mon, 15 May 2023 17:49:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE1EB62CC1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF04C433EF;
+        Mon, 15 May 2023 17:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172959;
-        bh=SMyDjsvPg0O3gSLkeDUOVPBL2g1q2ESth9owsfqiEPo=;
+        s=korg; t=1684171467;
+        bh=rwOIpgeC1gaS6k5s/wqoVPT/+kvtxf1fW1x6YozRxJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2aeI3p+ywmiu/Hwd4BalsYmMdopVvEsJaRrsrChFhLe7yRUxAr3rJuaOHUgxhthfn
-         I/YDCyUOH/X41m9NaTHPVk/pXcGCE5YORndc++U6mLRerV1LdT1eZvRMf3dqyUSI9y
-         euI+V3A6drPvuP18gc8mL9z8qhE72GybmIk6O2Es=
+        b=0JvPZ6E4FXJZF9EU/bqF4mVHBjsixIaztoGefYdxJvxKwemrF5O5ta5aZAKEb+GeG
+         uaTQI/v2N3iBUshKXlEO4x9gG71y56KTurh/b4W32ZZgqAGuKBgo41vY3QkNwKEaOe
+         qy9azFKz8aYV0+0S+l5wjlmJvILRf8GrrZ77VDJk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 293/381] arm64: dts: qcom: sdm845: correct dynamic power coefficients - again
-Date:   Mon, 15 May 2023 18:29:04 +0200
-Message-Id: <20230515161750.024507265@linuxfoundation.org>
+        patches@lists.linux.dev, Charlene Liu <Charlene.Liu@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 219/242] drm/amd/display: Update Z8 SR exit/enter latencies
+Date:   Mon, 15 May 2023 18:29:05 +0200
+Message-Id: <20230515161728.493656236@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,86 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit 44750f153699b6e4f851a399287e5c8df208d696 upstream.
+[ Upstream commit 9b0f51e8449f6f76170fda6a8dd9c417a43ce270 ]
 
-While stressing EAS on my dragonboard RB3, I have noticed that LITTLE cores
-where never selected as the most energy efficient CPU whatever the
-utilization level of waking task.
+[Why]
+Request from HW team to update the latencies to the new measured values.
 
-energy model framework uses its cost field to estimate the energy with
-the formula:
+[How]
+Update the values in the bounding box.
 
-  nrg = cost of the selected OPP * utilization / CPU's max capacity
-
-which ends up selecting the CPU with lowest cost / max capacity ration
-as long as the utilization fits in the OPP's capacity.
-
-If we compare the cost of a little OPP with similar capacity of a big OPP
-like :
-       OPP(kHz)   OPP capacity    cost     max capacity   cost/max capacity
-LITTLE 1766400    407             351114   407            863
-big    1056000    408             520267   1024           508
-
-This can be interpreted as the LITTLE core consumes 70% more than big core
-for the same compute capacity.
-
-According to [1], LITTLE consumes 10% less than big core for Coremark
-benchmark at those OPPs. If we consider that everything else stays
-unchanged, the dynamic-power-coefficient of LITTLE core should be
-only 53% of the current value: 290 * 53% = 154
-
-Set the dynamic-power-coefficient of CPU0-3 to 154 to fix the energy model.
-
-[1] https://github.com/kdrag0n/freqbench/tree/master/results/sdm845/main
-
-Fixes: 0e0a8e35d725 ("arm64: dts: qcom: sdm845: correct dynamic power coefficients")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230106164618.1845281-1-vincent.guittot@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 8f586cc16c1f ("drm/amd/display: Change default Z8 watermark values")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -197,7 +197,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -222,7 +222,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -244,7 +244,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -266,7 +266,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index 6a1cf6adea77d..0c91d8a3de4c3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -149,8 +149,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_14_soc = {
+ 	.num_states = 5,
+ 	.sr_exit_time_us = 16.5,
+ 	.sr_enter_plus_exit_time_us = 18.5,
+-	.sr_exit_z8_time_us = 280.0,
+-	.sr_enter_plus_exit_z8_time_us = 350.0,
++	.sr_exit_z8_time_us = 210.0,
++	.sr_enter_plus_exit_z8_time_us = 310.0,
+ 	.writeback_latency_us = 12.0,
+ 	.dram_channel_width_bytes = 4,
+ 	.round_trip_ping_latency_dcfclk_cycles = 106,
+-- 
+2.39.2
+
 
 
