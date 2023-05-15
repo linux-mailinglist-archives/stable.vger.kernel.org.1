@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F8337033E0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F39CC703915
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242443AbjEOQmX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
+        id S243191AbjEORis (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242898AbjEOQmV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:42:21 -0400
+        with ESMTP id S244449AbjEORid (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6283F46B0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5092C1560F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBB8F628AF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12A4C433D2;
-        Mon, 15 May 2023 16:42:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC2B761EEF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C3BC433EF;
+        Mon, 15 May 2023 17:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168937;
-        bh=uCSUtyvj8ZSa6PDseg7z1s5325cFPAq9sbVZ7nFabB4=;
+        s=korg; t=1684172104;
+        bh=Y9pbJ/ZBjgS29MlqoP8RiQcQS9uqDIF8O+5Ksku71FU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mvS8s5AefH7DYWzyzGrIIupVranApQJkKL0UIVub2ChNBjQD1h3CtYwfiPP1+PBZW
-         mvr/Nl473UkWms44AZedwQ3U08ZIP3jVhzsEneD/RFjKBZXZPymha1FeP44XtXOGF+
-         hctJg1wIyrLMXr61DvldxPDgi7NxsgYb/2yMNSyc=
+        b=iq5gYgtLaURKbscJWnK1fZcaYkvTwCzNoTWNYKcuX6RA8SiDXPVAdiWZgtKuHa9aS
+         Pgk6my8a4ns7WalW90EhocCHV7Jlhpc2jOpp8ZvAMOQ5vFTGVifOcE56pGhvtmlHf0
+         BGOyG6Bw3r7X7ry9bbyW6b5i38aneZXlMAYnQWzs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 060/191] rtlwifi: Start changing RT_TRACE into rtl_dbg
+        patches@lists.linux.dev,
+        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Kishon Vijay Abraham I <kvijayab@amd.com>,
+        Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 5.10 046/381] iommu/amd: Fix "Guest Virtual APIC Table Root Pointer" configuration in IRTE
 Date:   Mon, 15 May 2023 18:24:57 +0200
-Message-Id: <20230515161709.391512103@linuxfoundation.org>
+Message-Id: <20230515161738.920556922@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,56 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Larry Finger <Larry.Finger@lwfinger.net>
+From: Kishon Vijay Abraham I <kvijayab@amd.com>
 
-[ Upstream commit 78a7245d84300cd616dbce26e6fc42a039a62279 ]
+commit ccc62b827775915a9b82db42a29813d04f92df7a upstream.
 
-The macro name RT_TRACE makes it seem that it is used for tracing, when
-is actually used for debugging. Change the name to RT_DEBUG.
+commit b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC
+(de-)activation code") while refactoring guest virtual APIC
+activation/de-activation code, stored information for activate/de-activate
+in "struct amd_ir_data". It used 32-bit integer data type for storing the
+"Guest Virtual APIC Table Root Pointer" (ga_root_ptr), though the
+"ga_root_ptr" is actually a 40-bit field in IRTE (Interrupt Remapping
+Table Entry).
 
-This step creates the new macro while keeping the old RT_TRACE to allow
-building. It will be removed at the end of the patch series.
+This causes interrupts from PCIe devices to not reach the guest in the case
+of PCIe passthrough with SME (Secure Memory Encryption) enabled as _SME_
+bit in the "ga_root_ptr" is lost before writing it to the IRTE.
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200723204244.24457-2-Larry.Finger@lwfinger.net
-Stable-dep-of: 905a9241e4e8 ("wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by using 64-bit data type for storing the "ga_root_ptr". While at
+that also change the data type of "ga_tag" to u32 in order to match
+the IOMMU spec.
+
+Fixes: b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC (de-)activation code")
+Cc: stable@vger.kernel.org # v5.4+
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Link: https://lore.kernel.org/r/20230405130317.9351-1-kvijayab@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/debug.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iommu/amd/amd_iommu_types.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.h b/drivers/net/wireless/realtek/rtlwifi/debug.h
-index ad6834af618b4..14f822afc89ac 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.h
-@@ -181,6 +181,10 @@ void _rtl_dbg_print_data(struct rtl_priv *rtlpriv, u64 comp, int level,
- 			 const char *titlestring,
- 			 const void *hexdata, int hexdatalen);
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -897,8 +897,8 @@ struct amd_ir_data {
+ 	 */
+ 	struct irq_cfg *cfg;
+ 	int ga_vector;
+-	int ga_root_ptr;
+-	int ga_tag;
++	u64 ga_root_ptr;
++	u32 ga_tag;
+ };
  
-+#define rtl_dbg(rtlpriv, comp, level, fmt, ...)			\
-+	_rtl_dbg_trace(rtlpriv, comp, level,				\
-+		       fmt, ##__VA_ARGS__)
-+
- #define RT_TRACE(rtlpriv, comp, level, fmt, ...)			\
- 	_rtl_dbg_trace(rtlpriv, comp, level,				\
- 		       fmt, ##__VA_ARGS__)
-@@ -197,6 +201,13 @@ void _rtl_dbg_print_data(struct rtl_priv *rtlpriv, u64 comp, int level,
- 
- struct rtl_priv;
- 
-+__printf(4, 5)
-+static inline void rtl_dbg(struct rtl_priv *rtlpriv,
-+			   u64 comp, int level,
-+			   const char *fmt, ...)
-+{
-+}
-+
- __printf(4, 5)
- static inline void RT_TRACE(struct rtl_priv *rtlpriv,
- 			    u64 comp, int level,
--- 
-2.39.2
-
+ struct amd_irte_ops {
 
 
