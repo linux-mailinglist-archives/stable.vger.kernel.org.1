@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C66C47038C7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0719D703ABD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244212AbjEOReu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54418 "EHLO
+        id S238780AbjEORzR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:55:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244314AbjEORe3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:29 -0400
+        with ESMTP id S231666AbjEORyk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6511A14362
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A0918AA4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:52:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFAA762D5A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB9DC433D2;
-        Mon, 15 May 2023 17:32:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FE2D62F79
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C14C433EF;
+        Mon, 15 May 2023 17:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171950;
-        bh=OOSk6E47L5v3k5q8JitSU3+y696+rg94U0EanL7ixHA=;
+        s=korg; t=1684173156;
+        bh=wXzA0DZSC9uBx6sxgPe19lisLeu920AdyBdZyVZ1oP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BwComZpCrLUsAlUBjXPLUTlVC0BX10xxxqTGnPlEMaYiRYgRDxA67EPeLzfcWWAsc
-         CGM8/TYrcjWRGs1xt6xqbmcgQOJ+jo3HB7s/I2Gcu0wm8WjlsJQjKREuYPN6QA7Ok5
-         imjtzsJ0NntME0ZzXK8Cl49jumz//3XfMJzBvXYo=
+        b=lr917zRYlN1gp9iGu839p7HYpycVARU8VNwxDcuh5snXDuDL1Gf5BdMpjWpVIRshr
+         55Ws68pnL0lzjxd0TsYngC/Iri7nG5j9y/O7sGsPJ3wSAjK4+/A5Cp9wusXhTNZade
+         TCThwOy+uMN4D98zP70wKNR0yhnpGrVn+huYNbvw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 5.15 130/134] drm/msm/adreno: adreno_gpu: Use suspend() instead of idle() on load error
+        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 356/381] KVM: x86: hyper-v: Avoid calling kvm_make_vcpus_request_mask() with vcpu_mask==NULL
 Date:   Mon, 15 May 2023 18:30:07 +0200
-Message-Id: <20230515161707.492696259@linuxfoundation.org>
+Message-Id: <20230515161752.961975295@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-commit 3eeca5e5f3100435b06a5b5d86daa3d135a8a4bd upstream.
+commit 6470accc7ba948b0b3aca22b273fe84ec638a116 upstream.
 
-The adreno_load_gpu() path is guarded by an error check on
-adreno_load_fw(). This function is responsible for loading
-Qualcomm-only-signed binaries (e.g. SQE and GMU FW for A6XX), but it
-does not take the vendor-signed ZAP blob into account.
+In preparation to making kvm_make_vcpus_request_mask() use for_each_set_bit()
+switch kvm_hv_flush_tlb() to calling kvm_make_all_cpus_request() for 'all cpus'
+case.
 
-By embedding the SQE (and GMU, if necessary) firmware into the
-initrd/kernel, we can trigger and unfortunate path that would not bail
-out early and proceed with gpu->hw_init(). That will fail, as the ZAP
-loader path will not find the firmware and return back to
-adreno_load_gpu().
+Note: kvm_make_all_cpus_request() (unlike kvm_make_vcpus_request_mask())
+currently dynamically allocates cpumask on each call and this is suboptimal.
+Both kvm_make_all_cpus_request() and kvm_make_vcpus_request_mask() are
+going to be switched to using pre-allocated per-cpu masks.
 
-This error path involves pm_runtime_put_sync() which then calls idle()
-instead of suspend(). This is suboptimal, as it means that we're not
-going through the clean shutdown sequence. With at least A619_holi, this
-makes the GPU not wake up until it goes through at least one more
-start-fail-stop cycle. The pm_runtime_put_sync that appears in the error
-path actually does not guarantee that because of the earlier enabling of
-runtime autosuspend.
-
-Fix that by using pm_runtime_put_sync_suspend to force a clean shutdown.
-
-Test cases:
-1. All firmware baked into kernel
-2. error loading ZAP fw in initrd -> load from rootfs at DE start
-
-Both succeed on A619_holi (SM6375) and A630 (SDM845).
-
-Fixes: 0d997f95b70f ("drm/msm/adreno: fix runtime PM imbalance at gpu load")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/530001/
-Link: https://lore.kernel.org/r/20230330231517.2747024-1-konrad.dybcio@linaro.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <20210903075141.403071-4-vkuznets@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Fixes: 6100066358ee ("KVM: Optimize kvm_make_vcpus_request_mask() a bit")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/hyperv.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -431,7 +431,7 @@ struct msm_gpu *adreno_load_gpu(struct d
- 	return gpu;
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -1562,16 +1562,19 @@ static u64 kvm_hv_flush_tlb(struct kvm_v
  
- err_put_rpm:
--	pm_runtime_put_sync(&pdev->dev);
-+	pm_runtime_put_sync_suspend(&pdev->dev);
- err_disable_rpm:
- 	pm_runtime_disable(&pdev->dev);
+ 	cpumask_clear(&hv_vcpu->tlb_flush);
  
+-	vcpu_mask = all_cpus ? NULL :
+-		sparse_set_to_vcpu_mask(kvm, sparse_banks, valid_bank_mask,
+-					vp_bitmap, vcpu_bitmap);
+-
+ 	/*
+ 	 * vcpu->arch.cr3 may not be up-to-date for running vCPUs so we can't
+ 	 * analyze it here, flush TLB regardless of the specified address space.
+ 	 */
+-	kvm_make_vcpus_request_mask(kvm, KVM_REQ_TLB_FLUSH_GUEST,
+-				    NULL, vcpu_mask, &hv_vcpu->tlb_flush);
++	if (all_cpus) {
++		kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH_GUEST);
++	} else {
++		vcpu_mask = sparse_set_to_vcpu_mask(kvm, sparse_banks, valid_bank_mask,
++						    vp_bitmap, vcpu_bitmap);
++
++		kvm_make_vcpus_request_mask(kvm, KVM_REQ_TLB_FLUSH_GUEST,
++					    NULL, vcpu_mask, &hv_vcpu->tlb_flush);
++	}
+ 
+ ret_success:
+ 	/* We always do full TLB flush, set rep_done = rep_cnt. */
 
 
