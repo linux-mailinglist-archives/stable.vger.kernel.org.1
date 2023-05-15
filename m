@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D657B7039E8
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA33703B61
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244654AbjEORqp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44650 "EHLO
+        id S244839AbjEOSCd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:02:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244638AbjEORqX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:23 -0400
+        with ESMTP id S244079AbjEOSCK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4410A13D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92C71FA41
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:59:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D519062E9A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C631AC433D2;
-        Mon, 15 May 2023 17:44:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9612063013
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83114C4339B;
+        Mon, 15 May 2023 17:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172688;
-        bh=I6yqmYBMNEpvE9R22snnsr6NUl0kAUZqPsFUsdLaLLg=;
+        s=korg; t=1684173568;
+        bh=Bab8G0Uz4Aq2bi/QtxrqE8coAUNCd34i66i+D/rqNhI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TwIZ07GYXLzP28J1PWgVmDMXisCIxGTyfxjflTHibqBtexC+Q/hcZ4uoymJAwWJjd
-         bhWRocpYiWbTpOwUaGLe+4VEp1YzOJ5ud3OOel/B1AacKE775paMuOXMhAGsN3pmgB
-         QVD64h7lzihIkOqmt2tyxYG0G95fDhMwtCgm/yK8=
+        b=ndE8wS9X9yaA+HqGpaYpjz+FVUB6RRP/BYX0V+Z9ds3Q2+7JGruCSQvEPHhdw56Gz
+         eZmCqjc7VfnuENcCk/6qgh2BjUI/skzZoSQGxMPevKVFRaXXCuHNkSSoSBR36m/3G1
+         g6Ur1gbMTWsz6onsL/Ce6iGW8ecIdTn+F1GzxNGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 235/381] clk: at91: clk-sam9x60-pll: fix return value check
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.4 108/282] ixgbe: Allow flow hash to be set via ethtool
 Date:   Mon, 15 May 2023 18:28:06 +0200
-Message-Id: <20230515161747.317860386@linuxfoundation.org>
+Message-Id: <20230515161725.485421335@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 1bd8e27fd0db0fe7f489213836dcbab92934f8fa ]
+[ Upstream commit 4f3ed1293feb9502dc254b05802faf1ad3317ac6 ]
 
-sam9x60_frac_pll_compute_mul_frac() can't return zero. Remove the check
-against zero to reflect this.
+ixgbe currently returns `EINVAL` whenever the flowhash it set by ethtool
+because the ethtool code in the kernel passes a non-zero value for hfunc
+that ixgbe should allow.
 
-Fixes: 43b1bb4a9b3e ("clk: at91: clk-sam9x60-pll: re-factor to support plls with multiple outputs")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230227105931.2812412-1-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+When ethtool is called with `ETHTOOL_SRXFHINDIR`,
+`ethtool_set_rxfh_indir` will call ixgbe's set_rxfh function
+with `ETH_RSS_HASH_NO_CHANGE`. This value should be accepted.
+
+When ethtool is called with `ETHTOOL_SRSSH`, `ethtool_set_rxfh` will
+call ixgbe's set_rxfh function with `rxfh.hfunc`, which appears to be
+hardcoded in ixgbe to always be `ETH_RSS_HASH_TOP`. This value should
+also be accepted.
+
+Before this patch:
+
+$ sudo ethtool -L eth1 combined 10
+$ sudo ethtool -X eth1 default
+Cannot set RX flow hash configuration: Invalid argument
+
+After this patch:
+
+$ sudo ethtool -L eth1 combined 10
+$ sudo ethtool -X eth1 default
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 10 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9     0     1     2     3     4     5
+   16:      6     7     8     9     0     1     2     3
+   24:      4     5     6     7     8     9     0     1
+   ...
+
+Fixes: 1c7cf0784e4d ("ixgbe: support for ethtool set_rxfh")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-sam9x60-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/at91/clk-sam9x60-pll.c b/drivers/clk/at91/clk-sam9x60-pll.c
-index 5a9daa3643a72..5fe50ba173a80 100644
---- a/drivers/clk/at91/clk-sam9x60-pll.c
-+++ b/drivers/clk/at91/clk-sam9x60-pll.c
-@@ -452,7 +452,7 @@ sam9x60_clk_register_frac_pll(struct regmap *regmap, spinlock_t *lock,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index 7c52ae8ac005b..babe16ece5aa6 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -3008,8 +3008,8 @@ static int ixgbe_set_rxfh(struct net_device *netdev, const u32 *indir,
+ 	int i;
+ 	u32 reta_entries = ixgbe_rss_indir_tbl_entries(adapter);
  
- 		ret = sam9x60_frac_pll_compute_mul_frac(&frac->core, FCORE_MIN,
- 							parent_rate, true);
--		if (ret <= 0) {
-+		if (ret < 0) {
- 			hw = ERR_PTR(ret);
- 			goto free;
- 		}
+-	if (hfunc)
+-		return -EINVAL;
++	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
++		return -EOPNOTSUPP;
+ 
+ 	/* Fill out the redirection table */
+ 	if (indir) {
 -- 
 2.39.2
 
