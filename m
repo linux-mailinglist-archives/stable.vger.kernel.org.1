@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B95E70349F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0DD703901
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243071AbjEOQuk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54482 "EHLO
+        id S244452AbjEORhu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243081AbjEOQu1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 739F05FC9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:15 -0700 (PDT)
+        with ESMTP id S244199AbjEORhW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EB010E44
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F329A6295B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DFFC4339B;
-        Mon, 15 May 2023 16:50:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B59B662DB6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0569C433D2;
+        Mon, 15 May 2023 17:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169414;
-        bh=TCgXeyIv7mi0iT01dbtjL/dta3cQvkXmJn8yfuKwnDM=;
+        s=korg; t=1684172086;
+        bh=uK35DXXbqaB+kOQBB45RdJHPlNvqSa2wIBInCt6wZsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g8TeteKUUUedjsPWvznKDFtZtW6BPqiWhAA0JHw2Fk4Hodok6rot05u4w/28Nzqsk
-         0p68nzqUURltqobhNXKSYV+yGSxxGZuTiZKYJBv4yXL8abP9MnjJwmuBeLTGvWV5nD
-         K1wrMUDZsAZhGJHzUcVPiZ/ShvKma4z7SM0zrmXA=
+        b=I4JSyKil9j/j69hsv3v0uBV+iQKZ34UN6o2cc3lduIes970vYHz08jb7b09BWpBPj
+         g7RLtTswT95vY6LfPz57SRFxHFSj1WA7OlALzABiIIi9iliQ1vxsYf5/v4fsROKPrd
+         vesrcldcpDXiQ88YjiwJvic+JeeVKUv+VrgP7UoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Eugene Huang <eugene.huang99@gmail.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 049/246] r8152: move setting r8153b_rx_agg_chg_indicate()
+Subject: [PATCH 5.10 010/381] ASOC: Intel: sof_sdw: add quirk for Intel Rooks County NUC M15
 Date:   Mon, 15 May 2023 18:24:21 +0200
-Message-Id: <20230515161724.056157856@linuxfoundation.org>
+Message-Id: <20230515161737.226770859@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,63 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Eugene Huang <eugene.huang99@gmail.com>
 
-[ Upstream commit cce8334f4aacd9936309a002d4a4de92a07cd2c2 ]
+[ Upstream commit 3c728b1bc5b99c5275ac5c7788ef814c0e51ef54 ]
 
-Move setting r8153b_rx_agg_chg_indicate() for 2.5G devices. The
-r8153b_rx_agg_chg_indicate() has to be called after enabling tx/rx.
-Otherwise, the coalescing settings are useless.
+Same quirks as the 'Bishop County' NUC M15, except the rt711 is in the
+'JD2 100K' jack detection mode.
 
-Fixes: 195aae321c82 ("r8152: support new chips")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://github.com/thesofproject/linux/issues/4088
+Signed-off-by: Eugene Huang <eugene.huang99@gmail.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20230314090553.498664-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ sound/soc/intel/boards/sof_sdw.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 58670a65b840d..755b0f72dd44f 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -3027,12 +3027,16 @@ static int rtl_enable(struct r8152 *tp)
- 	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_CR, ocp_data);
- 
- 	switch (tp->version) {
--	case RTL_VER_08:
--	case RTL_VER_09:
--	case RTL_VER_14:
--		r8153b_rx_agg_chg_indicate(tp);
-+	case RTL_VER_01:
-+	case RTL_VER_02:
-+	case RTL_VER_03:
-+	case RTL_VER_04:
-+	case RTL_VER_05:
-+	case RTL_VER_06:
-+	case RTL_VER_07:
- 		break;
- 	default:
-+		r8153b_rx_agg_chg_indicate(tp);
- 		break;
- 	}
- 
-@@ -3086,7 +3090,6 @@ static void r8153_set_rx_early_timeout(struct r8152 *tp)
- 			       640 / 8);
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EXTRA_AGGR_TMR,
- 			       ocp_data);
--		r8153b_rx_agg_chg_indicate(tp);
- 		break;
- 
- 	default:
-@@ -3120,7 +3123,6 @@ static void r8153_set_rx_early_size(struct r8152 *tp)
- 	case RTL_VER_15:
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_SIZE,
- 			       ocp_data / 8);
--		r8153b_rx_agg_chg_indicate(tp);
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index f5d8f7951cfc3..eb713e9c2bd22 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -175,6 +175,17 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_SDW_PCH_DMIC |
+ 					SOF_RT711_JD_SRC_JD2),
+ 	},
++	{
++		/* NUC15 'Rooks County' LAPRC510 and LAPRC710 skews */
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel(R) Client Systems"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LAPRC"),
++		},
++		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
++					SOF_SDW_PCH_DMIC |
++					RT711_JD2_100K),
++	},
+ 	/* TigerLake-SDCA devices */
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
 -- 
 2.39.2
 
