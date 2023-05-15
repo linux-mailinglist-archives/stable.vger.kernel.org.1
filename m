@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1141E703AEF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEA8670369B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239706AbjEOR5O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53912 "EHLO
+        id S243817AbjEORL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244997AbjEOR4G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D48714E40
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:14 -0700 (PDT)
+        with ESMTP id S243754AbjEORLb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816A2100EE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD9EE62F8D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23BBC433D2;
-        Mon, 15 May 2023 17:54:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0021C62B45
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F09C433EF;
+        Mon, 15 May 2023 17:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173253;
-        bh=sNjFJXXSGnJhGP/9x0qVMOuSRz2T50pkHklqgv1IzY4=;
+        s=korg; t=1684170582;
+        bh=drhGnSGvYxwpS8uOHQel/WorVpxgNQs3Ix4O3UQuUOE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ac+SfOHkfMgpS27jP8gXxp14+vmzJLAIrA0zidWcURqTSVtNbmCEHl2xEsWUZZ3FW
-         0qAe4JfO0ee7LIQOvAIUr/U/X0y0xxta5lkAZwx2M2Ugf95fBxgom+PsCZs21nuobI
-         FkR5fVEgLalrJhKB2D2Wz0zLwSYXQjQ2Oq0Kbjnc=
+        b=ARW0iCJm32Pr0RhpJR7Ulb3kfiYkTVZ5pGcJZTdSeu6P4YowVNjelqc0E+g7dLPEv
+         hp22yengii/0iqdVBQYaNn39n3Kl5na9nVvJmKQonPP6MJxR1aEkWf6cORUcmcUa+o
+         EpS9BgLB5KxYbSvQr+nnpR0l3/8tOlj8+2CADwmg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jingbo Xu <jefflexu@linux.alibaba.com>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>,
-        Chao Yu <chao@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/282] erofs: fix potential overflow calculating xattr_isize
+        patches@lists.linux.dev,
+        Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+        Uma Shankar <uma.shankar@intel.com>,
+        Animesh Manna <animesh.manna@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.1 149/239] drm/i915/color: Fix typo for Plane CSC indexes
 Date:   Mon, 15 May 2023 18:26:52 +0200
-Message-Id: <20230515161723.296550598@linuxfoundation.org>
+Message-Id: <20230515161726.152147751@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-[ Upstream commit 1b3567a1969b26f709d82a874498c0754ea841c3 ]
+commit 2efc8e1001acfdc143cf2d25a08a4974c322e2a8 upstream.
 
-Given on-disk i_xattr_icount is 16 bits and xattr_isize is calculated
-from i_xattr_icount multiplying 4, xattr_isize has a theoretical maximum
-of 256K (64K * 4).
+Replace _PLANE_INPUT_CSC_RY_GY_2_* with _PLANE_CSC_RY_GY_2_*
+for Plane CSC
 
-Thus declare xattr_isize as unsigned int to avoid the potential overflow.
+Fixes: 6eba56f64d5d ("drm/i915/pxp: black pixels on pxp disabled")
 
-Fixes: bfb8674dc044 ("staging: erofs: add erofs in-memory stuffs")
-Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20230414061810.6479-1-jefflexu@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Animesh Manna <animesh.manna@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230330150104.2923519-1-chaitanya.kumar.borah@intel.com
+(cherry picked from commit e39c76b2160bbd005587f978d29603ef790aefcd)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_reg.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
-index 544a453f3076c..cc7a42682814c 100644
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -226,7 +226,7 @@ struct erofs_inode {
+--- a/drivers/gpu/drm/i915/i915_reg.h
++++ b/drivers/gpu/drm/i915/i915_reg.h
+@@ -7840,8 +7840,8 @@ enum skl_power_gate {
  
- 	unsigned char datalayout;
- 	unsigned char inode_isize;
--	unsigned short xattr_isize;
-+	unsigned int xattr_isize;
- 
- 	unsigned int xattr_shared_count;
- 	unsigned int *xattr_shared_xattrs;
--- 
-2.39.2
-
+ #define _PLANE_CSC_RY_GY_1(pipe)	_PIPE(pipe, _PLANE_CSC_RY_GY_1_A, \
+ 					      _PLANE_CSC_RY_GY_1_B)
+-#define _PLANE_CSC_RY_GY_2(pipe)	_PIPE(pipe, _PLANE_INPUT_CSC_RY_GY_2_A, \
+-					      _PLANE_INPUT_CSC_RY_GY_2_B)
++#define _PLANE_CSC_RY_GY_2(pipe)	_PIPE(pipe, _PLANE_CSC_RY_GY_2_A, \
++					      _PLANE_CSC_RY_GY_2_B)
+ #define PLANE_CSC_COEFF(pipe, plane, index)	_MMIO_PLANE(plane, \
+ 							    _PLANE_CSC_RY_GY_1(pipe) +  (index) * 4, \
+ 							    _PLANE_CSC_RY_GY_2(pipe) + (index) * 4)
 
 
