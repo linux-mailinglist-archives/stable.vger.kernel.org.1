@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA7BD703AAC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E11797038BE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbjEORyA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:54:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53782 "EHLO
+        id S244406AbjEORee (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239975AbjEORxh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:53:37 -0400
+        with ESMTP id S242938AbjEOReQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDCA18841
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:51:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 913D51797A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C7A462F9B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:51:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD68C433D2;
-        Mon, 15 May 2023 17:51:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D64262D4C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26CAC433A0;
+        Mon, 15 May 2023 17:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173098;
-        bh=iitImpDgGmwmMZHxjqTf7HR7xO/FUPNLehp02kgZ0ck=;
+        s=korg; t=1684171928;
+        bh=gijC1yzGZA3N6eISKROgoqHRNLNf9w56/SDtBFj4ZPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GLieDViwgt1nYwXEyaEV0EeKp74qDZg954MUkPphp/+7yjL1hObmKgbeVyf795655
-         gzF8/kCIoGV+KopA5of2sJciQY1pGHfBD7WGSXiELYs6KtNFnu8KCjBZLGmDy7sgAV
-         4Ys0OLC9Aor+6Z2UCzwuTgzxkQjA8vEaaTRx2wTY=
+        b=WI7FYtueuXdvl1BqBRcJh7deMi7s02lCThIoe1qAPvkbztyJIcaiZ48h6rbzPNIMF
+         6kloPD9AbsD0TRUPMdwqL7GAHmjdNj29N5L8KUq7xvCYoxqS0Er8qFwuw0nvc7RwLz
+         ATnFHR/pME9nMMQsl2Xd7u35wQ8lYZ1ODFdE3CbA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.10 349/381] f2fs: fix potential corruption when moving a directory
-Date:   Mon, 15 May 2023 18:30:00 +0200
-Message-Id: <20230515161752.627711794@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+394aa8a792cb99dbc837@syzkaller.appspotmail.com,
+        syzbot+344aaa8697ebd232bfc8@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 124/134] ext4: improve error handling from ext4_dirhash()
+Date:   Mon, 15 May 2023 18:30:01 +0200
+Message-Id: <20230515161707.281278208@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,65 +55,156 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit d94772154e524b329a168678836745d2773a6e02 upstream.
+commit 4b3cb1d108bfc2aebb0d7c8a52261a53cf7f5786 upstream.
 
-F2FS has the same issue in ext4_rename causing crash revealed by
-xfstests/generic/707.
+The ext4_dirhash() will *almost* never fail, especially when the hash
+tree feature was first introduced.  However, with the addition of
+support of encrypted, casefolded file names, that function can most
+certainly fail today.
 
-See also commit 0813299c586b ("ext4: Fix possible corruption when moving a directory")
+So make sure the callers of ext4_dirhash() properly check for
+failures, and reflect the errors back up to their callers.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230506142419.984260-1-tytso@mit.edu
+Reported-by: syzbot+394aa8a792cb99dbc837@syzkaller.appspotmail.com
+Reported-by: syzbot+344aaa8697ebd232bfc8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=db56459ea4ac4a676ae4b4678f633e55da005a9b
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/namei.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ fs/ext4/hash.c  |    6 +++++-
+ fs/ext4/namei.c |   53 +++++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 42 insertions(+), 17 deletions(-)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -969,12 +969,20 @@ static int f2fs_rename(struct inode *old
- 			goto out;
+--- a/fs/ext4/hash.c
++++ b/fs/ext4/hash.c
+@@ -277,7 +277,11 @@ static int __ext4fs_dirhash(const struct
  	}
- 
-+	/*
-+	 * Copied from ext4_rename: we need to protect against old.inode
-+	 * directory getting converted from inline directory format into
-+	 * a normal one.
-+	 */
-+	if (S_ISDIR(old_inode->i_mode))
-+		inode_lock_nested(old_inode, I_MUTEX_NONDIR2);
-+
- 	err = -ENOENT;
- 	old_entry = f2fs_find_entry(old_dir, &old_dentry->d_name, &old_page);
- 	if (!old_entry) {
- 		if (IS_ERR(old_page))
- 			err = PTR_ERR(old_page);
--		goto out;
-+		goto out_unlock_old;
+ 	default:
+ 		hinfo->hash = 0;
+-		return -1;
++		hinfo->minor_hash = 0;
++		ext4_warning(dir->i_sb,
++			     "invalid/unsupported hash tree version %u",
++			     hinfo->hash_version);
++		return -EINVAL;
  	}
+ 	hash = hash & ~1;
+ 	if (hash == (EXT4_HTREE_EOF_32BIT << 1))
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -674,7 +674,7 @@ static struct stats dx_show_leaf(struct
+ 				len = de->name_len;
+ 				if (!IS_ENCRYPTED(dir)) {
+ 					/* Directory is not encrypted */
+-					ext4fs_dirhash(dir, de->name,
++					(void) ext4fs_dirhash(dir, de->name,
+ 						de->name_len, &h);
+ 					printk("%*.s:(U)%x.%u ", len,
+ 					       name, h.hash,
+@@ -709,8 +709,9 @@ static struct stats dx_show_leaf(struct
+ 					if (IS_CASEFOLDED(dir))
+ 						h.hash = EXT4_DIRENT_HASH(de);
+ 					else
+-						ext4fs_dirhash(dir, de->name,
+-						       de->name_len, &h);
++						(void) ext4fs_dirhash(dir,
++							de->name,
++							de->name_len, &h);
+ 					printk("%*.s:(E)%x.%u ", len, name,
+ 					       h.hash, (unsigned) ((char *) de
+ 								   - base));
+@@ -720,7 +721,8 @@ static struct stats dx_show_leaf(struct
+ #else
+ 				int len = de->name_len;
+ 				char *name = de->name;
+-				ext4fs_dirhash(dir, de->name, de->name_len, &h);
++				(void) ext4fs_dirhash(dir, de->name,
++						      de->name_len, &h);
+ 				printk("%*.s:%x.%u ", len, name, h.hash,
+ 				       (unsigned) ((char *) de - base));
+ #endif
+@@ -849,8 +851,14 @@ dx_probe(struct ext4_filename *fname, st
+ 	hinfo->seed = EXT4_SB(dir->i_sb)->s_hash_seed;
+ 	/* hash is already computed for encrypted casefolded directory */
+ 	if (fname && fname_name(fname) &&
+-				!(IS_ENCRYPTED(dir) && IS_CASEFOLDED(dir)))
+-		ext4fs_dirhash(dir, fname_name(fname), fname_len(fname), hinfo);
++	    !(IS_ENCRYPTED(dir) && IS_CASEFOLDED(dir))) {
++		int ret = ext4fs_dirhash(dir, fname_name(fname),
++					 fname_len(fname), hinfo);
++		if (ret < 0) {
++			ret_err = ERR_PTR(ret);
++			goto fail;
++		}
++	}
+ 	hash = hinfo->hash;
  
- 	if (S_ISDIR(old_inode->i_mode)) {
-@@ -1082,6 +1090,9 @@ static int f2fs_rename(struct inode *old
+ 	if (root->info.unused_flags & 1) {
+@@ -1111,7 +1119,12 @@ static int htree_dirblock_to_tree(struct
+ 				hinfo->minor_hash = 0;
+ 			}
+ 		} else {
+-			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			err = ext4fs_dirhash(dir, de->name,
++					     de->name_len, hinfo);
++			if (err < 0) {
++				count = err;
++				goto errout;
++			}
+ 		}
+ 		if ((hinfo->hash < start_hash) ||
+ 		    ((hinfo->hash == start_hash) &&
+@@ -1313,8 +1326,12 @@ static int dx_make_map(struct inode *dir
+ 		if (de->name_len && de->inode) {
+ 			if (ext4_hash_in_dirent(dir))
+ 				h.hash = EXT4_DIRENT_HASH(de);
+-			else
+-				ext4fs_dirhash(dir, de->name, de->name_len, &h);
++			else {
++				int err = ext4fs_dirhash(dir, de->name,
++						     de->name_len, &h);
++				if (err < 0)
++					return err;
++			}
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+@@ -1452,10 +1469,9 @@ int ext4_fname_setup_ci_filename(struct
+ 	hinfo->hash_version = DX_HASH_SIPHASH;
+ 	hinfo->seed = NULL;
+ 	if (cf_name->name)
+-		ext4fs_dirhash(dir, cf_name->name, cf_name->len, hinfo);
++		return ext4fs_dirhash(dir, cf_name->name, cf_name->len, hinfo);
+ 	else
+-		ext4fs_dirhash(dir, iname->name, iname->len, hinfo);
+-	return 0;
++		return ext4fs_dirhash(dir, iname->name, iname->len, hinfo);
+ }
+ #endif
  
- 	f2fs_unlock_op(sbi);
+@@ -2298,10 +2314,15 @@ static int make_indexed_dir(handle_t *ha
+ 	fname->hinfo.seed = EXT4_SB(dir->i_sb)->s_hash_seed;
  
-+	if (S_ISDIR(old_inode->i_mode))
-+		inode_unlock(old_inode);
-+
- 	if (IS_DIRSYNC(old_dir) || IS_DIRSYNC(new_dir))
- 		f2fs_sync_fs(sbi->sb, 1);
- 
-@@ -1096,6 +1107,9 @@ out_dir:
- 		f2fs_put_page(old_dir_page, 0);
- out_old:
- 	f2fs_put_page(old_page, 0);
-+out_unlock_old:
-+	if (S_ISDIR(old_inode->i_mode))
-+		inode_unlock(old_inode);
- out:
- 	if (whiteout)
- 		iput(whiteout);
+ 	/* casefolded encrypted hashes are computed on fname setup */
+-	if (!ext4_hash_in_dirent(dir))
+-		ext4fs_dirhash(dir, fname_name(fname),
+-				fname_len(fname), &fname->hinfo);
+-
++	if (!ext4_hash_in_dirent(dir)) {
++		int err = ext4fs_dirhash(dir, fname_name(fname),
++					 fname_len(fname), &fname->hinfo);
++		if (err < 0) {
++			brelse(bh2);
++			brelse(bh);
++			return err;
++		}
++	}
+ 	memset(frames, 0, sizeof(frames));
+ 	frame = frames;
+ 	frame->entries = entries;
 
 
