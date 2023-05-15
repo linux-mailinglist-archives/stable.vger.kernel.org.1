@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 176C670346A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A47F770399D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243015AbjEOQsU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:48:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53482 "EHLO
+        id S244490AbjEORoN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243001AbjEOQsR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:17 -0400
+        with ESMTP id S243278AbjEORn4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5B75598
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30248120B3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BBA162917
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F21C433EF;
-        Mon, 15 May 2023 16:47:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFFB162E3F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08662C433D2;
+        Mon, 15 May 2023 17:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169278;
-        bh=Oxm6zcFUt0i3P6Kq1dvEAUv3ijIXeY7QiQnwrPW2fRg=;
+        s=korg; t=1684172488;
+        bh=l/retEStJOe5Bme2md0VMa2ucq9Q3qeTQ7qpv0Hyqzc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WJf3jovCkR19pNIU0J7PoIwyMpZ76G5XM/3zpmLqeqkL5TKglY11iI/9pFrRlle9w
-         jDeXfjOu9TrXufckKD3uE5Z7fQ7VaDh/Ir98xnl8NHDZ55vLVAPrea0q3zzNE5gYsK
-         WUi+YIP7SXcn+qIAAmf+kQTVlCUVAMGzUdarD5ys=
+        b=UUA/QuNsIqV7rtkHxI2enLfn75ch4MxDSCs9K/xcUyCEoKEH3f5uf/AvjjDz55Wxb
+         umMoQcYclb70KNQT9kazU20MdDQ6Wbpbum3Pp/NW4rUIh65ayEPsF3g0uJM/zocEgU
+         1xFetDwMYRFMP2raBe6wszh6BEi4mHH9B0wF0Ows=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com,
-        syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 184/191] ext4: fix invalid free tracking in ext4_xattr_move_to_block()
+        patches@lists.linux.dev, Nate Thornton <nate.thornton@samsung.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Minwoo Im <minwoo.im@samsung.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 170/381] nvme: fix async event trace event
 Date:   Mon, 15 May 2023 18:27:01 +0200
-Message-Id: <20230515161714.172862462@linuxfoundation.org>
+Message-Id: <20230515161744.496529346@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +57,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Keith Busch <kbusch@kernel.org>
 
-commit b87c7cdf2bed4928b899e1ce91ef0d147017ba45 upstream.
+[ Upstream commit 6622b76fe922b94189499a90ccdb714a4a8d0773 ]
 
-In ext4_xattr_move_to_block(), the value of the extended attribute
-which we need to move to an external block may be allocated by
-kvmalloc() if the value is stored in an external inode.  So at the end
-of the function the code tried to check if this was the case by
-testing entry->e_value_inum.
+Mixing AER Event Type and Event Info has masking clashes. Just print the
+event type, but also include the event info of the AER result in the
+trace.
 
-However, at this point, the pointer to the xattr entry is no longer
-valid, because it was removed from the original location where it had
-been stored.  So we could end up calling kvfree() on a pointer which
-was not allocated by kvmalloc(); or we could also potentially leak
-memory by not freeing the buffer when it should be freed.  Fix this by
-storing whether it should be freed in a separate variable.
-
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230430160426.581366-1-tytso@mit.edu
-Link: https://syzkaller.appspot.com/bug?id=5c2aee8256e30b55ccf57312c16d88417adbd5e1
-Link: https://syzkaller.appspot.com/bug?id=41a6b5d4917c0412eb3b3c3c604965bed7d7420b
-Reported-by: syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com
-Reported-by: syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 09bd1ff4b15143b ("nvme-core: add async event trace helper")
+Reported-by: Nate Thornton <nate.thornton@samsung.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/nvme/host/core.c  |  5 +----
+ drivers/nvme/host/trace.h | 15 ++++++---------
+ 2 files changed, 7 insertions(+), 13 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2573,6 +2573,7 @@ static int ext4_xattr_move_to_block(hand
- 		.in_inode = !!entry->e_value_inum,
- 	};
- 	struct ext4_xattr_ibody_header *header = IHDR(inode, raw_inode);
-+	int needs_kvfree = 0;
- 	int error;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index cb3f807ede1b8..07c41a149328a 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4430,8 +4430,6 @@ static void nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+ {
+ 	u32 aer_notice_type = nvme_aer_subtype(result);
  
- 	is = kzalloc(sizeof(struct ext4_xattr_ibody_find), GFP_NOFS);
-@@ -2595,7 +2596,7 @@ static int ext4_xattr_move_to_block(hand
- 			error = -ENOMEM;
- 			goto out;
- 		}
+-	trace_nvme_async_event(ctrl, aer_notice_type);
 -
-+		needs_kvfree = 1;
- 		error = ext4_xattr_inode_get(inode, entry, buffer, value_size);
- 		if (error)
- 			goto out;
-@@ -2634,7 +2635,7 @@ static int ext4_xattr_move_to_block(hand
+ 	switch (aer_notice_type) {
+ 	case NVME_AER_NOTICE_NS_CHANGED:
+ 		set_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events);
+@@ -4463,7 +4461,6 @@ static void nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
  
- out:
- 	kfree(b_entry_name);
--	if (entry->e_value_inum && buffer)
-+	if (needs_kvfree && buffer)
- 		kvfree(buffer);
- 	if (is)
- 		brelse(is->iloc.bh);
+ static void nvme_handle_aer_persistent_error(struct nvme_ctrl *ctrl)
+ {
+-	trace_nvme_async_event(ctrl, NVME_AER_ERROR);
+ 	dev_warn(ctrl->device, "resetting controller due to AER\n");
+ 	nvme_reset_ctrl(ctrl);
+ }
+@@ -4478,6 +4475,7 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
+ 	if (le16_to_cpu(status) >> 1 != NVME_SC_SUCCESS)
+ 		return;
+ 
++	trace_nvme_async_event(ctrl, result);
+ 	switch (aer_type) {
+ 	case NVME_AER_NOTICE:
+ 		nvme_handle_aen_notice(ctrl, result);
+@@ -4495,7 +4493,6 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
+ 	case NVME_AER_SMART:
+ 	case NVME_AER_CSS:
+ 	case NVME_AER_VS:
+-		trace_nvme_async_event(ctrl, aer_type);
+ 		ctrl->aen_result = result;
+ 		break;
+ 	default:
+diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
+index aa8b0f86b2be1..b258f7b8788e1 100644
+--- a/drivers/nvme/host/trace.h
++++ b/drivers/nvme/host/trace.h
+@@ -127,15 +127,12 @@ TRACE_EVENT(nvme_async_event,
+ 	),
+ 	TP_printk("nvme%d: NVME_AEN=%#08x [%s]",
+ 		__entry->ctrl_id, __entry->result,
+-		__print_symbolic(__entry->result,
+-		aer_name(NVME_AER_NOTICE_NS_CHANGED),
+-		aer_name(NVME_AER_NOTICE_ANA),
+-		aer_name(NVME_AER_NOTICE_FW_ACT_STARTING),
+-		aer_name(NVME_AER_NOTICE_DISC_CHANGED),
+-		aer_name(NVME_AER_ERROR),
+-		aer_name(NVME_AER_SMART),
+-		aer_name(NVME_AER_CSS),
+-		aer_name(NVME_AER_VS))
++		__print_symbolic(__entry->result & 0x7,
++			aer_name(NVME_AER_ERROR),
++			aer_name(NVME_AER_SMART),
++			aer_name(NVME_AER_NOTICE),
++			aer_name(NVME_AER_CSS),
++			aer_name(NVME_AER_VS))
+ 	)
+ );
+ 
+-- 
+2.39.2
+
 
 
