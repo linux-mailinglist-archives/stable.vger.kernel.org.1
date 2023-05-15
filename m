@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B8B37035E4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03317703914
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243590AbjEOREd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
+        id S244492AbjEORil (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243426AbjEOREM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:12 -0400
+        with ESMTP id S244474AbjEORiZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC027EE3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:02:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA0D106FA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDAD862A9D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB3DC433D2;
-        Mon, 15 May 2023 17:02:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 067D462DB7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27B9C433EF;
+        Mon, 15 May 2023 17:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170133;
-        bh=jJyNus2CwwIY+AAgjOpLx+S5mKMQaBPOy9bff8eWG8k=;
+        s=korg; t=1684172107;
+        bh=ZheHF2Es9l7dGqTGX453WIo07dJi81f7biRKOVgUASw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=elNfUevw10euiQUlNoIHYJ4frt4K4F279xKwMV/EpzFFeaqoql138sKh1AB/iUWqQ
-         4ctHKNKwpkXE2aij9+kwEiamCSvGmWFVOqK2H1U9qpjwBJGDSpH2LVboeOb0kxvrYv
-         ZGsxOJnCdYWMEa9Dz13S+oWqpyefLTIBH1mhxXOc=
+        b=Mp08LT/XGI4I04zyWLyMsuK7njGn3GePm7TKAU54Zun88D/VMVyq7sTX2q7XSDp59
+         KeuKolhD0XpGTdoq2jCFdO+pIV6JDtIS4mPqBZ6eSqklSJoO8jT7qqRIlu8wTZC8bR
+         cj6OzfiQPFHc9Oz+S8qiSs2zprzgGOIUWX7pRcXI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/239] octeonxt2-af: mcs: Fix per port bypass config
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 047/381] Revert "ubifs: dirty_cow_znode: Fix memleak in error handling path"
 Date:   Mon, 15 May 2023 18:24:58 +0200
-Message-Id: <20230515161722.768477633@linuxfoundation.org>
+Message-Id: <20230515161738.959332091@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,89 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit c222b292a3568754828ffd30338d2909b14ed160 ]
+commit 7d01cb27f6aebc54efbe28d8961a973b8f795b13 upstream.
 
-For each lmac port, MCS has two MCS_TOP_SLAVE_CHANNEL_CONFIGX
-registers. For CN10KB both register need to be configured for the
-port level mcs bypass to work. This patch also sets bitmap
-of flowid/secy entry reserved for default bypass so that these
-entries can be shown in debugfs.
+This reverts commit 122deabfe1428 (ubifs: dirty_cow_znode: Fix memleak
+in error handling path).
+After commit 122deabfe1428 applied, if insert_old_idx() failed, old
+index neither exists in TNC nor in old-index tree. Which means that
+old index node could be overwritten in layout_leb_in_gaps(), then
+ubifs image will be corrupted in power-cut.
 
-Fixes: bd69476e86fc ("octeontx2-af: cn10k: mcs: Install a default TCAM for normal traffic")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 122deabfe1428 (ubifs: dirty_cow_znode: Fix memleak ... path)
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/mcs.c       | 11 ++++++++++-
- .../net/ethernet/marvell/octeontx2/af/rvu_debugfs.c   |  5 +++--
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ fs/ubifs/tnc.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-index f68a6a0e3aa41..492baa0b594ce 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-@@ -494,6 +494,9 @@ int mcs_install_flowid_bypass_entry(struct mcs *mcs)
+--- a/fs/ubifs/tnc.c
++++ b/fs/ubifs/tnc.c
+@@ -267,18 +267,11 @@ static struct ubifs_znode *dirty_cow_zno
+ 	if (zbr->len) {
+ 		err = insert_old_idx(c, zbr->lnum, zbr->offs);
+ 		if (unlikely(err))
+-			/*
+-			 * Obsolete znodes will be freed by tnc_destroy_cnext()
+-			 * or free_obsolete_znodes(), copied up znodes should
+-			 * be added back to tnc and freed by
+-			 * ubifs_destroy_tnc_subtree().
+-			 */
+-			goto out;
++			return ERR_PTR(err);
+ 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
+ 	} else
+ 		err = 0;
  
- 	/* Flow entry */
- 	flow_id = mcs->hw->tcam_entries - MCS_RSRC_RSVD_CNT;
-+	__set_bit(flow_id, mcs->rx.flow_ids.bmap);
-+	__set_bit(flow_id, mcs->tx.flow_ids.bmap);
-+
- 	for (reg_id = 0; reg_id < 4; reg_id++) {
- 		reg = MCSX_CPM_RX_SLAVE_FLOWID_TCAM_MASKX(reg_id, flow_id);
- 		mcs_reg_write(mcs, reg, GENMASK_ULL(63, 0));
-@@ -504,6 +507,8 @@ int mcs_install_flowid_bypass_entry(struct mcs *mcs)
- 	}
- 	/* secy */
- 	secy_id = mcs->hw->secy_entries - MCS_RSRC_RSVD_CNT;
-+	__set_bit(secy_id, mcs->rx.secy.bmap);
-+	__set_bit(secy_id, mcs->tx.secy.bmap);
- 
- 	/* Set validate frames to NULL and enable control port */
- 	plcy = 0x7ull;
-@@ -528,6 +533,7 @@ int mcs_install_flowid_bypass_entry(struct mcs *mcs)
- 	/* Enable Flowid entry */
- 	mcs_ena_dis_flowid_entry(mcs, flow_id, MCS_RX, true);
- 	mcs_ena_dis_flowid_entry(mcs, flow_id, MCS_TX, true);
-+
- 	return 0;
- }
- 
-@@ -1325,8 +1331,11 @@ void mcs_reset_port(struct mcs *mcs, u8 port_id, u8 reset)
- void mcs_set_lmac_mode(struct mcs *mcs, int lmac_id, u8 mode)
- {
- 	u64 reg;
-+	int id = lmac_id * 2;
- 
--	reg = MCSX_MCS_TOP_SLAVE_CHANNEL_CFG(lmac_id * 2);
-+	reg = MCSX_MCS_TOP_SLAVE_CHANNEL_CFG(id);
-+	mcs_reg_write(mcs, reg, (u64)mode);
-+	reg = MCSX_MCS_TOP_SLAVE_CHANNEL_CFG((id + 1));
- 	mcs_reg_write(mcs, reg, (u64)mode);
- }
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index abef0fd4259a3..0cab27448399c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -497,8 +497,9 @@ static int rvu_dbg_mcs_rx_secy_stats_display(struct seq_file *filp, void *unused
- 			   stats.octet_validated_cnt);
- 		seq_printf(filp, "secy%d: Pkts on disable port: %lld\n", secy_id,
- 			   stats.pkt_port_disabled_cnt);
--		seq_printf(filp, "secy%d: Octets validated: %lld\n", secy_id, stats.pkt_badtag_cnt);
--		seq_printf(filp, "secy%d: Octets validated: %lld\n", secy_id, stats.pkt_nosa_cnt);
-+		seq_printf(filp, "secy%d: Pkts with badtag: %lld\n", secy_id, stats.pkt_badtag_cnt);
-+		seq_printf(filp, "secy%d: Pkts with no SA(sectag.tci.c=0): %lld\n", secy_id,
-+			   stats.pkt_nosa_cnt);
- 		seq_printf(filp, "secy%d: Pkts with nosaerror: %lld\n", secy_id,
- 			   stats.pkt_nosaerror_cnt);
- 		seq_printf(filp, "secy%d: Tagged ctrl pkts: %lld\n", secy_id,
--- 
-2.39.2
-
+-out:
+ 	zbr->znode = zn;
+ 	zbr->lnum = 0;
+ 	zbr->offs = 0;
 
 
