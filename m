@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B367F703430
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F190070335E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242959AbjEOQpk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
+        id S242772AbjEOQgT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242926AbjEOQph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:37 -0400
+        with ESMTP id S242776AbjEOQgS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F304EE0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A677C170C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C3BC628EF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7D6C433D2;
-        Mon, 15 May 2023 16:45:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D3336280C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DEFC4339B;
+        Mon, 15 May 2023 16:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169135;
-        bh=SSDsLax/oxSZpWirU66ATXQyxPSeqpHAfv/U2GK4HIo=;
+        s=korg; t=1684168576;
+        bh=xHx45QrS3GR1asBkCLKHE9aMp55OnGfNJF3BZmoTDCg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FTE4BiSB9Nt42QbP/RFSz0OOmffmeiQjOlIMLroP7xc7gsK7TlseMzFJrNN+6s8Om
-         +QxtiZo9k3lnsW/JOCVVkxEgRK/o1gCKjyy9PNovtR8dp5EFFmFj+YGLQEyN+0N+WS
-         Dc+cDSVhR7D2C01wOPu8nm5pWjg3wj1KF8gvJ2WM=
+        b=te+hzCdNfvxDLrR3Jdv1xsxJy9eY74z1WaeG1dLqwMfmLOZky/JGeK7PoyEYSl5qP
+         jrG6Y1LSePNYFpSUS/3YV9MZUc3BPBkwp50zbfku4pJaR8Xxk/PjraBSPOLFIWHqRe
+         +UjtGqfLo5XVj1aN1gluanQQfNK7iV4tNF9z5k0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 124/191] dmaengine: at_xdmac: do not enable all cyclic channels
+        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 064/116] RDMA/rdmavt: Delete unnecessary NULL check
 Date:   Mon, 15 May 2023 18:26:01 +0200
-Message-Id: <20230515161711.818772531@linuxfoundation.org>
+Message-Id: <20230515161700.416826710@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Natalia Petrova <n.petrova@fintech.ru>
 
-[ Upstream commit f8435befd81dd85b7b610598551fadf675849bc1 ]
+[ Upstream commit b73a0b80c69de77d8d4942abb37066531c0169b2 ]
 
-Do not global enable all the cyclic channels in at_xdmac_resume(). Instead
-save the global status in at_xdmac_suspend() and re-enable the cyclic
-channel only if it was active before suspend.
+There is no need to check 'rdi->qp_dev' for NULL. The field 'qp_dev'
+is created in rvt_register_device() which will fail if the 'qp_dev'
+allocation fails in rvt_driver_qp_init(). Overwise this pointer
+doesn't changed and passed to rvt_qp_exit() by the next step.
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-6-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0acb0cc7ecc1 ("IB/rdmavt: Initialize and teardown of qpn table")
+Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
+Link: https://lore.kernel.org/r/20230303124408.16685-1-n.petrova@fintech.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rdmavt/qp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index a451ecae16692..33ea7abd8cc97 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -223,6 +223,7 @@ struct at_xdmac {
- 	int			irq;
- 	struct clk		*clk;
- 	u32			save_gim;
-+	u32			save_gs;
- 	struct dma_pool		*at_xdmac_desc_pool;
- 	struct at_xdmac_chan	chan[0];
- };
-@@ -1878,6 +1879,7 @@ static int atmel_xdmac_suspend(struct device *dev)
- 		}
- 	}
- 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
-+	atxdmac->save_gs = at_xdmac_read(atxdmac, AT_XDMAC_GS);
+diff --git a/drivers/infiniband/sw/rdmavt/qp.c b/drivers/infiniband/sw/rdmavt/qp.c
+index b0309876f4bb1..2bfcd47b58baa 100644
+--- a/drivers/infiniband/sw/rdmavt/qp.c
++++ b/drivers/infiniband/sw/rdmavt/qp.c
+@@ -318,8 +318,6 @@ void rvt_qp_exit(struct rvt_dev_info *rdi)
+ 	if (qps_inuse)
+ 		rvt_pr_err(rdi, "QP memory leak! %u still in use\n",
+ 			   qps_inuse);
+-	if (!rdi->qp_dev)
+-		return;
  
- 	at_xdmac_off(atxdmac);
- 	clk_disable_unprepare(atxdmac->clk);
-@@ -1914,7 +1916,8 @@ static int atmel_xdmac_resume(struct device *dev)
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
- 			wmb();
--			at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
-+			if (atxdmac->save_gs & atchan->mask)
-+				at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
- 		}
- 	}
- 	return 0;
+ 	kfree(rdi->qp_dev->qp_table);
+ 	free_qpn_table(&rdi->qp_dev->qpn_table);
 -- 
 2.39.2
 
