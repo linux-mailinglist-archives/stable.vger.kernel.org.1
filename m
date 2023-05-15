@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AEC5703889
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C4C3703A5D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244210AbjEORdC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:33:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54420 "EHLO
+        id S244806AbjEORur (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242712AbjEORcl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC0E7120A1;
-        Mon, 15 May 2023 10:30:10 -0700 (PDT)
+        with ESMTP id S244792AbjEORu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7D516E9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CE3462083;
-        Mon, 15 May 2023 17:30:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3763FC433D2;
-        Mon, 15 May 2023 17:30:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D42862E3B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044C7C4339E;
+        Mon, 15 May 2023 17:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171809;
-        bh=FWrdJUOVDUfaF82ePCRRUrLyhKUa8xyRp8tooUuq0sk=;
+        s=korg; t=1684172901;
+        bh=Dxv0V0djtdYeLj6z8vYogg+s4bQ8ZSK+opspWFTIT50=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hj689cbq7clSdkznzG0doK/FbfFy7gRgEEGbZWldBMBBteHkSX6eaqWDSlAukeCoz
-         h2Tt1UZ+3j4e4Qt6ez5NIngwfmkmCo8gUhGOq83fNxSPnN2WDrMGh6E9jxlwlYXhu0
-         qzPyJzn6IaYjNsfCUE0sRMfpYXauLyDj6YepJSvE=
+        b=IBjOdAbwc2e/GY1Oxckw7QCoBdGea+3UBpz9c7VQdRKojseZfbyYypTy7xpImO3vD
+         0NeD6jF5brIfZrH+n7u8SFqYNiUBSUpCq8ZOvGNkC7qfaDgebE7JxpoRMKHYecflie
+         hGiANMHNEUU7YmpN+Mu4aFCYB6xy/1/cq8Ix8Rk4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Igor Zhbanov <izh1979@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH 5.15 078/134] sh: nmi_debug: fix return value of __setup handler
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 304/381] mailbox: zynq: Switch to flexible array to simplify code
 Date:   Mon, 15 May 2023 18:29:15 +0200
-Message-Id: <20230515161705.779834317@linuxfoundation.org>
+Message-Id: <20230515161750.560894259@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,53 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit d1155e4132de712a9d3066e2667ceaad39a539c5 upstream.
+[ Upstream commit 043f85ce81cb1714e14d31c322c5646513dde3fb ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from nmi_debug_setup().
+Using flexible array is more straight forward. It
+  - saves 1 pointer in the 'zynqmp_ipi_pdata' structure
+  - saves an indirection when using this array
+  - saves some LoC and avoids some always spurious pointer arithmetic
 
-Fixes: 1e1030dccb10 ("sh: nmi_debug support.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-3-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Stable-dep-of: f72f805e7288 ("mailbox: zynqmp: Fix counts of child nodes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/nmi_debug.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/sh/kernel/nmi_debug.c
-+++ b/arch/sh/kernel/nmi_debug.c
-@@ -49,7 +49,7 @@ static int __init nmi_debug_setup(char *
- 	register_die_notifier(&nmi_debug_nb);
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 05e36229622e3..136a84ad871cc 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -110,7 +110,7 @@ struct zynqmp_ipi_pdata {
+ 	unsigned int method;
+ 	u32 local_id;
+ 	int num_mboxes;
+-	struct zynqmp_ipi_mbox *ipi_mboxes;
++	struct zynqmp_ipi_mbox ipi_mboxes[];
+ };
  
- 	if (*str != '=')
--		return 0;
-+		return 1;
+ static struct device_driver zynqmp_ipi_mbox_driver = {
+@@ -635,7 +635,7 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
+ 	int num_mboxes, ret = -EINVAL;
  
- 	for (p = str + 1; *p; p = sep + 1) {
- 		sep = strchr(p, ',');
-@@ -70,6 +70,6 @@ static int __init nmi_debug_setup(char *
- 			break;
+ 	num_mboxes = of_get_child_count(np);
+-	pdata = devm_kzalloc(dev, sizeof(*pdata) + (num_mboxes * sizeof(*mbox)),
++	pdata = devm_kzalloc(dev, struct_size(pdata, ipi_mboxes, num_mboxes),
+ 			     GFP_KERNEL);
+ 	if (!pdata)
+ 		return -ENOMEM;
+@@ -649,8 +649,6 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
  	}
  
--	return 0;
-+	return 1;
- }
- __setup("nmi_debug", nmi_debug_setup);
+ 	pdata->num_mboxes = num_mboxes;
+-	pdata->ipi_mboxes = (struct zynqmp_ipi_mbox *)
+-			    ((char *)pdata + sizeof(*pdata));
+ 
+ 	mbox = pdata->ipi_mboxes;
+ 	for_each_available_child_of_node(np, nc) {
+-- 
+2.39.2
+
 
 
