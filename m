@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 052D270340B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F22DD703319
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242912AbjEOQoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47814 "EHLO
+        id S242050AbjEOQdN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242959AbjEOQoI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32DE24693
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:04 -0700 (PDT)
+        with ESMTP id S242732AbjEOQdK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D8D30E7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA0DF628BC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D76C433D2;
-        Mon, 15 May 2023 16:44:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7221B62526
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FC0C4339C;
+        Mon, 15 May 2023 16:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169043;
-        bh=+/hW71CHIoBr+rdAj/1AeoEhhalXs4deQs+5JIkCaxg=;
+        s=korg; t=1684168384;
+        bh=Gfho95/6K/uX3oq47MASCSU2N5nvK8dGz+S4g0TJR08=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CEbidrD34TUBZrSXGt0l4pPgLXfvHwTCrIQoVB6hsTfs0jzVVFQ4nAH/QcBNme91a
-         1LnqMnB5z3cO5FJVF3SN4w7880e8kxaCsNKDqQ93y75mtEvJ31yOoC0yLeiCskjzpX
-         fKFBIZYycmOmnv+F/pKIko7xzFZivzwlD/vKad9o=
+        b=q8os+phwYP80/CI57p7vXu5thgrPyyPPXaU2dHzR9XGmUuG4vb9ed9VEAgfHA/n46
+         XygCp00jTJpAgN8sFUDtQSzXT3fTLVmOZ3hFuiuudOO54hz/KZe78sXdWLdJevzyCG
+         5xLANR/g91QVHYz/76gEIj1KCDqlM89wODaPWwHU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 093/191] mtd: spi-nor: cadence-quadspi: Make driver independent of flash geometry
+Subject: [PATCH 4.14 033/116] net/packet: convert po->auxdata to an atomic flag
 Date:   Mon, 15 May 2023 18:25:30 +0200
-Message-Id: <20230515161710.649360849@linuxfoundation.org>
+Message-Id: <20230515161659.365914465@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,98 +54,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 834b4e8d344139ba64cda22099b2b2ef6c9a542d ]
+[ Upstream commit fd53c297aa7b077ae98a3d3d2d3aa278a1686ba6 ]
 
-Drop configuration of Flash size, erase size and page size
-configuration. Flash size is needed only if using AHB decoder (BIT 23 of
-CONFIG_REG) which is not used by the driver.
-Erase size and page size are needed if IP is configured to send WREN
-automatically. But since SPI NOR layer takes care of sending WREN, there
-is no need to configure these fields either.
+po->auxdata can be read while another thread
+is changing its value, potentially raising KCSAN splat.
 
-Therefore drop these in preparation to move the driver to spi-mem
-framework where flash geometry is not visible to controller driver.
+Convert it to PACKET_SOCK_AUXDATA flag.
 
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Link: https://lore.kernel.org/r/20200601070444.16923-2-vigneshr@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 2087e85bb66e ("spi: cadence-quadspi: fix suspend-resume implementations")
+Fixes: 8dc419447415 ("[PACKET]: Add optional checksum computation for recvmsg")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/cadence-quadspi.c | 36 +--------------------------
- 1 file changed, 1 insertion(+), 35 deletions(-)
+ net/packet/af_packet.c | 8 +++-----
+ net/packet/diag.c      | 2 +-
+ net/packet/internal.h  | 4 ++--
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/cadence-quadspi.c b/drivers/mtd/spi-nor/cadence-quadspi.c
-index a92f531ad23a3..cdebe6853e6c3 100644
---- a/drivers/mtd/spi-nor/cadence-quadspi.c
-+++ b/drivers/mtd/spi-nor/cadence-quadspi.c
-@@ -80,9 +80,6 @@ struct cqspi_st {
- 	dma_addr_t		mmap_phys_base;
- 
- 	int			current_cs;
--	int			current_page_size;
--	int			current_erase_size;
--	int			current_addr_width;
- 	unsigned long		master_ref_clk_hz;
- 	bool			is_decoded_cs;
- 	u32			fifo_depth;
-@@ -734,32 +731,6 @@ static void cqspi_chipselect(struct spi_nor *nor)
- 	writel(reg, reg_base + CQSPI_REG_CONFIG);
- }
- 
--static void cqspi_configure_cs_and_sizes(struct spi_nor *nor)
--{
--	struct cqspi_flash_pdata *f_pdata = nor->priv;
--	struct cqspi_st *cqspi = f_pdata->cqspi;
--	void __iomem *iobase = cqspi->iobase;
--	unsigned int reg;
--
--	/* configure page size and block size. */
--	reg = readl(iobase + CQSPI_REG_SIZE);
--	reg &= ~(CQSPI_REG_SIZE_PAGE_MASK << CQSPI_REG_SIZE_PAGE_LSB);
--	reg &= ~(CQSPI_REG_SIZE_BLOCK_MASK << CQSPI_REG_SIZE_BLOCK_LSB);
--	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
--	reg |= (nor->page_size << CQSPI_REG_SIZE_PAGE_LSB);
--	reg |= (ilog2(nor->mtd.erasesize) << CQSPI_REG_SIZE_BLOCK_LSB);
--	reg |= (nor->addr_width - 1);
--	writel(reg, iobase + CQSPI_REG_SIZE);
--
--	/* configure the chip select */
--	cqspi_chipselect(nor);
--
--	/* Store the new configuration of the controller */
--	cqspi->current_page_size = nor->page_size;
--	cqspi->current_erase_size = nor->mtd.erasesize;
--	cqspi->current_addr_width = nor->addr_width;
--}
--
- static unsigned int calculate_ticks_for_ns(const unsigned int ref_clk_hz,
- 					   const unsigned int ns_val)
- {
-@@ -865,18 +836,13 @@ static void cqspi_configure(struct spi_nor *nor)
- 	int switch_cs = (cqspi->current_cs != f_pdata->cs);
- 	int switch_ck = (cqspi->sclk != sclk);
- 
--	if ((cqspi->current_page_size != nor->page_size) ||
--	    (cqspi->current_erase_size != nor->mtd.erasesize) ||
--	    (cqspi->current_addr_width != nor->addr_width))
--		switch_cs = 1;
--
- 	if (switch_cs || switch_ck)
- 		cqspi_controller_enable(cqspi, 0);
- 
- 	/* Switch chip select. */
- 	if (switch_cs) {
- 		cqspi->current_cs = f_pdata->cs;
--		cqspi_configure_cs_and_sizes(nor);
-+		cqspi_chipselect(nor);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index ce6afdb50933b..8b44ad304a656 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3480,7 +3480,7 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		memcpy(msg->msg_name, &PACKET_SKB_CB(skb)->sa, copy_len);
  	}
  
- 	/* Setup baudrate divisor and delays */
+-	if (pkt_sk(sk)->auxdata) {
++	if (packet_sock_flag(pkt_sk(sk), PACKET_SOCK_AUXDATA)) {
+ 		struct tpacket_auxdata aux;
+ 
+ 		aux.tp_status = TP_STATUS_USER;
+@@ -3865,9 +3865,7 @@ packet_setsockopt(struct socket *sock, int level, int optname, char __user *optv
+ 		if (copy_from_user(&val, optval, sizeof(val)))
+ 			return -EFAULT;
+ 
+-		lock_sock(sk);
+-		po->auxdata = !!val;
+-		release_sock(sk);
++		packet_sock_flag_set(po, PACKET_SOCK_AUXDATA, val);
+ 		return 0;
+ 	}
+ 	case PACKET_ORIGDEV:
+@@ -4009,7 +4007,7 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
+ 
+ 		break;
+ 	case PACKET_AUXDATA:
+-		val = po->auxdata;
++		val = packet_sock_flag(po, PACKET_SOCK_AUXDATA);
+ 		break;
+ 	case PACKET_ORIGDEV:
+ 		val = packet_sock_flag(po, PACKET_SOCK_ORIGDEV);
+diff --git a/net/packet/diag.c b/net/packet/diag.c
+index bf5928e5df035..d9f912ad23dfa 100644
+--- a/net/packet/diag.c
++++ b/net/packet/diag.c
+@@ -22,7 +22,7 @@ static int pdiag_put_info(const struct packet_sock *po, struct sk_buff *nlskb)
+ 	pinfo.pdi_flags = 0;
+ 	if (po->running)
+ 		pinfo.pdi_flags |= PDI_RUNNING;
+-	if (po->auxdata)
++	if (packet_sock_flag(po, PACKET_SOCK_AUXDATA))
+ 		pinfo.pdi_flags |= PDI_AUXDATA;
+ 	if (packet_sock_flag(po, PACKET_SOCK_ORIGDEV))
+ 		pinfo.pdi_flags |= PDI_ORIGDEV;
+diff --git a/net/packet/internal.h b/net/packet/internal.h
+index f39dcc7608bc6..3d871cae85b8c 100644
+--- a/net/packet/internal.h
++++ b/net/packet/internal.h
+@@ -117,8 +117,7 @@ struct packet_sock {
+ 	struct mutex		pg_vec_lock;
+ 	unsigned long		flags;
+ 	unsigned int		running;	/* bind_lock must be held */
+-	unsigned int		auxdata:1,	/* writer must hold sock lock */
+-				has_vnet_hdr:1,
++	unsigned int		has_vnet_hdr:1, /* writer must hold sock lock */
+ 				tp_loss:1,
+ 				tp_tx_has_off:1;
+ 	int			pressure;
+@@ -144,6 +143,7 @@ static struct packet_sock *pkt_sk(struct sock *sk)
+ 
+ enum packet_sock_flags {
+ 	PACKET_SOCK_ORIGDEV,
++	PACKET_SOCK_AUXDATA,
+ };
+ 
+ static inline void packet_sock_flag_set(struct packet_sock *po,
 -- 
 2.39.2
 
