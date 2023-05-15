@@ -2,58 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF2970370A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12C6B70363D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243924AbjEORQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55890 "EHLO
+        id S243588AbjEORIJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:08:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243764AbjEORP4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED203100F3;
-        Mon, 15 May 2023 10:14:44 -0700 (PDT)
+        with ESMTP id S243582AbjEORHu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E95E6E9B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:06:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59B6F62BBB;
-        Mon, 15 May 2023 17:14:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179D0C433EF;
-        Mon, 15 May 2023 17:14:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 863DC62AE0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3D2C433D2;
+        Mon, 15 May 2023 17:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170883;
-        bh=4jSls9SEgL+5agkw266mNjGCuZcNspC+bOyWIa1yb6I=;
+        s=korg; t=1684170319;
+        bh=ALqK/OCEqIMYl16HqqaGjde0UhCmhmdKxoSBUfnqnz8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jRYAjJ608jjjiUSdRUie7QQOp8sksSyc0lYCe+rMnhsYqNmfqaPJaGwYKFqEaNJwD
-         Jix+TYhDkHwYlLIEBLWepcRRm2q4KLrkXmoOUlbz5/mSeQlv11/SJIfV95hHYubpxN
-         TYN3I+WedvJaQTxke0ZPSFnlCr60Ti+e6XNpZehg=
+        b=vEHpkXqgimGbMAhvyv29DQsw+yhULc5QnWUG7d/TWcmzHhaVeOWW77019MAGpRvIb
+         1ffMNkOwG/GSu7dD75fE7cJqdicUvMyM3GJDn0J2UnHhKjUhY33I+D2o6t+iqpyWZi
+         Rpw7k5UnlkdXNBGF00odNVgLWNJWq9p5ZKDFRb/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+ebc945fdb4acd72cba78@syzkaller.appspotmail.com,
-        David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+        patches@lists.linux.dev, Yang Jihong <yangjihong1@huawei.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 031/242] rxrpc: Fix potential data race in rxrpc_wait_to_be_connected()
+Subject: [PATCH 6.1 094/239] perf ftrace: Make system wide the default target for latency subcommand
 Date:   Mon, 15 May 2023 18:25:57 +0200
-Message-Id: <20230515161722.857279092@linuxfoundation.org>
+Message-Id: <20230515161724.497339326@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,114 +61,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-[ Upstream commit 2b5fdc0f5caa505afe34d608e2eefadadf2ee67a ]
+[ Upstream commit ecd4960d908e27e40b63a7046df2f942c148c6f6 ]
 
-Inside the loop in rxrpc_wait_to_be_connected() it checks call->error to
-see if it should exit the loop without first checking the call state.  This
-is probably safe as if call->error is set, the call is dead anyway, but we
-should probably wait for the call state to have been set to completion
-first, lest it cause surprise on the way out.
+If no target is specified for 'latency' subcommand, the execution fails
+because - 1 (invalid value) is written to set_ftrace_pid tracefs file.
+Make system wide the default target, which is the same as the default
+behavior of 'trace' subcommand.
 
-Fix this by only accessing call->error if the call is complete.  We don't
-actually need to access the error inside the loop as we'll do that after.
+Before the fix:
 
-This caused the following report:
+  # perf ftrace latency -T schedule
+  failed to set ftrace pid
 
-    BUG: KCSAN: data-race in rxrpc_send_data / rxrpc_set_call_completion
+After the fix:
 
-    write to 0xffff888159cf3c50 of 4 bytes by task 25673 on cpu 1:
-     rxrpc_set_call_completion+0x71/0x1c0 net/rxrpc/call_state.c:22
-     rxrpc_send_data_packet+0xba9/0x1650 net/rxrpc/output.c:479
-     rxrpc_transmit_one+0x1e/0x130 net/rxrpc/output.c:714
-     rxrpc_decant_prepared_tx net/rxrpc/call_event.c:326 [inline]
-     rxrpc_transmit_some_data+0x496/0x600 net/rxrpc/call_event.c:350
-     rxrpc_input_call_event+0x564/0x1220 net/rxrpc/call_event.c:464
-     rxrpc_io_thread+0x307/0x1d80 net/rxrpc/io_thread.c:461
-     kthread+0x1ac/0x1e0 kernel/kthread.c:376
-     ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+  # perf ftrace latency -T schedule
+  ^C#   DURATION     |      COUNT | GRAPH                                          |
+       0 - 1    us |          0 |                                                |
+       1 - 2    us |          0 |                                                |
+       2 - 4    us |          0 |                                                |
+       4 - 8    us |       2828 | ####                                           |
+       8 - 16   us |      23953 | ########################################       |
+      16 - 32   us |        408 |                                                |
+      32 - 64   us |        318 |                                                |
+      64 - 128  us |          4 |                                                |
+     128 - 256  us |          3 |                                                |
+     256 - 512  us |          0 |                                                |
+     512 - 1024 us |          1 |                                                |
+       1 - 2    ms |          4 |                                                |
+       2 - 4    ms |          0 |                                                |
+       4 - 8    ms |          0 |                                                |
+       8 - 16   ms |          0 |                                                |
+      16 - 32   ms |          0 |                                                |
+      32 - 64   ms |          0 |                                                |
+      64 - 128  ms |          0 |                                                |
+     128 - 256  ms |          4 |                                                |
+     256 - 512  ms |          2 |                                                |
+     512 - 1024 ms |          0 |                                                |
+       1 - ...   s |          0 |                                                |
 
-    read to 0xffff888159cf3c50 of 4 bytes by task 25672 on cpu 0:
-     rxrpc_send_data+0x29e/0x1950 net/rxrpc/sendmsg.c:296
-     rxrpc_do_sendmsg+0xb7a/0xc20 net/rxrpc/sendmsg.c:726
-     rxrpc_sendmsg+0x413/0x520 net/rxrpc/af_rxrpc.c:565
-     sock_sendmsg_nosec net/socket.c:724 [inline]
-     sock_sendmsg net/socket.c:747 [inline]
-     ____sys_sendmsg+0x375/0x4c0 net/socket.c:2501
-     ___sys_sendmsg net/socket.c:2555 [inline]
-     __sys_sendmmsg+0x263/0x500 net/socket.c:2641
-     __do_sys_sendmmsg net/socket.c:2670 [inline]
-     __se_sys_sendmmsg net/socket.c:2667 [inline]
-     __x64_sys_sendmmsg+0x57/0x60 net/socket.c:2667
-     do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-     do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-     entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-    value changed: 0x00000000 -> 0xffffffea
-
-Fixes: 9d35d880e0e4 ("rxrpc: Move client call connection to the I/O thread")
-Reported-by: syzbot+ebc945fdb4acd72cba78@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/000000000000e7c6d205fa10a3cd@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Dmitry Vyukov <dvyukov@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/r/508133.1682427395@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 53be50282269b46c ("perf ftrace: Add 'latency' subcommand")
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230324032702.109964-1-yangjihong1@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/sendmsg.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ tools/perf/builtin-ftrace.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index da49fcf1c4567..6caa47d352ed6 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -50,15 +50,11 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
- 	_enter("%d", call->debug_id);
+diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
+index 7de07bb16d235..4bc5b7cf3e04b 100644
+--- a/tools/perf/builtin-ftrace.c
++++ b/tools/perf/builtin-ftrace.c
+@@ -1228,10 +1228,12 @@ int cmd_ftrace(int argc, const char **argv)
+ 		goto out_delete_filters;
+ 	}
  
- 	if (rxrpc_call_state(call) != RXRPC_CALL_CLIENT_AWAIT_CONN)
--		return call->error;
-+		goto no_wait;
- 
- 	add_wait_queue_exclusive(&call->waitq, &myself);
- 
- 	for (;;) {
--		ret = call->error;
--		if (ret < 0)
--			break;
--
- 		switch (call->interruptibility) {
- 		case RXRPC_INTERRUPTIBLE:
- 		case RXRPC_PREINTERRUPTIBLE:
-@@ -69,10 +65,9 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
- 			set_current_state(TASK_UNINTERRUPTIBLE);
- 			break;
- 		}
--		if (rxrpc_call_state(call) != RXRPC_CALL_CLIENT_AWAIT_CONN) {
--			ret = call->error;
++	/* Make system wide (-a) the default target. */
++	if (!argc && target__none(&ftrace.target))
++		ftrace.target.system_wide = true;
 +
-+		if (rxrpc_call_state(call) != RXRPC_CALL_CLIENT_AWAIT_CONN)
- 			break;
--		}
- 		if ((call->interruptibility == RXRPC_INTERRUPTIBLE ||
- 		     call->interruptibility == RXRPC_PREINTERRUPTIBLE) &&
- 		    signal_pending(current)) {
-@@ -85,6 +80,7 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
- 	remove_wait_queue(&call->waitq, &myself);
- 	__set_current_state(TASK_RUNNING);
- 
-+no_wait:
- 	if (ret == 0 && rxrpc_call_is_complete(call))
- 		ret = call->error;
- 
+ 	switch (subcmd) {
+ 	case PERF_FTRACE_TRACE:
+-		if (!argc && target__none(&ftrace.target))
+-			ftrace.target.system_wide = true;
+ 		cmd_func = __cmd_ftrace;
+ 		break;
+ 	case PERF_FTRACE_LATENCY:
 -- 
 2.39.2
 
