@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D79703488
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58AF7703399
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:39:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243032AbjEOQtW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
+        id S242790AbjEOQjO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243034AbjEOQtQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:16 -0400
+        with ESMTP id S242841AbjEOQjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A010559B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A2B19A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCDD962943
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012C5C433D2;
-        Mon, 15 May 2023 16:49:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A66CF62858
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B50DC433D2;
+        Mon, 15 May 2023 16:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169354;
-        bh=D+nVR6YJ6wziewKaom6jQtPAN2+qliognPODIvsi3EE=;
+        s=korg; t=1684168744;
+        bh=Gw9H2vxwSHMyyQmTAnR7TTD1ym8iPaoaSVSwo76Ffxc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KUMm3wIySgL3XRyHa+QTQ6PVtVRNJBt3ivyYtFk3S3LPdrWfnfndefvSLTUz6Rj5B
-         PYebWAnIGzlMfD9QC3yAil2I9HGmo1aCRZ2uzZKkaVuO/P2xjWuWnhU/5RG0ckKUmO
-         ft+3bEYv8ou+qsU44ObSFdg5B0T29kWpaUjkwVfE=
+        b=w2+IQ7Nvgg3SZ0bep4gD/JxLVwDmppCtZyvLqb+OuJkF90R/PXvRGaMTycsggFMg3
+         KT5f1+Xb5CJS3BJKRl4uwNwM3XI66ZV6hlTGF2ct+yQTqn1brTonzecV9842p+Ie1j
+         2xzPpMdtjIMxbwfGNxAjgehBnTjFKdpYw2YVJEp4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 032/246] octeontx2-pf: mcs: Fix shared counters logic
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 4.19 007/191] IMA: allow/fix UML builds
 Date:   Mon, 15 May 2023 18:24:04 +0200
-Message-Id: <20230515161723.566068867@linuxfoundation.org>
+Message-Id: <20230515161707.460071056@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,106 +57,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 9bdfe61054fb2b989eb58df20bf99c0cf67e3038 ]
+commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
 
-Macsec stats like InPktsLate and InPktsDelayed share
-same counter in hardware. If SecY replay_protect is true
-then counter represents InPktsLate otherwise InPktsDelayed.
-This mode change was tracked based on protect_frames
-instead of replay_protect mistakenly. Similarly InPktsUnchecked
-and InPktsOk share same counter and mode change was tracked
-based on validate_check instead of validate_disabled.
-This patch fixes those problems.
+UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
+NO_IOMEM).
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
+
+ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
+ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
+ld: security/integrity/ima/ima_init.o: in function `ima_init':
+ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
+ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
+ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
+ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
+
+Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
+is set, regardless of the UML Kconfig setting.
+This updates TCG_TPM from =m to =y and fixes the linker errors.
+
+Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
+Cc: Stable <stable@vger.kernel.org> # v5.14+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  | 14 +++++++-------
- .../ethernet/marvell/octeontx2/nic/otx2_common.h   |  2 +-
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ security/integrity/ima/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index 13faca9add9f4..3ad8d7ef20be6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -1014,7 +1014,7 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
- 
- 	/* Check if sync is really needed */
- 	if (secy->validate_frames == txsc->last_validate_frames &&
--	    secy->protect_frames == txsc->last_protect_frames)
-+	    secy->replay_protect == txsc->last_replay_protect)
- 		return;
- 
- 	cn10k_mcs_secy_stats(pfvf, txsc->hw_secy_id_rx, &rx_rsp, MCS_RX, true);
-@@ -1036,19 +1036,19 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
- 		rxsc->stats.InPktsInvalid += sc_rsp.pkt_invalid_cnt;
- 		rxsc->stats.InPktsNotValid += sc_rsp.pkt_notvalid_cnt;
- 
--		if (txsc->last_protect_frames)
-+		if (txsc->last_replay_protect)
- 			rxsc->stats.InPktsLate += sc_rsp.pkt_late_cnt;
- 		else
- 			rxsc->stats.InPktsDelayed += sc_rsp.pkt_late_cnt;
- 
--		if (txsc->last_validate_frames == MACSEC_VALIDATE_CHECK)
-+		if (txsc->last_validate_frames == MACSEC_VALIDATE_DISABLED)
- 			rxsc->stats.InPktsUnchecked += sc_rsp.pkt_unchecked_cnt;
- 		else
- 			rxsc->stats.InPktsOK += sc_rsp.pkt_unchecked_cnt;
- 	}
- 
- 	txsc->last_validate_frames = secy->validate_frames;
--	txsc->last_protect_frames = secy->protect_frames;
-+	txsc->last_replay_protect = secy->replay_protect;
- }
- 
- static int cn10k_mdo_open(struct macsec_context *ctx)
-@@ -1117,7 +1117,7 @@ static int cn10k_mdo_add_secy(struct macsec_context *ctx)
- 	txsc->sw_secy = secy;
- 	txsc->encoding_sa = secy->tx_sc.encoding_sa;
- 	txsc->last_validate_frames = secy->validate_frames;
--	txsc->last_protect_frames = secy->protect_frames;
-+	txsc->last_replay_protect = secy->replay_protect;
- 
- 	list_add(&txsc->entry, &cfg->txsc_list);
- 
-@@ -1538,12 +1538,12 @@ static int cn10k_mdo_get_rx_sc_stats(struct macsec_context *ctx)
- 	rxsc->stats.InPktsInvalid += rsp.pkt_invalid_cnt;
- 	rxsc->stats.InPktsNotValid += rsp.pkt_notvalid_cnt;
- 
--	if (secy->protect_frames)
-+	if (secy->replay_protect)
- 		rxsc->stats.InPktsLate += rsp.pkt_late_cnt;
- 	else
- 		rxsc->stats.InPktsDelayed += rsp.pkt_late_cnt;
- 
--	if (secy->validate_frames == MACSEC_VALIDATE_CHECK)
-+	if (secy->validate_frames == MACSEC_VALIDATE_DISABLED)
- 		rxsc->stats.InPktsUnchecked += rsp.pkt_unchecked_cnt;
- 	else
- 		rxsc->stats.InPktsOK += rsp.pkt_unchecked_cnt;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index 3d22cc6a2804a..f42b2b65bfd7b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -389,7 +389,7 @@ struct cn10k_mcs_txsc {
- 	struct cn10k_txsc_stats stats;
- 	struct list_head entry;
- 	enum macsec_validation_type last_validate_frames;
--	bool last_protect_frames;
-+	bool last_replay_protect;
- 	u16 hw_secy_id_tx;
- 	u16 hw_secy_id_rx;
- 	u16 hw_flow_id;
--- 
-2.39.2
-
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -7,7 +7,7 @@ config IMA
+ 	select CRYPTO_HMAC
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_HASH_INFO
+-	select TCG_TPM if HAS_IOMEM && !UML
++	select TCG_TPM if HAS_IOMEM
+ 	select TCG_TIS if TCG_TPM && X86
+ 	select TCG_CRB if TCG_TPM && ACPI
+ 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
 
 
