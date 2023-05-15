@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB50703BE9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41C23703BB5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:05:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245025AbjEOSI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:08:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39896 "EHLO
+        id S245006AbjEOSFo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:05:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244964AbjEOSH4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:07:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03AB19F21
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:04:54 -0700 (PDT)
+        with ESMTP id S244996AbjEOSFV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:05:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5646B1886A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:03:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90D3963091
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:04:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E371C433EF;
-        Mon, 15 May 2023 18:04:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5E9F62FA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B88C433EF;
+        Mon, 15 May 2023 18:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173894;
-        bh=7kPxX1RXc892Fa0/FRxnTtHuWJcGU06GkqYpQ/kTSFY=;
+        s=korg; t=1684173789;
+        bh=wE6pSbNrn6qYaSIOmf7p4c3njD5jJ9XV1sMYnghL00I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cadi+GUf0RwiJw+K9ljG4ogqdHcK6NiyezJFaQMeBB3mB7t/nZlbF24+4sJyVpAtm
-         AhlRyzG4cYlX+460hIbr/QZfOYFrtZ6h1yFqyr19iR/MEniDcM1xtaSODODx8ox2R4
-         qcA65y3qT6APc+kiQhx8B4OFnS5j7hSnQ13T+4q8=
+        b=waJH7tRohmz1V6jcbegYWtaurQFD3bGRclj7rCW2r31wUoBFCQ6jLD62D0ouq1wyR
+         6kpfegFInEApVwqFNXJSDJX7vsdq+C/mCjWkbMwE85np2L5HNIpK7IkLCzUtt/wecR
+         GJgpK9WahGwNeJ2pWDO//2RBNsVpogKJa2i358LU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-        Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 5.4 199/282] clk: rockchip: rk3399: allow clk_cifout to force clk_cifout_src to reparent
-Date:   Mon, 15 May 2023 18:29:37 +0200
-Message-Id: <20230515161728.219492697@linuxfoundation.org>
+        patches@lists.linux.dev, Peng Liu <liupeng17@lenovo.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 200/282] scripts/gdb: fix lx-timerlist for Python3
+Date:   Mon, 15 May 2023 18:29:38 +0200
+Message-Id: <20230515161728.249333465@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -44,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,39 +56,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Peng Liu <liupeng17@lenovo.com>
 
-commit 933bf364e152cd60902cf9585c2ba310d593e69f upstream.
+commit 7362042f3556528e9e9b1eb5ce8d7a3a6331476b upstream.
 
-clk_cifout is derived from clk_cifout_src through an integer divider
-limited to 32. clk_cifout_src is a child of either cpll, gpll or npll
-without any possibility of a divider of any sort. The default clock
-parent is cpll.
+Below incompatibilities between Python2 and Python3 made lx-timerlist fail
+to run under Python3.
 
-Let's allow clk_cifout to ask its parent clk_cifout_src to reparent in
-order to find the real closest possible rate for clk_cifout and not one
-derived from cpll only.
+o xrange() is replaced by range() in Python3
+o bytes and str are different types in Python3
+o the return value of Inferior.read_memory() is memoryview object in
+  Python3
 
-Cc: stable@vger.kernel.org # 4.10+
-Fixes: fd8bc829336a ("clk: rockchip: fix the rk3399 cifout clock")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20221117-rk3399-cifout-set-rate-parent-v1-0-432548d04081@theobroma-systems.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+akpm: cc stable so that older kernels are properly debuggable under newer
+Python.
+
+Link: https://lkml.kernel.org/r/TYCP286MB2146EE1180A4D5176CBA8AB2C6819@TYCP286MB2146.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Peng Liu <liupeng17@lenovo.com>
+Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk-rk3399.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/gdb/linux/timerlist.py |    4 +++-
+ scripts/gdb/linux/utils.py     |    5 ++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/rockchip/clk-rk3399.c
-+++ b/drivers/clk/rockchip/clk-rk3399.c
-@@ -1259,7 +1259,7 @@ static struct rockchip_clk_branch rk3399
- 			RK3399_CLKSEL_CON(56), 6, 2, MFLAGS,
- 			RK3399_CLKGATE_CON(10), 7, GFLAGS),
+--- a/scripts/gdb/linux/timerlist.py
++++ b/scripts/gdb/linux/timerlist.py
+@@ -73,7 +73,7 @@ def print_cpu(hrtimer_bases, cpu, max_cl
+     ts = cpus.per_cpu(tick_sched_ptr, cpu)
  
--	COMPOSITE_NOGATE(SCLK_CIF_OUT, "clk_cifout", mux_clk_cif_p, 0,
-+	COMPOSITE_NOGATE(SCLK_CIF_OUT, "clk_cifout", mux_clk_cif_p, CLK_SET_RATE_PARENT,
- 			 RK3399_CLKSEL_CON(56), 5, 1, MFLAGS, 0, 5, DFLAGS),
+     text = "cpu: {}\n".format(cpu)
+-    for i in xrange(max_clock_bases):
++    for i in range(max_clock_bases):
+         text += " clock {}:\n".format(i)
+         text += print_base(cpu_base['clock_base'][i])
  
- 	/* gic */
+@@ -158,6 +158,8 @@ def pr_cpumask(mask):
+     num_bytes = (nr_cpu_ids + 7) / 8
+     buf = utils.read_memoryview(inf, bits, num_bytes).tobytes()
+     buf = binascii.b2a_hex(buf)
++    if type(buf) is not str:
++        buf=buf.decode()
+ 
+     chunks = []
+     i = num_bytes
+--- a/scripts/gdb/linux/utils.py
++++ b/scripts/gdb/linux/utils.py
+@@ -89,7 +89,10 @@ def get_target_endianness():
+ 
+ 
+ def read_memoryview(inf, start, length):
+-    return memoryview(inf.read_memory(start, length))
++    m = inf.read_memory(start, length)
++    if type(m) is memoryview:
++        return m
++    return memoryview(m)
+ 
+ 
+ def read_u16(buffer, offset):
 
 
