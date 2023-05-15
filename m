@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBE27039AF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA5A703775
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244646AbjEORpP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
+        id S244054AbjEORVZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244706AbjEORox (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58DC61B090
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:28 -0700 (PDT)
+        with ESMTP id S244058AbjEORVH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 411FB10A05
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:19:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A351B62E6F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A00C433EF;
-        Mon, 15 May 2023 17:42:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF8156210E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DE5C4339B;
+        Mon, 15 May 2023 17:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172547;
-        bh=QLwEUQ8r5I1I2kHhKLZebL/h2n+2wf1rb1yeKN38Q7A=;
+        s=korg; t=1684171140;
+        bh=v1rj7E7XGwnPY6b+0GXVEqNUPOMJaPmgGWT6TblS49I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cPcGkGv/Nv6tX4p4vjH43NGU1f05/lhbyS0aXLjQz7tJn1emogthN//nY9sgd+z+E
-         fkJmKOpB5ZMS5SxLkYOnT6P4gbDZQQthIWETIeN6ecvZCtVBq+v96YZ1TE1TvWmbxa
-         4jt4WoRmnHsfubk9pF2BbVybuqCMd0gMfML4BBvg=
+        b=EekGEagWx+rW4VjTcSQd9kFlf1xmaqnwjFZdUu1WLhd2DtAJ1a4VcHqIg2i12EGcU
+         OAI+zZFfpIU52Cqb2w+Lvq/1mNOVB5LI/6eAGgsRog/GcDa+xcdFac1xdv+M952Soi
+         gRWYNVVJJ+Ud5JCMhB6WiOFlS6VGGrXAA0ITM8h0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/381] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
-Date:   Mon, 15 May 2023 18:27:19 +0200
-Message-Id: <20230515161745.303860687@linuxfoundation.org>
+Subject: [PATCH 6.2 114/242] KVM: x86/mmu: Replace open coded usage of tdp_mmu_page with is_tdp_mmu_page()
+Date:   Mon, 15 May 2023 18:27:20 +0200
+Message-Id: <20230515161725.330191101@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liu Jian <liujian56@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
+[ Upstream commit aeb568a1a6041e3d69def54046747bbd989bc4ed ]
 
-This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
+Use is_tdp_mmu_page() instead of querying sp->tdp_mmu_page directly so
+that all users benefit if KVM ever finds a way to optimize the logic.
 
-This patch introduces a possible null-ptr-def problem. Revert it. And the
-fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
-btsdio: fix use after free bug in btsdio_remove due to race condition").
+No functional change intended.
 
-Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20221012181702.3663607-10-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: edbdb43fc96b ("KVM: x86: Preserve TDP MMU roots until they are explicitly invalidated")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btsdio.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kvm/mmu/mmu.c     | 2 +-
+ arch/x86/kvm/mmu/tdp_mmu.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
-index 7050a16e7efeb..199e8f7d426d9 100644
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -352,7 +352,6 @@ static void btsdio_remove(struct sdio_func *func)
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 8666e8ff48a6e..dcca08a08bd0c 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -1942,7 +1942,7 @@ static bool is_obsolete_sp(struct kvm *kvm, struct kvm_mmu_page *sp)
+ 		return true;
  
- 	BT_DBG("func %p", func);
+ 	/* TDP MMU pages do not use the MMU generation. */
+-	return !sp->tdp_mmu_page &&
++	return !is_tdp_mmu_page(sp) &&
+ 	       unlikely(sp->mmu_valid_gen != kvm->arch.mmu_valid_gen);
+ }
  
--	cancel_work_sync(&data->work);
- 	if (!data)
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 7e5952e95d3bf..cc1fb9a656201 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -133,7 +133,7 @@ void kvm_tdp_mmu_put_root(struct kvm *kvm, struct kvm_mmu_page *root,
+ 	if (!refcount_dec_and_test(&root->tdp_mmu_root_count))
  		return;
  
+-	WARN_ON(!root->tdp_mmu_page);
++	WARN_ON(!is_tdp_mmu_page(root));
+ 
+ 	/*
+ 	 * The root now has refcount=0.  It is valid, but readers already
 -- 
 2.39.2
 
