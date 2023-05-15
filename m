@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47474703B04
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4A6570368B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244115AbjEOR6o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:58:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
+        id S243751AbjEORLO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244877AbjEOR61 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:27 -0400
+        with ESMTP id S243760AbjEORK4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F1115612
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92EC69EEA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 608C362F75
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC6BC433EF;
-        Mon, 15 May 2023 17:54:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9789E62B19
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CECC433D2;
+        Mon, 15 May 2023 17:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173299;
-        bh=S36NYVKjfmDx6sKc59U5sRs1sjbL0bkuQywxhdOvNYQ=;
+        s=korg; t=1684170545;
+        bh=PbZZuSH1PYVFxlTFOMPW56lB9p0Nk3XQKPBB3OSagGQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=axUAmskcWGbdsDuvL7w5OEUt4ubJX2y5BKJiL8TEvCI6isD+vmVcC9iNGVhOJl678
-         29yDIcJNdW1KFaH4JdVhh+vJQRNdbZKKuMxyiZAZNwqLhvmwYocp9R0BET5vyLqna+
-         9c1wO9+17AUdloy0C83lgpRgAzBj5VDqOkJNqhdY=
+        b=s2qbYOg3TVUsxEJkQQdOmF/Zv+Fp0edfSeDjaUyPLQ6NbpAa8VOEdL4SmMVhSBOH5
+         pb1qUasqFo//wEo2jp3Yit9YiC0RSqRQgCq2LuEI519/m0KJydkjabEKvxEOFXxGui
+         X++IPpW/ti1bISUHDyd0/1xB3BGhF8Xm+96LaiTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 050/282] drm/msm/adreno: drop bogus pm_runtime_set_active()
+        patches@lists.linux.dev, Horatio Zhang <Hongkun.Zhang@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 165/239] drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v10_0_hw_fini
 Date:   Mon, 15 May 2023 18:27:08 +0200
-Message-Id: <20230515161723.756531172@linuxfoundation.org>
+Message-Id: <20230515161726.625408478@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Horatio Zhang <Hongkun.Zhang@amd.com>
 
-[ Upstream commit db7662d076c973072d788bd0e8130e04430307a1 ]
+commit 08c677cb0b436a96a836792bb35a8ec5de4999c2 upstream.
 
-The runtime PM status can only be updated while runtime PM is disabled.
+The gmc.ecc_irq is enabled by firmware per IFWI setting,
+and the host driver is not privileged to enable/disable
+the interrupt. So, it is meaningless to use the amdgpu_irq_put
+function in gmc_v10_0_hw_fini, which also leads to the call
+trace.
 
-Drop the bogus pm_runtime_set_active() call that was made after enabling
-runtime PM and which (incidentally but correctly) left the runtime PM
-status set to 'suspended'.
+[   82.340264] Call Trace:
+[   82.340265]  <TASK>
+[   82.340269]  gmc_v10_0_hw_fini+0x83/0xa0 [amdgpu]
+[   82.340447]  gmc_v10_0_suspend+0xe/0x20 [amdgpu]
+[   82.340623]  amdgpu_device_ip_suspend_phase2+0x127/0x1c0 [amdgpu]
+[   82.340789]  amdgpu_device_ip_suspend+0x3d/0x80 [amdgpu]
+[   82.340955]  amdgpu_device_pre_asic_reset+0xdd/0x2b0 [amdgpu]
+[   82.341122]  amdgpu_device_gpu_recover.cold+0x4dd/0xbb2 [amdgpu]
+[   82.341359]  amdgpu_debugfs_reset_work+0x4c/0x70 [amdgpu]
+[   82.341529]  process_one_work+0x21d/0x3f0
+[   82.341535]  worker_thread+0x1fa/0x3c0
+[   82.341538]  ? process_one_work+0x3f0/0x3f0
+[   82.341540]  kthread+0xff/0x130
+[   82.341544]  ? kthread_complete_and_exit+0x20/0x20
+[   82.341547]  ret_from_fork+0x22/0x30
 
-Fixes: 2c087a336676 ("drm/msm/adreno: Load the firmware before bringing up the hardware")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/524972/
-Link: https://lore.kernel.org/r/20230303164807.13124-4-johan+linaro@kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Horatio Zhang <Hongkun.Zhang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Fixes: c8b5a95b5709 ("drm/amdgpu: Fix desktop freezed after gpu-reset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
-index 6ad9d2de07ed6..2a727ab0faf75 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -239,9 +239,6 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
- 	 */
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+@@ -1142,7 +1142,6 @@ static int gmc_v10_0_hw_fini(void *handl
+ 		return 0;
+ 	}
  
--	/* Make sure pm runtime is active and reset any previous errors */
--	pm_runtime_set_active(&pdev->dev);
--
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
- 		pm_runtime_put_sync(&pdev->dev);
--- 
-2.39.2
-
+-	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
+ 
+ 	return 0;
 
 
