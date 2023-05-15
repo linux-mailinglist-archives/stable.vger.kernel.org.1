@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0516703B31
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 103FA703793
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243908AbjEOSAd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
+        id S244113AbjEORWy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245104AbjEOSAF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:05 -0400
+        with ESMTP id S244095AbjEORWj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7421BB9A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713BE11DA5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABC4762FC1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78B6C433EF;
-        Mon, 15 May 2023 17:57:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 509986210B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7D6C433D2;
+        Mon, 15 May 2023 17:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173442;
-        bh=YEB+Jut9FpCIkPP9R++XHX142KeQUeO4gw+CbmMqB2w=;
+        s=korg; t=1684171242;
+        bh=xQvH9MyRGqG1cSPs/o/fe9O1XXrcYK3BP/m+RlS0WA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BvSQN3kxdTpViDcVisDlotlLivuCN5rUKLMjDrGNiv7jgOWqo5DIKg4H41aXKH56f
-         t+f15kmkvr/ndlejBB2ER+9Qcd/XVedBtS1ypglRR8vurN/vkrKniQwTs883szTWTJ
-         eB9JZp6uEZ+7kD8cNRT25c+Zg6d9ZhgYwWqmMODA=
+        b=hlaoYa3wULOd5W4FZPKjSL9uCeDd/gXsKjh9oCGLkEDITVLKsplO1wODn6KykFbC4
+         4hW2Lgoo3AG67gp+UHS+9bf+LdWHlT0sye9J+PpOZgcSi909MFd42qGGOvExP1e5LW
+         Y6LOVm7cfQFOByB4zWpZ9XgKUZNR61gVvIrE7I2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
-        Stephan Mueller <smueller@chronox.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 095/282] crypto: drbg - Only fail when jent is unavailable in FIPS mode
+        patches@lists.linux.dev, Andrey Avdeev <jamesstoun@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.2 147/242] platform/x86: touchscreen_dmi: Add info for the Dexp Ursus KX210i
 Date:   Mon, 15 May 2023 18:27:53 +0200
-Message-Id: <20230515161725.109561072@linuxfoundation.org>
+Message-Id: <20230515161726.306247516@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +53,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Andrey Avdeev <jamesstoun@gmail.com>
 
-[ Upstream commit 686cd976b6ddedeeb1a1fb09ba53a891d3cc9a03 ]
+commit 4b65f95c87c35699bc6ad540d6b9dd7f950d0924 upstream.
 
-When jent initialisation fails for any reason other than ENOENT,
-the entire drbg fails to initialise, even when we're not in FIPS
-mode.  This is wrong because we can still use the kernel RNG when
-we're not in FIPS mode.
+Add touchscreen info for the Dexp Ursus KX210i
 
-Change it so that it only fails when we are in FIPS mode.
-
-Fixes: 57225e679788 ("crypto: drbg - Use callback API for random readiness")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrey Avdeev <jamesstoun@gmail.com>
+Link: https://lore.kernel.org/r/ZE4gRgzRQCjXFYD0@avdeevavpc
+Cc: stable@vger.kernel.org
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/drbg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/touchscreen_dmi.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/crypto/drbg.c b/crypto/drbg.c
-index 732b72e4ee4dd..df80752fb649b 100644
---- a/crypto/drbg.c
-+++ b/crypto/drbg.c
-@@ -1519,7 +1519,7 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
- 		const int err = PTR_ERR(drbg->jent);
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -336,6 +336,22 @@ static const struct ts_dmi_data dexp_urs
+ 	.properties	= dexp_ursus_7w_props,
+ };
  
- 		drbg->jent = NULL;
--		if (fips_enabled || err != -ENOENT)
-+		if (fips_enabled)
- 			return err;
- 		pr_info("DRBG: Continuing without Jitter RNG\n");
- 	}
--- 
-2.39.2
-
++static const struct property_entry dexp_ursus_kx210i_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
++	PROPERTY_ENTRY_U32("touchscreen-min-y",  2),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1720),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1137),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-dexp-ursus-kx210i.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	PROPERTY_ENTRY_BOOL("silead,home-button"),
++	{ }
++};
++
++static const struct ts_dmi_data dexp_ursus_kx210i_data = {
++	.acpi_name	= "MSSL1680:00",
++	.properties	= dexp_ursus_kx210i_props,
++};
++
+ static const struct property_entry digma_citi_e200_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1980),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1500),
+@@ -1191,6 +1207,14 @@ const struct dmi_system_id touchscreen_d
+ 		},
+ 	},
+ 	{
++		/* DEXP Ursus KX210i */
++		.driver_data = (void *)&dexp_ursus_kx210i_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "INSYDE Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "S107I"),
++		},
++	},
++	{
+ 		/* Digma Citi E200 */
+ 		.driver_data = (void *)&digma_citi_e200_data,
+ 		.matches = {
 
 
