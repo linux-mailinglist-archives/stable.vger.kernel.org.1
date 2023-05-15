@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D76870335F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163767033FF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242779AbjEOQgW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39650 "EHLO
+        id S242645AbjEOQnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242776AbjEOQgV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:21 -0400
+        with ESMTP id S242901AbjEOQnl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B8F3C19
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC0F469C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AFFC627F2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBFEC433D2;
-        Mon, 15 May 2023 16:36:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C625C6221C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB860C433D2;
+        Mon, 15 May 2023 16:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168579;
-        bh=wm7NykqsZdajRZpic0gqlPf5dCZekwoyJXcgh7h+mYo=;
+        s=korg; t=1684169018;
+        bh=26mI+EMAj6RgnTLQYmPlNyfcRTi1EK1AZMJwmxc08iw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PmmRT6EcgQ14WR/sLa4fm+vGyMkHsVUV73QOpR3PyQd4c8FIWqjxVWJBlrnGR29zR
-         iUJtig8xpAw5MZ85YdcOuLUkr7FWb2ixz5gjddjG61CV+0P9Q3rk+sIY7CyTb4JJdf
-         MwOmNwJZSQ7/M+Wf+F55s7uocf4rJGx4P5tGVgdE=
+        b=Xb4WPb7jJ00RiAS3SxEEX6iTRnNy6MroOFU/9GRwGEB7IDMPXzavI0mxkg3Gmk/bL
+         OCyL4bR35gIwlIwmgBHYDVXkCS+cFG0rHO+pHH3TYhX2NjSFaZSHsuplKomssT8HkV
+         GlWxaOYERwrfasdIkkdB2nBDf+HE5NZmvMVmn60M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        Brendan Cunningham <bcunningham@cornelisnetworks.com>,
+        Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 055/116] staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
+Subject: [PATCH 4.19 115/191] IB/hfi1: Fix SDMA mmu_rb_node not being evicted in LRU order
 Date:   Mon, 15 May 2023 18:25:52 +0200
-Message-Id: <20230515161700.091587711@linuxfoundation.org>
+Message-Id: <20230515161711.447022231@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +57,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+From: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
 
-[ Upstream commit 3fac2397f562eb669ddc2f45867a253f3fc26184 ]
+[ Upstream commit 9fe8fec5e43d5a80f43cbf61aaada1b047a1eb61 ]
 
-When loading the driver for rtl8192e, the W_DISABLE# switch is working as
-intended. But when the WLAN is turned off in software and then turned on
-again the W_DISABLE# does not work anymore. Reason for this is that in
-the function _rtl92e_dm_check_rf_ctrl_gpio() the bfirst_after_down is
-checked and returned when true. bfirst_after_down is set true when
-switching the WLAN off in software. But it is not set to false again
-when WLAN is turned on again.
+hfi1_mmu_rb_remove_unless_exact() did not move mmu_rb_node objects in
+mmu_rb_handler->lru_list after getting a cache hit on an mmu_rb_node.
 
-Add bfirst_after_down = false in _rtl92e_sta_up to reset bit and fix
-above described bug.
+As a result, hfi1_mmu_rb_evict() was not guaranteed to evict truly
+least-recently used nodes.
 
-Fixes: 94a799425eee ("From: wlanfae <wlanfae@realtek.com> [PATCH 1/8] rtl8192e: Import new version of driver from realtek")
-Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Link: https://lore.kernel.org/r/20230418200201.GA17398@matrix-ESPRIMO-P710
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This could be a performance issue for an application when that
+application:
+- Uses some long-lived buffers frequently.
+- Uses a large number of buffers once.
+- Hits the mmu_rb_handler cache size or pinned-page limits, forcing
+  mmu_rb_handler cache entries to be evicted.
+
+In this case, the one-time use buffers cause the long-lived buffer
+entries to eventually filter to the end of the LRU list where
+hfi1_mmu_rb_evict() will consider evicting a frequently-used long-lived
+entry instead of evicting one of the one-time use entries.
+
+Fix this by inserting new mmu_rb_node at the tail of
+mmu_rb_handler->lru_list and move mmu_rb_ndoe to the tail of
+mmu_rb_handler->lru_list when the mmu_rb_node is a hit in
+hfi1_mmu_rb_remove_unless_exact(). Change hfi1_mmu_rb_evict() to evict
+from the head of mmu_rb_handler->lru_list instead of the tail.
+
+Fixes: 0636e9ab8355 ("IB/hfi1: Add cache evict LRU list")
+Signed-off-by: Brendan Cunningham <bcunningham@cornelisnetworks.com>
+Signed-off-by: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Link: https://lore.kernel.org/r/168088635931.3027109.10423156330761536044.stgit@252.162.96.66.static.eigbox.net
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/hfi1/mmu_rb.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-index e1ede9fd4920b..8420bdae1a5cc 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-@@ -778,6 +778,7 @@ static int _rtl92e_sta_up(struct net_device *dev, bool is_silent_reset)
- 	else
- 		netif_wake_queue(dev);
+diff --git a/drivers/infiniband/hw/hfi1/mmu_rb.c b/drivers/infiniband/hw/hfi1/mmu_rb.c
+index e1c7996c018ef..513a297b4ff0e 100644
+--- a/drivers/infiniband/hw/hfi1/mmu_rb.c
++++ b/drivers/infiniband/hw/hfi1/mmu_rb.c
+@@ -175,7 +175,7 @@ int hfi1_mmu_rb_insert(struct mmu_rb_handler *handler,
+ 		goto unlock;
+ 	}
+ 	__mmu_int_rb_insert(mnode, &handler->root);
+-	list_add(&mnode->list, &handler->lru_list);
++	list_add_tail(&mnode->list, &handler->lru_list);
  
-+	priv->bfirst_after_down = false;
- 	return 0;
+ 	ret = handler->ops->insert(handler->ops_arg, mnode);
+ 	if (ret) {
+@@ -222,8 +222,10 @@ bool hfi1_mmu_rb_remove_unless_exact(struct mmu_rb_handler *handler,
+ 	spin_lock_irqsave(&handler->lock, flags);
+ 	node = __mmu_rb_search(handler, addr, len);
+ 	if (node) {
+-		if (node->addr == addr && node->len == len)
++		if (node->addr == addr && node->len == len) {
++			list_move_tail(&node->list, &handler->lru_list);
+ 			goto unlock;
++		}
+ 		__mmu_int_rb_remove(node, &handler->root);
+ 		list_del(&node->list); /* remove from LRU list */
+ 		ret = true;
+@@ -244,8 +246,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
+ 	INIT_LIST_HEAD(&del_list);
+ 
+ 	spin_lock_irqsave(&handler->lock, flags);
+-	list_for_each_entry_safe_reverse(rbnode, ptr, &handler->lru_list,
+-					 list) {
++	list_for_each_entry_safe(rbnode, ptr, &handler->lru_list, list) {
+ 		if (handler->ops->evict(handler->ops_arg, rbnode, evict_arg,
+ 					&stop)) {
+ 			__mmu_int_rb_remove(rbnode, &handler->root);
+@@ -257,9 +258,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
+ 	}
+ 	spin_unlock_irqrestore(&handler->lock, flags);
+ 
+-	while (!list_empty(&del_list)) {
+-		rbnode = list_first_entry(&del_list, struct mmu_rb_node, list);
+-		list_del(&rbnode->list);
++	list_for_each_entry_safe(rbnode, ptr, &del_list, list) {
+ 		handler->ops->remove(handler->ops_arg, rbnode);
+ 	}
  }
- 
 -- 
 2.39.2
 
