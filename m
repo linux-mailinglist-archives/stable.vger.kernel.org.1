@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18B167037A3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 188FA70382A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244062AbjEORXX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
+        id S244284AbjEOR2a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:28:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244065AbjEORXB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:01 -0400
+        with ESMTP id S244234AbjEOR1g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BB412E9A;
-        Mon, 15 May 2023 10:21:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740B81434D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 060B562C64;
-        Mon, 15 May 2023 17:21:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC28C433D2;
-        Mon, 15 May 2023 17:21:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2099C62D02
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A9CC43445;
+        Mon, 15 May 2023 17:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171270;
-        bh=FWrdJUOVDUfaF82ePCRRUrLyhKUa8xyRp8tooUuq0sk=;
+        s=korg; t=1684171582;
+        bh=bx0eOU8cEHI1Pi1NmAnC/S05NUAKobA7I3BEL882X5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N2pqMnDrBgqdDZoitsA28oXSeZWrpLbj9QfT8mmSMnjFnyO1nsFPtBLFudpYLgK+d
-         b99oa9B73AcV4ydrn+cWnIctE3020NOwIx8A8VSiWK5nC5IszKCm9CYEascLWB5nSQ
-         hXRbJR4e917YSwWec89UJedys01b5Y9er6ua2ggU=
+        b=JHBA9k0ul0m5u93e1vdWFKNQCBmNLquBTG+ZAlERuhREFppAzVzcBJ1sQwMNOB488
+         ZxPp0B4Xutt0hQHHdeWlt2QNNJGf4DIaX9M3nVUJLJtmJsO/7YrjwEPbm+kjJK1wMF
+         A+f1Q9u8CPN0jBPTr1mlfaCu9EGgl/5RC45qN+IY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Igor Zhbanov <izh1979@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH 6.2 155/242] sh: nmi_debug: fix return value of __setup handler
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
+        Richard Weinberger <richard@nod.at>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 004/134] ubifs: Fix memory leak in do_rename
 Date:   Mon, 15 May 2023 18:28:01 +0200
-Message-Id: <20230515161726.539225557@linuxfoundation.org>
+Message-Id: <20230515161703.060935007@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +55,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mårten Lindahl <marten.lindahl@axis.com>
 
-commit d1155e4132de712a9d3066e2667ceaad39a539c5 upstream.
+[ Upstream commit 3a36d20e012903f45714df2731261fdefac900cb ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from nmi_debug_setup().
+If renaming a file in an encrypted directory, function
+fscrypt_setup_filename allocates memory for a file name. This name is
+never used, and before returning to the caller the memory for it is not
+freed.
 
-Fixes: 1e1030dccb10 ("sh: nmi_debug support.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
+When running kmemleak on it we see that it is registered as a leak. The
+report below is triggered by a simple program 'rename' that renames a
+file in an encrypted directory:
+
+  unreferenced object 0xffff888101502840 (size 32):
+    comm "rename", pid 9404, jiffies 4302582475 (age 435.735s)
+    backtrace:
+      __kmem_cache_alloc_node
+      __kmalloc
+      fscrypt_setup_filename
+      do_rename
+      ubifs_rename
+      vfs_rename
+      do_renameat2
+
+To fix this we can remove the call to fscrypt_setup_filename as it's not
+needed.
+
+Fixes: 278d9a243635f26 ("ubifs: Rename whiteout atomically")
+Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-3-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/nmi_debug.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ubifs/dir.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/arch/sh/kernel/nmi_debug.c
-+++ b/arch/sh/kernel/nmi_debug.c
-@@ -49,7 +49,7 @@ static int __init nmi_debug_setup(char *
- 	register_die_notifier(&nmi_debug_nb);
+diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
+index 005566bc6dc13..6a054df8b991d 100644
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -358,7 +358,6 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
+ 	umode_t mode = S_IFCHR | WHITEOUT_MODE;
+ 	struct inode *inode;
+ 	struct ubifs_info *c = dir->i_sb->s_fs_info;
+-	struct fscrypt_name nm;
  
- 	if (*str != '=')
--		return 0;
-+		return 1;
+ 	/*
+ 	 * Create an inode('nlink = 1') for whiteout without updating journal,
+@@ -369,10 +368,6 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
+ 	dbg_gen("dent '%pd', mode %#hx in dir ino %lu",
+ 		dentry, mode, dir->i_ino);
  
- 	for (p = str + 1; *p; p = sep + 1) {
- 		sep = strchr(p, ',');
-@@ -70,6 +70,6 @@ static int __init nmi_debug_setup(char *
- 			break;
- 	}
- 
--	return 0;
-+	return 1;
+-	err = fscrypt_setup_filename(dir, &dentry->d_name, 0, &nm);
+-	if (err)
+-		return ERR_PTR(err);
+-
+ 	inode = ubifs_new_inode(c, dir, mode, false);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+@@ -395,7 +390,6 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
+ 	make_bad_inode(inode);
+ 	iput(inode);
+ out_free:
+-	fscrypt_free_filename(&nm);
+ 	ubifs_err(c, "cannot create whiteout file, error %d", err);
+ 	return ERR_PTR(err);
  }
- __setup("nmi_debug", nmi_debug_setup);
+-- 
+2.39.2
+
 
 
