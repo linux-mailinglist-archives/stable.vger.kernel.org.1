@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C65AB70377B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B7A703B0E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243973AbjEORVs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:21:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
+        id S242371AbjEOR7I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232820AbjEORVe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:34 -0400
+        with ESMTP id S242445AbjEOR6f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12BB106ED
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:19:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0192815EEA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CED762C1E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081E3C4339B;
-        Mon, 15 May 2023 17:19:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C754462FEC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3CC433EF;
+        Mon, 15 May 2023 17:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171159;
-        bh=D7ig1Wd3F2JVkRVmTIaGz9/CJ9wrbx8bwDRcLcZTHVE=;
+        s=korg; t=1684173361;
+        bh=XmNYg1PQsz8vNeQbI+155zAITQTRKcFB3NUHy93W8ok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BmjTQ3BM7H+z09jyUcGsBDx0OV6aN7eoEcVOUkA84S4kcAsaj7O5FKAGTsIbGKpxj
-         Y0HW8x6s3GDuth1O+uZt0+N3DS75Mls60hOzYEQOZyhGOdakdJfDOTmi/ducC6qHw1
-         STYd4p+2HA+/msj9pAY8wXloIK+9IeDL+8mfnqAU=
+        b=KNYs+rB8QfnGcUnruOuDyGsdCz8TfHBaPvimEDw7vRvV4OitErjnPuaA7ofLfTawh
+         37ewL2FCf/gS7T6qkAcMJ/cXx3VH3cp0CnKtPdqkWwaP0Gs1DvX/PFuf0UmobXvupm
+         ku3C3QCOVFAfT0vGV4SYuiK/VQXehNos287AQjHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.2 120/242] ksmbd: fix racy issue from smb2 close and logoff with multichannel
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 068/282] timekeeping: Split jiffies seqlock
 Date:   Mon, 15 May 2023 18:27:26 +0200
-Message-Id: <20230515161725.507128084@linuxfoundation.org>
+Message-Id: <20230515161724.274205539@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,409 +54,187 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit abcc506a9a71976a8b4c9bf3ee6efd13229c1e19 ]
+[ Upstream commit e5d4d1756b07d9490a0269a9e68c1e05ee1feb9b ]
 
-When smb client send concurrent smb2 close and logoff request
-with multichannel connection, It can cause racy issue. logoff request
-free tcon and can cause UAF issues in smb2 close. When receiving logoff
-request with multichannel, ksmbd should wait until all remaning requests
-complete as well as ones in the current connection, and then make
-session expired.
+seqlock consists of a sequence counter and a spinlock_t which is used to
+serialize the writers. spinlock_t is substituted by a "sleeping" spinlock
+on PREEMPT_RT enabled kernels which breaks the usage in the timekeeping
+code as the writers are executed in hard interrupt and therefore
+non-preemptible context even on PREEMPT_RT.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20796 ZDI-CAN-20595
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The spinlock in seqlock cannot be unconditionally replaced by a
+raw_spinlock_t as many seqlock users have nesting spinlock sections or
+other code which is not suitable to run in truly atomic context on RT.
+
+Instead of providing a raw_seqlock API for a single use case, open code the
+seqlock for the jiffies use case and implement it with a raw_spinlock_t and
+a sequence counter.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200321113242.120587764@linutronix.de
+Stable-dep-of: e9523a0d8189 ("tick/common: Align tick period with the HZ tick.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/connection.c        | 54 +++++++++++++++++++++++++++---------
- fs/ksmbd/connection.h        | 19 +++++++++++--
- fs/ksmbd/mgmt/tree_connect.c |  3 ++
- fs/ksmbd/mgmt/user_session.c | 36 ++++++++++++++++++++----
- fs/ksmbd/smb2pdu.c           | 21 +++++++-------
- 5 files changed, 101 insertions(+), 32 deletions(-)
+ kernel/time/jiffies.c     |  7 ++++---
+ kernel/time/tick-common.c | 10 ++++++----
+ kernel/time/tick-sched.c  | 19 ++++++++++++-------
+ kernel/time/timekeeping.c |  6 ++++--
+ kernel/time/timekeeping.h |  3 ++-
+ 5 files changed, 28 insertions(+), 17 deletions(-)
 
-diff --git a/fs/ksmbd/connection.c b/fs/ksmbd/connection.c
-index 3cb88853d6932..e3312fbf4c090 100644
---- a/fs/ksmbd/connection.c
-+++ b/fs/ksmbd/connection.c
-@@ -20,7 +20,7 @@ static DEFINE_MUTEX(init_lock);
- static struct ksmbd_conn_ops default_conn_ops;
- 
- LIST_HEAD(conn_list);
--DEFINE_RWLOCK(conn_list_lock);
-+DECLARE_RWSEM(conn_list_lock);
- 
- /**
-  * ksmbd_conn_free() - free resources of the connection instance
-@@ -32,9 +32,9 @@ DEFINE_RWLOCK(conn_list_lock);
-  */
- void ksmbd_conn_free(struct ksmbd_conn *conn)
- {
--	write_lock(&conn_list_lock);
-+	down_write(&conn_list_lock);
- 	list_del(&conn->conns_list);
--	write_unlock(&conn_list_lock);
-+	up_write(&conn_list_lock);
- 
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
-@@ -84,9 +84,9 @@ struct ksmbd_conn *ksmbd_conn_alloc(void)
- 	spin_lock_init(&conn->llist_lock);
- 	INIT_LIST_HEAD(&conn->lock_list);
- 
--	write_lock(&conn_list_lock);
-+	down_write(&conn_list_lock);
- 	list_add(&conn->conns_list, &conn_list);
--	write_unlock(&conn_list_lock);
-+	up_write(&conn_list_lock);
- 	return conn;
- }
- 
-@@ -95,7 +95,7 @@ bool ksmbd_conn_lookup_dialect(struct ksmbd_conn *c)
- 	struct ksmbd_conn *t;
- 	bool ret = false;
- 
--	read_lock(&conn_list_lock);
-+	down_read(&conn_list_lock);
- 	list_for_each_entry(t, &conn_list, conns_list) {
- 		if (memcmp(t->ClientGUID, c->ClientGUID, SMB2_CLIENT_GUID_SIZE))
- 			continue;
-@@ -103,7 +103,7 @@ bool ksmbd_conn_lookup_dialect(struct ksmbd_conn *c)
- 		ret = true;
- 		break;
- 	}
--	read_unlock(&conn_list_lock);
-+	up_read(&conn_list_lock);
- 	return ret;
- }
- 
-@@ -159,9 +159,37 @@ void ksmbd_conn_unlock(struct ksmbd_conn *conn)
- 	mutex_unlock(&conn->srv_mutex);
- }
- 
--void ksmbd_conn_wait_idle(struct ksmbd_conn *conn)
-+void ksmbd_all_conn_set_status(u64 sess_id, u32 status)
- {
-+	struct ksmbd_conn *conn;
-+
-+	down_read(&conn_list_lock);
-+	list_for_each_entry(conn, &conn_list, conns_list) {
-+		if (conn->binding || xa_load(&conn->sessions, sess_id))
-+			WRITE_ONCE(conn->status, status);
-+	}
-+	up_read(&conn_list_lock);
-+}
-+
-+void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id)
-+{
-+	struct ksmbd_conn *bind_conn;
-+
- 	wait_event(conn->req_running_q, atomic_read(&conn->req_running) < 2);
-+
-+	down_read(&conn_list_lock);
-+	list_for_each_entry(bind_conn, &conn_list, conns_list) {
-+		if (bind_conn == conn)
-+			continue;
-+
-+		if ((bind_conn->binding || xa_load(&bind_conn->sessions, sess_id)) &&
-+		    !ksmbd_conn_releasing(bind_conn) &&
-+		    atomic_read(&bind_conn->req_running)) {
-+			wait_event(bind_conn->req_running_q,
-+				atomic_read(&bind_conn->req_running) == 0);
-+		}
-+	}
-+	up_read(&conn_list_lock);
- }
- 
- int ksmbd_conn_write(struct ksmbd_work *work)
-@@ -362,10 +390,10 @@ int ksmbd_conn_handler_loop(void *p)
- 	}
- 
- out:
-+	ksmbd_conn_set_releasing(conn);
- 	/* Wait till all reference dropped to the Server object*/
- 	wait_event(conn->r_count_q, atomic_read(&conn->r_count) == 0);
- 
--
- 	if (IS_ENABLED(CONFIG_UNICODE))
- 		utf8_unload(conn->um);
- 	unload_nls(conn->local_nls);
-@@ -409,7 +437,7 @@ static void stop_sessions(void)
- 	struct ksmbd_transport *t;
- 
- again:
--	read_lock(&conn_list_lock);
-+	down_read(&conn_list_lock);
- 	list_for_each_entry(conn, &conn_list, conns_list) {
- 		struct task_struct *task;
- 
-@@ -420,12 +448,12 @@ static void stop_sessions(void)
- 				    task->comm, task_pid_nr(task));
- 		ksmbd_conn_set_exiting(conn);
- 		if (t->ops->shutdown) {
--			read_unlock(&conn_list_lock);
-+			up_read(&conn_list_lock);
- 			t->ops->shutdown(t);
--			read_lock(&conn_list_lock);
-+			down_read(&conn_list_lock);
- 		}
- 	}
--	read_unlock(&conn_list_lock);
-+	up_read(&conn_list_lock);
- 
- 	if (!list_empty(&conn_list)) {
- 		schedule_timeout_interruptible(HZ / 10); /* 100ms */
-diff --git a/fs/ksmbd/connection.h b/fs/ksmbd/connection.h
-index 98bb5f199fa24..ad8dfaa48ffb3 100644
---- a/fs/ksmbd/connection.h
-+++ b/fs/ksmbd/connection.h
-@@ -26,7 +26,8 @@ enum {
- 	KSMBD_SESS_GOOD,
- 	KSMBD_SESS_EXITING,
- 	KSMBD_SESS_NEED_RECONNECT,
--	KSMBD_SESS_NEED_NEGOTIATE
-+	KSMBD_SESS_NEED_NEGOTIATE,
-+	KSMBD_SESS_RELEASING
+diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
+index d23b434c2ca7b..eddcf49704445 100644
+--- a/kernel/time/jiffies.c
++++ b/kernel/time/jiffies.c
+@@ -58,7 +58,8 @@ static struct clocksource clocksource_jiffies = {
+ 	.max_cycles	= 10,
  };
  
- struct ksmbd_stats {
-@@ -140,10 +141,10 @@ struct ksmbd_transport {
- #define KSMBD_TCP_PEER_SOCKADDR(c)	((struct sockaddr *)&((c)->peer_addr))
+-__cacheline_aligned_in_smp DEFINE_SEQLOCK(jiffies_lock);
++__cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(jiffies_lock);
++__cacheline_aligned_in_smp seqcount_t jiffies_seq;
  
- extern struct list_head conn_list;
--extern rwlock_t conn_list_lock;
-+extern struct rw_semaphore conn_list_lock;
+ #if (BITS_PER_LONG < 64)
+ u64 get_jiffies_64(void)
+@@ -67,9 +68,9 @@ u64 get_jiffies_64(void)
+ 	u64 ret;
  
- bool ksmbd_conn_alive(struct ksmbd_conn *conn);
--void ksmbd_conn_wait_idle(struct ksmbd_conn *conn);
-+void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id);
- struct ksmbd_conn *ksmbd_conn_alloc(void);
- void ksmbd_conn_free(struct ksmbd_conn *conn);
- bool ksmbd_conn_lookup_dialect(struct ksmbd_conn *c);
-@@ -191,6 +192,11 @@ static inline bool ksmbd_conn_exiting(struct ksmbd_conn *conn)
- 	return READ_ONCE(conn->status) == KSMBD_SESS_EXITING;
+ 	do {
+-		seq = read_seqbegin(&jiffies_lock);
++		seq = read_seqcount_begin(&jiffies_seq);
+ 		ret = jiffies_64;
+-	} while (read_seqretry(&jiffies_lock, seq));
++	} while (read_seqcount_retry(&jiffies_seq, seq));
+ 	return ret;
  }
- 
-+static inline bool ksmbd_conn_releasing(struct ksmbd_conn *conn)
-+{
-+	return READ_ONCE(conn->status) == KSMBD_SESS_RELEASING;
-+}
-+
- static inline void ksmbd_conn_set_new(struct ksmbd_conn *conn)
+ EXPORT_SYMBOL(get_jiffies_64);
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 7e5d3524e924d..6c9c342dd0e53 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -84,13 +84,15 @@ int tick_is_oneshot_available(void)
+ static void tick_periodic(int cpu)
  {
- 	WRITE_ONCE(conn->status, KSMBD_SESS_NEW);
-@@ -215,4 +221,11 @@ static inline void ksmbd_conn_set_exiting(struct ksmbd_conn *conn)
- {
- 	WRITE_ONCE(conn->status, KSMBD_SESS_EXITING);
- }
-+
-+static inline void ksmbd_conn_set_releasing(struct ksmbd_conn *conn)
-+{
-+	WRITE_ONCE(conn->status, KSMBD_SESS_RELEASING);
-+}
-+
-+void ksmbd_all_conn_set_status(u64 sess_id, u32 status);
- #endif /* __CONNECTION_H__ */
-diff --git a/fs/ksmbd/mgmt/tree_connect.c b/fs/ksmbd/mgmt/tree_connect.c
-index f19de20c2960c..f07a05f376513 100644
---- a/fs/ksmbd/mgmt/tree_connect.c
-+++ b/fs/ksmbd/mgmt/tree_connect.c
-@@ -137,6 +137,9 @@ int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess)
- 	struct ksmbd_tree_connect *tc;
- 	unsigned long id;
+ 	if (tick_do_timer_cpu == cpu) {
+-		write_seqlock(&jiffies_lock);
++		raw_spin_lock(&jiffies_lock);
++		write_seqcount_begin(&jiffies_seq);
  
-+	if (!sess)
-+		return -EINVAL;
-+
- 	xa_for_each(&sess->tree_conns, id, tc)
- 		ret |= ksmbd_tree_conn_disconnect(sess, tc);
- 	xa_destroy(&sess->tree_conns);
-diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
-index b809f7987b9f4..ea4b56d570fbb 100644
---- a/fs/ksmbd/mgmt/user_session.c
-+++ b/fs/ksmbd/mgmt/user_session.c
-@@ -153,10 +153,6 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
- 	if (!sess)
+ 		/* Keep track of the next tick event */
+ 		tick_next_period = ktime_add(tick_next_period, tick_period);
+ 
+ 		do_timer(1);
+-		write_sequnlock(&jiffies_lock);
++		write_seqcount_end(&jiffies_seq);
++		raw_spin_unlock(&jiffies_lock);
+ 		update_wall_time();
+ 	}
+ 
+@@ -162,9 +164,9 @@ void tick_setup_periodic(struct clock_event_device *dev, int broadcast)
+ 		ktime_t next;
+ 
+ 		do {
+-			seq = read_seqbegin(&jiffies_lock);
++			seq = read_seqcount_begin(&jiffies_seq);
+ 			next = tick_next_period;
+-		} while (read_seqretry(&jiffies_lock, seq));
++		} while (read_seqcount_retry(&jiffies_seq, seq));
+ 
+ 		clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT);
+ 
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 5eb04bb598026..88a508cc89255 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -65,7 +65,8 @@ static void tick_do_update_jiffies64(ktime_t now)
  		return;
  
--	down_write(&sessions_table_lock);
--	hash_del(&sess->hlist);
--	up_write(&sessions_table_lock);
--
- 	if (sess->user)
- 		ksmbd_free_user(sess->user);
+ 	/* Reevaluate with jiffies_lock held */
+-	write_seqlock(&jiffies_lock);
++	raw_spin_lock(&jiffies_lock);
++	write_seqcount_begin(&jiffies_seq);
  
-@@ -187,15 +183,18 @@ static void ksmbd_expire_session(struct ksmbd_conn *conn)
- 	unsigned long id;
- 	struct ksmbd_session *sess;
- 
-+	down_write(&sessions_table_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
- 		if (sess->state != SMB2_SESSION_VALID ||
- 		    time_after(jiffies,
- 			       sess->last_active + SMB2_SESSION_TIMEOUT)) {
- 			xa_erase(&conn->sessions, sess->id);
-+			hash_del(&sess->hlist);
- 			ksmbd_session_destroy(sess);
- 			continue;
- 		}
+ 	delta = ktime_sub(now, last_jiffies_update);
+ 	if (delta >= tick_period) {
+@@ -91,10 +92,12 @@ static void tick_do_update_jiffies64(ktime_t now)
+ 		/* Keep the tick_next_period variable up to date */
+ 		tick_next_period = ktime_add(last_jiffies_update, tick_period);
+ 	} else {
+-		write_sequnlock(&jiffies_lock);
++		write_seqcount_end(&jiffies_seq);
++		raw_spin_unlock(&jiffies_lock);
+ 		return;
  	}
-+	up_write(&sessions_table_lock);
+-	write_sequnlock(&jiffies_lock);
++	write_seqcount_end(&jiffies_seq);
++	raw_spin_unlock(&jiffies_lock);
+ 	update_wall_time();
  }
  
- int ksmbd_session_register(struct ksmbd_conn *conn,
-@@ -207,15 +206,16 @@ int ksmbd_session_register(struct ksmbd_conn *conn,
- 	return xa_err(xa_store(&conn->sessions, sess->id, sess, GFP_KERNEL));
- }
- 
--static void ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
-+static int ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
+@@ -105,12 +108,14 @@ static ktime_t tick_init_jiffy_update(void)
  {
- 	struct channel *chann;
+ 	ktime_t period;
  
- 	chann = xa_erase(&sess->ksmbd_chann_list, (long)conn);
- 	if (!chann)
--		return;
-+		return -ENOENT;
- 
- 	kfree(chann);
-+	return 0;
+-	write_seqlock(&jiffies_lock);
++	raw_spin_lock(&jiffies_lock);
++	write_seqcount_begin(&jiffies_seq);
+ 	/* Did we start the jiffies update yet ? */
+ 	if (last_jiffies_update == 0)
+ 		last_jiffies_update = tick_next_period;
+ 	period = last_jiffies_update;
+-	write_sequnlock(&jiffies_lock);
++	write_seqcount_end(&jiffies_seq);
++	raw_spin_unlock(&jiffies_lock);
+ 	return period;
  }
  
- void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
-@@ -223,13 +223,37 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
- 	struct ksmbd_session *sess;
- 	unsigned long id;
+@@ -665,10 +670,10 @@ static ktime_t tick_nohz_next_event(struct tick_sched *ts, int cpu)
  
-+	down_write(&sessions_table_lock);
-+	if (conn->binding) {
-+		int bkt;
-+		struct hlist_node *tmp;
-+
-+		hash_for_each_safe(sessions_table, bkt, tmp, sess, hlist) {
-+			if (!ksmbd_chann_del(conn, sess) &&
-+			    xa_empty(&sess->ksmbd_chann_list)) {
-+				hash_del(&sess->hlist);
-+				ksmbd_session_destroy(sess);
-+			}
-+		}
-+	}
-+
- 	xa_for_each(&conn->sessions, id, sess) {
-+		unsigned long chann_id;
-+		struct channel *chann;
-+
-+		xa_for_each(&sess->ksmbd_chann_list, chann_id, chann) {
-+			if (chann->conn != conn)
-+				ksmbd_conn_set_exiting(chann->conn);
-+		}
-+
- 		ksmbd_chann_del(conn, sess);
- 		if (xa_empty(&sess->ksmbd_chann_list)) {
- 			xa_erase(&conn->sessions, sess->id);
-+			hash_del(&sess->hlist);
- 			ksmbd_session_destroy(sess);
- 		}
- 	}
-+	up_write(&sessions_table_lock);
+ 	/* Read jiffies and the time when jiffies were updated last */
+ 	do {
+-		seq = read_seqbegin(&jiffies_lock);
++		seq = read_seqcount_begin(&jiffies_seq);
+ 		basemono = last_jiffies_update;
+ 		basejiff = jiffies;
+-	} while (read_seqretry(&jiffies_lock, seq));
++	} while (read_seqcount_retry(&jiffies_seq, seq));
+ 	ts->last_jiffies = basejiff;
+ 	ts->timer_expires_base = basemono;
+ 
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 2bc278dd98546..105dd0b663291 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -2415,8 +2415,10 @@ EXPORT_SYMBOL(hardpps);
+  */
+ void xtime_update(unsigned long ticks)
+ {
+-	write_seqlock(&jiffies_lock);
++	raw_spin_lock(&jiffies_lock);
++	write_seqcount_begin(&jiffies_seq);
+ 	do_timer(ticks);
+-	write_sequnlock(&jiffies_lock);
++	write_seqcount_end(&jiffies_seq);
++	raw_spin_unlock(&jiffies_lock);
+ 	update_wall_time();
  }
+diff --git a/kernel/time/timekeeping.h b/kernel/time/timekeeping.h
+index 141ab3ab0354f..099737f6f10c7 100644
+--- a/kernel/time/timekeeping.h
++++ b/kernel/time/timekeeping.h
+@@ -25,7 +25,8 @@ static inline void sched_clock_resume(void) { }
+ extern void do_timer(unsigned long ticks);
+ extern void update_wall_time(void);
  
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index d6423f2fae6d9..53badff17efaa 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -2099,21 +2099,22 @@ int smb2_session_logoff(struct ksmbd_work *work)
- 	struct smb2_logoff_rsp *rsp = smb2_get_msg(work->response_buf);
- 	struct ksmbd_session *sess;
- 	struct smb2_logoff_req *req = smb2_get_msg(work->request_buf);
-+	u64 sess_id = le64_to_cpu(req->hdr.SessionId);
+-extern seqlock_t jiffies_lock;
++extern raw_spinlock_t jiffies_lock;
++extern seqcount_t jiffies_seq;
  
- 	rsp->StructureSize = cpu_to_le16(4);
- 	inc_rfc1001_len(work->response_buf, 4);
+ #define CS_NAME_LEN	32
  
- 	ksmbd_debug(SMB, "request\n");
- 
--	ksmbd_conn_set_need_reconnect(conn);
-+	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_RECONNECT);
- 	ksmbd_close_session_fds(work);
--	ksmbd_conn_wait_idle(conn);
-+	ksmbd_conn_wait_idle(conn, sess_id);
- 
- 	/*
- 	 * Re-lookup session to validate if session is deleted
- 	 * while waiting request complete
- 	 */
--	sess = ksmbd_session_lookup(conn, le64_to_cpu(req->hdr.SessionId));
-+	sess = ksmbd_session_lookup_all(conn, sess_id);
- 	if (ksmbd_tree_conn_session_logoff(sess)) {
- 		ksmbd_debug(SMB, "Invalid tid %d\n", req->hdr.Id.SyncId.TreeId);
- 		rsp->hdr.Status = STATUS_NETWORK_NAME_DELETED;
-@@ -2126,7 +2127,7 @@ int smb2_session_logoff(struct ksmbd_work *work)
- 
- 	ksmbd_free_user(sess->user);
- 	sess->user = NULL;
--	ksmbd_conn_set_need_negotiate(conn);
-+	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
- 	return 0;
- }
- 
-@@ -6958,7 +6959,7 @@ int smb2_lock(struct ksmbd_work *work)
- 
- 		nolock = 1;
- 		/* check locks in connection list */
--		read_lock(&conn_list_lock);
-+		down_read(&conn_list_lock);
- 		list_for_each_entry(conn, &conn_list, conns_list) {
- 			spin_lock(&conn->llist_lock);
- 			list_for_each_entry_safe(cmp_lock, tmp2, &conn->lock_list, clist) {
-@@ -6975,7 +6976,7 @@ int smb2_lock(struct ksmbd_work *work)
- 						list_del(&cmp_lock->flist);
- 						list_del(&cmp_lock->clist);
- 						spin_unlock(&conn->llist_lock);
--						read_unlock(&conn_list_lock);
-+						up_read(&conn_list_lock);
- 
- 						locks_free_lock(cmp_lock->fl);
- 						kfree(cmp_lock);
-@@ -6997,7 +6998,7 @@ int smb2_lock(struct ksmbd_work *work)
- 				    cmp_lock->start > smb_lock->start &&
- 				    cmp_lock->start < smb_lock->end) {
- 					spin_unlock(&conn->llist_lock);
--					read_unlock(&conn_list_lock);
-+					up_read(&conn_list_lock);
- 					pr_err("previous lock conflict with zero byte lock range\n");
- 					goto out;
- 				}
-@@ -7006,7 +7007,7 @@ int smb2_lock(struct ksmbd_work *work)
- 				    smb_lock->start > cmp_lock->start &&
- 				    smb_lock->start < cmp_lock->end) {
- 					spin_unlock(&conn->llist_lock);
--					read_unlock(&conn_list_lock);
-+					up_read(&conn_list_lock);
- 					pr_err("current lock conflict with zero byte lock range\n");
- 					goto out;
- 				}
-@@ -7017,14 +7018,14 @@ int smb2_lock(struct ksmbd_work *work)
- 				      cmp_lock->end >= smb_lock->end)) &&
- 				    !cmp_lock->zero_len && !smb_lock->zero_len) {
- 					spin_unlock(&conn->llist_lock);
--					read_unlock(&conn_list_lock);
-+					up_read(&conn_list_lock);
- 					pr_err("Not allow lock operation on exclusive lock range\n");
- 					goto out;
- 				}
- 			}
- 			spin_unlock(&conn->llist_lock);
- 		}
--		read_unlock(&conn_list_lock);
-+		up_read(&conn_list_lock);
- out_check_cl:
- 		if (smb_lock->fl->fl_type == F_UNLCK && nolock) {
- 			pr_err("Try to unlock nolocked range\n");
 -- 
 2.39.2
 
