@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04762703767
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B6E703689
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244072AbjEORU7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
+        id S243759AbjEORLK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243964AbjEORUk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:40 -0400
+        with ESMTP id S243735AbjEORKu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C32120BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2AFDDA8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7D2762C39
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4F3C433EF;
-        Mon, 15 May 2023 17:18:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5762F62103
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D837C4339B;
+        Mon, 15 May 2023 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171100;
-        bh=OeO/2ubp2e4QEVb0Tp+cJ/qWhTGJBFHQEAL0uVrP2mo=;
+        s=korg; t=1684170538;
+        bh=Ij2MPBpicVaoUxHh4iI46HT+B/nAyHsmpx57MDj6Woo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eky8Ln52xy5ot+Ri5LrlOHpyXI+JzWHRLkVLJC44QvfVR3y7nK9oIzBZr5563kvSI
-         n+B4KAuTBW3fuBoslbTBmLAQD3Zz+3XgDcKdONIRyw41QlElTEkba3nuYsj3l/A5Mo
-         uWEo2Sva7eBzAPXwgHyomBgmlKHhO8s9IwCrl1nk=
+        b=GRsREMEp3mOV5LtZ0+/EOQCy8xMrRiyZ52se9SIcEK2lqzbHx9pA+eH7AXQogBcvF
+         UlxHgvhr4SgVLTZprSorZ9u4dSHWRTvbiZrIQtsB6OnbfpNtLlxCl2hwtyv8ahJYI0
+         /TH7bxLO1xgpewK5X8fQ8DMmw8aurhspkJFh/gu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Jihong <yangjihong1@huawei.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 100/242] perf ftrace: Make system wide the default target for latency subcommand
+        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
+        Alan Liu <HaoPing.Liu@amd.com>,
+        Samson Tam <Samson.Tam@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 163/239] drm/amd/display: filter out invalid bits in pipe_fuses
 Date:   Mon, 15 May 2023 18:27:06 +0200
-Message-Id: <20230515161724.904987841@linuxfoundation.org>
+Message-Id: <20230515161726.562064875@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,85 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Samson Tam <Samson.Tam@amd.com>
 
-[ Upstream commit ecd4960d908e27e40b63a7046df2f942c148c6f6 ]
+commit 682439fffad9fa9a38d37dd1b1318e9374232213 upstream.
 
-If no target is specified for 'latency' subcommand, the execution fails
-because - 1 (invalid value) is written to set_ftrace_pid tracefs file.
-Make system wide the default target, which is the same as the default
-behavior of 'trace' subcommand.
+[Why]
+Reading pipe_fuses from register may have invalid bits set, which may
+ affect the num_pipes erroneously.
 
-Before the fix:
+[How]
+Add read_pipes_fuses() call and filter bits based on expected number
+ of pipes.
 
-  # perf ftrace latency -T schedule
-  failed to set ftrace pid
-
-After the fix:
-
-  # perf ftrace latency -T schedule
-  ^C#   DURATION     |      COUNT | GRAPH                                          |
-       0 - 1    us |          0 |                                                |
-       1 - 2    us |          0 |                                                |
-       2 - 4    us |          0 |                                                |
-       4 - 8    us |       2828 | ####                                           |
-       8 - 16   us |      23953 | ########################################       |
-      16 - 32   us |        408 |                                                |
-      32 - 64   us |        318 |                                                |
-      64 - 128  us |          4 |                                                |
-     128 - 256  us |          3 |                                                |
-     256 - 512  us |          0 |                                                |
-     512 - 1024 us |          1 |                                                |
-       1 - 2    ms |          4 |                                                |
-       2 - 4    ms |          0 |                                                |
-       4 - 8    ms |          0 |                                                |
-       8 - 16   ms |          0 |                                                |
-      16 - 32   ms |          0 |                                                |
-      32 - 64   ms |          0 |                                                |
-      64 - 128  ms |          0 |                                                |
-     128 - 256  ms |          4 |                                                |
-     256 - 512  ms |          2 |                                                |
-     512 - 1024 ms |          0 |                                                |
-       1 - ...   s |          0 |                                                |
-
-Fixes: 53be50282269b46c ("perf ftrace: Add 'latency' subcommand")
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230324032702.109964-1-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Acked-by: Alan Liu <HaoPing.Liu@amd.com>
+Signed-off-by: Samson Tam <Samson.Tam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-ftrace.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c   |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c |   10 +++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
-index d7fe00f66b831..fb1b66ef2e167 100644
---- a/tools/perf/builtin-ftrace.c
-+++ b/tools/perf/builtin-ftrace.c
-@@ -1228,10 +1228,12 @@ int cmd_ftrace(int argc, const char **argv)
- 		goto out_delete_filters;
- 	}
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+@@ -2037,6 +2037,14 @@ static struct resource_funcs dcn32_res_p
+ 	.remove_phantom_pipes = dcn32_remove_phantom_pipes,
+ };
  
-+	/* Make system wide (-a) the default target. */
-+	if (!argc && target__none(&ftrace.target))
-+		ftrace.target.system_wide = true;
++static uint32_t read_pipe_fuses(struct dc_context *ctx)
++{
++	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
++	/* DCN32 support max 4 pipes */
++	value = value & 0xf;
++	return value;
++}
 +
- 	switch (subcmd) {
- 	case PERF_FTRACE_TRACE:
--		if (!argc && target__none(&ftrace.target))
--			ftrace.target.system_wide = true;
- 		cmd_func = __cmd_ftrace;
- 		break;
- 	case PERF_FTRACE_LATENCY:
--- 
-2.39.2
-
+ 
+ static bool dcn32_resource_construct(
+ 	uint8_t num_virtual_links,
+@@ -2079,7 +2087,7 @@ static bool dcn32_resource_construct(
+ 	pool->base.res_cap = &res_cap_dcn32;
+ 	/* max number of pipes for ASIC before checking for pipe fuses */
+ 	num_pipes  = pool->base.res_cap->num_timing_generator;
+-	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
++	pipe_fuses = read_pipe_fuses(ctx);
+ 
+ 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
+ 		if (pipe_fuses & 1 << i)
+--- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+@@ -1621,6 +1621,14 @@ static struct resource_funcs dcn321_res_
+ 	.remove_phantom_pipes = dcn32_remove_phantom_pipes,
+ };
+ 
++static uint32_t read_pipe_fuses(struct dc_context *ctx)
++{
++	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
++	/* DCN321 support max 4 pipes */
++	value = value & 0xf;
++	return value;
++}
++
+ 
+ static bool dcn321_resource_construct(
+ 	uint8_t num_virtual_links,
+@@ -1663,7 +1671,7 @@ static bool dcn321_resource_construct(
+ 	pool->base.res_cap = &res_cap_dcn321;
+ 	/* max number of pipes for ASIC before checking for pipe fuses */
+ 	num_pipes  = pool->base.res_cap->num_timing_generator;
+-	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
++	pipe_fuses = read_pipe_fuses(ctx);
+ 
+ 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
+ 		if (pipe_fuses & 1 << i)
 
 
