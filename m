@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9491F70331B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4AF70392B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242753AbjEOQdV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36178 "EHLO
+        id S244651AbjEORkG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:40:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242618AbjEOQdO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:14 -0400
+        with ESMTP id S243082AbjEORj2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2505B18C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A4F13C2A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99E3F627B6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9046AC433EF;
-        Mon, 15 May 2023 16:33:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF9EF62DF9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF2AC433D2;
+        Mon, 15 May 2023 17:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168388;
-        bh=U0MFm+//bs8H8UtF/UNLuHVEYwO6v/YHt4yfLLZsFNc=;
+        s=korg; t=1684172210;
+        bh=J/TKn7cB8RbSwew906heIl+5+mzMHJ6evydX3hEhffY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jSfQFepscGTwbVfdgZHaFCvhMRytcECtUf3v5mKqlNTmOSfbrh/4w+/jAl25JbQ4P
-         VKjO8FYeXV9Z/Pk5tD3DfKjt+EfgEc7yJi9+CpGpNUkz4JILrIZNIKP9iOK6rUtnQ2
-         i1rn0pepEo9FOoGitv5/Tl0V6jnx5uPtD2mPLTJU=
+        b=CCJFG568IL7kNMII3HTu9fQo+7JO1WZVE4Az2F5fDBzQy2rweFRmEGgpuRFTq0MAw
+         sxaU+6ipOR/HADvRkT2MiGe9eDakboGOyHYPk+JBcGLMgg/fNH5r249EKmxdFzQKtB
+         KQ17ARlAIW3NTSEF8paH3cP6UwwrTKN4XKifGTbg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 034/116] scsi: target: iscsit: Fix TAS handling during conn cleanup
+Subject: [PATCH 5.10 080/381] drm/msm/disp/dpu: check for crtc enable rather than crtc active to release shared resources
 Date:   Mon, 15 May 2023 18:25:31 +0200
-Message-Id: <20230515161659.404583375@linuxfoundation.org>
+Message-Id: <20230515161740.425836325@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Vinod Polimera <quic_vpolimer@quicinc.com>
 
-[ Upstream commit cc79da306ebb2edb700c3816b90219223182ac3c ]
+[ Upstream commit b6975693846b562c4d3e0e60cc884affc5bdac00 ]
 
-Fix a bug added in commit f36199355c64 ("scsi: target: iscsi: Fix cmd abort
-fabric stop race").
+According to KMS documentation, The driver must not release any shared
+resources if active is set to false but enable still true.
 
-If CMD_T_TAS is set on the se_cmd we must call iscsit_free_cmd() to do the
-last put on the cmd and free it, because the connection is down and we will
-not up sending the response and doing the put from the normal I/O
-path.
-
-Add a check for CMD_T_TAS in iscsit_release_commands_from_conn() so we now
-detect this case and run iscsit_free_cmd().
-
-Fixes: f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop race")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-9-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ccc862b957c6 ("drm/msm/dpu: Fix reservation failures in modeset")
+Signed-off-by: Vinod Polimera <quic_vpolimer@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/524726/
+Link: https://lore.kernel.org/r/1677774797-31063-5-git-send-email-quic_vpolimer@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index d9fcef82ddf59..d801f5b388b8a 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4088,9 +4088,12 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
- 	list_for_each_entry_safe(cmd, cmd_tmp, &tmp_list, i_conn_node) {
- 		struct se_cmd *se_cmd = &cmd->se_cmd;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index a0274fcfe9c9d..408fc6c8a6df8 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -634,7 +634,7 @@ static int dpu_encoder_virt_atomic_check(
+ 		if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+ 			dpu_rm_release(global_state, drm_enc);
  
--		if (se_cmd->se_tfo != NULL) {
--			spin_lock_irq(&se_cmd->t_state_lock);
--			if (se_cmd->transport_state & CMD_T_ABORTED) {
-+		if (!se_cmd->se_tfo)
-+			continue;
-+
-+		spin_lock_irq(&se_cmd->t_state_lock);
-+		if (se_cmd->transport_state & CMD_T_ABORTED) {
-+			if (!(se_cmd->transport_state & CMD_T_TAS))
- 				/*
- 				 * LIO's abort path owns the cleanup for this,
- 				 * so put it back on the list and let
-@@ -4098,11 +4101,10 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
- 				 */
- 				list_move_tail(&cmd->i_conn_node,
- 					       &conn->conn_cmd_list);
--			} else {
--				se_cmd->transport_state |= CMD_T_FABRIC_STOP;
--			}
--			spin_unlock_irq(&se_cmd->t_state_lock);
-+		} else {
-+			se_cmd->transport_state |= CMD_T_FABRIC_STOP;
+-			if (!crtc_state->active_changed || crtc_state->active)
++			if (!crtc_state->active_changed || crtc_state->enable)
+ 				ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
+ 						drm_enc, crtc_state, topology);
  		}
-+		spin_unlock_irq(&se_cmd->t_state_lock);
- 	}
- 	spin_unlock_bh(&conn->cmd_lock);
- 
 -- 
 2.39.2
 
