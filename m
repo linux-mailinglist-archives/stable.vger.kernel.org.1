@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 031477039ED
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7603F703B41
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244594AbjEORqv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40202 "EHLO
+        id S242898AbjEOSBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244616AbjEORq3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:29 -0400
+        with ESMTP id S244258AbjEOSBA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CEB716EBA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF5CE4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EE4C62EAE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103D1C433EF;
-        Mon, 15 May 2023 17:45:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FFB63015
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A136C433D2;
+        Mon, 15 May 2023 17:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172703;
-        bh=7Zf61SUObHrdsdm8g725yGyBBc4+P2tZoJMiUsQk+M8=;
+        s=korg; t=1684173494;
+        bh=yzyO32OdFln+2y3T39bhhoxeUln21xmm6w9Oaa8fSdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EsCcSywDukWjjLIaAytxLv2aoPUXgW+T7iyScApy+01IXn0BVTpH0KHAVWW2g9uS4
-         A47Wdis5nwQ545Q9yjnQU6a5ZF6To9ngwntXwrInQNLhT6d3llNfASMN/BereuKq+x
-         GdyBertRYM7Mk0ymiYthuaR4qLv/mm/1DyNbKeck=
+        b=TRCDQ4lgYwFCA822tihWEDaWp0Tukw/Ftx7mKduEeNawMlVEQAa7lENErvmN6AlhA
+         Vhx+LX/7bzoePSxQd4yGAn++xQzvQjKh3y2BJw+zT9mVQ4vqGAqNYM9VKOTY+zmxnS
+         1a4uayLX1X4Tg+I6jdV5ZVEorZd4DkwJg6dKJHHw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/381] rtc: omap: include header for omap_rtc_power_off_program prototype
+Subject: [PATCH 5.4 113/282] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
 Date:   Mon, 15 May 2023 18:28:11 +0200
-Message-Id: <20230515161747.548674006@linuxfoundation.org>
+Message-Id: <20230515161725.632281493@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit f69c2b5420497b7a54181ce170d682cbeb1f119f ]
+[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
 
-Non-static functions should have a prototype:
+This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
 
-  drivers/rtc/rtc-omap.c:410:5: error: no previous prototype for ‘omap_rtc_power_off_program’ [-Werror=missing-prototypes]
+This patch introduces a possible null-ptr-def problem. Revert it. And the
+fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
+btsdio: fix use after free bug in btsdio_remove due to race condition").
 
-Fixes: 6256f7f7f217 ("rtc: OMAP: Add support for rtc-only mode")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230311094021.79730-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-omap.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btsdio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-omap.c b/drivers/rtc/rtc-omap.c
-index c20fc7937dfa8..18ae2a4f26eab 100644
---- a/drivers/rtc/rtc-omap.c
-+++ b/drivers/rtc/rtc-omap.c
-@@ -25,6 +25,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/rtc.h>
-+#include <linux/rtc/rtc-omap.h>
+diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
+index 81125fb180351..fd9571d5fdac9 100644
+--- a/drivers/bluetooth/btsdio.c
++++ b/drivers/bluetooth/btsdio.c
+@@ -343,7 +343,6 @@ static void btsdio_remove(struct sdio_func *func)
  
- /*
-  * The OMAP RTC is a year/month/day/hours/minutes/seconds BCD clock
+ 	BT_DBG("func %p", func);
+ 
+-	cancel_work_sync(&data->work);
+ 	if (!data)
+ 		return;
+ 
 -- 
 2.39.2
 
