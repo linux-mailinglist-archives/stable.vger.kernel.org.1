@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 645E3703799
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F087D7036E4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244094AbjEORXM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40254 "EHLO
+        id S243728AbjEORO7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244018AbjEORWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:51 -0400
+        with ESMTP id S243884AbjEOROf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FCF7120B5;
-        Mon, 15 May 2023 10:21:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FA535B82
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BAAD62C54;
-        Mon, 15 May 2023 17:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DECC433D2;
-        Mon, 15 May 2023 17:20:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 502E262B87
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BB2C433EF;
+        Mon, 15 May 2023 17:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171258;
-        bh=Nc25TSkVxVrXY64easAv0Dysj5N+r+hR4Ws0zUbzFD0=;
+        s=korg; t=1684170780;
+        bh=L6QpClRIlFfMaJTrwTgivNsYg6cLEXedlzsM3ua5aEQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UtgkctKQmV/HQfiTBSAF1uKG34rftn4OTlJibbxAMGVZuHe4/vFrfWLu0N/jlvHls
-         AlporCOmVGY9mv8kBxF5t6ndM+lZjuE9+nFV4UBrdiXn+JA6deDuNn5AOsxynMfR8S
-         86VEBOg+hQ96LM4aofF11dV07A4CcubILak2jmP0=
+        b=fljZvs45Q0gg7aS4dmdhJfbRfCQAV9c4bHuNLwX2yfzS24CPyCM4ZfUxoTbD2mTTz
+         pNLUYoMR42dOdwulsaz7GBai12R2VICH0PMD1A4EnI+O+F7EI0qHzCs4/uOyGQdsxC
+         TEmu/FqZUmFvlwunM6vSf6+Bf02l4jYKyXv0QnXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.2 152/242] sh: math-emu: fix macro redefined warning
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.1 215/239] ksmbd: block asynchronous requests when making a delay on session setup
 Date:   Mon, 15 May 2023 18:27:58 +0200
-Message-Id: <20230515161726.450136349@linuxfoundation.org>
+Message-Id: <20230515161728.176647204@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,47 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 58a49ad90939386a8682e842c474a0d2c00ec39c upstream.
+[ Upstream commit b096d97f47326b1e2dbdef1c91fab69ffda54d17 ]
 
-Fix a warning that was reported by the kernel test robot:
+ksmbd make a delay of 5 seconds on session setup to avoid dictionary
+attacks. But the 5 seconds delay can be bypassed by using asynchronous
+requests. This patch block all requests on current connection when
+making a delay on sesstion setup failure.
 
-In file included from ../include/math-emu/soft-fp.h:27,
-                 from ../arch/sh/math-emu/math.c:22:
-../arch/sh/include/asm/sfp-machine.h:17: warning: "__BYTE_ORDER" redefined
-   17 | #define __BYTE_ORDER __BIG_ENDIAN
-In file included from ../arch/sh/math-emu/math.c:21:
-../arch/sh/math-emu/sfp-util.h:71: note: this is the location of the previous definition
-   71 | #define __BYTE_ORDER __LITTLE_ENDIAN
-
-Fixes: b929926f01f2 ("sh: define __BIG_ENDIAN for math-emu")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: lore.kernel.org/r/202111121827.6v6SXtVv-lkp@intel.com
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-5-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20482
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/math-emu/sfp-util.h |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/ksmbd/smb2pdu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/sh/math-emu/sfp-util.h
-+++ b/arch/sh/math-emu/sfp-util.h
-@@ -67,7 +67,3 @@
-   } while (0)
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index d3f33194faf1a..e7594a56cbfe3 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1862,8 +1862,11 @@ int smb2_sess_setup(struct ksmbd_work *work)
  
- #define abort()	return 0
--
--#define __BYTE_ORDER __LITTLE_ENDIAN
--
--
+ 			sess->last_active = jiffies;
+ 			sess->state = SMB2_SESSION_EXPIRED;
+-			if (try_delay)
++			if (try_delay) {
++				ksmbd_conn_set_need_reconnect(conn);
+ 				ssleep(5);
++				ksmbd_conn_set_need_negotiate(conn);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.39.2
+
 
 
