@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 204CC7033CB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DCE7032FF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242510AbjEOQlf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44342 "EHLO
+        id S242714AbjEOQcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242860AbjEOQld (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8971A40F4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:31 -0700 (PDT)
+        with ESMTP id S242715AbjEOQcO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E14AB198B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F03C6288B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1230FC433EF;
-        Mon, 15 May 2023 16:41:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 60B4062752
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D28C433EF;
+        Mon, 15 May 2023 16:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168890;
-        bh=8i/JvyJzl4/l64YOefdgKj3GkQ/Fwr088NYA7QpuCa0=;
+        s=korg; t=1684168326;
+        bh=141Z8f1cQLdopGTrfy+qHT5bRV2Dr5CIrnWmvf4PQfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Me2MJXsTuYTABMbtF/zVfIBavKwsUQjdT6Lr9yAneAgbYUbMx/hHSDbh/liTMNZmJ
-         3L4Es7nJyXTzo0tfR1YHadrNqx14o2D6t6A305jr2vhAfxCJVA4Xrgzz/titqLO+NB
-         T9xRIgtKbe2eTi8xzR7/21/Uzi4wvZEMRGy33QEg=
+        b=E1DG+9VHw8ZRH+y8ABKcmPHKDAvcLH+qKeVC6vY3OzkhxfYhdcFyCAG8r7/Y/5ccQ
+         CkRWm3AvyHXy3LGPWMHkd/m2hrZX6W6OgC0TJhi0k6zRngapp+Pt5vabtahdx1297m
+         TkYeYWUrLtRusfSouYnVMik3EKoquaFGPZ5R7Nmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
-        Sridhar Samudrala <sridhar.samudrala@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.19 074/191] ixgbe: Enable setting RSS table to default values
+        patches@lists.linux.dev, Wang YanQing <udknight@gmail.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 4.14 014/116] ubi: Fix return value overwrite issue in try_write_vid_and_data()
 Date:   Mon, 15 May 2023 18:25:11 +0200
-Message-Id: <20230515161709.954097935@linuxfoundation.org>
+Message-Id: <20230515161658.769648411@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,147 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joe Damato <jdamato@fastly.com>
+From: Wang YanQing <udknight@gmail.com>
 
-[ Upstream commit e85d3d55875f7a1079edfbc4e4e98d6f8aea9ac7 ]
+commit 31a149d5c13c4cbcf97de3435817263a2d8c9d6e upstream.
 
-ethtool uses `ETHTOOL_GRXRINGS` to compute how many queues are supported
-by RSS. The driver should return the smaller of either:
-  - The maximum number of RSS queues the device supports, OR
-  - The number of RX queues configured
+The commit 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
+adds helper function, try_write_vid_and_data(), to simplify the code, but this
+helper function has bug, it will return 0 (success) when ubi_io_write_vid_hdr()
+or the ubi_io_write_data() return error number (-EIO, etc), because the return
+value of ubi_wl_put_peb() will overwrite the original return value.
 
-Prior to this change, running `ethtool -X $iface default` fails if the
-number of queues configured is larger than the number supported by RSS,
-even though changing the queue count correctly resets the flowhash to
-use all supported queues.
+This issue will cause unexpected data loss issue, because the caller of this
+function and UBIFS willn't know the data is lost.
 
-Other drivers (for example, i40e) will succeed but the flow hash will
-reset to support the maximum number of queues supported by RSS, even if
-that amount is smaller than the configured amount.
-
-Prior to this change:
-
-$ sudo ethtool -L eth1 combined 20
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 20 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9    10    11    12    13    14    15
-   16:      0     1     2     3     4     5     6     7
-   24:      8     9    10    11    12    13    14    15
-   32:      0     1     2     3     4     5     6     7
-...
-
-You can see that the flowhash was correctly set to use the maximum
-number of queues supported by the driver (16).
-
-However, asking the NIC to reset to "default" fails:
-
-$ sudo ethtool -X eth1 default
-Cannot set RX flow hash configuration: Invalid argument
-
-After this change, the flowhash can be reset to default which will use
-all of the available RSS queues (16) or the configured queue count,
-whichever is smaller.
-
-Starting with eth1 which has 10 queues and a flowhash distributing to
-all 10 queues:
-
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 10 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9     0     1     2     3     4     5
-   16:      6     7     8     9     0     1     2     3
-...
-
-Increasing the queue count to 48 resets the flowhash to distribute to 16
-queues, as it did before this patch:
-
-$ sudo ethtool -L eth1 combined 48
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 16 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9    10    11    12    13    14    15
-   16:      0     1     2     3     4     5     6     7
-...
-
-Due to the other bugfix in this series, the flowhash can be set to use
-queues 0-5:
-
-$ sudo ethtool -X eth1 equal 5
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 16 RX ring(s):
-    0:      0     1     2     3     4     0     1     2
-    8:      3     4     0     1     2     3     4     0
-   16:      1     2     3     4     0     1     2     3
-...
-
-Due to this bugfix, the flowhash can be reset to default and use 16
-queues:
-
-$ sudo ethtool -X eth1 default
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 16 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9    10    11    12    13    14    15
-   16:      0     1     2     3     4     5     6     7
-...
-
-Fixes: 91cd94bfe4f0 ("ixgbe: add basic support for setting and getting nfc controls")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wang YanQing <udknight@gmail.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/mtd/ubi/eba.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index a852f9c920742..3d361557a63a3 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -2539,6 +2539,14 @@ static int ixgbe_get_rss_hash_opts(struct ixgbe_adapter *adapter,
- 	return 0;
- }
- 
-+static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
-+{
-+	if (adapter->hw.mac.type < ixgbe_mac_X550)
-+		return 16;
-+	else
-+		return 64;
-+}
-+
- static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
- 			   u32 *rule_locs)
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -943,7 +943,7 @@ static int try_write_vid_and_data(struct
+ 				  int offset, int len)
  {
-@@ -2547,7 +2555,8 @@ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 	struct ubi_device *ubi = vol->ubi;
+-	int pnum, opnum, err, vol_id = vol->vol_id;
++	int pnum, opnum, err, err2, vol_id = vol->vol_id;
  
- 	switch (cmd->cmd) {
- 	case ETHTOOL_GRXRINGS:
--		cmd->data = adapter->num_rx_queues;
-+		cmd->data = min_t(int, adapter->num_rx_queues,
-+				  ixgbe_rss_indir_tbl_max(adapter));
- 		ret = 0;
- 		break;
- 	case ETHTOOL_GRXCLSRLCNT:
-@@ -2949,14 +2958,6 @@ static int ixgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
- 	return ret;
+ 	pnum = ubi_wl_get_peb(ubi);
+ 	if (pnum < 0) {
+@@ -978,10 +978,19 @@ static int try_write_vid_and_data(struct
+ out_put:
+ 	up_read(&ubi->fm_eba_sem);
+ 
+-	if (err && pnum >= 0)
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
+-	else if (!err && opnum >= 0)
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
++	if (err && pnum >= 0) {
++		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
++		if (err2) {
++			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
++				 pnum, err2);
++		}
++	} else if (!err && opnum >= 0) {
++		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
++		if (err2) {
++			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
++				 opnum, err2);
++		}
++	}
+ 
+ 	return err;
  }
- 
--static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
--{
--	if (adapter->hw.mac.type < ixgbe_mac_X550)
--		return 16;
--	else
--		return 64;
--}
--
- static u32 ixgbe_get_rxfh_key_size(struct net_device *netdev)
- {
- 	return IXGBE_RSS_KEY_SIZE;
--- 
-2.39.2
-
 
 
