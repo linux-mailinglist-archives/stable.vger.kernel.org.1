@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1919703439
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F1E703AD7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242950AbjEOQqD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50212 "EHLO
+        id S245010AbjEOR4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242951AbjEOQqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398544EEE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:01 -0700 (PDT)
+        with ESMTP id S244854AbjEORze (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD1410CE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBFAF628F9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3006C4339B;
-        Mon, 15 May 2023 16:45:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFA1062216
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000F8C433EF;
+        Mon, 15 May 2023 17:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169160;
-        bh=2R0IC72LIR6W0D47EIvhmqARl4fveDZyScq3LHY8iG4=;
+        s=korg; t=1684173209;
+        bh=0kM0V+605O1M1znJUIHIVJQociBMYCy5OXAFrQeck+o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nxxODwYkMCsCXVeAV5V82C31I9VMNDfEpJfDrJOSBAFo/HUVsWE8gTS0GL/9JZe+v
-         P/r85AaeUv1oA2c4zm17C0WBNHFJlSGyHG9f08eBXOovKWya1Ag4YYwVuk37NXD3sV
-         +O3rPA0lMPhqFfoG0VT9emzws0s647syBQvoink4=
+        b=tUFSVLHDWK1dwhn1g4V4EULeDGvJrNai2ejClC/u02rtiaoSWb4I/RTTo/XTAJnVM
+         zI1yatMjwDQmO7cP93Iq55RZfo9AgiLmc8VslSoVICfsp1rhllbaR0VDFmcjF+yJUD
+         L8o+nXPA8272s+EnZavUU3QMCwM/BURD7gLgtkmI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Wenliang Wang <wangwenliang.1995@bytedance.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 162/191] virtio_net: suppress cpu stall when free_unused_bufs
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Subject: [PATCH 5.4 021/282] pwm: meson: Fix g12a ao clk81 name
 Date:   Mon, 15 May 2023 18:26:39 +0200
-Message-Id: <20230515161713.314846970@linuxfoundation.org>
+Message-Id: <20230515161722.909797309@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wenliang Wang <wangwenliang.1995@bytedance.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit f8bb5104394560e29017c25bcade4c6b7aabd108 ]
+commit 9e4fa80ab7ef9eb4f7b1ea9fc31e0eb040e85e25 upstream.
 
-For multi-queue and large ring-size use case, the following error
-occurred when free_unused_bufs:
-rcu: INFO: rcu_sched self-detected stall on CPU.
+Fix the name of the aoclk81 clock. Apparently name aoclk81 as used by
+the vendor driver was changed when mainlining the g12a clock driver.
 
-Fixes: 986a4f4d452d ("virtio_net: multiqueue support")
-Signed-off-by: Wenliang Wang <wangwenliang.1995@bytedance.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f41efceb46e6 ("pwm: meson: Add clock source configuration for Meson G12A")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pwm/pwm-meson.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 9b72b3f0b5bf9..d45e8de79f286 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2685,12 +2685,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
- 		struct virtqueue *vq = vi->sq[i].vq;
- 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
- 			virtnet_sq_free_unused_buf(vq, buf);
-+		cond_resched();
- 	}
+--- a/drivers/pwm/pwm-meson.c
++++ b/drivers/pwm/pwm-meson.c
+@@ -433,7 +433,7 @@ static const struct meson_pwm_data pwm_a
+ };
  
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		struct virtqueue *vq = vi->rq[i].vq;
- 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
- 			virtnet_rq_free_unused_buf(vq, buf);
-+		cond_resched();
- 	}
- }
+ static const char * const pwm_g12a_ao_ab_parent_names[] = {
+-	"xtal", "aoclk81", "fclk_div4", "fclk_div5"
++	"xtal", "g12a_ao_clk81", "fclk_div4", "fclk_div5"
+ };
  
--- 
-2.39.2
-
+ static const struct meson_pwm_data pwm_g12a_ao_ab_data = {
+@@ -442,7 +442,7 @@ static const struct meson_pwm_data pwm_g
+ };
+ 
+ static const char * const pwm_g12a_ao_cd_parent_names[] = {
+-	"xtal", "aoclk81",
++	"xtal", "g12a_ao_clk81",
+ };
+ 
+ static const struct meson_pwm_data pwm_g12a_ao_cd_data = {
 
 
