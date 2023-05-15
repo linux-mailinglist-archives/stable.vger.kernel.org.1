@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C0C703B18
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4CE170356A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243795AbjEOR7R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60546 "EHLO
+        id S243338AbjEOQ6x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244754AbjEOR6z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:55 -0400
+        with ESMTP id S243343AbjEOQ6r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0C51FA46
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586907D9C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12F7562F75
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C21CC433D2;
-        Mon, 15 May 2023 17:56:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9102262A3C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81943C433D2;
+        Mon, 15 May 2023 16:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173379;
-        bh=gGtlz5Bh1DZ9JLIl2sTaswDJtwHZ2ffk0UdIg1mwC8Q=;
+        s=korg; t=1684169921;
+        bh=3y7O2X8OhDEjW1aSCmpk6EqsYbOaQkWKclk50bssoOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hfHQH/qSECXeaNeaeutC6L42vDownGgINAiUhuhCfqOb/vW7gDNU6iWUf8K0pJWcw
-         ViRncjyiWv4ScnfNgE/JcMJcjI/IqXe/PziO5/hD+iZlpdOGEgpZ27o4rELjmmyJZR
-         q1LkE3/l6M5M924oKKawZ6nE4Fs0b59FOWwHqecc=
+        b=EuynoCDR+g7o9i6nnZoIrLKw2otkXnkfbsjurtC4Ddibqz4kI2bLUgOlg3Ft9DYx9
+         hpV5ydrjLUbKrkP6nDfIOzc3Yka4SAJdTIa/HSjG9Rux6dWbP7NURSewlfVCvi+rD9
+         dd6mec1o0UxE+S+xBL2jRGQu61uwHU/j/K8PBI6A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 046/282] media: av7110: prevent underflow in write_ts_to_decoder()
+        patches@lists.linux.dev,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Rudi Heitbaum <rudi@heitbaum.com>
+Subject: [PATCH 6.3 212/246] fs/ntfs3: Refactoring of various minor issues
 Date:   Mon, 15 May 2023 18:27:04 +0200
-Message-Id: <20230515161723.641833351@linuxfoundation.org>
+Message-Id: <20230515161728.958144421@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +54,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <error27@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit eed9496a0501357aa326ddd6b71408189ed872eb ]
+commit 6827d50b2c430c329af442b64c9176d174f56521 upstream.
 
-The buf[4] value comes from the user via ts_play().  It is a value in
-the u8 range.  The final length we pass to av7110_ipack_instant_repack()
-is "len - (buf[4] + 1) - 4" so add a check to ensure that the length is
-not negative.  It's not clear that passing a negative len value does
-anything bad necessarily, but it's not best practice.
+Removed unused macro.
+Changed null pointer checking.
+Fixed inconsistent indenting.
 
-With the new bounds checking the "if (!len)" condition is no longer
-possible or required so remove that.
-
-Fixes: fd46d16d602a ("V4L/DVB (11759): dvb-ttpci: Add TS replay capability")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: Rudi Heitbaum <rudi@heitbaum.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ttpci/av7110_av.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/bitmap.c  |    3 ++-
+ fs/ntfs3/frecord.c |    2 +-
+ fs/ntfs3/fsntfs.c  |    6 ++++--
+ fs/ntfs3/namei.c   |    2 +-
+ fs/ntfs3/ntfs.h    |    3 ---
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/pci/ttpci/av7110_av.c b/drivers/media/pci/ttpci/av7110_av.c
-index ea9f7d0058a21..e201d5a56bc65 100644
---- a/drivers/media/pci/ttpci/av7110_av.c
-+++ b/drivers/media/pci/ttpci/av7110_av.c
-@@ -822,10 +822,10 @@ static int write_ts_to_decoder(struct av7110 *av7110, int type, const u8 *buf, s
- 		av7110_ipack_flush(ipack);
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -658,7 +658,8 @@ int wnd_init(struct wnd_bitmap *wnd, str
+ 	if (!wnd->bits_last)
+ 		wnd->bits_last = wbits;
  
- 	if (buf[3] & ADAPT_FIELD) {
-+		if (buf[4] > len - 1 - 4)
-+			return 0;
- 		len -= buf[4] + 1;
- 		buf += buf[4] + 1;
--		if (!len)
--			return 0;
+-	wnd->free_bits = kcalloc(wnd->nwnd, sizeof(u16), GFP_NOFS | __GFP_NOWARN);
++	wnd->free_bits =
++		kcalloc(wnd->nwnd, sizeof(u16), GFP_NOFS | __GFP_NOWARN);
+ 	if (!wnd->free_bits)
+ 		return -ENOMEM;
+ 
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1645,7 +1645,7 @@ struct ATTR_FILE_NAME *ni_fname_name(str
+ {
+ 	struct ATTRIB *attr = NULL;
+ 	struct ATTR_FILE_NAME *fname;
+-       struct le_str *fns;
++	struct le_str *fns;
+ 
+ 	if (le)
+ 		*le = NULL;
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -2594,8 +2594,10 @@ static inline bool is_reserved_name(stru
+ 	if (len == 4 || (len > 4 && le16_to_cpu(name[4]) == '.')) {
+ 		port_digit = le16_to_cpu(name[3]);
+ 		if (port_digit >= '1' && port_digit <= '9')
+-			if (!ntfs_cmp_names(name, 3, COM_NAME, 3, upcase, false) ||
+-			    !ntfs_cmp_names(name, 3, LPT_NAME, 3, upcase, false))
++			if (!ntfs_cmp_names(name, 3, COM_NAME, 3, upcase,
++					    false) ||
++			    !ntfs_cmp_names(name, 3, LPT_NAME, 3, upcase,
++					    false))
+ 				return true;
  	}
  
- 	av7110_ipack_instant_repack(buf + 4, len - 4, ipack);
--- 
-2.39.2
-
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -93,7 +93,7 @@ static struct dentry *ntfs_lookup(struct
+ 	 * If the MFT record of ntfs inode is not a base record, inode->i_op can be NULL.
+ 	 * This causes null pointer dereference in d_splice_alias().
+ 	 */
+-	if (!IS_ERR(inode) && inode->i_op == NULL) {
++	if (!IS_ERR_OR_NULL(inode) && !inode->i_op) {
+ 		iput(inode);
+ 		inode = ERR_PTR(-EINVAL);
+ 	}
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -435,9 +435,6 @@ static inline u64 attr_svcn(const struct
+ 	return attr->non_res ? le64_to_cpu(attr->nres.svcn) : 0;
+ }
+ 
+-/* The size of resident attribute by its resident size. */
+-#define BYTES_PER_RESIDENT(b) (0x18 + (b))
+-
+ static_assert(sizeof(struct ATTRIB) == 0x48);
+ static_assert(sizeof(((struct ATTRIB *)NULL)->res) == 0x08);
+ static_assert(sizeof(((struct ATTRIB *)NULL)->nres) == 0x38);
 
 
