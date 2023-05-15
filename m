@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAF370393D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEAEF7034EB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244544AbjEORk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:40:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
+        id S243128AbjEOQyN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244638AbjEORkD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:03 -0400
+        with ESMTP id S243120AbjEOQxh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA0A17945
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313937297
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5AD662DE2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F98C433EF;
-        Mon, 15 May 2023 17:37:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6A7562033
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F461C433EF;
+        Mon, 15 May 2023 16:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172229;
-        bh=zNLmtlvE92e+a6GUH7QTXZjn1URMTLYoWikuSwWheO8=;
+        s=korg; t=1684169593;
+        bh=fFIITTqZj4Tpks68nbymJI6pymHbMQrYOSVdLreAt7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wBz4phU0C5D+gS23jW24TRVT2XabFuafvb3f2rwYYvL/VZvSs5BWf98JW86Cysofu
-         RvdHJ1W8QFjnloOcBsiQjDlSEwXajqB6C+ecN0I+McaCcb25CN6j3XanSCLpKz7s+p
-         5uM0nUPpbVSpG7674pQfSJN6vPOKNPYx8/Jznyg0=
+        b=hzwoqT/xVZAp79vhA44yesDpFUAKZ+3FTaAlDObJHSEqPfjFlWLGQLblpu8C5XI8P
+         UPvCNbtfJpg7fNd1TF0Qvtc9aOySjbNXe1B6FiYmXsmw3zQCmny/6Le7wgLEBMV3mn
+         1nGSGwWS1qH40072pkAMHW4curUqm6v2zuqh2ewE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Thomas Richter <tmricht@linux.ibm.com>,
+        Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/381] tpm, tpm_tis: Claim locality before writing interrupt registers
+Subject: [PATCH 6.3 107/246] perf vendor events s390: Remove UTF-8 characters from JSON file
 Date:   Mon, 15 May 2023 18:25:19 +0200
-Message-Id: <20230515161739.884029290@linuxfoundation.org>
+Message-Id: <20230515161725.789303142@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,83 +59,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
+[ Upstream commit eb2feb68cb7d404288493c41480843bc9f404789 ]
 
-In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
-TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
-Currently these modifications are done without holding a locality thus they
-have no effect. Fix this by claiming the (default) locality before the
-registers are written.
+Commit 7f76b31130680fb3 ("perf list: Add IBM z16 event description for
+s390") contains the verbal description for z16 extended counter set.
 
-Since now tpm_tis_gen_interrupt() is called with the locality already
-claimed remove locality request and release from this function.
+However some entries of the public description contain UTF-8 characters
+which breaks the build on some distros.
 
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
+Fix this and remove the UTF-8 characters.
+
+Fixes: 7f76b31130680fb3 ("perf list: Add IBM z16 event description for s390")
+Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ tools/perf/pmu-events/arch/s390/cf_z16/extended.json | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 99cbf6fb062ce..52826a7edf800 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -721,16 +721,10 @@ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
- 	cap_t cap;
- 	int ret;
- 
--	ret = request_locality(chip, 0);
--	if (ret < 0)
--		return;
--
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
- 	else
- 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
--
--	release_locality(chip, 0);
- }
- 
- /* Register the IRQ and issue a command that will cause an interrupt. If an
-@@ -753,10 +747,16 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	}
- 	priv->irq = irq;
- 
-+	rc = request_locality(chip, 0);
-+	if (rc < 0)
-+		return rc;
-+
- 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
- 			   &original_int_vec);
--	if (rc < 0)
-+	if (rc < 0) {
-+		release_locality(chip, priv->locality);
- 		return rc;
-+	}
- 
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
- 	if (rc < 0)
-@@ -790,10 +790,12 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
- 		tpm_tis_write8(priv, original_int_vec,
- 			       TPM_INT_VECTOR(priv->locality));
--		return -1;
-+		rc = -1;
- 	}
- 
--	return 0;
-+	release_locality(chip, priv->locality);
-+
-+	return rc;
- }
- 
- /* Try to find the IRQ the TPM is using. This is for legacy x86 systems that
+diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/extended.json b/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
+index c306190fc06f2..c2b10ec1c6e01 100644
+--- a/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
++++ b/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
+@@ -95,28 +95,28 @@
+ 		"EventCode": "145",
+ 		"EventName": "DCW_REQ",
+ 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache",
+-		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache."
++		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache."
+ 	},
+ 	{
+ 		"Unit": "CPU-M-CF",
+ 		"EventCode": "146",
+ 		"EventName": "DCW_REQ_IV",
+ 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Intervention",
+-		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache with intervention."
++		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache with intervention."
+ 	},
+ 	{
+ 		"Unit": "CPU-M-CF",
+ 		"EventCode": "147",
+ 		"EventName": "DCW_REQ_CHIP_HIT",
+ 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Chip HP Hit",
+-		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache after using chip level horizontal persistence, Chip-HP hit."
++		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache after using chip level horizontal persistence, Chip-HP hit."
+ 	},
+ 	{
+ 		"Unit": "CPU-M-CF",
+ 		"EventCode": "148",
+ 		"EventName": "DCW_REQ_DRAWER_HIT",
+ 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Drawer HP Hit",
+-		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache after using drawer level horizontal persistence, Drawer-HP hit."
++		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache after using drawer level horizontal persistence, Drawer-HP hit."
+ 	},
+ 	{
+ 		"Unit": "CPU-M-CF",
+@@ -284,7 +284,7 @@
+ 		"EventCode": "172",
+ 		"EventName": "ICW_REQ_DRAWER_HIT",
+ 		"BriefDescription": "Directory Write Level 1 Instruction Cache from Cache with Drawer HP Hit",
+-		"PublicDescription": "A directory write to the Level-1 Instruction cache directory where the returned cache line was sourced from the requestor’s Level-2 cache using drawer level horizontal persistence, Drawer-HP hit."
++		"PublicDescription": "A directory write to the Level-1 Instruction cache directory where the returned cache line was sourced from the requestors Level-2 cache using drawer level horizontal persistence, Drawer-HP hit."
+ 	},
+ 	{
+ 		"Unit": "CPU-M-CF",
 -- 
 2.39.2
 
