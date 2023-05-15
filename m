@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD691703402
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F0987036F1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242905AbjEOQns (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46922 "EHLO
+        id S243518AbjEORPU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242900AbjEOQnn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E160469D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:42 -0700 (PDT)
+        with ESMTP id S243930AbjEOROz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31C83D2EE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B883A62171
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2F5C4339B;
-        Mon, 15 May 2023 16:43:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1339062B5C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A34BC433EF;
+        Mon, 15 May 2023 17:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169021;
-        bh=sF7ZBgsVmgijIqv/pXx+8FRGezQlNpxl1nYiGp21MJI=;
+        s=korg; t=1684170808;
+        bh=eneSfdHZZIigCbK4uJJvxm1G7RJebvwOZ+fvEna6Sew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aA1acU75Pyxj2FsB9QTGOCbx4722AkT4SNdfbzcXPvyl6+rEn34EWQha7SvgtHCOe
-         5yMLJrpi4XILe6CHkB7OT1qEXYQVbRjsJ8G0Bl5EZB5xojEVW7nexRUUfW2tlT9t5G
-         JoQOBfHJNxXxGZaIbQqVP9av0kNgoT4YGtkAx3i4=
+        b=g0H5B6EXcxqPVgrMeaTkyeoIhigXYxtf4niTVWfM3maGBJhS5293BSZvsTbvlIgAc
+         ubsuHOo9dJpHxxxS1wwBN3sLivUBRBZy2d+jeHyBWxDVUglAkIxofh8ejF531Zjl+f
+         VDytGXjt/bez+Il8XnNQo5ERUKT4Lo4jkgkcTEYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Dae R. Jeong" <threeearcat@gmail.com>,
+        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 089/191] vmci_host: fix a race condition in vmci_host_poll() causing GPF
-Date:   Mon, 15 May 2023 18:25:26 +0200
-Message-Id: <20230515161710.490427586@linuxfoundation.org>
+Subject: [PATCH 6.2 001/242] USB: dwc3: gadget: drop dead hibernation code
+Date:   Mon, 15 May 2023 18:25:27 +0200
+Message-Id: <20230515161721.850391318@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,93 +56,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dae R. Jeong <threeearcat@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit ae13381da5ff0e8e084c0323c3cc0a945e43e9c7 ]
+[ Upstream commit bdb19d01026a5cccfa437be8adcf2df472c5889e ]
 
-During fuzzing, a general protection fault is observed in
-vmci_host_poll().
+The hibernation code is broken and has never been enabled in mainline
+and should thus be dropped.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
-RIP: 0010:__lock_acquire+0xf3/0x5e00 kernel/locking/lockdep.c:4926
-<- omitting registers ->
-Call Trace:
- <TASK>
- lock_acquire+0x1a4/0x4a0 kernel/locking/lockdep.c:5672
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0xb3/0x100 kernel/locking/spinlock.c:162
- add_wait_queue+0x3d/0x260 kernel/sched/wait.c:22
- poll_wait include/linux/poll.h:49 [inline]
- vmci_host_poll+0xf8/0x2b0 drivers/misc/vmw_vmci/vmci_host.c:174
- vfs_poll include/linux/poll.h:88 [inline]
- do_pollfd fs/select.c:873 [inline]
- do_poll fs/select.c:921 [inline]
- do_sys_poll+0xc7c/0x1aa0 fs/select.c:1015
- __do_sys_ppoll fs/select.c:1121 [inline]
- __se_sys_ppoll+0x2cc/0x330 fs/select.c:1101
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x4e/0xa0 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
+Remove the hibernation bits from the gadget code, which effectively
+reverts commits e1dadd3b0f27 ("usb: dwc3: workaround: bogus hibernation
+events") and 7b2a0368bbc9 ("usb: dwc3: gadget: set KEEP_CONNECT in case
+of hibernation") except for the spurious interrupt warning.
 
-Example thread interleaving that causes the general protection fault
-is as follows:
-
-CPU1 (vmci_host_poll)               CPU2 (vmci_host_do_init_context)
------                               -----
-// Read uninitialized context
-context = vmci_host_dev->context;
-                                    // Initialize context
-                                    vmci_host_dev->context = vmci_ctx_create();
-                                    vmci_host_dev->ct_type = VMCIOBJ_CONTEXT;
-
-if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-    // Dereferencing the wrong pointer
-    poll_wait(..., &context->host_context);
-}
-
-In this scenario, vmci_host_poll() reads vmci_host_dev->context first,
-and then reads vmci_host_dev->ct_type to check that
-vmci_host_dev->context is initialized. However, since these two reads
-are not atomically executed, there is a chance of a race condition as
-described above.
-
-To fix this race condition, read vmci_host_dev->context after checking
-the value of vmci_host_dev->ct_type so that vmci_host_poll() always
-reads an initialized context.
-
-Reported-by: Dae R. Jeong <threeearcat@gmail.com>
-Fixes: 8bf503991f87 ("VMCI: host side driver implementation.")
-Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
-Link: https://lore.kernel.org/r/ZCGFsdBAU4cYww5l@dragonet
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230404072524.19014-5-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 39674be56fba ("usb: dwc3: gadget: Execute gadget stop after halting the controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c | 46 +++++----------------------------------
+ 1 file changed, 6 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
-index 83e0c95d20a47..5acbf384ffa64 100644
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -169,10 +169,16 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
- static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
- {
- 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
--	struct vmci_ctx *context = vmci_host_dev->context;
-+	struct vmci_ctx *context;
- 	__poll_t mask = 0;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 3faac3244c7db..a995e3f4df37f 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2478,7 +2478,7 @@ static void __dwc3_gadget_set_speed(struct dwc3 *dwc)
+ 	dwc3_writel(dwc->regs, DWC3_DCFG, reg);
+ }
  
- 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-+		/*
-+		 * Read context only if ct_type == VMCIOBJ_CONTEXT to make
-+		 * sure that context is initialized
-+		 */
-+		context = vmci_host_dev->context;
-+
- 		/* Check for VMCI calls to this VM context. */
- 		if (wait)
- 			poll_wait(filp, &context->host_context.wait_queue,
+-static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
++static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
+ {
+ 	u32			reg;
+ 	u32			timeout = 2000;
+@@ -2497,17 +2497,11 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
+ 			reg &= ~DWC3_DCTL_KEEP_CONNECT;
+ 		reg |= DWC3_DCTL_RUN_STOP;
+ 
+-		if (dwc->has_hibernation)
+-			reg |= DWC3_DCTL_KEEP_CONNECT;
+-
+ 		__dwc3_gadget_set_speed(dwc);
+ 		dwc->pullups_connected = true;
+ 	} else {
+ 		reg &= ~DWC3_DCTL_RUN_STOP;
+ 
+-		if (dwc->has_hibernation && !suspend)
+-			reg &= ~DWC3_DCTL_KEEP_CONNECT;
+-
+ 		dwc->pullups_connected = false;
+ 	}
+ 
+@@ -2589,7 +2583,7 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	 * remaining event generated by the controller while polling for
+ 	 * DSTS.DEVCTLHLT.
+ 	 */
+-	return dwc3_gadget_run_stop(dwc, false, false);
++	return dwc3_gadget_run_stop(dwc, false);
+ }
+ 
+ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
+@@ -2643,7 +2637,7 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
+ 
+ 		dwc3_event_buffers_setup(dwc);
+ 		__dwc3_gadget_start(dwc);
+-		ret = dwc3_gadget_run_stop(dwc, true, false);
++		ret = dwc3_gadget_run_stop(dwc, true);
+ 	}
+ 
+ 	pm_runtime_put(dwc->dev);
+@@ -4210,30 +4204,6 @@ static void dwc3_gadget_suspend_interrupt(struct dwc3 *dwc,
+ 	dwc->link_state = next;
+ }
+ 
+-static void dwc3_gadget_hibernation_interrupt(struct dwc3 *dwc,
+-		unsigned int evtinfo)
+-{
+-	unsigned int is_ss = evtinfo & BIT(4);
+-
+-	/*
+-	 * WORKAROUND: DWC3 revision 2.20a with hibernation support
+-	 * have a known issue which can cause USB CV TD.9.23 to fail
+-	 * randomly.
+-	 *
+-	 * Because of this issue, core could generate bogus hibernation
+-	 * events which SW needs to ignore.
+-	 *
+-	 * Refers to:
+-	 *
+-	 * STAR#9000546576: Device Mode Hibernation: Issue in USB 2.0
+-	 * Device Fallback from SuperSpeed
+-	 */
+-	if (is_ss ^ (dwc->speed == USB_SPEED_SUPER))
+-		return;
+-
+-	/* enter hibernation here */
+-}
+-
+ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
+ 		const struct dwc3_event_devt *event)
+ {
+@@ -4251,11 +4221,7 @@ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
+ 		dwc3_gadget_wakeup_interrupt(dwc);
+ 		break;
+ 	case DWC3_DEVICE_EVENT_HIBER_REQ:
+-		if (dev_WARN_ONCE(dwc->dev, !dwc->has_hibernation,
+-					"unexpected hibernation event\n"))
+-			break;
+-
+-		dwc3_gadget_hibernation_interrupt(dwc, event->event_info);
++		dev_WARN_ONCE(dwc->dev, true, "unexpected hibernation event\n");
+ 		break;
+ 	case DWC3_DEVICE_EVENT_LINK_STATUS_CHANGE:
+ 		dwc3_gadget_linksts_change_interrupt(dwc, event->event_info);
+@@ -4592,7 +4558,7 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ 	if (!dwc->gadget_driver)
+ 		return 0;
+ 
+-	dwc3_gadget_run_stop(dwc, false, false);
++	dwc3_gadget_run_stop(dwc, false);
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc3_disconnect_gadget(dwc);
+@@ -4613,7 +4579,7 @@ int dwc3_gadget_resume(struct dwc3 *dwc)
+ 	if (ret < 0)
+ 		goto err0;
+ 
+-	ret = dwc3_gadget_run_stop(dwc, true, false);
++	ret = dwc3_gadget_run_stop(dwc, true);
+ 	if (ret < 0)
+ 		goto err1;
+ 
 -- 
 2.39.2
 
