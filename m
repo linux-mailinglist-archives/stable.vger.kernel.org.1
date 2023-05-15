@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D81070346D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1334703478
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243024AbjEOQsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53658 "EHLO
+        id S243012AbjEOQtJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243012AbjEOQsW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:22 -0400
+        with ESMTP id S242733AbjEOQsi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BFE5B8A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:48:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E38244A8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:48:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BE106292D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:48:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232F8C433EF;
-        Mon, 15 May 2023 16:48:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCB8062009
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:48:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FC6C433EF;
+        Mon, 15 May 2023 16:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169281;
-        bh=eneSfdHZZIigCbK4uJJvxm1G7RJebvwOZ+fvEna6Sew=;
+        s=korg; t=1684169316;
+        bh=aebu5AmRjdAg2J39aY6IJOnUyymxxJWQF3A/gRu9Hm8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b+ngNw+s/MfOO6hAN3eTzspspRfe8AO9C89qFkv9sJ6srd4EZEDfXz4QccoB0ANPv
-         +vhYIha1CSrOakuA+9P3QT2HXgUAwg+vHz2p4DE/BiUNMJNaOqQQ2VI1sr54N3OH6j
-         P/05eMs4KRb+uVP6mPpLXbpaWi9xgG4vYDzqVvuI=
+        b=c1u/sCWrNl6z9FShyUVVMEMsinejTIxSz+o7w/CrgOgixyANpsjq27gwWxvt+r9ib
+         CbNgVIkB+PmK/U9FooGtUbDywvBO8L1lo0kUE+xBJGK3S59qkfheG4G4m1rEDAW5a7
+         q0dQjMYdNT879n+i/2NWIelPV7NNTD1lUwgIgKZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 001/246] USB: dwc3: gadget: drop dead hibernation code
-Date:   Mon, 15 May 2023 18:23:33 +0200
-Message-Id: <20230515161722.658179152@linuxfoundation.org>
+Subject: [PATCH 6.3 002/246] usb: dwc3: gadget: Execute gadget stop after halting the controller
+Date:   Mon, 15 May 2023 18:23:34 +0200
+Message-Id: <20230515161722.687154488@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
 References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,139 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit bdb19d01026a5cccfa437be8adcf2df472c5889e ]
+[ Upstream commit 39674be56fba1cd3a03bf4617f523a35f85fd2c1 ]
 
-The hibernation code is broken and has never been enabled in mainline
-and should thus be dropped.
+Do not call gadget stop until the poll for controller halt is
+completed.  DEVTEN is cleared as part of gadget stop, so the intention to
+allow ep0 events to continue while waiting for controller halt is not
+happening.
 
-Remove the hibernation bits from the gadget code, which effectively
-reverts commits e1dadd3b0f27 ("usb: dwc3: workaround: bogus hibernation
-events") and 7b2a0368bbc9 ("usb: dwc3: gadget: set KEEP_CONNECT in case
-of hibernation") except for the spurious interrupt warning.
-
+Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Cc: stable@vger.kernel.org
 Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-5-johan+linaro@kernel.org
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230420212759.29429-2-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 39674be56fba ("usb: dwc3: gadget: Execute gadget stop after halting the controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 46 +++++----------------------------------
- 1 file changed, 6 insertions(+), 40 deletions(-)
+ drivers/usb/dwc3/gadget.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 3faac3244c7db..a995e3f4df37f 100644
+index a995e3f4df37f..e63700937ba8c 100644
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -2478,7 +2478,7 @@ static void __dwc3_gadget_set_speed(struct dwc3 *dwc)
- 	dwc3_writel(dwc->regs, DWC3_DCFG, reg);
- }
+@@ -2546,7 +2546,6 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	 * bit.
+ 	 */
+ 	dwc3_stop_active_transfers(dwc);
+-	__dwc3_gadget_stop(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
  
--static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
-+static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
- {
- 	u32			reg;
- 	u32			timeout = 2000;
-@@ -2497,17 +2497,11 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
- 			reg &= ~DWC3_DCTL_KEEP_CONNECT;
- 		reg |= DWC3_DCTL_RUN_STOP;
- 
--		if (dwc->has_hibernation)
--			reg |= DWC3_DCTL_KEEP_CONNECT;
--
- 		__dwc3_gadget_set_speed(dwc);
- 		dwc->pullups_connected = true;
- 	} else {
- 		reg &= ~DWC3_DCTL_RUN_STOP;
- 
--		if (dwc->has_hibernation && !suspend)
--			reg &= ~DWC3_DCTL_KEEP_CONNECT;
--
- 		dwc->pullups_connected = false;
- 	}
- 
-@@ -2589,7 +2583,7 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	/*
+@@ -2583,7 +2582,19 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
  	 * remaining event generated by the controller while polling for
  	 * DSTS.DEVCTLHLT.
  	 */
--	return dwc3_gadget_run_stop(dwc, false, false);
-+	return dwc3_gadget_run_stop(dwc, false);
+-	return dwc3_gadget_run_stop(dwc, false);
++	ret = dwc3_gadget_run_stop(dwc, false);
++
++	/*
++	 * Stop the gadget after controller is halted, so that if needed, the
++	 * events to update EP0 state can still occur while the run/stop
++	 * routine polls for the halted state.  DEVTEN is cleared as part of
++	 * gadget stop.
++	 */
++	spin_lock_irqsave(&dwc->lock, flags);
++	__dwc3_gadget_stop(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
++
++	return ret;
  }
  
  static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
-@@ -2643,7 +2637,7 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- 
- 		dwc3_event_buffers_setup(dwc);
- 		__dwc3_gadget_start(dwc);
--		ret = dwc3_gadget_run_stop(dwc, true, false);
-+		ret = dwc3_gadget_run_stop(dwc, true);
- 	}
- 
- 	pm_runtime_put(dwc->dev);
-@@ -4210,30 +4204,6 @@ static void dwc3_gadget_suspend_interrupt(struct dwc3 *dwc,
- 	dwc->link_state = next;
- }
- 
--static void dwc3_gadget_hibernation_interrupt(struct dwc3 *dwc,
--		unsigned int evtinfo)
--{
--	unsigned int is_ss = evtinfo & BIT(4);
--
--	/*
--	 * WORKAROUND: DWC3 revision 2.20a with hibernation support
--	 * have a known issue which can cause USB CV TD.9.23 to fail
--	 * randomly.
--	 *
--	 * Because of this issue, core could generate bogus hibernation
--	 * events which SW needs to ignore.
--	 *
--	 * Refers to:
--	 *
--	 * STAR#9000546576: Device Mode Hibernation: Issue in USB 2.0
--	 * Device Fallback from SuperSpeed
--	 */
--	if (is_ss ^ (dwc->speed == USB_SPEED_SUPER))
--		return;
--
--	/* enter hibernation here */
--}
--
- static void dwc3_gadget_interrupt(struct dwc3 *dwc,
- 		const struct dwc3_event_devt *event)
- {
-@@ -4251,11 +4221,7 @@ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
- 		dwc3_gadget_wakeup_interrupt(dwc);
- 		break;
- 	case DWC3_DEVICE_EVENT_HIBER_REQ:
--		if (dev_WARN_ONCE(dwc->dev, !dwc->has_hibernation,
--					"unexpected hibernation event\n"))
--			break;
--
--		dwc3_gadget_hibernation_interrupt(dwc, event->event_info);
-+		dev_WARN_ONCE(dwc->dev, true, "unexpected hibernation event\n");
- 		break;
- 	case DWC3_DEVICE_EVENT_LINK_STATUS_CHANGE:
- 		dwc3_gadget_linksts_change_interrupt(dwc, event->event_info);
-@@ -4592,7 +4558,7 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	if (!dwc->gadget_driver)
- 		return 0;
- 
--	dwc3_gadget_run_stop(dwc, false, false);
-+	dwc3_gadget_run_stop(dwc, false);
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_disconnect_gadget(dwc);
-@@ -4613,7 +4579,7 @@ int dwc3_gadget_resume(struct dwc3 *dwc)
- 	if (ret < 0)
- 		goto err0;
- 
--	ret = dwc3_gadget_run_stop(dwc, true, false);
-+	ret = dwc3_gadget_run_stop(dwc, true);
- 	if (ret < 0)
- 		goto err1;
- 
 -- 
 2.39.2
 
