@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC4AF70371D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84D16703502
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243952AbjEORRB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:17:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60730 "EHLO
+        id S243199AbjEOQzE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243951AbjEORQk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21B711555
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:25 -0700 (PDT)
+        with ESMTP id S243204AbjEOQyj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9317349CE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:54:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6589C62BD0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58833C4339B;
-        Mon, 15 May 2023 17:15:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 296D3629C8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264EBC433D2;
+        Mon, 15 May 2023 16:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170924;
-        bh=NOk+8lOklDQ0w/YZ0De8ZvehQM+7V9vyH7QjHzOl628=;
+        s=korg; t=1684169657;
+        bh=FsPrgsFNzHbbngytaK5Rjwhhpx0OGkf70uSG4ycAFxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LWvnNpqKrTviAZShFYivv1DKng4Sk9WtkvwqEM6S6chpJgslqeSkobxzzN5ZiaCpa
-         dVtJu8VQpkMegj8eji9aE9Rk882AsSAtjY1/nxo846Bl5Ubb62n49k2BwOWdSdoA6Q
-         zETKoAjCOYwmklMYRm7+sqL2jp7I+cDpda+cS6sw=
+        b=Rlu4u8XO1My+ltnB0xnPwn2gwhE0Ut3rvT99aevAVAGBYbCX7cHqCxBD7P8m/HeqD
+         xR9qrShnq7IhiiN9Lu/RCXgmOrzva4vSI+CTg98xNV5QAXw5x3S2JjcuqVISEj0fEr
+         ZocSfU1mlNT8eJOaowpS9A89Es4PBhtDe9hHTKWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
-        Mathias Krause <minipli@grsecurity.net>,
-        Sean Christopherson <seanjc@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 015/242] KVM: x86/mmu: Avoid indirect call for get_cr3
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 129/246] btrfs: properly reject clear_cache and v1 cache for block-group-tree
 Date:   Mon, 15 May 2023 18:25:41 +0200
-Message-Id: <20230515161722.279531274@linuxfoundation.org>
+Message-Id: <20230515161726.433200448@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,132 +53,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 2fdcc1b324189b5fb20655baebd40cd82e2bdf0c ]
+commit 64b5d5b2852661284ccbb038c697562cc56231bf upstream.
 
-Most of the time, calls to get_guest_pgd result in calling
-kvm_read_cr3 (the exception is only nested TDP).  Hardcode
-the default instead of using the get_cr3 function, avoiding
-a retpoline if they are enabled.
+[BUG]
+With block-group-tree feature enabled, mounting it with clear_cache
+would cause the following transaction abort at mount or remount:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lore.kernel.org/r/20230322013731.102955-2-minipli@grsecurity.net
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>	# backport to v6.2.x
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  BTRFS info (device dm-4): force clearing of disk cache
+  BTRFS info (device dm-4): using free space tree
+  BTRFS info (device dm-4): auto enabling async discard
+  BTRFS info (device dm-4): clearing free space tree
+  BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE (0x1)
+  BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE_VALID (0x2)
+  BTRFS error (device dm-4): block-group-tree feature requires fres-space-tree and no-holes
+  BTRFS error (device dm-4): super block corruption detected before writing it to disk
+  BTRFS: error (device dm-4) in write_all_supers:4288: errno=-117 Filesystem corrupted (unexpected superblock corruption detected)
+  BTRFS warning (device dm-4: state E): Skipping commit of aborted transaction.
+
+[CAUSE]
+For block-group-tree feature, we have an artificial dependency on
+free-space-tree.
+
+This means if we detect block-group-tree without v2 cache, we consider
+it a corruption and cause the problem.
+
+For clear_cache mount option, it would temporary disable v2 cache, then
+re-enable it.
+
+But unfortunately for that temporary v2 cache disabled status, we refuse
+to write a superblock with bg tree only flag, thus leads to the above
+transaction abortion.
+
+[FIX]
+For now, just reject clear_cache and v1 cache mount option for block
+group tree.  So now we got a graceful rejection other than a transaction
+abort:
+
+  BTRFS info (device dm-4): force clearing of disk cache
+  BTRFS error (device dm-4): cannot disable free space tree with block-group-tree feature
+  BTRFS error (device dm-4): open_ctree failed
+
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c         | 31 ++++++++++++++++++++-----------
- arch/x86/kvm/mmu/paging_tmpl.h |  2 +-
- 2 files changed, 21 insertions(+), 12 deletions(-)
+ fs/btrfs/super.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 835426254e768..2faea9e873629 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -233,6 +233,20 @@ static struct kvm_mmu_role_regs vcpu_to_role_regs(struct kvm_vcpu *vcpu)
- 	return regs;
- }
- 
-+static unsigned long get_guest_cr3(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_read_cr3(vcpu);
-+}
-+
-+static inline unsigned long kvm_mmu_get_guest_pgd(struct kvm_vcpu *vcpu,
-+						  struct kvm_mmu *mmu)
-+{
-+	if (IS_ENABLED(CONFIG_RETPOLINE) && mmu->get_guest_pgd == get_guest_cr3)
-+		return kvm_read_cr3(vcpu);
-+
-+	return mmu->get_guest_pgd(vcpu);
-+}
-+
- static inline bool kvm_available_flush_tlb_with_range(void)
- {
- 	return kvm_x86_ops.tlb_remote_flush_with_range;
-@@ -3699,7 +3713,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
- 	int quadrant, i, r;
- 	hpa_t root;
- 
--	root_pgd = mmu->get_guest_pgd(vcpu);
-+	root_pgd = kvm_mmu_get_guest_pgd(vcpu, mmu);
- 	root_gfn = root_pgd >> PAGE_SHIFT;
- 
- 	if (mmu_check_root(vcpu, root_gfn))
-@@ -4149,7 +4163,7 @@ static bool kvm_arch_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	arch.token = alloc_apf_token(vcpu);
- 	arch.gfn = gfn;
- 	arch.direct_map = vcpu->arch.mmu->root_role.direct;
--	arch.cr3 = vcpu->arch.mmu->get_guest_pgd(vcpu);
-+	arch.cr3 = kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu);
- 
- 	return kvm_setup_async_pf(vcpu, cr2_or_gpa,
- 				  kvm_vcpu_gfn_to_hva(vcpu, gfn), &arch);
-@@ -4168,7 +4182,7 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
- 		return;
- 
- 	if (!vcpu->arch.mmu->root_role.direct &&
--	      work->arch.cr3 != vcpu->arch.mmu->get_guest_pgd(vcpu))
-+	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
- 		return;
- 
- 	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true);
-@@ -4530,11 +4544,6 @@ void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd)
- }
- EXPORT_SYMBOL_GPL(kvm_mmu_new_pgd);
- 
--static unsigned long get_cr3(struct kvm_vcpu *vcpu)
--{
--	return kvm_read_cr3(vcpu);
--}
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -826,7 +826,12 @@ out:
+ 	    !btrfs_test_opt(info, CLEAR_CACHE)) {
+ 		btrfs_err(info, "cannot disable free space tree");
+ 		ret = -EINVAL;
 -
- static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
- 			   unsigned int access)
- {
-@@ -5085,7 +5094,7 @@ static void init_kvm_tdp_mmu(struct kvm_vcpu *vcpu,
- 	context->page_fault = kvm_tdp_page_fault;
- 	context->sync_page = nonpaging_sync_page;
- 	context->invlpg = NULL;
--	context->get_guest_pgd = get_cr3;
-+	context->get_guest_pgd = get_guest_cr3;
- 	context->get_pdptr = kvm_pdptr_read;
- 	context->inject_page_fault = kvm_inject_page_fault;
- 
-@@ -5235,7 +5244,7 @@ static void init_kvm_softmmu(struct kvm_vcpu *vcpu,
- 
- 	kvm_init_shadow_mmu(vcpu, cpu_role);
- 
--	context->get_guest_pgd     = get_cr3;
-+	context->get_guest_pgd     = get_guest_cr3;
- 	context->get_pdptr         = kvm_pdptr_read;
- 	context->inject_page_fault = kvm_inject_page_fault;
- }
-@@ -5249,7 +5258,7 @@ static void init_kvm_nested_mmu(struct kvm_vcpu *vcpu,
- 		return;
- 
- 	g_context->cpu_role.as_u64   = new_mode.as_u64;
--	g_context->get_guest_pgd     = get_cr3;
-+	g_context->get_guest_pgd     = get_guest_cr3;
- 	g_context->get_pdptr         = kvm_pdptr_read;
- 	g_context->inject_page_fault = kvm_inject_page_fault;
- 
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 0f64550720557..89b19b7ef4f9f 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -324,7 +324,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 	trace_kvm_mmu_pagetable_walk(addr, access);
- retry_walk:
- 	walker->level = mmu->cpu_role.base.level;
--	pte           = mmu->get_guest_pgd(vcpu);
-+	pte           = kvm_mmu_get_guest_pgd(vcpu, mmu);
- 	have_ad       = PT_HAVE_ACCESSED_DIRTY(mmu);
- 
- #if PTTYPE == 64
--- 
-2.39.2
-
++	}
++	if (btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE) &&
++	    (btrfs_test_opt(info, CLEAR_CACHE) ||
++	     !btrfs_test_opt(info, FREE_SPACE_TREE))) {
++		btrfs_err(info, "cannot disable free space tree with block-group-tree feature");
++		ret = -EINVAL;
+ 	}
+ 	if (!ret)
+ 		ret = btrfs_check_mountopts_zoned(info);
 
 
