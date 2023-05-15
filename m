@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD147036A1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D89A703758
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243608AbjEORMI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54220 "EHLO
+        id S243905AbjEORUR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243603AbjEORLj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:39 -0400
+        with ESMTP id S243947AbjEORTh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495E161B6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D6CD06C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2835D6230D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF3AC433EF;
-        Mon, 15 May 2023 17:09:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B153662B53
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF75FC433D2;
+        Mon, 15 May 2023 17:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170598;
-        bh=x7DtbXgcXKV0svX2OgWksTLM2v19PVrF1W+u/MOrAPE=;
+        s=korg; t=1684171062;
+        bh=7ssxIjA0PR/d+uX6qoc2an3TyemLGh9dMJykDM6ipuc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZAVkhxG6j8z4TkIB8O673wcy6l7DwBahPSQbX8HC9rq5bkuoQU8Bg8ffgxgTHXEZF
-         iFKEAaCipKxlR3T08VjSk+3XxDzkDXmr1t4dnP6Wi+j7gelPILVm2tSkFKtlTa16W/
-         2/lp8sJjZ3JcK0smFn8xQtDNxRuNBZwnf/gUpKxU=
+        b=HuLfEmqxzXE5cLDZpShseWI0xh2T4cM/wW16/A2+77DQf8Pf8D8btjrmT2mNJswlx
+         +fI3QJp+zsVNsAqIuXg3Rcd3U8Jp+sZOdgbBw3L2IKNRcfUKFez8WEdDDcoKaGD1YX
+         qzDmmYx8owhx2OSgzUGGTipELEhHgPJewOuFqeXQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.1 152/239] drm/msm: fix drm device leak on bind errors
+        Wenliang Wang <wangwenliang.1995@bytedance.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 089/242] virtio_net: suppress cpu stall when free_unused_bufs
 Date:   Mon, 15 May 2023 18:26:55 +0200
-Message-Id: <20230515161726.241374406@linuxfoundation.org>
+Message-Id: <20230515161724.566121661@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Wenliang Wang <wangwenliang.1995@bytedance.com>
 
-commit 214b09db61978497df24efcb3959616814bca46b upstream.
+[ Upstream commit f8bb5104394560e29017c25bcade4c6b7aabd108 ]
 
-Make sure to free the DRM device also in case of early errors during
-bind().
+For multi-queue and large ring-size use case, the following error
+occurred when free_unused_bufs:
+rcu: INFO: rcu_sched self-detected stall on CPU.
 
-Fixes: 2027e5b3413d ("drm/msm: Initialize MDSS irq domain at probe time")
-Cc: stable@vger.kernel.org      # 5.17
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525097/
-Link: https://lore.kernel.org/r/20230306100722.28485-6-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 986a4f4d452d ("virtio_net: multiqueue support")
+Signed-off-by: Wenliang Wang <wangwenliang.1995@bytedance.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -446,12 +446,12 @@ static int msm_drm_init(struct device *d
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 0644069592211..259d54b229bf1 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3411,12 +3411,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
+ 		struct virtqueue *vq = vi->sq[i].vq;
+ 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+ 			virtnet_sq_free_unused_buf(vq, buf);
++		cond_resched();
+ 	}
  
- 	ret = msm_init_vram(ddev);
- 	if (ret)
--		return ret;
-+		goto err_put_dev;
- 
- 	/* Bind all our sub-components: */
- 	ret = component_bind_all(dev, ddev);
- 	if (ret)
--		return ret;
-+		goto err_put_dev;
- 
- 	dma_set_max_seg_size(dev, UINT_MAX);
- 
-@@ -546,6 +546,12 @@ static int msm_drm_init(struct device *d
- 
- err_msm_uninit:
- 	msm_drm_uninit(dev);
-+
-+	return ret;
-+
-+err_put_dev:
-+	drm_dev_put(ddev);
-+
- 	return ret;
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		struct virtqueue *vq = vi->rq[i].vq;
+ 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+ 			virtnet_rq_free_unused_buf(vq, buf);
++		cond_resched();
+ 	}
  }
  
+-- 
+2.39.2
+
 
 
