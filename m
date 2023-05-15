@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C123703A10
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71DB3703857
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244695AbjEORsN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:48:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47392 "EHLO
+        id S244280AbjEORb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244650AbjEORrs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:47:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E8C19F1C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:25 -0700 (PDT)
+        with ESMTP id S244287AbjEORba (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CE114E4E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D60A62EDD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70841C433D2;
-        Mon, 15 May 2023 17:46:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3812662D12
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29444C4339E;
+        Mon, 15 May 2023 17:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172783;
-        bh=zbv5u0E7fTINTdTIpq8QOJIuOePMyYIPIZS1552Wfak=;
+        s=korg; t=1684171675;
+        bh=zdglWL4bnwYdkIrI9RTea6iTC5gAyWBNH+iBchfKxdo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YW9pPvTPCVKoEbLHrM+uxjF9A8V4+527a+NRCAIjWYC3fWDH/faEYpvZI6TBa7Wks
-         oXQQmRemEJLbHLqcYe3yqyDFwJEESe6ptg5vGLbt5TKJkvYx5QnZr+qxBic7YZq24z
-         n8weMs9Jc4j4AyiGmfsRTJ2PDpno3tUctEaWLC+s=
+        b=NKWyQfTM97NXy9IqiHymQmtaG0f1jm2ZpN+PfqQCDN7Ij2Pi5SVKyg6Uf2Ve7F0TO
+         eKNAszrSeI2BRImlOevNdp+966ptrnvzEr9T7yWnDYMN9qFtVKIAxYchFT59JHLKqQ
+         h7uL3AmHnxCsfENUQS3M7wYAPY87pmD8CPXZKN/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jitao Shi <jitao.shi@mediatek.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willem de Bruijn <willemb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/381] pwm: mtk-disp: Adjust the clocks to avoid them mismatch
-Date:   Mon, 15 May 2023 18:28:37 +0200
-Message-Id: <20230515161748.770566671@linuxfoundation.org>
+Subject: [PATCH 5.15 041/134] af_packet: Dont send zero-byte data in packet_sendmsg_spkt().
+Date:   Mon, 15 May 2023 18:28:38 +0200
+Message-Id: <20230515161704.509998518@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,196 +56,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jitao Shi <jitao.shi@mediatek.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit d7a4e582587d97a586b1f7709e3bddcf35928e96 ]
+[ Upstream commit 6a341729fb31b4c5df9f74f24b4b1c98410c9b87 ]
 
-The clks "main" and "mm" are prepared in .probe() (and unprepared in
-.remove()). This results in the clocks being on during suspend which
-results in unnecessarily increased power consumption.
+syzkaller reported a warning below [0].
 
-Remove the clock operations from .probe() and .remove(). Add the
-clk_prepare_enable() in .enable() and the clk_disable_unprepare() in
-.disable().
+We can reproduce it by sending 0-byte data from the (AF_PACKET,
+SOCK_PACKET) socket via some devices whose dev->hard_header_len
+is 0.
 
-Signed-off-by: Jitao Shi <jitao.shi@mediatek.com>
-[thierry.reding@gmail.com: squashed in fixup patch]
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: 36dd7f530ae7 ("pwm: mtk-disp: Disable shadow registers before setting backlight values")
+    struct sockaddr_pkt addr = {
+        .spkt_family = AF_PACKET,
+        .spkt_device = "tun0",
+    };
+    int fd;
+
+    fd = socket(AF_PACKET, SOCK_PACKET, 0);
+    sendto(fd, NULL, 0, 0, (struct sockaddr *)&addr, sizeof(addr));
+
+We have a similar fix for the (AF_PACKET, SOCK_RAW) socket as
+commit dc633700f00f ("net/af_packet: check len when min_header_len
+equals to 0").
+
+Let's add the same test for the SOCK_PACKET socket.
+
+[0]:
+skb_assert_len
+WARNING: CPU: 1 PID: 19945 at include/linux/skbuff.h:2552 skb_assert_len include/linux/skbuff.h:2552 [inline]
+WARNING: CPU: 1 PID: 19945 at include/linux/skbuff.h:2552 __dev_queue_xmit+0x1f26/0x31d0 net/core/dev.c:4159
+Modules linked in:
+CPU: 1 PID: 19945 Comm: syz-executor.0 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:skb_assert_len include/linux/skbuff.h:2552 [inline]
+RIP: 0010:__dev_queue_xmit+0x1f26/0x31d0 net/core/dev.c:4159
+Code: 89 de e8 1d a2 85 fd 84 db 75 21 e8 64 a9 85 fd 48 c7 c6 80 2a 1f 86 48 c7 c7 c0 06 1f 86 c6 05 23 cf 27 04 01 e8 fa ee 56 fd <0f> 0b e8 43 a9 85 fd 0f b6 1d 0f cf 27 04 31 ff 89 de e8 e3 a1 85
+RSP: 0018:ffff8880217af6e0 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90001133000
+RDX: 0000000000040000 RSI: ffffffff81186922 RDI: 0000000000000001
+RBP: ffff8880217af8b0 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888030045640
+R13: ffff8880300456b0 R14: ffff888030045650 R15: ffff888030045718
+FS:  00007fc5864da640(0000) GS:ffff88806cd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020005740 CR3: 000000003f856003 CR4: 0000000000770ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ dev_queue_xmit include/linux/netdevice.h:3085 [inline]
+ packet_sendmsg_spkt+0xc4b/0x1230 net/packet/af_packet.c:2066
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg+0x1b4/0x200 net/socket.c:747
+ ____sys_sendmsg+0x331/0x970 net/socket.c:2503
+ ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2557
+ __sys_sendmmsg+0x18c/0x430 net/socket.c:2643
+ __do_sys_sendmmsg net/socket.c:2672 [inline]
+ __se_sys_sendmmsg net/socket.c:2669 [inline]
+ __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2669
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3c/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+RIP: 0033:0x7fc58791de5d
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
+RSP: 002b:00007fc5864d9cc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007fc58791de5d
+RDX: 0000000000000001 RSI: 0000000020005740 RDI: 0000000000000004
+RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007fc58797e530 R15: 0000000000000000
+ </TASK>
+---[ end trace 0000000000000000 ]---
+skb len=0 headroom=16 headlen=0 tailroom=304
+mac=(16,0) net=(16,-1) trans=-1
+shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
+csum(0x0 ip_summed=0 complete_sw=0 valid=0 level=0)
+hash(0x0 sw=0 l4=0) proto=0x0000 pkttype=0 iif=0
+dev name=sit0 feat=0x00000006401d7869
+sk family=17 type=10 proto=0
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mtk-disp.c | 91 +++++++++++++++++---------------------
- 1 file changed, 41 insertions(+), 50 deletions(-)
+ net/packet/af_packet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
-index af63aaab8e153..a594a0fdddd7b 100644
---- a/drivers/pwm/pwm-mtk-disp.c
-+++ b/drivers/pwm/pwm-mtk-disp.c
-@@ -74,6 +74,19 @@ static int mtk_disp_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	u64 div, rate;
- 	int err;
- 
-+	err = clk_prepare_enable(mdp->clk_main);
-+	if (err < 0) {
-+		dev_err(chip->dev, "Can't enable mdp->clk_main: %pe\n", ERR_PTR(err));
-+		return err;
-+	}
-+
-+	err = clk_prepare_enable(mdp->clk_mm);
-+	if (err < 0) {
-+		dev_err(chip->dev, "Can't enable mdp->clk_mm: %pe\n", ERR_PTR(err));
-+		clk_disable_unprepare(mdp->clk_main);
-+		return err;
-+	}
-+
- 	/*
- 	 * Find period, high_width and clk_div to suit duty_ns and period_ns.
- 	 * Calculate proper div value to keep period value in the bound.
-@@ -87,8 +100,11 @@ static int mtk_disp_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	rate = clk_get_rate(mdp->clk_main);
- 	clk_div = div_u64(rate * period_ns, NSEC_PER_SEC) >>
- 			  PWM_PERIOD_BIT_WIDTH;
--	if (clk_div > PWM_CLKDIV_MAX)
-+	if (clk_div > PWM_CLKDIV_MAX) {
-+		clk_disable_unprepare(mdp->clk_mm);
-+		clk_disable_unprepare(mdp->clk_main);
- 		return -EINVAL;
-+	}
- 
- 	div = NSEC_PER_SEC * (clk_div + 1);
- 	period = div64_u64(rate * period_ns, div);
-@@ -98,16 +114,6 @@ static int mtk_disp_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	high_width = div64_u64(rate * duty_ns, div);
- 	value = period | (high_width << PWM_HIGH_WIDTH_SHIFT);
- 
--	err = clk_enable(mdp->clk_main);
--	if (err < 0)
--		return err;
--
--	err = clk_enable(mdp->clk_mm);
--	if (err < 0) {
--		clk_disable(mdp->clk_main);
--		return err;
--	}
--
- 	mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
- 				 PWM_CLKDIV_MASK,
- 				 clk_div << PWM_CLKDIV_SHIFT);
-@@ -122,10 +128,21 @@ static int mtk_disp_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 		mtk_disp_pwm_update_bits(mdp, mdp->data->commit,
- 					 mdp->data->commit_mask,
- 					 0x0);
-+	} else {
-+		/*
-+		 * For MT2701, disable double buffer before writing register
-+		 * and select manual mode and use PWM_PERIOD/PWM_HIGH_WIDTH.
-+		 */
-+		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
-+					 mdp->data->bls_debug_mask,
-+					 mdp->data->bls_debug_mask);
-+		mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
-+					 mdp->data->con0_sel,
-+					 mdp->data->con0_sel);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 0db871edd3a18..f5d430bd372ce 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1999,7 +1999,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 		goto retry;
  	}
  
--	clk_disable(mdp->clk_mm);
--	clk_disable(mdp->clk_main);
-+	clk_disable_unprepare(mdp->clk_mm);
-+	clk_disable_unprepare(mdp->clk_main);
- 
- 	return 0;
- }
-@@ -135,13 +152,16 @@ static int mtk_disp_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	struct mtk_disp_pwm *mdp = to_mtk_disp_pwm(chip);
- 	int err;
- 
--	err = clk_enable(mdp->clk_main);
--	if (err < 0)
-+	err = clk_prepare_enable(mdp->clk_main);
-+	if (err < 0) {
-+		dev_err(chip->dev, "Can't enable mdp->clk_main: %pe\n", ERR_PTR(err));
- 		return err;
-+	}
- 
--	err = clk_enable(mdp->clk_mm);
-+	err = clk_prepare_enable(mdp->clk_mm);
- 	if (err < 0) {
--		clk_disable(mdp->clk_main);
-+		dev_err(chip->dev, "Can't enable mdp->clk_mm: %pe\n", ERR_PTR(err));
-+		clk_disable_unprepare(mdp->clk_main);
- 		return err;
+-	if (!dev_validate_header(dev, skb->data, len)) {
++	if (!dev_validate_header(dev, skb->data, len) || !skb->len) {
+ 		err = -EINVAL;
+ 		goto out_unlock;
  	}
- 
-@@ -158,8 +178,8 @@ static void mtk_disp_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	mtk_disp_pwm_update_bits(mdp, DISP_PWM_EN, mdp->data->enable_mask,
- 				 0x0);
- 
--	clk_disable(mdp->clk_mm);
--	clk_disable(mdp->clk_main);
-+	clk_disable_unprepare(mdp->clk_mm);
-+	clk_disable_unprepare(mdp->clk_main);
- }
- 
- static const struct pwm_ops mtk_disp_pwm_ops = {
-@@ -194,14 +214,6 @@ static int mtk_disp_pwm_probe(struct platform_device *pdev)
- 	if (IS_ERR(mdp->clk_mm))
- 		return PTR_ERR(mdp->clk_mm);
- 
--	ret = clk_prepare(mdp->clk_main);
--	if (ret < 0)
--		return ret;
--
--	ret = clk_prepare(mdp->clk_mm);
--	if (ret < 0)
--		goto disable_clk_main;
--
- 	mdp->chip.dev = &pdev->dev;
- 	mdp->chip.ops = &mtk_disp_pwm_ops;
- 	mdp->chip.base = -1;
-@@ -209,32 +221,13 @@ static int mtk_disp_pwm_probe(struct platform_device *pdev)
- 
- 	ret = pwmchip_add(&mdp->chip);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "pwmchip_add() failed: %d\n", ret);
--		goto disable_clk_mm;
-+		dev_err(&pdev->dev, "pwmchip_add() failed: %pe\n", ERR_PTR(ret));
-+		return ret;
- 	}
- 
- 	platform_set_drvdata(pdev, mdp);
- 
--	/*
--	 * For MT2701, disable double buffer before writing register
--	 * and select manual mode and use PWM_PERIOD/PWM_HIGH_WIDTH.
--	 */
--	if (!mdp->data->has_commit) {
--		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
--					 mdp->data->bls_debug_mask,
--					 mdp->data->bls_debug_mask);
--		mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
--					 mdp->data->con0_sel,
--					 mdp->data->con0_sel);
--	}
--
- 	return 0;
--
--disable_clk_mm:
--	clk_unprepare(mdp->clk_mm);
--disable_clk_main:
--	clk_unprepare(mdp->clk_main);
--	return ret;
- }
- 
- static int mtk_disp_pwm_remove(struct platform_device *pdev)
-@@ -242,8 +235,6 @@ static int mtk_disp_pwm_remove(struct platform_device *pdev)
- 	struct mtk_disp_pwm *mdp = platform_get_drvdata(pdev);
- 
- 	pwmchip_remove(&mdp->chip);
--	clk_unprepare(mdp->clk_mm);
--	clk_unprepare(mdp->clk_main);
- 
- 	return 0;
- }
 -- 
 2.39.2
 
