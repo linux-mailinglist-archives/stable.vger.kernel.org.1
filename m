@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C3857035C6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCBE5703B11
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243562AbjEORCo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:02:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40854 "EHLO
+        id S242447AbjEOR7K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243458AbjEORCT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592048A7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:20 -0700 (PDT)
+        with ESMTP id S242898AbjEOR6h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586F313289
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2CBF62A32
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62252C4339E;
-        Mon, 15 May 2023 17:00:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F42062FD5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5994AC433D2;
+        Mon, 15 May 2023 17:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170018;
-        bh=PPut6dtIJcJlxShP/lc91v5Nt1YB2mUvCf1jObvBFKY=;
+        s=korg; t=1684173308;
+        bh=HArUtGGJYRcFVVK4BzkRhDQM1iTtgUeX7T8e2Md6pFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VQWXHzqKiWx2pjc2ldyEDkz1L8RKnSeCWP4vJ/H/ie1FAqxmxZZJfqjxEhTdYjjaA
-         ODvFdjxuqzqd+R1+EEc2xcQRjyTzW3pl2pJyH61RO2JD1qyuYNLxuw4UskdeiQopGa
-         Bw9gA8MoGV3USttLkGAtcshCzSIrjTbAb2HQOoa8=
+        b=P6wSNSb/OKLJoytXXFnPy7rj/UqxRgwPImMxDPYMU+I4g2OLGpXTUWLJjyJkvCCUp
+         2fNHObZBOtPDbEPQDkf2ZkfwnBYEROUBiDdPYhzYjX+75MZkGc6vilA016ctER9Iiz
+         uNYF8breR00LvFxoLARW/x2BtK1OaFrbR8lV5wes=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Haridhar Kalvala <haridhar.kalvala@intel.com>,
-        Gustavo Sousa <gustavo.sousa@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 219/246] drm/i915/mtl: Add Wa_14017856879
+Subject: [PATCH 5.4 053/282] regulator: core: Consistently set mutex_owner when using ww_mutex_lock_slow()
 Date:   Mon, 15 May 2023 18:27:11 +0200
-Message-Id: <20230515161729.163333116@linuxfoundation.org>
+Message-Id: <20230515161723.842143789@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,55 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haridhar Kalvala <haridhar.kalvala@intel.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 4b51210f98c2b89ce37aede5b8dc5105be0572c6 ]
+[ Upstream commit b83a1772be854f87602de14726737d3e5b06e1f4 ]
 
-Wa_14017856879 implementation for mtl.
+When a codepath locks a rdev using ww_mutex_lock_slow() directly then
+that codepath is responsible for incrementing the "ref_cnt" and also
+setting the "mutex_owner" to "current".
 
-Bspec: 46046
+The regulator core consistently got that right for "ref_cnt" but
+didn't always get it right for "mutex_owner". Let's fix this.
 
-Signed-off-by: Haridhar Kalvala <haridhar.kalvala@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230404173220.3175577-1-haridhar.kalvala@intel.com
-Stable-dep-of: 81900e3a3775 ("drm/i915: disable sampler indirect state in bindless heap")
+It's unlikely that this truly matters because the "mutex_owner" is
+only needed if we're going to do subsequent locking of the same
+rdev. However, even though it's not truly needed it seems less
+surprising if we consistently set "mutex_owner" properly.
+
+Fixes: f8702f9e4aa7 ("regulator: core: Use ww_mutex for regulators locking")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20230329143317.RFC.v2.1.I4e9d433ea26360c06dd1381d091c82bb1a4ce843@changeid
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_gt_regs.h     | 2 ++
- drivers/gpu/drm/i915/gt/intel_workarounds.c | 5 +++++
- 2 files changed, 7 insertions(+)
+ drivers/regulator/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-index 15b8636853ff0..72275749686aa 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -1172,7 +1172,9 @@
- #define   THREAD_EX_ARB_MODE_RR_AFTER_DEP	REG_FIELD_PREP(THREAD_EX_ARB_MODE, 0x2)
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 0179716f74d74..1cdf924c0111b 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -344,6 +344,7 @@ static void regulator_lock_dependent(struct regulator_dev *rdev,
+ 			ww_mutex_lock_slow(&new_contended_rdev->mutex, ww_ctx);
+ 			old_contended_rdev = new_contended_rdev;
+ 			old_contended_rdev->ref_cnt++;
++			old_contended_rdev->mutex_owner = current;
+ 		}
  
- #define HSW_ROW_CHICKEN3			_MMIO(0xe49c)
-+#define GEN9_ROW_CHICKEN3			MCR_REG(0xe49c)
- #define   HSW_ROW_CHICKEN3_L3_GLOBAL_ATOMICS_DISABLE	(1 << 6)
-+#define   MTL_DISABLE_FIX_FOR_EOT_FLUSH		REG_BIT(9)
+ 		err = regulator_lock_recursive(rdev,
+@@ -5659,6 +5660,7 @@ static void regulator_summary_lock(struct ww_acquire_ctx *ww_ctx)
+ 			ww_mutex_lock_slow(&new_contended_rdev->mutex, ww_ctx);
+ 			old_contended_rdev = new_contended_rdev;
+ 			old_contended_rdev->ref_cnt++;
++			old_contended_rdev->mutex_owner = current;
+ 		}
  
- #define GEN8_ROW_CHICKEN			MCR_REG(0xe4f0)
- #define   FLOW_CONTROL_ENABLE			REG_BIT(15)
-diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-index bfdffb6a013ce..b7c6c078dcc02 100644
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -3015,6 +3015,11 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
- 
- 	add_render_compute_tuning_settings(i915, wal);
- 
-+	if (IS_MTL_GRAPHICS_STEP(i915, M, STEP_B0, STEP_FOREVER) ||
-+	    IS_MTL_GRAPHICS_STEP(i915, P, STEP_B0, STEP_FOREVER))
-+		/* Wa_14017856879 */
-+		wa_mcr_masked_en(wal, GEN9_ROW_CHICKEN3, MTL_DISABLE_FIX_FOR_EOT_FLUSH);
-+
- 	if (IS_MTL_GRAPHICS_STEP(i915, M, STEP_A0, STEP_B0) ||
- 	    IS_MTL_GRAPHICS_STEP(i915, P, STEP_A0, STEP_B0))
- 		/*
+ 		err = regulator_summary_lock_all(ww_ctx,
 -- 
 2.39.2
 
