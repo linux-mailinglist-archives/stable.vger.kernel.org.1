@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD7B70340D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D92703517
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242658AbjEOQoS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:44:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47702 "EHLO
+        id S229854AbjEOQzj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242500AbjEOQoN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:13 -0400
+        with ESMTP id S243135AbjEOQzT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3D9F46BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F286EAF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B434062063
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA5CC433EF;
-        Mon, 15 May 2023 16:44:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C5A4629ED
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A027C433D2;
+        Mon, 15 May 2023 16:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169049;
-        bh=9I34f69u/u9PeK7CawB0uOrK+6ixS1bOt1t0vGh5BIg=;
+        s=korg; t=1684169716;
+        bh=8z5yXFlNasZ1rri+oVWZ3attzAR6SXce5X0Om3gSaCU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lx02TGq14Y8Fd4PCXG2hwpUwhmp82FXktbQQCpb8jDog3no7v1oRbMcYCk63wBGe0
-         Keu+UUOARfOa5dVaMDpjsKFPYaH1lR4ZhCb7fa3X1QHcczcXsJ9zXiO0U4xe9wbpUw
-         Yjb1uKVPs3mfjj+s7QVrJJJG695fKw7osVbwiYJU=
+        b=MEQgQi4TRNENaBUkazrc6doH/KQ78IRHmQ07zhbzkdEV1qRyspBqH+0+nrFAILIQC
+         DbX/7DCyFgmRGSx/ImmvQdRKrBupzkzg2o26zIvLODUNlWywekEACWLbzjNDUjdTyJ
+         kM8Tq2nICOAqeqdNXiDHNibfPc4v0BhDzLWlLH+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Dmitrii Dolgov <9erthalion6@gmail.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/191] mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel
+Subject: [PATCH 6.3 120/246] perf stat: Separate bperf from bpf_profiler
 Date:   Mon, 15 May 2023 18:25:32 +0200
-Message-Id: <20230515161710.736312203@linuxfoundation.org>
+Message-Id: <20230515161726.169240860@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +58,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Dmitrii Dolgov <9erthalion6@gmail.com>
 
-[ Upstream commit 935da5e5100f57d843cac4781b21f1c235059aa0 ]
+[ Upstream commit ecc68ee216c6c5b2f84915e1441adf436f1b019b ]
 
-dma_request_chan_by_mask() can throw EPROBE_DEFER if DMA provider
-is not yet probed. Currently driver just falls back to using PIO mode
-(which is less efficient) in this case. Instead return probe deferral
-error as is so that driver will be re probed once DMA provider is
-available.
+It seems that perf stat -b <prog id> doesn't produce any results:
 
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Link: https://lore.kernel.org/r/20200601070444.16923-6-vigneshr@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 2087e85bb66e ("spi: cadence-quadspi: fix suspend-resume implementations")
+    $ perf stat -e cycles -b 4 -I 10000 -vvv
+    Control descriptor is not initialized
+    cycles: 0 0 0
+                time        counts unit      events
+	10.007641640    <not supported>      cycles
+
+Looks like this happens because fentry/fexit progs are getting loaded, but the
+corresponding perf event is not enabled and not added into the events bpf map.
+I think there is some mixing up between two type of bpf support, one for bperf
+and one for bpf_profiler. Both are identified via evsel__is_bpf, based on which
+perf events are enabled, but for the latter (bpf_profiler) a perf event is
+required. Using evsel__is_bperf to check only bperf produces expected results:
+
+    $ perf stat -e cycles -b 4 -I 10000 -vvv
+    Control descriptor is not initialized
+    ------------------------------------------------------------
+    perf_event_attr:
+      size                             136
+      sample_type                      IDENTIFIER
+      read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
+      disabled                         1
+      exclude_guest                    1
+    ------------------------------------------------------------
+    sys_perf_event_open: pid -1  cpu 0  group_fd -1  flags 0x8 = 3
+    ------------------------------------------------------------
+    [...perf_event_attr for other CPUs...]
+    ------------------------------------------------------------
+    cycles: 309426 169009 169009
+		time             counts unit events
+	10.010091271             309426      cycles
+
+The final numbers correspond (at least in the level of magnitude) to the
+same metric obtained via bpftool.
+
+Fixes: 112cb56164bc2108 ("perf stat: Introduce config stat.bpf-counter-events")
+Reviewed-by: Song Liu <song@kernel.org>
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+Tested-by: Song Liu <song@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230412182316.11628-1-9erthalion6@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/cadence-quadspi.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tools/perf/builtin-stat.c | 4 ++--
+ tools/perf/util/evsel.h   | 5 +++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/cadence-quadspi.c b/drivers/mtd/spi-nor/cadence-quadspi.c
-index bd62ed8710315..16ac2e3c351df 100644
---- a/drivers/mtd/spi-nor/cadence-quadspi.c
-+++ b/drivers/mtd/spi-nor/cadence-quadspi.c
-@@ -1162,7 +1162,7 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
- 	cqspi_controller_enable(cqspi, 1);
- }
- 
--static void cqspi_request_mmap_dma(struct cqspi_st *cqspi)
-+static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
- {
- 	dma_cap_mask_t mask;
- 
-@@ -1171,11 +1171,16 @@ static void cqspi_request_mmap_dma(struct cqspi_st *cqspi)
- 
- 	cqspi->rx_chan = dma_request_chan_by_mask(&mask);
- 	if (IS_ERR(cqspi->rx_chan)) {
--		dev_err(&cqspi->pdev->dev, "No Rx DMA available\n");
-+		int ret = PTR_ERR(cqspi->rx_chan);
-+
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&cqspi->pdev->dev, "No Rx DMA available\n");
- 		cqspi->rx_chan = NULL;
--		return;
-+		return ret;
- 	}
- 	init_completion(&cqspi->rx_dma_complete);
-+
-+	return 0;
- }
- 
- static int cqspi_setup_flash(struct cqspi_st *cqspi, struct device_node *np)
-@@ -1256,8 +1261,11 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi, struct device_node *np)
- 			dev_dbg(nor->dev, "using direct mode for %s\n",
- 				mtd->name);
- 
--			if (!cqspi->rx_chan)
--				cqspi_request_mmap_dma(cqspi);
-+			if (!cqspi->rx_chan) {
-+				ret = cqspi_request_mmap_dma(cqspi);
-+				if (ret == -EPROBE_DEFER)
-+					goto err;
-+			}
- 		}
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index fa7c40956d0fa..eeba93ae3b584 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -773,7 +773,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 		counter->reset_group = false;
+ 		if (bpf_counter__load(counter, &target))
+ 			return -1;
+-		if (!evsel__is_bpf(counter))
++		if (!(evsel__is_bperf(counter)))
+ 			all_counters_use_bpf = false;
  	}
  
+@@ -789,7 +789,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 
+ 		if (counter->reset_group || counter->errored)
+ 			continue;
+-		if (evsel__is_bpf(counter))
++		if (evsel__is_bperf(counter))
+ 			continue;
+ try_again:
+ 		if (create_perf_stat_counter(counter, &stat_config, &target,
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index 24cb807ef6ce0..1a7358b46ad4e 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -267,6 +267,11 @@ static inline bool evsel__is_bpf(struct evsel *evsel)
+ 	return evsel->bpf_counter_ops != NULL;
+ }
+ 
++static inline bool evsel__is_bperf(struct evsel *evsel)
++{
++	return evsel->bpf_counter_ops != NULL && list_empty(&evsel->bpf_counter_list);
++}
++
+ #define EVSEL__MAX_ALIASES 8
+ 
+ extern const char *const evsel__hw_cache[PERF_COUNT_HW_CACHE_MAX][EVSEL__MAX_ALIASES];
 -- 
 2.39.2
 
