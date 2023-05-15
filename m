@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F22703560
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D117036A4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243295AbjEOQ6Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
+        id S243423AbjEORMM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243274AbjEOQ6X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4572768E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:20 -0700 (PDT)
+        with ESMTP id S243678AbjEORLw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F8A8A6B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1F5862A39
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00095C433D2;
-        Mon, 15 May 2023 16:58:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A2A162102
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363FCC433EF;
+        Mon, 15 May 2023 17:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169899;
-        bh=eG/No02p96U9z755qMZ6ksiz0GF+P1LV3U3MupKXbaU=;
+        s=korg; t=1684170607;
+        bh=JcLaq3QYEJasR+9EsD9hKaOel5WXA83OZFLuOqh4isY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wfbDp2pQn+l8C6BedJYVIf7wfIIZePKvZctQV/iyQq4+ypIJMm/80sX/0OqTLBg+L
-         /AQvBVKHcmF2vY0bBTgZv4nxD7PF4NzHd6JlErQNLilbMpasjTQP2AJMd6nvbbRXXz
-         5pAHu4AUPXzCbuMz6OZplSIwmt6wyWaKo0aXca5c=
+        b=ZRKocXv889I01WbG0Rl2ZoCBXDKAk8uk9riuE/q79n29eSC0oqrHvLMBskOMYj53Q
+         qMfhgwO1L1vhuauCRBtSEyqDdKzqKXKADT3AzDL4R+YfTfiGOegCrYqu6HvOUf1V+n
+         3mPqGj0xSKFEEp3ITvGaXjvXrIe8W9Kov2qsQWv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Horatio Zhang <Hongkun.Zhang@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Feifei Xu <Feifei.Xu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 206/246] drm/amdgpu: drop gfx_v11_0_cp_ecc_error_irq_funcs
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.1 155/239] drm/i915/dsi: Use unconditional msleep() instead of intel_dsi_msleep()
 Date:   Mon, 15 May 2023 18:26:58 +0200
-Message-Id: <20230515161728.785440289@linuxfoundation.org>
+Message-Id: <20230515161726.331153356@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,159 +55,146 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Horatio Zhang <Hongkun.Zhang@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 720b47229a5b24061d1c2e29ddb6043a59178d79 upstream.
+commit c8c2969bfcba5fcba3a5b078315c1b586d927d9f upstream.
 
-The gfx.cp_ecc_error_irq is retired in gfx11. In gfx_v11_0_hw_fini still
-use amdgpu_irq_put to disable this interrupt, which caused the call trace
-in this function.
+The intel_dsi_msleep() helper skips sleeping if the MIPI-sequences have
+a version of 3 or newer and the panel is in vid-mode.
 
-[  102.873958] Call Trace:
-[  102.873959]  <TASK>
-[  102.873961]  gfx_v11_0_hw_fini+0x23/0x1e0 [amdgpu]
-[  102.874019]  gfx_v11_0_suspend+0xe/0x20 [amdgpu]
-[  102.874072]  amdgpu_device_ip_suspend_phase2+0x240/0x460 [amdgpu]
-[  102.874122]  amdgpu_device_ip_suspend+0x3d/0x80 [amdgpu]
-[  102.874172]  amdgpu_device_pre_asic_reset+0xd9/0x490 [amdgpu]
-[  102.874223]  amdgpu_device_gpu_recover.cold+0x548/0xce6 [amdgpu]
-[  102.874321]  amdgpu_debugfs_reset_work+0x4c/0x70 [amdgpu]
-[  102.874375]  process_one_work+0x21f/0x3f0
-[  102.874377]  worker_thread+0x200/0x3e0
-[  102.874378]  ? process_one_work+0x3f0/0x3f0
-[  102.874379]  kthread+0xfd/0x130
-[  102.874380]  ? kthread_complete_and_exit+0x20/0x20
-[  102.874381]  ret_from_fork+0x22/0x30
+This is based on the big comment around line 730 which starts with
+"Panel enable/disable sequences from the VBT spec.", where
+the "v3 video mode seq" column does not have any wait t# entries.
 
-v2:
-- Handle umc and gfx ras cases in separated patch
-- Retired the gfx_v11_0_cp_ecc_error_irq_funcs in gfx11
+Checking the Windows driver shows that it does always honor
+the VBT delays independent of the version of the VBT sequences.
 
-v3:
-- Improve the subject and code comments
-- Add judgment on gfx11 in the function of amdgpu_gfx_ras_late_init
+Commit 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for
+the panel_on_delay when there is no reset-deassert MIPI-sequence")
+switched to a direct msleep() instead of intel_dsi_msleep()
+when there is no MIPI_SEQ_DEASSERT_RESET sequence, to fix
+the panel on an Acer Aspire Switch 10 E SW3-016 not turning on.
 
-v4:
-- Drop the define of CP_ME1_PIPE_INST_ADDR_INTERVAL and
-SET_ECC_ME_PIPE_STATE which using in gfx_v11_0_set_cp_ecc_error_state
-- Check cp_ecc_error_irq.funcs rather than ip version for a more
-sustainable life
+And now testing on a Nextbook Ares 8A shows that panel_on_delay
+must always be honored otherwise the panel will not turn on.
 
-v5:
-- Simplify judgment conditions
+Instead of only always using regular msleep() for panel_on_delay
+do as Windows does and always use regular msleep() everywhere
+were intel_dsi_msleep() is used and drop the intel_dsi_msleep()
+helper.
 
-Signed-off-by: Horatio Zhang <Hongkun.Zhang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Changes in v2:
+- Replace all intel_dsi_msleep() calls instead of just
+  the intel_dsi_msleep(panel_on_delay) call
+
 Cc: stable@vger.kernel.org
+Fixes: 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for the panel_on_delay when there is no reset-deassert MIPI-sequence")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230425194441.68086-1-hdegoede@redhat.com
+(cherry picked from commit fa83c12132f71302f7d4b02758dc0d46048d3f5f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c |    8 +++--
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c  |   46 --------------------------------
- 2 files changed, 5 insertions(+), 49 deletions(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c       |    2 +-
+ drivers/gpu/drm/i915/display/intel_dsi_vbt.c |   11 -----------
+ drivers/gpu/drm/i915/display/intel_dsi_vbt.h |    1 -
+ drivers/gpu/drm/i915/display/vlv_dsi.c       |   22 +++++-----------------
+ 4 files changed, 6 insertions(+), 30 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -686,9 +686,11 @@ int amdgpu_gfx_ras_late_init(struct amdg
- 		if (r)
- 			return r;
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -1210,7 +1210,7 @@ static void gen11_dsi_powerup_panel(stru
  
--		r = amdgpu_irq_get(adev, &adev->gfx.cp_ecc_error_irq, 0);
--		if (r)
--			goto late_fini;
-+		if (adev->gfx.cp_ecc_error_irq.funcs) {
-+			r = amdgpu_irq_get(adev, &adev->gfx.cp_ecc_error_irq, 0);
-+			if (r)
-+				goto late_fini;
-+		}
- 	} else {
- 		amdgpu_ras_feature_enable_on_boot(adev, ras_block, 0);
- 	}
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -1313,13 +1313,6 @@ static int gfx_v11_0_sw_init(void *handl
- 	if (r)
- 		return r;
- 
--	/* ECC error */
--	r = amdgpu_irq_add_id(adev, SOC21_IH_CLIENTID_GRBM_CP,
--				  GFX_11_0_0__SRCID__CP_ECC_ERROR,
--				  &adev->gfx.cp_ecc_error_irq);
--	if (r)
--		return r;
--
- 	/* FED error */
- 	r = amdgpu_irq_add_id(adev, SOC21_IH_CLIENTID_GFX,
- 				  GFX_11_0_0__SRCID__RLC_GC_FED_INTERRUPT,
-@@ -4442,7 +4435,6 @@ static int gfx_v11_0_hw_fini(void *handl
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 	int r;
- 
--	amdgpu_irq_put(adev, &adev->gfx.cp_ecc_error_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
- 
-@@ -5882,36 +5874,6 @@ static void gfx_v11_0_set_compute_eop_in
- 	}
+ 	/* panel power on related mipi dsi vbt sequences */
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
+-	intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
++	msleep(intel_dsi->panel_on_delay);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+--- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
++++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
+@@ -762,17 +762,6 @@ void intel_dsi_vbt_exec_sequence(struct
+ 		gpiod_set_value_cansleep(intel_dsi->gpio_backlight, 0);
  }
  
--#define CP_ME1_PIPE_INST_ADDR_INTERVAL  0x1
--#define SET_ECC_ME_PIPE_STATE(reg_addr, state) \
--	do { \
--		uint32_t tmp = RREG32_SOC15_IP(GC, reg_addr); \
--		tmp = REG_SET_FIELD(tmp, CP_ME1_PIPE0_INT_CNTL, CP_ECC_ERROR_INT_ENABLE, state); \
--		WREG32_SOC15_IP(GC, reg_addr, tmp); \
--	} while (0)
--
--static int gfx_v11_0_set_cp_ecc_error_state(struct amdgpu_device *adev,
--							struct amdgpu_irq_src *source,
--							unsigned type,
--							enum amdgpu_interrupt_state state)
+-void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec)
 -{
--	uint32_t ecc_irq_state = 0;
--	uint32_t pipe0_int_cntl_addr = 0;
--	int i = 0;
+-	struct intel_connector *connector = intel_dsi->attached_connector;
 -
--	ecc_irq_state = (state == AMDGPU_IRQ_STATE_ENABLE) ? 1 : 0;
+-	/* For v3 VBTs in vid-mode the delays are part of the VBT sequences */
+-	if (is_vid_mode(intel_dsi) && connector->panel.vbt.dsi.seq_version >= 3)
+-		return;
 -
--	pipe0_int_cntl_addr = SOC15_REG_OFFSET(GC, 0, regCP_ME1_PIPE0_INT_CNTL);
--
--	WREG32_FIELD15_PREREG(GC, 0, CP_INT_CNTL_RING0, CP_ECC_ERROR_INT_ENABLE, ecc_irq_state);
--
--	for (i = 0; i < adev->gfx.mec.num_pipe_per_mec; i++)
--		SET_ECC_ME_PIPE_STATE(pipe0_int_cntl_addr + i * CP_ME1_PIPE_INST_ADDR_INTERVAL,
--					ecc_irq_state);
--
--	return 0;
+-	msleep(msec);
 -}
 -
- static int gfx_v11_0_set_eop_interrupt_state(struct amdgpu_device *adev,
- 					    struct amdgpu_irq_src *src,
- 					    unsigned type,
-@@ -6329,11 +6291,6 @@ static const struct amdgpu_irq_src_funcs
- 	.process = gfx_v11_0_priv_inst_irq,
- };
+ void intel_dsi_log_params(struct intel_dsi *intel_dsi)
+ {
+ 	struct drm_i915_private *i915 = to_i915(intel_dsi->base.base.dev);
+--- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
++++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
+@@ -16,7 +16,6 @@ void intel_dsi_vbt_gpio_init(struct inte
+ void intel_dsi_vbt_gpio_cleanup(struct intel_dsi *intel_dsi);
+ void intel_dsi_vbt_exec_sequence(struct intel_dsi *intel_dsi,
+ 				 enum mipi_seq seq_id);
+-void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec);
+ void intel_dsi_log_params(struct intel_dsi *intel_dsi);
  
--static const struct amdgpu_irq_src_funcs gfx_v11_0_cp_ecc_error_irq_funcs = {
--	.set = gfx_v11_0_set_cp_ecc_error_state,
--	.process = amdgpu_gfx_cp_ecc_error_irq,
--};
+ #endif /* __INTEL_DSI_VBT_H__ */
+--- a/drivers/gpu/drm/i915/display/vlv_dsi.c
++++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
+@@ -782,7 +782,6 @@ static void intel_dsi_pre_enable(struct
+ {
+ 	struct intel_dsi *intel_dsi = enc_to_intel_dsi(encoder);
+ 	struct intel_crtc *crtc = to_intel_crtc(pipe_config->uapi.crtc);
+-	struct intel_connector *connector = to_intel_connector(conn_state->connector);
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	enum pipe pipe = crtc->pipe;
+ 	enum port port;
+@@ -830,21 +829,10 @@ static void intel_dsi_pre_enable(struct
+ 	if (!IS_GEMINILAKE(dev_priv))
+ 		intel_dsi_prepare(encoder, pipe_config);
+ 
++	/* Give the panel time to power-on and then deassert its reset */
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
 -
- static const struct amdgpu_irq_src_funcs gfx_v11_0_rlc_gc_fed_irq_funcs = {
- 	.process = gfx_v11_0_rlc_gc_fed_irq,
- };
-@@ -6349,9 +6306,6 @@ static void gfx_v11_0_set_irq_funcs(stru
- 	adev->gfx.priv_inst_irq.num_types = 1;
- 	adev->gfx.priv_inst_irq.funcs = &gfx_v11_0_priv_inst_irq_funcs;
+-	/*
+-	 * Give the panel time to power-on and then deassert its reset.
+-	 * Depending on the VBT MIPI sequences version the deassert-seq
+-	 * may contain the necessary delay, intel_dsi_msleep() will skip
+-	 * the delay in that case. If there is no deassert-seq, then an
+-	 * unconditional msleep is used to give the panel time to power-on.
+-	 */
+-	if (connector->panel.vbt.dsi.sequence[MIPI_SEQ_DEASSERT_RESET]) {
+-		intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
+-		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+-	} else {
+-		msleep(intel_dsi->panel_on_delay);
+-	}
++	msleep(intel_dsi->panel_on_delay);
++	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
  
--	adev->gfx.cp_ecc_error_irq.num_types = 1; /* CP ECC error */
--	adev->gfx.cp_ecc_error_irq.funcs = &gfx_v11_0_cp_ecc_error_irq_funcs;
--
- 	adev->gfx.rlc_gc_fed_irq.num_types = 1; /* 0x80 FED error */
- 	adev->gfx.rlc_gc_fed_irq.funcs = &gfx_v11_0_rlc_gc_fed_irq_funcs;
+ 	if (IS_GEMINILAKE(dev_priv)) {
+ 		glk_cold_boot = glk_dsi_enable_io(encoder);
+@@ -878,7 +866,7 @@ static void intel_dsi_pre_enable(struct
+ 		msleep(20); /* XXX */
+ 		for_each_dsi_port(port, intel_dsi->ports)
+ 			dpi_send_cmd(intel_dsi, TURN_ON, false, port);
+-		intel_dsi_msleep(intel_dsi, 100);
++		msleep(100);
  
+ 		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+ 
+@@ -1006,7 +994,7 @@ static void intel_dsi_post_disable(struc
+ 	/* Assert reset */
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_ASSERT_RESET);
+ 
+-	intel_dsi_msleep(intel_dsi, intel_dsi->panel_off_delay);
++	msleep(intel_dsi->panel_off_delay);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_OFF);
+ 
+ 	intel_dsi->panel_power_off_time = ktime_get_boottime();
 
 
