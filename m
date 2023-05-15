@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5065F70361B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE4D7033D6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243489AbjEORGu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:06:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
+        id S242873AbjEOQmK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:42:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243493AbjEORGd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:33 -0400
+        with ESMTP id S242877AbjEOQmG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:42:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C291903A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028754684
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D83062ABE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA3FC433D2;
-        Mon, 15 May 2023 17:05:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 945C6628A1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CE3C433D2;
+        Mon, 15 May 2023 16:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170300;
-        bh=r+SSyj6xy+isNVZlVW0ckysKn30n63yxHTczV9k9BUk=;
+        s=korg; t=1684168925;
+        bh=KWvhPX1ixnFSOGoaO/lkNV+DjU9KFtgggDeBOTyELKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A8RRNuQpbcVGd7cUHoh1qyVC/Ir3PPpCpWax8xawOeKU2d81vy5IVb8xTHmeuxydW
-         MmDdVIfN0amslFxqYH1H8JU5Fe4ip9LrI0GS+cecM8XtlhlT8uhJ69Bp2c5bvNLABJ
-         4phiTS+Qfp34exIkgP/8KhNe8oSPEkfHyrK/7VNM=
+        b=pawv6Z16ChBibbY3MY//QwdHy9VnJpHufcFO/XpMhsqs6It4sRb8DbvrtY8Xiq7dL
+         yEF4gdoQeDFSHgIWZvmXhoCOxoSU4/armhXiLeUpqIaXPCFGqM3H5O4P83QmFy0A+6
+         opkgPOVr/ykDDuh9eEulNOf9/jyO860MdLg0j+tU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/239] r8152: fix the poor throughput for 2.5G devices
+Subject: [PATCH 4.19 084/191] usb: gadget: udc: renesas_usb3: Fix use after free bug in renesas_usb3_remove due to race condition
 Date:   Mon, 15 May 2023 18:25:21 +0200
-Message-Id: <20230515161723.443519615@linuxfoundation.org>
+Message-Id: <20230515161710.324100110@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 61b0ad6f58e2066e054c6d4839d67974d2861a7d ]
+[ Upstream commit 2b947f8769be8b8181dc795fd292d3e7120f5204 ]
 
-Fix the poor throughput for 2.5G devices, when changing the speed from
-auto mode to force mode. This patch is used to notify the MAC when the
-mode is changed.
+In renesas_usb3_probe, role_work is bound with renesas_usb3_role_work.
+renesas_usb3_start will be called to start the work.
 
-Fixes: 195aae321c82 ("r8152: support new chips")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+If we remove the driver which will call usbhs_remove, there may be
+an unfinished work. The possible sequence is as follows:
+
+CPU0                  			CPU1
+
+                    			 renesas_usb3_role_work
+renesas_usb3_remove
+usb_role_switch_unregister
+device_unregister
+kfree(sw)
+//free usb3->role_sw
+                    			 usb_role_switch_set_role
+                    			 //use usb3->role_sw
+
+The usb3->role_sw could be freed under such circumstance and then
+used in usb_role_switch_set_role.
+
+This bug was found by static analysis. And note that removing a
+driver is a root-only operation, and should never happen in normal
+case. But the root user may directly remove the device which
+will also trigger the remove function.
+
+Fix it by canceling the work before cleanup in the renesas_usb3_remove.
+
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20230320062931.505170-1-zyytlz.wz@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/usb/gadget/udc/renesas_usb3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index b0ce524ef1a50..a7665accc81c8 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -199,6 +199,7 @@
- #define OCP_EEE_AR		0xa41a
- #define OCP_EEE_DATA		0xa41c
- #define OCP_PHY_STATUS		0xa420
-+#define OCP_INTR_EN		0xa424
- #define OCP_NCTL_CFG		0xa42c
- #define OCP_POWER_CFG		0xa430
- #define OCP_EEE_CFG		0xa432
-@@ -620,6 +621,9 @@ enum spd_duplex {
- #define PHY_STAT_LAN_ON		3
- #define PHY_STAT_PWRDN		5
+diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
+index c17d7a71e29a3..013db752d55da 100644
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2478,6 +2478,7 @@ static int renesas_usb3_remove(struct platform_device *pdev)
+ 	debugfs_remove_recursive(usb3->dentry);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
-+/* OCP_INTR_EN */
-+#define INTR_SPEED_FORCE	BIT(3)
-+
- /* OCP_NCTL_CFG */
- #define PGA_RETURN_EN		BIT(1)
++	cancel_work_sync(&usb3->role_work);
+ 	usb_role_switch_unregister(usb3->role_sw);
  
-@@ -7554,6 +7558,11 @@ static void r8156_hw_phy_cfg(struct r8152 *tp)
- 				      ((swap_a & 0x1f) << 8) |
- 				      ((swap_a >> 8) & 0x1f));
- 		}
-+
-+		/* Notify the MAC when the speed is changed to force mode. */
-+		data = ocp_reg_read(tp, OCP_INTR_EN);
-+		data |= INTR_SPEED_FORCE;
-+		ocp_reg_write(tp, OCP_INTR_EN, data);
- 		break;
- 	default:
- 		break;
-@@ -7949,6 +7958,11 @@ static void r8156b_hw_phy_cfg(struct r8152 *tp)
- 		break;
- 	}
- 
-+	/* Notify the MAC when the speed is changed to force mode. */
-+	data = ocp_reg_read(tp, OCP_INTR_EN);
-+	data |= INTR_SPEED_FORCE;
-+	ocp_reg_write(tp, OCP_INTR_EN, data);
-+
- 	if (rtl_phy_patch_request(tp, true, true))
- 		return;
- 
+ 	usb_del_gadget_udc(&usb3->gadget);
 -- 
 2.39.2
 
