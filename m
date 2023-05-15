@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F81703616
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AE270391C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243650AbjEORGS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:06:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
+        id S243356AbjEORjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243569AbjEORF4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:56 -0400
+        with ESMTP id S243153AbjEORio (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95747DAF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:04:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495A91B755
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BB4D62AAB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292C9C433EF;
-        Mon, 15 May 2023 17:02:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F98E62DDF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712B9C433EF;
+        Mon, 15 May 2023 17:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170161;
-        bh=qTsrLSqGAkEBd9UiyRLMI7cQ0VBHbsj8urXUfkpEl78=;
+        s=korg; t=1684172135;
+        bh=yjSMFh2lDx9zW9UwJoL3rkqVvGKryu1CEZqvhD2/m5E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bjo9SRR15nqSfO3cXVih4VJyDJ1HgSEio+RFaNijjsQaITXoYN0cbCwJOStbUObPg
-         pmczngVbv9F/XjZnKIwifza+tseiv3QwGenzX7JR5CqEIjGWTCpCJ0+9zWuQc6M9P3
-         OJvcSgSzR1k7KRfUdxECty7tataq2i5OFNghK5/k=
+        b=Y/6TMh21eEC+xkkjGuJ4amkyNmEOI8WU5e1TN1YpGSXVmupiOZEudh6GsErjpBal3
+         fgcWMoTGKXIhqn4yDrEheHHtsZMjaEGInrRW94GDYFCQIBsc2T04mv3B9QHythIdTc
+         +Zxq4vd5+nkY2jxZbTO6Ks67yD1qxxAExxyJEVUY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/239] octeontx2-pf: mcs: Do not reset PN while updating secy
+        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
+        Song Liu <song@kernel.org>
+Subject: [PATCH 5.10 055/381] md/raid10: fix null-ptr-deref in raid10_sync_request
 Date:   Mon, 15 May 2023 18:25:06 +0200
-Message-Id: <20230515161723.002673573@linuxfoundation.org>
+Message-Id: <20230515161739.316982436@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,66 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 3c99bace4ad08ad0264285ba8ad73117560992c2 ]
+commit a405c6f0229526160aa3f177f65e20c86fce84c5 upstream.
 
-After creating SecYs, SCs and SAs a SecY can be modified
-to change attributes like validation mode, protect frames
-mode etc. During this SecY update, packet number is reset to
-initial user given value by mistake. Hence do not reset
-PN when updating SecY parameters.
+init_resync() inits mempool and sets conf->have_replacemnt at the beginning
+of sync, close_sync() frees the mempool when sync is completed.
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After [1] recovery might be skipped and init_resync() is called but
+close_sync() is not. null-ptr-deref occurs with r10bio->dev[i].repl_bio.
+
+The following is one way to reproduce the issue.
+
+  1) create a array, wait for resync to complete, mddev->recovery_cp is set
+     to MaxSector.
+  2) recovery is woken and it is skipped. conf->have_replacement is set to
+     0 in init_resync(). close_sync() not called.
+  3) some io errors and rdev A is set to WantReplacement.
+  4) a new device is added and set to A's replacement.
+  5) recovery is woken, A have replacement, but conf->have_replacemnt is
+     0. r10bio->dev[i].repl_bio will not be alloced and null-ptr-deref
+     occurs.
+
+Fix it by not calling init_resync() if recovery skipped.
+
+[1] commit 7e83ccbecd60 ("md/raid10: Allow skipping recovery when clean arrays are assembled")
+Fixes: 7e83ccbecd60 ("md/raid10: Allow skipping recovery when clean arrays are assembled")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230222041000.3341651-3-linan666@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/md/raid10.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index 3ad8d7ef20be6..a487a98eac88c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -1134,6 +1134,7 @@ static int cn10k_mdo_upd_secy(struct macsec_context *ctx)
- 	struct macsec_secy *secy = ctx->secy;
- 	struct macsec_tx_sa *sw_tx_sa;
- 	struct cn10k_mcs_txsc *txsc;
-+	bool active;
- 	u8 sa_num;
- 	int err;
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2900,10 +2900,6 @@ static sector_t raid10_sync_request(stru
+ 	sector_t chunk_mask = conf->geo.chunk_mask;
+ 	int page_idx = 0;
  
-@@ -1141,15 +1142,19 @@ static int cn10k_mdo_upd_secy(struct macsec_context *ctx)
- 	if (!txsc)
- 		return -ENOENT;
- 
--	txsc->encoding_sa = secy->tx_sc.encoding_sa;
+-	if (!mempool_initialized(&conf->r10buf_pool))
+-		if (init_resync(conf))
+-			return 0;
 -
--	sa_num = txsc->encoding_sa;
--	sw_tx_sa = rcu_dereference_bh(secy->tx_sc.sa[sa_num]);
-+	/* Encoding SA got changed */
-+	if (txsc->encoding_sa != secy->tx_sc.encoding_sa) {
-+		txsc->encoding_sa = secy->tx_sc.encoding_sa;
-+		sa_num = txsc->encoding_sa;
-+		sw_tx_sa = rcu_dereference_bh(secy->tx_sc.sa[sa_num]);
-+		active = sw_tx_sa ? sw_tx_sa->active : false;
-+		cn10k_mcs_link_tx_sa2sc(pfvf, secy, txsc, sa_num, active);
-+	}
- 
- 	if (netif_running(secy->netdev)) {
- 		cn10k_mcs_sync_stats(pfvf, secy, txsc);
- 
--		err = cn10k_mcs_secy_tx_cfg(pfvf, secy, txsc, sw_tx_sa, sa_num);
-+		err = cn10k_mcs_secy_tx_cfg(pfvf, secy, txsc, NULL, 0);
- 		if (err)
- 			return err;
+ 	/*
+ 	 * Allow skipping a full rebuild for incremental assembly
+ 	 * of a clean array, like RAID1 does.
+@@ -2919,6 +2915,10 @@ static sector_t raid10_sync_request(stru
+ 		return mddev->dev_sectors - sector_nr;
  	}
--- 
-2.39.2
-
+ 
++	if (!mempool_initialized(&conf->r10buf_pool))
++		if (init_resync(conf))
++			return 0;
++
+  skipped:
+ 	max_sector = mddev->dev_sectors;
+ 	if (test_bit(MD_RECOVERY_SYNC, &mddev->recovery) ||
 
 
