@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA40B703732
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6EC703994
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243972AbjEORSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33810 "EHLO
+        id S244623AbjEORnv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:43:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243975AbjEORRl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 858A311DA5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:08 -0700 (PDT)
+        with ESMTP id S244435AbjEORne (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF7111577
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72DD462BEE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606F8C433D2;
-        Mon, 15 May 2023 17:16:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CACD762E50
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99FDC433EF;
+        Mon, 15 May 2023 17:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170965;
-        bh=uDRo++hqK3SzFxaKPIVM1dD1G5nxJYJJupxA11R3zyY=;
+        s=korg; t=1684172464;
+        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eGZ4FiAFnPQB7+qWdZnrusslulh+ibgc2gCNSUt5qqyyYE9Ud6w17rQxdI7pqB0HU
-         rlZ3qCkw3HvTsfGzxDPKD1eoBK+T6HE5g4QwuXixx+pyalsvIexZXGy87EJm/MSl6C
-         oFUPtqQR/9QEbO1qxH34tCE7oiNvCsMOCtTqXM+k=
+        b=rW1POXhOIqM9ewZ0ij9zm8prG873zFzGjziCGVoNgzcaAIL4kgHwQjQY79qeoirtI
+         NpstaeEDzLQqSTBAUqLr5DVb6LHYsDVquOKomC1ACXuaGAYbZPwNIr/sdkohkfj1h0
+         dtFWJIH2VK8WHhvlkhazdNEaX8RLVWaSVeQahQws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andy Moreton <andy.moreton@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 058/242] sfc: Fix module EEPROM reporting for QSFP modules
+        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 133/381] wifi: ath6kl: reduce WARN to dev_dbg() in callback
 Date:   Mon, 15 May 2023 18:26:24 +0200
-Message-Id: <20230515161723.647419542@linuxfoundation.org>
+Message-Id: <20230515161742.846726854@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,57 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Moreton <andy.moreton@amd.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 281900a923d4c50df109b52a22ae3cdac150159b ]
+[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
 
-The sfc driver does not report QSFP module EEPROM contents correctly
-as only the first page is fetched from hardware.
+The warn is triggered on a known race condition, documented in the code above
+the test, that is correctly handled.  Using WARN() hinders automated testing.
+Reducing severity.
 
-Commit 0e1a2a3e6e7d ("ethtool: Add SFF-8436 and SFF-8636 max EEPROM
-length definitions") added ETH_MODULE_SFF_8436_MAX_LEN for the overall
-size of the EEPROM info, so use that to report the full EEPROM contents.
-
-Fixes: 9b17010da57a ("sfc: Add ethtool -m support for QSFP modules")
-Signed-off-by: Andy Moreton <andy.moreton@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
+Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/mcdi_port_common.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/mcdi_port_common.c b/drivers/net/ethernet/sfc/mcdi_port_common.c
-index 899cc16710048..0ab14f3d01d4d 100644
---- a/drivers/net/ethernet/sfc/mcdi_port_common.c
-+++ b/drivers/net/ethernet/sfc/mcdi_port_common.c
-@@ -972,12 +972,15 @@ static u32 efx_mcdi_phy_module_type(struct efx_nic *efx)
- 
- 	/* A QSFP+ NIC may actually have an SFP+ module attached.
- 	 * The ID is page 0, byte 0.
-+	 * QSFP28 is of type SFF_8636, however, this is treated
-+	 * the same by ethtool, so we can also treat them the same.
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index c68848819a52d..9b88d96bfe96c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
  	 */
- 	switch (efx_mcdi_phy_get_module_eeprom_byte(efx, 0, 0)) {
--	case 0x3:
-+	case 0x3: /* SFP */
- 		return MC_CMD_MEDIA_SFP_PLUS;
--	case 0xc:
--	case 0xd:
-+	case 0xc: /* QSFP */
-+	case 0xd: /* QSFP+ */
-+	case 0x11: /* QSFP28 */
- 		return MC_CMD_MEDIA_QSFP_PLUS;
- 	default:
- 		return 0;
-@@ -1075,7 +1078,7 @@ int efx_mcdi_phy_get_module_info(struct efx_nic *efx, struct ethtool_modinfo *mo
- 
- 	case MC_CMD_MEDIA_QSFP_PLUS:
- 		modinfo->type = ETH_MODULE_SFF_8436;
--		modinfo->eeprom_len = ETH_MODULE_SFF_8436_LEN;
-+		modinfo->eeprom_len = ETH_MODULE_SFF_8436_MAX_LEN;
- 		break;
- 
- 	default:
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
+ 	}
 -- 
 2.39.2
 
