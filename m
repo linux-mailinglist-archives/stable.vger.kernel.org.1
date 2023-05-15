@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B874703BBF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057CB703BC1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243314AbjEOSGF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:06:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
+        id S244971AbjEOSGZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:06:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244269AbjEOSFs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:05:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7A8C1D4B1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:03:42 -0700 (PDT)
+        with ESMTP id S243125AbjEOSF7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:05:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24082183F5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:03:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 072656308F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EE9C433D2;
-        Mon, 15 May 2023 18:03:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7131863094
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:03:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8D7C433B4;
+        Mon, 15 May 2023 18:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173821;
-        bh=ZyjwAePiV0okZQS3H01dOD/0oUz3zgwcoR6fXxPFWOI=;
+        s=korg; t=1684173827;
+        bh=a8QJ9EJzBTlBqhii5F/12mBnvY5NzPBsT+SUedInjb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pzQ9TX+5g9pQ9InaTCGAJGqNhvjtorgry/N0E5SMkbC1Vz9VSILBYhIhnea1Lb1vq
-         Cem/0JECcD2YP4DxuN3NcVrQnC8iKw/jBddVWRsGsY92mATvTPTbLN19qigK5Tpdy1
-         U/bDkjy+yNgHzAqOOorRUNwa2ZfBNSjIoyMkcbp4=
+        b=WyMKS8iPDe6PN228c25bNDP+u9uEeVa8fRXfwc1d6TtoFcfPmd/Rf7k6PVa2W2/ZE
+         auFJT5ImOIpMQghVx8c5iISHBvgaeWktpk4vkR4K9kBKwxk3Q4SJVJU5gWKQDd3yHN
+         z9ioJcIRU5gQmaDxuo22uUlnhu9zWn7t7GAZ8KEg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan McDowell <noodles@earth.li>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 218/282] crypto: safexcel - Cleanup ring IRQ workqueues on load failure
-Date:   Mon, 15 May 2023 18:29:56 +0200
-Message-Id: <20230515161728.770240153@linuxfoundation.org>
+        patches@lists.linux.dev, Pengcheng Yang <yangpc@wangsu.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jens Axboe <axboe@kernel.dk>, Jann Horn <jannh@google.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.4 219/282] kernel/relay.c: fix read_pos error when multiple readers
+Date:   Mon, 15 May 2023 18:29:57 +0200
+Message-Id: <20230515161728.798725193@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -44,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,157 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonathan McDowell <noodles@earth.li>
+From: Pengcheng Yang <yangpc@wangsu.com>
 
-[ Upstream commit ca25c00ccbc5f942c63897ed23584cfc66e8ec81 ]
+[ Upstream commit 341a7213e5c1ce274cc0f02270054905800ea660 ]
 
-A failure loading the safexcel driver results in the following warning
-on boot, because the IRQ affinity has not been correctly cleaned up.
-Ensure we clean up the affinity and workqueues on a failure to load the
-driver.
+When reading, read_pos should start with bytes_consumed, not file->f_pos.
+Because when there is more than one reader, the read_pos corresponding to
+file->f_pos may have been consumed, which will cause the data that has
+been consumed to be read and the bytes_consumed update error.
 
-crypto-safexcel: probe of f2800000.crypto failed with error -2
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 232 at kernel/irq/manage.c:1913 free_irq+0x300/0x340
-Modules linked in: hwmon mdio_i2c crypto_safexcel(+) md5 sha256_generic libsha256 authenc libdes omap_rng rng_core nft_masq nft_nat nft_chain_nat nf_nat nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables libcrc32c nfnetlink fuse autofs4
-CPU: 1 PID: 232 Comm: systemd-udevd Tainted: G        W          6.1.6-00002-g9d4898824677 #3
-Hardware name: MikroTik RB5009 (DT)
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : free_irq+0x300/0x340
-lr : free_irq+0x2e0/0x340
-sp : ffff800008fa3890
-x29: ffff800008fa3890 x28: 0000000000000000 x27: 0000000000000000
-x26: ffff8000008e6dc0 x25: ffff000009034cac x24: ffff000009034d50
-x23: 0000000000000000 x22: 000000000000004a x21: ffff0000093e0d80
-x20: ffff000009034c00 x19: ffff00000615fc00 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 000075f5c1584c5e
-x14: 0000000000000017 x13: 0000000000000000 x12: 0000000000000040
-x11: ffff000000579b60 x10: ffff000000579b62 x9 : ffff800008bbe370
-x8 : ffff000000579dd0 x7 : 0000000000000000 x6 : ffff000000579e18
-x5 : ffff000000579da8 x4 : ffff800008ca0000 x3 : ffff800008ca0188
-x2 : 0000000013033204 x1 : ffff000009034c00 x0 : ffff8000087eadf0
-Call trace:
- free_irq+0x300/0x340
- devm_irq_release+0x14/0x20
- devres_release_all+0xa0/0x100
- device_unbind_cleanup+0x14/0x60
- really_probe+0x198/0x2d4
- __driver_probe_device+0x74/0xdc
- driver_probe_device+0x3c/0x110
- __driver_attach+0x8c/0x190
- bus_for_each_dev+0x6c/0xc0
- driver_attach+0x20/0x30
- bus_add_driver+0x148/0x1fc
- driver_register+0x74/0x120
- __platform_driver_register+0x24/0x30
- safexcel_init+0x48/0x1000 [crypto_safexcel]
- do_one_initcall+0x4c/0x1b0
- do_init_module+0x44/0x1cc
- load_module+0x1724/0x1be4
- __do_sys_finit_module+0xbc/0x110
- __arm64_sys_finit_module+0x1c/0x24
- invoke_syscall+0x44/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x20/0x80
- el0_svc+0x14/0x4c
- el0t_64_sync_handler+0xb0/0xb4
- el0t_64_sync+0x148/0x14c
----[ end trace 0000000000000000 ]---
-
-Fixes: 1b44c5a60c13 ("inside-secure - add SafeXcel EIP197 crypto engine driver")
-Signed-off-by: Jonathan McDowell <noodles@earth.li>
-Cc: stable@vger.kernel.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Pengcheng Yang <yangpc@wangsu.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>e
+Link: http://lkml.kernel.org/r/1579691175-28949-1-git-send-email-yangpc@wangsu.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 43ec16f1450f ("relayfs: fix out-of-bounds access in relay_file_read")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/safexcel.c | 37 ++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ kernel/relay.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/crypto/inside-secure/safexcel.c b/drivers/crypto/inside-secure/safexcel.c
-index 2d34a3832d8e6..04638e1833513 100644
---- a/drivers/crypto/inside-secure/safexcel.c
-+++ b/drivers/crypto/inside-secure/safexcel.c
-@@ -1467,19 +1467,23 @@ static int safexcel_probe_generic(void *pdev,
- 						     &priv->ring[i].rdr);
- 		if (ret) {
- 			dev_err(dev, "Failed to initialize rings\n");
--			return ret;
-+			goto err_cleanup_rings;
- 		}
+diff --git a/kernel/relay.c b/kernel/relay.c
+index 9b1cfcd8dc6b1..989f78f16ad5c 100644
+--- a/kernel/relay.c
++++ b/kernel/relay.c
+@@ -997,14 +997,14 @@ static void relay_file_read_consume(struct rchan_buf *buf,
+ /*
+  *	relay_file_read_avail - boolean, are there unconsumed bytes available?
+  */
+-static int relay_file_read_avail(struct rchan_buf *buf, size_t read_pos)
++static int relay_file_read_avail(struct rchan_buf *buf)
+ {
+ 	size_t subbuf_size = buf->chan->subbuf_size;
+ 	size_t n_subbufs = buf->chan->n_subbufs;
+ 	size_t produced = buf->subbufs_produced;
+ 	size_t consumed = buf->subbufs_consumed;
  
- 		priv->ring[i].rdr_req = devm_kcalloc(dev,
- 			EIP197_DEFAULT_RING_SIZE,
- 			sizeof(*priv->ring[i].rdr_req),
- 			GFP_KERNEL);
--		if (!priv->ring[i].rdr_req)
--			return -ENOMEM;
-+		if (!priv->ring[i].rdr_req) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+-	relay_file_read_consume(buf, read_pos, 0);
++	relay_file_read_consume(buf, 0, 0);
  
- 		ring_irq = devm_kzalloc(dev, sizeof(*ring_irq), GFP_KERNEL);
--		if (!ring_irq)
--			return -ENOMEM;
-+		if (!ring_irq) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+ 	consumed = buf->subbufs_consumed;
  
- 		ring_irq->priv = priv;
- 		ring_irq->ring = i;
-@@ -1493,7 +1497,8 @@ static int safexcel_probe_generic(void *pdev,
- 						ring_irq);
- 		if (irq < 0) {
- 			dev_err(dev, "Failed to get IRQ ID for ring %d\n", i);
--			return irq;
-+			ret = irq;
-+			goto err_cleanup_rings;
- 		}
+@@ -1065,23 +1065,20 @@ static size_t relay_file_read_subbuf_avail(size_t read_pos,
  
- 		priv->ring[i].irq = irq;
-@@ -1505,8 +1510,10 @@ static int safexcel_probe_generic(void *pdev,
- 		snprintf(wq_name, 9, "wq_ring%d", i);
- 		priv->ring[i].workqueue =
- 			create_singlethread_workqueue(wq_name);
--		if (!priv->ring[i].workqueue)
--			return -ENOMEM;
-+		if (!priv->ring[i].workqueue) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+ /**
+  *	relay_file_read_start_pos - find the first available byte to read
+- *	@read_pos: file read position
+  *	@buf: relay channel buffer
+  *
+- *	If the @read_pos is in the middle of padding, return the
++ *	If the read_pos is in the middle of padding, return the
+  *	position of the first actually available byte, otherwise
+  *	return the original value.
+  */
+-static size_t relay_file_read_start_pos(size_t read_pos,
+-					struct rchan_buf *buf)
++static size_t relay_file_read_start_pos(struct rchan_buf *buf)
+ {
+ 	size_t read_subbuf, padding, padding_start, padding_end;
+ 	size_t subbuf_size = buf->chan->subbuf_size;
+ 	size_t n_subbufs = buf->chan->n_subbufs;
+ 	size_t consumed = buf->subbufs_consumed % n_subbufs;
++	size_t read_pos = consumed * subbuf_size + buf->bytes_consumed;
  
- 		priv->ring[i].requests = 0;
- 		priv->ring[i].busy = false;
-@@ -1523,16 +1530,26 @@ static int safexcel_probe_generic(void *pdev,
- 	ret = safexcel_hw_init(priv);
- 	if (ret) {
- 		dev_err(dev, "HW init failed (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
+-	if (!read_pos)
+-		read_pos = consumed * subbuf_size + buf->bytes_consumed;
+ 	read_subbuf = read_pos / subbuf_size;
+ 	padding = buf->padding[read_subbuf];
+ 	padding_start = (read_subbuf + 1) * subbuf_size - padding;
+@@ -1137,10 +1134,10 @@ static ssize_t relay_file_read(struct file *filp,
+ 	do {
+ 		void *from;
  
- 	ret = safexcel_register_algorithms(priv);
- 	if (ret) {
- 		dev_err(dev, "Failed to register algorithms (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
+-		if (!relay_file_read_avail(buf, *ppos))
++		if (!relay_file_read_avail(buf))
+ 			break;
  
- 	return 0;
-+
-+err_cleanup_rings:
-+	for (i = 0; i < priv->config.rings; i++) {
-+		if (priv->ring[i].irq)
-+			irq_set_affinity_hint(priv->ring[i].irq, NULL);
-+		if (priv->ring[i].workqueue)
-+			destroy_workqueue(priv->ring[i].workqueue);
-+	}
-+
-+	return ret;
- }
- 
- static void safexcel_hw_reset_rings(struct safexcel_crypto_priv *priv)
+-		read_start = relay_file_read_start_pos(*ppos, buf);
++		read_start = relay_file_read_start_pos(buf);
+ 		avail = relay_file_read_subbuf_avail(read_start, buf);
+ 		if (!avail)
+ 			break;
 -- 
 2.39.2
 
