@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347987038FC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D64C703603
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244487AbjEORhU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:37:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
+        id S243593AbjEORFY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242536AbjEORg7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:59 -0400
+        with ESMTP id S243694AbjEORFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B82514E56
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA65A27A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37E2162DA3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258C5C433D2;
-        Mon, 15 May 2023 17:34:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ABDE262A71
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:01:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F937C433D2;
+        Mon, 15 May 2023 17:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172067;
-        bh=XmcK61++eq3I1ivCFoKSwIBTROMsf1phJzvHxWTo/XA=;
+        s=korg; t=1684170114;
+        bh=ODgdSZa33c7HK6Z+zBriefM0XZK50IZWPUrOB5ux364=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fCb3cQoP5b4QgFiOxjL9GMHid2UmsNjYiAumFXkk8DnfxhjkjmBsK1hAUdqNhODTU
-         TkmRjIGTIjKBEyegwMjNjBWoYw3hYCcp4aQZ412k0aSAT5bHuBmb46xueHgsoLeBPb
-         OjAg0cGWxFNiHSb39El0mgCw/ALIwSPGlr5j7HjU=
+        b=CgOQXaiMNURF4D04K1FY2ihfvrlfb2mbjOJrjw7aNOyvHS7MwHRmIqKGg9y6i4xiV
+         ldix72fpr9BLMOU3PMq5AVmxv55nW/hwieWQvLtYdzRvssIS/C+nnlCHgF0vxo0c5k
+         DYwPIjPWeLqP46aILed5YiAPRm3U8zkcM23LVKGg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Machek <pavel@denx.de>,
-        Corey Minyard <minyard@acm.org>
-Subject: [PATCH 5.10 032/381] ipmi:ssif: Add send_retries increment
-Date:   Mon, 15 May 2023 18:24:43 +0200
-Message-Id: <20230515161738.249626143@linuxfoundation.org>
+        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
+        Sean Christopherson <seanjc@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 021/239] KVM: x86: Do not unload MMU roots when only toggling CR0.WP with TDP enabled
+Date:   Mon, 15 May 2023 18:24:44 +0200
+Message-Id: <20230515161722.224363649@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,34 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Corey Minyard <minyard@acm.org>
+From: Mathias Krause <minipli@grsecurity.net>
 
-commit 6ce7995a43febe693d4894033c6e29314970646a upstream.
+[ Upstream commit 01b31714bd90be2784f7145bf93b7f78f3d081e1 ]
 
-A recent change removed an increment of send_retries, re-add it.
+There is no need to unload the MMU roots with TDP enabled when only
+CR0.WP has changed -- the paging structures are still valid, only the
+permission bitmap needs to be updated.
 
-Fixes: 95767ed78a18 ipmi:ssif: resend_msg() cannot fail
-Reported-by: Pavel Machek <pavel@denx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Corey Minyard <minyard@acm.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+One heavy user of toggling CR0.WP is grsecurity's KERNEXEC feature to
+implement kernel W^X.
+
+The optimization brings a huge performance gain for this case as the
+following micro-benchmark running 'ssdd 10 50000' from rt-tests[1] on a
+grsecurity L1 VM shows (runtime in seconds, lower is better):
+
+                       legacy     TDP    shadow
+kvm-x86/next@d8708b     8.43s    9.45s    70.3s
+             +patch     5.39s    5.63s    70.2s
+
+For legacy MMU this is ~36% faster, for TDP MMU even ~40% faster. Also
+TDP and legacy MMU now both have a similar runtime which vanishes the
+need to disable TDP MMU for grsecurity.
+
+Shadow MMU sees no measurable difference and is still slow, as expected.
+
+[1] https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
+
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Link: https://lore.kernel.org/r/20230322013731.102955-3-minipli@grsecurity.net
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kvm/x86.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -564,8 +564,10 @@ static void retry_timeout(struct timer_l
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 3463ef7f30196..d7af225b63d89 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -910,6 +910,18 @@ EXPORT_SYMBOL_GPL(load_pdptrs);
  
- 	if (waiting)
- 		start_get(ssif_info);
--	if (resend)
-+	if (resend) {
- 		start_resend(ssif_info);
-+		ssif_inc_stat(ssif_info, send_retries);
+ void kvm_post_set_cr0(struct kvm_vcpu *vcpu, unsigned long old_cr0, unsigned long cr0)
+ {
++	/*
++	 * CR0.WP is incorporated into the MMU role, but only for non-nested,
++	 * indirect shadow MMUs.  If TDP is enabled, the MMU's metadata needs
++	 * to be updated, e.g. so that emulating guest translations does the
++	 * right thing, but there's no need to unload the root as CR0.WP
++	 * doesn't affect SPTEs.
++	 */
++	if (tdp_enabled && (cr0 ^ old_cr0) == X86_CR0_WP) {
++		kvm_init_mmu(vcpu);
++		return;
 +	}
- }
- 
- static void watch_timeout(struct timer_list *t)
++
+ 	if ((cr0 ^ old_cr0) & X86_CR0_PG) {
+ 		kvm_clear_async_pf_completion_queue(vcpu);
+ 		kvm_async_pf_hash_reset(vcpu);
+-- 
+2.39.2
+
 
 
