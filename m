@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 994EC703856
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84CCA703A40
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244216AbjEORbn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:31:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47912 "EHLO
+        id S244843AbjEORuJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:50:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244218AbjEORbQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528D414931
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:09 -0700 (PDT)
+        with ESMTP id S244853AbjEORtt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3847218A8E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17D6562D0C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C769C433D2;
-        Mon, 15 May 2023 17:27:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E946B62EC7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01933C433EF;
+        Mon, 15 May 2023 17:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171653;
-        bh=6sadYxQqoW6SYkj3y5+nsM2Bxve4miq8lBM2zyRh6fg=;
+        s=korg; t=1684172864;
+        bh=FuBBhW+Fb+wpfcQoxvDf4Xp4kQxaDmn4xLUi0Qa+KpM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rmrbPhfff2MXJUXUk5x6GlzbYHN13GFflRhQMNN5q2DMpEYeSZ2d4TyT8FiHvW0rE
-         KVkrmoC08N2g+CmMwOs+NQVx8VpK2PzcGNxb1vrXvssOjd1EJ7v52xcxiMNS+0yhDV
-         /FWbS6v26adhIAO0nHs2bukcobcIG8JdL5Wv83X0=
+        b=bk8Obo4biXZw6TnuzamXcVkQRqOZEt0fUyih9cA8U6JK9vGXuhnWIvt6ibLyuewbx
+         eoZSymEAnpmUN16JCUyd7KhEo+LuMOQfxfEcn0O8W6Bj2gcuXwu05rkdwL5c73BvAu
+         uPuZyOfycr3Me48MkmmzrVPma08D79QToJaqA7Js=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/134] octeontx2-af: Skip PFs if not enabled
+        patches@lists.linux.dev,
+        syzbot+bf4bb7731ef73b83a3b4@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Ye Bin <yebin10@huawei.com>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 261/381] ext4: fix use-after-free read in ext4_find_extent for bigalloc + inline
 Date:   Mon, 15 May 2023 18:28:32 +0200
-Message-Id: <20230515161704.272376869@linuxfoundation.org>
+Message-Id: <20230515161748.521117945@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,194 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 5eb1b7220948a69298a436148a735f32ec325289 ]
+[ Upstream commit 835659598c67907b98cd2aa57bb951dfaf675c69 ]
 
-Firmware enables PFs and allocate mbox resources for each of the PFs.
-Currently PF driver configures mbox resources without checking whether
-PF is enabled or not. This results in crash. This patch fixes this issue
-by skipping disabled PF's mbox initialization.
+Syzbot found the following issue:
+loop0: detected capacity change from 0 to 2048
+EXT4-fs (loop0): mounted filesystem 00000000-0000-0000-0000-000000000000 without journal. Quota mode: none.
+==================================================================
+BUG: KASAN: use-after-free in ext4_ext_binsearch_idx fs/ext4/extents.c:768 [inline]
+BUG: KASAN: use-after-free in ext4_find_extent+0x76e/0xd90 fs/ext4/extents.c:931
+Read of size 4 at addr ffff888073644750 by task syz-executor420/5067
 
-Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+CPU: 0 PID: 5067 Comm: syz-executor420 Not tainted 6.2.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
+ print_address_description+0x74/0x340 mm/kasan/report.c:306
+ print_report+0x107/0x1f0 mm/kasan/report.c:417
+ kasan_report+0xcd/0x100 mm/kasan/report.c:517
+ ext4_ext_binsearch_idx fs/ext4/extents.c:768 [inline]
+ ext4_find_extent+0x76e/0xd90 fs/ext4/extents.c:931
+ ext4_clu_mapped+0x117/0x970 fs/ext4/extents.c:5809
+ ext4_insert_delayed_block fs/ext4/inode.c:1696 [inline]
+ ext4_da_map_blocks fs/ext4/inode.c:1806 [inline]
+ ext4_da_get_block_prep+0x9e8/0x13c0 fs/ext4/inode.c:1870
+ ext4_block_write_begin+0x6a8/0x2290 fs/ext4/inode.c:1098
+ ext4_da_write_begin+0x539/0x760 fs/ext4/inode.c:3082
+ generic_perform_write+0x2e4/0x5e0 mm/filemap.c:3772
+ ext4_buffered_write_iter+0x122/0x3a0 fs/ext4/file.c:285
+ ext4_file_write_iter+0x1d0/0x18f0
+ call_write_iter include/linux/fs.h:2186 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x7dc/0xc50 fs/read_write.c:584
+ ksys_write+0x177/0x2a0 fs/read_write.c:637
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f4b7a9737b9
+RSP: 002b:00007ffc5cac3668 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f4b7a9737b9
+RDX: 00000000175d9003 RSI: 0000000020000200 RDI: 0000000000000004
+RBP: 00007f4b7a933050 R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000079f R11: 0000000000000246 R12: 00007f4b7a9330e0
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Above issue is happens when enable bigalloc and inline data feature. As
+commit 131294c35ed6 fixed delayed allocation bug in ext4_clu_mapped for
+bigalloc + inline. But it only resolved issue when has inline data, if
+inline data has been converted to extent(ext4_da_convert_inline_data_to_extent)
+before writepages, there is no EXT4_STATE_MAY_INLINE_DATA flag. However
+i_data is still store inline data in this scene. Then will trigger UAF
+when find extent.
+To resolve above issue, there is need to add judge "ext4_has_inline_data(inode)"
+in ext4_clu_mapped().
+
+Fixes: 131294c35ed6 ("ext4: fix delayed allocation bug in ext4_clu_mapped for bigalloc + inline")
+Reported-by: syzbot+bf4bb7731ef73b83a3b4@syzkaller.appspotmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Tested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20230406111627.1916759-1-tudor.ambarus@linaro.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.c  |  5 +-
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  3 +-
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 49 +++++++++++++++----
- 3 files changed, 46 insertions(+), 11 deletions(-)
+ fs/ext4/extents.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.c b/drivers/net/ethernet/marvell/octeontx2/af/mbox.c
-index 2898931d5260a..9690ac01f02c8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.c
-@@ -157,7 +157,7 @@ EXPORT_SYMBOL(otx2_mbox_init);
-  */
- int otx2_mbox_regions_init(struct otx2_mbox *mbox, void **hwbase,
- 			   struct pci_dev *pdev, void *reg_base,
--			   int direction, int ndevs)
-+			   int direction, int ndevs, unsigned long *pf_bmap)
- {
- 	struct otx2_mbox_dev *mdev;
- 	int devid, err;
-@@ -169,6 +169,9 @@ int otx2_mbox_regions_init(struct otx2_mbox *mbox, void **hwbase,
- 	mbox->hwbase = hwbase[0];
- 
- 	for (devid = 0; devid < ndevs; devid++) {
-+		if (!test_bit(devid, pf_bmap))
-+			continue;
-+
- 		mdev = &mbox->dev[devid];
- 		mdev->mbase = hwbase[devid];
- 		mdev->hwbase = hwbase[devid];
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index c6643c7db1fc4..2b6cbd5af100d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -96,9 +96,10 @@ void otx2_mbox_destroy(struct otx2_mbox *mbox);
- int otx2_mbox_init(struct otx2_mbox *mbox, void __force *hwbase,
- 		   struct pci_dev *pdev, void __force *reg_base,
- 		   int direction, int ndevs);
-+
- int otx2_mbox_regions_init(struct otx2_mbox *mbox, void __force **hwbase,
- 			   struct pci_dev *pdev, void __force *reg_base,
--			   int direction, int ndevs);
-+			   int direction, int ndevs, unsigned long *bmap);
- void otx2_mbox_msg_send(struct otx2_mbox *mbox, int devid);
- int otx2_mbox_wait_for_rsp(struct otx2_mbox *mbox, int devid);
- int otx2_mbox_busy_poll_for_rsp(struct otx2_mbox *mbox, int devid);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index bd33b90aaa67b..f64509b1d120c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -2196,7 +2196,7 @@ static inline void rvu_afvf_mbox_up_handler(struct work_struct *work)
- }
- 
- static int rvu_get_mbox_regions(struct rvu *rvu, void **mbox_addr,
--				int num, int type)
-+				int num, int type, unsigned long *pf_bmap)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	int region;
-@@ -2208,6 +2208,9 @@ static int rvu_get_mbox_regions(struct rvu *rvu, void **mbox_addr,
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 6c06ce9dd6bd8..2c2e1cc43e0e8 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5805,7 +5805,8 @@ int ext4_clu_mapped(struct inode *inode, ext4_lblk_t lclu)
+ 	 * mapped - no physical clusters have been allocated, and the
+ 	 * file has no extents
  	 */
- 	if (type == TYPE_AFVF) {
- 		for (region = 0; region < num; region++) {
-+			if (!test_bit(region, pf_bmap))
-+				continue;
-+
- 			if (hw->cap.per_pf_mbox_regs) {
- 				bar4 = rvu_read64(rvu, BLKADDR_RVUM,
- 						  RVU_AF_PFX_BAR4_ADDR(0)) +
-@@ -2229,6 +2232,9 @@ static int rvu_get_mbox_regions(struct rvu *rvu, void **mbox_addr,
- 	 * RVU_AF_PF_BAR4_ADDR register.
- 	 */
- 	for (region = 0; region < num; region++) {
-+		if (!test_bit(region, pf_bmap))
-+			continue;
-+
- 		if (hw->cap.per_pf_mbox_regs) {
- 			bar4 = rvu_read64(rvu, BLKADDR_RVUM,
- 					  RVU_AF_PFX_BAR4_ADDR(region));
-@@ -2257,20 +2263,41 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 	int err = -EINVAL, i, dir, dir_up;
- 	void __iomem *reg_base;
- 	struct rvu_work *mwork;
-+	unsigned long *pf_bmap;
- 	void **mbox_regions;
- 	const char *name;
-+	u64 cfg;
+-	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA))
++	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA) ||
++	    ext4_has_inline_data(inode))
+ 		return 0;
  
--	mbox_regions = kcalloc(num, sizeof(void *), GFP_KERNEL);
--	if (!mbox_regions)
-+	pf_bmap = bitmap_zalloc(num, GFP_KERNEL);
-+	if (!pf_bmap)
- 		return -ENOMEM;
- 
-+	/* RVU VFs */
-+	if (type == TYPE_AFVF)
-+		bitmap_set(pf_bmap, 0, num);
-+
-+	if (type == TYPE_AFPF) {
-+		/* Mark enabled PFs in bitmap */
-+		for (i = 0; i < num; i++) {
-+			cfg = rvu_read64(rvu, BLKADDR_RVUM, RVU_PRIV_PFX_CFG(i));
-+			if (cfg & BIT_ULL(20))
-+				set_bit(i, pf_bmap);
-+		}
-+	}
-+
-+	mbox_regions = kcalloc(num, sizeof(void *), GFP_KERNEL);
-+	if (!mbox_regions) {
-+		err = -ENOMEM;
-+		goto free_bitmap;
-+	}
-+
- 	switch (type) {
- 	case TYPE_AFPF:
- 		name = "rvu_afpf_mailbox";
- 		dir = MBOX_DIR_AFPF;
- 		dir_up = MBOX_DIR_AFPF_UP;
- 		reg_base = rvu->afreg_base;
--		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFPF);
-+		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFPF, pf_bmap);
- 		if (err)
- 			goto free_regions;
- 		break;
-@@ -2279,7 +2306,7 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 		dir = MBOX_DIR_PFVF;
- 		dir_up = MBOX_DIR_PFVF_UP;
- 		reg_base = rvu->pfreg_base;
--		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFVF);
-+		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFVF, pf_bmap);
- 		if (err)
- 			goto free_regions;
- 		break;
-@@ -2310,16 +2337,19 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 	}
- 
- 	err = otx2_mbox_regions_init(&mw->mbox, mbox_regions, rvu->pdev,
--				     reg_base, dir, num);
-+				     reg_base, dir, num, pf_bmap);
- 	if (err)
- 		goto exit;
- 
- 	err = otx2_mbox_regions_init(&mw->mbox_up, mbox_regions, rvu->pdev,
--				     reg_base, dir_up, num);
-+				     reg_base, dir_up, num, pf_bmap);
- 	if (err)
- 		goto exit;
- 
- 	for (i = 0; i < num; i++) {
-+		if (!test_bit(i, pf_bmap))
-+			continue;
-+
- 		mwork = &mw->mbox_wrk[i];
- 		mwork->rvu = rvu;
- 		INIT_WORK(&mwork->work, mbox_handler);
-@@ -2328,8 +2358,7 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 		mwork->rvu = rvu;
- 		INIT_WORK(&mwork->work, mbox_up_handler);
- 	}
--	kfree(mbox_regions);
--	return 0;
-+	goto free_regions;
- 
- exit:
- 	destroy_workqueue(mw->mbox_wq);
-@@ -2338,6 +2367,8 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 		iounmap((void __iomem *)mbox_regions[num]);
- free_regions:
- 	kfree(mbox_regions);
-+free_bitmap:
-+	bitmap_free(pf_bmap);
- 	return err;
- }
- 
+ 	/* search for the extent closest to the first block in the cluster */
 -- 
 2.39.2
 
