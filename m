@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC7E6703B60
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3D8C7037CF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243575AbjEOSCa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:02:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60844 "EHLO
+        id S243778AbjEORYS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242467AbjEOSCJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8E51B752;
-        Mon, 15 May 2023 10:59:27 -0700 (PDT)
+        with ESMTP id S244167AbjEORXs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50C4DC5A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF3306301D;
-        Mon, 15 May 2023 17:59:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD6EC433EF;
-        Mon, 15 May 2023 17:59:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5F8562C65
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC453C433D2;
+        Mon, 15 May 2023 17:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173549;
-        bh=GnuTKGySGlfr07daI7HAiFk0boCdBF/4zjHSMFSEV+4=;
+        s=korg; t=1684171354;
+        bh=0M0FAuG3Qyhr2jqM0j3vbsgcmFZMleMWj3HaMudskG4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jij7zj5KEpEI467gjBQD3hAdZuZZHtySCfzefVlMWCuyo/lr0HHx7AMy61WN2G5Dm
-         P97dgzTK8L8qgVHVRUEGkKBVULocz6eQlBN7ZkhLmFsj5JFkU4cEgc2xOLoK7+SwIv
-         aGFmywExHFXNqErfqrK08HNWqU5GJSanq/yUw9xU=
+        b=DtgqIYl9JteYGlo7hewWd+b4LXy7plGmcQK8ENtYRO7iTmxBMmswKCyNWs7bw8RvK
+         9h+oaxGORMsMFIApN7bjDBYOWYtk0qt6JSAyQTDEsUv6MAkfdAjPZDIym5PRNKoWAS
+         Lg876TEr0aVGnRyRbb5h5qO7uJCU449NCkoJ43Fg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 130/282] linux/vt_buffer.h: allow either builtin or modular for macros
-Date:   Mon, 15 May 2023 18:28:28 +0200
-Message-Id: <20230515161726.123094846@linuxfoundation.org>
+        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.2 183/242] irqchip/loongson-eiointc: Fix returned value on parsing MADT
+Date:   Mon, 15 May 2023 18:28:29 +0200
+Message-Id: <20230515161727.361596443@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,58 +53,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-[ Upstream commit 2b76ffe81e32afd6d318dc4547e2ba8c46207b77 ]
+commit 112eaa8fec5ea75f1be003ec55760b09a86799f8 upstream.
 
-Fix build errors on ARCH=alpha when CONFIG_MDA_CONSOLE=m.
-This allows the ARCH macros to be the only ones defined.
+In pch_pic_parse_madt(), a NULL parent pointer will be
+returned from acpi_get_vec_parent() for second pch-pic domain
+related to second bridge while calling eiointc_acpi_init() at
+first time, where the parent of it has not been initialized
+yet, and will be initialized during second time calling
+eiointc_acpi_init(). So, it's reasonable to return zero so
+that failure of acpi_table_parse_madt() will be avoided, or else
+acpi_cascade_irqdomain_init() will return and initialization of
+followed pch_msi domain will be skipped.
 
-In file included from ../drivers/video/console/mdacon.c:37:
-../arch/alpha/include/asm/vga.h:17:40: error: expected identifier or '(' before 'volatile'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                                        ^~~~~~~~
-../include/linux/vt_buffer.h:24:34: note: in definition of macro 'scr_writew'
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                  ^~~~
-../include/linux/vt_buffer.h:24:40: error: expected ')' before '=' token
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                        ^
-../arch/alpha/include/asm/vga.h:17:20: note: in expansion of macro 'scr_writew'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                    ^~~~~~~~~~
-../arch/alpha/include/asm/vga.h:25:29: error: expected identifier or '(' before 'volatile'
-   25 | static inline u16 scr_readw(volatile const u16 *addr)
-      |                             ^~~~~~~~
+Although it does not matter when pch_msi_parse_madt() returns
+-EINVAL if no invalid parent is found, it's also reasonable to
+return zero for that.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Link: https://lore.kernel.org/r/20230329021529.16188-1-rdunlap@infradead.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230407083453.6305-2-lvjianmin@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vt_buffer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-loongson-eiointc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/vt_buffer.h b/include/linux/vt_buffer.h
-index 848db1b1569ff..919d999a8c1db 100644
---- a/include/linux/vt_buffer.h
-+++ b/include/linux/vt_buffer.h
-@@ -16,7 +16,7 @@
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -343,7 +343,7 @@ static int __init pch_pic_parse_madt(uni
+ 	if (parent)
+ 		return pch_pic_acpi_init(parent, pchpic_entry);
  
- #include <linux/string.h>
+-	return -EINVAL;
++	return 0;
+ }
  
--#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_MDA_CONSOLE)
-+#if IS_ENABLED(CONFIG_VGA_CONSOLE) || IS_ENABLED(CONFIG_MDA_CONSOLE)
- #include <asm/vga.h>
- #endif
+ static int __init pch_msi_parse_madt(union acpi_subtable_headers *header,
+@@ -355,7 +355,7 @@ static int __init pch_msi_parse_madt(uni
+ 	if (parent)
+ 		return pch_msi_acpi_init(parent, pchmsi_entry);
  
--- 
-2.39.2
-
+-	return -EINVAL;
++	return 0;
+ }
+ 
+ static int __init acpi_cascade_irqdomain_init(void)
 
 
