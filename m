@@ -2,55 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4F7703339
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B247034F4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242732AbjEOQef (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37624 "EHLO
+        id S243187AbjEOQy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242426AbjEOQec (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5101C1738
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:30 -0700 (PDT)
+        with ESMTP id S243141AbjEOQyL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38DF34C3D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBA4C62767
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A8FC4339B;
-        Mon, 15 May 2023 16:34:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CADB8629BD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A544C433EF;
+        Mon, 15 May 2023 16:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168469;
-        bh=iTTczptSFAkAnXxRHH00iexYWM7fDhH82EcWlFBAYcE=;
+        s=korg; t=1684169621;
+        bh=mA5Af+3HT9Wflv+pWq1SnJ1P4qY8NLhpPM0eIDceUi0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zW5G59Kt4wXj+ogWY6MIQaEfqtzYs6xYu+XTMN9fdp2f4mN5/JfbBMc7Pl2l7qR8x
-         qce7axVHr/Kaa/BqPgPmixCSskJT4S+4Q8oTxUL/9jbtlg56HZ+ChvhYRJKmh9xKHq
-         mxvEAE1rfiomizs3o4CH+r7Zj2qd/PFs4mFGj6vI=
+        b=SzHBstvN8hyVG6YnGUJaoPfnsShdt3YG5LzlQZApcCIgawnL2lTt46yOZ8o5ux6G/
+         JhwggdjfD8TMiyMf6qXuMlgoN6PoWNT80VJsxlMcf+SRQtTELG18AHZt55Cgj1kkw2
+         Ca5t2t0kSk7FNJrwIydla5qjyf2RId7otEPg1CAg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
+        patches@lists.linux.dev, Yang Shi <shy828301@gmail.com>,
+        James Clark <james.clark@arm.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        John Garry <john.g.garry@oracle.com>,
+        Leo Yan <leo.yan@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Suzuki Poulouse <suzuki.poulose@arm.com>,
+        Will Deacon <will@kernel.org>, coresight@lists.linaro.org,
+        denik@google.com, linux-arm-kernel@lists.infradead.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 030/116] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+Subject: [PATCH 6.3 115/246] perf cs-etm: Fix timeless decode mode detection
 Date:   Mon, 15 May 2023 18:25:27 +0200
-Message-Id: <20230515161659.266088173@linuxfoundation.org>
+Message-Id: <20230515161726.023499152@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,75 +69,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
+[ Upstream commit 449067f3fc9f340da54e383738286881e6634d0b ]
 
-Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
-wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
+In this context, timeless refers to the trace data rather than the perf
+event data. But when detecting whether there are timestamps in the trace
+data or not, the presence of a timestamp flag on any perf event is used.
 
-For some reason we have no corresponding check for SO_PASSSEC.
+Since commit f42c0ce573df ("perf record: Always get text_poke events
+with --kcore option") timestamps were added to a tracking event when
+--kcore is used which breaks this detection mechanism. Fix it by
+detecting if trace timestamps exist by looking at the ETM config flags.
+This would have always been a more accurate way of doing it anyway.
 
-In the recvmsg(2) doc we have:
-       MSG_CTRUNC
-              indicates that some control data was discarded due to lack
-              of space in the buffer for ancillary data.
+This fixes the following error message when using --kcore with
+Coresight:
 
-So, we need to set MSG_CTRUNC flag for all types of SCM.
+  $ perf record --kcore -e cs_etm// --per-thread
+  $ perf report
+  The perf.data/data data has no samples!
 
-This change can break applications those don't check MSG_CTRUNC flag.
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-v2:
-- commit message was rewritten according to Eric's suggestion
-Acked-by: Paul Moore <paul@paul-moore.com>
-
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f42c0ce573df79d1 ("perf record: Always get text_poke events with --kcore option")
+Reported-by: Yang Shi <shy828301@gmail.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: coresight@lists.linaro.org
+Cc: denik@google.com
+Cc: linux-arm-kernel@lists.infradead.org
+Link: https://lore.kernel.org/lkml/CAHbLzkrJQTrYBtPkf=jf3OpQ-yBcJe7XkvQstX9j2frz4WF-SQ@mail.gmail.com/
+Link: https://lore.kernel.org/r/20230424134748.228137-2-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/scm.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/perf/util/cs-etm.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index 903771c8d4e33..1268a051f1aa2 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -104,16 +104,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
- 		}
- 	}
+diff --git a/tools/perf/util/cs-etm.c b/tools/perf/util/cs-etm.c
+index f65bac5ddbdb6..e43bc9eea3087 100644
+--- a/tools/perf/util/cs-etm.c
++++ b/tools/perf/util/cs-etm.c
+@@ -2517,26 +2517,29 @@ static int cs_etm__process_auxtrace_event(struct perf_session *session,
+ 	return 0;
  }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return test_bit(SOCK_PASSSEC, &sock->flags);
-+}
- #else
- static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
- { }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SECURITY_NETWORK */
  
- static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
- 				struct scm_cookie *scm, int flags)
+-static bool cs_etm__is_timeless_decoding(struct cs_etm_auxtrace *etm)
++static int cs_etm__setup_timeless_decoding(struct cs_etm_auxtrace *etm)
  {
- 	if (!msg->msg_control) {
--		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
-+		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
-+		    scm_has_secdata(sock))
- 			msg->msg_flags |= MSG_CTRUNC;
- 		scm_destroy(scm);
- 		return;
+ 	struct evsel *evsel;
+ 	struct evlist *evlist = etm->session->evlist;
+-	bool timeless_decoding = true;
+ 
+ 	/* Override timeless mode with user input from --itrace=Z */
+-	if (etm->synth_opts.timeless_decoding)
+-		return true;
++	if (etm->synth_opts.timeless_decoding) {
++		etm->timeless_decoding = true;
++		return 0;
++	}
+ 
+ 	/*
+-	 * Circle through the list of event and complain if we find one
+-	 * with the time bit set.
++	 * Find the cs_etm evsel and look at what its timestamp setting was
+ 	 */
+-	evlist__for_each_entry(evlist, evsel) {
+-		if ((evsel->core.attr.sample_type & PERF_SAMPLE_TIME))
+-			timeless_decoding = false;
+-	}
++	evlist__for_each_entry(evlist, evsel)
++		if (cs_etm__evsel_is_auxtrace(etm->session, evsel)) {
++			etm->timeless_decoding =
++				!(evsel->core.attr.config & BIT(ETM_OPT_TS));
++			return 0;
++		}
+ 
+-	return timeless_decoding;
++	pr_err("CS ETM: Couldn't find ETM evsel\n");
++	return -EINVAL;
+ }
+ 
+ /*
+@@ -2943,7 +2946,6 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
+ 	etm->snapshot_mode = (ptr[CS_ETM_SNAPSHOT] != 0);
+ 	etm->metadata = metadata;
+ 	etm->auxtrace_type = auxtrace_info->type;
+-	etm->timeless_decoding = cs_etm__is_timeless_decoding(etm);
+ 
+ 	/* Use virtual timestamps if all ETMs report ts_source = 1 */
+ 	etm->has_virtual_ts = cs_etm__has_virtual_ts(metadata, num_cpu);
+@@ -2960,6 +2962,10 @@ int cs_etm__process_auxtrace_info_full(union perf_event *event,
+ 	etm->auxtrace.evsel_is_auxtrace = cs_etm__evsel_is_auxtrace;
+ 	session->auxtrace = &etm->auxtrace;
+ 
++	err = cs_etm__setup_timeless_decoding(etm);
++	if (err)
++		return err;
++
+ 	etm->unknown_thread = thread__new(999999999, 999999999);
+ 	if (!etm->unknown_thread) {
+ 		err = -ENOMEM;
 -- 
 2.39.2
 
