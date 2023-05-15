@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA85770392E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E077036F7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242937AbjEORkH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32798 "EHLO
+        id S243876AbjEORPb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244482AbjEORjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:35 -0400
+        with ESMTP id S243879AbjEORPR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BAF7EDD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D670449D5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A984162DC8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD6DC433D2;
-        Mon, 15 May 2023 17:36:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73E5B62B95
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF08C4339B;
+        Mon, 15 May 2023 17:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172220;
-        bh=RQAyKoxJPXp2/5Zu2X3PvEEINs1sMUK/6e47PO81TjU=;
+        s=korg; t=1684170833;
+        bh=5aMe+SQDdg+2+y71+xyx+fjX1RwDL3aHcO+rK7aA+b4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Omt2TSeaLYMWgIiSJTZ6QCQ7eD2nDUp4pESuA5qJKxDYHOR1kDb9RbkbeG/p5gLj/
-         AuLNpEUQQ1qbXsDPCDsSL809135/axGA/NIpiEAalLq1M+wXqRhuk2YeV5g5zR6T62
-         DNh2ABG8um3K4BzVDYHMZo9N5iPTUrmdmuH0vEmc=
+        b=DQxg0BehbHIPPvOfW9yom3UD91+4v1u7EwTZq7eI/WmsnSZnGh5XUPcG9S2nRMxzC
+         JWWHGg5cccTo/WLUC1Sy5tVcLnvvP55mi9SF5m4vHUwiQwrFLTPCRa96bn9xrCFcNc
+         6OYv3945hid9Glwkd3aJ1msL++ytYH3HUYzCcVTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Danny Lin <danny@kdrag0n.dev>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/381] arm64: dts: qcom: sdm845: correct dynamic power coefficients
+        patches@lists.linux.dev, Luca Weiss <luca.weiss@fairphone.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 6.2 008/242] qcom: llcc/edac: Support polling mode for ECC handling
 Date:   Mon, 15 May 2023 18:25:34 +0200
-Message-Id: <20230515161740.558788935@linuxfoundation.org>
+Message-Id: <20230515161722.063031778@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,125 +58,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 0e0a8e35d72533b3eef3365e900baacd7cede8e2 ]
+[ Upstream commit 721d3e91bfc93975c5e1a76c7d588dd8df5d82da ]
 
-Following sm8150/sm8250 update sdm845 capacity-dmips-mhz and
-dynamic-power-coefficient based on the measurements [1], [2].
+Not all Qcom platforms support IRQ mode for ECC handling. For those
+platforms, the current EDAC driver will not be probed due to missing ECC
+IRQ in devicetree.
 
-The energy model dynamic-power-coefficient values were calculated with
-    DPC = µW / MHz / V^2
-for each OPP, and averaged across all OPPs within each cluster for the
-final coefficient. Voltages were obtained from the qcom-cpufreq-hw
-driver that reads voltages from the OSM LUT programmed into the SoC.
+So add support for polling mode so that the EDAC driver can be used on all
+Qcom platforms supporting LLCC.
 
-Normalized DMIPS/MHz capacity scale values for each CPU were calculated
-from CoreMarks/MHz (CoreMark iterations per second per MHz), which
-serves the same purpose. For each CPU, the final capacity-dmips-mhz
-value is the C/MHz value of its maximum frequency normalized to
-SCHED_CAPACITY_SCALE (1024) for the fastest CPU in the system.
+The polling delay of 5000ms is chosen based on Qcom downstream/vendor
+driver.
 
-For more details on measurement process see the commit message for the
-commit 6aabed5526ee ("arm64: dts: qcom: sm8250: Add CPU capacities and
-energy model").
-
-[1] https://github.com/kdrag0n/freqbench
-[2] https://github.com/kdrag0n/freqbench/tree/master/results/sdm845/main
-
-Cc: Danny Lin <danny@kdrag0n.dev>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/20220315141104.730235-1-dmitry.baryshkov@linaro.org
+Reported-by: Luca Weiss <luca.weiss@fairphone.com>
+Tested-by: Luca Weiss <luca.weiss@fairphone.com>
+Tested-by: Steev Klimaszewski <steev@kali.org> # Thinkpad X13s
+Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8540p-ride
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230314080443.64635-14-manivannan.sadhasivam@linaro.org
+Stable-dep-of: cca94f1dd6d0 ("soc: qcom: llcc: Do not create EDAC platform device on SDM845")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/edac/qcom_edac.c     | 50 +++++++++++++++++++++---------------
+ drivers/soc/qcom/llcc-qcom.c | 13 +++++-----
+ 2 files changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 9beb3c34fcdb5..076b6949a0eed 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -196,8 +196,8 @@
- 			cpu-idle-states = <&LITTLE_CPU_SLEEP_0
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			capacity-dmips-mhz = <607>;
--			dynamic-power-coefficient = <100>;
-+			capacity-dmips-mhz = <611>;
-+			dynamic-power-coefficient = <290>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -221,8 +221,8 @@
- 			cpu-idle-states = <&LITTLE_CPU_SLEEP_0
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			capacity-dmips-mhz = <607>;
--			dynamic-power-coefficient = <100>;
-+			capacity-dmips-mhz = <611>;
-+			dynamic-power-coefficient = <290>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -243,8 +243,8 @@
- 			cpu-idle-states = <&LITTLE_CPU_SLEEP_0
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			capacity-dmips-mhz = <607>;
--			dynamic-power-coefficient = <100>;
-+			capacity-dmips-mhz = <611>;
-+			dynamic-power-coefficient = <290>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -265,8 +265,8 @@
- 			cpu-idle-states = <&LITTLE_CPU_SLEEP_0
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			capacity-dmips-mhz = <607>;
--			dynamic-power-coefficient = <100>;
-+			capacity-dmips-mhz = <611>;
-+			dynamic-power-coefficient = <290>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -288,7 +288,7 @@
- 			cpu-idle-states = <&BIG_CPU_SLEEP_0
- 					   &BIG_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			dynamic-power-coefficient = <396>;
-+			dynamic-power-coefficient = <442>;
- 			qcom,freq-domain = <&cpufreq_hw 1>;
- 			operating-points-v2 = <&cpu4_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -310,7 +310,7 @@
- 			cpu-idle-states = <&BIG_CPU_SLEEP_0
- 					   &BIG_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			dynamic-power-coefficient = <396>;
-+			dynamic-power-coefficient = <442>;
- 			qcom,freq-domain = <&cpufreq_hw 1>;
- 			operating-points-v2 = <&cpu4_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -332,7 +332,7 @@
- 			cpu-idle-states = <&BIG_CPU_SLEEP_0
- 					   &BIG_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			dynamic-power-coefficient = <396>;
-+			dynamic-power-coefficient = <442>;
- 			qcom,freq-domain = <&cpufreq_hw 1>;
- 			operating-points-v2 = <&cpu4_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -354,7 +354,7 @@
- 			cpu-idle-states = <&BIG_CPU_SLEEP_0
- 					   &BIG_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
--			dynamic-power-coefficient = <396>;
-+			dynamic-power-coefficient = <442>;
- 			qcom,freq-domain = <&cpufreq_hw 1>;
- 			operating-points-v2 = <&cpu4_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
+diff --git a/drivers/edac/qcom_edac.c b/drivers/edac/qcom_edac.c
+index c45519f59dc11..2c91ceff8a9ca 100644
+--- a/drivers/edac/qcom_edac.c
++++ b/drivers/edac/qcom_edac.c
+@@ -76,6 +76,8 @@
+ #define DRP0_INTERRUPT_ENABLE           BIT(6)
+ #define SB_DB_DRP_INTERRUPT_ENABLE      0x3
+ 
++#define ECC_POLL_MSEC			5000
++
+ enum {
+ 	LLCC_DRAM_CE = 0,
+ 	LLCC_DRAM_UE,
+@@ -285,8 +287,7 @@ dump_syn_reg(struct edac_device_ctl_info *edev_ctl, int err_type, u32 bank)
+ 	return ret;
+ }
+ 
+-static irqreturn_t
+-llcc_ecc_irq_handler(int irq, void *edev_ctl)
++static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
+ {
+ 	struct edac_device_ctl_info *edac_dev_ctl = edev_ctl;
+ 	struct llcc_drv_data *drv = edac_dev_ctl->dev->platform_data;
+@@ -332,6 +333,11 @@ llcc_ecc_irq_handler(int irq, void *edev_ctl)
+ 	return irq_rc;
+ }
+ 
++static void llcc_ecc_check(struct edac_device_ctl_info *edev_ctl)
++{
++	llcc_ecc_irq_handler(0, edev_ctl);
++}
++
+ static int qcom_llcc_edac_probe(struct platform_device *pdev)
+ {
+ 	struct llcc_drv_data *llcc_driv_data = pdev->dev.platform_data;
+@@ -359,29 +365,31 @@ static int qcom_llcc_edac_probe(struct platform_device *pdev)
+ 	edev_ctl->ctl_name = "llcc";
+ 	edev_ctl->panic_on_ue = LLCC_ERP_PANIC_ON_UE;
+ 
+-	rc = edac_device_add_device(edev_ctl);
+-	if (rc)
+-		goto out_mem;
+-
+-	platform_set_drvdata(pdev, edev_ctl);
+-
+-	/* Request for ecc irq */
++	/* Check if LLCC driver has passed ECC IRQ */
+ 	ecc_irq = llcc_driv_data->ecc_irq;
+-	if (ecc_irq < 0) {
+-		rc = -ENODEV;
+-		goto out_dev;
+-	}
+-	rc = devm_request_irq(dev, ecc_irq, llcc_ecc_irq_handler,
++	if (ecc_irq > 0) {
++		/* Use interrupt mode if IRQ is available */
++		rc = devm_request_irq(dev, ecc_irq, llcc_ecc_irq_handler,
+ 			      IRQF_TRIGGER_HIGH, "llcc_ecc", edev_ctl);
+-	if (rc)
+-		goto out_dev;
++		if (!rc) {
++			edac_op_state = EDAC_OPSTATE_INT;
++			goto irq_done;
++		}
++	}
+ 
+-	return rc;
++	/* Fall back to polling mode otherwise */
++	edev_ctl->poll_msec = ECC_POLL_MSEC;
++	edev_ctl->edac_check = llcc_ecc_check;
++	edac_op_state = EDAC_OPSTATE_POLL;
+ 
+-out_dev:
+-	edac_device_del_device(edev_ctl->dev);
+-out_mem:
+-	edac_device_free_ctl_info(edev_ctl);
++irq_done:
++	rc = edac_device_add_device(edev_ctl);
++	if (rc) {
++		edac_device_free_ctl_info(edev_ctl);
++		return rc;
++	}
++
++	platform_set_drvdata(pdev, edev_ctl);
+ 
+ 	return rc;
+ }
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index 26efe12012a0d..e417bd285d9db 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -1001,13 +1001,12 @@ static int qcom_llcc_probe(struct platform_device *pdev)
+ 		goto err;
+ 
+ 	drv_data->ecc_irq = platform_get_irq_optional(pdev, 0);
+-	if (drv_data->ecc_irq >= 0) {
+-		llcc_edac = platform_device_register_data(&pdev->dev,
+-						"qcom_llcc_edac", -1, drv_data,
+-						sizeof(*drv_data));
+-		if (IS_ERR(llcc_edac))
+-			dev_err(dev, "Failed to register llcc edac driver\n");
+-	}
++
++	llcc_edac = platform_device_register_data(&pdev->dev,
++					"qcom_llcc_edac", -1, drv_data,
++					sizeof(*drv_data));
++	if (IS_ERR(llcc_edac))
++		dev_err(dev, "Failed to register llcc edac driver\n");
+ 
+ 	return 0;
+ err:
 -- 
 2.39.2
 
