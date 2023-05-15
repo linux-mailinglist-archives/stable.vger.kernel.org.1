@@ -2,73 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E85487032EB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 345E0703865
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242680AbjEOQ3f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:29:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59938 "EHLO
+        id S244218AbjEORcT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242688AbjEOQ3e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:29:34 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5195E6E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:29:31 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-3f3a287ecceso34704731cf.0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:29:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1684168171; x=1686760171;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rHpcsyuraYipRh6JrDyCG/QY3q0OoJTJdMJOWndENCc=;
-        b=BSYqYbQkwHL4mrBWnucRzTipj5Nu9rzJUkmYfi+7daXIWIVb/LdX/qjEnp1naOjMMg
-         5VoOcDwTf+H/85Oc4oLDcHqMnjldw9Mx4KJye/cxPqhXGXlsf1dxpMyKBvW/0Gzv7+/7
-         C9XISfbGDjX1oVb1GwYTJz8FX+k2FidtLt29FZwA00ody7cNcjGFsjXfnyYyiCVbSuv+
-         KcXXJ0l52LOAFrGvr+9fRRFlnp4EPSl8jecoX/5wg+Cf1+bMkwIvR/v3YN+7xIl1+qCZ
-         Zyo9u69TE+ROGOrxQ/GPHL84meiROlV1cvBx9MUC6UnMlO9igdszXzPnpEpXJwPdtWUr
-         RVhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684168171; x=1686760171;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rHpcsyuraYipRh6JrDyCG/QY3q0OoJTJdMJOWndENCc=;
-        b=MJ9l8tv2WFbUBxXNLJOMBzHG0/2FG53n2CZB8t7zWXzqvGMOQkf2SdWcZjChcQsNKg
-         ZHkdbiRJtMqCmvG0GEV+DySWRKeuRRaTJE03ojlxIAqkAIFW/TXDZw3fKfpqM6//WTq3
-         grYicBwfzYuf8hBP3SO6YG+QejeuMNsaQrLAki4W2w+P3DTs/EazIb03qa7vovFo2C/p
-         99K6QUx0Qak2Awjo2DND3wk56BIC0PCLv2Y+EE9Y6xOW4R8+1RMB8xZ0O13V6n7eTuhA
-         hworFb7n7tBbXSKrWw1DiMGJPItZd0V+lKw+nYCYc0rPvL5NPENAxaCahyeDWDHkbSus
-         QfbQ==
-X-Gm-Message-State: AC+VfDxhA5ujoVE0uWZzygtCF1usprNLPqFJSyGgdgNaQ2Ez7PParzVn
-        EFZsC9QQk4fuInjX3dv5DIUvBIeSaYAltefZGQ0/kQ==
-X-Google-Smtp-Source: ACHHUZ7W3rDE8/W5o/GHcHMti08Uun/DjbpZZVO5xumzi9ao3DNvSLLrAkbDQfclVBIYTxSm5L12X2SFgGLLPBIsg3I=
-X-Received: by 2002:a05:622a:492:b0:3f5:1de5:af48 with SMTP id
- p18-20020a05622a049200b003f51de5af48mr9837008qtx.5.1684168171050; Mon, 15 May
- 2023 09:29:31 -0700 (PDT)
+        with ESMTP id S244175AbjEORbk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F2C11565
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B265162104
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D35C433D2;
+        Mon, 15 May 2023 17:28:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684171722;
+        bh=2BTqrsOuX2qndCyFcL+iyjJMwm6ee14bEwr9jjFRtts=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=PSbGbA1ePKA196ZAhqhyDLfXVf6mVgk23urOzZuxh9Jrf3SoGjzP+z/wkSdQ1GZa5
+         2ZwC3lQJDvy85RGRytQjdjMKj8L2w0j4fhzjvMXNqCaEq3KbxQD6bmxbWgmu+9kRJG
+         j4GaVaAUbrdqS2FWVsnsQ40KMntWazhMdvx2mO5o=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev,
+        Will Ochowicz <Will.Ochowicz@genusplc.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Leo Yan <leo.yan@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 058/134] perf symbols: Fix return incorrect build_id size in elf_read_build_id()
+Date:   Mon, 15 May 2023 18:28:55 +0200
+Message-Id: <20230515161705.086872464@linuxfoundation.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-References: <20230515130958.32471-1-lrh2000@pku.edu.cn> <20230515130958.32471-5-lrh2000@pku.edu.cn>
-In-Reply-To: <20230515130958.32471-5-lrh2000@pku.edu.cn>
-From:   Pasha Tatashin <pasha.tatashin@soleen.com>
-Date:   Mon, 15 May 2023 12:28:54 -0400
-Message-ID: <CA+CK2bBD_fdmz1fFjB8MXBGMHf4jzRWeBRirH3HdWRLqY7cmtw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] mm: page_table_check: Ensure user pages are not
- slab pages
-To:     Ruihan Li <lrh2000@pku.edu.cn>
-Cc:     linux-mm@kvack.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,37 +65,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 9:10=E2=80=AFAM Ruihan Li <lrh2000@pku.edu.cn> wrot=
-e:
->
-> The current uses of PageAnon in page table check functions can lead to
-> type confusion bugs between struct page and slab [1], if slab pages are
-> accidentally mapped into the user space. This is because slab reuses the
-> bits in struct page to store its internal states, which renders PageAnon
-> ineffective on slab pages.
->
-> Since slab pages are not expected to be mapped into the user space, this
-> patch adds BUG_ON(PageSlab(page)) checks to make sure that slab pages
-> are not inadvertently mapped. Otherwise, there must be some bugs in the
-> kernel.
->
-> Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.=
-com/ [1]
-> Fixes: df4e817b7108 ("mm: page table check")
-> Cc: <stable@vger.kernel.org> # 5.17
-> Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+[ Upstream commit 1511e4696acb715a4fe48be89e1e691daec91c0e ]
 
-I would also update order in mm/memory.c
-static int validate_page_before_insert(struct page *page)
-{
-if (PageAnon(page) || PageSlab(page) || page_has_type(page))
+In elf_read_build_id(), if gnu build_id is found, should return the size of
+the actually copied data. If descsz is greater thanBuild_ID_SIZE,
+write_buildid data access may occur.
 
-It is not strictly a bug there, as it works by accident, but
-PageSlab() should go before PageAnon(), because without checking if
-this is PageSlab() we should not be testing for PageAnon().
+Fixes: be96ea8ffa788dcc ("perf symbols: Fix issue with binaries using 16-bytes buildids (v2)")
+Reported-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Tested-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Link: https://lore.kernel.org/lkml/CWLP265MB49702F7BA3D6D8F13E4B1A719C649@CWLP265MB4970.GBRP265.PROD.OUTLOOK.COM/T/
+Link: https://lore.kernel.org/r/20230427012841.231729-1-yangjihong1@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/perf/util/symbol-elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks you,
-Pasha
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index fd42f768e5848..bbc3a150597a4 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -553,7 +553,7 @@ static int elf_read_build_id(Elf *elf, void *bf, size_t size)
+ 				size_t sz = min(size, descsz);
+ 				memcpy(bf, ptr, sz);
+ 				memset(bf + sz, 0, size - sz);
+-				err = descsz;
++				err = sz;
+ 				break;
+ 			}
+ 		}
+-- 
+2.39.2
+
+
+
