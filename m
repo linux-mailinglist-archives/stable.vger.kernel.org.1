@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C377022B6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 200987022B7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbjEOENl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 00:13:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
+        id S229758AbjEOENo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 00:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237999AbjEOENe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:13:34 -0400
+        with ESMTP id S238784AbjEOENf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:13:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6741706
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:13:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6061BC8
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:13:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8469611C6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:13:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BF6C433D2;
-        Mon, 15 May 2023 04:13:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFE2B60FC8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080A9C433D2;
+        Mon, 15 May 2023 04:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684124002;
-        bh=bv8s97ruT+rM9l6ybdOh/m7BqZeJfh9036GEs4s0KfA=;
+        s=korg; t=1684124011;
+        bh=juNDAKDZKiofrkptxY1XjAe0bjJNF0i2BL6KzVH+1CU=;
         h=Subject:To:Cc:From:Date:From;
-        b=xIM0tF9xzMWQlyXOETvSkW4erXE+mqJJ5Bz5SqmE1W5uMlIooDQ3Mnj66I1Qmpihz
-         p5T5u9lw50gSWHaZhBN9nvI4wCIKbyGscyffigHhvGs/kJGjscjbJK9FWFa/uNQKC7
-         jb/VxpbdrL06XH/oIJ6OJTDQjXwM37D5siDymc9U=
-Subject: FAILED: patch "[PATCH] ext4: check iomap type only if ext4_iomap_begin() does not" failed to apply to 5.4-stable tree
+        b=vlNQKGCMc1pRoME5S2Abo2oz5SZHTTICNH33w6AQ5cpdleZaiyEftv+/p5fZWKCAc
+         iOTqU7yLFQr2fkSpHpcvsjNw5RdqQTUFLF35m6ejLjfSCZqGWo9Rg5nxk/WHDDuWYZ
+         WDCtgSa0MhVuMCTqfKOJBJIrRt4G7GuI84dZuR+c=
+Subject: FAILED: patch "[PATCH] ext4: check iomap type only if ext4_iomap_begin() does not" failed to apply to 4.19-stable tree
 To:     libaokun1@huawei.com, jack@suse.cz, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 15 May 2023 06:13:19 +0200
-Message-ID: <2023051519-quarters-shrank-0a63@gregkh>
+Date:   Mon, 15 May 2023 06:13:20 +0200
+Message-ID: <2023051520-amigo-consent-6b7c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa83c34e3e56b3c672af38059e066242655271b1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051519-quarters-shrank-0a63@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051520-amigo-consent-6b7c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,6 +81,7 @@ c8cc88163f40 ("ext4: Add support for blocksize < pagesize in dioread_nolock")
 2943fdbc688e ("ext4: Refactor mpage_map_and_submit_buffers function")
 a00713ea982b ("ext4: Add API to bring in support for unwritten io_end_vec conversion")
 821ff38d192a ("ext4: keep uniform naming convention for io & io_end variables")
+70cb0d02b581 ("Merge tag 'ext4_for_linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tytso/ext4")
 
 thanks,
 
