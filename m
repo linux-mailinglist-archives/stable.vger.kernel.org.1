@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C6870334E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81E20703966
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242650AbjEOQfa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:35:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
+        id S244525AbjEORmU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242764AbjEOQf3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:29 -0400
+        with ESMTP id S244514AbjEORle (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A35E3ABF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D201B748
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7A6962806
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73DDC4339B;
-        Mon, 15 May 2023 16:35:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E897762E0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E949DC433D2;
+        Mon, 15 May 2023 17:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168527;
-        bh=wFvb5tOdCs9SeX4MFn6uNWnKovlGstNK94yc/JYN31Y=;
+        s=korg; t=1684172350;
+        bh=0zeMxstQsi049kfBIVT6iNTnxplUdAGgXg1JoQvLJu0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sqaFUBaaj/WEaxuY+JMP405mUgpwumQXImAEGtYyXDHEgkBS9OqyOyP34u3nS4Zo1
-         Zt3DaKkSRkbt7R0sxaKngaAunT7hQKPmD/nE42lc40md/ya5nsqQw7rtSY4FACEi4o
-         MQQJ2m+KprJ3eMaXZ1iuQO0JdXkPwiLiCKdrlri4=
+        b=G1TL0nU7YmvsyhAgLI9cpc1dcnWwSgneRJdztSxdtBmUSDrUrbEy3TXGK6Ied3uoV
+         nmROvLv9F2deYEP0WTYtf93qHA00VPQ9AwRhQ4NEsGsfDFd75j2Qy12VA/MPGSFK/G
+         hX9iZZ30Gh2Cn5q2ARl8Pr4XWfqmCex76cNOKwAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.14 078/116] s390/dasd: fix hanging blockdevice after request requeue
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 124/381] drm/i915: Make intel_get_crtc_new_encoder() less oopsy
 Date:   Mon, 15 May 2023 18:26:15 +0200
-Message-Id: <20230515161700.869889393@linuxfoundation.org>
+Message-Id: <20230515161742.428005297@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit d8898ee50edecacdf0141f26fd90acf43d7e9cd7 upstream.
+[ Upstream commit 631420b06597a33c72b6dcef78d1c2dea17f452d ]
 
-The DASD driver does not kick the requeue list when requeuing IO requests
-to the blocklayer. This might lead to hanging blockdevice when there is
-no other trigger for this.
+The point of the WARN was to print something, not oops
+straight up. Currently that is precisely what happens
+if we can't find the connector for the crtc in the atomic
+state. Get the dev pointer from the atomic state instead
+of the potentially NULL encoder to avoid that.
 
-Fix by automatically kick the requeue list when requeuing DASD requests
-to the blocklayer.
-
-Fixes: e443343e509a ("s390/dasd: blk-mq conversion")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230405142017.2446986-8-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230413200602.6037-2-ville.syrjala@linux.intel.com
+Fixes: 3a47ae201e07 ("drm/i915/display: Make WARN* drm specific where encoder ptr is available")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 3b6692357f70498f617ea1b31a0378070a0acf1c)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd.c |    2 +-
+ drivers/gpu/drm/i915/display/intel_display.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -2899,7 +2899,7 @@ static int _dasd_requeue_request(struct
- 		return 0;
- 	spin_lock_irq(&cqr->dq->lock);
- 	req = (struct request *) cqr->callback_data;
--	blk_mq_requeue_request(req, false);
-+	blk_mq_requeue_request(req, true);
- 	spin_unlock_irq(&cqr->dq->lock);
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index d46011f7a8380..9a06bd8cb200b 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -5844,7 +5844,7 @@ intel_get_crtc_new_encoder(const struct intel_atomic_state *state,
+ 		num_encoders++;
+ 	}
  
- 	return 0;
+-	drm_WARN(encoder->base.dev, num_encoders != 1,
++	drm_WARN(state->base.dev, num_encoders != 1,
+ 		 "%d encoders for pipe %c\n",
+ 		 num_encoders, pipe_name(crtc->pipe));
+ 
+-- 
+2.39.2
+
 
 
