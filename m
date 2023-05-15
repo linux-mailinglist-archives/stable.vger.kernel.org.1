@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72469703764
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939A3703B19
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243893AbjEORU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40352 "EHLO
+        id S243918AbjEOR7S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243903AbjEORUi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:38 -0400
+        with ESMTP id S244849AbjEOR6z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2F73120AC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE09189B6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9F3E62C35
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC256C433D2;
-        Mon, 15 May 2023 17:18:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04D8162E5F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE79C433EF;
+        Mon, 15 May 2023 17:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171097;
-        bh=+uYP06R+TB4tHjw/8hOh0muGsWF7sdTRUwAcTu33Iu4=;
+        s=korg; t=1684173382;
+        bh=dikgG2imwo+P3cxb8MSGyr4TvK+hb3NCmkiOM0+zx7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NEN1C3e7GcTijywlxJ7vnVfSAu9YVS3TRaH0rPBd/UhOIOyTupDXzq1Coe3qdNjYQ
-         LbQuBD6CgR3ZFxKVlMhX/KuPtTGGRNDs0mniduZFXRKX3TD16dovl2GJ6OoLavK/dV
-         an0u9LKT+iMnegBEcpjrEsRNUjeI6tQJdS9VgyN0=
+        b=b3E5anmBQs45sbL1GyWTr97cqj3uw6sZULnsQB1jf2LQwbvcXdWQLImjQvUk822NZ
+         tACynN52HSg8DWbs/RyES0fYkEnKAU3ieKgejN5QtFxXvXOjbmBkIzT9OLI04Uf6Co
+         M58D/DpXHncRHNzl0OjTKx6U4qIhtfFQK4TYL3to=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patrice Duroux <patrice.duroux@gmail.com>,
-        Ian Rogers <irogers@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Mukesh Ojha <quic_mojha@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 099/242] perf tests record_offcpu.sh: Fix redirection of stderr to stdin
+Subject: [PATCH 5.4 047/282] firmware: qcom_scm: Clear download bit during reboot
 Date:   Mon, 15 May 2023 18:27:05 +0200
-Message-Id: <20230515161724.876056025@linuxfoundation.org>
+Message-Id: <20230515161723.670847006@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Patrice Duroux <patrice.duroux@gmail.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit 9835b742ac3ee16dee361e7ccda8022f99d1cd94 ]
+[ Upstream commit 781d32d1c9709fd25655c4e3e3e15370ae4ae4db ]
 
-It's not 2&>1, the correct is 2>&1
+During normal restart of a system download bit should
+be cleared irrespective of whether download mode is
+set or not.
 
-Fixes: ade1d0307b2fb3d9 ("perf offcpu: Update offcpu test for child process")
-Signed-off-by: Patrice Duroux <patrice.duroux@gmail.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20230303193058.21274-1-patrice.duroux@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 8c1b7dc9ba22 ("firmware: qcom: scm: Expose download-mode control")
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/1678979666-551-1-git-send-email-quic_mojha@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/record_offcpu.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/qcom_scm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/shell/record_offcpu.sh b/tools/perf/tests/shell/record_offcpu.sh
-index e01973d4e0fba..f062ae9a95e1a 100755
---- a/tools/perf/tests/shell/record_offcpu.sh
-+++ b/tools/perf/tests/shell/record_offcpu.sh
-@@ -65,7 +65,7 @@ test_offcpu_child() {
+diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+index b9fdc20b4eb9b..eda25d506059b 100644
+--- a/drivers/firmware/qcom_scm.c
++++ b/drivers/firmware/qcom_scm.c
+@@ -585,8 +585,7 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ static void qcom_scm_shutdown(struct platform_device *pdev)
+ {
+ 	/* Clean shutdown, disable download mode to allow normal restart */
+-	if (download_mode)
+-		qcom_scm_set_download_mode(false);
++	qcom_scm_set_download_mode(false);
+ }
  
-   # perf bench sched messaging creates 400 processes
-   if ! perf record --off-cpu -e dummy -o ${perfdata} -- \
--    perf bench sched messaging -g 10 > /dev/null 2&>1
-+    perf bench sched messaging -g 10 > /dev/null 2>&1
-   then
-     echo "Child task off-cpu test [Failed record]"
-     err=1
+ static const struct of_device_id qcom_scm_dt_match[] = {
 -- 
 2.39.2
 
