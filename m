@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B895703731
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82EBC703358
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243940AbjEORSC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35592 "EHLO
+        id S242793AbjEOQgG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:36:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243871AbjEORRh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:37 -0400
+        with ESMTP id S242772AbjEOQgC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 858DF86AC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDFA3C1D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 657C362BE6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564D4C433EF;
-        Mon, 15 May 2023 17:16:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B5E462806
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A94EC433EF;
+        Mon, 15 May 2023 16:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170962;
-        bh=EXFqXdXwVAsr36WwgbkX5Eo9j0ymXd0jAADfZQlwtuU=;
+        s=korg; t=1684168558;
+        bh=nkh185cS751bN6Xp8qpAregKgfF/2pw+hGuj56jMUtA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=flAZhgmuhmQD9DZzuMd9GfTF77ZMxTGV9XGsBaM2uYdHgQ46rzGeo/DrEk6Y+Wq98
-         1yBeS98Z6+zuVCQiSZIFSk4QccJta5nzEmeEvIES0kextDbQKsycjRkGVfbgJy8wrI
-         Jo+Cdhm2BXHZfcDmZy2bukrVuVUz+/0YSNmewOUg=
+        b=KfY70GOa2qsXwZRHwERu7/ulhV4vqgQnqn4BOLzD4eVk35nEXfesWRn1Zh4YjVxxP
+         ukl/T9SrK/nBYNmf7HeQkCJmcax7CwAglh0uKi3UKedo2f0uZQC+hr83Najs7hUA6C
+         Q/WFqRSADyp2QgejWCiAkHgVI6FRO2los+vUFL8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?V=C3=A1clav=20Zindulka?= <vaclav.zindulka@tlapnet.cz>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 057/242] r8152: move setting r8153b_rx_agg_chg_indicate()
-Date:   Mon, 15 May 2023 18:26:23 +0200
-Message-Id: <20230515161723.618827343@linuxfoundation.org>
+Subject: [PATCH 4.14 087/116] netfilter: nf_tables: bogus EBUSY when deleting set after flush
+Date:   Mon, 15 May 2023 18:26:24 +0200
+Message-Id: <20230515161701.167439935@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +55,220 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit cce8334f4aacd9936309a002d4a4de92a07cd2c2 ]
+[ backport for 4.14 of 273fe3f1006ea5ebc63d6729e43e8e45e32b256a ]
 
-Move setting r8153b_rx_agg_chg_indicate() for 2.5G devices. The
-r8153b_rx_agg_chg_indicate() has to be called after enabling tx/rx.
-Otherwise, the coalescing settings are useless.
+Set deletion after flush coming in the same batch results in EBUSY. Add
+set use counter to track the number of references to this set from
+rules. We cannot rely on the list of bindings for this since such list
+is still populated from the preparation phase.
 
-Fixes: 195aae321c82 ("r8152: support new chips")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Václav Zindulka <vaclav.zindulka@tlapnet.cz>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ include/net/netfilter/nf_tables.h |  6 ++++++
+ net/netfilter/nf_tables_api.c     | 28 +++++++++++++++++++++++++++-
+ net/netfilter/nft_dynset.c        | 13 +++++++++----
+ net/netfilter/nft_lookup.c        | 13 +++++++++----
+ net/netfilter/nft_objref.c        | 13 +++++++++----
+ 5 files changed, 60 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index a7665accc81c8..059d610901d84 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -3027,12 +3027,16 @@ static int rtl_enable(struct r8152 *tp)
- 	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_CR, ocp_data);
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index ca82f32d10cd4..fe56b2f825b4e 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -383,6 +383,7 @@ void nft_unregister_set(struct nft_set_type *type);
+  * 	@dtype: data type (verdict or numeric type defined by userspace)
+  * 	@objtype: object type (see NFT_OBJECT_* definitions)
+  * 	@size: maximum set size
++ *	@use: number of rules references to this set
+  * 	@nelems: number of elements
+  * 	@ndeact: number of deactivated elements queued for removal
+  *	@timeout: default timeout value in jiffies
+@@ -405,6 +406,7 @@ struct nft_set {
+ 	u32				dtype;
+ 	u32				objtype;
+ 	u32				size;
++	u32				use;
+ 	atomic_t			nelems;
+ 	u32				ndeact;
+ 	u64				timeout;
+@@ -459,6 +461,10 @@ struct nft_set_binding {
+ 	u32				flags;
+ };
  
- 	switch (tp->version) {
--	case RTL_VER_08:
--	case RTL_VER_09:
--	case RTL_VER_14:
--		r8153b_rx_agg_chg_indicate(tp);
-+	case RTL_VER_01:
-+	case RTL_VER_02:
-+	case RTL_VER_03:
-+	case RTL_VER_04:
-+	case RTL_VER_05:
-+	case RTL_VER_06:
-+	case RTL_VER_07:
- 		break;
- 	default:
-+		r8153b_rx_agg_chg_indicate(tp);
- 		break;
- 	}
++enum nft_trans_phase;
++void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
++			      struct nft_set_binding *binding,
++			      enum nft_trans_phase phase);
+ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 		       struct nft_set_binding *binding);
+ void nf_tables_unbind_set(const struct nft_ctx *ctx, struct nft_set *set,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e9e3e7680a14c..2f5b5d563e4d1 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3309,6 +3309,9 @@ static int nf_tables_newset(struct net *net, struct sock *nlsk,
  
-@@ -3086,7 +3090,6 @@ static void r8153_set_rx_early_timeout(struct r8152 *tp)
- 			       640 / 8);
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EXTRA_AGGR_TMR,
- 			       ocp_data);
--		r8153b_rx_agg_chg_indicate(tp);
- 		break;
+ static void nft_set_destroy(struct nft_set *set)
+ {
++	if (WARN_ON(set->use > 0))
++		return;
++
+ 	set->ops->destroy(set);
+ 	module_put(set->ops->type->owner);
+ 	kfree(set->name);
+@@ -3339,7 +3342,7 @@ static int nf_tables_delset(struct net *net, struct sock *nlsk,
+ 	if (IS_ERR(set))
+ 		return PTR_ERR(set);
  
- 	default:
-@@ -3120,7 +3123,6 @@ static void r8153_set_rx_early_size(struct r8152 *tp)
- 	case RTL_VER_15:
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_SIZE,
- 			       ocp_data / 8);
--		r8153b_rx_agg_chg_indicate(tp);
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
+-	if (!list_empty(&set->bindings) ||
++	if (set->use ||
+ 	    (nlh->nlmsg_flags & NLM_F_NONREC && atomic_read(&set->nelems) > 0))
+ 		return -EBUSY;
+ 
+@@ -3367,6 +3370,9 @@ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 	struct nft_set_binding *i;
+ 	struct nft_set_iter iter;
+ 
++	if (set->use == UINT_MAX)
++		return -EOVERFLOW;
++
+ 	if (!list_empty(&set->bindings) && set->flags & NFT_SET_ANONYMOUS)
+ 		return -EBUSY;
+ 
+@@ -3394,6 +3400,7 @@ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 	binding->chain = ctx->chain;
+ 	list_add_tail_rcu(&binding->list, &set->bindings);
+ 	nft_set_trans_bind(ctx, set);
++	set->use++;
+ 
+ 	return 0;
+ }
+@@ -3413,6 +3420,25 @@ void nf_tables_unbind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ }
+ EXPORT_SYMBOL_GPL(nf_tables_unbind_set);
+ 
++void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
++			      struct nft_set_binding *binding,
++			      enum nft_trans_phase phase)
++{
++	switch (phase) {
++	case NFT_TRANS_PREPARE:
++		set->use--;
++		return;
++	case NFT_TRANS_ABORT:
++	case NFT_TRANS_RELEASE:
++		set->use--;
++		/* fall through */
++	default:
++		nf_tables_unbind_set(ctx, set, binding,
++				     phase == NFT_TRANS_COMMIT);
++	}
++}
++EXPORT_SYMBOL_GPL(nf_tables_deactivate_set);
++
+ void nf_tables_destroy_set(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	if (list_empty(&set->bindings) && set->flags & NFT_SET_ANONYMOUS)
+diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
+index 7e0a203437408..a20f1668328dc 100644
+--- a/net/netfilter/nft_dynset.c
++++ b/net/netfilter/nft_dynset.c
+@@ -229,11 +229,15 @@ static void nft_dynset_deactivate(const struct nft_ctx *ctx,
+ {
+ 	struct nft_dynset *priv = nft_expr_priv(expr);
+ 
+-	if (phase == NFT_TRANS_PREPARE)
+-		return;
++	nf_tables_deactivate_set(ctx, priv->set, &priv->binding, phase);
++}
++
++static void nft_dynset_activate(const struct nft_ctx *ctx,
++				const struct nft_expr *expr)
++{
++	struct nft_dynset *priv = nft_expr_priv(expr);
+ 
+-	nf_tables_unbind_set(ctx, priv->set, &priv->binding,
+-			     phase == NFT_TRANS_COMMIT);
++	priv->set->use++;
+ }
+ 
+ static void nft_dynset_destroy(const struct nft_ctx *ctx,
+@@ -281,6 +285,7 @@ static const struct nft_expr_ops nft_dynset_ops = {
+ 	.eval		= nft_dynset_eval,
+ 	.init		= nft_dynset_init,
+ 	.destroy	= nft_dynset_destroy,
++	.activate	= nft_dynset_activate,
+ 	.deactivate	= nft_dynset_deactivate,
+ 	.dump		= nft_dynset_dump,
+ };
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index 7dd35245222c5..453f84c571662 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -124,11 +124,15 @@ static void nft_lookup_deactivate(const struct nft_ctx *ctx,
+ {
+ 	struct nft_lookup *priv = nft_expr_priv(expr);
+ 
+-	if (phase == NFT_TRANS_PREPARE)
+-		return;
++	nf_tables_deactivate_set(ctx, priv->set, &priv->binding, phase);
++}
++
++static void nft_lookup_activate(const struct nft_ctx *ctx,
++				const struct nft_expr *expr)
++{
++	struct nft_lookup *priv = nft_expr_priv(expr);
+ 
+-	nf_tables_unbind_set(ctx, priv->set, &priv->binding,
+-			     phase == NFT_TRANS_COMMIT);
++	priv->set->use++;
+ }
+ 
+ static void nft_lookup_destroy(const struct nft_ctx *ctx,
+@@ -164,6 +168,7 @@ static const struct nft_expr_ops nft_lookup_ops = {
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_lookup)),
+ 	.eval		= nft_lookup_eval,
+ 	.init		= nft_lookup_init,
++	.activate	= nft_lookup_activate,
+ 	.deactivate	= nft_lookup_deactivate,
+ 	.destroy	= nft_lookup_destroy,
+ 	.dump		= nft_lookup_dump,
+diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
+index f72aeff93efad..7e628f4f02b93 100644
+--- a/net/netfilter/nft_objref.c
++++ b/net/netfilter/nft_objref.c
+@@ -160,11 +160,15 @@ static void nft_objref_map_deactivate(const struct nft_ctx *ctx,
+ {
+ 	struct nft_objref_map *priv = nft_expr_priv(expr);
+ 
+-	if (phase == NFT_TRANS_PREPARE)
+-		return;
++	nf_tables_deactivate_set(ctx, priv->set, &priv->binding, phase);
++}
++
++static void nft_objref_map_activate(const struct nft_ctx *ctx,
++				    const struct nft_expr *expr)
++{
++	struct nft_objref_map *priv = nft_expr_priv(expr);
+ 
+-	nf_tables_unbind_set(ctx, priv->set, &priv->binding,
+-			     phase == NFT_TRANS_COMMIT);
++	priv->set->use++;
+ }
+ 
+ static void nft_objref_map_destroy(const struct nft_ctx *ctx,
+@@ -181,6 +185,7 @@ static const struct nft_expr_ops nft_objref_map_ops = {
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_objref_map)),
+ 	.eval		= nft_objref_map_eval,
+ 	.init		= nft_objref_map_init,
++	.activate	= nft_objref_map_activate,
+ 	.deactivate	= nft_objref_map_deactivate,
+ 	.destroy	= nft_objref_map_destroy,
+ 	.dump		= nft_objref_map_dump,
 -- 
 2.39.2
 
