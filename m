@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 020077034B9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE6847035E0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243063AbjEOQvx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:51:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55104 "EHLO
+        id S243541AbjEOREZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:04:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243065AbjEOQvf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B6F5BBE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:26 -0700 (PDT)
+        with ESMTP id S243549AbjEOREF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0249B868B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:02:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F27C62982
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB87C433EF;
-        Mon, 15 May 2023 16:51:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1D4362A7A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:01:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EDEC433D2;
+        Mon, 15 May 2023 17:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169485;
-        bh=WXHX+duXFT1bKg3lep9sRXBUbNqewxIpuZCG/cKch40=;
+        s=korg; t=1684170092;
+        bh=eVxlkhFDQ8P0oSPyzRU8a03o0UJh4A8zZkXgKFMIk0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TVpbufu1g5o6I+WPRdyoXXqY72demmGCeiAG2E9BhC1MDM6U1uwqw1DP3s+jMKBUC
-         k5RGrGwtH/gWNDPs1hf2jbN71e5m4Z/RSGx+4k1jK307fpRFg7iJ8/Sz7t5sFVmOUH
-         XpN828SINuXAi1oUZFCN73irbWJDll9RiYP+C3Os=
+        b=LN9xOgXTZ1SSJhUzU9ZWJVggXPb5L31TDxoB/dp/hT0PxuZR05tacfyprzTUByCEw
+         CsZfdttoNlZuWwkrymR/rrF8p1tndIkGhz53zgbg73TL9c4nIn3tCNjUSRNT8Ukr/Z
+         jkn+7koxkv2b01oXsQ5a+VC5d+hKjMoOflGf6byk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Greg Thelen <gthelen@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 055/246] arm64: kernel: remove SHF_WRITE|SHF_EXECINSTR from .idmap.text
+        patches@lists.linux.dev, Martin Krastev <krastevm@vmware.com>,
+        Maaz Mombasawala <mombasawalam@vmware.com>,
+        Zack Rusin <zackr@vmware.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 004/239] drm/vmwgfx: Fix Legacy Display Unit atomic drm support
 Date:   Mon, 15 May 2023 18:24:27 +0200
-Message-Id: <20230515161724.230453483@linuxfoundation.org>
+Message-Id: <20230515161721.688281014@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,88 +54,215 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ndesaulniers@google.com <ndesaulniers@google.com>
+From: Martin Krastev <krastevm@vmware.com>
 
-[ Upstream commit 4df69e0df295822cdf816442fe4897f214cccb08 ]
+[ Upstream commit a37a512db3fa1b65fe9087003e5b2072cefb3667 ]
 
-commit d54170812ef1 ("arm64: fix .idmap.text assertion for large kernels")
-modified some of the section assembler directives that declare
-.idmap.text to be SHF_ALLOC instead of
-SHF_ALLOC|SHF_WRITE|SHF_EXECINSTR.
+Legacy Display Unit (LDU) fb dirty support used a custom fb dirty callback. Latter
+handled only the DIRTYFB IOCTL presentation path but not the ADDFB2/PAGE_FLIP/RMFB
+IOCTL path, common for Wayland compositors.
 
-This patch fixes up the remaining stragglers that were left behind.  Add
-Fixes tag so that this doesn't precede related change in stable.
+Get rid of the custom callback in favor of drm_atomic_helper_dirtyfb and unify the
+handling of the presentation paths inside of vmw_ldu_primary_plane_atomic_update.
+This also homogenizes the fb dirty callbacks across all DUs: LDU, SOU and STDU.
 
-Fixes: d54170812ef1 ("arm64: fix .idmap.text assertion for large kernels")
-Reported-by: Greg Thelen <gthelen@google.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/r/20230428-awx-v2-1-b197ffa16edc@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Martin Krastev <krastevm@vmware.com>
+Reviewed-by: Maaz Mombasawala <mombasawalam@vmware.com>
+Fixes: 2f5544ff0300 ("drm/vmwgfx: Use atomic helper function for dirty fb IOCTL")
+Cc: <stable@vger.kernel.org> # v5.0+
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230321020949.335012-3-zack@kde.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpu-reset.S | 2 +-
- arch/arm64/kernel/sleep.S     | 2 +-
- arch/arm64/mm/proc.S          | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 62 +----------------------------
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h |  5 ---
+ drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c | 45 +++++++++++++++++----
+ 3 files changed, 38 insertions(+), 74 deletions(-)
 
-diff --git a/arch/arm64/kernel/cpu-reset.S b/arch/arm64/kernel/cpu-reset.S
-index 6b752fe897451..c87445dde6745 100644
---- a/arch/arm64/kernel/cpu-reset.S
-+++ b/arch/arm64/kernel/cpu-reset.S
-@@ -14,7 +14,7 @@
- #include <asm/virt.h>
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index d5c4da2b05b1a..aab6389cb4aab 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1264,70 +1264,10 @@ static void vmw_framebuffer_bo_destroy(struct drm_framebuffer *framebuffer)
+ 	kfree(vfbd);
+ }
  
- .text
--.pushsection    .idmap.text, "awx"
-+.pushsection    .idmap.text, "a"
+-static int vmw_framebuffer_bo_dirty(struct drm_framebuffer *framebuffer,
+-				    struct drm_file *file_priv,
+-				    unsigned int flags, unsigned int color,
+-				    struct drm_clip_rect *clips,
+-				    unsigned int num_clips)
+-{
+-	struct vmw_private *dev_priv = vmw_priv(framebuffer->dev);
+-	struct vmw_framebuffer_bo *vfbd =
+-		vmw_framebuffer_to_vfbd(framebuffer);
+-	struct drm_clip_rect norect;
+-	int ret, increment = 1;
+-
+-	drm_modeset_lock_all(&dev_priv->drm);
+-
+-	if (!num_clips) {
+-		num_clips = 1;
+-		clips = &norect;
+-		norect.x1 = norect.y1 = 0;
+-		norect.x2 = framebuffer->width;
+-		norect.y2 = framebuffer->height;
+-	} else if (flags & DRM_MODE_FB_DIRTY_ANNOTATE_COPY) {
+-		num_clips /= 2;
+-		increment = 2;
+-	}
+-
+-	switch (dev_priv->active_display_unit) {
+-	case vmw_du_legacy:
+-		ret = vmw_kms_ldu_do_bo_dirty(dev_priv, &vfbd->base, 0, 0,
+-					      clips, num_clips, increment);
+-		break;
+-	default:
+-		ret = -EINVAL;
+-		WARN_ONCE(true, "Dirty called with invalid display system.\n");
+-		break;
+-	}
+-
+-	vmw_cmd_flush(dev_priv, false);
+-
+-	drm_modeset_unlock_all(&dev_priv->drm);
+-
+-	return ret;
+-}
+-
+-static int vmw_framebuffer_bo_dirty_ext(struct drm_framebuffer *framebuffer,
+-					struct drm_file *file_priv,
+-					unsigned int flags, unsigned int color,
+-					struct drm_clip_rect *clips,
+-					unsigned int num_clips)
+-{
+-	struct vmw_private *dev_priv = vmw_priv(framebuffer->dev);
+-
+-	if (dev_priv->active_display_unit == vmw_du_legacy &&
+-	    vmw_cmd_supported(dev_priv))
+-		return vmw_framebuffer_bo_dirty(framebuffer, file_priv, flags,
+-						color, clips, num_clips);
+-
+-	return drm_atomic_helper_dirtyfb(framebuffer, file_priv, flags, color,
+-					 clips, num_clips);
+-}
+-
+ static const struct drm_framebuffer_funcs vmw_framebuffer_bo_funcs = {
+ 	.create_handle = vmw_framebuffer_bo_create_handle,
+ 	.destroy = vmw_framebuffer_bo_destroy,
+-	.dirty = vmw_framebuffer_bo_dirty_ext,
++	.dirty = drm_atomic_helper_dirtyfb,
+ };
  
  /*
-  * cpu_soft_restart(el2_switch, entry, arg0, arg1, arg2)
-diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
-index 2ae7cff1953aa..2aa5129d82537 100644
---- a/arch/arm64/kernel/sleep.S
-+++ b/arch/arm64/kernel/sleep.S
-@@ -97,7 +97,7 @@ SYM_FUNC_START(__cpu_suspend_enter)
- 	ret
- SYM_FUNC_END(__cpu_suspend_enter)
- 
--	.pushsection ".idmap.text", "awx"
-+	.pushsection ".idmap.text", "a"
- SYM_CODE_START(cpu_resume)
- 	mov	x0, xzr
- 	bl	init_kernel_el
-diff --git a/arch/arm64/mm/proc.S b/arch/arm64/mm/proc.S
-index 91410f4880900..c2cb437821ca4 100644
---- a/arch/arm64/mm/proc.S
-+++ b/arch/arm64/mm/proc.S
-@@ -167,7 +167,7 @@ alternative_else_nop_endif
- SYM_FUNC_END(cpu_do_resume)
- #endif
- 
--	.pushsection ".idmap.text", "awx"
-+	.pushsection ".idmap.text", "a"
- 
- .macro	__idmap_cpu_set_reserved_ttbr1, tmp1, tmp2
- 	adrp	\tmp1, reserved_pg_dir
-@@ -201,7 +201,7 @@ SYM_FUNC_END(idmap_cpu_replace_ttbr1)
- 
- #define KPTI_NG_PTE_FLAGS	(PTE_ATTRINDX(MT_NORMAL) | SWAPPER_PTE_FLAGS)
- 
--	.pushsection ".idmap.text", "awx"
-+	.pushsection ".idmap.text", "a"
- 
- 	.macro	kpti_mk_tbl_ng, type, num_entries
- 	add	end_\type\()p, cur_\type\()p, #\num_entries * 8
-@@ -400,7 +400,7 @@ SYM_FUNC_END(idmap_kpti_install_ng_mappings)
-  * Output:
-  *	Return in x0 the value of the SCTLR_EL1 register.
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+index 85f86faa32439..b02d2793659f9 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -517,11 +517,6 @@ void vmw_du_connector_destroy_state(struct drm_connector *connector,
   */
--	.pushsection ".idmap.text", "awx"
-+	.pushsection ".idmap.text", "a"
- SYM_FUNC_START(__cpu_setup)
- 	tlbi	vmalle1				// Invalidate local TLB
- 	dsb	nsh
+ int vmw_kms_ldu_init_display(struct vmw_private *dev_priv);
+ int vmw_kms_ldu_close_display(struct vmw_private *dev_priv);
+-int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
+-			    struct vmw_framebuffer *framebuffer,
+-			    unsigned int flags, unsigned int color,
+-			    struct drm_clip_rect *clips,
+-			    unsigned int num_clips, int increment);
+ int vmw_kms_update_proxy(struct vmw_resource *res,
+ 			 const struct drm_clip_rect *clips,
+ 			 unsigned num_clips,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
+index a56e5d0ca3c65..ac72c20715f32 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
+@@ -234,6 +234,7 @@ static const struct drm_crtc_funcs vmw_legacy_crtc_funcs = {
+ 	.atomic_duplicate_state = vmw_du_crtc_duplicate_state,
+ 	.atomic_destroy_state = vmw_du_crtc_destroy_state,
+ 	.set_config = drm_atomic_helper_set_config,
++	.page_flip = drm_atomic_helper_page_flip,
+ };
+ 
+ 
+@@ -273,6 +274,12 @@ static const struct
+ drm_connector_helper_funcs vmw_ldu_connector_helper_funcs = {
+ };
+ 
++static int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
++				   struct vmw_framebuffer *framebuffer,
++				   unsigned int flags, unsigned int color,
++				   struct drm_mode_rect *clips,
++				   unsigned int num_clips);
++
+ /*
+  * Legacy Display Plane Functions
+  */
+@@ -291,7 +298,6 @@ vmw_ldu_primary_plane_atomic_update(struct drm_plane *plane,
+ 	struct drm_framebuffer *fb;
+ 	struct drm_crtc *crtc = new_state->crtc ?: old_state->crtc;
+ 
+-
+ 	ldu = vmw_crtc_to_ldu(crtc);
+ 	dev_priv = vmw_priv(plane->dev);
+ 	fb       = new_state->fb;
+@@ -304,8 +310,31 @@ vmw_ldu_primary_plane_atomic_update(struct drm_plane *plane,
+ 		vmw_ldu_del_active(dev_priv, ldu);
+ 
+ 	vmw_ldu_commit_list(dev_priv);
+-}
+ 
++	if (vfb && vmw_cmd_supported(dev_priv)) {
++		struct drm_mode_rect fb_rect = {
++			.x1 = 0,
++			.y1 = 0,
++			.x2 = vfb->base.width,
++			.y2 = vfb->base.height
++		};
++		struct drm_mode_rect *damage_rects = drm_plane_get_damage_clips(new_state);
++		u32 rect_count = drm_plane_get_damage_clips_count(new_state);
++		int ret;
++
++		if (!damage_rects) {
++			damage_rects = &fb_rect;
++			rect_count = 1;
++		}
++
++		ret = vmw_kms_ldu_do_bo_dirty(dev_priv, vfb, 0, 0, damage_rects, rect_count);
++
++		drm_WARN_ONCE(plane->dev, ret,
++			"vmw_kms_ldu_do_bo_dirty failed with: ret=%d\n", ret);
++
++		vmw_cmd_flush(dev_priv, false);
++	}
++}
+ 
+ static const struct drm_plane_funcs vmw_ldu_plane_funcs = {
+ 	.update_plane = drm_atomic_helper_update_plane,
+@@ -536,11 +565,11 @@ int vmw_kms_ldu_close_display(struct vmw_private *dev_priv)
+ }
+ 
+ 
+-int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
+-			    struct vmw_framebuffer *framebuffer,
+-			    unsigned int flags, unsigned int color,
+-			    struct drm_clip_rect *clips,
+-			    unsigned int num_clips, int increment)
++static int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
++				   struct vmw_framebuffer *framebuffer,
++				   unsigned int flags, unsigned int color,
++				   struct drm_mode_rect *clips,
++				   unsigned int num_clips)
+ {
+ 	size_t fifo_size;
+ 	int i;
+@@ -556,7 +585,7 @@ int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
+ 		return -ENOMEM;
+ 
+ 	memset(cmd, 0, fifo_size);
+-	for (i = 0; i < num_clips; i++, clips += increment) {
++	for (i = 0; i < num_clips; i++, clips++) {
+ 		cmd[i].header = SVGA_CMD_UPDATE;
+ 		cmd[i].body.x = clips->x1;
+ 		cmd[i].body.y = clips->y1;
 -- 
 2.39.2
 
