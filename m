@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF50D7039BC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3DA703378
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244642AbjEORpe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40226 "EHLO
+        id S242800AbjEOQhY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244643AbjEORpO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:14 -0400
+        with ESMTP id S242723AbjEOQhX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 004966E92
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A94823C22
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D550162E49
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8813C433EF;
-        Mon, 15 May 2023 17:42:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4750762837
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E409C433EF;
+        Mon, 15 May 2023 16:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172577;
-        bh=iWbCCRy1Spjcf836iiuBVoDOigsexpBSKY30+3yNyjY=;
+        s=korg; t=1684168641;
+        bh=XlUpJ7Pi01HnD8swK0ZTBWvr6cUn/YaGoA7TnB+qEKU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=be8neLZF9AodVs4lDk6AIKtDtOJ5IPBvKdO4fPlac24AkLT+kjuHI9jMX2/7qkl6+
-         9sgdw/orW7CVWlLY2EiHoUyUrU+9ue8Ua0Uhbffjs7lwYmsSMqTmCtMDYkW2Df/XgY
-         xNNyMn9Ve86AlVbwWvfEz3/SbRTDXepscKqe0EUY=
+        b=J3Jbkfd0gGRzSLOfmVHIJm6S7Mj3X1FMQ8+NdUXW7OPhZdK5yoAOIJI+p0lWcddKS
+         NoefYJNxdbYjlpYvRfg3I/1RN4p5ytARR+y1RD2VGw7r6yuw0OeeTXnOe1HAVi/jwP
+         hohFeX+8xJMy60P/Q53bhUL5RrBWVrG5LNSQb9tE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@linux.dev>,
-        Stanislav Fomichev <sdf@google.com>,
-        YiFei Zhu <zhuyifei@google.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/381] selftests/bpf: Wait for receive in cg_storage_multi test
+        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
+        Thomas Voegtle <tv@lio96.de>,
+        =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= 
+        <christoph.boehmwalder@linbit.com>, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.14 114/116] drbd: correctly submit flush bio on barrier
 Date:   Mon, 15 May 2023 18:26:51 +0200
-Message-Id: <20230515161744.033983594@linuxfoundation.org>
+Message-Id: <20230515161702.018761516@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,68 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
 
-[ Upstream commit 5af607a861d43ffff830fc1890033e579ec44799 ]
+commit 3899d94e3831ee07ea6821c032dc297aec80586a upstream.
 
-In some cases the loopback latency might be large enough, causing
-the assertion on invocations to be run before ingress prog getting
-executed. The assertion would fail and the test would flake.
+When we receive a flush command (or "barrier" in DRBD), we currently use
+a REQ_OP_FLUSH with the REQ_PREFLUSH flag set.
 
-This can be reliably reproduced by arbitrarily increasing the
-loopback latency (thanks to [1]):
-  tc qdisc add dev lo root handle 1: htb default 12
-  tc class add dev lo parent 1:1 classid 1:12 htb rate 20kbps ceil 20kbps
-  tc qdisc add dev lo parent 1:12 netem delay 100ms
+The correct way to submit a flush bio is by using a REQ_OP_WRITE without
+any data, and set the REQ_PREFLUSH flag.
 
-Fix this by waiting on the receive end, instead of instantly
-returning to the assert. The call to read() will wait for the
-default SO_RCVTIMEO timeout of 3 seconds provided by
-start_server().
+Since commit b4a6bb3a67aa ("block: add a sanity check for non-write
+flush/fua bios"), this triggers a warning in the block layer, but this
+has been broken for quite some time before that.
 
-[1] https://gist.github.com/kstevens715/4598301
+So use the correct set of flags to actually make the flush happen.
 
-Reported-by: Martin KaFai Lau <martin.lau@linux.dev>
-Link: https://lore.kernel.org/bpf/9c5c8b7e-1d89-a3af-5400-14fde81f4429@linux.dev/
-Fixes: 3573f384014f ("selftests/bpf: Test CGROUP_STORAGE behavior on shared egress + ingress")
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Link: https://lore.kernel.org/r/20230405193354.1956209-1-zhuyifei@google.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: stable@vger.kernel.org
+Fixes: f9ff0da56437 ("drbd: allow parallel flushes for multi-volume resources")
+Reported-by: Thomas Voegtle <tv@lio96.de>
+Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230503121937.17232-1-christoph.boehmwalder@linbit.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/block/drbd/drbd_receiver.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c b/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-index 643dfa35419c1..48dc5827daa7f 100644
---- a/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-@@ -56,8 +56,9 @@ static bool assert_storage_noexist(struct bpf_map *map, const void *key)
+--- a/drivers/block/drbd/drbd_receiver.c
++++ b/drivers/block/drbd/drbd_receiver.c
+@@ -1309,7 +1309,7 @@ static void submit_one_flush(struct drbd
+ 	bio_set_dev(bio, device->ldev->backing_bdev);
+ 	bio->bi_private = octx;
+ 	bio->bi_end_io = one_flush_endio;
+-	bio->bi_opf = REQ_OP_FLUSH | REQ_PREFLUSH;
++	bio->bi_opf = REQ_OP_WRITE | REQ_PREFLUSH;
  
- static bool connect_send(const char *cgroup_path)
- {
--	bool res = true;
- 	int server_fd = -1, client_fd = -1;
-+	char message[] = "message";
-+	bool res = true;
- 
- 	if (join_cgroup(cgroup_path))
- 		goto out_clean;
-@@ -70,7 +71,10 @@ static bool connect_send(const char *cgroup_path)
- 	if (client_fd < 0)
- 		goto out_clean;
- 
--	if (send(client_fd, "message", strlen("message"), 0) < 0)
-+	if (send(client_fd, &message, sizeof(message), 0) < 0)
-+		goto out_clean;
-+
-+	if (read(server_fd, &message, sizeof(message)) < 0)
- 		goto out_clean;
- 
- 	res = false;
--- 
-2.39.2
-
+ 	device->flush_jif = jiffies;
+ 	set_bit(FLUSH_PENDING, &device->flags);
 
 
