@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C40727039D9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A64117035B2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243494AbjEORqY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44650 "EHLO
+        id S243531AbjEORBU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:01:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244690AbjEORqE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:04 -0400
+        with ESMTP id S243448AbjEOQ7z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 534D011B65
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D24C983CF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB43262E99
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0BAC433D2;
-        Mon, 15 May 2023 17:44:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26A5962A59
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18328C433D2;
+        Mon, 15 May 2023 16:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172648;
-        bh=RJTPGN6oEi6Yos+3WycusWIvGhfbzMyFii435hEou30=;
+        s=korg; t=1684169983;
+        bh=gijC1yzGZA3N6eISKROgoqHRNLNf9w56/SDtBFj4ZPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0jIPSwVwIN4ZSkjy2RsbD27Mg4YMohk7tVsj4SMaoW4jOSkomkaCUWAOc+pzUGM2d
-         snsbm6KlU/o7QgAiNObwIpFAimeaVSUo/uap4pF91us1746zLzTI0dBFi/sbk+5xgZ
-         NoHcKXK5AC38GDlgnWKHtDci3Mvqtvnl/5bPXZzw=
+        b=SZCfFmdVWEwGzD8k5PmMCMUDz2oqVc6CjcwFWEXu7exq1Sv3HWfUAOxT3DEXYc+pT
+         sAMpK9dfoT6eRmcYtUzw4li6O1vQDDcg+RTts5saF/HAHfSkU1Q1BFmkmU7GgnGkNQ
+         QIaUfJqAccwK6sM9rSWBiELuxvfbycn1Bf3bBlF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 194/381] usb: host: xhci-rcar: remove leftover quirk handling
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+394aa8a792cb99dbc837@syzkaller.appspotmail.com,
+        syzbot+344aaa8697ebd232bfc8@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.3 233/246] ext4: improve error handling from ext4_dirhash()
 Date:   Mon, 15 May 2023 18:27:25 +0200
-Message-Id: <20230515161745.584547368@linuxfoundation.org>
+Message-Id: <20230515161729.619468984@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +55,156 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 5d67f4861884762ebc2bddb5d667444e45f25782 ]
+commit 4b3cb1d108bfc2aebb0d7c8a52261a53cf7f5786 upstream.
 
-Loading V3 firmware does not need a quirk anymore, remove the leftover
-code.
+The ext4_dirhash() will *almost* never fail, especially when the hash
+tree feature was first introduced.  However, with the addition of
+support of encrypted, casefolded file names, that function can most
+certainly fail today.
 
-Fixes: ed8603e11124 ("usb: host: xhci-rcar: Simplify getting the firmware name for R-Car Gen3")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20230307163041.3815-10-wsa+renesas@sang-engineering.com
+So make sure the callers of ext4_dirhash() properly check for
+failures, and reflect the errors back up to their callers.
+
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230506142419.984260-1-tytso@mit.edu
+Reported-by: syzbot+394aa8a792cb99dbc837@syzkaller.appspotmail.com
+Reported-by: syzbot+344aaa8697ebd232bfc8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=db56459ea4ac4a676ae4b4678f633e55da005a9b
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-rcar.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/ext4/hash.c  |    6 +++++-
+ fs/ext4/namei.c |   53 +++++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 42 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-rcar.c b/drivers/usb/host/xhci-rcar.c
-index 9888ba7d85b6a..cfafa1c50adea 100644
---- a/drivers/usb/host/xhci-rcar.c
-+++ b/drivers/usb/host/xhci-rcar.c
-@@ -75,7 +75,6 @@ MODULE_FIRMWARE(XHCI_RCAR_FIRMWARE_NAME_V3);
+--- a/fs/ext4/hash.c
++++ b/fs/ext4/hash.c
+@@ -277,7 +277,11 @@ static int __ext4fs_dirhash(const struct
+ 	}
+ 	default:
+ 		hinfo->hash = 0;
+-		return -1;
++		hinfo->minor_hash = 0;
++		ext4_warning(dir->i_sb,
++			     "invalid/unsupported hash tree version %u",
++			     hinfo->hash_version);
++		return -EINVAL;
+ 	}
+ 	hash = hash & ~1;
+ 	if (hash == (EXT4_HTREE_EOF_32BIT << 1))
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -674,7 +674,7 @@ static struct stats dx_show_leaf(struct
+ 				len = de->name_len;
+ 				if (!IS_ENCRYPTED(dir)) {
+ 					/* Directory is not encrypted */
+-					ext4fs_dirhash(dir, de->name,
++					(void) ext4fs_dirhash(dir, de->name,
+ 						de->name_len, &h);
+ 					printk("%*.s:(U)%x.%u ", len,
+ 					       name, h.hash,
+@@ -709,8 +709,9 @@ static struct stats dx_show_leaf(struct
+ 					if (IS_CASEFOLDED(dir))
+ 						h.hash = EXT4_DIRENT_HASH(de);
+ 					else
+-						ext4fs_dirhash(dir, de->name,
+-						       de->name_len, &h);
++						(void) ext4fs_dirhash(dir,
++							de->name,
++							de->name_len, &h);
+ 					printk("%*.s:(E)%x.%u ", len, name,
+ 					       h.hash, (unsigned) ((char *) de
+ 								   - base));
+@@ -720,7 +721,8 @@ static struct stats dx_show_leaf(struct
+ #else
+ 				int len = de->name_len;
+ 				char *name = de->name;
+-				ext4fs_dirhash(dir, de->name, de->name_len, &h);
++				(void) ext4fs_dirhash(dir, de->name,
++						      de->name_len, &h);
+ 				printk("%*.s:%x.%u ", len, name, h.hash,
+ 				       (unsigned) ((char *) de - base));
+ #endif
+@@ -849,8 +851,14 @@ dx_probe(struct ext4_filename *fname, st
+ 	hinfo->seed = EXT4_SB(dir->i_sb)->s_hash_seed;
+ 	/* hash is already computed for encrypted casefolded directory */
+ 	if (fname && fname_name(fname) &&
+-				!(IS_ENCRYPTED(dir) && IS_CASEFOLDED(dir)))
+-		ext4fs_dirhash(dir, fname_name(fname), fname_len(fname), hinfo);
++	    !(IS_ENCRYPTED(dir) && IS_CASEFOLDED(dir))) {
++		int ret = ext4fs_dirhash(dir, fname_name(fname),
++					 fname_len(fname), hinfo);
++		if (ret < 0) {
++			ret_err = ERR_PTR(ret);
++			goto fail;
++		}
++	}
+ 	hash = hinfo->hash;
  
- /* For soc_device_attribute */
- #define RCAR_XHCI_FIRMWARE_V2   BIT(0) /* FIRMWARE V2 */
--#define RCAR_XHCI_FIRMWARE_V3   BIT(1) /* FIRMWARE V3 */
- 
- static const struct soc_device_attribute rcar_quirks_match[]  = {
- 	{
-@@ -147,8 +146,6 @@ static int xhci_rcar_download_firmware(struct usb_hcd *hcd)
- 
- 	if (quirks & RCAR_XHCI_FIRMWARE_V2)
- 		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V2;
--	else if (quirks & RCAR_XHCI_FIRMWARE_V3)
--		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V3;
+ 	if (root->info.unused_flags & 1) {
+@@ -1111,7 +1119,12 @@ static int htree_dirblock_to_tree(struct
+ 				hinfo->minor_hash = 0;
+ 			}
+ 		} else {
+-			ext4fs_dirhash(dir, de->name, de->name_len, hinfo);
++			err = ext4fs_dirhash(dir, de->name,
++					     de->name_len, hinfo);
++			if (err < 0) {
++				count = err;
++				goto errout;
++			}
+ 		}
+ 		if ((hinfo->hash < start_hash) ||
+ 		    ((hinfo->hash == start_hash) &&
+@@ -1313,8 +1326,12 @@ static int dx_make_map(struct inode *dir
+ 		if (de->name_len && de->inode) {
+ 			if (ext4_hash_in_dirent(dir))
+ 				h.hash = EXT4_DIRENT_HASH(de);
+-			else
+-				ext4fs_dirhash(dir, de->name, de->name_len, &h);
++			else {
++				int err = ext4fs_dirhash(dir, de->name,
++						     de->name_len, &h);
++				if (err < 0)
++					return err;
++			}
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+@@ -1452,10 +1469,9 @@ int ext4_fname_setup_ci_filename(struct
+ 	hinfo->hash_version = DX_HASH_SIPHASH;
+ 	hinfo->seed = NULL;
+ 	if (cf_name->name)
+-		ext4fs_dirhash(dir, cf_name->name, cf_name->len, hinfo);
++		return ext4fs_dirhash(dir, cf_name->name, cf_name->len, hinfo);
  	else
- 		firmware_name = priv->firmware_name;
+-		ext4fs_dirhash(dir, iname->name, iname->len, hinfo);
+-	return 0;
++		return ext4fs_dirhash(dir, iname->name, iname->len, hinfo);
+ }
+ #endif
  
--- 
-2.39.2
-
+@@ -2298,10 +2314,15 @@ static int make_indexed_dir(handle_t *ha
+ 	fname->hinfo.seed = EXT4_SB(dir->i_sb)->s_hash_seed;
+ 
+ 	/* casefolded encrypted hashes are computed on fname setup */
+-	if (!ext4_hash_in_dirent(dir))
+-		ext4fs_dirhash(dir, fname_name(fname),
+-				fname_len(fname), &fname->hinfo);
+-
++	if (!ext4_hash_in_dirent(dir)) {
++		int err = ext4fs_dirhash(dir, fname_name(fname),
++					 fname_len(fname), &fname->hinfo);
++		if (err < 0) {
++			brelse(bh2);
++			brelse(bh);
++			return err;
++		}
++	}
+ 	memset(frames, 0, sizeof(frames));
+ 	frame = frames;
+ 	frame->entries = entries;
 
 
