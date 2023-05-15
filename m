@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09BD0703A05
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CD7D703822
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244753AbjEORrk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46510 "EHLO
+        id S244277AbjEOR1i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244128AbjEORrG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:47:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A1F618A97
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:54 -0700 (PDT)
+        with ESMTP id S244276AbjEOR1W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7187610A13
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE1A362EBD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2F4C433D2;
-        Mon, 15 May 2023 17:45:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E1F062CE4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA399C433EF;
+        Mon, 15 May 2023 17:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172753;
-        bh=jcVLoMjznRvKBvnaiZSKrhusVn6MDBWvB0xIxVd+Sjg=;
+        s=korg; t=1684171570;
+        bh=2qVUV9OkNHd1g2qmZFWshx7GnnNRYQpXuECWjUBNC9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=znkgUXexsK6QpzQ3Aj31Ip+daDP4xon5b36Guds1A7glU4BUW4G85kRCnsg+89MRZ
-         ShHfWRGvx6DBkb8Rqb55ONx4Zy0x+XV7YrEjZdFHCboJT2yW6VpMhP6GBvOxlpM8G7
-         g9qKxqSUv2ldaG9Yw42vqQ+HMYo0RsFWin+PLx6U=
+        b=bEJWe1jM1IIb3SAaVP9mMUdnBLvAfdTbB14O/A89zzWrTcxETbRfz0jupMRM/jCQG
+         jpx008ZsG+PDhOwGOstRCMV5Yas/ENuNmgpvnHzDI6GjONCn7H2wL7DAPBTa1moASj
+         kfQMjkFBVD6pRjfiXzI04VOOPTbCzr82XoUCW3xA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, mhiramat@kernel.org, npiggin@gmail.com,
+        Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+        Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 227/381] spmi: Add a check for remove callback when removing a SPMI driver
+Subject: [PATCH 5.15 001/134] ring-buffer: Ensure proper resetting of atomic variables in ring_buffer_reset_online_cpus
 Date:   Mon, 15 May 2023 18:27:58 +0200
-Message-Id: <20230515161746.975445557@linuxfoundation.org>
+Message-Id: <20230515161702.947758823@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,63 +58,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jishnu Prakash <quic_jprakash@quicinc.com>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-[ Upstream commit b56eef3e16d888883fefab47425036de80dd38fc ]
+[ Upstream commit 7c339fb4d8577792378136c15fde773cfb863cb8 ]
 
-When removing a SPMI driver, there can be a crash due to NULL pointer
-dereference if it does not have a remove callback defined. This is
-one such call trace observed when removing the QCOM SPMI PMIC driver:
+In ring_buffer_reset_online_cpus, the buffer_size_kb write operation
+may permanently fail if the cpu_online_mask changes between two
+for_each_online_buffer_cpu loops. The number of increases and decreases
+on both cpu_buffer->resize_disabled and cpu_buffer->record_disabled may be
+inconsistent, causing some CPUs to have non-zero values for these atomic
+variables after the function returns.
 
- dump_backtrace.cfi_jt+0x0/0x8
- dump_stack_lvl+0xd8/0x16c
- panic+0x188/0x498
- __cfi_slowpath+0x0/0x214
- __cfi_slowpath+0x1dc/0x214
- spmi_drv_remove+0x16c/0x1e0
- device_release_driver_internal+0x468/0x79c
- driver_detach+0x11c/0x1a0
- bus_remove_driver+0xc4/0x124
- driver_unregister+0x58/0x84
- cleanup_module+0x1c/0xc24 [qcom_spmi_pmic]
- __do_sys_delete_module+0x3ec/0x53c
- __arm64_sys_delete_module+0x18/0x28
- el0_svc_common+0xdc/0x294
- el0_svc+0x38/0x9c
- el0_sync_handler+0x8c/0xf0
- el0_sync+0x1b4/0x1c0
+This issue can be reproduced by "echo 0 > trace" while hotplugging cpu.
+After reproducing success, we can find out buffer_size_kb will not be
+functional anymore.
 
-If a driver has all its resources allocated through devm_() APIs and
-does not need any other explicit cleanup, it would not require a
-remove callback to be defined. Hence, add a check for remove callback
-presence before calling it when removing a SPMI driver.
+To prevent leaving 'resize_disabled' and 'record_disabled' non-zero after
+ring_buffer_reset_online_cpus returns, we ensure that each atomic variable
+has been set up before atomic_sub() to it.
 
-Link: https://lore.kernel.org/r/1671601032-18397-2-git-send-email-quic_jprakash@quicinc.com
-Fixes: 6f00f8c8635f ("mfd: qcom-spmi-pmic: Use devm_of_platform_populate()")
-Fixes: 5a86bf343976 ("spmi: Linux driver framework for SPMI")
-Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20230413223834.4084793-7-sboyd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20230426062027.17451-1-Tze-nan.Wu@mediatek.com
+
+Cc: stable@vger.kernel.org
+Cc: <mhiramat@kernel.org>
+Cc: npiggin@gmail.com
+Fixes: b23d7a5f4a07 ("ring-buffer: speed up buffer resets by avoiding synchronize_rcu for each CPU")
+Reviewed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spmi/spmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
-index c16b60f645a4d..8ca7e004a53dc 100644
---- a/drivers/spmi/spmi.c
-+++ b/drivers/spmi/spmi.c
-@@ -348,7 +348,8 @@ static int spmi_drv_remove(struct device *dev)
- 	const struct spmi_driver *sdrv = to_spmi_driver(dev->driver);
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index bacd1f87f941b..83046c6443f1c 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5295,6 +5295,9 @@ void ring_buffer_reset_cpu(struct trace_buffer *buffer, int cpu)
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_reset_cpu);
  
- 	pm_runtime_get_sync(dev);
--	sdrv->remove(to_spmi_device(dev));
-+	if (sdrv->remove)
-+		sdrv->remove(to_spmi_device(dev));
- 	pm_runtime_put_noidle(dev);
++/* Flag to ensure proper resetting of atomic variables */
++#define RESET_BIT	(1 << 30)
++
+ /**
+  * ring_buffer_reset_cpu - reset a ring buffer per CPU buffer
+  * @buffer: The ring buffer to reset a per cpu buffer of
+@@ -5311,20 +5314,27 @@ void ring_buffer_reset_online_cpus(struct trace_buffer *buffer)
+ 	for_each_online_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
  
- 	pm_runtime_disable(dev);
+-		atomic_inc(&cpu_buffer->resize_disabled);
++		atomic_add(RESET_BIT, &cpu_buffer->resize_disabled);
+ 		atomic_inc(&cpu_buffer->record_disabled);
+ 	}
+ 
+ 	/* Make sure all commits have finished */
+ 	synchronize_rcu();
+ 
+-	for_each_online_buffer_cpu(buffer, cpu) {
++	for_each_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
+ 
++		/*
++		 * If a CPU came online during the synchronize_rcu(), then
++		 * ignore it.
++		 */
++		if (!(atomic_read(&cpu_buffer->resize_disabled) & RESET_BIT))
++			continue;
++
+ 		reset_disabled_cpu_buffer(cpu_buffer);
+ 
+ 		atomic_dec(&cpu_buffer->record_disabled);
+-		atomic_dec(&cpu_buffer->resize_disabled);
++		atomic_sub(RESET_BIT, &cpu_buffer->resize_disabled);
+ 	}
+ 
+ 	mutex_unlock(&buffer->mutex);
 -- 
 2.39.2
 
