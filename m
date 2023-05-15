@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B7A703B0E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B76877036C0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242371AbjEOR7I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60610 "EHLO
+        id S243851AbjEORNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242445AbjEOR6f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0192815EEA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:06 -0700 (PDT)
+        with ESMTP id S243724AbjEORNM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997B69EF3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C754462FEC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3CC433EF;
-        Mon, 15 May 2023 17:56:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 609B662B69
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F04EC4339B;
+        Mon, 15 May 2023 17:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173361;
-        bh=XmNYg1PQsz8vNeQbI+155zAITQTRKcFB3NUHy93W8ok=;
+        s=korg; t=1684170692;
+        bh=6bc4r8hhPwLpn7u/K2gooVQoh0VagQRG8DT/taaWISk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KNYs+rB8QfnGcUnruOuDyGsdCz8TfHBaPvimEDw7vRvV4OitErjnPuaA7ofLfTawh
-         37ewL2FCf/gS7T6qkAcMJ/cXx3VH3cp0CnKtPdqkWwaP0Gs1DvX/PFuf0UmobXvupm
-         ku3C3QCOVFAfT0vGV4SYuiK/VQXehNos287AQjHg=
+        b=0oRWKlAUgtGc5l7vO/iGJwodGwFpvrwncf0HbJD4fh23WsOulzt3hi5JD52IcQVlj
+         +1sBJS4LEA3PbwxGLKj14XdS9MQIn1opFhjXDNDCceXHQwv+cDp/mSzMKcUKrjVp3O
+         pplJI61dKni8aoQ3XyqPqbY0EKWnJHCloVDzdpuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/282] timekeeping: Split jiffies seqlock
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.1 183/239] drm/msm/adreno: adreno_gpu: Use suspend() instead of idle() on load error
 Date:   Mon, 15 May 2023 18:27:26 +0200
-Message-Id: <20230515161724.274205539@linuxfoundation.org>
+Message-Id: <20230515161727.153218736@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,189 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit e5d4d1756b07d9490a0269a9e68c1e05ee1feb9b ]
+commit 3eeca5e5f3100435b06a5b5d86daa3d135a8a4bd upstream.
 
-seqlock consists of a sequence counter and a spinlock_t which is used to
-serialize the writers. spinlock_t is substituted by a "sleeping" spinlock
-on PREEMPT_RT enabled kernels which breaks the usage in the timekeeping
-code as the writers are executed in hard interrupt and therefore
-non-preemptible context even on PREEMPT_RT.
+The adreno_load_gpu() path is guarded by an error check on
+adreno_load_fw(). This function is responsible for loading
+Qualcomm-only-signed binaries (e.g. SQE and GMU FW for A6XX), but it
+does not take the vendor-signed ZAP blob into account.
 
-The spinlock in seqlock cannot be unconditionally replaced by a
-raw_spinlock_t as many seqlock users have nesting spinlock sections or
-other code which is not suitable to run in truly atomic context on RT.
+By embedding the SQE (and GMU, if necessary) firmware into the
+initrd/kernel, we can trigger and unfortunate path that would not bail
+out early and proceed with gpu->hw_init(). That will fail, as the ZAP
+loader path will not find the firmware and return back to
+adreno_load_gpu().
 
-Instead of providing a raw_seqlock API for a single use case, open code the
-seqlock for the jiffies use case and implement it with a raw_spinlock_t and
-a sequence counter.
+This error path involves pm_runtime_put_sync() which then calls idle()
+instead of suspend(). This is suboptimal, as it means that we're not
+going through the clean shutdown sequence. With at least A619_holi, this
+makes the GPU not wake up until it goes through at least one more
+start-fail-stop cycle. The pm_runtime_put_sync that appears in the error
+path actually does not guarantee that because of the earlier enabling of
+runtime autosuspend.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200321113242.120587764@linutronix.de
-Stable-dep-of: e9523a0d8189 ("tick/common: Align tick period with the HZ tick.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix that by using pm_runtime_put_sync_suspend to force a clean shutdown.
+
+Test cases:
+1. All firmware baked into kernel
+2. error loading ZAP fw in initrd -> load from rootfs at DE start
+
+Both succeed on A619_holi (SM6375) and A630 (SDM845).
+
+Fixes: 0d997f95b70f ("drm/msm/adreno: fix runtime PM imbalance at gpu load")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/530001/
+Link: https://lore.kernel.org/r/20230330231517.2747024-1-konrad.dybcio@linaro.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/jiffies.c     |  7 ++++---
- kernel/time/tick-common.c | 10 ++++++----
- kernel/time/tick-sched.c  | 19 ++++++++++++-------
- kernel/time/timekeeping.c |  6 ++++--
- kernel/time/timekeeping.h |  3 ++-
- 5 files changed, 28 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/msm/adreno/adreno_device.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
-index d23b434c2ca7b..eddcf49704445 100644
---- a/kernel/time/jiffies.c
-+++ b/kernel/time/jiffies.c
-@@ -58,7 +58,8 @@ static struct clocksource clocksource_jiffies = {
- 	.max_cycles	= 10,
- };
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -465,7 +465,7 @@ struct msm_gpu *adreno_load_gpu(struct d
+ 	return gpu;
  
--__cacheline_aligned_in_smp DEFINE_SEQLOCK(jiffies_lock);
-+__cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(jiffies_lock);
-+__cacheline_aligned_in_smp seqcount_t jiffies_seq;
+ err_put_rpm:
+-	pm_runtime_put_sync(&pdev->dev);
++	pm_runtime_put_sync_suspend(&pdev->dev);
+ err_disable_rpm:
+ 	pm_runtime_disable(&pdev->dev);
  
- #if (BITS_PER_LONG < 64)
- u64 get_jiffies_64(void)
-@@ -67,9 +68,9 @@ u64 get_jiffies_64(void)
- 	u64 ret;
- 
- 	do {
--		seq = read_seqbegin(&jiffies_lock);
-+		seq = read_seqcount_begin(&jiffies_seq);
- 		ret = jiffies_64;
--	} while (read_seqretry(&jiffies_lock, seq));
-+	} while (read_seqcount_retry(&jiffies_seq, seq));
- 	return ret;
- }
- EXPORT_SYMBOL(get_jiffies_64);
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 7e5d3524e924d..6c9c342dd0e53 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -84,13 +84,15 @@ int tick_is_oneshot_available(void)
- static void tick_periodic(int cpu)
- {
- 	if (tick_do_timer_cpu == cpu) {
--		write_seqlock(&jiffies_lock);
-+		raw_spin_lock(&jiffies_lock);
-+		write_seqcount_begin(&jiffies_seq);
- 
- 		/* Keep track of the next tick event */
- 		tick_next_period = ktime_add(tick_next_period, tick_period);
- 
- 		do_timer(1);
--		write_sequnlock(&jiffies_lock);
-+		write_seqcount_end(&jiffies_seq);
-+		raw_spin_unlock(&jiffies_lock);
- 		update_wall_time();
- 	}
- 
-@@ -162,9 +164,9 @@ void tick_setup_periodic(struct clock_event_device *dev, int broadcast)
- 		ktime_t next;
- 
- 		do {
--			seq = read_seqbegin(&jiffies_lock);
-+			seq = read_seqcount_begin(&jiffies_seq);
- 			next = tick_next_period;
--		} while (read_seqretry(&jiffies_lock, seq));
-+		} while (read_seqcount_retry(&jiffies_seq, seq));
- 
- 		clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT);
- 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 5eb04bb598026..88a508cc89255 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -65,7 +65,8 @@ static void tick_do_update_jiffies64(ktime_t now)
- 		return;
- 
- 	/* Reevaluate with jiffies_lock held */
--	write_seqlock(&jiffies_lock);
-+	raw_spin_lock(&jiffies_lock);
-+	write_seqcount_begin(&jiffies_seq);
- 
- 	delta = ktime_sub(now, last_jiffies_update);
- 	if (delta >= tick_period) {
-@@ -91,10 +92,12 @@ static void tick_do_update_jiffies64(ktime_t now)
- 		/* Keep the tick_next_period variable up to date */
- 		tick_next_period = ktime_add(last_jiffies_update, tick_period);
- 	} else {
--		write_sequnlock(&jiffies_lock);
-+		write_seqcount_end(&jiffies_seq);
-+		raw_spin_unlock(&jiffies_lock);
- 		return;
- 	}
--	write_sequnlock(&jiffies_lock);
-+	write_seqcount_end(&jiffies_seq);
-+	raw_spin_unlock(&jiffies_lock);
- 	update_wall_time();
- }
- 
-@@ -105,12 +108,14 @@ static ktime_t tick_init_jiffy_update(void)
- {
- 	ktime_t period;
- 
--	write_seqlock(&jiffies_lock);
-+	raw_spin_lock(&jiffies_lock);
-+	write_seqcount_begin(&jiffies_seq);
- 	/* Did we start the jiffies update yet ? */
- 	if (last_jiffies_update == 0)
- 		last_jiffies_update = tick_next_period;
- 	period = last_jiffies_update;
--	write_sequnlock(&jiffies_lock);
-+	write_seqcount_end(&jiffies_seq);
-+	raw_spin_unlock(&jiffies_lock);
- 	return period;
- }
- 
-@@ -665,10 +670,10 @@ static ktime_t tick_nohz_next_event(struct tick_sched *ts, int cpu)
- 
- 	/* Read jiffies and the time when jiffies were updated last */
- 	do {
--		seq = read_seqbegin(&jiffies_lock);
-+		seq = read_seqcount_begin(&jiffies_seq);
- 		basemono = last_jiffies_update;
- 		basejiff = jiffies;
--	} while (read_seqretry(&jiffies_lock, seq));
-+	} while (read_seqcount_retry(&jiffies_seq, seq));
- 	ts->last_jiffies = basejiff;
- 	ts->timer_expires_base = basemono;
- 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 2bc278dd98546..105dd0b663291 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2415,8 +2415,10 @@ EXPORT_SYMBOL(hardpps);
-  */
- void xtime_update(unsigned long ticks)
- {
--	write_seqlock(&jiffies_lock);
-+	raw_spin_lock(&jiffies_lock);
-+	write_seqcount_begin(&jiffies_seq);
- 	do_timer(ticks);
--	write_sequnlock(&jiffies_lock);
-+	write_seqcount_end(&jiffies_seq);
-+	raw_spin_unlock(&jiffies_lock);
- 	update_wall_time();
- }
-diff --git a/kernel/time/timekeeping.h b/kernel/time/timekeeping.h
-index 141ab3ab0354f..099737f6f10c7 100644
---- a/kernel/time/timekeeping.h
-+++ b/kernel/time/timekeeping.h
-@@ -25,7 +25,8 @@ static inline void sched_clock_resume(void) { }
- extern void do_timer(unsigned long ticks);
- extern void update_wall_time(void);
- 
--extern seqlock_t jiffies_lock;
-+extern raw_spinlock_t jiffies_lock;
-+extern seqcount_t jiffies_seq;
- 
- #define CS_NAME_LEN	32
- 
--- 
-2.39.2
-
 
 
