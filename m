@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD9ED703624
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9735F703504
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243559AbjEORHI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47040 "EHLO
+        id S243212AbjEOQzF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243569AbjEORGv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C24BA5D8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:20 -0700 (PDT)
+        with ESMTP id S243174AbjEOQyk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA5936E96
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:54:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 361C262A9D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B80C433EF;
-        Mon, 15 May 2023 17:04:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B06E629C0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:54:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F86DC4339B;
+        Mon, 15 May 2023 16:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170276;
-        bh=50lPu6tEysEYdXbs6D/Iejzz1JDrJY9e/78PNCFGN2s=;
+        s=korg; t=1684169660;
+        bh=crE+3prRPrVEAyoNqBZ/oDDymuz63sBm4m/fZgJ+fw4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RFC/D0ixdMrx6P9czYlVEvcdNorshBPvncDb7MVHJHI41hRWRSqFlUsyz2cd9MLv8
-         lAr80BM+yNZETRe3VpP2mnKiP2w5JudafME/HLNxIIR3glfK9U4+h3z/S/FUXSbFNB
-         mDraPZbmM0bSXQrwGZh3HojXa9ShQ2qhrhYst3bM=
+        b=buM4IeWNKuw9xSXrMR/44h5nfwAwhY/c1CELdFCc9RkDpDzSvKoOmGJkHHVBMYDMH
+         Tv5ewNaz0uGu6jG6m3d3uI9xzqIs2/CQ56LLeI2Xl1KwxVz4tPLMNudZ6zi7ao7m++
+         Asw0tcd/uZOxEO2XGvgZfVQ11YybuBtCI0cP/AJ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/239] af_packet: Dont send zero-byte data in packet_sendmsg_spkt().
+        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 130/246] btrfs: fix assertion of exclop condition when starting balance
 Date:   Mon, 15 May 2023 18:25:42 +0200
-Message-Id: <20230515161724.053083084@linuxfoundation.org>
+Message-Id: <20230515161726.462887377@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,111 +53,180 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: xiaoshoukui <xiaoshoukui@gmail.com>
 
-[ Upstream commit 6a341729fb31b4c5df9f74f24b4b1c98410c9b87 ]
+commit ac868bc9d136cde6e3eb5de77019a63d57a540ff upstream.
 
-syzkaller reported a warning below [0].
+Balance as exclusive state is compatible with paused balance and device
+add, which makes some things more complicated. The assertion of valid
+states when starting from paused balance needs to take into account two
+more states, the combinations can be hit when there are several threads
+racing to start balance and device add. This won't typically happen when
+the commands are started from command line.
 
-We can reproduce it by sending 0-byte data from the (AF_PACKET,
-SOCK_PACKET) socket via some devices whose dev->hard_header_len
-is 0.
+Scenario 1: With exclusive_operation state == BTRFS_EXCLOP_NONE.
 
-    struct sockaddr_pkt addr = {
-        .spkt_family = AF_PACKET,
-        .spkt_device = "tun0",
-    };
-    int fd;
+Concurrently adding multiple devices to the same mount point and
+btrfs_exclop_finish executed finishes before assertion in
+btrfs_exclop_balance, exclusive_operation will changed to
+BTRFS_EXCLOP_NONE state which lead to assertion failed:
 
-    fd = socket(AF_PACKET, SOCK_PACKET, 0);
-    sendto(fd, NULL, 0, 0, (struct sockaddr *)&addr, sizeof(addr));
+  fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE ||
+  fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD,
+  in fs/btrfs/ioctl.c:456
+  Call Trace:
+   <TASK>
+   btrfs_exclop_balance+0x13c/0x310
+   ? memdup_user+0xab/0xc0
+   ? PTR_ERR+0x17/0x20
+   btrfs_ioctl_add_dev+0x2ee/0x320
+   btrfs_ioctl+0x9d5/0x10d0
+   ? btrfs_ioctl_encoded_write+0xb80/0xb80
+   __x64_sys_ioctl+0x197/0x210
+   do_syscall_64+0x3c/0xb0
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-We have a similar fix for the (AF_PACKET, SOCK_RAW) socket as
-commit dc633700f00f ("net/af_packet: check len when min_header_len
-equals to 0").
+Scenario 2: With exclusive_operation state == BTRFS_EXCLOP_BALANCE_PAUSED.
 
-Let's add the same test for the SOCK_PACKET socket.
+Concurrently adding multiple devices to the same mount point and
+btrfs_exclop_balance executed finish before the latter thread execute
+assertion in btrfs_exclop_balance, exclusive_operation will changed to
+BTRFS_EXCLOP_BALANCE_PAUSED state which lead to assertion failed:
 
-[0]:
-skb_assert_len
-WARNING: CPU: 1 PID: 19945 at include/linux/skbuff.h:2552 skb_assert_len include/linux/skbuff.h:2552 [inline]
-WARNING: CPU: 1 PID: 19945 at include/linux/skbuff.h:2552 __dev_queue_xmit+0x1f26/0x31d0 net/core/dev.c:4159
-Modules linked in:
-CPU: 1 PID: 19945 Comm: syz-executor.0 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:skb_assert_len include/linux/skbuff.h:2552 [inline]
-RIP: 0010:__dev_queue_xmit+0x1f26/0x31d0 net/core/dev.c:4159
-Code: 89 de e8 1d a2 85 fd 84 db 75 21 e8 64 a9 85 fd 48 c7 c6 80 2a 1f 86 48 c7 c7 c0 06 1f 86 c6 05 23 cf 27 04 01 e8 fa ee 56 fd <0f> 0b e8 43 a9 85 fd 0f b6 1d 0f cf 27 04 31 ff 89 de e8 e3 a1 85
-RSP: 0018:ffff8880217af6e0 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90001133000
-RDX: 0000000000040000 RSI: ffffffff81186922 RDI: 0000000000000001
-RBP: ffff8880217af8b0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888030045640
-R13: ffff8880300456b0 R14: ffff888030045650 R15: ffff888030045718
-FS:  00007fc5864da640(0000) GS:ffff88806cd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020005740 CR3: 000000003f856003 CR4: 0000000000770ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- dev_queue_xmit include/linux/netdevice.h:3085 [inline]
- packet_sendmsg_spkt+0xc4b/0x1230 net/packet/af_packet.c:2066
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x1b4/0x200 net/socket.c:747
- ____sys_sendmsg+0x331/0x970 net/socket.c:2503
- ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2557
- __sys_sendmmsg+0x18c/0x430 net/socket.c:2643
- __do_sys_sendmmsg net/socket.c:2672 [inline]
- __se_sys_sendmmsg net/socket.c:2669 [inline]
- __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2669
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3c/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7fc58791de5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007fc5864d9cc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007fc58791de5d
-RDX: 0000000000000001 RSI: 0000000020005740 RDI: 0000000000000004
-RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fc58797e530 R15: 0000000000000000
- </TASK>
----[ end trace 0000000000000000 ]---
-skb len=0 headroom=16 headlen=0 tailroom=304
-mac=(16,0) net=(16,-1) trans=-1
-shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
-csum(0x0 ip_summed=0 complete_sw=0 valid=0 level=0)
-hash(0x0 sw=0 l4=0) proto=0x0000 pkttype=0 iif=0
-dev name=sit0 feat=0x00000006401d7869
-sk family=17 type=10 proto=0
+  fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE ||
+  fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD ||
+  fs_info->exclusive_operation == BTRFS_EXCLOP_NONE,
+  fs/btrfs/ioctl.c:458
+  Call Trace:
+   <TASK>
+   btrfs_exclop_balance+0x240/0x410
+   ? memdup_user+0xab/0xc0
+   ? PTR_ERR+0x17/0x20
+   btrfs_ioctl_add_dev+0x2ee/0x320
+   btrfs_ioctl+0x9d5/0x10d0
+   ? btrfs_ioctl_encoded_write+0xb80/0xb80
+   __x64_sys_ioctl+0x197/0x210
+   do_syscall_64+0x3c/0xb0
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+An example of the failed assertion is below, which shows that the
+paused balance is also needed to be checked.
+
+  root@syzkaller:/home/xsk# ./repro
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  [  416.611428][ T7970] BTRFS info (device loop0): fs_info exclusive_operation: 0
+  Failed to add device /dev/vda, errno 14
+  [  416.613973][ T7971] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.615456][ T7972] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.617528][ T7973] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.618359][ T7974] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.622589][ T7975] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.624034][ T7976] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.626420][ T7977] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.627643][ T7978] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.629006][ T7979] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  [  416.630298][ T7980] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  [  416.632787][ T7981] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.634282][ T7982] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.636202][ T7983] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  [  416.637012][ T7984] BTRFS info (device loop0): fs_info exclusive_operation: 1
+  Failed to add device /dev/vda, errno 14
+  [  416.637759][ T7984] assertion failed: fs_info->exclusive_operation ==
+  BTRFS_EXCLOP_BALANCE || fs_info->exclusive_operation ==
+  BTRFS_EXCLOP_DEV_ADD || fs_info->exclusive_operation ==
+  BTRFS_EXCLOP_NONE, in fs/btrfs/ioctl.c:458
+  [  416.639845][ T7984] invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+  [  416.640485][ T7984] CPU: 0 PID: 7984 Comm: repro Not tainted 6.2.0 #7
+  [  416.641172][ T7984] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+  [  416.642090][ T7984] RIP: 0010:btrfs_assertfail+0x2c/0x2e
+  [  416.644423][ T7984] RSP: 0018:ffffc90003ea7e28 EFLAGS: 00010282
+  [  416.645018][ T7984] RAX: 00000000000000cc RBX: 0000000000000000 RCX: 0000000000000000
+  [  416.645763][ T7984] RDX: ffff88801d030000 RSI: ffffffff81637e7c RDI: fffff520007d4fb7
+  [  416.646554][ T7984] RBP: ffffffff8a533de0 R08: 00000000000000cc R09: 0000000000000000
+  [  416.647299][ T7984] R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8a533da0
+  [  416.648041][ T7984] R13: 00000000000001ca R14: 000000005000940a R15: 0000000000000000
+  [  416.648785][ T7984] FS:  00007fa2985d4640(0000) GS:ffff88802cc00000(0000) knlGS:0000000000000000
+  [  416.649616][ T7984] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  416.650238][ T7984] CR2: 0000000000000000 CR3: 0000000018e5e000 CR4: 0000000000750ef0
+  [  416.650980][ T7984] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [  416.651725][ T7984] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [  416.652502][ T7984] PKRU: 55555554
+  [  416.652888][ T7984] Call Trace:
+  [  416.653241][ T7984]  <TASK>
+  [  416.653527][ T7984]  btrfs_exclop_balance+0x240/0x410
+  [  416.654036][ T7984]  ? memdup_user+0xab/0xc0
+  [  416.654465][ T7984]  ? PTR_ERR+0x17/0x20
+  [  416.654874][ T7984]  btrfs_ioctl_add_dev+0x2ee/0x320
+  [  416.655380][ T7984]  btrfs_ioctl+0x9d5/0x10d0
+  [  416.655822][ T7984]  ? btrfs_ioctl_encoded_write+0xb80/0xb80
+  [  416.656400][ T7984]  __x64_sys_ioctl+0x197/0x210
+  [  416.656874][ T7984]  do_syscall_64+0x3c/0xb0
+  [  416.657346][ T7984]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [  416.657922][ T7984] RIP: 0033:0x4546af
+  [  416.660170][ T7984] RSP: 002b:00007fa2985d4150 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  [  416.660972][ T7984] RAX: ffffffffffffffda RBX: 00007fa2985d4640 RCX: 00000000004546af
+  [  416.661714][ T7984] RDX: 0000000000000000 RSI: 000000005000940a RDI: 0000000000000003
+  [  416.662449][ T7984] RBP: 00007fa2985d41d0 R08: 0000000000000000 R09: 00007ffee37a4c4f
+  [  416.663195][ T7984] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fa2985d4640
+  [  416.663951][ T7984] R13: 0000000000000009 R14: 000000000041b320 R15: 00007fa297dd4000
+  [  416.664703][ T7984]  </TASK>
+  [  416.665040][ T7984] Modules linked in:
+  [  416.665590][ T7984] ---[ end trace 0000000000000000 ]---
+  [  416.666176][ T7984] RIP: 0010:btrfs_assertfail+0x2c/0x2e
+  [  416.668775][ T7984] RSP: 0018:ffffc90003ea7e28 EFLAGS: 00010282
+  [  416.669425][ T7984] RAX: 00000000000000cc RBX: 0000000000000000 RCX: 0000000000000000
+  [  416.670235][ T7984] RDX: ffff88801d030000 RSI: ffffffff81637e7c RDI: fffff520007d4fb7
+  [  416.671050][ T7984] RBP: ffffffff8a533de0 R08: 00000000000000cc R09: 0000000000000000
+  [  416.671867][ T7984] R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8a533da0
+  [  416.672685][ T7984] R13: 00000000000001ca R14: 000000005000940a R15: 0000000000000000
+  [  416.673501][ T7984] FS:  00007fa2985d4640(0000) GS:ffff88802cc00000(0000) knlGS:0000000000000000
+  [  416.674425][ T7984] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  416.675114][ T7984] CR2: 0000000000000000 CR3: 0000000018e5e000 CR4: 0000000000750ef0
+  [  416.675933][ T7984] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [  416.676760][ T7984] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Link: https://lore.kernel.org/linux-btrfs/20230324031611.98986-1-xiaoshoukui@gmail.com/
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ioctl.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ac9335d76fb73..2af2ab924d64a 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2035,7 +2035,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		goto retry;
- 	}
- 
--	if (!dev_validate_header(dev, skb->data, len)) {
-+	if (!dev_validate_header(dev, skb->data, len) || !skb->len) {
- 		err = -EINVAL;
- 		goto out_unlock;
- 	}
--- 
-2.39.2
-
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -454,7 +454,9 @@ void btrfs_exclop_balance(struct btrfs_f
+ 	case BTRFS_EXCLOP_BALANCE_PAUSED:
+ 		spin_lock(&fs_info->super_lock);
+ 		ASSERT(fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE ||
+-		       fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD);
++		       fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD ||
++		       fs_info->exclusive_operation == BTRFS_EXCLOP_NONE ||
++		       fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE_PAUSED);
+ 		fs_info->exclusive_operation = BTRFS_EXCLOP_BALANCE_PAUSED;
+ 		spin_unlock(&fs_info->super_lock);
+ 		break;
 
 
