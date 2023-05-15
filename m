@@ -2,49 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 671F7703652
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC480703513
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243493AbjEORJD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47434 "EHLO
+        id S243230AbjEOQze (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243445AbjEORIo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:44 -0400
+        with ESMTP id S243233AbjEOQzL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B96909ED5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738BF4EF6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 79FFA62B04
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:06:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802DBC433EF;
-        Mon, 15 May 2023 17:06:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06B5F629CD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03236C433EF;
+        Mon, 15 May 2023 16:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170406;
-        bh=fFIITTqZj4Tpks68nbymJI6pymHbMQrYOSVdLreAt7s=;
+        s=korg; t=1684169704;
+        bh=ZGQwDrblZujQZQODfbu5LD+tJ6qDeTPQhNlyaCkmguQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vF0guvtE1egFBRubGtMzU/58OtVm+efPSnMCTQD3ZQ1m0UnCJJZJbSH66P2zezIId
-         /AbwXi5r36U7s6Xa1IQgB1vX6KKNazIMCicJJdvsiyixQIhVPgqWlgt8CD2tyWNx7a
-         JUfJ4oQrdOXNRhvdTNDFruqeWdJeKoHobEF4vWyE=
+        b=k0uPxCYNUED8OWoHxOPeWqJS2dx6u4aoiLu6irpxmDiMqQyRgPxOvw5LLiDGc7Rf0
+         2qplISYcxeyhJFzLKxgsgXeMav/JljjeLCUFxUqW/saLNQyebAZKqVtSQxucsmLNDm
+         PKkQ3XWUayXNwJfnQ5meXu6y9fSXEk0EssNz4+hk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Thomas Richter <tmricht@linux.ibm.com>,
-        Sumanth Korikkar <sumanthk@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/239] perf vendor events s390: Remove UTF-8 characters from JSON file
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.3 143/246] platform/x86: touchscreen_dmi: Add upside-down quirk for GDIX1002 ts on the Juno Tablet
 Date:   Mon, 15 May 2023 18:25:55 +0200
-Message-Id: <20230515161724.431574414@linuxfoundation.org>
+Message-Id: <20230515161726.852035145@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,82 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit eb2feb68cb7d404288493c41480843bc9f404789 ]
+commit 6abfa99ce52f61a31bcfc2aaaae09006f5665495 upstream.
 
-Commit 7f76b31130680fb3 ("perf list: Add IBM z16 event description for
-s390") contains the verbal description for z16 extended counter set.
+The Juno Computers Juno Tablet has an upside-down mounted Goodix
+touchscreen. Add a quirk to invert both axis to correct for this.
 
-However some entries of the public description contain UTF-8 characters
-which breaks the build on some distros.
-
-Fix this and remove the UTF-8 characters.
-
-Fixes: 7f76b31130680fb3 ("perf list: Add IBM z16 event description for s390")
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://junocomputers.com/us/product/juno-tablet/
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230505210323.43177-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/pmu-events/arch/s390/cf_z16/extended.json | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/extended.json b/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
-index c306190fc06f2..c2b10ec1c6e01 100644
---- a/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
-+++ b/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
-@@ -95,28 +95,28 @@
- 		"EventCode": "145",
- 		"EventName": "DCW_REQ",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache."
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -378,6 +378,11 @@ static const struct ts_dmi_data gdix1001
+ 	.properties	= gdix1001_upside_down_props,
+ };
+ 
++static const struct ts_dmi_data gdix1002_00_upside_down_data = {
++	.acpi_name	= "GDIX1002:00",
++	.properties	= gdix1001_upside_down_props,
++};
++
+ static const struct property_entry gp_electronic_t701_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 960),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 640),
+@@ -1296,6 +1301,18 @@ const struct dmi_system_id touchscreen_d
+ 		},
  	},
  	{
- 		"Unit": "CPU-M-CF",
- 		"EventCode": "146",
- 		"EventName": "DCW_REQ_IV",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Intervention",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache with intervention."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache with intervention."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
- 		"EventCode": "147",
- 		"EventName": "DCW_REQ_CHIP_HIT",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Chip HP Hit",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache after using chip level horizontal persistence, Chip-HP hit."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache after using chip level horizontal persistence, Chip-HP hit."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
- 		"EventCode": "148",
- 		"EventName": "DCW_REQ_DRAWER_HIT",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Drawer HP Hit",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache after using drawer level horizontal persistence, Drawer-HP hit."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache after using drawer level horizontal persistence, Drawer-HP hit."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
-@@ -284,7 +284,7 @@
- 		"EventCode": "172",
- 		"EventName": "ICW_REQ_DRAWER_HIT",
- 		"BriefDescription": "Directory Write Level 1 Instruction Cache from Cache with Drawer HP Hit",
--		"PublicDescription": "A directory write to the Level-1 Instruction cache directory where the returned cache line was sourced from the requestor’s Level-2 cache using drawer level horizontal persistence, Drawer-HP hit."
-+		"PublicDescription": "A directory write to the Level-1 Instruction cache directory where the returned cache line was sourced from the requestors Level-2 cache using drawer level horizontal persistence, Drawer-HP hit."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
--- 
-2.39.2
-
++		/* Juno Tablet */
++		.driver_data = (void *)&gdix1002_00_upside_down_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Default string"),
++			/* Both product- and board-name being "Default string" is somewhat rare */
++			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
++			DMI_MATCH(DMI_BOARD_NAME, "Default string"),
++			/* Above matches are too generic, add partial bios-version match */
++			DMI_MATCH(DMI_BIOS_VERSION, "JP2V1."),
++		},
++	},
++	{
+ 		/* Mediacom WinPad 7.0 W700 (same hw as Wintron surftab 7") */
+ 		.driver_data = (void *)&trekstor_surftab_wintron70_data,
+ 		.matches = {
 
 
