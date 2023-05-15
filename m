@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 377E57037AE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123F87036CF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244116AbjEORXn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40860 "EHLO
+        id S243758AbjEOROU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:14:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244097AbjEORXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:16 -0400
+        with ESMTP id S243735AbjEORN4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 345D210F5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77F2AD0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6D8B62C64
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77E6C433EF;
-        Mon, 15 May 2023 17:21:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8076462B8D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736DFC433D2;
+        Mon, 15 May 2023 17:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171295;
-        bh=2X4k2/iIks3FseQkiid0IWUxRMlvGIKBkbXIxiXk09Q=;
+        s=korg; t=1684170736;
+        bh=bxFIocmA/966J2uMkJHVQ06clj+a7pm+Lx20MByDI6I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SWIEPfju1U/C/u5a/g8G0WqrYbfh4vqOsweihS5fYkKbT+D0XzNQi/H33iu8vAsz4
-         TlxaiG5pYIG4GqFRm3pGTyMAFHN8VFyzC5rZbPRLynRwimWlbS7ysfrdwDnhNTNW5P
-         EqYaJsMO9QAsTMqeDq8EjNhYTC93q64PUynWpRUM=
+        b=CJrN34UhUc0PUDUPtl9zXKnUkj3ZaUk3YBP3Aci1O/XQboSSt1I1WfNb2C9D2OkvY
+         hLarJTPFaAMAnei+7eA3ko+I5ldaZaXibciaVtKtEKVMA2RYSuiD/F8oHGVKdYFirF
+         cUlBkv+l34dwC5wToDXPBGc8sCjVgY/csblOcKZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.2 163/242] sysctl: clarify register_sysctl_init() base directory order
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+91dccab7c64e2850a4e5@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 226/239] ext4: fix deadlock when converting an inline directory in nojournal mode
 Date:   Mon, 15 May 2023 18:28:09 +0200
-Message-Id: <20230515161726.772831631@linuxfoundation.org>
+Message-Id: <20230515161728.497543251@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,42 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 228b09de936395ddd740df3522ea35ae934830d8 upstream.
+commit f4ce24f54d9cca4f09a395f3eecce20d6bec4663 upstream.
 
-Relatively new docs which I added which hinted the base directories needed
-to be created before is wrong, remove that incorrect comment. This has been
-hinted before by Eric twice already [0] [1], I had just not verified that
-until now. Now that I've verified that updates the docs to relax the context
-described.
+In no journal mode, ext4_finish_convert_inline_dir() can self-deadlock
+by calling ext4_handle_dirty_dirblock() when it already has taken the
+directory lock.  There is a similar self-deadlock in
+ext4_incvert_inline_data_nolock() for data files which we'll fix at
+the same time.
 
-[0] https://lkml.kernel.org/r/875ys0azt8.fsf@email.froward.int.ebiederm.org
-[1] https://lkml.kernel.org/r/87ftbiud6s.fsf@x220.int.ebiederm.org
+A simple reproducer demonstrating the problem:
 
-Cc: stable@vger.kernel.org # v5.17
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Suggested-by: Eric W. Biederman <ebiederm@xmission.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+    mke2fs -Fq -t ext2 -O inline_data -b 4k /dev/vdc 64
+    mount -t ext4 -o dirsync /dev/vdc /vdc
+    cd /vdc
+    mkdir file0
+    cd file0
+    touch file0
+    touch file1
+    attr -s BurnSpaceInEA -V abcde .
+    touch supercalifragilisticexpialidocious
+
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230507021608.1290720-1-tytso@mit.edu
+Reported-by: syzbot+91dccab7c64e2850a4e5@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=ba84cc80a9491d65416bc7877e1650c87530fe8a
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/ext4/inline.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1445,10 +1445,7 @@ EXPORT_SYMBOL(register_sysctl);
-  * register_sysctl() failing on init are extremely low, and so for both reasons
-  * this function does not return any error as it is used by initialization code.
-  *
-- * Context: Can only be called after your respective sysctl base path has been
-- * registered. So for instance, most base directories are registered early on
-- * init before init levels are processed through proc_sys_init() and
-- * sysctl_init_bases().
-+ * Context: if your base directory does not exist it will be created for you.
-  */
- void __init __register_sysctl_init(const char *path, struct ctl_table *table,
- 				 const char *table_name)
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -1178,6 +1178,7 @@ static int ext4_finish_convert_inline_di
+ 		ext4_initialize_dirent_tail(dir_block,
+ 					    inode->i_sb->s_blocksize);
+ 	set_buffer_uptodate(dir_block);
++	unlock_buffer(dir_block);
+ 	err = ext4_handle_dirty_dirblock(handle, inode, dir_block);
+ 	if (err)
+ 		return err;
+@@ -1252,6 +1253,7 @@ static int ext4_convert_inline_data_nolo
+ 	if (!S_ISDIR(inode->i_mode)) {
+ 		memcpy(data_bh->b_data, buf, inline_size);
+ 		set_buffer_uptodate(data_bh);
++		unlock_buffer(data_bh);
+ 		error = ext4_handle_dirty_metadata(handle,
+ 						   inode, data_bh);
+ 	} else {
+@@ -1259,7 +1261,6 @@ static int ext4_convert_inline_data_nolo
+ 						       buf, inline_size);
+ 	}
+ 
+-	unlock_buffer(data_bh);
+ out_restore:
+ 	if (error)
+ 		ext4_restore_inline_data(handle, inode, iloc, buf, inline_size);
 
 
