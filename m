@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68AFB703834
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ACC0703B4F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244273AbjEOR3i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48858 "EHLO
+        id S242462AbjEOSBw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244220AbjEOR3M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:29:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 445C81209D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:57 -0700 (PDT)
+        with ESMTP id S242735AbjEOSBU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49F7A1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 405D762D04
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35218C433D2;
-        Mon, 15 May 2023 17:26:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44E77621A8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B97C433D2;
+        Mon, 15 May 2023 17:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171613;
-        bh=vYQUcLPMTRVFgU2TgOleFQK6YisZAf2Z3MsTK94EWuo=;
+        s=korg; t=1684173524;
+        bh=XFmwQPBp075IrwiZSMqUh8QW5dwqOujOVStZgkr7jQ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1If3tvMu8DaYpJYz4UL++PgfRK1SdqNz+tasjVY5GrKh0uKt61tpGuMh5YnvIQENf
-         AHOfYwEBDb6HkeDHpqMVk3uVaOAa4fkloXHQ0lLFD8pz7rEAE96qlwm9ThApxV3c/0
-         HXfaAbdRtSQCtfC1I9kAm0Wasxp4FHNvQMNvBD6U=
+        b=b375hxa8FVusLesSRCK543dnvAX7ooZ5o6tR0Ch506+4eTpKuayZAw/ppZb0Ay408
+         lNTK54BNkG0vXwQQVm7S7hSFTSNgww+rNGf/i0tM7zLBuzeh1UjyYZJTFjquUKmWIp
+         8WUfQmb271sfzTbfh8zSMSb1rqe3VO0PQd2Jgyjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/134] selftests: srv6: make srv6_end_dt46_l3vpn_test more robust
+Subject: [PATCH 5.4 122/282] spi: imx: enable runtime pm support
 Date:   Mon, 15 May 2023 18:28:20 +0200
-Message-Id: <20230515161703.772716105@linuxfoundation.org>
+Message-Id: <20230515161725.892619304@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,59 +54,231 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit 46ef24c60f8ee70662968ac55325297ed4624d61 ]
+[ Upstream commit 525c9e5a32bd7951eae3f06d9d077fea51718a6c ]
 
-On some distributions, the rp_filter is automatically set (=1) by
-default on a netdev basis (also on VRFs).
-In an SRv6 End.DT46 behavior, decapsulated IPv4 packets are routed using
-the table associated with the VRF bound to that tunnel. During lookup
-operations, the rp_filter can lead to packet loss when activated on the
-VRF.
-Therefore, we chose to make this selftest more robust by explicitly
-disabling the rp_filter during tests (as it is automatically set by some
-Linux distributions).
+Enable runtime pm support for spi-imx driver.
 
-Fixes: 03a0b567a03d ("selftests: seg6: add selftest for SRv6 End.DT46 Behavior")
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Tested-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Link: https://lore.kernel.org/r/20200727063354.17031-1-xiaoning.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 11951c9e3f36 ("spi: imx: Don't skip cleanup in remove's error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/srv6_end_dt46_l3vpn_test.sh  | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-imx.c | 121 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 88 insertions(+), 33 deletions(-)
 
-diff --git a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-index aebaab8ce44cb..441eededa0312 100755
---- a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-@@ -292,6 +292,11 @@ setup_hs()
- 	ip netns exec ${hsname} sysctl -wq net.ipv6.conf.all.accept_dad=0
- 	ip netns exec ${hsname} sysctl -wq net.ipv6.conf.default.accept_dad=0
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 90793fc321358..95f1746a85d9d 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -13,7 +13,9 @@
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+@@ -30,6 +32,8 @@ static bool use_dma = true;
+ module_param(use_dma, bool, 0644);
+ MODULE_PARM_DESC(use_dma, "Enable usage of DMA when available (default)");
  
-+	# disable the rp_filter otherwise the kernel gets confused about how
-+	# to route decap ipv4 packets.
-+	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
-+	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.default.rp_filter=0
++#define MXC_RPM_TIMEOUT		2000 /* 2000ms */
 +
- 	ip -netns ${hsname} link add veth0 type veth peer name ${rtveth}
- 	ip -netns ${hsname} link set ${rtveth} netns ${rtname}
- 	ip -netns ${hsname} addr add ${IPv6_HS_NETWORK}::${hs}/64 dev veth0 nodad
-@@ -316,11 +321,6 @@ setup_hs()
- 	ip netns exec ${rtname} sysctl -wq net.ipv6.conf.${rtveth}.proxy_ndp=1
- 	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.proxy_arp=1
+ #define MXC_CSPIRXDATA		0x00
+ #define MXC_CSPITXDATA		0x04
+ #define MXC_CSPICTRL		0x08
+@@ -1532,20 +1536,16 @@ spi_imx_prepare_message(struct spi_master *master, struct spi_message *msg)
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 	int ret;
  
--	# disable the rp_filter otherwise the kernel gets confused about how
--	# to route decap ipv4 packets.
--	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
--	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.rp_filter=0
+-	ret = clk_enable(spi_imx->clk_per);
+-	if (ret)
+-		return ret;
 -
- 	ip netns exec ${rtname} sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
+-	ret = clk_enable(spi_imx->clk_ipg);
+-	if (ret) {
+-		clk_disable(spi_imx->clk_per);
++	ret = pm_runtime_get_sync(spi_imx->dev);
++	if (ret < 0) {
++		dev_err(spi_imx->dev, "failed to enable clock\n");
+ 		return ret;
+ 	}
+ 
+ 	ret = spi_imx->devtype_data->prepare_message(spi_imx, msg);
+ 	if (ret) {
+-		clk_disable(spi_imx->clk_ipg);
+-		clk_disable(spi_imx->clk_per);
++		pm_runtime_mark_last_busy(spi_imx->dev);
++		pm_runtime_put_autosuspend(spi_imx->dev);
+ 	}
+ 
+ 	return ret;
+@@ -1556,8 +1556,8 @@ spi_imx_unprepare_message(struct spi_master *master, struct spi_message *msg)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 
+-	clk_disable(spi_imx->clk_ipg);
+-	clk_disable(spi_imx->clk_per);
++	pm_runtime_mark_last_busy(spi_imx->dev);
++	pm_runtime_put_autosuspend(spi_imx->dev);
+ 	return 0;
  }
  
+@@ -1676,13 +1676,15 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		goto out_master_put;
+ 	}
+ 
+-	ret = clk_prepare_enable(spi_imx->clk_per);
+-	if (ret)
+-		goto out_master_put;
++	pm_runtime_enable(spi_imx->dev);
++	pm_runtime_set_autosuspend_delay(spi_imx->dev, MXC_RPM_TIMEOUT);
++	pm_runtime_use_autosuspend(spi_imx->dev);
+ 
+-	ret = clk_prepare_enable(spi_imx->clk_ipg);
+-	if (ret)
+-		goto out_put_per;
++	ret = pm_runtime_get_sync(spi_imx->dev);
++	if (ret < 0) {
++		dev_err(spi_imx->dev, "failed to enable clock\n");
++		goto out_runtime_pm_put;
++	}
+ 
+ 	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
+ 	/*
+@@ -1692,7 +1694,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	if (spi_imx->devtype_data->has_dmamode) {
+ 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
+ 		if (ret == -EPROBE_DEFER)
+-			goto out_clk_put;
++			goto out_runtime_pm_put;
+ 
+ 		if (ret < 0)
+ 			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
+@@ -1707,19 +1709,20 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	ret = spi_bitbang_start(&spi_imx->bitbang);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
+-		goto out_clk_put;
++		goto out_runtime_pm_put;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "probed\n");
+ 
+-	clk_disable(spi_imx->clk_ipg);
+-	clk_disable(spi_imx->clk_per);
++	pm_runtime_mark_last_busy(spi_imx->dev);
++	pm_runtime_put_autosuspend(spi_imx->dev);
++
+ 	return ret;
+ 
+-out_clk_put:
+-	clk_disable_unprepare(spi_imx->clk_ipg);
+-out_put_per:
+-	clk_disable_unprepare(spi_imx->clk_per);
++out_runtime_pm_put:
++	pm_runtime_dont_use_autosuspend(spi_imx->dev);
++	pm_runtime_put_sync(spi_imx->dev);
++	pm_runtime_disable(spi_imx->dev);
+ out_master_put:
+ 	spi_master_put(master);
+ 
+@@ -1734,30 +1737,82 @@ static int spi_imx_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&spi_imx->bitbang);
+ 
+-	ret = clk_enable(spi_imx->clk_per);
++	ret = pm_runtime_get_sync(spi_imx->dev);
++	if (ret < 0) {
++		dev_err(spi_imx->dev, "failed to enable clock\n");
++		return ret;
++	}
++
++	writel(0, spi_imx->base + MXC_CSPICTRL);
++
++	pm_runtime_dont_use_autosuspend(spi_imx->dev);
++	pm_runtime_put_sync(spi_imx->dev);
++	pm_runtime_disable(spi_imx->dev);
++
++	spi_imx_sdma_exit(spi_imx);
++	spi_master_put(master);
++
++	return 0;
++}
++
++static int __maybe_unused spi_imx_runtime_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_imx_data *spi_imx;
++	int ret;
++
++	spi_imx = spi_master_get_devdata(master);
++
++	ret = clk_prepare_enable(spi_imx->clk_per);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = clk_enable(spi_imx->clk_ipg);
++	ret = clk_prepare_enable(spi_imx->clk_ipg);
+ 	if (ret) {
+-		clk_disable(spi_imx->clk_per);
++		clk_disable_unprepare(spi_imx->clk_per);
+ 		return ret;
+ 	}
+ 
+-	writel(0, spi_imx->base + MXC_CSPICTRL);
+-	clk_disable_unprepare(spi_imx->clk_ipg);
++	return 0;
++}
++
++static int __maybe_unused spi_imx_runtime_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_imx_data *spi_imx;
++
++	spi_imx = spi_master_get_devdata(master);
++
+ 	clk_disable_unprepare(spi_imx->clk_per);
+-	spi_imx_sdma_exit(spi_imx);
+-	spi_master_put(master);
++	clk_disable_unprepare(spi_imx->clk_ipg);
++
++	return 0;
++}
+ 
++static int __maybe_unused spi_imx_suspend(struct device *dev)
++{
++	pinctrl_pm_select_sleep_state(dev);
+ 	return 0;
+ }
+ 
++static int __maybe_unused spi_imx_resume(struct device *dev)
++{
++	pinctrl_pm_select_default_state(dev);
++	return 0;
++}
++
++static const struct dev_pm_ops imx_spi_pm = {
++	SET_RUNTIME_PM_OPS(spi_imx_runtime_suspend,
++				spi_imx_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(spi_imx_suspend, spi_imx_resume)
++};
++
+ static struct platform_driver spi_imx_driver = {
+ 	.driver = {
+ 		   .name = DRIVER_NAME,
+ 		   .of_match_table = spi_imx_dt_ids,
+-		   },
++		   .pm = &imx_spi_pm,
++	},
+ 	.id_table = spi_imx_devtype,
+ 	.probe = spi_imx_probe,
+ 	.remove = spi_imx_remove,
 -- 
 2.39.2
 
