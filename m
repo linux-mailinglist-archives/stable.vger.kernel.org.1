@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC61703879
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BECCC7037FD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242479AbjEORcr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53798 "EHLO
+        id S244143AbjEOR0W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:26:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244282AbjEORc3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E264961A2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:33 -0700 (PDT)
+        with ESMTP id S244141AbjEOR0G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E9A11568
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E25462055
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E05FC433EF;
-        Mon, 15 May 2023 17:29:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBEE662CB7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B353AC433EF;
+        Mon, 15 May 2023 17:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171772;
-        bh=6gtk6LyTUMC8jMZLMLOjkNWVEDgMLHSqs1GlV7ggfUw=;
+        s=korg; t=1684171486;
+        bh=wSUrz+NeO/lYyL3E4TXSTgZljsA16Z692dL1f7VyAE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cdTHdQfCzdCLqZm4yK5GopLinZv2wEJnRMRpHCJlxd73sOYTwyFHVroB1Ny6czuXJ
-         274NpgjgMBmGkdxEah3KySAY4jr7bTArTgymMYy6MAkNSjVfsOJ6ba4lr8oKXpM6mB
-         dHgQqqAZTppmjZxH0jbXtV0cxv47PideZo3777D0=
+        b=nAV4AxPwbyAGVAPCi+0D/KqRPiZwIBSDR2rcd6kBIU+MShTVfIg+zDlxvlwlEGOKF
+         ZX7h4/fxGiDwbNw1zhHK9Pe1fRpDs7O72Fxs+UDB9z+Ow7CMRshu7R94n3D0YJqSNW
+         dwFhMMGinGiWoppjedN8HPkb4IGP8t/bhUlEPQls=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 073/134] smb3: fix problem remounting a share after shutdown
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com,
+        Ye Bin <yebin10@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.2 224/242] ext4: fix WARNING in mb_find_extent
 Date:   Mon, 15 May 2023 18:29:10 +0200
-Message-Id: <20230515161705.596866127@linuxfoundation.org>
+Message-Id: <20230515161728.641229508@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,40 +55,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 716a3cf317456fa01d54398bb14ab354f50ed6a2 upstream.
+commit fa08a7b61dff8a4df11ff1e84abfc214b487caf7 upstream.
 
-xfstests generic/392 showed a problem where even after a
-shutdown call was made on a mount, we would still attempt
-to use the (now inaccessible) superblock if another mount
-was attempted for the same share.
+Syzbot found the following issue:
 
-Reported-by: David Howells <dhowells@redhat.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: <stable@vger.kernel.org>
-Fixes: 087f757b0129 ("cifs: add shutdown support")
-Signed-off-by: Steve French <stfrench@microsoft.com>
+EXT4-fs: Warning: mounting with data=journal disables delayed allocation, dioread_nolock, O_DIRECT and fast_commit support!
+EXT4-fs (loop0): orphan cleanup on readonly fs
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 5067 at fs/ext4/mballoc.c:1869 mb_find_extent+0x8a1/0xe30
+Modules linked in:
+CPU: 1 PID: 5067 Comm: syz-executor307 Not tainted 6.2.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+RIP: 0010:mb_find_extent+0x8a1/0xe30 fs/ext4/mballoc.c:1869
+RSP: 0018:ffffc90003c9e098 EFLAGS: 00010293
+RAX: ffffffff82405731 RBX: 0000000000000041 RCX: ffff8880783457c0
+RDX: 0000000000000000 RSI: 0000000000000041 RDI: 0000000000000040
+RBP: 0000000000000040 R08: ffffffff82405723 R09: ffffed10053c9402
+R10: ffffed10053c9402 R11: 1ffff110053c9401 R12: 0000000000000000
+R13: ffffc90003c9e538 R14: dffffc0000000000 R15: ffffc90003c9e2cc
+FS:  0000555556665300(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000056312f6796f8 CR3: 0000000022437000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ext4_mb_complex_scan_group+0x353/0x1100 fs/ext4/mballoc.c:2307
+ ext4_mb_regular_allocator+0x1533/0x3860 fs/ext4/mballoc.c:2735
+ ext4_mb_new_blocks+0xddf/0x3db0 fs/ext4/mballoc.c:5605
+ ext4_ext_map_blocks+0x1868/0x6880 fs/ext4/extents.c:4286
+ ext4_map_blocks+0xa49/0x1cc0 fs/ext4/inode.c:651
+ ext4_getblk+0x1b9/0x770 fs/ext4/inode.c:864
+ ext4_bread+0x2a/0x170 fs/ext4/inode.c:920
+ ext4_quota_write+0x225/0x570 fs/ext4/super.c:7105
+ write_blk fs/quota/quota_tree.c:64 [inline]
+ get_free_dqblk+0x34a/0x6d0 fs/quota/quota_tree.c:130
+ do_insert_tree+0x26b/0x1aa0 fs/quota/quota_tree.c:340
+ do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
+ do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
+ do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
+ dq_insert_tree fs/quota/quota_tree.c:401 [inline]
+ qtree_write_dquot+0x3b6/0x530 fs/quota/quota_tree.c:420
+ v2_write_dquot+0x11b/0x190 fs/quota/quota_v2.c:358
+ dquot_acquire+0x348/0x670 fs/quota/dquot.c:444
+ ext4_acquire_dquot+0x2dc/0x400 fs/ext4/super.c:6740
+ dqget+0x999/0xdc0 fs/quota/dquot.c:914
+ __dquot_initialize+0x3d0/0xcf0 fs/quota/dquot.c:1492
+ ext4_process_orphan+0x57/0x2d0 fs/ext4/orphan.c:329
+ ext4_orphan_cleanup+0xb60/0x1340 fs/ext4/orphan.c:474
+ __ext4_fill_super fs/ext4/super.c:5516 [inline]
+ ext4_fill_super+0x81cd/0x8700 fs/ext4/super.c:5644
+ get_tree_bdev+0x400/0x620 fs/super.c:1282
+ vfs_get_tree+0x88/0x270 fs/super.c:1489
+ do_new_mount+0x289/0xad0 fs/namespace.c:3145
+ do_mount fs/namespace.c:3488 [inline]
+ __do_sys_mount fs/namespace.c:3697 [inline]
+ __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Add some debug information:
+mb_find_extent: mb_find_extent block=41, order=0 needed=64 next=0 ex=0/41/1@3735929054 64 64 7
+block_bitmap: ff 3f 0c 00 fc 01 00 00 d2 3d 00 00 00 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+
+Acctually, blocks per group is 64, but block bitmap indicate at least has
+128 blocks. Now, ext4_validate_block_bitmap() didn't check invalid block's
+bitmap if set.
+To resolve above issue, add check like fsck "Padding at end of block bitmap is
+not set".
+
+Cc: stable@kernel.org
+Reported-by: syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230116020015.1506120-1-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/connect.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/balloc.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -2474,6 +2474,13 @@ cifs_match_super(struct super_block *sb,
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -303,6 +303,22 @@ struct ext4_group_desc * ext4_get_group_
+ 	return desc;
+ }
  
- 	spin_lock(&cifs_tcp_ses_lock);
- 	cifs_sb = CIFS_SB(sb);
++static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
++						    ext4_group_t block_group,
++						    struct buffer_head *bh)
++{
++	ext4_grpblk_t next_zero_bit;
++	unsigned long bitmap_size = sb->s_blocksize * 8;
++	unsigned int offset = num_clusters_in_group(sb, block_group);
 +
-+	/* We do not want to use a superblock that has been shutdown */
-+	if (CIFS_MOUNT_SHUTDOWN & cifs_sb->mnt_cifs_flags) {
-+		spin_unlock(&cifs_tcp_ses_lock);
++	if (bitmap_size <= offset)
 +		return 0;
-+	}
 +
- 	tlink = cifs_get_tlink(cifs_sb_master_tlink(cifs_sb));
- 	if (tlink == NULL) {
- 		/* can not match superblock if tlink were ever null */
++	next_zero_bit = ext4_find_next_zero_bit(bh->b_data, bitmap_size, offset);
++
++	return (next_zero_bit < bitmap_size ? next_zero_bit : 0);
++}
++
+ /*
+  * Return the block number which was discovered to be invalid, or 0 if
+  * the block bitmap is valid.
+@@ -401,6 +417,15 @@ static int ext4_validate_block_bitmap(st
+ 					EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+ 		return -EFSCORRUPTED;
+ 	}
++	blk = ext4_valid_block_bitmap_padding(sb, block_group, bh);
++	if (unlikely(blk != 0)) {
++		ext4_unlock_group(sb, block_group);
++		ext4_error(sb, "bg %u: block %llu: padding at end of block bitmap is not set",
++			   block_group, blk);
++		ext4_mark_group_bitmap_corrupted(sb, block_group,
++						 EXT4_GROUP_INFO_BBITMAP_CORRUPT);
++		return -EFSCORRUPTED;
++	}
+ 	set_buffer_verified(bh);
+ verified:
+ 	ext4_unlock_group(sb, block_group);
 
 
