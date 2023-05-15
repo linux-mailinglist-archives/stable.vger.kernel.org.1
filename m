@@ -2,94 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFE32703EDC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 22:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3EF703F4B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 23:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245226AbjEOUvW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 16:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
+        id S243936AbjEOVFI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 17:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245100AbjEOUvW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 16:51:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2707EDD;
-        Mon, 15 May 2023 13:51:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4F7762537;
-        Mon, 15 May 2023 20:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C992BC433EF;
-        Mon, 15 May 2023 20:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684183880;
-        bh=gAaxqdEUQkw8LfkOGDpq841oskaFlCAl0W84Cnjnr8U=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=ESlXR15gAAalNchEl/7wvfkLF+B8S5CEYoCOTnFbUGWKUOZk7RR0NJDykrQ7DACYG
-         5iNjd6FDUWrQ3tX0mvwBJoFv2S3aSvK7kA/3FueeLzUgEu/7evw6ce4BqRY+k/Wnfj
-         frX6fiVx0W1+FyF5mEUThyQgypPAjtgrjtOmX945fjemDFV74fer0HVhiHM+ATR+E2
-         AwHXRIY4Bd08I7Xsd7xbfdlnLe9iLuhwkqELvVUibgqbxTqenyNt65hVDTDPcBixYB
-         uwtESfvOKJjzlw0hF650zwi4Bl6SRIatK5vUItA4Gvl7PRd+Rf1wCb3SdGpymXFZnq
-         RvF3qujEiZwvg==
-Date:   Mon, 15 May 2023 15:51:18 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Acid Bong <acidbong@tilde.cafe>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Message-ID: <ZGKbRo9shUcR0myC@bhelgaas>
+        with ESMTP id S245549AbjEOVFG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 17:05:06 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEB53AB1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 14:05:04 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-50bcb4a81ceso23439136a12.2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 14:05:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=grsecurity.net; s=grsec; t=1684184703; x=1686776703;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nTC5Jbhy5Lugdl8MQ6NAHTFMl02UAz0PiZG1+JeYllU=;
+        b=r7Y+wGlEbH+TI2ac9S60EZVz17Cngknk9F+P3WXlkCXn22omlX+KWBt3fFfT4MGPSp
+         akbRQXfuwTJPVkDlixgmdz/fUHzHkUnGHxo0miYRKzmpud864bwRacWBownvbYIP9+th
+         vw8KkVwpxYNRQCCQlqpy/GNxRRKriOFGgPX01jsQcATap99vp5hAXf2YBYHh784Nhs56
+         xYA4TadeUTXXzqaO7b/Ni8gOLrX0Q1DLqINSedwIBhOUZisjhXcUrsgUMb2dZn9jbFDk
+         yl3ny+kaDc+PLvVK4SNUb6x80DGpELOaAf5f8FJbZQx0ceyNCTBNcZTzjXCVv0y4atxI
+         3wYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684184703; x=1686776703;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nTC5Jbhy5Lugdl8MQ6NAHTFMl02UAz0PiZG1+JeYllU=;
+        b=C7ShscQZ260P1JFT2aHnp3PRFWr4Opws2PI7Ev/3E6G4kCc0+7U/IV2cHsF/o7Q5zt
+         jaRnDD+OjWZBJL2gw7TIf0iTtoAzoUUuTt8UYGAUkMtJLhV4mTf6k/Hy7Hsuj2c3EI8d
+         ETWhXHEAjCp7Gz8F0Wiv1p+m1PGm8iuvfNyGknPa3peF5bLEdz6d26shu3ySylk1WZvS
+         3LxU/4sRDg4pu0WcD7POdTfa7mAma6Q8iUfRUT9sJVgqeBiaPmj8vzgkMXIyqz35Yb2+
+         UEG1lMfrGDrF+xDWUoPFRQNa2mrnYz1BDOMxhEu4QLRm7eHYueg0F2whRuirHmruu+Sv
+         247g==
+X-Gm-Message-State: AC+VfDzXvyJ06RtubrplOjRFTQCG0ewfgI8m5YIslB/OvW76lg+gqcFQ
+        oMfLmUkwB4hPoUNRgmCB48t0cw==
+X-Google-Smtp-Source: ACHHUZ6Nc+66OOY20dcOI24Ym3TpCQwZDgHylzSiCmG8NVPaPVKJPowOt8qEG2aWJB4u/54qjQqlYw==
+X-Received: by 2002:a17:907:9345:b0:94e:c4b:4d95 with SMTP id bv5-20020a170907934500b0094e0c4b4d95mr29919895ejc.69.1684184703361;
+        Mon, 15 May 2023 14:05:03 -0700 (PDT)
+Received: from ?IPV6:2003:f6:af37:b00:dfd3:5152:f381:a5f3? (p200300f6af370b00dfd35152f381a5f3.dip0.t-ipconnect.de. [2003:f6:af37:b00:dfd3:5152:f381:a5f3])
+        by smtp.gmail.com with ESMTPSA id ib23-20020a1709072c7700b00966069b78absm9977564ejc.192.2023.05.15.14.05.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 May 2023 14:05:03 -0700 (PDT)
+Message-ID: <234e01b6-1b5c-d682-a078-3dd91a62abf4@grsecurity.net>
+Date:   Mon, 15 May 2023 23:05:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CRWCUOAB4JKZ.3EKQN1TFFMVQL@bong>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 5.15 0/8] KVM CR0.WP series backport
+To:     Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Cc:     stable@vger.kernel.org, kvm@vger.kernel.org
+References: <20230508154709.30043-1-minipli@grsecurity.net>
+ <ZF1a8xIGLwcdJDVZ@google.com>
+Content-Language: en-US, de-DE
+From:   Mathias Krause <minipli@grsecurity.net>
+In-Reply-To: <ZF1a8xIGLwcdJDVZ@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[+cc linux-pci; thread at
-https://lore.kernel.org/r/CRVU11I7JJWF.367PSO4YAQQEI@bong]
+[Paolo, can you please take a look at this as well?]
 
-On Fri, Apr 14, 2023 at 12:07:42PM +0300, Acid Bong wrote:
-> > Thorsten
-> > why do you pass pci=nomsi
->
-> It's a workaround for another issue i've been facing for about 2 or 3
-> years, since when I first tried out Linux (started with loading Kubuntu
-> and Mint live images). Without that workaround Kubuntu didn't boot for
-> me - on kernel 5.8 it only reached the graphic installer part, but hung
-> after language selection menu, on 5.4 and 5.11 - didn't even reach the
-> graphic session. With Mint it was more severe - the screen was flooded
-> with PCIe errors, like so:
+On 11.05.23 23:15, Sean Christopherson wrote:
+> On Mon, May 08, 2023, Mathias Krause wrote:
+>> This is a backport of the CR0.WP KVM series[1] to Linux v5.15. It
+>> differs from the v6.1 backport as in needing additional prerequisite
+>> patches from Lai Jiangshan (and fixes for those) to ensure the
+>> assumption it's safe to let CR0.WP be a guest owned bit still stand.
 > 
-> 	Apr 10 18:47:08 bong last message buffered 3 times
-> 	Apr 10 18:47:08 bong kernel: pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask
-> 	Apr 10 18:47:08 bong last message buffered 5 times
-> 	Apr 10 18:47:08 bong kernel: pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask
-> 	Apr 10 18:47:08 bong last message buffered 13 times
-> 	Apr 10 18:47:08 bong kernel: pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask
-> 	Apr 10 18:47:08 bong last message buffered 5 times
-> 	Apr 10 18:47:08 bong kernel: pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask
-> 	Apr 10 18:47:08 bong last message buffered 6 times
+> NAK.
 > 
-> `pci=nomsi` saved me also during Debian installation - without it the
-> live ISO just crashed mid-installation.
+> The CR0.WP changes also very subtly rely on commit 2ba676774dfc ("KVM: x86/mmu:
+> cleanup computation of MMU roles for two-dimensional paging"), which hardcodes
+> WP=1 in the mmu role.
 
-Likely "pci=nomsi" or "pci=noaer" are not related to the
-suspend/poweroff issue, but I'd really like to fix the AER problem
-anyway.
+Well, that commit has the MMU role split into two (mmu_role and
+cpu_role) which was not the case for 5.15 and below. In fact, that split
+was more confusing than helpful, so commit 7a458f0e1ba1 ("KVM: x86/mmu:
+remove extended bits from mmu_role, rename field") /degraded/ mmu_role
+to root_role and made clear that bit test helpers like is_cr0_wp() look
+at cpu_role instead. In that regard, the backport should be equivalent
+to what we have in 6.4, as it's using mmu_role for the older kernels
+instead of cpu_role (which does not exist there yet).
 
-Can you collect the complete dmesg log and output of "sudo lspci -vv"
-and post them somewhere (https://bugzilla.kernel.org is a good place)?
+>                        Without that, KVM will end up in a weird state when
+> reinitializing the MMU context without reloading the root, as KVM will effectively
+> change the role of an active root.  E.g. child pages in the legacy MMU will have
+> a mix of WP=0 and WP=1 in their role.
 
-Ideally the dmesg would be from the most recent kernel you have.
+But does that really matter? Or, asked differently, don't we have that
+very same situation for 6.4 with cpu_role.base.cr0_wp being the bit
+looked at and not root_role.cr0_wp?
 
-Bjorn
+Either way, with EPT this should only matter if emulation is required
+and patch 8 makes sure we'll use the proper value of CR0.WP prior to
+starting the guest page table walk by refreshing the relevant cr0_wp
+bit. Or am I missing something?
+
+> 
+> The inconsistency may or may not cause functional problems (I honestly don't know),
+> but this missed dependency is exactly the type of problem that I am/was worried
+> about with respect to backporting these changes all the way to 5.15.
+
+While doing the backports I carefully looked at the changes and
+differences between the trees and, honestly, I don't think I missed this
+dependency as I did account for the mmu_role->{cpu,root}_role split (or
+rather unification regarding the backport) as explained above.
+
+
+>                                                                       I'm simply
+> not comfortable backporting these changes due to the number of modifications and
+> enhancements that we've made to the TDP MMU, and to KVM's MMU handling in general,
+> between 5.15 and 6.1.
+
+I understand your concerns, fiddling with the MMU implementation is not
+easy at all, as it has so many combinations to keep in mind and quite
+some implicit assumptions throughout the code. Moreover, I'm a newcomer
+to this part of the kernel. However, I tried very hard to look at the
+changes for the individual backports and double- or even triple-checked
+the code to make sure the changes are still consistent with the rest of
+the code base. But I'm just a human, so I might have missed something,
+but a vague bad feeling doesn't convince me that I did something wrong.
+Less so, as KUT supports me in not having messed up things too badly.
+
+I know your backlog is huge and your review time is a scarce resource.
+But could you or Paolo please take another look?
+
+Thanks,
+Mathias
