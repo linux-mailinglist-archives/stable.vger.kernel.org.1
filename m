@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C457034C8
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 082027033D5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243110AbjEOQwN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:52:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
+        id S242272AbjEOQmF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:42:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243139AbjEOQv6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:58 -0400
+        with ESMTP id S242612AbjEOQmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:42:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480ED559D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA9F44BE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8C7C6299C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7997C433D2;
-        Mon, 15 May 2023 16:51:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 689E96289C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620F4C433D2;
+        Mon, 15 May 2023 16:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169516;
-        bh=2CpyPyxBfC2wsCt3WW3S9wDelkzwsiNvUhAcLcGys0M=;
+        s=korg; t=1684168921;
+        bh=7d2QRqwq1SzFZRmBVYbxz9gYBoj1JEiV7lYWBs8fBS0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bltw/BdZvq3yh6jVyoJAcaWRpp7RdO7pVtHNHtNgMQXebnQ5RHdiIfo/o6KaNmCMO
-         w/0Lq1Q2jUeOvZrPIg5S7cWtq1CdZftQuO5JLwDe/VpyDuLp8Je2dRTWUwoQoXzdNg
-         RNn5SfuPTyNXESYuOLS4KHRb6wBV4LjnAOBfRMaM=
+        b=Qey3WnU1f29LLADWfepgIAyio+6RQQLxC+YnreFkFsLk+vAdd5RGgazhogss59UKY
+         6Q4wrmYxUOO64Qy7n3rqCAckMWYeqqR8QGFs3zlvoRDpC27pMKFUf34XT45+6LdOUS
+         RT2XcsIqCEwTrPLZ05ifdVKZeAJoaFVgM92rTg/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Nick Hawkins <nick.hawkins@hpe.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 082/246] i2c: gxp: fix build failure without CONFIG_I2C_SLAVE
+        patches@lists.linux.dev,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 057/191] scsi: target: iscsit: Fix TAS handling during conn cleanup
 Date:   Mon, 15 May 2023 18:24:54 +0200
-Message-Id: <20230515161725.038027340@linuxfoundation.org>
+Message-Id: <20230515161709.283519994@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,74 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 5d388143fa6c351d985ffd23ea50c91c8839141b ]
+[ Upstream commit cc79da306ebb2edb700c3816b90219223182ac3c ]
 
-The gxp_i2c_slave_irq_handler() is hidden in an #ifdef, but the
-caller uses an IS_ENABLED() check:
+Fix a bug added in commit f36199355c64 ("scsi: target: iscsi: Fix cmd abort
+fabric stop race").
 
-drivers/i2c/busses/i2c-gxp.c: In function 'gxp_i2c_irq_handler':
-drivers/i2c/busses/i2c-gxp.c:467:29: error: implicit declaration of function 'gxp_i2c_slave_irq_handler'; did you mean 'gxp_i2c_irq_handler'? [-Werror=implicit-function-declaration]
+If CMD_T_TAS is set on the se_cmd we must call iscsit_free_cmd() to do the
+last put on the cmd and free it, because the connection is down and we will
+not up sending the response and doing the put from the normal I/O
+path.
 
-It has to consistently use one method or the other to avoid warnings,
-so move to IS_ENABLED() here for readability and build coverage, and
-move the #ifdef in linux/i2c.h to allow building it as dead code.
+Add a check for CMD_T_TAS in iscsit_release_commands_from_conn() so we now
+detect this case and run iscsit_free_cmd().
 
-Fixes: 4a55ed6f89f5 ("i2c: Add GXP SoC I2C Controller")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nick Hawkins <nick.hawkins@hpe.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop race")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-9-michael.christie@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-gxp.c | 2 --
- include/linux/i2c.h          | 4 ++--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/target/iscsi/iscsi_target.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-gxp.c b/drivers/i2c/busses/i2c-gxp.c
-index d4b55d989a268..8ea3fb5e4c7f7 100644
---- a/drivers/i2c/busses/i2c-gxp.c
-+++ b/drivers/i2c/busses/i2c-gxp.c
-@@ -353,7 +353,6 @@ static void gxp_i2c_chk_data_ack(struct gxp_i2c_drvdata *drvdata)
- 	writew(value, drvdata->base + GXP_I2CMCMD);
- }
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 58ccded1be857..7738e249c4a24 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4056,9 +4056,12 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
+ 	list_for_each_entry_safe(cmd, cmd_tmp, &tmp_list, i_conn_node) {
+ 		struct se_cmd *se_cmd = &cmd->se_cmd;
  
--#if IS_ENABLED(CONFIG_I2C_SLAVE)
- static bool gxp_i2c_slave_irq_handler(struct gxp_i2c_drvdata *drvdata)
- {
- 	u8 value;
-@@ -437,7 +436,6 @@ static bool gxp_i2c_slave_irq_handler(struct gxp_i2c_drvdata *drvdata)
+-		if (se_cmd->se_tfo != NULL) {
+-			spin_lock_irq(&se_cmd->t_state_lock);
+-			if (se_cmd->transport_state & CMD_T_ABORTED) {
++		if (!se_cmd->se_tfo)
++			continue;
++
++		spin_lock_irq(&se_cmd->t_state_lock);
++		if (se_cmd->transport_state & CMD_T_ABORTED) {
++			if (!(se_cmd->transport_state & CMD_T_TAS))
+ 				/*
+ 				 * LIO's abort path owns the cleanup for this,
+ 				 * so put it back on the list and let
+@@ -4066,11 +4069,10 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
+ 				 */
+ 				list_move_tail(&cmd->i_conn_node,
+ 					       &conn->conn_cmd_list);
+-			} else {
+-				se_cmd->transport_state |= CMD_T_FABRIC_STOP;
+-			}
+-			spin_unlock_irq(&se_cmd->t_state_lock);
++		} else {
++			se_cmd->transport_state |= CMD_T_FABRIC_STOP;
+ 		}
++		spin_unlock_irq(&se_cmd->t_state_lock);
+ 	}
+ 	spin_unlock_bh(&conn->cmd_lock);
  
- 	return true;
- }
--#endif
- 
- static irqreturn_t gxp_i2c_irq_handler(int irq, void *_drvdata)
- {
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 5ba89663ea865..13a1ce38cb0c5 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -385,7 +385,6 @@ static inline void i2c_set_clientdata(struct i2c_client *client, void *data)
- 
- /* I2C slave support */
- 
--#if IS_ENABLED(CONFIG_I2C_SLAVE)
- enum i2c_slave_event {
- 	I2C_SLAVE_READ_REQUESTED,
- 	I2C_SLAVE_WRITE_REQUESTED,
-@@ -396,9 +395,10 @@ enum i2c_slave_event {
- 
- int i2c_slave_register(struct i2c_client *client, i2c_slave_cb_t slave_cb);
- int i2c_slave_unregister(struct i2c_client *client);
--bool i2c_detect_slave_mode(struct device *dev);
- int i2c_slave_event(struct i2c_client *client,
- 		    enum i2c_slave_event event, u8 *val);
-+#if IS_ENABLED(CONFIG_I2C_SLAVE)
-+bool i2c_detect_slave_mode(struct device *dev);
- #else
- static inline bool i2c_detect_slave_mode(struct device *dev) { return false; }
- #endif
 -- 
 2.39.2
 
