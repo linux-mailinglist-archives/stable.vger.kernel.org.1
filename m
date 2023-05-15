@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE537037C4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D7170378F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244030AbjEORYH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40336 "EHLO
+        id S243999AbjEORWs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244100AbjEORXc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1821D86B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:06 -0700 (PDT)
+        with ESMTP id S244069AbjEORWd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C804913C1D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FB7362C76
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB1AC4339B;
-        Mon, 15 May 2023 17:22:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4148862C54
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3171FC433EF;
+        Mon, 15 May 2023 17:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171325;
-        bh=JEIw3/JeNfM0mUIqTOhzCXaqqyzceP9zscvyxHK/3V4=;
+        s=korg; t=1684171233;
+        bh=ZGQwDrblZujQZQODfbu5LD+tJ6qDeTPQhNlyaCkmguQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kyZNcPCNk/2dtGJ0lHoiyegApazQ9043k4EDsEbAQDH+3OUEJANFSJbACryP0K2Na
-         +nKUwpdnIUsbNniBDx9dagg5yg+Whm9t2PjZOIPfam80WPOjDleGb/Z0uzGARUk3SC
-         xzhMAy1rBAfVJ50sjfLhzOTIcShmrRKRDoY+QcVM=
+        b=SnPWQ/aiNNeZ0NVPkEhnTYNxHcXULeH4aATqHzV0wsju6xQcqC83dVcKuDlDlcp04
+         tNIqDyrVFjdgv3NlEdm0lGrbYvTVP6uYM+kDXCzEVF+4m7NZS9kVepxZXK/2ojxtBh
+         a6GwZ4RGWMWTZf4Gimuglc1OqtwiFcI4mSD0Iac4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Wendy Wang <wendy.wang@intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.2 143/242] platform/x86/intel-uncore-freq: Return error on write frequency
-Date:   Mon, 15 May 2023 18:27:49 +0200
-Message-Id: <20230515161726.191866151@linuxfoundation.org>
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.2 144/242] platform/x86: touchscreen_dmi: Add upside-down quirk for GDIX1002 ts on the Juno Tablet
+Date:   Mon, 15 May 2023 18:27:50 +0200
+Message-Id: <20230515161726.220524719@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
 References: <20230515161721.802179972@linuxfoundation.org>
@@ -47,8 +42,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,47 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 75e406b540c3eca67625d97bbefd4e3787eafbfe upstream.
+commit 6abfa99ce52f61a31bcfc2aaaae09006f5665495 upstream.
 
-Currently when the uncore_write() returns error, it is silently
-ignored. Return error to user space when uncore_write() fails.
+The Juno Computers Juno Tablet has an upside-down mounted Goodix
+touchscreen. Add a quirk to invert both axis to correct for this.
 
-Fixes: 49a474c7ba51 ("platform/x86: Add support for Uncore frequency control")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Tested-by: Wendy Wang <wendy.wang@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230418153230.679094-1-srinivas.pandruvada@linux.intel.com
+Link: https://junocomputers.com/us/product/juno-tablet/
 Cc: stable@vger.kernel.org
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230505210323.43177-1-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/platform/x86/touchscreen_dmi.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-@@ -44,14 +44,18 @@ static ssize_t store_min_max_freq_khz(st
- 				      int min_max)
- {
- 	unsigned int input;
-+	int ret;
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -378,6 +378,11 @@ static const struct ts_dmi_data gdix1001
+ 	.properties	= gdix1001_upside_down_props,
+ };
  
- 	if (kstrtouint(buf, 10, &input))
- 		return -EINVAL;
- 
- 	mutex_lock(&uncore_lock);
--	uncore_write(data, input, min_max);
-+	ret = uncore_write(data, input, min_max);
- 	mutex_unlock(&uncore_lock);
- 
-+	if (ret)
-+		return ret;
++static const struct ts_dmi_data gdix1002_00_upside_down_data = {
++	.acpi_name	= "GDIX1002:00",
++	.properties	= gdix1001_upside_down_props,
++};
 +
- 	return count;
- }
- 
+ static const struct property_entry gp_electronic_t701_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 960),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 640),
+@@ -1296,6 +1301,18 @@ const struct dmi_system_id touchscreen_d
+ 		},
+ 	},
+ 	{
++		/* Juno Tablet */
++		.driver_data = (void *)&gdix1002_00_upside_down_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Default string"),
++			/* Both product- and board-name being "Default string" is somewhat rare */
++			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
++			DMI_MATCH(DMI_BOARD_NAME, "Default string"),
++			/* Above matches are too generic, add partial bios-version match */
++			DMI_MATCH(DMI_BIOS_VERSION, "JP2V1."),
++		},
++	},
++	{
+ 		/* Mediacom WinPad 7.0 W700 (same hw as Wintron surftab 7") */
+ 		.driver_data = (void *)&trekstor_surftab_wintron70_data,
+ 		.matches = {
 
 
