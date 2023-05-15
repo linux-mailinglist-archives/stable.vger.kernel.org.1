@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F321703BC6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F2C703BB3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243147AbjEOSGn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
+        id S244988AbjEOSFk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:05:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234345AbjEOSGb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:06:31 -0400
+        with ESMTP id S244989AbjEOSFT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:05:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C59F821050
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:04:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A167618A96
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:03:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A19A63097
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:04:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9526AC4339C;
-        Mon, 15 May 2023 18:04:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61D4462F55
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77593C433EF;
+        Mon, 15 May 2023 17:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173844;
-        bh=DxfaVIai1PkiD7G2jWhf4OqeyHIXupmlQ/nSx/+sDHQ=;
+        s=korg; t=1684173140;
+        bh=ievWxEhbBq7mV8V6xO4LaLgceP9f+5E9mizu868TEKI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0MnWiomJ2tv+TdCEliSeGWkHxn551380mBZgyMf1O+Y+auleLQzTsrXGMF39f2NvX
-         0aDBRysMvE1dUxO9kWcHGyrJVFffFgTVbEo28AVNL0E/Dyeb9/93dg70Mcsyd9Xx5l
-         xy8FkbU5WLLmFQq38JPix9bVGBaN5GOSAXUAhsmQ=
+        b=Rj8zFWbJYBdP7xKN8OAOfA1f5P37BWfDbel53QdESk/OsopqdG01ikedHezG18Qq1
+         P0Ciw9KLlz9ddV1b+rdv2MjA5b76KuRe20Kt98bHUXsKT0hfB2IRrA3Azo5qs/D0lD
+         lb6tE/3TYaV6R8GFfKJYm686N8KrHpA7UQgRfqxc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Angelo Dureghello <angelo.dureghello@timesys.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 224/282] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 351/381] drm/amdgpu: fix an amdgpu_irq_put() issue in gmc_v9_0_hw_fini()
 Date:   Mon, 15 May 2023 18:30:02 +0200
-Message-Id: <20230515161728.944860348@linuxfoundation.org>
+Message-Id: <20230515161752.726160368@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Angelo Dureghello <angelo.dureghello@timesys.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
+commit 922a76ba31adf84e72bc947267385be420c689ee upstream.
 
-Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
-processing.
+As made mention of in commit 08c677cb0b43 ("drm/amdgpu: fix
+amdgpu_irq_put call trace in gmc_v10_0_hw_fini") and commit 13af556104fa
+("drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v11_0_hw_fini"). It
+is meaningless to call amdgpu_irq_put() for gmc.ecc_irq. So, remove it
+from gmc_v9_0_hw_fini().
 
-Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
-Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Fixes: 3029c855d79f ("drm/amdgpu: Fix desktop freezed after gpu-reset")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ea32be579e7b1..3a8a49b7ec3d9 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3876,6 +3876,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
- 	.set_egress_port = mv88e6095_g1_set_egress_port,
- 	.watchdog_ops = &mv88e6390_watchdog_ops,
-+	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
+@@ -1686,7 +1686,6 @@ static int gmc_v9_0_hw_fini(void *handle
+ 		return 0;
+ 	}
+ 
+-	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
+ 
+ 	return 0;
 
 
