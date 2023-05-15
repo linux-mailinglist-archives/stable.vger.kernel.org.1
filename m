@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E1657038EC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 630037033A4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244275AbjEORgl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
+        id S242862AbjEOQkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244204AbjEORgY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:24 -0400
+        with ESMTP id S242868AbjEOQjz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9E41524C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F108840C6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 163F362D81
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC3AC433EF;
-        Mon, 15 May 2023 17:33:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 874856285C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9A6C433EF;
+        Mon, 15 May 2023 16:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172036;
-        bh=0sHig8OLTxrRpDAVtoiHxEPFeUB3uN8t5cIY8ebs8yY=;
+        s=korg; t=1684168773;
+        bh=grx8F4N+VDnBePEeWy6jqceCHQ7OGokjSWBsZQTCjRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tH3TijglBt1ijRaIJ87SKrm8zTZyytcGV8lUBLu71SJJAN2Qy4Iu8YNt2s5PTIXhE
-         v+HMtOvpcewQv2N1Bz1Xgsrey37OmVibxSOsyRyMm2zZPb+GdI9JH8DVuzBx49uoav
-         RTSar3ZjrbIP8mJg77i9j/e7q6NLrfo+W0uB4AaQ=
+        b=QhvrjvF9iPvpVXEm8FRksHriYwaoC1E2FOvkGwj0GOBxV13DIh8Fyxwj4Yg0wAA72
+         0kPnIhpCtxU4wTLrCRD7T5a2MkWZqRLqFbXLaFZt+MfOZSbNnBDDVWb3kz6vZUyo7b
+         DEfOu719f8FI5t7rR8WXIh+LVSFffoeGNh0G2ydI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 023/381] perf sched: Cast PTHREAD_STACK_MIN to int as it may turn into sysconf(__SC_THREAD_STACK_MIN_VALUE)
+        patches@lists.linux.dev, Uros Bizjak <ubizjak@gmail.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 037/191] x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
 Date:   Mon, 15 May 2023 18:24:34 +0200
-Message-Id: <20230515161737.825232395@linuxfoundation.org>
+Message-Id: <20230515161708.534257105@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-commit d08c84e01afa7a7eee6badab25d5420fa847f783 upstream.
+[ Upstream commit f96fb2df3eb31ede1b34b0521560967310267750 ]
 
-In fedora rawhide the PTHREAD_STACK_MIN define may end up expanded to a
-sysconf() call, and that will return 'long int', breaking the build:
+The detection of atomic update failure in reserve_eilvt_offset() is
+not correct. The value returned by atomic_cmpxchg() should be compared
+to the old value from the location to be updated.
 
-    45 fedora:rawhide                : FAIL gcc version 11.1.1 20210623 (Red Hat 11.1.1-6) (GCC)
-      builtin-sched.c: In function 'create_tasks':
-      /git/perf-5.14.0-rc1/tools/include/linux/kernel.h:43:24: error: comparison of distinct pointer types lacks a cast [-Werror]
-         43 |         (void) (&_max1 == &_max2);              \
-            |                        ^~
-      builtin-sched.c:673:34: note: in expansion of macro 'max'
-        673 |                         (size_t) max(16 * 1024, PTHREAD_STACK_MIN));
-            |                                  ^~~
-      cc1: all warnings being treated as errors
+If these two are the same, then atomic update succeeded and
+"eilvt_offsets[offset]" location is updated to "new" in an atomic way.
 
-  $ grep __sysconf /usr/include/*/*.h
-  /usr/include/bits/pthread_stack_min-dynamic.h:extern long int __sysconf (int __name) __THROW;
-  /usr/include/bits/pthread_stack_min-dynamic.h:#   define PTHREAD_STACK_MIN __sysconf (__SC_THREAD_STACK_MIN_VALUE)
-  /usr/include/bits/time.h:extern long int __sysconf (int);
-  /usr/include/bits/time.h:# define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
-  $
+Otherwise, the atomic update failed and it should be retried with the
+value from "eilvt_offsets[offset]" - exactly what atomic_try_cmpxchg()
+does in a correct and more optimal way.
 
-So cast it to int to cope with that.
-
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a68c439b1966c ("apic, x86: Check if EILVT APIC registers are available (AMD only)")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230227160917.107820-1-ubizjak@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/apic.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -670,7 +670,7 @@ static void create_tasks(struct perf_sch
- 	err = pthread_attr_init(&attr);
- 	BUG_ON(err);
- 	err = pthread_attr_setstacksize(&attr,
--			(size_t) max(16 * 1024, PTHREAD_STACK_MIN));
-+			(size_t) max(16 * 1024, (int)PTHREAD_STACK_MIN));
- 	BUG_ON(err);
- 	err = pthread_mutex_lock(&sched->start_work_mutex);
- 	BUG_ON(err);
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 926939978c1c3..9318fe7d850e3 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -403,10 +403,9 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
+ 		if (vector && !eilvt_entry_is_changeable(vector, new))
+ 			/* may not change if vectors are different */
+ 			return rsvd;
+-		rsvd = atomic_cmpxchg(&eilvt_offsets[offset], rsvd, new);
+-	} while (rsvd != new);
++	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
+ 
+-	rsvd &= ~APIC_EILVT_MASKED;
++	rsvd = new & ~APIC_EILVT_MASKED;
+ 	if (rsvd && rsvd != vector)
+ 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
+ 			offset, rsvd);
+-- 
+2.39.2
+
 
 
