@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BC85703926
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F718703629
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244507AbjEORje (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33474 "EHLO
+        id S243449AbjEORHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244345AbjEORjT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:19 -0400
+        with ESMTP id S243458AbjEORHF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2775E1BDD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65613D862
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B97562DE2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F1CC433EF;
-        Mon, 15 May 2023 17:36:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 902BE62AC5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E49EC433D2;
+        Mon, 15 May 2023 17:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172169;
-        bh=06d8IPVI5eAL7/cmO7sqtDEdUvwYtc3z9r3AnNxkftk=;
+        s=korg; t=1684170283;
+        bh=v2FjJd2V0/+q+5jzoEIchjJyOj54CXhm1HIZf4Bg5J8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fR+LGT+wscz5J39qO14SuflN8Rj+49rjmv8D+EkAitiWAMw346u6P/P6+5y6escUe
-         Z62OK4zLCtGP9srjEDU7PyRsBVBeOYq/mnbdRlqLkFODfr3B8Bm0pcvsD1O2vZ8xrN
-         o1VQgdhFhi1Owtr4seYufYOwQWOqMY/bN2Lf7G+I=
+        b=ub4vDWAkx2M1WIw7+CJ24eqo3WhwvcfRrSI0SHjwwwg9VisdP57qBYx8KTuO18Yi2
+         MGMMgyAnBvuFA6Rs/+WfqRVVa9MV69BClxavQsUNZL31oHs/0XlO1LRJM+0SBrEEBU
+         ClQCII1YQpYft4J+vz1300ex7fL0kncIGcqZyCoI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev,
+        Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+        Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+        Mason Huo <mason.huo@starfivetech.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/381] tpm, tpm_tis: Do not skip reset of original interrupt vector
-Date:   Mon, 15 May 2023 18:25:16 +0200
-Message-Id: <20230515161739.749763950@linuxfoundation.org>
+Subject: [PATCH 6.1 054/239] RISC-V: mm: Enable huge page support to kernel_page_present() function
+Date:   Mon, 15 May 2023 18:25:17 +0200
+Message-Id: <20230515161723.327075569@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,111 +59,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 
-[ Upstream commit ed9be0e6c892a783800d77a41ca4c7255c6af8c5 ]
+[ Upstream commit a15c90b67a662c75f469822a7f95c7aaa049e28f ]
 
-If in tpm_tis_probe_irq_single() an error occurs after the original
-interrupt vector has been read, restore the interrupts before the error is
-returned.
+Currently kernel_page_present() function doesn't support huge page
+detection causes the function to mistakenly return false to the
+hibernation core.
 
-Since the caller does not check the error value, return -1 in any case that
-the TPM_CHIP_FLAG_IRQ flag is not set. Since the return value of function
-tpm_tis_gen_interrupt() is not longer used, make it a void function.
+Add huge page detection to the function to solve the problem.
 
-Fixes: 1107d065fdf1 ("tpm_tis: Introduce intermediate layer for TPM access")
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 9e953cda5cdf ("riscv: Introduce huge page support for 32/64bit kernel")
+Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Reviewed-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+Reviewed-by: Mason Huo <mason.huo@starfivetech.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20230330064321.1008373-4-jeeheng.sia@starfivetech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 29 +++++++++++------------------
- 1 file changed, 11 insertions(+), 18 deletions(-)
+ arch/riscv/mm/pageattr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index dc56b976d8162..ae0c773a6041a 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -714,7 +714,7 @@ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
- 	return IRQ_HANDLED;
- }
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 86c56616e5dea..ea3d61de065b3 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -217,18 +217,26 @@ bool kernel_page_present(struct page *page)
+ 	pgd = pgd_offset_k(addr);
+ 	if (!pgd_present(*pgd))
+ 		return false;
++	if (pgd_leaf(*pgd))
++		return true;
  
--static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
-+static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
- {
- 	const char *desc = "attempting to generate an interrupt";
- 	u32 cap2;
-@@ -723,7 +723,7 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 	p4d = p4d_offset(pgd, addr);
+ 	if (!p4d_present(*p4d))
+ 		return false;
++	if (p4d_leaf(*p4d))
++		return true;
  
- 	ret = request_locality(chip, 0);
- 	if (ret < 0)
--		return ret;
-+		return;
+ 	pud = pud_offset(p4d, addr);
+ 	if (!pud_present(*pud))
+ 		return false;
++	if (pud_leaf(*pud))
++		return true;
  
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
-@@ -731,8 +731,6 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
- 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
+ 	pmd = pmd_offset(pud, addr);
+ 	if (!pmd_present(*pmd))
+ 		return false;
++	if (pmd_leaf(*pmd))
++		return true;
  
- 	release_locality(chip, 0);
--
--	return ret;
- }
- 
- /* Register the IRQ and issue a command that will cause an interrupt. If an
-@@ -762,42 +760,37 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
- 	if (rc < 0)
--		return rc;
-+		goto restore_irqs;
- 
- 	rc = tpm_tis_read32(priv, TPM_INT_STATUS(priv->locality), &int_status);
- 	if (rc < 0)
--		return rc;
-+		goto restore_irqs;
- 
- 	/* Clear all existing */
- 	rc = tpm_tis_write32(priv, TPM_INT_STATUS(priv->locality), int_status);
- 	if (rc < 0)
--		return rc;
--
-+		goto restore_irqs;
- 	/* Turn on */
- 	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality),
- 			     intmask | TPM_GLOBAL_INT_ENABLE);
- 	if (rc < 0)
--		return rc;
-+		goto restore_irqs;
- 
- 	priv->irq_tested = false;
- 
- 	/* Generate an interrupt by having the core call through to
- 	 * tpm_tis_send
- 	 */
--	rc = tpm_tis_gen_interrupt(chip);
--	if (rc < 0)
--		return rc;
-+	tpm_tis_gen_interrupt(chip);
- 
-+restore_irqs:
- 	/* tpm_tis_send will either confirm the interrupt is working or it
- 	 * will call disable_irq which undoes all of the above.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
--		rc = tpm_tis_write8(priv, original_int_vec,
--				TPM_INT_VECTOR(priv->locality));
--		if (rc < 0)
--			return rc;
--
--		return 1;
-+		tpm_tis_write8(priv, original_int_vec,
-+			       TPM_INT_VECTOR(priv->locality));
-+		return -1;
- 	}
- 
- 	return 0;
+ 	pte = pte_offset_kernel(pmd, addr);
+ 	return pte_present(*pte);
 -- 
 2.39.2
 
