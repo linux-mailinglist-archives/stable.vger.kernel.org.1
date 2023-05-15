@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D62CF7039B1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 217D270355C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244535AbjEORpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38488 "EHLO
+        id S243281AbjEOQ6P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244514AbjEORo5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:57 -0400
+        with ESMTP id S243292AbjEOQ6J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C725D147C2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9225B88
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7D8B62E77
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2C1C433D2;
-        Mon, 15 May 2023 17:42:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA05561F7D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4D0C433D2;
+        Mon, 15 May 2023 16:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172553;
-        bh=26cEiiai7da8DeAWxm2Do5WA9qQurkxsU215vhvAQR4=;
+        s=korg; t=1684169887;
+        bh=Db35oJ7nP8VKQqC6YjMXrYMAho4NgfrfuTh2jHm7xq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gBlC+Wjcm5GRzyYps3ONogFzpvRfsWAn3f4p3iAlEmMYcrbMtvQa2zNcQw3xXwPYm
-         WyIFdTuE7fYOqbzV9vnpb+iXtrGBz0nQ6K1S7vcefw5/VeJ7GX57Ok4vl1h6Hke8mN
-         5avDgSw0fX68y5ahJyqpMC67dB99FfjFpnwvGlU8=
+        b=EXuoVMm6A7NIC2xDGqoTWXiH33v2zBuBj51HLln8/rP2Z1WIzjy810U4v524NENol
+         h9F34grEYYwDothxNTILJ46qeaqoNCEqhB8YHK6L0bVpt0v18EdST82ySA/zmxxdQl
+         vjDcGX+fDT9IN1dRy5IlWrdGLPMi/v27jN/7XrbE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
-        Stephan Mueller <smueller@chronox.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/381] crypto: drbg - Only fail when jent is unavailable in FIPS mode
+        patches@lists.linux.dev, Yifan Zhang <yifan1.zhang@amd.com>,
+        Yogesh Mohan Marimuthu <Yogesh.Mohanmarimuthu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Tim Huang <Tim.Huang@amd.com>
+Subject: [PATCH 6.3 202/246] drm/amdgpu: change gfx 11.0.4 external_id range
 Date:   Mon, 15 May 2023 18:26:54 +0200
-Message-Id: <20230515161744.162087288@linuxfoundation.org>
+Message-Id: <20230515161728.668845415@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +55,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit 686cd976b6ddedeeb1a1fb09ba53a891d3cc9a03 ]
+commit 996e93a3fe74dcf9d467ae3020aea42cc3ff65e3 upstream.
 
-When jent initialisation fails for any reason other than ENOENT,
-the entire drbg fails to initialise, even when we're not in FIPS
-mode.  This is wrong because we can still use the kernel RNG when
-we're not in FIPS mode.
+gfx 11.0.4 range starts from 0x80.
 
-Change it so that it only fails when we are in FIPS mode.
-
-Fixes: 57225e679788 ("crypto: drbg - Use callback API for random readiness")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 311d52367d0a ("drm/amdgpu: add soc21 common ip block support for GC 11.0.4")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reported-by: Yogesh Mohan Marimuthu <Yogesh.Mohanmarimuthu@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/drbg.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/soc21.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/drbg.c b/crypto/drbg.c
-index ecc6b167b89e2..ba1fa5cdd90ac 100644
---- a/crypto/drbg.c
-+++ b/crypto/drbg.c
-@@ -1519,7 +1519,7 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
- 		const int err = PTR_ERR(drbg->jent);
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -778,7 +778,7 @@ static int soc21_common_early_init(void
+ 			AMD_PG_SUPPORT_VCN_DPG |
+ 			AMD_PG_SUPPORT_GFX_PG |
+ 			AMD_PG_SUPPORT_JPEG;
+-		adev->external_rev_id = adev->rev_id + 0x1;
++		adev->external_rev_id = adev->rev_id + 0x80;
+ 		break;
  
- 		drbg->jent = NULL;
--		if (fips_enabled || err != -ENOENT)
-+		if (fips_enabled)
- 			return err;
- 		pr_info("DRBG: Continuing without Jitter RNG\n");
- 	}
--- 
-2.39.2
-
+ 	default:
 
 
