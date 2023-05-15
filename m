@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9005A703BD3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C5D9703BD7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:07:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242794AbjEOSHM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38500 "EHLO
+        id S245074AbjEOSHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244986AbjEOSGo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:06:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699D7448A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:04:27 -0700 (PDT)
+        with ESMTP id S244505AbjEOSGq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:06:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 577A621062
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:04:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3BFD630AC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:04:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F43C433EF;
-        Mon, 15 May 2023 18:04:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16949630AD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1227FC433D2;
+        Mon, 15 May 2023 18:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173866;
-        bh=/v6mvuuEz4u3OIcGixR1Lz1ageIEKZSFQc6q+3FG3cI=;
+        s=korg; t=1684173869;
+        bh=SuUwIq0PzR8Ww3Kpv4OkddLaqZa64uhNR1e2w1Axi1Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gIDXUeS+do9FsATn4P9NZFKM8uQnLBqer49U5igE/EJ2tevNEAFaY3h6BW8g3jOOi
-         0xq04KiztFqH4Y7oKPJwEoAfZUlLtBacuz2spcxGMm4uB5zsc537rudBq1oqg/S8M9
-         r90swzOfnrM2czUrU+X3kthPJxNe/ZKoyX8hly+I=
+        b=VomwX6ESJiZJJdO17yWn1DkUZrH3JB1HPJ81PqoL1ZNUTHHVgewLkLjOzTCr7DNKi
+         axPQOQeJqeGH6vb3oCZJ0bKdBYJ3GVtrXUEVENYiRcOFn8nAgtEaiMyJvOTUL145MH
+         MFpEnOhfpdW9fcKmZFAH1ls7UD2zzCTxw6FlPRNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Ruliang Lin <u202112092@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Daniel Mack <daniel@zonque.org>, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 230/282] drm/amdgpu: add a missing lock for AMDGPU_SCHED
-Date:   Mon, 15 May 2023 18:30:08 +0200
-Message-Id: <20230515161729.123122630@linuxfoundation.org>
+Subject: [PATCH 5.4 231/282] ALSA: caiaq: input: Add error handling for unsupported input methods in `snd_usb_caiaq_input_init`
+Date:   Mon, 15 May 2023 18:30:09 +0200
+Message-Id: <20230515161729.151669518@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,49 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Ruliang Lin <u202112092@hust.edu.cn>
 
-[ Upstream commit 2397e3d8d2e120355201a8310b61929f5a8bd2c0 ]
+[ Upstream commit 0d727e1856ef22dd9337199430258cb64cbbc658 ]
 
-mgr->ctx_handles should be protected by mgr->lock.
+Smatch complains that:
+snd_usb_caiaq_input_init() warn: missing error code 'ret'
 
-v2: improve commit message
-v3: add a Fixes tag
+This patch adds a new case to handle the situation where the
+device does not support any input methods in the
+`snd_usb_caiaq_input_init` function. It returns an `-EINVAL` error code
+to indicate that no input methods are supported on the device.
 
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Fixes: 52c6a62c64fa ("drm/amdgpu: add interface for editing a foreign process's priority v3")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 523f1dce3743 ("[ALSA] Add Native Instrument usb audio device support")
+Signed-off-by: Ruliang Lin <u202112092@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Acked-by: Daniel Mack <daniel@zonque.org>
+Link: https://lore.kernel.org/r/20230504065054.3309-1-u202112092@hust.edu.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/usb/caiaq/input.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
-index c799691dfa848..94a503dc08b72 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
-@@ -58,6 +58,7 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
- {
- 	struct fd f = fdget(fd);
- 	struct amdgpu_fpriv *fpriv;
-+	struct amdgpu_ctx_mgr *mgr;
- 	struct amdgpu_ctx *ctx;
- 	uint32_t id;
- 	int r;
-@@ -71,8 +72,11 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
- 		return r;
+diff --git a/sound/usb/caiaq/input.c b/sound/usb/caiaq/input.c
+index 533eb69fe4e69..cd5a8584dbe32 100644
+--- a/sound/usb/caiaq/input.c
++++ b/sound/usb/caiaq/input.c
+@@ -804,6 +804,7 @@ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev)
+ 
+ 	default:
+ 		/* no input methods supported on this device */
++		ret = -EINVAL;
+ 		goto exit_free_idev;
  	}
  
--	idr_for_each_entry(&fpriv->ctx_mgr.ctx_handles, ctx, id)
-+	mgr = &fpriv->ctx_mgr;
-+	mutex_lock(&mgr->lock);
-+	idr_for_each_entry(&mgr->ctx_handles, ctx, id)
- 		amdgpu_ctx_priority_override(ctx, priority);
-+	mutex_unlock(&mgr->lock);
- 
- 	fdput(f);
- 	return 0;
 -- 
 2.39.2
 
