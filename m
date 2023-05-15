@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F19070341F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22DE9703AC5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242921AbjEOQpG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49056 "EHLO
+        id S242231AbjEORzX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:55:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242917AbjEOQpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:04 -0400
+        with ESMTP id S245041AbjEORzA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB23E4C3D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFAA6DC6B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43CCF628E1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEC3C433EF;
-        Mon, 15 May 2023 16:45:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C3B1262FB1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE9CC433D2;
+        Mon, 15 May 2023 17:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169101;
-        bh=Q7yCNEvgtNcBFUTF4jwhznexh1azwXCyNMKGiag13IM=;
+        s=korg; t=1684173175;
+        bh=kWxbaHNWH+oGwcoH7sjGbYlQiWGGZrrUFCkinoge6N0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qeHolWUHmvpCNykN/hAJ6npEFovml2q80pBKgPKpLCvjhFEU4G+YnFwvkyoYZAJE4
-         oeCIoXrbITJcXcV6Y+J/1ryzUD+oqExjmf7yRjs9axrWOk83yGRR7cxLq+Xn83sbKd
-         R5QJmFc6DPmkRl8nUUjQ3NZmIRVF6TGM+YSRtxJI=
+        b=GQMjSTNzDwgk5H3Ibnc1dVtyHDPZ4seWUb3qS0Gt8bpjX0UlQD+X5sQOQT27iEYS8
+         G+2YdbbIeIG2C+tJ4+mBpsChupheGToFKNv/4gHpxMtnKXFKyglmEze4OeA9lxayBT
+         zf8bClCzh1WSp2u2OPJ5W23Dnjtp08jf0rA+gKw0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Corey Minyard <cminyard@mvista.com>,
-        Kamlakant Patel <kamlakant.patel@cavium.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 142/191] ipmi: Fix how the lower layers are told to watch for messages
-Date:   Mon, 15 May 2023 18:26:19 +0200
-Message-Id: <20230515161712.554997125@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.4 002/282] wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
+Date:   Mon, 15 May 2023 18:26:20 +0200
+Message-Id: <20230515161722.234598758@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,465 +55,168 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Corey Minyard <cminyard@mvista.com>
+From: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
 
-[ Upstream commit c65ea996595005be470fbfa16711deba414fd33b ]
+commit 0da40e018fd034d87c9460123fa7f897b69fdee7 upstream.
 
-The IPMI driver has a mechanism to tell the lower layers it needs
-to watch for messages, commands, and watchdogs (so it doesn't
-needlessly poll).  However, it needed some extensions, it needed
-a way to tell what is being waited for so it could set the timeout
-appropriately.
+Fix a slab-out-of-bounds read that occurs in kmemdup() called from
+brcmf_get_assoc_ies().
+The bug could occur when assoc_info->req_len, data from a URB provided
+by a USB device, is bigger than the size of buffer which is defined as
+WL_EXTRA_BUF_MAX.
 
-The update to the lower layer was also being done once a second
-at best because it was done in the main timeout handler.  However,
-if a command is sent and a response message is coming back,
-it needed to be started immediately.  So modify the code to
-update immediately if it needs to be enabled.  Disable is still
-lazy.
+Add the size check for req_len/resp_len of assoc_info.
 
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
-Tested-by: Kamlakant Patel <kamlakant.patel@cavium.com>
-Stable-dep-of: 6d2555cde291 ("ipmi: fix SSIF not responding under certain cond.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by a modified version of syzkaller.
+
+[   46.592467][    T7] ==================================================================
+[   46.594687][    T7] BUG: KASAN: slab-out-of-bounds in kmemdup+0x3e/0x50
+[   46.596572][    T7] Read of size 3014656 at addr ffff888019442000 by task kworker/0:1/7
+[   46.598575][    T7]
+[   46.599157][    T7] CPU: 0 PID: 7 Comm: kworker/0:1 Tainted: G           O      5.14.0+ #145
+[   46.601333][    T7] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+[   46.604360][    T7] Workqueue: events brcmf_fweh_event_worker
+[   46.605943][    T7] Call Trace:
+[   46.606584][    T7]  dump_stack_lvl+0x8e/0xd1
+[   46.607446][    T7]  print_address_description.constprop.0.cold+0x93/0x334
+[   46.608610][    T7]  ? kmemdup+0x3e/0x50
+[   46.609341][    T7]  kasan_report.cold+0x79/0xd5
+[   46.610151][    T7]  ? kmemdup+0x3e/0x50
+[   46.610796][    T7]  kasan_check_range+0x14e/0x1b0
+[   46.611691][    T7]  memcpy+0x20/0x60
+[   46.612323][    T7]  kmemdup+0x3e/0x50
+[   46.612987][    T7]  brcmf_get_assoc_ies+0x967/0xf60
+[   46.613904][    T7]  ? brcmf_notify_vif_event+0x3d0/0x3d0
+[   46.614831][    T7]  ? lock_chain_count+0x20/0x20
+[   46.615683][    T7]  ? mark_lock.part.0+0xfc/0x2770
+[   46.616552][    T7]  ? lock_chain_count+0x20/0x20
+[   46.617409][    T7]  ? mark_lock.part.0+0xfc/0x2770
+[   46.618244][    T7]  ? lock_chain_count+0x20/0x20
+[   46.619024][    T7]  brcmf_bss_connect_done.constprop.0+0x241/0x2e0
+[   46.620019][    T7]  ? brcmf_parse_configure_security.isra.0+0x2a0/0x2a0
+[   46.620818][    T7]  ? __lock_acquire+0x181f/0x5790
+[   46.621462][    T7]  brcmf_notify_connect_status+0x448/0x1950
+[   46.622134][    T7]  ? rcu_read_lock_bh_held+0xb0/0xb0
+[   46.622736][    T7]  ? brcmf_cfg80211_join_ibss+0x7b0/0x7b0
+[   46.623390][    T7]  ? find_held_lock+0x2d/0x110
+[   46.623962][    T7]  ? brcmf_fweh_event_worker+0x19f/0xc60
+[   46.624603][    T7]  ? mark_held_locks+0x9f/0xe0
+[   46.625145][    T7]  ? lockdep_hardirqs_on_prepare+0x3e0/0x3e0
+[   46.625871][    T7]  ? brcmf_cfg80211_join_ibss+0x7b0/0x7b0
+[   46.626545][    T7]  brcmf_fweh_call_event_handler.isra.0+0x90/0x100
+[   46.627338][    T7]  brcmf_fweh_event_worker+0x557/0xc60
+[   46.627962][    T7]  ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
+[   46.628736][    T7]  ? rcu_read_lock_sched_held+0xa1/0xd0
+[   46.629396][    T7]  ? rcu_read_lock_bh_held+0xb0/0xb0
+[   46.629970][    T7]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+[   46.630649][    T7]  process_one_work+0x92b/0x1460
+[   46.631205][    T7]  ? pwq_dec_nr_in_flight+0x330/0x330
+[   46.631821][    T7]  ? rwlock_bug.part.0+0x90/0x90
+[   46.632347][    T7]  worker_thread+0x95/0xe00
+[   46.632832][    T7]  ? __kthread_parkme+0x115/0x1e0
+[   46.633393][    T7]  ? process_one_work+0x1460/0x1460
+[   46.633957][    T7]  kthread+0x3a1/0x480
+[   46.634369][    T7]  ? set_kthread_struct+0x120/0x120
+[   46.634933][    T7]  ret_from_fork+0x1f/0x30
+[   46.635431][    T7]
+[   46.635687][    T7] Allocated by task 7:
+[   46.636151][    T7]  kasan_save_stack+0x1b/0x40
+[   46.636628][    T7]  __kasan_kmalloc+0x7c/0x90
+[   46.637108][    T7]  kmem_cache_alloc_trace+0x19e/0x330
+[   46.637696][    T7]  brcmf_cfg80211_attach+0x4a0/0x4040
+[   46.638275][    T7]  brcmf_attach+0x389/0xd40
+[   46.638739][    T7]  brcmf_usb_probe+0x12de/0x1690
+[   46.639279][    T7]  usb_probe_interface+0x2aa/0x760
+[   46.639820][    T7]  really_probe+0x205/0xb70
+[   46.640342][    T7]  __driver_probe_device+0x311/0x4b0
+[   46.640876][    T7]  driver_probe_device+0x4e/0x150
+[   46.641445][    T7]  __device_attach_driver+0x1cc/0x2a0
+[   46.642000][    T7]  bus_for_each_drv+0x156/0x1d0
+[   46.642543][    T7]  __device_attach+0x23f/0x3a0
+[   46.643065][    T7]  bus_probe_device+0x1da/0x290
+[   46.643644][    T7]  device_add+0xb7b/0x1eb0
+[   46.644130][    T7]  usb_set_configuration+0xf59/0x16f0
+[   46.644720][    T7]  usb_generic_driver_probe+0x82/0xa0
+[   46.645295][    T7]  usb_probe_device+0xbb/0x250
+[   46.645786][    T7]  really_probe+0x205/0xb70
+[   46.646258][    T7]  __driver_probe_device+0x311/0x4b0
+[   46.646804][    T7]  driver_probe_device+0x4e/0x150
+[   46.647387][    T7]  __device_attach_driver+0x1cc/0x2a0
+[   46.647926][    T7]  bus_for_each_drv+0x156/0x1d0
+[   46.648454][    T7]  __device_attach+0x23f/0x3a0
+[   46.648939][    T7]  bus_probe_device+0x1da/0x290
+[   46.649478][    T7]  device_add+0xb7b/0x1eb0
+[   46.649936][    T7]  usb_new_device.cold+0x49c/0x1029
+[   46.650526][    T7]  hub_event+0x1c98/0x3950
+[   46.650975][    T7]  process_one_work+0x92b/0x1460
+[   46.651535][    T7]  worker_thread+0x95/0xe00
+[   46.651991][    T7]  kthread+0x3a1/0x480
+[   46.652413][    T7]  ret_from_fork+0x1f/0x30
+[   46.652885][    T7]
+[   46.653131][    T7] The buggy address belongs to the object at ffff888019442000
+[   46.653131][    T7]  which belongs to the cache kmalloc-2k of size 2048
+[   46.654669][    T7] The buggy address is located 0 bytes inside of
+[   46.654669][    T7]  2048-byte region [ffff888019442000, ffff888019442800)
+[   46.656137][    T7] The buggy address belongs to the page:
+[   46.656720][    T7] page:ffffea0000651000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x19440
+[   46.657792][    T7] head:ffffea0000651000 order:3 compound_mapcount:0 compound_pincount:0
+[   46.658673][    T7] flags: 0x100000000010200(slab|head|node=0|zone=1)
+[   46.659422][    T7] raw: 0100000000010200 0000000000000000 dead000000000122 ffff888100042000
+[   46.660363][    T7] raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
+[   46.661236][    T7] page dumped because: kasan: bad access detected
+[   46.661956][    T7] page_owner tracks the page as allocated
+[   46.662588][    T7] page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52a20(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 7, ts 31136961085, free_ts 0
+[   46.664271][    T7]  prep_new_page+0x1aa/0x240
+[   46.664763][    T7]  get_page_from_freelist+0x159a/0x27c0
+[   46.665340][    T7]  __alloc_pages+0x2da/0x6a0
+[   46.665847][    T7]  alloc_pages+0xec/0x1e0
+[   46.666308][    T7]  allocate_slab+0x380/0x4e0
+[   46.666770][    T7]  ___slab_alloc+0x5bc/0x940
+[   46.667264][    T7]  __slab_alloc+0x6d/0x80
+[   46.667712][    T7]  kmem_cache_alloc_trace+0x30a/0x330
+[   46.668299][    T7]  brcmf_usbdev_qinit.constprop.0+0x50/0x470
+[   46.668885][    T7]  brcmf_usb_probe+0xc97/0x1690
+[   46.669438][    T7]  usb_probe_interface+0x2aa/0x760
+[   46.669988][    T7]  really_probe+0x205/0xb70
+[   46.670487][    T7]  __driver_probe_device+0x311/0x4b0
+[   46.671031][    T7]  driver_probe_device+0x4e/0x150
+[   46.671604][    T7]  __device_attach_driver+0x1cc/0x2a0
+[   46.672192][    T7]  bus_for_each_drv+0x156/0x1d0
+[   46.672739][    T7] page_owner free stack trace missing
+[   46.673335][    T7]
+[   46.673620][    T7] Memory state around the buggy address:
+[   46.674213][    T7]  ffff888019442700: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   46.675083][    T7]  ffff888019442780: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   46.675994][    T7] >ffff888019442800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   46.676875][    T7]                    ^
+[   46.677323][    T7]  ffff888019442880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   46.678190][    T7]  ffff888019442900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   46.679052][    T7] ==================================================================
+[   46.679945][    T7] Disabling lock debugging due to kernel taint
+[   46.680725][    T7] Kernel panic - not syncing:
+
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230309104457.22628-1-jisoo.jang@yonsei.ac.kr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 119 ++++++++++++++++++++--------
- drivers/char/ipmi/ipmi_si_intf.c    |   5 +-
- drivers/char/ipmi/ipmi_ssif.c       |  26 +++---
- include/linux/ipmi_smi.h            |  36 +++++++--
- 4 files changed, 134 insertions(+), 52 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 4265e8d3e71c5..31cfa47d24984 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -536,9 +536,22 @@ struct ipmi_smi {
- 	unsigned int     waiting_events_count; /* How many events in queue? */
- 	char             delivering_events;
- 	char             event_msg_printed;
-+
-+	/* How many users are waiting for events? */
- 	atomic_t         event_waiters;
- 	unsigned int     ticks_to_req_ev;
--	int              last_needs_timer;
-+
-+	/* How many users are waiting for commands? */
-+	atomic_t         command_waiters;
-+
-+	/* How many users are waiting for watchdogs? */
-+	atomic_t         watchdog_waiters;
-+
-+	/*
-+	 * Tells what the lower layer has last been asked to watch for,
-+	 * messages and/or watchdogs.  Protected by xmit_msgs_lock.
-+	 */
-+	unsigned int     last_watch_mask;
- 
- 	/*
- 	 * The event receiver for my BMC, only really used at panic
-@@ -1085,6 +1098,29 @@ static int intf_err_seq(struct ipmi_smi *intf,
- 	return rv;
- }
- 
-+/* Must be called with xmit_msgs_lock held. */
-+static void smi_tell_to_watch(struct ipmi_smi *intf,
-+			      unsigned int flags,
-+			      struct ipmi_smi_msg *smi_msg)
-+{
-+	if (flags & IPMI_WATCH_MASK_CHECK_MESSAGES) {
-+		if (!smi_msg)
-+			return;
-+
-+		if (!smi_msg->needs_response)
-+			return;
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5466,6 +5466,11 @@ static s32 brcmf_get_assoc_ies(struct br
+ 		(struct brcmf_cfg80211_assoc_ielen_le *)cfg->extra_buf;
+ 	req_len = le32_to_cpu(assoc_info->req_len);
+ 	resp_len = le32_to_cpu(assoc_info->resp_len);
++	if (req_len > WL_EXTRA_BUF_MAX || resp_len > WL_EXTRA_BUF_MAX) {
++		bphy_err(drvr, "invalid lengths in assoc info: req %u resp %u\n",
++			 req_len, resp_len);
++		return -EINVAL;
 +	}
-+
-+	if (!intf->handlers->set_need_watch)
-+		return;
-+
-+	if ((intf->last_watch_mask & flags) == flags)
-+		return;
-+
-+	intf->last_watch_mask |= flags;
-+	intf->handlers->set_need_watch(intf->send_info,
-+				       intf->last_watch_mask);
-+}
- 
- static void free_user_work(struct work_struct *work)
- {
-@@ -1164,8 +1200,9 @@ int ipmi_create_user(unsigned int          if_num,
- 	spin_unlock_irqrestore(&intf->seq_lock, flags);
- 	if (handler->ipmi_watchdog_pretimeout) {
- 		/* User wants pretimeouts, so make sure to watch for them. */
--		if (atomic_inc_return(&intf->event_waiters) == 1)
--			need_waiter(intf);
-+		if (atomic_inc_return(&intf->watchdog_waiters) == 1)
-+			smi_tell_to_watch(intf, IPMI_WATCH_MASK_CHECK_WATCHDOG,
-+					  NULL);
- 	}
- 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
- 	*user = new_user;
-@@ -1239,7 +1276,7 @@ static void _ipmi_destroy_user(struct ipmi_user *user)
- 		user->handler->shutdown(user->handler_data);
- 
- 	if (user->handler->ipmi_watchdog_pretimeout)
--		atomic_dec(&intf->event_waiters);
-+		atomic_dec(&intf->watchdog_waiters);
- 
- 	if (user->gets_events)
- 		atomic_dec(&intf->event_waiters);
-@@ -1597,8 +1634,8 @@ int ipmi_register_for_cmd(struct ipmi_user *user,
- 		goto out_unlock;
- 	}
- 
--	if (atomic_inc_return(&intf->event_waiters) == 1)
--		need_waiter(intf);
-+	if (atomic_inc_return(&intf->command_waiters) == 1)
-+		smi_tell_to_watch(intf, IPMI_WATCH_MASK_CHECK_COMMANDS, NULL);
- 
- 	list_add_rcu(&rcvr->link, &intf->cmd_rcvrs);
- 
-@@ -1648,7 +1685,7 @@ int ipmi_unregister_for_cmd(struct ipmi_user *user,
- 	synchronize_rcu();
- 	release_ipmi_user(user, index);
- 	while (rcvrs) {
--		atomic_dec(&intf->event_waiters);
-+		atomic_dec(&intf->command_waiters);
- 		rcvr = rcvrs;
- 		rcvrs = rcvr->next;
- 		kfree(rcvr);
-@@ -1765,22 +1802,21 @@ static struct ipmi_smi_msg *smi_add_send_msg(struct ipmi_smi *intf,
- 	return smi_msg;
- }
- 
--
- static void smi_send(struct ipmi_smi *intf,
- 		     const struct ipmi_smi_handlers *handlers,
- 		     struct ipmi_smi_msg *smi_msg, int priority)
- {
- 	int run_to_completion = intf->run_to_completion;
-+	unsigned long flags = 0;
- 
--	if (run_to_completion) {
--		smi_msg = smi_add_send_msg(intf, smi_msg, priority);
--	} else {
--		unsigned long flags;
--
-+	if (!run_to_completion)
- 		spin_lock_irqsave(&intf->xmit_msgs_lock, flags);
--		smi_msg = smi_add_send_msg(intf, smi_msg, priority);
-+	smi_msg = smi_add_send_msg(intf, smi_msg, priority);
-+
-+	smi_tell_to_watch(intf, IPMI_WATCH_MASK_CHECK_MESSAGES, smi_msg);
-+
-+	if (!run_to_completion)
- 		spin_unlock_irqrestore(&intf->xmit_msgs_lock, flags);
--	}
- 
- 	if (smi_msg)
- 		handlers->sender(intf->send_info, smi_msg);
-@@ -1978,6 +2014,9 @@ static int i_ipmi_req_ipmb(struct ipmi_smi        *intf,
- 				ipmb_seq, broadcast,
- 				source_address, source_lun);
- 
-+		/* We will be getting a response in the BMC message queue. */
-+		smi_msg->needs_response = true;
-+
- 		/*
- 		 * Copy the message into the recv message data, so we
- 		 * can retransmit it later if necessary.
-@@ -2165,6 +2204,7 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 			goto out;
- 		}
- 	}
-+	smi_msg->needs_response = false;
- 
- 	rcu_read_lock();
- 	if (intf->in_shutdown) {
-@@ -3386,6 +3426,8 @@ int ipmi_add_smi(struct module         *owner,
- 	INIT_LIST_HEAD(&intf->hp_xmit_msgs);
- 	spin_lock_init(&intf->events_lock);
- 	atomic_set(&intf->event_waiters, 0);
-+	atomic_set(&intf->watchdog_waiters, 0);
-+	atomic_set(&intf->command_waiters, 0);
- 	intf->ticks_to_req_ev = IPMI_REQUEST_EV_TIME;
- 	INIT_LIST_HEAD(&intf->waiting_events);
- 	intf->waiting_events_count = 0;
-@@ -4404,6 +4446,9 @@ static void smi_recv_tasklet(unsigned long val)
- 			intf->curr_msg = newmsg;
- 		}
- 	}
-+
-+	smi_tell_to_watch(intf, IPMI_WATCH_MASK_CHECK_MESSAGES, newmsg);
-+
- 	if (!run_to_completion)
- 		spin_unlock_irqrestore(&intf->xmit_msgs_lock, flags);
- 	if (newmsg)
-@@ -4531,7 +4576,7 @@ static void check_msg_timeout(struct ipmi_smi *intf, struct seq_table *ent,
- 			      struct list_head *timeouts,
- 			      unsigned long timeout_period,
- 			      int slot, unsigned long *flags,
--			      unsigned int *waiting_msgs)
-+			      unsigned int *watch_mask)
- {
- 	struct ipmi_recv_msg *msg;
- 
-@@ -4543,7 +4588,7 @@ static void check_msg_timeout(struct ipmi_smi *intf, struct seq_table *ent,
- 
- 	if (timeout_period < ent->timeout) {
- 		ent->timeout -= timeout_period;
--		(*waiting_msgs)++;
-+		*watch_mask |= IPMI_WATCH_MASK_CHECK_MESSAGES;
- 		return;
- 	}
- 
-@@ -4562,7 +4607,7 @@ static void check_msg_timeout(struct ipmi_smi *intf, struct seq_table *ent,
- 		struct ipmi_smi_msg *smi_msg;
- 		/* More retries, send again. */
- 
--		(*waiting_msgs)++;
-+		*watch_mask |= IPMI_WATCH_MASK_CHECK_MESSAGES;
- 
- 		/*
- 		 * Start with the max timer, set to normal timer after
-@@ -4614,13 +4659,13 @@ static unsigned int ipmi_timeout_handler(struct ipmi_smi *intf,
- 	struct ipmi_recv_msg *msg, *msg2;
- 	unsigned long        flags;
- 	int                  i;
--	unsigned int         waiting_msgs = 0;
-+	unsigned int         watch_mask = 0;
- 
- 	if (!intf->bmc_registered) {
- 		kref_get(&intf->refcount);
- 		if (!schedule_work(&intf->bmc_reg_work)) {
- 			kref_put(&intf->refcount, intf_free);
--			waiting_msgs++;
-+			watch_mask |= IPMI_WATCH_MASK_INTERNAL;
- 		}
- 	}
- 
-@@ -4640,7 +4685,7 @@ static unsigned int ipmi_timeout_handler(struct ipmi_smi *intf,
- 	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++)
- 		check_msg_timeout(intf, &intf->seq_table[i],
- 				  &timeouts, timeout_period, i,
--				  &flags, &waiting_msgs);
-+				  &flags, &watch_mask);
- 	spin_unlock_irqrestore(&intf->seq_lock, flags);
- 
- 	list_for_each_entry_safe(msg, msg2, &timeouts, link)
-@@ -4671,7 +4716,7 @@ static unsigned int ipmi_timeout_handler(struct ipmi_smi *intf,
- 
- 	tasklet_schedule(&intf->recv_tasklet);
- 
--	return waiting_msgs;
-+	return watch_mask;
- }
- 
- static void ipmi_request_event(struct ipmi_smi *intf)
-@@ -4691,37 +4736,43 @@ static atomic_t stop_operation;
- static void ipmi_timeout(struct timer_list *unused)
- {
- 	struct ipmi_smi *intf;
--	int nt = 0, index;
-+	unsigned int watch_mask = 0;
-+	int index;
-+	unsigned long flags;
- 
- 	if (atomic_read(&stop_operation))
- 		return;
- 
- 	index = srcu_read_lock(&ipmi_interfaces_srcu);
- 	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
--		int lnt = 0;
--
- 		if (atomic_read(&intf->event_waiters)) {
- 			intf->ticks_to_req_ev--;
- 			if (intf->ticks_to_req_ev == 0) {
- 				ipmi_request_event(intf);
- 				intf->ticks_to_req_ev = IPMI_REQUEST_EV_TIME;
- 			}
--			lnt++;
-+			watch_mask |= IPMI_WATCH_MASK_INTERNAL;
- 		}
- 
--		lnt += ipmi_timeout_handler(intf, IPMI_TIMEOUT_TIME);
-+		if (atomic_read(&intf->watchdog_waiters))
-+			watch_mask |= IPMI_WATCH_MASK_CHECK_WATCHDOG;
- 
--		lnt = !!lnt;
--		if (lnt != intf->last_needs_timer &&
--					intf->handlers->set_need_watch)
--			intf->handlers->set_need_watch(intf->send_info, lnt);
--		intf->last_needs_timer = lnt;
-+		if (atomic_read(&intf->command_waiters))
-+			watch_mask |= IPMI_WATCH_MASK_CHECK_COMMANDS;
-+
-+		watch_mask |= ipmi_timeout_handler(intf, IPMI_TIMEOUT_TIME);
- 
--		nt += lnt;
-+		spin_lock_irqsave(&intf->xmit_msgs_lock, flags);
-+		if (watch_mask != intf->last_watch_mask &&
-+					intf->handlers->set_need_watch)
-+			intf->handlers->set_need_watch(intf->send_info,
-+						       watch_mask);
-+		intf->last_watch_mask = watch_mask;
-+		spin_unlock_irqrestore(&intf->xmit_msgs_lock, flags);
- 	}
- 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
- 
--	if (nt)
-+	if (watch_mask)
- 		mod_timer(&ipmi_timer, jiffies + IPMI_TIMEOUT_JIFFIES);
- }
- 
-diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
-index a5e1dce042e8e..429fe063e33ff 100644
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -1073,10 +1073,13 @@ static void request_events(void *send_info)
- 	atomic_set(&smi_info->req_events, 1);
- }
- 
--static void set_need_watch(void *send_info, bool enable)
-+static void set_need_watch(void *send_info, unsigned int watch_mask)
- {
- 	struct smi_info *smi_info = send_info;
- 	unsigned long flags;
-+	int enable;
-+
-+	enable = !!(watch_mask & ~IPMI_WATCH_MASK_INTERNAL);
- 
- 	atomic_set(&smi_info->need_watch, enable);
- 	spin_lock_irqsave(&smi_info->si_lock, flags);
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index 469da2290c2a0..e760501e50b20 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -91,8 +91,8 @@
- /*
-  * Timeout for the watch, only used for get flag timer.
-  */
--#define SSIF_WATCH_TIMEOUT_MSEC	   100
--#define SSIF_WATCH_TIMEOUT_JIFFIES msecs_to_jiffies(SSIF_WATCH_TIMEOUT_MSEC)
-+#define SSIF_WATCH_MSG_TIMEOUT		msecs_to_jiffies(10)
-+#define SSIF_WATCH_WATCHDOG_TIMEOUT	msecs_to_jiffies(250)
- 
- enum ssif_intf_state {
- 	SSIF_NORMAL,
-@@ -274,7 +274,7 @@ struct ssif_info {
- 	struct timer_list retry_timer;
- 	int retries_left;
- 
--	bool need_watch;		/* Need to look for flags? */
-+	long watch_timeout;		/* Timeout for flags check, 0 if off. */
- 	struct timer_list watch_timer;	/* Flag fetch timer. */
- 
- 	/* Info from SSIF cmd */
-@@ -576,9 +576,9 @@ static void watch_timeout(struct timer_list *t)
- 		return;
- 
- 	flags = ipmi_ssif_lock_cond(ssif_info, &oflags);
--	if (ssif_info->need_watch) {
-+	if (ssif_info->watch_timeout) {
- 		mod_timer(&ssif_info->watch_timer,
--			  jiffies + SSIF_WATCH_TIMEOUT_JIFFIES);
-+			  jiffies + ssif_info->watch_timeout);
- 		if (SSIF_IDLE(ssif_info)) {
- 			start_flag_fetch(ssif_info, flags); /* Releases lock */
- 			return;
-@@ -1151,17 +1151,23 @@ static void request_events(void *send_info)
-  * Upper layer is changing the flag saying whether we need to request
-  * flags periodically or not.
-  */
--static void ssif_set_need_watch(void *send_info, bool enable)
-+static void ssif_set_need_watch(void *send_info, unsigned int watch_mask)
- {
- 	struct ssif_info *ssif_info = (struct ssif_info *) send_info;
- 	unsigned long oflags, *flags;
-+	long timeout = 0;
-+
-+	if (watch_mask & IPMI_WATCH_MASK_CHECK_MESSAGES)
-+		timeout = SSIF_WATCH_MSG_TIMEOUT;
-+	else if (watch_mask & ~IPMI_WATCH_MASK_INTERNAL)
-+		timeout = SSIF_WATCH_WATCHDOG_TIMEOUT;
- 
- 	flags = ipmi_ssif_lock_cond(ssif_info, &oflags);
--	if (enable != ssif_info->need_watch) {
--		ssif_info->need_watch = enable;
--		if (ssif_info->need_watch)
-+	if (timeout != ssif_info->watch_timeout) {
-+		ssif_info->watch_timeout = timeout;
-+		if (ssif_info->watch_timeout)
- 			mod_timer(&ssif_info->watch_timer,
--				  jiffies + SSIF_WATCH_TIMEOUT_JIFFIES);
-+				  jiffies + ssif_info->watch_timeout);
- 	}
- 	ipmi_ssif_unlock_cond(ssif_info, flags);
- }
-diff --git a/include/linux/ipmi_smi.h b/include/linux/ipmi_smi.h
-index 1995ce1467890..86b119400f301 100644
---- a/include/linux/ipmi_smi.h
-+++ b/include/linux/ipmi_smi.h
-@@ -30,6 +30,17 @@ struct device;
- /* Structure for the low-level drivers. */
- typedef struct ipmi_smi *ipmi_smi_t;
- 
-+/*
-+ * Flags for set_check_watch() below.  Tells if the SMI should be
-+ * waiting for watchdog timeouts, commands and/or messages.  There is
-+ * also an internal flag for the message handler, SMIs should ignore
-+ * it.
-+ */
-+#define IPMI_WATCH_MASK_INTERNAL	(1 << 0)
-+#define IPMI_WATCH_MASK_CHECK_MESSAGES	(1 << 1)
-+#define IPMI_WATCH_MASK_CHECK_WATCHDOG	(1 << 2)
-+#define IPMI_WATCH_MASK_CHECK_COMMANDS	(1 << 3)
-+
- /*
-  * Messages to/from the lower layer.  The smi interface will take one
-  * of these to send. After the send has occurred and a response has
-@@ -55,8 +66,16 @@ struct ipmi_smi_msg {
- 	int           rsp_size;
- 	unsigned char rsp[IPMI_MAX_MSG_LENGTH];
- 
--	/* Will be called when the system is done with the message
--	   (presumably to free it). */
-+	/*
-+	 * There should be a response message coming back in the BMC
-+	 * message queue.
-+	 */
-+	bool needs_response;
-+
-+	/*
-+	 * Will be called when the system is done with the message
-+	 * (presumably to free it).
-+	 */
- 	void (*done)(struct ipmi_smi_msg *msg);
- };
- 
-@@ -105,12 +124,15 @@ struct ipmi_smi_handlers {
- 
- 	/*
- 	 * Called by the upper layer when some user requires that the
--	 * interface watch for events, received messages, watchdog
--	 * pretimeouts, or not.  Used by the SMI to know if it should
--	 * watch for these.  This may be NULL if the SMI does not
--	 * implement it.
-+	 * interface watch for received messages and watchdog
-+	 * pretimeouts (basically do a "Get Flags", or not.  Used by
-+	 * the SMI to know if it should watch for these.  This may be
-+	 * NULL if the SMI does not implement it.  watch_mask is from
-+	 * IPMI_WATCH_MASK_xxx above.  The interface should run slower
-+	 * timeouts for just watchdog checking or faster timeouts when
-+	 * waiting for the message queue.
- 	 */
--	void (*set_need_watch)(void *send_info, bool enable);
-+	void (*set_need_watch)(void *send_info, unsigned int watch_mask);
- 
- 	/*
- 	 * Called when flushing all pending messages.
--- 
-2.39.2
-
+ 	if (req_len) {
+ 		err = brcmf_fil_iovar_data_get(ifp, "assoc_req_ies",
+ 					       cfg->extra_buf,
 
 
