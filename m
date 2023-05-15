@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C4670346C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980BB70368A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242954AbjEOQsV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:48:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53532 "EHLO
+        id S243745AbjEORLM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243022AbjEOQsS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:18 -0400
+        with ESMTP id S243747AbjEORKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABEA659C7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C30C9EF7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06BEE628AD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE3EC433EF;
-        Mon, 15 May 2023 16:47:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CF5862102
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226E6C433EF;
+        Mon, 15 May 2023 17:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169266;
-        bh=heserXd+5bjBJq2dzPhBrYFhXa8E0HyyClOlmrPz1VY=;
+        s=korg; t=1684170535;
+        bh=bsG+6lwfQd+Jq/qThmt40RUeE6LFAUYgBn1SGdJLwuU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eiWKo0ya6AYYV17fe+s2xMwjmGozjnQOYOsb60BbcFQF8hhACEs5e54Yy/8VwJ0Wo
-         YZuP1G247oS1x3DyUb3PfujWFzahZRESx89TJ2btUbqfX9TR1GjKz296lVaVTW8B5e
-         1M+2ggU4G3HOpUQNoTRmQs+xhCREwRp45d34MaW0=
+        b=oUbDUScQOTi7S1U9bhvseqNiQQ8zSXk0hhuEJfFEn/RrY40Ox4mrelWw3L4IeJcPG
+         botHc19/t6A2dDjDDQEBdSjlT8N7ptyrGEXF7YdkcYItXKA94L/HaSijYB0g2ZEJW4
+         tD3+7U4VTBjb7aF8eNr5tCF3MsXeoy6w7xy+Idhk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Theodore Tso" <tytso@mit.edu>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 4.19 188/191] PCI: pciehp: Use down_read/write_nested(reset_lock) to fix lockdep errors
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Jun Lei <Jun.Lei@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 162/239] drm/amd/display: Fix 4to1 MPC black screen with DPP RCO
 Date:   Mon, 15 May 2023 18:27:05 +0200
-Message-Id: <20230515161714.329149687@linuxfoundation.org>
+Message-Id: <20230515161726.533653375@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,183 +58,264 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit 085a9f43433f30cbe8a1ade62d9d7827c3217f4d upstream.
+commit bf224e00a9f54e2bf14b4d720a09c3d2f4aa4aa8 upstream.
 
-Use down_read_nested() and down_write_nested() when taking the
-ctrl->reset_lock rw-sem, passing the number of PCIe hotplug controllers in
-the path to the PCI root bus as lock subclass parameter.
+[Why]
+DPP Root clock optimization when combined with 4to1 MPC combine results
+in the screen turning black.
 
-This fixes the following false-positive lockdep report when unplugging a
-Lenovo X1C8 from a Lenovo 2nd gen TB3 dock:
+This is because the DPPCLK is stopped during the middle of an
+optimize_bandwidth sequence during commit_minimal_transition without
+going through plane power down/power up.
 
-  pcieport 0000:06:01.0: pciehp: Slot(1): Link Down
-  pcieport 0000:06:01.0: pciehp: Slot(1): Card not present
-  ============================================
-  WARNING: possible recursive locking detected
-  5.16.0-rc2+ #621 Not tainted
-  --------------------------------------------
-  irq/124-pciehp/86 is trying to acquire lock:
-  ffff8e5ac4299ef8 (&ctrl->reset_lock){.+.+}-{3:3}, at: pciehp_check_presence+0x23/0x80
+[How]
+The intent of a 0Hz DPP clock through update_clocks is to disable the
+DTO. This differs from the behavior of stopping the DPPCLK entirely
+(utilizing a 0Hz clock on some ASIC) so it's better to move this logic
+to reside next to plane power up/power down where we gate the HUBP/DPP
+DOMAIN.
 
-  but task is already holding lock:
-  ffff8e5ac4298af8 (&ctrl->reset_lock){.+.+}-{3:3}, at: pciehp_ist+0xf3/0x180
+The new  sequence should be:
+Power down: PG enabled -> RCO on
+Power up: RCO off -> PG disabled
 
-   other info that might help us debug this:
-   Possible unsafe locking scenario:
+Rename power_on_plane to power_on_plane_resources to reflect the
+actual operation that's occurring.
 
-	 CPU0
-	 ----
-    lock(&ctrl->reset_lock);
-    lock(&ctrl->reset_lock);
-
-   *** DEADLOCK ***
-
-   May be due to missing lock nesting notation
-
-  3 locks held by irq/124-pciehp/86:
-   #0: ffff8e5ac4298af8 (&ctrl->reset_lock){.+.+}-{3:3}, at: pciehp_ist+0xf3/0x180
-   #1: ffffffffa3b024e8 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pciehp_unconfigure_device+0x31/0x110
-   #2: ffff8e5ac1ee2248 (&dev->mutex){....}-{3:3}, at: device_release_driver+0x1c/0x40
-
-  stack backtrace:
-  CPU: 4 PID: 86 Comm: irq/124-pciehp Not tainted 5.16.0-rc2+ #621
-  Hardware name: LENOVO 20U90SIT19/20U90SIT19, BIOS N2WET30W (1.20 ) 08/26/2021
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x59/0x73
-   __lock_acquire.cold+0xc5/0x2c6
-   lock_acquire+0xb5/0x2b0
-   down_read+0x3e/0x50
-   pciehp_check_presence+0x23/0x80
-   pciehp_runtime_resume+0x5c/0xa0
-   device_for_each_child+0x45/0x70
-   pcie_port_device_runtime_resume+0x20/0x30
-   pci_pm_runtime_resume+0xa7/0xc0
-   __rpm_callback+0x41/0x110
-   rpm_callback+0x59/0x70
-   rpm_resume+0x512/0x7b0
-   __pm_runtime_resume+0x4a/0x90
-   __device_release_driver+0x28/0x240
-   device_release_driver+0x26/0x40
-   pci_stop_bus_device+0x68/0x90
-   pci_stop_bus_device+0x2c/0x90
-   pci_stop_and_remove_bus_device+0xe/0x20
-   pciehp_unconfigure_device+0x6c/0x110
-   pciehp_disable_slot+0x5b/0xe0
-   pciehp_handle_presence_or_link_change+0xc3/0x2f0
-   pciehp_ist+0x179/0x180
-
-This lockdep warning is triggered because with Thunderbolt, hotplug ports
-are nested. When removing multiple devices in a daisy-chain, each hotplug
-port's reset_lock may be acquired recursively. It's never the same lock, so
-the lockdep splat is a false positive.
-
-Because locks at the same hierarchy level are never acquired recursively, a
-per-level lockdep class is sufficient to fix the lockdep warning.
-
-The choice to use one lockdep subclass per pcie-hotplug controller in the
-path to the root-bus was made to conserve class keys because their number
-is limited and the complexity grows quadratically with number of keys
-according to Documentation/locking/lockdep-design.rst.
-
-Link: https://lore.kernel.org/linux-pci/20190402021933.GA2966@mit.edu/
-Link: https://lore.kernel.org/linux-pci/de684a28-9038-8fc6-27ca-3f6f2f6400d7@redhat.com/
-Link: https://lore.kernel.org/r/20211217141709.379663-1-hdegoede@redhat.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=208855
-Reported-by: "Theodore Ts'o" <tytso@mit.edu>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Cc: stable@vger.kernel.org
-[lukas: backport to v4.19-stable]
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/hotplug/pciehp.h      |    3 +++
- drivers/pci/hotplug/pciehp_core.c |    2 +-
- drivers/pci/hotplug/pciehp_hpc.c  |   19 +++++++++++++++++--
- 3 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c |   12 ++++++-
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c        |    8 +++-
+ drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dccg.c         |   13 +------
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_dccg.c       |   23 ++++++++++++++
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_hwseq.c      |   10 ++++++
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_hwseq.h      |    2 +
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_init.c       |    1 
+ drivers/gpu/drm/amd/display/dc/inc/hw/dccg.h              |   23 +++++++-------
+ drivers/gpu/drm/amd/display/dc/inc/hw_sequencer_private.h |    4 ++
+ 9 files changed, 71 insertions(+), 25 deletions(-)
 
---- a/drivers/pci/hotplug/pciehp.h
-+++ b/drivers/pci/hotplug/pciehp.h
-@@ -84,6 +84,8 @@ struct slot {
-  * @reset_lock: prevents access to the Data Link Layer Link Active bit in the
-  *	Link Status register and to the Presence Detect State bit in the Slot
-  *	Status register during a slot reset which may cause them to flap
-+ * @depth: Number of additional hotplug ports in the path to the root bus,
-+ *	used as lock subclass for @reset_lock
-  * @slot: pointer to the controller's slot structure
-  * @queue: wait queue to wake up on reception of a Command Completed event,
-  *	used for synchronous writes to the Slot Control register
-@@ -115,6 +117,7 @@ struct controller {
- 	struct mutex ctrl_lock;
- 	struct pcie_device *pcie;
- 	struct rw_semaphore reset_lock;
-+	unsigned int depth;
- 	struct slot *slot;
- 	wait_queue_head_t queue;
- 	u32 slot_cap;
---- a/drivers/pci/hotplug/pciehp_core.c
-+++ b/drivers/pci/hotplug/pciehp_core.c
-@@ -215,7 +215,7 @@ static void pciehp_check_presence(struct
- 	struct slot *slot = ctrl->slot;
- 	u8 occupied;
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+@@ -726,11 +726,15 @@ void dcn10_hubp_pg_control(
+ 	}
+ }
  
--	down_read(&ctrl->reset_lock);
-+	down_read_nested(&ctrl->reset_lock, ctrl->depth);
- 	mutex_lock(&slot->lock);
+-static void power_on_plane(
++static void power_on_plane_resources(
+ 	struct dce_hwseq *hws,
+ 	int plane_id)
+ {
+ 	DC_LOGGER_INIT(hws->ctx->logger);
++
++	if (hws->funcs.dpp_root_clock_control)
++		hws->funcs.dpp_root_clock_control(hws, plane_id, true);
++
+ 	if (REG(DC_IP_REQUEST_CNTL)) {
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0,
+ 				IP_REQUEST_EN, 1);
+@@ -1237,11 +1241,15 @@ void dcn10_plane_atomic_power_down(struc
+ 			hws->funcs.hubp_pg_control(hws, hubp->inst, false);
  
- 	pciehp_get_adapter_status(slot, &occupied);
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -674,7 +674,7 @@ static irqreturn_t pciehp_ist(int irq, v
- 	 * Disable requests have higher priority than Presence Detect Changed
- 	 * or Data Link Layer State Changed events.
- 	 */
--	down_read(&ctrl->reset_lock);
-+	down_read_nested(&ctrl->reset_lock, ctrl->depth);
- 	if (events & DISABLE_SLOT)
- 		pciehp_handle_disable_request(slot);
- 	else if (events & (PCI_EXP_SLTSTA_PDC | PCI_EXP_SLTSTA_DLLSC))
-@@ -785,7 +785,7 @@ int pciehp_reset_slot(struct slot *slot,
- 	if (probe)
- 		return 0;
+ 		dpp->funcs->dpp_reset(dpp);
++
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0,
+ 				IP_REQUEST_EN, 0);
+ 		DC_LOG_DEBUG(
+ 				"Power gated front end %d\n", hubp->inst);
+ 	}
++
++	if (hws->funcs.dpp_root_clock_control)
++		hws->funcs.dpp_root_clock_control(hws, dpp->inst, false);
+ }
  
--	down_write(&ctrl->reset_lock);
-+	down_write_nested(&ctrl->reset_lock, ctrl->depth);
+ /* disable HW used by plane.
+@@ -2450,7 +2458,7 @@ static void dcn10_enable_plane(
  
- 	if (!ATTN_BUTTN(ctrl)) {
- 		ctrl_mask |= PCI_EXP_SLTCTL_PDCE;
-@@ -872,6 +872,20 @@ static inline void dbg_ctrl(struct contr
+ 	undo_DEGVIDCN10_253_wa(dc);
  
- #define FLAG(x, y)	(((x) & (y)) ? '+' : '-')
+-	power_on_plane(dc->hwseq,
++	power_on_plane_resources(dc->hwseq,
+ 		pipe_ctx->plane_res.hubp->inst);
  
-+static inline int pcie_hotplug_depth(struct pci_dev *dev)
+ 	/* enable DCFCLK current DCHUB */
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -1087,11 +1087,15 @@ void dcn20_blank_pixel_data(
+ }
+ 
+ 
+-static void dcn20_power_on_plane(
++static void dcn20_power_on_plane_resources(
+ 	struct dce_hwseq *hws,
+ 	struct pipe_ctx *pipe_ctx)
+ {
+ 	DC_LOGGER_INIT(hws->ctx->logger);
++
++	if (hws->funcs.dpp_root_clock_control)
++		hws->funcs.dpp_root_clock_control(hws, pipe_ctx->plane_res.dpp->inst, true);
++
+ 	if (REG(DC_IP_REQUEST_CNTL)) {
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0,
+ 				IP_REQUEST_EN, 1);
+@@ -1115,7 +1119,7 @@ static void dcn20_enable_plane(struct dc
+ 	//if (dc->debug.sanity_checks) {
+ 	//	dcn10_verify_allow_pstate_change_high(dc);
+ 	//}
+-	dcn20_power_on_plane(dc->hwseq, pipe_ctx);
++	dcn20_power_on_plane_resources(dc->hwseq, pipe_ctx);
+ 
+ 	/* enable DCFCLK current DCHUB */
+ 	pipe_ctx->plane_res.hubp->funcs->hubp_clk_cntl(pipe_ctx->plane_res.hubp, true);
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dccg.c
+@@ -66,17 +66,8 @@ void dccg31_update_dpp_dto(struct dccg *
+ 		REG_UPDATE(DPPCLK_DTO_CTRL,
+ 				DPPCLK_DTO_ENABLE[dpp_inst], 1);
+ 	} else {
+-		//DTO must be enabled to generate a 0Hz clock output
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp) {
+-			REG_UPDATE(DPPCLK_DTO_CTRL,
+-					DPPCLK_DTO_ENABLE[dpp_inst], 1);
+-			REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+-					DPPCLK0_DTO_PHASE, 0,
+-					DPPCLK0_DTO_MODULO, 1);
+-		} else {
+-			REG_UPDATE(DPPCLK_DTO_CTRL,
+-					DPPCLK_DTO_ENABLE[dpp_inst], 0);
+-		}
++		REG_UPDATE(DPPCLK_DTO_CTRL,
++				DPPCLK_DTO_ENABLE[dpp_inst], 0);
+ 	}
+ 	dccg->pipe_dppclk_khz[dpp_inst] = req_dppclk;
+ }
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_dccg.c
+@@ -289,8 +289,31 @@ static void dccg314_set_valid_pixel_rate
+ 	dccg314_set_dtbclk_dto(dccg, &dto_params);
+ }
+ 
++static void dccg314_dpp_root_clock_control(
++		struct dccg *dccg,
++		unsigned int dpp_inst,
++		bool clock_on)
 +{
-+	struct pci_bus *bus = dev->bus;
-+	int depth = 0;
++	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
 +
-+	while (bus->parent) {
-+		bus = bus->parent;
-+		if (bus->self && bus->self->is_hotplug_bridge)
-+			depth++;
++	if (clock_on) {
++		/* turn off the DTO and leave phase/modulo at max */
++		REG_UPDATE(DPPCLK_DTO_CTRL, DPPCLK_DTO_ENABLE[dpp_inst], 0);
++		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
++			  DPPCLK0_DTO_PHASE, 0xFF,
++			  DPPCLK0_DTO_MODULO, 0xFF);
++	} else {
++		/* turn on the DTO to generate a 0hz clock */
++		REG_UPDATE(DPPCLK_DTO_CTRL, DPPCLK_DTO_ENABLE[dpp_inst], 1);
++		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
++			  DPPCLK0_DTO_PHASE, 0,
++			  DPPCLK0_DTO_MODULO, 1);
 +	}
-+
-+	return depth;
 +}
 +
- struct controller *pcie_init(struct pcie_device *dev)
+ static const struct dccg_funcs dccg314_funcs = {
+ 	.update_dpp_dto = dccg31_update_dpp_dto,
++	.dpp_root_clock_control = dccg314_dpp_root_clock_control,
+ 	.get_dccg_ref_freq = dccg31_get_dccg_ref_freq,
+ 	.dccg_init = dccg31_init,
+ 	.set_dpstreamclk = dccg314_set_dpstreamclk,
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_hwseq.c
+@@ -392,6 +392,16 @@ void dcn314_set_pixels_per_cycle(struct
+ 				pix_per_cycle);
+ }
+ 
++void dcn314_dpp_root_clock_control(struct dce_hwseq *hws, unsigned int dpp_inst, bool clock_on)
++{
++	if (!hws->ctx->dc->debug.root_clock_optimization.bits.dpp)
++		return;
++
++	if (hws->ctx->dc->res_pool->dccg->funcs->dpp_root_clock_control)
++		hws->ctx->dc->res_pool->dccg->funcs->dpp_root_clock_control(
++			hws->ctx->dc->res_pool->dccg, dpp_inst, clock_on);
++}
++
+ void dcn314_hubp_pg_control(struct dce_hwseq *hws, unsigned int hubp_inst, bool power_on)
  {
- 	struct controller *ctrl;
-@@ -884,6 +898,7 @@ struct controller *pcie_init(struct pcie
- 		goto abort;
+ 	struct dc_context *ctx = hws->ctx;
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_hwseq.h
+@@ -43,4 +43,6 @@ void dcn314_set_pixels_per_cycle(struct
  
- 	ctrl->pcie = dev;
-+	ctrl->depth = pcie_hotplug_depth(dev->port);
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &slot_cap);
+ void dcn314_hubp_pg_control(struct dce_hwseq *hws, unsigned int hubp_inst, bool power_on);
  
- 	if (pdev->hotplug_user_indicators)
++void dcn314_dpp_root_clock_control(struct dce_hwseq *hws, unsigned int dpp_inst, bool clock_on);
++
+ #endif /* __DC_HWSS_DCN314_H__ */
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_init.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_init.c
+@@ -137,6 +137,7 @@ static const struct hwseq_private_funcs
+ 	.plane_atomic_disable = dcn20_plane_atomic_disable,
+ 	.plane_atomic_power_down = dcn10_plane_atomic_power_down,
+ 	.enable_power_gating_plane = dcn314_enable_power_gating_plane,
++	.dpp_root_clock_control = dcn314_dpp_root_clock_control,
+ 	.hubp_pg_control = dcn314_hubp_pg_control,
+ 	.program_all_writeback_pipes_in_tree = dcn30_program_all_writeback_pipes_in_tree,
+ 	.update_odm = dcn314_update_odm,
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/dccg.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/dccg.h
+@@ -148,18 +148,21 @@ struct dccg_funcs {
+ 		struct dccg *dccg,
+ 		int inst);
+ 
+-void (*set_pixel_rate_div)(
+-        struct dccg *dccg,
+-        uint32_t otg_inst,
+-        enum pixel_rate_div k1,
+-        enum pixel_rate_div k2);
++	void (*set_pixel_rate_div)(struct dccg *dccg,
++			uint32_t otg_inst,
++			enum pixel_rate_div k1,
++			enum pixel_rate_div k2);
+ 
+-void (*set_valid_pixel_rate)(
+-        struct dccg *dccg,
+-	int ref_dtbclk_khz,
+-        int otg_inst,
+-        int pixclk_khz);
++	void (*set_valid_pixel_rate)(
++			struct dccg *dccg,
++			int ref_dtbclk_khz,
++			int otg_inst,
++			int pixclk_khz);
+ 
++	void (*dpp_root_clock_control)(
++			struct dccg *dccg,
++			unsigned int dpp_inst,
++			bool clock_on);
+ };
+ 
+ #endif //__DAL_DCCG_H__
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw_sequencer_private.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw_sequencer_private.h
+@@ -115,6 +115,10 @@ struct hwseq_private_funcs {
+ 	void (*plane_atomic_disable)(struct dc *dc, struct pipe_ctx *pipe_ctx);
+ 	void (*enable_power_gating_plane)(struct dce_hwseq *hws,
+ 		bool enable);
++	void (*dpp_root_clock_control)(
++			struct dce_hwseq *hws,
++			unsigned int dpp_inst,
++			bool clock_on);
+ 	void (*dpp_pg_control)(struct dce_hwseq *hws,
+ 			unsigned int dpp_inst,
+ 			bool power_on);
 
 
