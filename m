@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14677022C6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 962E77022C7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238157AbjEOEOy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 00:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57118 "EHLO
+        id S229708AbjEOEPs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 00:15:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238839AbjEOEOw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:14:52 -0400
+        with ESMTP id S229539AbjEOEPr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:15:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A4CE50
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:14:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B2C9E50
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:15:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B7DD61207
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:14:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAA4C433D2;
-        Mon, 15 May 2023 04:14:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB59961840
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:15:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0572C433D2;
+        Mon, 15 May 2023 04:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684124090;
-        bh=Ul6Y59DyDRc+blQI7n8QDWgqdOM9kw5p8k+0xGO8P2U=;
+        s=korg; t=1684124145;
+        bh=QsAdi/faYLT+ezo0UA9sejNYQQ7Hf2bU21jweFQtR2Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=ugJ0+2vS7//prPqPgdcEcqssHtrL5JJaoGWgcr/ky0M+IrzRxWKYig9nJNahQ8DSH
-         P1aPt7HSLxVT4qYIcaHv8i9qgXPn5vxV7v65ccxdVMa67gjEwAy8O7mz/u/ft1DV9P
-         uS2X/3oE1ofMKXFSVYjgFRYzrOlak5yZfPacCkyw=
-Subject: FAILED: patch "[PATCH] ext4: fix deadlock when converting an inline directory in" failed to apply to 4.14-stable tree
-To:     tytso@mit.edu
+        b=tw244I9kentHNe5GWLAZPY23/0TmzMzQZK+LGpSTTSCufDb6SnTja1NkUYpjy0AQO
+         yFaVGAyfSG7jcuYE2aPqqq6+2/t+g6Za4M5CORIIsbHPpV/lNW0oqsezkdXYVigA3/
+         96VUyYB0xv2FSITpSsODQKgnYeAxhJU6ClzNJy84=
+Subject: FAILED: patch "[PATCH] ext4: fix lockdep warning when enabling MMP" failed to apply to 5.15-stable tree
+To:     jack@suse.cz, brauner@kernel.org, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 15 May 2023 06:14:41 +0200
-Message-ID: <2023051541-whacking-until-c2b2@gregkh>
+Date:   Mon, 15 May 2023 06:15:42 +0200
+Message-ID: <2023051542-twiddling-guise-b47e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,28 +48,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x f4ce24f54d9cca4f09a395f3eecce20d6bec4663
+git cherry-pick -x 949f95ff39bf188e594e7ecd8e29b82eb108f5bf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051541-whacking-until-c2b2@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051542-twiddling-guise-b47e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-f4ce24f54d9c ("ext4: fix deadlock when converting an inline directory in nojournal mode")
-f036adb39976 ("ext4: rename "dirent_csum" functions to use "dirblock"")
-b886ee3e778e ("ext4: Support case-insensitive file name lookups")
-ee73f9a52a34 ("ext4: convert to new i_version API")
-ae5e165d855d ("fs: new API for handling inode->i_version")
-5cea7647e646 ("Merge branch 'for-4.15' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux")
+949f95ff39bf ("ext4: fix lockdep warning when enabling MMP")
 
 thanks,
 
@@ -77,62 +72,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f4ce24f54d9cca4f09a395f3eecce20d6bec4663 Mon Sep 17 00:00:00 2001
-From: Theodore Ts'o <tytso@mit.edu>
-Date: Sat, 6 May 2023 21:04:01 -0400
-Subject: [PATCH] ext4: fix deadlock when converting an inline directory in
- nojournal mode
+From 949f95ff39bf188e594e7ecd8e29b82eb108f5bf Mon Sep 17 00:00:00 2001
+From: Jan Kara <jack@suse.cz>
+Date: Tue, 11 Apr 2023 14:10:19 +0200
+Subject: [PATCH] ext4: fix lockdep warning when enabling MMP
 
-In no journal mode, ext4_finish_convert_inline_dir() can self-deadlock
-by calling ext4_handle_dirty_dirblock() when it already has taken the
-directory lock.  There is a similar self-deadlock in
-ext4_incvert_inline_data_nolock() for data files which we'll fix at
-the same time.
-
-A simple reproducer demonstrating the problem:
-
-    mke2fs -Fq -t ext2 -O inline_data -b 4k /dev/vdc 64
-    mount -t ext4 -o dirsync /dev/vdc /vdc
-    cd /vdc
-    mkdir file0
-    cd file0
-    touch file0
-    touch file1
-    attr -s BurnSpaceInEA -V abcde .
-    touch supercalifragilisticexpialidocious
+When we enable MMP in ext4_multi_mount_protect() during mount or
+remount, we end up calling sb_start_write() from write_mmp_block(). This
+triggers lockdep warning because freeze protection ranks above s_umount
+semaphore we are holding during mount / remount. The problem is harmless
+because we are guaranteed the filesystem is not frozen during mount /
+remount but still let's fix the warning by not grabbing freeze
+protection from ext4_multi_mount_protect().
 
 Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230507021608.1290720-1-tytso@mit.edu
-Reported-by: syzbot+91dccab7c64e2850a4e5@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=ba84cc80a9491d65416bc7877e1650c87530fe8a
+Reported-by: syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=ab7e5b6f400b7778d46f01841422e5718fb81843
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20230411121019.21940-1-jack@suse.cz
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 859bc4e2c9b0..d3dfc51a43c5 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1175,6 +1175,7 @@ static int ext4_finish_convert_inline_dir(handle_t *handle,
- 		ext4_initialize_dirent_tail(dir_block,
- 					    inode->i_sb->s_blocksize);
- 	set_buffer_uptodate(dir_block);
-+	unlock_buffer(dir_block);
- 	err = ext4_handle_dirty_dirblock(handle, inode, dir_block);
- 	if (err)
- 		return err;
-@@ -1249,6 +1250,7 @@ static int ext4_convert_inline_data_nolock(handle_t *handle,
- 	if (!S_ISDIR(inode->i_mode)) {
- 		memcpy(data_bh->b_data, buf, inline_size);
- 		set_buffer_uptodate(data_bh);
-+		unlock_buffer(data_bh);
- 		error = ext4_handle_dirty_metadata(handle,
- 						   inode, data_bh);
- 	} else {
-@@ -1256,7 +1258,6 @@ static int ext4_convert_inline_data_nolock(handle_t *handle,
- 						       buf, inline_size);
- 	}
+diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
+index 4022bc713421..0aaf38ffcb6e 100644
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -39,28 +39,36 @@ static void ext4_mmp_csum_set(struct super_block *sb, struct mmp_struct *mmp)
+  * Write the MMP block using REQ_SYNC to try to get the block on-disk
+  * faster.
+  */
+-static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
++static int write_mmp_block_thawed(struct super_block *sb,
++				  struct buffer_head *bh)
+ {
+ 	struct mmp_struct *mmp = (struct mmp_struct *)(bh->b_data);
  
--	unlock_buffer(data_bh);
- out_restore:
- 	if (error)
- 		ext4_restore_inline_data(handle, inode, iloc, buf, inline_size);
+-	/*
+-	 * We protect against freezing so that we don't create dirty buffers
+-	 * on frozen filesystem.
+-	 */
+-	sb_start_write(sb);
+ 	ext4_mmp_csum_set(sb, mmp);
+ 	lock_buffer(bh);
+ 	bh->b_end_io = end_buffer_write_sync;
+ 	get_bh(bh);
+ 	submit_bh(REQ_OP_WRITE | REQ_SYNC | REQ_META | REQ_PRIO, bh);
+ 	wait_on_buffer(bh);
+-	sb_end_write(sb);
+ 	if (unlikely(!buffer_uptodate(bh)))
+ 		return -EIO;
+-
+ 	return 0;
+ }
+ 
++static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
++{
++	int err;
++
++	/*
++	 * We protect against freezing so that we don't create dirty buffers
++	 * on frozen filesystem.
++	 */
++	sb_start_write(sb);
++	err = write_mmp_block_thawed(sb, bh);
++	sb_end_write(sb);
++	return err;
++}
++
+ /*
+  * Read the MMP block. It _must_ be read from disk and hence we clear the
+  * uptodate flag on the buffer.
+@@ -344,7 +352,11 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	seq = mmp_new_seq();
+ 	mmp->mmp_seq = cpu_to_le32(seq);
+ 
+-	retval = write_mmp_block(sb, bh);
++	/*
++	 * On mount / remount we are protected against fs freezing (by s_umount
++	 * semaphore) and grabbing freeze protection upsets lockdep
++	 */
++	retval = write_mmp_block_thawed(sb, bh);
+ 	if (retval)
+ 		goto failed;
+ 
 
