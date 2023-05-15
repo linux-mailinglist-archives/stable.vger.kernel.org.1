@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED2F703359
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4750703623
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242739AbjEOQgN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:36:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
+        id S243463AbjEORHG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:07:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242785AbjEOQgE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:04 -0400
+        with ESMTP id S243627AbjEORGu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5312E170C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D29AD10
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9615362818
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D70C433D2;
-        Mon, 15 May 2023 16:36:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B31FA62AD9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD49C433EF;
+        Mon, 15 May 2023 17:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168561;
-        bh=CxqRf6HXdQJMr97zh4dctDZj0aUhKN4IMnSNUeNkzzk=;
+        s=korg; t=1684170317;
+        bh=MapsZVpRj1V/QFWIebHTZnskccuSz+6QBhPZx2yRK34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1nPayAs4TwHYSzenzo5FKD+h/xDpsm08iUxydWr93Wdj2fFoJ3k3QRanEk4nTfgUx
-         nActEUHGtQxHoYGVuKozkjJK/5TF5fY1keTmF7QkQg+WPIS/bzrvc7zWc6fRlamAUv
-         Yus/EqZQo6gItdkD22TBH04vjC1Y3KaMyfcqNDDw=
+        b=UjTmf38G+FOcvfrtBO770QLtqp/t/AeNohafnvp3BxXNmI0hUH2hlcRzAjzv4LNfF
+         yT4eVQZx5ztZik9lPOtOVfW26ZivEE11WVo4ojERY1XYi5C36WnrA+0SsEHkEaT3Vz
+         0sN6bXkUyG1cS2tOGfI3CHzV4FQq/nAWB8/jpYBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Patrice Duroux <patrice.duroux@gmail.com>,
+        Ian Rogers <irogers@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 059/116] powerpc/wii: fix resource printk format warnings
+Subject: [PATCH 6.1 093/239] perf tests record_offcpu.sh: Fix redirection of stderr to stdin
 Date:   Mon, 15 May 2023 18:25:56 +0200
-Message-Id: <20230515161700.238073992@linuxfoundation.org>
+Message-Id: <20230515161724.460432581@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,85 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Patrice Duroux <patrice.duroux@gmail.com>
 
-[ Upstream commit 7b69600d4da0049244e9be2f5ef5a2f8e04fcd9a ]
+[ Upstream commit 9835b742ac3ee16dee361e7ccda8022f99d1cd94 ]
 
-Use "%pa" format specifier for resource_size_t to avoid compiler
-printk format warnings.
+It's not 2&>1, the correct is 2>&1
 
-../arch/powerpc/platforms/embedded6xx/flipper-pic.c: In function 'flipper_pic_init':
-../include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-../arch/powerpc/platforms/embedded6xx/flipper-pic.c:148:9: note: in expansion of macro 'pr_info'
-  148 |         pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-      |         ^~~~~~~
-
-../arch/powerpc/platforms/embedded6xx/hlwd-pic.c: In function 'hlwd_pic_init':
-../include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-../arch/powerpc/platforms/embedded6xx/hlwd-pic.c:174:9: note: in expansion of macro 'pr_info'
-  174 |         pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-      |         ^~~~~~~
-
-../arch/powerpc/platforms/embedded6xx/wii.c: In function 'wii_ioremap_hw_regs':
-../include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-../arch/powerpc/platforms/embedded6xx/wii.c:77:17: note: in expansion of macro 'pr_info'
-   77 |                 pr_info("%s at 0x%08x mapped to 0x%p\n", name,
-      |                 ^~~~~~~
-
-Fixes: 028ee972f032 ("powerpc: gamecube/wii: flipper interrupt controller support")
-Fixes: 9c21025c7845 ("powerpc: wii: hollywood interrupt controller support")
-Fixes: 5a7ee3198dfa ("powerpc: wii: platform support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-3-rdunlap@infradead.org
+Fixes: ade1d0307b2fb3d9 ("perf offcpu: Update offcpu test for child process")
+Signed-off-by: Patrice Duroux <patrice.duroux@gmail.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20230303193058.21274-1-patrice.duroux@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/embedded6xx/flipper-pic.c | 2 +-
- arch/powerpc/platforms/embedded6xx/hlwd-pic.c    | 2 +-
- arch/powerpc/platforms/embedded6xx/wii.c         | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/tests/shell/record_offcpu.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/embedded6xx/flipper-pic.c b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-index ade83829d5e8b..416375b346ba6 100644
---- a/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-+++ b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-@@ -157,7 +157,7 @@ struct irq_domain * __init flipper_pic_init(struct device_node *np)
- 	}
- 	io_base = ioremap(res.start, resource_size(&res));
+diff --git a/tools/perf/tests/shell/record_offcpu.sh b/tools/perf/tests/shell/record_offcpu.sh
+index d2eba583a2ac9..054272750aa9c 100755
+--- a/tools/perf/tests/shell/record_offcpu.sh
++++ b/tools/perf/tests/shell/record_offcpu.sh
+@@ -65,7 +65,7 @@ test_offcpu_child() {
  
--	pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-+	pr_info("controller at 0x%pa mapped to 0x%p\n", &res.start, io_base);
- 
- 	__flipper_quiesce(io_base);
- 
-diff --git a/arch/powerpc/platforms/embedded6xx/hlwd-pic.c b/arch/powerpc/platforms/embedded6xx/hlwd-pic.c
-index db2ea6b6889de..7b7d659fd1568 100644
---- a/arch/powerpc/platforms/embedded6xx/hlwd-pic.c
-+++ b/arch/powerpc/platforms/embedded6xx/hlwd-pic.c
-@@ -178,7 +178,7 @@ struct irq_domain *hlwd_pic_init(struct device_node *np)
- 		return NULL;
- 	}
- 
--	pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-+	pr_info("controller at 0x%pa mapped to 0x%p\n", &res.start, io_base);
- 
- 	__hlwd_quiesce(io_base);
- 
-diff --git a/arch/powerpc/platforms/embedded6xx/wii.c b/arch/powerpc/platforms/embedded6xx/wii.c
-index 2914529c06955..eabbced08d5f9 100644
---- a/arch/powerpc/platforms/embedded6xx/wii.c
-+++ b/arch/powerpc/platforms/embedded6xx/wii.c
-@@ -143,8 +143,8 @@ static void __iomem *wii_ioremap_hw_regs(char *name, char *compatible)
- 
- 	hw_regs = ioremap(res.start, resource_size(&res));
- 	if (hw_regs) {
--		pr_info("%s at 0x%08x mapped to 0x%p\n", name,
--			res.start, hw_regs);
-+		pr_info("%s at 0x%pa mapped to 0x%p\n", name,
-+			&res.start, hw_regs);
- 	}
- 
- out_put:
+   # perf bench sched messaging creates 400 processes
+   if ! perf record --off-cpu -e dummy -o ${perfdata} -- \
+-    perf bench sched messaging -g 10 > /dev/null 2&>1
++    perf bench sched messaging -g 10 > /dev/null 2>&1
+   then
+     echo "Child task off-cpu test [Failed record]"
+     err=1
 -- 
 2.39.2
 
