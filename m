@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A12703621
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF56703500
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243621AbjEORHC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48848 "EHLO
+        id S243062AbjEOQzA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243407AbjEORGn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17E7D9EF5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:13 -0700 (PDT)
+        with ESMTP id S243197AbjEOQyg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 577BD729D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:54:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 118B762AA7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210ECC433EF;
-        Mon, 15 May 2023 17:04:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0B15629CA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F41C433EF;
+        Mon, 15 May 2023 16:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170270;
-        bh=WQa5sOYdTrRKzNJUG4rsU3bj55qdENHExxL5L6pgAF4=;
+        s=korg; t=1684169654;
+        bh=M3v98ZhcJTfpmPI1aYheNzTgw8RV+l7Q8rQJILWMNCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pTYJESrA18P1taRpTogPOH8lCxKG1o9O+2dZ/WgrM/h4Tat7aLV2zsiy1KXj0CYEG
-         aKI8DKkPXR0u/mr4nkB1ch3eWFBQ0M2sgckCZt/R7JrgWXMTBKBGal4R5uLUzPAQ3e
-         EdHr5RXyirsRYDC6lkHQkBzwpiEvhBvZwvWilI7Y=
+        b=Ckrz8HLryPjseqeqySbTIQ6QEag2Ro6XpTdLD4vVuWYZTqXeYKDnLYierI7kKNzxo
+         Ztaf3cMBJeArk1NYwzQUmBO6AhE5jkYV1S1wpugnsleOcV1ySl2zqrwzRGC1neYHL4
+         B+XGciyCEFcTQogi6AG+oZx8cqdwUcq1JMXx/EAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+ef6edd9f1baaa54d6235@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 077/239] ethtool: Fix uninitialized number of lanes
+        patches@lists.linux.dev, Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 128/246] btrfs: zoned: fix wrong use of bitops API in btrfs_ensure_empty_zones
 Date:   Mon, 15 May 2023 18:25:40 +0200
-Message-Id: <20230515161723.995097214@linuxfoundation.org>
+Message-Id: <20230515161726.403229053@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,130 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 9ad685dbfe7e856bbf17a7177b64676d324d6ed7 ]
+commit 631003e2333c12cc1b52df06a707365b7363a159 upstream.
 
-It is not possible to set the number of lanes when setting link modes
-using the legacy IOCTL ethtool interface. Since 'struct
-ethtool_link_ksettings' is not initialized in this path, drivers receive
-an uninitialized number of lanes in 'struct
-ethtool_link_ksettings::lanes'.
+find_next_bit and find_next_zero_bit take @size as the second parameter and
+@offset as the third parameter. They are specified opposite in
+btrfs_ensure_empty_zones(). Thanks to the later loop, it never failed to
+detect the empty zones. Fix them and (maybe) return the result a bit
+faster.
 
-When this information is later queried from drivers, it results in the
-ethtool code making decisions based on uninitialized memory, leading to
-the following KMSAN splat [1]. In practice, this most likely only
-happens with the tun driver that simply returns whatever it got in the
-set operation.
+Note: the naming is a bit confusing, size has two meanings here, bitmap
+and our range size.
 
-As far as I can tell, this uninitialized memory is not leaked to user
-space thanks to the 'ethtool_ops->cap_link_lanes_supported' check in
-linkmodes_prepare_data().
-
-Fix by initializing the structure in the IOCTL path. Did not find any
-more call sites that pass an uninitialized structure when calling
-'ethtool_ops::set_link_ksettings()'.
-
-[1]
-BUG: KMSAN: uninit-value in ethnl_update_linkmodes net/ethtool/linkmodes.c:273 [inline]
-BUG: KMSAN: uninit-value in ethnl_set_linkmodes+0x190b/0x19d0 net/ethtool/linkmodes.c:333
- ethnl_update_linkmodes net/ethtool/linkmodes.c:273 [inline]
- ethnl_set_linkmodes+0x190b/0x19d0 net/ethtool/linkmodes.c:333
- ethnl_default_set_doit+0x88d/0xde0 net/ethtool/netlink.c:640
- genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
- genl_rcv_msg+0x141a/0x14c0 net/netlink/genetlink.c:1065
- netlink_rcv_skb+0x3f8/0x750 net/netlink/af_netlink.c:2577
- genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
- netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
- netlink_unicast+0xf41/0x1270 net/netlink/af_netlink.c:1365
- netlink_sendmsg+0x127d/0x1430 net/netlink/af_netlink.c:1942
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg net/socket.c:747 [inline]
- ____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
- ___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
- __sys_sendmsg net/socket.c:2584 [inline]
- __do_sys_sendmsg net/socket.c:2593 [inline]
- __se_sys_sendmsg net/socket.c:2591 [inline]
- __x64_sys_sendmsg+0x36b/0x540 net/socket.c:2591
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was stored to memory at:
- tun_get_link_ksettings+0x37/0x60 drivers/net/tun.c:3544
- __ethtool_get_link_ksettings+0x17b/0x260 net/ethtool/ioctl.c:441
- ethnl_set_linkmodes+0xee/0x19d0 net/ethtool/linkmodes.c:327
- ethnl_default_set_doit+0x88d/0xde0 net/ethtool/netlink.c:640
- genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
- genl_rcv_msg+0x141a/0x14c0 net/netlink/genetlink.c:1065
- netlink_rcv_skb+0x3f8/0x750 net/netlink/af_netlink.c:2577
- genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
- netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
- netlink_unicast+0xf41/0x1270 net/netlink/af_netlink.c:1365
- netlink_sendmsg+0x127d/0x1430 net/netlink/af_netlink.c:1942
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg net/socket.c:747 [inline]
- ____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
- ___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
- __sys_sendmsg net/socket.c:2584 [inline]
- __do_sys_sendmsg net/socket.c:2593 [inline]
- __se_sys_sendmsg net/socket.c:2591 [inline]
- __x64_sys_sendmsg+0x36b/0x540 net/socket.c:2591
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was stored to memory at:
- tun_set_link_ksettings+0x37/0x60 drivers/net/tun.c:3553
- ethtool_set_link_ksettings+0x600/0x690 net/ethtool/ioctl.c:609
- __dev_ethtool net/ethtool/ioctl.c:3024 [inline]
- dev_ethtool+0x1db9/0x2a70 net/ethtool/ioctl.c:3078
- dev_ioctl+0xb07/0x1270 net/core/dev_ioctl.c:524
- sock_do_ioctl+0x295/0x540 net/socket.c:1213
- sock_ioctl+0x729/0xd90 net/socket.c:1316
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl+0x222/0x400 fs/ioctl.c:856
- __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Local variable link_ksettings created at:
- ethtool_set_link_ksettings+0x54/0x690 net/ethtool/ioctl.c:577
- __dev_ethtool net/ethtool/ioctl.c:3024 [inline]
- dev_ethtool+0x1db9/0x2a70 net/ethtool/ioctl.c:3078
-
-Fixes: 012ce4dd3102 ("ethtool: Extend link modes settings uAPI with lanes")
-Reported-and-tested-by: syzbot+ef6edd9f1baaa54d6235@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/netdev/0000000000004bb41105fa70f361@google.com/
-Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1cd6121f2a38 ("btrfs: zoned: implement zoned chunk allocator")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/zoned.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 038398d41a937..940c0e27be735 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -580,8 +580,8 @@ static int ethtool_get_link_ksettings(struct net_device *dev,
- static int ethtool_set_link_ksettings(struct net_device *dev,
- 				      void __user *useraddr)
- {
-+	struct ethtool_link_ksettings link_ksettings = {};
- 	int err;
--	struct ethtool_link_ksettings link_ksettings;
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1168,12 +1168,12 @@ int btrfs_ensure_empty_zones(struct btrf
+ 		return -ERANGE;
  
- 	ASSERT_RTNL();
+ 	/* All the zones are conventional */
+-	if (find_next_bit(zinfo->seq_zones, begin, end) == end)
++	if (find_next_bit(zinfo->seq_zones, end, begin) == end)
+ 		return 0;
  
--- 
-2.39.2
-
+ 	/* All the zones are sequential and empty */
+-	if (find_next_zero_bit(zinfo->seq_zones, begin, end) == end &&
+-	    find_next_zero_bit(zinfo->empty_zones, begin, end) == end)
++	if (find_next_zero_bit(zinfo->seq_zones, end, begin) == end &&
++	    find_next_zero_bit(zinfo->empty_zones, end, begin) == end)
+ 		return 0;
+ 
+ 	for (pos = start; pos < start + size; pos += zinfo->zone_size) {
 
 
