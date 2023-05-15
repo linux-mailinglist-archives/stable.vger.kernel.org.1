@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9BAB703723
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7089F703410
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243970AbjEORRN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
+        id S242500AbjEOQoW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243856AbjEORQy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:54 -0400
+        with ESMTP id S239399AbjEOQoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F7D100C3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAA749E5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEF8762BC8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA651C433D2;
-        Mon, 15 May 2023 17:15:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D1E48628CC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39D2C433EF;
+        Mon, 15 May 2023 16:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170934;
-        bh=D+nVR6YJ6wziewKaom6jQtPAN2+qliognPODIvsi3EE=;
+        s=korg; t=1684169058;
+        bh=kNPZZHuInojpeKhKQgbMA3PvTr8M9yMYF6iCFzP2IyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MzAQFrV3F7019OxfuoHItjZHcW2QshyLTnmqtqbAjbphwhXmbSVOj/M1eMQ4bqUwf
-         TeVuhQH5fXshqULuxUSyQMHODpdYAl53w6L9ZmazrvDkHVyhWs6y7nXDQmtkiF6H5w
-         TjZvFnFfna7AxswHksoGyiVKstx8qehEv2rAaO0c=
+        b=LimdfyhUjzJQnSzNsgkkX2RTPyz+E0jmnlIQKVTabplQmJz4lcPpgoYBCCsAL0UfU
+         tvuZlo420soWCr9DouK/ObkEwO3xyWrh7W5UHbGZxSTwmW17EdsqWgexXCaVKGLPig
+         kM3xZrS/kdn0FwB0smqglmx0hx1WlK3cDq4vvRkM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 040/242] octeontx2-pf: mcs: Fix shared counters logic
+        patches@lists.linux.dev,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Jes Sorensen <jes@trained-monkey.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 4.19 129/191] wifi: rtl8xxxu: RTL8192EU always needs full init
 Date:   Mon, 15 May 2023 18:26:06 +0200
-Message-Id: <20230515161723.121451298@linuxfoundation.org>
+Message-Id: <20230515161712.050171376@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,106 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 9bdfe61054fb2b989eb58df20bf99c0cf67e3038 ]
+commit d46e04ccd40457a0119b76e11ab64a2ad403e138 upstream.
 
-Macsec stats like InPktsLate and InPktsDelayed share
-same counter in hardware. If SecY replay_protect is true
-then counter represents InPktsLate otherwise InPktsDelayed.
-This mode change was tracked based on protect_frames
-instead of replay_protect mistakenly. Similarly InPktsUnchecked
-and InPktsOk share same counter and mode change was tracked
-based on validate_check instead of validate_disabled.
-This patch fixes those problems.
+Always run the entire init sequence (rtl8xxxu_init_device()) for
+RTL8192EU. It's what the vendor driver does too.
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a bug where the device is unable to connect after
+rebooting:
+
+wlp3s0f3u2: send auth to ... (try 1/3)
+wlp3s0f3u2: send auth to ... (try 2/3)
+wlp3s0f3u2: send auth to ... (try 3/3)
+wlp3s0f3u2: authentication with ... timed out
+
+Rebooting leaves the device powered on (partially? at least the
+firmware is still running), but not really in a working state.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Jes Sorensen <jes@trained-monkey.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  | 14 +++++++-------
- .../ethernet/marvell/octeontx2/nic/otx2_common.h   |  2 +-
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index 13faca9add9f4..3ad8d7ef20be6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -1014,7 +1014,7 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
- 
- 	/* Check if sync is really needed */
- 	if (secy->validate_frames == txsc->last_validate_frames &&
--	    secy->protect_frames == txsc->last_protect_frames)
-+	    secy->replay_protect == txsc->last_replay_protect)
- 		return;
- 
- 	cn10k_mcs_secy_stats(pfvf, txsc->hw_secy_id_rx, &rx_rsp, MCS_RX, true);
-@@ -1036,19 +1036,19 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
- 		rxsc->stats.InPktsInvalid += sc_rsp.pkt_invalid_cnt;
- 		rxsc->stats.InPktsNotValid += sc_rsp.pkt_notvalid_cnt;
- 
--		if (txsc->last_protect_frames)
-+		if (txsc->last_replay_protect)
- 			rxsc->stats.InPktsLate += sc_rsp.pkt_late_cnt;
- 		else
- 			rxsc->stats.InPktsDelayed += sc_rsp.pkt_late_cnt;
- 
--		if (txsc->last_validate_frames == MACSEC_VALIDATE_CHECK)
-+		if (txsc->last_validate_frames == MACSEC_VALIDATE_DISABLED)
- 			rxsc->stats.InPktsUnchecked += sc_rsp.pkt_unchecked_cnt;
- 		else
- 			rxsc->stats.InPktsOK += sc_rsp.pkt_unchecked_cnt;
- 	}
- 
- 	txsc->last_validate_frames = secy->validate_frames;
--	txsc->last_protect_frames = secy->protect_frames;
-+	txsc->last_replay_protect = secy->replay_protect;
- }
- 
- static int cn10k_mdo_open(struct macsec_context *ctx)
-@@ -1117,7 +1117,7 @@ static int cn10k_mdo_add_secy(struct macsec_context *ctx)
- 	txsc->sw_secy = secy;
- 	txsc->encoding_sa = secy->tx_sc.encoding_sa;
- 	txsc->last_validate_frames = secy->validate_frames;
--	txsc->last_protect_frames = secy->protect_frames;
-+	txsc->last_replay_protect = secy->replay_protect;
- 
- 	list_add(&txsc->entry, &cfg->txsc_list);
- 
-@@ -1538,12 +1538,12 @@ static int cn10k_mdo_get_rx_sc_stats(struct macsec_context *ctx)
- 	rxsc->stats.InPktsInvalid += rsp.pkt_invalid_cnt;
- 	rxsc->stats.InPktsNotValid += rsp.pkt_notvalid_cnt;
- 
--	if (secy->protect_frames)
-+	if (secy->replay_protect)
- 		rxsc->stats.InPktsLate += rsp.pkt_late_cnt;
- 	else
- 		rxsc->stats.InPktsDelayed += rsp.pkt_late_cnt;
- 
--	if (secy->validate_frames == MACSEC_VALIDATE_CHECK)
-+	if (secy->validate_frames == MACSEC_VALIDATE_DISABLED)
- 		rxsc->stats.InPktsUnchecked += rsp.pkt_unchecked_cnt;
- 	else
- 		rxsc->stats.InPktsOK += rsp.pkt_unchecked_cnt;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index 3d22cc6a2804a..f42b2b65bfd7b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -389,7 +389,7 @@ struct cn10k_mcs_txsc {
- 	struct cn10k_txsc_stats stats;
- 	struct list_head entry;
- 	enum macsec_validation_type last_validate_frames;
--	bool last_protect_frames;
-+	bool last_replay_protect;
- 	u16 hw_secy_id_tx;
- 	u16 hw_secy_id_rx;
- 	u16 hw_flow_id;
--- 
-2.39.2
-
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -1710,6 +1710,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops =
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+ 	.has_s0s1 = 0,
+ 	.gen2_thermal_meter = 1,
++	.needs_full_init = 1,
+ 	.adda_1t_init = 0x0fc01616,
+ 	.adda_1t_path_on = 0x0fc01616,
+ 	.adda_2t_path_on_a = 0x0fc01616,
 
 
