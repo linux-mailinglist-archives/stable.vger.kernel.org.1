@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC480703513
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59D66703405
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243230AbjEOQze (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
+        id S242893AbjEOQny (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243233AbjEOQzL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738BF4EF6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:05 -0700 (PDT)
+        with ESMTP id S241741AbjEOQnx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4F4469A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06B5F629CD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03236C433EF;
-        Mon, 15 May 2023 16:55:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AE39628BD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4F3C433A0;
+        Mon, 15 May 2023 16:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169704;
-        bh=ZGQwDrblZujQZQODfbu5LD+tJ6qDeTPQhNlyaCkmguQ=;
+        s=korg; t=1684169030;
+        bh=fDiyMmzZzNjL7Xn24NtQe04Kj+sEmH8335wkk1d2YuQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k0uPxCYNUED8OWoHxOPeWqJS2dx6u4aoiLu6irpxmDiMqQyRgPxOvw5LLiDGc7Rf0
-         2qplISYcxeyhJFzLKxgsgXeMav/JljjeLCUFxUqW/saLNQyebAZKqVtSQxucsmLNDm
-         PKkQ3XWUayXNwJfnQ5meXu6y9fSXEk0EssNz4+hk=
+        b=Ni3bl5b2rgrXxgJw/PwTlgkrQm8wOOhtRkSDimDEE3jBgIQdjGFpJNqWM7Oy3L1af
+         DQr8jhdjoB21UOrDZvES2e87YkoLmAFLAJhwoTwBJx936sLKISvO93IkW0By928Dmx
+         3TGIPYROETvzg3XEaL5b90e5QrP1TDkzCutY+k+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.3 143/246] platform/x86: touchscreen_dmi: Add upside-down quirk for GDIX1002 ts on the Juno Tablet
+        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
+        Maor Gottlieb <maorg@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 118/191] RDMA/mlx5: Use correct device num_ports when modify DC
 Date:   Mon, 15 May 2023 18:25:55 +0200
-Message-Id: <20230515161726.852035145@linuxfoundation.org>
+Message-Id: <20230515161711.564116981@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,54 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-commit 6abfa99ce52f61a31bcfc2aaaae09006f5665495 upstream.
+[ Upstream commit 746aa3c8cb1a650ff2583497ac646e505831b9b9 ]
 
-The Juno Computers Juno Tablet has an upside-down mounted Goodix
-touchscreen. Add a quirk to invert both axis to correct for this.
+Just like other QP types, when modify DC, the port_num should be compared
+with dev->num_ports, instead of HCA_CAP.num_ports.  Otherwise Multi-port
+vHCA on DC may not work.
 
-Link: https://junocomputers.com/us/product/juno-tablet/
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230505210323.43177-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 776a3906b692 ("IB/mlx5: Add support for DC target QP")
+Link: https://lore.kernel.org/r/20230420013906.1244185-1-markzhang@nvidia.com
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/infiniband/hw/mlx5/qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -378,6 +378,11 @@ static const struct ts_dmi_data gdix1001
- 	.properties	= gdix1001_upside_down_props,
- };
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 1520a3098f7dc..0455abfba41c2 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -3350,7 +3350,7 @@ static int mlx5_ib_modify_dct(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 			return -EINVAL;
  
-+static const struct ts_dmi_data gdix1002_00_upside_down_data = {
-+	.acpi_name	= "GDIX1002:00",
-+	.properties	= gdix1001_upside_down_props,
-+};
-+
- static const struct property_entry gp_electronic_t701_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-size-x", 960),
- 	PROPERTY_ENTRY_U32("touchscreen-size-y", 640),
-@@ -1296,6 +1301,18 @@ const struct dmi_system_id touchscreen_d
- 		},
- 	},
- 	{
-+		/* Juno Tablet */
-+		.driver_data = (void *)&gdix1002_00_upside_down_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Default string"),
-+			/* Both product- and board-name being "Default string" is somewhat rare */
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Default string"),
-+			/* Above matches are too generic, add partial bios-version match */
-+			DMI_MATCH(DMI_BIOS_VERSION, "JP2V1."),
-+		},
-+	},
-+	{
- 		/* Mediacom WinPad 7.0 W700 (same hw as Wintron surftab 7") */
- 		.driver_data = (void *)&trekstor_surftab_wintron70_data,
- 		.matches = {
+ 		if (attr->port_num == 0 ||
+-		    attr->port_num > MLX5_CAP_GEN(dev->mdev, num_ports)) {
++		    attr->port_num > dev->num_ports) {
+ 			mlx5_ib_dbg(dev, "invalid port number %d. number of ports is %d\n",
+ 				    attr->port_num, dev->num_ports);
+ 			return -EINVAL;
+-- 
+2.39.2
+
 
 
