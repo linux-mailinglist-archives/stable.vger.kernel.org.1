@@ -2,55 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37810703B1F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72208703788
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244891AbjEOR7i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60324 "EHLO
+        id S244038AbjEORWS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241252AbjEOR7E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:59:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3F82090F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:35 -0700 (PDT)
+        with ESMTP id S244031AbjEORV7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD2F120A8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0848F62FE0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C33C433EF;
-        Mon, 15 May 2023 17:56:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD47A6210B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35EEC433D2;
+        Mon, 15 May 2023 17:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173394;
-        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
+        s=korg; t=1684171206;
+        bh=XGM6gZJzD88LVq2+6ZwZ204UFWDDs4SgUijuLLH/l70=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q5eKbaJ2gGkGRDQJxokRWjz2UvqN/Jhz/F2p2v37kdvIuoD4D67AekM55rWcDXUhC
-         enZWgLnkFXVN7F0w4WLSw6/IBs+6NA5nmq97D9FD+b5gFmbIgBbDFC1RE6AWR2X4kv
-         XNDoaKh+LWR0mYL9oPMq5N5JZDV/bw/dHDBUatwU=
+        b=W+2mNA//LFgbkVWjaq2LUkG9gBkIbtfGU/rkc/ISMEI7m7LyCpo2HpHNZQeMUfR1i
+         wp60UxsrW+iVX7ukgAPcleoFtiWKUAMzwYpYsvKfG0V9TE1Ng1nzEydAQBbGc0W0yQ
+         kfvH5D9jeodiQUg7fYxxc5UkN6KYjSJucDMkq5sw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/282] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.2 133/242] btrfs: dont free qgroup space unless specified
 Date:   Mon, 15 May 2023 18:27:39 +0200
-Message-Id: <20230515161724.668578859@linuxfoundation.org>
+Message-Id: <20230515161725.893426566@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,77 +54,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
+commit d246331b78cbef86237f9c22389205bc9b4e1cc1 upstream.
 
-Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
-wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
+Boris noticed in his simple quotas testing that he was getting a leak
+with Sweet Tea's change to subvol create that stopped doing a
+transaction commit.  This was just a side effect of that change.
 
-For some reason we have no corresponding check for SO_PASSSEC.
+In the delayed inode code we have an optimization that will free extra
+reservations if we think we can pack a dir item into an already modified
+leaf.  Previously this wouldn't be triggered in the subvolume create
+case because we'd commit the transaction, it was still possible but
+much harder to trigger.  It could actually be triggered if we did a
+mkdir && subvol create with qgroups enabled.
 
-In the recvmsg(2) doc we have:
-       MSG_CTRUNC
-              indicates that some control data was discarded due to lack
-              of space in the buffer for ancillary data.
+This occurs because in btrfs_insert_delayed_dir_index(), which gets
+called when we're adding the dir item, we do the following:
 
-So, we need to set MSG_CTRUNC flag for all types of SCM.
+  btrfs_block_rsv_release(fs_info, trans->block_rsv, bytes, NULL);
 
-This change can break applications those don't check MSG_CTRUNC flag.
+if we're able to skip reserving space.
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+The problem here is that trans->block_rsv points at the temporary block
+rsv for the subvolume create, which has qgroup reservations in the block
+rsv.
 
-v2:
-- commit message was rewritten according to Eric's suggestion
-Acked-by: Paul Moore <paul@paul-moore.com>
+This is a problem because btrfs_block_rsv_release() will do the
+following:
 
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  if (block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
+	  qgroup_to_release = block_rsv->qgroup_rsv_reserved -
+		  block_rsv->qgroup_rsv_size;
+	  block_rsv->qgroup_rsv_reserved = block_rsv->qgroup_rsv_size;
+  }
+
+The temporary block rsv just has ->qgroup_rsv_reserved set,
+->qgroup_rsv_size == 0.  The optimization in
+btrfs_insert_delayed_dir_index() sets ->qgroup_rsv_reserved = 0.  Then
+later on when we call btrfs_subvolume_release_metadata() which has
+
+  btrfs_block_rsv_release(fs_info, rsv, (u64)-1, &qgroup_to_release);
+  btrfs_qgroup_convert_reserved_meta(root, qgroup_to_release);
+
+qgroup_to_release is set to 0, and we do not convert the reserved
+metadata space.
+
+The problem here is that the block rsv code has been unconditionally
+messing with ->qgroup_rsv_reserved, because the main place this is used
+is delalloc, and any time we call btrfs_block_rsv_release() we do it
+with qgroup_to_release set, and thus do the proper accounting.
+
+The subvolume code is the only other code that uses the qgroup
+reservation stuff, but it's intermingled with the above optimization,
+and thus was getting its reservation freed out from underneath it and
+thus leaking the reserved space.
+
+The solution is to simply not mess with the qgroup reservations if we
+don't have qgroup_to_release set.  This works with the existing code as
+anything that messes with the delalloc reservations always have
+qgroup_to_release set.  This fixes the leak that Boris was observing.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/scm.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/btrfs/block-rsv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index 1ce365f4c2560..585adc1346bd0 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
- 		}
+--- a/fs/btrfs/block-rsv.c
++++ b/fs/btrfs/block-rsv.c
+@@ -124,7 +124,8 @@ static u64 block_rsv_release_bytes(struc
+ 	} else {
+ 		num_bytes = 0;
  	}
- }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return test_bit(SOCK_PASSSEC, &sock->flags);
-+}
- #else
- static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
- { }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SECURITY_NETWORK */
- 
- static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
- 				struct scm_cookie *scm, int flags)
- {
- 	if (!msg->msg_control) {
--		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
-+		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
-+		    scm_has_secdata(sock))
- 			msg->msg_flags |= MSG_CTRUNC;
- 		scm_destroy(scm);
- 		return;
--- 
-2.39.2
-
+-	if (block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
++	if (qgroup_to_release_ret &&
++	    block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
+ 		qgroup_to_release = block_rsv->qgroup_rsv_reserved -
+ 				    block_rsv->qgroup_rsv_size;
+ 		block_rsv->qgroup_rsv_reserved = block_rsv->qgroup_rsv_size;
 
 
