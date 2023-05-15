@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D5C703789
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25AFD703691
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244106AbjEORWW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40840 "EHLO
+        id S243536AbjEORLg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244079AbjEORWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:03 -0400
+        with ESMTP id S243763AbjEORLO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFBBD132A2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4200DD876
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C0C6762C39
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E22C433D2;
-        Mon, 15 May 2023 17:20:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2195362103
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B9FC4339C;
+        Mon, 15 May 2023 17:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171209;
-        bh=phV9mAp46YRgXmsCAh0zCANCV/rtaTL/l9opcLFudXk=;
+        s=korg; t=1684170563;
+        bh=YqDo/tczgT6Erja8rEHFm2scRcY6JC5nKPwxOy0rONA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JfGO9sUk7CFtGR8E0QYZZ3zAx+C/fJjNaMjffvy26E571FKOdfiROX8osBDjllm+2
-         kfaoX/05cAPyTY/795oZkC4zZsR+RxZTclCqKUw3/c5FqVTS7rN9EjCPS2thiv5lJg
-         Qu0s2HvzMZWLT26G8NvDxCDuLMDsTP4vfnZYu/Z8=
+        b=PpJRDL85IETwVdA58qPMq3vfGIvwb9GIIDQW8NOYnhfIIljYvxZxCAmDwkZGPJzp9
+         boBFSium1cJhuPom0DTC0mdzWAEdtYqPS7J/6OTu0tM1iZ3zFUZk+L9FqEcJ9Bri4c
+         Oe7hnhSgwE1gP7+zGGumzQ2k63DtTwIpm6/hm53k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 106/242] crypto: api - Add scaffolding to change completion function signature
-Date:   Mon, 15 May 2023 18:27:12 +0200
-Message-Id: <20230515161725.081105591@linuxfoundation.org>
+        patches@lists.linux.dev, Yifan Zhang <yifan1.zhang@amd.com>,
+        Yogesh Mohan Marimuthu <Yogesh.Mohanmarimuthu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Tim Huang <Tim.Huang@amd.com>
+Subject: [PATCH 6.1 170/239] drm/amdgpu: change gfx 11.0.4 external_id range
+Date:   Mon, 15 May 2023 18:27:13 +0200
+Message-Id: <20230515161726.771738201@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,79 +55,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit c35e03eaece71101ff6cbf776b86403860ac8cc3 ]
+commit 996e93a3fe74dcf9d467ae3020aea42cc3ff65e3 upstream.
 
-The crypto completion function currently takes a pointer to a
-struct crypto_async_request object.  However, in reality the API
-does not allow the use of any part of the object apart from the
-data field.  For example, ahash/shash will create a fake object
-on the stack to pass along a different data field.
+gfx 11.0.4 range starts from 0x80.
 
-This leads to potential bugs where the user may try to dereference
-or otherwise use the crypto_async_request object.
-
-This patch adds some temporary scaffolding so that the completion
-function can take a void * instead.  Once affected users have been
-converted this can be removed.
-
-The helper crypto_request_complete will remain even after the
-conversion is complete.  It should be used instead of calling
-the completion function directly.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 4140aafcff16 ("crypto: engine - fix crypto_queue backlog handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 311d52367d0a ("drm/amdgpu: add soc21 common ip block support for GC 11.0.4")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reported-by: Yogesh Mohan Marimuthu <Yogesh.Mohanmarimuthu@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/crypto/algapi.h | 7 +++++++
- include/linux/crypto.h  | 6 ++++++
- 2 files changed, 13 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/soc21.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/crypto/algapi.h b/include/crypto/algapi.h
-index 61b327206b557..1fd81e74a174f 100644
---- a/include/crypto/algapi.h
-+++ b/include/crypto/algapi.h
-@@ -302,4 +302,11 @@ enum {
- 	CRYPTO_MSG_ALG_LOADED,
- };
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -715,7 +715,7 @@ static int soc21_common_early_init(void
+ 			AMD_PG_SUPPORT_VCN_DPG |
+ 			AMD_PG_SUPPORT_GFX_PG |
+ 			AMD_PG_SUPPORT_JPEG;
+-		adev->external_rev_id = adev->rev_id + 0x1;
++		adev->external_rev_id = adev->rev_id + 0x80;
+ 		break;
  
-+static inline void crypto_request_complete(struct crypto_async_request *req,
-+					   int err)
-+{
-+	crypto_completion_t complete = req->complete;
-+	complete(req, err);
-+}
-+
- #endif	/* _CRYPTO_ALGAPI_H */
-diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-index 5d1e961f810ec..b18f6e669fb10 100644
---- a/include/linux/crypto.h
-+++ b/include/linux/crypto.h
-@@ -176,6 +176,7 @@ struct crypto_async_request;
- struct crypto_tfm;
- struct crypto_type;
- 
-+typedef struct crypto_async_request crypto_completion_data_t;
- typedef void (*crypto_completion_t)(struct crypto_async_request *req, int err);
- 
- /**
-@@ -595,6 +596,11 @@ struct crypto_wait {
- /*
-  * Async ops completion helper functioons
-  */
-+static inline void *crypto_get_completion_data(crypto_completion_data_t *req)
-+{
-+	return req->data;
-+}
-+
- void crypto_req_done(struct crypto_async_request *req, int err);
- 
- static inline int crypto_wait_req(int err, struct crypto_wait *wait)
--- 
-2.39.2
-
+ 	default:
 
 
