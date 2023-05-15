@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC2667036DC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 058A67039F5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243822AbjEOROl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55210 "EHLO
+        id S242536AbjEORq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243823AbjEOROW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:22 -0400
+        with ESMTP id S244699AbjEORqm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC70DD98
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 164C2176E8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BAC7562B8A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B0CC433EF;
-        Mon, 15 May 2023 17:12:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8293B62EAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722E1C433EF;
+        Mon, 15 May 2023 17:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170765;
-        bh=mTLgljBowj+HIHE/XYun5mcSDoGFs6yopZF9PDKvqyY=;
+        s=korg; t=1684172724;
+        bh=SQhgvZiRS09ztDnk3hOzPjDt2xtuQBJu+gwgGfnOXlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpT1yYpam9RHYEd/1bDSUCsIO94WNZkvdhSGypcY/W5W9wtrkJTA4/wdepeRpk92V
-         DMZQSN0b+D+rEo2ZzuryyE2Nfj9qdNKVeq/Tn1+y2lxMz6g3N1mmmiTZECXvK6kE2D
-         BKVbXSAaVBJDpeUh4YT6mPlbN0OatfZSYGQgzUBk=
+        b=MPwnnmSOOWf2Y0ZClfmb7qbkcEAoFT4NLgWMFarVq3SGmjV+37R75Ph9yzx7QZEMM
+         DL1CkKnyQGLdhw2KGx6Ctpid2SisrA8Bi82vIjezyj4TFT1u/HkMbvJy0r9VuVfoz/
+         /dAQiII1QNfRVL4RJZj8PN8qbMmEVf98hTomIAN8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 234/239] f2fs: inode: fix to do sanity check on extent cache correctly
+        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 246/381] RDMA/cm: Trace icm_send_rej event before the cm state is reset
 Date:   Mon, 15 May 2023 18:28:17 +0200
-Message-Id: <20230515161728.729322973@linuxfoundation.org>
+Message-Id: <20230515161747.816158305@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,104 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Mark Zhang <markzhang@nvidia.com>
 
-commit 269d119481008cd725ce32553332593c0ecfc91c upstream.
+[ Upstream commit bd9de1badac7e4ff6780365d4aa38983f5e2a436 ]
 
-In do_read_inode(), sanity check for extent cache should be called after
-f2fs_init_read_extent_tree(), fix it.
+Trace icm_send_rej event before the cm state is reset to idle, so that
+correct cm state will be logged. For example when an incoming request is
+rejected, the old trace log was:
+    icm_send_rej: local_id=961102742 remote_id=3829151631 state=IDLE reason=REJ_CONSUMER_DEFINED
+With this patch:
+    icm_send_rej: local_id=312971016 remote_id=3778819983 state=MRA_REQ_SENT reason=REJ_CONSUMER_DEFINED
 
-Fixes: 72840cccc0a1 ("f2fs: allocate the extent_cache by default")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8dc105befe16 ("RDMA/cm: Add tracepoints to track MAD send operations")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/20230330072351.481200-1-markzhang@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c |   25 +++++++++++++++++++++++++
- fs/f2fs/f2fs.h         |    1 +
- fs/f2fs/inode.c        |   22 ++++++----------------
- 3 files changed, 32 insertions(+), 16 deletions(-)
+ drivers/infiniband/core/cm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -15,6 +15,31 @@
- #include "node.h"
- #include <trace/events/f2fs.h>
+diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
+index 3133b6be6cab9..db1a25fbe2fa9 100644
+--- a/drivers/infiniband/core/cm.c
++++ b/drivers/infiniband/core/cm.c
+@@ -2924,6 +2924,8 @@ static int cm_send_rej_locked(struct cm_id_private *cm_id_priv,
+ 	    (ari && ari_length > IB_CM_REJ_ARI_LENGTH))
+ 		return -EINVAL;
  
-+bool sanity_check_extent_cache(struct inode *inode)
-+{
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-+	struct f2fs_inode_info *fi = F2FS_I(inode);
-+	struct extent_info *ei;
++	trace_icm_send_rej(&cm_id_priv->id, reason);
 +
-+	if (!fi->extent_tree[EX_READ])
-+		return true;
-+
-+	ei = &fi->extent_tree[EX_READ]->largest;
-+
-+	if (ei->len &&
-+		(!f2fs_is_valid_blkaddr(sbi, ei->blk,
-+					DATA_GENERIC_ENHANCE) ||
-+		!f2fs_is_valid_blkaddr(sbi, ei->blk + ei->len - 1,
-+					DATA_GENERIC_ENHANCE))) {
-+		set_sbi_flag(sbi, SBI_NEED_FSCK);
-+		f2fs_warn(sbi, "%s: inode (ino=%lx) extent info [%u, %u, %u] is incorrect, run fsck to fix",
-+			  __func__, inode->i_ino,
-+			  ei->blk, ei->fofs, ei->len);
-+		return false;
-+	}
-+	return true;
-+}
-+
- static void __set_extent_info(struct extent_info *ei,
- 				unsigned int fofs, unsigned int len,
- 				block_t blk, bool keep_clen,
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4125,6 +4125,7 @@ void f2fs_leave_shrinker(struct f2fs_sb_
- /*
-  * extent_cache.c
-  */
-+bool sanity_check_extent_cache(struct inode *inode);
- struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
- 				struct rb_entry *cached_re, unsigned int ofs);
- struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -262,22 +262,6 @@ static bool sanity_check_inode(struct in
- 		return false;
+ 	switch (state) {
+ 	case IB_CM_REQ_SENT:
+ 	case IB_CM_MRA_REQ_RCVD:
+@@ -2954,7 +2956,6 @@ static int cm_send_rej_locked(struct cm_id_private *cm_id_priv,
+ 		return -EINVAL;
  	}
  
--	if (fi->extent_tree[EX_READ]) {
--		struct extent_info *ei = &fi->extent_tree[EX_READ]->largest;
--
--		if (ei->len &&
--			(!f2fs_is_valid_blkaddr(sbi, ei->blk,
--						DATA_GENERIC_ENHANCE) ||
--			!f2fs_is_valid_blkaddr(sbi, ei->blk + ei->len - 1,
--						DATA_GENERIC_ENHANCE))) {
--			set_sbi_flag(sbi, SBI_NEED_FSCK);
--			f2fs_warn(sbi, "%s: inode (ino=%lx) extent info [%u, %u, %u] is incorrect, run fsck to fix",
--				  __func__, inode->i_ino,
--				  ei->blk, ei->fofs, ei->len);
--			return false;
--		}
--	}
--
- 	if (f2fs_sanity_check_inline_data(inode)) {
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_warn(sbi, "%s: inode (ino=%lx, mode=%u) should not have inline_data, run fsck to fix",
-@@ -479,6 +463,12 @@ static int do_read_inode(struct inode *i
- 		f2fs_put_page(node_page, 1);
- 		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
- 		return -EFSCORRUPTED;
-+	}
-+
-+	if (!sanity_check_extent_cache(inode)) {
-+		f2fs_put_page(node_page, 1);
-+		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
-+		return -EFSCORRUPTED;
- 	}
- 
- 	f2fs_put_page(node_page, 1);
+-	trace_icm_send_rej(&cm_id_priv->id, reason);
+ 	ret = ib_post_send_mad(msg, NULL);
+ 	if (ret) {
+ 		cm_free_msg(msg);
+-- 
+2.39.2
+
 
 
