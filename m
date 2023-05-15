@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B30703554
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC09703447
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243284AbjEOQ6A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
+        id S242987AbjEOQqn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:46:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243268AbjEOQ55 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:57 -0400
+        with ESMTP id S242970AbjEOQqh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB9B5BAE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93A94EE7;
+        Mon, 15 May 2023 09:46:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BE8762A2E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32869C433EF;
-        Mon, 15 May 2023 16:57:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86B6162907;
+        Mon, 15 May 2023 16:46:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD08C433D2;
+        Mon, 15 May 2023 16:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169868;
-        bh=9XZYfh5Y6D33K/YCtQ50BEh6Fn790iBO4eePjlDvSgs=;
+        s=korg; t=1684169193;
+        bh=4zIpdbbR4MfzIjZvHW7a1FTFF5jI7bmPAeYOIqvkwEk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rub44JHGQDHQFKA8XQCCxw2HoACaa7toGGAZosvZ5ke4CokytnNed1jzjdxGz5edj
-         yerJCAZK906k6/DlhLeMTl1efgqNtmFN4SZfylBUNZaahX6XbQLwTSJCjAD/VHM9hh
-         gLiKU9VsoNQ64NNan101adiZ3Vn6e7CUwU37NFW0=
+        b=LsjcpikHBT3Ufrmx9jzL7fvrWYxPS8vqvcKv+yTkVDUMgT7bwt/Yx6fzkpsIYv7cB
+         S8QFqHeTVDy0HsDd8d6nWF7LaMIE4e0PaYk8x8bXH/D5484FZcKk9hUTNur2X+MjVX
+         PGwiIKw0nH3H3wvieKpvQIJBCjHhcBj6EsfEN4ns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Horatio Zhang <Hongkun.Zhang@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 197/246] drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v10_0_hw_fini
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        devicetree@vger.kernel.org, Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-sh@vger.kernel.org
+Subject: [PATCH 4.19 172/191] sh: init: use OF_EARLY_FLATTREE for early init
 Date:   Mon, 15 May 2023 18:26:49 +0200
-Message-Id: <20230515161728.523599263@linuxfoundation.org>
+Message-Id: <20230515161713.674951042@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +59,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Horatio Zhang <Hongkun.Zhang@amd.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 08c677cb0b436a96a836792bb35a8ec5de4999c2 upstream.
+commit 6cba655543c7959f8a6d2979b9d40a6a66b7ed4f upstream.
 
-The gmc.ecc_irq is enabled by firmware per IFWI setting,
-and the host driver is not privileged to enable/disable
-the interrupt. So, it is meaningless to use the amdgpu_irq_put
-function in gmc_v10_0_hw_fini, which also leads to the call
-trace.
+When CONFIG_OF_EARLY_FLATTREE and CONFIG_SH_DEVICE_TREE are not set,
+SH3 build fails with a call to early_init_dt_scan(), so in
+arch/sh/kernel/setup.c and arch/sh/kernel/head_32.S, use
+CONFIG_OF_EARLY_FLATTREE instead of CONFIG_OF_FLATTREE.
 
-[   82.340264] Call Trace:
-[   82.340265]  <TASK>
-[   82.340269]  gmc_v10_0_hw_fini+0x83/0xa0 [amdgpu]
-[   82.340447]  gmc_v10_0_suspend+0xe/0x20 [amdgpu]
-[   82.340623]  amdgpu_device_ip_suspend_phase2+0x127/0x1c0 [amdgpu]
-[   82.340789]  amdgpu_device_ip_suspend+0x3d/0x80 [amdgpu]
-[   82.340955]  amdgpu_device_pre_asic_reset+0xdd/0x2b0 [amdgpu]
-[   82.341122]  amdgpu_device_gpu_recover.cold+0x4dd/0xbb2 [amdgpu]
-[   82.341359]  amdgpu_debugfs_reset_work+0x4c/0x70 [amdgpu]
-[   82.341529]  process_one_work+0x21d/0x3f0
-[   82.341535]  worker_thread+0x1fa/0x3c0
-[   82.341538]  ? process_one_work+0x3f0/0x3f0
-[   82.341540]  kthread+0xff/0x130
-[   82.341544]  ? kthread_complete_and_exit+0x20/0x20
-[   82.341547]  ret_from_fork+0x22/0x30
+Fixes this build error:
+../arch/sh/kernel/setup.c: In function 'sh_fdt_init':
+../arch/sh/kernel/setup.c:262:26: error: implicit declaration of function 'early_init_dt_scan' [-Werror=implicit-function-declaration]
+  262 |         if (!dt_virt || !early_init_dt_scan(dt_virt)) {
 
-Signed-off-by: Horatio Zhang <Hongkun.Zhang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Guchun Chen <guchun.chen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Fixes: c8b5a95b5709 ("drm/amdgpu: Fix desktop freezed after gpu-reset")
+Fixes: 03767daa1387 ("sh: fix build regression with CONFIG_OF && !CONFIG_OF_FLATTREE")
+Fixes: eb6b6930a70f ("sh: fix memory corruption of unflattened device tree")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
 Cc: stable@vger.kernel.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-4-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/sh/kernel/head_32.S |    6 +++---
+ arch/sh/kernel/setup.c   |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-@@ -1161,7 +1161,6 @@ static int gmc_v10_0_hw_fini(void *handl
- 		return 0;
- 	}
+--- a/arch/sh/kernel/head_32.S
++++ b/arch/sh/kernel/head_32.S
+@@ -67,7 +67,7 @@ ENTRY(_stext)
+ 	ldc	r0, r6_bank
+ #endif
  
--	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	mov	r4, r12		! Store device tree blob pointer in r12
+ #endif
+ 	
+@@ -318,7 +318,7 @@ ENTRY(_stext)
+ 10:		
+ #endif
  
- 	return 0;
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	mov.l	8f, r0		! Make flat device tree available early.
+ 	jsr	@r0
+ 	 mov	r12, r4
+@@ -349,7 +349,7 @@ ENTRY(stack_start)
+ 5:	.long	start_kernel
+ 6:	.long	cpu_init
+ 7:	.long	init_thread_union
+-#if defined(CONFIG_OF_FLATTREE)
++#if defined(CONFIG_OF_EARLY_FLATTREE)
+ 8:	.long	sh_fdt_init
+ #endif
+ 
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -242,7 +242,7 @@ void __init __weak plat_early_device_set
+ {
+ }
+ 
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ {
+ 	static int done = 0;
+@@ -329,7 +329,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Let earlyprintk output early console messages */
+ 	early_platform_driver_probe("earlyprintk", 1, 1);
+ 
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ #ifdef CONFIG_USE_BUILTIN_DTB
+ 	unflatten_and_copy_device_tree();
+ #else
 
 
