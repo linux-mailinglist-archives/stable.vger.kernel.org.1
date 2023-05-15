@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C952703539
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F70F70364E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243241AbjEOQ47 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
+        id S243679AbjEORIz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243244AbjEOQ46 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:58 -0400
+        with ESMTP id S243652AbjEORIg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFAD34EF3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1380E9020
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C62962A0D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C423C433EF;
-        Mon, 15 May 2023 16:56:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E952D62AA7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30BBC433EF;
+        Mon, 15 May 2023 17:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169806;
-        bh=AR+0ZKtJh0ms8RrjA/q7jX7w9PQ0Dy2FGWPcDQV+/+U=;
+        s=korg; t=1684170419;
+        bh=IQ7V4jLYoSfUBFp+KuV9+fH8dgnsgWzuyfXIi4oP/rM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t2DmTWoNrbg5VtpX1pX2aSbvw4AXIH/3W7NnxgtaVjcurnUgagfwyaFIgnC5sqvbF
-         /0fylezv6MOUssud52rlI8EQNxSfz4/ibyaSqGaAzsUBlG8+MZs/hEvqoa2g/g7eyX
-         YVHQTeNO3M9ZtvRnTq5D5/Cg9zE9uZS4wmDqdNAI=
+        b=LfjRhXaG4S9fIfiOS5A2fJP8mjuP7cgB2OyDD3VU2Z6RhljsZurhJxSNSEUliD2WE
+         yIDSeEDiHTY+SF9hGjV807b/W6wxTZlYETNZCzVFfj1znF9XTYmbG4r9Lmhq8iqHcN
+         ghOusRfIwIKq5n9nuGoSa1msZM6U8jytKRWI6dcE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ross Zwisler <zwisler@google.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.3 176/246] drm/i915: Check pipe source size when using skl+ scalers
+        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 125/239] platform/x86: thinkpad_acpi: Fix platform profiles on T490
 Date:   Mon, 15 May 2023 18:26:28 +0200
-Message-Id: <20230515161727.912170441@linuxfoundation.org>
+Message-Id: <20230515161725.451593822@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,63 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-commit d944eafed618a8507270b324ad9d5405bb7f0b3e upstream.
+commit 0c0cd3e25a5b64b541dd83ba6e032475a9d77432 upstream.
 
-The skl+ scalers only sample 12 bits of PIPESRC so we can't
-do any plane scaling at all when the pipe source size is >4k.
+I had incorrectly thought that PSC profiles were not usable on Intel
+platforms so had blocked them in the driver initialistion. This broke
+platform profiles on the T490.
 
-Make sure the pipe source size is also below the scaler's src
-size limits. Might not be 100% accurate, but should at least be
-safe. We can refine the limits later if we discover that recent
-hw is less restricted.
+After discussion with the FW team PSC does work on Intel platforms and
+should be allowed.
 
+Note - it's possible this may impact other platforms where it is advertised
+but special driver support that only Windows has is needed. But if it does
+then they will need fixing via quirks. Please report any issues to me so I
+can get them addressed - but I haven't found any problems in testing...yet
+
+Fixes: bce6243f767f ("platform/x86: thinkpad_acpi: do not use PSC mode on Intel platforms")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2177962
 Cc: stable@vger.kernel.org
-Tested-by: Ross Zwisler <zwisler@google.com>
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8357
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230418175528.13117-2-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 691248d4135fe3fae64b4ee0676bc96a7fd6950c)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20230505132523.214338-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/skl_scaler.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/platform/x86/thinkpad_acpi.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/skl_scaler.c
-+++ b/drivers/gpu/drm/i915/display/skl_scaler.c
-@@ -111,6 +111,8 @@ skl_update_scaler(struct intel_crtc_stat
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
- 	const struct drm_display_mode *adjusted_mode =
- 		&crtc_state->hw.adjusted_mode;
-+	int pipe_src_w = drm_rect_width(&crtc_state->pipe_src);
-+	int pipe_src_h = drm_rect_height(&crtc_state->pipe_src);
- 	int min_src_w, min_src_h, min_dst_w, min_dst_h;
- 	int max_src_w, max_src_h, max_dst_w, max_dst_h;
- 
-@@ -207,6 +209,21 @@ skl_update_scaler(struct intel_crtc_stat
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * The pipe scaler does not use all the bits of PIPESRC, at least
-+	 * on the earlier platforms. So even when we're scaling a plane
-+	 * the *pipe* source size must not be too large. For simplicity
-+	 * we assume the limits match the scaler source size limits. Might
-+	 * not be 100% accurate on all platforms, but good enough for now.
-+	 */
-+	if (pipe_src_w > max_src_w || pipe_src_h > max_src_h) {
-+		drm_dbg_kms(&dev_priv->drm,
-+			    "scaler_user index %u.%u: pipe src size %ux%u "
-+			    "is out of scaler range\n",
-+			    crtc->pipe, scaler_user, pipe_src_w, pipe_src_h);
-+		return -EINVAL;
-+	}
-+
- 	/* mark this plane as a scaler user in crtc_state */
- 	scaler_state->scaler_users |= (1 << scaler_user);
- 	drm_dbg_kms(&dev_priv->drm, "scaler_user index %u.%u: "
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10597,11 +10597,6 @@ static int tpacpi_dytc_profile_init(stru
+ 				dytc_mmc_get_available = true;
+ 		}
+ 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
+-		/* Support for this only works on AMD platforms */
+-		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
+-			dbg_printk(TPACPI_DBG_INIT, "PSC not support on Intel platforms\n");
+-			return -ENODEV;
+-		}
+ 		pr_debug("PSC is supported\n");
+ 	} else {
+ 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
 
 
