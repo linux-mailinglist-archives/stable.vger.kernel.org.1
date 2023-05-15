@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA93170353A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D948270373A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243227AbjEOQ5B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
+        id S243928AbjEORSZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243228AbjEOQ5B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:01 -0400
+        with ESMTP id S243914AbjEORSF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:18:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9DD65A1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD80E70D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AF9062A1B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669B6C4339C;
-        Mon, 15 May 2023 16:56:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 00E2C62BEC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00520C433D2;
+        Mon, 15 May 2023 17:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169809;
-        bh=kTlnrCaLLxGhKAuq8vjsHx7R1IrrkD7ASsB9N1wNDLA=;
+        s=korg; t=1684170984;
+        bh=8JTf4oQ9cy4Rfm6uEf/QYhkVJ8UQx/V5Icc7bqmlG3o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tsGnNK4+gPM1mT7fOa33PsM0NwqE5Gj6v2kzIPkFvhu4fiGFFqLZK+4mveskwzQuM
-         Z22c5Lgy/orCKORq1d9RrPAyk0KewRRGCi7U+gstti96faFzRT5efzd1N1wRSpHI5p
-         /cH0e6NUDhdHhD8DugbOm4huJM5LNBSjNXGPLY68=
+        b=yaw9gXSCIeOjkbsOuWoMd8HlrNoCHzYdO/mttr2zHJjbAm8MyTfY2viBK9lesIgRa
+         15+rzBjCwsTlDvOmjhYNAJTTX8Drx61RZtwmm39unVX9IfFaowEjyBsyQUv/gh2SNs
+         INSdGwkbpNNSveq7c8rWvz0zBCqFehg9SRywpdqY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.3 177/246] drm/i915/dsi: Use unconditional msleep() instead of intel_dsi_msleep()
+        patches@lists.linux.dev,
+        Frank Wunderlich <frank-w@public-files.de>,
+        Felix Fietkau <nbd@nbd.name>,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 063/242] net: ethernet: mtk_eth_soc: drop generic vlan rx offload, only use DSA untagging
 Date:   Mon, 15 May 2023 18:26:29 +0200
-Message-Id: <20230515161727.940854708@linuxfoundation.org>
+Message-Id: <20230515161723.794052802@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,146 +57,220 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit c8c2969bfcba5fcba3a5b078315c1b586d927d9f upstream.
+[ Upstream commit c6d96df9fa2c1d19525239d4262889cce594ce6c ]
 
-The intel_dsi_msleep() helper skips sleeping if the MIPI-sequences have
-a version of 3 or newer and the panel is in vid-mode.
+Through testing I found out that hardware vlan rx offload support seems to
+have some hardware issues. At least when using multiple MACs and when
+receiving tagged packets on the secondary MAC, the hardware can sometimes
+start to emit wrong tags on the first MAC as well.
 
-This is based on the big comment around line 730 which starts with
-"Panel enable/disable sequences from the VBT spec.", where
-the "v3 video mode seq" column does not have any wait t# entries.
+In order to avoid such issues, drop the feature configuration and use
+the offload feature only for DSA hardware untagging on MT7621/MT7622
+devices where this feature works properly.
 
-Checking the Windows driver shows that it does always honor
-the VBT delays independent of the version of the VBT sequences.
-
-Commit 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for
-the panel_on_delay when there is no reset-deassert MIPI-sequence")
-switched to a direct msleep() instead of intel_dsi_msleep()
-when there is no MIPI_SEQ_DEASSERT_RESET sequence, to fix
-the panel on an Acer Aspire Switch 10 E SW3-016 not turning on.
-
-And now testing on a Nextbook Ares 8A shows that panel_on_delay
-must always be honored otherwise the panel will not turn on.
-
-Instead of only always using regular msleep() for panel_on_delay
-do as Windows does and always use regular msleep() everywhere
-were intel_dsi_msleep() is used and drop the intel_dsi_msleep()
-helper.
-
-Changes in v2:
-- Replace all intel_dsi_msleep() calls instead of just
-  the intel_dsi_msleep(panel_on_delay) call
-
-Cc: stable@vger.kernel.org
-Fixes: 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for the panel_on_delay when there is no reset-deassert MIPI-sequence")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230425194441.68086-1-hdegoede@redhat.com
-(cherry picked from commit fa83c12132f71302f7d4b02758dc0d46048d3f5f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 08666cbb7dd5 ("net: ethernet: mtk_eth_soc: add support for configuring vlan rx offload")
+Tested-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Acked-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20230426172153.8352-1-linux@fw-web.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c       |    2 +-
- drivers/gpu/drm/i915/display/intel_dsi_vbt.c |   11 -----------
- drivers/gpu/drm/i915/display/intel_dsi_vbt.h |    1 -
- drivers/gpu/drm/i915/display/vlv_dsi.c       |   22 +++++-----------------
- 4 files changed, 6 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 106 ++++++++------------
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h |   1 -
+ 2 files changed, 40 insertions(+), 67 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -1211,7 +1211,7 @@ static void gen11_dsi_powerup_panel(stru
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index f56d4e7d4ae5d..4671d738a37c7 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1870,9 +1870,7 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
  
- 	/* panel power on related mipi dsi vbt sequences */
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
--	intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
-+	msleep(intel_dsi->panel_on_delay);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
---- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-+++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-@@ -762,17 +762,6 @@ void intel_dsi_vbt_exec_sequence(struct
- 		gpiod_set_value_cansleep(intel_dsi->gpio_backlight, 0);
+ 	while (done < budget) {
+ 		unsigned int pktlen, *rxdcsum;
+-		bool has_hwaccel_tag = false;
+ 		struct net_device *netdev;
+-		u16 vlan_proto, vlan_tci;
+ 		dma_addr_t dma_addr;
+ 		u32 hash, reason;
+ 		int mac = 0;
+@@ -2007,31 +2005,16 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+ 			skb_checksum_none_assert(skb);
+ 		skb->protocol = eth_type_trans(skb, netdev);
+ 
+-		if (netdev->features & NETIF_F_HW_VLAN_CTAG_RX) {
+-			if (MTK_HAS_CAPS(eth->soc->caps, MTK_NETSYS_V2)) {
+-				if (trxd.rxd3 & RX_DMA_VTAG_V2) {
+-					vlan_proto = RX_DMA_VPID(trxd.rxd4);
+-					vlan_tci = RX_DMA_VID(trxd.rxd4);
+-					has_hwaccel_tag = true;
+-				}
+-			} else if (trxd.rxd2 & RX_DMA_VTAG) {
+-				vlan_proto = RX_DMA_VPID(trxd.rxd3);
+-				vlan_tci = RX_DMA_VID(trxd.rxd3);
+-				has_hwaccel_tag = true;
+-			}
+-		}
+-
+ 		/* When using VLAN untagging in combination with DSA, the
+ 		 * hardware treats the MTK special tag as a VLAN and untags it.
+ 		 */
+-		if (has_hwaccel_tag && netdev_uses_dsa(netdev)) {
+-			unsigned int port = vlan_proto & GENMASK(2, 0);
++		if (!MTK_HAS_CAPS(eth->soc->caps, MTK_NETSYS_V2) &&
++		    (trxd.rxd2 & RX_DMA_VTAG) && netdev_uses_dsa(netdev)) {
++			unsigned int port = RX_DMA_VPID(trxd.rxd3) & GENMASK(2, 0);
+ 
+ 			if (port < ARRAY_SIZE(eth->dsa_meta) &&
+ 			    eth->dsa_meta[port])
+ 				skb_dst_set_noref(skb, &eth->dsa_meta[port]->dst);
+-		} else if (has_hwaccel_tag) {
+-			__vlan_hwaccel_put_tag(skb, htons(vlan_proto), vlan_tci);
+ 		}
+ 
+ 		if (reason == MTK_PPE_CPU_REASON_HIT_UNBIND_RATE_REACHED)
+@@ -2859,29 +2842,11 @@ static netdev_features_t mtk_fix_features(struct net_device *dev,
+ 
+ static int mtk_set_features(struct net_device *dev, netdev_features_t features)
+ {
+-	struct mtk_mac *mac = netdev_priv(dev);
+-	struct mtk_eth *eth = mac->hw;
+ 	netdev_features_t diff = dev->features ^ features;
+-	int i;
+ 
+ 	if ((diff & NETIF_F_LRO) && !(features & NETIF_F_LRO))
+ 		mtk_hwlro_netdev_disable(dev);
+ 
+-	/* Set RX VLAN offloading */
+-	if (!(diff & NETIF_F_HW_VLAN_CTAG_RX))
+-		return 0;
+-
+-	mtk_w32(eth, !!(features & NETIF_F_HW_VLAN_CTAG_RX),
+-		MTK_CDMP_EG_CTRL);
+-
+-	/* sync features with other MAC */
+-	for (i = 0; i < MTK_MAC_COUNT; i++) {
+-		if (!eth->netdev[i] || eth->netdev[i] == dev)
+-			continue;
+-		eth->netdev[i]->features &= ~NETIF_F_HW_VLAN_CTAG_RX;
+-		eth->netdev[i]->features |= features & NETIF_F_HW_VLAN_CTAG_RX;
+-	}
+-
+ 	return 0;
  }
  
--void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec)
--{
--	struct intel_connector *connector = intel_dsi->attached_connector;
--
--	/* For v3 VBTs in vid-mode the delays are part of the VBT sequences */
--	if (is_vid_mode(intel_dsi) && connector->panel.vbt.dsi.seq_version >= 3)
--		return;
--
--	msleep(msec);
--}
--
- void intel_dsi_log_params(struct intel_dsi *intel_dsi)
- {
- 	struct drm_i915_private *i915 = to_i915(intel_dsi->base.base.dev);
---- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
-+++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
-@@ -16,7 +16,6 @@ void intel_dsi_vbt_gpio_init(struct inte
- void intel_dsi_vbt_gpio_cleanup(struct intel_dsi *intel_dsi);
- void intel_dsi_vbt_exec_sequence(struct intel_dsi *intel_dsi,
- 				 enum mipi_seq seq_id);
--void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec);
- void intel_dsi_log_params(struct intel_dsi *intel_dsi);
+@@ -3184,30 +3149,6 @@ static int mtk_open(struct net_device *dev)
+ 	struct mtk_eth *eth = mac->hw;
+ 	int i, err;
  
- #endif /* __INTEL_DSI_VBT_H__ */
---- a/drivers/gpu/drm/i915/display/vlv_dsi.c
-+++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
-@@ -783,7 +783,6 @@ static void intel_dsi_pre_enable(struct
- {
- 	struct intel_dsi *intel_dsi = enc_to_intel_dsi(encoder);
- 	struct intel_crtc *crtc = to_intel_crtc(pipe_config->uapi.crtc);
--	struct intel_connector *connector = to_intel_connector(conn_state->connector);
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
- 	enum pipe pipe = crtc->pipe;
- 	enum port port;
-@@ -831,21 +830,10 @@ static void intel_dsi_pre_enable(struct
- 	if (!IS_GEMINILAKE(dev_priv))
- 		intel_dsi_prepare(encoder, pipe_config);
- 
-+	/* Give the panel time to power-on and then deassert its reset */
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
+-	if (mtk_uses_dsa(dev) && !eth->prog) {
+-		for (i = 0; i < ARRAY_SIZE(eth->dsa_meta); i++) {
+-			struct metadata_dst *md_dst = eth->dsa_meta[i];
 -
--	/*
--	 * Give the panel time to power-on and then deassert its reset.
--	 * Depending on the VBT MIPI sequences version the deassert-seq
--	 * may contain the necessary delay, intel_dsi_msleep() will skip
--	 * the delay in that case. If there is no deassert-seq, then an
--	 * unconditional msleep is used to give the panel time to power-on.
--	 */
--	if (connector->panel.vbt.dsi.sequence[MIPI_SEQ_DEASSERT_RESET]) {
--		intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
--		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+-			if (md_dst)
+-				continue;
+-
+-			md_dst = metadata_dst_alloc(0, METADATA_HW_PORT_MUX,
+-						    GFP_KERNEL);
+-			if (!md_dst)
+-				return -ENOMEM;
+-
+-			md_dst->u.port_info.port_id = i;
+-			eth->dsa_meta[i] = md_dst;
+-		}
 -	} else {
--		msleep(intel_dsi->panel_on_delay);
+-		/* Hardware special tag parsing needs to be disabled if at least
+-		 * one MAC does not use DSA.
+-		 */
+-		u32 val = mtk_r32(eth, MTK_CDMP_IG_CTRL);
+-		val &= ~MTK_CDMP_STAG_EN;
+-		mtk_w32(eth, val, MTK_CDMP_IG_CTRL);
 -	}
-+	msleep(intel_dsi->panel_on_delay);
-+	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+-
+ 	err = phylink_of_phy_connect(mac->phylink, mac->of_node, 0);
+ 	if (err) {
+ 		netdev_err(dev, "%s: could not attach PHY: %d\n", __func__,
+@@ -3246,6 +3187,40 @@ static int mtk_open(struct net_device *dev)
+ 	phylink_start(mac->phylink);
+ 	netif_tx_start_all_queues(dev);
  
- 	if (IS_GEMINILAKE(dev_priv)) {
- 		glk_cold_boot = glk_dsi_enable_io(encoder);
-@@ -879,7 +867,7 @@ static void intel_dsi_pre_enable(struct
- 		msleep(20); /* XXX */
- 		for_each_dsi_port(port, intel_dsi->ports)
- 			dpi_send_cmd(intel_dsi, TURN_ON, false, port);
--		intel_dsi_msleep(intel_dsi, 100);
-+		msleep(100);
++	if (MTK_HAS_CAPS(eth->soc->caps, MTK_NETSYS_V2))
++		return 0;
++
++	if (mtk_uses_dsa(dev) && !eth->prog) {
++		for (i = 0; i < ARRAY_SIZE(eth->dsa_meta); i++) {
++			struct metadata_dst *md_dst = eth->dsa_meta[i];
++
++			if (md_dst)
++				continue;
++
++			md_dst = metadata_dst_alloc(0, METADATA_HW_PORT_MUX,
++						    GFP_KERNEL);
++			if (!md_dst)
++				return -ENOMEM;
++
++			md_dst->u.port_info.port_id = i;
++			eth->dsa_meta[i] = md_dst;
++		}
++	} else {
++		/* Hardware special tag parsing needs to be disabled if at least
++		 * one MAC does not use DSA.
++		 */
++		u32 val = mtk_r32(eth, MTK_CDMP_IG_CTRL);
++
++		val &= ~MTK_CDMP_STAG_EN;
++		mtk_w32(eth, val, MTK_CDMP_IG_CTRL);
++
++		val = mtk_r32(eth, MTK_CDMQ_IG_CTRL);
++		val &= ~MTK_CDMQ_STAG_EN;
++		mtk_w32(eth, val, MTK_CDMQ_IG_CTRL);
++
++		mtk_w32(eth, 0, MTK_CDMP_EG_CTRL);
++	}
++
+ 	return 0;
+ }
  
- 		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+@@ -3572,10 +3547,9 @@ static int mtk_hw_init(struct mtk_eth *eth)
+ 	if (!MTK_HAS_CAPS(eth->soc->caps, MTK_NETSYS_V2)) {
+ 		val = mtk_r32(eth, MTK_CDMP_IG_CTRL);
+ 		mtk_w32(eth, val | MTK_CDMP_STAG_EN, MTK_CDMP_IG_CTRL);
+-	}
  
-@@ -1007,7 +995,7 @@ static void intel_dsi_post_disable(struc
- 	/* Assert reset */
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_ASSERT_RESET);
+-	/* Enable RX VLan Offloading */
+-	mtk_w32(eth, 1, MTK_CDMP_EG_CTRL);
++		mtk_w32(eth, 1, MTK_CDMP_EG_CTRL);
++	}
  
--	intel_dsi_msleep(intel_dsi, intel_dsi->panel_off_delay);
-+	msleep(intel_dsi->panel_off_delay);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_OFF);
+ 	/* set interrupt delays based on current Net DIM sample */
+ 	mtk_dim_rx(&eth->rx_dim.work);
+@@ -4176,7 +4150,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
+ 		eth->netdev[id]->hw_features |= NETIF_F_LRO;
  
- 	intel_dsi->panel_power_off_time = ktime_get_boottime();
+ 	eth->netdev[id]->vlan_features = eth->soc->hw_features &
+-		~(NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX);
++		~NETIF_F_HW_VLAN_CTAG_TX;
+ 	eth->netdev[id]->features |= eth->soc->hw_features;
+ 	eth->netdev[id]->ethtool_ops = &mtk_ethtool_ops;
+ 
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+index d4b4f9eaa4419..79112bd3e952e 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+@@ -48,7 +48,6 @@
+ #define MTK_HW_FEATURES		(NETIF_F_IP_CSUM | \
+ 				 NETIF_F_RXCSUM | \
+ 				 NETIF_F_HW_VLAN_CTAG_TX | \
+-				 NETIF_F_HW_VLAN_CTAG_RX | \
+ 				 NETIF_F_SG | NETIF_F_TSO | \
+ 				 NETIF_F_TSO6 | \
+ 				 NETIF_F_IPV6_CSUM |\
+-- 
+2.39.2
+
 
 
