@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 957DC7035C7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B4C7039AD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243566AbjEORCp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:02:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
+        id S244612AbjEORpD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243550AbjEORCU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:20 -0400
+        with ESMTP id S244657AbjEORor (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A6A9007
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C761419F3C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 876A262A5E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADB7C4339C;
-        Mon, 15 May 2023 17:00:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBB0262E04
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05FBC4339B;
+        Mon, 15 May 2023 17:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170020;
-        bh=Ban5jE4pIxsntXhPB9Yi+3jRDbCveSFmTqqK0SbGjzE=;
+        s=korg; t=1684172525;
+        bh=kUrKhhjbrNgLmWrEkrLqnjT5n441ieTdGqorhDsJrRk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0estiR/kbnh3BdelUsPY003nuy2yMmm/NuC7h6krxUlQ3w7BRMtYXSK54oo0xuKre
-         DxxSfzZzvnshIv2gmartF9esHmx4wf7CENoWZasio2lRNTj8SHZbKXx3ncAH402Kep
-         4WADNEQLqOLgtBbF/GGYvYfpxgupHoaKfDW2R9V4=
+        b=Q6dliw0Ov+p+gdmAe7xFXvmR2c73V++jEm+AIjkHxdum77F30UWZy4Q/Waf5fS6d5
+         yuN0yyuFRhebOKgPKs8/972pghMRLjDkPf52iQbc4n3TL9Mx6zJtXE77VnlQ7Igru6
+         lR4Wdw0m+yNzhFqws9PTxaOfaWmzDsEBurEBvjI4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-        Haridhar Kalvala <haridhar.kalvala@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 220/246] drm/i915: disable sampler indirect state in bindless heap
+Subject: [PATCH 5.10 181/381] wifi: iwlwifi: fw: fix memory leak in debugfs
 Date:   Mon, 15 May 2023 18:27:12 +0200
-Message-Id: <20230515161729.193254692@linuxfoundation.org>
+Message-Id: <20230515161744.998557331@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,79 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 81900e3a37750d8c6ad705045310e002f6dd0356 ]
+[ Upstream commit 3d90d2f4a018fe8cfd65068bc6350b6222be4852 ]
 
-By default the indirect state sampler data (border colors) are stored
-in the same heap as the SAMPLER_STATE structure. For userspace drivers
-that can be 2 different heaps (dynamic state heap & bindless sampler
-state heap). This means that border colors have to copied in 2
-different places so that the same SAMPLER_STATE structure find the
-right data.
+Fix a memory leak that occurs when reading the fw_info
+file all the way, since we return NULL indicating no
+more data, but don't free the status tracking object.
 
-This change is forcing the indirect state sampler data to only be in
-the dynamic state pool (more convenient for userspace drivers, they
-only have to have one copy of the border colors). This is reproducing
-the behavior of the Windows drivers.
-
-BSpec: 46052
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Haridhar Kalvala <haridhar.kalvala@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230407093237.3296286-1-lionel.g.landwerlin@intel.com
-(cherry picked from commit 16fc9c08f0ec7b1c95f1ea4a16097acdb3fc943d)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 36dfe9ac6e8b ("iwlwifi: dump api version in yaml format")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230418122405.239e501b3b8d.I4268f87809ef91209cbcd748eee0863195e70fa2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  1 +
- drivers/gpu/drm/i915/gt/intel_workarounds.c | 19 +++++++++++++++++++
- 2 files changed, 20 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-index 72275749686aa..e54891b0e2f43 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -1146,6 +1146,7 @@
- #define   SC_DISABLE_POWER_OPTIMIZATION_EBB	REG_BIT(9)
- #define   GEN11_SAMPLER_ENABLE_HEADLESS_MSG	REG_BIT(5)
- #define   MTL_DISABLE_SAMPLER_SC_OOO		REG_BIT(3)
-+#define   GEN11_INDIRECT_STATE_BASE_ADDR_OVERRIDE	REG_BIT(0)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 267ad4eddb5c0..24d6ed3513ce5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -344,8 +344,10 @@ static void *iwl_dbgfs_fw_info_seq_next(struct seq_file *seq,
+ 	const struct iwl_fw *fw = priv->fwrt->fw;
  
- #define GEN9_HALF_SLICE_CHICKEN7		MCR_REG(0xe194)
- #define   DG2_DISABLE_ROUND_ENABLE_ALLOW_FOR_SSLA	REG_BIT(15)
-diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-index b7c6c078dcc02..14f92a8082857 100644
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -3015,6 +3015,25 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
- 
- 	add_render_compute_tuning_settings(i915, wal);
- 
-+	if (GRAPHICS_VER(i915) >= 11) {
-+		/* This is not a Wa (although referred to as
-+		 * WaSetInidrectStateOverride in places), this allows
-+		 * applications that reference sampler states through
-+		 * the BindlessSamplerStateBaseAddress to have their
-+		 * border color relative to DynamicStateBaseAddress
-+		 * rather than BindlessSamplerStateBaseAddress.
-+		 *
-+		 * Otherwise SAMPLER_STATE border colors have to be
-+		 * copied in multiple heaps (DynamicStateBaseAddress &
-+		 * BindlessSamplerStateBaseAddress)
-+		 *
-+		 * BSpec: 46052
-+		 */
-+		wa_mcr_masked_en(wal,
-+				 GEN10_SAMPLER_MODE,
-+				 GEN11_INDIRECT_STATE_BASE_ADDR_OVERRIDE);
+ 	*pos = ++state->pos;
+-	if (*pos >= fw->ucode_capa.n_cmd_versions)
++	if (*pos >= fw->ucode_capa.n_cmd_versions) {
++		kfree(state);
+ 		return NULL;
 +	}
-+
- 	if (IS_MTL_GRAPHICS_STEP(i915, M, STEP_B0, STEP_FOREVER) ||
- 	    IS_MTL_GRAPHICS_STEP(i915, P, STEP_B0, STEP_FOREVER))
- 		/* Wa_14017856879 */
+ 
+ 	return state;
+ }
 -- 
 2.39.2
 
