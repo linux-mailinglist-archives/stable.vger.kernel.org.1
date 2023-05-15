@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8F770349B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90174703909
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243080AbjEOQuY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55394 "EHLO
+        id S244479AbjEORiR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243060AbjEOQuL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:11 -0400
+        with ESMTP id S244360AbjEORiB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7A106186
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2334DDA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D787362956
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA25EC433EF;
-        Mon, 15 May 2023 16:50:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFB5D62DC4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E69BC433EF;
+        Mon, 15 May 2023 17:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169405;
-        bh=BhvebBb+HeGYZCLPU+1fJN8yJf+OfH6keQuVtaSHC/g=;
+        s=korg; t=1684172080;
+        bh=oV2Sx8WR+OBUk97E11P04I05mKcvjMkEKE2O3zCZ1d0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fAgATEdEg3fGXLAnure+snrr1CvCuXZYCyExbiXz1k2yVNqpGJwn3caRZE/AAjgbN
-         pGLo1tvYe88QDtszuW0/de/eOJpNkgOAH+F8jvQ8YydF4RNNMxvOsun096WJOYYTJ4
-         oT6Sem4sKoy865LXGwguFTlNxkMiJskwOAs1KRdc=
+        b=eipeR5a5dOIcTtIpuoQZEK5scaanWpavUVJEwo0Ko0HFfiu8aQZgeI0TMWFYAXUxC
+         YY7JX2GodTRh7aGicDoxERvLg0zJ6uygKQ8VgQqU0Y+iMZZonxVsh3wB6x+lQGcpfv
+         qXs+6NwJe3aGfHGPZ/L/xVATjFoZ/6Tw0TbvVdgQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 046/246] net/sched: act_mirred: Add carrier check
-Date:   Mon, 15 May 2023 18:24:18 +0200
-Message-Id: <20230515161723.969976614@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 008/381] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+Date:   Mon, 15 May 2023 18:24:19 +0200
+Message-Id: <20230515161737.136928608@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,49 +54,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 526f28bd0fbdc699cda31426928802650c1528e5 ]
+commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
 
-There are cases where the device is adminstratively UP, but operationally
-down. For example, we have a physical device (Nvidia ConnectX-6 Dx, 25Gbps)
-who's cable was pulled out, here is its ip link output:
+Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
+SL8563. The modem supports the NCM mode. Interface 0 is used for running
+the AT commands. Interface 12 is the ADB interface.
 
-5: ens2f1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000
-    link/ether b8:ce:f6:4b:68:35 brd ff:ff:ff:ff:ff:ff
-    altname enp179s0f1np1
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1782 ProdID=4055 Rev=04.04
+S:  Manufacturer=Unisoc Phone
+S:  Product=Unisoc Phone
+S:  SerialNumber=<redacted>
+C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-As you can see, it's administratively UP but operationally down.
-In this case, sending a packet to this port caused a nasty kernel hang (so
-nasty that we were unable to capture it). Aborting a transmit based on
-operational status (in addition to administrative status) fixes the issue.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-v1->v2: Add fixes tag
-v2->v3: Remove blank line between tags + add change log, suggested by Leon
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_mirred.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 8037ec9b1d311..a61482c5edbe7 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -264,7 +264,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		goto out;
- 	}
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -595,6 +595,11 @@ static void option_instat_callback(struc
+ #define SIERRA_VENDOR_ID			0x1199
+ #define SIERRA_PRODUCT_EM9191			0x90d3
  
--	if (unlikely(!(dev->flags & IFF_UP))) {
-+	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
- 		goto out;
--- 
-2.39.2
-
++/* UNISOC (Spreadtrum) products */
++#define UNISOC_VENDOR_ID			0x1782
++/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
++#define TOZED_PRODUCT_LT70C			0x4055
++
+ /* Device flags */
+ 
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2225,6 +2230,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
