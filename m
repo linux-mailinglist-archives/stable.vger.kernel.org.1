@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3800470388B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E5B703A78
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244364AbjEORdF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53724 "EHLO
+        id S244906AbjEORvO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244230AbjEORcn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:43 -0400
+        with ESMTP id S244917AbjEORuy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7328120B1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9B51CA5A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 73EF062D26
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DD6C433D2;
-        Mon, 15 May 2023 17:30:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1077462EF8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A202C433D2;
+        Mon, 15 May 2023 17:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171818;
-        bh=6bctev+LNjdgklSrPVNVRyazqJmMW3HyfO4Z3Gg8d1M=;
+        s=korg; t=1684172940;
+        bh=fqyMnX2k1AQC0aLBmx/PR7ZIjhMvQdJX0EDqSpAkiUQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B0myDoD3fTRFE4mRyR9LftS/ZC29O3yMNskW2LSI+4yc8Yi3fSyL5fEMIwqJJ0PNp
-         Tmn5Vv4V975P/jOsB818Iopa0oEgB9AL5nOMUC2CvujrHrsOXdH0BUCT/mwcREZ8gY
-         MtVkIMDLCBNhAH0lmx9hhLZaON4xTLk8qhQ1cJqc=
+        b=qULh44KK63kqSY8qbfRMqxcGRV/JO28pMsUGiwfUzrz783CZPwfAlOcPwbqgFzzXL
+         D++YD8G4aCMnl7ti122oAHynE5cogufGJlgAtMFGQQ22MCUWIGUyWAyjTrXjlcGcvA
+         U7SW/G11iMeLH+4Q0Nk7XGElvFtFgbLMKnB45hm8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roman Li <Roman.Li@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 089/134] drm/amd/display: fix flickering caused by S/G mode
+        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 315/381] net/sched: act_mirred: Add carrier check
 Date:   Mon, 15 May 2023 18:29:26 +0200
-Message-Id: <20230515161706.120897336@linuxfoundation.org>
+Message-Id: <20230515161751.045491017@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 08da182175db4c7f80850354849d95f2670e8cd9 upstream.
+[ Upstream commit 526f28bd0fbdc699cda31426928802650c1528e5 ]
 
-Currently, on a handful of ASICs. We allow the framebuffer for a given
-plane to exist in either VRAM or GTT. However, if the plane's new
-framebuffer is in a different memory domain than it's previous
-framebuffer, flipping between them can cause the screen to flicker. So,
-to fix this, don't perform an immediate flip in the aforementioned case.
+There are cases where the device is adminstratively UP, but operationally
+down. For example, we have a physical device (Nvidia ConnectX-6 Dx, 25Gbps)
+who's cable was pulled out, here is its ip link output:
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
-Reviewed-by: Roman Li <Roman.Li@amd.com>
-Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+5: ens2f1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000
+    link/ether b8:ce:f6:4b:68:35 brd ff:ff:ff:ff:ff:ff
+    altname enp179s0f1np1
+
+As you can see, it's administratively UP but operationally down.
+In this case, sending a packet to this port caused a nasty kernel hang (so
+nasty that we were unable to capture it). Aborting a transmit based on
+operational status (in addition to administrative status) fixes the issue.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+v1->v2: Add fixes tag
+v2->v3: Remove blank line between tags + add change log, suggested by Leon
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/sched/act_mirred.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8944,6 +8944,13 @@ static void amdgpu_dm_commit_cursors(str
- 			handle_cursor_update(plane, old_plane_state);
- }
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 24d561d8d9c97..25dad1921baf2 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -244,7 +244,7 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 		goto out;
+ 	}
  
-+static inline uint32_t get_mem_type(struct drm_framebuffer *fb)
-+{
-+	struct amdgpu_bo *abo = gem_to_amdgpu_bo(fb->obj[0]);
-+
-+	return abo->tbo.resource ? abo->tbo.resource->mem_type : 0;
-+}
-+
- static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 				    struct dc_state *dc_state,
- 				    struct drm_device *dev,
-@@ -9064,11 +9071,13 @@ static void amdgpu_dm_commit_planes(stru
- 
- 		/*
- 		 * Only allow immediate flips for fast updates that don't
--		 * change FB pitch, DCC state, rotation or mirroing.
-+		 * change memory domain, FB pitch, DCC state, rotation or
-+		 * mirroring.
- 		 */
- 		bundle->flip_addrs[planes_count].flip_immediate =
- 			crtc->state->async_flip &&
--			acrtc_state->update_type == UPDATE_TYPE_FAST;
-+			acrtc_state->update_type == UPDATE_TYPE_FAST &&
-+			get_mem_type(old_plane_state->fb) == get_mem_type(fb);
- 
- 		timestamp_ns = ktime_get_ns();
- 		bundle->flip_addrs[planes_count].flip_timestamp_in_us = div_u64(timestamp_ns, 1000);
+-	if (unlikely(!(dev->flags & IFF_UP))) {
++	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
+ 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
+ 				       dev->name);
+ 		goto out;
+-- 
+2.39.2
+
 
 
