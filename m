@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12609703B12
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26E5C703694
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242490AbjEOR7L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
+        id S243806AbjEORLi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243991AbjEOR6l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D2E1C38C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:14 -0700 (PDT)
+        with ESMTP id S243768AbjEORLQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D03E736
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86D6362FD6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0BAC433EF;
-        Mon, 15 May 2023 17:55:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 339A862B32
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28947C433D2;
+        Mon, 15 May 2023 17:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173315;
-        bh=Gp25exMHYPRW1dvY4bAo3C5Tdksebk/uVRomrprCjeI=;
+        s=korg; t=1684170566;
+        bh=7CcgZ+EbgcYVHvFBCtgsjJy9Qw4JfDR0nUUgQWpqON0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qTiQ45EV44wl6zMHSe4mZTvzh9eoT8tWlkn++ApdZpudkE5gU6vfapnx3Qyanb8eB
-         5/urskM3yY31JXkAu8hzUYEbY4FOYDEQxl4mA17aW6t/kZQI+pfq2EEqMg6qqzAMIb
-         CTTCEvlNy0MY0TdiSxgMCLYfnMzjjtrlKGlO/y+M=
+        b=cDzstCVQnMbWbcBxCjsWN6dnG3jYSDoac5j4++pl/i/enDoF/XuDP/7c7xGBfXoWZ
+         To3/gudPPJTGJYyABCA06NzviPz01lD890LIuZOvmQ1QizCG1gGGBRQEbXaS5Vx9Ml
+         or8PLNx3kbnijWA3ZnGEhy7M9dVvO2rHknc4lD/o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Uros Bizjak <ubizjak@gmail.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/282] x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
-Date:   Mon, 15 May 2023 18:27:13 +0200
-Message-Id: <20230515161723.899012189@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Lin.Cao" <lincao12@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 171/239] drm/amdgpu: Fix vram recover doesnt work after whole GPU reset (v2)
+Date:   Mon, 15 May 2023 18:27:14 +0200
+Message-Id: <20230515161726.801364251@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Lin.Cao <lincao12@amd.com>
 
-[ Upstream commit f96fb2df3eb31ede1b34b0521560967310267750 ]
+commit 6c032c37ac3ef3b7df30937c785ecc4da428edc0 upstream.
 
-The detection of atomic update failure in reserve_eilvt_offset() is
-not correct. The value returned by atomic_cmpxchg() should be compared
-to the old value from the location to be updated.
+v1: Vmbo->shadow is used to back vram bo up when vram lost. So that we
+should set shadow as vmbo->shadow to recover vmbo->bo
+v2: Modify if(vmbo->shadow) shadow = vmbo->shadow as if(!vmbo->shadow)
+continue;
 
-If these two are the same, then atomic update succeeded and
-"eilvt_offsets[offset]" location is updated to "new" in an atomic way.
-
-Otherwise, the atomic update failed and it should be retried with the
-value from "eilvt_offsets[offset]" - exactly what atomic_try_cmpxchg()
-does in a correct and more optimal way.
-
-Fixes: a68c439b1966c ("apic, x86: Check if EILVT APIC registers are available (AMD only)")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230227160917.107820-1-ubizjak@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e18aaea733da ("drm/amdgpu: move shadow_list to amdgpu_bo_vm")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 68c7340325233..a3b7b2fb04cb0 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -410,10 +410,9 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
- 		if (vector && !eilvt_entry_is_changeable(vector, new))
- 			/* may not change if vectors are different */
- 			return rsvd;
--		rsvd = atomic_cmpxchg(&eilvt_offsets[offset], rsvd, new);
--	} while (rsvd != new);
-+	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
- 
--	rsvd &= ~APIC_EILVT_MASKED;
-+	rsvd = new & ~APIC_EILVT_MASKED;
- 	if (rsvd && rsvd != vector)
- 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
- 			offset, rsvd);
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4483,7 +4483,11 @@ static int amdgpu_device_recover_vram(st
+ 	dev_info(adev->dev, "recover vram bo from shadow start\n");
+ 	mutex_lock(&adev->shadow_list_lock);
+ 	list_for_each_entry(vmbo, &adev->shadow_list, shadow_list) {
+-		shadow = &vmbo->bo;
++		/* If vm is compute context or adev is APU, shadow will be NULL */
++		if (!vmbo->shadow)
++			continue;
++		shadow = vmbo->shadow;
++
+ 		/* No need to recover an evicted BO */
+ 		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
+ 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
 
 
