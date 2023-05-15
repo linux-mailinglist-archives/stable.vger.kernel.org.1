@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3718703A29
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC627037F5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244648AbjEORtU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:49:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
+        id S244169AbjEOR0I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:26:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243502AbjEORtE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E422183EA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:12 -0700 (PDT)
+        with ESMTP id S244172AbjEORZp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC46E723
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2BD662F0D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EC0C4339C;
-        Mon, 15 May 2023 17:47:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 00EC662C99
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDD0C433A1;
+        Mon, 15 May 2023 17:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172821;
-        bh=lotCwatslFPZITBt8TkH1xDOh26ZQ35HXt0PMV1FPo0=;
+        s=korg; t=1684171470;
+        bh=XURPeCvrUWTcOcQM7aBFDLH+SOba1tSvMHlhrbFXblE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SDP4rwsbaCHyGRXe7wMcv7LKRWVvjdJY1gorTx8i+4iwhrF+rAJ2GT8Jlhwnezkzf
-         nNACyXfe7e9KiYlYPG7L4rkqARZHfB21QVDA3ElLl3IJZcnp+NnT6PFj52aNsVbVkH
-         BiowS5HMLObONlcP940852nOjaRRQYxk1FSV2JfY=
+        b=X/itHRE/O3eVeE6iBu/eSSwtyHTBjdPlIzWkLXw8ZMxjHAzfx44EakDgvegFSMigE
+         yBRsQcn4qpyM5ZV8BcRAH8kED6RwWYphcydghjojSZY9NcpxjPJ2cyUug0y8JQ0M49
+         4Umzs5RtUSB6ICY2VrJe4RL2yGFGjQ4Kib6jrsW0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/381] mfd: tqmx86: Correct board names for TQMxE39x
+        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.2 202/242] drm/amd/pm: avoid potential UBSAN issue on legacy asics
 Date:   Mon, 15 May 2023 18:28:48 +0200
-Message-Id: <20230515161749.294142497@linuxfoundation.org>
+Message-Id: <20230515161728.001211007@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,119 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit f376c479668557bcc2fd9e9fbc0f53e7819a11cd ]
+commit 5247f05eadf1081a74b2233f291cee2efed25e3a upstream.
 
-It seems that this driver was developed based on preliminary documentation.
-Report the correct names for all TQMxE39x variants, as they are used by
-the released hardware revisions:
+Prevent further dpm casting on legacy asics without od_enabled in
+amdgpu_dpm_is_overdrive_supported. This can avoid UBSAN complain
+in init sequence.
 
-- Fix names for TQMxE39C1/C2 board IDs
-- Distinguish TQMxE39M and TQMxE39S, which use the same board ID
+v2: add a macro to check legacy dpm instead of checking asic family/type
+v3: refine macro name for naming consistency
 
-The TQMxE39M/S are distinguished using the SAUC (Sanctioned Alternate
-Uses Configuration) register of the GPIO controller. This also prepares
-for the correct handling of the differences between the GPIO controllers
-of our COMe and SMARC modules.
-
-Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/aca9a7cb42a85181bcb456c437554d2728e708ec.1676892223.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Evan Quan <evan.quan@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/tqmx86.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
-index c8ec0f92bc10a..0498f1b7e2e36 100644
---- a/drivers/mfd/tqmx86.c
-+++ b/drivers/mfd/tqmx86.c
-@@ -30,9 +30,9 @@
- #define TQMX86_REG_BOARD_ID_50UC	2
- #define TQMX86_REG_BOARD_ID_E38C	3
- #define TQMX86_REG_BOARD_ID_60EB	4
--#define TQMX86_REG_BOARD_ID_E39M	5
--#define TQMX86_REG_BOARD_ID_E39C	6
--#define TQMX86_REG_BOARD_ID_E39x	7
-+#define TQMX86_REG_BOARD_ID_E39MS	5
-+#define TQMX86_REG_BOARD_ID_E39C1	6
-+#define TQMX86_REG_BOARD_ID_E39C2	7
- #define TQMX86_REG_BOARD_ID_70EB	8
- #define TQMX86_REG_BOARD_ID_80UC	9
- #define TQMX86_REG_BOARD_ID_110EB	11
-@@ -48,6 +48,7 @@
- #define TQMX86_REG_IO_EXT_INT_12		3
- #define TQMX86_REG_IO_EXT_INT_MASK		0x3
- #define TQMX86_REG_IO_EXT_INT_GPIO_SHIFT	4
-+#define TQMX86_REG_SAUC		0x17
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
+@@ -36,6 +36,8 @@
+ #define amdgpu_dpm_enable_bapm(adev, e) \
+ 		((adev)->powerplay.pp_funcs->enable_bapm((adev)->powerplay.pp_handle, (e)))
  
- #define TQMX86_REG_I2C_DETECT	0x1a7
- #define TQMX86_REG_I2C_DETECT_SOFT		0xa5
-@@ -110,7 +111,7 @@ static const struct mfd_cell tqmx86_devs[] = {
- 	},
- };
- 
--static const char *tqmx86_board_id_to_name(u8 board_id)
-+static const char *tqmx86_board_id_to_name(u8 board_id, u8 sauc)
++#define amdgpu_dpm_is_legacy_dpm(adev) ((adev)->powerplay.pp_handle == (adev))
++
+ int amdgpu_dpm_get_sclk(struct amdgpu_device *adev, bool low)
  {
- 	switch (board_id) {
- 	case TQMX86_REG_BOARD_ID_E38M:
-@@ -121,12 +122,12 @@ static const char *tqmx86_board_id_to_name(u8 board_id)
- 		return "TQMxE38C";
- 	case TQMX86_REG_BOARD_ID_60EB:
- 		return "TQMx60EB";
--	case TQMX86_REG_BOARD_ID_E39M:
--		return "TQMxE39M";
--	case TQMX86_REG_BOARD_ID_E39C:
--		return "TQMxE39C";
--	case TQMX86_REG_BOARD_ID_E39x:
--		return "TQMxE39x";
-+	case TQMX86_REG_BOARD_ID_E39MS:
-+		return (sauc == 0xff) ? "TQMxE39M" : "TQMxE39S";
-+	case TQMX86_REG_BOARD_ID_E39C1:
-+		return "TQMxE39C1";
-+	case TQMX86_REG_BOARD_ID_E39C2:
-+		return "TQMxE39C2";
- 	case TQMX86_REG_BOARD_ID_70EB:
- 		return "TQMx70EB";
- 	case TQMX86_REG_BOARD_ID_80UC:
-@@ -159,9 +160,9 @@ static int tqmx86_board_id_to_clk_rate(u8 board_id)
- 	case TQMX86_REG_BOARD_ID_E40C1:
- 	case TQMX86_REG_BOARD_ID_E40C2:
- 		return 24000;
--	case TQMX86_REG_BOARD_ID_E39M:
--	case TQMX86_REG_BOARD_ID_E39C:
--	case TQMX86_REG_BOARD_ID_E39x:
-+	case TQMX86_REG_BOARD_ID_E39MS:
-+	case TQMX86_REG_BOARD_ID_E39C1:
-+	case TQMX86_REG_BOARD_ID_E39C2:
- 		return 25000;
- 	case TQMX86_REG_BOARD_ID_E38M:
- 	case TQMX86_REG_BOARD_ID_E38C:
-@@ -173,7 +174,7 @@ static int tqmx86_board_id_to_clk_rate(u8 board_id)
+ 	const struct amd_pm_funcs *pp_funcs = adev->powerplay.pp_funcs;
+@@ -1421,8 +1423,11 @@ int amdgpu_dpm_is_overdrive_supported(st
+ 	} else {
+ 		struct pp_hwmgr *hwmgr;
  
- static int tqmx86_probe(struct platform_device *pdev)
- {
--	u8 board_id, rev, i2c_det, io_ext_int_val;
-+	u8 board_id, sauc, rev, i2c_det, io_ext_int_val;
- 	struct device *dev = &pdev->dev;
- 	u8 gpio_irq_cfg, readback;
- 	const char *board_name;
-@@ -203,7 +204,8 @@ static int tqmx86_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+-		/* SI asic does not carry od_enabled */
+-		if (adev->family == AMDGPU_FAMILY_SI)
++		/*
++		 * dpm on some legacy asics don't carry od_enabled member
++		 * as its pp_handle is casted directly from adev.
++		 */
++		if (amdgpu_dpm_is_legacy_dpm(adev))
+ 			return false;
  
- 	board_id = ioread8(io_base + TQMX86_REG_BOARD_ID);
--	board_name = tqmx86_board_id_to_name(board_id);
-+	sauc = ioread8(io_base + TQMX86_REG_SAUC);
-+	board_name = tqmx86_board_id_to_name(board_id, sauc);
- 	rev = ioread8(io_base + TQMX86_REG_BOARD_REV);
- 
- 	dev_info(dev,
--- 
-2.39.2
-
+ 		hwmgr = (struct pp_hwmgr *)adev->powerplay.pp_handle;
 
 
