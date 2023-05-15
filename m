@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4AF0703737
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98EAE70367B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244003AbjEORST (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35886 "EHLO
+        id S243755AbjEORKZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:10:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243841AbjEORR7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:59 -0400
+        with ESMTP id S243840AbjEORJ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54587100F4;
-        Mon, 15 May 2023 10:16:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36275DD8F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EAB662BF0;
-        Mon, 15 May 2023 17:16:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9EBC4339B;
-        Mon, 15 May 2023 17:16:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A8762133
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13309C433D2;
+        Mon, 15 May 2023 17:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170975;
-        bh=tlJPUuUVRpEZGnrbkGEflL2jwDkHI9CNFTJwvu+RQuA=;
+        s=korg; t=1684170507;
+        bh=JEIw3/JeNfM0mUIqTOhzCXaqqyzceP9zscvyxHK/3V4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EoNvkkhNNEtj4MidLvuCqOKRtMRDqJR7uzZPdSY6vaCDaExWpDd/TgJFwSwdKHhTw
-         BLBCORIFQ9ye0UvqxXAPQpNUCX7exf6YScxWq9mYvaAjSOXMTUgJUII+BccRRiyMf/
-         B7is7rFmxxd1aqpVaxQWgXbN9n6sTZEJucZduwdU=
+        b=xKPFKxBvc4CvXFI4xSV6pKihPi38Ku3tE6f0U8Td/ZSQFEuXO4gsQsahSDVDY09Pg
+         ccZyeAA1wvtft5rSbCa6+FVJ0nTMhR3G5UMVm7CSqzHHbNT/Ftmgifywsw3msL1isK
+         2EE2DuDUJDWZp9t5JqkEzE8LkPyWeitg6vImxwIY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 060/242] rxrpc: Make it so that a waiting process can be aborted
+        patches@lists.linux.dev,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Wendy Wang <wendy.wang@intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 123/239] platform/x86/intel-uncore-freq: Return error on write frequency
 Date:   Mon, 15 May 2023 18:26:26 +0200
-Message-Id: <20230515161723.705585300@linuxfoundation.org>
+Message-Id: <20230515161725.393612102@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,62 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 0eb362d254814ce04848730bf32e75b8ee1a4d6c ]
+commit 75e406b540c3eca67625d97bbefd4e3787eafbfe upstream.
 
-When sendmsg() creates an rxrpc call, it queues it to wait for a connection
-and channel to be assigned and then waits before it can start shovelling
-data as the encrypted DATA packet content includes a summary of the
-connection parameters.
+Currently when the uncore_write() returns error, it is silently
+ignored. Return error to user space when uncore_write() fails.
 
-However, sendmsg() may get interrupted before a connection gets assigned
-and further sendmsg() calls will fail with EBUSY until an assignment is
-made.
-
-Fix this so that the call can at least be aborted without failing on
-EBUSY.  We have to be careful here as sendmsg() mustn't be allowed to start
-the call timer if the call doesn't yet have a connection assigned as an
-oops may follow shortly thereafter.
-
-Fixes: 540b1c48c37a ("rxrpc: Fix deadlock between call creation and sendmsg/recvmsg")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49a474c7ba51 ("platform/x86: Add support for Uncore frequency control")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Tested-by: Wendy Wang <wendy.wang@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230418153230.679094-1-srinivas.pandruvada@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/sendmsg.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index 7498a77b5d397..c1b074c17b33e 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -656,10 +656,13 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
- 			goto out_put_unlock;
- 	} else {
- 		switch (rxrpc_call_state(call)) {
--		case RXRPC_CALL_UNINITIALISED:
- 		case RXRPC_CALL_CLIENT_AWAIT_CONN:
--		case RXRPC_CALL_SERVER_PREALLOC:
- 		case RXRPC_CALL_SERVER_SECURING:
-+			if (p.command == RXRPC_CMD_SEND_ABORT)
-+				break;
-+			fallthrough;
-+		case RXRPC_CALL_UNINITIALISED:
-+		case RXRPC_CALL_SERVER_PREALLOC:
- 			rxrpc_put_call(call, rxrpc_call_put_sendmsg);
- 			ret = -EBUSY;
- 			goto error_release_sock;
--- 
-2.39.2
-
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
+@@ -44,14 +44,18 @@ static ssize_t store_min_max_freq_khz(st
+ 				      int min_max)
+ {
+ 	unsigned int input;
++	int ret;
+ 
+ 	if (kstrtouint(buf, 10, &input))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&uncore_lock);
+-	uncore_write(data, input, min_max);
++	ret = uncore_write(data, input, min_max);
+ 	mutex_unlock(&uncore_lock);
+ 
++	if (ret)
++		return ret;
++
+ 	return count;
+ }
+ 
 
 
