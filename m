@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 962E77022C7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D31D97022C9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229708AbjEOEPs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 00:15:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57328 "EHLO
+        id S238122AbjEOEPx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 00:15:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjEOEPr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:15:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B2C9E50
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:15:46 -0700 (PDT)
+        with ESMTP id S230166AbjEOEPv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:15:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F868E6A
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:15:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB59961840
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:15:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0572C433D2;
-        Mon, 15 May 2023 04:15:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9A3960F57
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08AAC433EF;
+        Mon, 15 May 2023 04:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684124145;
-        bh=QsAdi/faYLT+ezo0UA9sejNYQQ7Hf2bU21jweFQtR2Y=;
+        s=korg; t=1684124149;
+        bh=9J0ikh+n77odvwt4u80Cw54zNg1sV+eBHXumCVglP+Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=tw244I9kentHNe5GWLAZPY23/0TmzMzQZK+LGpSTTSCufDb6SnTja1NkUYpjy0AQO
-         yFaVGAyfSG7jcuYE2aPqqq6+2/t+g6Za4M5CORIIsbHPpV/lNW0oqsezkdXYVigA3/
-         96VUyYB0xv2FSITpSsODQKgnYeAxhJU6ClzNJy84=
-Subject: FAILED: patch "[PATCH] ext4: fix lockdep warning when enabling MMP" failed to apply to 5.15-stable tree
+        b=2cgRG/ezusXwWA2i4N/FzDgXnwIBvhtMtBeLnJ+Zfhs9KG/dN6XDVSpzO59XaiRTa
+         G8vrYzE6tCga2hWNtkR5NsvALLi9BwCqS+rs/J0mbUYke/Qf6OhACQoPPNuWn3a8bZ
+         Hf5iBTWZd7mQt0sUDrK0i35j8wGZ81wd0XXBgmTg=
+Subject: FAILED: patch "[PATCH] ext4: fix lockdep warning when enabling MMP" failed to apply to 5.10-stable tree
 To:     jack@suse.cz, brauner@kernel.org, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 15 May 2023 06:15:42 +0200
-Message-ID: <2023051542-twiddling-guise-b47e@gregkh>
+Date:   Mon, 15 May 2023 06:15:43 +0200
+Message-ID: <2023051543-brute-atrocious-12bc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,23 +48,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 949f95ff39bf188e594e7ecd8e29b82eb108f5bf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051542-twiddling-guise-b47e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051543-brute-atrocious-12bc@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 949f95ff39bf ("ext4: fix lockdep warning when enabling MMP")
+6810fad956df ("ext4: fix ext4_error_err save negative errno into superblock")
 
 thanks,
 
