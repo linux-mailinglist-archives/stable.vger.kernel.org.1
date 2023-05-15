@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C9970379F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D0DC703B3E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244134AbjEORXU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
+        id S243414AbjEOSBG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243778AbjEORXA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169251248B;
-        Mon, 15 May 2023 10:21:08 -0700 (PDT)
+        with ESMTP id S243053AbjEOSAn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061E61FA43
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA8DB62C65;
-        Mon, 15 May 2023 17:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9005C433EF;
-        Mon, 15 May 2023 17:21:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8537F62FF2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92939C433AE;
+        Mon, 15 May 2023 17:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171267;
-        bh=h5mK51aebmM7frvlZj9/VAIXXGKmEyWTQHFtggW+AO4=;
+        s=korg; t=1684173484;
+        bh=L4lpl+2vkeKeDOZJQLgs10LXlF6v6HNV8C3e7YI+k1Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OiISy/CXzo5KaHmwuCLa+V2rMYanClreSTTj9VE+RMhuKJhW1W30JSuL0l0D4Jl8T
-         mEg6IKJ3mo8wWTTI697GAlrwoe36/oWiEzRmPTsDaCLDD4BvSH8FJIeMFH9NJrvRwK
-         KF8ghGhp+thz9lSiMs6dFpo+e+mNu6DNaArqSmmM=
+        b=GyxetUhjzgTJyW+ens0/y6MaT3yJiHEUlEXN5aatfmV6jITTaHBnU39li/1K/Buk8
+         kx1TY5xrDHvCNklY9R+E+9pl7Rb7wY4vzj8yBIlNUfR7jKCAyzKfL9XnEewzpSEkRJ
+         4mNh7lzW8TcuH9gMf6v2e5RdIjLWgUHzgWNRv7Y4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        devicetree@vger.kernel.org, Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-sh@vger.kernel.org
-Subject: [PATCH 6.2 154/242] sh: init: use OF_EARLY_FLATTREE for early init
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 102/282] md/raid10: fix leak of r10bio->remaining for recovery
 Date:   Mon, 15 May 2023 18:28:00 +0200
-Message-Id: <20230515161726.509748856@linuxfoundation.org>
+Message-Id: <20230515161725.311544345@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,89 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 6cba655543c7959f8a6d2979b9d40a6a66b7ed4f upstream.
+[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
 
-When CONFIG_OF_EARLY_FLATTREE and CONFIG_SH_DEVICE_TREE are not set,
-SH3 build fails with a call to early_init_dt_scan(), so in
-arch/sh/kernel/setup.c and arch/sh/kernel/head_32.S, use
-CONFIG_OF_EARLY_FLATTREE instead of CONFIG_OF_FLATTREE.
+raid10_sync_request() will add 'r10bio->remaining' for both rdev and
+replacement rdev. However, if the read io fails, recovery_request_write()
+returns without issuing the write io, in this case, end_sync_request()
+is only called once and 'remaining' is leaked, cause an io hang.
 
-Fixes this build error:
-../arch/sh/kernel/setup.c: In function 'sh_fdt_init':
-../arch/sh/kernel/setup.c:262:26: error: implicit declaration of function 'early_init_dt_scan' [-Werror=implicit-function-declaration]
-  262 |         if (!dt_virt || !early_init_dt_scan(dt_virt)) {
+Fix the problem by decreasing 'remaining' according to if 'bio' and
+'repl_bio' is valid.
 
-Fixes: 03767daa1387 ("sh: fix build regression with CONFIG_OF && !CONFIG_OF_FLATTREE")
-Fixes: eb6b6930a70f ("sh: fix memory corruption of unflattened device tree")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Suggested-by: Rob Herring <robh+dt@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: devicetree@vger.kernel.org
-Cc: Rich Felker <dalias@libc.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-4-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/head_32.S |    6 +++---
- arch/sh/kernel/setup.c   |    4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/md/raid10.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/arch/sh/kernel/head_32.S
-+++ b/arch/sh/kernel/head_32.S
-@@ -64,7 +64,7 @@ ENTRY(_stext)
- 	ldc	r0, r6_bank
- #endif
- 
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- 	mov	r4, r12		! Store device tree blob pointer in r12
- #endif
- 	
-@@ -315,7 +315,7 @@ ENTRY(_stext)
- 10:		
- #endif
- 
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- 	mov.l	8f, r0		! Make flat device tree available early.
- 	jsr	@r0
- 	 mov	r12, r4
-@@ -346,7 +346,7 @@ ENTRY(stack_start)
- 5:	.long	start_kernel
- 6:	.long	cpu_init
- 7:	.long	init_thread_union
--#if defined(CONFIG_OF_FLATTREE)
-+#if defined(CONFIG_OF_EARLY_FLATTREE)
- 8:	.long	sh_fdt_init
- #endif
- 
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -244,7 +244,7 @@ void __init __weak plat_early_device_set
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 9fcc141e1ad64..dd91385a3526f 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2229,11 +2229,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
  {
- }
+ 	struct r10conf *conf = mddev->private;
+ 	int d;
+-	struct bio *wbio, *wbio2;
++	struct bio *wbio = r10_bio->devs[1].bio;
++	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
++
++	/* Need to test wbio2->bi_end_io before we call
++	 * generic_make_request as if the former is NULL,
++	 * the latter is free to free wbio2.
++	 */
++	if (wbio2 && !wbio2->bi_end_io)
++		wbio2 = NULL;
  
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- void __ref sh_fdt_init(phys_addr_t dt_phys)
- {
- 	static int done = 0;
-@@ -326,7 +326,7 @@ void __init setup_arch(char **cmdline_p)
- 	/* Let earlyprintk output early console messages */
- 	sh_early_platform_driver_probe("earlyprintk", 1, 1);
+ 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
+ 		fix_recovery_read_error(r10_bio);
+-		end_sync_request(r10_bio);
++		if (wbio->bi_end_io)
++			end_sync_request(r10_bio);
++		if (wbio2)
++			end_sync_request(r10_bio);
+ 		return;
+ 	}
  
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- #ifdef CONFIG_USE_BUILTIN_DTB
- 	unflatten_and_copy_device_tree();
- #else
+@@ -2242,14 +2253,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ 	 * and submit the write request
+ 	 */
+ 	d = r10_bio->devs[1].devnum;
+-	wbio = r10_bio->devs[1].bio;
+-	wbio2 = r10_bio->devs[1].repl_bio;
+-	/* Need to test wbio2->bi_end_io before we call
+-	 * generic_make_request as if the former is NULL,
+-	 * the latter is free to free wbio2.
+-	 */
+-	if (wbio2 && !wbio2->bi_end_io)
+-		wbio2 = NULL;
+ 	if (wbio->bi_end_io) {
+ 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
+ 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
+-- 
+2.39.2
+
 
 
