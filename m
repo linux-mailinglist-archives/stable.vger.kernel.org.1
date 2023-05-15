@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD25D703850
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37FFF703A3F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244324AbjEORbg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:31:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
+        id S244823AbjEORuG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243933AbjEORau (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:30:50 -0400
+        with ESMTP id S244844AbjEORts (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8EFA13C2F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B561526C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F14CF62D19
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D5DC433A0;
-        Mon, 15 May 2023 17:27:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5CAB62F11
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABF8C433D2;
+        Mon, 15 May 2023 17:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171650;
-        bh=TwDghPsd+u4A7TMfe/2NGDLvGnp9p4577uj5/Spb6Zg=;
+        s=korg; t=1684172861;
+        bh=R5mcXfsMV5E2Ph6G2ic/R5BwFJ9bP0IcdoSm7AUCUv4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mzaZ4+jOk0NI6RptW7Qi52pADkLHwETLNI8IVp9vVBRoGS5Jbo47TIaebQ6jsfsJN
-         NnunH0fXuC0OTHDopcjO57vWcEhn28V+3tmb0zOQib1JX4AgHcfIHGXqi0dje0GJrv
-         /LEsPbKo0hps8HVZNHh0FllvE9yHjX3b/qgLuJPQ=
+        b=W4RBfCbYQGmxH3BZ+/HxHR3Z9iep2sEhBZMl3R/+HNo6GXIVc8FRNVABoRIWuwQHq
+         0M4vd0CBr7r+Fx8V5EoWDSwUKY2hyDFVFtgC/od75h97Oe2lZ5FyQWWaxa3T+bC5DT
+         P/HohaSfhFpLS7MYz+/H9dwrFIUMUJTxsK2hnV30=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Stafford Horne <shorne@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/134] octeontx2-af: Secure APR table update with the lock
+Subject: [PATCH 5.10 260/381] openrisc: Properly store r31 to pt_regs on unhandled exceptions
 Date:   Mon, 15 May 2023 18:28:31 +0200
-Message-Id: <20230515161704.241517030@linuxfoundation.org>
+Message-Id: <20230515161748.470935316@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,79 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Stafford Horne <shorne@gmail.com>
 
-[ Upstream commit 048486f81d01db4d100af021ee2ea211d19732a0 ]
+[ Upstream commit 812489ac4dd91144a74ce65ecf232252a2e406fb ]
 
-APR table contains the lmtst base address of PF/VFs. These entries
-are updated by the PF/VF during the device probe. The lmtst address
-is fetched from HW using "TXN_REQ" and "ADDR_RSP_STS" registers.
-The lock tries to protect these registers from getting overwritten
-when multiple PFs invokes rvu_get_lmtaddr() simultaneously.
+In commit 91993c8c2ed5 ("openrisc: use shadow registers to save regs on
+exception") the unhandled exception path was changed to do an early
+store of r30 instead of r31.  The entry code was not updated and r31 is
+not getting stored to pt_regs.
 
-For example, if PF1 submit the request and got permitted before it
-reads the response and PF2 got scheduled submit the request then the
-response of PF1 is overwritten by the PF2 response.
+This patch updates the entry handler to store r31 instead of r30.  We
+also remove some misleading commented out store r30 and r31
+instructrions.
 
-Fixes: 893ae97214c3 ("octeontx2-af: cn10k: Support configurable LMTST regions")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+I noticed this while working on adding floating point exception
+handling,  This issue probably would never impact anything since we kill
+the process or Oops right away on unhandled exceptions.
+
+Fixes: 91993c8c2ed5 ("openrisc: use shadow registers to save regs on exception")
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c   | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/openrisc/kernel/entry.S | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-index 46a41cfff5751..25713287a288f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-@@ -60,13 +60,14 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 			   u64 iova, u64 *lmt_addr)
- {
- 	u64 pa, val, pf;
--	int err;
-+	int err = 0;
- 
- 	if (!iova) {
- 		dev_err(rvu->dev, "%s Requested Null address for transulation\n", __func__);
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&rvu->rsrc_lock);
- 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_REQ, iova);
- 	pf = rvu_get_pf(pcifunc) & 0x1F;
- 	val = BIT_ULL(63) | BIT_ULL(14) | BIT_ULL(13) | pf << 8 |
-@@ -76,12 +77,13 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 	err = rvu_poll_reg(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_RSP_STS, BIT_ULL(0), false);
- 	if (err) {
- 		dev_err(rvu->dev, "%s LMTLINE iova transulation failed\n", __func__);
--		return err;
-+		goto exit;
- 	}
- 	val = rvu_read64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_RSP_STS);
- 	if (val & ~0x1ULL) {
- 		dev_err(rvu->dev, "%s LMTLINE iova transulation failed err:%llx\n", __func__, val);
--		return -EIO;
-+		err = -EIO;
-+		goto exit;
- 	}
- 	/* PA[51:12] = RVU_AF_SMMU_TLN_FLIT0[57:18]
- 	 * PA[11:0] = IOVA[11:0]
-@@ -89,8 +91,9 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 	pa = rvu_read64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_TLN_FLIT0) >> 18;
- 	pa &= GENMASK_ULL(39, 0);
- 	*lmt_addr = (pa << 12) | (iova  & 0xFFF);
--
--	return 0;
-+exit:
-+	mutex_unlock(&rvu->rsrc_lock);
-+	return err;
- }
- 
- static int rvu_update_lmtaddr(struct rvu *rvu, u16 pcifunc, u64 lmt_addr)
+diff --git a/arch/openrisc/kernel/entry.S b/arch/openrisc/kernel/entry.S
+index b42d32d79b2e6..7257e942731df 100644
+--- a/arch/openrisc/kernel/entry.S
++++ b/arch/openrisc/kernel/entry.S
+@@ -173,7 +173,6 @@ handler:							;\
+ 	l.sw    PT_GPR28(r1),r28					;\
+ 	l.sw    PT_GPR29(r1),r29					;\
+ 	/* r30 already save */					;\
+-/*        l.sw    PT_GPR30(r1),r30*/					;\
+ 	l.sw    PT_GPR31(r1),r31					;\
+ 	TRACE_IRQS_OFF_ENTRY						;\
+ 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
+@@ -211,9 +210,8 @@ handler:							;\
+ 	l.sw    PT_GPR27(r1),r27					;\
+ 	l.sw    PT_GPR28(r1),r28					;\
+ 	l.sw    PT_GPR29(r1),r29					;\
+-	/* r31 already saved */					;\
+-	l.sw    PT_GPR30(r1),r30					;\
+-/*        l.sw    PT_GPR31(r1),r31	*/				;\
++	/* r30 already saved */						;\
++	l.sw    PT_GPR31(r1),r31					;\
+ 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
+ 	l.addi	r30,r0,-1					;\
+ 	l.sw	PT_ORIG_GPR11(r1),r30				;\
 -- 
 2.39.2
 
