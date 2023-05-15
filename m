@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A8337037EC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1915A703A1E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244227AbjEORZR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42434 "EHLO
+        id S244734AbjEORtI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244309AbjEORY5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B028612083
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:56 -0700 (PDT)
+        with ESMTP id S244527AbjEORse (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D090612C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3570362CA8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226B2C433EF;
-        Mon, 15 May 2023 17:23:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95D5B62F0B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871A7C4339C;
+        Mon, 15 May 2023 17:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171435;
-        bh=ZnrBVfKxTl5Xc6ux1pwz3Ml/tdKN1jh9iMv8venI6NI=;
+        s=korg; t=1684172818;
+        bh=HGcFdnrbVZfVG4AgjdTQeLZGlYu/RWG3+y06U7YrJNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aSi6+SyKfoEJQKw4bwjYGeCf00jLqPQYhF1LMcZpCdY+R9hmT0vPO7ujHn5nIe8/n
-         5nj08pdh4Qqg1BoiEtcjxF8KBFm/WYhOZ6zUhnBN4C+45J5AWmHQYm/plvq5Sf0ZwU
-         GnKQV2ZsXODKc9bMbunTMYtuJdqLKtuDn4bOhH2A=
+        b=m7zDoYSa6BuT/hDAZH4rO/K0i+LHHZETWvD9gjWTr9YN5uJE1gxfzCZZZB085ohvo
+         /vffhCBDyYgehb0plzIGUERsvPf0WiTrYBmOVIJju/TVFCx5jodRoynm570G3LS/JN
+         09QRdROqN2P4z+z3EOTzeniJGRjlSHpJoy7Bj4Z8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
-        Tao Zhou <tao.zhou1@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.2 201/242] drm/amdgpu: disable sdma ecc irq only when sdma RAS is enabled in suspend
+        patches@lists.linux.dev,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 276/381] mfd: tqmx86: Specify IO port register range more precisely
 Date:   Mon, 15 May 2023 18:28:47 +0200
-Message-Id: <20230515161727.972635679@linuxfoundation.org>
+Message-Id: <20230515161749.245979892@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,60 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-commit 8b229ada2669b74fdae06c83fbfda5a5a99fc253 upstream.
+[ Upstream commit 051c69ff4f607aa114c7bbdd7c41ed881367aeee ]
 
-sdma_v4_0_ip is shared on a few asics, but in sdma_v4_0_hw_fini,
-driver unconditionally disables ecc_irq which is only enabled on
-those asics enabling sdma ecc. This will introduce a warning in
-suspend cycle on those chips with sdma ip v4.0, while without
-sdma ecc. So this patch correct this.
+Registers 0x160..0x17f are unassigned. Use 0x180 as base register and
+update offets accordingly.
 
-[ 7283.166354] RIP: 0010:amdgpu_irq_put+0x45/0x70 [amdgpu]
-[ 7283.167001] RSP: 0018:ffff9a5fc3967d08 EFLAGS: 00010246
-[ 7283.167019] RAX: ffff98d88afd3770 RBX: 0000000000000001 RCX: 0000000000000000
-[ 7283.167023] RDX: 0000000000000000 RSI: ffff98d89da30390 RDI: ffff98d89da20000
-[ 7283.167025] RBP: ffff98d89da20000 R08: 0000000000036838 R09: 0000000000000006
-[ 7283.167028] R10: ffffd5764243c008 R11: 0000000000000000 R12: ffff98d89da30390
-[ 7283.167030] R13: ffff98d89da38978 R14: ffffffff999ae15a R15: ffff98d880130105
-[ 7283.167032] FS:  0000000000000000(0000) GS:ffff98d996f00000(0000) knlGS:0000000000000000
-[ 7283.167036] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7283.167039] CR2: 00000000f7a9d178 CR3: 00000001c42ea000 CR4: 00000000003506e0
-[ 7283.167041] Call Trace:
-[ 7283.167046]  <TASK>
-[ 7283.167048]  sdma_v4_0_hw_fini+0x38/0xa0 [amdgpu]
-[ 7283.167704]  amdgpu_device_ip_suspend_phase2+0x101/0x1a0 [amdgpu]
-[ 7283.168296]  amdgpu_device_suspend+0x103/0x180 [amdgpu]
-[ 7283.168875]  amdgpu_pmops_freeze+0x21/0x60 [amdgpu]
-[ 7283.169464]  pci_pm_freeze+0x54/0xc0
+Also change the size of the range to include 0x19f. While 0x19f is
+currently reserved for future extensions, so are several of the previous
+registers up to 0x19e, and it is weird to leave out just the last one.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/db4677ac318b1283c8956f637f409995a30a31c3.1676892223.git.matthias.schiffer@ew.tq-group.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/mfd/tqmx86.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -1941,9 +1941,11 @@ static int sdma_v4_0_hw_fini(void *handl
- 		return 0;
- 	}
+diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
+index 1db95aed5012e..c8ec0f92bc10a 100644
+--- a/drivers/mfd/tqmx86.c
++++ b/drivers/mfd/tqmx86.c
+@@ -16,8 +16,8 @@
+ #include <linux/platform_data/i2c-ocores.h>
+ #include <linux/platform_device.h>
  
--	for (i = 0; i < adev->sdma.num_instances; i++) {
--		amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
--			       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__SDMA)) {
-+		for (i = 0; i < adev->sdma.num_instances; i++) {
-+			amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
-+				       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+		}
- 	}
+-#define TQMX86_IOBASE	0x160
+-#define TQMX86_IOSIZE	0x3f
++#define TQMX86_IOBASE	0x180
++#define TQMX86_IOSIZE	0x20
+ #define TQMX86_IOBASE_I2C	0x1a0
+ #define TQMX86_IOSIZE_I2C	0xa
+ #define TQMX86_IOBASE_WATCHDOG	0x18b
+@@ -25,7 +25,7 @@
+ #define TQMX86_IOBASE_GPIO	0x18d
+ #define TQMX86_IOSIZE_GPIO	0x4
  
- 	sdma_v4_0_ctx_switch_enable(adev, false);
+-#define TQMX86_REG_BOARD_ID	0x20
++#define TQMX86_REG_BOARD_ID	0x00
+ #define TQMX86_REG_BOARD_ID_E38M	1
+ #define TQMX86_REG_BOARD_ID_50UC	2
+ #define TQMX86_REG_BOARD_ID_E38C	3
+@@ -40,8 +40,8 @@
+ #define TQMX86_REG_BOARD_ID_E40S	13
+ #define TQMX86_REG_BOARD_ID_E40C1	14
+ #define TQMX86_REG_BOARD_ID_E40C2	15
+-#define TQMX86_REG_BOARD_REV	0x21
+-#define TQMX86_REG_IO_EXT_INT	0x26
++#define TQMX86_REG_BOARD_REV	0x01
++#define TQMX86_REG_IO_EXT_INT	0x06
+ #define TQMX86_REG_IO_EXT_INT_NONE		0
+ #define TQMX86_REG_IO_EXT_INT_7			1
+ #define TQMX86_REG_IO_EXT_INT_9			2
+-- 
+2.39.2
+
 
 
