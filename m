@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9548B7033A1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FE57035D5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242850AbjEOQkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42826 "EHLO
+        id S243451AbjEORDT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:03:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242862AbjEOQjy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:54 -0400
+        with ESMTP id S243423AbjEORC6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCCE4209
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58EB9EE9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 620D862860
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52ED2C433D2;
-        Mon, 15 May 2023 16:39:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BBF762A5E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981D3C433D2;
+        Mon, 15 May 2023 17:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168769;
-        bh=cr2EG/vIZ8hnNdAuvjvMvr5H3eALVt9l5CavgR+kWX4=;
+        s=korg; t=1684170057;
+        bh=kltuW1aT/nc6YOfj7X4MjHR1svWrsydIFor7E6q6lyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VqvUyI5ppwxzFIcvnj3zwW2MBM//pboBklJ1wIgcVOAWI/OMi4lXNFRdywFr7ddq4
-         5QiU7kH8S56ABxUw9xzy1Vz2XCv6pdEpyiVnzYXSZVjPZ6oynttgArWNi7AAYp3Ezn
-         Rl063+GKKVTdOqbw2X3W+3R/0+qDakzXrRb3+hDQ=
+        b=AEwneCItm+eBlAn4L0eRxPMXrQu0Lr9I2+77dO6mlzQGoOJ8clUA3n+7VMeY7Wt1t
+         OqbnHqQTmqr3D3MjQ+IXbXQKYx2HD5Je5/KFqmboVW/J0K8sQ7AnCADrJGgWxE7+mm
+         btFWMlRV3sNkfK+5Z5aFS4czJCm4dgIbzmpfxUIY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 036/191] drm/msm/adreno: drop bogus pm_runtime_set_active()
-Date:   Mon, 15 May 2023 18:24:33 +0200
-Message-Id: <20230515161708.504426918@linuxfoundation.org>
+Subject: [PATCH 6.1 011/239] mtd: spi-nor: Add a RWW flag
+Date:   Mon, 15 May 2023 18:24:34 +0200
+Message-Id: <20230515161721.929383534@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +54,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit db7662d076c973072d788bd0e8130e04430307a1 ]
+[ Upstream commit 4eddee70140b3ae183398b246a609756546c51f1 ]
 
-The runtime PM status can only be updated while runtime PM is disabled.
+Introduce a new (no SFDP) flag for the feature that we are about to
+support: Read While Write. This means, if the chip has several banks and
+supports RWW, once a page of data to write has been transferred into the
+chip's internal SRAM, another read operation happening on a different
+bank can be performed during the tPROG delay.
 
-Drop the bogus pm_runtime_set_active() call that was made after enabling
-runtime PM and which (incidentally but correctly) left the runtime PM
-status set to 'suspended'.
-
-Fixes: 2c087a336676 ("drm/msm/adreno: Load the firmware before bringing up the hardware")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/524972/
-Link: https://lore.kernel.org/r/20230303164807.13124-4-johan+linaro@kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20230328154105.448540-7-miquel.raynal@bootlin.com
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Stable-dep-of: 9fd0945fe6fa ("mtd: spi-nor: spansion: Enable JFFS2 write buffer for Infineon s28hx SEMPER flash")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/mtd/spi-nor/core.c    | 3 +++
+ drivers/mtd/spi-nor/core.h    | 3 +++
+ drivers/mtd/spi-nor/debugfs.c | 1 +
+ 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
-index 0275be7e13b19..7acb53a907e5c 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -196,9 +196,6 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
- 	 */
- 	pm_runtime_enable(&pdev->dev);
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 88da4a125c743..621e9ad4bcc39 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2440,6 +2440,9 @@ static void spi_nor_init_flags(struct spi_nor *nor)
  
--	/* Make sure pm runtime is active and reset any previous errors */
--	pm_runtime_set_active(&pdev->dev);
--
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
- 		dev_err(dev->dev, "Couldn't power up the GPU: %d\n", ret);
+ 	if (flags & NO_CHIP_ERASE)
+ 		nor->flags |= SNOR_F_NO_OP_CHIP_ERASE;
++
++	if (flags & SPI_NOR_RWW)
++		nor->flags |= SNOR_F_RWW;
+ }
+ 
+ /**
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 8a846ad86d298..f23d1e77199e5 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -130,6 +130,7 @@ enum spi_nor_option_flags {
+ 	SNOR_F_IO_MODE_EN_VOLATILE = BIT(11),
+ 	SNOR_F_SOFT_RESET	= BIT(12),
+ 	SNOR_F_SWP_IS_VOLATILE	= BIT(13),
++	SNOR_F_RWW		= BIT(14),
+ };
+ 
+ struct spi_nor_read_command {
+@@ -459,6 +460,7 @@ struct spi_nor_fixups {
+  *   NO_CHIP_ERASE:           chip does not support chip erase.
+  *   SPI_NOR_NO_FR:           can't do fastread.
+  *   SPI_NOR_QUAD_PP:         flash supports Quad Input Page Program.
++ *   SPI_NOR_RWW:             flash supports reads while write.
+  *
+  * @no_sfdp_flags:  flags that indicate support that can be discovered via SFDP.
+  *                  Used when SFDP tables are not defined in the flash. These
+@@ -509,6 +511,7 @@ struct flash_info {
+ #define NO_CHIP_ERASE			BIT(7)
+ #define SPI_NOR_NO_FR			BIT(8)
+ #define SPI_NOR_QUAD_PP			BIT(9)
++#define SPI_NOR_RWW			BIT(10)
+ 
+ 	u8 no_sfdp_flags;
+ #define SPI_NOR_SKIP_SFDP		BIT(0)
+diff --git a/drivers/mtd/spi-nor/debugfs.c b/drivers/mtd/spi-nor/debugfs.c
+index 5f56b23205d8b..8b4922a1aafb9 100644
+--- a/drivers/mtd/spi-nor/debugfs.c
++++ b/drivers/mtd/spi-nor/debugfs.c
+@@ -25,6 +25,7 @@ static const char *const snor_f_names[] = {
+ 	SNOR_F_NAME(IO_MODE_EN_VOLATILE),
+ 	SNOR_F_NAME(SOFT_RESET),
+ 	SNOR_F_NAME(SWP_IS_VOLATILE),
++	SNOR_F_NAME(RWW),
+ };
+ #undef SNOR_F_NAME
+ 
 -- 
 2.39.2
 
