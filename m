@@ -2,55 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C15670378B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1517039AB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244093AbjEORWe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41700 "EHLO
+        id S244549AbjEORo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244005AbjEORWO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:14 -0400
+        with ESMTP id S244634AbjEORol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD66111D92
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2B719F22
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AB9962C4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26575C4339B;
-        Mon, 15 May 2023 17:20:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E820062E5C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE29DC433EF;
+        Mon, 15 May 2023 17:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171218;
-        bh=hafvI/zUuC2woK9AnCuIrElYgzbF2rJS2LgSZxzF5ww=;
+        s=korg; t=1684172534;
+        bh=u5scZ3YwEk8evyVzAjI6zcE7PyPejgJcwJm7WBuXZi0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZUnW6b2cN6WgO1ashbljD8gx/v/D2FpSG6B2MjTc/ahfn7XZMY1aRFT8Ipc0Mwxai
-         WhXWoL7Vc59JzHt0iov1uY0M3UYd1FK33Te/5Z1VcCt0Wfl/6Kd1VMnQpn+2jvV43Q
-         RmZhRvDKmpJIHRqqrJ4hBvWZGjSTaET9c0o9ikaw=
+        b=JA3QiOS1aZa9EIGFKg+qFyI73K4nnHG2Yqx5SECGOJzWwolEznuTPpPXAGcb2B8FQ
+         bvevOg6CH2RRNZmmUVK8JpXfBPMG/m+4IkOarn0zLIzJLEZFIN3UsReNuXPqqinfpW
+         Js9z2dok7Mu6ykPCeTimPPfeKK+PeQJPAnD6Mevg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Will Ochowicz <Will.Ochowicz@genusplc.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 109/242] perf symbols: Fix return incorrect build_id size in elf_read_build_id()
+Subject: [PATCH 5.10 184/381] bpf: Dont EFAULT for getsockopt with optval=NULL
 Date:   Mon, 15 May 2023 18:27:15 +0200
-Message-Id: <20230515161725.175612000@linuxfoundation.org>
+Message-Id: <20230515161745.127603527@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -65,48 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 1511e4696acb715a4fe48be89e1e691daec91c0e ]
+[ Upstream commit 00e74ae0863827d944e36e56a4ce1e77e50edb91 ]
 
-In elf_read_build_id(), if gnu build_id is found, should return the size of
-the actually copied data. If descsz is greater thanBuild_ID_SIZE,
-write_buildid data access may occur.
+Some socket options do getsockopt with optval=NULL to estimate the size
+of the final buffer (which is returned via optlen). This breaks BPF
+getsockopt assumptions about permitted optval buffer size. Let's enforce
+these assumptions only when non-NULL optval is provided.
 
-Fixes: be96ea8ffa788dcc ("perf symbols: Fix issue with binaries using 16-bytes buildids (v2)")
-Reported-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Tested-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/lkml/CWLP265MB49702F7BA3D6D8F13E4B1A719C649@CWLP265MB4970.GBRP265.PROD.OUTLOOK.COM/T/
-Link: https://lore.kernel.org/r/20230427012841.231729-1-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
+Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/ZD7Js4fj5YyI2oLd@google.com/T/#mb68daf700f87a9244a15d01d00c3f0e5b08f49f7
+Link: https://lore.kernel.org/bpf/20230418225343.553806-2-sdf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol-elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/cgroup.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-index 96767d1b3f1c2..714fd9d0b51ef 100644
---- a/tools/perf/util/symbol-elf.c
-+++ b/tools/perf/util/symbol-elf.c
-@@ -581,7 +581,7 @@ static int elf_read_build_id(Elf *elf, void *bf, size_t size)
- 				size_t sz = min(size, descsz);
- 				memcpy(bf, ptr, sz);
- 				memset(bf + sz, 0, size - sz);
--				err = descsz;
-+				err = sz;
- 				break;
- 			}
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index 6d92e393e1bc6..d3593a520bb72 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -1516,7 +1516,7 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
+ 		goto out;
+ 	}
+ 
+-	if (ctx.optlen > max_optlen || ctx.optlen < 0) {
++	if (optval && (ctx.optlen > max_optlen || ctx.optlen < 0)) {
+ 		ret = -EFAULT;
+ 		goto out;
+ 	}
+@@ -1530,8 +1530,11 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
+ 	}
+ 
+ 	if (ctx.optlen != 0) {
+-		if (copy_to_user(optval, ctx.optval, ctx.optlen) ||
+-		    put_user(ctx.optlen, optlen)) {
++		if (optval && copy_to_user(optval, ctx.optval, ctx.optlen)) {
++			ret = -EFAULT;
++			goto out;
++		}
++		if (put_user(ctx.optlen, optlen)) {
+ 			ret = -EFAULT;
+ 			goto out;
  		}
 -- 
 2.39.2
