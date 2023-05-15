@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D6F7034C0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA623703601
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243096AbjEOQwB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57332 "EHLO
+        id S243560AbjEORFV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:05:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243167AbjEOQvk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED005FC6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:38 -0700 (PDT)
+        with ESMTP id S243668AbjEORFB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7625CA27B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BEB762979
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A14C433D2;
-        Mon, 15 May 2023 16:51:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2BCB62A83
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949FCC433D2;
+        Mon, 15 May 2023 17:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169497;
-        bh=juZNPdt5hU6FDOsjoQpmESqHEDUkTdRiXZU6y7P/2+M=;
+        s=korg; t=1684170193;
+        bh=TPCEFs6Gs0KWg4bFSeNpTS70JR5mYKAK7iYjeH5spc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n4Ayk2sOXHP4wGTCmR8HdJ5m13AxXbcpFpeTQNjBB5WkFTMBqv/NvaQSRKf47lxxL
-         QHWesxpUZG6uCPQ366dwPTSWFXZhZ485VIl2ehh/x/QpeIaL3qML0081/lohAPkBJ+
-         D/ysiBy2VqW+wZCtdVflddbhUi5HO0L6fwPK8KjA=
+        b=mh4GlOvMVqmJUEx5sEcfAd4mr2gT0XxxgVl4tiijT3+LO9MItX7+FrfXsTVbttvpr
+         6yJFe1ceP4iMpgpfePuwo7xuCwKJTumGfa2nMw5Z9M9tc7bcLM3noTJqiKIZJ1Ek1C
+         cz8q77B/znF3G0yvl7FpWA8U8nWufH++dtKYmpuQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 076/246] ionic: remove noise from ethtool rxnfc error msg
+Subject: [PATCH 6.1 025/239] ASoC: Intel: soc-acpi-byt: Fix "WM510205" match no longer working
 Date:   Mon, 15 May 2023 18:24:48 +0200
-Message-Id: <20230515161724.851654860@linuxfoundation.org>
+Message-Id: <20230515161722.343995397@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,36 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3711d44fac1f80ea69ecb7315fed05b3812a7401 ]
+[ Upstream commit c963e2ec095cb3f855890be53f56f5a6c6fbe371 ]
 
-It seems that ethtool is calling into .get_rxnfc more often with
-ETHTOOL_GRXCLSRLCNT which ionic doesn't know about.  We don't
-need to log a message about it, just return not supported.
+Commit 7e1d728a94ca ("ASoC: Intel: soc-acpi-byt: Add new WM5102 ACPI HID")
+added an extra HID to wm5102_comp_ids.codecs, but it forgot to bump
+wm5102_comp_ids.num_codecs, causing the last codec HID in the codecs list
+to no longer work.
 
-Fixes: aa3198819bea6 ("ionic: Add RSS support")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Bump wm5102_comp_ids.num_codecs to fix this.
+
+Fixes: 7e1d728a94ca ("ASoC: Intel: soc-acpi-byt: Add new WM5102 ACPI HID")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230421183714.35186-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-byt-match.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index cf33503468a3d..9b2b96fa36af8 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -794,7 +794,7 @@ static int ionic_get_rxnfc(struct net_device *netdev,
- 		info->data = lif->nxqs;
- 		break;
- 	default:
--		netdev_err(netdev, "Command parameter %d is not supported\n",
-+		netdev_dbg(netdev, "Command parameter %d is not supported\n",
- 			   info->cmd);
- 		err = -EOPNOTSUPP;
- 	}
+diff --git a/sound/soc/intel/common/soc-acpi-intel-byt-match.c b/sound/soc/intel/common/soc-acpi-intel-byt-match.c
+index db5a92b9875a8..87c44f284971a 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-byt-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-byt-match.c
+@@ -124,7 +124,7 @@ static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
+ };
+ 
+ static const struct snd_soc_acpi_codecs wm5102_comp_ids = {
+-	.num_codecs = 2,
++	.num_codecs = 3,
+ 	.codecs = { "10WM5102", "WM510204", "WM510205"},
+ };
+ 
 -- 
 2.39.2
 
