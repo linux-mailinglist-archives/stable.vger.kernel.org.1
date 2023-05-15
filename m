@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A45BF703B8E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5A6703B70
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244924AbjEOSEN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
+        id S244650AbjEOSDC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:03:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244822AbjEOSDw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:03:52 -0400
+        with ESMTP id S242616AbjEOSCj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60FA81EC2E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:01:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7C5718AA9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:00:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0585D6303C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:01:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC3FC433D2;
-        Mon, 15 May 2023 18:01:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7B0563033
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:00:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C423C433D2;
+        Mon, 15 May 2023 18:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173680;
-        bh=iE0wZMksM6a9tSftIOGq0hN69rU1j92IRkBBYfHFQZM=;
+        s=korg; t=1684173615;
+        bh=3sXvIJvkpg5u/ww1+E7pmpi+ybvqB+7s1eDOpbybtSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MOjjv4wHTo4RF1YtAeX6jHdYYb1MeZo8zRCD6nZi0TWNpJxajJIDAdQLvGFQpSPHw
-         CZUQExzvVdY1tUlBNJUTZRF2tlu6Bmtla+EanwudveBsKFWqWVSREdeVQUZ3t1E76B
-         kbdhsCZomQWNQXJY5YiHDADZY+RK/DScW/kthBCk=
+        b=Y32jONbdhiDiYqhP4Zoy/eRc4n8c97/SGQkMW/C5f5guG+gYqTDm0poGMxKO8BiT5
+         X17DsqmBgwlRQXSW+bHvlVdJZlvWfGf654tGvICQ5zi3RTfmQK1P8QR7lt+GTTOLuP
+         Pq2IghAwDEla0xKGqqRzZEf7GfM0qNOZYSiJZOV0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 132/282] spi: fsl-spi: Fix CPM/QE mode Litte Endian
-Date:   Mon, 15 May 2023 18:28:30 +0200
-Message-Id: <20230515161726.181212525@linuxfoundation.org>
+Subject: [PATCH 5.4 134/282] of: Fix modalias string generation
+Date:   Mon, 15 May 2023 18:28:32 +0200
+Message-Id: <20230515161726.239393594@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -56,68 +57,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit c20c57d9868d7f9fd1b2904c7801b07e128f6322 ]
+[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
 
-CPM has the same problem as QE so for CPM also use the fix added
-by commit 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian"):
+The helper generating an OF based modalias (of_device_get_modalias())
+works fine, but due to the use of snprintf() internally it needs a
+buffer one byte longer than what should be needed just for the entire
+string (excluding the '\0'). Most users of this helper are sysfs hooks
+providing the modalias string to users. They all provide a PAGE_SIZE
+buffer which is way above the number of bytes required to fit the
+modalias string and hence do not suffer from this issue.
 
-  CPM mode uses Little Endian so words > 8 bits are byte swapped.
-  Workaround this by always enforcing wordsize 8 for 16 and 32 bits
-  words. Unfortunately this will not work for LSB transfers
-  where wordsize is > 8 bits so disable these for now.
+There is another user though, of_device_request_module(), which is only
+called by drivers/usb/common/ulpi.c. This request module function is
+faulty, but maybe because in most cases there is an alternative, ULPI
+driver users have not noticed it.
 
-Also limit the workaround to 16 and 32 bits words because it can
-only work for multiples of 8-bits.
+In this function, of_device_get_modalias() is called twice. The first
+time without buffer just to get the number of bytes required by the
+modalias string (excluding the null byte), and a second time, after
+buffer allocation, to fill the buffer. The allocation asks for an
+additional byte, in order to store the trailing '\0'. However, the
+buffer *length* provided to of_device_get_modalias() excludes this extra
+byte. The internal use of snprintf() with a length that is exactly the
+number of bytes to be written has the effect of using the last available
+byte to store a '\0', which then smashes the last character of the
+modalias string.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Fixes: 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian")
-Link: https://lore.kernel.org/r/1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Provide the actual size of the buffer to of_device_get_modalias() to fix
+this issue.
+
+Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
+will anyway end the string with a null byte, but there is a possibility
+that this function might be called on a struct device_node without
+compatible, in this case snprintf() would not be executed. So we keep it
+just to avoid possible unbounded strings.
+
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/of/device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 02b999d48ca19..ae805f91eafa5 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -208,8 +208,8 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 				struct spi_device *spi,
- 				int bits_per_word)
- {
--	/* QE uses Little Endian for words > 8
--	 * so transform all words > 8 into 8 bits
-+	/* CPM/QE uses Little Endian for words > 8
-+	 * so transform 16 and 32 bits words into 8 bits
- 	 * Unfortnatly that doesn't work for LSB so
- 	 * reject these for now */
- 	/* Note: 32 bits word, LSB works iff
-@@ -217,9 +217,11 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 	if (spi->mode & SPI_LSB_FIRST &&
- 	    bits_per_word > 8)
- 		return -EINVAL;
--	if (bits_per_word > 8)
-+	if (bits_per_word <= 8)
-+		return bits_per_word;
-+	if (bits_per_word == 16 || bits_per_word == 32)
- 		return 8; /* pretend its 8 bits */
--	return bits_per_word;
-+	return -EINVAL;
- }
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index da81583920103..7fb870097a849 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -246,12 +246,15 @@ int of_device_request_module(struct device *dev)
+ 	if (size < 0)
+ 		return size;
  
- static int fsl_spi_setup_transfer(struct spi_device *spi,
-@@ -249,7 +251,7 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else if (mpc8xxx_spi->flags & SPI_QE)
-+	else
- 		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
- 							  bits_per_word);
+-	str = kmalloc(size + 1, GFP_KERNEL);
++	/* Reserve an additional byte for the trailing '\0' */
++	size++;
++
++	str = kmalloc(size, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
+ 
+ 	of_device_get_modalias(dev, str, size);
+-	str[size] = '\0';
++	str[size - 1] = '\0';
+ 	ret = request_module(str);
+ 	kfree(str);
  
 -- 
 2.39.2
