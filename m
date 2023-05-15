@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D2FA703821
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2107E7038AD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244232AbjEOR1g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
+        id S244417AbjEOReG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:34:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244235AbjEOR1V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:21 -0400
+        with ESMTP id S244287AbjEORdu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F0C13C33
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44EAF17945
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E21F62CEC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E6DC433D2;
-        Mon, 15 May 2023 17:25:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A9E662D53
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5F7C4339B;
+        Mon, 15 May 2023 17:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171554;
-        bh=Kra88e1xBRKhOzdO16W7/YyxQdwURgp/5mQpythfczo=;
+        s=korg; t=1684171890;
+        bh=UTzj7nKTWqKbuscNnAoLIgIrhjd3jG+Y+Ahj6J+Ti9E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L/AVd73ezf8v2ZUMifPwNX/KszOXvqzDzcMuUuV2WMi5wuDyk4PN3dnA+kf9OeSZj
-         2Y06avF6s1sFCxOSFDCRAgYr2UFW3xwNrrXn8nxmhYRhIS+0QmqjcvW87wyKm1Ed7q
-         crIJOwzK3XMGF5Ga9aqyE2QqLk8SHK+ZqMgnWyy0=
+        b=kpv1KUhZPCbo2Kb5lQ1c+0hsOmx8YNiC1GPeTiiIJp55lOim8fG4KV/FfCq2+fkf1
+         bbfRxQO037Y4WdP8afcFbvxuLWOr4HVT8+TFUwlqDHob0N57oCV9jVlv8eBl1hTMDV
+         VFXATD8nJO+SHCmTuINr5J7U3YdA19oTMWlzqmmc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com,
-        stable@kernel.org, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 232/242] ext4: add bounds checking in get_max_inline_xattr_value_size()
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH 5.15 081/134] remoteproc: imx_rproc: Call of_node_put() on iteration error
 Date:   Mon, 15 May 2023 18:29:18 +0200
-Message-Id: <20230515161728.872985190@linuxfoundation.org>
+Message-Id: <20230515161705.881483652@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-commit 2220eaf90992c11d888fe771055d4de330385f01 upstream.
+commit 5ef074e805ecfd9a16dbb7b6b88bbfa8abad7054 upstream.
 
-Normally the extended attributes in the inode body would have been
-checked when the inode is first opened, but if someone is writing to
-the block device while the file system is mounted, it's possible for
-the inode table to get corrupted.  Add bounds checking to avoid
-reading beyond the end of allocated memory if this happens.
+Function of_phandle_iterator_next() calls of_node_put() on the last
+device_node it iterated over, but when the loop exits prematurely it has
+to be called explicitly.
 
-Reported-by: syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=1966db24521e5f6e23f7
-Cc: stable@kernel.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: b29b4249f8f0 ("remoteproc: imx_rproc: add i.MX specific parse fw hook")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20230320221826.2728078-5-mathieu.poirier@linaro.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/remoteproc/imx_rproc.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -34,6 +34,7 @@ static int get_max_inline_xattr_value_si
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_xattr_entry *entry;
- 	struct ext4_inode *raw_inode;
-+	void *end;
- 	int free, min_offs;
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -452,6 +452,7 @@ static int imx_rproc_prepare(struct rpro
  
- 	if (!EXT4_INODE_HAS_XATTR_SPACE(inode))
-@@ -57,14 +58,23 @@ static int get_max_inline_xattr_value_si
- 	raw_inode = ext4_raw_inode(iloc);
- 	header = IHDR(inode, raw_inode);
- 	entry = IFIRST(header);
-+	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
- 
- 	/* Compute min_offs. */
--	for (; !IS_LAST_ENTRY(entry); entry = EXT4_XATTR_NEXT(entry)) {
-+	while (!IS_LAST_ENTRY(entry)) {
-+		void *next = EXT4_XATTR_NEXT(entry);
-+
-+		if (next >= end) {
-+			EXT4_ERROR_INODE(inode,
-+					 "corrupt xattr in inline inode");
-+			return 0;
-+		}
- 		if (!entry->e_value_inum && entry->e_value_size) {
- 			size_t offs = le16_to_cpu(entry->e_value_offs);
- 			if (offs < min_offs)
- 				min_offs = offs;
+ 		rmem = of_reserved_mem_lookup(it.node);
+ 		if (!rmem) {
++			of_node_put(it.node);
+ 			dev_err(priv->dev, "unable to acquire memory-region\n");
+ 			return -EINVAL;
  		}
-+		entry = next;
+@@ -464,10 +465,12 @@ static int imx_rproc_prepare(struct rpro
+ 					   imx_rproc_mem_alloc, imx_rproc_mem_release,
+ 					   it.node->name);
+ 
+-		if (mem)
++		if (mem) {
+ 			rproc_coredump_add_segment(rproc, da, rmem->size);
+-		else
++		} else {
++			of_node_put(it.node);
+ 			return -ENOMEM;
++		}
+ 
+ 		rproc_add_carveout(rproc, mem);
  	}
- 	free = min_offs -
- 		((void *)entry - (void *)IFIRST(header)) - sizeof(__u32);
 
 
