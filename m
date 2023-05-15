@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7F07036A3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B177039B8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243809AbjEORML (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:12:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
+        id S244609AbjEORp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243676AbjEORLu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:50 -0400
+        with ESMTP id S244605AbjEORpD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C614C23
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9DD7ECB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3759362B0A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E0C433EF;
-        Mon, 15 May 2023 17:10:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD0D562E47
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87FFC433EF;
+        Mon, 15 May 2023 17:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170604;
-        bh=Xtq3oH+sWQ25JFIWjhmDhQcdnHPdaqB/3DTC6A7/U0w=;
+        s=korg; t=1684172565;
+        bh=NZhi0xVtW7EMChztBxbN0pyviFRvH+2jLhEiS908OSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IqgKL6qXJB4sHtlqsfLVsdPEX/XBlAjcZgXU4FKwV4NiZrtUYz1qoTIbH2fM0qvw2
-         3VVwWvjF4u3HJa4+rPySAN/imfRuIi+gDnJTnqqJK60ntHjOYUocNx93vmCPjrniWr
-         D/1UkJcyvpeErBarZa6dZk4B7DVD+jC1E0u+wg0A=
+        b=gt3Aa/Jzqnq/4GwNY/rHEXVb4MkucQgeYoK8TFoHe34X/cCRfWydaYMA+U7sQwVhG
+         J8fV/KJ6cUmE7Bzwk71Br9X1t3QPoMrLbb8t3Ay7G500/De0nz3++AkDSfEwCSJ4vn
+         fduGUhuErPG8udPIbbea00I4X+ltZHI94jZIVrz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.1 154/239] drm/msm: fix workqueue leak on bind errors
+        patches@lists.linux.dev, Shuchang Li <lishuchang@hust.edu.cn>,
+        Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 166/381] scsi: lpfc: Fix ioremap issues in lpfc_sli4_pci_mem_setup()
 Date:   Mon, 15 May 2023 18:26:57 +0200
-Message-Id: <20230515161726.301425347@linuxfoundation.org>
+Message-Id: <20230515161744.307520978@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Shuchang Li <lishuchang@hust.edu.cn>
 
-commit a75b49db6529b2af049eafd938fae888451c3685 upstream.
+[ Upstream commit 91a0c0c1413239d0548b5aac4c82f38f6d53a91e ]
 
-Make sure to destroy the workqueue also in case of early errors during
-bind (e.g. a subcomponent failing to bind).
+When if_type equals zero and pci_resource_start(pdev, PCI_64BIT_BAR4)
+returns false, drbl_regs_memmap_p is not remapped. This passes a NULL
+pointer to iounmap(), which can trigger a WARN() on certain arches.
 
-Since commit c3b790ea07a1 ("drm: Manage drm_mode_config_init with
-drmm_") the mode config will be freed when the drm device is released
-also when using the legacy interface, but add an explicit cleanup for
-consistency and to facilitate backporting.
+When if_type equals six and pci_resource_start(pdev, PCI_64BIT_BAR4)
+returns true, drbl_regs_memmap_p may has been remapped and
+ctrl_regs_memmap_p is not remapped. This is a resource leak and passes a
+NULL pointer to iounmap().
 
-Fixes: 060530f1ea67 ("drm/msm: use componentised device support")
-Cc: stable@vger.kernel.org      # 3.15
-Cc: Rob Clark <robdclark@gmail.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525093/
-Link: https://lore.kernel.org/r/20230306100722.28485-9-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix these issues, we need to add null checks before iounmap(), and
+change some goto labels.
+
+Fixes: 1351e69fc6db ("scsi: lpfc: Add push-to-adapter support to sli4")
+Signed-off-by: Shuchang Li <lishuchang@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230404072133.1022-1-lishuchang@hust.edu.cn
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_init.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -456,7 +456,7 @@ static int msm_drm_init(struct device *d
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 17200b453cbbb..1bb3c96a04bd6 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -10477,7 +10477,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 				goto out_iounmap_all;
+ 		} else {
+ 			error = -ENOMEM;
+-			goto out_iounmap_all;
++			goto out_iounmap_ctrl;
+ 		}
+ 	}
  
- 	ret = msm_init_vram(ddev);
- 	if (ret)
--		goto err_put_dev;
-+		goto err_cleanup_mode_config;
+@@ -10495,7 +10495,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 			dev_err(&pdev->dev,
+ 			   "ioremap failed for SLI4 HBA dpp registers.\n");
+ 			error = -ENOMEM;
+-			goto out_iounmap_ctrl;
++			goto out_iounmap_all;
+ 		}
+ 		phba->pci_bar4_memmap_p = phba->sli4_hba.dpp_regs_memmap_p;
+ 	}
+@@ -10520,9 +10520,11 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 	return 0;
  
- 	/* Bind all our sub-components: */
- 	ret = component_bind_all(dev, ddev);
-@@ -561,6 +561,9 @@ err_msm_uninit:
+ out_iounmap_all:
+-	iounmap(phba->sli4_hba.drbl_regs_memmap_p);
++	if (phba->sli4_hba.drbl_regs_memmap_p)
++		iounmap(phba->sli4_hba.drbl_regs_memmap_p);
+ out_iounmap_ctrl:
+-	iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
++	if (phba->sli4_hba.ctrl_regs_memmap_p)
++		iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
+ out_iounmap_conf:
+ 	iounmap(phba->sli4_hba.conf_regs_memmap_p);
  
- err_deinit_vram:
- 	msm_deinit_vram(ddev);
-+err_cleanup_mode_config:
-+	drm_mode_config_cleanup(ddev);
-+	destroy_workqueue(priv->wq);
- err_put_dev:
- 	drm_dev_put(ddev);
- 
+-- 
+2.39.2
+
 
 
