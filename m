@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04529703B0B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A72D9703657
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241400AbjEOR7G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60596 "EHLO
+        id S243712AbjEORJT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242371AbjEOR6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:34 -0400
+        with ESMTP id S243605AbjEORI6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 957A915EDD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07C1FD074
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF2B562216
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EC6C433EF;
-        Mon, 15 May 2023 17:54:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DCCE62A8D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 525F8C433D2;
+        Mon, 15 May 2023 17:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173275;
-        bh=FCO+mQ7M3QwYjQeEpbF4qYkU0s0b3eMBg1HLdPwqYy4=;
+        s=korg; t=1684170428;
+        bh=ecRzZTC14Y082V1XWJK204NohrP7IYeyAEnOOPYXe8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jC8OV0c5fZKRVpbJ3Euj6e5k7mDzSLEgBZapvFan+m22qnTudlb+0Qoij/VmhUsRx
-         vNPKC+G5XeTrLpHK99ASyHlANds3p/cOUsUDb1Kj9Bql+CVI+XfDdR0V3F9ca3ir7m
-         DCDOoX4lDZSUclT/H9lqAK9J2yKf7sbTfTIr+isg=
+        b=wpdolGdX+YRQOCf2oEKxtq7YiTp3zrViAaDyFFqY4d7QQTADW29+e0HGgpJ9NyhxQ
+         m4CVIFAgdkSOshbAJKtyPOwlGdzbuHEnATW5GmQmXwjNZijZ7bRO2GDCfEe5OJqjFI
+         28GcgUEv5YwsW8ept3GCmwZNrVYReX26m6bPJaRI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-Subject: [PATCH 5.4 013/282] staging: iio: resolver: ads1210: fix config mode
+        patches@lists.linux.dev,
+        syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com,
+        Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 128/239] inotify: Avoid reporting event with invalid wd
 Date:   Mon, 15 May 2023 18:26:31 +0200
-Message-Id: <20230515161722.666805127@linuxfoundation.org>
+Message-Id: <20230515161725.538148081@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,34 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 16313403d873ff17a587818b61f84c8cb4971cef upstream.
+commit c915d8f5918bea7c3962b09b8884ca128bfd9b0c upstream.
 
-As stated in the device datasheet [1], bits a0 and a1 have to be set to
-1 for the configuration mode.
+When inotify_freeing_mark() races with inotify_handle_inode_event() it
+can happen that inotify_handle_inode_event() sees that i_mark->wd got
+already reset to -1 and reports this value to userspace which can
+confuse the inotify listener. Avoid the problem by validating that wd is
+sensible (and pretend the mark got removed before the event got
+generated otherwise).
 
-[1]: https://www.analog.com/media/en/technical-documentation/data-sheets/ad2s1210.pdf
-
-Fixes: b19e9ad5e2cb9 ("staging:iio:resolver:ad2s1210 general driver cleanup")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230327145414.1505537-1-nuno.sa@analog.com
+CC: stable@vger.kernel.org
+Fixes: 7e790dd5fc93 ("inotify: fix error paths in inotify_update_watch")
+Message-Id: <20230424163219.9250-1-jack@suse.cz>
+Reported-by: syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/resolver/ad2s1210.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/notify/inotify/inotify_fsnotify.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/iio/resolver/ad2s1210.c
-+++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -101,7 +101,7 @@ struct ad2s1210_state {
- static const int ad2s1210_mode_vals[4][2] = {
- 	[MOD_POS] = { 0, 0 },
- 	[MOD_VEL] = { 0, 1 },
--	[MOD_CONFIG] = { 1, 0 },
-+	[MOD_CONFIG] = { 1, 1 },
- };
+--- a/fs/notify/inotify/inotify_fsnotify.c
++++ b/fs/notify/inotify/inotify_fsnotify.c
+@@ -65,7 +65,7 @@ int inotify_handle_inode_event(struct fs
+ 	struct fsnotify_event *fsn_event;
+ 	struct fsnotify_group *group = inode_mark->group;
+ 	int ret;
+-	int len = 0;
++	int len = 0, wd;
+ 	int alloc_len = sizeof(struct inotify_event_info);
+ 	struct mem_cgroup *old_memcg;
  
- static inline void ad2s1210_set_mode(enum ad2s1210_mode mode,
+@@ -81,6 +81,13 @@ int inotify_handle_inode_event(struct fs
+ 			      fsn_mark);
+ 
+ 	/*
++	 * We can be racing with mark being detached. Don't report event with
++	 * invalid wd.
++	 */
++	wd = READ_ONCE(i_mark->wd);
++	if (wd == -1)
++		return 0;
++	/*
+ 	 * Whoever is interested in the event, pays for the allocation. Do not
+ 	 * trigger OOM killer in the target monitoring memcg as it may have
+ 	 * security repercussion.
+@@ -110,7 +117,7 @@ int inotify_handle_inode_event(struct fs
+ 	fsn_event = &event->fse;
+ 	fsnotify_init_event(fsn_event);
+ 	event->mask = mask;
+-	event->wd = i_mark->wd;
++	event->wd = wd;
+ 	event->sync_cookie = cookie;
+ 	event->name_len = len;
+ 	if (len)
 
 
