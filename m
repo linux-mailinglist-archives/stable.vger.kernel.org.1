@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53BE97036FC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73913703628
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243734AbjEORPj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:15:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54988 "EHLO
+        id S243437AbjEORHT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243605AbjEORPV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:21 -0400
+        with ESMTP id S243432AbjEORHC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF9E7683
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A52D857
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3280F62B92
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E971DC433D2;
-        Mon, 15 May 2023 17:14:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ABBB62ACA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD0FC4339B;
+        Mon, 15 May 2023 17:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170843;
-        bh=fuu7aK3XgegqChFiQwiUMAqQXp5TEg+yBOBibtS0UrQ=;
+        s=korg; t=1684170288;
+        bh=K+4E7FO8AO6LNI50qGvqBz4rtIEdcgcYzJgkvH+0LTQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aGSQNesnLaJvgncFoP9uRQVQ7P5qdNRHxfwzT/tAKpOcz76n9ig84QEgH5C43RE7n
-         qQud4waNzI35Cps1kIdkG1FYEBbkXzJRqh4eONveyOPsxm/6iukm/mGmXAEBmQHcFa
-         gEhoNflKqnOSYu8KHVszYbIgxe/AiirUHDjeGHBw=
+        b=XiEDYdO4sp0bQqHm0qypxIhzLSzlYYKLkJzAxJMOso84lyQ/eNy6GokuYQIMl1k8v
+         iLHDUdoRKidQYEqcsfaC++tJpAaEhMkwbc7qVhdHxp2fiUFHajs0UcEhQw9EexJWIH
+         ox6zrdySlc3P2WPWttDKYfVonL2Dt7nHXEX1kRCw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
-        Sean Christopherson <seanjc@google.com>,
+        patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 019/242] KVM: x86/mmu: Refresh CR0.WP prior to checking for emulated permission faults
+Subject: [PATCH 6.1 082/239] KVM: s390: fix race in gmap_make_secure()
 Date:   Mon, 15 May 2023 18:25:45 +0200
-Message-Id: <20230515161722.508403410@linuxfoundation.org>
+Message-Id: <20230515161724.140354206@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,114 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit cf9f4c0eb1699d306e348b1fd0225af7b2c282d3 ]
+[ Upstream commit c148dc8e2fa403be501612ee409db866eeed35c0 ]
 
-Refresh the MMU's snapshot of the vCPU's CR0.WP prior to checking for
-permission faults when emulating a guest memory access and CR0.WP may be
-guest owned.  If the guest toggles only CR0.WP and triggers emulation of
-a supervisor write, e.g. when KVM is emulating UMIP, KVM may consume a
-stale CR0.WP, i.e. use stale protection bits metadata.
+Fix a potential race in gmap_make_secure() and remove the last user of
+follow_page() without FOLL_GET.
 
-Note, KVM passes through CR0.WP if and only if EPT is enabled as CR0.WP
-is part of the MMU role for legacy shadow paging, and SVM (NPT) doesn't
-support per-bit interception controls for CR0.  Don't bother checking for
-EPT vs. NPT as the "old == new" check will always be true under NPT, i.e.
-the only cost is the read of vcpu->arch.cr4 (SVM unconditionally grabs CR0
-from the VMCB on VM-Exit).
+The old code is locking something it doesn't have a reference to, and
+as explained by Jason and David in this discussion:
+https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
+it can lead to all kind of bad things, including the page getting
+unmapped (MADV_DONTNEED), freed, reallocated as a larger folio and the
+unlock_page() would target the wrong bit.
+There is also another race with the FOLL_WRITE, which could race
+between the follow_page() and the get_locked_pte().
 
-Reported-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lkml.kernel.org/r/677169b4-051f-fcae-756b-9a3e1bb9f8fe%40grsecurity.net
-Fixes: fb509f76acc8 ("KVM: VMX: Make CR0.WP a guest owned bit")
-Tested-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lore.kernel.org/r/20230405002608.418442-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>	# backport to v6.2.x
+The main point is to remove the last use of follow_page() without
+FOLL_GET or FOLL_PIN, removing the races can be considered a nice
+bonus.
+
+Link: https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-Id: <20230428092753.27913-2-imbrenda@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu.h     | 26 +++++++++++++++++++++++++-
- arch/x86/kvm/mmu/mmu.c | 15 +++++++++++++++
- 2 files changed, 40 insertions(+), 1 deletion(-)
+ arch/s390/kernel/uv.c | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 6bdaacb6faa07..59804be91b5b0 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -113,6 +113,8 @@ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
- bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
- int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 				u64 fault_address, char *insn, int insn_len);
-+void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
-+					struct kvm_mmu *mmu);
- 
- int kvm_mmu_load(struct kvm_vcpu *vcpu);
- void kvm_mmu_unload(struct kvm_vcpu *vcpu);
-@@ -153,6 +155,24 @@ static inline void kvm_mmu_load_pgd(struct kvm_vcpu *vcpu)
- 					  vcpu->arch.mmu->root_role.level);
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index f9810d2a267c6..5caa0ed2b594a 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -192,21 +192,10 @@ static int expected_page_refs(struct page *page)
+ 	return res;
  }
  
-+static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
-+						    struct kvm_mmu *mmu)
-+{
-+	/*
-+	 * When EPT is enabled, KVM may passthrough CR0.WP to the guest, i.e.
-+	 * @mmu's snapshot of CR0.WP and thus all related paging metadata may
-+	 * be stale.  Refresh CR0.WP and the metadata on-demand when checking
-+	 * for permission faults.  Exempt nested MMUs, i.e. MMUs for shadowing
-+	 * nEPT and nNPT, as CR0.WP is ignored in both cases.  Note, KVM does
-+	 * need to refresh nested_mmu, a.k.a. the walker used to translate L2
-+	 * GVAs to GPAs, as that "MMU" needs to honor L2's CR0.WP.
-+	 */
-+	if (!tdp_enabled || mmu == &vcpu->arch.guest_mmu)
-+		return;
-+
-+	__kvm_mmu_refresh_passthrough_bits(vcpu, mmu);
-+}
-+
- /*
-  * Check if a given access (described through the I/D, W/R and U/S bits of a
-  * page fault error code pfec) causes a permission fault with the given PTE
-@@ -184,8 +204,12 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
- 	u64 implicit_access = access & PFERR_IMPLICIT_ACCESS;
- 	bool not_smap = ((rflags & X86_EFLAGS_AC) | implicit_access) == X86_EFLAGS_AC;
- 	int index = (pfec + (not_smap << PFERR_RSVD_BIT)) >> 1;
--	bool fault = (mmu->permissions[index] >> pte_access) & 1;
- 	u32 errcode = PFERR_PRESENT_MASK;
-+	bool fault;
-+
-+	kvm_mmu_refresh_passthrough_bits(vcpu, mmu);
-+
-+	fault = (mmu->permissions[index] >> pte_access) & 1;
- 
- 	WARN_ON(pfec & (PFERR_PK_MASK | PFERR_RSVD_MASK));
- 	if (unlikely(mmu->pkru_mask)) {
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 2faea9e873629..ce135539145fd 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5047,6 +5047,21 @@ kvm_calc_cpu_role(struct kvm_vcpu *vcpu, const struct kvm_mmu_role_regs *regs)
- 	return role;
- }
- 
-+void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
-+					struct kvm_mmu *mmu)
-+{
-+	const bool cr0_wp = !!kvm_read_cr0_bits(vcpu, X86_CR0_WP);
-+
-+	BUILD_BUG_ON((KVM_MMU_CR0_ROLE_BITS & KVM_POSSIBLE_CR0_GUEST_BITS) != X86_CR0_WP);
-+	BUILD_BUG_ON((KVM_MMU_CR4_ROLE_BITS & KVM_POSSIBLE_CR4_GUEST_BITS));
-+
-+	if (is_cr0_wp(mmu) == cr0_wp)
-+		return;
-+
-+	mmu->cpu_role.base.cr0_wp = cr0_wp;
-+	reset_guest_paging_metadata(vcpu, mmu);
-+}
-+
- static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
+-static int make_secure_pte(pte_t *ptep, unsigned long addr,
+-			   struct page *exp_page, struct uv_cb_header *uvcb)
++static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
  {
- 	/* tdp_root_level is architecture forced level, use it if nonzero */
+-	pte_t entry = READ_ONCE(*ptep);
+-	struct page *page;
+ 	int expected, cc = 0;
+ 
+-	if (!pte_present(entry))
+-		return -ENXIO;
+-	if (pte_val(entry) & _PAGE_INVALID)
+-		return -ENXIO;
+-
+-	page = pte_page(entry);
+-	if (page != exp_page)
+-		return -ENXIO;
+ 	if (PageWriteback(page))
+ 		return -EAGAIN;
+ 	expected = expected_page_refs(page);
+@@ -297,17 +286,18 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 		goto out;
+ 
+ 	rc = -ENXIO;
+-	page = follow_page(vma, uaddr, FOLL_WRITE);
+-	if (IS_ERR_OR_NULL(page))
+-		goto out;
+-
+-	lock_page(page);
+ 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
+-	if (should_export_before_import(uvcb, gmap->mm))
+-		uv_convert_from_secure(page_to_phys(page));
+-	rc = make_secure_pte(ptep, uaddr, page, uvcb);
++	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
++		page = pte_page(*ptep);
++		rc = -EAGAIN;
++		if (trylock_page(page)) {
++			if (should_export_before_import(uvcb, gmap->mm))
++				uv_convert_from_secure(page_to_phys(page));
++			rc = make_page_secure(page, uvcb);
++			unlock_page(page);
++		}
++	}
+ 	pte_unmap_unlock(ptep, ptelock);
+-	unlock_page(page);
+ out:
+ 	mmap_read_unlock(gmap->mm);
+ 
 -- 
 2.39.2
 
