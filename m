@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BED070345F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939EC703AFF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243006AbjEOQro (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:47:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
+        id S242266AbjEOR6e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242933AbjEOQrk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:47:40 -0400
+        with ESMTP id S243555AbjEOR6I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B3B59FD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F8819F14
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2151C62921
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE26CC433D2;
-        Mon, 15 May 2023 16:47:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E796162FC1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D6AC433D2;
+        Mon, 15 May 2023 17:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169240;
-        bh=9DKgt/JDPUYmyZ/wbVYvDukfctL4AqyJnAp9frN8dHc=;
+        s=korg; t=1684173284;
+        bh=i7tkikb9B/v3/qphQrzliupINYsQvih68KkHmePpApY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=18XObNpU7MYRn1mw1iK8BD115v0KNnjuK7r5sgOJ3ZH/Tg+8lfQKo0liL7mnfxSIs
-         Fv93IdkjcI/oZ5aDQSdBVsBMGyuKjY6YpBBVF/Nx4APfkmhqoVzOWEWz2TGnqkoOON
-         EtzMkLoc7mm2SB4uK0P2IJOrCbPhqEJKyICguM94=
+        b=Cptgy6zmyRBE3DAX7pQnGGYEgxE8P7djkuHdlRC6R3EgDKyXXunJMiTBhTX6tpofK
+         WmmZMpPsAEHqsYiJ/vDrwU5DShfMeffHHGrapEPeBGqLg2pr/m8ajHGrWKjI/hxyLQ
+         ZUM6fM4dAehS81xtu/tJfm15AcwDSvTRobjQFOzs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hawking Zhang <Hawking.Zhang@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Rex Zhu <Rex.Zhu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 157/191] drm/amdgpu: Put enable gfx off feature to a delay thread
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.4 016/282] MIPS: fw: Allow firmware to pass a empty env
 Date:   Mon, 15 May 2023 18:26:34 +0200
-Message-Id: <20230515161713.123794861@linuxfoundation.org>
+Message-Id: <20230515161722.755985402@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,109 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rex Zhu <Rex.Zhu@amd.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 1e317b99f0c244bd8830918fdae9715210baf4fe ]
+commit ee1809ed7bc456a72dc8410b475b73021a3a68d5 upstream.
 
-delay to enable gfx off feature to avoid gfx on/off frequently
-suggested by Alex and Evan.
+fw_getenv will use env entry to determine style of env,
+however it is legal for firmware to just pass a empty list.
 
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Rex Zhu <Rex.Zhu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 2397e3d8d2e1 ("drm/amdgpu: add a missing lock for AMDGPU_SCHED")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check if first entry exist before running strchr to avoid
+null pointer dereference.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/clbr/n64bootloader/issues/5
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h        |  2 ++
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 15 +++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c    |  8 ++++++--
- 3 files changed, 23 insertions(+), 2 deletions(-)
+ arch/mips/fw/lib/cmdline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index 624864148f1d6..45e6dfa330adc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -954,6 +954,8 @@ struct amdgpu_gfx {
- 	bool                            gfx_off_state; /* true: enabled, false: disabled */
- 	struct mutex                    gfx_off_mutex;
- 	uint32_t                        gfx_off_req_count; /* default 1, enable gfx off: dec 1, disable gfx off: add 1 */
-+	struct delayed_work             gfx_off_delay_work;
-+
- 	/* pipe reservation */
- 	struct mutex			pipe_reserve_mutex;
- 	DECLARE_BITMAP			(pipe_reserve_bitmap, AMDGPU_MAX_COMPUTE_QUEUES);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index fed1097c64690..787cbeea8dc55 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1927,6 +1927,19 @@ static void amdgpu_device_ip_late_init_func_handler(struct work_struct *work)
- 		DRM_ERROR("ib ring test failed (%d).\n", r);
- }
+--- a/arch/mips/fw/lib/cmdline.c
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -51,7 +51,7 @@ char *fw_getenv(char *envname)
+ {
+ 	char *result = NULL;
  
-+static void amdgpu_device_delay_enable_gfx_off(struct work_struct *work)
-+{
-+	struct amdgpu_device *adev =
-+		container_of(work, struct amdgpu_device, gfx.gfx_off_delay_work.work);
-+
-+	mutex_lock(&adev->gfx.gfx_off_mutex);
-+	if (!adev->gfx.gfx_off_state && !adev->gfx.gfx_off_req_count) {
-+		if (!amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_GFX, true))
-+			adev->gfx.gfx_off_state = true;
-+	}
-+	mutex_unlock(&adev->gfx.gfx_off_mutex);
-+}
-+
- /**
-  * amdgpu_device_ip_suspend_phase1 - run suspend for hardware IPs (phase 1)
-  *
-@@ -2396,6 +2409,8 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 
- 	INIT_DELAYED_WORK(&adev->late_init_work,
- 			  amdgpu_device_ip_late_init_func_handler);
-+	INIT_DELAYED_WORK(&adev->gfx.gfx_off_delay_work,
-+			  amdgpu_device_delay_enable_gfx_off);
- 
- 	adev->gfx.gfx_off_req_count = 1;
- 	adev->pm.ac_power = power_supply_is_system_supplied() > 0 ? true : false;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index 889d1266f3ae7..af42c2464a598 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -26,6 +26,9 @@
- #include "amdgpu.h"
- #include "amdgpu_gfx.h"
- 
-+/* 0.5 second timeout */
-+#define GFX_OFF_DELAY_ENABLE         msecs_to_jiffies(500)
-+
- /*
-  * GPU scratch registers helpers function.
-  */
-@@ -360,6 +363,7 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_device *adev, bool enable)
- 	if (!adev->powerplay.pp_funcs->set_powergating_by_smu)
- 		return;
- 
-+
- 	mutex_lock(&adev->gfx.gfx_off_mutex);
- 
- 	if (!enable)
-@@ -368,11 +372,11 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_device *adev, bool enable)
- 		adev->gfx.gfx_off_req_count--;
- 
- 	if (enable && !adev->gfx.gfx_off_state && !adev->gfx.gfx_off_req_count) {
--		if (!amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_GFX, true))
--			adev->gfx.gfx_off_state = true;
-+		schedule_delayed_work(&adev->gfx.gfx_off_delay_work, GFX_OFF_DELAY_ENABLE);
- 	} else if (!enable && adev->gfx.gfx_off_state) {
- 		if (!amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_GFX, false))
- 			adev->gfx.gfx_off_state = false;
- 	}
-+
- 	mutex_unlock(&adev->gfx.gfx_off_mutex);
- }
--- 
-2.39.2
-
+-	if (_fw_envp != NULL) {
++	if (_fw_envp != NULL && fw_envp(0) != NULL) {
+ 		/*
+ 		 * Return a pointer to the given environment variable.
+ 		 * YAMON uses "name", "value" pairs, while U-Boot uses
 
 
