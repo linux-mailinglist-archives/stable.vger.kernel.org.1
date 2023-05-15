@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1915A703A1E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C62C703883
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244734AbjEORtI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:49:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
+        id S244377AbjEORcz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244527AbjEORse (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:34 -0400
+        with ESMTP id S244344AbjEORci (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D090612C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E089D06C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95D5B62F0B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871A7C4339C;
-        Mon, 15 May 2023 17:46:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F94862D1D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F8FC433D2;
+        Mon, 15 May 2023 17:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172818;
-        bh=HGcFdnrbVZfVG4AgjdTQeLZGlYu/RWG3+y06U7YrJNY=;
+        s=korg; t=1684171797;
+        bh=IXW+SxrrS9I3G4nKeObOhNkcrAc+UvDXcBFwOekBzes=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m7zDoYSa6BuT/hDAZH4rO/K0i+LHHZETWvD9gjWTr9YN5uJE1gxfzCZZZB085ohvo
-         /vffhCBDyYgehb0plzIGUERsvPf0WiTrYBmOVIJju/TVFCx5jodRoynm570G3LS/JN
-         09QRdROqN2P4z+z3EOTzeniJGRjlSHpJoy7Bj4Z8=
+        b=GZR4XrP22p1OH1YauJv5mu4BGvbZ7hJAIz5+Ekl9/4yINsq9gbEZu596dUDYZD5+s
+         v0pXTN/QdG5v8Ps/g2pfZyp5tpbdBFORc8I/1699ADHCr+ObVlrSA8jKYBKonpVmmU
+         9MhexkvTpca2wVb2RTWxbh7dIbSEg+d7zjHMU27Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/381] mfd: tqmx86: Specify IO port register range more precisely
-Date:   Mon, 15 May 2023 18:28:47 +0200
-Message-Id: <20230515161749.245979892@linuxfoundation.org>
+Subject: [PATCH 5.15 051/134] perf pmu: zfree() expects a pointer to a pointer to zero it after freeing its contents
+Date:   Mon, 15 May 2023 18:28:48 +0200
+Message-Id: <20230515161704.842936829@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +54,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 051c69ff4f607aa114c7bbdd7c41ed881367aeee ]
+[ Upstream commit 57f14b5ae1a97537f2abd2828ee7212cada7036e ]
 
-Registers 0x160..0x17f are unassigned. Use 0x180 as base register and
-update offets accordingly.
+An audit showed just this one problem with zfree(), fix it.
 
-Also change the size of the range to include 0x19f. While 0x19f is
-currently reserved for future extensions, so are several of the previous
-registers up to 0x19e, and it is weird to leave out just the last one.
-
-Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/db4677ac318b1283c8956f637f409995a30a31c3.1676892223.git.matthias.schiffer@ew.tq-group.com
+Fixes: 9fbc61f832ebf432 ("perf pmu: Add support for PMU capabilities")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/tqmx86.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/perf/util/pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
-index 1db95aed5012e..c8ec0f92bc10a 100644
---- a/drivers/mfd/tqmx86.c
-+++ b/drivers/mfd/tqmx86.c
-@@ -16,8 +16,8 @@
- #include <linux/platform_data/i2c-ocores.h>
- #include <linux/platform_device.h>
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index 26c0b88cef4c8..eafd80be66076 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -1858,7 +1858,7 @@ static int perf_pmu__new_caps(struct list_head *list, char *name, char *value)
+ 	return 0;
  
--#define TQMX86_IOBASE	0x160
--#define TQMX86_IOSIZE	0x3f
-+#define TQMX86_IOBASE	0x180
-+#define TQMX86_IOSIZE	0x20
- #define TQMX86_IOBASE_I2C	0x1a0
- #define TQMX86_IOSIZE_I2C	0xa
- #define TQMX86_IOBASE_WATCHDOG	0x18b
-@@ -25,7 +25,7 @@
- #define TQMX86_IOBASE_GPIO	0x18d
- #define TQMX86_IOSIZE_GPIO	0x4
+ free_name:
+-	zfree(caps->name);
++	zfree(&caps->name);
+ free_caps:
+ 	free(caps);
  
--#define TQMX86_REG_BOARD_ID	0x20
-+#define TQMX86_REG_BOARD_ID	0x00
- #define TQMX86_REG_BOARD_ID_E38M	1
- #define TQMX86_REG_BOARD_ID_50UC	2
- #define TQMX86_REG_BOARD_ID_E38C	3
-@@ -40,8 +40,8 @@
- #define TQMX86_REG_BOARD_ID_E40S	13
- #define TQMX86_REG_BOARD_ID_E40C1	14
- #define TQMX86_REG_BOARD_ID_E40C2	15
--#define TQMX86_REG_BOARD_REV	0x21
--#define TQMX86_REG_IO_EXT_INT	0x26
-+#define TQMX86_REG_BOARD_REV	0x01
-+#define TQMX86_REG_IO_EXT_INT	0x06
- #define TQMX86_REG_IO_EXT_INT_NONE		0
- #define TQMX86_REG_IO_EXT_INT_7			1
- #define TQMX86_REG_IO_EXT_INT_9			2
 -- 
 2.39.2
 
