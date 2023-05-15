@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47F770399D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE344703761
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244490AbjEORoN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
+        id S243725AbjEORUg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243278AbjEORn4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:56 -0400
+        with ESMTP id S243778AbjEORUQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30248120B3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4112D11D9D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFFB162E3F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08662C433D2;
-        Mon, 15 May 2023 17:41:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EB2F62C07
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BCAC433EF;
+        Mon, 15 May 2023 17:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172488;
-        bh=l/retEStJOe5Bme2md0VMa2ucq9Q3qeTQ7qpv0Hyqzc=;
+        s=korg; t=1684171084;
+        bh=okmCW/nC5I62wkF5kWuZFeOKF9Qrq+Dk2uDjwK7SZZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UUA/QuNsIqV7rtkHxI2enLfn75ch4MxDSCs9K/xcUyCEoKEH3f5uf/AvjjDz55Wxb
-         umMoQcYclb70KNQT9kazU20MdDQ6Wbpbum3Pp/NW4rUIh65ayEPsF3g0uJM/zocEgU
-         1xFetDwMYRFMP2raBe6wszh6BEi4mHH9B0wF0Ows=
+        b=TxMp5QlCQcaC0HPJz1NhiVZOnOkh2RdGrhli/lWhGrqcWKDts6EFW3QXp8DDtw6qv
+         5MApGd+ogbz9AYch/2Ql88+iViUQ3QaF7IYEA+QKmoVfaVn87I7vE90OT1qikYBJX9
+         Z2sk0kFzKW7TG9CUUOGfWrvq8L4FCfw4wAjSrvYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nate Thornton <nate.thornton@samsung.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Minwoo Im <minwoo.im@samsung.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 170/381] nvme: fix async event trace event
+        patches@lists.linux.dev, Roman Lozko <lozko.roma@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 095/242] perf scripts intel-pt-events.py: Fix IPC output for Python 2
 Date:   Mon, 15 May 2023 18:27:01 +0200
-Message-Id: <20230515161744.496529346@linuxfoundation.org>
+Message-Id: <20230515161724.759437071@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,90 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Keith Busch <kbusch@kernel.org>
+From: Roman Lozko <lozko.roma@gmail.com>
 
-[ Upstream commit 6622b76fe922b94189499a90ccdb714a4a8d0773 ]
+[ Upstream commit 1f64cfdebfe0494264271e8d7a3a47faf5f58ec7 ]
 
-Mixing AER Event Type and Event Info has masking clashes. Just print the
-event type, but also include the event info of the AER result in the
-trace.
+Integers are not converted to floats during division in Python 2 which
+results in incorrect IPC values. Fix by switching to new division
+behavior.
 
-Fixes: 09bd1ff4b15143b ("nvme-core: add async event trace helper")
-Reported-by: Nate Thornton <nate.thornton@samsung.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: a483e64c0b62e93a ("perf scripting python: intel-pt-events.py: Add --insn-trace and --src-trace")
+Signed-off-by: Roman Lozko <lozko.roma@gmail.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230310150445.2925841-1-lozko.roma@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c  |  5 +----
- drivers/nvme/host/trace.h | 15 ++++++---------
- 2 files changed, 7 insertions(+), 13 deletions(-)
+ tools/perf/scripts/python/intel-pt-events.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index cb3f807ede1b8..07c41a149328a 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4430,8 +4430,6 @@ static void nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
- {
- 	u32 aer_notice_type = nvme_aer_subtype(result);
+diff --git a/tools/perf/scripts/python/intel-pt-events.py b/tools/perf/scripts/python/intel-pt-events.py
+index 08862a2582f44..1c76368f13c1a 100644
+--- a/tools/perf/scripts/python/intel-pt-events.py
++++ b/tools/perf/scripts/python/intel-pt-events.py
+@@ -11,7 +11,7 @@
+ # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ # more details.
  
--	trace_nvme_async_event(ctrl, aer_notice_type);
--
- 	switch (aer_notice_type) {
- 	case NVME_AER_NOTICE_NS_CHANGED:
- 		set_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events);
-@@ -4463,7 +4461,6 @@ static void nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+-from __future__ import print_function
++from __future__ import division, print_function
  
- static void nvme_handle_aer_persistent_error(struct nvme_ctrl *ctrl)
- {
--	trace_nvme_async_event(ctrl, NVME_AER_ERROR);
- 	dev_warn(ctrl->device, "resetting controller due to AER\n");
- 	nvme_reset_ctrl(ctrl);
- }
-@@ -4478,6 +4475,7 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
- 	if (le16_to_cpu(status) >> 1 != NVME_SC_SUCCESS)
- 		return;
- 
-+	trace_nvme_async_event(ctrl, result);
- 	switch (aer_type) {
- 	case NVME_AER_NOTICE:
- 		nvme_handle_aen_notice(ctrl, result);
-@@ -4495,7 +4493,6 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
- 	case NVME_AER_SMART:
- 	case NVME_AER_CSS:
- 	case NVME_AER_VS:
--		trace_nvme_async_event(ctrl, aer_type);
- 		ctrl->aen_result = result;
- 		break;
- 	default:
-diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
-index aa8b0f86b2be1..b258f7b8788e1 100644
---- a/drivers/nvme/host/trace.h
-+++ b/drivers/nvme/host/trace.h
-@@ -127,15 +127,12 @@ TRACE_EVENT(nvme_async_event,
- 	),
- 	TP_printk("nvme%d: NVME_AEN=%#08x [%s]",
- 		__entry->ctrl_id, __entry->result,
--		__print_symbolic(__entry->result,
--		aer_name(NVME_AER_NOTICE_NS_CHANGED),
--		aer_name(NVME_AER_NOTICE_ANA),
--		aer_name(NVME_AER_NOTICE_FW_ACT_STARTING),
--		aer_name(NVME_AER_NOTICE_DISC_CHANGED),
--		aer_name(NVME_AER_ERROR),
--		aer_name(NVME_AER_SMART),
--		aer_name(NVME_AER_CSS),
--		aer_name(NVME_AER_VS))
-+		__print_symbolic(__entry->result & 0x7,
-+			aer_name(NVME_AER_ERROR),
-+			aer_name(NVME_AER_SMART),
-+			aer_name(NVME_AER_NOTICE),
-+			aer_name(NVME_AER_CSS),
-+			aer_name(NVME_AER_VS))
- 	)
- );
- 
+ import io
+ import os
 -- 
 2.39.2
 
