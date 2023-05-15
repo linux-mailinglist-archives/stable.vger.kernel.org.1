@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEA8670369B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E3770344A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243817AbjEORL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
+        id S242961AbjEOQqv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:46:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243754AbjEORLb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:31 -0400
+        with ESMTP id S242989AbjEOQqp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816A2100EE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0522E5243
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0021C62B45
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F09C433EF;
-        Mon, 15 May 2023 17:09:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8ECA56290E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789A4C4339B;
+        Mon, 15 May 2023 16:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170582;
-        bh=drhGnSGvYxwpS8uOHQel/WorVpxgNQs3Ix4O3UQuUOE=;
+        s=korg; t=1684169203;
+        bh=Zvknaq37eclXJmEZNGhMRlRqREfz+q/18uzeB+KgQOU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ARW0iCJm32Pr0RhpJR7Ulb3kfiYkTVZ5pGcJZTdSeu6P4YowVNjelqc0E+g7dLPEv
-         hp22yengii/0iqdVBQYaNn39n3Kl5na9nVvJmKQonPP6MJxR1aEkWf6cORUcmcUa+o
-         EpS9BgLB5KxYbSvQr+nnpR0l3/8tOlj8+2CADwmg=
+        b=UfRideOu6i5QMcis+1vwcipecRH9u18qo42XOJDyiSMJVpKIC26ogTrucIa+FUxq3
+         tFHwnC9wY6xph7JE3qg095RbvJYYXwJT1+gImCJoBEJIACwsciyzn9n3CDGS9tgTIH
+         7HQB3Qn9jjl/4g6be05su9hB/ZFFzoZKVGsLTgZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-        Uma Shankar <uma.shankar@intel.com>,
-        Animesh Manna <animesh.manna@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.1 149/239] drm/i915/color: Fix typo for Plane CSC indexes
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 4.19 175/191] ARM: dts: s5pv210: correct MIPI CSIS clock name
 Date:   Mon, 15 May 2023 18:26:52 +0200
-Message-Id: <20230515161726.152147751@linuxfoundation.org>
+Message-Id: <20230515161713.793424340@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +53,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 2efc8e1001acfdc143cf2d25a08a4974c322e2a8 upstream.
+commit 665b9459bb53b8f19bd1541567e1fe9782c83c4b upstream.
 
-Replace _PLANE_INPUT_CSC_RY_GY_2_* with _PLANE_CSC_RY_GY_2_*
-for Plane CSC
+The Samsung S5P/Exynos MIPI CSIS bindings and Linux driver expect first
+clock name to be "csis".  Otherwise the driver fails to probe.
 
-Fixes: 6eba56f64d5d ("drm/i915/pxp: black pixels on pxp disabled")
-
+Fixes: 94ad0f6d9278 ("ARM: dts: Add Device tree for s5pv210 SoC")
 Cc: <stable@vger.kernel.org>
-
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Animesh Manna <animesh.manna@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230330150104.2923519-1-chaitanya.kumar.borah@intel.com
-(cherry picked from commit e39c76b2160bbd005587f978d29603ef790aefcd)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230212185818.43503-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_reg.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/s5pv210.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/i915_reg.h
-+++ b/drivers/gpu/drm/i915/i915_reg.h
-@@ -7840,8 +7840,8 @@ enum skl_power_gate {
- 
- #define _PLANE_CSC_RY_GY_1(pipe)	_PIPE(pipe, _PLANE_CSC_RY_GY_1_A, \
- 					      _PLANE_CSC_RY_GY_1_B)
--#define _PLANE_CSC_RY_GY_2(pipe)	_PIPE(pipe, _PLANE_INPUT_CSC_RY_GY_2_A, \
--					      _PLANE_INPUT_CSC_RY_GY_2_B)
-+#define _PLANE_CSC_RY_GY_2(pipe)	_PIPE(pipe, _PLANE_CSC_RY_GY_2_A, \
-+					      _PLANE_CSC_RY_GY_2_B)
- #define PLANE_CSC_COEFF(pipe, plane, index)	_MMIO_PLANE(plane, \
- 							    _PLANE_CSC_RY_GY_1(pipe) +  (index) * 4, \
- 							    _PLANE_CSC_RY_GY_2(pipe) + (index) * 4)
+--- a/arch/arm/boot/dts/s5pv210.dtsi
++++ b/arch/arm/boot/dts/s5pv210.dtsi
+@@ -560,7 +560,7 @@
+ 				interrupts = <29>;
+ 				clocks = <&clocks CLK_CSIS>,
+ 						<&clocks SCLK_CSIS>;
+-				clock-names = "clk_csis",
++				clock-names = "csis",
+ 						"sclk_csis";
+ 				bus-width = <4>;
+ 				status = "disabled";
 
 
