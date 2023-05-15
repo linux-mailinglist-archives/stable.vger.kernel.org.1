@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8157036D9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3F197037D3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243877AbjEOROe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56352 "EHLO
+        id S244027AbjEORY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243879AbjEOROT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:19 -0400
+        with ESMTP id S244147AbjEORYG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBA28106D9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02D897EE6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9320962B8D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C557C4339B;
-        Mon, 15 May 2023 17:12:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8701062C54
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DE2C433D2;
+        Mon, 15 May 2023 17:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170759;
-        bh=M7GBqfX5ce6zJ8h0MOog4Pd7G7biwvALEcKTt4Qkmj8=;
+        s=korg; t=1684171366;
+        bh=C1EHBejhltQUJsb+n597kPRcWUmcmrDTBbB4j7w2Thc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gp5vTH5p3Cn09F08K6ev+J4L/Q6x0OP7L4NmB6VvsXXc3RsxDvByjwBNgFIEnS3lr
-         S/5zhobu+lEiFqI4I639u4dIzY8dONf6teV22lrHI/kfc1esfO84pH2sErBcFuu5br
-         Yt0ba4eqL9ibPVmFjRfnM0uH2Xcp4do50AgXo9Io=
+        b=byfZaCS2kJqF14lHEtuzKGOmSM1BP/tH86KaN/V7ILbFOdBmEERSuveFSorU1OsnO
+         SgyLouZNqN7SggaJpOB+dNwc/2rh38XliQWGLfFuL7z1tNHVyoHQfn50j6u0zeKgEv
+         bg6DFpbSz4/ibaR4Y4JNtZkwN8Vieq3bDCZrwRlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Vinod Govindapillai <vinod.govindapillai@intel.com>,
-        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH 6.1 232/239] drm/dsc: fix DP_DSC_MAX_BPP_DELTA_* macro values
+        Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 6.2 169/242] drm/bridge: lt8912b: Fix DSI Video Mode
 Date:   Mon, 15 May 2023 18:28:15 +0200
-Message-Id: <20230515161728.670688559@linuxfoundation.org>
+Message-Id: <20230515161726.951290831@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 0d68683838f2850dd8ff31f1121e05bfb7a2def0 upstream.
+commit f435b7ef3b360d689df2ffa8326352cd07940d92 upstream.
 
-The macro values just don't match the specs. Fix them.
+LT8912 DSI port supports only Non-Burst mode video operation with Sync
+Events and continuous clock on clock lane, correct dsi mode flags
+according to that removing MIPI_DSI_MODE_VIDEO_BURST flag.
 
-Fixes: 1482ec00be4a ("drm: Add missing DP DSC extended capability definitions.")
-Cc: Vinod Govindapillai <vinod.govindapillai@intel.com>
-Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230406134615.1422509-2-jani.nikula@intel.com
+Cc: <stable@vger.kernel.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230330093131.424828-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/display/drm_dp.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/include/drm/display/drm_dp.h
-+++ b/include/drm/display/drm_dp.h
-@@ -286,8 +286,8 @@
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -504,7 +504,6 @@ static int lt8912_attach_dsi(struct lt89
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
  
- #define DP_DSC_MAX_BITS_PER_PIXEL_HI        0x068   /* eDP 1.4 */
- # define DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK  (0x3 << 0)
--# define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  0x06
--# define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  0x08
-+# define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  (0x3 << 5)	/* eDP 1.5 & DP 2.0 */
-+# define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  (1 << 7)	/* eDP 1.5 & DP 2.0 */
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO |
+-			  MIPI_DSI_MODE_VIDEO_BURST |
+ 			  MIPI_DSI_MODE_LPM |
+ 			  MIPI_DSI_MODE_NO_EOT_PACKET;
  
- #define DP_DSC_DEC_COLOR_FORMAT_CAP         0x069
- # define DP_DSC_RGB                         (1 << 0)
 
 
