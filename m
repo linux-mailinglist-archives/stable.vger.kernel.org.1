@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2A2703B47
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76E087039F0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244159AbjEOSBg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
+        id S244627AbjEORqw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242699AbjEOSBE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:04 -0400
+        with ESMTP id S244626AbjEORqh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4295213C37
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A219176E0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C186F62FE0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8ADFC433D2;
-        Mon, 15 May 2023 17:58:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2719962EAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CCDFC433D2;
+        Mon, 15 May 2023 17:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173500;
-        bh=9Ew0Z4GvGT1idRXRSUmaiQGiEpcbYCEd36ai2ZMxikA=;
+        s=korg; t=1684172712;
+        bh=KLuqx3kSjc5fXA3+Hmba1xj5yoG/W0abJhg6nF1O4Y4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QUwYydARiusTUrxhJKIWn6PaBg0+y6TAAAMjuhLMDBGohEsqkLxkfE8D/UyiUazj5
-         4dNlWJdAs4U9HCe1XMb6f7K9p55uke8maWfyj/pjzw3uov1otsJ17r0aso6WMnG0Zt
-         1nUW136yAq8freaodjvXHAHm1d91548rrPDSW/xA=
+        b=waM+iwQ+F2n6sqnlJzkCV/dOU/koDf6cYE+NslY1HNzoDj/HiLM9sc+BBh7os7WrA
+         Q19N7xQhfm/U+o0gGUOBw6eLalKiY/Pb+GTp6jXQTwexUWL6wsszdKW5KOO1K+kDDW
+         oqvaR2rN4btyYQvOcsRx1qcUvLLYr1KceoF1PpJ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gan Gecen <gangecen@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 115/282] net: amd: Fix link leak when verifying config failed
+Subject: [PATCH 5.10 242/381] rtc: meson-vrtc: Use ktime_get_real_ts64() to get the current time
 Date:   Mon, 15 May 2023 18:28:13 +0200
-Message-Id: <20230515161725.689549880@linuxfoundation.org>
+Message-Id: <20230515161747.637457226@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gencen Gan <gangecen@hust.edu.cn>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit d325c34d9e7e38d371c0a299d415e9b07f66a1fb ]
+[ Upstream commit 0e6255fa3f649170da6bd1a544680589cfae1131 ]
 
-After failing to verify configuration, it returns directly without
-releasing link, which may cause memory leak.
+The VRTC alarm register can be programmed with an amount of seconds
+after which the SoC will be woken up by the VRTC timer again. We are
+already converting the alarm time from meson_vrtc_set_alarm() to
+"seconds since 1970". This means we also need to use "seconds since
+1970" for the current time.
 
-Paolo Abeni thinks that the whole code of this driver is quite
-"suboptimal" and looks unmainatained since at least ~15y, so he
-suggests that we could simply remove the whole driver, please
-take it into consideration.
+This fixes a problem where setting the alarm to one minute in the future
+results in the firmware (which handles wakeup) to output (on the serial
+console) that the system will be woken up in billions of seconds.
+ktime_get_raw_ts64() returns the time since boot, not since 1970. Switch
+to ktime_get_real_ts64() to fix the calculation of the alarm time and to
+make the SoC wake up at the specified date/time. Also the firmware
+(which manages suspend) now prints either 59 or 60 seconds until wakeup
+(depending on how long it takes for the system to enter suspend).
 
-Simon Horman suggests that the fix label should be set to
-"Linux-2.6.12-rc2" considering that the problem has existed
-since the driver was introduced and the commit above doesn't
-seem to exist in net/net-next.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Gan Gecen <gangecen@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 6ef35398e827 ("rtc: Add Amlogic Virtual Wake RTC")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20230320212142.2355062-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/nmclan_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-meson-vrtc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/nmclan_cs.c b/drivers/net/ethernet/amd/nmclan_cs.c
-index 9c152d85840d7..c9d2a6f150624 100644
---- a/drivers/net/ethernet/amd/nmclan_cs.c
-+++ b/drivers/net/ethernet/amd/nmclan_cs.c
-@@ -652,7 +652,7 @@ static int nmclan_config(struct pcmcia_device *link)
-     } else {
-       pr_notice("mace id not found: %x %x should be 0x40 0x?9\n",
- 		sig[0], sig[1]);
--      return -ENODEV;
-+      goto failed;
-     }
-   }
+diff --git a/drivers/rtc/rtc-meson-vrtc.c b/drivers/rtc/rtc-meson-vrtc.c
+index e6bd0808a092b..18ff8439b5bb5 100644
+--- a/drivers/rtc/rtc-meson-vrtc.c
++++ b/drivers/rtc/rtc-meson-vrtc.c
+@@ -23,7 +23,7 @@ static int meson_vrtc_read_time(struct device *dev, struct rtc_time *tm)
+ 	struct timespec64 time;
  
+ 	dev_dbg(dev, "%s\n", __func__);
+-	ktime_get_raw_ts64(&time);
++	ktime_get_real_ts64(&time);
+ 	rtc_time64_to_tm(time.tv_sec, tm);
+ 
+ 	return 0;
+@@ -96,7 +96,7 @@ static int __maybe_unused meson_vrtc_suspend(struct device *dev)
+ 		long alarm_secs;
+ 		struct timespec64 time;
+ 
+-		ktime_get_raw_ts64(&time);
++		ktime_get_real_ts64(&time);
+ 		local_time = time.tv_sec;
+ 
+ 		dev_dbg(dev, "alarm_time = %lus, local_time=%lus\n",
 -- 
 2.39.2
 
