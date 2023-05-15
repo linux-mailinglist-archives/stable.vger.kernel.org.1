@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CA1703796
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85506703A01
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244108AbjEORXD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40976 "EHLO
+        id S244749AbjEORrc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:47:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243854AbjEORWr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:47 -0400
+        with ESMTP id S244695AbjEORqz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69168DD91
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736AE18A84
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F65162C12
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7161FC433D2;
-        Mon, 15 May 2023 17:20:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02AEB62EAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44F6C433EF;
+        Mon, 15 May 2023 17:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171248;
-        bh=ecRzZTC14Y082V1XWJK204NohrP7IYeyAEnOOPYXe8A=;
+        s=korg; t=1684172740;
+        bh=0HJM1R+h7rxjU4MfxFfiDhl4Xlmm3VSzo6VBSG+O5O8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jQIWge3EzHHcBK4iZULrGBfUsYHfXXm6zYDEW3zKC5nmzWce7cz8br9IVDU+4ALIE
-         iQR6lXhm/Z7VhHP6n0TXe+bNnyNLuFItO09/e+C4rt9TgHmuuzkeQE+6CAfL//Czsd
-         v11VVGGCK1eS1Pqp6Gu0XxzQWRnlEeWm2ecEp7WA=
+        b=XZ91jPtLAFkpS+gvC2AIDNvUFQSuT1N6GQFKfvmpV6MS3OCPd4xZmbyO+qZ8DTr9o
+         /tN91rnuiitcI4safQe4xd4zqkgyGv33MmJw23tNrX7RkKMspH/SKzxFKKsg3tl0dF
+         0dtjqZY33jta92usFAcYmSLfOlafL3OY6wuLol6U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com,
-        Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.2 149/242] inotify: Avoid reporting event with invalid wd
+        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 224/381] tty: serial: fsl_lpuart: adjust buffer length to the intended size
 Date:   Mon, 15 May 2023 18:27:55 +0200
-Message-Id: <20230515161726.363428783@linuxfoundation.org>
+Message-Id: <20230515161746.831600592@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,61 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-commit c915d8f5918bea7c3962b09b8884ca128bfd9b0c upstream.
+[ Upstream commit f73fd750552524b06b5d77ebfdd106ccc8fcac61 ]
 
-When inotify_freeing_mark() races with inotify_handle_inode_event() it
-can happen that inotify_handle_inode_event() sees that i_mark->wd got
-already reset to -1 and reports this value to userspace which can
-confuse the inotify listener. Avoid the problem by validating that wd is
-sensible (and pretend the mark got removed before the event got
-generated otherwise).
+Based on the fls function definition provided below, we should not
+subtract 1 to obtain the correct buffer length:
 
-CC: stable@vger.kernel.org
-Fixes: 7e790dd5fc93 ("inotify: fix error paths in inotify_update_watch")
-Message-Id: <20230424163219.9250-1-jack@suse.cz>
-Reported-by: syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
+
+Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Link: https://lore.kernel.org/r/20230410195555.1003900-1-shenwei.wang@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/inotify/inotify_fsnotify.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/notify/inotify/inotify_fsnotify.c
-+++ b/fs/notify/inotify/inotify_fsnotify.c
-@@ -65,7 +65,7 @@ int inotify_handle_inode_event(struct fs
- 	struct fsnotify_event *fsn_event;
- 	struct fsnotify_group *group = inode_mark->group;
- 	int ret;
--	int len = 0;
-+	int len = 0, wd;
- 	int alloc_len = sizeof(struct inotify_event_info);
- 	struct mem_cgroup *old_memcg;
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index f481c260b7049..a2efa81471f30 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1220,7 +1220,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 	 * 10ms at any baud rate.
+ 	 */
+ 	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
+-	sport->rx_dma_rng_buf_len = (1 << (fls(sport->rx_dma_rng_buf_len) - 1));
++	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
+ 	if (sport->rx_dma_rng_buf_len < 16)
+ 		sport->rx_dma_rng_buf_len = 16;
  
-@@ -81,6 +81,13 @@ int inotify_handle_inode_event(struct fs
- 			      fsn_mark);
- 
- 	/*
-+	 * We can be racing with mark being detached. Don't report event with
-+	 * invalid wd.
-+	 */
-+	wd = READ_ONCE(i_mark->wd);
-+	if (wd == -1)
-+		return 0;
-+	/*
- 	 * Whoever is interested in the event, pays for the allocation. Do not
- 	 * trigger OOM killer in the target monitoring memcg as it may have
- 	 * security repercussion.
-@@ -110,7 +117,7 @@ int inotify_handle_inode_event(struct fs
- 	fsn_event = &event->fse;
- 	fsnotify_init_event(fsn_event);
- 	event->mask = mask;
--	event->wd = i_mark->wd;
-+	event->wd = wd;
- 	event->sync_cookie = cookie;
- 	event->name_len = len;
- 	if (len)
+-- 
+2.39.2
+
 
 
