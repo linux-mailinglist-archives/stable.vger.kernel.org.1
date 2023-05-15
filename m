@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D537035D3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 817557039C9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243413AbjEORDL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:03:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41356 "EHLO
+        id S244647AbjEORp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243397AbjEORCr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:47 -0400
+        with ESMTP id S244645AbjEORpe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231B39EC7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95DC16939
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04D7F62A32
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B44DC433D2;
-        Mon, 15 May 2023 17:00:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5134F62E91
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B23BC433EF;
+        Mon, 15 May 2023 17:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170046;
-        bh=0Ca6o7MerjoONvrrCE6Rs9ivjhwaCw7VSA468KWqP3U=;
+        s=korg; t=1684172604;
+        bh=QfRK7FXslAgthGLAmF1RdLIOPrlwPU0deXIUube0OBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A3m5aXDQNN7Wi6X4p09ZLlRu5mZdCq5EduU+yWTvI/zVGBAmDVcGdhwvZZGD+KpoS
-         DeMEzbXU4/W3J5tIVLveowwBrUDEfeL+yN7yHYCLFtoRTU4MCqIFRTJf001qg3qOq+
-         eQIV3+7nAxE3mUKbyx2ZsfcRv3axSFRKsUiYlZ10=
+        b=iDWOBnGZkwkqv515aBDrsz3Bs+czGRCzbK02Y+iSC32odfJppzQFthYoJID9ON4m3
+         pN6cdK13hUT5MGXjBGOu0bJiX+2yO7n2hqRUqskW+nVgt0H+wVtKb6b0vnoc1eXO8J
+         Vl9B4uiEXdVH187YRaqIiX73Cedcyi1tJiQ92JdE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 246/246] drm/amd/display: Fix hang when skipping modeset
-Date:   Mon, 15 May 2023 18:27:38 +0200
-Message-Id: <20230515161730.050115476@linuxfoundation.org>
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 208/381] of: Fix modalias string generation
+Date:   Mon, 15 May 2023 18:27:39 +0200
+Message-Id: <20230515161746.190210882@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,60 +57,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit da5e14909776edea4462672fb4a3007802d262e7 upstream.
+[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
 
-[Why&How]
+The helper generating an OF based modalias (of_device_get_modalias())
+works fine, but due to the use of snprintf() internally it needs a
+buffer one byte longer than what should be needed just for the entire
+string (excluding the '\0'). Most users of this helper are sysfs hooks
+providing the modalias string to users. They all provide a PAGE_SIZE
+buffer which is way above the number of bytes required to fit the
+modalias string and hence do not suffer from this issue.
 
-When skipping full modeset since the only state change was a front porch
-change, the DC commit sequence requires extra checks to handle non
-existant plane states being asked to be removed from context.
+There is another user though, of_device_request_module(), which is only
+called by drivers/usb/common/ulpi.c. This request module function is
+faulty, but maybe because in most cases there is an alternative, ULPI
+driver users have not noticed it.
 
-Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+In this function, of_device_get_modalias() is called twice. The first
+time without buffer just to get the number of bytes required by the
+modalias string (excluding the null byte), and a second time, after
+buffer allocation, to fill the buffer. The allocation asks for an
+additional byte, in order to store the trailing '\0'. However, the
+buffer *length* provided to of_device_get_modalias() excludes this extra
+byte. The internal use of snprintf() with a length that is exactly the
+number of bytes to be written has the effect of using the last available
+byte to store a '\0', which then smashes the last character of the
+modalias string.
+
+Provide the actual size of the buffer to of_device_get_modalias() to fix
+this issue.
+
+Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
+will anyway end the string with a null byte, but there is a possibility
+that this function might be called on a struct device_node without
+compatible, in this case snprintf() would not be executed. So we keep it
+just to avoid possible unbounded strings.
+
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 ++++-
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    3 +++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/of/device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7957,6 +7957,8 @@ static void amdgpu_dm_commit_planes(stru
- 			continue;
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 1122daa8e2736..3a547793135c3 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -264,12 +264,15 @@ int of_device_request_module(struct device *dev)
+ 	if (size < 0)
+ 		return size;
  
- 		dc_plane = dm_new_plane_state->dc_state;
-+		if (!dc_plane)
-+			continue;
- 
- 		bundle->surface_updates[planes_count].surface = dc_plane;
- 		if (new_pcrtc_state->color_mgmt_changed) {
-@@ -9616,8 +9618,9 @@ static int dm_update_plane_state(struct
- 			return -EINVAL;
- 		}
- 
-+		if (dm_old_plane_state->dc_state)
-+			dc_plane_state_release(dm_old_plane_state->dc_state);
- 
--		dc_plane_state_release(dm_old_plane_state->dc_state);
- 		dm_new_plane_state->dc_state = NULL;
- 
- 		*lock_and_validation_needed = true;
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1707,6 +1707,9 @@ bool dc_remove_plane_from_context(
- 	struct dc_stream_status *stream_status = NULL;
- 	struct resource_pool *pool = dc->res_pool;
- 
-+	if (!plane_state)
-+		return true;
+-	str = kmalloc(size + 1, GFP_KERNEL);
++	/* Reserve an additional byte for the trailing '\0' */
++	size++;
 +
- 	for (i = 0; i < context->stream_count; i++)
- 		if (context->streams[i] == stream) {
- 			stream_status = &context->stream_status[i];
++	str = kmalloc(size, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
+ 
+ 	of_device_get_modalias(dev, str, size);
+-	str[size] = '\0';
++	str[size - 1] = '\0';
+ 	ret = request_module(str);
+ 	kfree(str);
+ 
+-- 
+2.39.2
+
 
 
