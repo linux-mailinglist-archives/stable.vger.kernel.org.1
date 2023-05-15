@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37731703C0D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60F36703BEA
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:08:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245168AbjEOSJO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:09:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        id S245132AbjEOSIa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:08:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245122AbjEOSIr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:08:47 -0400
+        with ESMTP id S245028AbjEOSH4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:07:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7D11FA41
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:06:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDAB15EC8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:04:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 721D163075
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:06:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674B5C433D2;
-        Mon, 15 May 2023 18:06:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB7FC630A4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:04:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1094C433D2;
+        Mon, 15 May 2023 18:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173976;
-        bh=L/wlkFeRoPvYzeWpOE64RMvvkw+NnekToVnpow8bhTg=;
+        s=korg; t=1684173897;
+        bh=nQORE5W4ginFr1jU/UwbyPYMhs+f07NBBLHya7FjedA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qBxluIHYfHUVOJqtULJ97O2w4HTj4Ua/4EmB8UM+wAqaeqxlSXaMP74iT4o7kt3tb
-         n93nxXn0rHXb45JeuUyUqLWz+mcmHI5UAyjJqHfPgqfbobXxIow0j8Zid/PEp86nJs
-         EJO4uwlUyiXWPtebnGiPbLVICWnZiQCYDyPeJMH4=
+        b=c4rvml0d1A0yc83Q8DIqUYDN6KLwHBtfieNNFWNMhpkxyDF10ErRR7EfqH6UOGcgf
+         SA75KAkWXtnItTotlzholy0X1VBWuOSPKkLNmvm72uXSEFYc6rsIGO9WRuN2n1zOyf
+         ak6WJkcERIba15y7vX3FCUOZ9ELpHaQCz9Qng0zU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Jason Wang <jasowang@redhat.com>,
+        patches@lists.linux.dev,
+        Wenliang Wang <wangwenliang.1995@bytedance.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 233/282] virtio_net: split free_unused_bufs()
-Date:   Mon, 15 May 2023 18:30:11 +0200
-Message-Id: <20230515161729.209378780@linuxfoundation.org>
+Subject: [PATCH 5.4 234/282] virtio_net: suppress cpu stall when free_unused_bufs
+Date:   Mon, 15 May 2023 18:30:12 +0200
+Message-Id: <20230515161729.238567164@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -55,86 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: Wenliang Wang <wangwenliang.1995@bytedance.com>
 
-[ Upstream commit 6e345f8c7cd029ad3aaece15ad4425ac26e4eb63 ]
+[ Upstream commit f8bb5104394560e29017c25bcade4c6b7aabd108 ]
 
-This patch separates two functions for freeing sq buf and rq buf from
-free_unused_bufs().
+For multi-queue and large ring-size use case, the following error
+occurred when free_unused_bufs:
+rcu: INFO: rcu_sched self-detected stall on CPU.
 
-When supporting the enable/disable tx/rq queue in the future, it is
-necessary to support separate recovery of a sq buf or a rq buf.
-
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20220801063902.129329-40-xuanzhuo@linux.alibaba.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Stable-dep-of: f8bb51043945 ("virtio_net: suppress cpu stall when free_unused_bufs")
+Fixes: 986a4f4d452d ("virtio_net: multiqueue support")
+Signed-off-by: Wenliang Wang <wangwenliang.1995@bytedance.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 41 ++++++++++++++++++++++++----------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
+ drivers/net/virtio_net.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 59d4449450ee8..b77181f04b119 100644
+index b77181f04b119..7922e833620e8 100644
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -2792,6 +2792,27 @@ static void free_receive_page_frags(struct virtnet_info *vi)
- 			put_page(vi->rq[i].alloc_frag.page);
- }
- 
-+static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
-+{
-+	if (!is_xdp_frame(buf))
-+		dev_kfree_skb(buf);
-+	else
-+		xdp_return_frame(ptr_to_xdp(buf));
-+}
-+
-+static void virtnet_rq_free_unused_buf(struct virtqueue *vq, void *buf)
-+{
-+	struct virtnet_info *vi = vq->vdev->priv;
-+	int i = vq2rxq(vq);
-+
-+	if (vi->mergeable_rx_bufs)
-+		put_page(virt_to_head_page(buf));
-+	else if (vi->big_packets)
-+		give_pages(&vi->rq[i], buf);
-+	else
-+		put_page(virt_to_head_page(buf));
-+}
-+
- static void free_unused_bufs(struct virtnet_info *vi)
- {
- 	void *buf;
-@@ -2799,26 +2820,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
- 
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
+@@ -2822,12 +2822,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
  		struct virtqueue *vq = vi->sq[i].vq;
--		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL) {
--			if (!is_xdp_frame(buf))
--				dev_kfree_skb(buf);
--			else
--				xdp_return_frame(ptr_to_xdp(buf));
--		}
-+		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
-+			virtnet_sq_free_unused_buf(vq, buf);
+ 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+ 			virtnet_sq_free_unused_buf(vq, buf);
++		cond_resched();
  	}
  
  	for (i = 0; i < vi->max_queue_pairs; i++) {
  		struct virtqueue *vq = vi->rq[i].vq;
--
--		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL) {
--			if (vi->mergeable_rx_bufs) {
--				put_page(virt_to_head_page(buf));
--			} else if (vi->big_packets) {
--				give_pages(&vi->rq[i], buf);
--			} else {
--				put_page(virt_to_head_page(buf));
--			}
--		}
-+		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
-+			virtnet_rq_free_unused_buf(vq, buf);
+ 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+ 			virtnet_rq_free_unused_buf(vq, buf);
++		cond_resched();
  	}
  }
  
