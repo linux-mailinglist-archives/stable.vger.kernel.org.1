@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35506703A63
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D2FA703821
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244888AbjEORvB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46492 "EHLO
+        id S244232AbjEOR1g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244887AbjEORue (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:34 -0400
+        with ESMTP id S244235AbjEOR1V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48CA19F18
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F0C13C33
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC28362F3E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11BDC4339E;
-        Mon, 15 May 2023 17:48:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E21F62CEC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E6DC433D2;
+        Mon, 15 May 2023 17:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172910;
-        bh=UqsV6kpN6V5dhZKIggXFyrj9RMxF6R5AszPr6eTzBb0=;
+        s=korg; t=1684171554;
+        bh=Kra88e1xBRKhOzdO16W7/YyxQdwURgp/5mQpythfczo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qyctGcJEDZaJCEo4jUcG4ZdH2wiNGb+NwZYrLqnlMUxPp9J1x0Z2h1ap52bNsvip8
-         zayO36oR5+co4fKtJvqSfXG9uFzTvTrQkcEmXflt0ycWwZgpKAF41t/DLEONwL6ztR
-         h0qTq5hBaptXvQPN1BHCtA6jFJ7OyytasMm6affg=
+        b=L/AVd73ezf8v2ZUMifPwNX/KszOXvqzDzcMuUuV2WMi5wuDyk4PN3dnA+kf9OeSZj
+         2Y06avF6s1sFCxOSFDCRAgYr2UFW3xwNrrXn8nxmhYRhIS+0QmqjcvW87wyKm1Ed7q
+         crIJOwzK3XMGF5Ga9aqyE2QqLk8SHK+ZqMgnWyy0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sami Tolvanen <samitolvanen@google.com>,
-        Akilesh Kailash <akailash@google.com>,
-        Mike Snitzer <snitzer@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 306/381] dm verity: skip redundant verity_handle_err() on I/O errors
-Date:   Mon, 15 May 2023 18:29:17 +0200
-Message-Id: <20230515161750.661730862@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com,
+        stable@kernel.org, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.2 232/242] ext4: add bounds checking in get_max_inline_xattr_value_size()
+Date:   Mon, 15 May 2023 18:29:18 +0200
+Message-Id: <20230515161728.872985190@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akilesh Kailash <akailash@google.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 2c0468e054c0adb660ac055fc396622ec7235df9 ]
+commit 2220eaf90992c11d888fe771055d4de330385f01 upstream.
 
-Without FEC, dm-verity won't call verity_handle_err() when I/O fails,
-but with FEC enabled, it currently does even if an I/O error has
-occurred.
+Normally the extended attributes in the inode body would have been
+checked when the inode is first opened, but if someone is writing to
+the block device while the file system is mounted, it's possible for
+the inode table to get corrupted.  Add bounds checking to avoid
+reading beyond the end of allocated memory if this happens.
 
-If there is an I/O error and FEC correction fails, return the error
-instead of calling verity_handle_err() again.
-
-Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Akilesh Kailash <akailash@google.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Mike Snitzer <snitzer@redhat.com>
-Stable-dep-of: e8c5d45f82ce ("dm verity: fix error handling for check_at_most_once on FEC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=1966db24521e5f6e23f7
+Cc: stable@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-target.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/ext4/inline.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-index c801f6b93b7b4..d9c388e6ce76c 100644
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -475,6 +475,7 @@ static int verity_verify_io(struct dm_verity_io *io)
- 	struct bvec_iter start;
- 	unsigned b;
- 	struct crypto_wait wait;
-+	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -34,6 +34,7 @@ static int get_max_inline_xattr_value_si
+ 	struct ext4_xattr_ibody_header *header;
+ 	struct ext4_xattr_entry *entry;
+ 	struct ext4_inode *raw_inode;
++	void *end;
+ 	int free, min_offs;
  
- 	for (b = 0; b < io->n_blocks; b++) {
- 		int r;
-@@ -529,9 +530,17 @@ static int verity_verify_io(struct dm_verity_io *io)
- 		else if (verity_fec_decode(v, io, DM_VERITY_BLOCK_TYPE_DATA,
- 					   cur_block, NULL, &start) == 0)
- 			continue;
--		else if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA,
--					   cur_block))
--			return -EIO;
-+		else {
-+			if (bio->bi_status) {
-+				/*
-+				 * Error correction failed; Just return error
-+				 */
-+				return -EIO;
-+			}
-+			if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA,
-+					      cur_block))
-+				return -EIO;
+ 	if (!EXT4_INODE_HAS_XATTR_SPACE(inode))
+@@ -57,14 +58,23 @@ static int get_max_inline_xattr_value_si
+ 	raw_inode = ext4_raw_inode(iloc);
+ 	header = IHDR(inode, raw_inode);
+ 	entry = IFIRST(header);
++	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
+ 
+ 	/* Compute min_offs. */
+-	for (; !IS_LAST_ENTRY(entry); entry = EXT4_XATTR_NEXT(entry)) {
++	while (!IS_LAST_ENTRY(entry)) {
++		void *next = EXT4_XATTR_NEXT(entry);
++
++		if (next >= end) {
++			EXT4_ERROR_INODE(inode,
++					 "corrupt xattr in inline inode");
++			return 0;
 +		}
+ 		if (!entry->e_value_inum && entry->e_value_size) {
+ 			size_t offs = le16_to_cpu(entry->e_value_offs);
+ 			if (offs < min_offs)
+ 				min_offs = offs;
+ 		}
++		entry = next;
  	}
- 
- 	return 0;
--- 
-2.39.2
-
+ 	free = min_offs -
+ 		((void *)entry - (void *)IFIRST(header)) - sizeof(__u32);
 
 
