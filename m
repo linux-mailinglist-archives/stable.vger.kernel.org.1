@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C177070364A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9618703419
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243683AbjEORIo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
+        id S242913AbjEOQoq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:44:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243557AbjEORIW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB8E558A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:06:48 -0700 (PDT)
+        with ESMTP id S242917AbjEOQop (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE3B04C3C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1304562AFF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:06:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271BCC4339C;
-        Mon, 15 May 2023 17:06:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67F30628DE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758CCC433EF;
+        Mon, 15 May 2023 16:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170374;
-        bh=4WoCIRYarhKRg3t4I+aMszyQ+wLDNX7DJUp8huWSEhk=;
+        s=korg; t=1684169082;
+        bh=2vfoooX6IhvEmM2mujXCsv3TM1IFWjRCEjiGHsVuOfE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PuVtfNqxQi74e4K1guqMiw8abHv+E3gvXeAkat9eISBsGuaUBJsZalLEqXddr3cNU
-         tfRRiN6cT0+WXMQRenr1bjDvFQHsizJbYgBMsUYnQCPgaQorII7z5fdXGM2T5Sx+ze
-         wQTOHxHDH7+77kmGX5ASq0IM8T5BvQG6HcyZEbA4=
+        b=ARCnQxam51rQQzT4s5dklueVep2g/0uI7B4joDy3n+Ogeyc62Eb2d5cSJ2is9Lzan
+         Is9sY3piepPPbkV6MctcA10UtQ8YWdjtR/AQrD99ukTX7HuihV/D2zQinv/BJI6PQu
+         xXMQX+fUmrPW1DC5Jpk+nt8Y+Ms16LIZdkbVx7Gg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 111/239] btrfs: properly reject clear_cache and v1 cache for block-group-tree
+        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.19 137/191] debugobject: Ensure pool refill (again)
 Date:   Mon, 15 May 2023 18:26:14 +0200
-Message-Id: <20230515161725.028354035@linuxfoundation.org>
+Message-Id: <20230515161712.373109664@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,72 +53,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 64b5d5b2852661284ccbb038c697562cc56231bf upstream.
+commit 0af462f19e635ad522f28981238334620881badc upstream.
 
-[BUG]
-With block-group-tree feature enabled, mounting it with clear_cache
-would cause the following transaction abort at mount or remount:
+The recent fix to ensure atomicity of lookup and allocation inadvertently
+broke the pool refill mechanism.
 
-  BTRFS info (device dm-4): force clearing of disk cache
-  BTRFS info (device dm-4): using free space tree
-  BTRFS info (device dm-4): auto enabling async discard
-  BTRFS info (device dm-4): clearing free space tree
-  BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE (0x1)
-  BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE_VALID (0x2)
-  BTRFS error (device dm-4): block-group-tree feature requires fres-space-tree and no-holes
-  BTRFS error (device dm-4): super block corruption detected before writing it to disk
-  BTRFS: error (device dm-4) in write_all_supers:4288: errno=-117 Filesystem corrupted (unexpected superblock corruption detected)
-  BTRFS warning (device dm-4: state E): Skipping commit of aborted transaction.
+Prior to that change debug_objects_activate() and debug_objecs_assert_init()
+invoked debug_objecs_init() to set up the tracking object for statically
+initialized objects. That's not longer the case and debug_objecs_init() is
+now the only place which does pool refills.
 
-[CAUSE]
-For block-group-tree feature, we have an artificial dependency on
-free-space-tree.
+Depending on the number of statically initialized objects this can be
+enough to actually deplete the pool, which was observed by Ido via a
+debugobjects OOM warning.
 
-This means if we detect block-group-tree without v2 cache, we consider
-it a corruption and cause the problem.
+Restore the old behaviour by adding explicit refill opportunities to
+debug_objects_activate() and debug_objecs_assert_init().
 
-For clear_cache mount option, it would temporary disable v2 cache, then
-re-enable it.
-
-But unfortunately for that temporary v2 cache disabled status, we refuse
-to write a superblock with bg tree only flag, thus leads to the above
-transaction abortion.
-
-[FIX]
-For now, just reject clear_cache and v1 cache mount option for block
-group tree.  So now we got a graceful rejection other than a transaction
-abort:
-
-  BTRFS info (device dm-4): force clearing of disk cache
-  BTRFS error (device dm-4): cannot disable free space tree with block-group-tree feature
-  BTRFS error (device dm-4): open_ctree failed
-
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 63a759694eed ("debugobject: Prevent init race with static objects")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/871qk05a9d.ffs@tglx
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/debugobjects.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1136,7 +1136,12 @@ out:
- 	    !btrfs_test_opt(info, CLEAR_CACHE)) {
- 		btrfs_err(info, "cannot disable free space tree");
- 		ret = -EINVAL;
--
-+	}
-+	if (btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE) &&
-+	    (btrfs_test_opt(info, CLEAR_CACHE) ||
-+	     !btrfs_test_opt(info, FREE_SPACE_TREE))) {
-+		btrfs_err(info, "cannot disable free space tree with block-group-tree feature");
-+		ret = -EINVAL;
- 	}
- 	if (!ret)
- 		ret = btrfs_check_mountopts_zoned(info);
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -460,6 +460,16 @@ static struct debug_obj *lookup_object_o
+ 	return NULL;
+ }
+ 
++static void debug_objects_fill_pool(void)
++{
++	/*
++	 * On RT enabled kernels the pool refill must happen in preemptible
++	 * context:
++	 */
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
++		fill_pool();
++}
++
+ static void
+ __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
+ {
+@@ -468,7 +478,7 @@ __debug_object_init(void *addr, struct d
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+ 
+-	fill_pool();
++	debug_objects_fill_pool();
+ 
+ 	db = get_bucket((unsigned long) addr);
+ 
+@@ -553,6 +563,8 @@ int debug_object_activate(void *addr, st
+ 	if (!debug_objects_enabled)
+ 		return 0;
+ 
++	debug_objects_fill_pool();
++
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+@@ -762,6 +774,8 @@ void debug_object_assert_init(void *addr
+ 	if (!debug_objects_enabled)
+ 		return;
+ 
++	debug_objects_fill_pool();
++
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
 
 
