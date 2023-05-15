@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F147B7036B6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E387870359D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243676AbjEORNF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54990 "EHLO
+        id S243498AbjEORAI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:00:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243687AbjEORMs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7869DD9C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:02 -0700 (PDT)
+        with ESMTP id S243379AbjEOQ7s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A527A95
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CE5562B49
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04ECC433D2;
-        Mon, 15 May 2023 17:10:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82CA362A76
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F903C433D2;
+        Mon, 15 May 2023 16:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170648;
-        bh=gfKhUyKw0CX2PeLVIE8ww3bHJUVtkPZriPj0BxQava8=;
+        s=korg; t=1684169973;
+        bh=43TqDKCd4qjupXBs2ajov1rLIP/ldwSnPtNxZ7rIqSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f7kIGSQXo3viZMaC3UysbInNKX0w6moQQIjPq+87/vQWcvK51B1NNEtKJhjsTDz3r
-         UGE+ZqJLr8UZ3P05Eq/BndYepe3VAfXuuAHe73K7qUtNKpfJEvkWu37eAkGDR6Qk1o
-         d4K7R3CQB/Vyhyd32/0wk0Dfc8nROP40zviWnulU=
+        b=r6A9SFlvSixKMRO3rj0wSyczcZ5a7ychtu7F6eGVKaHxyPXnFEQ5W9DHKVWx3e0OM
+         xnN9K6RnOMGH0oQ6ru22RlkGo5+c5dICh1mJyYfkn4h08kK0E71CtiGz3kn4rDUHKB
+         xI979prrU0ZZpOXMoYviqcQUDmd3K/NjsecVvlqo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Subject: [PATCH 6.1 180/239] HID: wacom: Set a default resolution for older tablets
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+08106c4b7d60702dbc14@syzkaller.appspotmail.com,
+        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.3 231/246] ext4: check iomap type only if ext4_iomap_begin() does not fail
 Date:   Mon, 15 May 2023 18:27:23 +0200
-Message-Id: <20230515161727.065826484@linuxfoundation.org>
+Message-Id: <20230515161729.547599576@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,48 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 08a46b4190d345544d04ce4fe2e1844b772b8535 upstream.
+commit fa83c34e3e56b3c672af38059e066242655271b1 upstream.
 
-Some older tablets may not report physical maximum for X/Y
-coordinates. Set a default to prevent undefined resolution.
+When ext4_iomap_overwrite_begin() calls ext4_iomap_begin() map blocks may
+fail for some reason (e.g. memory allocation failure, bare disk write), and
+later because "iomap->type ! = IOMAP_MAPPED" triggers WARN_ON(). When ext4
+iomap_begin() returns an error, it is normal that the type of iomap->type
+may not match the expectation. Therefore, we only determine if iomap->type
+is as expected when ext4_iomap_begin() is executed successfully.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Link: https://lore.kernel.org/r/20230409164229.29777-1-ping.cheng@wacom.com
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: stable@kernel.org
+Reported-by: syzbot+08106c4b7d60702dbc14@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/00000000000015760b05f9b4eee9@google.com
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230505132429.714648-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1895,6 +1895,7 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
-+	int resolution = hidinput_calc_abs_res(field, resolution_code);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3576,7 +3576,7 @@ static int ext4_iomap_overwrite_begin(st
+ 	 */
+ 	flags &= ~IOMAP_WRITE;
+ 	ret = ext4_iomap_begin(inode, offset, length, flags, iomap, srcmap);
+-	WARN_ON_ONCE(iomap->type != IOMAP_MAPPED);
++	WARN_ON_ONCE(!ret && iomap->type != IOMAP_MAPPED);
+ 	return ret;
+ }
  
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
-@@ -1915,8 +1916,15 @@ static void wacom_map_usage(struct input
- 	switch (type) {
- 	case EV_ABS:
- 		input_set_abs_params(input, code, fmin, fmax, fuzz, 0);
--		input_abs_set_res(input, code,
--				  hidinput_calc_abs_res(field, resolution_code));
-+
-+		/* older tablet may miss physical usage */
-+		if ((code == ABS_X || code == ABS_Y) && !resolution) {
-+			resolution = WACOM_INTUOS_RES;
-+			hid_warn(input,
-+				 "Wacom usage (%d) missing resolution \n",
-+				 code);
-+		}
-+		input_abs_set_res(input, code, resolution);
- 		break;
- 	case EV_KEY:
- 	case EV_MSC:
 
 
