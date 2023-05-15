@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C51D703662
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8876370356F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243637AbjEORJc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47536 "EHLO
+        id S243320AbjEOQ7G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243668AbjEORJI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:08 -0400
+        with ESMTP id S243324AbjEOQ67 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF1DA5F4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F2C76A0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5E3B62ACB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49E9C433D2;
-        Mon, 15 May 2023 17:07:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD80762A45
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E85C433EF;
+        Mon, 15 May 2023 16:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170463;
-        bh=c/O0qV31ZKfDuQtGjvdPfrfaJpo9rVqHAzIqawCN0mY=;
+        s=korg; t=1684169937;
+        bh=hAmmsQLFELuxXA9xinP0kXxf6Fq6ko4yDpQQjzvSkjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KaFvM89wBwy4oYA7zblLrDYgD/iJLBdRI8dpcLe7fzOSL+lg/gZGpT9Whp0ZsIl2n
-         DiKOhRx3JG6KozC3Qz1qXW4e+JPnVtOI6UPrm7AKABcVyJcfQLvttuRMvsOwmE5MfL
-         EeXPrmAByodN4VRuN+at7IGzyJkiuxNP8KJG+4QY=
+        b=uJBPecE60i2shJQc7XEBJC0hYJi6q0xWpGN4eU2/TCInve9mi21KVpVwF5uPs3kK6
+         Z0UuziSz0I4R1Vnlz1hWVXkOx94xUb0eHl6HyJpj/2HYy0R/EUFo1k+L1tEXt4ePaI
+         ZsLI7WG0GwCEuw49m6SVbJAzvidIGfNLwWTtDtU0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Subject: [PATCH 6.1 138/239] remoteproc: st: Call of_node_put() on iteration error
+        patches@lists.linux.dev, James Cowgill <james.cowgill@blaize.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.3 189/246] drm/panel: otm8009a: Set backlight parent to panel device
 Date:   Mon, 15 May 2023 18:26:41 +0200
-Message-Id: <20230515161725.832909659@linuxfoundation.org>
+Message-Id: <20230515161728.288675529@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
+From: James Cowgill <james.cowgill@blaize.com>
 
-commit 8a74918948b40317a5b5bab9739d13dcb5de2784 upstream.
+commit ab4f869fba6119997f7630d600049762a2b014fa upstream.
 
-Function of_phandle_iterator_next() calls of_node_put() on the last
-device_node it iterated over, but when the loop exits prematurely it has
-to be called explicitly.
+This is the logical place to put the backlight device, and it also
+fixes a kernel crash if the MIPI host is removed. Previously the
+backlight device would be unregistered twice when this happened - once
+as a child of the MIPI host through `mipi_dsi_host_unregister`, and
+once when the panel device is destroyed.
 
-Fixes: 3df52ed7f269 ("remoteproc: st: add reserved memory support")
+Fixes: 12a6cbd4f3f1 ("drm/panel: otm8009a: Use new backlight API")
+Signed-off-by: James Cowgill <james.cowgill@blaize.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Link: https://lore.kernel.org/r/20230320221826.2728078-3-mathieu.poirier@linaro.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230412173450.199592-1-james.cowgill@blaize.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/st_remoteproc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-orisetech-otm8009a.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/remoteproc/st_remoteproc.c
-+++ b/drivers/remoteproc/st_remoteproc.c
-@@ -129,6 +129,7 @@ static int st_rproc_parse_fw(struct rpro
- 	while (of_phandle_iterator_next(&it) == 0) {
- 		rmem = of_reserved_mem_lookup(it.node);
- 		if (!rmem) {
-+			of_node_put(it.node);
- 			dev_err(dev, "unable to acquire memory-region\n");
- 			return -EINVAL;
- 		}
-@@ -150,8 +151,10 @@ static int st_rproc_parse_fw(struct rpro
- 							   it.node->name);
- 		}
+--- a/drivers/gpu/drm/panel/panel-orisetech-otm8009a.c
++++ b/drivers/gpu/drm/panel/panel-orisetech-otm8009a.c
+@@ -471,7 +471,7 @@ static int otm8009a_probe(struct mipi_ds
+ 		       DRM_MODE_CONNECTOR_DSI);
  
--		if (!mem)
-+		if (!mem) {
-+			of_node_put(it.node);
- 			return -ENOMEM;
-+		}
- 
- 		rproc_add_carveout(rproc, mem);
- 		index++;
+ 	ctx->bl_dev = devm_backlight_device_register(dev, dev_name(dev),
+-						     dsi->host->dev, ctx,
++						     dev, ctx,
+ 						     &otm8009a_backlight_ops,
+ 						     NULL);
+ 	if (IS_ERR(ctx->bl_dev)) {
 
 
