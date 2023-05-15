@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08F0C703573
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC65703574
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243304AbjEOQ7N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39342 "EHLO
+        id S243303AbjEOQ7P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243298AbjEOQ7L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:11 -0400
+        with ESMTP id S243311AbjEOQ7O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E3EB7A98
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 538DA5B88
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB50062A49
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1BCC433D2;
-        Mon, 15 May 2023 16:59:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4C5062A4F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3667C433EF;
+        Mon, 15 May 2023 16:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169949;
-        bh=NID4KUmXriX4ekkz0vYmBRkVlbhxHL5dCiwxSe+d5tE=;
+        s=korg; t=1684169952;
+        bh=n/jF8GJHXx0IsOirldqpSobt7hxHOwb1eQXwmAdpSSM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1GMnzpLVZNRlf2goFEIKWjLai7kf7xpvoibay721DABYWXsN6Y0nPl5GK1atOR1I4
-         1+zmvdKGaaunPXLSb2hoNOgYp3UHk7ALEpzBrbf07GJ75AR+xKBdoyCt1XjhrDnFZy
-         Xtq+jGLQ68GLyP7a6zeWggULmFgFr8I348ff6r2E=
+        b=ZAEkkIoYmNecimAhlhKVQhkdHE5PkVFNndGU0bvAGBdjDf94hMJ2Dcy7q4iSLLhhZ
+         p83WBWB7Fvu/dCUY8OZJnYUMJOEWshPGeGkEWubVDvc0N9hxZyBn4LPx7v9kE13Tm3
+         3VtDGSrx4QyVoKXxg6EVuNxfGxY2kHOvjhqPx/h8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Wheeler <daniel.wheeler@amd.com>,
-        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Leo Chen <sancchen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 223/246] drm/amd/display: Lowering min Z8 residency time
-Date:   Mon, 15 May 2023 18:27:15 +0200
-Message-Id: <20230515161729.279806841@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+        David Hildenbrand <david@redhat.com>,
+        Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.3 224/246] parisc: Fix encoding of swp_entry due to added SWP_EXCLUSIVE flag
+Date:   Mon, 15 May 2023 18:27:16 +0200
+Message-Id: <20230515161729.309596490@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
 References: <20230515161722.610123835@linuxfoundation.org>
@@ -57,41 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leo Chen <sancchen@amd.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit d893f39320e1248d1c97fde0d6e51e5ea008a76b ]
+commit 6f9e98849edaa8aefc4030ff3500e41556e83ff7 upstream.
 
-[Why & How]
-Per HW team request, we're lowering the minimum Z8
-residency time to 2000us. This enables Z8 support for additional
-modes we were previously blocking like 2k>60hz
+Fix the __swp_offset() and __swp_entry() macros due to commit 6d239fc78c0b
+("parisc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE") which introduced the
+SWP_EXCLUSIVE flag by reusing the _PAGE_ACCESSED flag.
 
-Cc: stable@vger.kernel.org
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
-Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Leo Chen <sancchen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+Tested-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 6d239fc78c0b ("parisc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE")
+Cc: <stable@vger.kernel.org> # v6.3+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/asm/pgtable.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
-index 33d8188d076ab..30129fb9c27a9 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
-@@ -887,7 +887,7 @@ static const struct dc_plane_cap plane_cap = {
- static const struct dc_debug_options debug_defaults_drv = {
- 	.disable_z10 = false,
- 	.enable_z9_disable_interface = true,
--	.minimum_z8_residency_time = 3080,
-+	.minimum_z8_residency_time = 2000,
- 	.psr_skip_crtc_disable = true,
- 	.disable_dmcu = true,
- 	.force_abm_enable = false,
--- 
-2.39.2
-
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -413,12 +413,12 @@ extern void paging_init (void);
+  *   For the 64bit version, the offset is extended by 32bit.
+  */
+ #define __swp_type(x)                     ((x).val & 0x1f)
+-#define __swp_offset(x)                   ( (((x).val >> 6) &  0x7) | \
+-					  (((x).val >> 8) & ~0x7) )
++#define __swp_offset(x)                   ( (((x).val >> 5) & 0x7) | \
++					  (((x).val >> 10) << 3) )
+ #define __swp_entry(type, offset)         ((swp_entry_t) { \
+ 					    ((type) & 0x1f) | \
+-					    ((offset &  0x7) << 6) | \
+-					    ((offset & ~0x7) << 8) })
++					    ((offset & 0x7) << 5) | \
++					    ((offset >> 3) << 10) })
+ #define __pte_to_swp_entry(pte)		((swp_entry_t) { pte_val(pte) })
+ #define __swp_entry_to_pte(x)		((pte_t) { (x).val })
+ 
 
 
