@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9455E703333
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6C5703701
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242756AbjEOQe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
+        id S243768AbjEORP6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242552AbjEOQeY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB45213D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:15 -0700 (PDT)
+        with ESMTP id S243844AbjEORP3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAB317D94
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00E6E627D4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C61C433D2;
-        Mon, 15 May 2023 16:34:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 804D862B9F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8FBC433D2;
+        Mon, 15 May 2023 17:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168454;
-        bh=ufqFlv+I9tCin+KtiMY6Y3gmHisBpvYSxrl/qB3IAjI=;
+        s=korg; t=1684170858;
+        bh=Z5nvmuWjD93nU6MrRfTc/LCR9a3YHv8eUz1pCtH2154=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r7qGeC7OJWe/4zwGc5cBjfbc+hznVhTDclQpVByfoz2feL5f3MoNRlYrZ5cQUVVEN
-         rocpXCsxzZQQ0M12UjONSNe8BAdvLIjA0xYNy1Zg/cBtaxKTWFvhecx0ZQH/cotOdT
-         Z2ljRyzM/+lmS7UJPIE9i1JD9hOGkSUBpkIoz3O0=
+        b=eUS2joW3c0KAmymAfykkJ7e/N3GrLtBR8FAZKnqs9H/MccWB/TxX6bbCW9XPF+Vo3
+         MyIQ0tU+IN7QHbxtcMYGuK1HxNUXaRkvN4eJdTwBQMlZeUoTI9ozdmpPg/OREZNmBU
+         e/+a9YLJ3XVQ1e3jWveN75cpwiOg5HJSM1HtDUBI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Manish Rangankar <mrangankar@marvell.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 053/116] tty: serial: fsl_lpuart: adjust buffer length to the intended size
+Subject: [PATCH 6.2 024/242] scsi: qedi: Fix use after free bug in qedi_remove()
 Date:   Mon, 15 May 2023 18:25:50 +0200
-Message-Id: <20230515161700.031734357@linuxfoundation.org>
+Message-Id: <20230515161722.655840363@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,37 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit f73fd750552524b06b5d77ebfdd106ccc8fcac61 ]
+[ Upstream commit c5749639f2d0a1f6cbe187d05f70c2e7c544d748 ]
 
-Based on the fls function definition provided below, we should not
-subtract 1 to obtain the correct buffer length:
+In qedi_probe() we call __qedi_probe() which initializes
+&qedi->recovery_work with qedi_recovery_handler() and
+&qedi->board_disable_work with qedi_board_disable_work().
 
-fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
+When qedi_schedule_recovery_handler() is called, schedule_delayed_work()
+will finally start the work.
 
-Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20230410195555.1003900-1-shenwei.wang@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In qedi_remove(), which is called to remove the driver, the following
+sequence may be observed:
+
+Fix this by finishing the work before cleanup in qedi_remove().
+
+CPU0                  CPU1
+
+                     |qedi_recovery_handler
+qedi_remove          |
+  __qedi_remove      |
+iscsi_host_free      |
+scsi_host_put        |
+//free shost         |
+                     |iscsi_host_for_each_session
+                     |//use qedi->shost
+
+Cancel recovery_work and board_disable_work in __qedi_remove().
+
+Fixes: 4b1068f5d74b ("scsi: qedi: Add MFW error recovery process")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Link: https://lore.kernel.org/r/20230413033422.28003-1-zyytlz.wz@163.com
+Acked-by: Manish Rangankar <mrangankar@marvell.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qedi/qedi_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 20dd476e4d1a1..e7ab8ec032cfe 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -998,7 +998,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 	 * 10ms at any baud rate.
- 	 */
- 	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
--	sport->rx_dma_rng_buf_len = (1 << (fls(sport->rx_dma_rng_buf_len) - 1));
-+	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
- 	if (sport->rx_dma_rng_buf_len < 16)
- 		sport->rx_dma_rng_buf_len = 16;
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index f2ee49756df8d..45d3595541820 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -2450,6 +2450,9 @@ static void __qedi_remove(struct pci_dev *pdev, int mode)
+ 		qedi_ops->ll2->stop(qedi->cdev);
+ 	}
  
++	cancel_delayed_work_sync(&qedi->recovery_work);
++	cancel_delayed_work_sync(&qedi->board_disable_work);
++
+ 	qedi_free_iscsi_pf_param(qedi);
+ 
+ 	rval = qedi_ops->common->update_drv_state(qedi->cdev, false);
 -- 
 2.39.2
 
