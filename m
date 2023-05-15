@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49682703989
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A4B703371
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244585AbjEORnb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
+        id S242813AbjEOQhE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243477AbjEORnH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:07 -0400
+        with ESMTP id S242799AbjEOQhB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C878176FB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A8D126
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1D5B62E46
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703E9C4339B;
-        Mon, 15 May 2023 17:40:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F3126282A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539D8C433EF;
+        Mon, 15 May 2023 16:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172443;
-        bh=192leasKzAIc4vYdJBRT3H2H51t6sT8tDQzqUBjRRQ4=;
+        s=korg; t=1684168618;
+        bh=iYL8y8yM2SdFXKcvjmQWXL8dd02w2G3EHkn9kaMUThE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FfphZw8tMbndtGP/rNq6IVWn10u5rKxcNcR6f00yRWlGVbGVr/HZMbi4bJKcgiw34
-         jYYOw/Nb8evxJ9BxM1kMzNP1Zz04QJmNOXzxNTcMNUYoFsi31N2uoaug11kOYnT/2V
-         hpCpeZ665sqVA8fUu5+/f0Ddm8wzJuWewslz7Qsk=
+        b=jE+9uU0V49GmzMzjSDU8EQZX19rM5dmVryX2qFFZrWZCPTDqoL3OmYmAqboi5Ec8I
+         64KcOd0rYgtDHWIGWQwZIxS7RjdQBDMXANegdUh9zeMsDHluSD1i+98vJda7KYcKF7
+         jT1ryhHi1Jhuxdtzm3goaQgmNKdLhrpIJw6P/L8s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Qi Han <hanqi@vivo.com>, Yangtao Li <frank.li@vivo.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/381] f2fs: compress: fix to call f2fs_wait_on_page_writeback() in f2fs_write_raw_pages()
+        patches@lists.linux.dev, stable@kernel.org,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.14 108/116] ext4: bail out of ext4_xattr_ibody_get() fails for any reason
 Date:   Mon, 15 May 2023 18:26:45 +0200
-Message-Id: <20230515161743.779320364@linuxfoundation.org>
+Message-Id: <20230515161701.833034890@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,98 +53,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit babedcbac164cec970872b8097401ca913a80e61 ]
+commit 2a534e1d0d1591e951f9ece2fb460b2ff92edabd upstream.
 
-BUG_ON() will be triggered when writing files concurrently,
-because the same page is writtenback multiple times.
+In ext4_update_inline_data(), if ext4_xattr_ibody_get() fails for any
+reason, it's best if we just fail as opposed to stumbling on,
+especially if the failure is EFSCORRUPTED.
 
-1597 void folio_end_writeback(struct folio *folio)
-1598 {
-		......
-1618     if (!__folio_end_writeback(folio))
-1619         BUG();
-		......
-1625 }
-
-kernel BUG at mm/filemap.c:1619!
-Call Trace:
- <TASK>
- f2fs_write_end_io+0x1a0/0x370
- blk_update_request+0x6c/0x410
- blk_mq_end_request+0x15/0x130
- blk_complete_reqs+0x3c/0x50
- __do_softirq+0xb8/0x29b
- ? sort_range+0x20/0x20
- run_ksoftirqd+0x19/0x20
- smpboot_thread_fn+0x10b/0x1d0
- kthread+0xde/0x110
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x22/0x30
- </TASK>
-
-Below is the concurrency scenario:
-
-[Process A]		[Process B]		[Process C]
-f2fs_write_raw_pages()
-  - redirty_page_for_writepage()
-  - unlock page()
-			f2fs_do_write_data_page()
-			  - lock_page()
-			  - clear_page_dirty_for_io()
-			  - set_page_writeback() [1st writeback]
-			    .....
-			    - unlock page()
-
-						generic_perform_write()
-						  - f2fs_write_begin()
-						    - wait_for_stable_page()
-
-						  - f2fs_write_end()
-						    - set_page_dirty()
-
-  - lock_page()
-    - f2fs_do_write_data_page()
-      - set_page_writeback() [2st writeback]
-
-This problem was introduced by the previous commit 7377e853967b ("f2fs:
-compress: fix potential deadlock of compress file"). All pagelocks were
-released in f2fs_write_raw_pages(), but whether the page was
-in the writeback state was ignored in the subsequent writing process.
-Let's fix it by waiting for the page to writeback before writing.
-
-Cc: Christoph Hellwig <hch@lst.de>
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Fixes: 7377e853967b ("f2fs: compress: fix potential deadlock of compress file")
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/inline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 1541da5ace85e..1be9de40f0b5a 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1391,6 +1391,12 @@ static int f2fs_write_raw_pages(struct compress_ctx *cc,
- 		if (!PageDirty(cc->rpages[i]))
- 			goto continue_unlock;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -364,7 +364,7 @@ static int ext4_update_inline_data(handl
  
-+		if (PageWriteback(cc->rpages[i])) {
-+			if (wbc->sync_mode == WB_SYNC_NONE)
-+				goto continue_unlock;
-+			f2fs_wait_on_page_writeback(cc->rpages[i], DATA, true, true);
-+		}
-+
- 		if (!clear_page_dirty_for_io(cc->rpages[i]))
- 			goto continue_unlock;
+ 	error = ext4_xattr_ibody_get(inode, i.name_index, i.name,
+ 				     value, len);
+-	if (error == -ENODATA)
++	if (error < 0)
+ 		goto out;
  
--- 
-2.39.2
-
+ 	BUFFER_TRACE(is.iloc.bh, "get_write_access");
 
 
