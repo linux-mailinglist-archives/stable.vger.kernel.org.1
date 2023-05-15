@@ -2,49 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DB7270360A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD691703402
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243634AbjEORFp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47144 "EHLO
+        id S242905AbjEOQns (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243749AbjEORFM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:12 -0400
+        with ESMTP id S242900AbjEOQnn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79C97693
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E160469D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 300D262AC1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A038C433D2;
-        Mon, 15 May 2023 17:03:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B883A62171
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2F5C4339B;
+        Mon, 15 May 2023 16:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170221;
-        bh=qOBSYKrrJNMOsqAXziZo4Vnnfaf+F5Pw6+ia2yoKir4=;
+        s=korg; t=1684169021;
+        bh=sF7ZBgsVmgijIqv/pXx+8FRGezQlNpxl1nYiGp21MJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xWzOni5ql7ygEtevJYCnVi65iDndW1H9/kPxsSPTklQ7JHyibzzbl/d/kaNs2jxbE
-         1FP8O7bIq6Pif15CvxldHPMahOXTJQZ+G65RA8jmGP9sogqC8jE1k827MLSyBtc/oK
-         G+y4DjCRuoMwz+noZoE+Hw5YseupmyOJrjKrO9AE=
+        b=aA1acU75Pyxj2FsB9QTGOCbx4722AkT4SNdfbzcXPvyl6+rEn34EWQha7SvgtHCOe
+         5yMLJrpi4XILe6CHkB7OT1qEXYQVbRjsJ8G0Bl5EZB5xojEVW7nexRUUfW2tlT9t5G
+         JoQOBfHJNxXxGZaIbQqVP9av0kNgoT4YGtkAx3i4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
-        Haridhar Kalvala <haridhar.kalvala@intel.com>,
-        Gustavo Sousa <gustavo.sousa@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        patches@lists.linux.dev, "Dae R. Jeong" <threeearcat@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/239] drm/i915/mtl: Add the missing CPU transcoder mask in intel_device_info
+Subject: [PATCH 4.19 089/191] vmci_host: fix a race condition in vmci_host_poll() causing GPF
 Date:   Mon, 15 May 2023 18:25:26 +0200
-Message-Id: <20230515161723.589856808@linuxfoundation.org>
+Message-Id: <20230515161710.490427586@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,47 +53,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+From: Dae R. Jeong <threeearcat@gmail.com>
 
-[ Upstream commit 6ece90e3665a9b7fb2637fcca26cebd42991580b ]
+[ Upstream commit ae13381da5ff0e8e084c0323c3cc0a945e43e9c7 ]
 
-CPU transcoder mask is used to iterate over the available
-CPU transcoders in the macro for_each_cpu_transcoder().
+During fuzzing, a general protection fault is observed in
+vmci_host_poll().
 
-The macro is broken on MTL and got highlighted when audio
-state was being tracked for each transcoder added in [1].
+general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
+RIP: 0010:__lock_acquire+0xf3/0x5e00 kernel/locking/lockdep.c:4926
+<- omitting registers ->
+Call Trace:
+ <TASK>
+ lock_acquire+0x1a4/0x4a0 kernel/locking/lockdep.c:5672
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0xb3/0x100 kernel/locking/spinlock.c:162
+ add_wait_queue+0x3d/0x260 kernel/sched/wait.c:22
+ poll_wait include/linux/poll.h:49 [inline]
+ vmci_host_poll+0xf8/0x2b0 drivers/misc/vmw_vmci/vmci_host.c:174
+ vfs_poll include/linux/poll.h:88 [inline]
+ do_pollfd fs/select.c:873 [inline]
+ do_poll fs/select.c:921 [inline]
+ do_sys_poll+0xc7c/0x1aa0 fs/select.c:1015
+ __do_sys_ppoll fs/select.c:1121 [inline]
+ __se_sys_ppoll+0x2cc/0x330 fs/select.c:1101
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x4e/0xa0 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-Add the missing CPU transcoder mask which is similar to ADL-P
-mask but without DSI transcoders.
+Example thread interleaving that causes the general protection fault
+is as follows:
 
-[1]: https://patchwork.freedesktop.org/patch/523723/
+CPU1 (vmci_host_poll)               CPU2 (vmci_host_do_init_context)
+-----                               -----
+// Read uninitialized context
+context = vmci_host_dev->context;
+                                    // Initialize context
+                                    vmci_host_dev->context = vmci_ctx_create();
+                                    vmci_host_dev->ct_type = VMCIOBJ_CONTEXT;
 
-Fixes: 7835303982d1 ("drm/i915/mtl: Add MeteorLake PCI IDs")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-Acked-by: Haridhar Kalvala <haridhar.kalvala@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230420221248.2511314-1-radhakrishna.sripada@intel.com
-(cherry picked from commit bddc18913bd44adae5c828fd514d570f43ba1576)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
+    // Dereferencing the wrong pointer
+    poll_wait(..., &context->host_context);
+}
+
+In this scenario, vmci_host_poll() reads vmci_host_dev->context first,
+and then reads vmci_host_dev->ct_type to check that
+vmci_host_dev->context is initialized. However, since these two reads
+are not atomically executed, there is a chance of a race condition as
+described above.
+
+To fix this race condition, read vmci_host_dev->context after checking
+the value of vmci_host_dev->ct_type so that vmci_host_poll() always
+reads an initialized context.
+
+Reported-by: Dae R. Jeong <threeearcat@gmail.com>
+Fixes: 8bf503991f87 ("VMCI: host side driver implementation.")
+Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
+Link: https://lore.kernel.org/r/ZCGFsdBAU4cYww5l@dragonet
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/vmw_vmci/vmci_host.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i915_pci.c
-index fe4f279aaeb3e..a2efc0b9d50c8 100644
---- a/drivers/gpu/drm/i915/i915_pci.c
-+++ b/drivers/gpu/drm/i915/i915_pci.c
-@@ -1133,6 +1133,8 @@ static const struct intel_gt_definition xelpmp_extra_gt[] = {
- static const struct intel_device_info mtl_info = {
- 	XE_HP_FEATURES,
- 	XE_LPDP_FEATURES,
-+	.__runtime.cpu_transcoder_mask = BIT(TRANSCODER_A) | BIT(TRANSCODER_B) |
-+			       BIT(TRANSCODER_C) | BIT(TRANSCODER_D),
- 	/*
- 	 * Real graphics IP version will be obtained from hardware GMD_ID
- 	 * register.  Value provided here is just for sanity checking.
+diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
+index 83e0c95d20a47..5acbf384ffa64 100644
+--- a/drivers/misc/vmw_vmci/vmci_host.c
++++ b/drivers/misc/vmw_vmci/vmci_host.c
+@@ -169,10 +169,16 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
+ static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
+ {
+ 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
+-	struct vmci_ctx *context = vmci_host_dev->context;
++	struct vmci_ctx *context;
+ 	__poll_t mask = 0;
+ 
+ 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
++		/*
++		 * Read context only if ct_type == VMCIOBJ_CONTEXT to make
++		 * sure that context is initialized
++		 */
++		context = vmci_host_dev->context;
++
+ 		/* Check for VMCI calls to this VM context. */
+ 		if (wait)
+ 			poll_wait(filp, &context->host_context.wait_queue,
 -- 
 2.39.2
 
