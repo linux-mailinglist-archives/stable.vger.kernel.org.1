@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5DCD703A73
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF83D70381E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244953AbjEORvK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
+        id S244283AbjEOR1d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244688AbjEORuo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 807251CA4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:55 -0700 (PDT)
+        with ESMTP id S244218AbjEOR1P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E031C76B2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 086FC622D5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001A0C433EF;
-        Mon, 15 May 2023 17:48:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFF5D62CB7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04B9C433D2;
+        Mon, 15 May 2023 17:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172934;
-        bh=d7RI03HynCAR1+H3PVW5/R2mgra1sr+H/qsTWV8+sro=;
+        s=korg; t=1684171567;
+        bh=CxbJiUdoOwWCub5oUT4dciourSL24OIe77Bt3433Y8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EquzfYdTeO/yxCxXGPaJYEKmLhqBOwhPgPdfVHlFnStMgLstjPVViHYTHFHAtroKj
-         H8bUnmPbOEqNrvuGBChRStlocv9ZsmFlyfW6FLfKurEoAU0e1trF/BZiiVB/LpFHOq
-         lM+SJYOF7Hz9hjD20vjSkh7KfezhrxRotcsr82bc=
+        b=Ch0tUpkKX8Tr7zL59T9Gy+A7LJfdKVbQCqmpQ3woHtO7BQNb5juwzCA1Z43dEqiuH
+         JEid1cx3uCuZ7ImixX1BUIhpoxn0gEaxzHXY4Qpy3AqXktGIangasZ1jXezHcKOqNa
+         IZJPk8t8wgYxMMQjN8IFDAr9pqJyiay908GQ6EaE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 314/381] watchdog: dw_wdt: Fix the error handling path of dw_wdt_drv_probe()
+        syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>,
+        Borislav Petkov <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 6.2 239/242] x86: fix clear_user_rep_good() exception handling annotation
 Date:   Mon, 15 May 2023 18:29:25 +0200
-Message-Id: <20230515161751.005319190@linuxfoundation.org>
+Message-Id: <20230515161729.076494020@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,59 +54,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 7f5390750645756bd5da2b24fac285f2654dd922 ]
+This code no longer exists in mainline, because it was removed in
+commit d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory
+clearing") upstream.
 
-The commit in Fixes has only updated the remove function and missed the
-error handling path of the probe.
+However, rather than backport the full range of x86 memory clearing and
+copying cleanups, fix the exception table annotation placement for the
+final 'rep movsb' in clear_user_rep_good(): rather than pointing at the
+actual instruction that did the user space access, it pointed to the
+register move just before it.
 
-Add the missing reset_control_assert() call.
+That made sense from a code flow standpoint, but not from an actual
+usage standpoint: it means that if user access takes an exception, the
+exception handler won't actually find the instruction in the exception
+tables.
 
-Fixes: 65a3b6935d92 ("watchdog: dw_wdt: get reset lines from dt")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/fbb650650bbb33a8fa2fd028c23157bedeed50e1.1682491863.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, rather than fixing it up and returning -EFAULT, it would
+then turn it into a kernel oops report instead, something like:
+
+    BUG: unable to handle page fault for address: 0000000020081000
+    #PF: supervisor write access in kernel mode
+    #PF: error_code(0x0002) - not-present page
+    ...
+    RIP: 0010:clear_user_rep_good+0x1c/0x30 arch/x86/lib/clear_page_64.S:147
+    ...
+    Call Trace:
+      __clear_user arch/x86/include/asm/uaccess_64.h:103 [inline]
+      clear_user arch/x86/include/asm/uaccess_64.h:124 [inline]
+      iov_iter_zero+0x709/0x1290 lib/iov_iter.c:800
+      iomap_dio_hole_iter fs/iomap/direct-io.c:389 [inline]
+      iomap_dio_iter fs/iomap/direct-io.c:440 [inline]
+      __iomap_dio_rw+0xe3d/0x1cd0 fs/iomap/direct-io.c:601
+      iomap_dio_rw+0x40/0xa0 fs/iomap/direct-io.c:689
+      ext4_dio_read_iter fs/ext4/file.c:94 [inline]
+      ext4_file_read_iter+0x4be/0x690 fs/ext4/file.c:145
+      call_read_iter include/linux/fs.h:2183 [inline]
+      do_iter_readv_writev+0x2e0/0x3b0 fs/read_write.c:733
+      do_iter_read+0x2f2/0x750 fs/read_write.c:796
+      vfs_readv+0xe5/0x150 fs/read_write.c:916
+      do_preadv+0x1b6/0x270 fs/read_write.c:1008
+      __do_sys_preadv2 fs/read_write.c:1070 [inline]
+      __se_sys_preadv2 fs/read_write.c:1061 [inline]
+      __x64_sys_preadv2+0xef/0x150 fs/read_write.c:1061
+      do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+      do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+      entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+which then looks like a filesystem bug rather than the incorrect
+exception annotation that it is.
+
+[ The alternative to this one-liner fix is to take the upstream series
+  that cleans this all up:
+
+    68674f94ffc9 ("x86: don't use REP_GOOD or ERMS for small memory copies")
+    20f3337d350c ("x86: don't use REP_GOOD or ERMS for small memory clearing")
+    adfcf4231b8c ("x86: don't use REP_GOOD or ERMS for user memory copies")
+  * d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory clearing")
+    3639a535587d ("x86: move stac/clac from user copy routines into callers")
+    577e6a7fd50d ("x86: inline the 'rep movs' in user copies for the FSRM case")
+    8c9b6a88b7e2 ("x86: improve on the non-rep 'clear_user' function")
+    427fda2c8a49 ("x86: improve on the non-rep 'copy_user' function")
+  * e046fe5a36a9 ("x86: set FSRS automatically on AMD CPUs that have FSRM")
+    e1f2750edc4a ("x86: remove 'zerorest' argument from __copy_user_nocache()")
+    034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
+
+  with either the whole series or at a minimum the two marked commits
+  being needed to fix this issue ]
+
+Reported-by: syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=401145a9a237779feb26
+Fixes: 0db7058e8e23 ("x86/clear_user: Make it faster")
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/dw_wdt.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/lib/clear_page_64.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
-index 32d0e1781e63c..3cd1182819809 100644
---- a/drivers/watchdog/dw_wdt.c
-+++ b/drivers/watchdog/dw_wdt.c
-@@ -638,7 +638,7 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
+--- a/arch/x86/lib/clear_page_64.S
++++ b/arch/x86/lib/clear_page_64.S
+@@ -142,8 +142,8 @@ SYM_FUNC_START(clear_user_rep_good)
+ 	and $7, %edx
+ 	jz .Lrep_good_exit
  
- 	ret = dw_wdt_init_timeouts(dw_wdt, dev);
- 	if (ret)
--		goto out_disable_clk;
-+		goto out_assert_rst;
+-.Lrep_good_bytes:
+ 	mov %edx, %ecx
++.Lrep_good_bytes:
+ 	rep stosb
  
- 	wdd = &dw_wdt->wdd;
- 	wdd->ops = &dw_wdt_ops;
-@@ -669,12 +669,15 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
- 
- 	ret = watchdog_register_device(wdd);
- 	if (ret)
--		goto out_disable_pclk;
-+		goto out_assert_rst;
- 
- 	dw_wdt_dbgfs_init(dw_wdt);
- 
- 	return 0;
- 
-+out_assert_rst:
-+	reset_control_assert(dw_wdt->rst);
-+
- out_disable_pclk:
- 	clk_disable_unprepare(dw_wdt->pclk);
- 
--- 
-2.39.2
-
+ .Lrep_good_exit:
 
 
