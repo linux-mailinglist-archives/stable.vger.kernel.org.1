@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FE370338C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 999A9703902
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242819AbjEOQia (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41768 "EHLO
+        id S243325AbjEORhw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:37:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242817AbjEOQi3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1B7540CD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:27 -0700 (PDT)
+        with ESMTP id S243356AbjEORh2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE8B855A4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6630162333
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588BEC433D2;
-        Mon, 15 May 2023 16:38:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF79762DC6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37D7C433D2;
+        Mon, 15 May 2023 17:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168706;
-        bh=p9ehA8kDIhNZ/CZqFEVodDpkS0KwISdHL5eMKx61uGc=;
+        s=korg; t=1684172092;
+        bh=q6984CWVAf+RLClE2wIk0JXO4zHeQuXHIUIFknW0DjA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ofz7YQg01ptnKZFof1XaOHemVnlQp/g8qX2Ka4ccYDvCh5xMBCGCJm0i/eN8R8Eqb
-         FbCa18WUxHVsXDq4Vxb+jBJS0aSnGog8CAf8UmkvO8TkMz0ihyCuqVvXyCm68ggaEY
-         EsbXXsQ1LMuczUo8WanIFtNo7i5oYe+Ee3mCvknY=
+        b=Vpmh3bI+Zw+t3BVfvOeYe/8IxKLscR3+lzrC2pf30p14wAZkEZ/Z1YrioUH2r8+Pr
+         TM4Bj6mlPxZtygrV2ZlfTb/rnwG9PIuvdWh9IQ+IuZkp4GRoPnZHGFHWrfFgSiGIYS
+         OMDpa0G1swkissyJ53kOU3WIOfgcw5BGQZpus4II=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 4.19 016/191] reiserfs: Add security prefix to xattr name in reiserfs_security_write()
+        patches@lists.linux.dev,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH 5.10 002/381] counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
 Date:   Mon, 15 May 2023 18:24:13 +0200
-Message-Id: <20230515161707.798163581@linuxfoundation.org>
+Message-Id: <20230515161736.890956992@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,54 +53,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-commit d82dcd9e21b77d338dc4875f3d4111f0db314a7c upstream.
+commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
 
-Reiserfs sets a security xattr at inode creation time in two stages: first,
-it calls reiserfs_security_init() to obtain the xattr from active LSMs;
-then, it calls reiserfs_security_write() to actually write that xattr.
+The Counter (CNTR) register is 24 bits wide, but we can have an
+effective 25-bit count value by setting bit 24 to the XOR of the Borrow
+flag and Carry flag. The flags can be read from the FLAG register, but a
+race condition exists: the Borrow flag and Carry flag are instantaneous
+and could change by the time the count value is read from the CNTR
+register.
 
-Unfortunately, it seems there is a wrong expectation that LSMs provide the
-full xattr name in the form 'security.<suffix>'. However, LSMs always
-provided just the suffix, causing reiserfs to not write the xattr at all
-(if the suffix is shorter than the prefix), or to write an xattr with the
-wrong name.
+Since the race condition could result in an incorrect 25-bit count
+value, remove support for 25-bit count values from this driver;
+hard-coded maximum count values are replaced by a LS7267_CNTR_MAX define
+for consistency and clarity.
 
-Add a temporary buffer in reiserfs_security_write(), and write to it the
-full xattr name, before passing it to reiserfs_xattr_set_handle().
-
-Also replace the name length check with a check that the full xattr name is
-not larger than XATTR_NAME_MAX.
-
-Cc: stable@vger.kernel.org # v2.6.x
-Fixes: 57fe60df6241 ("reiserfs: add atomic addition of selinux attributes during inode creation")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 104-QUAD-8")
+Cc: <stable@vger.kernel.org> # 6.1.x
+Cc: <stable@vger.kernel.org> # 6.2.x
+Link: https://lore.kernel.org/r/20230312231554.134858-1-william.gray@linaro.org/
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/reiserfs/xattr_security.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/counter/104-quad-8.c |   28 ++++------------------------
+ 1 file changed, 4 insertions(+), 24 deletions(-)
 
---- a/fs/reiserfs/xattr_security.c
-+++ b/fs/reiserfs/xattr_security.c
-@@ -81,11 +81,15 @@ int reiserfs_security_write(struct reise
- 			    struct inode *inode,
- 			    struct reiserfs_security_handle *sec)
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -62,10 +62,6 @@ struct quad8_iio {
+ #define QUAD8_REG_CHAN_OP 0x11
+ #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
+ #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
+-/* Borrow Toggle flip-flop */
+-#define QUAD8_FLAG_BT BIT(0)
+-/* Carry Toggle flip-flop */
+-#define QUAD8_FLAG_CT BIT(1)
+ /* Error flag */
+ #define QUAD8_FLAG_E BIT(4)
+ /* Up/Down flag */
+@@ -104,9 +100,6 @@ static int quad8_read_raw(struct iio_dev
  {
-+	char xattr_name[XATTR_NAME_MAX + 1] = XATTR_SECURITY_PREFIX;
- 	int error;
--	if (strlen(sec->name) < sizeof(XATTR_SECURITY_PREFIX))
-+
-+	if (XATTR_SECURITY_PREFIX_LEN + strlen(sec->name) > XATTR_NAME_MAX)
- 		return -EINVAL;
+ 	struct quad8_iio *const priv = iio_priv(indio_dev);
+ 	const int base_offset = priv->base + 2 * chan->channel;
+-	unsigned int flags;
+-	unsigned int borrow;
+-	unsigned int carry;
+ 	int i;
  
--	error = reiserfs_xattr_set_handle(th, inode, sec->name, sec->value,
-+	strlcat(xattr_name, sec->name, sizeof(xattr_name));
-+
-+	error = reiserfs_xattr_set_handle(th, inode, xattr_name, sec->value,
- 					  sec->length, XATTR_CREATE);
- 	if (error == -ENODATA || error == -EOPNOTSUPP)
- 		error = 0;
+ 	switch (mask) {
+@@ -117,12 +110,7 @@ static int quad8_read_raw(struct iio_dev
+ 			return IIO_VAL_INT;
+ 		}
+ 
+-		flags = inb(base_offset + 1);
+-		borrow = flags & QUAD8_FLAG_BT;
+-		carry = !!(flags & QUAD8_FLAG_CT);
+-
+-		/* Borrow XOR Carry effectively doubles count range */
+-		*val = (borrow ^ carry) << 24;
++		*val = 0;
+ 
+ 		mutex_lock(&priv->lock);
+ 
+@@ -643,17 +631,9 @@ static int quad8_count_read(struct count
+ {
+ 	struct quad8_iio *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id;
+-	unsigned int flags;
+-	unsigned int borrow;
+-	unsigned int carry;
+ 	int i;
+ 
+-	flags = inb(base_offset + 1);
+-	borrow = flags & QUAD8_FLAG_BT;
+-	carry = !!(flags & QUAD8_FLAG_CT);
+-
+-	/* Borrow XOR Carry effectively doubles count range */
+-	*val = (unsigned long)(borrow ^ carry) << 24;
++	*val = 0;
+ 
+ 	mutex_lock(&priv->lock);
+ 
+@@ -1198,8 +1178,8 @@ static ssize_t quad8_count_ceiling_read(
+ 
+ 	mutex_unlock(&priv->lock);
+ 
+-	/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
+-	return sprintf(buf, "33554431\n");
++	/* By default 0xFFFFFF (24 bits unsigned) is maximum count */
++	return sprintf(buf, "16777215\n");
+ }
+ 
+ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
 
 
