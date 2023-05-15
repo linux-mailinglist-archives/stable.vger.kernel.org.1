@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC827037DA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42EF0703A12
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244177AbjEORYj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41734 "EHLO
+        id S244755AbjEORsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244175AbjEORYV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:21 -0400
+        with ESMTP id S244754AbjEORsH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5473D10E7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34FD21B094
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34A6F61FA1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23645C433D2;
-        Mon, 15 May 2023 17:23:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAA1762EE5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC5DC4339E;
+        Mon, 15 May 2023 17:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171388;
-        bh=KuEl3I79LaBi7SqK/raDUlCtJXUfEp1kHM1zSWQhnyc=;
+        s=korg; t=1684172790;
+        bh=GR7Ela1j7RtgcTsF+IMcnglXnmG+P+VslChq5U2/h+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aQIGEKffvSPNs0Bfz8feCK4o8X+pSltTfitOc3AvLGnL0zbRtAEJ7HonXSYZh/Wo4
-         WJMZqTKsf3cJQGJlvWiIPd3/apV6+QhxPr5/hOOEAe/Fhc6Fz55KizkmpDIsITiILS
-         y7ypM/fFZw/u3sHSqC2wT9LNzteK/VAGaE5p7ORg=
+        b=tn2h0ATXgQj+stBsDdJP8lu+mCnJNMy5K5Fdig2dNV0eDZIK/U9RQEjJNrtBV8L4/
+         Ud+iJb2CYu9sdPiFptXsZPggdX62o5zzw+76vEbrvcG4l4UU6TNBPVeyCn6NS0L6ZI
+         KdPD5rPbKUSjEHeJSNMczHVO8eJupWB8WBks0Jl4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.2 193/242] drm/amdgpu: fix an amdgpu_irq_put() issue in gmc_v9_0_hw_fini()
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 268/381] phy: tegra: xusb: Add missing tegra_xusb_port_unregister for usb2_port and ulpi_port
 Date:   Mon, 15 May 2023 18:28:39 +0200
-Message-Id: <20230515161727.738049312@linuxfoundation.org>
+Message-Id: <20230515161748.869022456@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-commit 922a76ba31adf84e72bc947267385be420c689ee upstream.
+[ Upstream commit e024854048e733391b31fe5a398704b31b9af803 ]
 
-As made mention of in commit 08c677cb0b43 ("drm/amdgpu: fix
-amdgpu_irq_put call trace in gmc_v10_0_hw_fini") and commit 13af556104fa
-("drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v11_0_hw_fini"). It
-is meaningless to call amdgpu_irq_put() for gmc.ecc_irq. So, remove it
-from gmc_v9_0_hw_fini().
+The tegra_xusb_port_unregister should be called when usb2_port
+and ulpi_port map fails in tegra_xusb_add_usb2_port() or in
+tegra_xusb_add_ulpi_port(), fix it.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Fixes: 3029c855d79f ("drm/amdgpu: Fix desktop freezed after gpu-reset")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20221129111634.1547747-1-cuigaosheng1@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/phy/tegra/xusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1963,7 +1963,6 @@ static int gmc_v9_0_hw_fini(void *handle
- 	if (adev->mmhub.funcs->update_power_gating)
- 		adev->mmhub.funcs->update_power_gating(adev, false);
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 181a1be5f4917..d07f33ec79397 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -775,6 +775,7 @@ static int tegra_xusb_add_usb2_port(struct tegra_xusb_padctl *padctl,
+ 	usb2->base.lane = usb2->base.ops->map(&usb2->base);
+ 	if (IS_ERR(usb2->base.lane)) {
+ 		err = PTR_ERR(usb2->base.lane);
++		tegra_xusb_port_unregister(&usb2->base);
+ 		goto out;
+ 	}
  
--	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
+@@ -841,6 +842,7 @@ static int tegra_xusb_add_ulpi_port(struct tegra_xusb_padctl *padctl,
+ 	ulpi->base.lane = ulpi->base.ops->map(&ulpi->base);
+ 	if (IS_ERR(ulpi->base.lane)) {
+ 		err = PTR_ERR(ulpi->base.lane);
++		tegra_xusb_port_unregister(&ulpi->base);
+ 		goto out;
+ 	}
  
- 	return 0;
+-- 
+2.39.2
+
 
 
