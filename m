@@ -2,59 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9862B703772
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66D12703B13
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243961AbjEORVR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:21:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
+        id S242528AbjEOR7L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244073AbjEORVB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8FE212EBD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:53 -0700 (PDT)
+        with ESMTP id S244202AbjEOR6n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB48E18994
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF8C96205E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D82C433D2;
-        Mon, 15 May 2023 17:18:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 561FB62FD0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469FFC433D2;
+        Mon, 15 May 2023 17:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171131;
-        bh=m7i8Y8IHu/njLCDUUr8smsA3tgSYIqo4RuzfNnHOmXg=;
+        s=korg; t=1684173305;
+        bh=ixhXjcUVw55FqI6hOXHTTexbt1hc3sptsu/8l88U1gg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fFJ5tLgwB1NhI8rxr5I8C4CxZSefwT86YLjyZAKECPkqr4O9Tsew7Q/WkcD8LB+L6
-         mwBNx5yGRLY5SkMGv5vBmbZMhsRsjhGbKITdhylGtHZ3fOP9EolbFkRH6BoOo87sDC
-         e/QfgRREx4sWOerR0a6lwkpYXUZhbBGqFmS7C42E=
+        b=LpyjH6J01JV68+Eh5j+eK1WEtXs7m0e8EgmYmgySEtEejR4UVIVjV2WIgPL1q313s
+         wjhwOdGexuEr0UZ38IX3Kg+A8kd5QJs81X+uY2rpDgrucM2pXKyHOmPug7k24D74RG
+         5tVdA1J7iQ9XXAxKaCK6CL5MDKNZ/UlH5/w76ETs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, elfring@users.sourceforge.net,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        German Gomez <german.gomez@arm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 103/242] perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
-Date:   Mon, 15 May 2023 18:27:09 +0200
-Message-Id: <20230515161724.992300832@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        Qiang Yu <yuq825@gmail.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 052/282] drm/lima/lima_drv: Add missing unwind goto in lima_pdev_probe()
+Date:   Mon, 15 May 2023 18:27:10 +0200
+Message-Id: <20230515161723.813600910@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,54 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <Markus.Elfring@web.de>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit c160118a90d4acf335993d8d59b02ae2147a524e ]
+[ Upstream commit c5647cae2704e58d1c4e5fedbf63f11bca6376c9 ]
 
-Addresses of two data structure members were determined before
-corresponding null pointer checks in the implementation of the function
-“sort__sym_from_cmp”.
+Smatch reports:
+drivers/gpu/drm/lima/lima_drv.c:396 lima_pdev_probe() warn:
+	missing unwind goto?
 
-Thus avoid the risk for undefined behaviour by removing extra
-initialisations for the local variables “from_l” and “from_r” (also
-because they were already reassigned with the same value behind this
-pointer check).
+Store return value in err and goto 'err_out0' which has
+lima_sched_slab_fini() before returning.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 1b9e97a2a95e4941 ("perf tools: Fix report -F symbol_from for data without branch info")
-Signed-off-by: <elfring@users.sourceforge.net>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/cocci/54a21fea-64e3-de67-82ef-d61b90ffad05@web.de/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: a1d2a6339961 ("drm/lima: driver for ARM Mali4xx GPUs")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230314052711.4061652-1-harshit.m.mogalapalli@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/sort.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/lima/lima_drv.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 2bf3f88276972..22808643ab725 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -966,8 +966,7 @@ static int hist_entry__dso_to_filter(struct hist_entry *he, int type,
- static int64_t
- sort__sym_from_cmp(struct hist_entry *left, struct hist_entry *right)
- {
--	struct addr_map_symbol *from_l = &left->branch_info->from;
--	struct addr_map_symbol *from_r = &right->branch_info->from;
-+	struct addr_map_symbol *from_l, *from_r;
+diff --git a/drivers/gpu/drm/lima/lima_drv.c b/drivers/gpu/drm/lima/lima_drv.c
+index 75ec703d22e03..89513c7c50d55 100644
+--- a/drivers/gpu/drm/lima/lima_drv.c
++++ b/drivers/gpu/drm/lima/lima_drv.c
+@@ -300,8 +300,10 @@ static int lima_pdev_probe(struct platform_device *pdev)
  
- 	if (!left->branch_info || !right->branch_info)
- 		return cmp_null(left->branch_info, right->branch_info);
+ 	/* Allocate and initialize the DRM device. */
+ 	ddev = drm_dev_alloc(&lima_drm_driver, &pdev->dev);
+-	if (IS_ERR(ddev))
+-		return PTR_ERR(ddev);
++	if (IS_ERR(ddev)) {
++		err = PTR_ERR(ddev);
++		goto err_out0;
++	}
+ 
+ 	ddev->dev_private = ldev;
+ 	ldev->ddev = ddev;
 -- 
 2.39.2
 
