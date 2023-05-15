@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F9D97036CD
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3477039E3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243787AbjEOROQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55890 "EHLO
+        id S244636AbjEORqi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243605AbjEORNz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:55 -0400
+        with ESMTP id S244639AbjEORqQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4978683F1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0609214E76
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CEEC562B78
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF50DC433EF;
-        Mon, 15 May 2023 17:11:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9786262E9D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CE8C433EF;
+        Mon, 15 May 2023 17:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170712;
-        bh=hi6YpvwkqwvuWQeFelCu8ydho8FQbsHKPNbAEPX+8B8=;
+        s=korg; t=1684172673;
+        bh=96xJQ/2uB8QceE5ijnDHeqsXxx2vhniFS4ziP/WEReg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ssmdg7I1LETPC5dIv7EqsXnCDedl0M1i5+SH3rVHakNbwy78nfJHlLtK/eKyXQpHJ
-         /8xoqWOtDPvZQ+oX+z9ZnvTHuf5eaT/Oo5NOTrhtDa9Sww5zosCEFx2qJ3W4oadqcZ
-         mzSVyQdLMuhbOxBVsb/CR/Tz9fvX+08IXZsP+8mw=
+        b=jLy+qCQ5KqvUO7nmJli1XD/9jxZrOxYFzT5BqRIdkzoiwQPmLl+LFbYhFsGae7dB4
+         09rl32faQPUyTbaa0gYtMTRp/EzmvUB/QrOGKEQILVpJNeF+AggHfDYv3YRHP3qAeQ
+         g0bZF201ed/A4Ou3UEIOEDNPDgqmBXsH1mu4GPGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Charlene Liu <Charlene.Liu@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Chunfeng Yun <chunfeng.yun@mediatek.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/239] drm/amd/display: Update Z8 SR exit/enter latencies
+Subject: [PATCH 5.10 222/381] usb: mtu3: fix kernel panic at qmu transfer done irq handler
 Date:   Mon, 15 May 2023 18:27:53 +0200
-Message-Id: <20230515161728.027693385@linuxfoundation.org>
+Message-Id: <20230515161746.761176362@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +53,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Chunfeng Yun <chunfeng.yun@mediatek.com>
 
-[ Upstream commit 9b0f51e8449f6f76170fda6a8dd9c417a43ce270 ]
+[ Upstream commit d28f4091ea7ec3510fd6a3c6d433234e7a2bef14 ]
 
-[Why]
-Request from HW team to update the latencies to the new measured values.
+When handle qmu transfer irq, it will unlock @mtu->lock before give back
+request, if another thread handle disconnect event at the same time, and
+try to disable ep, it may lock @mtu->lock and free qmu ring, then qmu
+irq hanlder may get a NULL gpd, avoid the KE by checking gpd's value before
+handling it.
 
-[How]
-Update the values in the bounding box.
+e.g.
+qmu done irq on cpu0                 thread running on cpu1
 
-Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 8f586cc16c1f ("drm/amd/display: Change default Z8 watermark values")
+qmu_done_tx()
+  handle gpd [0]
+    mtu3_requ_complete()        mtu3_gadget_ep_disable()
+      unlock @mtu->lock
+        give back request         lock @mtu->lock
+                                    mtu3_ep_disable()
+                                      mtu3_gpd_ring_free()
+                                   unlock @mtu->lock
+      lock @mtu->lock
+    get next gpd [1]
+
+[1]: goto [0] to handle next gpd, and next gpd may be NULL.
+
+Fixes: 48e0d3735aa5 ("usb: mtu3: supports new QMU format")
+Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
+Link: https://lore.kernel.org/r/20230417025203.18097-3-chunfeng.yun@mediatek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/mtu3/mtu3_qmu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 9214ce23c3bd3..2c99193b63fa6 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -148,8 +148,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_14_soc = {
- 	.num_states = 5,
- 	.sr_exit_time_us = 16.5,
- 	.sr_enter_plus_exit_time_us = 18.5,
--	.sr_exit_z8_time_us = 280.0,
--	.sr_enter_plus_exit_z8_time_us = 350.0,
-+	.sr_exit_z8_time_us = 210.0,
-+	.sr_enter_plus_exit_z8_time_us = 310.0,
- 	.writeback_latency_us = 12.0,
- 	.dram_channel_width_bytes = 4,
- 	.round_trip_ping_latency_dcfclk_cycles = 106,
+diff --git a/drivers/usb/mtu3/mtu3_qmu.c b/drivers/usb/mtu3/mtu3_qmu.c
+index 2ea3157ddb6e2..e65586147965d 100644
+--- a/drivers/usb/mtu3/mtu3_qmu.c
++++ b/drivers/usb/mtu3/mtu3_qmu.c
+@@ -210,6 +210,7 @@ static struct qmu_gpd *advance_enq_gpd(struct mtu3_gpd_ring *ring)
+ 	return ring->enqueue;
+ }
+ 
++/* @dequeue may be NULL if ring is unallocated or freed */
+ static struct qmu_gpd *advance_deq_gpd(struct mtu3_gpd_ring *ring)
+ {
+ 	if (ring->dequeue < ring->end)
+@@ -484,7 +485,7 @@ static void qmu_done_tx(struct mtu3 *mtu, u8 epnum)
+ 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
+ 		__func__, epnum, gpd, gpd_current, ring->enqueue);
+ 
+-	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
++	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
+ 
+ 		mreq = next_request(mep);
+ 
+@@ -523,7 +524,7 @@ static void qmu_done_rx(struct mtu3 *mtu, u8 epnum)
+ 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
+ 		__func__, epnum, gpd, gpd_current, ring->enqueue);
+ 
+-	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
++	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
+ 
+ 		mreq = next_request(mep);
+ 
 -- 
 2.39.2
 
