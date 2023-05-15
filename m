@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC80A7036EC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2C9970379F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243873AbjEORPQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55898 "EHLO
+        id S244134AbjEORXU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243678AbjEOROs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:48 -0400
+        with ESMTP id S243778AbjEORXA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61FFB9EFA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169251248B;
+        Mon, 15 May 2023 10:21:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9071E620CE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BA6C4339B;
-        Mon, 15 May 2023 17:13:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA8DB62C65;
+        Mon, 15 May 2023 17:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9005C433EF;
+        Mon, 15 May 2023 17:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170787;
-        bh=IS3eTNAwMHLh2tpSzI8bputzlKlvyqVwV2iqt1JHKWw=;
+        s=korg; t=1684171267;
+        bh=h5mK51aebmM7frvlZj9/VAIXXGKmEyWTQHFtggW+AO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gE+sibYuz1vWtyKF+gkpQvd0qVmPujiQ1jn304Xbo3rc2KCQMbiwjsLfKNADYMVHt
-         rlBt80LwBNT7iuQIy9m3iRaLQE3BC7tDo7YVKIDwwJhGtQJxSYFmOONOVoMsieg6Ob
-         51IislifdNbD7UyqE5mAuGWq/7OCr5rNi8FnWZcs=
+        b=OiISy/CXzo5KaHmwuCLa+V2rMYanClreSTTj9VE+RMhuKJhW1W30JSuL0l0D4Jl8T
+         mEg6IKJ3mo8wWTTI697GAlrwoe36/oWiEzRmPTsDaCLDD4BvSH8FJIeMFH9NJrvRwK
+         KF8ghGhp+thz9lSiMs6dFpo+e+mNu6DNaArqSmmM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vinod Govindapillai <vinod.govindapillai@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/239] drm: Add missing DP DSC extended capability definitions.
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        devicetree@vger.kernel.org, Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-sh@vger.kernel.org
+Subject: [PATCH 6.2 154/242] sh: init: use OF_EARLY_FLATTREE for early init
 Date:   Mon, 15 May 2023 18:28:00 +0200
-Message-Id: <20230515161728.236945573@linuxfoundation.org>
+Message-Id: <20230515161726.509748856@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,72 +59,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 1482ec00be4a3634aeffbcc799791a723df69339 ]
+commit 6cba655543c7959f8a6d2979b9d40a6a66b7ed4f upstream.
 
-Adding DP DSC register definitions, we might need for further
-DSC implementation, supporting MST and DP branch pass-through mode.
+When CONFIG_OF_EARLY_FLATTREE and CONFIG_SH_DEVICE_TREE are not set,
+SH3 build fails with a call to early_init_dt_scan(), so in
+arch/sh/kernel/setup.c and arch/sh/kernel/head_32.S, use
+CONFIG_OF_EARLY_FLATTREE instead of CONFIG_OF_FLATTREE.
 
-v2: - Fixed checkpatch comment warning
-v3: - Removed function which is not yet used(Jani Nikula)
+Fixes this build error:
+../arch/sh/kernel/setup.c: In function 'sh_fdt_init':
+../arch/sh/kernel/setup.c:262:26: error: implicit declaration of function 'early_init_dt_scan' [-Werror=implicit-function-declaration]
+  262 |         if (!dt_virt || !early_init_dt_scan(dt_virt)) {
 
-Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20221101094222.22091-2-stanislav.lisovskiy@intel.com
-Stable-dep-of: 13525645e224 ("drm/dsc: fix drm_edp_dsc_sink_output_bpp() DPCD high byte usage")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 03767daa1387 ("sh: fix build regression with CONFIG_OF && !CONFIG_OF_FLATTREE")
+Fixes: eb6b6930a70f ("sh: fix memory corruption of unflattened device tree")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
+Cc: stable@vger.kernel.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-4-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/display/drm_dp.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/sh/kernel/head_32.S |    6 +++---
+ arch/sh/kernel/setup.c   |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/drm/display/drm_dp.h b/include/drm/display/drm_dp.h
-index e934aab357bea..9bc22a02874d9 100644
---- a/include/drm/display/drm_dp.h
-+++ b/include/drm/display/drm_dp.h
-@@ -240,6 +240,8 @@
- #define DP_DSC_SUPPORT                      0x060   /* DP 1.4 */
- # define DP_DSC_DECOMPRESSION_IS_SUPPORTED  (1 << 0)
- # define DP_DSC_PASSTHROUGH_IS_SUPPORTED    (1 << 1)
-+# define DP_DSC_DYNAMIC_PPS_UPDATE_SUPPORT_COMP_TO_COMP    (1 << 2)
-+# define DP_DSC_DYNAMIC_PPS_UPDATE_SUPPORT_UNCOMP_TO_COMP  (1 << 3)
+--- a/arch/sh/kernel/head_32.S
++++ b/arch/sh/kernel/head_32.S
+@@ -64,7 +64,7 @@ ENTRY(_stext)
+ 	ldc	r0, r6_bank
+ #endif
  
- #define DP_DSC_REV                          0x061
- # define DP_DSC_MAJOR_MASK                  (0xf << 0)
-@@ -278,12 +280,15 @@
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	mov	r4, r12		! Store device tree blob pointer in r12
+ #endif
+ 	
+@@ -315,7 +315,7 @@ ENTRY(_stext)
+ 10:		
+ #endif
  
- #define DP_DSC_BLK_PREDICTION_SUPPORT       0x066
- # define DP_DSC_BLK_PREDICTION_IS_SUPPORTED (1 << 0)
-+# define DP_DSC_RGB_COLOR_CONV_BYPASS_SUPPORT (1 << 1)
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	mov.l	8f, r0		! Make flat device tree available early.
+ 	jsr	@r0
+ 	 mov	r12, r4
+@@ -346,7 +346,7 @@ ENTRY(stack_start)
+ 5:	.long	start_kernel
+ 6:	.long	cpu_init
+ 7:	.long	init_thread_union
+-#if defined(CONFIG_OF_FLATTREE)
++#if defined(CONFIG_OF_EARLY_FLATTREE)
+ 8:	.long	sh_fdt_init
+ #endif
  
- #define DP_DSC_MAX_BITS_PER_PIXEL_LOW       0x067   /* eDP 1.4 */
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -244,7 +244,7 @@ void __init __weak plat_early_device_set
+ {
+ }
  
- #define DP_DSC_MAX_BITS_PER_PIXEL_HI        0x068   /* eDP 1.4 */
- # define DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK  (0x3 << 0)
- # define DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT 8
-+# define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  0x06
-+# define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  0x08
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ {
+ 	static int done = 0;
+@@ -326,7 +326,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Let earlyprintk output early console messages */
+ 	sh_early_platform_driver_probe("earlyprintk", 1, 1);
  
- #define DP_DSC_DEC_COLOR_FORMAT_CAP         0x069
- # define DP_DSC_RGB                         (1 << 0)
-@@ -345,11 +350,13 @@
- # define DP_DSC_24_PER_DP_DSC_SINK          (1 << 2)
- 
- #define DP_DSC_BITS_PER_PIXEL_INC           0x06F
-+# define DP_DSC_RGB_YCbCr444_MAX_BPP_DELTA_MASK 0x1f
-+# define DP_DSC_RGB_YCbCr420_MAX_BPP_DELTA_MASK 0xe0
- # define DP_DSC_BITS_PER_PIXEL_1_16         0x0
- # define DP_DSC_BITS_PER_PIXEL_1_8          0x1
- # define DP_DSC_BITS_PER_PIXEL_1_4          0x2
- # define DP_DSC_BITS_PER_PIXEL_1_2          0x3
--# define DP_DSC_BITS_PER_PIXEL_1            0x4
-+# define DP_DSC_BITS_PER_PIXEL_1_1          0x4
- 
- #define DP_PSR_SUPPORT                      0x070   /* XXX 1.2? */
- # define DP_PSR_IS_SUPPORTED                1
--- 
-2.39.2
-
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ #ifdef CONFIG_USE_BUILTIN_DTB
+ 	unflatten_and_copy_device_tree();
+ #else
 
 
