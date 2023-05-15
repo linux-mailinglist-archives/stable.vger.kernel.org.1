@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAEF7034EB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB3E7033D4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243128AbjEOQyN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        id S242875AbjEOQmB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243120AbjEOQxh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:37 -0400
+        with ESMTP id S242612AbjEOQmA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:42:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313937297
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBF93AA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6A7562033
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F461C433EF;
-        Mon, 15 May 2023 16:53:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54374628A4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64615C433EF;
+        Mon, 15 May 2023 16:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169593;
-        bh=fFIITTqZj4Tpks68nbymJI6pymHbMQrYOSVdLreAt7s=;
+        s=korg; t=1684168918;
+        bh=owxnvc9dbeU66QE9VZST8VtAbpLCLsfBM9MGS8LJDB8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hzwoqT/xVZAp79vhA44yesDpFUAKZ+3FTaAlDObJHSEqPfjFlWLGQLblpu8C5XI8P
-         UPvCNbtfJpg7fNd1TF0Qvtc9aOySjbNXe1B6FiYmXsmw3zQCmny/6Le7wgLEBMV3mn
-         1nGSGwWS1qH40072pkAMHW4curUqm6v2zuqh2ewE=
+        b=wTIGh5NAwmpdAijIpVNKQX4XswuWsVxDiNqMtjxbeEnNagg9OBA++YvPSz35buOvI
+         Da5o4R+/8fBEyMQyw0NV/iPm2Fey6f+KfhEmlUATHJyziXo4x5RHBUF8lzELE8F+aJ
+         WwRz4Z1oYznHITXJaaxkriisswsWzovBiI7Wbo0k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Thomas Richter <tmricht@linux.ibm.com>,
-        Sumanth Korikkar <sumanthk@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
+        patches@lists.linux.dev, Marco Pagani <marpagan@redhat.com>,
+        Tom Rix <trix@redhat.com>, Xu Yilun <yilun.xu@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 107/246] perf vendor events s390: Remove UTF-8 characters from JSON file
-Date:   Mon, 15 May 2023 18:25:19 +0200
-Message-Id: <20230515161725.789303142@linuxfoundation.org>
+Subject: [PATCH 4.19 083/191] fpga: bridge: fix kernel-doc parameter description
+Date:   Mon, 15 May 2023 18:25:20 +0200
+Message-Id: <20230515161710.294131183@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,80 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Marco Pagani <marpagan@redhat.com>
 
-[ Upstream commit eb2feb68cb7d404288493c41480843bc9f404789 ]
+[ Upstream commit 7ef1a2c1c9dffa177ecc3ea50b7f5ee63a621137 ]
 
-Commit 7f76b31130680fb3 ("perf list: Add IBM z16 event description for
-s390") contains the verbal description for z16 extended counter set.
+Fix the kernel-doc description for the "struct fpga_image_info *info"
+parameter of the fpga_bridge_get() function.
 
-However some entries of the public description contain UTF-8 characters
-which breaks the build on some distros.
-
-Fix this and remove the UTF-8 characters.
-
-Fixes: 7f76b31130680fb3 ("perf list: Add IBM z16 event description for s390")
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/ZBwkl77/I31AQk12@osiris
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 060ac5c8fa7b ("fpga: bridge: kernel-doc fixes")
+Signed-off-by: Marco Pagani <marpagan@redhat.com>
+Reviewed-by: Tom Rix <trix@redhat.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20230301140309.512578-1-marpagan@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/s390/cf_z16/extended.json | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/fpga/fpga-bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/extended.json b/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
-index c306190fc06f2..c2b10ec1c6e01 100644
---- a/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
-+++ b/tools/perf/pmu-events/arch/s390/cf_z16/extended.json
-@@ -95,28 +95,28 @@
- 		"EventCode": "145",
- 		"EventName": "DCW_REQ",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
- 		"EventCode": "146",
- 		"EventName": "DCW_REQ_IV",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Intervention",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache with intervention."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache with intervention."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
- 		"EventCode": "147",
- 		"EventName": "DCW_REQ_CHIP_HIT",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Chip HP Hit",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache after using chip level horizontal persistence, Chip-HP hit."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache after using chip level horizontal persistence, Chip-HP hit."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
- 		"EventCode": "148",
- 		"EventName": "DCW_REQ_DRAWER_HIT",
- 		"BriefDescription": "Directory Write Level 1 Data Cache from Cache with Drawer HP Hit",
--		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestor’s Level-2 cache after using drawer level horizontal persistence, Drawer-HP hit."
-+		"PublicDescription": "A directory write to the Level-1 Data cache directory where the returned cache line was sourced from the requestors Level-2 cache after using drawer level horizontal persistence, Drawer-HP hit."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
-@@ -284,7 +284,7 @@
- 		"EventCode": "172",
- 		"EventName": "ICW_REQ_DRAWER_HIT",
- 		"BriefDescription": "Directory Write Level 1 Instruction Cache from Cache with Drawer HP Hit",
--		"PublicDescription": "A directory write to the Level-1 Instruction cache directory where the returned cache line was sourced from the requestor’s Level-2 cache using drawer level horizontal persistence, Drawer-HP hit."
-+		"PublicDescription": "A directory write to the Level-1 Instruction cache directory where the returned cache line was sourced from the requestors Level-2 cache using drawer level horizontal persistence, Drawer-HP hit."
- 	},
- 	{
- 		"Unit": "CPU-M-CF",
+diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
+index c983dac97501b..c7db12192facd 100644
+--- a/drivers/fpga/fpga-bridge.c
++++ b/drivers/fpga/fpga-bridge.c
+@@ -121,7 +121,7 @@ static int fpga_bridge_dev_match(struct device *dev, const void *data)
+ /**
+  * fpga_bridge_get - get an exclusive reference to a fpga bridge
+  * @dev:	parent device that fpga bridge was registered with
+- * @info:	fpga manager info
++ * @info:	fpga image specific information
+  *
+  * Given a device, get an exclusive reference to a fpga bridge.
+  *
 -- 
 2.39.2
 
