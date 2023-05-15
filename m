@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 592D570386E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CB687037F1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244289AbjEORca (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49462 "EHLO
+        id S244240AbjEORZi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244300AbjEORcE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3991156B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:59 -0700 (PDT)
+        with ESMTP id S244074AbjEORZX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9240D12E98
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61F7462083
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5523DC433EF;
-        Mon, 15 May 2023 17:28:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1385062CB9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C18C433EF;
+        Mon, 15 May 2023 17:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171738;
-        bh=8HqKZbdm+NdWuMjFruEQj0mnHgrk5sNmmaxBCSov924=;
+        s=korg; t=1684171451;
+        bh=JFEmUAFbvR1GozaB9PYdzBfxPtxuIWcR5UcXntMwvrk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DjHiqDUsEatue8EBivI4wRBJWUPnLASuAwp0xJINc4QCUyxtp6oig97/s9+xxdR0+
-         AWeqSqc5fsyveZCYJGjM5syXmTJ5kH7dkIHjkLsnhkJRO/UtkZbN5oMuLoXWrxsqYA
-         vze9M8mmQK2Xj117c++aEkxCE7/3HDkduzoEahX0=
+        b=uJ3OVHFLWya1E2izS2JPyuaZ2Cm++TvLfnxdrt9YH0b76l0NSGpej4LFU0QwPOYPR
+         kQbCQS3vpHErjJcDmPHZqVQyHDlEe6VMQZMhlUT9/DOFrfYGRprspngXrupxC0uvBE
+         q5WnZQBF+Mpc7iS20Thjxuy6mpxdNDGyvLhbChjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 063/134] btrfs: fix encoded write i_size corruption with no-holes
+        patches@lists.linux.dev, Ross Zwisler <zwisler@google.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 214/242] drm/i915: Check pipe source size when using skl+ scalers
 Date:   Mon, 15 May 2023 18:29:00 +0200
-Message-Id: <20230515161705.244859624@linuxfoundation.org>
+Message-Id: <20230515161728.348164855@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,92 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Boris Burkov <boris@bur.io>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit e7db9e5c6b9615b287d01f0231904fbc1fbde9c5 upstream.
+[ Upstream commit d944eafed618a8507270b324ad9d5405bb7f0b3e ]
 
-We have observed a btrfs filesystem corruption on workloads using
-no-holes and encoded writes via send stream v2. The symptom is that a
-file appears to be truncated to the end of its last aligned extent, even
-though the final unaligned extent and even the file extent and otherwise
-correctly updated inode item have been written.
+The skl+ scalers only sample 12 bits of PIPESRC so we can't
+do any plane scaling at all when the pipe source size is >4k.
 
-So if we were writing out a 1MiB+X file via 8 128K extents and one
-extent of length X, i_size would be set to 1MiB, but the ninth extent,
-nbyte, etc. would all appear correct otherwise.
+Make sure the pipe source size is also below the scaler's src
+size limits. Might not be 100% accurate, but should at least be
+safe. We can refine the limits later if we discover that recent
+hw is less restricted.
 
-The source of the race is a narrow (one line of code) window in which a
-no-holes fs has read in an updated i_size, but has not yet set a shared
-disk_i_size variable to write. Therefore, if two ordered extents run in
-parallel (par for the course for receive workloads), the following
-sequence can play out: (following "threads" a bit loosely, since there
-are callbacks involved for endio but extra threads aren't needed to
-cause the issue)
-
-  ENC-WR1 (second to last)                                         ENC-WR2 (last)
-  -------                                                          -------
-  btrfs_do_encoded_write
-    set i_size = 1M
-    submit bio B1 ending at 1M
-  endio B1
-  btrfs_inode_safe_disk_i_size_write
-    local i_size = 1M
-    falls off a cliff for some reason
-							      btrfs_do_encoded_write
-								set i_size = 1M+X
-								submit bio B2 ending at 1M+X
-							      endio B2
-							      btrfs_inode_safe_disk_i_size_write
-								local i_size = 1M+X
-								disk_i_size = 1M+X
-    disk_i_size = 1M
-							      btrfs_delayed_update_inode
-    btrfs_delayed_update_inode
-
-And the delayed inode ends up filled with nbytes=1M+X and isize=1M, and
-writes respect i_size and present a corrupted file missing its last
-extents.
-
-Fix this by holding the inode lock in the no-holes case so that a thread
-can't sneak in a write to disk_i_size that gets overwritten with an out
-of date i_size.
-
-Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Tested-by: Ross Zwisler <zwisler@google.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8357
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230418175528.13117-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 691248d4135fe3fae64b4ee0676bc96a7fd6950c)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file-item.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/skl_scaler.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/fs/btrfs/file-item.c
-+++ b/fs/btrfs/file-item.c
-@@ -47,13 +47,13 @@ void btrfs_inode_safe_disk_i_size_write(
- 	u64 start, end, i_size;
- 	int ret;
+diff --git a/drivers/gpu/drm/i915/display/skl_scaler.c b/drivers/gpu/drm/i915/display/skl_scaler.c
+index 01e8812936126..fe5c47672580b 100644
+--- a/drivers/gpu/drm/i915/display/skl_scaler.c
++++ b/drivers/gpu/drm/i915/display/skl_scaler.c
+@@ -107,6 +107,8 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	const struct drm_display_mode *adjusted_mode =
+ 		&crtc_state->hw.adjusted_mode;
++	int pipe_src_w = drm_rect_width(&crtc_state->pipe_src);
++	int pipe_src_h = drm_rect_height(&crtc_state->pipe_src);
+ 	int min_src_w, min_src_h, min_dst_w, min_dst_h;
+ 	int max_src_w, max_src_h, max_dst_w, max_dst_h;
  
-+	spin_lock(&inode->lock);
- 	i_size = new_i_size ?: i_size_read(&inode->vfs_inode);
- 	if (btrfs_fs_incompat(fs_info, NO_HOLES)) {
- 		inode->disk_i_size = i_size;
--		return;
-+		goto out_unlock;
+@@ -198,6 +200,21 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
+ 		return -EINVAL;
  	}
  
--	spin_lock(&inode->lock);
- 	ret = find_contiguous_extent_bit(&inode->file_extent_tree, 0, &start,
- 					 &end, EXTENT_DIRTY);
- 	if (!ret && start == 0)
-@@ -61,6 +61,7 @@ void btrfs_inode_safe_disk_i_size_write(
- 	else
- 		i_size = 0;
- 	inode->disk_i_size = i_size;
-+out_unlock:
- 	spin_unlock(&inode->lock);
- }
- 
++	/*
++	 * The pipe scaler does not use all the bits of PIPESRC, at least
++	 * on the earlier platforms. So even when we're scaling a plane
++	 * the *pipe* source size must not be too large. For simplicity
++	 * we assume the limits match the scaler source size limits. Might
++	 * not be 100% accurate on all platforms, but good enough for now.
++	 */
++	if (pipe_src_w > max_src_w || pipe_src_h > max_src_h) {
++		drm_dbg_kms(&dev_priv->drm,
++			    "scaler_user index %u.%u: pipe src size %ux%u "
++			    "is out of scaler range\n",
++			    crtc->pipe, scaler_user, pipe_src_w, pipe_src_h);
++		return -EINVAL;
++	}
++
+ 	/* mark this plane as a scaler user in crtc_state */
+ 	scaler_state->scaler_users |= (1 << scaler_user);
+ 	drm_dbg_kms(&dev_priv->drm, "scaler_user index %u.%u: "
+-- 
+2.39.2
+
 
 
