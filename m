@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D0A270330F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFAF370393D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242214AbjEOQcj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:32:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35304 "EHLO
+        id S244544AbjEORk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242752AbjEOQch (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4063199
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:35 -0700 (PDT)
+        with ESMTP id S244638AbjEORkD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA0A17945
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5133A62526
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0097DC433A0;
-        Mon, 15 May 2023 16:32:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5AD662DE2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F98C433EF;
+        Mon, 15 May 2023 17:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168354;
-        bh=B1D0B69W3ayQ+VLKZmFFAwMOKcHG+IM3AFk1dqjbArk=;
+        s=korg; t=1684172229;
+        bh=zNLmtlvE92e+a6GUH7QTXZjn1URMTLYoWikuSwWheO8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cwZNzQp1015qgQt25VdDoU+kVshGDYNParZQkdu+1XKuCwPzmwTCyFqrCktwwqBKD
-         JnEncijzmscz/pjkdZ/BHzlxPtjfE3lhPmr1zKh9NCZvq6Mct+3JJPeo6QakgPuTVW
-         O+CXty5tDy0oZvR+MQZf0b2Ah4St45kBfLcWWubo=
+        b=wBz4phU0C5D+gS23jW24TRVT2XabFuafvb3f2rwYYvL/VZvSs5BWf98JW86Cysofu
+         RvdHJ1W8QFjnloOcBsiQjDlSEwXajqB6C+ecN0I+McaCcb25CN6j3XanSCLpKz7s+p
+         5uM0nUPpbVSpG7674pQfSJN6vPOKNPYx8/Jznyg0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 022/116] media: av7110: prevent underflow in write_ts_to_decoder()
+Subject: [PATCH 5.10 068/381] tpm, tpm_tis: Claim locality before writing interrupt registers
 Date:   Mon, 15 May 2023 18:25:19 +0200
-Message-Id: <20230515161659.020265396@linuxfoundation.org>
+Message-Id: <20230515161739.884029290@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,45 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <error27@gmail.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit eed9496a0501357aa326ddd6b71408189ed872eb ]
+[ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
 
-The buf[4] value comes from the user via ts_play().  It is a value in
-the u8 range.  The final length we pass to av7110_ipack_instant_repack()
-is "len - (buf[4] + 1) - 4" so add a check to ensure that the length is
-not negative.  It's not clear that passing a negative len value does
-anything bad necessarily, but it's not best practice.
+In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
+TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
+Currently these modifications are done without holding a locality thus they
+have no effect. Fix this by claiming the (default) locality before the
+registers are written.
 
-With the new bounds checking the "if (!len)" condition is no longer
-possible or required so remove that.
+Since now tpm_tis_gen_interrupt() is called with the locality already
+claimed remove locality request and release from this function.
 
-Fixes: fd46d16d602a ("V4L/DVB (11759): dvb-ttpci: Add TS replay capability")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ttpci/av7110_av.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/pci/ttpci/av7110_av.c b/drivers/media/pci/ttpci/av7110_av.c
-index 2aa4ba675194e..43b780aadf5fe 100644
---- a/drivers/media/pci/ttpci/av7110_av.c
-+++ b/drivers/media/pci/ttpci/av7110_av.c
-@@ -836,10 +836,10 @@ static int write_ts_to_decoder(struct av7110 *av7110, int type, const u8 *buf, s
- 		av7110_ipack_flush(ipack);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 99cbf6fb062ce..52826a7edf800 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -721,16 +721,10 @@ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 	cap_t cap;
+ 	int ret;
  
- 	if (buf[3] & ADAPT_FIELD) {
-+		if (buf[4] > len - 1 - 4)
-+			return 0;
- 		len -= buf[4] + 1;
- 		buf += buf[4] + 1;
--		if (!len)
--			return 0;
+-	ret = request_locality(chip, 0);
+-	if (ret < 0)
+-		return;
+-
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
+ 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
+ 	else
+ 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
+-
+-	release_locality(chip, 0);
+ }
+ 
+ /* Register the IRQ and issue a command that will cause an interrupt. If an
+@@ -753,10 +747,16 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	}
+ 	priv->irq = irq;
+ 
++	rc = request_locality(chip, 0);
++	if (rc < 0)
++		return rc;
++
+ 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
+ 			   &original_int_vec);
+-	if (rc < 0)
++	if (rc < 0) {
++		release_locality(chip, priv->locality);
+ 		return rc;
++	}
+ 
+ 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
+ 	if (rc < 0)
+@@ -790,10 +790,12 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
+ 		tpm_tis_write8(priv, original_int_vec,
+ 			       TPM_INT_VECTOR(priv->locality));
+-		return -1;
++		rc = -1;
  	}
  
- 	av7110_ipack_instant_repack(buf + 4, len - 4, ipack);
+-	return 0;
++	release_locality(chip, priv->locality);
++
++	return rc;
+ }
+ 
+ /* Try to find the IRQ the TPM is using. This is for legacy x86 systems that
 -- 
 2.39.2
 
