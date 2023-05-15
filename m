@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDECB703739
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0271A70399C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244010AbjEORSU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35556 "EHLO
+        id S243375AbjEORoL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243989AbjEORSA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:18:00 -0400
+        with ESMTP id S243477AbjEORns (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A1B12088
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8861C11D9C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E992A62BF5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A86C4339C;
-        Mon, 15 May 2023 17:16:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AAD0F62E57
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B200C433D2;
+        Mon, 15 May 2023 17:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170981;
-        bh=ieltGLTLLywDiGRea3LFOSf+OYyD0IxQUjOpP1/I/s4=;
+        s=korg; t=1684172476;
+        bh=po7BveljnL+uE1oi7vuTJKw+iOecQRUKjAeTneo+wN8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2mes1vbtfEIWThYkhTZ+6ehXaI6uvPycegZUpzQkIwcHKevVPFiw9dq763RGoxIUf
-         BiTU2jU1bxQmEmnS3/Z6txTy5j4vr7D17zk4yqWZRRfu1PM9bkkHAxS9ucAsNjSdyX
-         hwou54A49ewDVVX9eHLedRXE0args3RHzmD6M3Sg=
+        b=ca8LGUR9QahrQWu4lY4ixCK8mkLmOMUWz4drV2vIMD+a+vLAuESE84xlXZuDEXgzF
+         NXMg3XUa+WtClc1lRflbgRCxAnkvPvg14JR0MdTeVovx5I6KPlh1OXBeDNfWYG+tWI
+         vOoN5bUjJM9jOW2msAeSFRuqFJKuqHD9wCDzCqWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        kernel test robot <lkp@intel.com>,
-        Jisheng Zhang <jszhang@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>,
-        Guo Ren <guoren@kernel.org>,
-        Drew Fustini <dfustini@baylibre.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 062/242] riscv: compat_syscall_table: Fixup compile warning
+Subject: [PATCH 5.10 137/381] bpf: take into account liveness when propagating precision
 Date:   Mon, 15 May 2023 18:26:28 +0200
-Message-Id: <20230515161723.764840658@linuxfoundation.org>
+Message-Id: <20230515161743.017607442@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,44 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit f9c4bbddece7eff1155c70d48e3c9c2a01b9d778 ]
+[ Upstream commit 52c2b005a3c18c565fc70cfd0ca49375f301e952 ]
 
-../arch/riscv/kernel/compat_syscall_table.c:12:41: warning: initialized
-field overwritten [-Woverride-init]
-   12 | #define __SYSCALL(nr, call)      [nr] = (call),
-      |                                         ^
-../include/uapi/asm-generic/unistd.h:567:1: note: in expansion of macro
-'__SYSCALL'
-  567 | __SYSCALL(__NR_semget, sys_semget)
+When doing state comparison, if old state has register that is not
+marked as REG_LIVE_READ, then we just skip comparison, regardless what's
+the state of corresponing register in current state. This is because not
+REG_LIVE_READ register is irrelevant for further program execution and
+correctness. All good here.
 
-Fixes: 59c10c52f573 ("riscv: compat: syscall: Add compat_sys_call_table implementation")
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Tested-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Drew Fustini <dfustini@baylibre.com>
-Link: https://lore.kernel.org/r/20230501223353.2833899-1-dfustini@baylibre.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+But when we get to precision propagation, after two states were declared
+equivalent, we don't take into account old register's liveness, and thus
+attempt to propagate precision for register in current state even if
+that register in old state was not REG_LIVE_READ anymore. This is bad,
+because register in current state could be anything at all and this
+could cause -EFAULT due to internal logic bugs.
+
+Fix by taking into account REG_LIVE_READ liveness mark to keep the logic
+in state comparison in sync with precision propagation.
+
+Fixes: a3ce685dd01a ("bpf: fix precision tracking")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20230309224131.57449-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/verifier.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index 4cf303a779ab9..8d02b9d05738d 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -9,6 +9,7 @@ CFLAGS_REMOVE_patch.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_sbi.o	= $(CC_FLAGS_FTRACE)
- endif
- CFLAGS_syscall_table.o	+= $(call cc-option,-Wno-override-init,)
-+CFLAGS_compat_syscall_table.o += $(call cc-option,-Wno-override-init,)
- 
- ifdef CONFIG_KEXEC
- AFLAGS_kexec_relocate.o := -mcmodel=medany $(call cc-option,-mno-relax)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 5a96a9dd51e4c..e2488a00efc5a 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -9550,7 +9550,8 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 		state_reg = state->regs;
+ 		for (i = 0; i < BPF_REG_FP; i++, state_reg++) {
+ 			if (state_reg->type != SCALAR_VALUE ||
+-			    !state_reg->precise)
++			    !state_reg->precise ||
++			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating r%d\n", i, fr);
+@@ -9564,7 +9565,8 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 				continue;
+ 			state_reg = &state->stack[i].spilled_ptr;
+ 			if (state_reg->type != SCALAR_VALUE ||
+-			    !state_reg->precise)
++			    !state_reg->precise ||
++			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating fp%d\n",
 -- 
 2.39.2
 
