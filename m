@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98CCC703760
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80AF470345B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244052AbjEORUd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:20:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
+        id S242999AbjEOQrX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:47:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244100AbjEORUN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:13 -0400
+        with ESMTP id S243006AbjEOQrT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:47:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ACC811D96
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64E1055BE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF5E362BF2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06C1C433EF;
-        Mon, 15 May 2023 17:17:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA09B6276A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B70C433EF;
+        Mon, 15 May 2023 16:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171078;
-        bh=iH6muFLsBl4cq/ZQjPh2dctKTGePJn46wlTWW4YhjpU=;
+        s=korg; t=1684169228;
+        bh=4tfU5tqKgsS9bIgzDZ7AGnvNOgJ7gYuvRikHdzIAaS0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RhlKxu3cZBoruqonBBHwX1kLXNBkPgqn4NQW1GPemHHV57V+kKt1MVvTvMzdMdr/C
-         rJLWDkMwUhy5bEgUCREJY3FYUkQ0sr8JkSLxxEhwZe6F2Nc5/8p+tyslloKr3YobRd
-         aE3zh65EUx0Dp0TCpigIvzHeLSkoLEArDKuwWzAg=
+        b=jhOdHL6sZCpCGw6G7GLc11MWATnza9pRfMh08uTNN1+hIV9Me1Qt/x+BWLLnB7zRb
+         UDCJkVMKvq8eD1MXrdL+lzreNUZvbUZXbE99lVK5sQTaf1nvauJXK/K+dr8mPAqf0i
+         y6LgtKOn+KY6+lKkBgf+vx8k7Bdw4Ddi6KE/h5cw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kan Liang <kan.liang@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 093/242] perf record: Fix "read LOST count failed" msg with sample read
+        patches@lists.linux.dev, stable@kernel.org,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 182/191] ext4: bail out of ext4_xattr_ibody_get() fails for any reason
 Date:   Mon, 15 May 2023 18:26:59 +0200
-Message-Id: <20230515161724.700131682@linuxfoundation.org>
+Message-Id: <20230515161714.095928729@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,59 +53,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 07d85ba9d04e1ebd282f656a29ddf08c5b7b32a2 ]
+commit 2a534e1d0d1591e951f9ece2fb460b2ff92edabd upstream.
 
-Hundreds of "read LOST count failed" error messages may be displayed,
-when the below command is launched.
+In ext4_update_inline_data(), if ext4_xattr_ibody_get() fails for any
+reason, it's best if we just fail as opposed to stumbling on,
+especially if the failure is EFSCORRUPTED.
 
-perf record -e '{cpu/mem-loads-aux/,cpu/event=0xcd,umask=0x1/}:S' -a
-
-According to the commit 89e3106fa25fb1b6 ("libperf: Handle read format
-in perf_evsel__read()"), the PERF_FORMAT_GROUP is only available for
-the leader. However, the record__read_lost_samples() goes through every
-entry of an evlist, which includes both leader and member. The member
-event errors out and triggers the error message. Since there may be
-hundreds of CPUs on a server, the message will be printed hundreds of
-times, which is very annoying.
-
-The message itself is correct, but the pr_err is a overkill. Other error
-messages in the record__read_lost_samples() are all pr_debug. To make
-the output format consistent, change the pr_err("read LOST count
-failed\n"); to pr_debug("read LOST count failed\n");.
-User can still get the message via -v option.
-
-Fixes: e3a23261ad06d598 ("perf record: Read and inject LOST_SAMPLES events")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230301150413.27011-1-kan.liang@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-record.c | 2 +-
+ fs/ext4/inline.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index 8374117e66f6e..be7c0c29d15b0 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -1866,7 +1866,7 @@ static void __record__read_lost_samples(struct record *rec, struct evsel *evsel,
- 	int id_hdr_size;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -358,7 +358,7 @@ static int ext4_update_inline_data(handl
  
- 	if (perf_evsel__read(&evsel->core, cpu_idx, thread_idx, &count) < 0) {
--		pr_err("read LOST count failed\n");
-+		pr_debug("read LOST count failed\n");
- 		return;
- 	}
+ 	error = ext4_xattr_ibody_get(inode, i.name_index, i.name,
+ 				     value, len);
+-	if (error == -ENODATA)
++	if (error < 0)
+ 		goto out;
  
--- 
-2.39.2
-
+ 	BUFFER_TRACE(is.iloc.bh, "get_write_access");
 
 
