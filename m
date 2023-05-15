@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F5C703545
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE167703411
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243282AbjEOQ5Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36986 "EHLO
+        id S239399AbjEOQoX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243268AbjEOQ5Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C27311D;
-        Mon, 15 May 2023 09:57:09 -0700 (PDT)
+        with ESMTP id S242887AbjEOQoX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A00E4698
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A912629F5;
-        Mon, 15 May 2023 16:57:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF99C433D2;
-        Mon, 15 May 2023 16:57:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBDCE627C4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDB3C433D2;
+        Mon, 15 May 2023 16:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169828;
-        bh=FWrdJUOVDUfaF82ePCRRUrLyhKUa8xyRp8tooUuq0sk=;
+        s=korg; t=1684169061;
+        bh=ONVAui3caU3CRk2auBsLG5HVBTu4nkCT1go6w6RA0iI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DjUOFlOUVAxeEz2rAD0duPHtEKYn4j+YaakXzY9F02/C8NWxlx0Ma+tffbTwFmw/0
-         9ALGxG6hHn+0cSnkLxs0Q2iKyNfjmpw7myFo76GXfEuYUr8H00jxCNOK6aNI3aHtzi
-         dRSWQ6g8tLYhSaRnfleJh3ZXCrd73gqGrXFMgfxk=
+        b=YYIXXkhxShEwk8ipWwTJmKjOdDKhM2BEFm2GnFAAYbjVct31BvDjhQ/w7O/kST9Vw
+         SmMA8xpV7t7W3dxfsOeb4hT8qycXwwZTSC8WppV1TMEaFuW5r6/UdZcqg4CIxhO9El
+         deOLQxS/MR54PkpH7Rm3biMfTbTJZEs98ObTLQPc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Igor Zhbanov <izh1979@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH 6.3 154/246] sh: nmi_debug: fix return value of __setup handler
-Date:   Mon, 15 May 2023 18:26:06 +0200
-Message-Id: <20230515161727.175634139@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 4.19 130/191] clk: rockchip: rk3399: allow clk_cifout to force clk_cifout_src to reparent
+Date:   Mon, 15 May 2023 18:26:07 +0200
+Message-Id: <20230515161712.085429725@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,53 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-commit d1155e4132de712a9d3066e2667ceaad39a539c5 upstream.
+commit 933bf364e152cd60902cf9585c2ba310d593e69f upstream.
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from nmi_debug_setup().
+clk_cifout is derived from clk_cifout_src through an integer divider
+limited to 32. clk_cifout_src is a child of either cpll, gpll or npll
+without any possibility of a divider of any sort. The default clock
+parent is cpll.
 
-Fixes: 1e1030dccb10 ("sh: nmi_debug support.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-3-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Let's allow clk_cifout to ask its parent clk_cifout_src to reparent in
+order to find the real closest possible rate for clk_cifout and not one
+derived from cpll only.
+
+Cc: stable@vger.kernel.org # 4.10+
+Fixes: fd8bc829336a ("clk: rockchip: fix the rk3399 cifout clock")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20221117-rk3399-cifout-set-rate-parent-v1-0-432548d04081@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/kernel/nmi_debug.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/rockchip/clk-rk3399.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/sh/kernel/nmi_debug.c
-+++ b/arch/sh/kernel/nmi_debug.c
-@@ -49,7 +49,7 @@ static int __init nmi_debug_setup(char *
- 	register_die_notifier(&nmi_debug_nb);
+--- a/drivers/clk/rockchip/clk-rk3399.c
++++ b/drivers/clk/rockchip/clk-rk3399.c
+@@ -1267,7 +1267,7 @@ static struct rockchip_clk_branch rk3399
+ 			RK3399_CLKSEL_CON(56), 6, 2, MFLAGS,
+ 			RK3399_CLKGATE_CON(10), 7, GFLAGS),
  
- 	if (*str != '=')
--		return 0;
-+		return 1;
+-	COMPOSITE_NOGATE(SCLK_CIF_OUT, "clk_cifout", mux_clk_cif_p, 0,
++	COMPOSITE_NOGATE(SCLK_CIF_OUT, "clk_cifout", mux_clk_cif_p, CLK_SET_RATE_PARENT,
+ 			 RK3399_CLKSEL_CON(56), 5, 1, MFLAGS, 0, 5, DFLAGS),
  
- 	for (p = str + 1; *p; p = sep + 1) {
- 		sep = strchr(p, ',');
-@@ -70,6 +70,6 @@ static int __init nmi_debug_setup(char *
- 			break;
- 	}
- 
--	return 0;
-+	return 1;
- }
- __setup("nmi_debug", nmi_debug_setup);
+ 	/* gic */
 
 
