@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B58B703416
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B75CD703748
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242923AbjEOQoh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48448 "EHLO
+        id S243993AbjEORTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242917AbjEOQof (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:35 -0400
+        with ESMTP id S244024AbjEORS6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:18:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB8449D1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554B0DDA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69F60628DB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7392EC433EF;
-        Mon, 15 May 2023 16:44:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34EB962BEE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3910FC433EF;
+        Mon, 15 May 2023 17:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169073;
-        bh=sFrfPY7EMkBSX+YimTIkq9AjymcaZRkC1tl3CcGmGv8=;
+        s=korg; t=1684171018;
+        bh=IH9iwk9BVxbL63OTDuc7CZwBqRuE+xwme9GMYrJzLAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n8s7XEeoxKnmBwl7PMcr/EIiRL4TyDzkHK0TUhQW1I5MixLBN0Ij/JDrNJ0QdSYzH
-         y2ABQ1t2XdtX+4UZKeQFOUm9p0uCZWvYoWQwuxzzDnWqYnfhOa8LVsj5+UY9yEjJtn
-         lkN0w6Firb9OWOZZWcT2yKG1pQUjE4+i4eH9Asrw=
+        b=MbkoLj8W89pLp5EndanYICZq9hYBNCeOEBCiuJaLVWdE48uGoGyFHqLNALWtym8RB
+         KEh7lRSOuhBz73smLwr9Jr/noIP6eJ4DkdP0pJI5VxTsfWe0y7OB99M7kEGapslTCN
+         2EdmB7n9pPdKle21Vg7C/aMunQLod8dXgO7k4T1Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 4.19 134/191] dm flakey: fix a crash with invalid table line
+        patches@lists.linux.dev, Palash Oswal <oswalpalash@gmail.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Cong Wang <cong.wang@bytedance.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 045/242] sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()
 Date:   Mon, 15 May 2023 18:26:11 +0200
-Message-Id: <20230515161712.245342369@linuxfoundation.org>
+Message-Id: <20230515161723.268259126@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,37 +57,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit 98dba02d9a93eec11bffbb93c7c51624290702d2 upstream.
+[ Upstream commit c88f8d5cd95fd039cff95d682b8e71100c001df0 ]
 
-This command will crash with NULL pointer dereference:
- dmsetup create flakey --table \
-  "0 `blockdev --getsize /dev/ram0` flakey /dev/ram0 0 0 1 2 corrupt_bio_byte 512"
+When a tunnel device is bound with the underlying device, its
+dev->needed_headroom needs to be updated properly. IPv4 tunnels
+already do the same in ip_tunnel_bind_dev(). Otherwise we may
+not have enough header room for skb, especially after commit
+b17f709a2401 ("gue: TX support for using remote checksum offload option").
 
-Fix the crash by checking if arg_name is non-NULL before comparing it.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32b8a8e59c9c ("sit: add IPv4 over IPv4 support")
+Reported-by: Palash Oswal <oswalpalash@gmail.com>
+Link: https://lore.kernel.org/netdev/CAGyP=7fDcSPKu6nttbGwt7RXzE3uyYxLjCSE97J64pRxJP8jPA@mail.gmail.com/
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-flakey.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/sit.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/md/dm-flakey.c
-+++ b/drivers/md/dm-flakey.c
-@@ -124,9 +124,9 @@ static int parse_features(struct dm_arg_
- 			 * Direction r or w?
- 			 */
- 			arg_name = dm_shift_arg(as);
--			if (!strcasecmp(arg_name, "w"))
-+			if (arg_name && !strcasecmp(arg_name, "w"))
- 				fc->corrupt_bio_rw = WRITE;
--			else if (!strcasecmp(arg_name, "r"))
-+			else if (arg_name && !strcasecmp(arg_name, "r"))
- 				fc->corrupt_bio_rw = READ;
- 			else {
- 				ti->error = "Invalid corrupt bio direction (r or w)";
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 70d81bba50939..3ffb6a5b1f82a 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -1095,12 +1095,13 @@ static netdev_tx_t sit_tunnel_xmit(struct sk_buff *skb,
+ 
+ static void ipip6_tunnel_bind_dev(struct net_device *dev)
+ {
++	struct ip_tunnel *tunnel = netdev_priv(dev);
++	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+ 	struct net_device *tdev = NULL;
+-	struct ip_tunnel *tunnel;
++	int hlen = LL_MAX_HEADER;
+ 	const struct iphdr *iph;
+ 	struct flowi4 fl4;
+ 
+-	tunnel = netdev_priv(dev);
+ 	iph = &tunnel->parms.iph;
+ 
+ 	if (iph->daddr) {
+@@ -1123,14 +1124,15 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
+ 		tdev = __dev_get_by_index(tunnel->net, tunnel->parms.link);
+ 
+ 	if (tdev && !netif_is_l3_master(tdev)) {
+-		int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+ 		int mtu;
+ 
+ 		mtu = tdev->mtu - t_hlen;
+ 		if (mtu < IPV6_MIN_MTU)
+ 			mtu = IPV6_MIN_MTU;
+ 		WRITE_ONCE(dev->mtu, mtu);
++		hlen = tdev->hard_header_len + tdev->needed_headroom;
+ 	}
++	dev->needed_headroom = t_hlen + hlen;
+ }
+ 
+ static void ipip6_tunnel_update(struct ip_tunnel *t, struct ip_tunnel_parm *p,
+-- 
+2.39.2
+
 
 
