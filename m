@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BF23703B8D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0BB5703B9C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:04:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244672AbjEOSEM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:04:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39712 "EHLO
+        id S243251AbjEOSEe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244813AbjEOSDw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:03:52 -0400
+        with ESMTP id S244863AbjEOSEP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:04:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449EE1EC26
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:01:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07DD219979
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:01:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 197F56304F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:01:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACA9C433EF;
-        Mon, 15 May 2023 18:01:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBE1263041
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9E4C433EF;
+        Mon, 15 May 2023 18:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173683;
-        bh=F2bk/Jm4kI5G11EZsiHj/7AQDrYV4wdbsdMZWkeXlAM=;
+        s=korg; t=1684173717;
+        bh=G0tGC8k0SBDCDGJ6Iv4A5FGuN2gQNmpMbtGLNVHDqD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yXbI7aGrltDnkQjdMRJEc/7BLZlBr6OphYxLWUHBG035EfGeg1xK7Y7De4MC4EYZC
-         ir1OqVDp3bRRG72CYSdT1gRcGOGS7Du7+TRuoGAkC06FE7obWbHRkh8JmCV9iVWAzd
-         WvByFoFEKwYInxOQyOP69usL1cxQObVbOs4aeTA8=
+        b=hh3Cit5jdj6/8oqUP+ll+73C3B+VadPGV92PbXNOCmd3an6crfe3rIWBtVag5hiSg
+         KlTcLmIaONLyUjzE4J1UasP2EEmLyRdcH5tRxQoU4VHeZAkc3tOPmR4Z786tkOi4Zg
+         SqNiDyMcuk/PVglCdXRtZ6EGdFPZh7ItpIDKJTeE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 166/282] power: supply: generic-adc-battery: fix unit scaling
-Date:   Mon, 15 May 2023 18:29:04 +0200
-Message-Id: <20230515161727.189352899@linuxfoundation.org>
+Subject: [PATCH 5.4 167/282] clk: add missing of_node_put() in "assigned-clocks" property parsing
+Date:   Mon, 15 May 2023 18:29:05 +0200
+Message-Id: <20230515161727.219072066@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -55,37 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Reichel <sre@kernel.org>
+From: Clément Léger <clement.leger@bootlin.com>
 
-[ Upstream commit 44263f50065969f2344808388bd589740f026167 ]
+[ Upstream commit 27a6e1b09a782517fddac91259970ac466a3f7b6 ]
 
-power-supply properties are reported in µV, µA and µW.
-The IIO API provides mV, mA, mW, so the values need to
-be multiplied by 1000.
+When returning from of_parse_phandle_with_args(), the np member of the
+of_phandle_args structure should be put after usage. Add missing
+of_node_put() calls in both __set_clk_parents() and __set_clk_rates().
 
-Fixes: e60fea794e6e ("power: battery: Generic battery driver using IIO")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Signed-off-by: Sebastian Reichel <sre@kernel.org>
+Fixes: 86be408bfbd8 ("clk: Support for clock parents and rates assigned from device tree")
+Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+Link: https://lore.kernel.org/r/20230131083227.10990-1-clement.leger@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/generic-adc-battery.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/clk-conf.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/generic-adc-battery.c b/drivers/power/supply/generic-adc-battery.c
-index 97b0e873e87d2..c2d6378bb897d 100644
---- a/drivers/power/supply/generic-adc-battery.c
-+++ b/drivers/power/supply/generic-adc-battery.c
-@@ -138,6 +138,9 @@ static int read_channel(struct gab *adc_bat, enum power_supply_property psp,
- 			result);
- 	if (ret < 0)
- 		pr_err("read channel error\n");
-+	else
-+		*result *= 1000;
-+
- 	return ret;
- }
+diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
+index 2ef819606c417..1a4e6340f95ce 100644
+--- a/drivers/clk/clk-conf.c
++++ b/drivers/clk/clk-conf.c
+@@ -33,9 +33,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
+ 			else
+ 				return rc;
+ 		}
+-		if (clkspec.np == node && !clk_supplier)
++		if (clkspec.np == node && !clk_supplier) {
++			of_node_put(clkspec.np);
+ 			return 0;
++		}
+ 		pclk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(pclk)) {
+ 			if (PTR_ERR(pclk) != -EPROBE_DEFER)
+ 				pr_warn("clk: couldn't get parent clock %d for %pOF\n",
+@@ -48,10 +51,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
+ 		if (rc < 0)
+ 			goto err;
+ 		if (clkspec.np == node && !clk_supplier) {
++			of_node_put(clkspec.np);
+ 			rc = 0;
+ 			goto err;
+ 		}
+ 		clk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(clk)) {
+ 			if (PTR_ERR(clk) != -EPROBE_DEFER)
+ 				pr_warn("clk: couldn't get assigned clock %d for %pOF\n",
+@@ -93,10 +98,13 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
+ 				else
+ 					return rc;
+ 			}
+-			if (clkspec.np == node && !clk_supplier)
++			if (clkspec.np == node && !clk_supplier) {
++				of_node_put(clkspec.np);
+ 				return 0;
++			}
  
+ 			clk = of_clk_get_from_provider(&clkspec);
++			of_node_put(clkspec.np);
+ 			if (IS_ERR(clk)) {
+ 				if (PTR_ERR(clk) != -EPROBE_DEFER)
+ 					pr_warn("clk: couldn't get clock %d for %pOF\n",
 -- 
 2.39.2
 
