@@ -2,62 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCCA6703762
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE9B703B16
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243802AbjEORUh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:20:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35558 "EHLO
+        id S243148AbjEOR7O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243888AbjEORUR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:17 -0400
+        with ESMTP id S244684AbjEOR6p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2EF8A47
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1EC18981
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0181B62C19
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CC4C433EF;
-        Mon, 15 May 2023 17:18:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE67363006
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4ADC433D2;
+        Mon, 15 May 2023 17:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171081;
-        bh=7Ww3gJ0MMaCot7GcXVMObp+oao8gk8X9WDzROii9aVo=;
+        s=korg; t=1684173370;
+        bh=hFv2u4Yusf1LDohkO2kSi+L5bR7samG9gkIredYcF90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xd74bOx/asHwaCCgQPtPbNlWOvuV0zWBdHb9ckryarl7xvvRbA2YysPYuWAEg0tn4
-         n4/otBYaScs/tCcgVMDG8GcCjVVHubCQqJRAAO6HknuhNsd7XoP36kjSRXw7RVqw4c
-         VmCR9jt2vYids/l19pS0HcYy7Y3RaQ/jbf5DeRyg=
+        b=IiSa1jko1xM/avOAD9MlVlp4HmZuCafgEaRREbmpENM7K2/aIEQf3cOMRVdSmgYNU
+         em+FrRFH4wbYR39B6oVDSSaVK2Vy9qDwByhqOUUbdT+Rld9heKmiHmc2UCqO4Xfg3q
+         qq817d9MjxRkX+G4Jza637IVXfpXckGwNKdQYhug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andres Freund <andres@anarazel.de>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Pavithra Gurushankar <gpavithrasha@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Quentin Monnet <quentin@isovalent.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Stephane Eranian <eranian@google.com>,
-        Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Tom Rix <trix@redhat.com>,
-        Yang Jihong <yangjihong1@huawei.com>, llvm@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 094/242] perf build: Support python/perf.so testing
-Date:   Mon, 15 May 2023 18:27:00 +0200
-Message-Id: <20230515161724.729261846@linuxfoundation.org>
+Subject: [PATCH 5.4 043/282] ARM: dts: qcom: ipq8064: Fix the PCI I/O port range
+Date:   Mon, 15 May 2023 18:27:01 +0200
+Message-Id: <20230515161723.555718569@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -72,102 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ian Rogers <irogers@google.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 7a9b223ca0761a7c7c72e569b86b84a907aa0f92 ]
+[ Upstream commit 0b16b34e491629016109e56747ad64588074194b ]
 
-Add a build target to echo the python/perf.so's name from
-Makefile.perf. Use it in tests/make so the correct target is built and
-tested for.
+For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI addresses
+(0x0fe00000, 0x31e00000, 0x35e00000) specified in the ranges property for
+I/O region.
 
-Fixes: caec54705adb73b0 ("perf build: Fix python/perf.so library's name")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andres Freund <andres@anarazel.de>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin Liška <mliska@suse.cz>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Pavithra Gurushankar <gpavithrasha@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Quentin Monnet <quentin@isovalent.com>
-Cc: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Tom Rix <trix@redhat.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: llvm@lists.linux.dev
-Link: https://lore.kernel.org/r/20230311065753.3012826-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+While at it, let's use the missing 0x prefix for the addresses.
+
+Fixes: 93241840b664 ("ARM: dts: qcom: Add pcie nodes for ipq8064")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-17-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.perf | 7 +++++--
- tools/perf/tests/make    | 5 +++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/qcom-ipq8064.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index b7d9c42062300..cc2b0ace54bac 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -647,13 +647,16 @@ all: shell_compatibility_test $(ALL_PROGRAMS) $(LANG_BINDINGS) $(OTHER_PROGRAMS)
- # Create python binding output directory if not already present
- _dummy := $(shell [ -d '$(OUTPUT)python' ] || mkdir -p '$(OUTPUT)python')
+diff --git a/arch/arm/boot/dts/qcom-ipq8064.dtsi b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+index f2653600f47f8..976a8a1fa9535 100644
+--- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+@@ -451,8 +451,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
--$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): $(PYTHON_EXT_SRCS) $(PYTHON_EXT_DEPS) $(LIBPERF)
-+$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): $(PYTHON_EXT_SRCS) $(PYTHON_EXT_DEPS) $(LIBPERF) $(LIBSUBCMD)
- 	$(QUIET_GEN)LDSHARED="$(CC) -pthread -shared" \
-         CFLAGS='$(CFLAGS)' LDFLAGS='$(LDFLAGS)' \
- 	  $(PYTHON_WORD) util/setup.py \
- 	  --quiet build_ext; \
- 	cp $(PYTHON_EXTBUILD_LIB)perf*.so $(OUTPUT)python/
+-			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00010000   /* downstream I/O */
+-				  0x82000000 0 0x08000000 0x08000000 0 0x07e00000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x0fe00000 0x0 0x00010000   /* I/O */
++				  0x82000000 0x0 0x08000000 0x08000000 0x0 0x07e00000>; /* MEM */
  
-+python_perf_target:
-+	@echo "Target is: $(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX)"
-+
- please_set_SHELL_PATH_to_a_more_modern_shell:
- 	$(Q)$$(:)
+ 			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -502,8 +502,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
-@@ -1151,7 +1154,7 @@ FORCE:
- .PHONY: all install clean config-clean strip install-gtk
- .PHONY: shell_compatibility_test please_set_SHELL_PATH_to_a_more_modern_shell
- .PHONY: .FORCE-PERF-VERSION-FILE TAGS tags cscope FORCE prepare
--.PHONY: archheaders
-+.PHONY: archheaders python_perf_target
+-			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00010000   /* downstream I/O */
+-				  0x82000000 0 0x2e000000 0x2e000000 0 0x03e00000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x31e00000 0x0 0x00010000   /* I/O */
++				  0x82000000 0x0 0x2e000000 0x2e000000 0x0 0x03e00000>; /* MEM */
  
- endif # force_fixdep
+ 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -553,8 +553,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
-diff --git a/tools/perf/tests/make b/tools/perf/tests/make
-index 009d6efb673ce..deb37fb982e97 100644
---- a/tools/perf/tests/make
-+++ b/tools/perf/tests/make
-@@ -62,10 +62,11 @@ lib = lib
- endif
+-			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00010000   /* downstream I/O */
+-				  0x82000000 0 0x32000000 0x32000000 0 0x03e00000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x35e00000 0x0 0x00010000   /* I/O */
++				  0x82000000 0x0 0x32000000 0x32000000 0x0 0x03e00000>; /* MEM */
  
- has = $(shell which $1 2>/dev/null)
-+python_perf_so := $(shell $(MAKE) python_perf_target|grep "Target is:"|awk '{print $$3}')
- 
- # standard single make variable specified
- make_clean_all      := clean all
--make_python_perf_so := python/perf.so
-+make_python_perf_so := $(python_perf_so)
- make_debug          := DEBUG=1
- make_no_libperl     := NO_LIBPERL=1
- make_no_libpython   := NO_LIBPYTHON=1
-@@ -204,7 +205,7 @@ test_make_doc    := $(test_ok)
- test_make_help_O := $(test_ok)
- test_make_doc_O  := $(test_ok)
- 
--test_make_python_perf_so := test -f $(PERF_O)/python/perf.so
-+test_make_python_perf_so := test -f $(PERF_O)/$(python_perf_so)
- 
- test_make_perf_o           := test -f $(PERF_O)/perf.o
- test_make_util_map_o       := test -f $(PERF_O)/util/map.o
+ 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
 -- 
 2.39.2
 
