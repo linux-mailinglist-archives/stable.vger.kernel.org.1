@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD757022A1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 05:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 940FF7022A5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 05:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231910AbjEODv5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 23:51:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
+        id S234226AbjEOD7M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 23:59:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238489AbjEODvz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 23:51:55 -0400
+        with ESMTP id S231500AbjEOD7L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 23:59:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C90C6189
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 20:51:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4485AE5E
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 20:59:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59FC06113D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 03:51:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE70C433D2;
-        Mon, 15 May 2023 03:51:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8B8E6142C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 03:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C12C433D2;
+        Mon, 15 May 2023 03:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684122712;
-        bh=8tUhIgsf/aABc0z3KyTOyOwL8BqBKwM0KGPzl9xAYHg=;
+        s=korg; t=1684123149;
+        bh=dVlg3dlwcijDwrEoN7oOI9+E5B/BcKv+jesAgVUM+bs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jgGuJC/n9FgWdvSKMcwNWnEEA4M8qKM3yKYEBpAzEUKAzQNFB26rneeSibzELSMcH
-         DJsLZATXQsQ2zW+HLUS2DUIMgmy/2SdTfCSCyKXz9aZZ1AJsFu8Wyi400WdS2H6DL4
-         07H+wLCyqHi5PbJTZlHbjzXec2VsBKHBkQnlgYbE=
-Date:   Mon, 15 May 2023 05:51:49 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Yeongjin Gil <youngjin.gil@samsung.com>
-Cc:     stable@vger.kernel.org, Sungjong Seo <sj1557.seo@samsung.com>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: Re: [PATCH v2] dm verity: fix error handling for check_at_most_once
- on FEC
-Message-ID: <2023051508-payphone-dimly-b417@gregkh>
-References: <2023050701-epileptic-unethical-f46c@gregkh>
- <CGME20230515011823epcas1p2e05135dda9e7e159d637016d81d55abc@epcas1p2.samsung.com>
- <20230515011816.25372-1-youngjin.gil@samsung.com>
+        b=RvvOjFU9ijG9Vfdi5ZU6eCYwy/wz8pYeu2laXSVOeS6Vlz39s7+gzPJRt1HvuK1hP
+         Aw2qGgffW4CeMoFgJA2Mf9uo7ZxKAPAjp6oV/gplXCDesKmtn2fN6SyYnH6i3Fi3IP
+         kdfqkGUcTmK9pls0sJdUBFIlTof1XslDELfwa8xU=
+Date:   Mon, 15 May 2023 05:59:06 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Sedat Dilek <sedat.dilek@gmail.com>, stable@vger.kernel.org
+Subject: Re: [queue-6.3] Double "fs/ntfs3: Fix null-ptr-deref on inode->i_op
+ in ntfs_lookup()"
+Message-ID: <2023051558-crescent-urging-a428@gregkh>
+References: <CA+icZUVq2eAb_hRLZjt5Uuf=Na3O5vPPHeca2oFay7ZeNQL8wA@mail.gmail.com>
+ <ZGGn0IffMsXXE+lF@sashalap>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515011816.25372-1-youngjin.gil@samsung.com>
+In-Reply-To: <ZGGn0IffMsXXE+lF@sashalap>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -53,32 +51,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 10:18:16AM +0900, Yeongjin Gil wrote:
-> In verity_end_io(), if bi_status is not BLK_STS_OK, it can be return
-> directly. But if FEC configured, it is desired to correct the data page
-> through verity_verify_io. And the return value will be converted to
-> blk_status and passed to verity_finish_io().
+On Sun, May 14, 2023 at 11:32:32PM -0400, Sasha Levin wrote:
+> On Sat, May 13, 2023 at 08:46:56PM +0200, Sedat Dilek wrote:
+> > Hi,
+> > 
+> > while looking through 6.3-series patch-queue I noticed:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=queue/6.3&id=5a5aea218d527e82c59d0164b4205a96399bda8e
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=queue/6.3&id=a5085c4040ae421cc5d90bba2a1a1cecd6f800c0
+> > 
+> > Looks like the same patch:
+> > 
+> > fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
+> > commit 254e69f284d7270e0abdc023ee53b71401c3ba0c upstream.
+> > 
+> > fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
+> > [ Upstream commit 254e69f284d7270e0abdc023ee53b71401c3ba0c ]
 > 
-> BTW, when a bit is set in v->validated_blocks, verity_verify_io() skips
-> verification regardless of I/O error for the corresponding bio. In this
-> case, the I/O error could not be returned properly, and as a result,
-> there is a problem that abnormal data could be read for the
-> corresponding block.
-> 
-> To fix this problem, when an I/O error occurs, do not skip verification
-> even if the bit related is set in v->validated_blocks.
-> 
-> Fixes: 843f38d382b1 ("dm verity: add 'check_at_most_once' option to only validate hashes once")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-> Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
-> Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-> (cherry picked from commit e8c5d45f82ce0c238a4817739892fe8897a3dcc3)
+> Looks like Greg's patch somehow applied on top of mine, I've dropped it.
 
-Why did you send this 3 times?
-
-And what kernel(s) is this to be applied to?
-
-confused,
-
-greg k-h
+Thank you, this got confusing fast...
