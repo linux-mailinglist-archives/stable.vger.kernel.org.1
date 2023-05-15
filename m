@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D041703A9F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF35F7038CA
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244897AbjEORx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53924 "EHLO
+        id S242712AbjEORfL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244527AbjEORxI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:53:08 -0400
+        with ESMTP id S244425AbjEORee (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07BFF19F1B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:51:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7501E19BF3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBA3262F8A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:51:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7046C433EF;
-        Mon, 15 May 2023 17:51:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5656862D64
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510C6C433EF;
+        Mon, 15 May 2023 17:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173069;
-        bh=wSUrz+NeO/lYyL3E4TXSTgZljsA16Z692dL1f7VyAE0=;
+        s=korg; t=1684171959;
+        bh=4kk/zNZc2OrVB84yJRNEDoIy3nnVw2F+f3/dgGyEIJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NuEKAKy01LHYar9DljYKp7rbiiv+KZzG8UD+0oZVsfGJGHG657+p2z+QrBsCCAMbl
-         ArxFvojVldbdstUq/nqNAu7+8czUYFbWLMP2wMIODgfpBloqm/cP8w/rtEmKIJNeQ2
-         PozAx2AW+/vvS+18b7VwGsVzuvpZQqkuXZ/FvpnI=
+        b=x+TMMVMXvMYuv7gvKT498HmrEBYdl2n6mbu/nVcZnFujUPwejftx5Wqoaf16ZiaEc
+         EOlamRje3+r2S3HspCA2AgPDZYB8TqZqYEigTi2ybL0ZYMxCxmXuINyWsNi9hPi5JR
+         rwhvZ4QOa+Om9Z82SvFUdnA5JWcmxPm9FjiTHBh0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com,
-        Ye Bin <yebin10@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 358/381] ext4: fix WARNING in mb_find_extent
-Date:   Mon, 15 May 2023 18:30:09 +0200
-Message-Id: <20230515161753.067650716@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH 5.15 133/134] RISC-V: Fix up a cherry-pick warning in setup_vm_final()
+Date:   Mon, 15 May 2023 18:30:10 +0200
+Message-Id: <20230515161707.610511632@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,129 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ye Bin <yebin10@huawei.com>
 
-commit fa08a7b61dff8a4df11ff1e84abfc214b487caf7 upstream.
+This triggers a -Wdeclaration-after-statement as the code has changed a
+bit since upstream.  It might be better to hoist the whole block up, but
+this is a smaller change so I went with it.
 
-Syzbot found the following issue:
+arch/riscv/mm/init.c:755:16: warning: mixing declarations and code is a C99 extension [-Wdeclaration-after-statement]
+             unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
+                           ^
+     1 warning generated.
 
-EXT4-fs: Warning: mounting with data=journal disables delayed allocation, dioread_nolock, O_DIRECT and fast_commit support!
-EXT4-fs (loop0): orphan cleanup on readonly fs
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 5067 at fs/ext4/mballoc.c:1869 mb_find_extent+0x8a1/0xe30
-Modules linked in:
-CPU: 1 PID: 5067 Comm: syz-executor307 Not tainted 6.2.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-RIP: 0010:mb_find_extent+0x8a1/0xe30 fs/ext4/mballoc.c:1869
-RSP: 0018:ffffc90003c9e098 EFLAGS: 00010293
-RAX: ffffffff82405731 RBX: 0000000000000041 RCX: ffff8880783457c0
-RDX: 0000000000000000 RSI: 0000000000000041 RDI: 0000000000000040
-RBP: 0000000000000040 R08: ffffffff82405723 R09: ffffed10053c9402
-R10: ffffed10053c9402 R11: 1ffff110053c9401 R12: 0000000000000000
-R13: ffffc90003c9e538 R14: dffffc0000000000 R15: ffffc90003c9e2cc
-FS:  0000555556665300(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056312f6796f8 CR3: 0000000022437000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ext4_mb_complex_scan_group+0x353/0x1100 fs/ext4/mballoc.c:2307
- ext4_mb_regular_allocator+0x1533/0x3860 fs/ext4/mballoc.c:2735
- ext4_mb_new_blocks+0xddf/0x3db0 fs/ext4/mballoc.c:5605
- ext4_ext_map_blocks+0x1868/0x6880 fs/ext4/extents.c:4286
- ext4_map_blocks+0xa49/0x1cc0 fs/ext4/inode.c:651
- ext4_getblk+0x1b9/0x770 fs/ext4/inode.c:864
- ext4_bread+0x2a/0x170 fs/ext4/inode.c:920
- ext4_quota_write+0x225/0x570 fs/ext4/super.c:7105
- write_blk fs/quota/quota_tree.c:64 [inline]
- get_free_dqblk+0x34a/0x6d0 fs/quota/quota_tree.c:130
- do_insert_tree+0x26b/0x1aa0 fs/quota/quota_tree.c:340
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- dq_insert_tree fs/quota/quota_tree.c:401 [inline]
- qtree_write_dquot+0x3b6/0x530 fs/quota/quota_tree.c:420
- v2_write_dquot+0x11b/0x190 fs/quota/quota_v2.c:358
- dquot_acquire+0x348/0x670 fs/quota/dquot.c:444
- ext4_acquire_dquot+0x2dc/0x400 fs/ext4/super.c:6740
- dqget+0x999/0xdc0 fs/quota/dquot.c:914
- __dquot_initialize+0x3d0/0xcf0 fs/quota/dquot.c:1492
- ext4_process_orphan+0x57/0x2d0 fs/ext4/orphan.c:329
- ext4_orphan_cleanup+0xb60/0x1340 fs/ext4/orphan.c:474
- __ext4_fill_super fs/ext4/super.c:5516 [inline]
- ext4_fill_super+0x81cd/0x8700 fs/ext4/super.c:5644
- get_tree_bdev+0x400/0x620 fs/super.c:1282
- vfs_get_tree+0x88/0x270 fs/super.c:1489
- do_new_mount+0x289/0xad0 fs/namespace.c:3145
- do_mount fs/namespace.c:3488 [inline]
- __do_sys_mount fs/namespace.c:3697 [inline]
- __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Add some debug information:
-mb_find_extent: mb_find_extent block=41, order=0 needed=64 next=0 ex=0/41/1@3735929054 64 64 7
-block_bitmap: ff 3f 0c 00 fc 01 00 00 d2 3d 00 00 00 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Acctually, blocks per group is 64, but block bitmap indicate at least has
-128 blocks. Now, ext4_validate_block_bitmap() didn't check invalid block's
-bitmap if set.
-To resolve above issue, add check like fsck "Padding at end of block bitmap is
-not set".
-
-Cc: stable@kernel.org
-Reported-by: syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230116020015.1506120-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: bbf94b042155 ("riscv: Move early dtb mapping into the fixmap region")
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304300429.SXZOA5up-lkp@intel.com/
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/balloc.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/riscv/mm/init.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -303,6 +303,22 @@ struct ext4_group_desc * ext4_get_group_
- 	return desc;
- }
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -714,6 +714,7 @@ static void __init setup_vm_final(void)
+ {
+ 	uintptr_t va, map_size;
+ 	phys_addr_t pa, start, end;
++	unsigned long idx __maybe_unused;
+ 	u64 i;
  
-+static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
-+						    ext4_group_t block_group,
-+						    struct buffer_head *bh)
-+{
-+	ext4_grpblk_t next_zero_bit;
-+	unsigned long bitmap_size = sb->s_blocksize * 8;
-+	unsigned int offset = num_clusters_in_group(sb, block_group);
-+
-+	if (bitmap_size <= offset)
-+		return 0;
-+
-+	next_zero_bit = ext4_find_next_zero_bit(bh->b_data, bitmap_size, offset);
-+
-+	return (next_zero_bit < bitmap_size ? next_zero_bit : 0);
-+}
-+
- /*
-  * Return the block number which was discovered to be invalid, or 0 if
-  * the block bitmap is valid.
-@@ -401,6 +417,15 @@ static int ext4_validate_block_bitmap(st
- 					EXT4_GROUP_INFO_BBITMAP_CORRUPT);
- 		return -EFSCORRUPTED;
- 	}
-+	blk = ext4_valid_block_bitmap_padding(sb, block_group, bh);
-+	if (unlikely(blk != 0)) {
-+		ext4_unlock_group(sb, block_group);
-+		ext4_error(sb, "bg %u: block %llu: padding at end of block bitmap is not set",
-+			   block_group, blk);
-+		ext4_mark_group_bitmap_corrupted(sb, block_group,
-+						 EXT4_GROUP_INFO_BBITMAP_CORRUPT);
-+		return -EFSCORRUPTED;
-+	}
- 	set_buffer_verified(bh);
- verified:
- 	ext4_unlock_group(sb, block_group);
+ 	/**
+@@ -733,7 +734,7 @@ static void __init setup_vm_final(void)
+ 	 * directly in swapper_pg_dir in addition to the pgd entry that points
+ 	 * to fixmap_pte.
+ 	 */
+-	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
++	idx = pgd_index(__fix_to_virt(FIX_FDT));
+ 
+ 	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
+ #endif
 
 
