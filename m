@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA077039F9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB537036ED
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244638AbjEORrE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39852 "EHLO
+        id S243886AbjEORPS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244489AbjEORqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3794C7ECB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:32 -0700 (PDT)
+        with ESMTP id S243900AbjEOROu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747679EDD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7A6962EBF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE62EC433EF;
-        Mon, 15 May 2023 17:45:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAE5660B9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFADCC433D2;
+        Mon, 15 May 2023 17:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172731;
-        bh=R+ZRkWmerXpRcM+n9D043qxdlL9738RG012q4HJc3Ro=;
+        s=korg; t=1684170796;
+        bh=25k/maKvTjokGF7S74GJjyHlScOMw2b5fZgwxGk+au4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vWurK8cq2dInfYS11Qo0YT+q7CQqjnzrOjTugGmkcgZvuuER/UNuIe59trlckk5pH
-         xY2L+mo2SaZefs5iwl8HvgT8EB3AA8/ZtecgQx/9wSzRDJRsAL02EIiuMjYYP2jC7w
-         A5wmh+SQQvYng4iHgBILN+fTmQiNqEZvSaqKQBJU=
+        b=m3QTLkDuP3hg9h5fCZKT4XDlaCv8JGdQMcmgZJvokuYEmk0pbU9dNf0O2g2eKPmBx
+         Pl150TyTkCKLH9+JI/3ClpGT4aBRFhnXKdiZrPi6pu0YQ1Ri7UzsK/DESF6Ay/CTTJ
+         iZsJUxyxAegGBo/rarlRwLgqntFgA6MVCSLC3Cts=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Brendan Cunningham <bcunningham@cornelisnetworks.com>,
-        Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 248/381] IB/hfi1: Fix SDMA mmu_rb_node not being evicted in LRU order
-Date:   Mon, 15 May 2023 18:28:19 +0200
-Message-Id: <20230515161747.903120769@linuxfoundation.org>
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 237/239] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
+Date:   Mon, 15 May 2023 18:28:20 +0200
+Message-Id: <20230515161728.817519057@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,93 +54,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 9fe8fec5e43d5a80f43cbf61aaada1b047a1eb61 ]
+commit 8a5299a1278eadf1e08a598a5345c376206f171e upstream.
 
-hfi1_mmu_rb_remove_unless_exact() did not move mmu_rb_node objects in
-mmu_rb_handler->lru_list after getting a cache hit on an mmu_rb_node.
+For different reasons, fsl-spi driver performs bits_per_word
+modifications for different reasons:
+- On CPU mode, to minimise amount of interrupts
+- On CPM/QE mode to work around controller byte order
 
-As a result, hfi1_mmu_rb_evict() was not guaranteed to evict truly
-least-recently used nodes.
+For CPU mode that's done in fsl_spi_prepare_message() while
+for CPM mode that's done in fsl_spi_setup_transfer().
 
-This could be a performance issue for an application when that
-application:
-- Uses some long-lived buffers frequently.
-- Uses a large number of buffers once.
-- Hits the mmu_rb_handler cache size or pinned-page limits, forcing
-  mmu_rb_handler cache entries to be evicted.
+Reunify all of it in fsl_spi_prepare_message(), and catch
+impossible cases early through master's bits_per_word_mask
+instead of returning EINVAL later.
 
-In this case, the one-time use buffers cause the long-lived buffer
-entries to eventually filter to the end of the LRU list where
-hfi1_mmu_rb_evict() will consider evicting a frequently-used long-lived
-entry instead of evicting one of the one-time use entries.
-
-Fix this by inserting new mmu_rb_node at the tail of
-mmu_rb_handler->lru_list and move mmu_rb_ndoe to the tail of
-mmu_rb_handler->lru_list when the mmu_rb_node is a hit in
-hfi1_mmu_rb_remove_unless_exact(). Change hfi1_mmu_rb_evict() to evict
-from the head of mmu_rb_handler->lru_list instead of the tail.
-
-Fixes: 0636e9ab8355 ("IB/hfi1: Add cache evict LRU list")
-Signed-off-by: Brendan Cunningham <bcunningham@cornelisnetworks.com>
-Signed-off-by: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Link: https://lore.kernel.org/r/168088635931.3027109.10423156330761536044.stgit@252.162.96.66.static.eigbox.net
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/mmu_rb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/spi/spi-fsl-spi.c |   46 +++++++++++++++++++++-------------------------
+ 1 file changed, 21 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/mmu_rb.c b/drivers/infiniband/hw/hfi1/mmu_rb.c
-index ed8a96ae61cef..d8b6bf271db8f 100644
---- a/drivers/infiniband/hw/hfi1/mmu_rb.c
-+++ b/drivers/infiniband/hw/hfi1/mmu_rb.c
-@@ -171,7 +171,7 @@ int hfi1_mmu_rb_insert(struct mmu_rb_handler *handler,
- 		goto unlock;
- 	}
- 	__mmu_int_rb_insert(mnode, &handler->root);
--	list_add(&mnode->list, &handler->lru_list);
-+	list_add_tail(&mnode->list, &handler->lru_list);
- 
- 	ret = handler->ops->insert(handler->ops_arg, mnode);
- 	if (ret) {
-@@ -222,8 +222,10 @@ bool hfi1_mmu_rb_remove_unless_exact(struct mmu_rb_handler *handler,
- 	spin_lock_irqsave(&handler->lock, flags);
- 	node = __mmu_rb_search(handler, addr, len);
- 	if (node) {
--		if (node->addr == addr && node->len == len)
-+		if (node->addr == addr && node->len == len) {
-+			list_move_tail(&node->list, &handler->lru_list);
- 			goto unlock;
-+		}
- 		__mmu_int_rb_remove(node, &handler->root);
- 		list_del(&node->list); /* remove from LRU list */
- 		ret = true;
-@@ -247,8 +249,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
- 	INIT_LIST_HEAD(&del_list);
- 
- 	spin_lock_irqsave(&handler->lock, flags);
--	list_for_each_entry_safe_reverse(rbnode, ptr, &handler->lru_list,
--					 list) {
-+	list_for_each_entry_safe(rbnode, ptr, &handler->lru_list, list) {
- 		if (handler->ops->evict(handler->ops_arg, rbnode, evict_arg,
- 					&stop)) {
- 			__mmu_int_rb_remove(rbnode, &handler->root);
-@@ -260,9 +261,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
- 	}
- 	spin_unlock_irqrestore(&handler->lock, flags);
- 
--	while (!list_empty(&del_list)) {
--		rbnode = list_first_entry(&del_list, struct mmu_rb_node, list);
--		list_del(&rbnode->list);
-+	list_for_each_entry_safe(rbnode, ptr, &del_list, list) {
- 		handler->ops->remove(handler->ops_arg, rbnode);
- 	}
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -177,26 +177,6 @@ static int mspi_apply_cpu_mode_quirks(st
+ 	return bits_per_word;
  }
--- 
-2.39.2
-
+ 
+-static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+-				struct spi_device *spi,
+-				int bits_per_word)
+-{
+-	/* CPM/QE uses Little Endian for words > 8
+-	 * so transform 16 and 32 bits words into 8 bits
+-	 * Unfortnatly that doesn't work for LSB so
+-	 * reject these for now */
+-	/* Note: 32 bits word, LSB works iff
+-	 * tfcr/rfcr is set to CPMFCR_GBL */
+-	if (spi->mode & SPI_LSB_FIRST &&
+-	    bits_per_word > 8)
+-		return -EINVAL;
+-	if (bits_per_word <= 8)
+-		return bits_per_word;
+-	if (bits_per_word == 16 || bits_per_word == 32)
+-		return 8; /* pretend its 8 bits */
+-	return -EINVAL;
+-}
+-
+ static int fsl_spi_setup_transfer(struct spi_device *spi,
+ 					struct spi_transfer *t)
+ {
+@@ -224,9 +204,6 @@ static int fsl_spi_setup_transfer(struct
+ 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
+ 							   mpc8xxx_spi,
+ 							   bits_per_word);
+-	else
+-		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
+-							  bits_per_word);
+ 
+ 	if (bits_per_word < 0)
+ 		return bits_per_word;
+@@ -361,6 +338,19 @@ static int fsl_spi_prepare_message(struc
+ 				t->bits_per_word = 32;
+ 			else if ((t->len & 1) == 0)
+ 				t->bits_per_word = 16;
++		} else {
++			/*
++			 * CPM/QE uses Little Endian for words > 8
++			 * so transform 16 and 32 bits words into 8 bits
++			 * Unfortnatly that doesn't work for LSB so
++			 * reject these for now
++			 * Note: 32 bits word, LSB works iff
++			 * tfcr/rfcr is set to CPMFCR_GBL
++			 */
++			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
++				return -EINVAL;
++			if (t->bits_per_word == 16 || t->bits_per_word == 32)
++				t->bits_per_word = 8; /* pretend its 8 bits */
+ 		}
+ 	}
+ 	return fsl_spi_setup_transfer(m->spi, first);
+@@ -594,8 +584,14 @@ static struct spi_master *fsl_spi_probe(
+ 	if (mpc8xxx_spi->type == TYPE_GRLIB)
+ 		fsl_spi_grlib_probe(dev);
+ 
+-	master->bits_per_word_mask =
+-		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
++	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
++		master->bits_per_word_mask =
++			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
++	else
++		master->bits_per_word_mask =
++			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
++
++	master->bits_per_word_mask &=
+ 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
+ 
+ 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
 
 
