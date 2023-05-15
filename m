@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0987036F1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94954703408
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243518AbjEORPU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
+        id S241741AbjEOQoM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243930AbjEOROz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:55 -0400
+        with ESMTP id S242916AbjEOQn4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31C83D2EE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9AA949E5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1339062B5C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A34BC433EF;
-        Mon, 15 May 2023 17:13:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 778A36221C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D1CC433EF;
+        Mon, 15 May 2023 16:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170808;
-        bh=eneSfdHZZIigCbK4uJJvxm1G7RJebvwOZ+fvEna6Sew=;
+        s=korg; t=1684169033;
+        bh=joWalmMrIBCwoP/BEsDAGdHUxeygABLKTljEnT0fvTs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g0H5B6EXcxqPVgrMeaTkyeoIhigXYxtf4niTVWfM3maGBJhS5293BSZvsTbvlIgAc
-         ubsuHOo9dJpHxxxS1wwBN3sLivUBRBZy2d+jeHyBWxDVUglAkIxofh8ejF531Zjl+f
-         VDytGXjt/bez+Il8XnNQo5ERUKT4Lo4jkgkcTEYk=
+        b=e57BTY5XqZ7xoKbbrouEQUte0NbUIKSDZ+bLmM2SCcoKMx6U/ddpXVLApzRKw+I9p
+         lO0bYJjMS0PMcGknZ6W3voC2J4v9mgaQ1t5xhK7cfre9jfFxm0iVdqkWY4TxlVQouU
+         +8jRMIdP0KcM7xpN0mdCoD4a7TVqQ7OOokl/OCSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 001/242] USB: dwc3: gadget: drop dead hibernation code
+Subject: [PATCH 4.19 090/191] of: Fix modalias string generation
 Date:   Mon, 15 May 2023 18:25:27 +0200
-Message-Id: <20230515161721.850391318@linuxfoundation.org>
+Message-Id: <20230515161710.520118565@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,138 +57,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit bdb19d01026a5cccfa437be8adcf2df472c5889e ]
+[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
 
-The hibernation code is broken and has never been enabled in mainline
-and should thus be dropped.
+The helper generating an OF based modalias (of_device_get_modalias())
+works fine, but due to the use of snprintf() internally it needs a
+buffer one byte longer than what should be needed just for the entire
+string (excluding the '\0'). Most users of this helper are sysfs hooks
+providing the modalias string to users. They all provide a PAGE_SIZE
+buffer which is way above the number of bytes required to fit the
+modalias string and hence do not suffer from this issue.
 
-Remove the hibernation bits from the gadget code, which effectively
-reverts commits e1dadd3b0f27 ("usb: dwc3: workaround: bogus hibernation
-events") and 7b2a0368bbc9 ("usb: dwc3: gadget: set KEEP_CONNECT in case
-of hibernation") except for the spurious interrupt warning.
+There is another user though, of_device_request_module(), which is only
+called by drivers/usb/common/ulpi.c. This request module function is
+faulty, but maybe because in most cases there is an alternative, ULPI
+driver users have not noticed it.
 
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-5-johan+linaro@kernel.org
+In this function, of_device_get_modalias() is called twice. The first
+time without buffer just to get the number of bytes required by the
+modalias string (excluding the null byte), and a second time, after
+buffer allocation, to fill the buffer. The allocation asks for an
+additional byte, in order to store the trailing '\0'. However, the
+buffer *length* provided to of_device_get_modalias() excludes this extra
+byte. The internal use of snprintf() with a length that is exactly the
+number of bytes to be written has the effect of using the last available
+byte to store a '\0', which then smashes the last character of the
+modalias string.
+
+Provide the actual size of the buffer to of_device_get_modalias() to fix
+this issue.
+
+Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
+will anyway end the string with a null byte, but there is a possibility
+that this function might be called on a struct device_node without
+compatible, in this case snprintf() would not be executed. So we keep it
+just to avoid possible unbounded strings.
+
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 39674be56fba ("usb: dwc3: gadget: Execute gadget stop after halting the controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 46 +++++----------------------------------
- 1 file changed, 6 insertions(+), 40 deletions(-)
+ drivers/of/device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 3faac3244c7db..a995e3f4df37f 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2478,7 +2478,7 @@ static void __dwc3_gadget_set_speed(struct dwc3 *dwc)
- 	dwc3_writel(dwc->regs, DWC3_DCFG, reg);
- }
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 258742830e366..566d8af05157d 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -258,12 +258,15 @@ int of_device_request_module(struct device *dev)
+ 	if (size < 0)
+ 		return size;
  
--static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
-+static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
- {
- 	u32			reg;
- 	u32			timeout = 2000;
-@@ -2497,17 +2497,11 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
- 			reg &= ~DWC3_DCTL_KEEP_CONNECT;
- 		reg |= DWC3_DCTL_RUN_STOP;
+-	str = kmalloc(size + 1, GFP_KERNEL);
++	/* Reserve an additional byte for the trailing '\0' */
++	size++;
++
++	str = kmalloc(size, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
  
--		if (dwc->has_hibernation)
--			reg |= DWC3_DCTL_KEEP_CONNECT;
--
- 		__dwc3_gadget_set_speed(dwc);
- 		dwc->pullups_connected = true;
- 	} else {
- 		reg &= ~DWC3_DCTL_RUN_STOP;
- 
--		if (dwc->has_hibernation && !suspend)
--			reg &= ~DWC3_DCTL_KEEP_CONNECT;
--
- 		dwc->pullups_connected = false;
- 	}
- 
-@@ -2589,7 +2583,7 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 	 * remaining event generated by the controller while polling for
- 	 * DSTS.DEVCTLHLT.
- 	 */
--	return dwc3_gadget_run_stop(dwc, false, false);
-+	return dwc3_gadget_run_stop(dwc, false);
- }
- 
- static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
-@@ -2643,7 +2637,7 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- 
- 		dwc3_event_buffers_setup(dwc);
- 		__dwc3_gadget_start(dwc);
--		ret = dwc3_gadget_run_stop(dwc, true, false);
-+		ret = dwc3_gadget_run_stop(dwc, true);
- 	}
- 
- 	pm_runtime_put(dwc->dev);
-@@ -4210,30 +4204,6 @@ static void dwc3_gadget_suspend_interrupt(struct dwc3 *dwc,
- 	dwc->link_state = next;
- }
- 
--static void dwc3_gadget_hibernation_interrupt(struct dwc3 *dwc,
--		unsigned int evtinfo)
--{
--	unsigned int is_ss = evtinfo & BIT(4);
--
--	/*
--	 * WORKAROUND: DWC3 revision 2.20a with hibernation support
--	 * have a known issue which can cause USB CV TD.9.23 to fail
--	 * randomly.
--	 *
--	 * Because of this issue, core could generate bogus hibernation
--	 * events which SW needs to ignore.
--	 *
--	 * Refers to:
--	 *
--	 * STAR#9000546576: Device Mode Hibernation: Issue in USB 2.0
--	 * Device Fallback from SuperSpeed
--	 */
--	if (is_ss ^ (dwc->speed == USB_SPEED_SUPER))
--		return;
--
--	/* enter hibernation here */
--}
--
- static void dwc3_gadget_interrupt(struct dwc3 *dwc,
- 		const struct dwc3_event_devt *event)
- {
-@@ -4251,11 +4221,7 @@ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
- 		dwc3_gadget_wakeup_interrupt(dwc);
- 		break;
- 	case DWC3_DEVICE_EVENT_HIBER_REQ:
--		if (dev_WARN_ONCE(dwc->dev, !dwc->has_hibernation,
--					"unexpected hibernation event\n"))
--			break;
--
--		dwc3_gadget_hibernation_interrupt(dwc, event->event_info);
-+		dev_WARN_ONCE(dwc->dev, true, "unexpected hibernation event\n");
- 		break;
- 	case DWC3_DEVICE_EVENT_LINK_STATUS_CHANGE:
- 		dwc3_gadget_linksts_change_interrupt(dwc, event->event_info);
-@@ -4592,7 +4558,7 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	if (!dwc->gadget_driver)
- 		return 0;
- 
--	dwc3_gadget_run_stop(dwc, false, false);
-+	dwc3_gadget_run_stop(dwc, false);
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_disconnect_gadget(dwc);
-@@ -4613,7 +4579,7 @@ int dwc3_gadget_resume(struct dwc3 *dwc)
- 	if (ret < 0)
- 		goto err0;
- 
--	ret = dwc3_gadget_run_stop(dwc, true, false);
-+	ret = dwc3_gadget_run_stop(dwc, true);
- 	if (ret < 0)
- 		goto err1;
+ 	of_device_get_modalias(dev, str, size);
+-	str[size] = '\0';
++	str[size - 1] = '\0';
+ 	ret = request_module(str);
+ 	kfree(str);
  
 -- 
 2.39.2
