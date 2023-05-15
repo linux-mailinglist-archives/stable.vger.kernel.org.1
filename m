@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26A39703310
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3CD703907
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242496AbjEOQcp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35494 "EHLO
+        id S244318AbjEORiP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242552AbjEOQcn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B255C2D47
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:38 -0700 (PDT)
+        with ESMTP id S244204AbjEORh4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974D21FDF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ED4D62526
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFD4C4339C;
-        Mon, 15 May 2023 16:32:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 789EA62DD1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6FDC433D2;
+        Mon, 15 May 2023 17:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168357;
-        bh=7sDGfqqB93+wDCNe7B9fAfRtAoB0k44USpmUZAWrtsE=;
+        s=korg; t=1684172113;
+        bh=rXdhiwU858sJTqwtKcrffjkWJEjmPEXyWJw2azd04Q8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QzLnwRHIFHwtW/cyeD+16+sFDvcSuLeOWdz1HuTsaY1B/7NqExtRYdUDgts3V3fx2
-         W+qNEj4U1xEwoy6mAPWU+vIyeEl2an9lnorcBYgTFL5MVzK1VYJHNzAPTfb//EXLKr
-         eOgwtMIxErkDPaDgXmweLgBWLarWnwbAv8GAOM5s=
+        b=rB+OGrUVwIgHkNJARzKhKmiZZqe9i9KvEpvAc+f+rEXhB1bp6wR+Syyk9A0kxvEIC
+         //3HKUV3tL73UknwfBqqItGApYegtGJcVnqFlS6RjyilaZW30Gaq9gyd0FQ1ZliBcJ
+         ID1+EELzyKZfV8ZDX9u3E5K7qKA/B9tjjblkUgJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 003/116] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+        patches@lists.linux.dev, Wang YanQing <udknight@gmail.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 049/381] ubi: Fix return value overwrite issue in try_write_vid_and_data()
 Date:   Mon, 15 May 2023 18:25:00 +0200
-Message-Id: <20230515161658.365753805@linuxfoundation.org>
+Message-Id: <20230515161739.051581650@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,90 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Wang YanQing <udknight@gmail.com>
 
-commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
+commit 31a149d5c13c4cbcf97de3435817263a2d8c9d6e upstream.
 
-Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
-SL8563. The modem supports the NCM mode. Interface 0 is used for running
-the AT commands. Interface 12 is the ADB interface.
+The commit 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
+adds helper function, try_write_vid_and_data(), to simplify the code, but this
+helper function has bug, it will return 0 (success) when ubi_io_write_vid_hdr()
+or the ubi_io_write_data() return error number (-EIO, etc), because the return
+value of ubi_wl_put_peb() will overwrite the original return value.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1782 ProdID=4055 Rev=04.04
-S:  Manufacturer=Unisoc Phone
-S:  Product=Unisoc Phone
-S:  SerialNumber=<redacted>
-C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This issue will cause unexpected data loss issue, because the caller of this
+function and UBIFS willn't know the data is lost.
 
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
+Fixes: 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Wang YanQing <udknight@gmail.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/ubi/eba.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -598,6 +598,11 @@ static void option_instat_callback(struc
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -947,7 +947,7 @@ static int try_write_vid_and_data(struct
+ 				  int offset, int len)
+ {
+ 	struct ubi_device *ubi = vol->ubi;
+-	int pnum, opnum, err, vol_id = vol->vol_id;
++	int pnum, opnum, err, err2, vol_id = vol->vol_id;
  
-+/* UNISOC (Spreadtrum) products */
-+#define UNISOC_VENDOR_ID			0x1782
-+/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
-+#define TOZED_PRODUCT_LT70C			0x4055
-+
- /* Device flags */
+ 	pnum = ubi_wl_get_peb(ubi);
+ 	if (pnum < 0) {
+@@ -982,10 +982,19 @@ static int try_write_vid_and_data(struct
+ out_put:
+ 	up_read(&ubi->fm_eba_sem);
  
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2227,6 +2232,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+-	if (err && pnum >= 0)
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
+-	else if (!err && opnum >= 0)
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
++	if (err && pnum >= 0) {
++		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
++		if (err2) {
++			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
++				 pnum, err2);
++		}
++	} else if (!err && opnum >= 0) {
++		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
++		if (err2) {
++			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
++				 opnum, err2);
++		}
++	}
+ 
+ 	return err;
+ }
 
 
