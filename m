@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FEB7039B7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAB5C703454
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244596AbjEORp1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39806 "EHLO
+        id S242998AbjEOQrE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:47:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244602AbjEORpD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:03 -0400
+        with ESMTP id S243001AbjEOQrB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:47:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FCB313C2E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F7D55A1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4A2C62E7F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B35C433D2;
-        Mon, 15 May 2023 17:42:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72B4D62906
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B82C433D2;
+        Mon, 15 May 2023 16:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172562;
-        bh=Tg+tl9AP14ckMuqAgef54ar+JhIYxUs7Pg3x8AV+pis=;
+        s=korg; t=1684169215;
+        bh=ZWbCf90Yar4GmSmQR0CxJ+WqThTi8fKsnhcTa2G1ZdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dRvXfE3QUwtJzTWO0WJjm73fQyqwmzKS9151Yy8eZuAEzFbLf286HyawU3O7P00Om
-         WI8dVYgmFhojOu/gfXn/IwPMdt6D8ZV9PqehObaRUorPMYkBbIJFg+XOn855qXYT8q
-         SbYhZ4RY5zNUBzL4J6n831F08LSoqliQK0klh+U0=
+        b=PCZYuZlElLDPkXudgojYhLRNcA/FDDMga/SzAtbqqE82tuvvEQxGn/zpY/y8Vcn+w
+         3ntNIQNGAH1z2hJRrctCUdDP15mggLf8NLYnwSrYpd2LhGgrsJk6JYRJCO1EcXzg9x
+         8Ide2i+Cn/o5YfWYB/DDE4H2hgpvZsrJUsyZeSuE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 165/381] f2fs: fix to avoid use-after-free for cached IPU bio
+        patches@lists.linux.dev,
+        syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com,
+        syzbot+8785e41224a3afd04321@syzkaller.appspotmail.com,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 179/191] ext4: avoid a potential slab-out-of-bounds in ext4_group_desc_csum
 Date:   Mon, 15 May 2023 18:26:56 +0200
-Message-Id: <20230515161744.258928136@linuxfoundation.org>
+Message-Id: <20230515161713.977390971@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,76 +56,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 5cdb422c839134273866208dad5360835ddb9794 ]
+commit 4f04351888a83e595571de672e0a4a8b74f4fb31 upstream.
 
-xfstest generic/019 reports a bug:
+When modifying the block device while it is mounted by the filesystem,
+syzbot reported the following:
 
-kernel BUG at mm/filemap.c:1619!
-RIP: 0010:folio_end_writeback+0x8a/0x90
+BUG: KASAN: slab-out-of-bounds in crc16+0x206/0x280 lib/crc16.c:58
+Read of size 1 at addr ffff888075f5c0a8 by task syz-executor.2/15586
+
+CPU: 1 PID: 15586 Comm: syz-executor.2 Not tainted 6.2.0-rc5-syzkaller-00205-gc96618275234 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
 Call Trace:
- end_page_writeback+0x1c/0x60
- f2fs_write_end_io+0x199/0x420
- bio_endio+0x104/0x180
- submit_bio_noacct+0xa5/0x510
- submit_bio+0x48/0x80
- f2fs_submit_write_bio+0x35/0x300
- f2fs_submit_merged_ipu_write+0x2a0/0x2b0
- f2fs_write_single_data_page+0x838/0x8b0
- f2fs_write_cache_pages+0x379/0xa30
- f2fs_write_data_pages+0x30c/0x340
- do_writepages+0xd8/0x1b0
- __writeback_single_inode+0x44/0x370
- writeback_sb_inodes+0x233/0x4d0
- __writeback_inodes_wb+0x56/0xf0
- wb_writeback+0x1dd/0x2d0
- wb_workfn+0x367/0x4a0
- process_one_work+0x21d/0x430
- worker_thread+0x4e/0x3c0
- kthread+0x103/0x130
- ret_from_fork+0x2c/0x50
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
+ print_address_description+0x74/0x340 mm/kasan/report.c:306
+ print_report+0x107/0x1f0 mm/kasan/report.c:417
+ kasan_report+0xcd/0x100 mm/kasan/report.c:517
+ crc16+0x206/0x280 lib/crc16.c:58
+ ext4_group_desc_csum+0x81b/0xb20 fs/ext4/super.c:3187
+ ext4_group_desc_csum_set+0x195/0x230 fs/ext4/super.c:3210
+ ext4_mb_clear_bb fs/ext4/mballoc.c:6027 [inline]
+ ext4_free_blocks+0x191a/0x2810 fs/ext4/mballoc.c:6173
+ ext4_remove_blocks fs/ext4/extents.c:2527 [inline]
+ ext4_ext_rm_leaf fs/ext4/extents.c:2710 [inline]
+ ext4_ext_remove_space+0x24ef/0x46a0 fs/ext4/extents.c:2958
+ ext4_ext_truncate+0x177/0x220 fs/ext4/extents.c:4416
+ ext4_truncate+0xa6a/0xea0 fs/ext4/inode.c:4342
+ ext4_setattr+0x10c8/0x1930 fs/ext4/inode.c:5622
+ notify_change+0xe50/0x1100 fs/attr.c:482
+ do_truncate+0x200/0x2f0 fs/open.c:65
+ handle_truncate fs/namei.c:3216 [inline]
+ do_open fs/namei.c:3561 [inline]
+ path_openat+0x272b/0x2dd0 fs/namei.c:3714
+ do_filp_open+0x264/0x4f0 fs/namei.c:3741
+ do_sys_openat2+0x124/0x4e0 fs/open.c:1310
+ do_sys_open fs/open.c:1326 [inline]
+ __do_sys_creat fs/open.c:1402 [inline]
+ __se_sys_creat fs/open.c:1396 [inline]
+ __x64_sys_creat+0x11f/0x160 fs/open.c:1396
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f72f8a8c0c9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f72f97e3168 EFLAGS: 00000246 ORIG_RAX: 0000000000000055
+RAX: ffffffffffffffda RBX: 00007f72f8bac050 RCX: 00007f72f8a8c0c9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000280
+RBP: 00007f72f8ae7ae9 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffd165348bf R14: 00007f72f97e3300 R15: 0000000000022000
 
-The root cause is: after cp_error is set, f2fs_submit_merged_ipu_write()
-in f2fs_write_single_data_page() tries to flush IPU bio in cache, however
-f2fs_submit_merged_ipu_write() missed to check validity of @bio parameter,
-result in submitting random cached bio which belong to other IO context,
-then it will cause use-after-free issue, fix it by adding additional
-validity check.
+Replace
+	le16_to_cpu(sbi->s_es->s_desc_size)
+with
+	sbi->s_desc_size
 
-Fixes: 0b20fcec8651 ("f2fs: cache global IPU bio")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It reduces ext4's compiled text size, and makes the code more efficient
+(we remove an extra indirect reference and a potential byte
+swap on big endian systems), and there is no downside. It also avoids the
+potential KASAN / syzkaller failure, as a bonus.
+
+Reported-by: syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com
+Reported-by: syzbot+8785e41224a3afd04321@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=70d28d11ab14bd7938f3e088365252aa923cff42
+Link: https://syzkaller.appspot.com/bug?id=b85721b38583ecc6b5e72ff524c67302abbc30f3
+Link: https://lore.kernel.org/all/000000000000ece18705f3b20934@google.com/
+Fixes: 717d50e4971b ("Ext4: Uninitialized Block Groups")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20230504121525.3275886-1-tudor.ambarus@linaro.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ext4/super.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index db26e87b8f0dd..e9481c940895c 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -849,6 +849,8 @@ void f2fs_submit_merged_ipu_write(struct f2fs_sb_info *sbi,
- 	bool found = false;
- 	struct bio *target = bio ? *bio : NULL;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2423,11 +2423,9 @@ static __le16 ext4_group_desc_csum(struc
+ 	crc = crc16(crc, (__u8 *)gdp, offset);
+ 	offset += sizeof(gdp->bg_checksum); /* skip checksum */
+ 	/* for checksum of struct ext4_group_desc do the rest...*/
+-	if (ext4_has_feature_64bit(sb) &&
+-	    offset < le16_to_cpu(sbi->s_es->s_desc_size))
++	if (ext4_has_feature_64bit(sb) && offset < sbi->s_desc_size)
+ 		crc = crc16(crc, (__u8 *)gdp + offset,
+-			    le16_to_cpu(sbi->s_es->s_desc_size) -
+-				offset);
++			    sbi->s_desc_size - offset);
  
-+	f2fs_bug_on(sbi, !target && !page);
-+
- 	for (temp = HOT; temp < NR_TEMP_TYPE && !found; temp++) {
- 		struct f2fs_bio_info *io = sbi->write_io[DATA] + temp;
- 		struct list_head *head = &io->bio_list;
-@@ -2917,7 +2919,8 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
- 
- 	if (unlikely(f2fs_cp_error(sbi))) {
- 		f2fs_submit_merged_write(sbi, DATA);
--		f2fs_submit_merged_ipu_write(sbi, bio, NULL);
-+		if (bio && *bio)
-+			f2fs_submit_merged_ipu_write(sbi, bio, NULL);
- 		submitted = NULL;
- 	}
- 
--- 
-2.39.2
-
+ out:
+ 	return cpu_to_le16(crc);
 
 
