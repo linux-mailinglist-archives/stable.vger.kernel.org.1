@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7311A7034BA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F24B7035EE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243085AbjEOQvy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56668 "EHLO
+        id S243428AbjEOREs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243087AbjEOQvi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:38 -0400
+        with ESMTP id S243383AbjEOREa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E3E5BAA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A329000
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:02:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F96C62979
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB9AC4339C;
-        Mon, 15 May 2023 16:51:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53F0A62AA3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409F0C433EF;
+        Mon, 15 May 2023 17:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169488;
-        bh=I+PQW7Q6MTtVfDI8pfVsv+cIduMAUITzN9s/KfdtbNo=;
+        s=korg; t=1684170148;
+        bh=eDxwM3/Hn0xTNge5K13nN5bHQHIJbyWyRCYNILT2scQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t7eIRS680Y8M39wy7Ic31zIFXlKIR6i65UW1Lw+Y8i5gBBgIkHNCplmR4n12v/E2n
-         sm79Cxs5mWg85llj+aRg8I10WOqbHX76/3sIYOvlDefLg32EeLCySN/UzmDIGf9ydr
-         EpMlYX+RrL4lYQCbgEqE66obRcQ1sSaf6cDDNSr0=
+        b=NcPmsh83HYqHStJaVIspUrTbgwzXFUK+iknmBSedqXYcOimf1sI7FtN0WeJbujxsh
+         Srb61+NWSj5nFhHfS4kimtm0gksy+4Ng12JfpReaQRivxeE7lf037dmVAhHEELh3zC
+         ov+mGAvVxttp7wqXnvmTDlhHzX+unN8NiAtJ4pZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
+        Sean Christopherson <seanjc@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 073/246] octeontx2-af: Skip PFs if not enabled
+Subject: [PATCH 6.1 022/239] KVM: x86: Make use of kvm_read_cr*_bits() when testing bits
 Date:   Mon, 15 May 2023 18:24:45 +0200
-Message-Id: <20230515161724.761653981@linuxfoundation.org>
+Message-Id: <20230515161722.253792439@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,194 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Mathias Krause <minipli@grsecurity.net>
 
-[ Upstream commit 5eb1b7220948a69298a436148a735f32ec325289 ]
+[ Upstream commit 74cdc836919bf34684ef66f995273f35e2189daf ]
 
-Firmware enables PFs and allocate mbox resources for each of the PFs.
-Currently PF driver configures mbox resources without checking whether
-PF is enabled or not. This results in crash. This patch fixes this issue
-by skipping disabled PF's mbox initialization.
+Make use of the kvm_read_cr{0,4}_bits() helper functions when we only
+want to know the state of certain bits instead of the whole register.
 
-Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This not only makes the intent cleaner, it also avoids a potential
+VMREAD in case the tested bits aren't guest owned.
+
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Link: https://lore.kernel.org/r/20230322013731.102955-5-minipli@grsecurity.net
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.c  |  5 +-
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  3 +-
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 49 +++++++++++++++----
- 3 files changed, 46 insertions(+), 11 deletions(-)
+ arch/x86/kvm/pmu.c     | 4 ++--
+ arch/x86/kvm/vmx/vmx.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.c b/drivers/net/ethernet/marvell/octeontx2/af/mbox.c
-index 2898931d5260a..9690ac01f02c8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.c
-@@ -157,7 +157,7 @@ EXPORT_SYMBOL(otx2_mbox_init);
-  */
- int otx2_mbox_regions_init(struct otx2_mbox *mbox, void **hwbase,
- 			   struct pci_dev *pdev, void *reg_base,
--			   int direction, int ndevs)
-+			   int direction, int ndevs, unsigned long *pf_bmap)
- {
- 	struct otx2_mbox_dev *mdev;
- 	int devid, err;
-@@ -169,6 +169,9 @@ int otx2_mbox_regions_init(struct otx2_mbox *mbox, void **hwbase,
- 	mbox->hwbase = hwbase[0];
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index de1fd73697365..20cd746cf4678 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -418,9 +418,9 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ 	if (!pmc)
+ 		return 1;
  
- 	for (devid = 0; devid < ndevs; devid++) {
-+		if (!test_bit(devid, pf_bmap))
-+			continue;
-+
- 		mdev = &mbox->dev[devid];
- 		mdev->mbase = hwbase[devid];
- 		mdev->hwbase = hwbase[devid];
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 0ce533848536e..26636a4d7dcc6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -96,9 +96,10 @@ void otx2_mbox_destroy(struct otx2_mbox *mbox);
- int otx2_mbox_init(struct otx2_mbox *mbox, void __force *hwbase,
- 		   struct pci_dev *pdev, void __force *reg_base,
- 		   int direction, int ndevs);
-+
- int otx2_mbox_regions_init(struct otx2_mbox *mbox, void __force **hwbase,
- 			   struct pci_dev *pdev, void __force *reg_base,
--			   int direction, int ndevs);
-+			   int direction, int ndevs, unsigned long *bmap);
- void otx2_mbox_msg_send(struct otx2_mbox *mbox, int devid);
- int otx2_mbox_wait_for_rsp(struct otx2_mbox *mbox, int devid);
- int otx2_mbox_busy_poll_for_rsp(struct otx2_mbox *mbox, int devid);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 8683ce57ed3fb..9f673bda9dbdd 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -2282,7 +2282,7 @@ static inline void rvu_afvf_mbox_up_handler(struct work_struct *work)
- }
+-	if (!(kvm_read_cr4(vcpu) & X86_CR4_PCE) &&
++	if (!(kvm_read_cr4_bits(vcpu, X86_CR4_PCE)) &&
+ 	    (static_call(kvm_x86_get_cpl)(vcpu) != 0) &&
+-	    (kvm_read_cr0(vcpu) & X86_CR0_PE))
++	    (kvm_read_cr0_bits(vcpu, X86_CR0_PE)))
+ 		return 1;
  
- static int rvu_get_mbox_regions(struct rvu *rvu, void **mbox_addr,
--				int num, int type)
-+				int num, int type, unsigned long *pf_bmap)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	int region;
-@@ -2294,6 +2294,9 @@ static int rvu_get_mbox_regions(struct rvu *rvu, void **mbox_addr,
- 	 */
- 	if (type == TYPE_AFVF) {
- 		for (region = 0; region < num; region++) {
-+			if (!test_bit(region, pf_bmap))
-+				continue;
-+
- 			if (hw->cap.per_pf_mbox_regs) {
- 				bar4 = rvu_read64(rvu, BLKADDR_RVUM,
- 						  RVU_AF_PFX_BAR4_ADDR(0)) +
-@@ -2315,6 +2318,9 @@ static int rvu_get_mbox_regions(struct rvu *rvu, void **mbox_addr,
- 	 * RVU_AF_PF_BAR4_ADDR register.
- 	 */
- 	for (region = 0; region < num; region++) {
-+		if (!test_bit(region, pf_bmap))
-+			continue;
-+
- 		if (hw->cap.per_pf_mbox_regs) {
- 			bar4 = rvu_read64(rvu, BLKADDR_RVUM,
- 					  RVU_AF_PFX_BAR4_ADDR(region));
-@@ -2343,20 +2349,41 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 	int err = -EINVAL, i, dir, dir_up;
- 	void __iomem *reg_base;
- 	struct rvu_work *mwork;
-+	unsigned long *pf_bmap;
- 	void **mbox_regions;
- 	const char *name;
-+	u64 cfg;
- 
--	mbox_regions = kcalloc(num, sizeof(void *), GFP_KERNEL);
--	if (!mbox_regions)
-+	pf_bmap = bitmap_zalloc(num, GFP_KERNEL);
-+	if (!pf_bmap)
- 		return -ENOMEM;
- 
-+	/* RVU VFs */
-+	if (type == TYPE_AFVF)
-+		bitmap_set(pf_bmap, 0, num);
-+
-+	if (type == TYPE_AFPF) {
-+		/* Mark enabled PFs in bitmap */
-+		for (i = 0; i < num; i++) {
-+			cfg = rvu_read64(rvu, BLKADDR_RVUM, RVU_PRIV_PFX_CFG(i));
-+			if (cfg & BIT_ULL(20))
-+				set_bit(i, pf_bmap);
-+		}
-+	}
-+
-+	mbox_regions = kcalloc(num, sizeof(void *), GFP_KERNEL);
-+	if (!mbox_regions) {
-+		err = -ENOMEM;
-+		goto free_bitmap;
-+	}
-+
- 	switch (type) {
- 	case TYPE_AFPF:
- 		name = "rvu_afpf_mailbox";
- 		dir = MBOX_DIR_AFPF;
- 		dir_up = MBOX_DIR_AFPF_UP;
- 		reg_base = rvu->afreg_base;
--		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFPF);
-+		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFPF, pf_bmap);
- 		if (err)
- 			goto free_regions;
+ 	*data = pmc_read_counter(pmc) & mask;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 5db21d9ef6710..4984357c5d441 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5417,7 +5417,7 @@ static int handle_cr(struct kvm_vcpu *vcpu)
  		break;
-@@ -2365,7 +2392,7 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 		dir = MBOX_DIR_PFVF;
- 		dir_up = MBOX_DIR_PFVF_UP;
- 		reg_base = rvu->pfreg_base;
--		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFVF);
-+		err = rvu_get_mbox_regions(rvu, mbox_regions, num, TYPE_AFVF, pf_bmap);
- 		if (err)
- 			goto free_regions;
- 		break;
-@@ -2396,16 +2423,19 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 	}
+ 	case 3: /* lmsw */
+ 		val = (exit_qualification >> LMSW_SOURCE_DATA_SHIFT) & 0x0f;
+-		trace_kvm_cr_write(0, (kvm_read_cr0(vcpu) & ~0xful) | val);
++		trace_kvm_cr_write(0, (kvm_read_cr0_bits(vcpu, ~0xful) | val));
+ 		kvm_lmsw(vcpu, val);
  
- 	err = otx2_mbox_regions_init(&mw->mbox, mbox_regions, rvu->pdev,
--				     reg_base, dir, num);
-+				     reg_base, dir, num, pf_bmap);
- 	if (err)
- 		goto exit;
+ 		return kvm_skip_emulated_instruction(vcpu);
+@@ -7496,7 +7496,7 @@ static u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
+ 	if (!kvm_arch_has_noncoherent_dma(vcpu->kvm))
+ 		return (MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT) | VMX_EPT_IPAT_BIT;
  
- 	err = otx2_mbox_regions_init(&mw->mbox_up, mbox_regions, rvu->pdev,
--				     reg_base, dir_up, num);
-+				     reg_base, dir_up, num, pf_bmap);
- 	if (err)
- 		goto exit;
- 
- 	for (i = 0; i < num; i++) {
-+		if (!test_bit(i, pf_bmap))
-+			continue;
-+
- 		mwork = &mw->mbox_wrk[i];
- 		mwork->rvu = rvu;
- 		INIT_WORK(&mwork->work, mbox_handler);
-@@ -2414,8 +2444,7 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 		mwork->rvu = rvu;
- 		INIT_WORK(&mwork->work, mbox_up_handler);
- 	}
--	kfree(mbox_regions);
--	return 0;
-+	goto free_regions;
- 
- exit:
- 	destroy_workqueue(mw->mbox_wq);
-@@ -2424,6 +2453,8 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
- 		iounmap((void __iomem *)mbox_regions[num]);
- free_regions:
- 	kfree(mbox_regions);
-+free_bitmap:
-+	bitmap_free(pf_bmap);
- 	return err;
- }
- 
+-	if (kvm_read_cr0(vcpu) & X86_CR0_CD) {
++	if (kvm_read_cr0_bits(vcpu, X86_CR0_CD)) {
+ 		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_CD_NW_CLEARED))
+ 			cache = MTRR_TYPE_WRBACK;
+ 		else
 -- 
 2.39.2
 
