@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8764470371A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC93703936
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243859AbjEORQy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:16:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
+        id S244472AbjEORkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:40:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243858AbjEORQd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A4F93C5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:19 -0700 (PDT)
+        with ESMTP id S244584AbjEORj5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AC591794E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4166662BC8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BF1C433EF;
-        Mon, 15 May 2023 17:15:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0820E62DFC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111DFC433EF;
+        Mon, 15 May 2023 17:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170918;
-        bh=TK7+vglgGcrJ+yIpt4V833bB+fthppqXYskoSxF1zO8=;
+        s=korg; t=1684172238;
+        bh=0VVpOUotMO8F7BC9YNIV0tcowO8G/cQQCPlFsnJC7yQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T1sERZlRV6i5LJsj6Q1llBNnri75CIkx1C7RG2ZmZMc8BZWNT8eznZ+aXz6iioj4s
-         1HgzWjoiJ4Xy6UBphQSktROyoIrjsQmXh382vRvaD8xuU3zGUf/93b3zuDu46pj7Q1
-         /+oeFkjJsKtQroldJxpuUX4+ivBhl4MHDQwyNOqY=
+        b=ySRWKeH2SnUZkRasIc31GZMBbJhHiF0Y1lvEEG///opglEKZcIFAOOtH+vOB7nxSx
+         YEhDviJlzeEXymnwiluyDHkf9aWF/wtjJkrPapQ+JkZ/BJtffDkbsEv19qO5ZLmQfH
+         hMZ1AXspzCVuoEfrqTNgsyKjmEyY8ye4kEy30Ic4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com,
-        ZhangPeng <zhangpeng362@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 013/242] fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
+Subject: [PATCH 5.10 088/381] ARM: dts: qcom: ipq4019: Fix the PCI I/O port range
 Date:   Mon, 15 May 2023 18:25:39 +0200
-Message-Id: <20230515161722.211617441@linuxfoundation.org>
+Message-Id: <20230515161740.774645817@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,78 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ZhangPeng <zhangpeng362@huawei.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 254e69f284d7270e0abdc023ee53b71401c3ba0c ]
+[ Upstream commit 2540279e9a9e74fc880d1e4c83754ecfcbe290a0 ]
 
-Syzbot reported a null-ptr-deref bug:
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI address
+(0x40200000) specified in the ranges property for I/O region.
 
-ntfs3: loop0: Different NTFS' sector size (1024) and media sector size
-(512)
-ntfs3: loop0: Mark volume as dirty due to NTFS errors
-general protection fault, probably for non-canonical address
-0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-RIP: 0010:d_flags_for_inode fs/dcache.c:1980 [inline]
-RIP: 0010:__d_add+0x5ce/0x800 fs/dcache.c:2796
-Call Trace:
- <TASK>
- d_splice_alias+0x122/0x3b0 fs/dcache.c:3191
- lookup_open fs/namei.c:3391 [inline]
- open_last_lookups fs/namei.c:3481 [inline]
- path_openat+0x10e6/0x2df0 fs/namei.c:3688
- do_filp_open+0x264/0x4f0 fs/namei.c:3718
- do_sys_openat2+0x124/0x4e0 fs/open.c:1310
- do_sys_open fs/open.c:1326 [inline]
- __do_sys_open fs/open.c:1334 [inline]
- __se_sys_open fs/open.c:1330 [inline]
- __x64_sys_open+0x221/0x270 fs/open.c:1330
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+While at it, let's use the missing 0x prefix for the addresses.
 
-If the MFT record of ntfs inode is not a base record, inode->i_op can be
-NULL. And a null-ptr-deref may happen:
-
-ntfs_lookup()
-    dir_search_u() # inode->i_op is set to NULL
-    d_splice_alias()
-        __d_add()
-            d_flags_for_inode() # inode->i_op->get_link null-ptr-deref
-
-Fix this by adding a Check on inode->i_op before calling the
-d_splice_alias() function.
-
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Reported-by: syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com
-Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 187519403273 ("ARM: dts: ipq4019: Add a few peripheral nodes")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-16-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/namei.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm/boot/dts/qcom-ipq4019.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index c8db35e2ae172..3db34d5c03dc7 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -88,6 +88,16 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
- 		__putname(uni);
- 	}
+diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+index 3defd47fd8fab..037bb8a9b01ec 100644
+--- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+@@ -414,8 +414,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
-+	/*
-+	 * Check for a null pointer
-+	 * If the MFT record of ntfs inode is not a base record, inode->i_op can be NULL.
-+	 * This causes null pointer dereference in d_splice_alias().
-+	 */
-+	if (!IS_ERR(inode) && inode->i_op == NULL) {
-+		iput(inode);
-+		inode = ERR_PTR(-EINVAL);
-+	}
-+
- 	return d_splice_alias(inode, dentry);
- }
+-			ranges = <0x81000000 0 0x40200000 0x40200000 0 0x00100000>,
+-				 <0x82000000 0 0x40300000 0x40300000 0 0x00d00000>;
++			ranges = <0x81000000 0x0 0x00000000 0x40200000 0x0 0x00100000>,
++				 <0x82000000 0x0 0x40300000 0x40300000 0x0 0x00d00000>;
  
+ 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
 -- 
 2.39.2
 
