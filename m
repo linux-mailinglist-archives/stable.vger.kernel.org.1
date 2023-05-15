@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FDC870354F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD28B703770
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243276AbjEOQ5n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
+        id S243892AbjEORVK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243299AbjEOQ5f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB007AA0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:34 -0700 (PDT)
+        with ESMTP id S243793AbjEORU4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863AA100F4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0452362A1B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B61C4339B;
-        Mon, 15 May 2023 16:57:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 561AD62B71
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C847C433D2;
+        Mon, 15 May 2023 17:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169853;
-        bh=8JDlbxaHCXppQq+a//4xQ21vo96uMP4M8S8H5M7uD7s=;
+        s=korg; t=1684171118;
+        bh=3vXHZr452gE1buZe1gFxXS74w6NY4/2gmvCI41Jjwao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HJeG3loql8oJC7YkVZs3e3GwIUWRxRkzsfiGC6+Xg7/htPJTVjpfBpkPnFkmlGnmw
-         WkFVGA5F9Qk9AfgbXW4nbVhhwbA1rBklN0slSQfuap3WM6CSkH5JZViPCdwvfRxWyh
-         9Mh2GQuPD0dJ5fsh7A3tEIsOSzvMkUAYV4jg9AnQ=
+        b=FDwSr78j6YvfeOf6865w0HiQpOW3gU5l/yfX+CDGofo3shpxBlcHyKPqmzjGcjpIh
+         fMMKOCW7v3CdCBQLdCzhn87gLAzVokzxgTJfeOEJLujwdrVxF4VSMI045u7ETyDidX
+         Qb51/eBHtjMsO8W3E4WSTfpTb3S/Q3i78fyhgo5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
-        Alan Liu <HaoPing.Liu@amd.com>,
-        Samson Tam <Samson.Tam@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 192/246] drm/amd/display: filter out invalid bits in pipe_fuses
+        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+ef6edd9f1baaa54d6235@syzkaller.appspotmail.com
+Subject: [PATCH 6.2 078/242] ethtool: Fix uninitialized number of lanes
 Date:   Mon, 15 May 2023 18:26:44 +0200
-Message-Id: <20230515161728.376460027@linuxfoundation.org>
+Message-Id: <20230515161724.238209515@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,80 +57,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Samson Tam <Samson.Tam@amd.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 682439fffad9fa9a38d37dd1b1318e9374232213 upstream.
+[ Upstream commit 9ad685dbfe7e856bbf17a7177b64676d324d6ed7 ]
 
-[Why]
-Reading pipe_fuses from register may have invalid bits set, which may
- affect the num_pipes erroneously.
+It is not possible to set the number of lanes when setting link modes
+using the legacy IOCTL ethtool interface. Since 'struct
+ethtool_link_ksettings' is not initialized in this path, drivers receive
+an uninitialized number of lanes in 'struct
+ethtool_link_ksettings::lanes'.
 
-[How]
-Add read_pipes_fuses() call and filter bits based on expected number
- of pipes.
+When this information is later queried from drivers, it results in the
+ethtool code making decisions based on uninitialized memory, leading to
+the following KMSAN splat [1]. In practice, this most likely only
+happens with the tun driver that simply returns whatever it got in the
+set operation.
 
-Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
-Acked-by: Alan Liu <HaoPing.Liu@amd.com>
-Signed-off-by: Samson Tam <Samson.Tam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As far as I can tell, this uninitialized memory is not leaked to user
+space thanks to the 'ethtool_ops->cap_link_lanes_supported' check in
+linkmodes_prepare_data().
+
+Fix by initializing the structure in the IOCTL path. Did not find any
+more call sites that pass an uninitialized structure when calling
+'ethtool_ops::set_link_ksettings()'.
+
+[1]
+BUG: KMSAN: uninit-value in ethnl_update_linkmodes net/ethtool/linkmodes.c:273 [inline]
+BUG: KMSAN: uninit-value in ethnl_set_linkmodes+0x190b/0x19d0 net/ethtool/linkmodes.c:333
+ ethnl_update_linkmodes net/ethtool/linkmodes.c:273 [inline]
+ ethnl_set_linkmodes+0x190b/0x19d0 net/ethtool/linkmodes.c:333
+ ethnl_default_set_doit+0x88d/0xde0 net/ethtool/netlink.c:640
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x141a/0x14c0 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x3f8/0x750 net/netlink/af_netlink.c:2577
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf41/0x1270 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x127d/0x1430 net/netlink/af_netlink.c:1942
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+ ___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+ __sys_sendmsg net/socket.c:2584 [inline]
+ __do_sys_sendmsg net/socket.c:2593 [inline]
+ __se_sys_sendmsg net/socket.c:2591 [inline]
+ __x64_sys_sendmsg+0x36b/0x540 net/socket.c:2591
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was stored to memory at:
+ tun_get_link_ksettings+0x37/0x60 drivers/net/tun.c:3544
+ __ethtool_get_link_ksettings+0x17b/0x260 net/ethtool/ioctl.c:441
+ ethnl_set_linkmodes+0xee/0x19d0 net/ethtool/linkmodes.c:327
+ ethnl_default_set_doit+0x88d/0xde0 net/ethtool/netlink.c:640
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x141a/0x14c0 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x3f8/0x750 net/netlink/af_netlink.c:2577
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf41/0x1270 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x127d/0x1430 net/netlink/af_netlink.c:1942
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+ ___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+ __sys_sendmsg net/socket.c:2584 [inline]
+ __do_sys_sendmsg net/socket.c:2593 [inline]
+ __se_sys_sendmsg net/socket.c:2591 [inline]
+ __x64_sys_sendmsg+0x36b/0x540 net/socket.c:2591
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was stored to memory at:
+ tun_set_link_ksettings+0x37/0x60 drivers/net/tun.c:3553
+ ethtool_set_link_ksettings+0x600/0x690 net/ethtool/ioctl.c:609
+ __dev_ethtool net/ethtool/ioctl.c:3024 [inline]
+ dev_ethtool+0x1db9/0x2a70 net/ethtool/ioctl.c:3078
+ dev_ioctl+0xb07/0x1270 net/core/dev_ioctl.c:524
+ sock_do_ioctl+0x295/0x540 net/socket.c:1213
+ sock_ioctl+0x729/0xd90 net/socket.c:1316
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl+0x222/0x400 fs/ioctl.c:856
+ __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Local variable link_ksettings created at:
+ ethtool_set_link_ksettings+0x54/0x690 net/ethtool/ioctl.c:577
+ __dev_ethtool net/ethtool/ioctl.c:3024 [inline]
+ dev_ethtool+0x1db9/0x2a70 net/ethtool/ioctl.c:3078
+
+Fixes: 012ce4dd3102 ("ethtool: Extend link modes settings uAPI with lanes")
+Reported-and-tested-by: syzbot+ef6edd9f1baaa54d6235@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/netdev/0000000000004bb41105fa70f361@google.com/
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c   |   10 +++++++++-
- drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c |   10 +++++++++-
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ net/ethtool/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-@@ -2077,6 +2077,14 @@ static struct resource_funcs dcn32_res_p
- 	.restore_mall_state = dcn32_restore_mall_state,
- };
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 646b3e490c71a..f0c646a17700f 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -573,8 +573,8 @@ static int ethtool_get_link_ksettings(struct net_device *dev,
+ static int ethtool_set_link_ksettings(struct net_device *dev,
+ 				      void __user *useraddr)
+ {
++	struct ethtool_link_ksettings link_ksettings = {};
+ 	int err;
+-	struct ethtool_link_ksettings link_ksettings;
  
-+static uint32_t read_pipe_fuses(struct dc_context *ctx)
-+{
-+	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
-+	/* DCN32 support max 4 pipes */
-+	value = value & 0xf;
-+	return value;
-+}
-+
+ 	ASSERT_RTNL();
  
- static bool dcn32_resource_construct(
- 	uint8_t num_virtual_links,
-@@ -2119,7 +2127,7 @@ static bool dcn32_resource_construct(
- 	pool->base.res_cap = &res_cap_dcn32;
- 	/* max number of pipes for ASIC before checking for pipe fuses */
- 	num_pipes  = pool->base.res_cap->num_timing_generator;
--	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
-+	pipe_fuses = read_pipe_fuses(ctx);
- 
- 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
- 		if (pipe_fuses & 1 << i)
---- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-@@ -1626,6 +1626,14 @@ static struct resource_funcs dcn321_res_
- 	.restore_mall_state = dcn32_restore_mall_state,
- };
- 
-+static uint32_t read_pipe_fuses(struct dc_context *ctx)
-+{
-+	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
-+	/* DCN321 support max 4 pipes */
-+	value = value & 0xf;
-+	return value;
-+}
-+
- 
- static bool dcn321_resource_construct(
- 	uint8_t num_virtual_links,
-@@ -1668,7 +1676,7 @@ static bool dcn321_resource_construct(
- 	pool->base.res_cap = &res_cap_dcn321;
- 	/* max number of pipes for ASIC before checking for pipe fuses */
- 	num_pipes  = pool->base.res_cap->num_timing_generator;
--	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
-+	pipe_fuses = read_pipe_fuses(ctx);
- 
- 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
- 		if (pipe_fuses & 1 << i)
+-- 
+2.39.2
+
 
 
