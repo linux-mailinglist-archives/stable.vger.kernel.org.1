@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6D67036AD
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BA677035D1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243794AbjEORMl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:12:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55898 "EHLO
+        id S243551AbjEORDE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:03:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243770AbjEORMV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F60310A10
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:31 -0700 (PDT)
+        with ESMTP id S243452AbjEORCo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9547893F9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 324D062B5B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B5CC433EF;
-        Mon, 15 May 2023 17:10:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A5962A82
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD13C433D2;
+        Mon, 15 May 2023 17:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170629;
-        bh=OnBRjEozKjCSrrwX3jTJxJRZbcoyb3RCQBP/QrAzU4M=;
+        s=korg; t=1684170036;
+        bh=bxY6flUVg6hxBf+YC4JoIgClaWBrMJABTZY30VfhaKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nsk2zmMjqTgZYW6rHsKWq6x1vzFvVATnGLfh9dm1SqFYA/ntMqQ5aeaR2RlZxiH9z
-         uf4uwtlAyIcGysDWVZXMh6Kr5fMXEs6ur1W9vPk30wrUzDBuaXeOTARLWri8pWG2po
-         4Q52r05lJJnGu7csBFEbBL8Aj6UKyfp4wrP8kbc0=
+        b=BMgxrr4WZQiu2NPK0SaLgPJb9sCF0FrpMGgmRTIsCmlG6nIyZyrUilOVkmpipF6ip
+         7ekjGAPmErqeotWwxzuuVLndiRmVtjpOYLsZJ/0EcBEC++bKMp4wJXX2GlO1mfVpiy
+         /5HzNQOofDgPaEOfs79vaaJtjaSiS0I3uLcA9gvk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 192/239] drm/msm: fix missing wq allocation error handling
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.3 243/246] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
 Date:   Mon, 15 May 2023 18:27:35 +0200
-Message-Id: <20230515161727.497023992@linuxfoundation.org>
+Message-Id: <20230515161729.949053986@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +54,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit ca090c837b430752038b24e56dd182010d77f6f6 ]
+commit fc96ec826bced75cc6b9c07a4ac44bbf651337ab upstream.
 
-Add the missing sanity check to handle workqueue allocation failures.
+On CPM, the RISC core is a lot more efficiant when doing transfers
+in 16-bits chunks than in 8-bits chunks, but unfortunately the
+words need to be byte swapped as seen in a previous commit.
 
-Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
-Cc: stable@vger.kernel.org      # 3.12
-Cc: Rob Clark <robdclark@gmail.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525102/
-Link: https://lore.kernel.org/r/20230306100722.28485-8-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, for large tranfers with an even size, allocate a temporary tx
+buffer and byte-swap data before and after transfer.
+
+This change allows setting higher speed for transfer. For instance
+on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
+that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
+at 25 MHz while a word transfer at the same speed uses 0.032%
+of CPM load. This means the speed can be 6 times higher in
+word mode for the same CPM load.
+
+For the time being, only do it on CPM1 as there must be a
+trade-off between the CPM load reduction and the CPU load required
+to byte swap the data.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
+ drivers/spi/spi-fsl-spi.c |    3 +++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
-index 5eeb4655fbf17..ac3d1d492a48c 100644
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -433,6 +433,10 @@ static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
- 	priv->dev = ddev;
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -21,6 +21,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/types.h>
+ #include <linux/platform_device.h>
++#include <linux/byteorder/generic.h>
  
- 	priv->wq = alloc_ordered_workqueue("msm", 0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto err_put_dev;
+ #include "spi-fsl-cpm.h"
+ #include "spi-fsl-lib.h"
+@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
+ 		mspi->rx_dma = mspi->dma_dummy_rx;
+ 		mspi->map_rx_dma = 0;
+ 	}
++	if (t->bits_per_word == 16 && t->tx_buf) {
++		const u16 *src = t->tx_buf;
++		u16 *dst;
++		int i;
++
++		dst = kmalloc(t->len, GFP_KERNEL);
++		if (!dst)
++			return -ENOMEM;
++
++		for (i = 0; i < t->len >> 1; i++)
++			dst[i] = cpu_to_le16p(src + i);
++
++		mspi->tx = dst;
++		mspi->map_tx_dma = 1;
 +	}
  
- 	INIT_LIST_HEAD(&priv->objects);
- 	mutex_init(&priv->obj_lock);
--- 
-2.39.2
-
+ 	if (mspi->map_tx_dma) {
+ 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
+@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
+ 	if (mspi->map_rx_dma)
+ 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
+ 	mspi->xfer_in_progress = NULL;
++
++	if (t->bits_per_word == 16 && t->rx_buf) {
++		int i;
++
++		for (i = 0; i < t->len; i += 2)
++			le16_to_cpus(t->rx_buf + i);
++	}
+ }
+ EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
+ 
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -351,6 +351,9 @@ static int fsl_spi_prepare_message(struc
+ 				return -EINVAL;
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
++			if (t->bits_per_word == 8 && t->len >= 256 &&
++			    (mpc8xxx_spi->flags & SPI_CPM1))
++				t->bits_per_word = 16;
+ 		}
+ 	}
+ 	return fsl_spi_setup_transfer(m->spi, first);
 
 
