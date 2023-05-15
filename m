@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A1D67032FD
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26D7A7035F8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242015AbjEOQcL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:32:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34576 "EHLO
+        id S243452AbjEORFS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242430AbjEOQcK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:10 -0400
+        with ESMTP id S243544AbjEOREp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456D310DB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13BB49EDE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D51616278C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CCAC433D2;
-        Mon, 15 May 2023 16:31:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7045E62AAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70549C433EF;
+        Mon, 15 May 2023 17:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168320;
-        bh=KI276+lpF1XU45m5pNAD3raNqll+L3b0/3IqPnJ2URA=;
+        s=korg; t=1684170173;
+        bh=IH9iwk9BVxbL63OTDuc7CZwBqRuE+xwme9GMYrJzLAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pz/x0XnRxi2oAZtga52/QjqUb1X7Me29MZoZjSllNIFCY7+zrV8zOawrqNsbCGtWK
-         4Zb0CK4MLsGvr31/D6zkMbKoj2LV6M0jFdJBkSteWIQIVuKpuUxPPt74aUgf89VSSF
-         C7AsvKrRVZyecplc17Ew75EJB9TUxByJ9hq3eDl0=
+        b=VYt7OV6TG00lrsZWb9M07uM9MRXMIrGGFajhcD9CAZJRD45/R7Seb5lFDr6zBjlS6
+         NAGjRrsBRgBc14JN5LDz+JaoqoNbf6SCR874qw8XaCkcPZWDlHrSa7CzCql8AO47ey
+         x8aKYg9C4/63RjwzafRiM8k5hjUwZUwWKZv0HMnY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Reid Tonking <reidt@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tony Lindgren <tony@atomide.com>, Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 4.14 012/116] i2c: omap: Fix standard mode false ACK readings
-Date:   Mon, 15 May 2023 18:25:09 +0200
-Message-Id: <20230515161658.706723725@linuxfoundation.org>
+        patches@lists.linux.dev, Palash Oswal <oswalpalash@gmail.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Cong Wang <cong.wang@bytedance.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/239] sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()
+Date:   Mon, 15 May 2023 18:25:10 +0200
+Message-Id: <20230515161723.120882593@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +57,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Reid Tonking <reidt@ti.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit c770657bd2611b077ec1e7b1fe6aa92f249399bd upstream.
+[ Upstream commit c88f8d5cd95fd039cff95d682b8e71100c001df0 ]
 
-Using standard mode, rare false ACK responses were appearing with
-i2cdetect tool. This was happening due to NACK interrupt triggering
-ISR thread before register access interrupt was ready. Removing the
-NACK interrupt's ability to trigger ISR thread lets register access
-ready interrupt do this instead.
+When a tunnel device is bound with the underlying device, its
+dev->needed_headroom needs to be updated properly. IPv4 tunnels
+already do the same in ip_tunnel_bind_dev(). Otherwise we may
+not have enough header room for skb, especially after commit
+b17f709a2401 ("gue: TX support for using remote checksum offload option").
 
-Cc: <stable@vger.kernel.org> # v3.7+
-Fixes: 3b2f8f82dad7 ("i2c: omap: switch to threaded IRQ support")
-Signed-off-by: Reid Tonking <reidt@ti.com>
-Acked-by: Vignesh Raghavendra <vigneshr@ti.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32b8a8e59c9c ("sit: add IPv4 over IPv4 support")
+Reported-by: Palash Oswal <oswalpalash@gmail.com>
+Link: https://lore.kernel.org/netdev/CAGyP=7fDcSPKu6nttbGwt7RXzE3uyYxLjCSE97J64pRxJP8jPA@mail.gmail.com/
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-omap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/sit.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1030,7 +1030,7 @@ omap_i2c_isr(int irq, void *dev_id)
- 	u16 stat;
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 70d81bba50939..3ffb6a5b1f82a 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -1095,12 +1095,13 @@ static netdev_tx_t sit_tunnel_xmit(struct sk_buff *skb,
  
- 	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
--	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG);
-+	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+ static void ipip6_tunnel_bind_dev(struct net_device *dev)
+ {
++	struct ip_tunnel *tunnel = netdev_priv(dev);
++	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+ 	struct net_device *tdev = NULL;
+-	struct ip_tunnel *tunnel;
++	int hlen = LL_MAX_HEADER;
+ 	const struct iphdr *iph;
+ 	struct flowi4 fl4;
  
- 	if (stat & mask)
- 		ret = IRQ_WAKE_THREAD;
+-	tunnel = netdev_priv(dev);
+ 	iph = &tunnel->parms.iph;
+ 
+ 	if (iph->daddr) {
+@@ -1123,14 +1124,15 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
+ 		tdev = __dev_get_by_index(tunnel->net, tunnel->parms.link);
+ 
+ 	if (tdev && !netif_is_l3_master(tdev)) {
+-		int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+ 		int mtu;
+ 
+ 		mtu = tdev->mtu - t_hlen;
+ 		if (mtu < IPV6_MIN_MTU)
+ 			mtu = IPV6_MIN_MTU;
+ 		WRITE_ONCE(dev->mtu, mtu);
++		hlen = tdev->hard_header_len + tdev->needed_headroom;
+ 	}
++	dev->needed_headroom = t_hlen + hlen;
+ }
+ 
+ static void ipip6_tunnel_update(struct ip_tunnel *t, struct ip_tunnel_parm *p,
+-- 
+2.39.2
+
 
 
