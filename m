@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A757034AC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94A5D703397
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243126AbjEOQu7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
+        id S242836AbjEOQjD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243082AbjEOQur (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869905BB4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:46 -0700 (PDT)
+        with ESMTP id S242831AbjEOQjA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D69B819A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2354F62920
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C28C433EF;
-        Mon, 15 May 2023 16:50:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CB916285C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D0AC433D2;
+        Mon, 15 May 2023 16:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169445;
-        bh=RcMf99sVVFYOzFuBxPyij6kdwnRsBoKd96FJsfVFXdc=;
+        s=korg; t=1684168737;
+        bh=tbAGR8olSID+ZXh68YMbQgpn1M1MrEf6vi/Iqaw5Vyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UdXMbEkO0k/dG0n4aoFFq9Ng3Xyuh9YX59s51rLXWEFFtcqp7w+mRExZhgbYHzElc
-         WaTusAVWl1lrKXwp4lDFkQ8hkMYqBtpku+2TogdFok9USRqr7LPkJKfpMr/NFrqrCx
-         iaVFqrmYM48OVXC/i4DAsa3SW2c9+J8WueUOeuwU=
+        b=fR6gZp5uaWKCItUMGNhcP9dSVamtIMyJ/yyCt5BKwu4HfvtoFIhCQM2yUPauablg5
+         eCrmXCMm+4+hqtpPTlYi6bad5bNGIGl5JaJJOoKWUiYGzBZ0oFDR6s2VY+4evBYvt6
+         uMTubvY5HKY7euwWf2HnehWZPsuzJaFnwTBatceQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 030/246] octeontx2-pf: mcs: Match macsec ethertype along with DMAC
+Subject: [PATCH 4.19 005/191] ASoC: Intel: bytcr_rt5640: Add quirk for the Acer Iconia One 7 B1-750
 Date:   Mon, 15 May 2023 18:24:02 +0200
-Message-Id: <20230515161723.509277307@linuxfoundation.org>
+Message-Id: <20230515161707.401676269@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,72 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 57d00d4364f314485092667d2a48718985515deb ]
+[ Upstream commit e38c5e80c3d293a883c6f1d553f2146ec0bda35e ]
 
-On CN10KB silicon a single hardware macsec block is
-present and offloads macsec operations for all the
-ethernet LMACs. TCAM match with macsec ethertype 0x88e5
-alone at RX side is not sufficient to distinguish all the
-macsec interfaces created on top of netdevs. Hence append
-the DMAC of the macsec interface too. Otherwise the first
-created macsec interface only receives all the macsec traffic.
+The Acer Iconia One 7 B1-750 tablet mostly works fine with the defaults
+for an Bay Trail CR tablet. Except for the internal mic, instead of
+an analog mic on IN3 a digital mic on DMIC1 is uses.
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add a quirk with these settings for this tablet.
+
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230322145332.131525-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c  | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_rt5640.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index 9ec5f38d38a84..f699209978fef 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -9,6 +9,7 @@
- #include <net/macsec.h>
- #include "otx2_common.h"
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -400,6 +400,18 @@ static int byt_rt5640_aif1_hw_params(str
  
-+#define MCS_TCAM0_MAC_DA_MASK		GENMASK_ULL(47, 0)
- #define MCS_TCAM0_MAC_SA_MASK		GENMASK_ULL(63, 48)
- #define MCS_TCAM1_MAC_SA_MASK		GENMASK_ULL(31, 0)
- #define MCS_TCAM1_ETYPE_MASK		GENMASK_ULL(47, 32)
-@@ -237,8 +238,10 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
- 				     struct cn10k_mcs_rxsc *rxsc, u8 hw_secy_id)
- {
- 	struct macsec_rx_sc *sw_rx_sc = rxsc->sw_rxsc;
-+	struct macsec_secy *secy = rxsc->sw_secy;
- 	struct mcs_flowid_entry_write_req *req;
- 	struct mbox *mbox = &pfvf->mbox;
-+	u64 mac_da;
- 	int ret;
- 
- 	mutex_lock(&mbox->lock);
-@@ -249,11 +252,16 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
- 		goto fail;
- 	}
- 
-+	mac_da = ether_addr_to_u64(secy->netdev->dev_addr);
-+
-+	req->data[0] = FIELD_PREP(MCS_TCAM0_MAC_DA_MASK, mac_da);
-+	req->mask[0] = ~0ULL;
-+	req->mask[0] = ~MCS_TCAM0_MAC_DA_MASK;
-+
- 	req->data[1] = FIELD_PREP(MCS_TCAM1_ETYPE_MASK, ETH_P_MACSEC);
- 	req->mask[1] = ~0ULL;
- 	req->mask[1] &= ~MCS_TCAM1_ETYPE_MASK;
- 
--	req->mask[0] = ~0ULL;
- 	req->mask[2] = ~0ULL;
- 	req->mask[3] = ~0ULL;
- 
--- 
-2.39.2
-
+ /* Please keep this list alphabetically sorted */
+ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
++	{	/* Acer Iconia One 7 B1-750 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "VESPA2"),
++		},
++		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
++					BYT_RT5640_JD_SRC_JD1_IN4P |
++					BYT_RT5640_OVCD_TH_1500UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Acer Iconia Tab 8 W1-810 */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Acer"),
 
 
