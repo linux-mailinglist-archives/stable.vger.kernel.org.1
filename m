@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8498E7036B9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D8A0703B21
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243730AbjEORNM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:13:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
+        id S243427AbjEOR7m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243724AbjEORMv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD8F9EC6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:07 -0700 (PDT)
+        with ESMTP id S243469AbjEOR7P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:59:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ECD01CA4E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52E3B62B69
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F58AC433D2;
-        Mon, 15 May 2023 17:10:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D31862FCE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD49C433D2;
+        Mon, 15 May 2023 17:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170651;
-        bh=pVqg07gdpgIise+Um/2jKBpIYgaa3ToU/n0phW34iZo=;
+        s=korg; t=1684173400;
+        bh=GEcvCinZNOGNElHmlU4euET+qrTYDXddU6JnYOlI/WA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YrgSsXQ8Sa/oZYf1bHoHLlstcm34YHyVYP4jCmGDL++RjcVDECe9kkM3fsng94usU
-         1D3lNpopgBfbBURTjkJPIZbRgPBS0NTQ50RvMFSZxf8FJnzrsvYxUcSLO7iY2/WV+5
-         6p7RVhnxwoJUenfQwt2hXp5IXjt34uP0JRRym6Bg=
+        b=PI9D22nN44J1p2r5y7w6ke146lIVOGvadM1qavePHBAFPOaxKTraR14WM5dkxWSNI
+         j/4oFnhW2RSA7zsF1TGYRi5yf7LaPHZzKHl+IKJczPm7z0XGhJJ4JLYcsPP74+HWcz
+         kw58Duk9xS21gc2tTjJvpIV2K5qnVejoyncOEwB8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ross Zwisler <zwisler@google.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/239] drm/i915: Check pipe source size when using skl+ scalers
+Subject: [PATCH 5.4 083/282] net/packet: annotate accesses to po->xmit
 Date:   Mon, 15 May 2023 18:27:41 +0200
-Message-Id: <20230515161727.673150333@linuxfoundation.org>
+Message-Id: <20230515161724.736823460@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,66 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d944eafed618a8507270b324ad9d5405bb7f0b3e ]
+[ Upstream commit b9d83ab8a708f23a4001d60e9d8d0b3be3d9f607 ]
 
-The skl+ scalers only sample 12 bits of PIPESRC so we can't
-do any plane scaling at all when the pipe source size is >4k.
+po->xmit can be set from setsockopt(PACKET_QDISC_BYPASS),
+while read locklessly.
 
-Make sure the pipe source size is also below the scaler's src
-size limits. Might not be 100% accurate, but should at least be
-safe. We can refine the limits later if we discover that recent
-hw is less restricted.
+Use READ_ONCE()/WRITE_ONCE() to avoid potential load/store
+tearing issues.
 
-Cc: stable@vger.kernel.org
-Tested-by: Ross Zwisler <zwisler@google.com>
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8357
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230418175528.13117-2-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 691248d4135fe3fae64b4ee0676bc96a7fd6950c)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: d346a3fae3ff ("packet: introduce PACKET_QDISC_BYPASS socket option")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/skl_scaler.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/packet/af_packet.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/skl_scaler.c b/drivers/gpu/drm/i915/display/skl_scaler.c
-index e6ec5ed0d00ec..90f42f63128ec 100644
---- a/drivers/gpu/drm/i915/display/skl_scaler.c
-+++ b/drivers/gpu/drm/i915/display/skl_scaler.c
-@@ -105,6 +105,8 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
- 	const struct drm_display_mode *adjusted_mode =
- 		&crtc_state->hw.adjusted_mode;
-+	int pipe_src_w = drm_rect_width(&crtc_state->pipe_src);
-+	int pipe_src_h = drm_rect_height(&crtc_state->pipe_src);
- 	int min_src_w, min_src_h, min_dst_w, min_dst_h;
- 	int max_src_w, max_src_h, max_dst_w, max_dst_h;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 450dc03347725..8636e74557ec2 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -266,7 +266,8 @@ static void packet_cached_dev_reset(struct packet_sock *po)
  
-@@ -196,6 +198,21 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
- 		return -EINVAL;
+ static bool packet_use_direct_xmit(const struct packet_sock *po)
+ {
+-	return po->xmit == packet_direct_xmit;
++	/* Paired with WRITE_ONCE() in packet_setsockopt() */
++	return READ_ONCE(po->xmit) == packet_direct_xmit;
+ }
+ 
+ static u16 packet_pick_tx_queue(struct sk_buff *skb)
+@@ -2799,7 +2800,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 		packet_inc_pending(&po->tx_ring);
+ 
+ 		status = TP_STATUS_SEND_REQUEST;
+-		err = po->xmit(skb);
++		/* Paired with WRITE_ONCE() in packet_setsockopt() */
++		err = READ_ONCE(po->xmit)(skb);
+ 		if (unlikely(err != 0)) {
+ 			if (err > 0)
+ 				err = net_xmit_errno(err);
+@@ -3002,7 +3004,8 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 		virtio_net_hdr_set_proto(skb, &vnet_hdr);
  	}
  
-+	/*
-+	 * The pipe scaler does not use all the bits of PIPESRC, at least
-+	 * on the earlier platforms. So even when we're scaling a plane
-+	 * the *pipe* source size must not be too large. For simplicity
-+	 * we assume the limits match the scaler source size limits. Might
-+	 * not be 100% accurate on all platforms, but good enough for now.
-+	 */
-+	if (pipe_src_w > max_src_w || pipe_src_h > max_src_h) {
-+		drm_dbg_kms(&dev_priv->drm,
-+			    "scaler_user index %u.%u: pipe src size %ux%u "
-+			    "is out of scaler range\n",
-+			    crtc->pipe, scaler_user, pipe_src_w, pipe_src_h);
-+		return -EINVAL;
-+	}
-+
- 	/* mark this plane as a scaler user in crtc_state */
- 	scaler_state->scaler_users |= (1 << scaler_user);
- 	drm_dbg_kms(&dev_priv->drm, "scaler_user index %u.%u: "
+-	err = po->xmit(skb);
++	/* Paired with WRITE_ONCE() in packet_setsockopt() */
++	err = READ_ONCE(po->xmit)(skb);
+ 	if (unlikely(err != 0)) {
+ 		if (err > 0)
+ 			err = net_xmit_errno(err);
+@@ -3949,7 +3952,8 @@ packet_setsockopt(struct socket *sock, int level, int optname, char __user *optv
+ 		if (copy_from_user(&val, optval, sizeof(val)))
+ 			return -EFAULT;
+ 
+-		po->xmit = val ? packet_direct_xmit : dev_queue_xmit;
++		/* Paired with all lockless reads of po->xmit */
++		WRITE_ONCE(po->xmit, val ? packet_direct_xmit : dev_queue_xmit);
+ 		return 0;
+ 	}
+ 	default:
 -- 
 2.39.2
 
