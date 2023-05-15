@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EBEA70396E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58400703514
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244551AbjEORm1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
+        id S243231AbjEOQzf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244584AbjEORmH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:07 -0400
+        with ESMTP id S243243AbjEOQzL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD891B749
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D8372A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C524762E24
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69495C433D2;
-        Mon, 15 May 2023 17:39:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FCA7629CD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06819C433EF;
+        Mon, 15 May 2023 16:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172378;
-        bh=NMPDj9gNR+q6iJhbchjz6/v5vcYV0OtYGL4SFGnlObg=;
+        s=korg; t=1684169707;
+        bh=v0LR2KYR8PyyF39lOMybbrGeHTn4QIJZBer4850tj4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GQB3E+cdhzYuuBFsnZTW6x/2mRvYT5y5s+ZT/V4pjKUyAyJ5Zt5cr7ygHEQvcnoYj
-         w3qicLk/WUfBgPYw0DbxYtzKrYtseyLmqO/ndAhgZ6vY7OPi5e3ofpMXmlg3HNLobp
-         v2ua9hf4wjAkD7JDXY3KJW+lMhZTG3kSfa04ebws=
+        b=ZusW/crPyXPTmXRjqV1x+ERydQhFJY0V+RuAKg4opE7hLYvB6nSXiWJCoZMn9Ha7u
+         J+1v2fMgbV+RZFbPDfPzzr0cfkdfESYn7eO2tdussmngunTnrDYWo2zgvT5bUrrVb7
+         eKLxX9H319qUE5m+meC/33DYHd/bjjaN6OaEA9L4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Uros Bizjak <ubizjak@gmail.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/381] x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
+        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.3 144/246] platform/x86: thinkpad_acpi: Fix platform profiles on T490
 Date:   Mon, 15 May 2023 18:25:56 +0200
-Message-Id: <20230515161741.548385592@linuxfoundation.org>
+Message-Id: <20230515161726.880534124@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit f96fb2df3eb31ede1b34b0521560967310267750 ]
+commit 0c0cd3e25a5b64b541dd83ba6e032475a9d77432 upstream.
 
-The detection of atomic update failure in reserve_eilvt_offset() is
-not correct. The value returned by atomic_cmpxchg() should be compared
-to the old value from the location to be updated.
+I had incorrectly thought that PSC profiles were not usable on Intel
+platforms so had blocked them in the driver initialistion. This broke
+platform profiles on the T490.
 
-If these two are the same, then atomic update succeeded and
-"eilvt_offsets[offset]" location is updated to "new" in an atomic way.
+After discussion with the FW team PSC does work on Intel platforms and
+should be allowed.
 
-Otherwise, the atomic update failed and it should be retried with the
-value from "eilvt_offsets[offset]" - exactly what atomic_try_cmpxchg()
-does in a correct and more optimal way.
+Note - it's possible this may impact other platforms where it is advertised
+but special driver support that only Windows has is needed. But if it does
+then they will need fixing via quirks. Please report any issues to me so I
+can get them addressed - but I haven't found any problems in testing...yet
 
-Fixes: a68c439b1966c ("apic, x86: Check if EILVT APIC registers are available (AMD only)")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230227160917.107820-1-ubizjak@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bce6243f767f ("platform/x86: thinkpad_acpi: do not use PSC mode on Intel platforms")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2177962
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20230505132523.214338-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 1c96f2425eafd..25eb69f26e039 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -410,10 +410,9 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
- 		if (vector && !eilvt_entry_is_changeable(vector, new))
- 			/* may not change if vectors are different */
- 			return rsvd;
--		rsvd = atomic_cmpxchg(&eilvt_offsets[offset], rsvd, new);
--	} while (rsvd != new);
-+	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
- 
--	rsvd &= ~APIC_EILVT_MASKED;
-+	rsvd = new & ~APIC_EILVT_MASKED;
- 	if (rsvd && rsvd != vector)
- 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
- 			offset, rsvd);
--- 
-2.39.2
-
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10593,11 +10593,6 @@ static int tpacpi_dytc_profile_init(stru
+ 				dytc_mmc_get_available = true;
+ 		}
+ 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
+-		/* Support for this only works on AMD platforms */
+-		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
+-			dbg_printk(TPACPI_DBG_INIT, "PSC not support on Intel platforms\n");
+-			return -ENODEV;
+-		}
+ 		pr_debug("PSC is supported\n");
+ 	} else {
+ 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
 
 
