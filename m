@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80A587033B0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B68B703924
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242848AbjEOQkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43286 "EHLO
+        id S244446AbjEORjc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:39:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242566AbjEOQkP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBEBC40FB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:40:10 -0700 (PDT)
+        with ESMTP id S243915AbjEORjQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04AF510E4C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68EAA62878
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEE3C4339C;
-        Mon, 15 May 2023 16:40:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DDD662DDB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4137DC4339C;
+        Mon, 15 May 2023 17:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168809;
-        bh=ojc58rMjtvQJnZH5ift4m2BaI2Ddu85cIVhMmcACl14=;
+        s=korg; t=1684172191;
+        bh=ovHfEM0fyjLv6XsaWbJU/Bs5Arfg6u26HFvANVF/FWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zxQB2CszA7hMfxCXgbBpI/WOmQqujsU/m7aEgfLgf7egN+S6xe6pFL2iKbDEViQ7V
-         xyIWrx6ITGIead9Z1kLOYdYuAUiazJIhvlI3Q6hkkRe0Qh//K9QX6allD+fNtrCi46
-         EWAzHgS7cMULQuuiCHRrvsq1JVeNMLaq8eeisBr4=
+        b=s7NTaVHsU6yqfFhVV82HDMSqPnRjhm34jNYrVphJLUKYyykrzbal3Q8Gt5rK7z1Lw
+         MDk4+7wWN2Nk9ju0cnhpo3hJgk1RBV2ieeDCBaeutPubdSrhiL9KiBnMdZpWZjGOxN
+         RHygD0oEjlUkFS2Dux+u0+zULvWY0Rbkwdh0HeJk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Alexey V. Vissarionov" <gremlin@altlinux.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 048/191] wifi: ath6kl: minor fix for allocation size
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.10 034/381] kheaders: Use array declaration instead of char
 Date:   Mon, 15 May 2023 18:24:45 +0200
-Message-Id: <20230515161708.942775281@linuxfoundation.org>
+Message-Id: <20230515161738.346763618@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,40 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey V. Vissarionov <gremlin@altlinux.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 778f83f889e7fca37780d9640fcbd0229ae38eaa ]
+commit b69edab47f1da8edd8e7bfdf8c70f51a2a5d89fb upstream.
 
-Although the "param" pointer occupies more or equal space compared
-to "*param", the allocation size should use the size of variable
-itself.
+Under CONFIG_FORTIFY_SOURCE, memcpy() will check the size of destination
+and source buffers. Defining kernel_headers_data as "char" would trip
+this check. Since these addresses are treated as byte arrays, define
+them as arrays (as done everywhere else).
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This was seen with:
 
-Fixes: bdcd81707973cf8a ("Add ath6kl cleaned up driver")
-Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230117110414.GC12547@altlinux.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  $ cat /sys/kernel/kheaders.tar.xz >> /dev/null
+
+  detected buffer overflow in memcpy
+  kernel BUG at lib/string_helpers.c:1027!
+  ...
+  RIP: 0010:fortify_panic+0xf/0x20
+  [...]
+  Call Trace:
+   <TASK>
+   ikheaders_read+0x45/0x50 [kheaders]
+   kernfs_fop_read_iter+0x1a4/0x2f0
+  ...
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/bpf/20230302112130.6e402a98@kernel.org/
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 43d8ce9d65a5 ("Provide in-kernel headers to make extending kernel easier")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230302224946.never.243-kees@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath6kl/bmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/kheaders.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
-index bde5a10d470c8..af98e871199d3 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -246,7 +246,7 @@ int ath6kl_bmi_execute(struct ath6kl *ar, u32 addr, u32 *param)
- 		return -EACCES;
- 	}
+--- a/kernel/kheaders.c
++++ b/kernel/kheaders.c
+@@ -26,15 +26,15 @@ asm (
+ "	.popsection				\n"
+ );
  
--	size = sizeof(cid) + sizeof(addr) + sizeof(param);
-+	size = sizeof(cid) + sizeof(addr) + sizeof(*param);
- 	if (size > ar->bmi.max_cmd_size) {
- 		WARN_ON(1);
- 		return -EINVAL;
--- 
-2.39.2
-
+-extern char kernel_headers_data;
+-extern char kernel_headers_data_end;
++extern char kernel_headers_data[];
++extern char kernel_headers_data_end[];
+ 
+ static ssize_t
+ ikheaders_read(struct file *file,  struct kobject *kobj,
+ 	       struct bin_attribute *bin_attr,
+ 	       char *buf, loff_t off, size_t len)
+ {
+-	memcpy(buf, &kernel_headers_data + off, len);
++	memcpy(buf, &kernel_headers_data[off], len);
+ 	return len;
+ }
+ 
+@@ -48,8 +48,8 @@ static struct bin_attribute kheaders_att
+ 
+ static int __init ikheaders_init(void)
+ {
+-	kheaders_attr.size = (&kernel_headers_data_end -
+-			      &kernel_headers_data);
++	kheaders_attr.size = (kernel_headers_data_end -
++			      kernel_headers_data);
+ 	return sysfs_create_bin_file(kernel_kobj, &kheaders_attr);
+ }
+ 
 
 
