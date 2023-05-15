@@ -2,49 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3AF6703969
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C8D8703728
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244568AbjEORmW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34340 "EHLO
+        id S243958AbjEORRd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234101AbjEORll (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC1813C1D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:20 -0700 (PDT)
+        with ESMTP id S243906AbjEORRK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A684311B5C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B9C362E0A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1600DC433EF;
-        Mon, 15 May 2023 17:39:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D05B62BDB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D434C433D2;
+        Mon, 15 May 2023 17:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172359;
-        bh=H/1+UzPVQdy96Xry1hn8eJduxdk5b7vEs+RxRYk77Oo=;
+        s=korg; t=1684170946;
+        bh=v2FjJd2V0/+q+5jzoEIchjJyOj54CXhm1HIZf4Bg5J8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xgE4EThv12HxB6KJiYU+YHOwIIuFOlFjtLl03zb+8QWbCzXf1M/658raNx1wtOVo2
-         dOq+ofU9m6gR7ZBQYXYDwFii/kN723LfpJM9LMyYc5g3rc/pf9yHoCFarnvjX6JF20
-         Ix+SpCeukbEyGhXDmcMUv7NqYoE1bEXdGnTmWZEI=
+        b=OzUjGUu5411OYELBbmYIVhL+GV7CocsoIv9WXsh1qhVmJLEB+c+0WGztIgNJd079i
+         wygJ+Aqg8Peom9RCbmKS0DPpP7StwUJBMTA0rujKFvFFcMgmm7kXt/Zp+f3+cqIoz/
+         9ayPp1xY6WucJjKKMfS1TUh2RJb44DNpzNlMbEdk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev,
+        Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+        Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+        Mason Huo <mason.huo@starfivetech.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/381] tick/sched: Optimize tick_do_update_jiffies64() further
+Subject: [PATCH 6.2 052/242] RISC-V: mm: Enable huge page support to kernel_page_present() function
 Date:   Mon, 15 May 2023 18:26:18 +0200
-Message-Id: <20230515161742.566080592@linuxfoundation.org>
+Message-Id: <20230515161723.473321693@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,60 +59,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 
-[ Upstream commit 7a35bf2a6a871cd0252cd371d741e7d070b53af9 ]
+[ Upstream commit a15c90b67a662c75f469822a7f95c7aaa049e28f ]
 
-Now that it's clear that there is always one tick to account, simplify the
-calculations some more.
+Currently kernel_page_present() function doesn't support huge page
+detection causes the function to mistakenly return false to the
+hibernation core.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201117132006.565663056@linutronix.de
-Stable-dep-of: e9523a0d8189 ("tick/common: Align tick period with the HZ tick.")
+Add huge page detection to the function to solve the problem.
+
+Fixes: 9e953cda5cdf ("riscv: Introduce huge page support for 32/64bit kernel")
+Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Reviewed-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+Reviewed-by: Mason Huo <mason.huo@starfivetech.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20230330064321.1008373-4-jeeheng.sia@starfivetech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/riscv/mm/pageattr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index ac9953f6f92ce..5c3d4355266db 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -53,7 +53,7 @@ static ktime_t last_jiffies_update;
-  */
- static void tick_do_update_jiffies64(ktime_t now)
- {
--	unsigned long ticks = 0;
-+	unsigned long ticks = 1;
- 	ktime_t delta;
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 86c56616e5dea..ea3d61de065b3 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -217,18 +217,26 @@ bool kernel_page_present(struct page *page)
+ 	pgd = pgd_offset_k(addr);
+ 	if (!pgd_present(*pgd))
+ 		return false;
++	if (pgd_leaf(*pgd))
++		return true;
  
- 	/*
-@@ -91,20 +91,21 @@ static void tick_do_update_jiffies64(ktime_t now)
+ 	p4d = p4d_offset(pgd, addr);
+ 	if (!p4d_present(*p4d))
+ 		return false;
++	if (p4d_leaf(*p4d))
++		return true;
  
- 	write_seqcount_begin(&jiffies_seq);
+ 	pud = pud_offset(p4d, addr);
+ 	if (!pud_present(*pud))
+ 		return false;
++	if (pud_leaf(*pud))
++		return true;
  
--	last_jiffies_update = ktime_add(last_jiffies_update, tick_period);
--
- 	delta = ktime_sub(now, tick_next_period);
- 	if (unlikely(delta >= tick_period)) {
- 		/* Slow path for long idle sleep times */
- 		s64 incr = ktime_to_ns(tick_period);
+ 	pmd = pmd_offset(pud, addr);
+ 	if (!pmd_present(*pmd))
+ 		return false;
++	if (pmd_leaf(*pmd))
++		return true;
  
--		ticks = ktime_divns(delta, incr);
-+		ticks += ktime_divns(delta, incr);
- 
- 		last_jiffies_update = ktime_add_ns(last_jiffies_update,
- 						   incr * ticks);
-+	} else {
-+		last_jiffies_update = ktime_add(last_jiffies_update,
-+						tick_period);
- 	}
- 
--	do_timer(++ticks);
-+	do_timer(ticks);
- 
- 	/*
- 	 * Keep the tick_next_period variable up to date.  WRITE_ONCE()
+ 	pte = pte_offset_kernel(pmd, addr);
+ 	return pte_present(*pte);
 -- 
 2.39.2
 
