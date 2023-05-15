@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C582870382E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C6C7039E5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244305AbjEOR2w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:28:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
+        id S244683AbjEORqk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244138AbjEOR1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7784C11569
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:29 -0700 (PDT)
+        with ESMTP id S242536AbjEORqS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5A215515
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 438B762CBB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A223C433D2;
-        Mon, 15 May 2023 17:26:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 810E062E9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A2FC4339B;
+        Mon, 15 May 2023 17:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171588;
-        bh=Ny8WIhhc+DsIwnwuaYUZiTvakmtGRstHvTGDZXsgPEE=;
+        s=korg; t=1684172678;
+        bh=Hl1CeOmqL8RN0LahdOvA7GdYIF4hpMjs8AKYFZsm7ps=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VuRyHYtkamK50mFfmriMaSBXbJ1G7JRf/oNkJ6xn239c4s1f+jVgXGAJ5nedSLLu7
-         3ePlXSgQuysH3wWFfrQRUcHuM2J8XPPwkSuxglKmeNXfQ/k22Kf3RnWoYQImiXLyFW
-         MdHElPD6RJ+WWRsdenkuD/ZDnyRkOW47qi2BEYnA=
+        b=XfjbEwCuBGwoE5strP8n6FWpVYpndN8dnPvCXhWwqbWy5Tpd7Zg/1MawNOBRU//Iq
+         JGptlDyARiVxHfrOM2K8mBAH82karPF4or9YmPqFxh5RcVmLwtyFq3MVqqFyUqo9zL
+         N+8AuMJTL2kE4yYpDT8fX9cZvl36hs2PdRmAW7gU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Carl Vanderlip <quic_carlv@quicinc.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/134] bus: mhi: host: Remove duplicate ee check for syserr
+Subject: [PATCH 5.10 232/381] macintosh: via-pmu-led: requires ATA to be set
 Date:   Mon, 15 May 2023 18:28:03 +0200
-Message-Id: <20230515161703.139942312@linuxfoundation.org>
+Message-Id: <20230515161747.180938900@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,48 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit d469d9448a0f1a33c175d3280b1542fa0158ad7a ]
+[ Upstream commit 05dce4ba125336875cd3eed3c1503fa81cd2f691 ]
 
-If we detect a system error via intvec, we only process the syserr if the
-current ee is different than the last observed ee.  The reason for this
-check is to prevent bhie from running multiple times, but with the single
-queue handling syserr, that is not possible.
+LEDS_TRIGGER_DISK depends on ATA, so selecting LEDS_TRIGGER_DISK
+when ATA is not set/enabled causes a Kconfig warning:
 
-The check can cause an issue with device recovery.  If PBL loads a bad SBL
-via BHI, but that SBL hangs before notifying the host of an ee change,
-then issuing soc_reset to crash the device and retry (after supplying a
-fixed SBL) will not recover the device as the host will observe a PBL->PBL
-transition and not process the syserr.  The device will be stuck until
-either the driver is reloaded, or the host is rebooted.  Instead, remove
-the check so that we can attempt to recover the device.
+WARNING: unmet direct dependencies detected for LEDS_TRIGGER_DISK
+  Depends on [n]: NEW_LEDS [=y] && LEDS_TRIGGERS [=y] && ATA [=n]
+  Selected by [y]:
+  - ADB_PMU_LED_DISK [=y] && MACINTOSH_DRIVERS [=y] && ADB_PMU_LED [=y] && LEDS_CLASS [=y]
 
-Fixes: ef2126c4e2ea ("bus: mhi: core: Process execution environment changes serially")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/1681142292-27571-2-git-send-email-quic_jhugo@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fix this by making ADB_PMU_LED_DISK depend on ATA.
+
+Seen on both PPC32 and PPC64.
+
+Fixes: 0e865a80c135 ("macintosh: Remove dependency on IDE_GD_ATA if ADB_PMU_LED_DISK is selected")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230223014241.20878-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/macintosh/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
-index 9a94b8d66f575..6b36689999427 100644
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -489,7 +489,7 @@ irqreturn_t mhi_intvec_threaded_handler(int irq_number, void *priv)
- 	}
- 	write_unlock_irq(&mhi_cntrl->pm_lock);
+diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+index 539a2ed4e13dc..a0e717a986dcb 100644
+--- a/drivers/macintosh/Kconfig
++++ b/drivers/macintosh/Kconfig
+@@ -86,6 +86,7 @@ config ADB_PMU_LED
  
--	if (pm_state != MHI_PM_SYS_ERR_DETECT || ee == mhi_cntrl->ee)
-+	if (pm_state != MHI_PM_SYS_ERR_DETECT)
- 		goto exit_intvec;
- 
- 	switch (ee) {
+ config ADB_PMU_LED_DISK
+ 	bool "Use front LED as DISK LED by default"
++	depends on ATA
+ 	depends on ADB_PMU_LED
+ 	depends on LEDS_CLASS
+ 	select LEDS_TRIGGERS
 -- 
 2.39.2
 
