@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44DF770373F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23CD7703653
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243937AbjEORSf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:18:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S243445AbjEORJD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242563AbjEORSL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:18:11 -0400
+        with ESMTP id S243557AbjEORIp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281945B82
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C87A25D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8250062BF9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFB9C433EF;
-        Mon, 15 May 2023 17:16:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8732262AFF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D04CC4339B;
+        Mon, 15 May 2023 17:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170994;
-        bh=NNISOHxR4cXLqX4rqj9MEP6f0iTjiVmzkmqCrA1E5MM=;
+        s=korg; t=1684170432;
+        bh=KDtz098cXIIKYANo2u+ugNLKs1oF2Xks42v7J5v9TV4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NgFRnqJwcogJzFicgOSmifQjPV1FFe8AXnQdpouI9CQRh2+4sVWBBRdJ/v8K1c4K0
-         4itkSoLwDUseXiOoPfSXFPn1ofRUMXhYNbD/IyaUIhpvBr6HpKAhXdV4bFPnkT5n61
-         hnr05hecSCVTAtnU/T2hLZvNJGt1GmsAUHvTId6E=
+        b=Av3bqlVsQz6N3BBkCXVi6oVcsVRwUIL/J2r2trBNtHVVfTMvJSvGbWREiaEqxKTjU
+         FGzf1CUPlLJZPykeQMGsbyIXA+AWPoOOuEBJ+nZYVQkJDy1e1FLKba4heFUJkGWKr5
+         8F93dNP0L+AsSHlG/QPXvHC8Wi7k5HuC9Ri3bSsw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 066/242] octeontx2-af: Secure APR table update with the lock
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 129/239] smb3: fix problem remounting a share after shutdown
 Date:   Mon, 15 May 2023 18:26:32 +0200
-Message-Id: <20230515161723.889035807@linuxfoundation.org>
+Message-Id: <20230515161725.567180306@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,81 +53,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 048486f81d01db4d100af021ee2ea211d19732a0 ]
+commit 716a3cf317456fa01d54398bb14ab354f50ed6a2 upstream.
 
-APR table contains the lmtst base address of PF/VFs. These entries
-are updated by the PF/VF during the device probe. The lmtst address
-is fetched from HW using "TXN_REQ" and "ADDR_RSP_STS" registers.
-The lock tries to protect these registers from getting overwritten
-when multiple PFs invokes rvu_get_lmtaddr() simultaneously.
+xfstests generic/392 showed a problem where even after a
+shutdown call was made on a mount, we would still attempt
+to use the (now inaccessible) superblock if another mount
+was attempted for the same share.
 
-For example, if PF1 submit the request and got permitted before it
-reads the response and PF2 got scheduled submit the request then the
-response of PF1 is overwritten by the PF2 response.
-
-Fixes: 893ae97214c3 ("octeontx2-af: cn10k: Support configurable LMTST regions")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: David Howells <dhowells@redhat.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 087f757b0129 ("cifs: add shutdown support")
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c   | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ fs/cifs/connect.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-index 7dbbc115cde42..f9faa5b23bb9d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-@@ -60,13 +60,14 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 			   u64 iova, u64 *lmt_addr)
- {
- 	u64 pa, val, pf;
--	int err;
-+	int err = 0;
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -2742,6 +2742,13 @@ cifs_match_super(struct super_block *sb,
  
- 	if (!iova) {
- 		dev_err(rvu->dev, "%s Requested Null address for transulation\n", __func__);
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&rvu->rsrc_lock);
- 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_REQ, iova);
- 	pf = rvu_get_pf(pcifunc) & 0x1F;
- 	val = BIT_ULL(63) | BIT_ULL(14) | BIT_ULL(13) | pf << 8 |
-@@ -76,12 +77,13 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 	err = rvu_poll_reg(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_RSP_STS, BIT_ULL(0), false);
- 	if (err) {
- 		dev_err(rvu->dev, "%s LMTLINE iova transulation failed\n", __func__);
--		return err;
-+		goto exit;
- 	}
- 	val = rvu_read64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_RSP_STS);
- 	if (val & ~0x1ULL) {
- 		dev_err(rvu->dev, "%s LMTLINE iova transulation failed err:%llx\n", __func__, val);
--		return -EIO;
-+		err = -EIO;
-+		goto exit;
- 	}
- 	/* PA[51:12] = RVU_AF_SMMU_TLN_FLIT0[57:18]
- 	 * PA[11:0] = IOVA[11:0]
-@@ -89,8 +91,9 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 	pa = rvu_read64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_TLN_FLIT0) >> 18;
- 	pa &= GENMASK_ULL(39, 0);
- 	*lmt_addr = (pa << 12) | (iova  & 0xFFF);
--
--	return 0;
-+exit:
-+	mutex_unlock(&rvu->rsrc_lock);
-+	return err;
- }
- 
- static int rvu_update_lmtaddr(struct rvu *rvu, u16 pcifunc, u64 lmt_addr)
--- 
-2.39.2
-
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	cifs_sb = CIFS_SB(sb);
++
++	/* We do not want to use a superblock that has been shutdown */
++	if (CIFS_MOUNT_SHUTDOWN & cifs_sb->mnt_cifs_flags) {
++		spin_unlock(&cifs_tcp_ses_lock);
++		return 0;
++	}
++
+ 	tlink = cifs_get_tlink(cifs_sb_master_tlink(cifs_sb));
+ 	if (tlink == NULL) {
+ 		/* can not match superblock if tlink were ever null */
 
 
