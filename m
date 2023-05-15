@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B9C70335A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EB47703970
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242770AbjEOQgP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39260 "EHLO
+        id S244587AbjEORma (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242772AbjEOQgH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DD3B3ABF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:05 -0700 (PDT)
+        with ESMTP id S244595AbjEORmH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8C913C18
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBA2262803
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE709C433EF;
-        Mon, 15 May 2023 16:36:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1567962E25
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C687CC433EF;
+        Mon, 15 May 2023 17:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168564;
-        bh=5Vi8SFSi5y9LeCUt1u8PLiMWdPJokZMze00l6jbOiQo=;
+        s=korg; t=1684172381;
+        bh=D2dYbKnuKGtMl4PLtwVII2h0iSBV7lxCoosr1K7fvuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fv1hCBJWtSBTQGgUVLR8urp2CXjXTfdw6o0VnaHr8qDpU9gF8VbDjf9UfXT7AaMXD
-         Je4nA7DmdK0w4fIEv02zOyAUuQmCivOFz9kbCI+bQ1dy3+Zuv8b3EO9HH/NkdXDZPB
-         iw6W8BBlPaXL40hwUoA0yoyKXk/RgeQ0XVaUg1Mw=
+        b=dvTRSdBDlJL6qgPMXbd2IJ8m4kaHPdqhFGlXKA/gq/76AwkWSVQ094a4x9WUPHSqR
+         oeNbWNIJF+DU/LgeMfkzWy9/pMNlEy/byy+lS4ieq5wQNNnkMwg0VEQFXEds084Jb1
+         aRdeLoTZwUllDY4dDt32A64/Gs5MqesWc5QPgHJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 060/116] powerpc/sysdev/tsi108: fix resource printk format warnings
+Subject: [PATCH 5.10 106/381] media: rkvdec: fix use after free bug in rkvdec_remove
 Date:   Mon, 15 May 2023 18:25:57 +0200
-Message-Id: <20230515161700.270014611@linuxfoundation.org>
+Message-Id: <20230515161741.586601907@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,43 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 55d8bd02cc1b9f1063993b5c42c9cabf4af67dea ]
+[ Upstream commit 3228cec23b8b29215e18090c6ba635840190993d ]
 
-Use "%pa" format specifier for resource_size_t to avoid a compiler
-printk format warning.
+In rkvdec_probe, rkvdec->watchdog_work is bound with
+rkvdec_watchdog_func. Then rkvdec_vp9_run may
+be called to start the work.
 
-  arch/powerpc/sysdev/tsi108_pci.c: In function 'tsi108_setup_pci':
-  include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t'
+If we remove the module which will call rkvdec_remove
+ to make cleanup, there may be a unfinished work.
+ The possible sequence is as follows, which will
+ cause a typical UAF bug.
 
-Fixes: c4342ff92bed ("[POWERPC] Update mpc7448hpc2 board irq support using device tree")
-Fixes: 2b9d7467a6db ("[POWERPC] Add tsi108 pci and platform device data register function")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-[mpe: Use pr_info() and unsplit string]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-5-rdunlap@infradead.org
+Fix it by canceling the work before cleanup in rkvdec_remove.
+
+CPU0                  CPU1
+
+                    |rkvdec_watchdog_func
+rkvdec_remove       |
+ rkvdec_v4l2_cleanup|
+  v4l2_m2m_release  |
+    kfree(m2m_dev); |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev->curr_ctx //use
+
+Fixes: cd33c830448b ("media: rkvdec: Add the rkvdec driver")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/tsi108_pci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/staging/media/rkvdec/rkvdec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/sysdev/tsi108_pci.c b/arch/powerpc/sysdev/tsi108_pci.c
-index 28ff1f53cefc1..6bd50c690006f 100644
---- a/arch/powerpc/sysdev/tsi108_pci.c
-+++ b/arch/powerpc/sysdev/tsi108_pci.c
-@@ -229,9 +229,8 @@ int __init tsi108_setup_pci(struct device_node *dev, u32 cfg_phys, int primary)
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index e384ea8d72801..f6a29a7078625 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -1077,6 +1077,8 @@ static int rkvdec_remove(struct platform_device *pdev)
+ {
+ 	struct rkvdec_dev *rkvdec = platform_get_drvdata(pdev);
  
- 	(hose)->ops = &tsi108_direct_pci_ops;
- 
--	printk(KERN_INFO "Found tsi108 PCI host bridge at 0x%08x. "
--	       "Firmware bus number: %d->%d\n",
--	       rsrc.start, hose->first_busno, hose->last_busno);
-+	pr_info("Found tsi108 PCI host bridge at 0x%pa. Firmware bus number: %d->%d\n",
-+		&rsrc.start, hose->first_busno, hose->last_busno);
- 
- 	/* Interpret the "ranges" property */
- 	/* This also maps the I/O region and sets isa_io/mem_base */
++	cancel_delayed_work_sync(&rkvdec->watchdog_work);
++
+ 	rkvdec_v4l2_cleanup(rkvdec);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
 -- 
 2.39.2
 
