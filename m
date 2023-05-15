@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EC037037E3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B13C670387F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243964AbjEORZA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:25:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41016 "EHLO
+        id S244306AbjEORcw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244161AbjEORYf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:35 -0400
+        with ESMTP id S244320AbjEORcg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E72CB40FF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D723F11D87
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A843A62BF9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE3AC433D2;
-        Mon, 15 May 2023 17:23:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73EA862D23
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70539C4339B;
+        Mon, 15 May 2023 17:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171410;
-        bh=n9qPg8YDBuATL63fuxweux1pB0Yu8n5yzAX8U/Y7gcA=;
+        s=korg; t=1684171787;
+        bh=7cp/UyRcXEVtKZ7hBztTmStjpxwfPTY6RctpJwepqbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZKTdTl5/qmgC/A7Z2drvv7bRK5GKx5HlOqAZKfAydVy4/4Z+DuQ93oGenunkskktX
-         CZ91md///cYRD9wBkHbNCCJg8ozi3By1pQq9V7P1WnMlXVLRd+12Gdb4A40x05Wcmy
-         hAzz+p7gWxbwIxYcmv9QdjLuu9n/sAFVqPSmvEhU=
+        b=sHoIV9pEjCcLgxHy9Y3KVeqCwf4bd6Te+8OGf89GMK61u4uSNSKtYDX0hruqEFj92
+         CJOWVuFSKViOL+2W1+Wnoc7vg6yUbSDadxP9Y5GWiq8SoTHcbMc9v8uVOCumfpI1De
+         xs/Omi+nc+tw5UTk9IyQHGP236U0k5mihfc8Ml+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nevenko Stupar <Nevenko.Stupar@amd.com>,
-        Jun Lei <Jun.Lei@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alex Hung <alex.hung@amd.com>, Alvin Lee <Alvin.Lee2@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.2 199/242] drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK modes
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 048/134] net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()
 Date:   Mon, 15 May 2023 18:28:45 +0200
-Message-Id: <20230515161727.914816557@linuxfoundation.org>
+Message-Id: <20230515161704.750701051@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alvin Lee <Alvin.Lee2@amd.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit b504f99ccaa64da364443431e388ecf30b604e38 upstream.
+[ Upstream commit 93e0401e0fc0c54b0ac05b687cd135c2ac38187c ]
 
-[Description]
-- Due to bandwidth / arbitration issues at 200Mhz DCFCLK,
-  we want to enforce minimum 60us of prefetch to avoid
-  intermittent underflow issues
-- Since 60us prefetch is already enforced for UCLK DPM0,
-  and many DCFCLK's > 200Mhz are mapped to UCLK DPM1, in
-  theory there should not be any UCLK DPM regressions by
-  enforcing greater prefetch
+The call to phy_stop() races with the later call to phy_disconnect(),
+resulting in concurrent phy_suspend() calls being run from different
+CPUs. The final call to phy_disconnect() ensures that the PHY is
+stopped and suspended, too.
 
-Reviewed-by: Nevenko Stupar <Nevenko.Stupar@amd.com>
-Reviewed-by: Jun Lei <Jun.Lei@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c |    5 +++--
- drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h |    1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -807,7 +807,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleep
- 					v->SwathHeightY[k],
- 					v->SwathHeightC[k],
- 					TWait,
--					v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ?
-+					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
-+						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= MIN_DCFCLK_FREQ_MHZ) ?
- 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
- 					/* Output */
- 					&v->DSTXAfterScaler[k],
-@@ -3289,7 +3290,7 @@ void dml32_ModeSupportAndSystemConfigura
- 							v->swath_width_chroma_ub_this_state[k],
- 							v->SwathHeightYThisState[k],
- 							v->SwathHeightCThisState[k], v->TWait,
--							v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ ?
-+							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= MIN_DCFCLK_FREQ_MHZ) ?
- 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 92cd2916e8015..35bf840716d57 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3416,7 +3416,6 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
  
- 							/* Output */
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-@@ -52,6 +52,7 @@
- #define BPP_BLENDED_PIPE 0xffffffff
+-	phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
  
- #define MEM_STROBE_FREQ_MHZ 1600
-+#define MIN_DCFCLK_FREQ_MHZ 200
- #define MEM_STROBE_MAX_DELIVERY_TIME_US 60.0
- 
- struct display_mode_lib;
+-- 
+2.39.2
+
 
 
