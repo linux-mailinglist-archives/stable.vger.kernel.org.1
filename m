@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E55C7037B9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 967387036B7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244112AbjEORXu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40148 "EHLO
+        id S243776AbjEORNJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243927AbjEORXZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE7968A65
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:51 -0700 (PDT)
+        with ESMTP id S243823AbjEORMt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5E1CDDA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2779A62C53
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1904CC433D2;
-        Mon, 15 May 2023 17:21:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C69B962B60
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DCAC433D2;
+        Mon, 15 May 2023 17:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171310;
-        bh=pIPvubYYlFwqIDsTuQne2PmSoCPFylk2EjmZ1tbL87E=;
+        s=korg; t=1684170664;
+        bh=t4wfhlhv0WB64ZrugnH109btefTtEgBncFuv009EILA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rQgSlzQfWHif7+eZS/9G5samBmCMahzeXoAj08MzOQ1/RiNp6exKnn+EvTBXnLn0r
-         /E2EogtqVY7o3YRIfm3f9OKH16oIyTHvBddn8xrKXhDD1Nc8QYZcaJYgiR940DOWq8
-         fZl2YLXHAflJgn3xYVekrPSoVI3V4WV4RD1zzP/c=
+        b=ErE7YqlXY7Gsb4O6PfaGk57GX25Sx4Wbg1RP5pMKNfMQIhgEhNlp6jMYkcl6N/IhY
+         6z5vBSe/6PrrEz1/Wh2ez6UV1de/U7ynFi7v1pppcD+g/lG3TN4TEXUz2y8kTfrgG+
+         W8kWr0ecL4m6Pjk4H8m8kBgjemiFU88prRM4Naho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.2 138/242] btrfs: zoned: zone finish data relocation BG with last IO
-Date:   Mon, 15 May 2023 18:27:44 +0200
-Message-Id: <20230515161726.043531246@linuxfoundation.org>
+        patches@lists.linux.dev, Charlene Liu <Charlene.Liu@amd.com>,
+        Alex Hung <alex.hung@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 202/239] drm/amd/display: Fix Z8 support configurations
+Date:   Mon, 15 May 2023 18:27:45 +0200
+Message-Id: <20230515161727.791262434@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,36 +57,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Naohiro Aota <Naohiro.Aota@wdc.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit f84353c7c20536ea7e01eca79430eccdf3cc7348 upstream.
+[ Upstream commit 73dd4ca4b5a01235607231839bd351bbef75a1d2 ]
 
-For data block groups, we zone finish a zone (or, just deactivate it) when
-seeing the last IO in btrfs_finish_ordered_io(). That is only called for
-IOs using ZONE_APPEND, but we use a regular WRITE command for data
-relocation IOs. Detect it and call btrfs_zone_finish_endio() properly.
+[Why]
+It's not supported in multi-display, but it is supported in 2nd eDP
+screen only.
 
-Fixes: be1a1d7a5d24 ("btrfs: zoned: finish fully written block group")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How]
+Remove multi display support, restrict number of planes for all
+z-states support, but still allow Z8 if we're not using PWRSEQ0.
+
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: d893f39320e1 ("drm/amd/display: Lowering min Z8 residency time")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c   | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3264,6 +3264,9 @@ int btrfs_finish_ordered_io(struct btrfs
- 		btrfs_rewrite_logical_zoned(ordered_extent);
- 		btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
- 					ordered_extent->disk_num_bytes);
-+	} else if (btrfs_is_data_reloc_root(inode->root)) {
-+		btrfs_zone_finish_endio(fs_info, ordered_extent->disk_bytenr,
-+					ordered_extent->disk_num_bytes);
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index feef0a75878f9..6a7bcba4a7dad 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -949,7 +949,6 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 	int plane_count;
+ 	int i;
+ 	unsigned int optimized_min_dst_y_next_start_us;
+-	bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
  
- 	btrfs_free_io_failure_record(inode, start, end);
+ 	plane_count = 0;
+ 	optimized_min_dst_y_next_start_us = 0;
+@@ -974,6 +973,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
+ 		struct dc_link *link = context->streams[0]->sink->link;
+ 		struct dc_stream_status *stream_status = &context->stream_status[0];
++		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
++		bool is_pwrseq0 = link->link_index == 0;
+ 
+ 		if (dc_extended_blank_supported(dc)) {
+ 			for (i = 0; i < dc->res_pool->pipe_count; i++) {
+@@ -986,18 +987,17 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 				}
+ 			}
+ 		}
+-		/* zstate only supported on PWRSEQ0  and when there's <2 planes*/
+-		if (link->link_index != 0 || stream_status->plane_count > 1)
++
++		/* Don't support multi-plane configurations */
++		if (stream_status->plane_count > 1)
+ 			return DCN_ZSTATE_SUPPORT_DISALLOW;
+ 
+-		if (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || optimized_min_dst_y_next_start_us > 5000)
++		if (is_pwrseq0 && (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || optimized_min_dst_y_next_start_us > 5000))
+ 			return DCN_ZSTATE_SUPPORT_ALLOW;
+-		else if (link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
++		else if (is_pwrseq0 && link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
+ 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_Z10_ONLY : DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY;
+ 		else
+ 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_ONLY : DCN_ZSTATE_SUPPORT_DISALLOW;
+-	} else if (allow_z8) {
+-		return DCN_ZSTATE_SUPPORT_ALLOW_Z8_ONLY;
+ 	} else {
+ 		return DCN_ZSTATE_SUPPORT_DISALLOW;
+ 	}
+-- 
+2.39.2
+
 
 
