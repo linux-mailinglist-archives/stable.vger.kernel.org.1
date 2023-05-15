@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F64703823
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66FFA703A79
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244114AbjEOR1j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47090 "EHLO
+        id S244921AbjEORvO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244103AbjEOR1X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55600106EF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:12 -0700 (PDT)
+        with ESMTP id S244919AbjEORu6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A1E19BEC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54F1662C39
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436B1C433D2;
-        Mon, 15 May 2023 17:26:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2870062F08
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186ABC433EF;
+        Mon, 15 May 2023 17:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171560;
-        bh=bxY6flUVg6hxBf+YC4JoIgClaWBrMJABTZY30VfhaKE=;
+        s=korg; t=1684172943;
+        bh=hCrY4jyxNQ4CJJLdiS9xm5clus0qWcE3FDl2BQsYHoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uJnT2nsxTfcbuzEAfNQ9PMkbzYlH7H32wnWOpLEK+u6oDbjiYw4G0xTNZKYbbqKCk
-         UVq7gkBOCBDaa8cZ0SqJhICFjBdM1fpasUByO8tp0+Mhw4wePvlg881wjLNszl9xjX
-         bpBpZ5aJeAOnV/vr3k3kyulkWiYikG7SPnJuT0hQ=
+        b=QlHClz24Siy9OdvaT9gT9jQhhh6OkwBfSavZMYoSR1QQ3g8IMs7yqKRPh9WrnQq6b
+         Ieehm+J1zJYon2PLJAOtsR/OKmcnxMHodGTxnVO+CBQfnN32bhWUr/XBA0eTGJzJfT
+         bcCRc9rZzWB09fgvEgScoLQyx8lA5rqRnBD04Gu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.2 241/242] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+        patches@lists.linux.dev, Andy Moreton <andy.moreton@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 316/381] sfc: Fix module EEPROM reporting for QSFP modules
 Date:   Mon, 15 May 2023 18:29:27 +0200
-Message-Id: <20230515161729.135029504@linuxfoundation.org>
+Message-Id: <20230515161751.091158216@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,94 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Andy Moreton <andy.moreton@amd.com>
 
-commit fc96ec826bced75cc6b9c07a4ac44bbf651337ab upstream.
+[ Upstream commit 281900a923d4c50df109b52a22ae3cdac150159b ]
 
-On CPM, the RISC core is a lot more efficiant when doing transfers
-in 16-bits chunks than in 8-bits chunks, but unfortunately the
-words need to be byte swapped as seen in a previous commit.
+The sfc driver does not report QSFP module EEPROM contents correctly
+as only the first page is fetched from hardware.
 
-So, for large tranfers with an even size, allocate a temporary tx
-buffer and byte-swap data before and after transfer.
+Commit 0e1a2a3e6e7d ("ethtool: Add SFF-8436 and SFF-8636 max EEPROM
+length definitions") added ETH_MODULE_SFF_8436_MAX_LEN for the overall
+size of the EEPROM info, so use that to report the full EEPROM contents.
 
-This change allows setting higher speed for transfer. For instance
-on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
-that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
-at 25 MHz while a word transfer at the same speed uses 0.032%
-of CPM load. This means the speed can be 6 times higher in
-word mode for the same CPM load.
-
-For the time being, only do it on CPM1 as there must be a
-trade-off between the CPM load reduction and the CPU load required
-to byte swap the data.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9b17010da57a ("sfc: Add ethtool -m support for QSFP modules")
+Signed-off-by: Andy Moreton <andy.moreton@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
- drivers/spi/spi-fsl-spi.c |    3 +++
- 2 files changed, 26 insertions(+)
+ drivers/net/ethernet/sfc/mcdi_port_common.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -21,6 +21,7 @@
- #include <linux/spi/spi.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
-+#include <linux/byteorder/generic.h>
+diff --git a/drivers/net/ethernet/sfc/mcdi_port_common.c b/drivers/net/ethernet/sfc/mcdi_port_common.c
+index c4fe3c48ac46a..eccb97a5d9387 100644
+--- a/drivers/net/ethernet/sfc/mcdi_port_common.c
++++ b/drivers/net/ethernet/sfc/mcdi_port_common.c
+@@ -974,12 +974,15 @@ static u32 efx_mcdi_phy_module_type(struct efx_nic *efx)
  
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
- 		mspi->rx_dma = mspi->dma_dummy_rx;
- 		mspi->map_rx_dma = 0;
- 	}
-+	if (t->bits_per_word == 16 && t->tx_buf) {
-+		const u16 *src = t->tx_buf;
-+		u16 *dst;
-+		int i;
-+
-+		dst = kmalloc(t->len, GFP_KERNEL);
-+		if (!dst)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < t->len >> 1; i++)
-+			dst[i] = cpu_to_le16p(src + i);
-+
-+		mspi->tx = dst;
-+		mspi->map_tx_dma = 1;
-+	}
+ 	/* A QSFP+ NIC may actually have an SFP+ module attached.
+ 	 * The ID is page 0, byte 0.
++	 * QSFP28 is of type SFF_8636, however, this is treated
++	 * the same by ethtool, so we can also treat them the same.
+ 	 */
+ 	switch (efx_mcdi_phy_get_module_eeprom_byte(efx, 0, 0)) {
+-	case 0x3:
++	case 0x3: /* SFP */
+ 		return MC_CMD_MEDIA_SFP_PLUS;
+-	case 0xc:
+-	case 0xd:
++	case 0xc: /* QSFP */
++	case 0xd: /* QSFP+ */
++	case 0x11: /* QSFP28 */
+ 		return MC_CMD_MEDIA_QSFP_PLUS;
+ 	default:
+ 		return 0;
+@@ -1077,7 +1080,7 @@ int efx_mcdi_phy_get_module_info(struct efx_nic *efx, struct ethtool_modinfo *mo
  
- 	if (mspi->map_tx_dma) {
- 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
-@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
- 	if (mspi->map_rx_dma)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
-+
-+	if (t->bits_per_word == 16 && t->rx_buf) {
-+		int i;
-+
-+		for (i = 0; i < t->len; i += 2)
-+			le16_to_cpus(t->rx_buf + i);
-+	}
- }
- EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
+ 	case MC_CMD_MEDIA_QSFP_PLUS:
+ 		modinfo->type = ETH_MODULE_SFF_8436;
+-		modinfo->eeprom_len = ETH_MODULE_SFF_8436_LEN;
++		modinfo->eeprom_len = ETH_MODULE_SFF_8436_MAX_LEN;
+ 		break;
  
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -351,6 +351,9 @@ static int fsl_spi_prepare_message(struc
- 				return -EINVAL;
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
-+			if (t->bits_per_word == 8 && t->len >= 256 &&
-+			    (mpc8xxx_spi->flags & SPI_CPM1))
-+				t->bits_per_word = 16;
- 		}
- 	}
- 	return fsl_spi_setup_transfer(m->spi, first);
+ 	default:
+-- 
+2.39.2
+
 
 
