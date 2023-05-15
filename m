@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3CB703830
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC807039EC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244292AbjEOR3R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49082 "EHLO
+        id S244593AbjEORqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244297AbjEOR2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:28:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC00171E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:45 -0700 (PDT)
+        with ESMTP id S244594AbjEORq2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA731561B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC18662CD2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA742C4339B;
-        Mon, 15 May 2023 17:26:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0A1C62EAC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22F3C4339B;
+        Mon, 15 May 2023 17:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171604;
-        bh=x/p1t7HAQ7Wo3VHr0Cq7bYnbckkSRlGPYPm5aGzbmss=;
+        s=korg; t=1684172700;
+        bh=aBBCA1aXK0AKvxDXedzNMKgiEz5iwmDxJ1EHM0QpqOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kEE/AZPysnqeVcHEp/tQrYCykkmRiLuQU26RwaR8SzdNawmQIFvGlPe8DM4riwuhO
-         ycv89PkSY83DAzyRTSNnQF0rQG86TIJpMPxiKnGtJX3ioSy0/R7xVDtnLQOQLNZu7F
-         ICDzGe2YJiHkaOOfcEcFU88InBQ/ozCdYnWYOVrA=
+        b=sQa7FKsh0XU9PD0NYEWAj8eWF3a3u7I7y5s1W6qASUPeLHnred9/RND5Bo7/wi+Jm
+         +yaMLmHmYW0EWmUjIdvdVJSD4uB5Ec4mi51HlNpWmzo6MbZAxEHqj1ofVRp+rIP7r4
+         F/dJgBlY4TRL4ZNUViUmp6WzejxBYgHaKlvU93dk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/134] ASoC: soc-pcm: align BE atomicity with that of the FE
-Date:   Mon, 15 May 2023 18:28:09 +0200
-Message-Id: <20230515161703.383776436@linuxfoundation.org>
+        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 239/381] workqueue: Fix hung time report of worker pools
+Date:   Mon, 15 May 2023 18:28:10 +0200
+Message-Id: <20230515161747.500995746@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,69 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit bbf7d3b1c4f40eb02dd1dffb500ba00b0bff0303 ]
+[ Upstream commit 335a42ebb0ca8ee9997a1731aaaae6dcd704c113 ]
 
-Since the flow for DPCM is based on taking a lock for the FE first, we
-need to make sure during the connection between a BE and an FE that
-they both use the same 'atomicity', otherwise we may sleep in atomic
-context.
+The workqueue watchdog prints a warning when there is no progress in
+a worker pool. Where the progress means that the pool started processing
+a pending work item.
 
-If the FE is nonatomic, this patch forces the BE to be nonatomic as
-well. That should have no negative impact since the BE 'inherits' the
-FE properties.
+Note that it is perfectly fine to process work items much longer.
+The progress should be guaranteed by waking up or creating idle
+workers.
 
-However, if the FE is atomic and the BE is not, then the configuration
-is flagged as invalid.
+show_one_worker_pool() prints state of non-idle worker pool. It shows
+a delay since the last pool->watchdog_ts.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-[ removed FE stream lock by tiwai ]
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20211207173745.15850-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The timestamp is updated when a first pending work is queued in
+__queue_work(). Also it is updated when a work is dequeued for
+processing in worker_thread() and rescuer_thread().
+
+The delay is misleading when there is no pending work item. In this
+case it shows how long the last work item is being proceed. Show
+zero instead. There is no stall if there is no pending work.
+
+Fixes: 82607adcf9cdf40fb7b ("workqueue: implement lockup detector")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-pcm.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/workqueue.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index a2b20526e7e2b..7bea8fa59f676 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -1123,6 +1123,8 @@ static snd_pcm_uframes_t soc_pcm_pointer(struct snd_pcm_substream *substream)
- static int dpcm_be_connect(struct snd_soc_pcm_runtime *fe,
- 		struct snd_soc_pcm_runtime *be, int stream)
- {
-+	struct snd_pcm_substream *fe_substream;
-+	struct snd_pcm_substream *be_substream;
- 	struct snd_soc_dpcm *dpcm;
- 	unsigned long flags;
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 7f57fed719957..b9041ab881bc8 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -4816,16 +4816,19 @@ void show_workqueue_state(void)
+ 	for_each_pool(pool, pi) {
+ 		struct worker *worker;
+ 		bool first = true;
++		unsigned long hung = 0;
  
-@@ -1132,6 +1134,20 @@ static int dpcm_be_connect(struct snd_soc_pcm_runtime *fe,
- 			return 0;
- 	}
+ 		raw_spin_lock_irqsave(&pool->lock, flags);
+ 		if (pool->nr_workers == pool->nr_idle)
+ 			goto next_pool;
  
-+	fe_substream = snd_soc_dpcm_get_substream(fe, stream);
-+	be_substream = snd_soc_dpcm_get_substream(be, stream);
++		/* How long the first pending work is waiting for a worker. */
++		if (!list_empty(&pool->worklist))
++			hung = jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000;
 +
-+	if (!fe_substream->pcm->nonatomic && be_substream->pcm->nonatomic) {
-+		dev_err(be->dev, "%s: FE is atomic but BE is nonatomic, invalid configuration\n",
-+			__func__);
-+		return -EINVAL;
-+	}
-+	if (fe_substream->pcm->nonatomic && !be_substream->pcm->nonatomic) {
-+		dev_warn(be->dev, "%s: FE is nonatomic but BE is not, forcing BE as nonatomic\n",
-+			 __func__);
-+		be_substream->pcm->nonatomic = 1;
-+	}
-+
- 	dpcm = kzalloc(sizeof(struct snd_soc_dpcm), GFP_ATOMIC);
- 	if (!dpcm)
- 		return -ENOMEM;
+ 		pr_info("pool %d:", pool->id);
+ 		pr_cont_pool_info(pool);
+-		pr_cont(" hung=%us workers=%d",
+-			jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000,
+-			pool->nr_workers);
++		pr_cont(" hung=%lus workers=%d", hung, pool->nr_workers);
+ 		if (pool->manager)
+ 			pr_cont(" manager: %d",
+ 				task_pid_nr(pool->manager->task));
 -- 
 2.39.2
 
