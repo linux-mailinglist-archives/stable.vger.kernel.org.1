@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 718B070366B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FDC870354F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243586AbjEORKJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49510 "EHLO
+        id S243276AbjEOQ5n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243400AbjEORJW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:22 -0400
+        with ESMTP id S243299AbjEOQ5f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843D7A5E5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB007AA0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 644A162B05
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0D7C4339B;
-        Mon, 15 May 2023 17:07:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0452362A1B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B61C4339B;
+        Mon, 15 May 2023 16:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170472;
-        bh=1KPsK5CooWq2LIUUkVehmIvDtU8paAYcvb+8wlSp0d0=;
+        s=korg; t=1684169853;
+        bh=8JDlbxaHCXppQq+a//4xQ21vo96uMP4M8S8H5M7uD7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n8g7cInbfj7RX4WiN1VTbHgQvVkWS6S+vjfxTb5eIFpJcq5854+j2d2VXxskMekQa
-         rUhBtDwBg3kaXzR25tirbjtyS+jz1u/8pk80XSNnw3vlqpzwnaLGjw4n9GrN1D0j95
-         KIc0qxWtxlCpGvuurqkc+bARIj3lrDF0ZgPvzHLs=
+        b=HJeG3loql8oJC7YkVZs3e3GwIUWRxRkzsfiGC6+Xg7/htPJTVjpfBpkPnFkmlGnmw
+         WkFVGA5F9Qk9AfgbXW4nbVhhwbA1rBklN0slSQfuap3WM6CSkH5JZViPCdwvfRxWyh
+         9Mh2GQuPD0dJ5fsh7A3tEIsOSzvMkUAYV4jg9AnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.1 141/239] remoteproc: rcar_rproc: Call of_node_put() on iteration error
+        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
+        Alan Liu <HaoPing.Liu@amd.com>,
+        Samson Tam <Samson.Tam@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 192/246] drm/amd/display: filter out invalid bits in pipe_fuses
 Date:   Mon, 15 May 2023 18:26:44 +0200
-Message-Id: <20230515161725.919457917@linuxfoundation.org>
+Message-Id: <20230515161728.376460027@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,55 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
+From: Samson Tam <Samson.Tam@amd.com>
 
-commit f8bae637d3d5e082b4ced71e28b16eb3ee0683c1 upstream.
+commit 682439fffad9fa9a38d37dd1b1318e9374232213 upstream.
 
-Function of_phandle_iterator_next() calls of_node_put() on the last
-device_node it iterated over, but when the loop exits prematurely it has
-to be called explicitly.
+[Why]
+Reading pipe_fuses from register may have invalid bits set, which may
+ affect the num_pipes erroneously.
 
-Fixes: 285892a74f13 ("remoteproc: Add Renesas rcar driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Link: https://lore.kernel.org/r/20230320221826.2728078-4-mathieu.poirier@linaro.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+[How]
+Add read_pipes_fuses() call and filter bits based on expected number
+ of pipes.
+
+Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Acked-by: Alan Liu <HaoPing.Liu@amd.com>
+Signed-off-by: Samson Tam <Samson.Tam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/rcar_rproc.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c   |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c |   10 +++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
---- a/drivers/remoteproc/rcar_rproc.c
-+++ b/drivers/remoteproc/rcar_rproc.c
-@@ -62,13 +62,16 @@ static int rcar_rproc_prepare(struct rpr
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+@@ -2077,6 +2077,14 @@ static struct resource_funcs dcn32_res_p
+ 	.restore_mall_state = dcn32_restore_mall_state,
+ };
  
- 		rmem = of_reserved_mem_lookup(it.node);
- 		if (!rmem) {
-+			of_node_put(it.node);
- 			dev_err(&rproc->dev,
- 				"unable to acquire memory-region\n");
- 			return -EINVAL;
- 		}
++static uint32_t read_pipe_fuses(struct dc_context *ctx)
++{
++	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
++	/* DCN32 support max 4 pipes */
++	value = value & 0xf;
++	return value;
++}
++
  
--		if (rmem->base > U32_MAX)
-+		if (rmem->base > U32_MAX) {
-+			of_node_put(it.node);
- 			return -EINVAL;
-+		}
+ static bool dcn32_resource_construct(
+ 	uint8_t num_virtual_links,
+@@ -2119,7 +2127,7 @@ static bool dcn32_resource_construct(
+ 	pool->base.res_cap = &res_cap_dcn32;
+ 	/* max number of pipes for ASIC before checking for pipe fuses */
+ 	num_pipes  = pool->base.res_cap->num_timing_generator;
+-	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
++	pipe_fuses = read_pipe_fuses(ctx);
  
- 		/* No need to translate pa to da, R-Car use same map */
- 		da = rmem->base;
-@@ -79,8 +82,10 @@ static int rcar_rproc_prepare(struct rpr
- 					   rcar_rproc_mem_release,
- 					   it.node->name);
+ 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
+ 		if (pipe_fuses & 1 << i)
+--- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+@@ -1626,6 +1626,14 @@ static struct resource_funcs dcn321_res_
+ 	.restore_mall_state = dcn32_restore_mall_state,
+ };
  
--		if (!mem)
-+		if (!mem) {
-+			of_node_put(it.node);
- 			return -ENOMEM;
-+		}
++static uint32_t read_pipe_fuses(struct dc_context *ctx)
++{
++	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
++	/* DCN321 support max 4 pipes */
++	value = value & 0xf;
++	return value;
++}
++
  
- 		rproc_add_carveout(rproc, mem);
- 	}
+ static bool dcn321_resource_construct(
+ 	uint8_t num_virtual_links,
+@@ -1668,7 +1676,7 @@ static bool dcn321_resource_construct(
+ 	pool->base.res_cap = &res_cap_dcn321;
+ 	/* max number of pipes for ASIC before checking for pipe fuses */
+ 	num_pipes  = pool->base.res_cap->num_timing_generator;
+-	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
++	pipe_fuses = read_pipe_fuses(ctx);
+ 
+ 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
+ 		if (pipe_fuses & 1 << i)
 
 
