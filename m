@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4A3703B28
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C68703786
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242701AbjEOSAZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:00:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60566 "EHLO
+        id S244011AbjEORWO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244902AbjEOR7n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:59:43 -0400
+        with ESMTP id S244015AbjEORVz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE77183E3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFAEF11B4D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09BC362FC1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125B1C4339B;
-        Mon, 15 May 2023 17:56:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF78362C33
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F0BC433EF;
+        Mon, 15 May 2023 17:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173391;
-        bh=/Uh98s5Dkcs1xs6RH/lx9E66JVp5GZxSv4+t0wJNBUc=;
+        s=korg; t=1684171203;
+        bh=VbmG4b/PP0cMZbKPa6u8FDsjcWq3UUmX/mC1ek3GoNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=faPjOzC0Xnk1/MWNyulE+Bx3SsX813KS7WmYJG8syNkvO/KRK1MUeYlIpepeKYbsk
-         IGqmQ8FcgxLSVflrSlz6tEXNnD+KDYlqWAXI8ai5jYh+OzkhxhX7qrKtEqwZeq9jvU
-         udg86HcXcHsfwBlhLFuWoJ1rrizCmquHX77XnLYw=
+        b=k1MRhRNlV5TtqI19pjytTyPafysg6/6/ngZQ37xqJGmr7R46zrAm1MViObVfR89Pu
+         UPhASuwB7She2yAbXtxYdH9lq/wSY6QuOH2Z97odDAsA2CArpiJacLJi0xsC3CVCgJ
+         lb0KpZF4AGrQJQbz6E9VYmPKlxBDZeP18mmREJH0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 080/282] wifi: rtw88: mac: Return the original error from rtw_mac_power_switch()
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.2 132/242] btrfs: fix encoded write i_size corruption with no-holes
 Date:   Mon, 15 May 2023 18:27:38 +0200
-Message-Id: <20230515161724.640113130@linuxfoundation.org>
+Message-Id: <20230515161725.863571149@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,50 +53,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 15c8e267dfa62f207ee1db666c822324e3362b84 ]
+commit e7db9e5c6b9615b287d01f0231904fbc1fbde9c5 upstream.
 
-rtw_mac_power_switch() calls rtw_pwr_seq_parser() which can return
--EINVAL, -EBUSY or 0. Propagate the original error code instead of
-unconditionally returning -EINVAL in case of an error.
+We have observed a btrfs filesystem corruption on workloads using
+no-holes and encoded writes via send stream v2. The symptom is that a
+file appears to be truncated to the end of its last aligned extent, even
+though the final unaligned extent and even the file extent and otherwise
+correctly updated inode item have been written.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230226221004.138331-3-martin.blumenstingl@googlemail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So if we were writing out a 1MiB+X file via 8 128K extents and one
+extent of length X, i_size would be set to 1MiB, but the ninth extent,
+nbyte, etc. would all appear correct otherwise.
+
+The source of the race is a narrow (one line of code) window in which a
+no-holes fs has read in an updated i_size, but has not yet set a shared
+disk_i_size variable to write. Therefore, if two ordered extents run in
+parallel (par for the course for receive workloads), the following
+sequence can play out: (following "threads" a bit loosely, since there
+are callbacks involved for endio but extra threads aren't needed to
+cause the issue)
+
+  ENC-WR1 (second to last)                                         ENC-WR2 (last)
+  -------                                                          -------
+  btrfs_do_encoded_write
+    set i_size = 1M
+    submit bio B1 ending at 1M
+  endio B1
+  btrfs_inode_safe_disk_i_size_write
+    local i_size = 1M
+    falls off a cliff for some reason
+							      btrfs_do_encoded_write
+								set i_size = 1M+X
+								submit bio B2 ending at 1M+X
+							      endio B2
+							      btrfs_inode_safe_disk_i_size_write
+								local i_size = 1M+X
+								disk_i_size = 1M+X
+    disk_i_size = 1M
+							      btrfs_delayed_update_inode
+    btrfs_delayed_update_inode
+
+And the delayed inode ends up filled with nbytes=1M+X and isize=1M, and
+writes respect i_size and present a corrupted file missing its last
+extents.
+
+Fix this by holding the inode lock in the no-holes case so that a thread
+can't sneak in a write to disk_i_size that gets overwritten with an out
+of date i_size.
+
+Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
+CC: stable@vger.kernel.org # 5.10+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/file-item.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index 9a50984fa06c9..94e69e97d5f5f 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -224,6 +224,7 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
- 	struct rtw_pwr_seq_cmd **pwr_seq;
- 	u8 rpwm;
- 	bool cur_pwr;
-+	int ret;
+--- a/fs/btrfs/file-item.c
++++ b/fs/btrfs/file-item.c
+@@ -52,13 +52,13 @@ void btrfs_inode_safe_disk_i_size_write(
+ 	u64 start, end, i_size;
+ 	int ret;
  
- 	rpwm = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
++	spin_lock(&inode->lock);
+ 	i_size = new_i_size ?: i_size_read(&inode->vfs_inode);
+ 	if (btrfs_fs_incompat(fs_info, NO_HOLES)) {
+ 		inode->disk_i_size = i_size;
+-		return;
++		goto out_unlock;
+ 	}
  
-@@ -245,8 +246,9 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
- 		return -EALREADY;
- 
- 	pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
--	if (rtw_pwr_seq_parser(rtwdev, pwr_seq))
--		return -EINVAL;
-+	ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
-+	if (ret)
-+		return ret;
- 
- 	return 0;
+-	spin_lock(&inode->lock);
+ 	ret = find_contiguous_extent_bit(&inode->file_extent_tree, 0, &start,
+ 					 &end, EXTENT_DIRTY);
+ 	if (!ret && start == 0)
+@@ -66,6 +66,7 @@ void btrfs_inode_safe_disk_i_size_write(
+ 	else
+ 		i_size = 0;
+ 	inode->disk_i_size = i_size;
++out_unlock:
+ 	spin_unlock(&inode->lock);
  }
--- 
-2.39.2
-
+ 
 
 
