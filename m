@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE97B7037F2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85FFA703870
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244133AbjEORZl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:25:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40180 "EHLO
+        id S244350AbjEORci (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244146AbjEORZ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E27F1328B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:15 -0700 (PDT)
+        with ESMTP id S244342AbjEORcQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C9B11621
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 386C662CB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D12C433D2;
-        Mon, 15 May 2023 17:24:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8806662CB3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E91C433D2;
+        Mon, 15 May 2023 17:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171454;
-        bh=PndzXQRV4rJJ2mtSel8n2VvNLFHkLZi3sczPFZej3/o=;
+        s=korg; t=1684171745;
+        bh=jX0aeYP0sREy6eyDwm7ySohAkb/Ajf8hT4PmiR67O4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o5BqEAvJ7J+lzAm5g37Yd7PsJ8hMTiKrKgHRcePP5MtIk0oeZuoEnRTdp88BeHvXq
-         JrfuAffha6IyxgQYWRJfVO7Xa+7ezu+IM6heZHabxyWh10dLfzW1b1GRD41JNOIGH2
-         W0I/qKL3iuwi8JG6L88TPp7JfFsQCw2aM/d2B8K4=
+        b=UJlQptf/MSw5BOYXFF5BfHubWbNRYtM1KNkCwiSLW2W4aNf9J555vHh8YtY9UNcmC
+         LJAKfVtY7cKuaLoC73vcM+pPabSvYfwhLcefeuddM2/VlMFE5KabqeVTbNyQQFndVX
+         JytaWe1o3XLkPwrB1Q7NLbBLTpi5w9ylgxRvZYGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Charlene Liu <Charlene.Liu@amd.com>,
-        Alex Hung <alex.hung@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 215/242] drm/amd/display: Fix Z8 support configurations
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 064/134] btrfs: dont free qgroup space unless specified
 Date:   Mon, 15 May 2023 18:29:01 +0200
-Message-Id: <20230515161728.376736865@linuxfoundation.org>
+Message-Id: <20230515161705.276145299@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,76 +54,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 73dd4ca4b5a01235607231839bd351bbef75a1d2 ]
+commit d246331b78cbef86237f9c22389205bc9b4e1cc1 upstream.
 
-[Why]
-It's not supported in multi-display, but it is supported in 2nd eDP
-screen only.
+Boris noticed in his simple quotas testing that he was getting a leak
+with Sweet Tea's change to subvol create that stopped doing a
+transaction commit.  This was just a side effect of that change.
 
-[How]
-Remove multi display support, restrict number of planes for all
-z-states support, but still allow Z8 if we're not using PWRSEQ0.
+In the delayed inode code we have an optimization that will free extra
+reservations if we think we can pack a dir item into an already modified
+leaf.  Previously this wouldn't be triggered in the subvolume create
+case because we'd commit the transaction, it was still possible but
+much harder to trigger.  It could actually be triggered if we did a
+mkdir && subvol create with qgroups enabled.
 
-Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: d893f39320e1 ("drm/amd/display: Lowering min Z8 residency time")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This occurs because in btrfs_insert_delayed_dir_index(), which gets
+called when we're adding the dir item, we do the following:
+
+  btrfs_block_rsv_release(fs_info, trans->block_rsv, bytes, NULL);
+
+if we're able to skip reserving space.
+
+The problem here is that trans->block_rsv points at the temporary block
+rsv for the subvolume create, which has qgroup reservations in the block
+rsv.
+
+This is a problem because btrfs_block_rsv_release() will do the
+following:
+
+  if (block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
+	  qgroup_to_release = block_rsv->qgroup_rsv_reserved -
+		  block_rsv->qgroup_rsv_size;
+	  block_rsv->qgroup_rsv_reserved = block_rsv->qgroup_rsv_size;
+  }
+
+The temporary block rsv just has ->qgroup_rsv_reserved set,
+->qgroup_rsv_size == 0.  The optimization in
+btrfs_insert_delayed_dir_index() sets ->qgroup_rsv_reserved = 0.  Then
+later on when we call btrfs_subvolume_release_metadata() which has
+
+  btrfs_block_rsv_release(fs_info, rsv, (u64)-1, &qgroup_to_release);
+  btrfs_qgroup_convert_reserved_meta(root, qgroup_to_release);
+
+qgroup_to_release is set to 0, and we do not convert the reserved
+metadata space.
+
+The problem here is that the block rsv code has been unconditionally
+messing with ->qgroup_rsv_reserved, because the main place this is used
+is delalloc, and any time we call btrfs_block_rsv_release() we do it
+with qgroup_to_release set, and thus do the proper accounting.
+
+The subvolume code is the only other code that uses the qgroup
+reservation stuff, but it's intermingled with the above optimization,
+and thus was getting its reservation freed out from underneath it and
+thus leaking the reserved space.
+
+The solution is to simply not mess with the qgroup reservations if we
+don't have qgroup_to_release set.  This works with the existing code as
+anything that messes with the delalloc reservations always have
+qgroup_to_release set.  This fixes the leak that Boris was observing.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c   | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/btrfs/block-rsv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-index c26da3bb2892b..859dc67a1fb6b 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -949,7 +949,6 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
- 	int plane_count;
- 	int i;
- 	unsigned int optimized_min_dst_y_next_start_us;
--	bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
- 
- 	plane_count = 0;
- 	optimized_min_dst_y_next_start_us = 0;
-@@ -974,6 +973,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
- 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
- 		struct dc_link *link = context->streams[0]->sink->link;
- 		struct dc_stream_status *stream_status = &context->stream_status[0];
-+		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
-+		bool is_pwrseq0 = link->link_index == 0;
- 
- 		if (dc_extended_blank_supported(dc)) {
- 			for (i = 0; i < dc->res_pool->pipe_count; i++) {
-@@ -986,18 +987,17 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
- 				}
- 			}
- 		}
--		/* zstate only supported on PWRSEQ0  and when there's <2 planes*/
--		if (link->link_index != 0 || stream_status->plane_count > 1)
-+
-+		/* Don't support multi-plane configurations */
-+		if (stream_status->plane_count > 1)
- 			return DCN_ZSTATE_SUPPORT_DISALLOW;
- 
--		if (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || optimized_min_dst_y_next_start_us > 5000)
-+		if (is_pwrseq0 && (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || optimized_min_dst_y_next_start_us > 5000))
- 			return DCN_ZSTATE_SUPPORT_ALLOW;
--		else if (link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
-+		else if (is_pwrseq0 && link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
- 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_Z10_ONLY : DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY;
- 		else
- 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_ONLY : DCN_ZSTATE_SUPPORT_DISALLOW;
--	} else if (allow_z8) {
--		return DCN_ZSTATE_SUPPORT_ALLOW_Z8_ONLY;
+--- a/fs/btrfs/block-rsv.c
++++ b/fs/btrfs/block-rsv.c
+@@ -121,7 +121,8 @@ static u64 block_rsv_release_bytes(struc
  	} else {
- 		return DCN_ZSTATE_SUPPORT_DISALLOW;
+ 		num_bytes = 0;
  	}
--- 
-2.39.2
-
+-	if (block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
++	if (qgroup_to_release_ret &&
++	    block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
+ 		qgroup_to_release = block_rsv->qgroup_rsv_reserved -
+ 				    block_rsv->qgroup_rsv_size;
+ 		block_rsv->qgroup_rsv_reserved = block_rsv->qgroup_rsv_size;
 
 
