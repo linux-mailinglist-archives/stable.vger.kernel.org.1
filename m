@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C38FA7034A9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 892F3703395
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243118AbjEOQu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55486 "EHLO
+        id S242832AbjEOQiy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:38:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243077AbjEOQuk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32D6B5BAA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:37 -0700 (PDT)
+        with ESMTP id S242830AbjEOQiy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16D4359E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5741628F6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB44CC433EF;
-        Mon, 15 May 2023 16:50:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4862162853
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4983CC433EF;
+        Mon, 15 May 2023 16:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169436;
-        bh=uQ4b34lpQ5BIXnm1AFs/knrTOhGFtUtdiJ4siLjajww=;
+        s=korg; t=1684168731;
+        bh=oV2Sx8WR+OBUk97E11P04I05mKcvjMkEKE2O3zCZ1d0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otccqYEZdwBfn/Y8sZOG96sivHnKwfkZGCrdc+0vsamyV9s1/4nwh5g86oI0icGpI
-         fRKv6AurK3cSyEp/RzDzBs+4lsYfe0gLngeNt5568KaOCXi+U5oTOozOAzP6UpzfBR
-         V+o0ZBJDV53Gzk6zi+gw0emqKdC5+dVybbc14/m8=
+        b=YMEELFJQ2rWpsv7f93KUxmUFsKWQ949bYxfdyxTKJypLsZJFZiyWp2ZzPrlUJscVa
+         3aLHf0aV2JGvvxoSRhimGIO2s7m7bC2o/FotXGS6NqRlYJEH7fklXLWFQxvraV8wX+
+         e5WeqjWd0Pjj0F+7ezlvgPWwRRev1HfND1RWwzk4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 027/246] octeontx2-af: mcs: Config parser to skip 8B header
-Date:   Mon, 15 May 2023 18:23:59 +0200
-Message-Id: <20230515161723.422494770@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 003/191] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+Date:   Mon, 15 May 2023 18:24:00 +0200
+Message-Id: <20230515161707.331965442@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,124 +54,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 65cdc2b637a5749c7dec0ce14fe2c48f1f91f671 ]
+commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
 
-When ptp timestamp is enabled in RPM, RPM will append 8B
-timestamp header for all RX traffic. MCS need to skip these
-8 bytes header while parsing the packet header, so that
-correct tcam key is created for lookup.
-This patch fixes the mcs parser configuration to skip this
-8B header for ptp packets.
+Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
+SL8563. The modem supports the NCM mode. Interface 0 is used for running
+the AT commands. Interface 12 is the ADB interface.
 
-Fixes: ca7f49ff8846 ("octeontx2-af: cn10k: Introduce driver for macsec block.")
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1782 ProdID=4055 Rev=04.04
+S:  Manufacturer=Unisoc Phone
+S:  Product=Unisoc Phone
+S:  SerialNumber=<redacted>
+C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/mcs_reg.h   |  1 +
- .../marvell/octeontx2/af/mcs_rvu_if.c         | 37 +++++++++++++++++++
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  1 +
- .../ethernet/marvell/octeontx2/af/rvu_cgx.c   |  2 +
- 4 files changed, 41 insertions(+)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-index c95a8b8f5eaf7..7427e3b1490f4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-@@ -97,6 +97,7 @@
- #define MCSX_PEX_TX_SLAVE_VLAN_CFGX(a)          (0x46f8ull + (a) * 0x8ull)
- #define MCSX_PEX_TX_SLAVE_CUSTOM_TAG_REL_MODE_SEL(a)	(0x788ull + (a) * 0x8ull)
- #define MCSX_PEX_TX_SLAVE_PORT_CONFIG(a)		(0x4738ull + (a) * 0x8ull)
-+#define MCSX_PEX_RX_SLAVE_PORT_CFGX(a)		(0x3b98ull + (a) * 0x8ull)
- #define MCSX_PEX_RX_SLAVE_RULE_ETYPE_CFGX(a) ({	\
- 	u64 offset;					\
- 							\
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-index eb25e458266ca..dfd23580e3b8e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-@@ -11,6 +11,7 @@
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -595,6 +595,11 @@ static void option_instat_callback(struc
+ #define SIERRA_VENDOR_ID			0x1199
+ #define SIERRA_PRODUCT_EM9191			0x90d3
  
- #include "mcs.h"
- #include "rvu.h"
-+#include "mcs_reg.h"
- #include "lmac_common.h"
- 
- #define M(_name, _id, _fn_name, _req_type, _rsp_type)			\
-@@ -32,6 +33,42 @@ static struct _req_type __maybe_unused					\
- MBOX_UP_MCS_MESSAGES
- #undef M
- 
-+void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena)
-+{
-+	struct mcs *mcs;
-+	u64 cfg;
-+	u8 port;
++/* UNISOC (Spreadtrum) products */
++#define UNISOC_VENDOR_ID			0x1782
++/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
++#define TOZED_PRODUCT_LT70C			0x4055
 +
-+	if (!rvu->mcs_blk_cnt)
-+		return;
-+
-+	/* When ptp is enabled, RPM appends 8B header for all
-+	 * RX packets. MCS PEX need to configure to skip 8B
-+	 * during packet parsing.
-+	 */
-+
-+	/* CNF10K-B */
-+	if (rvu->mcs_blk_cnt > 1) {
-+		mcs = mcs_get_pdata(rpm_id);
-+		cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION);
-+		if (ena)
-+			cfg |= BIT_ULL(lmac_id);
-+		else
-+			cfg &= ~BIT_ULL(lmac_id);
-+		mcs_reg_write(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION, cfg);
-+		return;
-+	}
-+	/* CN10KB */
-+	mcs = mcs_get_pdata(0);
-+	port = (rpm_id * rvu->hw->lmac_per_cgx) + lmac_id;
-+	cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PORT_CFGX(port));
-+	if (ena)
-+		cfg |= BIT_ULL(0);
-+	else
-+		cfg &= ~BIT_ULL(0);
-+	mcs_reg_write(mcs, MCSX_PEX_RX_SLAVE_PORT_CFGX(port), cfg);
-+}
-+
- int rvu_mbox_handler_mcs_set_lmac_mode(struct rvu *rvu,
- 				       struct mcs_set_lmac_mode *req,
- 				       struct msg_rsp *rsp)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index ef721caeac49b..d655bf04a483d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -920,6 +920,7 @@ int rvu_get_hwvf(struct rvu *rvu, int pcifunc);
- /* CN10K MCS */
- int rvu_mcs_init(struct rvu *rvu);
- int rvu_mcs_flr_handler(struct rvu *rvu, u16 pcifunc);
-+void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena);
- void rvu_mcs_exit(struct rvu *rvu);
+ /* Device flags */
  
- #endif /* RVU_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 438b212fb54a7..83b342fa8d753 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -773,6 +773,8 @@ static int rvu_cgx_ptp_rx_cfg(struct rvu *rvu, u16 pcifunc, bool enable)
- 	/* This flag is required to clean up CGX conf if app gets killed */
- 	pfvf->hw_rx_tstamp_en = enable;
- 
-+	/* Inform MCS about 8B RX header */
-+	rvu_mcs_ptp_cfg(rvu, cgx_id, lmac_id, enable);
- 	return 0;
- }
- 
--- 
-2.39.2
-
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2225,6 +2230,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
