@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 705CE703ABB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0357038CB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237835AbjEORzQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:55:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53956 "EHLO
+        id S243044AbjEORfL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241787AbjEORyf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:35 -0400
+        with ESMTP id S244434AbjEORef (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02DEB183FE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:52:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7593C113
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76A5A62F92
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:51:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AA5C433D2;
-        Mon, 15 May 2023 17:51:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5408462D66
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EDDC433D2;
+        Mon, 15 May 2023 17:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173075;
-        bh=Gf5vcxUqVMXCCfZA7pUAKHw/feiI8+HhUqgKVzG2U3U=;
+        s=korg; t=1684171962;
+        bh=DQTFi7TedA6iTe6JJbJbgFoeyjFPNHvsE9lED+6tYX4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dcb+nCcTaw7w8rZ7dDLFNQn0fiLGO6aopkpGEIGDPlAJONjzUXJVa6MWfP0JsCtMg
-         fvlI7y/P8qdc0OMUJ40FleNyrOO0hrjzGWjJHqZVpQ9kycSgOOMDtFkfpq6J8and0c
-         SMXbC5arxnPaRgMV7fKgijOf7Y2xH0WLFxyH7x+I=
+        b=Mr1Kj0NJ3TbIssznmbxMGHMXUNM19pr9v2K85mortQJgd688mSVL5AcXsERlVfAkP
+         4rFzmiT839kmzvRvjGyY3CubKweUgZJjPXNVbzfDnb818aWs20v/fjj9CgYBYVLfl1
+         ye9NP5YVjJrUEy0c/LaZO9gb3sKcT6V2AhTSkgRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+4a03518df1e31b537066@syzkaller.appspotmail.com,
-        Dmitry Vyukov <dvyukov@google.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 360/381] ext4: fix data races when using cached status extents
+        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 134/134] drm/amd/display: Fix hang when skipping modeset
 Date:   Mon, 15 May 2023 18:30:11 +0200
-Message-Id: <20230515161753.165129609@linuxfoundation.org>
+Message-Id: <20230515161707.640968423@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,81 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit 492888df0c7b42fc0843631168b0021bc4caee84 upstream.
+commit da5e14909776edea4462672fb4a3007802d262e7 upstream.
 
-When using cached extent stored in extent status tree in tree->cache_es
-another process holding ei->i_es_lock for reading can be racing with us
-setting new value of tree->cache_es. If the compiler would decide to
-refetch tree->cache_es at an unfortunate moment, it could result in a
-bogus in_range() check. Fix the possible race by using READ_ONCE() when
-using tree->cache_es only under ei->i_es_lock for reading.
+[Why&How]
 
-Cc: stable@kernel.org
-Reported-by: syzbot+4a03518df1e31b537066@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000d3b33905fa0fd4a6@google.com
-Suggested-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230504125524.10802-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+When skipping full modeset since the only state change was a front porch
+change, the DC commit sequence requires extra checks to handle non
+existant plane states being asked to be removed from context.
+
+Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c |   30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 ++++-
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -269,14 +269,12 @@ static void __es_find_extent_range(struc
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9020,6 +9020,8 @@ static void amdgpu_dm_commit_planes(stru
+ 			continue;
  
- 	/* see if the extent has been cached */
- 	es->es_lblk = es->es_len = es->es_pblk = 0;
--	if (tree->cache_es) {
--		es1 = tree->cache_es;
--		if (in_range(lblk, es1->es_lblk, es1->es_len)) {
--			es_debug("%u cached by [%u/%u) %llu %x\n",
--				 lblk, es1->es_lblk, es1->es_len,
--				 ext4_es_pblock(es1), ext4_es_status(es1));
--			goto out;
--		}
-+	es1 = READ_ONCE(tree->cache_es);
-+	if (es1 && in_range(lblk, es1->es_lblk, es1->es_len)) {
-+		es_debug("%u cached by [%u/%u) %llu %x\n",
-+			 lblk, es1->es_lblk, es1->es_len,
-+			 ext4_es_pblock(es1), ext4_es_status(es1));
-+		goto out;
- 	}
+ 		dc_plane = dm_new_plane_state->dc_state;
++		if (!dc_plane)
++			continue;
  
- 	es1 = __es_tree_search(&tree->root, lblk);
-@@ -295,7 +293,7 @@ out:
- 	}
+ 		bundle->surface_updates[planes_count].surface = dc_plane;
+ 		if (new_pcrtc_state->color_mgmt_changed) {
+@@ -10550,8 +10552,9 @@ static int dm_update_plane_state(struct
+ 			return -EINVAL;
+ 		}
  
- 	if (es1 && matching_fn(es1)) {
--		tree->cache_es = es1;
-+		WRITE_ONCE(tree->cache_es, es1);
- 		es->es_lblk = es1->es_lblk;
- 		es->es_len = es1->es_len;
- 		es->es_pblk = es1->es_pblk;
-@@ -934,14 +932,12 @@ int ext4_es_lookup_extent(struct inode *
++		if (dm_old_plane_state->dc_state)
++			dc_plane_state_release(dm_old_plane_state->dc_state);
  
- 	/* find extent in cache firstly */
- 	es->es_lblk = es->es_len = es->es_pblk = 0;
--	if (tree->cache_es) {
--		es1 = tree->cache_es;
--		if (in_range(lblk, es1->es_lblk, es1->es_len)) {
--			es_debug("%u cached by [%u/%u)\n",
--				 lblk, es1->es_lblk, es1->es_len);
--			found = 1;
--			goto out;
--		}
-+	es1 = READ_ONCE(tree->cache_es);
-+	if (es1 && in_range(lblk, es1->es_lblk, es1->es_len)) {
-+		es_debug("%u cached by [%u/%u)\n",
-+			 lblk, es1->es_lblk, es1->es_len);
-+		found = 1;
-+		goto out;
- 	}
+-		dc_plane_state_release(dm_old_plane_state->dc_state);
+ 		dm_new_plane_state->dc_state = NULL;
  
- 	node = tree->root.rb_node;
+ 		*lock_and_validation_needed = true;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1434,6 +1434,9 @@ bool dc_remove_plane_from_context(
+ 	struct dc_stream_status *stream_status = NULL;
+ 	struct resource_pool *pool = dc->res_pool;
+ 
++	if (!plane_state)
++		return true;
++
+ 	for (i = 0; i < context->stream_count; i++)
+ 		if (context->streams[i] == stream) {
+ 			stream_status = &context->stream_status[i];
 
 
