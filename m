@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 318A07039A7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEEB9703AEE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244576AbjEORom (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        id S241385AbjEOR5O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:57:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244578AbjEORoX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A280B18AAB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:59 -0700 (PDT)
+        with ESMTP id S243083AbjEOR4d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0798C18849
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB8CD62E56
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCC3C433D2;
-        Mon, 15 May 2023 17:41:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF8D362F5F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B2FC4339B;
+        Mon, 15 May 2023 17:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172519;
-        bh=Do4W/MMIjeRqXdmG2MP+NGl+aJN4qHyN3/szobTp1Bs=;
+        s=korg; t=1684173256;
+        bh=pSBL3QwO9Sn5pDMZIlNNy+3GdhBU4CYtzLQ9WcD+dk0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S8CZ4gMzSVRtcnxcXTPujWvI7DezcUvZXZl2IdzexLH/5FmC+UNgtd+Hc9vaHyeEl
-         GnSH58T3QKMBKJ/7w/d8ipazzVWqcepDXIXNIewfF9ZGz+oMpj7vGE4ZXNItpTM06O
-         4Wzkjt6pgdZ36w+xTIqAosEOwQtjon6LwMo3faj8=
+        b=OaXtapxyIvLxBEUPFggeoAmXHhMFMOjEo20ykbxtJW+UnjC8eIliLkAigpGNp6JNf
+         8dhTtQyxVJaDYLG7gsh054tIsVg+58HJMh4cB+tPbZE6YZJh8O3+RSZIOysXC0oqJ7
+         +RKME12GeVYwtFbJNHz76R1iGHXDDkVm5A3OuHSs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicolai Stange <nstange@suse.de>,
-        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/381] crypto: drbg - make drbg_prepare_hrng() handle jent instantiation errors
+Subject: [PATCH 5.4 035/282] drm/rockchip: Drop unbalanced obj unref
 Date:   Mon, 15 May 2023 18:26:53 +0200
-Message-Id: <20230515161744.130357486@linuxfoundation.org>
+Message-Id: <20230515161723.325318104@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,61 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolai Stange <nstange@suse.de>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 559edd47cce4cc407d606b4d7f376822816fd4b8 ]
+[ Upstream commit 8ee3b0e85f6ccd9e6c527bc50eaba774c3bb18d0 ]
 
-Now that drbg_prepare_hrng() doesn't do anything but to instantiate a
-jitterentropy crypto_rng instance, it looks a little odd to have the
-related error handling at its only caller, drbg_instantiate().
+In the error path, rockchip_drm_gem_object_mmap() is dropping an obj
+reference that it doesn't own.
 
-Move the handling of jitterentropy allocation failures from
-drbg_instantiate() close to the allocation itself in drbg_prepare_hrng().
-
-There is no change in behaviour.
-
-Signed-off-by: Nicolai Stange <nstange@suse.de>
-Reviewed-by: Stephan Müller <smueller@chronox.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 686cd976b6dd ("crypto: drbg - Only fail when jent is unavailable in FIPS mode")
+Fixes: 41315b793e13 ("drm/rockchip: use drm_gem_mmap helpers")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230119231734.2884543-1-robdclark@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/drbg.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_gem.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/crypto/drbg.c b/crypto/drbg.c
-index a4b5d6dbe99d3..ecc6b167b89e2 100644
---- a/crypto/drbg.c
-+++ b/crypto/drbg.c
-@@ -1515,6 +1515,14 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
- 		return 0;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+index 291e89b4045f3..96cc794147b5f 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+@@ -249,9 +249,6 @@ static int rockchip_drm_gem_object_mmap(struct drm_gem_object *obj,
+ 	else
+ 		ret = rockchip_drm_gem_object_mmap_dma(obj, vma);
  
- 	drbg->jent = crypto_alloc_rng("jitterentropy_rng", 0, 0);
-+	if (IS_ERR(drbg->jent)) {
-+		const int err = PTR_ERR(drbg->jent);
-+
-+		drbg->jent = NULL;
-+		if (fips_enabled || err != -ENOENT)
-+			return err;
-+		pr_info("DRBG: Continuing without Jitter RNG\n");
-+	}
- 
- 	return 0;
- }
-@@ -1570,14 +1578,6 @@ static int drbg_instantiate(struct drbg_state *drbg, struct drbg_string *pers,
- 		if (ret)
- 			goto free_everything;
- 
--		if (IS_ERR(drbg->jent)) {
--			ret = PTR_ERR(drbg->jent);
--			drbg->jent = NULL;
--			if (fips_enabled || ret != -ENOENT)
--				goto free_everything;
--			pr_info("DRBG: Continuing without Jitter RNG\n");
--		}
+-	if (ret)
+-		drm_gem_vm_close(vma);
 -
- 		reseed = false;
- 	}
+ 	return ret;
+ }
  
 -- 
 2.39.2
