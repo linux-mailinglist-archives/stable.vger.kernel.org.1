@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3658A703751
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B30703554
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243812AbjEORTg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:19:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34540 "EHLO
+        id S243284AbjEOQ6A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243943AbjEORTN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1903310E79
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:21 -0700 (PDT)
+        with ESMTP id S243268AbjEOQ55 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB9B5BAE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E019461FBB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58F5C433D2;
-        Mon, 15 May 2023 17:17:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BE8762A2E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32869C433EF;
+        Mon, 15 May 2023 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171040;
-        bh=QxKW70SDUOcM4ZzlccBHnO5C9wSOqYL2IMHRXM7Zdjo=;
+        s=korg; t=1684169868;
+        bh=9XZYfh5Y6D33K/YCtQ50BEh6Fn790iBO4eePjlDvSgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=szSvs+TG10nSqsB/hc5x12tTwfvSY66vha2iRer7NLlYyEHAW+pZamAgGt0hamDC3
-         UfQ1CN4Bu8Hj012dtCCcTmYUCY+YkHQ26azPCXBmEiuYrjQEa6jyEGFsKcFDzgvPeC
-         FbG7A8laZh21T8/0mKN9aVODqk76M2bLCn7nTr28=
+        b=Rub44JHGQDHQFKA8XQCCxw2HoACaa7toGGAZosvZ5ke4CokytnNed1jzjdxGz5edj
+         yerJCAZK906k6/DlhLeMTl1efgqNtmFN4SZfylBUNZaahX6XbQLwTSJCjAD/VHM9hh
+         gLiKU9VsoNQ64NNan101adiZ3Vn6e7CUwU37NFW0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruliang Lin <u202112092@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Daniel Mack <daniel@zonque.org>, Takashi Iwai <tiwai@suse.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 082/242] ALSA: caiaq: input: Add error handling for unsupported input methods in `snd_usb_caiaq_input_init`
-Date:   Mon, 15 May 2023 18:26:48 +0200
-Message-Id: <20230515161724.358172640@linuxfoundation.org>
+        patches@lists.linux.dev, Horatio Zhang <Hongkun.Zhang@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 197/246] drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v10_0_hw_fini
+Date:   Mon, 15 May 2023 18:26:49 +0200
+Message-Id: <20230515161728.523599263@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,43 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruliang Lin <u202112092@hust.edu.cn>
+From: Horatio Zhang <Hongkun.Zhang@amd.com>
 
-[ Upstream commit 0d727e1856ef22dd9337199430258cb64cbbc658 ]
+commit 08c677cb0b436a96a836792bb35a8ec5de4999c2 upstream.
 
-Smatch complains that:
-snd_usb_caiaq_input_init() warn: missing error code 'ret'
+The gmc.ecc_irq is enabled by firmware per IFWI setting,
+and the host driver is not privileged to enable/disable
+the interrupt. So, it is meaningless to use the amdgpu_irq_put
+function in gmc_v10_0_hw_fini, which also leads to the call
+trace.
 
-This patch adds a new case to handle the situation where the
-device does not support any input methods in the
-`snd_usb_caiaq_input_init` function. It returns an `-EINVAL` error code
-to indicate that no input methods are supported on the device.
+[   82.340264] Call Trace:
+[   82.340265]  <TASK>
+[   82.340269]  gmc_v10_0_hw_fini+0x83/0xa0 [amdgpu]
+[   82.340447]  gmc_v10_0_suspend+0xe/0x20 [amdgpu]
+[   82.340623]  amdgpu_device_ip_suspend_phase2+0x127/0x1c0 [amdgpu]
+[   82.340789]  amdgpu_device_ip_suspend+0x3d/0x80 [amdgpu]
+[   82.340955]  amdgpu_device_pre_asic_reset+0xdd/0x2b0 [amdgpu]
+[   82.341122]  amdgpu_device_gpu_recover.cold+0x4dd/0xbb2 [amdgpu]
+[   82.341359]  amdgpu_debugfs_reset_work+0x4c/0x70 [amdgpu]
+[   82.341529]  process_one_work+0x21d/0x3f0
+[   82.341535]  worker_thread+0x1fa/0x3c0
+[   82.341538]  ? process_one_work+0x3f0/0x3f0
+[   82.341540]  kthread+0xff/0x130
+[   82.341544]  ? kthread_complete_and_exit+0x20/0x20
+[   82.341547]  ret_from_fork+0x22/0x30
 
-Fixes: 523f1dce3743 ("[ALSA] Add Native Instrument usb audio device support")
-Signed-off-by: Ruliang Lin <u202112092@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Acked-by: Daniel Mack <daniel@zonque.org>
-Link: https://lore.kernel.org/r/20230504065054.3309-1-u202112092@hust.edu.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Horatio Zhang <Hongkun.Zhang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Fixes: c8b5a95b5709 ("drm/amdgpu: Fix desktop freezed after gpu-reset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/input.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/usb/caiaq/input.c b/sound/usb/caiaq/input.c
-index 1e2cf2f08eecd..84f26dce7f5d0 100644
---- a/sound/usb/caiaq/input.c
-+++ b/sound/usb/caiaq/input.c
-@@ -804,6 +804,7 @@ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev)
- 
- 	default:
- 		/* no input methods supported on this device */
-+		ret = -EINVAL;
- 		goto exit_free_idev;
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+@@ -1161,7 +1161,6 @@ static int gmc_v10_0_hw_fini(void *handl
+ 		return 0;
  	}
  
--- 
-2.39.2
-
+-	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
+ 
+ 	return 0;
 
 
