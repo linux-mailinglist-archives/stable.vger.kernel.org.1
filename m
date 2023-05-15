@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A047C703794
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AB7703B24
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244098AbjEORW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40352 "EHLO
+        id S232717AbjEOSAW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244048AbjEORWl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:41 -0400
+        with ESMTP id S244267AbjEOR7U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:59:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9B813C3E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B83101FEF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 32F0262C52
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37442C433EF;
-        Mon, 15 May 2023 17:20:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ED2262F79
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43326C433D2;
+        Mon, 15 May 2023 17:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171224;
-        bh=Ae/KnBJRs/9YKdb7zUKyLXsHGQk4IBiw0Xmo6TCRyvI=;
+        s=korg; t=1684173330;
+        bh=MdhVzwajEur6aJFWe8xhiBW8QYRN2udYfPayZRdhSPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yZFRqvu+H2E/om6dghUb+VNQUuqCdf/33cDaBy58DEWXDxLzkQJMXcgKRGLp764P8
-         A/hZpanBlDNqa1ugB6ltu5D8XDkizFVGGVvChgkl0cDews1UzF2vNI2YE8Zc71gKrS
-         gB9gudise3sYg/fP6yN1AVeJcb9PiaswXeSNvjuM=
+        b=VWUkV5atTMWVv4HFUX3Iye3Ppt4DcUWCDSvNMOnCTZ15hEBKvYUhzOcG1frWjCTuk
+         qvy8zfPzQoeUpo677ODnbJ5CDTiu0P/FScKsHHFXZ+kqIXmLFowRu8QHUWLELo7+rp
+         Ki8V6+rqMBYWC3uU1cK+cjlyQzMyQfbAubxdHHY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Dmitrii Dolgov <9erthalion6@gmail.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 111/242] perf stat: Separate bperf from bpf_profiler
+Subject: [PATCH 5.4 059/282] media: rcar_fdp1: fix pm_runtime_get_sync() usage count
 Date:   Mon, 15 May 2023 18:27:17 +0200
-Message-Id: <20230515161725.234246254@linuxfoundation.org>
+Message-Id: <20230515161724.014833270@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,101 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitrii Dolgov <9erthalion6@gmail.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit ecc68ee216c6c5b2f84915e1441adf436f1b019b ]
+[ Upstream commit 45e75a8c6fa455a5909ac04db76a4b15d6bb8368 ]
 
-It seems that perf stat -b <prog id> doesn't produce any results:
+The pm_runtime_get_sync() internally increments the
+dev->power.usage_count without decrementing it, even on errors.
+Replace it by the new pm_runtime_resume_and_get(), introduced by:
+commit dd8088d5a896 ("PM: runtime: Add pm_runtime_resume_and_get to deal with usage counter")
+in order to properly decrement the usage counter, avoiding
+a potential PM usage counter leak.
 
-    $ perf stat -e cycles -b 4 -I 10000 -vvv
-    Control descriptor is not initialized
-    cycles: 0 0 0
-                time        counts unit      events
-	10.007641640    <not supported>      cycles
+Also, right now, the driver is ignoring any troubles when
+trying to do PM resume. So, add the proper error handling
+for the code.
 
-Looks like this happens because fentry/fexit progs are getting loaded, but the
-corresponding perf event is not enabled and not added into the events bpf map.
-I think there is some mixing up between two type of bpf support, one for bperf
-and one for bpf_profiler. Both are identified via evsel__is_bpf, based on which
-perf events are enabled, but for the latter (bpf_profiler) a perf event is
-required. Using evsel__is_bperf to check only bperf produces expected results:
-
-    $ perf stat -e cycles -b 4 -I 10000 -vvv
-    Control descriptor is not initialized
-    ------------------------------------------------------------
-    perf_event_attr:
-      size                             136
-      sample_type                      IDENTIFIER
-      read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-      disabled                         1
-      exclude_guest                    1
-    ------------------------------------------------------------
-    sys_perf_event_open: pid -1  cpu 0  group_fd -1  flags 0x8 = 3
-    ------------------------------------------------------------
-    [...perf_event_attr for other CPUs...]
-    ------------------------------------------------------------
-    cycles: 309426 169009 169009
-		time             counts unit events
-	10.010091271             309426      cycles
-
-The final numbers correspond (at least in the level of magnitude) to the
-same metric obtained via bpftool.
-
-Fixes: 112cb56164bc2108 ("perf stat: Introduce config stat.bpf-counter-events")
-Reviewed-by: Song Liu <song@kernel.org>
-Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
-Tested-by: Song Liu <song@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230412182316.11628-1-9erthalion6@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 4 ++--
- tools/perf/util/evsel.h   | 5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/platform/rcar_fdp1.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index 387dc9c9e7bee..682db49eef4cb 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -773,7 +773,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
- 		counter->reset_group = false;
- 		if (bpf_counter__load(counter, &target))
- 			return -1;
--		if (!evsel__is_bpf(counter))
-+		if (!(evsel__is_bperf(counter)))
- 			all_counters_use_bpf = false;
+diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
+index d6eee66c8dd49..9caddc8387b46 100644
+--- a/drivers/media/platform/rcar_fdp1.c
++++ b/drivers/media/platform/rcar_fdp1.c
+@@ -2139,7 +2139,9 @@ static int fdp1_open(struct file *file)
  	}
  
-@@ -789,7 +789,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 	/* Perform any power management required */
+-	pm_runtime_get_sync(fdp1->dev);
++	ret = pm_runtime_resume_and_get(fdp1->dev);
++	if (ret < 0)
++		goto error_pm;
  
- 		if (counter->reset_group || counter->errored)
- 			continue;
--		if (evsel__is_bpf(counter))
-+		if (evsel__is_bperf(counter))
- 			continue;
- try_again:
- 		if (create_perf_stat_counter(counter, &stat_config, &target,
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index d572be41b9608..2899c97d997cd 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -269,6 +269,11 @@ static inline bool evsel__is_bpf(struct evsel *evsel)
- 	return evsel->bpf_counter_ops != NULL;
- }
+ 	v4l2_fh_add(&ctx->fh);
  
-+static inline bool evsel__is_bperf(struct evsel *evsel)
-+{
-+	return evsel->bpf_counter_ops != NULL && list_empty(&evsel->bpf_counter_list);
-+}
+@@ -2149,6 +2151,8 @@ static int fdp1_open(struct file *file)
+ 	mutex_unlock(&fdp1->dev_mutex);
+ 	return 0;
+ 
++error_pm:
++       v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+ error_ctx:
+ 	v4l2_ctrl_handler_free(&ctx->hdl);
+ 	kfree(ctx);
+@@ -2356,7 +2360,9 @@ static int fdp1_probe(struct platform_device *pdev)
+ 
+ 	/* Power up the cells to read HW */
+ 	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(fdp1->dev);
++	ret = pm_runtime_resume_and_get(fdp1->dev);
++	if (ret < 0)
++		goto disable_pm;
+ 
+ 	hw_version = fdp1_read(fdp1, FD1_IP_INTDATA);
+ 	switch (hw_version) {
+@@ -2385,6 +2391,9 @@ static int fdp1_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
++disable_pm:
++	pm_runtime_disable(fdp1->dev);
 +
- #define EVSEL__MAX_ALIASES 8
+ release_m2m:
+ 	v4l2_m2m_release(fdp1->m2m_dev);
  
- extern const char *const evsel__hw_cache[PERF_COUNT_HW_CACHE_MAX][EVSEL__MAX_ALIASES];
 -- 
 2.39.2
 
