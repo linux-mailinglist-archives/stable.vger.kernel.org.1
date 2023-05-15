@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C95F37037B0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC92E7039D0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244152AbjEORXo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41626 "EHLO
+        id S244603AbjEORqK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244053AbjEORXR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 176DF44B6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:39 -0700 (PDT)
+        with ESMTP id S244599AbjEORpq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF481693C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECE4662C54
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F27C433D2;
-        Mon, 15 May 2023 17:21:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B51C62E90
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C297C433EF;
+        Mon, 15 May 2023 17:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171298;
-        bh=TU+tnQ2Ae9mEfDDSV50Mz2VLeYfxmFTYpNP8fYWtdf0=;
+        s=korg; t=1684172620;
+        bh=22/0GyGstKxSi5WyUg/SfzoRo+KeW+wvMb1rDRutY3g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=twSXhjtLzlT9C0SKVqt3lKIpX0vqwV0lVBeohqjDpyHa6fuIGMJhobykVYUkDSvD8
-         KpM9O7A8FUm6UuWWbPS+Punhh1bLjqHwOUIenCaYPVHtpgMYD7zK0v5iCMxZxuvWUW
-         DntimVD7OW3tfvPrW9Wgg3KGJLTg9A8H5eaVozFg=
+        b=DD7dE24hXB+xa6lqwFel7YmMypOhHCKbkQBdHIa8JKsQ9/TgE1nJwPe4XHlVbqfyM
+         UKzK7rmk/KGEmCHhEj1S2a80uLwkHznOxgeyNZOvYHcJvHyGpwPikIMD5s1rq9PnOC
+         9DiGFPM75TKcbxeBTwuSwmTC8JuWDoyK7F8Ipw5M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.2 137/242] btrfs: fix space cache inconsistency after error loading it from disk
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Leonard Crestez <leonard.crestez@nxp.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 212/381] scripts/gdb: bail early if there are no clocks
 Date:   Mon, 15 May 2023 18:27:43 +0200
-Message-Id: <20230515161726.012955435@linuxfoundation.org>
+Message-Id: <20230515161746.357779008@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,57 +58,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit 0004ff15ea26015a0a3a6182dca3b9d1df32e2b7 upstream.
+[ Upstream commit 1d7adbc74c009057ed9dc3112f388e91a9c79acc ]
 
-When loading a free space cache from disk, at __load_free_space_cache(),
-if we fail to insert a bitmap entry, we still increment the number of
-total bitmaps in the btrfs_free_space_ctl structure, which is incorrect
-since we failed to add the bitmap entry. On error we then empty the
-cache by calling __btrfs_remove_free_space_cache(), which will result
-in getting the total bitmaps counter set to 1.
+Avoid generating an exception if there are no clocks registered:
 
-A failure to load a free space cache is not critical, so if a failure
-happens we just rebuild the cache by scanning the extent tree, which
-happens at block-group.c:caching_thread(). Yet the failure will result
-in having the total bitmaps of the btrfs_free_space_ctl always bigger
-by 1 then the number of bitmap entries we have. So fix this by having
-the total bitmaps counter be incremented only if we successfully added
-the bitmap entry.
+(gdb) lx-clk-summary
+                                 enable  prepare  protect
+   clock                          count    count    count        rate
+------------------------------------------------------------------------
+Python Exception <class 'gdb.error'>: No symbol "clk_root_list" in
+current context.
+Error occurred in Python: No symbol "clk_root_list" in current context.
 
-Fixes: a67509c30079 ("Btrfs: add a io_ctl struct and helpers for dealing with the space cache")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-CC: stable@vger.kernel.org # 4.4+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230323225246.3302977-1-f.fainelli@gmail.com
+Fixes: d1e9710b63d8 ("scripts/gdb: initial clk support: lx-clk-summary")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Leonard Crestez <leonard.crestez@nxp.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-cache.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ scripts/gdb/linux/clk.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -870,15 +870,16 @@ static int __load_free_space_cache(struc
- 			}
- 			spin_lock(&ctl->tree_lock);
- 			ret = link_free_space(ctl, e);
--			ctl->total_bitmaps++;
--			recalculate_thresholds(ctl);
--			spin_unlock(&ctl->tree_lock);
- 			if (ret) {
-+				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
-+			ctl->total_bitmaps++;
-+			recalculate_thresholds(ctl);
-+			spin_unlock(&ctl->tree_lock);
- 			list_add_tail(&e->list, &bitmaps);
- 		}
+diff --git a/scripts/gdb/linux/clk.py b/scripts/gdb/linux/clk.py
+index 061aecfa294e6..7a01fdc3e8446 100644
+--- a/scripts/gdb/linux/clk.py
++++ b/scripts/gdb/linux/clk.py
+@@ -41,6 +41,8 @@ are cached and potentially out of date"""
+             self.show_subtree(child, level + 1)
  
+     def invoke(self, arg, from_tty):
++        if utils.gdb_eval_or_none("clk_root_list") is None:
++            raise gdb.GdbError("No clocks registered")
+         gdb.write("                                 enable  prepare  protect               \n")
+         gdb.write("   clock                          count    count    count        rate   \n")
+         gdb.write("------------------------------------------------------------------------\n")
+-- 
+2.39.2
+
 
 
