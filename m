@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 392E2703531
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A98DB703973
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243235AbjEOQ4d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
+        id S244495AbjEORmj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243227AbjEOQ4c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:32 -0400
+        with ESMTP id S244493AbjEORmO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7125FD5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036E79033
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46ABE62A12
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39440C433D2;
-        Mon, 15 May 2023 16:56:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7BFC62E24
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB63BC433EF;
+        Mon, 15 May 2023 17:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169784;
-        bh=gHwocGite3FnJHIeWjDsd9hljM4pRdYxv0OaXT2IviM=;
+        s=korg; t=1684172390;
+        bh=ojc58rMjtvQJnZH5ift4m2BaI2Ddu85cIVhMmcACl14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nYLtXjErXZD3dJxlFo7ukqCOy8VjZnp0sURV+EDJcH4/8ZDSlI6V3rnfhtQVeNacK
-         40bCmO6/qJCb1UNbKcaPm/hKvqoA64hFLly6Wpg1yvmdW7TDbID+LwVszPaeRKKA6k
-         KOdPIfClu4JR4l9u//NIV8BjIU5u0z4OZGsrhi2A=
+        b=asHTf1br/lIebbE24H/ii55XtAwZNcchPvdaZzZ8CZe6J93vUKGwXTVv1fAUNHnRP
+         9PMuNCovMgjjapxfPOlOJMXeVj3c8f+BtDTC963FXRn7F7G+C4v29MaB5YjpxK/V8t
+         7RokOqJJqPe9fWO8o/Wty75+9vVilwraRHmeuW/4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-        Uma Shankar <uma.shankar@intel.com>,
-        Animesh Manna <animesh.manna@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.3 169/246] drm/i915/color: Fix typo for Plane CSC indexes
+        "Alexey V. Vissarionov" <gremlin@altlinux.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 130/381] wifi: ath6kl: minor fix for allocation size
 Date:   Mon, 15 May 2023 18:26:21 +0200
-Message-Id: <20230515161727.703043200@linuxfoundation.org>
+Message-Id: <20230515161742.702838850@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Alexey V. Vissarionov <gremlin@altlinux.org>
 
-commit 2efc8e1001acfdc143cf2d25a08a4974c322e2a8 upstream.
+[ Upstream commit 778f83f889e7fca37780d9640fcbd0229ae38eaa ]
 
-Replace _PLANE_INPUT_CSC_RY_GY_2_* with _PLANE_CSC_RY_GY_2_*
-for Plane CSC
+Although the "param" pointer occupies more or equal space compared
+to "*param", the allocation size should use the size of variable
+itself.
 
-Fixes: 6eba56f64d5d ("drm/i915/pxp: black pixels on pxp disabled")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: <stable@vger.kernel.org>
-
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Animesh Manna <animesh.manna@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230330150104.2923519-1-chaitanya.kumar.borah@intel.com
-(cherry picked from commit e39c76b2160bbd005587f978d29603ef790aefcd)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bdcd81707973cf8a ("Add ath6kl cleaned up driver")
+Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230117110414.GC12547@altlinux.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_reg.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath6kl/bmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/i915_reg.h
-+++ b/drivers/gpu/drm/i915/i915_reg.h
-@@ -7596,8 +7596,8 @@ enum skl_power_gate {
+diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
+index bde5a10d470c8..af98e871199d3 100644
+--- a/drivers/net/wireless/ath/ath6kl/bmi.c
++++ b/drivers/net/wireless/ath/ath6kl/bmi.c
+@@ -246,7 +246,7 @@ int ath6kl_bmi_execute(struct ath6kl *ar, u32 addr, u32 *param)
+ 		return -EACCES;
+ 	}
  
- #define _PLANE_CSC_RY_GY_1(pipe)	_PIPE(pipe, _PLANE_CSC_RY_GY_1_A, \
- 					      _PLANE_CSC_RY_GY_1_B)
--#define _PLANE_CSC_RY_GY_2(pipe)	_PIPE(pipe, _PLANE_INPUT_CSC_RY_GY_2_A, \
--					      _PLANE_INPUT_CSC_RY_GY_2_B)
-+#define _PLANE_CSC_RY_GY_2(pipe)	_PIPE(pipe, _PLANE_CSC_RY_GY_2_A, \
-+					      _PLANE_CSC_RY_GY_2_B)
- #define PLANE_CSC_COEFF(pipe, plane, index)	_MMIO_PLANE(plane, \
- 							    _PLANE_CSC_RY_GY_1(pipe) +  (index) * 4, \
- 							    _PLANE_CSC_RY_GY_2(pipe) + (index) * 4)
+-	size = sizeof(cid) + sizeof(addr) + sizeof(param);
++	size = sizeof(cid) + sizeof(addr) + sizeof(*param);
+ 	if (size > ar->bmi.max_cmd_size) {
+ 		WARN_ON(1);
+ 		return -EINVAL;
+-- 
+2.39.2
+
 
 
