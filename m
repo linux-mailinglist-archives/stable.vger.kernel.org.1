@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10AC9703BA7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36D81703BAC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244946AbjEOSFP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:05:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39694 "EHLO
+        id S243922AbjEOSFX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:05:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245003AbjEOSEz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:04:55 -0400
+        with ESMTP id S243132AbjEOSFI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:05:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52BA0183D8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:02:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF151D491
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:02:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC0B363075
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9758C433D2;
-        Mon, 15 May 2023 18:02:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 60A3A6307E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:02:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F61BC433EF;
+        Mon, 15 May 2023 18:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173752;
-        bh=/cuxQjA9Rb5GNUDebYWUDoUYJutjfz/vMw0V/FMfP5s=;
+        s=korg; t=1684173767;
+        bh=l6ye6TfyFQb9mPeoyzn1gGY0j7UuOkKnZ81XqGUi+Vk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G/RqtUekAFFelpYj5j7578tfAZZz5tdZXvZvHTDqueDjz6lkvwCHBV3Lgj9CFrL4U
-         F0ntOSWfUX4U378lUzQMZNJwAdIkj5ehsrhsont5p5zPRGRoThuhHdJm87adS8zZ6/
-         BITf8L4rhnsz2t20aEMlw7IJFL8UJ3nMT4V2YMfs=
+        b=zuaaW8hBkyixi2zf23nc5hh3oLRnnxQRKYzd9rM8BNh4Aj6cbSVJpL+vhHLmgIECT
+         U8FR9SZ4YqsvufMMAJuwGCPd1l3yI4hgn0ZUQ/o1F6uVcjFhxWMAqmotWFe3qYK0Sg
+         WGUmYw26euBxhkLvgxa1SXLZZM0NfxPTqwptpvAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
+        Brendan Cunningham <bcunningham@cornelisnetworks.com>,
+        Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
         Leon Romanovsky <leon@kernel.org>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 168/282] RDMA/siw: Remove namespace check from siw_netdev_event()
-Date:   Mon, 15 May 2023 18:29:06 +0200
-Message-Id: <20230515161727.247966643@linuxfoundation.org>
+Subject: [PATCH 5.4 169/282] IB/hfi1: Fix SDMA mmu_rb_node not being evicted in LRU order
+Date:   Mon, 15 May 2023 18:29:07 +0200
+Message-Id: <20230515161727.276972317@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -58,42 +57,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
 
-[ Upstream commit 266e9b3475ba82212062771fdbc40be0e3c06ec8 ]
+[ Upstream commit 9fe8fec5e43d5a80f43cbf61aaada1b047a1eb61 ]
 
-syzbot is reporting that siw_netdev_event(NETDEV_UNREGISTER) cannot destroy
-siw_device created after unshare(CLONE_NEWNET) due to net namespace check.
-It seems that this check was by error there and should be removed.
+hfi1_mmu_rb_remove_unless_exact() did not move mmu_rb_node objects in
+mmu_rb_handler->lru_list after getting a cache hit on an mmu_rb_node.
 
-Reported-by: syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=5e70d01ee8985ae62a3b
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Suggested-by: Leon Romanovsky <leon@kernel.org>
-Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/a44e9ac5-44e2-d575-9e30-02483cc7ffd1@I-love.SAKURA.ne.jp
-Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+As a result, hfi1_mmu_rb_evict() was not guaranteed to evict truly
+least-recently used nodes.
+
+This could be a performance issue for an application when that
+application:
+- Uses some long-lived buffers frequently.
+- Uses a large number of buffers once.
+- Hits the mmu_rb_handler cache size or pinned-page limits, forcing
+  mmu_rb_handler cache entries to be evicted.
+
+In this case, the one-time use buffers cause the long-lived buffer
+entries to eventually filter to the end of the LRU list where
+hfi1_mmu_rb_evict() will consider evicting a frequently-used long-lived
+entry instead of evicting one of the one-time use entries.
+
+Fix this by inserting new mmu_rb_node at the tail of
+mmu_rb_handler->lru_list and move mmu_rb_ndoe to the tail of
+mmu_rb_handler->lru_list when the mmu_rb_node is a hit in
+hfi1_mmu_rb_remove_unless_exact(). Change hfi1_mmu_rb_evict() to evict
+from the head of mmu_rb_handler->lru_list instead of the tail.
+
+Fixes: 0636e9ab8355 ("IB/hfi1: Add cache evict LRU list")
+Signed-off-by: Brendan Cunningham <bcunningham@cornelisnetworks.com>
+Signed-off-by: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Link: https://lore.kernel.org/r/168088635931.3027109.10423156330761536044.stgit@252.162.96.66.static.eigbox.net
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_main.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/infiniband/hw/hfi1/mmu_rb.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
-index dbbf8c6c16d38..a462c2fc6f311 100644
---- a/drivers/infiniband/sw/siw/siw_main.c
-+++ b/drivers/infiniband/sw/siw/siw_main.c
-@@ -472,9 +472,6 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
+diff --git a/drivers/infiniband/hw/hfi1/mmu_rb.c b/drivers/infiniband/hw/hfi1/mmu_rb.c
+index 14d2a90964c3c..a5631286c8e05 100644
+--- a/drivers/infiniband/hw/hfi1/mmu_rb.c
++++ b/drivers/infiniband/hw/hfi1/mmu_rb.c
+@@ -173,7 +173,7 @@ int hfi1_mmu_rb_insert(struct mmu_rb_handler *handler,
+ 		goto unlock;
+ 	}
+ 	__mmu_int_rb_insert(mnode, &handler->root);
+-	list_add(&mnode->list, &handler->lru_list);
++	list_add_tail(&mnode->list, &handler->lru_list);
  
- 	dev_dbg(&netdev->dev, "siw: event %lu\n", event);
+ 	ret = handler->ops->insert(handler->ops_arg, mnode);
+ 	if (ret) {
+@@ -220,8 +220,10 @@ bool hfi1_mmu_rb_remove_unless_exact(struct mmu_rb_handler *handler,
+ 	spin_lock_irqsave(&handler->lock, flags);
+ 	node = __mmu_rb_search(handler, addr, len);
+ 	if (node) {
+-		if (node->addr == addr && node->len == len)
++		if (node->addr == addr && node->len == len) {
++			list_move_tail(&node->list, &handler->lru_list);
+ 			goto unlock;
++		}
+ 		__mmu_int_rb_remove(node, &handler->root);
+ 		list_del(&node->list); /* remove from LRU list */
+ 		ret = true;
+@@ -242,8 +244,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
+ 	INIT_LIST_HEAD(&del_list);
  
--	if (dev_net(netdev) != &init_net)
--		return NOTIFY_OK;
--
- 	base_dev = ib_device_get_by_netdev(netdev, RDMA_DRIVER_SIW);
- 	if (!base_dev)
- 		return NOTIFY_OK;
+ 	spin_lock_irqsave(&handler->lock, flags);
+-	list_for_each_entry_safe_reverse(rbnode, ptr, &handler->lru_list,
+-					 list) {
++	list_for_each_entry_safe(rbnode, ptr, &handler->lru_list, list) {
+ 		if (handler->ops->evict(handler->ops_arg, rbnode, evict_arg,
+ 					&stop)) {
+ 			__mmu_int_rb_remove(rbnode, &handler->root);
+@@ -255,9 +256,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
+ 	}
+ 	spin_unlock_irqrestore(&handler->lock, flags);
+ 
+-	while (!list_empty(&del_list)) {
+-		rbnode = list_first_entry(&del_list, struct mmu_rb_node, list);
+-		list_del(&rbnode->list);
++	list_for_each_entry_safe(rbnode, ptr, &del_list, list) {
+ 		handler->ops->remove(handler->ops_arg, rbnode);
+ 	}
+ }
 -- 
 2.39.2
 
