@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CD6703313
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B169C70390A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242488AbjEOQcx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:32:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35746 "EHLO
+        id S244467AbjEORiV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241954AbjEOQcw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E7D2D74
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:47 -0700 (PDT)
+        with ESMTP id S244472AbjEORiE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 491D0120A3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88C2362752
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778C5C4339B;
-        Mon, 15 May 2023 16:32:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 254D162DD3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12740C433D2;
+        Mon, 15 May 2023 17:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168367;
-        bh=tt/2gS8U7sQTmTMFd0sPLzI5CfcICp6nHFZCtsEDrks=;
+        s=korg; t=1684172123;
+        bh=4ZDjMyZlTE9Oi+5UsaZHV9CcbRHm4y+tdZZZXlM/SyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QeD0WE21H6XU1t09hw95nA49XyNxVTuLmTk7fiaVzlaDJy7GXrsEujJ4ccv0zL2F2
-         py7YvW5iEZxEU0+pfB+rgto1BaXdmZa//HibqdyZiVbxyXlp/vR3ajn6L9toiNJxoz
-         q5JeuqPKaXYfgWZ/MeO69EIWb2v8srhzqMbd2qcA=
+        b=GRDc0SP4r1cc6aZ9Wk2FacI+DJyBJ9I6fsCiApgBW+N0fowPxN1OsFIu9jyQGdVOs
+         nGmZix0W2oGx1SmNSyPt/h0F7VQ0kyyTsP4tehjjQBe94+PoNBDjo7D7EJVt23SsqR
+         1jJAD9ZKjmWu5ctzB+PC8Hpa5+/yJrbr0Eiekjzw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 4.14 006/116] USB: dwc3: fix runtime pm imbalance on unbind
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 052/381] parisc: Fix argument pointer in real64_call_asm()
 Date:   Mon, 15 May 2023 18:25:03 +0200
-Message-Id: <20230515161658.473998112@linuxfoundation.org>
+Message-Id: <20230515161739.186432324@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 44d257e9012ee8040e41d224d0e5bfb5ef5427ea upstream.
+commit 6e3220ba3323a2c24be834aebf5d6e9f89d0993f upstream.
 
-Make sure to balance the runtime PM usage count on driver unbind by
-adding back the pm_runtime_allow() call that had been erroneously
-removed.
+Fix the argument pointer (ap) to point to real-mode memory
+instead of virtual memory.
 
-Fixes: 266d0493900a ("usb: dwc3: core: don't trigger runtime pm when remove driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Li Jun <jun.li@nxp.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-3-johan+linaro@kernel.org
+It's interesting that this issue hasn't shown up earlier, as this could
+have happened with any 64-bit PDC ROM code.
+
+I just noticed it because I suddenly faced a HPMC while trying to execute
+the 64-bit STI ROM code of an Visualize-FXe graphics card for the STI
+text console.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/kernel/real2.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1348,6 +1348,7 @@ static int dwc3_remove(struct platform_d
- 	dwc3_core_exit(dwc);
- 	dwc3_ulpi_exit(dwc);
+--- a/arch/parisc/kernel/real2.S
++++ b/arch/parisc/kernel/real2.S
+@@ -248,9 +248,6 @@ ENTRY_CFI(real64_call_asm)
+ 	/* save fn */
+ 	copy	%arg2, %r31
  
-+	pm_runtime_allow(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+-	/* set up the new ap */
+-	ldo	64(%arg1), %r29
+-
+ 	/* load up the arg registers from the saved arg area */
+ 	/* 32-bit calling convention passes first 4 args in registers */
+ 	ldd	0*REG_SZ(%arg1), %arg0		/* note overwriting arg0 */
+@@ -262,7 +259,9 @@ ENTRY_CFI(real64_call_asm)
+ 	ldd	7*REG_SZ(%arg1), %r19
+ 	ldd	1*REG_SZ(%arg1), %arg1		/* do this one last! */
+ 
++	/* set up real-mode stack and real-mode ap */
+ 	tophys_r1 %sp
++	ldo	-16(%sp), %r29			/* Reference param save area */
+ 
+ 	b,l	rfi_virt2real,%r2
+ 	nop
 
 
