@@ -2,97 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5FC702CF9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 14:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C363702D02
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 14:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241430AbjEOMny (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 08:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
+        id S241788AbjEOMqy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 08:46:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241863AbjEOMnj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 08:43:39 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 405CF2684
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 05:43:20 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id C270932007F9;
-        Mon, 15 May 2023 08:43:18 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 15 May 2023 08:43:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1684154598; x=1684240998; bh=RD
-        kwjy8wl26IHUMvtar7r0EtQTZnjSLBjEloeP/hYC4=; b=Ae/u24UxSqE1Jf3cEd
-        AKEc2RuLrKxZbQiOca16nDdCzHKyNLavw5WDJb1nJGK59y8+y0aRy9MtI36d2DoB
-        lWkQP2jttKl5f71ASEZMPoslBSGjV+nqquiYN4qIGo83UKJ6erxOBsjCB3GDuxXs
-        crhShTMPDFWrSBU6Afu0dxM87iSG027IELb+Qkp7heufto5AMWMR1toqFdvDkdx6
-        yDKfe7LX1ct0FwpVr3zwriPfhrEoYPhqzmO/QVbF0c0gm343zow/vNIPq31ID8eG
-        ZIUrAGXkRO6FKmAXrUvAy1X9QPzk5d3UEs/SBI57oQKVofQnJOPWz9U0O+alCQ69
-        kQ6g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1684154598; x=1684240998; bh=RDkwjy8wl26IH
-        UMvtar7r0EtQTZnjSLBjEloeP/hYC4=; b=ByLA4RsM57XjVgCg4VjeLxF9QEjAx
-        unZsM7VK4gfzdKxV5YXiQKly+AILd3ZVM8vZX6YNSC0bS2ocLJI2aCRLEtaeL7Si
-        2Pq4ku699CaCNiSiBXkcRnfFN4O1S6wHmj1SYsFLIzw/L/eVUF5+pEEqxYGIhWuI
-        C8c+lM5SKkqQiiWdwgFBtMNzBHBDH1NMlWn5t27OsZGvjZHgZ1TADcmh6DagZ3KK
-        zg47qDERegklw4iHeUcvdRC8er+0KyHfWLcYlJ8mNww5zRr1ZT6BiM9Fj8o1e5W3
-        xx3G79gpWeOTeivRrvbt+HpvzgFQqyDxRpVPx/LEC2cov1cFZiOKfhShg==
-X-ME-Sender: <xms:5ihiZONUaZh96DN4IBELpJURmge5wRV0JtecTzW_SKlpYf1R1F7r2Q>
-    <xme:5ihiZM8yV-qajmPc-2D8nTCYIBHvDZo37fJVi2XGyQ2sx82xYhisFltkofClEaUg2
-    VHsr2n-kFZgqA>
-X-ME-Received: <xmr:5ihiZFT0-m4o5RhmNaoIsWyjIWzsvjBGGFEq_WWPJgdbGOTlNkpOW0W7m36Y3zI-lMe-ZwNGva7434lfROgm8Eg79xmunE16dZ4FXg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehjedgheeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:5ihiZOvrsBKktNPKRH-DlxI1_sYp4Ah2JCWYzydxWkcf4PTY7xwW2Q>
-    <xmx:5ihiZGdZMWwU7hY73uuVBC4sKZoRM3j9eTtAEPw1xn099eSAGDLiLA>
-    <xmx:5ihiZC03MKVhe8SbcKCZUOhsaHWPnTmjJ-xpwIPiWrhvhaoqP6KDTw>
-    <xmx:5ihiZNyZX5Go84SJK4REVVO2NYd9pQP2kuHmsIUA_xM2g8T45zu1Hg>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 May 2023 08:43:17 -0400 (EDT)
-Date:   Mon, 15 May 2023 14:43:14 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Vasily Gorbik <gor@linux.ibm.com>
-Cc:     stable@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.3 0/2] s390/mm: fix direct map accounting
-Message-ID: <2023051507-basil-broadly-63dc@gregkh>
-References: <cover.thread-961a23.your-ad-here.call-01683642007-ext-1116@work.hours>
+        with ESMTP id S241850AbjEOMqw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 08:46:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4011A6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 05:46:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AC9E61DC0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 12:46:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EDBC433D2;
+        Mon, 15 May 2023 12:46:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684154808;
+        bh=dpoHamVFG+cwgOWw/S4Qqs82u1tSCdn6SeV4KKeluK8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0H/i6XcuTQ/a1LrLan8XD8oY/fQGKrGQ2DhO1bZFfFCSqth8GWUoLtRKBzAHAJ6vR
+         sa/ghXbjvMthhwKLhkA0sZi4slyaAVBAuOxASq9pNNfDKVCTE6LP53tx8rtGUbcM15
+         L8GXltb9xTZVilgjnlKvgpyriX/7dVrJQWp6llfY=
+Date:   Mon, 15 May 2023 14:46:45 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc:     stable@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH 5.10.y] bus: mhi: host: Range check CHDBOFF and ERDBOFF
+Message-ID: <2023051536-ammonium-tropical-bfd9@gregkh>
+References: <2023050613-slacked-gush-009c@gregkh>
+ <1683733522-13432-1-git-send-email-quic_jhugo@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.thread-961a23.your-ad-here.call-01683642007-ext-1116@work.hours>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <1683733522-13432-1-git-send-email-quic_jhugo@quicinc.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 04:31:11PM +0200, Vasily Gorbik wrote:
-> As an alternative to backporting part of a large s390 patch series to the
-> 6.3-stable tree as dependencies, here are just couple of rebased changes.
+On Wed, May 10, 2023 at 09:45:22AM -0600, Jeffrey Hugo wrote:
+> Commit 6a0c637bfee69a74c104468544d9f2a6579626d0 upstream.
 > 
-> Avoids the need for:
-> Patch "s390/boot: rework decompressor reserved tracking" has been added to the 6.3-stable tree
-> Patch "s390/boot: rename mem_detect to physmem_info" has been added to the 6.3-stable tree
-> Patch "s390/boot: remove non-functioning image bootable check" has been added to the 6.3-stable tree
+> If the value read from the CHDBOFF and ERDBOFF registers is outside the
+> range of the MHI register space then an invalid address might be computed
+> which later causes a kernel panic.  Range check the read value to prevent
+> a crash due to bad data from the device.
+> 
+> Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+> Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+> Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+> Link: https://lore.kernel.org/r/1679674384-27209-1-git-send-email-quic_jhugo@quicinc.com
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/bus/mhi/core/init.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 
-All now queued up, thanks.
+This breaks the build, did you test it?
 
-greg k-h
