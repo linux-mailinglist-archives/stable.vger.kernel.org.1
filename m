@@ -2,50 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B143570368E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 652C870376A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243646AbjEORLU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:11:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        id S244013AbjEORVC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243660AbjEORLB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96866A5D8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:10 -0700 (PDT)
+        with ESMTP id S244011AbjEORUr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B076124BD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D41862B0A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D995C433D2;
-        Mon, 15 May 2023 17:09:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1E18621F0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA531C4339B;
+        Mon, 15 May 2023 17:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170541;
-        bh=mkROcgeKf/QVqMyGvbpMUEjcile4IozeG0H2SKuWYIA=;
+        s=korg; t=1684171106;
+        bh=CQLT/bsvAJd2jCdkCfQb3EdAHZfQbieJuhsfPHb1y0o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bFYNGEOGLV65JD+Dd5QY92mXNSxIDrKZo1d+bb11vLGMC5rkUmEzvj8JEHzisjN90
-         qPxJJCVnrtd0JXbuxA2PS4PUpQlKRe/pX5jiP3iZ17zUrloC8h0521faU88iI8eUox
-         SeKWFu+1v9tuUDyaDHZU5848GpQo/BWDDFekmwpU=
+        b=1w3AbR2ZctyE/41zpFERtG9PFOHK/0OIWWyTFAyld1KTGJzr1qsNg9DSvhp9FfD3B
+         hE6DiyijDL56OPhR8DqHAeVEqP+I84b5Q0Oqo7nHnohraqcVgWNhWlLkSAzqUuG3oi
+         jvfm2amlVN2Ct65Bxkm1lQ9V2QFyS3THtjB93b4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roman Li <Roman.Li@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 164/239] drm/amd/display: fix flickering caused by S/G mode
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@kernel.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 101/242] perf vendor events power9: Remove UTF-8 characters from JSON files
 Date:   Mon, 15 May 2023 18:27:07 +0200
-Message-Id: <20230515161726.591642735@linuxfoundation.org>
+Message-Id: <20230515161724.935020376@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,58 +62,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-commit 08da182175db4c7f80850354849d95f2670e8cd9 upstream.
+[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
 
-Currently, on a handful of ASICs. We allow the framebuffer for a given
-plane to exist in either VRAM or GTT. However, if the plane's new
-framebuffer is in a different memory domain than it's previous
-framebuffer, flipping between them can cause the screen to flicker. So,
-to fix this, don't perform an immediate flip in the aforementioned case.
+Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
+events") added and updated power9 PMU JSON events. However some of the
+JSON events which are part of other.json and pipeline.json files,
+contains UTF-8 characters in their brief description.  Having UTF-8
+character could breaks the perf build on some distros.
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
-Reviewed-by: Roman Li <Roman.Li@amd.com>
-Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this issue by removing the UTF-8 characters from other.json and
+pipeline.json files.
+
+Result without the fix:
+
+  [command]# file -i pmu-events/arch/powerpc/power9/*
+  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
+  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
+  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
+  [command]#
+
+Result with the fix:
+
+  [command]# file -i pmu-events/arch/powerpc/power9/*
+  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
+  [command]#
+
+Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Disha Goel <disgoel@linux.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
+Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
+ tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7593,6 +7593,13 @@ static void amdgpu_dm_commit_cursors(str
- 			handle_cursor_update(plane, old_plane_state);
- }
- 
-+static inline uint32_t get_mem_type(struct drm_framebuffer *fb)
-+{
-+	struct amdgpu_bo *abo = gem_to_amdgpu_bo(fb->obj[0]);
-+
-+	return abo->tbo.resource ? abo->tbo.resource->mem_type : 0;
-+}
-+
- static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 				    struct dc_state *dc_state,
- 				    struct drm_device *dev,
-@@ -7710,11 +7717,13 @@ static void amdgpu_dm_commit_planes(stru
- 
- 		/*
- 		 * Only allow immediate flips for fast updates that don't
--		 * change FB pitch, DCC state, rotation or mirroing.
-+		 * change memory domain, FB pitch, DCC state, rotation or
-+		 * mirroring.
- 		 */
- 		bundle->flip_addrs[planes_count].flip_immediate =
- 			crtc->state->async_flip &&
--			acrtc_state->update_type == UPDATE_TYPE_FAST;
-+			acrtc_state->update_type == UPDATE_TYPE_FAST &&
-+			get_mem_type(old_plane_state->fb) == get_mem_type(fb);
- 
- 		timestamp_ns = ktime_get_ns();
- 		bundle->flip_addrs[planes_count].flip_timestamp_in_us = div_u64(timestamp_ns, 1000);
+diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
+index 3f69422c21f99..f10bd554521a0 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
++++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
+@@ -1417,7 +1417,7 @@
+   {
+     "EventCode": "0x45054",
+     "EventName": "PM_FMA_CMPL",
+-    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
++    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
+   },
+   {
+     "EventCode": "0x201E8",
+@@ -2017,7 +2017,7 @@
+   {
+     "EventCode": "0xC0BC",
+     "EventName": "PM_LSU_FLUSH_OTHER",
+-    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
++    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
+   },
+   {
+     "EventCode": "0x5094",
+diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
+index d0265f255de2b..723bffa41c448 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
++++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
+@@ -442,7 +442,7 @@
+   {
+     "EventCode": "0x4D052",
+     "EventName": "PM_2FLOP_CMPL",
+-    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
++    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
+   },
+   {
+     "EventCode": "0x1F142",
+-- 
+2.39.2
+
 
 
