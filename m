@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CB5B7039EE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A7047036D1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244616AbjEORqv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
+        id S243853AbjEOROZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244620AbjEORqa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:30 -0400
+        with ESMTP id S243653AbjEOROK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFFBDC52
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0A3100DE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 345C762EAB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2180EC4339B;
-        Mon, 15 May 2023 17:45:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24FDF62B83
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B4C433EF;
+        Mon, 15 May 2023 17:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172706;
-        bh=PsqgKafZcqs7T4IVecJejKrs8cnA6FFjnjY/okz6uSU=;
+        s=korg; t=1684170746;
+        bh=TWL+qJQugE93zVVjjl/DucUP3g1jjUx+LRRUZuSZzDg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cy7hB/67gVQDaZlFOPyVhNGrFuKUMV8WIIWq3rDBKN3MP3iOJQ/LKYvqHfSI7QoKs
-         2eufMEVTEhKEi5VGDO3Dp9XexJVt72FAdDhiwHQibJj610V6FyHRlttvyEA9qddIRZ
-         tN0UQVOvxoFOGe67g0UhjLWruqwHsUJVOU3KXrxQ=
+        b=Wwwi80CWxehsdAWcuVEsCDCvxL6xAg+1jOrTxfCSW8/sbjWnLFwonZFZ6nms3hoip
+         EXaRFpgCwwsOppAdlJ6kaYhstqK8AzuGQ962UHUc6yJY9GNs1fnnQT1yMycdgFhI9f
+         27ikXe8PgkbbWIS95pGFmEK/otCDWRlwLieZeN4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev,
+        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Alan Liu <HaoPing.Liu@amd.com>, Leo Chen <sancchen@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/381] firmware: stratix10-svc: Fix an NULL vs IS_ERR() bug in probe
+Subject: [PATCH 6.1 211/239] drm/amd/display: Change default Z8 watermark values
 Date:   Mon, 15 May 2023 18:27:54 +0200
-Message-Id: <20230515161746.800339847@linuxfoundation.org>
+Message-Id: <20230515161728.057662301@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,37 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Leo Chen <sancchen@amd.com>
 
-[ Upstream commit e1d6ca042e62c2a69513235f8629eb6e62ca79c5 ]
+[ Upstream commit 8f586cc16c1fc3c2202c9d54563db8c7ed365f82 ]
 
-The svc_create_memory_pool() function returns error pointers.  It never
-returns NULL.  Fix the check.
+[Why & How]
+Previous Z8 watermark values were causing flickering and OTC underflow.
+Updating Z8 watermark values based on the measurement.
 
-Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/5f9a8cb4-5a4f-460b-9cdc-2fae6c5b7922@kili.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Alan Liu <HaoPing.Liu@amd.com>
+Signed-off-by: Leo Chen <sancchen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/stratix10-svc.c | 4 ++--
+ drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 7dd0ac1a0cfc7..78a446cb43486 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -989,8 +989,8 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	genpool = svc_create_memory_pool(pdev, sh_memory);
--	if (!genpool)
--		return -ENOMEM;
-+	if (IS_ERR(genpool))
-+		return PTR_ERR(genpool);
- 
- 	/* allocate service controller and supporting channel */
- 	controller = devm_kzalloc(dev, sizeof(*controller), GFP_KERNEL);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index 2c99193b63fa6..4f91e64754239 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -148,8 +148,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_14_soc = {
+ 	.num_states = 5,
+ 	.sr_exit_time_us = 16.5,
+ 	.sr_enter_plus_exit_time_us = 18.5,
+-	.sr_exit_z8_time_us = 210.0,
+-	.sr_enter_plus_exit_z8_time_us = 310.0,
++	.sr_exit_z8_time_us = 268.0,
++	.sr_enter_plus_exit_z8_time_us = 393.0,
+ 	.writeback_latency_us = 12.0,
+ 	.dram_channel_width_bytes = 4,
+ 	.round_trip_ping_latency_dcfclk_cycles = 106,
 -- 
 2.39.2
 
