@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42EE0703798
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E3C8703B30
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243860AbjEORXJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40148 "EHLO
+        id S243731AbjEOSAa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243964AbjEORWs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B3B11DB9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:56 -0700 (PDT)
+        with ESMTP id S245087AbjEOSAC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D6B1A3B5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F8B562C56
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC81C433D2;
-        Mon, 15 May 2023 17:20:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C051D62FD9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DD1C4339B;
+        Mon, 15 May 2023 17:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171239;
-        bh=IbIuFBY39dut/B58uONInkPlM9KkZKRci1tFVb1Rc3A=;
+        s=korg; t=1684173439;
+        bh=ZrO5iTBAhqSpaCmxHecgXDWrD6cpCiJJ0pdWWLd7XFA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n9VnK1tgcGeGsPwSVcDJPfqslZREdC4/+JwDb773EgcOv49cvHFhENvQMjFtbWZSA
-         wG/0dccZhdH5cio2fX0ebQaMA+0e7/XkEQqvgkKv6s+Sa2xdi4tQYxcNUDKpnLqnLB
-         UuF8BegVW7GSezfXcZ/JAbCn3rCFhV2rR27VHcMk=
+        b=wo7r30Yew0qTSuVEw8sknbq0RvU7mqfVZl+TP8fpuSYjOa+n5KrqLntCReRXGE2c9
+         i1Sc90zfp7dQ6Nr9tAKNX1BV4oCFoW6QUvRDIYsCl4qPZ3kbaEYtXN4sSpXbu/0m3k
+         BL8Pw8aQuzK/itBUjZPAGTCzD/icjDUC6uO0ABhc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fae <faenkhauser@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.2 146/242] platform/x86: hp-wmi: add micmute to hp_wmi_keymap struct
+        patches@lists.linux.dev, Nicolai Stange <nstange@suse.de>,
+        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 094/282] crypto: drbg - make drbg_prepare_hrng() handle jent instantiation errors
 Date:   Mon, 15 May 2023 18:27:52 +0200
-Message-Id: <20230515161726.277902835@linuxfoundation.org>
+Message-Id: <20230515161725.081319619@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,31 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fae <faenkhauser@gmail.com>
+From: Nicolai Stange <nstange@suse.de>
 
-commit decab2825c3ef9b154c6f76bce40872ffb41c36f upstream.
+[ Upstream commit 559edd47cce4cc407d606b4d7f376822816fd4b8 ]
 
-Fixes micmute key of HP Envy X360 ey0xxx.
+Now that drbg_prepare_hrng() doesn't do anything but to instantiate a
+jitterentropy crypto_rng instance, it looks a little odd to have the
+related error handling at its only caller, drbg_instantiate().
 
-Signed-off-by: Fae <faenkhauser@gmail.com>
-Link: https://lore.kernel.org/r/20230425063644.11828-1-faenkhauser@gmail.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the handling of jitterentropy allocation failures from
+drbg_instantiate() close to the allocation itself in drbg_prepare_hrng().
+
+There is no change in behaviour.
+
+Signed-off-by: Nicolai Stange <nstange@suse.de>
+Reviewed-by: Stephan Müller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 686cd976b6dd ("crypto: drbg - Only fail when jent is unavailable in FIPS mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ crypto/drbg.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -211,6 +211,7 @@ struct bios_rfkill2_state {
- static const struct key_entry hp_wmi_keymap[] = {
- 	{ KE_KEY, 0x02,    { KEY_BRIGHTNESSUP } },
- 	{ KE_KEY, 0x03,    { KEY_BRIGHTNESSDOWN } },
-+	{ KE_KEY, 0x270,   { KEY_MICMUTE } },
- 	{ KE_KEY, 0x20e6,  { KEY_PROG1 } },
- 	{ KE_KEY, 0x20e8,  { KEY_MEDIA } },
- 	{ KE_KEY, 0x2142,  { KEY_MEDIA } },
+diff --git a/crypto/drbg.c b/crypto/drbg.c
+index 9329d9dcc210f..732b72e4ee4dd 100644
+--- a/crypto/drbg.c
++++ b/crypto/drbg.c
+@@ -1515,6 +1515,14 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
+ 		return 0;
+ 
+ 	drbg->jent = crypto_alloc_rng("jitterentropy_rng", 0, 0);
++	if (IS_ERR(drbg->jent)) {
++		const int err = PTR_ERR(drbg->jent);
++
++		drbg->jent = NULL;
++		if (fips_enabled || err != -ENOENT)
++			return err;
++		pr_info("DRBG: Continuing without Jitter RNG\n");
++	}
+ 
+ 	return 0;
+ }
+@@ -1570,14 +1578,6 @@ static int drbg_instantiate(struct drbg_state *drbg, struct drbg_string *pers,
+ 		if (ret)
+ 			goto free_everything;
+ 
+-		if (IS_ERR(drbg->jent)) {
+-			ret = PTR_ERR(drbg->jent);
+-			drbg->jent = NULL;
+-			if (fips_enabled || ret != -ENOENT)
+-				goto free_everything;
+-			pr_info("DRBG: Continuing without Jitter RNG\n");
+-		}
+-
+ 		reseed = false;
+ 	}
+ 
+-- 
+2.39.2
+
 
 
