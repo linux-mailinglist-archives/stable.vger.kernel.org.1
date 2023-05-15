@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DF9703711
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D192703930
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243946AbjEORQi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:16:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
+        id S243161AbjEORkI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242242AbjEORQP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:15 -0400
+        with ESMTP id S244464AbjEORjs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F8B7E58
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09716A44
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07B7062BBD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC07DC433EF;
-        Mon, 15 May 2023 17:15:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3CBA62DFF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9943C433D2;
+        Mon, 15 May 2023 17:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170903;
-        bh=ZicQ6uSO6+ZppPJQszgth2Xw6/yerDIifcflPinaSCs=;
+        s=korg; t=1684172226;
+        bh=GRAp6G09t2sgX4GclXVAB9EEaG+zp8++UYu3MuIzjUs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j6roWCO/JVwzQHKrREd6wPZdv1BgEK3cnpSRVUfiumkuIhVMO3wjoHCS5FUleFFoQ
-         w1Anp2TelmARB3p80t2oq4trzw+NilvSE6WpZ6tYNoTOweewkp8LaZ8vLl394oF1lJ
-         McFtorUQNHnT1DyBbi1seQ0CPxb+JNSWe28Z5ghA=
+        b=MZkmOYI1QU568BDB12mC4LIQstCS1RxiibOiP9dt5N+12GkrErQ2uDMLketr91idX
+         sjztYPFQBEHUp/H9Y7Hs2lZaI5TPK8Gy5OrARC1e+DZQJeRvuyCFdlYiOXa1VxGfVA
+         nfKOflAy4H1Rwfc1xz9yVLblru3+oZrVnRKJzRe4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 010/242] mailbox: zynq: Switch to flexible array to simplify code
+Subject: [PATCH 5.10 085/381] arm64: dts: qcom: msm8998: Fix the PCI I/O port range
 Date:   Mon, 15 May 2023 18:25:36 +0200
-Message-Id: <20230515161722.122802501@linuxfoundation.org>
+Message-Id: <20230515161740.645472923@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 043f85ce81cb1714e14d31c322c5646513dde3fb ]
+[ Upstream commit c30a27dcfe4545edbda1578b3a63ed6147519cdd ]
 
-Using flexible array is more straight forward. It
-  - saves 1 pointer in the 'zynqmp_ipi_pdata' structure
-  - saves an indirection when using this array
-  - saves some LoC and avoids some always spurious pointer arithmetic
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI address
+(0x1b200000) specified in the ranges property for I/O region.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-Stable-dep-of: f72f805e7288 ("mailbox: zynqmp: Fix counts of child nodes")
+Fixes: b84dfd175c09 ("arm64: dts: qcom: msm8998: Add PCIe PHY and RC nodes")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-3-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index e02a4a18e8c29..29f09ded6e739 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -110,7 +110,7 @@ struct zynqmp_ipi_pdata {
- 	unsigned int method;
- 	u32 local_id;
- 	int num_mboxes;
--	struct zynqmp_ipi_mbox *ipi_mboxes;
-+	struct zynqmp_ipi_mbox ipi_mboxes[];
- };
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 0ea4c9e7e1800..7c8d69ca91cf4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -942,7 +942,7 @@
+ 			phys = <&pciephy>;
+ 			phy-names = "pciephy";
  
- static struct device_driver zynqmp_ipi_mbox_driver = {
-@@ -635,7 +635,7 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
- 	int num_mboxes, ret = -EINVAL;
+-			ranges = <0x01000000 0x0 0x1b200000 0x1b200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x1b200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x1b300000 0x1b300000 0x0 0xd00000>;
  
- 	num_mboxes = of_get_child_count(np);
--	pdata = devm_kzalloc(dev, sizeof(*pdata) + (num_mboxes * sizeof(*mbox)),
-+	pdata = devm_kzalloc(dev, struct_size(pdata, ipi_mboxes, num_mboxes),
- 			     GFP_KERNEL);
- 	if (!pdata)
- 		return -ENOMEM;
-@@ -649,8 +649,6 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
- 	}
- 
- 	pdata->num_mboxes = num_mboxes;
--	pdata->ipi_mboxes = (struct zynqmp_ipi_mbox *)
--			    ((char *)pdata + sizeof(*pdata));
- 
- 	mbox = pdata->ipi_mboxes;
- 	for_each_available_child_of_node(np, nc) {
+ 			#interrupt-cells = <1>;
 -- 
 2.39.2
 
