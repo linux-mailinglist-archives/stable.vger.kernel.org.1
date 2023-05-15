@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A51A703632
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CDCD7034E9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243671AbjEORHo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47318 "EHLO
+        id S243224AbjEOQyG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:54:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243423AbjEORHS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:18 -0400
+        with ESMTP id S243136AbjEOQxd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B25A5F4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50435B82
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54B3662AC2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C33DC433EF;
-        Mon, 15 May 2023 17:04:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9659161FEE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF5EC433EF;
+        Mon, 15 May 2023 16:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170291;
-        bh=xXMg8H4778BHXAIrTllZarOGafqqA8tPug/nW6gchgY=;
+        s=korg; t=1684169590;
+        bh=UMnLezGPkGwWIs7shz8Bgq0qRM3AuPB2jUwSIBLR+V8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mmImPM6MJi3OBweGD9qHQHEkAcsumd3WbaORq/pFgw0U4a/gclS6TC/R8yXYvLFDZ
-         yqnmQk5u3Pf9lcJYYUf0OuWpZGGDGd7kW3CUCQCRvSMG5eTRgnQZhW80uM8LUoj0lD
-         Qn0oiHGm2De2upu3tD3JiTXP5aaRrgkl0ODXN55g=
+        b=1xhfvtV+q9IrI4MsZs9/5RoYEMAdYFahDcnnZ6Lc1cplaBes6WLr8vHPvB+AvCqmU
+         txWFqEXPzDWJiZCzNoNaslXsIWo3r0vEd9nA20lb/aFxqkmrP+j1P+2BaHRPwDnjau
+         NKJuUdsl9AgVs0bd4F54VsBYNMTL916Y/MK97JRE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Akhil R <akhilrajeev@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/239] i2c: tegra: Fix PEC support for SMBUS block read
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 106/246] perf hist: Improve srcfile sort key performance (really)
 Date:   Mon, 15 May 2023 18:25:18 +0200
-Message-Id: <20230515161723.356410431@linuxfoundation.org>
+Message-Id: <20230515161725.760183309@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,125 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 9f855779a3874eee70e9f6be57b5f7774f14e510 ]
+[ Upstream commit 6094c7744bb0563e833e81d8df8513f9a4e7a257 ]
 
-Update the msg->len value correctly for SMBUS block read. The discrepancy
-went unnoticed as msg->len is used in SMBUS transfers only when a PEC
-byte is added.
+The earlier commit f0cdde28fecc0d7f ("perf hist: Improve srcfile sort
+key performance") updated the srcfile logic but missed to change the
+->cmp() callback which is called for every sample.
 
-Fixes: d7583c8a5748 ("i2c: tegra: Add SMBus block read function")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+It should use the same logic like in the srcline to speed up the
+processing because it'd return the same information repeatedly for the
+same address.  The real processing will be done in
+sort__srcfile_collapse().
+
+Fixes: f0cdde28fecc0d7f ("perf hist: Improve srcfile sort key performance")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230323025005.191239-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tegra.c | 40 +++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ tools/perf/util/sort.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
-index 3869c258a5296..2bc40f957e509 100644
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -242,9 +242,10 @@ struct tegra_i2c_hw_feature {
-  * @is_dvc: identifies the DVC I2C controller, has a different register layout
-  * @is_vi: identifies the VI I2C controller, has a different register layout
-  * @msg_complete: transfer completion notifier
-+ * @msg_buf_remaining: size of unsent data in the message buffer
-+ * @msg_len: length of message in current transfer
-  * @msg_err: error code for completed message
-  * @msg_buf: pointer to current message data
-- * @msg_buf_remaining: size of unsent data in the message buffer
-  * @msg_read: indicates that the transfer is a read access
-  * @timings: i2c timings information like bus frequency
-  * @multimaster_mode: indicates that I2C controller is in multi-master mode
-@@ -277,6 +278,7 @@ struct tegra_i2c_dev {
- 
- 	struct completion msg_complete;
- 	size_t msg_buf_remaining;
-+	unsigned int msg_len;
- 	int msg_err;
- 	u8 *msg_buf;
- 
-@@ -1169,7 +1171,7 @@ static void tegra_i2c_push_packet_header(struct tegra_i2c_dev *i2c_dev,
- 	else
- 		i2c_writel(i2c_dev, packet_header, I2C_TX_FIFO);
- 
--	packet_header = msg->len - 1;
-+	packet_header = i2c_dev->msg_len - 1;
- 
- 	if (i2c_dev->dma_mode && !i2c_dev->msg_read)
- 		*dma_buf++ = packet_header;
-@@ -1242,20 +1244,32 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
- 		return err;
- 
- 	i2c_dev->msg_buf = msg->buf;
-+	i2c_dev->msg_len = msg->len;
- 
--	/* The condition true implies smbus block read and len is already read */
--	if (msg->flags & I2C_M_RECV_LEN && end_state != MSG_END_CONTINUE)
--		i2c_dev->msg_buf = msg->buf + 1;
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index 093a0c8b2e3d3..4d6a51b1c1b2e 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -611,12 +611,7 @@ static char *hist_entry__get_srcfile(struct hist_entry *e)
+ static int64_t
+ sort__srcfile_cmp(struct hist_entry *left, struct hist_entry *right)
+ {
+-	if (!left->srcfile)
+-		left->srcfile = hist_entry__get_srcfile(left);
+-	if (!right->srcfile)
+-		right->srcfile = hist_entry__get_srcfile(right);
 -
--	i2c_dev->msg_buf_remaining = msg->len;
- 	i2c_dev->msg_err = I2C_ERR_NONE;
- 	i2c_dev->msg_read = !!(msg->flags & I2C_M_RD);
- 	reinit_completion(&i2c_dev->msg_complete);
+-	return strcmp(right->srcfile, left->srcfile);
++	return sort__srcline_cmp(left, right);
+ }
  
-+	/*
-+	 * For SMBUS block read command, read only 1 byte in the first transfer.
-+	 * Adjust that 1 byte for the next transfer in the msg buffer and msg
-+	 * length.
-+	 */
-+	if (msg->flags & I2C_M_RECV_LEN) {
-+		if (end_state == MSG_END_CONTINUE) {
-+			i2c_dev->msg_len = 1;
-+		} else {
-+			i2c_dev->msg_buf += 1;
-+			i2c_dev->msg_len -= 1;
-+		}
-+	}
-+
-+	i2c_dev->msg_buf_remaining = i2c_dev->msg_len;
-+
- 	if (i2c_dev->msg_read)
--		xfer_size = msg->len;
-+		xfer_size = i2c_dev->msg_len;
- 	else
--		xfer_size = msg->len + I2C_PACKET_HEADER_SIZE;
-+		xfer_size = i2c_dev->msg_len + I2C_PACKET_HEADER_SIZE;
- 
- 	xfer_size = ALIGN(xfer_size, BYTES_PER_FIFO_WORD);
- 
-@@ -1295,7 +1309,7 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
- 	if (!i2c_dev->msg_read) {
- 		if (i2c_dev->dma_mode) {
- 			memcpy(i2c_dev->dma_buf + I2C_PACKET_HEADER_SIZE,
--			       msg->buf, msg->len);
-+			       msg->buf, i2c_dev->msg_len);
- 
- 			dma_sync_single_for_device(i2c_dev->dma_dev,
- 						   i2c_dev->dma_phys,
-@@ -1352,7 +1366,7 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
- 						i2c_dev->dma_phys,
- 						xfer_size, DMA_FROM_DEVICE);
- 
--			memcpy(i2c_dev->msg_buf, i2c_dev->dma_buf, msg->len);
-+			memcpy(i2c_dev->msg_buf, i2c_dev->dma_buf, i2c_dev->msg_len);
- 		}
- 	}
- 
-@@ -1408,8 +1422,8 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
- 			if (ret)
- 				break;
--			/* Set the read byte as msg len */
--			msgs[i].len = msgs[i].buf[0];
-+			/* Set the msg length from first byte */
-+			msgs[i].len += msgs[i].buf[0];
- 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
- 		}
- 		ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], end_type);
+ static int64_t
 -- 
 2.39.2
 
