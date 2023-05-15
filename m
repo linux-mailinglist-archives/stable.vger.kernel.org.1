@@ -2,53 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EEA6703884
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4D93703A22
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244378AbjEORc4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53952 "EHLO
+        id S244391AbjEORtO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244331AbjEORcj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:39 -0400
+        with ESMTP id S244772AbjEORsp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52404D87C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A557516EBB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2CBF62D23
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A3BC4339B;
-        Mon, 15 May 2023 17:29:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B829A62EEB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CBFC433EF;
+        Mon, 15 May 2023 17:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171800;
-        bh=pj0kDBaCy7ECh9q6njUY6bdeNB/dOZlVpGDCznG8/bo=;
+        s=korg; t=1684172824;
+        bh=JBBZAqCpVnZGWOT/N8tULQpXc9e3KSU918TQwfJ6xLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vNPprpAX/OFjZi8M6RBi87k55uo8rRjV7dp7YllGwWk7tulEAUguwXDNa25Oj+TYU
-         +mFHZQPzgn9KuokE4C62O7dVBPk1/HAH6kArGRygK6OgL2Msnq//xX/k48qz0G7KxR
-         Ns7fGz+k4peNXc6zM84shqfW3MuGuROf3MRII0xE=
+        b=wC9vVMlvmz4lkLsE/2rPpNRQKfwhbxfSEwGtFe/Yz2eia3W5WKb2xrAIlsIYb7eH9
+         P3IMjlQ9CBRvU6trK17vbYBYxwuQq7HynYGZ/lDPNzQY2Ov0NrdwFxrPBLRosmfkne
+         bpwjJaUSONZ4HOEWWwy9gvnLZWR1JDOqfs5LDj4Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, elfring@users.sourceforge.net,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        German Gomez <german.gomez@arm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/134] perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
+        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
+        David Howells <dhowells@redhat.com>,
+        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 278/381] afs: Fix updating of i_size with dv jump from server
 Date:   Mon, 15 May 2023 18:28:49 +0200
-Message-Id: <20230515161704.881517720@linuxfoundation.org>
+Message-Id: <20230515161749.334568422@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -63,54 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <Markus.Elfring@web.de>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit c160118a90d4acf335993d8d59b02ae2147a524e ]
+[ Upstream commit d7f74e9a917503ee78f2b603a456d7227cf38919 ]
 
-Addresses of two data structure members were determined before
-corresponding null pointer checks in the implementation of the function
-“sort__sym_from_cmp”.
+If the data version returned from the server is larger than expected,
+the local data is invalidated, but we may still want to note the remote
+file size.
 
-Thus avoid the risk for undefined behaviour by removing extra
-initialisations for the local variables “from_l” and “from_r” (also
-because they were already reassigned with the same value behind this
-pointer check).
+Since we're setting change_size, we have to also set data_changed
+for the i_size to get updated.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 1b9e97a2a95e4941 ("perf tools: Fix report -F symbol_from for data without branch info")
-Signed-off-by: <elfring@users.sourceforge.net>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/cocci/54a21fea-64e3-de67-82ef-d61b90ffad05@web.de/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 3f4aa9818163 ("afs: Fix EOF corruption")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/sort.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/afs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index a111065b484ef..a4f2ffe2bdb6d 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -876,8 +876,7 @@ static int hist_entry__dso_to_filter(struct hist_entry *he, int type,
- static int64_t
- sort__sym_from_cmp(struct hist_entry *left, struct hist_entry *right)
- {
--	struct addr_map_symbol *from_l = &left->branch_info->from;
--	struct addr_map_symbol *from_r = &right->branch_info->from;
-+	struct addr_map_symbol *from_l, *from_r;
- 
- 	if (!left->branch_info || !right->branch_info)
- 		return cmp_null(left->branch_info, right->branch_info);
+diff --git a/fs/afs/inode.c b/fs/afs/inode.c
+index 826fae22a8cc9..fdca4262f806a 100644
+--- a/fs/afs/inode.c
++++ b/fs/afs/inode.c
+@@ -218,6 +218,7 @@ static void afs_apply_status(struct afs_operation *op,
+ 			set_bit(AFS_VNODE_ZAP_DATA, &vnode->flags);
+ 		}
+ 		change_size = true;
++		data_changed = true;
+ 	} else if (vnode->status.type == AFS_FTYPE_DIR) {
+ 		/* Expected directory change is handled elsewhere so
+ 		 * that we can locally edit the directory and save on a
 -- 
 2.39.2
 
