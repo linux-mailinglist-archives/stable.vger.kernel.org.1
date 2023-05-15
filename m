@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D3CD703907
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 709AD7034F3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244318AbjEORiP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:38:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
+        id S243139AbjEOQy0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:54:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244204AbjEORh4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:56 -0400
+        with ESMTP id S243098AbjEOQyJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974D21FDF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE0B525C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 789EA62DD1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6FDC433D2;
-        Mon, 15 May 2023 17:35:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8DF5629BD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E3AC433D2;
+        Mon, 15 May 2023 16:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172113;
-        bh=rXdhiwU858sJTqwtKcrffjkWJEjmPEXyWJw2azd04Q8=;
+        s=korg; t=1684169618;
+        bh=PTot+W/82ohb9dl444QtQDd2IeXf7RQWMqbCbZ0yFck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rB+OGrUVwIgHkNJARzKhKmiZZqe9i9KvEpvAc+f+rEXhB1bp6wR+Syyk9A0kxvEIC
-         //3HKUV3tL73UknwfBqqItGApYegtGJcVnqFlS6RjyilaZW30Gaq9gyd0FQ1ZliBcJ
-         ID1+EELzyKZfV8ZDX9u3E5K7qKA/B9tjjblkUgJw=
+        b=bB2HOeDs8rtT0cMl1eX9zXcd8NEGMq/714/v+Z/lYqftqLvGpilWlsGYRkzb7NSnO
+         FVPxs0Du7LwNrjv81Lc3KazxYJiFJA12CnLOeJ4TtqBZgrdxVRn8R4wlftmlXAJs7o
+         7irreRB/e05tp379ANTrGV60D9XAACb7M/bECj2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang YanQing <udknight@gmail.com>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.10 049/381] ubi: Fix return value overwrite issue in try_write_vid_and_data()
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 088/246] dt-bindings: perf: riscv,pmu: fix property dependencies
 Date:   Mon, 15 May 2023 18:25:00 +0200
-Message-Id: <20230515161739.051581650@linuxfoundation.org>
+Message-Id: <20230515161725.222432129@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang YanQing <udknight@gmail.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit 31a149d5c13c4cbcf97de3435817263a2d8c9d6e upstream.
+[ Upstream commit 4d276e4d3bb4a503e75086faab54f92c0a8fd368 ]
 
-The commit 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
-adds helper function, try_write_vid_and_data(), to simplify the code, but this
-helper function has bug, it will return 0 (success) when ubi_io_write_vid_hdr()
-or the ubi_io_write_data() return error number (-EIO, etc), because the return
-value of ubi_wl_put_peb() will overwrite the original return value.
+Seemingly I mis-implemented the dependencies here. The OpenSBI docs only
+point out that the "riscv,event-to-mhpmcounters property is mandatory if
+riscv,event-to-mhpmevent is present". It never claims that
+riscv,event-to-mhpmcounters requires riscv,event-to-mhpmevent.
 
-This issue will cause unexpected data loss issue, because the caller of this
-function and UBIFS willn't know the data is lost.
+Drop the dependency of riscv,event-to-mhpmcounters on
+riscv,event-to-mhpmevent.
 
-Fixes: 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wang YanQing <udknight@gmail.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e38085d9c59 ("dt-bindings: riscv: add SBI PMU event mappings")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20230404-tractor-confusing-8852e552539a@spud
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/eba.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/perf/riscv,pmu.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -947,7 +947,7 @@ static int try_write_vid_and_data(struct
- 				  int offset, int len)
- {
- 	struct ubi_device *ubi = vol->ubi;
--	int pnum, opnum, err, vol_id = vol->vol_id;
-+	int pnum, opnum, err, err2, vol_id = vol->vol_id;
+diff --git a/Documentation/devicetree/bindings/perf/riscv,pmu.yaml b/Documentation/devicetree/bindings/perf/riscv,pmu.yaml
+index a55a4d047d3fd..c8448de2f2a07 100644
+--- a/Documentation/devicetree/bindings/perf/riscv,pmu.yaml
++++ b/Documentation/devicetree/bindings/perf/riscv,pmu.yaml
+@@ -91,7 +91,6 @@ properties:
  
- 	pnum = ubi_wl_get_peb(ubi);
- 	if (pnum < 0) {
-@@ -982,10 +982,19 @@ static int try_write_vid_and_data(struct
- out_put:
- 	up_read(&ubi->fm_eba_sem);
+ dependencies:
+   "riscv,event-to-mhpmevent": [ "riscv,event-to-mhpmcounters" ]
+-  "riscv,event-to-mhpmcounters": [ "riscv,event-to-mhpmevent" ]
  
--	if (err && pnum >= 0)
--		err = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
--	else if (!err && opnum >= 0)
--		err = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
-+	if (err && pnum >= 0) {
-+		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
-+		if (err2) {
-+			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
-+				 pnum, err2);
-+		}
-+	} else if (!err && opnum >= 0) {
-+		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
-+		if (err2) {
-+			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
-+				 opnum, err2);
-+		}
-+	}
- 
- 	return err;
- }
+ required:
+   - compatible
+-- 
+2.39.2
+
 
 
