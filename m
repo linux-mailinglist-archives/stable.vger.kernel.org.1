@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48133703887
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C49703A15
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244354AbjEORc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53556 "EHLO
+        id S244678AbjEORsa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243532AbjEORcl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:41 -0400
+        with ESMTP id S244726AbjEORsN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990511208E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DC415515
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36D3B62D2D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5111C4339E;
-        Mon, 15 May 2023 17:30:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 122F762EED
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DC0C433D2;
+        Mon, 15 May 2023 17:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171806;
-        bh=04eAS9ZhjLBGe6xUWLazLApi3lHNM4wPJbmxne+lUDQ=;
+        s=korg; t=1684172799;
+        bh=64si91uDfxTHtxRqAnDkzgHV4kefBb+WYEOTUHF2Loo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pznv6UOBGE1jrfiACpxX+8vUV1WLZ7qZGQEwkxDbr1rwG4UIJ5CvtNpSpjUZjdmEH
-         zaX0OHU7LBm5RnRcns0nfEcArrdhslW4z4il9uiSP440ONq/pRkj7wjJnwcfoItNNz
-         0Z8PnoU6po5nmgL/7jsl/fWtfAsQONCV2PSEfyNY=
+        b=ryJpovFulK1Kf0Y8ifMJ+mYZtviUU+NW51PO91Z+wteUWCxmRgqt4GqurDvvDj+pH
+         jjE+U1NrAi/uT1w6JeqOnoj2ow8pRptCseSg3vmElG4bc8UMnnB0s1NsTJffAmx+f8
+         P1HsOxxWl3qHH7Dr1CVZNMJscVqAoYKddWy6eAXs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bartel Eerdekens <bartel.eerdekens@constell8.be>,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/134] net: dsa: mt7530: fix corrupt frames using trgmii on 40 MHz XTAL MT7621
-Date:   Mon, 15 May 2023 18:28:41 +0200
-Message-Id: <20230515161704.609869930@linuxfoundation.org>
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 271/381] dmaengine: at_xdmac: do not enable all cyclic channels
+Date:   Mon, 15 May 2023 18:28:42 +0200
+Message-Id: <20230515161749.013968492@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 37c218d8021e36e226add4bab93d071d30fe0704 ]
+[ Upstream commit f8435befd81dd85b7b610598551fadf675849bc1 ]
 
-The multi-chip module MT7530 switch with a 40 MHz oscillator on the
-MT7621AT, MT7621DAT, and MT7621ST SoCs forwards corrupt frames using
-trgmii.
+Do not global enable all the cyclic channels in at_xdmac_resume(). Instead
+save the global status in at_xdmac_suspend() and re-enable the cyclic
+channel only if it was active before suspend.
 
-This is caused by the assumption that MT7621 SoCs have got 150 MHz PLL,
-hence using the ncpo1 value, 0x0780.
-
-My testing shows this value works on Unielec U7621-06, Bartel's testing
-shows it won't work on Hi-Link HLK-MT7621A and Netgear WAC104. All devices
-tested have got 40 MHz oscillators.
-
-Using the value for 125 MHz PLL, 0x0640, works on all boards at hand. The
-definitions for 125 MHz PLL exist on the Banana Pi BPI-R2 BSP source code
-whilst 150 MHz PLL don't.
-
-Forwarding frames using trgmii on the MCM MT7530 switch with a 25 MHz
-oscillator on the said MT7621 SoCs works fine because the ncpo1 value
-defined for it is for 125 MHz PLL.
-
-Change the 150 MHz PLL comment to 125 MHz PLL, and use the 125 MHz PLL
-ncpo1 values for both oscillator frequencies.
-
-Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/81d24bbce7d99524d0771a8bdb2d6663e4eb4faa/u-boot-mt/drivers/net/rt2880_eth.c#L2195
-Fixes: 7ef6f6f8d237 ("net: dsa: mt7530: Add MT7621 TRGMII mode support")
-Tested-by: Bartel Eerdekens <bartel.eerdekens@constell8.be>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-6-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/at_xdmac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index dfea2ab0c297f..e7a551570cf3c 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -441,9 +441,9 @@ mt7530_pad_clk_setup(struct dsa_switch *ds, phy_interface_t interface)
- 		else
- 			ssc_delta = 0x87;
- 		if (priv->id == ID_MT7621) {
--			/* PLL frequency: 150MHz: 1.2GBit */
-+			/* PLL frequency: 125MHz: 1.0GBit */
- 			if (xtal == HWTRAP_XTAL_40MHZ)
--				ncpo1 = 0x0780;
-+				ncpo1 = 0x0640;
- 			if (xtal == HWTRAP_XTAL_25MHZ)
- 				ncpo1 = 0x0a00;
- 		} else { /* PLL frequency: 250MHz: 2.0Gbit */
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index b5d691ae45dcf..1fe006cc643e7 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -212,6 +212,7 @@ struct at_xdmac {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	u32			save_gim;
++	u32			save_gs;
+ 	struct dma_pool		*at_xdmac_desc_pool;
+ 	struct at_xdmac_chan	chan[];
+ };
+@@ -1910,6 +1911,7 @@ static int atmel_xdmac_suspend(struct device *dev)
+ 		}
+ 	}
+ 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
++	atxdmac->save_gs = at_xdmac_read(atxdmac, AT_XDMAC_GS);
+ 
+ 	at_xdmac_off(atxdmac);
+ 	clk_disable_unprepare(atxdmac->clk);
+@@ -1946,7 +1948,8 @@ static int atmel_xdmac_resume(struct device *dev)
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
+ 			wmb();
+-			at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
++			if (atxdmac->save_gs & atchan->mask)
++				at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
+ 		}
+ 	}
+ 	return 0;
 -- 
 2.39.2
 
