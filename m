@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3876C7038DE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D5A70338D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244469AbjEORf6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53898 "EHLO
+        id S242821AbjEOQic (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:38:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244443AbjEORfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:35:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF3A12E8A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:20 -0700 (PDT)
+        with ESMTP id S242817AbjEOQic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C28340C6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5260D62D97
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E1BC4339C;
-        Mon, 15 May 2023 17:33:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93585622FA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8345AC433D2;
+        Mon, 15 May 2023 16:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171996;
-        bh=O81WMp+Yzcg1ONMoySvhz2PCjyTX+kaNvOQDXzEkhY0=;
+        s=korg; t=1684168710;
+        bh=Mmt7n6/bL0fEivpxUSetOXviowAfVnF+KwqWtXG5aPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U0w+zl3CPaX9QJTKavqGT7VKjmBMl41HMCurJE2zGbIBARFEF2hEYEgsNKE7KIHLz
-         d1ck+738BfYSSGwyLXnc1WTTkZF2b9LRH+OQCHBWcsUPOPEF4k7S52mNWj3FH0Hk1R
-         kPXDDZ9n4bRMxL1af5PnVWRSxVkUWP7BboZP+Sbg=
+        b=yRdB8KtCgQ4Z+FLwJkeInFRcxbE/v5WAabG07T6IefbIaxPNWN7p5M1pTuUmyo1gD
+         qSU1x5FA19i9yR9wYLETgle3HHckJIhTyofwc3HDc24mkIvjfryIHvYjftwSxw4jd2
+         F5bc+w+ECs+6OBO9Twgl+RWIZRsgo8U4jl8QXPbU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Steven Price <steven.price@arm.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 003/381] KVM: arm64: Fix buffer overflow in kvm_arm_set_fw_reg()
+        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 4.19 017/191] KVM: nVMX: Emulate NOPs in L2, and PAUSE if its not intercepted
 Date:   Mon, 15 May 2023 18:24:14 +0200
-Message-Id: <20230515161736.931089659@linuxfoundation.org>
+Message-Id: <20230515161707.829276877@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,38 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a25bc8486f9c01c1af6b6c5657234b2eee2c39d6 upstream.
+commit 4984563823f0034d3533854c1b50e729f5191089 upstream.
 
-The KVM_REG_SIZE() comes from the ioctl and it can be a power of two
-between 0-32768 but if it is more than sizeof(long) this will corrupt
-memory.
+Extend VMX's nested intercept logic for emulated instructions to handle
+"pause" interception, in quotes because KVM's emulator doesn't filter out
+NOPs when checking for nested intercepts.  Failure to allow emulation of
+NOPs results in KVM injecting a #UD into L2 on any NOP that collides with
+the emulator's definition of PAUSE, i.e. on all single-byte NOPs.
 
-Fixes: 99adb567632b ("KVM: arm/arm64: Add save/restore support for firmware workaround state")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/4efbab8c-640f-43b2-8ac6-6d68e08280fe@kili.mountain
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-[will: kvm_arm_set_fw_reg() lives in psci.c not hypercalls.c]
-Signed-off-by: Will Deacon <will@kernel.org>
+For PAUSE itself, honor L1's PAUSE-exiting control, but ignore PLE to
+avoid unnecessarily injecting a #UD into L2.  Per the SDM, the first
+execution of PAUSE after VM-Entry is treated as the beginning of a new
+loop, i.e. will never trigger a PLE VM-Exit, and so L1 can't expect any
+given execution of PAUSE to deterministically exit.
+
+  ... the processor considers this execution to be the first execution of
+  PAUSE in a loop. (It also does so for the first execution of PAUSE at
+  CPL 0 after VM entry.)
+
+All that said, the PLE side of things is currently a moot point, as KVM
+doesn't expose PLE to L1.
+
+Note, vmx_check_intercept() is still wildly broken when L1 wants to
+intercept an instruction, as KVM injects a #UD instead of synthesizing a
+nested VM-Exit.  That issue extends far beyond NOP/PAUSE and needs far
+more effort to fix, i.e. is a problem for the future.
+
+Fixes: 07721feee46b ("KVM: nVMX: Don't emulate instructions in guest mode")
+Cc: Mathias Krause <minipli@grsecurity.net>
+Cc: stable@vger.kernel.org
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20230405002359.418138-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/psci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/vmx/vmx.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/arch/arm64/kvm/psci.c
-+++ b/arch/arm64/kvm/psci.c
-@@ -499,6 +499,8 @@ int kvm_arm_set_fw_reg(struct kvm_vcpu *
- 	u64 val;
- 	int wa_level;
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -13878,6 +13878,21 @@ static int vmx_check_intercept(struct kv
+ 		/* FIXME: produce nested vmexit and return X86EMUL_INTERCEPTED.  */
+ 		break;
  
-+	if (KVM_REG_SIZE(reg->id) != sizeof(val))
-+		return -ENOENT;
- 	if (copy_from_user(&val, uaddr, KVM_REG_SIZE(reg->id)))
- 		return -EFAULT;
- 
++	case x86_intercept_pause:
++		/*
++		 * PAUSE is a single-byte NOP with a REPE prefix, i.e. collides
++		 * with vanilla NOPs in the emulator.  Apply the interception
++		 * check only to actual PAUSE instructions.  Don't check
++		 * PAUSE-loop-exiting, software can't expect a given PAUSE to
++		 * exit, i.e. KVM is within its rights to allow L2 to execute
++		 * the PAUSE.
++		 */
++		if ((info->rep_prefix != REPE_PREFIX) ||
++		    !nested_cpu_has2(vmcs12, CPU_BASED_PAUSE_EXITING))
++			return X86EMUL_CONTINUE;
++
++		break;
++
+ 	/* TODO: check more intercepts... */
+ 	default:
+ 		break;
 
 
