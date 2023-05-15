@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E2C703556
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F49703754
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243290AbjEOQ6H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
+        id S244006AbjEORTs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243251AbjEOQ6E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:04 -0400
+        with ESMTP id S244027AbjEORTY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47E27A98
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9269C10E53
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49BAF62A19
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDB6C433D2;
-        Mon, 15 May 2023 16:57:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71F9662C0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61862C433D2;
+        Mon, 15 May 2023 17:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169874;
-        bh=OcebkbZRy50ImBlQ5tANGP4fgofkc2XBtM8xhAigonQ=;
+        s=korg; t=1684171049;
+        bh=BhiG/p0Fq2BsEXtcHi/FRyQHI8sjz5QJ1PM8p/z52U4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rcmQyOdSeVDX56ZNyjpT/SD6Rg3qpl4R+Ar8I1+Ysd+AypHIY5YgLLVv37VLADowP
-         BrJUvLcgRruqVQbyTWx5lHZ7ZvrzjyJfHcD2CfQk9gKewHgmCHdI9/nRuIc3LGLqoq
-         MJnUTDvZGxTgF75mDwZWD7TaIRalHjtnXOp8jibk=
+        b=TJd5gSOzEAPZhxtTzAK+gGZifmf8TnzA8ZeSRTiZ5UkaYeCIlu1hZ+fHHGf3JngBP
+         bjDv3VJHQoxPLyWvBNq2ymJ7RmMBtApL2Or8pezroZUj/3m0DofeecWwG410qNmC8y
+         tvDwba63KDoVg/rO7L3WlDsAJPnShO1YJfJsJpA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Horatio Zhang <Hongkun.Zhang@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 199/246] drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v11_0_hw_fini
+        patches@lists.linux.dev,
+        Bartel Eerdekens <bartel.eerdekens@constell8.be>,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 085/242] net: dsa: mt7530: fix corrupt frames using trgmii on 40 MHz XTAL MT7621
 Date:   Mon, 15 May 2023 18:26:51 +0200
-Message-Id: <20230515161728.581485103@linuxfoundation.org>
+Message-Id: <20230515161724.444388062@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +57,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Horatio Zhang <Hongkun.Zhang@amd.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-commit 13af556104fa93b1945c70bbf8a0a62cd2c92879 upstream.
+[ Upstream commit 37c218d8021e36e226add4bab93d071d30fe0704 ]
 
-The gmc.ecc_irq is enabled by firmware per IFWI setting,
-and the host driver is not privileged to enable/disable
-the interrupt. So, it is meaningless to use the amdgpu_irq_put
-function in gmc_v11_0_hw_fini, which also leads to the call
-trace.
+The multi-chip module MT7530 switch with a 40 MHz oscillator on the
+MT7621AT, MT7621DAT, and MT7621ST SoCs forwards corrupt frames using
+trgmii.
 
-[  102.980303] Call Trace:
-[  102.980303]  <TASK>
-[  102.980304]  gmc_v11_0_hw_fini+0x54/0x90 [amdgpu]
-[  102.980357]  gmc_v11_0_suspend+0xe/0x20 [amdgpu]
-[  102.980409]  amdgpu_device_ip_suspend_phase2+0x240/0x460 [amdgpu]
-[  102.980459]  amdgpu_device_ip_suspend+0x3d/0x80 [amdgpu]
-[  102.980520]  amdgpu_device_pre_asic_reset+0xd9/0x490 [amdgpu]
-[  102.980573]  amdgpu_device_gpu_recover.cold+0x548/0xce6 [amdgpu]
-[  102.980687]  amdgpu_debugfs_reset_work+0x4c/0x70 [amdgpu]
-[  102.980740]  process_one_work+0x21f/0x3f0
-[  102.980741]  worker_thread+0x200/0x3e0
-[  102.980742]  ? process_one_work+0x3f0/0x3f0
-[  102.980743]  kthread+0xfd/0x130
-[  102.980743]  ? kthread_complete_and_exit+0x20/0x20
-[  102.980744]  ret_from_fork+0x22/0x30
+This is caused by the assumption that MT7621 SoCs have got 150 MHz PLL,
+hence using the ncpo1 value, 0x0780.
 
-Signed-off-by: Horatio Zhang <Hongkun.Zhang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Guchun Chen <guchun.chen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Fixes: c8b5a95b5709 ("drm/amdgpu: Fix desktop freezed after gpu-reset")
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+My testing shows this value works on Unielec U7621-06, Bartel's testing
+shows it won't work on Hi-Link HLK-MT7621A and Netgear WAC104. All devices
+tested have got 40 MHz oscillators.
+
+Using the value for 125 MHz PLL, 0x0640, works on all boards at hand. The
+definitions for 125 MHz PLL exist on the Banana Pi BPI-R2 BSP source code
+whilst 150 MHz PLL don't.
+
+Forwarding frames using trgmii on the MCM MT7530 switch with a 25 MHz
+oscillator on the said MT7621 SoCs works fine because the ncpo1 value
+defined for it is for 125 MHz PLL.
+
+Change the 150 MHz PLL comment to 125 MHz PLL, and use the 125 MHz PLL
+ncpo1 values for both oscillator frequencies.
+
+Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/81d24bbce7d99524d0771a8bdb2d6663e4eb4faa/u-boot-mt/drivers/net/rt2880_eth.c#L2195
+Fixes: 7ef6f6f8d237 ("net: dsa: mt7530: Add MT7621 TRGMII mode support")
+Tested-by: Bartel Eerdekens <bartel.eerdekens@constell8.be>
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/dsa/mt7530.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -954,7 +954,6 @@ static int gmc_v11_0_hw_fini(void *handl
- 		return 0;
- 	}
- 
--	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
- 	gmc_v11_0_gart_disable(adev);
- 
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 326f992536a7e..f61e6e89339e1 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -446,9 +446,9 @@ mt7530_pad_clk_setup(struct dsa_switch *ds, phy_interface_t interface)
+ 		else
+ 			ssc_delta = 0x87;
+ 		if (priv->id == ID_MT7621) {
+-			/* PLL frequency: 150MHz: 1.2GBit */
++			/* PLL frequency: 125MHz: 1.0GBit */
+ 			if (xtal == HWTRAP_XTAL_40MHZ)
+-				ncpo1 = 0x0780;
++				ncpo1 = 0x0640;
+ 			if (xtal == HWTRAP_XTAL_25MHZ)
+ 				ncpo1 = 0x0a00;
+ 		} else { /* PLL frequency: 250MHz: 2.0Gbit */
+-- 
+2.39.2
+
 
 
