@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF83D70381E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3800470388B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244283AbjEOR1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47926 "EHLO
+        id S244364AbjEORdF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244218AbjEOR1P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E031C76B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:07 -0700 (PDT)
+        with ESMTP id S244230AbjEORcn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7328120B1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFF5D62CB7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04B9C433D2;
-        Mon, 15 May 2023 17:26:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73EF062D26
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DD6C433D2;
+        Mon, 15 May 2023 17:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171567;
-        bh=CxbJiUdoOwWCub5oUT4dciourSL24OIe77Bt3433Y8Q=;
+        s=korg; t=1684171818;
+        bh=6bctev+LNjdgklSrPVNVRyazqJmMW3HyfO4Z3Gg8d1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ch0tUpkKX8Tr7zL59T9Gy+A7LJfdKVbQCqmpQ3woHtO7BQNb5juwzCA1Z43dEqiuH
-         JEid1cx3uCuZ7ImixX1BUIhpoxn0gEaxzHXY4Qpy3AqXktGIangasZ1jXezHcKOqNa
-         IZJPk8t8wgYxMMQjN8IFDAr9pqJyiay908GQ6EaE=
+        b=B0myDoD3fTRFE4mRyR9LftS/ZC29O3yMNskW2LSI+4yc8Yi3fSyL5fEMIwqJJ0PNp
+         Tmn5Vv4V975P/jOsB818Iopa0oEgB9AL5nOMUC2CvujrHrsOXdH0BUCT/mwcREZ8gY
+         MtVkIMDLCBNhAH0lmx9hhLZaON4xTLk8qhQ1cJqc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>,
-        Borislav Petkov <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 6.2 239/242] x86: fix clear_user_rep_good() exception handling annotation
-Date:   Mon, 15 May 2023 18:29:25 +0200
-Message-Id: <20230515161729.076494020@linuxfoundation.org>
+        patches@lists.linux.dev, Roman Li <Roman.Li@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 089/134] drm/amd/display: fix flickering caused by S/G mode
+Date:   Mon, 15 May 2023 18:29:26 +0200
+Message-Id: <20230515161706.120897336@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,97 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-This code no longer exists in mainline, because it was removed in
-commit d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory
-clearing") upstream.
+commit 08da182175db4c7f80850354849d95f2670e8cd9 upstream.
 
-However, rather than backport the full range of x86 memory clearing and
-copying cleanups, fix the exception table annotation placement for the
-final 'rep movsb' in clear_user_rep_good(): rather than pointing at the
-actual instruction that did the user space access, it pointed to the
-register move just before it.
+Currently, on a handful of ASICs. We allow the framebuffer for a given
+plane to exist in either VRAM or GTT. However, if the plane's new
+framebuffer is in a different memory domain than it's previous
+framebuffer, flipping between them can cause the screen to flicker. So,
+to fix this, don't perform an immediate flip in the aforementioned case.
 
-That made sense from a code flow standpoint, but not from an actual
-usage standpoint: it means that if user access takes an exception, the
-exception handler won't actually find the instruction in the exception
-tables.
-
-As a result, rather than fixing it up and returning -EFAULT, it would
-then turn it into a kernel oops report instead, something like:
-
-    BUG: unable to handle page fault for address: 0000000020081000
-    #PF: supervisor write access in kernel mode
-    #PF: error_code(0x0002) - not-present page
-    ...
-    RIP: 0010:clear_user_rep_good+0x1c/0x30 arch/x86/lib/clear_page_64.S:147
-    ...
-    Call Trace:
-      __clear_user arch/x86/include/asm/uaccess_64.h:103 [inline]
-      clear_user arch/x86/include/asm/uaccess_64.h:124 [inline]
-      iov_iter_zero+0x709/0x1290 lib/iov_iter.c:800
-      iomap_dio_hole_iter fs/iomap/direct-io.c:389 [inline]
-      iomap_dio_iter fs/iomap/direct-io.c:440 [inline]
-      __iomap_dio_rw+0xe3d/0x1cd0 fs/iomap/direct-io.c:601
-      iomap_dio_rw+0x40/0xa0 fs/iomap/direct-io.c:689
-      ext4_dio_read_iter fs/ext4/file.c:94 [inline]
-      ext4_file_read_iter+0x4be/0x690 fs/ext4/file.c:145
-      call_read_iter include/linux/fs.h:2183 [inline]
-      do_iter_readv_writev+0x2e0/0x3b0 fs/read_write.c:733
-      do_iter_read+0x2f2/0x750 fs/read_write.c:796
-      vfs_readv+0xe5/0x150 fs/read_write.c:916
-      do_preadv+0x1b6/0x270 fs/read_write.c:1008
-      __do_sys_preadv2 fs/read_write.c:1070 [inline]
-      __se_sys_preadv2 fs/read_write.c:1061 [inline]
-      __x64_sys_preadv2+0xef/0x150 fs/read_write.c:1061
-      do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-      do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-      entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-which then looks like a filesystem bug rather than the incorrect
-exception annotation that it is.
-
-[ The alternative to this one-liner fix is to take the upstream series
-  that cleans this all up:
-
-    68674f94ffc9 ("x86: don't use REP_GOOD or ERMS for small memory copies")
-    20f3337d350c ("x86: don't use REP_GOOD or ERMS for small memory clearing")
-    adfcf4231b8c ("x86: don't use REP_GOOD or ERMS for user memory copies")
-  * d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory clearing")
-    3639a535587d ("x86: move stac/clac from user copy routines into callers")
-    577e6a7fd50d ("x86: inline the 'rep movs' in user copies for the FSRM case")
-    8c9b6a88b7e2 ("x86: improve on the non-rep 'clear_user' function")
-    427fda2c8a49 ("x86: improve on the non-rep 'copy_user' function")
-  * e046fe5a36a9 ("x86: set FSRS automatically on AMD CPUs that have FSRM")
-    e1f2750edc4a ("x86: remove 'zerorest' argument from __copy_user_nocache()")
-    034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
-
-  with either the whole series or at a minimum the two marked commits
-  being needed to fix this issue ]
-
-Reported-by: syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=401145a9a237779feb26
-Fixes: 0db7058e8e23 ("x86/clear_user: Make it faster")
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
+Reviewed-by: Roman Li <Roman.Li@amd.com>
+Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/clear_page_64.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/arch/x86/lib/clear_page_64.S
-+++ b/arch/x86/lib/clear_page_64.S
-@@ -142,8 +142,8 @@ SYM_FUNC_START(clear_user_rep_good)
- 	and $7, %edx
- 	jz .Lrep_good_exit
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8944,6 +8944,13 @@ static void amdgpu_dm_commit_cursors(str
+ 			handle_cursor_update(plane, old_plane_state);
+ }
  
--.Lrep_good_bytes:
- 	mov %edx, %ecx
-+.Lrep_good_bytes:
- 	rep stosb
++static inline uint32_t get_mem_type(struct drm_framebuffer *fb)
++{
++	struct amdgpu_bo *abo = gem_to_amdgpu_bo(fb->obj[0]);
++
++	return abo->tbo.resource ? abo->tbo.resource->mem_type : 0;
++}
++
+ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 				    struct dc_state *dc_state,
+ 				    struct drm_device *dev,
+@@ -9064,11 +9071,13 @@ static void amdgpu_dm_commit_planes(stru
  
- .Lrep_good_exit:
+ 		/*
+ 		 * Only allow immediate flips for fast updates that don't
+-		 * change FB pitch, DCC state, rotation or mirroing.
++		 * change memory domain, FB pitch, DCC state, rotation or
++		 * mirroring.
+ 		 */
+ 		bundle->flip_addrs[planes_count].flip_immediate =
+ 			crtc->state->async_flip &&
+-			acrtc_state->update_type == UPDATE_TYPE_FAST;
++			acrtc_state->update_type == UPDATE_TYPE_FAST &&
++			get_mem_type(old_plane_state->fb) == get_mem_type(fb);
+ 
+ 		timestamp_ns = ktime_get_ns();
+ 		bundle->flip_addrs[planes_count].flip_timestamp_in_us = div_u64(timestamp_ns, 1000);
 
 
