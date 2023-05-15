@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47504703771
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2688F70397B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244064AbjEORVM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
+        id S244504AbjEORm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244070AbjEORU6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E228012E9F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:48 -0700 (PDT)
+        with ESMTP id S244561AbjEORmn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 900D51B77A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C343C620B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DADC433D2;
-        Mon, 15 May 2023 17:18:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70E4162E35
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFF5C433D2;
+        Mon, 15 May 2023 17:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171128;
-        bh=EnQHNNnWRJ9wA3vFxST/Puftf64q6UJyO9WhgEOAGFI=;
+        s=korg; t=1684172414;
+        bh=DyG4DGvXl5x2kdCGk41xAZDPzJygjmMm6pEHgex+9v4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xggbH7u0uw9NBuvtV7gJ5WBvKkxkl9q8ZX0AxNG5KtHI0NCz06IOEJBtlRTAB8Vah
-         CFUECYtN2o4/++duV/vFkgjKngIGaOhrBQ/a8AqgvgKI+c4HPjIQMevadzD4DKlpgg
-         jrTxIkz0k5CQXJnP9Jxp3W1vG/jOdUiezE2cU5kg=
+        b=0s5uPdjgBIeDo2wpL38ekAhDFDWL5EUyMBEDsVL++n3IeZbnGwb/5UAhk4PBqiaLj
+         ojgQ+9ADgSmLvI8h8W60VWyN8whGLKKK4WyrLhGsLvrFolKDb332mTKS2V0Ry3opOG
+         /fZBiSVRO6kGmSF1QXeInENxMQh7OI6Yw6g6KRp4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Mike Christie <michael.christie@oracle.com>,
+        David Disseldorp <ddiss@suse.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 071/242] octeontx2-af: Update correct mask to filter IPv4 fragments
+Subject: [PATCH 5.10 146/381] scsi: target: Rename cmd.bad_sector to cmd.sense_info
 Date:   Mon, 15 May 2023 18:26:37 +0200
-Message-Id: <20230515161724.033894252@linuxfoundation.org>
+Message-Id: <20230515161743.447934128@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,39 +56,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suman Ghosh <sumang@marvell.com>
+From: David Disseldorp <ddiss@suse.de>
 
-[ Upstream commit 2075bf150ddf320df02c05e242774dc0f73be1a1 ]
+[ Upstream commit 8dd992fb67f33a0777fb4bee1e22a5ee5530f024 ]
 
-During the initial design, the IPv4 ip_flag mask was set to 0xff.
-Which results to filter only fragmets with (fragment_offset == 0).
-As part of the fix, updated the mask to 0x20 to filter all the
-fragmented packets irrespective of the fragment_offset value.
+cmd.bad_sector currently gets packed into the sense INFORMATION field for
+TCM_LOGICAL_BLOCK_{GUARD,APP_TAG,REF_TAG}_CHECK_FAILED errors, which carry
+an .add_sector_info flag in the sense_detail_table to ensure this.
 
-Fixes: c672e3727989 ("octeontx2-pf: Add support to filter packet based on IP fragment")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In preparation for propagating a byte offset on COMPARE AND WRITE
+TCM_MISCOMPARE_VERIFY error, rename cmd.bad_sector to cmd.sense_info and
+sense_detail.add_sector_info to sense_detail.add_sense_info so that it
+better reflects the sense INFORMATION field destination.
+
+[ddiss: update previously overlooked ib_isert]
+
+Link: https://lore.kernel.org/r/20201031233211.5207-3-ddiss@suse.de
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 673db054d7a2 ("scsi: target: Fix multiple LUN_RESET handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/isert/ib_isert.c |  4 ++--
+ drivers/target/target_core_sbc.c        |  2 +-
+ drivers/target/target_core_transport.c  | 12 ++++++------
+ include/target/target_core_base.h       |  2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 044cc211424ed..8392f63e433fc 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -544,7 +544,7 @@ static int otx2_tc_prepare_flow(struct otx2_nic *nic, struct otx2_tc_flow *node,
- 		if (match.mask->flags & FLOW_DIS_IS_FRAGMENT) {
- 			if (ntohs(flow_spec->etype) == ETH_P_IP) {
- 				flow_spec->ip_flag = IPV4_FLAG_MORE;
--				flow_mask->ip_flag = 0xff;
-+				flow_mask->ip_flag = IPV4_FLAG_MORE;
- 				req->features |= BIT_ULL(NPC_IPFRAG_IPV4);
- 			} else if (ntohs(flow_spec->etype) == ETH_P_IPV6) {
- 				flow_spec->next_header = IPPROTO_FRAGMENT;
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index edea37da8a5bd..2d0d966fba2c8 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -1553,12 +1553,12 @@ isert_check_pi_status(struct se_cmd *se_cmd, struct ib_mr *sig_mr)
+ 		}
+ 		sec_offset_err = mr_status.sig_err.sig_err_offset;
+ 		do_div(sec_offset_err, block_size);
+-		se_cmd->bad_sector = sec_offset_err + se_cmd->t_task_lba;
++		se_cmd->sense_info = sec_offset_err + se_cmd->t_task_lba;
+ 
+ 		isert_err("PI error found type %d at sector 0x%llx "
+ 			  "expected 0x%x vs actual 0x%x\n",
+ 			  mr_status.sig_err.err_type,
+-			  (unsigned long long)se_cmd->bad_sector,
++			  (unsigned long long)se_cmd->sense_info,
+ 			  mr_status.sig_err.expected,
+ 			  mr_status.sig_err.actual);
+ 		ret = 1;
+diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
+index eaf8551ebc612..47c5f26e6012d 100644
+--- a/drivers/target/target_core_sbc.c
++++ b/drivers/target/target_core_sbc.c
+@@ -1438,7 +1438,7 @@ sbc_dif_verify(struct se_cmd *cmd, sector_t start, unsigned int sectors,
+ 			if (rc) {
+ 				kunmap_atomic(daddr - dsg->offset);
+ 				kunmap_atomic(paddr - psg->offset);
+-				cmd->bad_sector = sector;
++				cmd->sense_info = sector;
+ 				return rc;
+ 			}
+ next:
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index ce521d3d30470..84d654c14917c 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -3135,7 +3135,7 @@ struct sense_detail {
+ 	u8 key;
+ 	u8 asc;
+ 	u8 ascq;
+-	bool add_sector_info;
++	bool add_sense_info;
+ };
+ 
+ static const struct sense_detail sense_detail_table[] = {
+@@ -3238,19 +3238,19 @@ static const struct sense_detail sense_detail_table[] = {
+ 		.key = ABORTED_COMMAND,
+ 		.asc = 0x10,
+ 		.ascq = 0x01, /* LOGICAL BLOCK GUARD CHECK FAILED */
+-		.add_sector_info = true,
++		.add_sense_info = true,
+ 	},
+ 	[TCM_LOGICAL_BLOCK_APP_TAG_CHECK_FAILED] = {
+ 		.key = ABORTED_COMMAND,
+ 		.asc = 0x10,
+ 		.ascq = 0x02, /* LOGICAL BLOCK APPLICATION TAG CHECK FAILED */
+-		.add_sector_info = true,
++		.add_sense_info = true,
+ 	},
+ 	[TCM_LOGICAL_BLOCK_REF_TAG_CHECK_FAILED] = {
+ 		.key = ABORTED_COMMAND,
+ 		.asc = 0x10,
+ 		.ascq = 0x03, /* LOGICAL BLOCK REFERENCE TAG CHECK FAILED */
+-		.add_sector_info = true,
++		.add_sense_info = true,
+ 	},
+ 	[TCM_COPY_TARGET_DEVICE_NOT_REACHABLE] = {
+ 		.key = COPY_ABORTED,
+@@ -3330,10 +3330,10 @@ static void translate_sense_reason(struct se_cmd *cmd, sense_reason_t reason)
+ 	cmd->scsi_status = SAM_STAT_CHECK_CONDITION;
+ 	cmd->scsi_sense_length  = TRANSPORT_SENSE_BUFFER;
+ 	scsi_build_sense_buffer(desc_format, buffer, key, asc, ascq);
+-	if (sd->add_sector_info)
++	if (sd->add_sense_info)
+ 		WARN_ON_ONCE(scsi_set_sense_information(buffer,
+ 							cmd->scsi_sense_length,
+-							cmd->bad_sector) < 0);
++							cmd->sense_info) < 0);
+ }
+ 
+ int
+diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+index 18a5dcd275f88..16992ba455deb 100644
+--- a/include/target/target_core_base.h
++++ b/include/target/target_core_base.h
+@@ -540,7 +540,7 @@ struct se_cmd {
+ 	struct scatterlist	*t_prot_sg;
+ 	unsigned int		t_prot_nents;
+ 	sense_reason_t		pi_err;
+-	sector_t		bad_sector;
++	u64			sense_info;
+ 	int			cpuid;
+ };
+ 
 -- 
 2.39.2
 
