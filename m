@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DB8D7036A2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63DA670355E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243645AbjEORMI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55924 "EHLO
+        id S243268AbjEOQ6S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243632AbjEORLn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:43 -0400
+        with ESMTP id S243295AbjEOQ6P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62AF77AA1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B80768E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EF1C62B33
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D55CC433EF;
-        Mon, 15 May 2023 17:10:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F46D61E7F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BD0C433D2;
+        Mon, 15 May 2023 16:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170601;
-        bh=o3mbBDRxMBe+GUCvfQahmEL2E1MLmnHjcu8Pmw8Oqz0=;
+        s=korg; t=1684169893;
+        bh=UFMDJh7KJWjZHQPcpfDQDnUz68/Uyt3gAUDuOqNaUAc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=idc2Z/o8HC/m59aws3H+05HRi220o+QzjTMnisZ8j/BVS9BxRPwYzLbSd+gNFrXer
-         5fzeLhTHW8/+OYjT1Ndm7SRL0L8t909bnz5/PLjCoEaBpCuet54FBpBMw/sZNwZDpp
-         8s70QaBI/AFFsjsWh9lYWJs+x+bz5+hQXOMavQt0=
+        b=GIGCGnD2uOEJTmLVpW/WwikFLVOtrz4PT1G9DrDsbqBpeR1yImG0U6+NauyrnKr3a
+         s/RLojX/m180YMVIyhGxAj/F2IwOjgyMSdkazSLEz0/FS/NuGFW0EYyTPTlDLVl9Ev
+         KquIpaRZcyZdGMQtlah9ISDSB8G9A5LzNxHcBdjs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Craig Tatlor <ctatlor97@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.1 153/239] drm/msm: fix vram leak on bind errors
+        patches@lists.linux.dev, Nevenko Stupar <Nevenko.Stupar@amd.com>,
+        Jun Lei <Jun.Lei@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Alex Hung <alex.hung@amd.com>, Alvin Lee <Alvin.Lee2@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.3 204/246] drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK modes
 Date:   Mon, 15 May 2023 18:26:56 +0200
-Message-Id: <20230515161726.271875868@linuxfoundation.org>
+Message-Id: <20230515161728.727247271@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,88 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Alvin Lee <Alvin.Lee2@amd.com>
 
-commit 60d476af96015891c7959f30838ae7a9749932bf upstream.
+commit b504f99ccaa64da364443431e388ecf30b604e38 upstream.
 
-Make sure to release the VRAM buffer also in a case a subcomponent fails
-to bind.
+[Description]
+- Due to bandwidth / arbitration issues at 200Mhz DCFCLK,
+  we want to enforce minimum 60us of prefetch to avoid
+  intermittent underflow issues
+- Since 60us prefetch is already enforced for UCLK DPM0,
+  and many DCFCLK's > 200Mhz are mapped to UCLK DPM1, in
+  theory there should not be any UCLK DPM regressions by
+  enforcing greater prefetch
 
-Fixes: d863f0c7b536 ("drm/msm: Call msm_init_vram before binding the gpu")
-Cc: stable@vger.kernel.org      # 5.11
-Cc: Craig Tatlor <ctatlor97@gmail.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525094/
-Link: https://lore.kernel.org/r/20230306100722.28485-7-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Nevenko Stupar <Nevenko.Stupar@amd.com>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c |    5 +++--
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -50,6 +50,8 @@
- #define MSM_VERSION_MINOR	9
- #define MSM_VERSION_PATCHLEVEL	0
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -810,7 +810,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleep
+ 					v->SwathHeightY[k],
+ 					v->SwathHeightC[k],
+ 					TWait,
+-					v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ?
++					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
++						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= MIN_DCFCLK_FREQ_MHZ) ?
+ 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
+ 					/* Output */
+ 					&v->DSTXAfterScaler[k],
+@@ -3309,7 +3310,7 @@ void dml32_ModeSupportAndSystemConfigura
+ 							v->swath_width_chroma_ub_this_state[k],
+ 							v->SwathHeightYThisState[k],
+ 							v->SwathHeightCThisState[k], v->TWait,
+-							v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ ?
++							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= MIN_DCFCLK_FREQ_MHZ) ?
+ 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
  
-+static void msm_deinit_vram(struct drm_device *ddev);
-+
- static const struct drm_mode_config_funcs mode_config_funcs = {
- 	.fb_create = msm_framebuffer_create,
- 	.output_poll_changed = drm_fb_helper_output_poll_changed,
-@@ -259,12 +261,7 @@ static int msm_drm_uninit(struct device
- 	if (kms && kms->funcs)
- 		kms->funcs->destroy(kms);
+ 							/* Output */
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
+@@ -53,6 +53,7 @@
+ #define BPP_BLENDED_PIPE 0xffffffff
  
--	if (priv->vram.paddr) {
--		unsigned long attrs = DMA_ATTR_NO_KERNEL_MAPPING;
--		drm_mm_takedown(&priv->vram.mm);
--		dma_free_attrs(dev, priv->vram.size, NULL,
--			       priv->vram.paddr, attrs);
--	}
-+	msm_deinit_vram(ddev);
+ #define MEM_STROBE_FREQ_MHZ 1600
++#define MIN_DCFCLK_FREQ_MHZ 200
+ #define MEM_STROBE_MAX_DELIVERY_TIME_US 60.0
  
- 	component_unbind_all(dev, ddev);
- 
-@@ -404,6 +401,19 @@ static int msm_init_vram(struct drm_devi
- 	return ret;
- }
- 
-+static void msm_deinit_vram(struct drm_device *ddev)
-+{
-+	struct msm_drm_private *priv = ddev->dev_private;
-+	unsigned long attrs = DMA_ATTR_NO_KERNEL_MAPPING;
-+
-+	if (!priv->vram.paddr)
-+		return;
-+
-+	drm_mm_takedown(&priv->vram.mm);
-+	dma_free_attrs(ddev->dev, priv->vram.size, NULL, priv->vram.paddr,
-+			attrs);
-+}
-+
- static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
- {
- 	struct msm_drm_private *priv = dev_get_drvdata(dev);
-@@ -451,7 +461,7 @@ static int msm_drm_init(struct device *d
- 	/* Bind all our sub-components: */
- 	ret = component_bind_all(dev, ddev);
- 	if (ret)
--		goto err_put_dev;
-+		goto err_deinit_vram;
- 
- 	dma_set_max_seg_size(dev, UINT_MAX);
- 
-@@ -549,6 +559,8 @@ err_msm_uninit:
- 
- 	return ret;
- 
-+err_deinit_vram:
-+	msm_deinit_vram(ddev);
- err_put_dev:
- 	drm_dev_put(ddev);
- 
+ struct display_mode_lib;
 
 
