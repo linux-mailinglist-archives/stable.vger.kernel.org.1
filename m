@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECEED7037D7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 039BD703A0F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244105AbjEORYd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
+        id S244746AbjEORsJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244151AbjEORYO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:14 -0400
+        with ESMTP id S244620AbjEORro (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:47:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C2E10E4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F9919F0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCA8862C7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DC5C433D2;
-        Mon, 15 May 2023 17:22:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2094A62EDA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12825C433D2;
+        Mon, 15 May 2023 17:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171379;
-        bh=nzN/1zJ0obQspiI1zRI0YmbeHYMNMcQkdISmlFjMC8Y=;
+        s=korg; t=1684172780;
+        bh=Tsm850rU7/rC7EYIcmSHAI2raHqCOV1CYD7LlqRaxOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oEbIRDN5XselT+6cE+yf7K5HRhWUDbx6PBc4Ai+BJX2kB6v6szvxV9iGVWN3r5gMT
-         COHK5/sGKuuDAfqXbX+Tbcesqfyjey6GDSW/4snyB9WbDT4yMpGX1ljYdZ53WRJ01P
-         ZBt3kItbuIbZn1hheYRlPGyL/xEWmy74UYRdDUfs=
+        b=tydi/kUCcM8tNTibs6TeQ7r+EJyrypvpzDzVpKawymd/1eGTn/pBNYGI9b04bvPpF
+         H6EA2yaIXO+hIII5I412yzJba5nRUKp3D+EOQxutiuLWmGQrBf51oDLYaLtjHPIYMe
+         rZE0vwXvZWEQsmZ++WKYOiy9on2DnWujB1q5ePkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roman Li <Roman.Li@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.2 190/242] drm/amd/display: fix flickering caused by S/G mode
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 265/381] pwm: mtk-disp: Dont check the return code of pwmchip_remove()
 Date:   Mon, 15 May 2023 18:28:36 +0200
-Message-Id: <20230515161727.646686066@linuxfoundation.org>
+Message-Id: <20230515161748.721724641@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 08da182175db4c7f80850354849d95f2670e8cd9 upstream.
+[ Upstream commit 9b7b5736ffd5da6f8f6329ebe5f1829cbcf8afae ]
 
-Currently, on a handful of ASICs. We allow the framebuffer for a given
-plane to exist in either VRAM or GTT. However, if the plane's new
-framebuffer is in a different memory domain than it's previous
-framebuffer, flipping between them can cause the screen to flicker. So,
-to fix this, don't perform an immediate flip in the aforementioned case.
+pwmchip_remove() returns always 0. Don't use the value to make it
+possible to eventually change the function to return void. Also the
+driver core ignores the return value of mtk_disp_pwm_remove().
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
-Reviewed-by: Roman Li <Roman.Li@amd.com>
-Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 36dd7f530ae7 ("pwm: mtk-disp: Disable shadow registers before setting backlight values")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-mtk-disp.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7703,6 +7703,13 @@ static void amdgpu_dm_commit_cursors(str
- 			handle_cursor_update(plane, old_plane_state);
+diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
+index 83b8be0209b74..af63aaab8e153 100644
+--- a/drivers/pwm/pwm-mtk-disp.c
++++ b/drivers/pwm/pwm-mtk-disp.c
+@@ -240,13 +240,12 @@ static int mtk_disp_pwm_probe(struct platform_device *pdev)
+ static int mtk_disp_pwm_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_disp_pwm *mdp = platform_get_drvdata(pdev);
+-	int ret;
+ 
+-	ret = pwmchip_remove(&mdp->chip);
++	pwmchip_remove(&mdp->chip);
+ 	clk_unprepare(mdp->clk_mm);
+ 	clk_unprepare(mdp->clk_main);
+ 
+-	return ret;
++	return 0;
  }
  
-+static inline uint32_t get_mem_type(struct drm_framebuffer *fb)
-+{
-+	struct amdgpu_bo *abo = gem_to_amdgpu_bo(fb->obj[0]);
-+
-+	return abo->tbo.resource ? abo->tbo.resource->mem_type : 0;
-+}
-+
- static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 				    struct dc_state *dc_state,
- 				    struct drm_device *dev,
-@@ -7820,11 +7827,13 @@ static void amdgpu_dm_commit_planes(stru
- 
- 		/*
- 		 * Only allow immediate flips for fast updates that don't
--		 * change FB pitch, DCC state, rotation or mirroing.
-+		 * change memory domain, FB pitch, DCC state, rotation or
-+		 * mirroring.
- 		 */
- 		bundle->flip_addrs[planes_count].flip_immediate =
- 			crtc->state->async_flip &&
--			acrtc_state->update_type == UPDATE_TYPE_FAST;
-+			acrtc_state->update_type == UPDATE_TYPE_FAST &&
-+			get_mem_type(old_plane_state->fb) == get_mem_type(fb);
- 
- 		timestamp_ns = ktime_get_ns();
- 		bundle->flip_addrs[planes_count].flip_timestamp_in_us = div_u64(timestamp_ns, 1000);
+ static const struct mtk_pwm_data mt2701_pwm_data = {
+-- 
+2.39.2
+
 
 
