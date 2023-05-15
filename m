@@ -2,80 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4874D703225
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6707170322A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242182AbjEOQGI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:06:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
+        id S242497AbjEOQGl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242421AbjEOQGH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:06:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364291FEF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:05:42 -0700 (PDT)
+        with ESMTP id S242484AbjEOQGk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:06:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E634830E3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:06:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC63C6116C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:05:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92136C433EF;
-        Mon, 15 May 2023 16:05:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CED4626D5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:06:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3B9C4339B;
+        Mon, 15 May 2023 16:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684166741;
-        bh=2V00zxlcGsGYNmBR6LzR8FMBw52qYS36a+v18pCfYOE=;
+        s=korg; t=1684166768;
+        bh=pzmeoheS/FFaE7ErQiSxJTxI+0lbm6CGIGbULZ1NUmk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WUBvd9i2lkf/K3+VGIf7/kufdCi4PiiYlQomcAopG/bRELPu7HTBsMpMjGgiaN4SJ
-         JqGwgrZkLFfRh6KjrvqdmApsttN7LYIs3i7zN0h+1F51O9df/uUnBQfMQCfCa+6N2e
-         yxSels4mEU/siWRxpVAJWh+x2gqlQzTh4uohJhuw=
-Date:   Mon, 15 May 2023 18:05:38 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Alex Deucher <alexander.deucher@amd.com>
-Cc:     stable@vger.kernel.org,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Alvin Lee <Alvin.Lee2@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: Re: [PATCH] drm/amd/display: Fix hang when skipping modeset
-Message-ID: <2023051518-frigidly-edgy-eb4b@gregkh>
-References: <20230515150426.2197413-1-alexander.deucher@amd.com>
+        b=eZBFwzDLmt8VxVir+pMiyJyDOEDy5PkGb37x8Tda+3rZNqmGRkYLPgZy7JAzBGIVE
+         t5C1h+nqVJ/7wGr66lwpc9IRRFIRLnvDn4S5FAo76Xui6rXHwG5WcW2dmTaQve9KOh
+         MqpdRiQkeV/mWoAD9bDuPP2uZkWA6uF7/YLsCLS4=
+Date:   Mon, 15 May 2023 18:06:06 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc:     stable@vger.kernel.org, John Ogness <john.ogness@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH 5.10.y] printk: declare printk_deferred_{enter,safe}() in
+ include/linux/printk.h
+Message-ID: <2023051501-mockup-override-c57e@gregkh>
+References: <2023042446-gills-morality-d566@gregkh>
+ <767ab028-d946-98d5-4a13-d6ed6df77763@I-love.SAKURA.ne.jp>
+ <2023051537-embargo-scouting-a849@gregkh>
+ <7f66845a-d27f-f1c8-fccf-91cd3be95024@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515150426.2197413-1-alexander.deucher@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <7f66845a-d27f-f1c8-fccf-91cd3be95024@I-love.SAKURA.ne.jp>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 11:04:26AM -0400, Alex Deucher wrote:
-> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+On Mon, May 15, 2023 at 10:11:33PM +0900, Tetsuo Handa wrote:
+> On 2023/05/15 21:56, Greg Kroah-Hartman wrote:
+> > On Sun, May 14, 2023 at 01:41:27PM +0900, Tetsuo Handa wrote:
+> >> commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
+> >>
+> >> [This patch implements subset of original commit 85e3e7fbbb72 ("printk:
+> >> remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
+> >> potential deadlock on zonelist_update_seq seqlock") depends on, for
+> >> commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
+> >> build_all_zonelists and page allocation") was backported to stable.]
+> > 
+> > All now queued up, thanks.
 > 
-> [Why&How]
+> Thank you. Then, please also queue original "[PATCH] mm/page_alloc: fix potential
+> deadlock on zonelist_update_seq" (Message ID listed below) to stable kernels.
 > 
-> When skipping full modeset since the only state change was a front porch
-> change, the DC commit sequence requires extra checks to handle non
-> existant plane states being asked to be removed from context.
+>   <2023042446-gills-morality-d566@gregkh>
+>   <2023042449-wobbling-putdown-13ea@gregkh>
+>   <2023042452-stopper-engross-e9da@gregkh>
+>   <2023042455-skinless-muzzle-1c50@gregkh>
 > 
-> Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
-> Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> (cherry picked from commit da5e14909776edea4462672fb4a3007802d262e7)
-> Cc: stable@vger.kernel.org
-> ---
-> 
-> Fixes a hang with freesync video enabled.
 
-I just guessed at what trees you wanted this applied to, next time it
-might be good to give us a hint :)
-
-thanks,
+Now done, thanks.
 
 greg k-h
