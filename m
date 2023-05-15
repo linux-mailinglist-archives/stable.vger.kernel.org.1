@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73CC6703949
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C287033FB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244497AbjEORkv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32786 "EHLO
+        id S242607AbjEOQnk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:43:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244493AbjEORkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF42D176E5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:48 -0700 (PDT)
+        with ESMTP id S242477AbjEOQng (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0E046A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7538762DBD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7879BC433EF;
-        Mon, 15 May 2023 17:37:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F85062785
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A22FC433D2;
+        Mon, 15 May 2023 16:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172266;
-        bh=wwgLppoq/qEbHUG0r5n2Q9C67QiJWzLZIa/GJFDFtE4=;
+        s=korg; t=1684169002;
+        bh=PbEvfGc01Tui+mG73oVy9+0C6KJqBHrjgvZ88mJbAfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UWzqVmSRRcrFmJtxfgx5p193OzKbva0bKIRlZSq/u0ItP/vj7pHK6TUVnpeqsAwR3
-         SPgrY8ePyOqk8n68eirihdNjpTYBb7JYezd/JwrfMCXSHMLMSxDUOVrMu28stdGuX2
-         hdCIFBiiYiOBNpvwcU6A09/PiSxE4Z7/Dn0wHhxQ=
+        b=gmUWxkYb4dS9v+YbrGjVKkkMByTOlzxeNVBfcbppD5n9WMNn0x0qnZ+DMgO2nIuY0
+         wPKTo+my7f71KJGgoEdSqcCOzZNvS7/lVcoQfG0rNz9znVLB8um/KW3H+bCdSCfMlv
+         C3a02T3dQFE4f0F/THFMfBElmQxs3jJXR2zhKHPE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Yang Jihong <yangjihong1@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/381] drm/msm/adreno: Defer enabling runpm until hw_init()
+Subject: [PATCH 4.19 110/191] perf/core: Fix hardlockup failure caused by perf throttle
 Date:   Mon, 15 May 2023 18:25:47 +0200
-Message-Id: <20230515161741.147201771@linuxfoundation.org>
+Message-Id: <20230515161711.258195222@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,60 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-[ Upstream commit 4b18299b33655fa9672b774b6df774dc03d6aee8 ]
+[ Upstream commit 15def34e2635ab7e0e96f1bc32e1b69609f14942 ]
 
-To avoid preventing the display from coming up before the rootfs is
-mounted, without resorting to packing fw in the initrd, the GPU has
-this limbo state where the device is probed, but we aren't ready to
-start sending commands to it.  This is particularly problematic for
-a6xx, since the GMU (which requires fw to be loaded) is the one that
-is controlling the power/clk/icc votes.
+commit e050e3f0a71bf ("perf: Fix broken interrupt rate throttling")
+introduces a change in throttling threshold judgment. Before this,
+compare hwc->interrupts and max_samples_per_tick, then increase
+hwc->interrupts by 1, but this commit reverses order of these two
+behaviors, causing the semantics of max_samples_per_tick to change.
+In literal sense of "max_samples_per_tick", if hwc->interrupts ==
+max_samples_per_tick, it should not be throttled, therefore, the judgment
+condition should be changed to "hwc->interrupts > max_samples_per_tick".
 
-So defer enabling runpm until we are ready to call gpu->hw_init(),
-as that is a point where we know we have all the needed fw and are
-ready to start sending commands to the coproc's.
+In fact, this may cause the hardlockup to fail, The minimum value of
+max_samples_per_tick may be 1, in this case, the return value of
+__perf_event_account_interrupt function is 1.
+As a result, nmi_watchdog gets throttled, which would stop PMU (Use x86
+architecture as an example, see x86_pmu_handle_irq).
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/489337/
-Link: https://lore.kernel.org/r/20220613182036.2567963-1-robdclark@gmail.com
-Stable-dep-of: db7662d076c9 ("drm/msm/adreno: drop bogus pm_runtime_set_active()")
+Fixes: e050e3f0a71b ("perf: Fix broken interrupt rate throttling")
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230227023508.102230-1-yangjihong1@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c | 6 ++++++
- drivers/gpu/drm/msm/adreno/adreno_gpu.c    | 1 -
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
-index 58e03b20e1c7a..c06202b9243c4 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -301,6 +301,12 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
- 	if (ret)
- 		return NULL;
- 
-+	/*
-+	 * Now that we have firmware loaded, and are ready to begin
-+	 * booting the gpu, go ahead and enable runpm:
-+	 */
-+	pm_runtime_enable(&pdev->dev);
-+
- 	/* Make sure pm runtime is active and reset any previous errors */
- 	pm_runtime_set_active(&pdev->dev);
- 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 78181e2d78a97..11a6a41b4910f 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -916,7 +916,6 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 	pm_runtime_set_autosuspend_delay(dev,
- 		adreno_gpu->info->inactive_period);
- 	pm_runtime_use_autosuspend(dev);
--	pm_runtime_enable(dev);
- 
- 	ret = msm_gpu_init(drm, pdev, &adreno_gpu->base, &funcs->base,
- 			adreno_gpu->info->name, &adreno_gpu_config);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 72ed3f3d078fc..2bf4b6b109bf4 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7843,8 +7843,8 @@ __perf_event_account_interrupt(struct perf_event *event, int throttle)
+ 		hwc->interrupts = 1;
+ 	} else {
+ 		hwc->interrupts++;
+-		if (unlikely(throttle
+-			     && hwc->interrupts >= max_samples_per_tick)) {
++		if (unlikely(throttle &&
++			     hwc->interrupts > max_samples_per_tick)) {
+ 			__this_cpu_inc(perf_throttled_count);
+ 			tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
+ 			hwc->interrupts = MAX_INTERRUPTS;
 -- 
 2.39.2
 
