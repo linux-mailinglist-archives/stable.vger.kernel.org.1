@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEDF70333B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A84DE70340A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242440AbjEOQei (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
+        id S240586AbjEOQoN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242552AbjEOQeh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C7E35B3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:36 -0700 (PDT)
+        with ESMTP id S242947AbjEOQoG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223E84C32
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9085627E1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52E6C433EF;
-        Mon, 15 May 2023 16:34:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9885B627C4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFABC433D2;
+        Mon, 15 May 2023 16:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168475;
-        bh=LkAPXPK0lll2/jfzIHfKXU86S2yvHjGHlLhMFb+Wo4U=;
+        s=korg; t=1684169040;
+        bh=LBuqxzUURxy6JBHyX4sQ1p/puLomcRGyhP/qbfuoyCw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XFWq/aLL7NJQ3/NELZPTAtgmVu4PxSLb7zaQ6Jvr4uR8k1lyDxqmBEvD+khwfr3Ge
-         cGcuD+DY4JRqbYp8rUN7kKmgd+QJCEC56cG7Z402+Y9VLXWYh3xGZBK9d4O2b/ZiZR
-         acdE5MipoZIQ3fpF+ZYPdtWz4FBQyX9SpeX1eFN0=
+        b=hEAmjGCrCUKgCcxMf6cy+0Kq9Lr4Gr828iKJ8cxp5NYl+3GoeuZ6LK4lBuEF/oUoz
+         00tH9LSuyk3O5Qzdxbq9Gm8JEya23wJ+ruOM8rvs3iz0QBu6kyFFCt3P42VrvaQclb
+         XdGwSQelGSXj3a5q2XuXrIhITmOLb5wXOF1j7Gow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 032/116] net/packet: convert po->origdev to an atomic flag
+Subject: [PATCH 4.19 092/191] ia64: salinfo: placate defined-but-not-used warning
 Date:   Mon, 15 May 2023 18:25:29 +0200
-Message-Id: <20230515161659.336552154@linuxfoundation.org>
+Message-Id: <20230515161710.609453330@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,124 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit ee5675ecdf7a4e713ed21d98a70c2871d6ebed01 ]
+[ Upstream commit 0de155752b152d6bcd96b5b5bf20af336abd183a ]
 
-syzbot/KCAN reported that po->origdev can be read
-while another thread is changing its value.
+When CONFIG_PROC_FS is not set, proc_salinfo_show() is not used.  Mark the
+function as __maybe_unused to quieten the warning message.
 
-We can avoid this splat by converting this field
-to an actual bit.
+../arch/ia64/kernel/salinfo.c:584:12: warning: 'proc_salinfo_show' defined but not used [-Wunused-function]
+  584 | static int proc_salinfo_show(struct seq_file *m, void *v)
+      |            ^~~~~~~~~~~~~~~~~
 
-Following patches will convert remaining 1bit fields.
-
-Fixes: 80feaacb8a64 ("[AF_PACKET]: Add option to return orig_dev to userspace.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/20230223034309.13375-1-rdunlap@infradead.org
+Fixes: 3f3942aca6da ("proc: introduce proc_create_single{,_data}")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 10 ++++------
- net/packet/diag.c      |  2 +-
- net/packet/internal.h  | 22 +++++++++++++++++++++-
- 3 files changed, 26 insertions(+), 8 deletions(-)
+ arch/ia64/kernel/salinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 1be5fb6af0178..ce6afdb50933b 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2144,7 +2144,7 @@ static int packet_rcv(struct sk_buff *skb, struct net_device *dev,
- 	sll = &PACKET_SKB_CB(skb)->sa.ll;
- 	sll->sll_hatype = dev->type;
- 	sll->sll_pkttype = skb->pkt_type;
--	if (unlikely(po->origdev))
-+	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
- 		sll->sll_ifindex = orig_dev->ifindex;
- 	else
- 		sll->sll_ifindex = dev->ifindex;
-@@ -2410,7 +2410,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 	sll->sll_hatype = dev->type;
- 	sll->sll_protocol = skb->protocol;
- 	sll->sll_pkttype = skb->pkt_type;
--	if (unlikely(po->origdev))
-+	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
- 		sll->sll_ifindex = orig_dev->ifindex;
- 	else
- 		sll->sll_ifindex = dev->ifindex;
-@@ -3879,9 +3879,7 @@ packet_setsockopt(struct socket *sock, int level, int optname, char __user *optv
- 		if (copy_from_user(&val, optval, sizeof(val)))
- 			return -EFAULT;
- 
--		lock_sock(sk);
--		po->origdev = !!val;
--		release_sock(sk);
-+		packet_sock_flag_set(po, PACKET_SOCK_ORIGDEV, val);
- 		return 0;
- 	}
- 	case PACKET_VNET_HDR:
-@@ -4014,7 +4012,7 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
- 		val = po->auxdata;
- 		break;
- 	case PACKET_ORIGDEV:
--		val = po->origdev;
-+		val = packet_sock_flag(po, PACKET_SOCK_ORIGDEV);
- 		break;
- 	case PACKET_VNET_HDR:
- 		val = po->has_vnet_hdr;
-diff --git a/net/packet/diag.c b/net/packet/diag.c
-index 7ef1c881ae741..bf5928e5df035 100644
---- a/net/packet/diag.c
-+++ b/net/packet/diag.c
-@@ -24,7 +24,7 @@ static int pdiag_put_info(const struct packet_sock *po, struct sk_buff *nlskb)
- 		pinfo.pdi_flags |= PDI_RUNNING;
- 	if (po->auxdata)
- 		pinfo.pdi_flags |= PDI_AUXDATA;
--	if (po->origdev)
-+	if (packet_sock_flag(po, PACKET_SOCK_ORIGDEV))
- 		pinfo.pdi_flags |= PDI_ORIGDEV;
- 	if (po->has_vnet_hdr)
- 		pinfo.pdi_flags |= PDI_VNETHDR;
-diff --git a/net/packet/internal.h b/net/packet/internal.h
-index f10294800aafb..f39dcc7608bc6 100644
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -115,9 +115,9 @@ struct packet_sock {
- 	int			copy_thresh;
- 	spinlock_t		bind_lock;
- 	struct mutex		pg_vec_lock;
-+	unsigned long		flags;
- 	unsigned int		running;	/* bind_lock must be held */
- 	unsigned int		auxdata:1,	/* writer must hold sock lock */
--				origdev:1,
- 				has_vnet_hdr:1,
- 				tp_loss:1,
- 				tp_tx_has_off:1;
-@@ -142,4 +142,24 @@ static struct packet_sock *pkt_sk(struct sock *sk)
- 	return (struct packet_sock *)sk;
- }
- 
-+enum packet_sock_flags {
-+	PACKET_SOCK_ORIGDEV,
-+};
-+
-+static inline void packet_sock_flag_set(struct packet_sock *po,
-+					enum packet_sock_flags flag,
-+					bool val)
-+{
-+	if (val)
-+		set_bit(flag, &po->flags);
-+	else
-+		clear_bit(flag, &po->flags);
-+}
-+
-+static inline bool packet_sock_flag(const struct packet_sock *po,
-+				    enum packet_sock_flags flag)
-+{
-+	return test_bit(flag, &po->flags);
-+}
-+
- #endif
+diff --git a/arch/ia64/kernel/salinfo.c b/arch/ia64/kernel/salinfo.c
+index aba1f463a8dd4..b889db4492c8d 100644
+--- a/arch/ia64/kernel/salinfo.c
++++ b/arch/ia64/kernel/salinfo.c
+@@ -580,7 +580,7 @@ static int salinfo_cpu_pre_down(unsigned int cpu)
+  * 'data' contains an integer that corresponds to the feature we're
+  * testing
+  */
+-static int proc_salinfo_show(struct seq_file *m, void *v)
++static int __maybe_unused proc_salinfo_show(struct seq_file *m, void *v)
+ {
+ 	unsigned long data = (unsigned long)v;
+ 	seq_puts(m, (sal_platform_features & data) ? "1\n" : "0\n");
 -- 
 2.39.2
 
