@@ -2,50 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8013F7036BC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9187039CE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243848AbjEORNW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:13:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54936 "EHLO
+        id S244673AbjEORqH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243632AbjEORNB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D862EAD21
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:23 -0700 (PDT)
+        with ESMTP id S244575AbjEORpo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C3A16927
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B88B662B75
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3ACC433D2;
-        Mon, 15 May 2023 17:11:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9858A62E04
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F9BC433EF;
+        Mon, 15 May 2023 17:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170683;
-        bh=PnbshWFvQEIxorj/Qld9/dSOPMyUbO+hOm9MEinElUY=;
+        s=korg; t=1684172614;
+        bh=aOzlE+ANOfR7mTJy+fxUnHQ1jqdFhdAPuhJ7O6Q5pnI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Oi8BruQ6/2qArVS7o2uddBgRLmMFsbZJ2Pi6a95s2HLznXFrx7M16vS5iAu5jiTGY
-         eTjlH+E4DV3nY5fzoDE2b37zsn0BuyNoArRtHltW5Qz+ClF7lqsX2UYQRnmzQT16GU
-         VuYeMWGyFNiNrIC/QtJDUnNvOj5xpa34/iWOKluc=
+        b=yYM39DMuyP1NwoXLkIvE8qlezVu9MRs3JNMOGz4czv/O+MzKpLeEvM4aJ1B+iDMmU
+         C/o+Hp093DZK/85pmNQs1XSz3euEH+AN97X8p30H7TuQyG+jvag2Or0LeJnuhJzphq
+         1J6xadtHnKApP9UhY9cSYzczHNn2ln47nyE0Gn7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
-        Jason Gerecke <jason.gerecke@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 6.1 181/239] HID: wacom: insert timestamp to packed Bluetooth (BT) events
+        patches@lists.linux.dev, Wei Wang <wvw@google.com>,
+        Midas Chien <midaschieh@google.com>,
+        =?UTF-8?q?Chunhui=20Li=20 ?= <chunhui.li@mediatek.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Tony Luck <tony.luck@intel.com>, kernel-team@android.com,
+        John Stultz <jstultz@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 193/381] pstore: Revert pmsg_lock back to a normal mutex
 Date:   Mon, 15 May 2023 18:27:24 +0200
-Message-Id: <20230515161727.095158706@linuxfoundation.org>
+Message-Id: <20230515161745.536242073@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,109 +61,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: John Stultz <jstultz@google.com>
 
-commit 17d793f3ed53080dab6bbeabfc82de890c901001 upstream.
+[ Upstream commit 5239a89b06d6b199f133bf0ffea421683187f257 ]
 
-To fully utilize the BT polling/refresh rate, a few input events
-are sent together to reduce event delay. This causes issue to the
-timestamp generated by input_sync since all the events in the same
-packet would pretty much have the same timestamp. This patch inserts
-time interval to the events by averaging the total time used for
-sending the packet.
+This reverts commit 76d62f24db07f22ccf9bc18ca793c27d4ebef721.
 
-This decision was mainly based on observing the actual time interval
-between each BT polling. The interval doesn't seem to be constant,
-due to the network and system environment. So, using solutions other
-than averaging doesn't end up with valid timestamps.
+So while priority inversion on the pmsg_lock is an occasional
+problem that an rt_mutex would help with, in uses where logging
+is writing to pmsg heavily from multiple threads, the pmsg_lock
+can be heavily contended.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Reviewed-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After this change landed, it was reported that cases where the
+mutex locking overhead was commonly adding on the order of 10s
+of usecs delay had suddenly jumped to ~msec delay with rtmutex.
+
+It seems the slight differences in the locks under this level
+of contention causes the normal mutexes to utilize the spinning
+optimizations, while the rtmutexes end up in the sleeping
+slowpath (which allows additional threads to pile on trying
+to take the lock).
+
+In this case, it devolves to a worse case senerio where the lock
+acquisition and scheduling overhead dominates, and each thread
+is waiting on the order of ~ms to do ~us of work.
+
+Obviously, having tons of threads all contending on a single
+lock for logging is non-optimal, so the proper fix is probably
+reworking pstore pmsg to have per-cpu buffers so we don't have
+contention.
+
+Additionally, Steven Rostedt has provided some furhter
+optimizations for rtmutexes that improves the rtmutex spinning
+path, but at least in my testing, I still see the test tripping
+into the sleeping path on rtmutexes while utilizing the spinning
+path with mutexes.
+
+But in the short term, lets revert the change to the rt_mutex
+and go back to normal mutexes to avoid a potentially major
+performance regression. And we can work on optimizations to both
+rtmutexes and finer-grained locking for pstore pmsg in the
+future.
+
+Cc: Wei Wang <wvw@google.com>
+Cc: Midas Chien<midaschieh@google.com>
+Cc: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Anton Vorontsov <anton@enomsg.org>
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: kernel-team@android.com
+Fixes: 76d62f24db07 ("pstore: Switch pmsg_lock to an rt_mutex to avoid priority inversion")
+Reported-by: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230308204043.2061631-1-jstultz@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |   26 ++++++++++++++++++++++++++
- drivers/hid/wacom_wac.h |    1 +
- 2 files changed, 27 insertions(+)
+ fs/pstore/pmsg.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1308,6 +1308,9 @@ static void wacom_intuos_pro2_bt_pen(str
+diff --git a/fs/pstore/pmsg.c b/fs/pstore/pmsg.c
+index 18cf94b597e05..d8542ec2f38c6 100644
+--- a/fs/pstore/pmsg.c
++++ b/fs/pstore/pmsg.c
+@@ -7,10 +7,9 @@
+ #include <linux/device.h>
+ #include <linux/fs.h>
+ #include <linux/uaccess.h>
+-#include <linux/rtmutex.h>
+ #include "internal.h"
  
- 	struct input_dev *pen_input = wacom->pen_input;
- 	unsigned char *data = wacom->data;
-+	int number_of_valid_frames = 0;
-+	int time_interval = 15000000;
-+	ktime_t time_packet_received = ktime_get();
- 	int i;
+-static DEFINE_RT_MUTEX(pmsg_lock);
++static DEFINE_MUTEX(pmsg_lock);
  
- 	if (wacom->features.type == INTUOSP2_BT ||
-@@ -1328,12 +1331,30 @@ static void wacom_intuos_pro2_bt_pen(str
- 		wacom->id[0] |= (wacom->serial[0] >> 32) & 0xFFFFF;
- 	}
+ static ssize_t write_pmsg(struct file *file, const char __user *buf,
+ 			  size_t count, loff_t *ppos)
+@@ -29,9 +28,9 @@ static ssize_t write_pmsg(struct file *file, const char __user *buf,
+ 	if (!access_ok(buf, count))
+ 		return -EFAULT;
  
-+	/* number of valid frames */
- 	for (i = 0; i < pen_frames; i++) {
- 		unsigned char *frame = &data[i*pen_frame_len + 1];
- 		bool valid = frame[0] & 0x80;
-+
-+		if (valid)
-+			number_of_valid_frames++;
-+	}
-+
-+	if (number_of_valid_frames) {
-+		if (wacom->hid_data.time_delayed)
-+			time_interval = ktime_get() - wacom->hid_data.time_delayed;
-+		time_interval /= number_of_valid_frames;
-+		wacom->hid_data.time_delayed = time_packet_received;
-+	}
-+
-+	for (i = 0; i < number_of_valid_frames; i++) {
-+		unsigned char *frame = &data[i*pen_frame_len + 1];
-+		bool valid = frame[0] & 0x80;
- 		bool prox = frame[0] & 0x40;
- 		bool range = frame[0] & 0x20;
- 		bool invert = frame[0] & 0x10;
-+		int frames_number_reversed = number_of_valid_frames - i - 1;
-+		int event_timestamp = time_packet_received - frames_number_reversed * time_interval;
- 
- 		if (!valid)
- 			continue;
-@@ -1346,6 +1367,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 			wacom->tool[0] = 0;
- 			wacom->id[0] = 0;
- 			wacom->serial[0] = 0;
-+			wacom->hid_data.time_delayed = 0;
- 			return;
- 		}
- 
-@@ -1382,6 +1404,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 						 get_unaligned_le16(&frame[11]));
- 			}
- 		}
-+
- 		if (wacom->tool[0]) {
- 			input_report_abs(pen_input, ABS_PRESSURE, get_unaligned_le16(&frame[5]));
- 			if (wacom->features.type == INTUOSP2_BT ||
-@@ -1405,6 +1428,9 @@ static void wacom_intuos_pro2_bt_pen(str
- 
- 		wacom->shared->stylus_in_proximity = prox;
- 
-+		/* add timestamp to unpack the frames */
-+		input_set_timestamp(pen_input, event_timestamp);
-+
- 		input_sync(pen_input);
- 	}
+-	rt_mutex_lock(&pmsg_lock);
++	mutex_lock(&pmsg_lock);
+ 	ret = psinfo->write_user(&record, buf);
+-	rt_mutex_unlock(&pmsg_lock);
++	mutex_unlock(&pmsg_lock);
+ 	return ret ? ret : count;
  }
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -324,6 +324,7 @@ struct hid_data {
- 	int ps_connected;
- 	bool pad_input_event_flag;
- 	unsigned short sequence_number;
-+	int time_delayed;
- };
  
- struct wacom_remote_data {
+-- 
+2.39.2
+
 
 
