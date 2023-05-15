@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8C1703688
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CB9770399F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243762AbjEORLB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54612 "EHLO
+        id S244611AbjEORoT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243778AbjEORKp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:45 -0400
+        with ESMTP id S244620AbjEORoD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20161E71D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF76176E6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3432062AAF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C271C433EF;
-        Mon, 15 May 2023 17:08:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 621B162E67
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541BBC433D2;
+        Mon, 15 May 2023 17:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170532;
-        bh=WBfc3+Hu8vos1MUxmTVZRWrMpgt8ZoLKgMbQTE0AEXs=;
+        s=korg; t=1684172497;
+        bh=Nv8eRoCotGvkeaWM3/9jZEi9lyO2GT60w7WL1mPGtTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FCZkYq+1BJI6aFNskVZJFHNRG7HbDoKryuXgVsMqfwgJeMHJjxb+6xDwyP6Sktjqy
-         pYwQTeHCf1VukQNjgXLzFXnRqzPd4xdgKHr/yxss2xe/28hY+OkGscjOW6LxQS1R/N
-         b+zq6cU68fXZwJ5trOHj5E/WcnB6ZzT9NejYelpo=
+        b=qjAtwWNYbP9oaK+3pbxCqUk0dIfDnE9pK9LQltgNPA2tKGGwJvIVRrhK0fPnigvQZ
+         8hWt3DGsT+Y2RqGH+d2OvulOCC6tdwQDRL7ZMl8aiYz+9wWIr0pNXabK6NVokNATp1
+         gTfGb8UYEIuvjzcg5EET+gd/ZOLKY6quNNDJ2z3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Charlene Liu <Charlene.Liu@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 161/239] drm/amd/display: Add NULL plane_state check for cursor disable logic
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 173/381] md/raid10: fix leak of r10bio->remaining for recovery
 Date:   Mon, 15 May 2023 18:27:04 +0200
-Message-Id: <20230515161726.504423922@linuxfoundation.org>
+Message-Id: <20230515161744.623007375@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,43 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit d29fb7baab09b6a1dc484c9c67933253883e770a upstream.
+[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
 
-[Why]
-While scanning the top_pipe connections we can run into a case where
-the bottom pipe is still connected to a top_pipe but with a NULL
-plane_state.
+raid10_sync_request() will add 'r10bio->remaining' for both rdev and
+replacement rdev. However, if the read io fails, recovery_request_write()
+returns without issuing the write io, in this case, end_sync_request()
+is only called once and 'remaining' is leaked, cause an io hang.
 
-[How]
-Treat a NULL plane_state the same as the plane being invisible for
-pipe cursor disable logic.
+Fix the problem by decreasing 'remaining' according to if 'bio' and
+'repl_bio' is valid.
 
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/raid10.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -3369,7 +3369,9 @@ static bool dcn10_can_pipe_disable_curso
- 	for (test_pipe = pipe_ctx->top_pipe; test_pipe;
- 	     test_pipe = test_pipe->top_pipe) {
- 		// Skip invisible layer and pipe-split plane on same layer
--		if (!test_pipe->plane_state->visible || test_pipe->plane_state->layer_index == cur_layer)
-+		if (!test_pipe->plane_state ||
-+		    !test_pipe->plane_state->visible ||
-+		    test_pipe->plane_state->layer_index == cur_layer)
- 			continue;
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 0e741a8d278df..ea0351fa1b549 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2212,11 +2212,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ {
+ 	struct r10conf *conf = mddev->private;
+ 	int d;
+-	struct bio *wbio, *wbio2;
++	struct bio *wbio = r10_bio->devs[1].bio;
++	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
++
++	/* Need to test wbio2->bi_end_io before we call
++	 * submit_bio_noacct as if the former is NULL,
++	 * the latter is free to free wbio2.
++	 */
++	if (wbio2 && !wbio2->bi_end_io)
++		wbio2 = NULL;
  
- 		r2 = test_pipe->plane_res.scl_data.recout;
+ 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
+ 		fix_recovery_read_error(r10_bio);
+-		end_sync_request(r10_bio);
++		if (wbio->bi_end_io)
++			end_sync_request(r10_bio);
++		if (wbio2)
++			end_sync_request(r10_bio);
+ 		return;
+ 	}
+ 
+@@ -2225,14 +2236,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ 	 * and submit the write request
+ 	 */
+ 	d = r10_bio->devs[1].devnum;
+-	wbio = r10_bio->devs[1].bio;
+-	wbio2 = r10_bio->devs[1].repl_bio;
+-	/* Need to test wbio2->bi_end_io before we call
+-	 * submit_bio_noacct as if the former is NULL,
+-	 * the latter is free to free wbio2.
+-	 */
+-	if (wbio2 && !wbio2->bi_end_io)
+-		wbio2 = NULL;
+ 	if (wbio->bi_end_io) {
+ 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
+ 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
+-- 
+2.39.2
+
 
 
