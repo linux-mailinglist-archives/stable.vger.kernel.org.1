@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02389703550
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA00970366E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243288AbjEOQ5q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37538 "EHLO
+        id S243663AbjEORKM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243313AbjEOQ5j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF5B7AB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:37 -0700 (PDT)
+        with ESMTP id S243708AbjEORJb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C395DC4A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE72B62A07
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3420C433EF;
-        Mon, 15 May 2023 16:57:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AEA562B34
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968EFC433D2;
+        Mon, 15 May 2023 17:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169856;
-        bh=uj+gcVHHknqsuUYqH19xmCR92HGJ0Y0REI1UsmLYbgs=;
+        s=korg; t=1684170479;
+        bh=n1RF0TGLAGhvOAJmjqRi911ZUpat4gINPHLDltTlltg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OyTVa2ETnu/Ql6S5m4Hx8rLo3x39+RTflx0F9Q3jmKZkGbc/+zbJuvJVtRMs5KJq/
-         kYhqvFYKbZX9p+5l8H3mXunsDP66zrZZYmYy4ww4g8gFK+SeQIX9oDcUoFDWXnQelC
-         B2Y9DwOQu99VwU0fsoA/YY4c/4+svA0xo0r+ExwE=
+        b=IFVY8Txd4JTg8YNELVYMF+XSbioAlYFhljhB0LE2449TM7TReMDUwPP3tCJNb6w/6
+         pJ8lOC8AmNuYYxE6tzPUXAfE2yFrFM6CBVJOSUBX2xQ/JnlXfl52E47eXOw4BmzvRq
+         /iOaaqXghkqb7OVEbBNceWZZUDmx8/vXQ+0q9y8E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Nikl=C4=81vs=20Ko=C4=BCes=C5=86ikovs?= 
-        <89q1r14hd@relay.firefox.com>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Hersen Wu <hersenxs.wu@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 193/246] drm/amd/display: fix access hdcp_workqueue assert
-Date:   Mon, 15 May 2023 18:26:45 +0200
-Message-Id: <20230515161728.406610761@linuxfoundation.org>
+        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
+        Joel Stanley <joel@jms.id.au>
+Subject: [PATCH 6.1 143/239] ARM: dts: aspeed: asrock: Correct firmware flash SPI clocks
+Date:   Mon, 15 May 2023 18:26:46 +0200
+Message-Id: <20230515161725.978148961@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,78 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Zev Weiss <zev@bewilderbeest.net>
 
-commit 3cf7cd3f770a0b89dc5f06e19edb52e65b93b214 upstream.
+commit 9dedb724446913ea7b1591b4b3d2e3e909090980 upstream.
 
-[Why] hdcp are enabled for asics from raven. for old asics
-which hdcp are not enabled, hdcp_workqueue are null. some
-access to hdcp work queue are not guarded with pointer check.
+While I'm not aware of any problems that have occurred running these
+at 100 MHz, the official word from ASRock is that 50 MHz is the
+correct speed to use, so let's be safe and use that instead.
 
-[How] add hdcp_workqueue pointer check before access workqueue.
-
-Fixes: 82986fd631fa ("drm/amd/display: save restore hdcp state when display is unplugged from mst hub")
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2444
-Reported-by: Niklāvs Koļesņikovs <89q1r14hd@relay.firefox.com>
-Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
 Cc: stable@vger.kernel.org
+Fixes: 2b81613ce417 ("ARM: dts: aspeed: Add ASRock E3C246D4I BMC")
+Fixes: a9a3d60b937a ("ARM: dts: aspeed: Add ASRock ROMED8HM3 BMC")
+Link: https://lore.kernel.org/r/20230224000400.12226-4-zev@bewilderbeest.net
+Signed-off-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           |    6 ++++
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   16 +++++++-----
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts | 2 +-
+ arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8533,6 +8533,9 @@ static void amdgpu_dm_atomic_commit_tail
- 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
- 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
- 
-+		if (!adev->dm.hdcp_workqueue)
-+			continue;
-+
- 		pr_debug("[HDCP_DM] -------------- i : %x ----------\n", i);
- 
- 		if (!connector)
-@@ -8581,6 +8584,9 @@ static void amdgpu_dm_atomic_commit_tail
- 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
- 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
- 
-+		if (!adev->dm.hdcp_workqueue)
-+			continue;
-+
- 		new_crtc_state = NULL;
- 		old_crtc_state = NULL;
- 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -385,13 +385,17 @@ static int dm_dp_mst_get_modes(struct dr
- 		if (aconnector->dc_sink && connector->state) {
- 			struct drm_device *dev = connector->dev;
- 			struct amdgpu_device *adev = drm_to_adev(dev);
--			struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
--			struct hdcp_workqueue *hdcp_w = &hdcp_work[aconnector->dc_link->link_index];
- 
--			connector->state->hdcp_content_type =
--			hdcp_w->hdcp_content_type[connector->index];
--			connector->state->content_protection =
--			hdcp_w->content_protection[connector->index];
-+			if (adev->dm.hdcp_workqueue) {
-+				struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
-+				struct hdcp_workqueue *hdcp_w =
-+					&hdcp_work[aconnector->dc_link->link_index];
-+
-+				connector->state->hdcp_content_type =
-+				hdcp_w->hdcp_content_type[connector->index];
-+				connector->state->content_protection =
-+				hdcp_w->content_protection[connector->index];
-+			}
- 		}
- #endif
- 
+diff --git a/arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts b/arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts
+index 67a75aeafc2b..c4b2efbfdf56 100644
+--- a/arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts
++++ b/arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts
+@@ -63,7 +63,7 @@ flash@0 {
+ 		status = "okay";
+ 		m25p,fast-read;
+ 		label = "bmc";
+-		spi-max-frequency = <100000000>; /* 100 MHz */
++		spi-max-frequency = <50000000>; /* 50 MHz */
+ #include "openbmc-flash-layout.dtsi"
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts b/arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts
+index 00efe1a93a69..4554abf0c7cd 100644
+--- a/arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts
++++ b/arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts
+@@ -51,7 +51,7 @@ flash@0 {
+ 		status = "okay";
+ 		m25p,fast-read;
+ 		label = "bmc";
+-		spi-max-frequency = <100000000>; /* 100 MHz */
++		spi-max-frequency = <50000000>; /* 50 MHz */
+ #include "openbmc-flash-layout-64.dtsi"
+ 	};
+ };
+-- 
+2.40.1
+
 
 
