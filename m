@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56B00703B17
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 322E7703765
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243389AbjEOR7P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60446 "EHLO
+        id S243943AbjEORU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244812AbjEOR6r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:47 -0400
+        with ESMTP id S244064AbjEORUj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C463189BB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C6E8106E6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 188E062FF0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2EEC433D2;
-        Mon, 15 May 2023 17:56:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48FD1621F4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E29BC433D2;
+        Mon, 15 May 2023 17:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173376;
-        bh=D1GtJnp1crPI/CgHevZZgWK1yPv+KTZC7pmAGrdnMXE=;
+        s=korg; t=1684171090;
+        bh=N4j3UetDREU97zvtSxjpWrR8AZlNcTWfAVMJuufj21w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vm3nOkVBtpZAUixInrOK7mO/ZLLePLqY5b2/pe856B+oC0/egIQmhtewwqFnqx2Zf
-         TxHB1PhG78l/SGhios0rpIs2H+YNaAkzGeNLre2L4+rlFvn5PIPLjEh1s5Shws4XZf
-         VRBOsE+jMYToMpHLS5KHtFl9BiyEllkuOdd32iF8=
+        b=N0VnaXZ8bRmtUAE+S5A5MA5xrBCVOnm+Wp2aWAWiSzwRYVOQaBZd/plUtRVa8FxGQ
+         FZk4edqgRbV/YaOxovnJajndiC19mJuJUpNZBByca6mtHqsnVvy9NJ1eZiqiSA6JYO
+         mc0zWp3P/4es47qQ21TfTDgypuBZEXD5gnq43HAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dafna Hirschfeld <dafna.hirschfeld@collabora.com>,
-        Helen Koike <helen.koike@collabora.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/282] media: uapi: add MEDIA_BUS_FMT_METADATA_FIXED media bus format.
+Subject: [PATCH 6.2 097/242] perf hist: Improve srcfile sort key performance (really)
 Date:   Mon, 15 May 2023 18:27:03 +0200
-Message-Id: <20230515161723.613443621@linuxfoundation.org>
+Message-Id: <20230515161724.817887906@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,80 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dafna Hirschfeld <dafna.hirschfeld@collabora.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 6ad253cc3436269fc6bcff03d704c672f368da0a ]
+[ Upstream commit 6094c7744bb0563e833e81d8df8513f9a4e7a257 ]
 
-MEDIA_BUS_FMT_METADATA_FIXED should be used when
-the same driver handles both sides of the link and
-the bus format is a fixed metadata format that is
-not configurable from userspace.
-The width and height will be set to 0 for this format.
+The earlier commit f0cdde28fecc0d7f ("perf hist: Improve srcfile sort
+key performance") updated the srcfile logic but missed to change the
+->cmp() callback which is called for every sample.
 
-Signed-off-by: Dafna Hirschfeld <dafna.hirschfeld@collabora.com>
-Acked-by: Helen Koike <helen.koike@collabora.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: eed9496a0501 ("media: av7110: prevent underflow in write_ts_to_decoder()")
+It should use the same logic like in the srcline to speed up the
+processing because it'd return the same information repeatedly for the
+same address.  The real processing will be done in
+sort__srcfile_collapse().
+
+Fixes: f0cdde28fecc0d7f ("perf hist: Improve srcfile sort key performance")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230323025005.191239-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/uapi/v4l/subdev-formats.rst         | 27 +++++++++++++++++++
- include/uapi/linux/media-bus-format.h         |  8 ++++++
- 2 files changed, 35 insertions(+)
+ tools/perf/util/sort.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/Documentation/media/uapi/v4l/subdev-formats.rst b/Documentation/media/uapi/v4l/subdev-formats.rst
-index 15e11f27b4c8f..b89a2f6c91552 100644
---- a/Documentation/media/uapi/v4l/subdev-formats.rst
-+++ b/Documentation/media/uapi/v4l/subdev-formats.rst
-@@ -7794,3 +7794,30 @@ formats.
-       - 0x5001
-       - Interleaved raw UYVY and JPEG image format with embedded meta-data
- 	used by Samsung S3C73MX camera sensors.
-+
-+.. _v4l2-mbus-metadata-fmts:
-+
-+Metadata Formats
-+^^^^^^^^^^^^^^^^
-+
-+This section lists all metadata formats.
-+
-+The following table lists the existing metadata formats.
-+
-+.. tabularcolumns:: |p{8.0cm}|p{1.4cm}|p{7.7cm}|
-+
-+.. flat-table:: Metadata formats
-+    :header-rows:  1
-+    :stub-columns: 0
-+
-+    * - Identifier
-+      - Code
-+      - Comments
-+    * .. _MEDIA-BUS-FMT-METADATA-FIXED:
-+
-+      - MEDIA_BUS_FMT_METADATA_FIXED
-+      - 0x7001
-+      - This format should be used when the same driver handles
-+	both sides of the link and the bus format is a fixed
-+	metadata format that is not configurable from userspace.
-+	Width and height will be set to 0 for this format.
-diff --git a/include/uapi/linux/media-bus-format.h b/include/uapi/linux/media-bus-format.h
-index 16c1fa2d89a42..052c8308b995c 100644
---- a/include/uapi/linux/media-bus-format.h
-+++ b/include/uapi/linux/media-bus-format.h
-@@ -155,4 +155,12 @@
- /* HSV - next is	0x6002 */
- #define MEDIA_BUS_FMT_AHSV8888_1X32		0x6001
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index 37662cdec5eef..2bf3f88276972 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -603,12 +603,7 @@ static char *hist_entry__get_srcfile(struct hist_entry *e)
+ static int64_t
+ sort__srcfile_cmp(struct hist_entry *left, struct hist_entry *right)
+ {
+-	if (!left->srcfile)
+-		left->srcfile = hist_entry__get_srcfile(left);
+-	if (!right->srcfile)
+-		right->srcfile = hist_entry__get_srcfile(right);
+-
+-	return strcmp(right->srcfile, left->srcfile);
++	return sort__srcline_cmp(left, right);
+ }
  
-+/*
-+ * This format should be used when the same driver handles
-+ * both sides of the link and the bus format is a fixed
-+ * metadata format that is not configurable from userspace.
-+ * Width and height will be set to 0 for this format.
-+ */
-+#define MEDIA_BUS_FMT_METADATA_FIXED		0x7001
-+
- #endif /* __LINUX_MEDIA_BUS_FORMAT_H */
+ static int64_t
 -- 
 2.39.2
 
