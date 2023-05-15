@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA677035D1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EEC0703B3A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243551AbjEORDE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40386 "EHLO
+        id S243528AbjEOSA5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243452AbjEORCo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:44 -0400
+        with ESMTP id S243991AbjEOSAf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9547893F9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F05A1994B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A5962A82
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD13C433D2;
-        Mon, 15 May 2023 17:00:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CE9C62FE9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32470C433EF;
+        Mon, 15 May 2023 17:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170036;
-        bh=bxY6flUVg6hxBf+YC4JoIgClaWBrMJABTZY30VfhaKE=;
+        s=korg; t=1684173472;
+        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BMgxrr4WZQiu2NPK0SaLgPJb9sCF0FrpMGgmRTIsCmlG6nIyZyrUilOVkmpipF6ip
-         7ekjGAPmErqeotWwxzuuVLndiRmVtjpOYLsZJ/0EcBEC++bKMp4wJXX2GlO1mfVpiy
-         /5HzNQOofDgPaEOfs79vaaJtjaSiS0I3uLcA9gvk=
+        b=io1a06uwXo3mAf1sNyuhDBAQQuHNeBMLd/a5nr1OMbYSSkY6MIelirCk3Inn3s5ol
+         iaaxCArVegxol6YDgZO8wbRic6xUVCduxSLPMcC+UAcJHTyZ+2SQo+u0pu3J2L4awf
+         MKG9K1z0mviPJ6QUhVlH/PvA7nXnBsw20SGBVBm4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.3 243/246] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 077/282] wifi: ath6kl: reduce WARN to dev_dbg() in callback
 Date:   Mon, 15 May 2023 18:27:35 +0200
-Message-Id: <20230515161729.949053986@linuxfoundation.org>
+Message-Id: <20230515161724.549300929@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,94 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit fc96ec826bced75cc6b9c07a4ac44bbf651337ab upstream.
+[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
 
-On CPM, the RISC core is a lot more efficiant when doing transfers
-in 16-bits chunks than in 8-bits chunks, but unfortunately the
-words need to be byte swapped as seen in a previous commit.
+The warn is triggered on a known race condition, documented in the code above
+the test, that is correctly handled.  Using WARN() hinders automated testing.
+Reducing severity.
 
-So, for large tranfers with an even size, allocate a temporary tx
-buffer and byte-swap data before and after transfer.
-
-This change allows setting higher speed for transfer. For instance
-on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
-that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
-at 25 MHz while a word transfer at the same speed uses 0.032%
-of CPM load. This means the speed can be 6 times higher in
-word mode for the same CPM load.
-
-For the time being, only do it on CPM1 as there must be a
-trade-off between the CPM load reduction and the CPU load required
-to byte swap the data.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
+Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
- drivers/spi/spi-fsl-spi.c |    3 +++
- 2 files changed, 26 insertions(+)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -21,6 +21,7 @@
- #include <linux/spi/spi.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
-+#include <linux/byteorder/generic.h>
- 
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
- 		mspi->rx_dma = mspi->dma_dummy_rx;
- 		mspi->map_rx_dma = 0;
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index c68848819a52d..9b88d96bfe96c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
+ 	 */
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
  	}
-+	if (t->bits_per_word == 16 && t->tx_buf) {
-+		const u16 *src = t->tx_buf;
-+		u16 *dst;
-+		int i;
-+
-+		dst = kmalloc(t->len, GFP_KERNEL);
-+		if (!dst)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < t->len >> 1; i++)
-+			dst[i] = cpu_to_le16p(src + i);
-+
-+		mspi->tx = dst;
-+		mspi->map_tx_dma = 1;
-+	}
- 
- 	if (mspi->map_tx_dma) {
- 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
-@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
- 	if (mspi->map_rx_dma)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
-+
-+	if (t->bits_per_word == 16 && t->rx_buf) {
-+		int i;
-+
-+		for (i = 0; i < t->len; i += 2)
-+			le16_to_cpus(t->rx_buf + i);
-+	}
- }
- EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
- 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -351,6 +351,9 @@ static int fsl_spi_prepare_message(struc
- 				return -EINVAL;
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
-+			if (t->bits_per_word == 8 && t->len >= 256 &&
-+			    (mpc8xxx_spi->flags & SPI_CPM1))
-+				t->bits_per_word = 16;
- 		}
- 	}
- 	return fsl_spi_setup_transfer(m->spi, first);
+-- 
+2.39.2
+
 
 
