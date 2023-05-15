@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A99107036C6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C887703585
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243777AbjEORNy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:13:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54518 "EHLO
+        id S243344AbjEOQ7j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:59:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243816AbjEORNa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB4DCA5C8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:49 -0700 (PDT)
+        with ESMTP id S243247AbjEOQ7a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D798E6A75
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCF2562B5C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70D5C433EF;
-        Mon, 15 May 2023 17:11:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 614D762A5B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E365C433D2;
+        Mon, 15 May 2023 16:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170709;
-        bh=7OUK97C5iHsWr2QaPyn8rk8/bCc8lvYudI710fn/FRU=;
+        s=korg; t=1684169967;
+        bh=dsUlUcH35UsGZm/tuCNh2+AMskVqpgqz+1l8V4/0b2s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FwUJkHQj3VtL2UPxzwqvzzRXTrF2xzIaMBwaa9x8ZNvb+mhAg26FUprIUfZMDx21Q
-         RX0OUscaF+YFTBltZVLJsjt1FdzArmxFOg5Fj86CpR/WuUwzOT79SGvExs9yXTBLP7
-         L7Lnt+TGAclsORwDsrwiZ2CFUaQynCTYr8jtzVwg=
+        b=pr//Gsgj5A5m2wWQlkMyKtyqX9KB49JjK5da3KtXm55MV1I828XdgpUZm1U8lHb44
+         ltFUKI1H5BslWZmtQr2X67ekp/LtCIWi3LmC40OocKX83mx6S/6JrpheUWSWdWYwj6
+         QlHgFhcfPjZXrWlDdcvH8STtTp6c6RrkkokyfRNQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lijo Lazar <lijo.lazar@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 178/239] drm/amd: Add a new helper for loading/validating microcode
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+4a03518df1e31b537066@syzkaller.appspotmail.com,
+        Dmitry Vyukov <dvyukov@google.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.3 229/246] ext4: fix data races when using cached status extents
 Date:   Mon, 15 May 2023 18:27:21 +0200
-Message-Id: <20230515161727.007875544@linuxfoundation.org>
+Message-Id: <20230515161729.479530925@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,81 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 2210af50ae7f4104269dfde7bafbbfbacdbe1a2b upstream.
+commit 492888df0c7b42fc0843631168b0021bc4caee84 upstream.
 
-All microcode runs a basic validation after it's been loaded. Each
-IP block as part of init will run both.
+When using cached extent stored in extent status tree in tree->cache_es
+another process holding ei->i_es_lock for reading can be racing with us
+setting new value of tree->cache_es. If the compiler would decide to
+refetch tree->cache_es at an unfortunate moment, it could result in a
+bogus in_range() check. Fix the possible race by using READ_ONCE() when
+using tree->cache_es only under ei->i_es_lock for reading.
 
-Introduce a wrapper for request_firmware and amdgpu_ucode_validate.
-This wrapper will also remap any error codes from request_firmware
-to -ENODEV.  This is so that early_init will fail if firmware couldn't
-be loaded instead of the IP block being disabled.
-
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@kernel.org
+Reported-by: syzbot+4a03518df1e31b537066@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000d3b33905fa0fd4a6@google.com
+Suggested-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230504125524.10802-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c |   36 ++++++++++++++++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h |    3 ++
- 2 files changed, 39 insertions(+)
+ fs/ext4/extents_status.c |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
-@@ -1091,3 +1091,39 @@ void amdgpu_ucode_ip_version_decode(stru
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -267,14 +267,12 @@ static void __es_find_extent_range(struc
  
- 	snprintf(ucode_prefix, len, "%s_%d_%d_%d", ip_name, maj, min, rev);
- }
-+
-+/*
-+ * amdgpu_ucode_request - Fetch and validate amdgpu microcode
-+ *
-+ * @adev: amdgpu device
-+ * @fw: pointer to load firmware to
-+ * @fw_name: firmware to load
-+ *
-+ * This is a helper that will use request_firmware and amdgpu_ucode_validate
-+ * to load and run basic validation on firmware. If the load fails, remap
-+ * the error code to -ENODEV, so that early_init functions will fail to load.
-+ */
-+int amdgpu_ucode_request(struct amdgpu_device *adev, const struct firmware **fw,
-+			 const char *fw_name)
-+{
-+	int err = request_firmware(fw, fw_name, adev->dev);
-+
-+	if (err)
-+		return -ENODEV;
-+	err = amdgpu_ucode_validate(*fw);
-+	if (err)
-+		dev_dbg(adev->dev, "\"%s\" failed to validate\n", fw_name);
-+
-+	return err;
-+}
-+
-+/*
-+ * amdgpu_ucode_release - Release firmware microcode
-+ *
-+ * @fw: pointer to firmware to release
-+ */
-+void amdgpu_ucode_release(const struct firmware **fw)
-+{
-+	release_firmware(*fw);
-+	*fw = NULL;
-+}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
-@@ -543,6 +543,9 @@ void amdgpu_ucode_print_sdma_hdr(const s
- void amdgpu_ucode_print_psp_hdr(const struct common_firmware_header *hdr);
- void amdgpu_ucode_print_gpu_info_hdr(const struct common_firmware_header *hdr);
- int amdgpu_ucode_validate(const struct firmware *fw);
-+int amdgpu_ucode_request(struct amdgpu_device *adev, const struct firmware **fw,
-+			 const char *fw_name);
-+void amdgpu_ucode_release(const struct firmware **fw);
- bool amdgpu_ucode_hdr_version(union amdgpu_firmware_header *hdr,
- 				uint16_t hdr_major, uint16_t hdr_minor);
+ 	/* see if the extent has been cached */
+ 	es->es_lblk = es->es_len = es->es_pblk = 0;
+-	if (tree->cache_es) {
+-		es1 = tree->cache_es;
+-		if (in_range(lblk, es1->es_lblk, es1->es_len)) {
+-			es_debug("%u cached by [%u/%u) %llu %x\n",
+-				 lblk, es1->es_lblk, es1->es_len,
+-				 ext4_es_pblock(es1), ext4_es_status(es1));
+-			goto out;
+-		}
++	es1 = READ_ONCE(tree->cache_es);
++	if (es1 && in_range(lblk, es1->es_lblk, es1->es_len)) {
++		es_debug("%u cached by [%u/%u) %llu %x\n",
++			 lblk, es1->es_lblk, es1->es_len,
++			 ext4_es_pblock(es1), ext4_es_status(es1));
++		goto out;
+ 	}
  
+ 	es1 = __es_tree_search(&tree->root, lblk);
+@@ -293,7 +291,7 @@ out:
+ 	}
+ 
+ 	if (es1 && matching_fn(es1)) {
+-		tree->cache_es = es1;
++		WRITE_ONCE(tree->cache_es, es1);
+ 		es->es_lblk = es1->es_lblk;
+ 		es->es_len = es1->es_len;
+ 		es->es_pblk = es1->es_pblk;
+@@ -931,14 +929,12 @@ int ext4_es_lookup_extent(struct inode *
+ 
+ 	/* find extent in cache firstly */
+ 	es->es_lblk = es->es_len = es->es_pblk = 0;
+-	if (tree->cache_es) {
+-		es1 = tree->cache_es;
+-		if (in_range(lblk, es1->es_lblk, es1->es_len)) {
+-			es_debug("%u cached by [%u/%u)\n",
+-				 lblk, es1->es_lblk, es1->es_len);
+-			found = 1;
+-			goto out;
+-		}
++	es1 = READ_ONCE(tree->cache_es);
++	if (es1 && in_range(lblk, es1->es_lblk, es1->es_len)) {
++		es_debug("%u cached by [%u/%u)\n",
++			 lblk, es1->es_lblk, es1->es_len);
++		found = 1;
++		goto out;
+ 	}
+ 
+ 	node = tree->root.rb_node;
 
 
