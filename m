@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D594270333F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBF0270362E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242532AbjEOQex (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
+        id S243669AbjEORHd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:07:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242760AbjEOQet (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:49 -0400
+        with ESMTP id S243569AbjEORHI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B04C3E6E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65895DC43
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 457BE627CB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D9DC433EF;
-        Mon, 15 May 2023 16:34:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4585861FBB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F9FC433EF;
+        Mon, 15 May 2023 17:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168487;
-        bh=qonoS5KuDxf1VuDrNx8O3V5Q9HdjLNeq40HFhFAjnXI=;
+        s=korg; t=1684170338;
+        bh=7uBiXhnuBjQruTsrEUwmig8ykQTwGnVtjbelpggzgr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0p5v4u2cHV/w6AJRZOrDDUScaIp0yvUZW2eOypKpR9mCYC+9i8L4MpcFdKOTveJcK
-         gJuqdW+PbMkLmqwpgpkhKEhCfpmkq8UgyHdyhj7EKHwm1mRe66Ixrh/mQ6Fp5RfPt5
-         GBgXKlZbkddI6KDFnm7/m/UPYyydOJnaFuodVFmk=
+        b=p7tSB0IiZ42BXSlocsWFV5qC2z+Z659Zz2M13yF6TxZD+tgRio3vMbUNbAY6QM8Di
+         fSHgfyqG1Mtkk7TlFpTZpYZxvTKIUXUAwn3J3nPvNdeV/0hOB9GBQizGx9uTB9o6pa
+         7vMRQze3G3rLDcGTJTyXXpBTD8NMqyf6pVvqXG7s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 066/116] clk: add missing of_node_put() in "assigned-clocks" property parsing
+Subject: [PATCH 6.1 100/239] crypto: api - Add scaffolding to change completion function signature
 Date:   Mon, 15 May 2023 18:26:03 +0200
-Message-Id: <20230515161700.476735172@linuxfoundation.org>
+Message-Id: <20230515161724.684554549@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +54,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clément Léger <clement.leger@bootlin.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 27a6e1b09a782517fddac91259970ac466a3f7b6 ]
+[ Upstream commit c35e03eaece71101ff6cbf776b86403860ac8cc3 ]
 
-When returning from of_parse_phandle_with_args(), the np member of the
-of_phandle_args structure should be put after usage. Add missing
-of_node_put() calls in both __set_clk_parents() and __set_clk_rates().
+The crypto completion function currently takes a pointer to a
+struct crypto_async_request object.  However, in reality the API
+does not allow the use of any part of the object apart from the
+data field.  For example, ahash/shash will create a fake object
+on the stack to pass along a different data field.
 
-Fixes: 86be408bfbd8 ("clk: Support for clock parents and rates assigned from device tree")
-Signed-off-by: Clément Léger <clement.leger@bootlin.com>
-Link: https://lore.kernel.org/r/20230131083227.10990-1-clement.leger@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+This leads to potential bugs where the user may try to dereference
+or otherwise use the crypto_async_request object.
+
+This patch adds some temporary scaffolding so that the completion
+function can take a void * instead.  Once affected users have been
+converted this can be removed.
+
+The helper crypto_request_complete will remain even after the
+conversion is complete.  It should be used instead of calling
+the completion function directly.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 4140aafcff16 ("crypto: engine - fix crypto_queue backlog handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-conf.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/crypto/algapi.h | 7 +++++++
+ include/linux/crypto.h  | 6 ++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
-index 49819b546134b..5c6760e45a16e 100644
---- a/drivers/clk/clk-conf.c
-+++ b/drivers/clk/clk-conf.c
-@@ -36,9 +36,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
- 			else
- 				return rc;
- 		}
--		if (clkspec.np == node && !clk_supplier)
-+		if (clkspec.np == node && !clk_supplier) {
-+			of_node_put(clkspec.np);
- 			return 0;
-+		}
- 		pclk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(pclk)) {
- 			if (PTR_ERR(pclk) != -EPROBE_DEFER)
- 				pr_warn("clk: couldn't get parent clock %d for %pOF\n",
-@@ -51,10 +54,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
- 		if (rc < 0)
- 			goto err;
- 		if (clkspec.np == node && !clk_supplier) {
-+			of_node_put(clkspec.np);
- 			rc = 0;
- 			goto err;
- 		}
- 		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(clk)) {
- 			if (PTR_ERR(clk) != -EPROBE_DEFER)
- 				pr_warn("clk: couldn't get assigned clock %d for %pOF\n",
-@@ -96,10 +101,13 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
- 				else
- 					return rc;
- 			}
--			if (clkspec.np == node && !clk_supplier)
-+			if (clkspec.np == node && !clk_supplier) {
-+				of_node_put(clkspec.np);
- 				return 0;
-+			}
+diff --git a/include/crypto/algapi.h b/include/crypto/algapi.h
+index f50c5d1725da5..224b860647083 100644
+--- a/include/crypto/algapi.h
++++ b/include/crypto/algapi.h
+@@ -265,4 +265,11 @@ enum {
+ 	CRYPTO_MSG_ALG_LOADED,
+ };
  
- 			clk = of_clk_get_from_provider(&clkspec);
-+			of_node_put(clkspec.np);
- 			if (IS_ERR(clk)) {
- 				if (PTR_ERR(clk) != -EPROBE_DEFER)
- 					pr_warn("clk: couldn't get clock %d for %pOF\n",
++static inline void crypto_request_complete(struct crypto_async_request *req,
++					   int err)
++{
++	crypto_completion_t complete = req->complete;
++	complete(req, err);
++}
++
+ #endif	/* _CRYPTO_ALGAPI_H */
+diff --git a/include/linux/crypto.h b/include/linux/crypto.h
+index 2324ab6f1846b..e3c4be29aaccb 100644
+--- a/include/linux/crypto.h
++++ b/include/linux/crypto.h
+@@ -176,6 +176,7 @@ struct crypto_async_request;
+ struct crypto_tfm;
+ struct crypto_type;
+ 
++typedef struct crypto_async_request crypto_completion_data_t;
+ typedef void (*crypto_completion_t)(struct crypto_async_request *req, int err);
+ 
+ /**
+@@ -595,6 +596,11 @@ struct crypto_wait {
+ /*
+  * Async ops completion helper functioons
+  */
++static inline void *crypto_get_completion_data(crypto_completion_data_t *req)
++{
++	return req->data;
++}
++
+ void crypto_req_done(struct crypto_async_request *req, int err);
+ 
+ static inline int crypto_wait_req(int err, struct crypto_wait *wait)
 -- 
 2.39.2
 
