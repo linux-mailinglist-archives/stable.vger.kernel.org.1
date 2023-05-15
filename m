@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B66703AFB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D00770369A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231666AbjEOR6c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58586 "EHLO
+        id S243582AbjEORL6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244961AbjEOR5x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:57:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 340331996D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:30 -0700 (PDT)
+        with ESMTP id S243729AbjEORL1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C1F100D5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D6E062FE2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFC4C433D2;
-        Mon, 15 May 2023 17:55:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C147762B33
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE1EC433EF;
+        Mon, 15 May 2023 17:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173327;
-        bh=rKN8FchKCnzGab1wEBlR+lkjrdbK84rIZCbqKmfAAZI=;
+        s=korg; t=1684170573;
+        bh=TifXGaWGBWlm68FOaLPEkkCtywDrgJcuZ+MEP8HwFis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yqaQXdiWJWdNq1c5fJR58zVil/14EbP+2frbR/MN3yK+Pz8NQ7OJlgoRZYht64rez
-         S/aH2zK5v8U3ZYGNmSjXcrKg7qse7ai873toI1qnDmUAEwvyVa3xVvGD0fGmmPzv7b
-         sy4Ej46ua4RbAwnna43aepUkxho8O4b0IzN6kTcY=
+        b=adBr0zBD3mouMAWXVz3p2CCOyFGD40FQQ+gV1mSS54M8VBzYCcZGa7itQ5rw8GZfN
+         tzgzUa6x0tPeJRtLCT5kOAHlriuc3QpUPm5UgT6J91dYUYRNb2RfDFUHZhcqFTY8Xl
+         Lr/pu9hIM5HTPK6NjQYzJlPdIZWzo6QsQ9m6ve1M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 058/282] media: rcar_fdp1: simplify error check logic at fdp_open()
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 173/239] drm/amd/pm: parse pp_handle under appropriate conditions
 Date:   Mon, 15 May 2023 18:27:16 +0200
-Message-Id: <20230515161723.986317840@linuxfoundation.org>
+Message-Id: <20230515161726.859529769@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,62 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit fa9f443f7c962d072d150472e2bb77de39817a9a ]
+commit 58d9b9a14b47c2a3da6effcbb01607ad7edc0275 upstream.
 
-Avoid some code duplication by moving the common error path
-logic at fdp_open().
+amdgpu_dpm_is_overdrive_supported is a common API across all
+asics, so we should cast pp_handle into correct structure
+under different power frameworks.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: using return directly to simplify code
+v3: SI asic does not carry od_enabled member in pp_handle, and update Fixes tag
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2541
+Fixes: eb4900aa4c49 ("drm/amdgpu: Fix kernel NULL pointer dereference in dpm functions")
+Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rcar_fdp1.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
-index 97bed45360f08..d6eee66c8dd49 100644
---- a/drivers/media/platform/rcar_fdp1.c
-+++ b/drivers/media/platform/rcar_fdp1.c
-@@ -2121,9 +2121,7 @@ static int fdp1_open(struct file *file)
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
+@@ -1414,15 +1414,21 @@ int amdgpu_dpm_get_smu_prv_buf_details(s
  
- 	if (ctx->hdl.error) {
- 		ret = ctx->hdl.error;
--		v4l2_ctrl_handler_free(&ctx->hdl);
--		kfree(ctx);
--		goto done;
-+		goto error_ctx;
- 	}
+ int amdgpu_dpm_is_overdrive_supported(struct amdgpu_device *adev)
+ {
+-	struct pp_hwmgr *hwmgr = adev->powerplay.pp_handle;
+-	struct smu_context *smu = adev->powerplay.pp_handle;
++	if (is_support_sw_smu(adev)) {
++		struct smu_context *smu = adev->powerplay.pp_handle;
  
- 	ctx->fh.ctrl_handler = &ctx->hdl;
-@@ -2137,10 +2135,7 @@ static int fdp1_open(struct file *file)
+-	if ((is_support_sw_smu(adev) && smu->od_enabled) ||
+-	    (is_support_sw_smu(adev) && smu->is_apu) ||
+-		(!is_support_sw_smu(adev) && hwmgr->od_enabled))
+-		return true;
++		return (smu->od_enabled || smu->is_apu);
++	} else {
++		struct pp_hwmgr *hwmgr;
  
- 	if (IS_ERR(ctx->fh.m2m_ctx)) {
- 		ret = PTR_ERR(ctx->fh.m2m_ctx);
--
--		v4l2_ctrl_handler_free(&ctx->hdl);
--		kfree(ctx);
--		goto done;
-+		goto error_ctx;
- 	}
- 
- 	/* Perform any power management required */
-@@ -2151,6 +2146,12 @@ static int fdp1_open(struct file *file)
- 	dprintk(fdp1, "Created instance: %p, m2m_ctx: %p\n",
- 		ctx, ctx->fh.m2m_ctx);
- 
-+	mutex_unlock(&fdp1->dev_mutex);
-+	return 0;
+-	return false;
++		/* SI asic does not carry od_enabled */
++		if (adev->family == AMDGPU_FAMILY_SI)
++			return false;
 +
-+error_ctx:
-+	v4l2_ctrl_handler_free(&ctx->hdl);
-+	kfree(ctx);
- done:
- 	mutex_unlock(&fdp1->dev_mutex);
- 	return ret;
--- 
-2.39.2
-
++		hwmgr = (struct pp_hwmgr *)adev->powerplay.pp_handle;
++
++		return hwmgr->od_enabled;
++	}
+ }
+ 
+ int amdgpu_dpm_set_pp_table(struct amdgpu_device *adev,
 
 
