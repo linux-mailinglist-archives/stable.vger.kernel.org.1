@@ -2,51 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 995C770330D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBBD7033D2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242703AbjEOQci (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35166 "EHLO
+        id S242874AbjEOQlz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:41:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242718AbjEOQcd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D7710C3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:32 -0700 (PDT)
+        with ESMTP id S242612AbjEOQly (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8691235BC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED82B62792
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E257AC433EF;
-        Mon, 15 May 2023 16:32:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2345E6289C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7793C433D2;
+        Mon, 15 May 2023 16:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168351;
-        bh=5wrs2YwhIfIgGlE5xIuSlmeURhjYYFBwdUzLbNskQMQ=;
+        s=korg; t=1684168912;
+        bh=RETydS2WhO8BHTIZvVcuOofMQcvxYdqOjTMw5QOfR54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MSUS4qTpLZLq4AZ/WbXbXQ/ISsUpb+P0XkpT5W2L2NSJsDiyQ120Ha+wlXJbConeS
-         v3ATrw1hsxFipYigerRVLhHEvidZThuDnCLc7HbKXLj88T7KqUMx2Z/8ffu9bO022d
-         wBblbNsKBWzSPX6uMYri25tzRjSRsYK5fOWOTZD8=
+        b=thLw5n5N9IJTyXwXxfEnShurbGFBQeoKppU9lxryG6zFm7UiqKEWxg8RrX9O77dV5
+         M6DmwqB6AXzC39/CBY8LGcQz5HirHyrA8XTX8DlmAK+8SQWpv4ImuUGsO3ms90hDt1
+         Ueogv/w5nYPBNWZ2KSExYjGRomUYTBb+SBr/AUvU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Wei Wang <wvw@google.com>,
+        Midas Chien <midaschieh@google.com>,
+        =?UTF-8?q?Chunhui=20Li=20 ?= <chunhui.li@mediatek.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Tony Luck <tony.luck@intel.com>, kernel-team@android.com,
+        John Stultz <jstultz@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 021/116] media: bdisp: Add missing check for create_workqueue
+Subject: [PATCH 4.19 081/191] pstore: Revert pmsg_lock back to a normal mutex
 Date:   Mon, 15 May 2023 18:25:18 +0200
-Message-Id: <20230515161658.988231158@linuxfoundation.org>
+Message-Id: <20230515161710.212636310@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,35 +61,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 2371adeab717d8fe32144a84f3491a03c5838cfb ]
+[ Upstream commit 5239a89b06d6b199f133bf0ffea421683187f257 ]
 
-Add the check for the return value of the create_workqueue
-in order to avoid NULL pointer dereference.
+This reverts commit 76d62f24db07f22ccf9bc18ca793c27d4ebef721.
 
-Fixes: 28ffeebbb7bd ("[media] bdisp: 2D blitter driver using v4l2 mem2mem framework")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+So while priority inversion on the pmsg_lock is an occasional
+problem that an rt_mutex would help with, in uses where logging
+is writing to pmsg heavily from multiple threads, the pmsg_lock
+can be heavily contended.
+
+After this change landed, it was reported that cases where the
+mutex locking overhead was commonly adding on the order of 10s
+of usecs delay had suddenly jumped to ~msec delay with rtmutex.
+
+It seems the slight differences in the locks under this level
+of contention causes the normal mutexes to utilize the spinning
+optimizations, while the rtmutexes end up in the sleeping
+slowpath (which allows additional threads to pile on trying
+to take the lock).
+
+In this case, it devolves to a worse case senerio where the lock
+acquisition and scheduling overhead dominates, and each thread
+is waiting on the order of ~ms to do ~us of work.
+
+Obviously, having tons of threads all contending on a single
+lock for logging is non-optimal, so the proper fix is probably
+reworking pstore pmsg to have per-cpu buffers so we don't have
+contention.
+
+Additionally, Steven Rostedt has provided some furhter
+optimizations for rtmutexes that improves the rtmutex spinning
+path, but at least in my testing, I still see the test tripping
+into the sleeping path on rtmutexes while utilizing the spinning
+path with mutexes.
+
+But in the short term, lets revert the change to the rt_mutex
+and go back to normal mutexes to avoid a potentially major
+performance regression. And we can work on optimizations to both
+rtmutexes and finer-grained locking for pstore pmsg in the
+future.
+
+Cc: Wei Wang <wvw@google.com>
+Cc: Midas Chien<midaschieh@google.com>
+Cc: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Anton Vorontsov <anton@enomsg.org>
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: kernel-team@android.com
+Fixes: 76d62f24db07 ("pstore: Switch pmsg_lock to an rt_mutex to avoid priority inversion")
+Reported-by: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230308204043.2061631-1-jstultz@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/sti/bdisp/bdisp-v4l2.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/pstore/pmsg.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/sti/bdisp/bdisp-v4l2.c b/drivers/media/platform/sti/bdisp/bdisp-v4l2.c
-index 79de7d413cf5e..d7432e0e3e6e1 100644
---- a/drivers/media/platform/sti/bdisp/bdisp-v4l2.c
-+++ b/drivers/media/platform/sti/bdisp/bdisp-v4l2.c
-@@ -1308,6 +1308,8 @@ static int bdisp_probe(struct platform_device *pdev)
- 	init_waitqueue_head(&bdisp->irq_queue);
- 	INIT_DELAYED_WORK(&bdisp->timeout_work, bdisp_irq_timeout);
- 	bdisp->work_queue = create_workqueue(BDISP_NAME);
-+	if (!bdisp->work_queue)
-+		return -ENOMEM;
+diff --git a/fs/pstore/pmsg.c b/fs/pstore/pmsg.c
+index ffc13ea196d2a..24db02de17874 100644
+--- a/fs/pstore/pmsg.c
++++ b/fs/pstore/pmsg.c
+@@ -15,10 +15,9 @@
+ #include <linux/device.h>
+ #include <linux/fs.h>
+ #include <linux/uaccess.h>
+-#include <linux/rtmutex.h>
+ #include "internal.h"
  
- 	spin_lock_init(&bdisp->slock);
- 	mutex_init(&bdisp->lock);
+-static DEFINE_RT_MUTEX(pmsg_lock);
++static DEFINE_MUTEX(pmsg_lock);
+ 
+ static ssize_t write_pmsg(struct file *file, const char __user *buf,
+ 			  size_t count, loff_t *ppos)
+@@ -37,9 +36,9 @@ static ssize_t write_pmsg(struct file *file, const char __user *buf,
+ 	if (!access_ok(VERIFY_READ, buf, count))
+ 		return -EFAULT;
+ 
+-	rt_mutex_lock(&pmsg_lock);
++	mutex_lock(&pmsg_lock);
+ 	ret = psinfo->write_user(&record, buf);
+-	rt_mutex_unlock(&pmsg_lock);
++	mutex_unlock(&pmsg_lock);
+ 	return ret ? ret : count;
+ }
+ 
 -- 
 2.39.2
 
