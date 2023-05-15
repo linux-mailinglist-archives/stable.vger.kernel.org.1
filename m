@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1804703651
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9455E703333
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243448AbjEORJC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:09:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47040 "EHLO
+        id S242756AbjEOQe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243681AbjEORIn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:43 -0400
+        with ESMTP id S242552AbjEOQeY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61747A240
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB45213D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C242A62A99
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:06:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCFAC433D2;
-        Mon, 15 May 2023 17:06:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 00E6E627D4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C61C433D2;
+        Mon, 15 May 2023 16:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170391;
-        bh=B1XIV5xnnTtp6YBbKhW9sCRmRzT9DbVLlipBk2+XD7g=;
+        s=korg; t=1684168454;
+        bh=ufqFlv+I9tCin+KtiMY6Y3gmHisBpvYSxrl/qB3IAjI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WXwD0RR+edizqy7ANXLuF7bE8aN0e9EdTwj96cjo6QCX2nKOAQEbZQvkNgX/sa8WH
-         0jfbVILV0V0DxZuSO1VzbuQLm1tFy3q5a+KlF6ZFPfAwcorxRSSk6g+7ou4jdynWgt
-         hefNP7ZPWOtR9SSfZ+TByYcAvewOqe/nJxN7gF80=
+        b=r7qGeC7OJWe/4zwGc5cBjfbc+hznVhTDclQpVByfoz2feL5f3MoNRlYrZ5cQUVVEN
+         rocpXCsxzZQQ0M12UjONSNe8BAdvLIjA0xYNy1Zg/cBtaxKTWFvhecx0ZQH/cotOdT
+         Z2ljRyzM/+lmS7UJPIE9i1JD9hOGkSUBpkIoz3O0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Wenliang Wang <wangwenliang.1995@bytedance.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/239] virtio_net: suppress cpu stall when free_unused_bufs
+Subject: [PATCH 4.14 053/116] tty: serial: fsl_lpuart: adjust buffer length to the intended size
 Date:   Mon, 15 May 2023 18:25:50 +0200
-Message-Id: <20230515161724.286652919@linuxfoundation.org>
+Message-Id: <20230515161700.031734357@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wenliang Wang <wangwenliang.1995@bytedance.com>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-[ Upstream commit f8bb5104394560e29017c25bcade4c6b7aabd108 ]
+[ Upstream commit f73fd750552524b06b5d77ebfdd106ccc8fcac61 ]
 
-For multi-queue and large ring-size use case, the following error
-occurred when free_unused_bufs:
-rcu: INFO: rcu_sched self-detected stall on CPU.
+Based on the fls function definition provided below, we should not
+subtract 1 to obtain the correct buffer length:
 
-Fixes: 986a4f4d452d ("virtio_net: multiqueue support")
-Signed-off-by: Wenliang Wang <wangwenliang.1995@bytedance.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
+
+Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Link: https://lore.kernel.org/r/20230410195555.1003900-1-shenwei.wang@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/fsl_lpuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 3f1883814ce21..9a612b13b4e46 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3405,12 +3405,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
- 		struct virtqueue *vq = vi->sq[i].vq;
- 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
- 			virtnet_sq_free_unused_buf(vq, buf);
-+		cond_resched();
- 	}
- 
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		struct virtqueue *vq = vi->rq[i].vq;
- 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
- 			virtnet_rq_free_unused_buf(vq, buf);
-+		cond_resched();
- 	}
- }
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 20dd476e4d1a1..e7ab8ec032cfe 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -998,7 +998,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 	 * 10ms at any baud rate.
+ 	 */
+ 	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
+-	sport->rx_dma_rng_buf_len = (1 << (fls(sport->rx_dma_rng_buf_len) - 1));
++	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
+ 	if (sport->rx_dma_rng_buf_len < 16)
+ 		sport->rx_dma_rng_buf_len = 16;
  
 -- 
 2.39.2
