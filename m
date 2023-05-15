@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98DB703973
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF32703AC6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244495AbjEORmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38564 "EHLO
+        id S242509AbjEORzY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244493AbjEORmO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:14 -0400
+        with ESMTP id S245059AbjEORzC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036E79033
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E842659B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7BFC62E24
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB63BC433EF;
-        Mon, 15 May 2023 17:39:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE85C62F77
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D9EC433D2;
+        Mon, 15 May 2023 17:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172390;
-        bh=ojc58rMjtvQJnZH5ift4m2BaI2Ddu85cIVhMmcACl14=;
+        s=korg; t=1684173178;
+        bh=EAhqY54xVuv/AzRcxMobKGeeZIMQy3G4RrmuBodxlYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=asHTf1br/lIebbE24H/ii55XtAwZNcchPvdaZzZ8CZe6J93vUKGwXTVv1fAUNHnRP
-         9PMuNCovMgjjapxfPOlOJMXeVj3c8f+BtDTC963FXRn7F7G+C4v29MaB5YjpxK/V8t
-         7RokOqJJqPe9fWO8o/Wty75+9vVilwraRHmeuW/4=
+        b=QVIZANZ2D1qkYqu58JNivi80O1W/hTGmwi8Vc8/wZgE+Y7pRkI/g5HKB5/dgOCRWA
+         +R9QpbCBFPwYzzY/iBFDhdzpTi7nndqVO+zdlnbLHAvrxwoRhCaFEyR7PcSjZ8xK65
+         0E7oCS7of4bq8ybm/KJ4udATFBFtbcOAJ83252d4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Alexey V. Vissarionov" <gremlin@altlinux.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/381] wifi: ath6kl: minor fix for allocation size
+        syzbot+20dcf81733d43ddff661@syzkaller.appspotmail.com,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Daniel Vetter <daniel.vetter@intel.com>
+Subject: [PATCH 5.4 003/282] drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
 Date:   Mon, 15 May 2023 18:26:21 +0200
-Message-Id: <20230515161742.702838850@linuxfoundation.org>
+Message-Id: <20230515161722.263543624@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey V. Vissarionov <gremlin@altlinux.org>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit 778f83f889e7fca37780d9640fcbd0229ae38eaa ]
+commit 1935f0deb6116dd785ea64d8035eab0ff441255b upstream.
 
-Although the "param" pointer occupies more or equal space compared
-to "*param", the allocation size should use the size of variable
-itself.
+Drivers are supposed to fix this up if needed if they don't outright
+reject it. Uncovered by 6c11df58fd1a ("fbmem: Check virtual screen
+sizes in fb_set_var()").
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bdcd81707973cf8a ("Add ath6kl cleaned up driver")
-Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230117110414.GC12547@altlinux.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+20dcf81733d43ddff661@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=c5faf983bfa4a607de530cd3bb008888bf06cefc
+Cc: stable@vger.kernel.org # v5.4+
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230404194038.472803-1-daniel.vetter@ffwll.ch
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath6kl/bmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_fb_helper.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
-index bde5a10d470c8..af98e871199d3 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -246,7 +246,7 @@ int ath6kl_bmi_execute(struct ath6kl *ar, u32 addr, u32 *param)
- 		return -EACCES;
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -1340,6 +1340,9 @@ int drm_fb_helper_check_var(struct fb_va
+ 		return -EINVAL;
  	}
  
--	size = sizeof(cid) + sizeof(addr) + sizeof(param);
-+	size = sizeof(cid) + sizeof(addr) + sizeof(*param);
- 	if (size > ar->bmi.max_cmd_size) {
- 		WARN_ON(1);
- 		return -EINVAL;
--- 
-2.39.2
-
++	var->xres_virtual = fb->width;
++	var->yres_virtual = fb->height;
++
+ 	/*
+ 	 * Workaround for SDL 1.2, which is known to be setting all pixel format
+ 	 * fields values to zero in some cases. We treat this situation as a
 
 
