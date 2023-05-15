@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3DC7703835
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 859BE703B50
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244056AbjEOR3i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48862 "EHLO
+        id S242735AbjEOSBx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244234AbjEOR3M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:29:12 -0400
+        with ESMTP id S242786AbjEOSBU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 448DC120A3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE2E15EC6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22C9262CB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB45C4339B;
-        Mon, 15 May 2023 17:26:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 529CF63024
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BE1C433EF;
+        Mon, 15 May 2023 17:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171616;
-        bh=LLezx0IRucv1RV+3noGzzS8zmfu+BNHnm6724uHKmY0=;
+        s=korg; t=1684173527;
+        bh=Ii7wuLkIGLx1+y9LU+wkZxE+SrFg+GoEy5rjdrYv8UM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RaMrPKYxJ2PWy3P1ASOpKyV6uHNuO6Noz4fKirFLUsdd8ozaUuWJ5sK/zRlIM0ntU
-         MamGFZQ3x+0eTvRfTFaRgLIyVy2HIuJiVAJ/Nk43Vqy+6ifGvY0RMI57YxsytXVgLJ
-         2oGCob/tiJOrzmyNiC2lNQxow6VrMVs8g3//xk6w=
+        b=unFHvkRMcs9Lr2+rHIk4IpiScLqeYyK0M5T2OfultALUs62+f6sffA3Cok5AwKBf4
+         /7HUkJA2dLxcwrPox6k/U3lab46ftybxNlBWkwpUO6Mn3LVX3qd8nWYBCersiakneL
+         iC3BTIKeNeiwCOqIqWjHYQrWslBFVOX1MjUzcP44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Angelo Dureghello <angelo.dureghello@timesys.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Zeal Robot <zealci@zte.com.cn>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/134] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
+Subject: [PATCH 5.4 123/282] spi: spi-imx: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
 Date:   Mon, 15 May 2023 18:28:21 +0200
-Message-Id: <20230515161703.820875491@linuxfoundation.org>
+Message-Id: <20230515161725.921487540@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,34 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Angelo Dureghello <angelo.dureghello@timesys.com>
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
+[ Upstream commit 7d34ff58f35c82207698f43af79817a05e1342e5 ]
 
-Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
-processing.
+Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
+pm_runtime_put_noidle. This change is just to simplify the code, no
+actual functional changes.
 
-Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
-Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Link: https://lore.kernel.org/r/20220414085343.2541608-1-chi.minghao@zte.com.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 11951c9e3f36 ("spi: imx: Don't skip cleanup in remove's error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index bc363fca2895f..b33aee4404de2 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -4575,6 +4575,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
- 	.set_egress_port = mv88e6095_g1_set_egress_port,
- 	.watchdog_ops = &mv88e6390_watchdog_ops,
-+	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 95f1746a85d9d..780c234257ca8 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1536,7 +1536,7 @@ spi_imx_prepare_message(struct spi_master *master, struct spi_message *msg)
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 	int ret;
+ 
+-	ret = pm_runtime_get_sync(spi_imx->dev);
++	ret = pm_runtime_resume_and_get(spi_imx->dev);
+ 	if (ret < 0) {
+ 		dev_err(spi_imx->dev, "failed to enable clock\n");
+ 		return ret;
+@@ -1737,7 +1737,7 @@ static int spi_imx_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&spi_imx->bitbang);
+ 
+-	ret = pm_runtime_get_sync(spi_imx->dev);
++	ret = pm_runtime_resume_and_get(spi_imx->dev);
+ 	if (ret < 0) {
+ 		dev_err(spi_imx->dev, "failed to enable clock\n");
+ 		return ret;
 -- 
 2.39.2
 
