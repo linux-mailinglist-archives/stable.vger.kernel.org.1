@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E788E7037BD
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55D94703B26
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244189AbjEORX6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
+        id S239357AbjEOSAX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244083AbjEORX2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:28 -0400
+        with ESMTP id S243067AbjEOR7k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:59:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF81A49C3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589E615EFD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 334D86210B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0CCC433D2;
-        Mon, 15 May 2023 17:21:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 394A262FCE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F498C433D2;
+        Mon, 15 May 2023 17:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171316;
-        bh=Ubu3/R8Di4oIVGLabB+YJYu7Hb/XYfxPwgyeTQG1ijo=;
+        s=korg; t=1684173416;
+        bh=hi7LJQ2+6JSwMNxWkh1xoasVnLLqu12APp6YoL8cFmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b7kMWWCafTiCvGXKzF59yJHBUJAPaK0w2r0NSvSWpoT8ebKqFBMhol9U/0x0j43jq
-         0pmey7NznYER5ygw3VTvK1xzTH1FNoI3Peg0X7PaNuRyr+e2U2NdsHpJFG/W0sSV1r
-         LrU7p2C25OHMwUPY84Sele1Vy3paJoR1eabizZfI=
+        b=c9xsUsFvEGAbg04vfMH3Z3lG0P+6E8lm1yx7PsPZlmvpFdynIVAEPJtMuu4P7u3qw
+         9qPFJQb0xiBIAx4WgHR5XDvlbuF6+TO02wbVk2nHf9STQRr2+EtLd68W0RwecYL4+u
+         z4qIucdh08gfYZEWTP2jH7E9Iv7Zemajjxp3DTk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vladimir Panteleev <git@vladimir.panteleev.md>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.2 140/242] btrfs: fix backref walking not returning all inode refs
+        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 088/282] f2fs: handle dqget error in f2fs_transfer_project_quota()
 Date:   Mon, 15 May 2023 18:27:46 +0200
-Message-Id: <20230515161726.102860635@linuxfoundation.org>
+Message-Id: <20230515161724.906275160@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,170 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-commit 0cad8f14d70cfeb5173dce93cafeba665a95430e upstream.
+[ Upstream commit 8051692f5f23260215bfe9a72e712d93606acc5f ]
 
-When using the logical to ino ioctl v2, if the flag to ignore offsets of
-file extent items (BTRFS_LOGICAL_INO_ARGS_IGNORE_OFFSET) is given, the
-backref walking code ends up not returning references for all file offsets
-of an inode that point to the given logical bytenr. This happens since
-kernel 6.2, commit 6ce6ba534418 ("btrfs: use a single argument for extent
-offset in backref walking functions") because:
+We should set the error code when dqget() failed.
 
-1) It mistakenly skipped the search for file extent items in a leaf that
-   point to the target extent if that flag is given. Instead it should
-   only skip the filtering done by check_extent_in_eb() - that is, it
-   should not avoid the calls to that function (or find_extent_in_eb(),
-   which uses it).
-
-2) It was also not building a list of inode extent elements (struct
-   extent_inode_elem) if we have multiple inode references for an extent
-   when the ignore offset flag is given to the logical to ino ioctl - it
-   would leave a single element, only the last one that was found.
-
-These stem from the confusing old interface for backref walking functions
-where we had an extent item offset argument that was a pointer to a u64
-and another boolean argument that indicated if the offset should be
-ignored, but the pointer could be NULL. That NULL case is used by
-relocation, qgroup extent accounting and fiemap, simply to avoid building
-the inode extent list for each reference, as it's not necessary for those
-use cases and therefore avoids memory allocations and some computations.
-
-Fix this by adding a boolean argument to the backref walk context
-structure to indicate that the inode extent list should not be built,
-make relocation set that argument to true and fix the backref walking
-logic to skip the calls to check_extent_in_eb() and find_extent_in_eb()
-only if this new argument is true, instead of 'ignore_extent_item_pos'
-being true.
-
-A test case for fstests will be added soon, to provide cover not only
-for these cases but to the logical to ino ioctl in general as well, as
-currently we do not have a test case for it.
-
-Reported-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-Link: https://lore.kernel.org/linux-btrfs/CAHhfkvwo=nmzrJSqZ2qMfF-rZB-ab6ahHnCD_sq9h4o8v+M7QQ@mail.gmail.com/
-Fixes: 6ce6ba534418 ("btrfs: use a single argument for extent offset in backref walking functions")
-CC: stable@vger.kernel.org # 6.2+
-Tested-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2c1d03056991 ("f2fs: support F2FS_IOC_FS{GET,SET}XATTR")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/backref.c    |   19 ++++++++++---------
- fs/btrfs/backref.h    |    6 ++++++
- fs/btrfs/relocation.c |    2 +-
- 3 files changed, 17 insertions(+), 10 deletions(-)
+ fs/f2fs/file.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -45,7 +45,8 @@ static int check_extent_in_eb(struct btr
- 	int root_count;
- 	bool cached;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index ef08ef0170306..8d4e66f36cf7e 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2821,15 +2821,16 @@ int f2fs_transfer_project_quota(struct inode *inode, kprojid_t kprojid)
+ 	struct dquot *transfer_to[MAXQUOTAS] = {};
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct super_block *sb = sbi->sb;
+-	int err = 0;
++	int err;
  
--	if (!btrfs_file_extent_compression(eb, fi) &&
-+	if (!ctx->ignore_extent_item_pos &&
-+	    !btrfs_file_extent_compression(eb, fi) &&
- 	    !btrfs_file_extent_encryption(eb, fi) &&
- 	    !btrfs_file_extent_other_encoding(eb, fi)) {
- 		u64 data_offset;
-@@ -552,7 +553,7 @@ static int add_all_parents(struct btrfs_
- 				count++;
- 			else
- 				goto next;
--			if (!ctx->ignore_extent_item_pos) {
-+			if (!ctx->skip_inode_ref_list) {
- 				ret = check_extent_in_eb(ctx, &key, eb, fi, &eie);
- 				if (ret == BTRFS_ITERATE_EXTENT_INODES_STOP ||
- 				    ret < 0)
-@@ -564,7 +565,7 @@ static int add_all_parents(struct btrfs_
- 						  eie, (void **)&old, GFP_NOFS);
- 			if (ret < 0)
- 				break;
--			if (!ret && !ctx->ignore_extent_item_pos) {
-+			if (!ret && !ctx->skip_inode_ref_list) {
- 				while (old->next)
- 					old = old->next;
- 				old->next = eie;
-@@ -1598,7 +1599,7 @@ again:
- 				goto out;
- 		}
- 		if (ref->count && ref->parent) {
--			if (!ctx->ignore_extent_item_pos && !ref->inode_list &&
-+			if (!ctx->skip_inode_ref_list && !ref->inode_list &&
- 			    ref->level == 0) {
- 				struct btrfs_tree_parent_check check = { 0 };
- 				struct extent_buffer *eb;
-@@ -1639,7 +1640,7 @@ again:
- 						  (void **)&eie, GFP_NOFS);
- 			if (ret < 0)
- 				goto out;
--			if (!ret && !ctx->ignore_extent_item_pos) {
-+			if (!ret && !ctx->skip_inode_ref_list) {
- 				/*
- 				 * We've recorded that parent, so we must extend
- 				 * its inode list here.
-@@ -1735,7 +1736,7 @@ int btrfs_find_all_leafs(struct btrfs_ba
- static int btrfs_find_all_roots_safe(struct btrfs_backref_walk_ctx *ctx)
- {
- 	const u64 orig_bytenr = ctx->bytenr;
--	const bool orig_ignore_extent_item_pos = ctx->ignore_extent_item_pos;
-+	const bool orig_skip_inode_ref_list = ctx->skip_inode_ref_list;
- 	bool roots_ulist_allocated = false;
- 	struct ulist_iterator uiter;
- 	int ret = 0;
-@@ -1756,7 +1757,7 @@ static int btrfs_find_all_roots_safe(str
- 		roots_ulist_allocated = true;
- 	}
- 
--	ctx->ignore_extent_item_pos = true;
-+	ctx->skip_inode_ref_list = true;
- 
- 	ULIST_ITER_INIT(&uiter);
- 	while (1) {
-@@ -1781,7 +1782,7 @@ static int btrfs_find_all_roots_safe(str
- 	ulist_free(ctx->refs);
- 	ctx->refs = NULL;
- 	ctx->bytenr = orig_bytenr;
--	ctx->ignore_extent_item_pos = orig_ignore_extent_item_pos;
-+	ctx->skip_inode_ref_list = orig_skip_inode_ref_list;
- 
- 	return ret;
+ 	transfer_to[PRJQUOTA] = dqget(sb, make_kqid_projid(kprojid));
+-	if (!IS_ERR(transfer_to[PRJQUOTA])) {
+-		err = __dquot_transfer(inode, transfer_to);
+-		if (err)
+-			set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
+-		dqput(transfer_to[PRJQUOTA]);
+-	}
++	if (IS_ERR(transfer_to[PRJQUOTA]))
++		return PTR_ERR(transfer_to[PRJQUOTA]);
++
++	err = __dquot_transfer(inode, transfer_to);
++	if (err)
++		set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
++	dqput(transfer_to[PRJQUOTA]);
+ 	return err;
  }
-@@ -1885,7 +1886,7 @@ int btrfs_is_data_extent_shared(struct b
- 		walk_ctx.time_seq = elem.seq;
- 	}
  
--	walk_ctx.ignore_extent_item_pos = true;
-+	walk_ctx.skip_inode_ref_list = true;
- 	walk_ctx.trans = trans;
- 	walk_ctx.fs_info = fs_info;
- 	walk_ctx.refs = &ctx->refs;
---- a/fs/btrfs/backref.h
-+++ b/fs/btrfs/backref.h
-@@ -60,6 +60,12 @@ struct btrfs_backref_walk_ctx {
- 	 * @extent_item_pos is ignored.
- 	 */
- 	bool ignore_extent_item_pos;
-+	/*
-+	 * If true and bytenr corresponds to a data extent, then the inode list
-+	 * (each member describing inode number, file offset and root) is not
-+	 * added to each reference added to the @refs ulist.
-+	 */
-+	bool skip_inode_ref_list;
- 	/* A valid transaction handle or NULL. */
- 	struct btrfs_trans_handle *trans;
- 	/*
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -3422,7 +3422,7 @@ int add_data_references(struct reloc_con
- 	btrfs_release_path(path);
- 
- 	ctx.bytenr = extent_key->objectid;
--	ctx.ignore_extent_item_pos = true;
-+	ctx.skip_inode_ref_list = true;
- 	ctx.fs_info = rc->extent_root->fs_info;
- 
- 	ret = btrfs_find_all_leafs(&ctx);
+-- 
+2.39.2
+
 
 
