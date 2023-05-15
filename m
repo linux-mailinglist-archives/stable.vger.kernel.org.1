@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 182BE703456
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3595E703B01
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242992AbjEOQrI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50672 "EHLO
+        id S242930AbjEOR6i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:58:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242993AbjEOQrF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:47:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0261055A6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:00 -0700 (PDT)
+        with ESMTP id S244123AbjEOR6T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD9919F2D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9443962915
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B384C433D2;
-        Mon, 15 May 2023 16:46:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1A0262E60
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E446CC433D2;
+        Mon, 15 May 2023 17:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169219;
-        bh=YJPGlHisMi3ANpCU6yLFOAHTjr+R8QcDCxbjs/YcfcE=;
+        s=korg; t=1684173290;
+        bh=lRukkDglGnUHTkphld9K3dAtwLcdzjjJI/P3vU7DcyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WFl9TENsQtHjS9xSkKztyUdTZ5OawyGAHoJ2WLTUv0T+4R5CeoqVDqlGLuq9nharc
-         yUFvGOKJhMMzUlnNwMMshN/WFToi8YwXIXFVOI02i4G4bge3VXErLmVlsTbh7kufvw
-         qwedFGNYZ85yz/X031ZxqSf3bT8nFgFctNLYJS7c=
+        b=HwcbFZH+lja1awwd1jOmeasWdaegsqet67wuRVk1mQTjrLgkbJLlivhgS8V7q/riL
+         Ss8+KYAXY+G+QKPhQV/kZubuGvTLfEtK6xppJhfqD3uYDIqwQqP1QLONDRHw0lejKC
+         yOUMMpi9rKJ3rAeP89RplyaMlX/xI/BSQ3UfOt+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 180/191] ext4: improve error recovery code paths in __ext4_remount()
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 039/282] arm64: dts: renesas: r8a774c0: Remove bogus voltages from OPP table
 Date:   Mon, 15 May 2023 18:26:57 +0200
-Message-Id: <20230515161714.017061793@linuxfoundation.org>
+Message-Id: <20230515161723.440848299@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,62 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 4c0b4818b1f636bc96359f7817a2d8bab6370162 upstream.
+[ Upstream commit 554edc3e9239bb81e61be9f0f5dbbeb528a69e72 ]
 
-If there are failures while changing the mount options in
-__ext4_remount(), we need to restore the old mount options.
+According to the RZ/G Series, 2nd Generation Hardware User’s Manual
+Rev. 1.11, the System CPU cores on RZ/G2E do not have their own power
+supply, but use the common internal power supply (typical 1.03V).
 
-This commit fixes two problem.  The first is there is a chance that we
-will free the old quota file names before a potential failure leading
-to a use-after-free.  The second problem addressed in this commit is
-if there is a failed read/write to read-only transition, if the quota
-has already been suspended, we need to renable quota handling.
+Hence remove the "opp-microvolt" properties from the Operating
+Performance Points table.  They are optional, and unused, when none of
+the CPU nodes is tied to a regulator using the "cpu-supply" property.
 
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230506142419.984260-2-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 231d8908a66fa98f ("arm64: dts: renesas: r8a774c0: Add OPPs table for cpu devices")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/8348e18a011ded94e35919cd8e17c0be1f9acf2f.1676560856.git.geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/renesas/r8a774c0.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5501,9 +5501,6 @@ static int ext4_remount(struct super_blo
- 	}
- 
- #ifdef CONFIG_QUOTA
--	/* Release old quota file names */
--	for (i = 0; i < EXT4_MAXQUOTAS; i++)
--		kfree(old_opts.s_qf_names[i]);
- 	if (enable_quota) {
- 		if (sb_any_quota_suspended(sb))
- 			dquot_resume(sb, -1);
-@@ -5513,6 +5510,9 @@ static int ext4_remount(struct super_blo
- 				goto restore_opts;
- 		}
- 	}
-+	/* Release old quota file names */
-+	for (i = 0; i < EXT4_MAXQUOTAS; i++)
-+		kfree(old_opts.s_qf_names[i]);
- #endif
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->system_blks)
- 		ext4_release_system_zone(sb);
-@@ -5529,6 +5529,13 @@ static int ext4_remount(struct super_blo
- 	return 0;
- 
- restore_opts:
-+	/*
-+	 * If there was a failing r/w to ro transition, we may need to
-+	 * re-enable quota
-+	 */
-+	if ((sb->s_flags & SB_RDONLY) && !(old_sb_flags & SB_RDONLY) &&
-+	    sb_any_quota_suspended(sb))
-+		dquot_resume(sb, -1);
- 	sb->s_flags = old_sb_flags;
- 	sbi->s_mount_opt = old_opts.s_mount_opt;
- 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
+diff --git a/arch/arm64/boot/dts/renesas/r8a774c0.dtsi b/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
+index 73ded80a79ba0..1de7891c658cf 100644
+--- a/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
+@@ -49,17 +49,14 @@
+ 		opp-shared;
+ 		opp-800000000 {
+ 			opp-hz = /bits/ 64 <800000000>;
+-			opp-microvolt = <820000>;
+ 			clock-latency-ns = <300000>;
+ 		};
+ 		opp-1000000000 {
+ 			opp-hz = /bits/ 64 <1000000000>;
+-			opp-microvolt = <820000>;
+ 			clock-latency-ns = <300000>;
+ 		};
+ 		opp-1200000000 {
+ 			opp-hz = /bits/ 64 <1200000000>;
+-			opp-microvolt = <820000>;
+ 			clock-latency-ns = <300000>;
+ 			opp-suspend;
+ 		};
+-- 
+2.39.2
+
 
 
