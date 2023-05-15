@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B3C703B3C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8147E7039D6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244393AbjEOSBA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
+        id S244408AbjEORqS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244669AbjEOSAi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3299011577
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:02 -0700 (PDT)
+        with ESMTP id S244645AbjEORqA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E960171E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71A8562FFB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7898EC433D2;
-        Mon, 15 May 2023 17:57:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30F6F62E82
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A88C433D2;
+        Mon, 15 May 2023 17:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173429;
-        bh=hsz1hbqpcfwMgZxRsk968jnq07PLHPRJmnbvV1PmneY=;
+        s=korg; t=1684172638;
+        bh=gbsgF0jUZQHzoprFJRgaCygFbigEFv3rZN2HwzN1HcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eWLvmwIFFEox7T8b4djoq5KlsAWurbwTSVxrPppXgUPBYJAou/NObmlsv0gdKK78c
-         MFbHgUVygXf1raTr+reeEs5xbOBQve075Qem6LBx4O1nTH4S6hnZ9g92JN18Oxxyda
-         r3Dy5RNCPULSOL93mOjRh73o97x02pWue1gJ0Mig=
+        b=aSKoadXk9iG0O5Kc8koJ72luuPSszv0FRPot96a9Lg9om5DA4p6FY3LbtroeqjHJV
+         D+ZnvyJ3AmAyw9JlHMuok6MNbTiVTViD066RCs/YAc8Qo1ukyjtE/KcEqT8JYT/ua2
+         hx3ktKHtQfU4394dv7YpDHwEpucASsfm9aNuxM3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/282] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
+        patches@lists.linux.dev, Kevin Brodsky <kevin.brodsky@arm.com>,
+        Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>,
+        Petr Vorel <pvorel@suse.cz>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 218/381] uapi/linux/const.h: prefer ISO-friendly __typeof__
 Date:   Mon, 15 May 2023 18:27:49 +0200
-Message-Id: <20230515161724.994720241@linuxfoundation.org>
+Message-Id: <20230515161746.599059807@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,51 +58,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
 
-[ Upstream commit 905a9241e4e8c15d2c084fee916280514848fe35 ]
+[ Upstream commit 31088f6f7906253ef4577f6a9b84e2d42447dba0 ]
 
-If there is a failure during copy_from_user or user-provided data buffer
-is invalid, rtl_debugfs_set_write_rfreg should return negative error code
-instead of a positive value count.
+typeof is (still) a GNU extension, which means that it cannot be used when
+building ISO C (e.g.  -std=c99).  It should therefore be avoided in uapi
+headers in favour of the ISO-friendly __typeof__.
 
-Fix this bug by returning correct error code. Moreover, the check of buffer
-against null is removed since it will be handled by copy_from_user.
+Unfortunately this issue could not be detected by
+CONFIG_UAPI_HEADER_TEST=y as the __ALIGN_KERNEL() macro is not expanded in
+any uapi header.
 
-Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230326053138.91338-1-harperchen1110@gmail.com
+This matters from a userspace perspective, not a kernel one. uapi
+headers and their contents are expected to be usable in a variety of
+situations, and in particular when building ISO C applications (with
+-std=c99 or similar).
+
+This particular problem can be reproduced by trying to use the
+__ALIGN_KERNEL macro directly in application code, say:
+
+#include <linux/const.h>
+
+int align(int x, int a)
+{
+	return __KERNEL_ALIGN(x, a);
+}
+
+and trying to build that with -std=c99.
+
+Link: https://lkml.kernel.org/r/20230411092747.3759032-1-kevin.brodsky@arm.com
+Fixes: a79ff731a1b2 ("netfilter: xtables: make XT_ALIGN() usable in exported headers by exporting __ALIGN_KERNEL()")
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Reported-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
+Tested-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/uapi/linux/const.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
-index a7a5d8fa3cc0c..c8db166a7dc80 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
-@@ -395,8 +395,8 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
+diff --git a/include/uapi/linux/const.h b/include/uapi/linux/const.h
+index af2a44c08683d..a429381e7ca50 100644
+--- a/include/uapi/linux/const.h
++++ b/include/uapi/linux/const.h
+@@ -28,7 +28,7 @@
+ #define _BITUL(x)	(_UL(1) << (x))
+ #define _BITULL(x)	(_ULL(1) << (x))
  
- 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
+-#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
++#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
+ #define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
  
--	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
--		return count;
-+	if (copy_from_user(tmp, buffer, tmp_len))
-+		return -EFAULT;
- 
- 	tmp[tmp_len] = '\0';
- 
-@@ -406,7 +406,7 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
- 	if (num != 4) {
- 		rtl_dbg(rtlpriv, COMP_ERR, DBG_DMESG,
- 			"Format is <path> <addr> <mask> <data>\n");
--		return count;
-+		return -EINVAL;
- 	}
- 
- 	rtl_set_rfreg(hw, path, addr, bitmask, data);
+ #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 -- 
 2.39.2
 
