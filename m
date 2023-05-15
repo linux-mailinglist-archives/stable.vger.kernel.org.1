@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEA457037D1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD25D703850
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244068AbjEORYX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40236 "EHLO
+        id S244324AbjEORbg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244121AbjEORX7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756E810A02
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:41 -0700 (PDT)
+        with ESMTP id S243933AbjEORau (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:30:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8EFA13C2F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06ECB62C7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD636C4339C;
-        Mon, 15 May 2023 17:22:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F14CF62D19
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D5DC433A0;
+        Mon, 15 May 2023 17:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171360;
-        bh=SJcNVqPMLRBn8szN4iK/v8qJtluMzp7ABfsLqduJgpc=;
+        s=korg; t=1684171650;
+        bh=TwDghPsd+u4A7TMfe/2NGDLvGnp9p4577uj5/Spb6Zg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M3EO1bYo+OQewvopxC4+RsmCAlAWDPKMPJ9oFMe6j7vdT/8jufs6/3RQnhQpwKY0D
-         /6BZJYThKp5MCN50KxU5mJ2+xKsiyaO9nA/kv0XyUzAzRrf1m0amhUs9qAOLprp96W
-         OwTgSF9weRDy6skO70xbvNcAnFcvnFQirdnOPiyE=
+        b=mzaZ4+jOk0NI6RptW7Qi52pADkLHwETLNI8IVp9vVBRoGS5Jbo47TIaebQ6jsfsJN
+         NnunH0fXuC0OTHDopcjO57vWcEhn28V+3tmb0zOQib1JX4AgHcfIHGXqi0dje0GJrv
+         /LEsPbKo0hps8HVZNHh0FllvE9yHjX3b/qgLuJPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.2 185/242] irqchip/loongson-eiointc: Fix registration of syscore_ops
+        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 034/134] octeontx2-af: Secure APR table update with the lock
 Date:   Mon, 15 May 2023 18:28:31 +0200
-Message-Id: <20230515161727.496215188@linuxfoundation.org>
+Message-Id: <20230515161704.241517030@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,42 +57,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianmin Lv <lvjianmin@loongson.cn>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit bdd60211eebb43ba1c4c14704965f4d4b628b931 upstream.
+[ Upstream commit 048486f81d01db4d100af021ee2ea211d19732a0 ]
 
-When support suspend/resume for loongson-eiointc, the syscore_ops
-is registered twice in dual-bridges machines where there are two
-eiointc IRQ domains. Repeated registration of an same syscore_ops
-broke syscore_ops_list. Also, cpuhp_setup_state_nocalls is only
-needed to call for once. So the patch will corret them.
+APR table contains the lmtst base address of PF/VFs. These entries
+are updated by the PF/VF during the device probe. The lmtst address
+is fetched from HW using "TXN_REQ" and "ADDR_RSP_STS" registers.
+The lock tries to protect these registers from getting overwritten
+when multiple PFs invokes rvu_get_lmtaddr() simultaneously.
 
-Fixes: a90335c2dfb4 ("irqchip/loongson-eiointc: Add suspend/resume support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230407083453.6305-4-lvjianmin@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, if PF1 submit the request and got permitted before it
+reads the response and PF2 got scheduled submit the request then the
+response of PF1 is overwritten by the PF2 response.
+
+Fixes: 893ae97214c3 ("octeontx2-af: cn10k: Support configurable LMTST regions")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-eiointc.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c   | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -422,10 +422,12 @@ int __init eiointc_acpi_init(struct irq_
- 	parent_irq = irq_create_mapping(parent, acpi_eiointc->cascade);
- 	irq_set_chained_handler_and_data(parent_irq, eiointc_irq_dispatch, priv);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index 46a41cfff5751..25713287a288f 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -60,13 +60,14 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
+ 			   u64 iova, u64 *lmt_addr)
+ {
+ 	u64 pa, val, pf;
+-	int err;
++	int err = 0;
  
--	register_syscore_ops(&eiointc_syscore_ops);
--	cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_LOONGARCH_STARTING,
-+	if (nr_pics == 1) {
-+		register_syscore_ops(&eiointc_syscore_ops);
-+		cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_LOONGARCH_STARTING,
- 				  "irqchip/loongarch/intc:starting",
- 				  eiointc_router_init, NULL);
-+	}
+ 	if (!iova) {
+ 		dev_err(rvu->dev, "%s Requested Null address for transulation\n", __func__);
+ 		return -EINVAL;
+ 	}
  
- 	if (cpu_has_flatmode)
- 		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
++	mutex_lock(&rvu->rsrc_lock);
+ 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_REQ, iova);
+ 	pf = rvu_get_pf(pcifunc) & 0x1F;
+ 	val = BIT_ULL(63) | BIT_ULL(14) | BIT_ULL(13) | pf << 8 |
+@@ -76,12 +77,13 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
+ 	err = rvu_poll_reg(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_RSP_STS, BIT_ULL(0), false);
+ 	if (err) {
+ 		dev_err(rvu->dev, "%s LMTLINE iova transulation failed\n", __func__);
+-		return err;
++		goto exit;
+ 	}
+ 	val = rvu_read64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_RSP_STS);
+ 	if (val & ~0x1ULL) {
+ 		dev_err(rvu->dev, "%s LMTLINE iova transulation failed err:%llx\n", __func__, val);
+-		return -EIO;
++		err = -EIO;
++		goto exit;
+ 	}
+ 	/* PA[51:12] = RVU_AF_SMMU_TLN_FLIT0[57:18]
+ 	 * PA[11:0] = IOVA[11:0]
+@@ -89,8 +91,9 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
+ 	pa = rvu_read64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_TLN_FLIT0) >> 18;
+ 	pa &= GENMASK_ULL(39, 0);
+ 	*lmt_addr = (pa << 12) | (iova  & 0xFFF);
+-
+-	return 0;
++exit:
++	mutex_unlock(&rvu->rsrc_lock);
++	return err;
+ }
+ 
+ static int rvu_update_lmtaddr(struct rvu *rvu, u16 pcifunc, u64 lmt_addr)
+-- 
+2.39.2
+
 
 
