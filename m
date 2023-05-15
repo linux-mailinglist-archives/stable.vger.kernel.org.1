@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D75D2703A13
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2569C7037DB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244620AbjEORsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
+        id S244132AbjEORYk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244625AbjEORsJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:09 -0400
+        with ESMTP id S244121AbjEORYY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509EA15605
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746E41156B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E255662EDD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE400C433EF;
-        Mon, 15 May 2023 17:46:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5565A60B9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5F7C433D2;
+        Mon, 15 May 2023 17:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172793;
-        bh=rtOpymRfZvfeRVyj11dSXMi9w0U9vzUsi7gXK5tqrrY=;
+        s=korg; t=1684171391;
+        bh=uHy5AfYgv3be1zbNF/jn+VKj92lkgomeSIE/o4TB+94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jKjzl6bAVilEDPHAdroExfvqM1VFxQhMz7bSo97hALIU8PP/SblPUqCKN9gtaVAl4
-         9D+4p4zQ2ahaK1wNxmwi/2WJkis9/JhwlrDbs1Gekcveg/POtz+5lva7FbNUBK9yn9
-         TQR27N7ifnTsqRysgvxGLUcpIYtefn9S/WbDyKcI=
+        b=PjhklpAnvWccjpeFTqxzctmcxP4fCzgrjw4ukEx4Cgp7bLuhUxN8k5Q5K9zzkmNU4
+         DT8fnvW3+RY1INp5uOw9XbEXQI2onSES8hSJTU879DbWlE6ExLQ+DWNiHXKvzZ8ah6
+         8pw7y1UmfBa0VijUuu8W09d8ZHgV6rT8weldqdjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/381] dmaengine: dw-edma: Fix to change for continuous transfer
+        patches@lists.linux.dev, Horatio Zhang <Hongkun.Zhang@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.2 194/242] drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v11_0_hw_fini
 Date:   Mon, 15 May 2023 18:28:40 +0200
-Message-Id: <20230515161748.917736528@linuxfoundation.org>
+Message-Id: <20230515161727.767363844@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,90 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shunsuke Mie <mie@igel.co.jp>
+From: Horatio Zhang <Hongkun.Zhang@amd.com>
 
-[ Upstream commit a251994a441ee0a69ba7062c8cd2d08ead3db379 ]
+commit 13af556104fa93b1945c70bbf8a0a62cd2c92879 upstream.
 
-The dw-edma driver stops after processing a DMA request even if a request
-remains in the issued queue, which is not the expected behavior. The DMA
-engine API requires continuous processing.
+The gmc.ecc_irq is enabled by firmware per IFWI setting,
+and the host driver is not privileged to enable/disable
+the interrupt. So, it is meaningless to use the amdgpu_irq_put
+function in gmc_v11_0_hw_fini, which also leads to the call
+trace.
 
-Add a trigger to start after one processing finished if there are requests
-remain.
+[  102.980303] Call Trace:
+[  102.980303]  <TASK>
+[  102.980304]  gmc_v11_0_hw_fini+0x54/0x90 [amdgpu]
+[  102.980357]  gmc_v11_0_suspend+0xe/0x20 [amdgpu]
+[  102.980409]  amdgpu_device_ip_suspend_phase2+0x240/0x460 [amdgpu]
+[  102.980459]  amdgpu_device_ip_suspend+0x3d/0x80 [amdgpu]
+[  102.980520]  amdgpu_device_pre_asic_reset+0xd9/0x490 [amdgpu]
+[  102.980573]  amdgpu_device_gpu_recover.cold+0x548/0xce6 [amdgpu]
+[  102.980687]  amdgpu_debugfs_reset_work+0x4c/0x70 [amdgpu]
+[  102.980740]  process_one_work+0x21f/0x3f0
+[  102.980741]  worker_thread+0x200/0x3e0
+[  102.980742]  ? process_one_work+0x3f0/0x3f0
+[  102.980743]  kthread+0xfd/0x130
+[  102.980743]  ? kthread_complete_and_exit+0x20/0x20
+[  102.980744]  ret_from_fork+0x22/0x30
 
-Fixes: e63d79d1ffcd ("dmaengine: Add Synopsys eDMA IP core driver")
-Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
-Link: https://lore.kernel.org/r/20230411101758.438472-1-mie@igel.co.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Horatio Zhang <Hongkun.Zhang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Fixes: c8b5a95b5709 ("drm/amdgpu: Fix desktop freezed after gpu-reset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-edma-core.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index d7ed50f8b9294..a3790f7b1b530 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -166,7 +166,7 @@ static void vchan_free_desc(struct virt_dma_desc *vdesc)
- 	dw_edma_free_desc(vd2dw_edma_desc(vdesc));
- }
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+@@ -941,7 +941,6 @@ static int gmc_v11_0_hw_fini(void *handl
+ 		return 0;
+ 	}
  
--static void dw_edma_start_transfer(struct dw_edma_chan *chan)
-+static int dw_edma_start_transfer(struct dw_edma_chan *chan)
- {
- 	struct dw_edma_chunk *child;
- 	struct dw_edma_desc *desc;
-@@ -174,16 +174,16 @@ static void dw_edma_start_transfer(struct dw_edma_chan *chan)
+-	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
+ 	gmc_v11_0_gart_disable(adev);
  
- 	vd = vchan_next_desc(&chan->vc);
- 	if (!vd)
--		return;
-+		return 0;
- 
- 	desc = vd2dw_edma_desc(vd);
- 	if (!desc)
--		return;
-+		return 0;
- 
- 	child = list_first_entry_or_null(&desc->chunk->list,
- 					 struct dw_edma_chunk, list);
- 	if (!child)
--		return;
-+		return 0;
- 
- 	dw_edma_v0_core_start(child, !desc->xfer_sz);
- 	desc->xfer_sz += child->ll_region.sz;
-@@ -191,6 +191,8 @@ static void dw_edma_start_transfer(struct dw_edma_chan *chan)
- 	list_del(&child->list);
- 	kfree(child);
- 	desc->chunks_alloc--;
-+
-+	return 1;
- }
- 
- static int dw_edma_device_config(struct dma_chan *dchan,
-@@ -497,14 +499,14 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- 		switch (chan->request) {
- 		case EDMA_REQ_NONE:
- 			desc = vd2dw_edma_desc(vd);
--			if (desc->chunks_alloc) {
--				chan->status = EDMA_ST_BUSY;
--				dw_edma_start_transfer(chan);
--			} else {
-+			if (!desc->chunks_alloc) {
- 				list_del(&vd->node);
- 				vchan_cookie_complete(vd);
--				chan->status = EDMA_ST_IDLE;
- 			}
-+
-+			/* Continue transferring if there are remaining chunks or issued requests.
-+			 */
-+			chan->status = dw_edma_start_transfer(chan) ? EDMA_ST_BUSY : EDMA_ST_IDLE;
- 			break;
- 
- 		case EDMA_REQ_STOP:
--- 
-2.39.2
-
 
 
