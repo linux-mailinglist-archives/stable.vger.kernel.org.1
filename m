@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B81777033AC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A4B7035DE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242847AbjEOQkJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42926 "EHLO
+        id S243440AbjEOREN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242855AbjEOQkB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AD0240C6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:58 -0700 (PDT)
+        with ESMTP id S243374AbjEORDz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:03:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C497DBA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:02:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0771662860
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E82C433EF;
-        Mon, 15 May 2023 16:39:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4CA462A85
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:01:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B43C433D2;
+        Mon, 15 May 2023 17:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168797;
-        bh=KpME67pG9ORsPNnLkZxMYRv1H1BJO5ATgK4Y5USyRN4=;
+        s=korg; t=1684170082;
+        bh=4SuwmcSWB1flmA30J5wW2/YmqqveElN4doWVpqOjtbI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z0zBal9iOU7wBN7ORt/xa8DdV8SFsP9xd8i/TTvJG155T5pp2Vbtsi2t8H3p2K4o8
-         nkqxrkRVVBaNk2z8JbH087UF+sbgTzlD2qrSdbiewRMi72/mY+RCYDg0Y7s2NRhJbZ
-         H3Kv5tV0NwrWDZC9/wk5fzGDdhiVzOWwln9m5ZHE=
+        b=Z9kFEJxc5OipjDW5an6gVfCxf7Kf1X3Nkfv/kpfbzVo7fi0pi3bkat2RVb6eh4bYR
+         up34BAgt+HmwB2k8yfDlT4UyM9N2Gklnx8UHw9an9xv0ZCJPldjg0O8WLM4ZNOPz+A
+         c0kwPoYdQT4y8kAFXoCZYBpE9VEmvMOj/MoJxrhM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Li <liwei391@huawei.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 044/191] arm64: kgdb: Set PSTATE.SS to 1 to re-enable single-step
-Date:   Mon, 15 May 2023 18:24:41 +0200
-Message-Id: <20230515161708.793862741@linuxfoundation.org>
+        patches@lists.linux.dev, Jerry Zuo <Jerry.Zuo@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Ryan Lin <tsung-hua.lin@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 019/239] drm/amd/display: Ext displays with dock cant recognized after resume
+Date:   Mon, 15 May 2023 18:24:42 +0200
+Message-Id: <20230515161722.165487057@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,126 +57,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Ryan Lin <tsung-hua.lin@amd.com>
 
-[ Upstream commit af6c0bd59f4f3ad5daad2f7b777954b1954551d5 ]
+[ Upstream commit 1e5d4d8eb8c0f15d90c50e7abd686c980e54e42e ]
 
-Currently only the first attempt to single-step has any effect. After
-that all further stepping remains "stuck" at the same program counter
-value.
+[Why]
+Needs to set the default value of the LTTPR timeout after resume.
 
-Refer to the ARM Architecture Reference Manual (ARM DDI 0487E.a) D2.12,
-PSTATE.SS=1 should be set at each step before transferring the PE to the
-'Active-not-pending' state. The problem here is PSTATE.SS=1 is not set
-since the second single-step.
+[How]
+Set the default (3.2ms) timeout at resuming if the sink supports
+LTTPR
 
-After the first single-step, the PE transferes to the 'Inactive' state,
-with PSTATE.SS=0 and MDSCR.SS=1, thus PSTATE.SS won't be set to 1 due to
-kernel_active_single_step()=true. Then the PE transferes to the
-'Active-pending' state when ERET and returns to the debugger by step
-exception.
-
-Before this patch:
-==================
-Entering kdb (current=0xffff3376039f0000, pid 1) on processor 0 due to Keyboard Entry
-[0]kdb>
-
-[0]kdb>
-[0]kdb> bp write_sysrq_trigger
-Instruction(i) BP #0 at 0xffffa45c13d09290 (write_sysrq_trigger)
-    is enabled   addr at ffffa45c13d09290, hardtype=0 installed=0
-
-[0]kdb> go
-$ echo h > /proc/sysrq-trigger
-
-Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to Breakpoint @ 0xffffad651a309290
-[1]kdb> ss
-
-Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to SS trap @ 0xffffad651a309294
-[1]kdb> ss
-
-Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to SS trap @ 0xffffad651a309294
-[1]kdb>
-
-After this patch:
-=================
-Entering kdb (current=0xffff6851c39f0000, pid 1) on processor 0 due to Keyboard Entry
-[0]kdb> bp write_sysrq_trigger
-Instruction(i) BP #0 at 0xffffc02d2dd09290 (write_sysrq_trigger)
-    is enabled   addr at ffffc02d2dd09290, hardtype=0 installed=0
-
-[0]kdb> go
-$ echo h > /proc/sysrq-trigger
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to Breakpoint @ 0xffffc02d2dd09290
-[1]kdb> ss
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd09294
-[1]kdb> ss
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd09298
-[1]kdb> ss
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd0929c
-[1]kdb>
-
-Fixes: 44679a4f142b ("arm64: KGDB: Add step debugging support")
-Co-developed-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Tested-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://lore.kernel.org/r/20230202073148.657746-3-sumit.garg@linaro.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Jerry Zuo <Jerry.Zuo@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Ryan Lin <tsung-hua.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/debug-monitors.h | 1 +
- arch/arm64/kernel/debug-monitors.c      | 5 +++++
- arch/arm64/kernel/kgdb.c                | 2 ++
- 3 files changed, 8 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include/asm/debug-monitors.h
-index 41b065f1be88c..13630e8078ff4 100644
---- a/arch/arm64/include/asm/debug-monitors.h
-+++ b/arch/arm64/include/asm/debug-monitors.h
-@@ -125,6 +125,7 @@ void user_regs_reset_single_step(struct user_pt_regs *regs,
- void kernel_enable_single_step(struct pt_regs *regs);
- void kernel_disable_single_step(void);
- int kernel_active_single_step(void);
-+void kernel_rewind_single_step(struct pt_regs *regs);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 99b99f0b42c06..9f637e360755d 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -39,6 +39,7 @@
+ #include "dc/dc_edid_parser.h"
+ #include "dc/dc_stat.h"
+ #include "amdgpu_dm_trace.h"
++#include "dc/inc/dc_link_ddc.h"
  
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- int reinstall_suspended_bps(struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
-index 501e835c65007..f5837937cd932 100644
---- a/arch/arm64/kernel/debug-monitors.c
-+++ b/arch/arm64/kernel/debug-monitors.c
-@@ -437,6 +437,11 @@ int kernel_active_single_step(void)
- }
- NOKPROBE_SYMBOL(kernel_active_single_step);
- 
-+void kernel_rewind_single_step(struct pt_regs *regs)
-+{
-+	set_regs_spsr_ss(regs);
-+}
+ #include "vid.h"
+ #include "amdgpu.h"
+@@ -2254,6 +2255,14 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
+ 		if (suspend) {
+ 			drm_dp_mst_topology_mgr_suspend(mgr);
+ 		} else {
++			/* if extended timeout is supported in hardware,
++			 * default to LTTPR timeout (3.2ms) first as a W/A for DP link layer
++			 * CTS 4.2.1.1 regression introduced by CTS specs requirement update.
++			 */
++			dc_link_aux_try_to_configure_timeout(aconnector->dc_link->ddc, LINK_AUX_DEFAULT_LTTPR_TIMEOUT_PERIOD);
++			if (!dp_is_lttpr_present(aconnector->dc_link))
++				dc_link_aux_try_to_configure_timeout(aconnector->dc_link->ddc, LINK_AUX_DEFAULT_TIMEOUT_PERIOD);
 +
- /* ptrace API */
- void user_enable_single_step(struct task_struct *task)
- {
-diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
-index 8815b5457dd0b..d7847ef10e9d3 100644
---- a/arch/arm64/kernel/kgdb.c
-+++ b/arch/arm64/kernel/kgdb.c
-@@ -234,6 +234,8 @@ int kgdb_arch_handle_exception(int exception_vector, int signo,
- 		 */
- 		if (!kernel_active_single_step())
- 			kernel_enable_single_step(linux_regs);
-+		else
-+			kernel_rewind_single_step(linux_regs);
- 		err = 0;
- 		break;
- 	default:
+ 			ret = drm_dp_mst_topology_mgr_resume(mgr, true);
+ 			if (ret < 0) {
+ 				dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
 -- 
 2.39.2
 
