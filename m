@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5354E70335C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1024703954
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242774AbjEOQgS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39394 "EHLO
+        id S244571AbjEORlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242802AbjEOQgM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F1A3C05
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:11 -0700 (PDT)
+        with ESMTP id S244564AbjEORlB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF333100EA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:38:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FAA262803
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112F3C433EF;
-        Mon, 15 May 2023 16:36:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE4D762DDB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:38:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD5CC433EF;
+        Mon, 15 May 2023 17:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168570;
-        bh=v2rXy3m9toCfrCrEu8cuapHfWTsuy11AeJ3MbhhBwAc=;
+        s=korg; t=1684172297;
+        bh=hAH0M2YpQkc4i4mY8Kl41/9GQaNyr/0AZsDDFALuWfY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gQUMGe6746ALtuYwffsaV2twcGrBCzcocrc6x/R1TiGrx78UTKeTGYV/QfWijHrxY
-         VuGE2UOLaqukBOsD3Yxz9TRY9BTAhctXNu0kUN9oLIFXBSJ6jSKii2vd/flGVoWA0c
-         ppyCbwLkmmNf6+skunVq3iqvKYdCDh7W0Y/MmBx4=
+        b=pROfjsYlWIrm4qz2gv+NHJnypRBZ+7/6rcVlYXx9MnK3zfr+gQO9cTrSrzIhHkVSQ
+         0zmxCD8DZvgeknjp9Ri9/ybBuz4H5c19UivsuIvSF4H/mNJye979KtxSyScqsKb/AQ
+         sHKhmV+f3xzWlFMD5eefvIfhuVaYsRrrg3KSzNWQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 062/116] powerpc/rtas: use memmove for potentially overlapping buffer copy
+Subject: [PATCH 5.10 108/381] media: saa7134: fix use after free bug in saa7134_finidev due to race condition
 Date:   Mon, 15 May 2023 18:25:59 +0200
-Message-Id: <20230515161700.336041370@linuxfoundation.org>
+Message-Id: <20230515161741.681574771@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 271208ee5e335cb1ad280d22784940daf7ddf820 ]
+[ Upstream commit 30cf57da176cca80f11df0d9b7f71581fe601389 ]
 
-Using memcpy() isn't safe when buf is identical to rtas_err_buf, which
-can happen during boot before slab is up. Full context which may not
-be obvious from the diff:
+In saa7134_initdev, it will call saa7134_hwinit1. There are three
+function invoking here: saa7134_video_init1, saa7134_ts_init1
+and saa7134_vbi_init1.
 
-	if (altbuf) {
-		buf = altbuf;
-	} else {
-		buf = rtas_err_buf;
-		if (slab_is_available())
-			buf = kmalloc(RTAS_ERROR_LOG_MAX, GFP_ATOMIC);
-	}
-	if (buf)
-		memcpy(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
+All of them will init a timer with same function. Take
+saa7134_video_init1 as an example. It'll bound &dev->video_q.timeout
+with saa7134_buffer_timeout.
 
-This was found by inspection and I'm not aware of it causing problems
-in practice. It appears to have been introduced by commit
-033ef338b6e0 ("powerpc: Merge rtas.c into arch/powerpc/kernel"); the
-old ppc64 version of this code did not have this problem.
+In buffer_activate, the timer funtcion is started.
 
-Use memmove() instead.
+If we remove the module or device which will call saa7134_finidev
+to make cleanup, there may be a unfinished work. The
+possible sequence is as follows, which will cause a
+typical UAF bug.
 
-Fixes: 033ef338b6e0 ("powerpc: Merge rtas.c into arch/powerpc/kernel")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230220-rtas-queue-for-6-4-v1-2-010e4416f13f@linux.ibm.com
+Fix it by canceling the timer works accordingly before cleanup in
+saa7134_finidev.
+
+CPU0                  CPU1
+
+                    |saa7134_buffer_timeout
+saa7134_finidev     |
+  kfree(dev);       |
+                    |
+                    | saa7134_buffer_next
+                    | //use dev
+
+Fixes: 1e7126b4a86a ("media: saa7134: Convert timers to use timer_setup()")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/saa7134/saa7134-ts.c    | 1 +
+ drivers/media/pci/saa7134/saa7134-vbi.c   | 1 +
+ drivers/media/pci/saa7134/saa7134-video.c | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 5d84b412b2fd4..35f1f8b2f6253 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -400,7 +400,7 @@ static char *__fetch_rtas_last_error(char *altbuf)
- 				buf = kmalloc(RTAS_ERROR_LOG_MAX, GFP_ATOMIC);
- 		}
- 		if (buf)
--			memcpy(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
-+			memmove(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
- 	}
+diff --git a/drivers/media/pci/saa7134/saa7134-ts.c b/drivers/media/pci/saa7134/saa7134-ts.c
+index 6a5053126237f..437dbe5e75e29 100644
+--- a/drivers/media/pci/saa7134/saa7134-ts.c
++++ b/drivers/media/pci/saa7134/saa7134-ts.c
+@@ -300,6 +300,7 @@ int saa7134_ts_start(struct saa7134_dev *dev)
  
- 	return buf;
+ int saa7134_ts_fini(struct saa7134_dev *dev)
+ {
++	del_timer_sync(&dev->ts_q.timeout);
+ 	saa7134_pgtable_free(dev->pci, &dev->ts_q.pt);
+ 	return 0;
+ }
+diff --git a/drivers/media/pci/saa7134/saa7134-vbi.c b/drivers/media/pci/saa7134/saa7134-vbi.c
+index 3f0b0933eed69..3e773690468bd 100644
+--- a/drivers/media/pci/saa7134/saa7134-vbi.c
++++ b/drivers/media/pci/saa7134/saa7134-vbi.c
+@@ -185,6 +185,7 @@ int saa7134_vbi_init1(struct saa7134_dev *dev)
+ int saa7134_vbi_fini(struct saa7134_dev *dev)
+ {
+ 	/* nothing */
++	del_timer_sync(&dev->vbi_q.timeout);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/media/pci/saa7134/saa7134-video.c b/drivers/media/pci/saa7134/saa7134-video.c
+index 85d082baaadc5..df9e3293015a2 100644
+--- a/drivers/media/pci/saa7134/saa7134-video.c
++++ b/drivers/media/pci/saa7134/saa7134-video.c
+@@ -2153,6 +2153,7 @@ int saa7134_video_init1(struct saa7134_dev *dev)
+ 
+ void saa7134_video_fini(struct saa7134_dev *dev)
+ {
++	del_timer_sync(&dev->video_q.timeout);
+ 	/* free stuff */
+ 	saa7134_pgtable_free(dev->pci, &dev->video_q.pt);
+ 	saa7134_pgtable_free(dev->pci, &dev->vbi_q.pt);
 -- 
 2.39.2
 
