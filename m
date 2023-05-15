@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90B597035F9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BCFC7033CC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243468AbjEORFS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40820 "EHLO
+        id S242863AbjEOQlg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:41:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243570AbjEOREs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:48 -0400
+        with ESMTP id S242860AbjEOQlf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1E59EEF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3EF840F4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D16B62A7A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECCAC433D2;
-        Mon, 15 May 2023 17:02:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A53B62893
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E824C433D2;
+        Mon, 15 May 2023 16:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170177;
-        bh=vYQUcLPMTRVFgU2TgOleFQK6YisZAf2Z3MsTK94EWuo=;
+        s=korg; t=1684168893;
+        bh=KdGpZpbIX6f0OquNJ5x7N6DyhgBfakoFzDaoFMxzAdw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XoHrEMICAGusECt1stwgmWuCLUADFD2PvfJwy7Rqq1mg8iMkkkBhZrEC9C3/07NFO
-         36R6UODI1w5/XGy2oSwA8CTmuDrNMBJhCZ8uANUgbaWNu6ERnfMJ5ZiQ7hJI8wdbuv
-         lH/O8VkVAFwMQb1+mdDS+qIaz+UhP/oQr6ZjXIBc=
+        b=xGsm7MWbyzaPopASC0oe8oxbcKr/mOjbrmcxOt+124kIA/wnwfc2aBSPgASHnholk
+         rt6zXSXAdD9rmEz2QSkvREAZhgKTdK+VvUlmWneiQLRlOjXOPKfhpcEX+5OUTtjE4Z
+         Z3B8St5v2y3f2zUOmszX0N36frCoz9oj3ZVzzdWA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/239] selftests: srv6: make srv6_end_dt46_l3vpn_test more robust
-Date:   Mon, 15 May 2023 18:25:11 +0200
-Message-Id: <20230515161723.150126356@linuxfoundation.org>
+Subject: [PATCH 4.19 075/191] netfilter: nf_tables: dont write table validation state without mutex
+Date:   Mon, 15 May 2023 18:25:12 +0200
+Message-Id: <20230515161709.993295539@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,59 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 46ef24c60f8ee70662968ac55325297ed4624d61 ]
+[ Upstream commit 9a32e9850686599ed194ccdceb6cd3dd56b2d9b9 ]
 
-On some distributions, the rp_filter is automatically set (=1) by
-default on a netdev basis (also on VRFs).
-In an SRv6 End.DT46 behavior, decapsulated IPv4 packets are routed using
-the table associated with the VRF bound to that tunnel. During lookup
-operations, the rp_filter can lead to packet loss when activated on the
-VRF.
-Therefore, we chose to make this selftest more robust by explicitly
-disabling the rp_filter during tests (as it is automatically set by some
-Linux distributions).
+The ->cleanup callback needs to be removed, this doesn't work anymore as
+the transaction mutex is already released in the ->abort function.
 
-Fixes: 03a0b567a03d ("selftests: seg6: add selftest for SRv6 End.DT46 Behavior")
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Tested-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Just do it after a successful validation pass, this either happens
+from commit or abort phases where transaction mutex is held.
+
+Fixes: f102d66b335a ("netfilter: nf_tables: use dedicated mutex to guard transactions")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/srv6_end_dt46_l3vpn_test.sh  | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/netfilter/nfnetlink.h | 1 -
+ net/netfilter/nf_tables_api.c       | 8 ++------
+ net/netfilter/nfnetlink.c           | 2 --
+ 3 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-index aebaab8ce44cb..441eededa0312 100755
---- a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-@@ -292,6 +292,11 @@ setup_hs()
- 	ip netns exec ${hsname} sysctl -wq net.ipv6.conf.all.accept_dad=0
- 	ip netns exec ${hsname} sysctl -wq net.ipv6.conf.default.accept_dad=0
+diff --git a/include/linux/netfilter/nfnetlink.h b/include/linux/netfilter/nfnetlink.h
+index e713476ff29db..a806803fbe37a 100644
+--- a/include/linux/netfilter/nfnetlink.h
++++ b/include/linux/netfilter/nfnetlink.h
+@@ -32,7 +32,6 @@ struct nfnetlink_subsystem {
+ 	struct module *owner;
+ 	int (*commit)(struct net *net, struct sk_buff *skb);
+ 	int (*abort)(struct net *net, struct sk_buff *skb);
+-	void (*cleanup)(struct net *net);
+ 	bool (*valid_genid)(struct net *net, u32 genid);
+ };
  
-+	# disable the rp_filter otherwise the kernel gets confused about how
-+	# to route decap ipv4 packets.
-+	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
-+	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.default.rp_filter=0
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 079f768496937..d7a082d5cd70e 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6241,6 +6241,8 @@ static int nf_tables_validate(struct net *net)
+ 			if (nft_table_validate(net, table) < 0)
+ 				return -EAGAIN;
+ 		}
 +
- 	ip -netns ${hsname} link add veth0 type veth peer name ${rtveth}
- 	ip -netns ${hsname} link set ${rtveth} netns ${rtname}
- 	ip -netns ${hsname} addr add ${IPv6_HS_NETWORK}::${hs}/64 dev veth0 nodad
-@@ -316,11 +321,6 @@ setup_hs()
- 	ip netns exec ${rtname} sysctl -wq net.ipv6.conf.${rtveth}.proxy_ndp=1
- 	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.proxy_arp=1
++		nft_validate_state_update(net, NFT_VALIDATE_SKIP);
+ 		break;
+ 	}
  
--	# disable the rp_filter otherwise the kernel gets confused about how
--	# to route decap ipv4 packets.
--	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
--	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.rp_filter=0
--
- 	ip netns exec ${rtname} sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
+@@ -6767,11 +6769,6 @@ static int __nf_tables_abort(struct net *net)
+ 	return 0;
  }
  
+-static void nf_tables_cleanup(struct net *net)
+-{
+-	nft_validate_state_update(net, NFT_VALIDATE_SKIP);
+-}
+-
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb)
+ {
+ 	int ret = __nf_tables_abort(net);
+@@ -6802,7 +6799,6 @@ static const struct nfnetlink_subsystem nf_tables_subsys = {
+ 	.cb		= nf_tables_cb,
+ 	.commit		= nf_tables_commit,
+ 	.abort		= nf_tables_abort,
+-	.cleanup	= nf_tables_cleanup,
+ 	.valid_genid	= nf_tables_valid_genid,
+ 	.owner		= THIS_MODULE,
+ };
+diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
+index 9bacddc761ba4..39e369e18cb87 100644
+--- a/net/netfilter/nfnetlink.c
++++ b/net/netfilter/nfnetlink.c
+@@ -495,8 +495,6 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	} else {
+ 		ss->abort(net, oskb);
+ 	}
+-	if (ss->cleanup)
+-		ss->cleanup(net);
+ 
+ 	nfnl_err_deliver(&err_list, oskb);
+ 	kfree_skb(skb);
 -- 
 2.39.2
 
