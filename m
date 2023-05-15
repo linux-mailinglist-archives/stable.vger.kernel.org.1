@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F136570362C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A01670394D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243542AbjEORHb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
+        id S242686AbjEORlB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:41:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243629AbjEORHH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91ABFD2DD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:38 -0700 (PDT)
+        with ESMTP id S243060AbjEORkj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD321176CF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28F2B62ACB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C811C433D2;
-        Mon, 15 May 2023 17:04:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 798A962DDE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F76C433D2;
+        Mon, 15 May 2023 17:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170297;
-        bh=ZPQqU2FWSMXhXfGEnLzUBhNLxnXTSR55vEuzALrF1qc=;
+        s=korg; t=1684172263;
+        bh=889NDf79AbqXnuCtmyh5OT2hpA5pDC6+jpAvhV7SOgE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wNBVt0dazGXJkb2vkKTZ4/i3mmSEXqsjtSTBckAhOYpypHUiZZxjjIed6g3VUJF8l
-         hLO1Pv+vms1XB8IIVjAZAg2zxsD2JMO/FG7sY9tLUDvjuf2O4lnG6ueyWa4q+KqMio
-         J19O4Zbmmhk1HPk5qapS3E9jjOcPWcvK4/xnf/hc=
+        b=cEjbR1owi4pLLknWylITnGiOViyWJBBVpMHHfWeIs8b6Ptdxm4mbBRg+U4nkOyawA
+         fP5JpafSdbKpOI1H30kZlH2wDAs8YaipT34+N2ZEIqWabF0uJD7ABHcT0qx9OGGvXc
+         5G+8vnsXbT5g2nwxOG2RmXgjRkFxTLXJrJP/qz2Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        =?UTF-8?q?Michael=20Niew=C3=B6hner?= <linux@mniewoehner.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/239] r8152: fix flow control issue of RTL8156A
+Subject: [PATCH 5.10 069/381] tpm, tpm: Implement usage counter for locality
 Date:   Mon, 15 May 2023 18:25:20 +0200
-Message-Id: <20230515161723.414151373@linuxfoundation.org>
+Message-Id: <20230515161739.931729530@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,127 +55,230 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 8ceda6d5a1e5402fd852e6cc59a286ce3dc545ee ]
+[ Upstream commit 7a2f55d0be296c4e81fd782f3d6c43ed4ec7e265 ]
 
-The feature of flow control becomes abnormal, if the device sends a
-pause frame and the tx/rx is disabled before sending a release frame. It
-causes the lost of packets.
+Implement a usage counter for the (default) locality used by the TPM TIS
+driver:
+Request the locality from the TPM if it has not been claimed yet, otherwise
+only increment the counter. Also release the locality if the counter is 0
+otherwise only decrement the counter. Since in case of SPI the register
+accesses are locked by means of the SPI bus mutex use a sleepable lock
+(i.e. also a mutex) to ensure thread-safety of the counter which may be
+accessed by both a userspace thread and the interrupt handler.
 
-Set PLA_RX_FIFO_FULL and PLA_RX_FIFO_EMPTY to zeros before disabling the
-tx/rx. And, toggle FC_PATCH_TASK before enabling tx/rx to reset the flow
-control patch and timer. Then, the hardware could clear the state and
-the flow control becomes normal after enabling tx/rx.
+By doing this refactor the names of the amended functions to use a more
+appropriate prefix.
 
-Besides, remove inline for fc_pause_on_auto() and fc_pause_off_auto().
-
-Fixes: 195aae321c82 ("r8152: support new chips")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Michael Niewöhner <linux@mniewoehner.de>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 56 ++++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 20 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 63 +++++++++++++++++++++++----------
+ drivers/char/tpm/tpm_tis_core.h |  2 ++
+ 2 files changed, 47 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 23da1d9dafd1f..b0ce524ef1a50 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5986,6 +5986,25 @@ static void rtl8153_disable(struct r8152 *tp)
- 	r8153_aldps_en(tp, true);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 52826a7edf800..3ea0fff30273e 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -136,16 +136,27 @@ static bool check_locality(struct tpm_chip *chip, int l)
+ 	return false;
  }
  
-+static u32 fc_pause_on_auto(struct r8152 *tp)
+-static int release_locality(struct tpm_chip *chip, int l)
++static int __tpm_tis_relinquish_locality(struct tpm_tis_data *priv, int l)
 +{
-+	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 6 * 1024);
++	tpm_tis_write8(priv, TPM_ACCESS(l), TPM_ACCESS_ACTIVE_LOCALITY);
++
++	return 0;
 +}
 +
-+static u32 fc_pause_off_auto(struct r8152 *tp)
-+{
-+	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 14 * 1024);
-+}
-+
-+static void r8156_fc_parameter(struct r8152 *tp)
-+{
-+	u32 pause_on = tp->fc_pause_on ? tp->fc_pause_on : fc_pause_on_auto(tp);
-+	u32 pause_off = tp->fc_pause_off ? tp->fc_pause_off : fc_pause_off_auto(tp);
-+
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, pause_on / 16);
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, pause_off / 16);
-+}
-+
- static int rtl8156_enable(struct r8152 *tp)
++static int tpm_tis_relinquish_locality(struct tpm_chip *chip, int l)
  {
- 	u32 ocp_data;
-@@ -5994,6 +6013,7 @@ static int rtl8156_enable(struct r8152 *tp)
- 	if (test_bit(RTL8152_UNPLUG, &tp->flags))
- 		return -ENODEV;
+ 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
  
-+	r8156_fc_parameter(tp);
- 	set_tx_qlen(tp);
- 	rtl_set_eee_plus(tp);
- 	r8153_set_rx_early_timeout(tp);
-@@ -6025,9 +6045,24 @@ static int rtl8156_enable(struct r8152 *tp)
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_L1_CTRL, ocp_data);
+-	tpm_tis_write8(priv, TPM_ACCESS(l), TPM_ACCESS_ACTIVE_LOCALITY);
++	mutex_lock(&priv->locality_count_mutex);
++	priv->locality_count--;
++	if (priv->locality_count == 0)
++		__tpm_tis_relinquish_locality(priv, l);
++	mutex_unlock(&priv->locality_count_mutex);
+ 
+ 	return 0;
+ }
+ 
+-static int request_locality(struct tpm_chip *chip, int l)
++static int __tpm_tis_request_locality(struct tpm_chip *chip, int l)
+ {
+ 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
+ 	unsigned long stop, timeout;
+@@ -186,6 +197,20 @@ static int request_locality(struct tpm_chip *chip, int l)
+ 	return -1;
+ }
+ 
++static int tpm_tis_request_locality(struct tpm_chip *chip, int l)
++{
++	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
++	int ret = 0;
++
++	mutex_lock(&priv->locality_count_mutex);
++	if (priv->locality_count == 0)
++		ret = __tpm_tis_request_locality(chip, l);
++	if (!ret)
++		priv->locality_count++;
++	mutex_unlock(&priv->locality_count_mutex);
++	return ret;
++}
++
+ static u8 tpm_tis_status(struct tpm_chip *chip)
+ {
+ 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
+@@ -638,7 +663,7 @@ static int probe_itpm(struct tpm_chip *chip)
+ 	if (vendor != TPM_VID_INTEL)
+ 		return 0;
+ 
+-	if (request_locality(chip, 0) != 0)
++	if (tpm_tis_request_locality(chip, 0) != 0)
+ 		return -EBUSY;
+ 
+ 	rc = tpm_tis_send_data(chip, cmd_getticks, len);
+@@ -659,7 +684,7 @@ static int probe_itpm(struct tpm_chip *chip)
+ 
+ out:
+ 	tpm_tis_ready(chip);
+-	release_locality(chip, priv->locality);
++	tpm_tis_relinquish_locality(chip, priv->locality);
+ 
+ 	return rc;
+ }
+@@ -747,14 +772,14 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	}
+ 	priv->irq = irq;
+ 
+-	rc = request_locality(chip, 0);
++	rc = tpm_tis_request_locality(chip, 0);
+ 	if (rc < 0)
+ 		return rc;
+ 
+ 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
+ 			   &original_int_vec);
+ 	if (rc < 0) {
+-		release_locality(chip, priv->locality);
++		tpm_tis_relinquish_locality(chip, priv->locality);
+ 		return rc;
  	}
  
-+	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_FW_TASK);
-+	ocp_data &= ~FC_PATCH_TASK;
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_TASK, ocp_data);
-+	usleep_range(1000, 2000);
-+	ocp_data |= FC_PATCH_TASK;
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_TASK, ocp_data);
-+
- 	return rtl_enable(tp);
- }
+@@ -793,7 +818,7 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 		rc = -1;
+ 	}
  
-+static void rtl8156_disable(struct r8152 *tp)
-+{
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, 0);
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, 0);
-+
-+	rtl8153_disable(tp);
-+}
-+
- static int rtl8156b_enable(struct r8152 *tp)
- {
- 	u32 ocp_data;
-@@ -6429,25 +6464,6 @@ static void rtl8153c_up(struct r8152 *tp)
- 	r8153b_u1u2en(tp, true);
- }
+-	release_locality(chip, priv->locality);
++	tpm_tis_relinquish_locality(chip, priv->locality);
  
--static inline u32 fc_pause_on_auto(struct r8152 *tp)
--{
--	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 6 * 1024);
--}
--
--static inline u32 fc_pause_off_auto(struct r8152 *tp)
--{
--	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 14 * 1024);
--}
--
--static void r8156_fc_parameter(struct r8152 *tp)
--{
--	u32 pause_on = tp->fc_pause_on ? tp->fc_pause_on : fc_pause_on_auto(tp);
--	u32 pause_off = tp->fc_pause_off ? tp->fc_pause_off : fc_pause_off_auto(tp);
--
--	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, pause_on / 16);
--	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, pause_off / 16);
--}
--
- static void rtl8156_change_mtu(struct r8152 *tp)
- {
- 	u32 rx_max_size = mtu_to_size(tp->netdev->mtu);
-@@ -9377,7 +9393,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 	case RTL_VER_10:
- 		ops->init		= r8156_init;
- 		ops->enable		= rtl8156_enable;
--		ops->disable		= rtl8153_disable;
-+		ops->disable		= rtl8156_disable;
- 		ops->up			= rtl8156_up;
- 		ops->down		= rtl8156_down;
- 		ops->unload		= rtl8153_unload;
+ 	return rc;
+ }
+@@ -909,8 +934,8 @@ static const struct tpm_class_ops tpm_tis = {
+ 	.req_complete_mask = TPM_STS_DATA_AVAIL | TPM_STS_VALID,
+ 	.req_complete_val = TPM_STS_DATA_AVAIL | TPM_STS_VALID,
+ 	.req_canceled = tpm_tis_req_canceled,
+-	.request_locality = request_locality,
+-	.relinquish_locality = release_locality,
++	.request_locality = tpm_tis_request_locality,
++	.relinquish_locality = tpm_tis_relinquish_locality,
+ 	.clk_enable = tpm_tis_clkrun_enable,
+ };
+ 
+@@ -944,6 +969,8 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 	priv->timeout_min = TPM_TIMEOUT_USECS_MIN;
+ 	priv->timeout_max = TPM_TIMEOUT_USECS_MAX;
+ 	priv->phy_ops = phy_ops;
++	priv->locality_count = 0;
++	mutex_init(&priv->locality_count_mutex);
+ 
+ 	dev_set_drvdata(&chip->dev, priv);
+ 
+@@ -990,14 +1017,14 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 		   TPM_INTF_DATA_AVAIL_INT | TPM_INTF_STS_VALID_INT;
+ 	intmask &= ~TPM_GLOBAL_INT_ENABLE;
+ 
+-	rc = request_locality(chip, 0);
++	rc = tpm_tis_request_locality(chip, 0);
+ 	if (rc < 0) {
+ 		rc = -ENODEV;
+ 		goto out_err;
+ 	}
+ 
+ 	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
+-	release_locality(chip, 0);
++	tpm_tis_relinquish_locality(chip, 0);
+ 
+ 	rc = tpm_chip_start(chip);
+ 	if (rc)
+@@ -1057,13 +1084,13 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 		 * proper timeouts for the driver.
+ 		 */
+ 
+-		rc = request_locality(chip, 0);
++		rc = tpm_tis_request_locality(chip, 0);
+ 		if (rc < 0)
+ 			goto out_err;
+ 
+ 		rc = tpm_get_timeouts(chip);
+ 
+-		release_locality(chip, 0);
++		tpm_tis_relinquish_locality(chip, 0);
+ 
+ 		if (rc) {
+ 			dev_err(dev, "Could not get TPM timeouts and durations\n");
+@@ -1081,11 +1108,11 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 			dev_err(&chip->dev, FW_BUG
+ 					"TPM interrupt not working, polling instead\n");
+ 
+-			rc = request_locality(chip, 0);
++			rc = tpm_tis_request_locality(chip, 0);
+ 			if (rc < 0)
+ 				goto out_err;
+ 			disable_interrupts(chip);
+-			release_locality(chip, 0);
++			tpm_tis_relinquish_locality(chip, 0);
+ 		}
+ 	}
+ 
+@@ -1158,13 +1185,13 @@ int tpm_tis_resume(struct device *dev)
+ 	 * an error code but for unknown reason it isn't handled.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_TPM2)) {
+-		ret = request_locality(chip, 0);
++		ret = tpm_tis_request_locality(chip, 0);
+ 		if (ret < 0)
+ 			return ret;
+ 
+ 		tpm1_do_selftest(chip);
+ 
+-		release_locality(chip, 0);
++		tpm_tis_relinquish_locality(chip, 0);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index 3be24f221e32a..464ed352ab2e8 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -90,6 +90,8 @@ enum tpm_tis_flags {
+ 
+ struct tpm_tis_data {
+ 	u16 manufacturer_id;
++	struct mutex locality_count_mutex;
++	unsigned int locality_count;
+ 	int locality;
+ 	int irq;
+ 	bool irq_tested;
 -- 
 2.39.2
 
