@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56349703999
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607E1703421
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244580AbjEORoI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
+        id S242927AbjEOQpJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:45:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244360AbjEORnq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83FF176CF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:22 -0700 (PDT)
+        with ESMTP id S242922AbjEOQpH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECE6C4C2D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C944562E4A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF01C433D2;
-        Mon, 15 May 2023 17:41:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DFD0628E6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600A1C433D2;
+        Mon, 15 May 2023 16:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172482;
-        bh=JIbDUYnII4i271qjKieXGt2Oy4nzk7VKyLk58eaihxg=;
+        s=korg; t=1684169104;
+        bh=HfDodf6FnSpmApYuf+l6inHqkXmo66v1BdyJQKhJGyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ddvd7lvGTfE5mSxqZvDNKBydCuPGLw+qoMuz866oAyp410DPVQz/OXlSMihyTGTyq
-         7rBKuBqlHhE1vSSDvNzOloYrMcykZpqyRKMexnCiEX8cYhQMWiiEcc4PJKozX3iNc7
-         7O/IU1nWAlXZr7nlbVMoWCwHJygf8+Wi4CxTJ4bs=
+        b=vp3TuYu3tlhkCbAuL8SXvW+ap3JbLk8uC+O4nnrdjnnao1PS+aRwutNKPB4m6I1D2
+         0BOGOfAN5KVYlFhFTZeYJrlPRJLrnVGscGhnUlP9avyzINLQfQ/lkA3m6wvvbPWu5g
+         U6oYV95GCzDO6FS5AMLasEnkxuAuroeQ9jnLqIjA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gusenleitner Klaus <gus@keba.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev, Corey Minyard <cminyard@mvista.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/381] tick/common: Align tick period with the HZ tick.
+Subject: [PATCH 4.19 143/191] ipmi_ssif: Rename idle state and check
 Date:   Mon, 15 May 2023 18:26:20 +0200
-Message-Id: <20230515161742.654722493@linuxfoundation.org>
+Message-Id: <20230515161712.599961299@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,65 +53,197 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Corey Minyard <cminyard@mvista.com>
 
-[ Upstream commit e9523a0d81899361214d118ad60ef76f0e92f71d ]
+[ Upstream commit 8230831c43a328c2be6d28c65d3f77e14c59986b ]
 
-With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
-expire the timer_list timers. This timer is programmed accurate in
-respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
-first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
-every 4 ms and so based on the current time the next tick can be
-computed.
+Rename the SSIF_IDLE() to IS_SSIF_IDLE(), since that is more clear, and
+rename SSIF_NORMAL to SSIF_IDLE, since that's more accurate.
 
-This accuracy broke since the commit mentioned below because the jiffy
-based clocksource is initialized with higher accuracy in
-read_persistent_wall_and_boot_offset(). This higher accuracy is
-inherited during the setup in tick_setup_device(). The timer still fires
-every 4ms with HZ=250 but timer is no longer aligned with
-CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
-of the timestamp. The offset differs with every boot and makes it
-impossible for user land to align with the tick.
-
-Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
-multiple of 1000/CONFIG_HZ ms.
-
-Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
-Reported-by: Gusenleitner Klaus <gus@keba.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
-Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Stable-dep-of: 6d2555cde291 ("ipmi: fix SSIF not responding under certain cond.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-common.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_ssif.c | 46 +++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 92bf99d558b48..2b7448ae5b478 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -216,9 +216,19 @@ static void tick_setup_device(struct tick_device *td,
- 		 * this cpu:
- 		 */
- 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
-+			ktime_t next_p;
-+			u32 rem;
-+
- 			tick_do_timer_cpu = cpu;
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index e760501e50b20..566be60fa1377 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -95,7 +95,7 @@
+ #define SSIF_WATCH_WATCHDOG_TIMEOUT	msecs_to_jiffies(250)
  
--			tick_next_period = ktime_get();
-+			next_p = ktime_get();
-+			div_u64_rem(next_p, TICK_NSEC, &rem);
-+			if (rem) {
-+				next_p -= rem;
-+				next_p += TICK_NSEC;
-+			}
-+
-+			tick_next_period = next_p;
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
+ enum ssif_intf_state {
+-	SSIF_NORMAL,
++	SSIF_IDLE,
+ 	SSIF_GETTING_FLAGS,
+ 	SSIF_GETTING_EVENTS,
+ 	SSIF_CLEARING_FLAGS,
+@@ -103,8 +103,8 @@ enum ssif_intf_state {
+ 	/* FIXME - add watchdog stuff. */
+ };
+ 
+-#define SSIF_IDLE(ssif)	 ((ssif)->ssif_state == SSIF_NORMAL \
+-			  && (ssif)->curr_msg == NULL)
++#define IS_SSIF_IDLE(ssif) ((ssif)->ssif_state == SSIF_IDLE \
++			    && (ssif)->curr_msg == NULL)
+ 
+ /*
+  * Indexes into stats[] in ssif_info below.
+@@ -349,9 +349,9 @@ static void return_hosed_msg(struct ssif_info *ssif_info,
+ 
+ /*
+  * Must be called with the message lock held.  This will release the
+- * message lock.  Note that the caller will check SSIF_IDLE and start a
+- * new operation, so there is no need to check for new messages to
+- * start in here.
++ * message lock.  Note that the caller will check IS_SSIF_IDLE and
++ * start a new operation, so there is no need to check for new
++ * messages to start in here.
+  */
+ static void start_clear_flags(struct ssif_info *ssif_info, unsigned long *flags)
+ {
+@@ -368,7 +368,7 @@ static void start_clear_flags(struct ssif_info *ssif_info, unsigned long *flags)
+ 
+ 	if (start_send(ssif_info, msg, 3) != 0) {
+ 		/* Error, just go to normal state. */
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ 	}
+ }
+ 
+@@ -383,7 +383,7 @@ static void start_flag_fetch(struct ssif_info *ssif_info, unsigned long *flags)
+ 	mb[0] = (IPMI_NETFN_APP_REQUEST << 2);
+ 	mb[1] = IPMI_GET_MSG_FLAGS_CMD;
+ 	if (start_send(ssif_info, mb, 2) != 0)
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ }
+ 
+ static void check_start_send(struct ssif_info *ssif_info, unsigned long *flags,
+@@ -394,7 +394,7 @@ static void check_start_send(struct ssif_info *ssif_info, unsigned long *flags,
+ 
+ 		flags = ipmi_ssif_lock_cond(ssif_info, &oflags);
+ 		ssif_info->curr_msg = NULL;
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 		ipmi_free_smi_msg(msg);
+ 	}
+@@ -408,7 +408,7 @@ static void start_event_fetch(struct ssif_info *ssif_info, unsigned long *flags)
+ 
+ 	msg = ipmi_alloc_smi_msg();
+ 	if (!msg) {
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 		return;
+ 	}
+@@ -431,7 +431,7 @@ static void start_recv_msg_fetch(struct ssif_info *ssif_info,
+ 
+ 	msg = ipmi_alloc_smi_msg();
+ 	if (!msg) {
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 		return;
+ 	}
+@@ -449,9 +449,9 @@ static void start_recv_msg_fetch(struct ssif_info *ssif_info,
+ 
+ /*
+  * Must be called with the message lock held.  This will release the
+- * message lock.  Note that the caller will check SSIF_IDLE and start a
+- * new operation, so there is no need to check for new messages to
+- * start in here.
++ * message lock.  Note that the caller will check IS_SSIF_IDLE and
++ * start a new operation, so there is no need to check for new
++ * messages to start in here.
+  */
+ static void handle_flags(struct ssif_info *ssif_info, unsigned long *flags)
+ {
+@@ -467,7 +467,7 @@ static void handle_flags(struct ssif_info *ssif_info, unsigned long *flags)
+ 		/* Events available. */
+ 		start_event_fetch(ssif_info, flags);
+ 	else {
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 	}
+ }
+@@ -579,7 +579,7 @@ static void watch_timeout(struct timer_list *t)
+ 	if (ssif_info->watch_timeout) {
+ 		mod_timer(&ssif_info->watch_timer,
+ 			  jiffies + ssif_info->watch_timeout);
+-		if (SSIF_IDLE(ssif_info)) {
++		if (IS_SSIF_IDLE(ssif_info)) {
+ 			start_flag_fetch(ssif_info, flags); /* Releases lock */
+ 			return;
+ 		}
+@@ -776,7 +776,7 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
+ 	}
+ 
+ 	switch (ssif_info->ssif_state) {
+-	case SSIF_NORMAL:
++	case SSIF_IDLE:
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 		if (!msg)
+ 			break;
+@@ -794,7 +794,7 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
+ 			 * Error fetching flags, or invalid length,
+ 			 * just give up for now.
+ 			 */
+-			ssif_info->ssif_state = SSIF_NORMAL;
++			ssif_info->ssif_state = SSIF_IDLE;
+ 			ipmi_ssif_unlock_cond(ssif_info, flags);
+ 			pr_warn(PFX "Error getting flags: %d %d, %x\n",
+ 			       result, len, (len >= 3) ? data[2] : 0);
+@@ -825,7 +825,7 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
+ 			pr_warn(PFX "Invalid response clearing flags: %x %x\n",
+ 				data[0], data[1]);
+ 		}
+-		ssif_info->ssif_state = SSIF_NORMAL;
++		ssif_info->ssif_state = SSIF_IDLE;
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 		break;
+ 
+@@ -901,7 +901,7 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
+ 	}
+ 
+ 	flags = ipmi_ssif_lock_cond(ssif_info, &oflags);
+-	if (SSIF_IDLE(ssif_info) && !ssif_info->stopping) {
++	if (IS_SSIF_IDLE(ssif_info) && !ssif_info->stopping) {
+ 		if (ssif_info->req_events)
+ 			start_event_fetch(ssif_info, flags);
+ 		else if (ssif_info->req_flags)
+@@ -1070,7 +1070,7 @@ static void start_next_msg(struct ssif_info *ssif_info, unsigned long *flags)
+ 	unsigned long oflags;
+ 
+  restart:
+-	if (!SSIF_IDLE(ssif_info)) {
++	if (!IS_SSIF_IDLE(ssif_info)) {
+ 		ipmi_ssif_unlock_cond(ssif_info, flags);
+ 		return;
+ 	}
+@@ -1292,7 +1292,7 @@ static void shutdown_ssif(void *send_info)
+ 	dev_set_drvdata(&ssif_info->client->dev, NULL);
+ 
+ 	/* make sure the driver is not looking for flags any more. */
+-	while (ssif_info->ssif_state != SSIF_NORMAL)
++	while (ssif_info->ssif_state != SSIF_IDLE)
+ 		schedule_timeout(1);
+ 
+ 	ssif_info->stopping = true;
+@@ -1674,7 +1674,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	}
+ 
+ 	spin_lock_init(&ssif_info->lock);
+-	ssif_info->ssif_state = SSIF_NORMAL;
++	ssif_info->ssif_state = SSIF_IDLE;
+ 	timer_setup(&ssif_info->retry_timer, retry_timeout, 0);
+ 	timer_setup(&ssif_info->watch_timer, watch_timeout, 0);
+ 
 -- 
 2.39.2
 
