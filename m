@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD3AF7033B9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41D5D7038E2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242852AbjEOQkn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43564 "EHLO
+        id S244146AbjEORgY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:36:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242881AbjEOQkg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:36 -0400
+        with ESMTP id S244275AbjEORfr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:35:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBBF170C;
-        Mon, 15 May 2023 09:40:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CAF912E9E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C6566287A;
-        Mon, 15 May 2023 16:40:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EFBC433D2;
-        Mon, 15 May 2023 16:40:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 877FE62D9D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D21BC433EF;
+        Mon, 15 May 2023 17:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168834;
-        bh=CcNRIHoQon4UbB5J5qZeKiIBNv/kTAdr7r1q7AaNHDc=;
+        s=korg; t=1684172006;
+        bh=2mpnOqWxpEpI0cTAts/u0E+GMwSudv3Lxo6rRUfhOzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YT0k6a06o6HwLYyAJKvm7S4Vk+PdiPHveJjdpSbUgej2lMh2ftXh0N+zzug7Lp/Vj
-         mZd3bTq4ZbJiDywN+xE5kI7ofJ903tAOIGyPmvnuQ72a9udJLoAs1E39pIbROZAPSY
-         r2tmV98IB7orSdwpuKi+dWo91RQdAr5nt+ks55og=
+        b=YxIuLHV+1JQ+6Cxcil37AHD+B/GZqy3qEy8OzuKNpXf/2g30xHxeLT951U3cv5+FV
+         r5N5BvoK+eyg4j1iZ86g4M425LpUrCX9/sfQZw/LE/8axZQP5Jal/EfzV4Sg3VMivQ
+         nc/RPWM8QHcBa1PlC8Xi7yuwC61aEXPfz2VxTP/4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        arozansk@redhat.com, linux-edac <linux-edac@vger.kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 4.19 028/191] EDAC, skx: Move debugfs node under EDACs hierarchy
+        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Chris Clayton <chris2553@googlemail.com>
+Subject: [PATCH 5.10 014/381] wireguard: timers: cast enum limits members to int in prints
 Date:   Mon, 15 May 2023 18:24:25 +0200
-Message-Id: <20230515161708.196893993@linuxfoundation.org>
+Message-Id: <20230515161737.397558267@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,78 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 85b9c8bfee67ed151c44861c71adc816fc1b46a9 ]
+commit 2d4ee16d969c97996e80e4c9cb6de0acaff22c9f upstream.
 
-The debugfs node is /sys/kernel/debug/skx_edac_test. Rename it and move
-under EDAC debugfs root directory. Remove the unused 'skx_fake_addr' and
-remove the 'skx_test' on error.
+Since gcc13, each member of an enum has the same type as the enum. And
+that is inherited from its members. Provided "REKEY_AFTER_MESSAGES =
+1ULL << 60", the named type is unsigned long.
 
-Co-developed-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-CC: Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: arozansk@redhat.com
-CC: linux-edac <linux-edac@vger.kernel.org>
-Link: http://lkml.kernel.org/r/1542353684-13496-1-git-send-email-qiuxu.zhuo@intel.com
-Stable-dep-of: 71b1e3ba3fed ("EDAC/skx: Fix overflows on the DRAM row address mapping arrays")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This generates warnings with gcc-13:
+  error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
+
+Cast those particular enum members to int when printing them.
+
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=36113
+Cc: Martin Liska <mliska@suse.cz>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://lore.kernel.org/all/20221213225208.3343692-2-Jason@zx2c4.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Chris Clayton <chris2553@googlemail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/skx_edac.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/net/wireguard/timers.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/edac/skx_edac.c b/drivers/edac/skx_edac.c
-index dd209e0dd9abb..b97803580d70f 100644
---- a/drivers/edac/skx_edac.c
-+++ b/drivers/edac/skx_edac.c
-@@ -896,12 +896,11 @@ static bool skx_decode(struct decoded_addr *res)
+--- a/drivers/net/wireguard/timers.c
++++ b/drivers/net/wireguard/timers.c
+@@ -46,7 +46,7 @@ static void wg_expired_retransmit_handsh
+ 	if (peer->timer_handshake_attempts > MAX_TIMER_HANDSHAKES) {
+ 		pr_debug("%s: Handshake for peer %llu (%pISpfsc) did not complete after %d attempts, giving up\n",
+ 			 peer->device->dev->name, peer->internal_id,
+-			 &peer->endpoint.addr, MAX_TIMER_HANDSHAKES + 2);
++			 &peer->endpoint.addr, (int)MAX_TIMER_HANDSHAKES + 2);
  
- #ifdef CONFIG_EDAC_DEBUG
- /*
-- * Debug feature. Make /sys/kernel/debug/skx_edac_test/addr.
-- * Write an address to this file to exercise the address decode
-- * logic in this driver.
-+ * Debug feature.
-+ * Exercise the address decode logic by writing an address to
-+ * /sys/kernel/debug/edac/skx_test/addr.
-  */
- static struct dentry *skx_test;
--static u64 skx_fake_addr;
+ 		del_timer(&peer->timer_send_keepalive);
+ 		/* We drop all packets without a keypair and don't try again,
+@@ -64,7 +64,7 @@ static void wg_expired_retransmit_handsh
+ 		++peer->timer_handshake_attempts;
+ 		pr_debug("%s: Handshake for peer %llu (%pISpfsc) did not complete after %d seconds, retrying (try %d)\n",
+ 			 peer->device->dev->name, peer->internal_id,
+-			 &peer->endpoint.addr, REKEY_TIMEOUT,
++			 &peer->endpoint.addr, (int)REKEY_TIMEOUT,
+ 			 peer->timer_handshake_attempts + 1);
  
- static int debugfs_u64_set(void *data, u64 val)
- {
-@@ -912,19 +911,19 @@ static int debugfs_u64_set(void *data, u64 val)
+ 		/* We clear the endpoint address src address, in case this is
+@@ -94,7 +94,7 @@ static void wg_expired_new_handshake(str
  
- 	return 0;
- }
--
- DEFINE_SIMPLE_ATTRIBUTE(fops_u64_wo, NULL, debugfs_u64_set, "%llu\n");
+ 	pr_debug("%s: Retrying handshake with peer %llu (%pISpfsc) because we stopped hearing back after %d seconds\n",
+ 		 peer->device->dev->name, peer->internal_id,
+-		 &peer->endpoint.addr, KEEPALIVE_TIMEOUT + REKEY_TIMEOUT);
++		 &peer->endpoint.addr, (int)(KEEPALIVE_TIMEOUT + REKEY_TIMEOUT));
+ 	/* We clear the endpoint address src address, in case this is the cause
+ 	 * of trouble.
+ 	 */
+@@ -126,7 +126,7 @@ static void wg_queued_expired_zero_key_m
  
--static struct dentry *mydebugfs_create(const char *name, umode_t mode,
--				       struct dentry *parent, u64 *value)
--{
--	return debugfs_create_file(name, mode, parent, value, &fops_u64_wo);
--}
--
- static void setup_skx_debug(void)
- {
--	skx_test = debugfs_create_dir("skx_edac_test", NULL);
--	mydebugfs_create("addr", S_IWUSR, skx_test, &skx_fake_addr);
-+	skx_test = edac_debugfs_create_dir("skx_test");
-+	if (!skx_test)
-+		return;
-+
-+	if (!edac_debugfs_create_file("addr", 0200, skx_test,
-+				      NULL, &fops_u64_wo)) {
-+		debugfs_remove(skx_test);
-+		skx_test = NULL;
-+	}
- }
- 
- static void teardown_skx_debug(void)
--- 
-2.39.2
-
+ 	pr_debug("%s: Zeroing out all keys for peer %llu (%pISpfsc), since we haven't received a new one in %d seconds\n",
+ 		 peer->device->dev->name, peer->internal_id,
+-		 &peer->endpoint.addr, REJECT_AFTER_TIME * 3);
++		 &peer->endpoint.addr, (int)REJECT_AFTER_TIME * 3);
+ 	wg_noise_handshake_clear(&peer->handshake);
+ 	wg_noise_keypairs_clear(&peer->keypairs);
+ 	wg_peer_put(peer);
 
 
