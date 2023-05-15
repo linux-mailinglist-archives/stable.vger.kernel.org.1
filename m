@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00920703567
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F05B703686
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243348AbjEOQ6r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38966 "EHLO
+        id S243749AbjEORKz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243322AbjEOQ6i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:38 -0400
+        with ESMTP id S243742AbjEORKg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC2B7D98
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA2CE705
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FA6562A39
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B0FC433D2;
-        Mon, 15 May 2023 16:58:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 103B262133
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEB8C433D2;
+        Mon, 15 May 2023 17:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169911;
-        bh=gfKhUyKw0CX2PeLVIE8ww3bHJUVtkPZriPj0BxQava8=;
+        s=korg; t=1684170529;
+        bh=hAmmsQLFELuxXA9xinP0kXxf6Fq6ko4yDpQQjzvSkjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FMISDRvK3TaZ/wwPjBY9AN2FGbf9uIlW8ksvBW0MhuyeE/4OcelyQJXSHP1lg6ZD6
-         SsiZXV5q8AoyCwM61ZRHTm3wOJ8N1XKlO89XOlkfuEg6fUYVWJFHGC4dAYSfMlBdsv
-         pxXlIyXqDSxSL11+u3MyyDY4VByJ2H7PXZicmrZM=
+        b=2NCC9qEuJkLxMRwB2FF9sIGOE5Is+C2hVqpKFyhWBh2sutWOVdGpVDd0XxuQeh/HY
+         JwySCSbWPmLF3CwIyQjdhDMrUlL4kndIxDqBYc2ZzFOEMFFUMW05SXuwCJQeiLQmBj
+         5rB4uNAuulEHoMf32RIGrdgBNY1K30iknJsQyYSo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Subject: [PATCH 6.3 210/246] HID: wacom: Set a default resolution for older tablets
-Date:   Mon, 15 May 2023 18:27:02 +0200
-Message-Id: <20230515161728.899808073@linuxfoundation.org>
+        patches@lists.linux.dev, James Cowgill <james.cowgill@blaize.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 160/239] drm/panel: otm8009a: Set backlight parent to panel device
+Date:   Mon, 15 May 2023 18:27:03 +0200
+Message-Id: <20230515161726.475616136@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,48 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: James Cowgill <james.cowgill@blaize.com>
 
-commit 08a46b4190d345544d04ce4fe2e1844b772b8535 upstream.
+commit ab4f869fba6119997f7630d600049762a2b014fa upstream.
 
-Some older tablets may not report physical maximum for X/Y
-coordinates. Set a default to prevent undefined resolution.
+This is the logical place to put the backlight device, and it also
+fixes a kernel crash if the MIPI host is removed. Previously the
+backlight device would be unregistered twice when this happened - once
+as a child of the MIPI host through `mipi_dsi_host_unregister`, and
+once when the panel device is destroyed.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Link: https://lore.kernel.org/r/20230409164229.29777-1-ping.cheng@wacom.com
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Fixes: 12a6cbd4f3f1 ("drm/panel: otm8009a: Use new backlight API")
+Signed-off-by: James Cowgill <james.cowgill@blaize.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230412173450.199592-1-james.cowgill@blaize.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-orisetech-otm8009a.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1895,6 +1895,7 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
-+	int resolution = hidinput_calc_abs_res(field, resolution_code);
+--- a/drivers/gpu/drm/panel/panel-orisetech-otm8009a.c
++++ b/drivers/gpu/drm/panel/panel-orisetech-otm8009a.c
+@@ -471,7 +471,7 @@ static int otm8009a_probe(struct mipi_ds
+ 		       DRM_MODE_CONNECTOR_DSI);
  
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
-@@ -1915,8 +1916,15 @@ static void wacom_map_usage(struct input
- 	switch (type) {
- 	case EV_ABS:
- 		input_set_abs_params(input, code, fmin, fmax, fuzz, 0);
--		input_abs_set_res(input, code,
--				  hidinput_calc_abs_res(field, resolution_code));
-+
-+		/* older tablet may miss physical usage */
-+		if ((code == ABS_X || code == ABS_Y) && !resolution) {
-+			resolution = WACOM_INTUOS_RES;
-+			hid_warn(input,
-+				 "Wacom usage (%d) missing resolution \n",
-+				 code);
-+		}
-+		input_abs_set_res(input, code, resolution);
- 		break;
- 	case EV_KEY:
- 	case EV_MSC:
+ 	ctx->bl_dev = devm_backlight_device_register(dev, dev_name(dev),
+-						     dsi->host->dev, ctx,
++						     dev, ctx,
+ 						     &otm8009a_backlight_ops,
+ 						     NULL);
+ 	if (IS_ERR(ctx->bl_dev)) {
 
 
