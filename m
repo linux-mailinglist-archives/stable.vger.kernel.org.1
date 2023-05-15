@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2557C703825
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6DA703A06
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244172AbjEOR1r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47246 "EHLO
+        id S244756AbjEORrm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:47:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244173AbjEOR1a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:30 -0400
+        with ESMTP id S244741AbjEORrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:47:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582D511563
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AF518AB1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2F2962CE7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D69C433EF;
-        Mon, 15 May 2023 17:26:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED37962EAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB62C433EF;
+        Mon, 15 May 2023 17:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171576;
-        bh=T0CeFnq3CHc5Xe1O31FYeiX17Q66noo5q2ST0EwTdNY=;
+        s=korg; t=1684172756;
+        bh=ENgjwrIbcdGFTLTJRbqsqCqUaoSieHRtHatTB+kAJ5c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tKbjGFAE0rFXzKIE7/QZQHE6oapGQhKc67gkRFCCa23lsq0fxNP80yfGuORtEtK9S
-         wntnIuTfk6vyNgG1uh1LxL+uatFF0xN2nJjxi9JhML0WO6hpd5e/yU7TV9VZt8adkO
-         uW5WLV08PTxjfOwPMU5fya9pc/74+in5wnSBgl2I=
+        b=RVdB+SXV4CKmGKWfEAaHiwXKVHYLiHmEk8F4jPVml2bRz/CLy9hcfnNc6Vnv62VKZ
+         MUu7KQxTAyWERUBTl97vVSkN2+WOF82uQgaj3t1c4UYI3h3BrlcrdAHUBcyHZYatvM
+         QxqULTfh/YN179BsveE2Mo4fXUWiSz4fp7GxjQMA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Liang He <windhl@126.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/134] crypto: ccp - Clear PSP interrupt status register before calling handler
+Subject: [PATCH 5.10 228/381] macintosh/windfarm_smu_sat: Add missing of_node_put()
 Date:   Mon, 15 May 2023 18:27:59 +0200
-Message-Id: <20230515161702.993604989@linuxfoundation.org>
+Message-Id: <20230515161747.021151926@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +54,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+From: Liang He <windhl@126.com>
 
-[ Upstream commit 45121ad4a1750ca47ce3f32bd434bdb0cdbf0043 ]
+[ Upstream commit 631cf002826007ab7415258ee647dcaf8845ad5a ]
 
-The PSP IRQ is edge-triggered (MSI or MSI-X) in all cases supported by
-the psp module so clear the interrupt status register early in the
-handler to prevent missed interrupts. sev_irq_handler() calls wake_up()
-on a wait queue, which can result in a new command being submitted from
-a different CPU. This then races with the clearing of isr and can result
-in missed interrupts. A missed interrupt results in a command waiting
-until it times out, which results in the psp being declared dead.
+We call of_node_get() in wf_sat_probe() after sat is created,
+so we need the of_node_put() before *kfree(sat)*.
 
-This is unlikely on bare metal, but has been observed when running
-virtualized. In the cases where this is observed, sev->cmdresp_reg has
-PSP_CMDRESP_RESP set which indicates that the command was processed
-correctly but no interrupt was asserted.
-
-The full sequence of events looks like this:
-
-CPU 1: submits SEV cmd #1
-CPU 1: calls wait_event_timeout()
-CPU 0: enters psp_irq_handler()
-CPU 0: calls sev_handler()->wake_up()
-CPU 1: wakes up; finishes processing cmd #1
-CPU 1: submits SEV cmd #2
-CPU 1: calls wait_event_timeout()
-PSP:   finishes processing cmd #2; interrupt status is still set; no interrupt
-CPU 0: clears intsts
-CPU 0: exits psp_irq_handler()
-CPU 1: wait_event_timeout() times out; psp_dead=true
-
-Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: ac171c46667c ("[PATCH] powerpc: Thermal control for dual core G5s")
+Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230330033558.2562778-1-windhl@126.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/psp-dev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/macintosh/windfarm_smu_sat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/ccp/psp-dev.c b/drivers/crypto/ccp/psp-dev.c
-index ae7b445999144..4bf9eaab4456f 100644
---- a/drivers/crypto/ccp/psp-dev.c
-+++ b/drivers/crypto/ccp/psp-dev.c
-@@ -42,6 +42,9 @@ static irqreturn_t psp_irq_handler(int irq, void *data)
- 	/* Read the interrupt status: */
- 	status = ioread32(psp->io_regs + psp->vdata->intsts_reg);
+diff --git a/drivers/macintosh/windfarm_smu_sat.c b/drivers/macintosh/windfarm_smu_sat.c
+index e46e1153a0b43..7d7d6213e32aa 100644
+--- a/drivers/macintosh/windfarm_smu_sat.c
++++ b/drivers/macintosh/windfarm_smu_sat.c
+@@ -171,6 +171,7 @@ static void wf_sat_release(struct kref *ref)
  
-+	/* Clear the interrupt status by writing the same value we read. */
-+	iowrite32(status, psp->io_regs + psp->vdata->intsts_reg);
-+
- 	/* invoke subdevice interrupt handlers */
- 	if (status) {
- 		if (psp->sev_irq_handler)
-@@ -51,9 +54,6 @@ static irqreturn_t psp_irq_handler(int irq, void *data)
- 			psp->tee_irq_handler(irq, psp->tee_irq_data, status);
- 	}
- 
--	/* Clear the interrupt status by writing the same value we read. */
--	iowrite32(status, psp->io_regs + psp->vdata->intsts_reg);
--
- 	return IRQ_HANDLED;
+ 	if (sat->nr >= 0)
+ 		sats[sat->nr] = NULL;
++	of_node_put(sat->node);
+ 	kfree(sat);
  }
  
 -- 
