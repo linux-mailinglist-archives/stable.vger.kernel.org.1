@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5836D703923
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C457034C8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244065AbjEORj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:39:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60008 "EHLO
+        id S243110AbjEOQwN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:52:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244128AbjEORjO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587AC8685
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:29 -0700 (PDT)
+        with ESMTP id S243139AbjEOQv6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480ED559D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3868E62DD3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F61C433D2;
-        Mon, 15 May 2023 17:36:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8C7C6299C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7997C433D2;
+        Mon, 15 May 2023 16:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172188;
-        bh=W7gRnmZIVovH5DyqTn3YHGKXrTqlv0v62JNDlzxjSaU=;
+        s=korg; t=1684169516;
+        bh=2CpyPyxBfC2wsCt3WW3S9wDelkzwsiNvUhAcLcGys0M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EofUbhdL7xwIOj/A+3OlqwUpMn6Qbv3AGQBGTErXhKOIapmYbRhKoF4Y3AD5sIEDb
-         d5388hK9hbhFVRXKzzwjCZaEtLI3gGZR9H++McB9Er2udF0Px9Nsiyr6lwO8blE46n
-         UM6oxH7PAPlXCmFezpv1i4vA45HA0Bv6m7/U5ihQ=
+        b=Bltw/BdZvq3yh6jVyoJAcaWRpp7RdO7pVtHNHtNgMQXebnQ5RHdiIfo/o6KaNmCMO
+         w/0Lq1Q2jUeOvZrPIg5S7cWtq1CdZftQuO5JLwDe/VpyDuLp8Je2dRTWUwoQoXzdNg
+         RNn5SfuPTyNXESYuOLS4KHRb6wBV4LjnAOBfRMaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Zhengming <zhang.zhengming@h3c.com>,
-        Zhao Lei <zhao_lei1@hoperun.com>,
-        Zhou Kete <zhou.kete@h3c.com>,
-        Pengcheng Yang <yangpc@wangsu.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 043/381] relayfs: fix out-of-bounds access in relay_file_read
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Nick Hawkins <nick.hawkins@hpe.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 082/246] i2c: gxp: fix build failure without CONFIG_I2C_SLAVE
 Date:   Mon, 15 May 2023 18:24:54 +0200
-Message-Id: <20230515161738.790959552@linuxfoundation.org>
+Message-Id: <20230515161725.038027340@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,77 +54,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Zhengming <zhang.zhengming@h3c.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 43ec16f1450f4936025a9bdf1a273affdb9732c1 upstream.
+[ Upstream commit 5d388143fa6c351d985ffd23ea50c91c8839141b ]
 
-There is a crash in relay_file_read, as the var from
-point to the end of last subbuf.
+The gxp_i2c_slave_irq_handler() is hidden in an #ifdef, but the
+caller uses an IS_ENABLED() check:
 
-The oops looks something like:
-pc : __arch_copy_to_user+0x180/0x310
-lr : relay_file_read+0x20c/0x2c8
-Call trace:
- __arch_copy_to_user+0x180/0x310
- full_proxy_read+0x68/0x98
- vfs_read+0xb0/0x1d0
- ksys_read+0x6c/0xf0
- __arm64_sys_read+0x20/0x28
- el0_svc_common.constprop.3+0x84/0x108
- do_el0_svc+0x74/0x90
- el0_svc+0x1c/0x28
- el0_sync_handler+0x88/0xb0
- el0_sync+0x148/0x180
+drivers/i2c/busses/i2c-gxp.c: In function 'gxp_i2c_irq_handler':
+drivers/i2c/busses/i2c-gxp.c:467:29: error: implicit declaration of function 'gxp_i2c_slave_irq_handler'; did you mean 'gxp_i2c_irq_handler'? [-Werror=implicit-function-declaration]
 
-We get the condition by analyzing the vmcore:
+It has to consistently use one method or the other to avoid warnings,
+so move to IS_ENABLED() here for readability and build coverage, and
+move the #ifdef in linux/i2c.h to allow building it as dead code.
 
-1). The last produced byte and last consumed byte
-    both at the end of the last subbuf
-
-2). A softirq calls function(e.g __blk_add_trace)
-    to write relay buffer occurs when an program is calling
-    relay_file_read_avail().
-
-        relay_file_read
-                relay_file_read_avail
-                        relay_file_read_consume(buf, 0, 0);
-                        //interrupted by softirq who will write subbuf
-                        ....
-                        return 1;
-                //read_start point to the end of the last subbuf
-                read_start = relay_file_read_start_pos
-                //avail is equal to subsize
-                avail = relay_file_read_subbuf_avail
-                //from  points to an invalid memory address
-                from = buf->start + read_start
-                //system is crashed
-                copy_to_user(buffer, from, avail)
-
-Link: https://lkml.kernel.org/r/20230419040203.37676-1-zhang.zhengming@h3c.com
-Fixes: 8d62fdebdaf9 ("relay file read: start-pos fix")
-Signed-off-by: Zhang Zhengming <zhang.zhengming@h3c.com>
-Reviewed-by: Zhao Lei <zhao_lei1@hoperun.com>
-Reviewed-by: Zhou Kete <zhou.kete@h3c.com>
-Reviewed-by: Pengcheng Yang <yangpc@wangsu.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a55ed6f89f5 ("i2c: Add GXP SoC I2C Controller")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nick Hawkins <nick.hawkins@hpe.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/relay.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-gxp.c | 2 --
+ include/linux/i2c.h          | 4 ++--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
---- a/kernel/relay.c
-+++ b/kernel/relay.c
-@@ -1077,7 +1077,8 @@ static size_t relay_file_read_start_pos(
- 	size_t subbuf_size = buf->chan->subbuf_size;
- 	size_t n_subbufs = buf->chan->n_subbufs;
- 	size_t consumed = buf->subbufs_consumed % n_subbufs;
--	size_t read_pos = consumed * subbuf_size + buf->bytes_consumed;
-+	size_t read_pos = (consumed * subbuf_size + buf->bytes_consumed)
-+			% (n_subbufs * subbuf_size);
+diff --git a/drivers/i2c/busses/i2c-gxp.c b/drivers/i2c/busses/i2c-gxp.c
+index d4b55d989a268..8ea3fb5e4c7f7 100644
+--- a/drivers/i2c/busses/i2c-gxp.c
++++ b/drivers/i2c/busses/i2c-gxp.c
+@@ -353,7 +353,6 @@ static void gxp_i2c_chk_data_ack(struct gxp_i2c_drvdata *drvdata)
+ 	writew(value, drvdata->base + GXP_I2CMCMD);
+ }
  
- 	read_subbuf = read_pos / subbuf_size;
- 	padding = buf->padding[read_subbuf];
+-#if IS_ENABLED(CONFIG_I2C_SLAVE)
+ static bool gxp_i2c_slave_irq_handler(struct gxp_i2c_drvdata *drvdata)
+ {
+ 	u8 value;
+@@ -437,7 +436,6 @@ static bool gxp_i2c_slave_irq_handler(struct gxp_i2c_drvdata *drvdata)
+ 
+ 	return true;
+ }
+-#endif
+ 
+ static irqreturn_t gxp_i2c_irq_handler(int irq, void *_drvdata)
+ {
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 5ba89663ea865..13a1ce38cb0c5 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -385,7 +385,6 @@ static inline void i2c_set_clientdata(struct i2c_client *client, void *data)
+ 
+ /* I2C slave support */
+ 
+-#if IS_ENABLED(CONFIG_I2C_SLAVE)
+ enum i2c_slave_event {
+ 	I2C_SLAVE_READ_REQUESTED,
+ 	I2C_SLAVE_WRITE_REQUESTED,
+@@ -396,9 +395,10 @@ enum i2c_slave_event {
+ 
+ int i2c_slave_register(struct i2c_client *client, i2c_slave_cb_t slave_cb);
+ int i2c_slave_unregister(struct i2c_client *client);
+-bool i2c_detect_slave_mode(struct device *dev);
+ int i2c_slave_event(struct i2c_client *client,
+ 		    enum i2c_slave_event event, u8 *val);
++#if IS_ENABLED(CONFIG_I2C_SLAVE)
++bool i2c_detect_slave_mode(struct device *dev);
+ #else
+ static inline bool i2c_detect_slave_mode(struct device *dev) { return false; }
+ #endif
+-- 
+2.39.2
+
 
 
