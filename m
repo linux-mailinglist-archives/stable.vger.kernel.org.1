@@ -2,199 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4FF67039AA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62980703AF7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244482AbjEORoz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40234 "EHLO
+        id S239253AbjEOR6A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:58:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244614AbjEORoi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00DAD15635
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:11 -0700 (PDT)
+        with ESMTP id S244102AbjEOR5f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:57:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 069D7DC7F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4E0A62E54
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA815C433D2;
-        Mon, 15 May 2023 17:42:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA5C762FDB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF683C433EF;
+        Mon, 15 May 2023 17:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172531;
-        bh=p0SIf7BBQR9DcN0yCrZ8bZntU5YaM3v/VwKjk2oRRhI=;
+        s=korg; t=1684173318;
+        bh=omzC1fhsQt6500uy7MmCM1iNKsjK1QsHFGDTMWhQU/U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L4CZhcQZoiJSDLWaGQaWMnghASKo4OXOBJqMKnRCD1R5y7lvDHM6JbQjPBQwGSUAX
-         etC7qyTGI1lUY/nYuYmnresNGreFjf39FopLDOcBO+pX3SZ5s6PUlwBdEepBLXfiv5
-         9OVVQwcgMjdsPOvE6HUZOhhb7YP6helPvTOjBUTA=
+        b=hdEjOQd1MFBhxa7t+iYFm30oiHV1wsEc9iz3uzEChuA6cne2pWWpXyc46WXGjTdoA
+         7h5Se5xvAkQ9K8unwOIwo+3jsMoAvPlSQo/wAzJPCYJ/+rXgv+I0EzSdRV/FbyVSVy
+         AVG3qYbD87Ycp2A44zoqyGgOD7gJIzdMp/Y/X0Cw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
-        Sridhar Samudrala <sridhar.samudrala@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 183/381] ixgbe: Enable setting RSS table to default values
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 056/282] media: dm1105: Fix use after free bug in dm1105_remove due to race condition
 Date:   Mon, 15 May 2023 18:27:14 +0200
-Message-Id: <20230515161745.088588570@linuxfoundation.org>
+Message-Id: <20230515161723.928233021@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_PDS_OTHER_BAD_TLD,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joe Damato <jdamato@fastly.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit e85d3d55875f7a1079edfbc4e4e98d6f8aea9ac7 ]
+[ Upstream commit 5abda7a16698d4d1f47af1168d8fa2c640116b4a ]
 
-ethtool uses `ETHTOOL_GRXRINGS` to compute how many queues are supported
-by RSS. The driver should return the smaller of either:
-  - The maximum number of RSS queues the device supports, OR
-  - The number of RX queues configured
+In dm1105_probe, it called dm1105_ir_init and bound
+&dm1105->ir.work with dm1105_emit_key.
+When it handles IRQ request with dm1105_irq,
+it may call schedule_work to start the work.
 
-Prior to this change, running `ethtool -X $iface default` fails if the
-number of queues configured is larger than the number supported by RSS,
-even though changing the queue count correctly resets the flowhash to
-use all supported queues.
+When we call dm1105_remove to remove the driver, there
+may be a sequence as follows:
 
-Other drivers (for example, i40e) will succeed but the flow hash will
-reset to support the maximum number of queues supported by RSS, even if
-that amount is smaller than the configured amount.
+Fix it by finishing the work before cleanup in dm1105_remove
 
-Prior to this change:
+CPU0                  CPU1
 
-$ sudo ethtool -L eth1 combined 20
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 20 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9    10    11    12    13    14    15
-   16:      0     1     2     3     4     5     6     7
-   24:      8     9    10    11    12    13    14    15
-   32:      0     1     2     3     4     5     6     7
-...
+                    |dm1105_emit_key
+dm1105_remove      |
+  dm1105_ir_exit       |
+    rc_unregister_device |
+    rc_free_device  |
+    rc_dev_release  |
+    kfree(dev);     |
+                    |
+                    | rc_keydown
+                    |   //use
 
-You can see that the flowhash was correctly set to use the maximum
-number of queues supported by the driver (16).
-
-However, asking the NIC to reset to "default" fails:
-
-$ sudo ethtool -X eth1 default
-Cannot set RX flow hash configuration: Invalid argument
-
-After this change, the flowhash can be reset to default which will use
-all of the available RSS queues (16) or the configured queue count,
-whichever is smaller.
-
-Starting with eth1 which has 10 queues and a flowhash distributing to
-all 10 queues:
-
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 10 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9     0     1     2     3     4     5
-   16:      6     7     8     9     0     1     2     3
-...
-
-Increasing the queue count to 48 resets the flowhash to distribute to 16
-queues, as it did before this patch:
-
-$ sudo ethtool -L eth1 combined 48
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 16 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9    10    11    12    13    14    15
-   16:      0     1     2     3     4     5     6     7
-...
-
-Due to the other bugfix in this series, the flowhash can be set to use
-queues 0-5:
-
-$ sudo ethtool -X eth1 equal 5
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 16 RX ring(s):
-    0:      0     1     2     3     4     0     1     2
-    8:      3     4     0     1     2     3     4     0
-   16:      1     2     3     4     0     1     2     3
-...
-
-Due to this bugfix, the flowhash can be reset to default and use 16
-queues:
-
-$ sudo ethtool -X eth1 default
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 16 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9    10    11    12    13    14    15
-   16:      0     1     2     3     4     5     6     7
-...
-
-Fixes: 91cd94bfe4f0 ("ixgbe: add basic support for setting and getting nfc controls")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 34d2f9bf189c ("V4L/DVB: dm1105: use dm1105_dev & dev instead of dm1105dvb")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/media/pci/dm1105/dm1105.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 472ea068ea7b0..2eb1331834731 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -2641,6 +2641,14 @@ static int ixgbe_get_rss_hash_opts(struct ixgbe_adapter *adapter,
- 	return 0;
- }
+diff --git a/drivers/media/pci/dm1105/dm1105.c b/drivers/media/pci/dm1105/dm1105.c
+index bb3a8cc9de0cb..6dbd98a3e5b8f 100644
+--- a/drivers/media/pci/dm1105/dm1105.c
++++ b/drivers/media/pci/dm1105/dm1105.c
+@@ -1179,6 +1179,7 @@ static void dm1105_remove(struct pci_dev *pdev)
+ 	struct dvb_demux *dvbdemux = &dev->demux;
+ 	struct dmx_demux *dmx = &dvbdemux->dmx;
  
-+static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
-+{
-+	if (adapter->hw.mac.type < ixgbe_mac_X550)
-+		return 16;
-+	else
-+		return 64;
-+}
-+
- static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
- 			   u32 *rule_locs)
- {
-@@ -2649,7 +2657,8 @@ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
- 
- 	switch (cmd->cmd) {
- 	case ETHTOOL_GRXRINGS:
--		cmd->data = adapter->num_rx_queues;
-+		cmd->data = min_t(int, adapter->num_rx_queues,
-+				  ixgbe_rss_indir_tbl_max(adapter));
- 		ret = 0;
- 		break;
- 	case ETHTOOL_GRXCLSRLCNT:
-@@ -3051,14 +3060,6 @@ static int ixgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
- 	return ret;
- }
- 
--static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
--{
--	if (adapter->hw.mac.type < ixgbe_mac_X550)
--		return 16;
--	else
--		return 64;
--}
--
- static u32 ixgbe_get_rxfh_key_size(struct net_device *netdev)
- {
- 	return IXGBE_RSS_KEY_SIZE;
++	cancel_work_sync(&dev->ir.work);
+ 	dm1105_ir_exit(dev);
+ 	dmx->close(dmx);
+ 	dvb_net_release(&dev->dvbnet);
 -- 
 2.39.2
 
