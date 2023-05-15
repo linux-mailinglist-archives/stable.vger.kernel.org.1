@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2127A703512
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6BDA703355
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243223AbjEOQzb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
+        id S241813AbjEOQfy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243094AbjEOQzI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:08 -0400
+        with ESMTP id S242770AbjEOQfx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7416B6A5B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C403C05
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07D6C629CD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6B6C433D2;
-        Mon, 15 May 2023 16:55:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B7ED6280B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C112C433D2;
+        Mon, 15 May 2023 16:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169701;
-        bh=JEIw3/JeNfM0mUIqTOhzCXaqqyzceP9zscvyxHK/3V4=;
+        s=korg; t=1684168548;
+        bh=XnOG/vF+ep9a0a+mcPnHZaKF1qiIkYB0kfNRk3wVojU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xy/om3tWtmUTIN/jhBSmDDhHPYmToEk8gBcV+u54eZFm8h2OzYa/zQkLqPBWLREpl
-         Tf+aFiYYrE1yO4mfMmegKskNRJTSjpKkd7gO21fgf7gQk4kFr+hPiF/FW91L8oPP1r
-         iV/v9A1icQ3nKqSWYPcEc3tyiHvPlLgtXG1aGaQo=
+        b=aQisHBmjqi6KzT/ODgtmEyA7CsaE216Fg3wIz31E1EOr+6A7HaahkdDMiNm8KycaH
+         iaajHlJTE0fTtiwIfZ0DWbYS9Zr+EMLet52PuLu9bClSN9YSO6YdVxTwe3MuUmIiLz
+         /1PfLqBDoVenxSON3avcO2z4KVQdVyjbz+vf3nWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Wendy Wang <wendy.wang@intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.3 142/246] platform/x86/intel-uncore-freq: Return error on write frequency
-Date:   Mon, 15 May 2023 18:25:54 +0200
-Message-Id: <20230515161726.823169678@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 058/116] powerpc/mpc512x: fix resource printk format warning
+Date:   Mon, 15 May 2023 18:25:55 +0200
+Message-Id: <20230515161700.195452917@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,47 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 75e406b540c3eca67625d97bbefd4e3787eafbfe upstream.
+[ Upstream commit 7538c97e2b80ff6b7a8ea2ecf16a04355461b439 ]
 
-Currently when the uncore_write() returns error, it is silently
-ignored. Return error to user space when uncore_write() fails.
+Use "%pa" format specifier for resource_size_t to avoid a compiler
+printk format warning.
 
-Fixes: 49a474c7ba51 ("platform/x86: Add support for Uncore frequency control")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Tested-by: Wendy Wang <wendy.wang@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230418153230.679094-1-srinivas.pandruvada@linux.intel.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+../arch/powerpc/platforms/512x/clock-commonclk.c: In function 'mpc5121_clk_provide_backwards_compat':
+../arch/powerpc/platforms/512x/clock-commonclk.c:989:44: error: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
+  989 |         snprintf(devname, sizeof(devname), "%08x.%s", res.start, np->name); \
+      |                                            ^~~~~~~~~  ~~~~~~~~~
+      |                                                          |
+      |                                                          resource_size_t {aka long long unsigned int}
+
+Prevents 24 such warnings.
+
+Fixes: 01f25c371658 ("clk: mpc512x: add backwards compat to the CCF code")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230223070116.660-2-rdunlap@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/512x/clock-commonclk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-@@ -44,14 +44,18 @@ static ssize_t store_min_max_freq_khz(st
- 				      int min_max)
- {
- 	unsigned int input;
-+	int ret;
+diff --git a/arch/powerpc/platforms/512x/clock-commonclk.c b/arch/powerpc/platforms/512x/clock-commonclk.c
+index b3097fe6441b9..1019d78e44bb4 100644
+--- a/arch/powerpc/platforms/512x/clock-commonclk.c
++++ b/arch/powerpc/platforms/512x/clock-commonclk.c
+@@ -985,7 +985,7 @@ static void mpc5121_clk_provide_migration_support(void)
  
- 	if (kstrtouint(buf, 10, &input))
- 		return -EINVAL;
+ #define NODE_PREP do { \
+ 	of_address_to_resource(np, 0, &res); \
+-	snprintf(devname, sizeof(devname), "%08x.%s", res.start, np->name); \
++	snprintf(devname, sizeof(devname), "%pa.%s", &res.start, np->name); \
+ } while (0)
  
- 	mutex_lock(&uncore_lock);
--	uncore_write(data, input, min_max);
-+	ret = uncore_write(data, input, min_max);
- 	mutex_unlock(&uncore_lock);
- 
-+	if (ret)
-+		return ret;
-+
- 	return count;
- }
- 
+ #define NODE_CHK(clkname, clkitem, regnode, regflag) do { \
+-- 
+2.39.2
+
 
 
