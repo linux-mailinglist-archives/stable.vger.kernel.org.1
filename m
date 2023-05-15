@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A96427038EB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F25457034D5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:53:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244141AbjEORgk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:36:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
+        id S243178AbjEOQxF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:53:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243082AbjEORgX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:23 -0400
+        with ESMTP id S243179AbjEOQwg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:52:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1CB114375
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609856191
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:52:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0428462D79
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C00C433EF;
-        Mon, 15 May 2023 17:33:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91C00629AB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84858C4339B;
+        Mon, 15 May 2023 16:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172033;
-        bh=R6yb1hfeBaOqGpTmhzm4UaWyZSy3HmdgbiVDHtoNFUE=;
+        s=korg; t=1684169541;
+        bh=npBbLmcMEaQs7e8YBzC1M2nq9z9ZzqYTbmd8ky/cOxA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X+0IHBjlcbdkl+CZbXoZ6SAIdCT6Vdhvv3y8a4awaIgyzag0H3GI7iOsa4cs8EcGD
-         yeAtvoc++q3gkGeIc9II6Uh/IkXBjY5Hq6gugsgSBxLr6672XsOvNGzQDHYb+5D4z+
-         FEISHM8rX2U2zUhclRw0aREUSaXHfJJA7J+SABpY=
+        b=SEk0W7ilr+s5yy6Eg8pnb6Kqi4tM4TMQv+ZbXE7YHguVwCzr4t8lCs7zfykae+7U9
+         wPQ7CF7FBI4MPwkFuCjisnKEuJpzMstqkmkCBqM1pYggZxOcDWAFnJig5JEY3ss8GC
+         jZYQBBTaX5j1mFz/ntKI4+qujw5BEruxcsUdt6oE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marco Elver <elver@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>
-Subject: [PATCH 5.10 022/381] posix-cpu-timers: Implement the missing timer_wait_running callback
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 061/246] netfilter: nf_tables: rename function to destroy hook list
 Date:   Mon, 15 May 2023 18:24:33 +0200
-Message-Id: <20230515161737.785349616@linuxfoundation.org>
+Message-Id: <20230515161724.414323036@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,268 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit f7abf14f0001a5a47539d9f60bbdca649e43536b upstream.
+[ Upstream commit cdc32546632354305afdcf399a5431138a31c9e0 ]
 
-For some unknown reason the introduction of the timer_wait_running callback
-missed to fixup posix CPU timers, which went unnoticed for almost four years.
-Marco reported recently that the WARN_ON() in timer_wait_running()
-triggers with a posix CPU timer test case.
+Rename nft_flowtable_hooks_destroy() by nft_hooks_destroy() to prepare
+for netdev chain device updates.
 
-Posix CPU timers have two execution models for expiring timers depending on
-CONFIG_POSIX_CPU_TIMERS_TASK_WORK:
-
-1) If not enabled, the expiry happens in hard interrupt context so
-   spin waiting on the remote CPU is reasonably time bound.
-
-   Implement an empty stub function for that case.
-
-2) If enabled, the expiry happens in task work before returning to user
-   space or guest mode. The expired timers are marked as firing and moved
-   from the timer queue to a local list head with sighand lock held. Once
-   the timers are moved, sighand lock is dropped and the expiry happens in
-   fully preemptible context. That means the expiring task can be scheduled
-   out, migrated, interrupted etc. So spin waiting on it is more than
-   suboptimal.
-
-   The timer wheel has a timer_wait_running() mechanism for RT, which uses
-   a per CPU timer-base expiry lock which is held by the expiry code and the
-   task waiting for the timer function to complete blocks on that lock.
-
-   This does not work in the same way for posix CPU timers as there is no
-   timer base and expiry for process wide timers can run on any task
-   belonging to that process, but the concept of waiting on an expiry lock
-   can be used too in a slightly different way:
-
-    - Add a mutex to struct posix_cputimers_work. This struct is per task
-      and used to schedule the expiry task work from the timer interrupt.
-
-    - Add a task_struct pointer to struct cpu_timer which is used to store
-      a the task which runs the expiry. That's filled in when the task
-      moves the expired timers to the local expiry list. That's not
-      affecting the size of the k_itimer union as there are bigger union
-      members already
-
-    - Let the task take the expiry mutex around the expiry function
-
-    - Let the waiter acquire a task reference with rcu_read_lock() held and
-      block on the expiry mutex
-
-   This avoids spin-waiting on a task which might not even be on a CPU and
-   works nicely for RT too.
-
-Fixes: ec8f954a40da ("posix-timers: Use a callback for cancel synchronization on PREEMPT_RT")
-Reported-by: Marco Elver <elver@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Marco Elver <elver@google.com>
-Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87zg764ojw.ffs@tglx
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 8509f62b0b07 ("netfilter: nf_tables: hit ENOENT on unexisting chain/flowtable update with missing attributes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/posix-timers.h   |   17 +++++---
- kernel/time/posix-cpu-timers.c |   81 +++++++++++++++++++++++++++++++++--------
- kernel/time/posix-timers.c     |    4 ++
- 3 files changed, 82 insertions(+), 20 deletions(-)
+ net/netfilter/nf_tables_api.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/linux/posix-timers.h
-+++ b/include/linux/posix-timers.h
-@@ -4,6 +4,7 @@
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 6e027fc9b443f..d41f35e88642b 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7767,7 +7767,7 @@ static int nft_register_flowtable_net_hooks(struct net *net,
+ 	return err;
+ }
  
- #include <linux/spinlock.h>
- #include <linux/list.h>
-+#include <linux/mutex.h>
- #include <linux/alarmtimer.h>
- #include <linux/timerqueue.h>
- #include <linux/task_work.h>
-@@ -63,16 +64,18 @@ static inline int clockid_to_fd(const cl
-  * cpu_timer - Posix CPU timer representation for k_itimer
-  * @node:	timerqueue node to queue in the task/sig
-  * @head:	timerqueue head on which this timer is queued
-- * @task:	Pointer to target task
-+ * @pid:	Pointer to target task PID
-  * @elist:	List head for the expiry list
-  * @firing:	Timer is currently firing
-+ * @handling:	Pointer to the task which handles expiry
-  */
- struct cpu_timer {
--	struct timerqueue_node	node;
--	struct timerqueue_head	*head;
--	struct pid		*pid;
--	struct list_head	elist;
--	int			firing;
-+	struct timerqueue_node		node;
-+	struct timerqueue_head		*head;
-+	struct pid			*pid;
-+	struct list_head		elist;
-+	int				firing;
-+	struct task_struct __rcu	*handling;
- };
- 
- static inline bool cpu_timer_enqueue(struct timerqueue_head *head,
-@@ -129,10 +132,12 @@ struct posix_cputimers {
- /**
-  * posix_cputimers_work - Container for task work based posix CPU timer expiry
-  * @work:	The task work to be scheduled
-+ * @mutex:	Mutex held around expiry in context of this task work
-  * @scheduled:  @work has been scheduled already, no further processing
-  */
- struct posix_cputimers_work {
- 	struct callback_head	work;
-+	struct mutex		mutex;
- 	unsigned int		scheduled;
- };
- 
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -782,6 +782,8 @@ static u64 collect_timerqueue(struct tim
- 			return expires;
- 
- 		ctmr->firing = 1;
-+		/* See posix_cpu_timer_wait_running() */
-+		rcu_assign_pointer(ctmr->handling, current);
- 		cpu_timer_dequeue(ctmr);
- 		list_add_tail(&ctmr->elist, firing);
- 	}
-@@ -1097,7 +1099,49 @@ static void handle_posix_cpu_timers(stru
- #ifdef CONFIG_POSIX_CPU_TIMERS_TASK_WORK
- static void posix_cpu_timers_work(struct callback_head *work)
+-static void nft_flowtable_hooks_destroy(struct list_head *hook_list)
++static void nft_hooks_destroy(struct list_head *hook_list)
  {
-+	struct posix_cputimers_work *cw = container_of(work, typeof(*cw), work);
-+
-+	mutex_lock(&cw->mutex);
- 	handle_posix_cpu_timers(current);
-+	mutex_unlock(&cw->mutex);
-+}
-+
-+/*
-+ * Invoked from the posix-timer core when a cancel operation failed because
-+ * the timer is marked firing. The caller holds rcu_read_lock(), which
-+ * protects the timer and the task which is expiring it from being freed.
-+ */
-+static void posix_cpu_timer_wait_running(struct k_itimer *timr)
-+{
-+	struct task_struct *tsk = rcu_dereference(timr->it.cpu.handling);
-+
-+	/* Has the handling task completed expiry already? */
-+	if (!tsk)
-+		return;
-+
-+	/* Ensure that the task cannot go away */
-+	get_task_struct(tsk);
-+	/* Now drop the RCU protection so the mutex can be locked */
-+	rcu_read_unlock();
-+	/* Wait on the expiry mutex */
-+	mutex_lock(&tsk->posix_cputimers_work.mutex);
-+	/* Release it immediately again. */
-+	mutex_unlock(&tsk->posix_cputimers_work.mutex);
-+	/* Drop the task reference. */
-+	put_task_struct(tsk);
-+	/* Relock RCU so the callsite is balanced */
-+	rcu_read_lock();
-+}
-+
-+static void posix_cpu_timer_wait_running_nsleep(struct k_itimer *timr)
-+{
-+	/* Ensure that timr->it.cpu.handling task cannot go away */
-+	rcu_read_lock();
-+	spin_unlock_irq(&timr->it_lock);
-+	posix_cpu_timer_wait_running(timr);
-+	rcu_read_unlock();
-+	/* @timr is on stack and is valid */
-+	spin_lock_irq(&timr->it_lock);
- }
+ 	struct nft_hook *hook, *next;
  
- /*
-@@ -1113,6 +1157,7 @@ void clear_posix_cputimers_work(struct t
- 	       sizeof(p->posix_cputimers_work.work));
- 	init_task_work(&p->posix_cputimers_work.work,
- 		       posix_cpu_timers_work);
-+	mutex_init(&p->posix_cputimers_work.mutex);
- 	p->posix_cputimers_work.scheduled = false;
- }
- 
-@@ -1191,6 +1236,18 @@ static inline void __run_posix_cpu_timer
- 	lockdep_posixtimer_exit();
- }
- 
-+static void posix_cpu_timer_wait_running(struct k_itimer *timr)
-+{
-+	cpu_relax();
-+}
-+
-+static void posix_cpu_timer_wait_running_nsleep(struct k_itimer *timr)
-+{
-+	spin_unlock_irq(&timr->it_lock);
-+	cpu_relax();
-+	spin_lock_irq(&timr->it_lock);
-+}
-+
- static inline bool posix_cpu_timers_work_scheduled(struct task_struct *tsk)
- {
- 	return false;
-@@ -1299,6 +1356,8 @@ static void handle_posix_cpu_timers(stru
- 		 */
- 		if (likely(cpu_firing >= 0))
- 			cpu_timer_fire(timer);
-+		/* See posix_cpu_timer_wait_running() */
-+		rcu_assign_pointer(timer->it.cpu.handling, NULL);
- 		spin_unlock(&timer->it_lock);
+@@ -7948,7 +7948,7 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
+ 					       &flowtable->hook_list,
+ 					       flowtable);
+ 	if (err < 0) {
+-		nft_flowtable_hooks_destroy(&flowtable->hook_list);
++		nft_hooks_destroy(&flowtable->hook_list);
+ 		goto err4;
  	}
- }
-@@ -1434,23 +1493,16 @@ static int do_cpu_nanosleep(const clocki
- 		expires = cpu_timer_getexpires(&timer.it.cpu);
- 		error = posix_cpu_timer_set(&timer, 0, &zero_it, &it);
- 		if (!error) {
--			/*
--			 * Timer is now unarmed, deletion can not fail.
--			 */
-+			/* Timer is now unarmed, deletion can not fail. */
- 			posix_cpu_timer_del(&timer);
-+		} else {
-+			while (error == TIMER_RETRY) {
-+				posix_cpu_timer_wait_running_nsleep(&timer);
-+				error = posix_cpu_timer_del(&timer);
-+			}
- 		}
--		spin_unlock_irq(&timer.it_lock);
  
--		while (error == TIMER_RETRY) {
--			/*
--			 * We need to handle case when timer was or is in the
--			 * middle of firing. In other cases we already freed
--			 * resources.
--			 */
--			spin_lock_irq(&timer.it_lock);
--			error = posix_cpu_timer_del(&timer);
--			spin_unlock_irq(&timer.it_lock);
--		}
-+		spin_unlock_irq(&timer.it_lock);
- 
- 		if ((it.it_value.tv_sec | it.it_value.tv_nsec) == 0) {
- 			/*
-@@ -1560,6 +1612,7 @@ const struct k_clock clock_posix_cpu = {
- 	.timer_del		= posix_cpu_timer_del,
- 	.timer_get		= posix_cpu_timer_get,
- 	.timer_rearm		= posix_cpu_timer_rearm,
-+	.timer_wait_running	= posix_cpu_timer_wait_running,
- };
- 
- const struct k_clock clock_process = {
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -846,6 +846,10 @@ static struct k_itimer *timer_wait_runni
- 	rcu_read_lock();
- 	unlock_timer(timer, *flags);
- 
-+	/*
-+	 * kc->timer_wait_running() might drop RCU lock. So @timer
-+	 * cannot be touched anymore after the function returns!
-+	 */
- 	if (!WARN_ON_ONCE(!kc->timer_wait_running))
- 		kc->timer_wait_running(timer);
- 
+@@ -8776,7 +8776,7 @@ static void nft_commit_release(struct nft_trans *trans)
+ 	case NFT_MSG_DELFLOWTABLE:
+ 	case NFT_MSG_DESTROYFLOWTABLE:
+ 		if (nft_trans_flowtable_update(trans))
+-			nft_flowtable_hooks_destroy(&nft_trans_flowtable_hooks(trans));
++			nft_hooks_destroy(&nft_trans_flowtable_hooks(trans));
+ 		else
+ 			nf_tables_flowtable_destroy(nft_trans_flowtable(trans));
+ 		break;
+@@ -9429,7 +9429,7 @@ static void nf_tables_abort_release(struct nft_trans *trans)
+ 		break;
+ 	case NFT_MSG_NEWFLOWTABLE:
+ 		if (nft_trans_flowtable_update(trans))
+-			nft_flowtable_hooks_destroy(&nft_trans_flowtable_hooks(trans));
++			nft_hooks_destroy(&nft_trans_flowtable_hooks(trans));
+ 		else
+ 			nf_tables_flowtable_destroy(nft_trans_flowtable(trans));
+ 		break;
+-- 
+2.39.2
+
 
 
