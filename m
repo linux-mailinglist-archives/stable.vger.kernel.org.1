@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37433703806
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C931703814
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244238AbjEOR0r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41734 "EHLO
+        id S244166AbjEOR1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244025AbjEOR0V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4AE911B7C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:08 -0700 (PDT)
+        with ESMTP id S244194AbjEOR0z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40858DC5A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C67562CA6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D9AC433EF;
-        Mon, 15 May 2023 17:25:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92E3662CB7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9ABC433EF;
+        Mon, 15 May 2023 17:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171504;
-        bh=ae1yMjVRx4Cq/FigsPbvT1w11aKsbp49H8+HaG8Zqss=;
+        s=korg; t=1684171514;
+        bh=voNhrY9iVz3g/RvhPe6ae7dSu7mgql45PL/RHZR6XXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UmpKTz7/zre409TxxC614sRHlIY+iWzk0ezHhXGfOfvOkUICzi0upAsRhM12ScujU
-         MKQYj95iULapYVZDbx6Uwod9wgXem0VsVWiCRL3ZbB638jXXUVad4IZ1kAtpRdbXro
-         eYZYshRSGfW64XJCe0YPYtNzak2/HfkBiXchAMVY=
+        b=FwnEAqjLXwvrMtkcym5CINSZiK50AHweSb/75Cp93mjDZgdpbMnlZp070BbU8G1sr
+         2I9jTTkg2RuxnKR3Xmto9q+g4/a/2AGqNYqAVXy8wCkudJpls12iGmE5xaMyKSUWf5
+         XXsVhNLgLgZf0h/V8U7KRGDtsnmssaYVtt3VSe50=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
-        Lijo Lazar <lijo.lazar@amd.com>,
+        patches@lists.linux.dev, Lijo Lazar <lijo.lazar@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.2 203/242] drm/amd: Load MES microcode during early_init
-Date:   Mon, 15 May 2023 18:28:49 +0200
-Message-Id: <20230515161728.030672808@linuxfoundation.org>
+Subject: [PATCH 6.2 204/242] drm/amd: Add a new helper for loading/validating microcode
+Date:   Mon, 15 May 2023 18:28:50 +0200
+Message-Id: <20230515161728.059316817@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
 References: <20230515161721.802179972@linuxfoundation.org>
@@ -44,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,362 +56,79 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit cc42e76e7de5190a7da5dac9d7b2bbb458e050bf upstream.
+commit 2210af50ae7f4104269dfde7bafbbfbacdbe1a2b upstream.
 
-Add an early_init phase to MES for fetching and validating microcode
-from the filesystem.
+All microcode runs a basic validation after it's been loaded. Each
+IP block as part of init will run both.
 
-If MES microcode is required but not available during early init, the
-firmware framebuffer will have already been released and the screen will
-freeze.
+Introduce a wrapper for request_firmware and amdgpu_ucode_validate.
+This wrapper will also remap any error codes from request_firmware
+to -ENODEV.  This is so that early_init will fail if firmware couldn't
+be loaded instead of the IP block being disabled.
 
-Move the request for MES microcode into the early_init phase
-so that if it's not available, early_init will fail.
-
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |   65 +++++++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |    1 
- drivers/gpu/drm/amd/amdgpu/mes_v10_1.c  |   97 +++++---------------------------
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |   88 +++++------------------------
- 4 files changed, 100 insertions(+), 151 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c |   36 ++++++++++++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h |    3 ++
+ 2 files changed, 39 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -21,6 +21,8 @@
-  *
-  */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+@@ -1091,3 +1091,39 @@ void amdgpu_ucode_ip_version_decode(stru
  
-+#include <linux/firmware.h>
-+
- #include "amdgpu_mes.h"
- #include "amdgpu.h"
- #include "soc15_common.h"
-@@ -1423,3 +1425,66 @@ error_pasid:
- 	kfree(vm);
- 	return 0;
+ 	snprintf(ucode_prefix, len, "%s_%d_%d_%d", ip_name, maj, min, rev);
  }
 +
-+int amdgpu_mes_init_microcode(struct amdgpu_device *adev, int pipe)
++/*
++ * amdgpu_ucode_request - Fetch and validate amdgpu microcode
++ *
++ * @adev: amdgpu device
++ * @fw: pointer to load firmware to
++ * @fw_name: firmware to load
++ *
++ * This is a helper that will use request_firmware and amdgpu_ucode_validate
++ * to load and run basic validation on firmware. If the load fails, remap
++ * the error code to -ENODEV, so that early_init functions will fail to load.
++ */
++int amdgpu_ucode_request(struct amdgpu_device *adev, const struct firmware **fw,
++			 const char *fw_name)
 +{
-+	const struct mes_firmware_header_v1_0 *mes_hdr;
-+	struct amdgpu_firmware_info *info;
-+	char ucode_prefix[30];
-+	char fw_name[40];
-+	int r;
++	int err = request_firmware(fw, fw_name, adev->dev);
 +
-+	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
-+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes%s.bin",
-+		ucode_prefix,
-+		pipe == AMDGPU_MES_SCHED_PIPE ? "" : "1");
-+	r = request_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
-+	if (r)
-+		goto out;
++	if (err)
++		return -ENODEV;
++	err = amdgpu_ucode_validate(*fw);
++	if (err)
++		dev_dbg(adev->dev, "\"%s\" failed to validate\n", fw_name);
 +
-+	r = amdgpu_ucode_validate(adev->mes.fw[pipe]);
-+	if (r)
-+		goto out;
-+
-+	mes_hdr = (const struct mes_firmware_header_v1_0 *)
-+		adev->mes.fw[pipe]->data;
-+	adev->mes.uc_start_addr[pipe] =
-+		le32_to_cpu(mes_hdr->mes_uc_start_addr_lo) |
-+		((uint64_t)(le32_to_cpu(mes_hdr->mes_uc_start_addr_hi)) << 32);
-+	adev->mes.data_start_addr[pipe] =
-+		le32_to_cpu(mes_hdr->mes_data_start_addr_lo) |
-+		((uint64_t)(le32_to_cpu(mes_hdr->mes_data_start_addr_hi)) << 32);
-+
-+	if (adev->firmware.load_type == AMDGPU_FW_LOAD_PSP) {
-+		int ucode, ucode_data;
-+
-+		if (pipe == AMDGPU_MES_SCHED_PIPE) {
-+			ucode = AMDGPU_UCODE_ID_CP_MES;
-+			ucode_data = AMDGPU_UCODE_ID_CP_MES_DATA;
-+		} else {
-+			ucode = AMDGPU_UCODE_ID_CP_MES1;
-+			ucode_data = AMDGPU_UCODE_ID_CP_MES1_DATA;
-+		}
-+
-+		info = &adev->firmware.ucode[ucode];
-+		info->ucode_id = ucode;
-+		info->fw = adev->mes.fw[pipe];
-+		adev->firmware.fw_size +=
-+			ALIGN(le32_to_cpu(mes_hdr->mes_ucode_size_bytes),
-+			      PAGE_SIZE);
-+
-+		info = &adev->firmware.ucode[ucode_data];
-+		info->ucode_id = ucode_data;
-+		info->fw = adev->mes.fw[pipe];
-+		adev->firmware.fw_size +=
-+			ALIGN(le32_to_cpu(mes_hdr->mes_ucode_data_size_bytes),
-+			      PAGE_SIZE);
-+	}
-+
-+	return 0;
-+
-+out:
-+	release_firmware(adev->mes.fw[pipe]);
-+	adev->mes.fw[pipe] = NULL;
-+	return r;
-+}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-@@ -306,6 +306,7 @@ struct amdgpu_mes_funcs {
- 
- int amdgpu_mes_ctx_get_offs(struct amdgpu_ring *ring, unsigned int id_offs);
- 
-+int amdgpu_mes_init_microcode(struct amdgpu_device *adev, int pipe);
- int amdgpu_mes_init(struct amdgpu_device *adev);
- void amdgpu_mes_fini(struct amdgpu_device *adev);
- 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v10_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v10_1.c
-@@ -379,82 +379,6 @@ static const struct amdgpu_mes_funcs mes
- 	.resume_gang = mes_v10_1_resume_gang,
- };
- 
--static int mes_v10_1_init_microcode(struct amdgpu_device *adev,
--				    enum admgpu_mes_pipe pipe)
--{
--	const char *chip_name;
--	char fw_name[30];
--	int err;
--	const struct mes_firmware_header_v1_0 *mes_hdr;
--	struct amdgpu_firmware_info *info;
--
--	switch (adev->ip_versions[GC_HWIP][0]) {
--	case IP_VERSION(10, 1, 10):
--		chip_name = "navi10";
--		break;
--	case IP_VERSION(10, 3, 0):
--		chip_name = "sienna_cichlid";
--		break;
--	default:
--		BUG();
--	}
--
--	if (pipe == AMDGPU_MES_SCHED_PIPE)
--		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes.bin",
--			 chip_name);
--	else
--		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes1.bin",
--			 chip_name);
--
--	err = request_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
--	if (err)
--		return err;
--
--	err = amdgpu_ucode_validate(adev->mes.fw[pipe]);
--	if (err) {
--		release_firmware(adev->mes.fw[pipe]);
--		adev->mes.fw[pipe] = NULL;
--		return err;
--	}
--
--	mes_hdr = (const struct mes_firmware_header_v1_0 *)
--		adev->mes.fw[pipe]->data;
--	adev->mes.uc_start_addr[pipe] =
--		le32_to_cpu(mes_hdr->mes_uc_start_addr_lo) |
--		((uint64_t)(le32_to_cpu(mes_hdr->mes_uc_start_addr_hi)) << 32);
--	adev->mes.data_start_addr[pipe] =
--		le32_to_cpu(mes_hdr->mes_data_start_addr_lo) |
--		((uint64_t)(le32_to_cpu(mes_hdr->mes_data_start_addr_hi)) << 32);
--
--	if (adev->firmware.load_type == AMDGPU_FW_LOAD_PSP) {
--		int ucode, ucode_data;
--
--		if (pipe == AMDGPU_MES_SCHED_PIPE) {
--			ucode = AMDGPU_UCODE_ID_CP_MES;
--			ucode_data = AMDGPU_UCODE_ID_CP_MES_DATA;
--		} else {
--			ucode = AMDGPU_UCODE_ID_CP_MES1;
--			ucode_data = AMDGPU_UCODE_ID_CP_MES1_DATA;
--		}
--
--		info = &adev->firmware.ucode[ucode];
--		info->ucode_id = ucode;
--		info->fw = adev->mes.fw[pipe];
--		adev->firmware.fw_size +=
--			ALIGN(le32_to_cpu(mes_hdr->mes_ucode_size_bytes),
--			      PAGE_SIZE);
--
--		info = &adev->firmware.ucode[ucode_data];
--		info->ucode_id = ucode_data;
--		info->fw = adev->mes.fw[pipe];
--		adev->firmware.fw_size +=
--			ALIGN(le32_to_cpu(mes_hdr->mes_ucode_data_size_bytes),
--			      PAGE_SIZE);
--	}
--
--	return 0;
--}
--
- static void mes_v10_1_free_microcode(struct amdgpu_device *adev,
- 				     enum admgpu_mes_pipe pipe)
- {
-@@ -1019,10 +943,6 @@ static int mes_v10_1_sw_init(void *handl
- 		if (!adev->enable_mes_kiq && pipe == AMDGPU_MES_KIQ_PIPE)
- 			continue;
- 
--		r = mes_v10_1_init_microcode(adev, pipe);
--		if (r)
--			return r;
--
- 		r = mes_v10_1_allocate_eop_buf(adev, pipe);
- 		if (r)
- 			return r;
-@@ -1229,6 +1149,22 @@ static int mes_v10_1_resume(void *handle
- 	return amdgpu_mes_resume(adev);
- }
- 
-+static int mes_v10_0_early_init(void *handle)
-+{
-+	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-+	int pipe, r;
-+
-+	for (pipe = 0; pipe < AMDGPU_MAX_MES_PIPES; pipe++) {
-+		if (!adev->enable_mes_kiq && pipe == AMDGPU_MES_KIQ_PIPE)
-+			continue;
-+		r = amdgpu_mes_init_microcode(adev, pipe);
-+		if (r)
-+			return r;
-+	}
-+
-+	return 0;
++	return err;
 +}
 +
- static int mes_v10_0_late_init(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-@@ -1241,6 +1177,7 @@ static int mes_v10_0_late_init(void *han
- 
- static const struct amd_ip_funcs mes_v10_1_ip_funcs = {
- 	.name = "mes_v10_1",
-+	.early_init = mes_v10_0_early_init,
- 	.late_init = mes_v10_0_late_init,
- 	.sw_init = mes_v10_1_sw_init,
- 	.sw_fini = mes_v10_1_sw_fini,
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -460,73 +460,6 @@ static const struct amdgpu_mes_funcs mes
- 	.misc_op = mes_v11_0_misc_op,
- };
- 
--static int mes_v11_0_init_microcode(struct amdgpu_device *adev,
--				    enum admgpu_mes_pipe pipe)
--{
--	char fw_name[30];
--	char ucode_prefix[30];
--	int err;
--	const struct mes_firmware_header_v1_0 *mes_hdr;
--	struct amdgpu_firmware_info *info;
--
--	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
--
--	if (pipe == AMDGPU_MES_SCHED_PIPE)
--		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes.bin",
--			 ucode_prefix);
--	else
--		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes1.bin",
--			 ucode_prefix);
--
--	err = request_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
--	if (err)
--		return err;
--
--	err = amdgpu_ucode_validate(adev->mes.fw[pipe]);
--	if (err) {
--		release_firmware(adev->mes.fw[pipe]);
--		adev->mes.fw[pipe] = NULL;
--		return err;
--	}
--
--	mes_hdr = (const struct mes_firmware_header_v1_0 *)
--		adev->mes.fw[pipe]->data;
--	adev->mes.uc_start_addr[pipe] =
--		le32_to_cpu(mes_hdr->mes_uc_start_addr_lo) |
--		((uint64_t)(le32_to_cpu(mes_hdr->mes_uc_start_addr_hi)) << 32);
--	adev->mes.data_start_addr[pipe] =
--		le32_to_cpu(mes_hdr->mes_data_start_addr_lo) |
--		((uint64_t)(le32_to_cpu(mes_hdr->mes_data_start_addr_hi)) << 32);
--
--	if (adev->firmware.load_type == AMDGPU_FW_LOAD_PSP) {
--		int ucode, ucode_data;
--
--		if (pipe == AMDGPU_MES_SCHED_PIPE) {
--			ucode = AMDGPU_UCODE_ID_CP_MES;
--			ucode_data = AMDGPU_UCODE_ID_CP_MES_DATA;
--		} else {
--			ucode = AMDGPU_UCODE_ID_CP_MES1;
--			ucode_data = AMDGPU_UCODE_ID_CP_MES1_DATA;
--		}
--
--		info = &adev->firmware.ucode[ucode];
--		info->ucode_id = ucode;
--		info->fw = adev->mes.fw[pipe];
--		adev->firmware.fw_size +=
--			ALIGN(le32_to_cpu(mes_hdr->mes_ucode_size_bytes),
--			      PAGE_SIZE);
--
--		info = &adev->firmware.ucode[ucode_data];
--		info->ucode_id = ucode_data;
--		info->fw = adev->mes.fw[pipe];
--		adev->firmware.fw_size +=
--			ALIGN(le32_to_cpu(mes_hdr->mes_ucode_data_size_bytes),
--			      PAGE_SIZE);
--	}
--
--	return 0;
--}
--
- static void mes_v11_0_free_microcode(struct amdgpu_device *adev,
- 				     enum admgpu_mes_pipe pipe)
- {
-@@ -1101,10 +1034,6 @@ static int mes_v11_0_sw_init(void *handl
- 		if (!adev->enable_mes_kiq && pipe == AMDGPU_MES_KIQ_PIPE)
- 			continue;
- 
--		r = mes_v11_0_init_microcode(adev, pipe);
--		if (r)
--			return r;
--
- 		r = mes_v11_0_allocate_eop_buf(adev, pipe);
- 		if (r)
- 			return r;
-@@ -1339,6 +1268,22 @@ static int mes_v11_0_resume(void *handle
- 	return amdgpu_mes_resume(adev);
- }
- 
-+static int mes_v11_0_early_init(void *handle)
++/*
++ * amdgpu_ucode_release - Release firmware microcode
++ *
++ * @fw: pointer to firmware to release
++ */
++void amdgpu_ucode_release(const struct firmware **fw)
 +{
-+	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-+	int pipe, r;
-+
-+	for (pipe = 0; pipe < AMDGPU_MAX_MES_PIPES; pipe++) {
-+		if (!adev->enable_mes_kiq && pipe == AMDGPU_MES_KIQ_PIPE)
-+			continue;
-+		r = amdgpu_mes_init_microcode(adev, pipe);
-+		if (r)
-+			return r;
-+	}
-+
-+	return 0;
++	release_firmware(*fw);
++	*fw = NULL;
 +}
-+
- static int mes_v11_0_late_init(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-@@ -1353,6 +1298,7 @@ static int mes_v11_0_late_init(void *han
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.h
+@@ -544,6 +544,9 @@ void amdgpu_ucode_print_sdma_hdr(const s
+ void amdgpu_ucode_print_psp_hdr(const struct common_firmware_header *hdr);
+ void amdgpu_ucode_print_gpu_info_hdr(const struct common_firmware_header *hdr);
+ int amdgpu_ucode_validate(const struct firmware *fw);
++int amdgpu_ucode_request(struct amdgpu_device *adev, const struct firmware **fw,
++			 const char *fw_name);
++void amdgpu_ucode_release(const struct firmware **fw);
+ bool amdgpu_ucode_hdr_version(union amdgpu_firmware_header *hdr,
+ 				uint16_t hdr_major, uint16_t hdr_minor);
  
- static const struct amd_ip_funcs mes_v11_0_ip_funcs = {
- 	.name = "mes_v11_0",
-+	.early_init = mes_v11_0_early_init,
- 	.late_init = mes_v11_0_late_init,
- 	.sw_init = mes_v11_0_sw_init,
- 	.sw_fini = mes_v11_0_sw_fini,
 
 
