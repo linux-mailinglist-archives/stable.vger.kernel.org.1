@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09837703B34
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CA1703796
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244708AbjEOSAj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
+        id S244108AbjEORXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245145AbjEOSAL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:11 -0400
+        with ESMTP id S243854AbjEORWr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0507C1527A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69168DD91
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9AE162FF2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF5BC433EF;
-        Mon, 15 May 2023 17:57:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F65162C12
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7161FC433D2;
+        Mon, 15 May 2023 17:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173448;
-        bh=jtZEkJHMuRm9VeDsyuPMvxwj9ruLpJH1SDbN1rrAzlg=;
+        s=korg; t=1684171248;
+        bh=ecRzZTC14Y082V1XWJK204NohrP7IYeyAEnOOPYXe8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZBjHihAmMXRXMceUKKnfSByzvMFo0JpWslRsf/kW911gW3r/usFGV8dyXh5p+e+HP
-         DKGAjJ7wIZgmIlmuMBQom7GrYmzvRyqTh6mJtAPlPc3TbCCjthYn64NzQ5cDSRWHUf
-         JzDBTb/scaTUOCAq0CGZfT1PZnZXxFyYybXbeBUY=
+        b=jQIWge3EzHHcBK4iZULrGBfUsYHfXXm6zYDEW3zKC5nmzWce7cz8br9IVDU+4ALIE
+         iQR6lXhm/Z7VhHP6n0TXe+bNnyNLuFItO09/e+C4rt9TgHmuuzkeQE+6CAfL//Czsd
+         v11VVGGCK1eS1Pqp6Gu0XxzQWRnlEeWm2ecEp7WA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        Xin Liu <liuxin350@huawei.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 097/282] bpf, sockmap: fix deadlocks in the sockhash and sockmap
+        patches@lists.linux.dev,
+        syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com,
+        Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.2 149/242] inotify: Avoid reporting event with invalid wd
 Date:   Mon, 15 May 2023 18:27:55 +0200
-Message-Id: <20230515161725.167075956@linuxfoundation.org>
+Message-Id: <20230515161726.363428783@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,83 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Liu <liuxin350@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
+commit c915d8f5918bea7c3962b09b8884ca128bfd9b0c upstream.
 
-When huang uses sched_switch tracepoint, the tracepoint
-does only one thing in the mounted ebpf program, which
-deletes the fixed elements in sockhash ([0])
+When inotify_freeing_mark() races with inotify_handle_inode_event() it
+can happen that inotify_handle_inode_event() sees that i_mark->wd got
+already reset to -1 and reports this value to userspace which can
+confuse the inotify listener. Avoid the problem by validating that wd is
+sensible (and pretend the mark got removed before the event got
+generated otherwise).
 
-It seems that elements in sockhash are rarely actively
-deleted by users or ebpf program. Therefore, we do not
-pay much attention to their deletion. Compared with hash
-maps, sockhash only provides spin_lock_bh protection.
-This causes it to appear to have self-locking behavior
-in the interrupt context.
-
-  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
-
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Xin Liu <liuxin350@huawei.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 7e790dd5fc93 ("inotify: fix error paths in inotify_update_watch")
+Message-Id: <20230424163219.9250-1-jack@suse.cz>
+Reported-by: syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/notify/inotify/inotify_fsnotify.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 5bce6d4d20573..78f2b6b265b2a 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -322,8 +322,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- {
- 	struct sock *sk;
- 	int err = 0;
-+	unsigned long flags;
+--- a/fs/notify/inotify/inotify_fsnotify.c
++++ b/fs/notify/inotify/inotify_fsnotify.c
+@@ -65,7 +65,7 @@ int inotify_handle_inode_event(struct fs
+ 	struct fsnotify_event *fsn_event;
+ 	struct fsnotify_group *group = inode_mark->group;
+ 	int ret;
+-	int len = 0;
++	int len = 0, wd;
+ 	int alloc_len = sizeof(struct inotify_event_info);
+ 	struct mem_cgroup *old_memcg;
  
--	raw_spin_lock_bh(&stab->lock);
-+	raw_spin_lock_irqsave(&stab->lock, flags);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
- 		sk = xchg(psk, NULL);
-@@ -333,7 +334,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- 	else
- 		err = -EINVAL;
+@@ -81,6 +81,13 @@ int inotify_handle_inode_event(struct fs
+ 			      fsn_mark);
  
--	raw_spin_unlock_bh(&stab->lock);
-+	raw_spin_unlock_irqrestore(&stab->lock, flags);
- 	return err;
- }
- 
-@@ -655,11 +656,12 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
- 	struct bpf_htab_bucket *bucket;
- 	struct bpf_htab_elem *elem;
- 	int ret = -ENOENT;
-+	unsigned long flags;
- 
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
--	raw_spin_lock_bh(&bucket->lock);
-+	raw_spin_lock_irqsave(&bucket->lock, flags);
- 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
- 	if (elem) {
- 		hlist_del_rcu(&elem->node);
-@@ -667,7 +669,7 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
- 		sock_hash_free_elem(htab, elem);
- 		ret = 0;
- 	}
--	raw_spin_unlock_bh(&bucket->lock);
-+	raw_spin_unlock_irqrestore(&bucket->lock, flags);
- 	return ret;
- }
- 
--- 
-2.39.2
-
+ 	/*
++	 * We can be racing with mark being detached. Don't report event with
++	 * invalid wd.
++	 */
++	wd = READ_ONCE(i_mark->wd);
++	if (wd == -1)
++		return 0;
++	/*
+ 	 * Whoever is interested in the event, pays for the allocation. Do not
+ 	 * trigger OOM killer in the target monitoring memcg as it may have
+ 	 * security repercussion.
+@@ -110,7 +117,7 @@ int inotify_handle_inode_event(struct fs
+ 	fsn_event = &event->fse;
+ 	fsnotify_init_event(fsn_event);
+ 	event->mask = mask;
+-	event->wd = i_mark->wd;
++	event->wd = wd;
+ 	event->sync_cookie = cookie;
+ 	event->name_len = len;
+ 	if (len)
 
 
