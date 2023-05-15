@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 234E470337D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA93170353A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242804AbjEOQhr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:37:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
+        id S243227AbjEOQ5B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242805AbjEOQhq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 257862D7E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:45 -0700 (PDT)
+        with ESMTP id S243228AbjEOQ5B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9DD65A1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE4896283C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE97C433EF;
-        Mon, 15 May 2023 16:37:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AF9062A1B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669B6C4339C;
+        Mon, 15 May 2023 16:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168664;
-        bh=Q2r45nfW1/gV7vRc29mKbsjPabQvVoN8pep8FUNsDgw=;
+        s=korg; t=1684169809;
+        bh=kTlnrCaLLxGhKAuq8vjsHx7R1IrrkD7ASsB9N1wNDLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pqvwX0JuxA/3US7YfNmy/Td30YDw7bBuD4Pn40C69gJZyo1t3LqPIzS/kjfjp1xMI
-         xC7VjSrod79tK6UD/Ms480qh+op3ZY49ETwN/UiA4AKEgD54fI0UvKoMMzzE3stXPO
-         KS2Jz2RsjFb90VyziY+gV4DuX+K/hLKEhlp5kQZ8=
+        b=tsGnNK4+gPM1mT7fOa33PsM0NwqE5Gj6v2kzIPkFvhu4fiGFFqLZK+4mveskwzQuM
+         Z22c5Lgy/orCKORq1d9RrPAyk0KewRRGCi7U+gstti96faFzRT5efzd1N1wRSpHI5p
+         /cH0e6NUDhdHhD8DugbOm4huJM5LNBSjNXGPLY68=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 092/116] af_packet: Dont send zero-byte data in packet_sendmsg_spkt().
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.3 177/246] drm/i915/dsi: Use unconditional msleep() instead of intel_dsi_msleep()
 Date:   Mon, 15 May 2023 18:26:29 +0200
-Message-Id: <20230515161701.319468579@linuxfoundation.org>
+Message-Id: <20230515161727.940854708@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,111 +55,146 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6a341729fb31b4c5df9f74f24b4b1c98410c9b87 ]
+commit c8c2969bfcba5fcba3a5b078315c1b586d927d9f upstream.
 
-syzkaller reported a warning below [0].
+The intel_dsi_msleep() helper skips sleeping if the MIPI-sequences have
+a version of 3 or newer and the panel is in vid-mode.
 
-We can reproduce it by sending 0-byte data from the (AF_PACKET,
-SOCK_PACKET) socket via some devices whose dev->hard_header_len
-is 0.
+This is based on the big comment around line 730 which starts with
+"Panel enable/disable sequences from the VBT spec.", where
+the "v3 video mode seq" column does not have any wait t# entries.
 
-    struct sockaddr_pkt addr = {
-        .spkt_family = AF_PACKET,
-        .spkt_device = "tun0",
-    };
-    int fd;
+Checking the Windows driver shows that it does always honor
+the VBT delays independent of the version of the VBT sequences.
 
-    fd = socket(AF_PACKET, SOCK_PACKET, 0);
-    sendto(fd, NULL, 0, 0, (struct sockaddr *)&addr, sizeof(addr));
+Commit 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for
+the panel_on_delay when there is no reset-deassert MIPI-sequence")
+switched to a direct msleep() instead of intel_dsi_msleep()
+when there is no MIPI_SEQ_DEASSERT_RESET sequence, to fix
+the panel on an Acer Aspire Switch 10 E SW3-016 not turning on.
 
-We have a similar fix for the (AF_PACKET, SOCK_RAW) socket as
-commit dc633700f00f ("net/af_packet: check len when min_header_len
-equals to 0").
+And now testing on a Nextbook Ares 8A shows that panel_on_delay
+must always be honored otherwise the panel will not turn on.
 
-Let's add the same test for the SOCK_PACKET socket.
+Instead of only always using regular msleep() for panel_on_delay
+do as Windows does and always use regular msleep() everywhere
+were intel_dsi_msleep() is used and drop the intel_dsi_msleep()
+helper.
 
-[0]:
-skb_assert_len
-WARNING: CPU: 1 PID: 19945 at include/linux/skbuff.h:2552 skb_assert_len include/linux/skbuff.h:2552 [inline]
-WARNING: CPU: 1 PID: 19945 at include/linux/skbuff.h:2552 __dev_queue_xmit+0x1f26/0x31d0 net/core/dev.c:4159
-Modules linked in:
-CPU: 1 PID: 19945 Comm: syz-executor.0 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:skb_assert_len include/linux/skbuff.h:2552 [inline]
-RIP: 0010:__dev_queue_xmit+0x1f26/0x31d0 net/core/dev.c:4159
-Code: 89 de e8 1d a2 85 fd 84 db 75 21 e8 64 a9 85 fd 48 c7 c6 80 2a 1f 86 48 c7 c7 c0 06 1f 86 c6 05 23 cf 27 04 01 e8 fa ee 56 fd <0f> 0b e8 43 a9 85 fd 0f b6 1d 0f cf 27 04 31 ff 89 de e8 e3 a1 85
-RSP: 0018:ffff8880217af6e0 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90001133000
-RDX: 0000000000040000 RSI: ffffffff81186922 RDI: 0000000000000001
-RBP: ffff8880217af8b0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888030045640
-R13: ffff8880300456b0 R14: ffff888030045650 R15: ffff888030045718
-FS:  00007fc5864da640(0000) GS:ffff88806cd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020005740 CR3: 000000003f856003 CR4: 0000000000770ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- dev_queue_xmit include/linux/netdevice.h:3085 [inline]
- packet_sendmsg_spkt+0xc4b/0x1230 net/packet/af_packet.c:2066
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x1b4/0x200 net/socket.c:747
- ____sys_sendmsg+0x331/0x970 net/socket.c:2503
- ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2557
- __sys_sendmmsg+0x18c/0x430 net/socket.c:2643
- __do_sys_sendmmsg net/socket.c:2672 [inline]
- __se_sys_sendmmsg net/socket.c:2669 [inline]
- __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2669
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3c/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7fc58791de5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007fc5864d9cc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007fc58791de5d
-RDX: 0000000000000001 RSI: 0000000020005740 RDI: 0000000000000004
-RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fc58797e530 R15: 0000000000000000
- </TASK>
----[ end trace 0000000000000000 ]---
-skb len=0 headroom=16 headlen=0 tailroom=304
-mac=(16,0) net=(16,-1) trans=-1
-shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
-csum(0x0 ip_summed=0 complete_sw=0 valid=0 level=0)
-hash(0x0 sw=0 l4=0) proto=0x0000 pkttype=0 iif=0
-dev name=sit0 feat=0x00000006401d7869
-sk family=17 type=10 proto=0
+Changes in v2:
+- Replace all intel_dsi_msleep() calls instead of just
+  the intel_dsi_msleep(panel_on_delay) call
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for the panel_on_delay when there is no reset-deassert MIPI-sequence")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230425194441.68086-1-hdegoede@redhat.com
+(cherry picked from commit fa83c12132f71302f7d4b02758dc0d46048d3f5f)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c       |    2 +-
+ drivers/gpu/drm/i915/display/intel_dsi_vbt.c |   11 -----------
+ drivers/gpu/drm/i915/display/intel_dsi_vbt.h |    1 -
+ drivers/gpu/drm/i915/display/vlv_dsi.c       |   22 +++++-----------------
+ 4 files changed, 6 insertions(+), 30 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 8b44ad304a656..2089da69da103 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1995,7 +1995,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		goto retry;
- 	}
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -1211,7 +1211,7 @@ static void gen11_dsi_powerup_panel(stru
  
--	if (!dev_validate_header(dev, skb->data, len)) {
-+	if (!dev_validate_header(dev, skb->data, len) || !skb->len) {
- 		err = -EINVAL;
- 		goto out_unlock;
- 	}
--- 
-2.39.2
-
+ 	/* panel power on related mipi dsi vbt sequences */
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
+-	intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
++	msleep(intel_dsi->panel_on_delay);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+--- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
++++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
+@@ -762,17 +762,6 @@ void intel_dsi_vbt_exec_sequence(struct
+ 		gpiod_set_value_cansleep(intel_dsi->gpio_backlight, 0);
+ }
+ 
+-void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec)
+-{
+-	struct intel_connector *connector = intel_dsi->attached_connector;
+-
+-	/* For v3 VBTs in vid-mode the delays are part of the VBT sequences */
+-	if (is_vid_mode(intel_dsi) && connector->panel.vbt.dsi.seq_version >= 3)
+-		return;
+-
+-	msleep(msec);
+-}
+-
+ void intel_dsi_log_params(struct intel_dsi *intel_dsi)
+ {
+ 	struct drm_i915_private *i915 = to_i915(intel_dsi->base.base.dev);
+--- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
++++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
+@@ -16,7 +16,6 @@ void intel_dsi_vbt_gpio_init(struct inte
+ void intel_dsi_vbt_gpio_cleanup(struct intel_dsi *intel_dsi);
+ void intel_dsi_vbt_exec_sequence(struct intel_dsi *intel_dsi,
+ 				 enum mipi_seq seq_id);
+-void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec);
+ void intel_dsi_log_params(struct intel_dsi *intel_dsi);
+ 
+ #endif /* __INTEL_DSI_VBT_H__ */
+--- a/drivers/gpu/drm/i915/display/vlv_dsi.c
++++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
+@@ -783,7 +783,6 @@ static void intel_dsi_pre_enable(struct
+ {
+ 	struct intel_dsi *intel_dsi = enc_to_intel_dsi(encoder);
+ 	struct intel_crtc *crtc = to_intel_crtc(pipe_config->uapi.crtc);
+-	struct intel_connector *connector = to_intel_connector(conn_state->connector);
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	enum pipe pipe = crtc->pipe;
+ 	enum port port;
+@@ -831,21 +830,10 @@ static void intel_dsi_pre_enable(struct
+ 	if (!IS_GEMINILAKE(dev_priv))
+ 		intel_dsi_prepare(encoder, pipe_config);
+ 
++	/* Give the panel time to power-on and then deassert its reset */
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
+-
+-	/*
+-	 * Give the panel time to power-on and then deassert its reset.
+-	 * Depending on the VBT MIPI sequences version the deassert-seq
+-	 * may contain the necessary delay, intel_dsi_msleep() will skip
+-	 * the delay in that case. If there is no deassert-seq, then an
+-	 * unconditional msleep is used to give the panel time to power-on.
+-	 */
+-	if (connector->panel.vbt.dsi.sequence[MIPI_SEQ_DEASSERT_RESET]) {
+-		intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
+-		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+-	} else {
+-		msleep(intel_dsi->panel_on_delay);
+-	}
++	msleep(intel_dsi->panel_on_delay);
++	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
+ 
+ 	if (IS_GEMINILAKE(dev_priv)) {
+ 		glk_cold_boot = glk_dsi_enable_io(encoder);
+@@ -879,7 +867,7 @@ static void intel_dsi_pre_enable(struct
+ 		msleep(20); /* XXX */
+ 		for_each_dsi_port(port, intel_dsi->ports)
+ 			dpi_send_cmd(intel_dsi, TURN_ON, false, port);
+-		intel_dsi_msleep(intel_dsi, 100);
++		msleep(100);
+ 
+ 		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+ 
+@@ -1007,7 +995,7 @@ static void intel_dsi_post_disable(struc
+ 	/* Assert reset */
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_ASSERT_RESET);
+ 
+-	intel_dsi_msleep(intel_dsi, intel_dsi->panel_off_delay);
++	msleep(intel_dsi->panel_off_delay);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_OFF);
+ 
+ 	intel_dsi->panel_power_off_time = ktime_get_boottime();
 
 
