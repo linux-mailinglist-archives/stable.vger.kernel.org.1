@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACAF4703904
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0416270339D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244473AbjEORiE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:38:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33580 "EHLO
+        id S242841AbjEOQjT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:39:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242397AbjEORhj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:39 -0400
+        with ESMTP id S242834AbjEOQjT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1441B1B0AC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE3A40CD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFA8D62D81
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9356C433D2;
-        Mon, 15 May 2023 17:34:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7482D62861
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9AAC4339C;
+        Mon, 15 May 2023 16:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172083;
-        bh=5lgoWjr6u1HjwgKvn1QmygnDtV1Wjk204QbyvoihS+k=;
+        s=korg; t=1684168756;
+        bh=+UNjsZf7xSoMA0b4vk92VZpnzERx3koPDWnZB8LYeNg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J+C3jH1DENN204+hElvVUHB6CSVkskm3yNo8Xeb/E9bVBq+bLIq9kYCtNRnRqM03f
-         B0fOByWkl7SAQa+745jTTFcLpQ+EhMvqW10H3lmwM6h5HzdYbU0v/GdnigAda24Je8
-         RedrmM8RWKj3xXPNcxJKVGiXdlyPgSXN8f9ngrNo=
+        b=1gDXxTJ5V9GXANcz9AhLKfnQ1Ps3g6kOHlfJl0Gz6Uq3+vgiISfyz/q8StsDPSj3P
+         3djREXzcR17Ph0fqo1719BDbRY5GU6nXuFl4bEqkgT/+dLBNyQt4Q/nMFPJlELo4gZ
+         Gfe6zL1kVOxEMkwvpYB0jsUOjn17COW4OnwgvPZ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Brian Norris <briannorris@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH 5.10 009/381] driver core: Dont require dynamic_debug for initcall_debug probe timing
-Date:   Mon, 15 May 2023 18:24:20 +0200
-Message-Id: <20230515161737.186518673@linuxfoundation.org>
+        patches@lists.linux.dev, Paul Moore <paul@paul-moore.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 024/191] selinux: ensure av_permissions.h is built when needed
+Date:   Mon, 15 May 2023 18:24:21 +0200
+Message-Id: <20230515161708.066273271@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Paul Moore <paul@paul-moore.com>
 
-commit e2f06aa885081e1391916367f53bad984714b4db upstream.
+[ Upstream commit 4ce1f694eb5d8ca607fed8542d32a33b4f1217a5 ]
 
-Don't require the use of dynamic debug (or modification of the kernel to
-add a #define DEBUG to the top of this file) to get the printk message
-about driver probe timing. This printk is only emitted when
-initcall_debug is enabled on the kernel commandline, and it isn't
-immediately obvious that you have to do something else to debug boot
-timing issues related to driver probe. Add a comment too so it doesn't
-get converted back to pr_debug().
+The Makefile rule responsible for building flask.h and
+av_permissions.h only lists flask.h as a target which means that
+av_permissions.h is only generated when flask.h needs to be
+generated.  This patch fixes this by adding av_permissions.h as a
+target to the rule.
 
-Fixes: eb7fbc9fb118 ("driver core: Add missing '\n' in log messages")
-Cc: stable <stable@kernel.org>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230412225842.3196599-1-swboyd@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8753f6bec352 ("selinux: generate flask headers during kernel build")
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/dd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ security/selinux/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -677,7 +677,12 @@ static int really_probe_debug(struct dev
- 	calltime = ktime_get();
- 	ret = really_probe(dev, drv);
- 	rettime = ktime_get();
--	pr_debug("probe of %s returned %d after %lld usecs\n",
-+	/*
-+	 * Don't change this to pr_debug() because that requires
-+	 * CONFIG_DYNAMIC_DEBUG and we want a simple 'initcall_debug' on the
-+	 * kernel commandline to print this all the time at the debug level.
-+	 */
-+	printk(KERN_DEBUG "probe of %s returned %d after %lld usecs\n",
- 		 dev_name(dev), ret, ktime_us_delta(rettime, calltime));
- 	return ret;
- }
+diff --git a/security/selinux/Makefile b/security/selinux/Makefile
+index 3efb0dda95b55..08ba8ca81d403 100644
+--- a/security/selinux/Makefile
++++ b/security/selinux/Makefile
+@@ -22,5 +22,5 @@ quiet_cmd_flask = GEN     $(obj)/flask.h $(obj)/av_permissions.h
+       cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
+ 
+ targets += flask.h av_permissions.h
+-$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
++$(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/genheaders/genheaders FORCE
+ 	$(call if_changed,flask)
+-- 
+2.39.2
+
 
 
