@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 322E7703765
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 366737039A5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243943AbjEORU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34314 "EHLO
+        id S244538AbjEORoh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244064AbjEORUj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C6E8106E6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:24 -0700 (PDT)
+        with ESMTP id S244610AbjEORoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C4E918A86
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48FD1621F4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E29BC433D2;
-        Mon, 15 May 2023 17:18:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D7BB62E45
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4369CC433EF;
+        Mon, 15 May 2023 17:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171090;
-        bh=N4j3UetDREU97zvtSxjpWrR8AZlNcTWfAVMJuufj21w=;
+        s=korg; t=1684172494;
+        bh=22hO9FZZTEOBmm0ug4aKxAW16UBXEHbNLjht8AjHKko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N0VnaXZ8bRmtUAE+S5A5MA5xrBCVOnm+Wp2aWAWiSzwRYVOQaBZd/plUtRVa8FxGQ
-         FZk4edqgRbV/YaOxovnJajndiC19mJuJUpNZBByca6mtHqsnVvy9NJ1eZiqiSA6JYO
-         mc0zWp3P/4es47qQ21TfTDgypuBZEXD5gnq43HAA=
+        b=Q2vElHLDDUknQdm2+VPQkj8Q7ymZbOzermwVI8zuH6UNFhHpM/XdjTFlYjq5z83Ae
+         ImlSCEhQ3KVRO6YOrG2BdK6ztnZq9Ty0btCEuzFGcgCNFQgdEMyuVwfMXjUbTGkJHH
+         UvvvKAwzJnLjbfbNQMLCxAJGUWWEu/HY2Y2pVnko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        syzbot+49f6cef45247ff249498@syzkaller.appspotmail.com,
+        Hsin-Wei Hung <hsinweih@uci.edu>,
+        Xin Liu <liuxin350@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 097/242] perf hist: Improve srcfile sort key performance (really)
+Subject: [PATCH 5.10 172/381] bpf, sockmap: Revert buggy deadlock fix in the sockhash and sockmap
 Date:   Mon, 15 May 2023 18:27:03 +0200
-Message-Id: <20230515161724.817887906@linuxfoundation.org>
+Message-Id: <20230515161744.577881411@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,52 +58,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 6094c7744bb0563e833e81d8df8513f9a4e7a257 ]
+[ Upstream commit 8c5c2a4898e3d6bad86e29d471e023c8a19ba799 ]
 
-The earlier commit f0cdde28fecc0d7f ("perf hist: Improve srcfile sort
-key performance") updated the srcfile logic but missed to change the
-->cmp() callback which is called for every sample.
+syzbot reported a splat and bisected it to recent commit ed17aa92dc56 ("bpf,
+sockmap: fix deadlocks in the sockhash and sockmap"):
 
-It should use the same logic like in the srcline to speed up the
-processing because it'd return the same information repeatedly for the
-same address.  The real processing will be done in
-sort__srcfile_collapse().
+  [...]
+  WARNING: CPU: 1 PID: 9280 at kernel/softirq.c:376 __local_bh_enable_ip+0xbe/0x130 kernel/softirq.c:376
+  Modules linked in:
+  CPU: 1 PID: 9280 Comm: syz-executor.1 Not tainted 6.2.0-syzkaller-13249-gd319f344561d #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
+  RIP: 0010:__local_bh_enable_ip+0xbe/0x130 kernel/softirq.c:376
+  [...]
+  Call Trace:
+  <TASK>
+  spin_unlock_bh include/linux/spinlock.h:395 [inline]
+  sock_map_del_link+0x2ea/0x510 net/core/sock_map.c:165
+  sock_map_unref+0xb0/0x1d0 net/core/sock_map.c:184
+  sock_hash_delete_elem+0x1ec/0x2a0 net/core/sock_map.c:945
+  map_delete_elem kernel/bpf/syscall.c:1536 [inline]
+  __sys_bpf+0x2edc/0x53e0 kernel/bpf/syscall.c:5053
+  __do_sys_bpf kernel/bpf/syscall.c:5166 [inline]
+  __se_sys_bpf kernel/bpf/syscall.c:5164 [inline]
+  __x64_sys_bpf+0x79/0xc0 kernel/bpf/syscall.c:5164
+  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+  do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  RIP: 0033:0x7fe8f7c8c169
+  </TASK>
+  [...]
 
-Fixes: f0cdde28fecc0d7f ("perf hist: Improve srcfile sort key performance")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230323025005.191239-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Revert for now until we have a proper solution.
+
+Fixes: ed17aa92dc56 ("bpf, sockmap: fix deadlocks in the sockhash and sockmap")
+Reported-by: syzbot+49f6cef45247ff249498@syzkaller.appspotmail.com
+Cc: Hsin-Wei Hung <hsinweih@uci.edu>
+Cc: Xin Liu <liuxin350@huawei.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/000000000000f1db9605f939720e@google.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/sort.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ net/core/sock_map.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 37662cdec5eef..2bf3f88276972 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -603,12 +603,7 @@ static char *hist_entry__get_srcfile(struct hist_entry *e)
- static int64_t
- sort__srcfile_cmp(struct hist_entry *left, struct hist_entry *right)
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index e21adbbb7461c..ee5d3f49b0b5b 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -423,9 +423,8 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
  {
--	if (!left->srcfile)
--		left->srcfile = hist_entry__get_srcfile(left);
--	if (!right->srcfile)
--		right->srcfile = hist_entry__get_srcfile(right);
--
--	return strcmp(right->srcfile, left->srcfile);
-+	return sort__srcline_cmp(left, right);
+ 	struct sock *sk;
+ 	int err = 0;
+-	unsigned long flags;
+ 
+-	raw_spin_lock_irqsave(&stab->lock, flags);
++	raw_spin_lock_bh(&stab->lock);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+ 		sk = xchg(psk, NULL);
+@@ -435,7 +434,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ 	else
+ 		err = -EINVAL;
+ 
+-	raw_spin_unlock_irqrestore(&stab->lock, flags);
++	raw_spin_unlock_bh(&stab->lock);
+ 	return err;
  }
  
- static int64_t
+@@ -957,12 +956,11 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 	struct bpf_shtab_bucket *bucket;
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
+-	unsigned long flags;
+ 
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
+-	raw_spin_lock_irqsave(&bucket->lock, flags);
++	raw_spin_lock_bh(&bucket->lock);
+ 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
+ 	if (elem) {
+ 		hlist_del_rcu(&elem->node);
+@@ -970,7 +968,7 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 		sock_hash_free_elem(htab, elem);
+ 		ret = 0;
+ 	}
+-	raw_spin_unlock_irqrestore(&bucket->lock, flags);
++	raw_spin_unlock_bh(&bucket->lock);
+ 	return ret;
+ }
+ 
 -- 
 2.39.2
 
