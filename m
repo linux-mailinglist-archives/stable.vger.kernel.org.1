@@ -2,57 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8517038E3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 020077034B9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244278AbjEORgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
+        id S243063AbjEOQvx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:51:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243477AbjEORfr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:35:47 -0400
+        with ESMTP id S243065AbjEOQvf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A2E12EAE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B6F5BBE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92DAB61EEF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F86C433D2;
-        Mon, 15 May 2023 17:33:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F27C62982
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB87C433EF;
+        Mon, 15 May 2023 16:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172009;
-        bh=Rw0pSNQBVmqVnVO5qQ0fjbWqjjvpW2WvqxUM+ZkQmb4=;
+        s=korg; t=1684169485;
+        bh=WXHX+duXFT1bKg3lep9sRXBUbNqewxIpuZCG/cKch40=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1OJALUcFjVRvYTPyw+LgE3fyqqRA2rIr0vVCtZDajzmIs9D/TrMsInSjv2YFZ06x
-         X1aTNMqRsG1yIJNrYUmnyBvnx9QzBsWWXCeVQzhDenKnfEZCUpaT19wti8h02uemNJ
-         zruIFcLpOTpztOu511hBJRQRWF3NIY/0b63Jo9AQ=
+        b=TVpbufu1g5o6I+WPRdyoXXqY72demmGCeiAG2E9BhC1MDM6U1uwqw1DP3s+jMKBUC
+         k5RGrGwtH/gWNDPs1hf2jbN71e5m4Z/RSGx+4k1jK307fpRFg7iJ8/Sz7t5sFVmOUH
+         XpN828SINuXAi1oUZFCN73irbWJDll9RiYP+C3Os=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Michael Haeuptle <michael.haeuptle@hpe.com>,
-        Ian May <ian.may@canonical.com>,
-        Andrey Grodzovsky <andrey2805@gmail.com>,
-        Rahul Kumar <rahul.kumar1@amd.com>,
-        Jialin Zhang <zhangjialin11@huawei.com>,
-        Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dan Stein <dstein@hpe.com>, Ashok Raj <ashok.raj@intel.com>,
-        Alex Michon <amichon@kalrayinc.com>,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 5.10 015/381] PCI: pciehp: Fix AB-BA deadlock between reset_lock and device_lock
-Date:   Mon, 15 May 2023 18:24:26 +0200
-Message-Id: <20230515161737.445915121@linuxfoundation.org>
+        patches@lists.linux.dev, Greg Thelen <gthelen@google.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 055/246] arm64: kernel: remove SHF_WRITE|SHF_EXECINSTR from .idmap.text
+Date:   Mon, 15 May 2023 18:24:27 +0200
+Message-Id: <20230515161724.230453483@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -67,178 +55,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukas Wunner <lukas@wunner.de>
+From: ndesaulniers@google.com <ndesaulniers@google.com>
 
-commit f5eff5591b8f9c5effd25c92c758a127765f74c1 upstream.
+[ Upstream commit 4df69e0df295822cdf816442fe4897f214cccb08 ]
 
-In 2013, commits
+commit d54170812ef1 ("arm64: fix .idmap.text assertion for large kernels")
+modified some of the section assembler directives that declare
+.idmap.text to be SHF_ALLOC instead of
+SHF_ALLOC|SHF_WRITE|SHF_EXECINSTR.
 
-  2e35afaefe64 ("PCI: pciehp: Add reset_slot() method")
-  608c388122c7 ("PCI: Add slot reset option to pci_dev_reset()")
+This patch fixes up the remaining stragglers that were left behind.  Add
+Fixes tag so that this doesn't precede related change in stable.
 
-amended PCIe hotplug to mask Presence Detect Changed events during a
-Secondary Bus Reset.  The reset thus no longer causes gratuitous slot
-bringdown and bringup.
-
-However the commits neglected to serialize reset with code paths reading
-slot registers.  For instance, a slot bringup due to an earlier hotplug
-event may see the Presence Detect State bit cleared during a concurrent
-Secondary Bus Reset.
-
-In 2018, commit
-
-  5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-
-retrofitted the missing locking.  It introduced a reset_lock which
-serializes a Secondary Bus Reset with other parts of pciehp.
-
-Unfortunately the locking turns out to be overzealous:  reset_lock is
-held for the entire enumeration and de-enumeration of hotplugged devices,
-including driver binding and unbinding.
-
-Driver binding and unbinding acquires device_lock while the reset_lock
-of the ancestral hotplug port is held.  A concurrent Secondary Bus Reset
-acquires the ancestral reset_lock while already holding the device_lock.
-The asymmetric locking order in the two code paths can lead to AB-BA
-deadlocks.
-
-Michael Haeuptle reports such deadlocks on simultaneous hot-removal and
-vfio release (the latter implies a Secondary Bus Reset):
-
-  pciehp_ist()                                    # down_read(reset_lock)
-    pciehp_handle_presence_or_link_change()
-      pciehp_disable_slot()
-        __pciehp_disable_slot()
-          remove_board()
-            pciehp_unconfigure_device()
-              pci_stop_and_remove_bus_device()
-                pci_stop_bus_device()
-                  pci_stop_dev()
-                    device_release_driver()
-                      device_release_driver_internal()
-                        __device_driver_lock()    # device_lock()
-
-  SYS_munmap()
-    vfio_device_fops_release()
-      vfio_device_group_close()
-        vfio_device_close()
-          vfio_device_last_close()
-            vfio_pci_core_close_device()
-              vfio_pci_core_disable()             # device_lock()
-                __pci_reset_function_locked()
-                  pci_reset_bus_function()
-                    pci_dev_reset_slot_function()
-                      pci_reset_hotplug_slot()
-                        pciehp_reset_slot()       # down_write(reset_lock)
-
-Ian May reports the same deadlock on simultaneous hot-removal and an
-AER-induced Secondary Bus Reset:
-
-  aer_recover_work_func()
-    pcie_do_recovery()
-      aer_root_reset()
-        pci_bus_error_reset()
-          pci_slot_reset()
-            pci_slot_lock()                       # device_lock()
-            pci_reset_hotplug_slot()
-              pciehp_reset_slot()                 # down_write(reset_lock)
-
-Fix by releasing the reset_lock during driver binding and unbinding,
-thereby splitting and shrinking the critical section.
-
-Driver binding and unbinding is protected by the device_lock() and thus
-serialized with a Secondary Bus Reset.  There's no need to additionally
-protect it with the reset_lock.  However, pciehp does not bind and
-unbind devices directly, but rather invokes PCI core functions which
-also perform certain enumeration and de-enumeration steps.
-
-The reset_lock's purpose is to protect slot registers, not enumeration
-and de-enumeration of hotplugged devices.  That would arguably be the
-job of the PCI core, not the PCIe hotplug driver.  After all, an
-AER-induced Secondary Bus Reset may as well happen during boot-time
-enumeration of the PCI hierarchy and there's no locking to prevent that
-either.
-
-Exempting *de-enumeration* from the reset_lock is relatively harmless:
-A concurrent Secondary Bus Reset may foil config space accesses such as
-PME interrupt disablement.  But if the device is physically gone, those
-accesses are pointless anyway.  If the device is physically present and
-only logically removed through an Attention Button press or the sysfs
-"power" attribute, PME interrupts as well as DMA cannot come through
-because pciehp_unconfigure_device() disables INTx and Bus Master bits.
-That's still protected by the reset_lock in the present commit.
-
-Exempting *enumeration* from the reset_lock also has limited impact:
-The exempted call to pci_bus_add_device() may perform device accesses
-through pcibios_bus_add_device() and pci_fixup_device() which are now
-no longer protected from a concurrent Secondary Bus Reset.  Otherwise
-there should be no impact.
-
-In essence, the present commit seeks to fix the AB-BA deadlocks while
-still retaining a best-effort reset protection for enumeration and
-de-enumeration of hotplugged devices -- until a general solution is
-implemented in the PCI core.
-
-Link: https://lore.kernel.org/linux-pci/CS1PR8401MB0728FC6FDAB8A35C22BD90EC95F10@CS1PR8401MB0728.NAMPRD84.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20200615143250.438252-1-ian.may@canonical.com
-Link: https://lore.kernel.org/linux-pci/ce878dab-c0c4-5bd0-a725-9805a075682d@amd.com
-Link: https://lore.kernel.org/linux-pci/ed831249-384a-6d35-0831-70af191e9bce@huawei.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215590
-Fixes: 5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-Link: https://lore.kernel.org/r/fef2b2e9edf245c049a8c5b94743c0f74ff5008a.1681191902.git.lukas@wunner.de
-Reported-by: Michael Haeuptle <michael.haeuptle@hpe.com>
-Reported-by: Ian May <ian.may@canonical.com>
-Reported-by: Andrey Grodzovsky <andrey2805@gmail.com>
-Reported-by: Rahul Kumar <rahul.kumar1@amd.com>
-Reported-by: Jialin Zhang <zhangjialin11@huawei.com>
-Tested-by: Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Cc: Dan Stein <dstein@hpe.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Alex Michon <amichon@kalrayinc.com>
-Cc: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d54170812ef1 ("arm64: fix .idmap.text assertion for large kernels")
+Reported-by: Greg Thelen <gthelen@google.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/r/20230428-awx-v2-1-b197ffa16edc@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_pci.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm64/kernel/cpu-reset.S | 2 +-
+ arch/arm64/kernel/sleep.S     | 2 +-
+ arch/arm64/mm/proc.S          | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/hotplug/pciehp_pci.c
-+++ b/drivers/pci/hotplug/pciehp_pci.c
-@@ -63,7 +63,14 @@ int pciehp_configure_device(struct contr
+diff --git a/arch/arm64/kernel/cpu-reset.S b/arch/arm64/kernel/cpu-reset.S
+index 6b752fe897451..c87445dde6745 100644
+--- a/arch/arm64/kernel/cpu-reset.S
++++ b/arch/arm64/kernel/cpu-reset.S
+@@ -14,7 +14,7 @@
+ #include <asm/virt.h>
  
- 	pci_assign_unassigned_bridge_resources(bridge);
- 	pcie_bus_configure_settings(parent);
-+
-+	/*
-+	 * Release reset_lock during driver binding
-+	 * to avoid AB-BA deadlock with device_lock.
-+	 */
-+	up_read(&ctrl->reset_lock);
- 	pci_bus_add_devices(parent);
-+	down_read_nested(&ctrl->reset_lock, ctrl->depth);
+ .text
+-.pushsection    .idmap.text, "awx"
++.pushsection    .idmap.text, "a"
  
-  out:
- 	pci_unlock_rescan_remove();
-@@ -104,7 +111,15 @@ void pciehp_unconfigure_device(struct co
- 	list_for_each_entry_safe_reverse(dev, temp, &parent->devices,
- 					 bus_list) {
- 		pci_dev_get(dev);
-+
-+		/*
-+		 * Release reset_lock during driver unbinding
-+		 * to avoid AB-BA deadlock with device_lock.
-+		 */
-+		up_read(&ctrl->reset_lock);
- 		pci_stop_and_remove_bus_device(dev);
-+		down_read_nested(&ctrl->reset_lock, ctrl->depth);
-+
- 		/*
- 		 * Ensure that no new Requests will be generated from
- 		 * the device.
+ /*
+  * cpu_soft_restart(el2_switch, entry, arg0, arg1, arg2)
+diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
+index 2ae7cff1953aa..2aa5129d82537 100644
+--- a/arch/arm64/kernel/sleep.S
++++ b/arch/arm64/kernel/sleep.S
+@@ -97,7 +97,7 @@ SYM_FUNC_START(__cpu_suspend_enter)
+ 	ret
+ SYM_FUNC_END(__cpu_suspend_enter)
+ 
+-	.pushsection ".idmap.text", "awx"
++	.pushsection ".idmap.text", "a"
+ SYM_CODE_START(cpu_resume)
+ 	mov	x0, xzr
+ 	bl	init_kernel_el
+diff --git a/arch/arm64/mm/proc.S b/arch/arm64/mm/proc.S
+index 91410f4880900..c2cb437821ca4 100644
+--- a/arch/arm64/mm/proc.S
++++ b/arch/arm64/mm/proc.S
+@@ -167,7 +167,7 @@ alternative_else_nop_endif
+ SYM_FUNC_END(cpu_do_resume)
+ #endif
+ 
+-	.pushsection ".idmap.text", "awx"
++	.pushsection ".idmap.text", "a"
+ 
+ .macro	__idmap_cpu_set_reserved_ttbr1, tmp1, tmp2
+ 	adrp	\tmp1, reserved_pg_dir
+@@ -201,7 +201,7 @@ SYM_FUNC_END(idmap_cpu_replace_ttbr1)
+ 
+ #define KPTI_NG_PTE_FLAGS	(PTE_ATTRINDX(MT_NORMAL) | SWAPPER_PTE_FLAGS)
+ 
+-	.pushsection ".idmap.text", "awx"
++	.pushsection ".idmap.text", "a"
+ 
+ 	.macro	kpti_mk_tbl_ng, type, num_entries
+ 	add	end_\type\()p, cur_\type\()p, #\num_entries * 8
+@@ -400,7 +400,7 @@ SYM_FUNC_END(idmap_kpti_install_ng_mappings)
+  * Output:
+  *	Return in x0 the value of the SCTLR_EL1 register.
+  */
+-	.pushsection ".idmap.text", "awx"
++	.pushsection ".idmap.text", "a"
+ SYM_FUNC_START(__cpu_setup)
+ 	tlbi	vmalle1				// Invalidate local TLB
+ 	dsb	nsh
+-- 
+2.39.2
+
 
 
