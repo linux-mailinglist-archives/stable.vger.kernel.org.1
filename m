@@ -2,49 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E33C70385F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92F47037AF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244018AbjEORcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
+        id S244097AbjEORXn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244084AbjEORbg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:36 -0400
+        with ESMTP id S244048AbjEORXR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CD84C9C3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705E955A4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B27D62083
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51090C433D2;
-        Mon, 15 May 2023 17:28:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C91A762C56
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB7EC433D2;
+        Mon, 15 May 2023 17:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171703;
-        bh=TBI4Upwy5WgmtsCdKAeGUyT3cZ/KvE+EUXYahU3rWSQ=;
+        s=korg; t=1684171292;
+        bh=1KPsK5CooWq2LIUUkVehmIvDtU8paAYcvb+8wlSp0d0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KG4fnWppXhsRlyuxZEoNdwpifpsruM3u+mm5pxRvHtsgxfWmCCaYjzbTfYDhZTEDM
-         bTWRIdYXYxP/LsY89LZ7WEYUMoOB01ZHCrSxHOnMc/zOywnuIXkgsAQ2rAREQhYeYR
-         S5zVBy8MtnB5yNVfs5kzplXyPuGC9EmYyBK8Njrc=
+        b=zfAjGjgDVUCVrXkQaHjtA2kUXjN0eCHDFZojFfR24SDCl4I6mvkySO8wCzoP6NH9l
+         m5e9ZVDfez09Dc77Qzs31tv0ceiFRFK2Ap6c0nLYVRnH31xUDCYjNR4uwtJI8Rwyo7
+         beL/h7X9snV2J5UQxof3WBGE2lVoay4jDRIOTXEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/134] ASoC: soc-pcm: use GFP_ATOMIC for dpcm structure
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.2 162/242] remoteproc: rcar_rproc: Call of_node_put() on iteration error
 Date:   Mon, 15 May 2023 18:28:08 +0200
-Message-Id: <20230515161703.334240982@linuxfoundation.org>
+Message-Id: <20230515161726.743204853@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,41 +53,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-[ Upstream commit d8a9c6e1f6766a16cf02b4e99a629f3c5512c183 ]
+commit f8bae637d3d5e082b4ced71e28b16eb3ee0683c1 upstream.
 
-We allocate a structure in dpcm_be_connect(), which may be called in
-atomic context. Using GFP_KERNEL is not quite right, we have to use
-GFP_ATOMIC to prevent the allocator from sleeping.
+Function of_phandle_iterator_next() calls of_node_put() on the last
+device_node it iterated over, but when the loop exits prematurely it has
+to be called explicitly.
 
-Suggested-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20211207173745.15850-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 285892a74f13 ("remoteproc: Add Renesas rcar driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/20230320221826.2728078-4-mathieu.poirier@linaro.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-pcm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/rcar_rproc.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 6f616ac4490f0..a2b20526e7e2b 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -1132,7 +1132,7 @@ static int dpcm_be_connect(struct snd_soc_pcm_runtime *fe,
- 			return 0;
+--- a/drivers/remoteproc/rcar_rproc.c
++++ b/drivers/remoteproc/rcar_rproc.c
+@@ -62,13 +62,16 @@ static int rcar_rproc_prepare(struct rpr
+ 
+ 		rmem = of_reserved_mem_lookup(it.node);
+ 		if (!rmem) {
++			of_node_put(it.node);
+ 			dev_err(&rproc->dev,
+ 				"unable to acquire memory-region\n");
+ 			return -EINVAL;
+ 		}
+ 
+-		if (rmem->base > U32_MAX)
++		if (rmem->base > U32_MAX) {
++			of_node_put(it.node);
+ 			return -EINVAL;
++		}
+ 
+ 		/* No need to translate pa to da, R-Car use same map */
+ 		da = rmem->base;
+@@ -79,8 +82,10 @@ static int rcar_rproc_prepare(struct rpr
+ 					   rcar_rproc_mem_release,
+ 					   it.node->name);
+ 
+-		if (!mem)
++		if (!mem) {
++			of_node_put(it.node);
+ 			return -ENOMEM;
++		}
+ 
+ 		rproc_add_carveout(rproc, mem);
  	}
- 
--	dpcm = kzalloc(sizeof(struct snd_soc_dpcm), GFP_KERNEL);
-+	dpcm = kzalloc(sizeof(struct snd_soc_dpcm), GFP_ATOMIC);
- 	if (!dpcm)
- 		return -ENOMEM;
- 
--- 
-2.39.2
-
 
 
