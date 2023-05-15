@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F0247035F1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6328C703314
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243386AbjEORFO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40850 "EHLO
+        id S241954AbjEOQdA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:33:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243441AbjEOREf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32C593C2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:03 -0700 (PDT)
+        with ESMTP id S242161AbjEOQc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32A50B0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECEB462AA9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B153CC433D2;
-        Mon, 15 May 2023 17:02:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95A406279F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37F4C4339E;
+        Mon, 15 May 2023 16:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170155;
-        bh=9rT+Y6aXRDPTKiDPkTYJnkAxv0bUZFtppkSXbIrdG60=;
+        s=korg; t=1684168370;
+        bh=sm0lFB1Hn23gvq32Ugr83/HZ6PHLx2Be4MFFqTicPKI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vyK3VCCQ5qvD/fzDfV3Lao+TSaQLcO7czZMV0PUrCmqX9fYHjivnEMgIM22VEBy1N
-         oX1X2alJuJSq6wwWr+8UlrbgHVdoCy+6pcMTP8OehLVaDBm7X15pYnBV/1n22Qx4zE
-         /PN0dtjbPrcTLqJCnQFZlp6RjxEgNs2Dqnen3sVA=
+        b=F8zDOgUO6u85CXKb0wZbVZSKH9TwnyR4jB+7BJkcsaNHUtog1dC6RPkc2fwYt9cEQ
+         xaec87QPDGmUtXBDusK7T8vjGtrRAC0zHeHdQpJ0LLQGyqr7OA+c7DLFvi99yBZZO7
+         so6A0O83I25PHbv76P+CyOrlal6Je2tjKs4pSF1Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/239] octeontx2-pf: mcs: Clear stats before freeing resource
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 4.14 007/116] perf sched: Cast PTHREAD_STACK_MIN to int as it may turn into sysconf(__SC_THREAD_STACK_MIN_VALUE)
 Date:   Mon, 15 May 2023 18:25:04 +0200
-Message-Id: <20230515161722.944950111@linuxfoundation.org>
+Message-Id: <20230515161658.507043042@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,52 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 815debbbf7b52026462c37eea3be70d6377a7a9a ]
+commit d08c84e01afa7a7eee6badab25d5420fa847f783 upstream.
 
-When freeing MCS hardware resources like SecY, SC and
-SA the corresponding stats needs to be cleared. Otherwise
-previous stats are shown in newly created macsec interfaces.
+In fedora rawhide the PTHREAD_STACK_MIN define may end up expanded to a
+sysconf() call, and that will return 'long int', breaking the build:
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    45 fedora:rawhide                : FAIL gcc version 11.1.1 20210623 (Red Hat 11.1.1-6) (GCC)
+      builtin-sched.c: In function 'create_tasks':
+      /git/perf-5.14.0-rc1/tools/include/linux/kernel.h:43:24: error: comparison of distinct pointer types lacks a cast [-Werror]
+         43 |         (void) (&_max1 == &_max2);              \
+            |                        ^~
+      builtin-sched.c:673:34: note: in expansion of macro 'max'
+        673 |                         (size_t) max(16 * 1024, PTHREAD_STACK_MIN));
+            |                                  ^~~
+      cc1: all warnings being treated as errors
+
+  $ grep __sysconf /usr/include/*/*.h
+  /usr/include/bits/pthread_stack_min-dynamic.h:extern long int __sysconf (int __name) __THROW;
+  /usr/include/bits/pthread_stack_min-dynamic.h:#   define PTHREAD_STACK_MIN __sysconf (__SC_THREAD_STACK_MIN_VALUE)
+  /usr/include/bits/time.h:extern long int __sysconf (int);
+  /usr/include/bits/time.h:# define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
+  $
+
+So cast it to int to cope with that.
+
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c    | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/perf/builtin-sched.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index f699209978fef..13faca9add9f4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -150,11 +150,20 @@ static void cn10k_mcs_free_rsrc(struct otx2_nic *pfvf, enum mcs_direction dir,
- 				enum mcs_rsrc_type type, u16 hw_rsrc_id,
- 				bool all)
- {
-+	struct mcs_clear_stats *clear_req;
- 	struct mbox *mbox = &pfvf->mbox;
- 	struct mcs_free_rsrc_req *req;
- 
- 	mutex_lock(&mbox->lock);
- 
-+	clear_req = otx2_mbox_alloc_msg_mcs_clear_stats(mbox);
-+	if (!clear_req)
-+		goto fail;
-+
-+	clear_req->id = hw_rsrc_id;
-+	clear_req->type = type;
-+	clear_req->dir = dir;
-+
- 	req = otx2_mbox_alloc_msg_mcs_free_resources(mbox);
- 	if (!req)
- 		goto fail;
--- 
-2.39.2
-
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -655,7 +655,7 @@ static void create_tasks(struct perf_sch
+ 	err = pthread_attr_init(&attr);
+ 	BUG_ON(err);
+ 	err = pthread_attr_setstacksize(&attr,
+-			(size_t) max(16 * 1024, PTHREAD_STACK_MIN));
++			(size_t) max(16 * 1024, (int)PTHREAD_STACK_MIN));
+ 	BUG_ON(err);
+ 	err = pthread_mutex_lock(&sched->start_work_mutex);
+ 	BUG_ON(err);
 
 
