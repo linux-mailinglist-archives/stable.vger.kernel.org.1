@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD66703831
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1ED47037AB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244308AbjEOR3S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49522 "EHLO
+        id S244005AbjEORXd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244254AbjEOR2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:28:50 -0400
+        with ESMTP id S244030AbjEORXN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3767271B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE8A12EA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B02C62CF6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4203DC433EF;
-        Mon, 15 May 2023 17:26:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FFD162C6A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8952FC433D2;
+        Mon, 15 May 2023 17:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171591;
-        bh=HqBt4IwpuwoTkXOZQ0w179BO0NSCN2gQ0XV6UM7h1/A=;
+        s=korg; t=1684171283;
+        bh=c/O0qV31ZKfDuQtGjvdPfrfaJpo9rVqHAzIqawCN0mY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g5EnuTlyeuk/CsiFGrdDW2Uuo8izDVVPZYnHry+C4xTblPLt2qFrKls7Ac7LXq6XK
-         T8oQBSU1aabckI+gw5PuKeewhEbIGHKW2OAfbKjy3NtrJMdLYkm+TgJ77tEjYDHJHC
-         guZFg3WWg+PH9kvj6O/mPcOU/B2snguYGotvCahQ=
+        b=JfyHlN/LpWadGNfIyo9Q4G3Y50zyoxpRlw/49gweYhZ3BrsAm2DZAqpUcCJU0/Qr4
+         uwr/2yAqqitb9fhZ+h5S4bAZD/uvF9re4jiqJ/bKKysJ/mHWD40eDB8kRRWcpq7262
+         aZdHNjUIBlO4Y0LWJ+6OyWhM7zWEyDov6vRtB+i4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Carl Vanderlip <quic_carlv@quicinc.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/134] bus: mhi: host: Use mhi_tryset_pm_state() for setting fw error state
-Date:   Mon, 15 May 2023 18:28:04 +0200
-Message-Id: <20230515161703.180368726@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Subject: [PATCH 6.2 159/242] remoteproc: st: Call of_node_put() on iteration error
+Date:   Mon, 15 May 2023 18:28:05 +0200
+Message-Id: <20230515161726.656869691@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,85 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-[ Upstream commit 1d1493bdc25f498468a606a4ece947d155cfa3a9 ]
+commit 8a74918948b40317a5b5bab9739d13dcb5de2784 upstream.
 
-If firmware loading fails, the controller's pm_state is updated to
-MHI_PM_FW_DL_ERR unconditionally.  This can corrupt the pm_state as the
-update is not done under the proper lock, and also does not validate
-the state transition.  The firmware loading can fail due to a detected
-syserr, but if MHI_PM_FW_DL_ERR is unconditionally set as the pm_state,
-the handling of the syserr can break when it attempts to transition from
-syserr detect, to syserr process.
+Function of_phandle_iterator_next() calls of_node_put() on the last
+device_node it iterated over, but when the loop exits prematurely it has
+to be called explicitly.
 
-By grabbing the lock, we ensure we don't race with some other pm_state
-update.  By using mhi_try_set_pm_state(), we check that the transition
-to MHI_PM_FW_DL_ERR is valid via the state machine logic.  If it is not
-valid, then some other transition is occurring like syserr processing, and
-we assume that will resolve the firmware loading error.
-
-Fixes: 12e050c77be0 ("bus: mhi: core: Move to an error state on any firmware load failure")
+Fixes: 3df52ed7f269 ("remoteproc: st: add reserved memory support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/1681142292-27571-3-git-send-email-quic_jhugo@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Link: https://lore.kernel.org/r/20230320221826.2728078-3-mathieu.poirier@linaro.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/boot.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/remoteproc/st_remoteproc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
-index 0a972620a4030..c9dfb1a48ad6d 100644
---- a/drivers/bus/mhi/host/boot.c
-+++ b/drivers/bus/mhi/host/boot.c
-@@ -390,6 +390,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
- {
- 	const struct firmware *firmware = NULL;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-+	enum mhi_pm_state new_state;
- 	const char *fw_name;
- 	void *buf;
- 	dma_addr_t dma_addr;
-@@ -507,14 +508,18 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
- 	}
+--- a/drivers/remoteproc/st_remoteproc.c
++++ b/drivers/remoteproc/st_remoteproc.c
+@@ -129,6 +129,7 @@ static int st_rproc_parse_fw(struct rpro
+ 	while (of_phandle_iterator_next(&it) == 0) {
+ 		rmem = of_reserved_mem_lookup(it.node);
+ 		if (!rmem) {
++			of_node_put(it.node);
+ 			dev_err(dev, "unable to acquire memory-region\n");
+ 			return -EINVAL;
+ 		}
+@@ -150,8 +151,10 @@ static int st_rproc_parse_fw(struct rpro
+ 							   it.node->name);
+ 		}
  
- error_fw_load:
--	mhi_cntrl->pm_state = MHI_PM_FW_DL_ERR;
--	wake_up_all(&mhi_cntrl->state_event);
-+	write_lock_irq(&mhi_cntrl->pm_lock);
-+	new_state = mhi_tryset_pm_state(mhi_cntrl, MHI_PM_FW_DL_ERR);
-+	write_unlock_irq(&mhi_cntrl->pm_lock);
-+	if (new_state == MHI_PM_FW_DL_ERR)
-+		wake_up_all(&mhi_cntrl->state_event);
- }
+-		if (!mem)
++		if (!mem) {
++			of_node_put(it.node);
+ 			return -ENOMEM;
++		}
  
- int mhi_download_amss_image(struct mhi_controller *mhi_cntrl)
- {
- 	struct image_info *image_info = mhi_cntrl->fbc_image;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-+	enum mhi_pm_state new_state;
- 	int ret;
- 
- 	if (!image_info)
-@@ -525,8 +530,11 @@ int mhi_download_amss_image(struct mhi_controller *mhi_cntrl)
- 			       &image_info->mhi_buf[image_info->entries - 1]);
- 	if (ret) {
- 		dev_err(dev, "MHI did not load AMSS, ret:%d\n", ret);
--		mhi_cntrl->pm_state = MHI_PM_FW_DL_ERR;
--		wake_up_all(&mhi_cntrl->state_event);
-+		write_lock_irq(&mhi_cntrl->pm_lock);
-+		new_state = mhi_tryset_pm_state(mhi_cntrl, MHI_PM_FW_DL_ERR);
-+		write_unlock_irq(&mhi_cntrl->pm_lock);
-+		if (new_state == MHI_PM_FW_DL_ERR)
-+			wake_up_all(&mhi_cntrl->state_event);
- 	}
- 
- 	return ret;
--- 
-2.39.2
-
+ 		rproc_add_carveout(rproc, mem);
+ 		index++;
 
 
