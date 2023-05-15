@@ -2,61 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 465687034D1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B5017038E6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243190AbjEOQwt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56726 "EHLO
+        id S242663AbjEORgc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:36:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243191AbjEOQwP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:52:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790CB658C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:52:12 -0700 (PDT)
+        with ESMTP id S244418AbjEORfz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:35:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F0F910E47
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 091FB6299F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:52:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB84C433D2;
-        Mon, 15 May 2023 16:52:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E06BD62DA3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EFEC433EF;
+        Mon, 15 May 2023 17:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169531;
-        bh=Gwo4vQWt2xIeID0AOSvgoQAvl1jdqNntedPLM2qVDX0=;
+        s=korg; t=1684172021;
+        bh=YMEdYDbQVsik8l5zNnyCGvPlrLXTOFZqmdM9+fTUcyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cIqPAQfqfaP4rZxF9kSAy0Dper6N9Vg7ymZwJNQoLExQsQOccAO3ezf1M8g9PUrnE
-         Jp6mMmPz0xgMYc370J3MANwqnTSZvtKvMAjIUSm9SRY0++qWl/rH6+xYsUH161VvDQ
-         djR0yLbbhLcTUelIq5qyDpBQ8naQVRUe2SCz43bo=
+        b=bbL8TDR7FoQchPUIP9BHVhs3rf8a9HUgqUIaTTylWiemUwRdzz0GTOwGQwvUng20R
+         yFPRpNHu6ucqANutlrE9brZ4CzxUjJ6OUHKjZWGdDuAzYtBuc2CEcnVUkfKdcgrErN
+         Irmg9o8MhX0mYboZoJpX44VezD6PSVL+AsU8qiLA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        John Harrison <John.C.Harrison@Intel.com>,
-        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-        Alan Previn <alan.previn.teres.alexis@intel.com>,
-        Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 058/246] drm/i915/guc: Actually return an error if GuC version range check fails
+        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 5.10 019/381] USB: dwc3: fix runtime pm imbalance on unbind
 Date:   Mon, 15 May 2023 18:24:30 +0200
-Message-Id: <20230515161724.317031752@linuxfoundation.org>
+Message-Id: <20230515161737.636425705@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,106 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Harrison <John.C.Harrison@Intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 1816f4a17f54a01afa2f06d6571c39890b97d282 ]
+commit 44d257e9012ee8040e41d224d0e5bfb5ef5427ea upstream.
 
-Dan Carpenter pointed out that 'err' was not being set in the case
-where the GuC firmware version range check fails. Fix that.
+Make sure to balance the runtime PM usage count on driver unbind by
+adding back the pm_runtime_allow() call that had been erroneously
+removed.
 
-Note that while this is a bug fix for a previous patch (see Fixes tag
-below). It is an exceedingly low risk bug. The range check is
-asserting that the GuC firmware version is within spec. So it should
-not be possible to ever have a firmware file that fails this check. If
-larger version numbers are required in the future, that would be a
-backwards breaking spec change and thus require a major version bump,
-in which case an old i915 driver would not load that new version anyway.
-
-Fixes: 9bbba0667f37 ("drm/i915/guc: Use GuC submission API version number")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230421224742.2357198-1-John.C.Harrison@Intel.com
-(cherry picked from commit 80ab31799002166ac7c660bacfbff4f85bc29107)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 266d0493900a ("usb: dwc3: core: don't trigger runtime pm when remove driver")
+Cc: stable@vger.kernel.org	# 5.9
+Cc: Li Jun <jun.li@nxp.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230404072524.19014-3-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/usb/dwc3/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
-index 264c952f777bb..22786d9116fd0 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
-@@ -622,9 +622,10 @@ static bool is_ver_8bit(struct intel_uc_fw_ver *ver)
- 	return ver->major < 0xFF && ver->minor < 0xFF && ver->patch < 0xFF;
- }
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1655,6 +1655,7 @@ static int dwc3_remove(struct platform_d
+ 	dwc3_core_exit(dwc);
+ 	dwc3_ulpi_exit(dwc);
  
--static bool guc_check_version_range(struct intel_uc_fw *uc_fw)
-+static int guc_check_version_range(struct intel_uc_fw *uc_fw)
- {
- 	struct intel_guc *guc = container_of(uc_fw, struct intel_guc, fw);
-+	struct intel_gt *gt = __uc_fw_to_gt(uc_fw);
- 
- 	/*
- 	 * GuC version number components are defined as being 8-bits.
-@@ -633,24 +634,24 @@ static bool guc_check_version_range(struct intel_uc_fw *uc_fw)
- 	 */
- 
- 	if (!is_ver_8bit(&uc_fw->file_selected.ver)) {
--		gt_warn(__uc_fw_to_gt(uc_fw), "%s firmware: invalid file version: 0x%02X:%02X:%02X\n",
-+		gt_warn(gt, "%s firmware: invalid file version: 0x%02X:%02X:%02X\n",
- 			intel_uc_fw_type_repr(uc_fw->type),
- 			uc_fw->file_selected.ver.major,
- 			uc_fw->file_selected.ver.minor,
- 			uc_fw->file_selected.ver.patch);
--		return false;
-+		return -EINVAL;
- 	}
- 
- 	if (!is_ver_8bit(&guc->submission_version)) {
--		gt_warn(__uc_fw_to_gt(uc_fw), "%s firmware: invalid submit version: 0x%02X:%02X:%02X\n",
-+		gt_warn(gt, "%s firmware: invalid submit version: 0x%02X:%02X:%02X\n",
- 			intel_uc_fw_type_repr(uc_fw->type),
- 			guc->submission_version.major,
- 			guc->submission_version.minor,
- 			guc->submission_version.patch);
--		return false;
-+		return -EINVAL;
- 	}
- 
--	return true;
-+	return i915_inject_probe_error(gt->i915, -EINVAL);
- }
- 
- static int check_fw_header(struct intel_gt *gt,
-@@ -759,8 +760,11 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
- 	if (err)
- 		goto fail;
- 
--	if (uc_fw->type == INTEL_UC_FW_TYPE_GUC && !guc_check_version_range(uc_fw))
--		goto fail;
-+	if (uc_fw->type == INTEL_UC_FW_TYPE_GUC) {
-+		err = guc_check_version_range(uc_fw);
-+		if (err)
-+			goto fail;
-+	}
- 
- 	if (uc_fw->file_wanted.ver.major && uc_fw->file_selected.ver.major) {
- 		/* Check the file's major version was as it claimed */
--- 
-2.39.2
-
++	pm_runtime_allow(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 
 
