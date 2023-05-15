@@ -2,54 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80BB970346B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430D77035C4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241866AbjEOQsU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:48:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53468 "EHLO
+        id S243564AbjEORCe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243018AbjEOQsR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:17 -0400
+        with ESMTP id S243445AbjEORCP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D12D355AD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFE5869E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D85462935
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A06C433D2;
-        Mon, 15 May 2023 16:47:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49EB162A72
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403C0C433AA;
+        Mon, 15 May 2023 17:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169275;
-        bh=9T+FYo40MWYfEGaH0BzD1zPKTlpfN+KlVw/zxqKThzA=;
+        s=korg; t=1684170011;
+        bh=HBeguLkvqwmESsAcM+3GWYQltD5pdUwiFwgU7sAlujk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xNobiBu5easwIdiMA7MAlC0mUgrP2ZjwaWvWkCOaVIX07g3hz/FLmdQ5LON8zboD7
-         DpwmdZM5zl+o0LIuqFzyjLybh9q/sWMlfTCSoGgbnUnXKkaVqdyxxhtZUktzUiBTFz
-         H/KvPp5u1mcckZIscPkLFzg+7HyBg2Rf5s3J31GU=
+        b=l15I6VD63HVAbc+d42UEymketWARxx1q9tVcT54XxNSVYvcSkqaPUMHzoUuzkcc1j
+         dOCdesbyK9QwMs3GOBpZfsEgIhR6XuN/GGfDuYlppF7l4vbi4OMTMRa+NZ0qCvzF0O
+         wXjcrX7mRUy26lgiqN1xzA1g7xbExshcmVvqfNRM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot <syzbot+223c7461c58c58a4cb10@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Michal Hocko <mhocko@suse.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Petr Mladek <pmladek@suse.com>,
-        David Hildenbrand <david@redhat.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Patrick Daly <quic_pdaly@quicinc.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 191/191] mm/page_alloc: fix potential deadlock on zonelist_update_seq seqlock
-Date:   Mon, 15 May 2023 18:27:08 +0200
-Message-Id: <20230515161714.436264855@linuxfoundation.org>
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Anusha Srivatsa <anusha.srivatsa@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 217/246] drm/i915: Add _PICK_EVEN_2RANGES()
+Date:   Mon, 15 May 2023 18:27:09 +0200
+Message-Id: <20230515161729.105836992@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -64,181 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit 1007843a91909a4995ee78a538f62d8665705b66 upstream.
+[ Upstream commit 357513233d6456c9f99e34794897efd4ae907e83 ]
 
-syzbot is reporting circular locking dependency which involves
-zonelist_update_seq seqlock [1], for this lock is checked by memory
-allocation requests which do not need to be retried.
+It's a constant pattern in the driver to need to use 2 ranges of MMIOs
+based on port, phy, pll, etc. When that happens, instead of using
+_PICK_EVEN(), _PICK() needs to be used.  Using _PICK() is discouraged
+due to some reasons like:
 
-One deadlock scenario is kmalloc(GFP_ATOMIC) from an interrupt handler.
+1) It increases the code size since the array is declared
+   in each call site
+2) Developers need to be careful not to incur an
+   out-of-bounds array access
+3) Developers need to be careful that the indexes match the
+   table. For that it may be that the table needs to contain
+   holes, making (1) even worse.
 
-  CPU0
-  ----
-  __build_all_zonelists() {
-    write_seqlock(&zonelist_update_seq); // makes zonelist_update_seq.seqcount odd
-    // e.g. timer interrupt handler runs at this moment
-      some_timer_func() {
-        kmalloc(GFP_ATOMIC) {
-          __alloc_pages_slowpath() {
-            read_seqbegin(&zonelist_update_seq) {
-              // spins forever because zonelist_update_seq.seqcount is odd
-            }
-          }
-        }
-      }
-    // e.g. timer interrupt handler finishes
-    write_sequnlock(&zonelist_update_seq); // makes zonelist_update_seq.seqcount even
-  }
+Add a variant of _PICK_EVEN() that works with 2 ranges and selects which
+one to use depending on the index value.
 
-This deadlock scenario can be easily eliminated by not calling
-read_seqbegin(&zonelist_update_seq) from !__GFP_DIRECT_RECLAIM allocation
-requests, for retry is applicable to only __GFP_DIRECT_RECLAIM allocation
-requests.  But Michal Hocko does not know whether we should go with this
-approach.
+v2: Fix the address expansion in the example (Anusha)
+v3: Also rename macro to _PICK_EVEN_2RANGES() in the documentation
+    and reword it to clarify what ranges are chosen based on the index
+    (Jani)
 
-Another deadlock scenario which syzbot is reporting is a race between
-kmalloc(GFP_ATOMIC) from tty_insert_flip_string_and_push_buffer() with
-port->lock held and printk() from __build_all_zonelists() with
-zonelist_update_seq held.
-
-  CPU0                                   CPU1
-  ----                                   ----
-  pty_write() {
-    tty_insert_flip_string_and_push_buffer() {
-                                         __build_all_zonelists() {
-                                           write_seqlock(&zonelist_update_seq);
-                                           build_zonelists() {
-                                             printk() {
-                                               vprintk() {
-                                                 vprintk_default() {
-                                                   vprintk_emit() {
-                                                     console_unlock() {
-                                                       console_flush_all() {
-                                                         console_emit_next_record() {
-                                                           con->write() = serial8250_console_write() {
-      spin_lock_irqsave(&port->lock, flags);
-      tty_insert_flip_string() {
-        tty_insert_flip_string_fixed_flag() {
-          __tty_buffer_request_room() {
-            tty_buffer_alloc() {
-              kmalloc(GFP_ATOMIC | __GFP_NOWARN) {
-                __alloc_pages_slowpath() {
-                  zonelist_iter_begin() {
-                    read_seqbegin(&zonelist_update_seq); // spins forever because zonelist_update_seq.seqcount is odd
-                                                             spin_lock_irqsave(&port->lock, flags); // spins forever because port->lock is held
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      spin_unlock_irqrestore(&port->lock, flags);
-                                                             // message is printed to console
-                                                             spin_unlock_irqrestore(&port->lock, flags);
-                                                           }
-                                                         }
-                                                       }
-                                                     }
-                                                   }
-                                                 }
-                                               }
-                                             }
-                                           }
-                                           write_sequnlock(&zonelist_update_seq);
-                                         }
-    }
-  }
-
-This deadlock scenario can be eliminated by
-
-  preventing interrupt context from calling kmalloc(GFP_ATOMIC)
-
-and
-
-  preventing printk() from calling console_flush_all()
-
-while zonelist_update_seq.seqcount is odd.
-
-Since Petr Mladek thinks that __build_all_zonelists() can become a
-candidate for deferring printk() [2], let's address this problem by
-
-  disabling local interrupts in order to avoid kmalloc(GFP_ATOMIC)
-
-and
-
-  disabling synchronous printk() in order to avoid console_flush_all()
-
-.
-
-As a side effect of minimizing duration of zonelist_update_seq.seqcount
-being odd by disabling synchronous printk(), latency at
-read_seqbegin(&zonelist_update_seq) for both !__GFP_DIRECT_RECLAIM and
-__GFP_DIRECT_RECLAIM allocation requests will be reduced.  Although, from
-lockdep perspective, not calling read_seqbegin(&zonelist_update_seq) (i.e.
-do not record unnecessary locking dependency) from interrupt context is
-still preferable, even if we don't allow calling kmalloc(GFP_ATOMIC)
-inside
-write_seqlock(&zonelist_update_seq)/write_sequnlock(&zonelist_update_seq)
-section...
-
-Link: https://lkml.kernel.org/r/8796b95c-3da3-5885-fddd-6ef55f30e4d3@I-love.SAKURA.ne.jp
-Fixes: 3d36424b3b58 ("mm/page_alloc: fix race condition between build_all_zonelists and page allocation")
-Link: https://lkml.kernel.org/r/ZCrs+1cDqPWTDFNM@alley [2]
-Reported-by: syzbot <syzbot+223c7461c58c58a4cb10@syzkaller.appspotmail.com>
-  Link: https://syzkaller.appspot.com/bug?extid=223c7461c58c58a4cb10 [1]
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Patrick Daly <quic_pdaly@quicinc.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230125182403.7526-1-lucas.demarchi@intel.com
+Stable-dep-of: 214b09db6197 ("drm/msm: fix drm device leak on bind errors")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/i915/i915_reg_defs.h | 29 ++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5425,7 +5425,21 @@ static void __build_all_zonelists(void *
- 	int nid;
- 	int __maybe_unused cpu;
- 	pg_data_t *self = data;
-+	unsigned long flags;
+diff --git a/drivers/gpu/drm/i915/i915_reg_defs.h b/drivers/gpu/drm/i915/i915_reg_defs.h
+index be43580a69793..983c5aa3045b3 100644
+--- a/drivers/gpu/drm/i915/i915_reg_defs.h
++++ b/drivers/gpu/drm/i915/i915_reg_defs.h
+@@ -119,6 +119,35 @@
+  */
+ #define _PICK_EVEN(__index, __a, __b) ((__a) + (__index) * ((__b) - (__a)))
  
-+	/*
-+	 * Explicitly disable this CPU's interrupts before taking seqlock
-+	 * to prevent any IRQ handler from calling into the page allocator
-+	 * (e.g. GFP_ATOMIC) that could hit zonelist_iter_begin and livelock.
-+	 */
-+	local_irq_save(flags);
-+	/*
-+	 * Explicitly disable this CPU's synchronous printk() before taking
-+	 * seqlock to prevent any printk() from trying to hold port->lock, for
-+	 * tty_insert_flip_string_and_push_buffer() on other CPU might be
-+	 * calling kmalloc(GFP_ATOMIC | __GFP_NOWARN) with port->lock held.
-+	 */
-+	printk_deferred_enter();
- 	write_seqlock(&zonelist_update_seq);
- 
- #ifdef CONFIG_NUMA
-@@ -5460,6 +5474,8 @@ static void __build_all_zonelists(void *
- 	}
- 
- 	write_sequnlock(&zonelist_update_seq);
-+	printk_deferred_exit();
-+	local_irq_restore(flags);
- }
- 
- static noinline void __init
++/*
++ * Like _PICK_EVEN(), but supports 2 ranges of evenly spaced address offsets.
++ * @__c_index corresponds to the index in which the second range starts to be
++ * used. Using math interval notation, the first range is used for indexes [ 0,
++ * @__c_index), while the second range is used for [ @__c_index, ... ). Example:
++ *
++ * #define _FOO_A			0xf000
++ * #define _FOO_B			0xf004
++ * #define _FOO_C			0xf008
++ * #define _SUPER_FOO_A			0xa000
++ * #define _SUPER_FOO_B			0xa100
++ * #define FOO(x)			_MMIO(_PICK_EVEN_2RANGES(x, 3,		\
++ *					      _FOO_A, _FOO_B,			\
++ *					      _SUPER_FOO_A, _SUPER_FOO_B))
++ *
++ * This expands to:
++ *	0: 0xf000,
++ *	1: 0xf004,
++ *	2: 0xf008,
++ *	3: 0xa000,
++ *	4: 0xa100,
++ *	5: 0xa200,
++ *	...
++ */
++#define _PICK_EVEN_2RANGES(__index, __c_index, __a, __b, __c, __d)		\
++	(BUILD_BUG_ON_ZERO(!__is_constexpr(__c_index)) +			\
++	 ((__index) < (__c_index) ? _PICK_EVEN(__index, __a, __b) :		\
++				   _PICK_EVEN((__index) - (__c_index), __c, __d)))
++
+ /*
+  * Given the arbitrary numbers in varargs, pick the 0-based __index'th number.
+  *
+-- 
+2.39.2
+
 
 
