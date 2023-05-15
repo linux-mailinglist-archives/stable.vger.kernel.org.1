@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 630037033A4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4A77034AF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242862AbjEOQkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
+        id S243106AbjEOQvG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:51:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242868AbjEOQjz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:55 -0400
+        with ESMTP id S243122AbjEOQu6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F108840C6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8B376185
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 874856285C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9A6C433EF;
-        Mon, 15 May 2023 16:39:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14A5462982
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A33C433EF;
+        Mon, 15 May 2023 16:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168773;
-        bh=grx8F4N+VDnBePEeWy6jqceCHQ7OGokjSWBsZQTCjRY=;
+        s=korg; t=1684169454;
+        bh=0D4IA4SHNWemuEwpiLXvyPFsdWPRbvt3EWAV5AX/6Uc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QhvrjvF9iPvpVXEm8FRksHriYwaoC1E2FOvkGwj0GOBxV13DIh8Fyxwj4Yg0wAA72
-         0kPnIhpCtxU4wTLrCRD7T5a2MkWZqRLqFbXLaFZt+MfOZSbNnBDDVWb3kz6vZUyo7b
-         DEfOu719f8FI5t7rR8WXIh+LVSFffoeGNh0G2ydI=
+        b=Xgvamqen9gIAhaCHHmgUdYMMZ5cpL+YaEvo1PugUV9YnintMcMF827FKIToZ6ZoOP
+         3qHqzQRZW+8gmyNOiCXTpm0RkghpMqi7UdfOfuf1Me6mJDolN9vw6mzAr7OPLUGYz8
+         6pt8NJVKUar9vNt6DwcV0YwkGr/shHWAweQU3sbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Uros Bizjak <ubizjak@gmail.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 037/191] x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
-Date:   Mon, 15 May 2023 18:24:34 +0200
-Message-Id: <20230515161708.534257105@linuxfoundation.org>
+Subject: [PATCH 6.3 063/246] netfilter: nf_tables: hit ENOENT on unexisting chain/flowtable update with missing attributes
+Date:   Mon, 15 May 2023 18:24:35 +0200
+Message-Id: <20230515161724.471425994@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +53,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f96fb2df3eb31ede1b34b0521560967310267750 ]
+[ Upstream commit 8509f62b0b07ae8d6dec5aa9613ab1b250ff632f ]
 
-The detection of atomic update failure in reserve_eilvt_offset() is
-not correct. The value returned by atomic_cmpxchg() should be compared
-to the old value from the location to be updated.
+If user does not specify hook number and priority, then assume this is
+a chain/flowtable update. Therefore, report ENOENT which provides a
+better hint than EINVAL. Set on extended netlink error report to refer
+to the chain name.
 
-If these two are the same, then atomic update succeeded and
-"eilvt_offsets[offset]" location is updated to "new" in an atomic way.
-
-Otherwise, the atomic update failed and it should be retried with the
-value from "eilvt_offsets[offset]" - exactly what atomic_try_cmpxchg()
-does in a correct and more optimal way.
-
-Fixes: a68c439b1966c ("apic, x86: Check if EILVT APIC registers are available (AMD only)")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230227160917.107820-1-ubizjak@gmail.com
+Fixes: 5b6743fb2c2a ("netfilter: nf_tables: skip flowtable hooknum and priority on device updates")
+Fixes: 5efe72698a97 ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 926939978c1c3..9318fe7d850e3 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -403,10 +403,9 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
- 		if (vector && !eilvt_entry_is_changeable(vector, new))
- 			/* may not change if vectors are different */
- 			return rsvd;
--		rsvd = atomic_cmpxchg(&eilvt_offsets[offset], rsvd, new);
--	} while (rsvd != new);
-+	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f64e83323473a..45f701fd86f06 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2066,8 +2066,10 @@ static int nft_chain_parse_hook(struct net *net,
  
--	rsvd &= ~APIC_EILVT_MASKED;
-+	rsvd = new & ~APIC_EILVT_MASKED;
- 	if (rsvd && rsvd != vector)
- 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
- 			offset, rsvd);
+ 	if (!basechain) {
+ 		if (!ha[NFTA_HOOK_HOOKNUM] ||
+-		    !ha[NFTA_HOOK_PRIORITY])
+-			return -EINVAL;
++		    !ha[NFTA_HOOK_PRIORITY]) {
++			NL_SET_BAD_ATTR(extack, nla[NFTA_CHAIN_NAME]);
++			return -ENOENT;
++		}
+ 
+ 		hook->num = ntohl(nla_get_be32(ha[NFTA_HOOK_HOOKNUM]));
+ 		hook->priority = ntohl(nla_get_be32(ha[NFTA_HOOK_PRIORITY]));
+@@ -7630,7 +7632,7 @@ static const struct nla_policy nft_flowtable_hook_policy[NFTA_FLOWTABLE_HOOK_MAX
+ };
+ 
+ static int nft_flowtable_parse_hook(const struct nft_ctx *ctx,
+-				    const struct nlattr *attr,
++				    const struct nlattr * const nla[],
+ 				    struct nft_flowtable_hook *flowtable_hook,
+ 				    struct nft_flowtable *flowtable,
+ 				    struct netlink_ext_ack *extack, bool add)
+@@ -7642,15 +7644,18 @@ static int nft_flowtable_parse_hook(const struct nft_ctx *ctx,
+ 
+ 	INIT_LIST_HEAD(&flowtable_hook->list);
+ 
+-	err = nla_parse_nested_deprecated(tb, NFTA_FLOWTABLE_HOOK_MAX, attr,
++	err = nla_parse_nested_deprecated(tb, NFTA_FLOWTABLE_HOOK_MAX,
++					  nla[NFTA_FLOWTABLE_HOOK],
+ 					  nft_flowtable_hook_policy, NULL);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	if (add) {
+ 		if (!tb[NFTA_FLOWTABLE_HOOK_NUM] ||
+-		    !tb[NFTA_FLOWTABLE_HOOK_PRIORITY])
+-			return -EINVAL;
++		    !tb[NFTA_FLOWTABLE_HOOK_PRIORITY]) {
++			NL_SET_BAD_ATTR(extack, nla[NFTA_FLOWTABLE_NAME]);
++			return -ENOENT;
++		}
+ 
+ 		hooknum = ntohl(nla_get_be32(tb[NFTA_FLOWTABLE_HOOK_NUM]));
+ 		if (hooknum != NF_NETDEV_INGRESS)
+@@ -7835,8 +7840,8 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 	u32 flags;
+ 	int err;
+ 
+-	err = nft_flowtable_parse_hook(ctx, nla[NFTA_FLOWTABLE_HOOK],
+-				       &flowtable_hook, flowtable, extack, false);
++	err = nft_flowtable_parse_hook(ctx, nla, &flowtable_hook, flowtable,
++				       extack, false);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -7981,8 +7986,8 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
+ 	if (err < 0)
+ 		goto err3;
+ 
+-	err = nft_flowtable_parse_hook(&ctx, nla[NFTA_FLOWTABLE_HOOK],
+-				       &flowtable_hook, flowtable, extack, true);
++	err = nft_flowtable_parse_hook(&ctx, nla, &flowtable_hook, flowtable,
++				       extack, true);
+ 	if (err < 0)
+ 		goto err4;
+ 
+@@ -8044,8 +8049,8 @@ static int nft_delflowtable_hook(struct nft_ctx *ctx,
+ 	struct nft_trans *trans;
+ 	int err;
+ 
+-	err = nft_flowtable_parse_hook(ctx, nla[NFTA_FLOWTABLE_HOOK],
+-				       &flowtable_hook, flowtable, extack, false);
++	err = nft_flowtable_parse_hook(ctx, nla, &flowtable_hook, flowtable,
++				       extack, false);
+ 	if (err < 0)
+ 		return err;
+ 
 -- 
 2.39.2
 
