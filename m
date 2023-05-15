@@ -2,145 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C3EF703F4B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 23:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72767040F4
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 00:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243936AbjEOVFI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 17:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
+        id S243352AbjEOW0F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 18:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245549AbjEOVFG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 17:05:06 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEB53AB1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 14:05:04 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-50bcb4a81ceso23439136a12.2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 14:05:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1684184703; x=1686776703;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nTC5Jbhy5Lugdl8MQ6NAHTFMl02UAz0PiZG1+JeYllU=;
-        b=r7Y+wGlEbH+TI2ac9S60EZVz17Cngknk9F+P3WXlkCXn22omlX+KWBt3fFfT4MGPSp
-         akbRQXfuwTJPVkDlixgmdz/fUHzHkUnGHxo0miYRKzmpud864bwRacWBownvbYIP9+th
-         vw8KkVwpxYNRQCCQlqpy/GNxRRKriOFGgPX01jsQcATap99vp5hAXf2YBYHh784Nhs56
-         xYA4TadeUTXXzqaO7b/Ni8gOLrX0Q1DLqINSedwIBhOUZisjhXcUrsgUMb2dZn9jbFDk
-         yl3ny+kaDc+PLvVK4SNUb6x80DGpELOaAf5f8FJbZQx0ceyNCTBNcZTzjXCVv0y4atxI
-         3wYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684184703; x=1686776703;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nTC5Jbhy5Lugdl8MQ6NAHTFMl02UAz0PiZG1+JeYllU=;
-        b=C7ShscQZ260P1JFT2aHnp3PRFWr4Opws2PI7Ev/3E6G4kCc0+7U/IV2cHsF/o7Q5zt
-         jaRnDD+OjWZBJL2gw7TIf0iTtoAzoUUuTt8UYGAUkMtJLhV4mTf6k/Hy7Hsuj2c3EI8d
-         ETWhXHEAjCp7Gz8F0Wiv1p+m1PGm8iuvfNyGknPa3peF5bLEdz6d26shu3ySylk1WZvS
-         3LxU/4sRDg4pu0WcD7POdTfa7mAma6Q8iUfRUT9sJVgqeBiaPmj8vzgkMXIyqz35Yb2+
-         UEG1lMfrGDrF+xDWUoPFRQNa2mrnYz1BDOMxhEu4QLRm7eHYueg0F2whRuirHmruu+Sv
-         247g==
-X-Gm-Message-State: AC+VfDzXvyJ06RtubrplOjRFTQCG0ewfgI8m5YIslB/OvW76lg+gqcFQ
-        oMfLmUkwB4hPoUNRgmCB48t0cw==
-X-Google-Smtp-Source: ACHHUZ6Nc+66OOY20dcOI24Ym3TpCQwZDgHylzSiCmG8NVPaPVKJPowOt8qEG2aWJB4u/54qjQqlYw==
-X-Received: by 2002:a17:907:9345:b0:94e:c4b:4d95 with SMTP id bv5-20020a170907934500b0094e0c4b4d95mr29919895ejc.69.1684184703361;
-        Mon, 15 May 2023 14:05:03 -0700 (PDT)
-Received: from ?IPV6:2003:f6:af37:b00:dfd3:5152:f381:a5f3? (p200300f6af370b00dfd35152f381a5f3.dip0.t-ipconnect.de. [2003:f6:af37:b00:dfd3:5152:f381:a5f3])
-        by smtp.gmail.com with ESMTPSA id ib23-20020a1709072c7700b00966069b78absm9977564ejc.192.2023.05.15.14.05.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 May 2023 14:05:03 -0700 (PDT)
-Message-ID: <234e01b6-1b5c-d682-a078-3dd91a62abf4@grsecurity.net>
-Date:   Mon, 15 May 2023 23:05:01 +0200
+        with ESMTP id S234623AbjEOW0E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 18:26:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA1D2A3;
+        Mon, 15 May 2023 15:26:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86E23623F6;
+        Mon, 15 May 2023 22:26:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644E7C433D2;
+        Mon, 15 May 2023 22:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684189562;
+        bh=mgXb0mwxaOmdxBcgoHsqCUvWmllYoas8WLQZmW80/0U=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tljRDJNRgEs51+Df/dmJVTibiTt1wcAE1beiT9OvcO/Cm+pyikMJrPEY7Ow/IoO2d
+         bUGy2qRQc6S0rEP10IdJk5MKv+FffbtjlIMNKpOWdMyMUGuS/s9z0zPSFiDWcAz6h2
+         JMl0WdK67n5pWI2IQgtE5jaUJyz61CK2XH2Y3QSQX0r/mveGntgl/kUYHds+phMic9
+         blq8A1GjpsF6reZQaCYe2I66VDmCXsGpQHOhsNOXQdfM/AeFcPn/hEl5QCodVAjM0F
+         kIcB7I0KbNEvbnaLGiacadd+aMGNiIjO9xqbmqMkqRubhauD8tjKp+NKg3joFabTnJ
+         S5ws7+8XA/xEQ==
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Stefan Berger <stefanb@linux.vnet.ibm.com>
+Cc:     Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] tpm: tpm_vtpm_proxy: fix a race condition in /dev/vtpmx creation
+Date:   Tue, 16 May 2023 01:25:54 +0300
+Message-Id: <20230515222554.2783592-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 5.15 0/8] KVM CR0.WP series backport
-To:     Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Cc:     stable@vger.kernel.org, kvm@vger.kernel.org
-References: <20230508154709.30043-1-minipli@grsecurity.net>
- <ZF1a8xIGLwcdJDVZ@google.com>
-Content-Language: en-US, de-DE
-From:   Mathias Krause <minipli@grsecurity.net>
-In-Reply-To: <ZF1a8xIGLwcdJDVZ@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[Paolo, can you please take a look at this as well?]
+From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
 
-On 11.05.23 23:15, Sean Christopherson wrote:
-> On Mon, May 08, 2023, Mathias Krause wrote:
->> This is a backport of the CR0.WP KVM series[1] to Linux v5.15. It
->> differs from the v6.1 backport as in needing additional prerequisite
->> patches from Lai Jiangshan (and fixes for those) to ensure the
->> assumption it's safe to let CR0.WP be a guest owned bit still stand.
-> 
-> NAK.
-> 
-> The CR0.WP changes also very subtly rely on commit 2ba676774dfc ("KVM: x86/mmu:
-> cleanup computation of MMU roles for two-dimensional paging"), which hardcodes
-> WP=1 in the mmu role.
+/dev/vtpmx is made visible before 'workqueue' is initialized, which can
+lead to a memory corruption in the worst case scenario.
 
-Well, that commit has the MMU role split into two (mmu_role and
-cpu_role) which was not the case for 5.15 and below. In fact, that split
-was more confusing than helpful, so commit 7a458f0e1ba1 ("KVM: x86/mmu:
-remove extended bits from mmu_role, rename field") /degraded/ mmu_role
-to root_role and made clear that bit test helpers like is_cr0_wp() look
-at cpu_role instead. In that regard, the backport should be equivalent
-to what we have in 6.4, as it's using mmu_role for the older kernels
-instead of cpu_role (which does not exist there yet).
+Address this by initializing 'workqueue' as the very first step of the
+driver initialization.
 
->                        Without that, KVM will end up in a weird state when
-> reinitializing the MMU context without reloading the root, as KVM will effectively
-> change the role of an active root.  E.g. child pages in the legacy MMU will have
-> a mix of WP=0 and WP=1 in their role.
+Cc: stable@vger.kernel.org
+Fixes: 6f99612e2500 ("tpm: Proxy driver for supporting multiple emulated TPMs")
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+---
+v2:
+- Replace vtpmx_cleanup() with destroy_workqueue():
+  https://lore.kernel.org/linux-integrity/CSLCEYDKKWWE.36POIXVT65SLE@suppilovahvero/
+- Fix typo:
+  https://lore.kernel.org/linux-integrity/4651cf1c-423d-05c2-b4c3-9d829a2eadf4@linux.ibm.com/
+---
+ drivers/char/tpm/tpm_vtpm_proxy.c | 30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
 
-But does that really matter? Or, asked differently, don't we have that
-very same situation for 6.4 with cpu_role.base.cr0_wp being the bit
-looked at and not root_role.cr0_wp?
+diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
+index 5c865987ba5c..30e953988cab 100644
+--- a/drivers/char/tpm/tpm_vtpm_proxy.c
++++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+@@ -683,37 +683,21 @@ static struct miscdevice vtpmx_miscdev = {
+ 	.fops = &vtpmx_fops,
+ };
+ 
+-static int vtpmx_init(void)
+-{
+-	return misc_register(&vtpmx_miscdev);
+-}
+-
+-static void vtpmx_cleanup(void)
+-{
+-	misc_deregister(&vtpmx_miscdev);
+-}
+-
+ static int __init vtpm_module_init(void)
+ {
+ 	int rc;
+ 
+-	rc = vtpmx_init();
+-	if (rc) {
+-		pr_err("couldn't create vtpmx device\n");
+-		return rc;
+-	}
+-
+ 	workqueue = create_workqueue("tpm-vtpm");
+ 	if (!workqueue) {
+ 		pr_err("couldn't create workqueue\n");
+-		rc = -ENOMEM;
+-		goto err_vtpmx_cleanup;
++		return -ENOMEM;
+ 	}
+ 
+-	return 0;
+-
+-err_vtpmx_cleanup:
+-	vtpmx_cleanup();
++	rc = misc_register(&vtpmx_miscdev);
++	if (rc) {
++		pr_err("couldn't create vtpmx device\n");
++		destroy_workqueue(workqueue);
++	}
+ 
+ 	return rc;
+ }
+@@ -721,7 +705,7 @@ static int __init vtpm_module_init(void)
+ static void __exit vtpm_module_exit(void)
+ {
+ 	destroy_workqueue(workqueue);
+-	vtpmx_cleanup();
++	misc_deregister(&vtpmx_miscdev);
+ }
+ 
+ module_init(vtpm_module_init);
+-- 
+2.39.2
 
-Either way, with EPT this should only matter if emulation is required
-and patch 8 makes sure we'll use the proper value of CR0.WP prior to
-starting the guest page table walk by refreshing the relevant cr0_wp
-bit. Or am I missing something?
-
-> 
-> The inconsistency may or may not cause functional problems (I honestly don't know),
-> but this missed dependency is exactly the type of problem that I am/was worried
-> about with respect to backporting these changes all the way to 5.15.
-
-While doing the backports I carefully looked at the changes and
-differences between the trees and, honestly, I don't think I missed this
-dependency as I did account for the mmu_role->{cpu,root}_role split (or
-rather unification regarding the backport) as explained above.
-
-
->                                                                       I'm simply
-> not comfortable backporting these changes due to the number of modifications and
-> enhancements that we've made to the TDP MMU, and to KVM's MMU handling in general,
-> between 5.15 and 6.1.
-
-I understand your concerns, fiddling with the MMU implementation is not
-easy at all, as it has so many combinations to keep in mind and quite
-some implicit assumptions throughout the code. Moreover, I'm a newcomer
-to this part of the kernel. However, I tried very hard to look at the
-changes for the individual backports and double- or even triple-checked
-the code to make sure the changes are still consistent with the rest of
-the code base. But I'm just a human, so I might have missed something,
-but a vague bad feeling doesn't convince me that I did something wrong.
-Less so, as KUT supports me in not having messed up things too badly.
-
-I know your backlog is huge and your review time is a scarce resource.
-But could you or Paolo please take another look?
-
-Thanks,
-Mathias
