@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2156D7039A4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B93B703AF6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244624AbjEORog (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
+        id S244915AbjEOR5i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:57:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244626AbjEORoR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:17 -0400
+        with ESMTP id S241400AbjEOR5O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:57:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC034C9EB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AAA1692F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57D1362E57
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4837AC433EF;
-        Mon, 15 May 2023 17:41:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4308862F8D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2A1C433D2;
+        Mon, 15 May 2023 17:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172512;
-        bh=VTI1NBL+bA1K3E3BNiIU3+U//mjnGUdlJbe6G3k4vmw=;
+        s=korg; t=1684173302;
+        bh=BngxkBEeruidy+V43jLSck4RA53JDM+RyB8mLAt8jJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LTNLOTekzfoZokXVFd8OZXsUgiua2W8Elk9mA7EIXMcx+3ZS6t4dEbFnG1eF5zWcn
-         P27BqqpzW7hkkmKPPt/qI3V4cbdCiN6fJpi1yUCPOq8xdjESFSAZeydzCM5RTegN8x
-         fVLap5DHHemS+4FRG/QhTMhZUO0RfNfkXmwPOgAo=
+        b=bjQeeFqnMNUryNQCJYZyQKmqwIuGStwUofe+npMeHlM+OWKPF68TdfAzjnzlbqY/w
+         mtwRZRIo0qyAth0Z6kkYyxpOEQ58kRKzJb/dBfmDDn4pwu/lu1H+Kz8jN9wYZslsCe
+         GWpHxlDeL4iIu26lgTRvdOxWqAfuCauxMcbQSpaI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/381] jdb2: Dont refuse invalidation of already invalidated buffers
+        patches@lists.linux.dev,
+        Georgii Kruglov <georgy.kruglov@yandex.ru>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 051/282] mmc: sdhci-of-esdhc: fix quirk to ignore command inhibit for data
 Date:   Mon, 15 May 2023 18:27:09 +0200
-Message-Id: <20230515161744.863430369@linuxfoundation.org>
+Message-Id: <20230515161723.784972052@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,42 +56,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Georgii Kruglov <georgy.kruglov@yandex.ru>
 
-[ Upstream commit bd159398a2d2234de07d310132865706964aaaa7 ]
+[ Upstream commit 0dd8316037a2a6d85b2be208bef9991de7b42170 ]
 
-When invalidating buffers under the partial tail page,
-jbd2_journal_invalidate_folio() returns -EBUSY if the buffer is part of
-the committing transaction as we cannot safely modify buffer state.
-However if the buffer is already invalidated (due to previous
-invalidation attempts from ext4_wait_for_tail_page_commit()), there's
-nothing to do and there's no point in returning -EBUSY. This fixes
-occasional warnings from ext4_journalled_invalidate_folio() triggered by
-generic/051 fstest when blocksize < pagesize.
+If spec_reg is equal to 'SDHCI_PRESENT_STATE', esdhc_readl_fixup()
+fixes up register value and returns it immediately. As a result, the
+further block
+(spec_reg == SDHCI_PRESENT_STATE)
+    &&(esdhc->quirk_ignore_data_inhibit == true),
+is never executed.
 
-Fixes: 53e872681fed ("ext4: fix deadlock in journal_unmap_buffer()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230329154950.19720-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The patch merges the second block into the first one.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1f1929f3f2fa ("mmc: sdhci-of-esdhc: add quirk to ignore command inhibit for data")
+Signed-off-by: Georgii Kruglov <georgy.kruglov@yandex.ru>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230321203715.3975-1-georgy.kruglov@yandex.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/transaction.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/sdhci-of-esdhc.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index 1923528154b52..1baf2d607268f 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -2378,6 +2378,9 @@ static int journal_unmap_buffer(journal_t *journal, struct buffer_head *bh,
- 			spin_unlock(&jh->b_state_lock);
- 			write_unlock(&journal->j_state_lock);
- 			jbd2_journal_put_journal_head(jh);
-+			/* Already zapped buffer? Nothing to do... */
-+			if (!bh->b_bdev)
-+				return 0;
- 			return -EBUSY;
+diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
+index 69c133e7ced05..48765208e2953 100644
+--- a/drivers/mmc/host/sdhci-of-esdhc.c
++++ b/drivers/mmc/host/sdhci-of-esdhc.c
+@@ -124,6 +124,7 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
+ 			return ret;
  		}
- 		/*
+ 	}
++
+ 	/*
+ 	 * The DAT[3:0] line signal levels and the CMD line signal level are
+ 	 * not compatible with standard SDHC register. The line signal levels
+@@ -135,6 +136,16 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
+ 		ret = value & 0x000fffff;
+ 		ret |= (value >> 4) & SDHCI_DATA_LVL_MASK;
+ 		ret |= (value << 1) & SDHCI_CMD_LVL;
++
++		/*
++		 * Some controllers have unreliable Data Line Active
++		 * bit for commands with busy signal. This affects
++		 * Command Inhibit (data) bit. Just ignore it since
++		 * MMC core driver has already polled card status
++		 * with CMD13 after any command with busy siganl.
++		 */
++		if (esdhc->quirk_ignore_data_inhibit)
++			ret &= ~SDHCI_DATA_INHIBIT;
+ 		return ret;
+ 	}
+ 
+@@ -149,19 +160,6 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
+ 		return ret;
+ 	}
+ 
+-	/*
+-	 * Some controllers have unreliable Data Line Active
+-	 * bit for commands with busy signal. This affects
+-	 * Command Inhibit (data) bit. Just ignore it since
+-	 * MMC core driver has already polled card status
+-	 * with CMD13 after any command with busy siganl.
+-	 */
+-	if ((spec_reg == SDHCI_PRESENT_STATE) &&
+-	(esdhc->quirk_ignore_data_inhibit == true)) {
+-		ret = value & ~SDHCI_DATA_INHIBIT;
+-		return ret;
+-	}
+-
+ 	ret = value;
+ 	return ret;
+ }
 -- 
 2.39.2
 
