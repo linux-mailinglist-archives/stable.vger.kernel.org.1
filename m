@@ -2,50 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F26703AF3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423CB703974
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242606AbjEOR5Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
+        id S244522AbjEORml (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241578AbjEOR4o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D24A01D4A0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:32 -0700 (PDT)
+        with ESMTP id S244514AbjEORmU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7F2185
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DEDD62F51
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922F7C433EF;
-        Mon, 15 May 2023 17:54:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E52CD62E23
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEDAC433D2;
+        Mon, 15 May 2023 17:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173272;
-        bh=Y81ck8f9JFOZl4W2yMziyUFKOW/A6Cf/RHftLAzUJ9Q=;
+        s=korg; t=1684172393;
+        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1DKj52CCZ0yHYj/CDzSAvZukWp+OwK2nNkposTaco3cy3v1v3xNNT68bnCIodQJP3
-         QOuvER6612uQ0ZonIivU5PL+V9Mi5pfq82mxWbS+oWlwML71nLhlKFdRdqFjgZBEG1
-         Mx/7xAyKzOFnpef1Pty3T5qCb4rjgIliRAVT3QKo=
+        b=TFR8+3P3dS54o7D4Dy6rlq8tVYVRNL4n+GIYKhLcEbygmeQ1t8fXMdWmsa+CpWivl
+         4qw3xx+NSH8yZzpq7bbsR8OZtwSvGzCqeYbmqR5wFJ/snDJdTu3okS7YvRAJhgbCIe
+         ubXwl7pVIZ0In6ONa0b6bD8kuttqTiihSE5pKpUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.4 012/282] perf sched: Cast PTHREAD_STACK_MIN to int as it may turn into sysconf(__SC_THREAD_STACK_MIN_VALUE)
+        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 139/381] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
 Date:   Mon, 15 May 2023 18:26:30 +0200
-Message-Id: <20230515161722.638224979@linuxfoundation.org>
+Message-Id: <20230515161743.115415582@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +59,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 
-commit d08c84e01afa7a7eee6badab25d5420fa847f783 upstream.
+[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
 
-In fedora rawhide the PTHREAD_STACK_MIN define may end up expanded to a
-sysconf() call, and that will return 'long int', breaking the build:
+Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
+wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
 
-    45 fedora:rawhide                : FAIL gcc version 11.1.1 20210623 (Red Hat 11.1.1-6) (GCC)
-      builtin-sched.c: In function 'create_tasks':
-      /git/perf-5.14.0-rc1/tools/include/linux/kernel.h:43:24: error: comparison of distinct pointer types lacks a cast [-Werror]
-         43 |         (void) (&_max1 == &_max2);              \
-            |                        ^~
-      builtin-sched.c:673:34: note: in expansion of macro 'max'
-        673 |                         (size_t) max(16 * 1024, PTHREAD_STACK_MIN));
-            |                                  ^~~
-      cc1: all warnings being treated as errors
+For some reason we have no corresponding check for SO_PASSSEC.
 
-  $ grep __sysconf /usr/include/*/*.h
-  /usr/include/bits/pthread_stack_min-dynamic.h:extern long int __sysconf (int __name) __THROW;
-  /usr/include/bits/pthread_stack_min-dynamic.h:#   define PTHREAD_STACK_MIN __sysconf (__SC_THREAD_STACK_MIN_VALUE)
-  /usr/include/bits/time.h:extern long int __sysconf (int);
-  /usr/include/bits/time.h:# define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
-  $
+In the recvmsg(2) doc we have:
+       MSG_CTRUNC
+              indicates that some control data was discarded due to lack
+              of space in the buffer for ancillary data.
 
-So cast it to int to cope with that.
+So, we need to set MSG_CTRUNC flag for all types of SCM.
 
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change can break applications those don't check MSG_CTRUNC flag.
+
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+
+v2:
+- commit message was rewritten according to Eric's suggestion
+Acked-by: Paul Moore <paul@paul-moore.com>
+
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/scm.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -666,7 +666,7 @@ static void create_tasks(struct perf_sch
- 	err = pthread_attr_init(&attr);
- 	BUG_ON(err);
- 	err = pthread_attr_setstacksize(&attr,
--			(size_t) max(16 * 1024, PTHREAD_STACK_MIN));
-+			(size_t) max(16 * 1024, (int)PTHREAD_STACK_MIN));
- 	BUG_ON(err);
- 	err = pthread_mutex_lock(&sched->start_work_mutex);
- 	BUG_ON(err);
+diff --git a/include/net/scm.h b/include/net/scm.h
+index 1ce365f4c2560..585adc1346bd0 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
+ 		}
+ 	}
+ }
++
++static inline bool scm_has_secdata(struct socket *sock)
++{
++	return test_bit(SOCK_PASSSEC, &sock->flags);
++}
+ #else
+ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
+ { }
++
++static inline bool scm_has_secdata(struct socket *sock)
++{
++	return false;
++}
+ #endif /* CONFIG_SECURITY_NETWORK */
+ 
+ static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
+ 				struct scm_cookie *scm, int flags)
+ {
+ 	if (!msg->msg_control) {
+-		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
++		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
++		    scm_has_secdata(sock))
+ 			msg->msg_flags |= MSG_CTRUNC;
+ 		scm_destroy(scm);
+ 		return;
+-- 
+2.39.2
+
 
 
