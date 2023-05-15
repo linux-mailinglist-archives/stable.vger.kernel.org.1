@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE8F703A6E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0157038B3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244758AbjEORvH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47218 "EHLO
+        id S244190AbjEOReO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:34:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244898AbjEORul (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:41 -0400
+        with ESMTP id S244392AbjEORd6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68BFA1B0B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 207BF6E8E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5504C62F14
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451B4C4339E;
-        Mon, 15 May 2023 17:48:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2D6162D24
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A760CC433D2;
+        Mon, 15 May 2023 17:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172925;
-        bh=aleVvIC/cMH7FGD8Cf8+HOrwEPMgwqaeTDjFnh4RZZY=;
+        s=korg; t=1684171903;
+        bh=U4NSWi9f+F1NaQZ6NGyWh16DzOqv+ksa2bIZuhHkBuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JA45qtteRImnLGhKBKjZJZLA1tw8LZm2pNEosouHpONlhr0m1nIjiu8IvkeQV4TRE
-         blH+R/l0V4jlGNsiLQwge7csHqXDDWxHTs9+7sgTUUU7hkKIJVjoRjwKb0fKpm6jN2
-         JbSmOMKh5B/Zv5bSzRmCZJgqzDvplx0DpfmzfW4g=
+        b=yx0xW6P+O4GwoFKxo6s53rce0k40iwjvLo4QWOjJwhaPP3pDMMFz1PsY5MWNIDYNW
+         QEAge+lQTEpGZ7gwnCBU6mEOviHBokOOgBASNgIim59+QZvudQZxX5Bie05syvhEKP
+         ATCAYAX/L4cKWtuSHc5avHc0uWgpYyCaM9hvdPKw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Palash Oswal <oswalpalash@gmail.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Cong Wang <cong.wang@bytedance.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 311/381] sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()
+        patches@lists.linux.dev, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 5.15 085/134] drm/msm: fix NULL-deref on snapshot tear down
 Date:   Mon, 15 May 2023 18:29:22 +0200
-Message-Id: <20230515161750.879459667@linuxfoundation.org>
+Message-Id: <20230515161706.000459956@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,69 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c88f8d5cd95fd039cff95d682b8e71100c001df0 ]
+commit a465353b9250802f87b97123e33a17f51277f0b1 upstream.
 
-When a tunnel device is bound with the underlying device, its
-dev->needed_headroom needs to be updated properly. IPv4 tunnels
-already do the same in ip_tunnel_bind_dev(). Otherwise we may
-not have enough header room for skb, especially after commit
-b17f709a2401 ("gue: TX support for using remote checksum offload option").
+In case of early initialisation errors and on platforms that do not use
+the DPU controller, the deinitilisation code can be called with the kms
+pointer set to NULL.
 
-Fixes: 32b8a8e59c9c ("sit: add IPv4 over IPv4 support")
-Reported-by: Palash Oswal <oswalpalash@gmail.com>
-Link: https://lore.kernel.org/netdev/CAGyP=7fDcSPKu6nttbGwt7RXzE3uyYxLjCSE97J64pRxJP8jPA@mail.gmail.com/
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/525099/
+Link: https://lore.kernel.org/r/20230306100722.28485-4-johan+linaro@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/sit.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index 1ce486a9bc076..9806bd56b95f1 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -1094,12 +1094,13 @@ static netdev_tx_t sit_tunnel_xmit(struct sk_buff *skb,
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -359,7 +359,8 @@ static int msm_drm_uninit(struct device
+ 		msm_fbdev_free(ddev);
+ #endif
  
- static void ipip6_tunnel_bind_dev(struct net_device *dev)
- {
-+	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
- 	struct net_device *tdev = NULL;
--	struct ip_tunnel *tunnel;
-+	int hlen = LL_MAX_HEADER;
- 	const struct iphdr *iph;
- 	struct flowi4 fl4;
+-	msm_disp_snapshot_destroy(ddev);
++	if (kms)
++		msm_disp_snapshot_destroy(ddev);
  
--	tunnel = netdev_priv(dev);
- 	iph = &tunnel->parms.iph;
+ 	drm_mode_config_cleanup(ddev);
  
- 	if (iph->daddr) {
-@@ -1122,14 +1123,15 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
- 		tdev = __dev_get_by_index(tunnel->net, tunnel->parms.link);
- 
- 	if (tdev && !netif_is_l3_master(tdev)) {
--		int t_hlen = tunnel->hlen + sizeof(struct iphdr);
- 		int mtu;
- 
- 		mtu = tdev->mtu - t_hlen;
- 		if (mtu < IPV6_MIN_MTU)
- 			mtu = IPV6_MIN_MTU;
- 		WRITE_ONCE(dev->mtu, mtu);
-+		hlen = tdev->hard_header_len + tdev->needed_headroom;
- 	}
-+	dev->needed_headroom = t_hlen + hlen;
- }
- 
- static void ipip6_tunnel_update(struct ip_tunnel *t, struct ip_tunnel_parm *p,
--- 
-2.39.2
-
 
 
