@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7597D703A7E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36CAE7037F3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241379AbjEORv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
+        id S244203AbjEORZr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244905AbjEORvJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:51:09 -0400
+        with ESMTP id S244210AbjEORZc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C08316EBB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7349E13C26
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7F2162F08
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CE7C433D2;
-        Mon, 15 May 2023 17:49:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95B6462CBC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0B6C433EF;
+        Mon, 15 May 2023 17:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172953;
-        bh=Ci6EsZHvwy2O+Pq23OjtiVozcA6n0rlDyVZSmzborLM=;
+        s=korg; t=1684171458;
+        bh=ySzyVxVmWL0qF749aKDXnCtw9gVgM89n6QudJK/XpVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LIGwD6hQCq/XG+f5t+bqcIYNNDzxUH7KIYNEaYkZCcWkZ89y7q1/ZCVSDOBsJROhE
-         UIfTm9T5VkCuq9d3op8GIqjLpmoK3R6hqLeg9/knbXQYQ83HyYys8nFHzFr/fZPCjk
-         KGEi2cyeSV2RWn5l/pY+Gri8k7ZlW5VJRsJCdWT4=
+        b=JS//GIfS/u0b10PSZvc736xwFH+cosD02wr1s1NMPLeb0+4j1sY5RMks5OY0m2G9c
+         48SDhfGWnZsnANnmwEE75oRD8psyAhNVaEtJqZua587kKL8bakCpuyDU+6vsgHRebZ
+         hxxeyuDFeLfMs3pRzOpijXZAPyy4YtVK3dr+M+ks=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 291/381] debugobject: Ensure pool refill (again)
+        patches@lists.linux.dev, Jun Lei <Jun.Lei@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 216/242] drm/amd/display: Add minimum Z8 residency debug option
 Date:   Mon, 15 May 2023 18:29:02 +0200
-Message-Id: <20230515161749.929215903@linuxfoundation.org>
+Message-Id: <20230515161728.406005756@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,80 +57,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit 0af462f19e635ad522f28981238334620881badc upstream.
+[ Upstream commit 0db13eae41fcc67f408dbb3dfda59633c4fa03fb ]
 
-The recent fix to ensure atomicity of lookup and allocation inadvertently
-broke the pool refill mechanism.
+[Why]
+Allows finer control and tuning for debug and profiling.
 
-Prior to that change debug_objects_activate() and debug_objecs_assert_init()
-invoked debug_objecs_init() to set up the tracking object for statically
-initialized objects. That's not longer the case and debug_objecs_init() is
-now the only place which does pool refills.
+[How]
+Add the debug option into DC. The default remains the same as before
+for now.
 
-Depending on the number of statically initialized objects this can be
-enough to actually deplete the pool, which was observed by Ido via a
-debugobjects OOM warning.
-
-Restore the old behaviour by adding explicit refill opportunities to
-debug_objects_activate() and debug_objecs_assert_init().
-
-Fixes: 63a759694eed ("debugobject: Prevent init race with static objects")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/871qk05a9d.ffs@tglx
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: d893f39320e1 ("drm/amd/display: Lowering min Z8 residency time")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dc.h                     | 1 +
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c | 1 +
+ drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c    | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -590,6 +590,16 @@ static struct debug_obj *lookup_object_o
- 	return NULL;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 37998dc0fc144..b519602c054b2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -796,6 +796,7 @@ struct dc_debug_options {
+ 	unsigned int force_odm_combine; //bit vector based on otg inst
+ 	unsigned int seamless_boot_odm_combine;
+ 	unsigned int force_odm_combine_4to1; //bit vector based on otg inst
++	int minimum_z8_residency_time;
+ 	bool disable_z9_mpc;
+ 	unsigned int force_fclk_khz;
+ 	bool enable_tri_buf;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+index 9ffba4c6fe550..5c23c934c9751 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+@@ -887,6 +887,7 @@ static const struct dc_plane_cap plane_cap = {
+ static const struct dc_debug_options debug_defaults_drv = {
+ 	.disable_z10 = false,
+ 	.enable_z9_disable_interface = true,
++	.minimum_z8_residency_time = 1000,
+ 	.psr_skip_crtc_disable = true,
+ 	.disable_dmcu = true,
+ 	.force_abm_enable = false,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index 859dc67a1fb6b..b6b8be74ee0ea 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -973,7 +973,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
+ 		struct dc_link *link = context->streams[0]->sink->link;
+ 		struct dc_stream_status *stream_status = &context->stream_status[0];
+-		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
++		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
++		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
+ 		bool is_pwrseq0 = link->link_index == 0;
  
-+static void debug_objects_fill_pool(void)
-+{
-+	/*
-+	 * On RT enabled kernels the pool refill must happen in preemptible
-+	 * context:
-+	 */
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
-+		fill_pool();
-+}
-+
- static void
- __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack)
- {
-@@ -598,7 +608,7 @@ __debug_object_init(void *addr, const st
- 	struct debug_obj *obj;
- 	unsigned long flags;
- 
--	fill_pool();
-+	debug_objects_fill_pool();
- 
- 	db = get_bucket((unsigned long) addr);
- 
-@@ -683,6 +693,8 @@ int debug_object_activate(void *addr, co
- 	if (!debug_objects_enabled)
- 		return 0;
- 
-+	debug_objects_fill_pool();
-+
- 	db = get_bucket((unsigned long) addr);
- 
- 	raw_spin_lock_irqsave(&db->lock, flags);
-@@ -892,6 +904,8 @@ void debug_object_assert_init(void *addr
- 	if (!debug_objects_enabled)
- 		return;
- 
-+	debug_objects_fill_pool();
-+
- 	db = get_bucket((unsigned long) addr);
- 
- 	raw_spin_lock_irqsave(&db->lock, flags);
+ 		if (dc_extended_blank_supported(dc)) {
+-- 
+2.39.2
+
 
 
