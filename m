@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B14703AB8
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ACDC703AC2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244861AbjEORyo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:54:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54074 "EHLO
+        id S241367AbjEORzU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:55:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244667AbjEORyP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:15 -0400
+        with ESMTP id S244991AbjEORyy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B491D14E47
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:52:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C7C183DF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:52:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9480262F9F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E01C433EF;
-        Mon, 15 May 2023 17:52:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D2DF62F9D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B62C433EF;
+        Mon, 15 May 2023 17:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173138;
-        bh=5Ppl7cbmrqBLbKZsDq11q8n894s1dlMntoQ63KsogeI=;
+        s=korg; t=1684173168;
+        bh=0e1hVz1OfnBNAurXHdnbrowvGPbmelbq7rWmCHDdTWo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PlEIWnwMNXreqzZUbJxI6m7Cy6csNJ7lVTbfDJFolGcNLGnbDL0/hw6nGSipXxpZ7
-         ih4o9B4PFIHr8SXH8aOevuvwBmV72sWf3FUjIE8uEHStRb1rVTkhy990HnsbwrXuG+
-         JDyoNXKJH5VVNn/Eqq9EXfx6h08izF3c0kihBwno=
+        b=JuNCk5q2vf3H4Z3BS5WPD6V2BF/RNiZt2x3+yBTwkjaO121Xksg19OqdME/sO+Qjf
+         zgn+kDY1kO+WQlap2QLwHpWQQ0V7MfSdVEU3QwmGvqFHjIH1rk13PUTw4L5z8DYO3t
+         G7OMESg1VCi7626gi6wjxGu3Rfi2olIg8veJIUzE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Petr Mladek <pmladek@suse.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH 5.10 378/381] printk: declare printk_deferred_{enter,safe}() in include/linux/printk.h
-Date:   Mon, 15 May 2023 18:30:29 +0200
-Message-Id: <20230515161754.030008297@linuxfoundation.org>
+        patches@lists.linux.dev, Tian Tao <tiantao6@hisilicon.com>,
+        Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 5.10 379/381] drm/exynos: move to use request_irq by IRQF_NO_AUTOEN flag
+Date:   Mon, 15 May 2023 18:30:30 +0200
+Message-Id: <20230515161754.079396066@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
 References: <20230515161736.775969473@linuxfoundation.org>
@@ -54,77 +53,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Tian Tao <tiantao6@hisilicon.com>
 
-commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
+commit a4e5eed2c6a689ef2b6ad8d7ae86665c69039379 upstream.
 
-[This patch implements subset of original commit 85e3e7fbbb72 ("printk:
-remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
-potential deadlock on zonelist_update_seq seqlock") depends on, for
-commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
-build_all_zonelists and page allocation") was backported to stable.]
+After this patch cbe16f35bee68 genirq: Add IRQF_NO_AUTOEN for
+request_irq/nmi() is merged. request_irq() after setting
+IRQ_NOAUTOEN as below
 
-All NMI contexts are handled the same as the safe context: store the
-message and defer printing. There is no need to have special NMI
-context tracking for this. Using in_nmi() is enough.
+irq_set_status_flags(irq, IRQ_NOAUTOEN);
+request_irq(dev, irq...);
+can be replaced by request_irq() with IRQF_NO_AUTOEN flag.
 
-There are several parts of the kernel that are manually calling into
-the printk NMI context tracking in order to cause general printk
-deferred printing:
+v2:
+Fix the problem of using wrong flags
 
-    arch/arm/kernel/smp.c
-    arch/powerpc/kexec/crash.c
-    kernel/trace/trace.c
-
-For arm/kernel/smp.c and powerpc/kexec/crash.c, provide a new
-function pair printk_deferred_enter/exit that explicitly achieves the
-same objective.
-
-For ftrace, remove the printk context manipulation completely. It was
-added in commit 03fc7f9c99c1 ("printk/nmi: Prevent deadlock when
-accessing the main log buffer in NMI"). The purpose was to enforce
-storing messages directly into the ring buffer even in NMI context.
-It really should have only modified the behavior in NMI context.
-There is no need for a special behavior any longer. All messages are
-always stored directly now. The console deferring is handled
-transparently in vprintk().
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-[pmladek@suse.com: Remove special handling in ftrace.c completely.
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20210715193359.25946-5-john.ogness@linutronix.de
-[penguin-kernel: Copy only printk_deferred_{enter,safe}() definition ]
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/printk.h |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/gpu/drm/exynos/exynos5433_drm_decon.c |    4 ++--
+ drivers/gpu/drm/exynos/exynos_drm_dsi.c       |    7 +++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -623,4 +623,23 @@ static inline void print_hex_dump_debug(
- #define print_hex_dump_bytes(prefix_str, prefix_type, buf, len)	\
- 	print_hex_dump_debug(prefix_str, prefix_type, 16, 1, buf, len, true)
+--- a/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
+@@ -775,8 +775,8 @@ static int decon_conf_irq(struct decon_c
+ 			return irq;
+ 		}
+ 	}
+-	irq_set_status_flags(irq, IRQ_NOAUTOEN);
+-	ret = devm_request_irq(ctx->dev, irq, handler, flags, "drm_decon", ctx);
++	ret = devm_request_irq(ctx->dev, irq, handler,
++			       flags | IRQF_NO_AUTOEN, "drm_decon", ctx);
+ 	if (ret < 0) {
+ 		dev_err(ctx->dev, "IRQ %s request failed\n", name);
+ 		return ret;
+--- a/drivers/gpu/drm/exynos/exynos_drm_dsi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_dsi.c
+@@ -1353,10 +1353,9 @@ static int exynos_dsi_register_te_irq(st
+ 	}
  
-+#ifdef CONFIG_PRINTK
-+extern void __printk_safe_enter(void);
-+extern void __printk_safe_exit(void);
-+/*
-+ * The printk_deferred_enter/exit macros are available only as a hack for
-+ * some code paths that need to defer all printk console printing. Interrupts
-+ * must be disabled for the deferred duration.
-+ */
-+#define printk_deferred_enter __printk_safe_enter
-+#define printk_deferred_exit __printk_safe_exit
-+#else
-+static inline void printk_deferred_enter(void)
-+{
-+}
-+static inline void printk_deferred_exit(void)
-+{
-+}
-+#endif
-+
- #endif
+ 	te_gpio_irq = gpio_to_irq(dsi->te_gpio);
+-	irq_set_status_flags(te_gpio_irq, IRQ_NOAUTOEN);
+ 
+ 	ret = request_threaded_irq(te_gpio_irq, exynos_dsi_te_irq_handler, NULL,
+-					IRQF_TRIGGER_RISING, "TE", dsi);
++				   IRQF_TRIGGER_RISING | IRQF_NO_AUTOEN, "TE", dsi);
+ 	if (ret) {
+ 		dev_err(dsi->dev, "request interrupt failed with %d\n", ret);
+ 		gpio_free(dsi->te_gpio);
+@@ -1802,9 +1801,9 @@ static int exynos_dsi_probe(struct platf
+ 	if (dsi->irq < 0)
+ 		return dsi->irq;
+ 
+-	irq_set_status_flags(dsi->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_threaded_irq(dev, dsi->irq, NULL,
+-					exynos_dsi_irq, IRQF_ONESHOT,
++					exynos_dsi_irq,
++					IRQF_ONESHOT | IRQF_NO_AUTOEN,
+ 					dev_name(dev), dsi);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request dsi irq\n");
 
 
