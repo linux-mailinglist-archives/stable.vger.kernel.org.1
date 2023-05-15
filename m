@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDCD270355B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318A07039A7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243289AbjEOQ6P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38194 "EHLO
+        id S244576AbjEORom (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243309AbjEOQ6H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:07 -0400
+        with ESMTP id S244578AbjEORoX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0403159F5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A280B18AAB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9F8E62A19
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2069C433D2;
-        Mon, 15 May 2023 16:58:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB8CD62E56
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCC3C433D2;
+        Mon, 15 May 2023 17:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169884;
-        bh=doUGeYeK5D6hC+5KFMRRy2mVHjf3LgxF2nqwGpUT1Cs=;
+        s=korg; t=1684172519;
+        bh=Do4W/MMIjeRqXdmG2MP+NGl+aJN4qHyN3/szobTp1Bs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gLiabosLGKet1xLDMX+A5CStZCgyivWnSgJWDzVuhXJiDTsQDZr6ZBdt9Vf9oV7zn
-         iYwxTvOLG9933ChZRFhULo+LMlpik6DXH+tcmnSKU5y4ezO2M8lmTGlL/P9d5/FVmi
-         20fUjBWi7gQe5fTpNBXMNF9O7DKy1wqpsdXHyYUA=
+        b=S8CZ4gMzSVRtcnxcXTPujWvI7DezcUvZXZl2IdzexLH/5FmC+UNgtd+Hc9vaHyeEl
+         GnSH58T3QKMBKJ/7w/d8ipazzVWqcepDXIXNIewfF9ZGz+oMpj7vGE4ZXNItpTM06O
+         4Wzkjt6pgdZ36w+xTIqAosEOwQtjon6LwMo3faj8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>,
-        Veerabadhran Gopalakrishnan <Veerabadhran.Gopalakrishnan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 201/246] drm/amdgpu/jpeg: Remove harvest checking for JPEG3
+        patches@lists.linux.dev, Nicolai Stange <nstange@suse.de>,
+        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/381] crypto: drbg - make drbg_prepare_hrng() handle jent instantiation errors
 Date:   Mon, 15 May 2023 18:26:53 +0200
-Message-Id: <20230515161728.639274295@linuxfoundation.org>
+Message-Id: <20230515161744.130357486@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,30 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>
+From: Nicolai Stange <nstange@suse.de>
 
-commit 5b94db73e45e2e6c2840f39c022fd71dfa47fc58 upstream.
+[ Upstream commit 559edd47cce4cc407d606b4d7f376822816fd4b8 ]
 
-Register CC_UVD_HARVESTING is obsolete for JPEG 3.1.2
+Now that drbg_prepare_hrng() doesn't do anything but to instantiate a
+jitterentropy crypto_rng instance, it looks a little odd to have the
+related error handling at its only caller, drbg_instantiate().
 
-Signed-off-by: Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>
-Reviewed-by: Veerabadhran Gopalakrishnan <Veerabadhran.Gopalakrishnan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the handling of jitterentropy allocation failures from
+drbg_instantiate() close to the allocation itself in drbg_prepare_hrng().
+
+There is no change in behaviour.
+
+Signed-off-by: Nicolai Stange <nstange@suse.de>
+Reviewed-by: Stephan Müller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 686cd976b6dd ("crypto: drbg - Only fail when jent is unavailable in FIPS mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c |    1 +
- 1 file changed, 1 insertion(+)
+ crypto/drbg.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c
-@@ -54,6 +54,7 @@ static int jpeg_v3_0_early_init(void *ha
+diff --git a/crypto/drbg.c b/crypto/drbg.c
+index a4b5d6dbe99d3..ecc6b167b89e2 100644
+--- a/crypto/drbg.c
++++ b/crypto/drbg.c
+@@ -1515,6 +1515,14 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
+ 		return 0;
  
- 	switch (adev->ip_versions[UVD_HWIP][0]) {
- 	case IP_VERSION(3, 1, 1):
-+	case IP_VERSION(3, 1, 2):
- 		break;
- 	default:
- 		harvest = RREG32_SOC15(JPEG, 0, mmCC_UVD_HARVESTING);
+ 	drbg->jent = crypto_alloc_rng("jitterentropy_rng", 0, 0);
++	if (IS_ERR(drbg->jent)) {
++		const int err = PTR_ERR(drbg->jent);
++
++		drbg->jent = NULL;
++		if (fips_enabled || err != -ENOENT)
++			return err;
++		pr_info("DRBG: Continuing without Jitter RNG\n");
++	}
+ 
+ 	return 0;
+ }
+@@ -1570,14 +1578,6 @@ static int drbg_instantiate(struct drbg_state *drbg, struct drbg_string *pers,
+ 		if (ret)
+ 			goto free_everything;
+ 
+-		if (IS_ERR(drbg->jent)) {
+-			ret = PTR_ERR(drbg->jent);
+-			drbg->jent = NULL;
+-			if (fips_enabled || ret != -ENOENT)
+-				goto free_everything;
+-			pr_info("DRBG: Continuing without Jitter RNG\n");
+-		}
+-
+ 		reseed = false;
+ 	}
+ 
+-- 
+2.39.2
+
 
 
