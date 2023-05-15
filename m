@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79C10703ADE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C06B70336F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244706AbjEOR4R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
+        id S242810AbjEOQg4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:36:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244985AbjEORzo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:44 -0400
+        with ESMTP id S242799AbjEOQgz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA2E15EEA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A243C12
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B4CE62F5F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7065FC433D2;
-        Mon, 15 May 2023 17:53:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F7D46281E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2C8C433D2;
+        Mon, 15 May 2023 16:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173224;
-        bh=ZheHF2Es9l7dGqTGX453WIo07dJi81f7biRKOVgUASw=;
+        s=korg; t=1684168610;
+        bh=ypxJasnUqLk7S4UiAsFHgDnLBTl9EFSMR1YVWGCUaJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uHBTjjok4360wyWRtlCnOZ3uIEMcC5woWq/BQ4zXc/5gkMUkuDr5zspXaXP4d54YS
-         7VQWFeLGhdEPIh8dr0qlebWhwz11GsKJMSUR0s5ZEjmb6/qWuXvlHhCVnkyivyN12R
-         EO2hey2u0S7sGKk4ZMIKGO8g2NCo6E0y/hESlgng=
+        b=n9LdynhaMJUlspFmwy+0ffAvihkreF5zjmmQlCeb0Qq1U6dBkkrVyzsqjRf+GupB+
+         4jmcingTT7NKisndM9VFJ8Wy/GiRsQDLiaW01j3YHV4juSVQw8Izqy3i3SV90hIhr4
+         arpDOSFLy54RukPbyKsILMw5c9ZT3oRfNtZYLG0g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.4 026/282] Revert "ubifs: dirty_cow_znode: Fix memleak in error handling path"
+        patches@lists.linux.dev,
+        syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com,
+        stable@kernel.org, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.14 107/116] ext4: add bounds checking in get_max_inline_xattr_value_size()
 Date:   Mon, 15 May 2023 18:26:44 +0200
-Message-Id: <20230515161723.063947034@linuxfoundation.org>
+Message-Id: <20230515161701.794953464@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,47 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 7d01cb27f6aebc54efbe28d8961a973b8f795b13 upstream.
+commit 2220eaf90992c11d888fe771055d4de330385f01 upstream.
 
-This reverts commit 122deabfe1428 (ubifs: dirty_cow_znode: Fix memleak
-in error handling path).
-After commit 122deabfe1428 applied, if insert_old_idx() failed, old
-index neither exists in TNC nor in old-index tree. Which means that
-old index node could be overwritten in layout_leb_in_gaps(), then
-ubifs image will be corrupted in power-cut.
+Normally the extended attributes in the inode body would have been
+checked when the inode is first opened, but if someone is writing to
+the block device while the file system is mounted, it's possible for
+the inode table to get corrupted.  Add bounds checking to avoid
+reading beyond the end of allocated memory if this happens.
 
-Fixes: 122deabfe1428 (ubifs: dirty_cow_znode: Fix memleak ... path)
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Reported-by: syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=1966db24521e5f6e23f7
+Cc: stable@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/tnc.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ fs/ext4/inline.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -267,18 +267,11 @@ static struct ubifs_znode *dirty_cow_zno
- 	if (zbr->len) {
- 		err = insert_old_idx(c, zbr->lnum, zbr->offs);
- 		if (unlikely(err))
--			/*
--			 * Obsolete znodes will be freed by tnc_destroy_cnext()
--			 * or free_obsolete_znodes(), copied up znodes should
--			 * be added back to tnc and freed by
--			 * ubifs_destroy_tnc_subtree().
--			 */
--			goto out;
-+			return ERR_PTR(err);
- 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
- 	} else
- 		err = 0;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -38,6 +38,7 @@ static int get_max_inline_xattr_value_si
+ 	struct ext4_xattr_ibody_header *header;
+ 	struct ext4_xattr_entry *entry;
+ 	struct ext4_inode *raw_inode;
++	void *end;
+ 	int free, min_offs;
  
--out:
- 	zbr->znode = zn;
- 	zbr->lnum = 0;
- 	zbr->offs = 0;
+ 	if (!EXT4_INODE_HAS_XATTR_SPACE(inode))
+@@ -61,14 +62,23 @@ static int get_max_inline_xattr_value_si
+ 	raw_inode = ext4_raw_inode(iloc);
+ 	header = IHDR(inode, raw_inode);
+ 	entry = IFIRST(header);
++	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
+ 
+ 	/* Compute min_offs. */
+-	for (; !IS_LAST_ENTRY(entry); entry = EXT4_XATTR_NEXT(entry)) {
++	while (!IS_LAST_ENTRY(entry)) {
++		void *next = EXT4_XATTR_NEXT(entry);
++
++		if (next >= end) {
++			EXT4_ERROR_INODE(inode,
++					 "corrupt xattr in inline inode");
++			return 0;
++		}
+ 		if (!entry->e_value_inum && entry->e_value_size) {
+ 			size_t offs = le16_to_cpu(entry->e_value_offs);
+ 			if (offs < min_offs)
+ 				min_offs = offs;
+ 		}
++		entry = next;
+ 	}
+ 	free = min_offs -
+ 		((void *)entry - (void *)IFIRST(header)) - sizeof(__u32);
 
 
