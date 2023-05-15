@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1ED703713
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3293A703530
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243729AbjEORQj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:16:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34382 "EHLO
+        id S243226AbjEOQ4b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243903AbjEORQU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E769016
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:07 -0700 (PDT)
+        with ESMTP id S243240AbjEOQ43 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D5B49D1;
+        Mon, 15 May 2023 09:56:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1731A62BC8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08634C433D2;
-        Mon, 15 May 2023 17:15:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35A3F62A20;
+        Mon, 15 May 2023 16:56:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28095C433A4;
+        Mon, 15 May 2023 16:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170906;
-        bh=WALGCv9bJuC5jpLasO8nOKynOvRkbYV7IAAorv5WqX4=;
+        s=korg; t=1684169781;
+        bh=Nc25TSkVxVrXY64easAv0Dysj5N+r+hR4Ws0zUbzFD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hyh+Syp2PI+mSaAGdjmK1OgdR5J/42RwqywtcioCM/Vf7kYf6a7k07DaHFBd36LBY
-         WwoW1s4/01TediNNjKOFzvaMRk5UYlZL4tH9+xn81y7LIBrczCAC6XbagWbMcLEkvJ
-         SwyTjqrRUqM5R8i0yb5/iZHpdZ58ZT/jsdDgJdd4=
+        b=QRSWXCh95R53OJM6SadulcdDc3Q6Bz3en5cdI6uFfqzKddWdiF9Z55vS+rggHvrQZ
+         LqOHccjZP3nc/pGk1drKTqVyJFjJU+TM2EJ/yJ/WLQKl1jonyeCij5MCT08mv42UQi
+         uJMBeQBGN4ytA/pvEY0shiq7kXK08gGocEXQUVqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 037/242] octeontx2-pf: mcs: Fix NULL pointer dereferences
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.3 151/246] sh: math-emu: fix macro redefined warning
 Date:   Mon, 15 May 2023 18:26:03 +0200
-Message-Id: <20230515161723.032117103@linuxfoundation.org>
+Message-Id: <20230515161727.081528476@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,104 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 699af748c61574125d269db260dabbe20436d74e ]
+commit 58a49ad90939386a8682e842c474a0d2c00ec39c upstream.
 
-When system is rebooted after creating macsec interface
-below NULL pointer dereference crashes occurred. This
-patch fixes those crashes by using correct order of teardown
+Fix a warning that was reported by the kernel test robot:
 
-[ 3324.406942] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[ 3324.415726] Mem abort info:
-[ 3324.418510]   ESR = 0x96000006
-[ 3324.421557]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 3324.426865]   SET = 0, FnV = 0
-[ 3324.429913]   EA = 0, S1PTW = 0
-[ 3324.433047] Data abort info:
-[ 3324.435921]   ISV = 0, ISS = 0x00000006
-[ 3324.439748]   CM = 0, WnR = 0
-....
-[ 3324.575915] Call trace:
-[ 3324.578353]  cn10k_mdo_del_secy+0x24/0x180
-[ 3324.582440]  macsec_common_dellink+0xec/0x120
-[ 3324.586788]  macsec_notify+0x17c/0x1c0
-[ 3324.590529]  raw_notifier_call_chain+0x50/0x70
-[ 3324.594965]  call_netdevice_notifiers_info+0x34/0x7c
-[ 3324.599921]  rollback_registered_many+0x354/0x5bc
-[ 3324.604616]  unregister_netdevice_queue+0x88/0x10c
-[ 3324.609399]  unregister_netdev+0x20/0x30
-[ 3324.613313]  otx2_remove+0x8c/0x310
-[ 3324.616794]  pci_device_shutdown+0x30/0x70
-[ 3324.620882]  device_shutdown+0x11c/0x204
+In file included from ../include/math-emu/soft-fp.h:27,
+                 from ../arch/sh/math-emu/math.c:22:
+../arch/sh/include/asm/sfp-machine.h:17: warning: "__BYTE_ORDER" redefined
+   17 | #define __BYTE_ORDER __BIG_ENDIAN
+In file included from ../arch/sh/math-emu/math.c:21:
+../arch/sh/math-emu/sfp-util.h:71: note: this is the location of the previous definition
+   71 | #define __BYTE_ORDER __LITTLE_ENDIAN
 
-[  966.664930] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  966.673712] Mem abort info:
-[  966.676497]   ESR = 0x96000006
-[  966.679543]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  966.684848]   SET = 0, FnV = 0
-[  966.687895]   EA = 0, S1PTW = 0
-[  966.691028] Data abort info:
-[  966.693900]   ISV = 0, ISS = 0x00000006
-[  966.697729]   CM = 0, WnR = 0
-[  966.833467] Call trace:
-[  966.835904]  cn10k_mdo_stop+0x20/0xa0
-[  966.839557]  macsec_dev_stop+0xe8/0x11c
-[  966.843384]  __dev_close_many+0xbc/0x140
-[  966.847298]  dev_close_many+0x84/0x120
-[  966.851039]  rollback_registered_many+0x114/0x5bc
-[  966.855735]  unregister_netdevice_many.part.0+0x14/0xa0
-[  966.860952]  unregister_netdevice_many+0x18/0x24
-[  966.865560]  macsec_notify+0x1ac/0x1c0
-[  966.869303]  raw_notifier_call_chain+0x50/0x70
-[  966.873738]  call_netdevice_notifiers_info+0x34/0x7c
-[  966.878694]  rollback_registered_many+0x354/0x5bc
-[  966.883390]  unregister_netdevice_queue+0x88/0x10c
-[  966.888173]  unregister_netdev+0x20/0x30
-[  966.892090]  otx2_remove+0x8c/0x310
-[  966.895571]  pci_device_shutdown+0x30/0x70
-[  966.899660]  device_shutdown+0x11c/0x204
-[  966.903574]  __do_sys_reboot+0x208/0x290
-[  966.907487]  __arm64_sys_reboot+0x20/0x30
-[  966.911489]  el0_svc_handler+0x80/0x1c0
-[  966.915316]  el0_svc+0x8/0x180
-[  966.918362] Code: f9400000 f9400a64 91220014 f94b3403 (f9400060)
-[  966.924448] ---[ end trace 341778e799c3d8d7 ]---
-
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b929926f01f2 ("sh: define __BIG_ENDIAN for math-emu")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: lore.kernel.org/r/202111121827.6v6SXtVv-lkp@intel.com
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-5-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/sh/math-emu/sfp-util.h |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c1ea60bc2630e..3489553ad7010 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -3069,8 +3069,6 @@ static void otx2_remove(struct pci_dev *pdev)
- 		otx2_config_pause_frm(pf);
- 	}
+--- a/arch/sh/math-emu/sfp-util.h
++++ b/arch/sh/math-emu/sfp-util.h
+@@ -67,7 +67,3 @@
+   } while (0)
  
--	cn10k_mcs_free(pf);
+ #define abort()	return 0
 -
- #ifdef CONFIG_DCB
- 	/* Disable PFC config */
- 	if (pf->pfc_en) {
-@@ -3084,6 +3082,7 @@ static void otx2_remove(struct pci_dev *pdev)
- 
- 	otx2_unregister_dl(pf);
- 	unregister_netdev(netdev);
-+	cn10k_mcs_free(pf);
- 	otx2_sriov_disable(pf->pdev);
- 	otx2_sriov_vfcfg_cleanup(pf);
- 	if (pf->otx2_wq)
--- 
-2.39.2
-
+-#define __BYTE_ORDER __LITTLE_ENDIAN
+-
+-
 
 
