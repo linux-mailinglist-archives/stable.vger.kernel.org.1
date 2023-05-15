@@ -2,45 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B527033A0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465687034D1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242856AbjEOQkB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42408 "EHLO
+        id S243190AbjEOQwt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:52:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242844AbjEOQjW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:22 -0400
+        with ESMTP id S243191AbjEOQwP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:52:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D3ED40E0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790CB658C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:52:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D736762860
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63196C433EF;
-        Mon, 15 May 2023 16:39:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 091FB6299F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:52:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB84C433D2;
+        Mon, 15 May 2023 16:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168760;
-        bh=80r4zmHMOPpIU1/BIE3YkCgRbTxfsLjgWcSf1l0/pAY=;
+        s=korg; t=1684169531;
+        bh=Gwo4vQWt2xIeID0AOSvgoQAvl1jdqNntedPLM2qVDX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rNaN7Kqc5urFionrr2hnSo1cVu+ufqr65ygj26ieOl29BX+jU+/OCTk4t6YwktIMC
-         ITFp7BPAQOOq2aesh1ZBqL87vCuMmMcMde8ljofJ/pxgX+wPYUdMis4hW2gB5xLwmg
-         d1Sy5bZBcgz5c8+wTb3IfIjxSI8dCSchfvirsIS4=
+        b=cIqPAQfqfaP4rZxF9kSAy0Dper6N9Vg7ymZwJNQoLExQsQOccAO3ezf1M8g9PUrnE
+         Jp6mMmPz0xgMYc370J3MANwqnTSZvtKvMAjIUSm9SRY0++qWl/rH6+xYsUH161VvDQ
+         djR0yLbbhLcTUelIq5qyDpBQ8naQVRUe2SCz43bo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        John Harrison <John.C.Harrison@Intel.com>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+        Alan Previn <alan.previn.teres.alexis@intel.com>,
+        Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Matthew Brost <matthew.brost@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Matthew Auld <matthew.auld@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 033/191] media: av7110: prevent underflow in write_ts_to_decoder()
+Subject: [PATCH 6.3 058/246] drm/i915/guc: Actually return an error if GuC version range check fails
 Date:   Mon, 15 May 2023 18:24:30 +0200
-Message-Id: <20230515161708.390936796@linuxfoundation.org>
+Message-Id: <20230515161724.317031752@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +65,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <error27@gmail.com>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-[ Upstream commit eed9496a0501357aa326ddd6b71408189ed872eb ]
+[ Upstream commit 1816f4a17f54a01afa2f06d6571c39890b97d282 ]
 
-The buf[4] value comes from the user via ts_play().  It is a value in
-the u8 range.  The final length we pass to av7110_ipack_instant_repack()
-is "len - (buf[4] + 1) - 4" so add a check to ensure that the length is
-not negative.  It's not clear that passing a negative len value does
-anything bad necessarily, but it's not best practice.
+Dan Carpenter pointed out that 'err' was not being set in the case
+where the GuC firmware version range check fails. Fix that.
 
-With the new bounds checking the "if (!len)" condition is no longer
-possible or required so remove that.
+Note that while this is a bug fix for a previous patch (see Fixes tag
+below). It is an exceedingly low risk bug. The range check is
+asserting that the GuC firmware version is within spec. So it should
+not be possible to ever have a firmware file that fails this check. If
+larger version numbers are required in the future, that would be a
+backwards breaking spec change and thus require a major version bump,
+in which case an old i915 driver would not load that new version anyway.
 
-Fixes: fd46d16d602a ("V4L/DVB (11759): dvb-ttpci: Add TS replay capability")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 9bbba0667f37 ("drm/i915/guc: Use GuC submission API version number")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230421224742.2357198-1-John.C.Harrison@Intel.com
+(cherry picked from commit 80ab31799002166ac7c660bacfbff4f85bc29107)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ttpci/av7110_av.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/pci/ttpci/av7110_av.c b/drivers/media/pci/ttpci/av7110_av.c
-index ef1bc17cdc4d3..03d1d1fba8bc8 100644
---- a/drivers/media/pci/ttpci/av7110_av.c
-+++ b/drivers/media/pci/ttpci/av7110_av.c
-@@ -836,10 +836,10 @@ static int write_ts_to_decoder(struct av7110 *av7110, int type, const u8 *buf, s
- 		av7110_ipack_flush(ipack);
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
+index 264c952f777bb..22786d9116fd0 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c
+@@ -622,9 +622,10 @@ static bool is_ver_8bit(struct intel_uc_fw_ver *ver)
+ 	return ver->major < 0xFF && ver->minor < 0xFF && ver->patch < 0xFF;
+ }
  
- 	if (buf[3] & ADAPT_FIELD) {
-+		if (buf[4] > len - 1 - 4)
-+			return 0;
- 		len -= buf[4] + 1;
- 		buf += buf[4] + 1;
--		if (!len)
--			return 0;
+-static bool guc_check_version_range(struct intel_uc_fw *uc_fw)
++static int guc_check_version_range(struct intel_uc_fw *uc_fw)
+ {
+ 	struct intel_guc *guc = container_of(uc_fw, struct intel_guc, fw);
++	struct intel_gt *gt = __uc_fw_to_gt(uc_fw);
+ 
+ 	/*
+ 	 * GuC version number components are defined as being 8-bits.
+@@ -633,24 +634,24 @@ static bool guc_check_version_range(struct intel_uc_fw *uc_fw)
+ 	 */
+ 
+ 	if (!is_ver_8bit(&uc_fw->file_selected.ver)) {
+-		gt_warn(__uc_fw_to_gt(uc_fw), "%s firmware: invalid file version: 0x%02X:%02X:%02X\n",
++		gt_warn(gt, "%s firmware: invalid file version: 0x%02X:%02X:%02X\n",
+ 			intel_uc_fw_type_repr(uc_fw->type),
+ 			uc_fw->file_selected.ver.major,
+ 			uc_fw->file_selected.ver.minor,
+ 			uc_fw->file_selected.ver.patch);
+-		return false;
++		return -EINVAL;
  	}
  
- 	av7110_ipack_instant_repack(buf + 4, len - 4, ipack);
+ 	if (!is_ver_8bit(&guc->submission_version)) {
+-		gt_warn(__uc_fw_to_gt(uc_fw), "%s firmware: invalid submit version: 0x%02X:%02X:%02X\n",
++		gt_warn(gt, "%s firmware: invalid submit version: 0x%02X:%02X:%02X\n",
+ 			intel_uc_fw_type_repr(uc_fw->type),
+ 			guc->submission_version.major,
+ 			guc->submission_version.minor,
+ 			guc->submission_version.patch);
+-		return false;
++		return -EINVAL;
+ 	}
+ 
+-	return true;
++	return i915_inject_probe_error(gt->i915, -EINVAL);
+ }
+ 
+ static int check_fw_header(struct intel_gt *gt,
+@@ -759,8 +760,11 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
+ 	if (err)
+ 		goto fail;
+ 
+-	if (uc_fw->type == INTEL_UC_FW_TYPE_GUC && !guc_check_version_range(uc_fw))
+-		goto fail;
++	if (uc_fw->type == INTEL_UC_FW_TYPE_GUC) {
++		err = guc_check_version_range(uc_fw);
++		if (err)
++			goto fail;
++	}
+ 
+ 	if (uc_fw->file_wanted.ver.major && uc_fw->file_selected.ver.major) {
+ 		/* Check the file's major version was as it claimed */
 -- 
 2.39.2
 
