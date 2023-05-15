@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D66703405
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EBEA70396E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242893AbjEOQny (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47542 "EHLO
+        id S244551AbjEORm1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241741AbjEOQnx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:53 -0400
+        with ESMTP id S244584AbjEORmH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4F4469A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD891B749
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AE39628BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4F3C433A0;
-        Mon, 15 May 2023 16:43:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C524762E24
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69495C433D2;
+        Mon, 15 May 2023 17:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169030;
-        bh=fDiyMmzZzNjL7Xn24NtQe04Kj+sEmH8335wkk1d2YuQ=;
+        s=korg; t=1684172378;
+        bh=NMPDj9gNR+q6iJhbchjz6/v5vcYV0OtYGL4SFGnlObg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ni3bl5b2rgrXxgJw/PwTlgkrQm8wOOhtRkSDimDEE3jBgIQdjGFpJNqWM7Oy3L1af
-         DQr8jhdjoB21UOrDZvES2e87YkoLmAFLAJhwoTwBJx936sLKISvO93IkW0By928Dmx
-         3TGIPYROETvzg3XEaL5b90e5QrP1TDkzCutY+k+0=
+        b=GQB3E+cdhzYuuBFsnZTW6x/2mRvYT5y5s+ZT/V4pjKUyAyJ5Zt5cr7ygHEQvcnoYj
+         w3qicLk/WUfBgPYw0DbxYtzKrYtseyLmqO/ndAhgZ6vY7OPi5e3ofpMXmlg3HNLobp
+         v2ua9hf4wjAkD7JDXY3KJW+lMhZTG3kSfa04ebws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Uros Bizjak <ubizjak@gmail.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 118/191] RDMA/mlx5: Use correct device num_ports when modify DC
-Date:   Mon, 15 May 2023 18:25:55 +0200
-Message-Id: <20230515161711.564116981@linuxfoundation.org>
+Subject: [PATCH 5.10 105/381] x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
+Date:   Mon, 15 May 2023 18:25:56 +0200
+Message-Id: <20230515161741.548385592@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 746aa3c8cb1a650ff2583497ac646e505831b9b9 ]
+[ Upstream commit f96fb2df3eb31ede1b34b0521560967310267750 ]
 
-Just like other QP types, when modify DC, the port_num should be compared
-with dev->num_ports, instead of HCA_CAP.num_ports.  Otherwise Multi-port
-vHCA on DC may not work.
+The detection of atomic update failure in reserve_eilvt_offset() is
+not correct. The value returned by atomic_cmpxchg() should be compared
+to the old value from the location to be updated.
 
-Fixes: 776a3906b692 ("IB/mlx5: Add support for DC target QP")
-Link: https://lore.kernel.org/r/20230420013906.1244185-1-markzhang@nvidia.com
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+If these two are the same, then atomic update succeeded and
+"eilvt_offsets[offset]" location is updated to "new" in an atomic way.
+
+Otherwise, the atomic update failed and it should be retried with the
+value from "eilvt_offsets[offset]" - exactly what atomic_try_cmpxchg()
+does in a correct and more optimal way.
+
+Fixes: a68c439b1966c ("apic, x86: Check if EILVT APIC registers are available (AMD only)")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230227160917.107820-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/apic.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 1520a3098f7dc..0455abfba41c2 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -3350,7 +3350,7 @@ static int mlx5_ib_modify_dct(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 			return -EINVAL;
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 1c96f2425eafd..25eb69f26e039 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -410,10 +410,9 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
+ 		if (vector && !eilvt_entry_is_changeable(vector, new))
+ 			/* may not change if vectors are different */
+ 			return rsvd;
+-		rsvd = atomic_cmpxchg(&eilvt_offsets[offset], rsvd, new);
+-	} while (rsvd != new);
++	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
  
- 		if (attr->port_num == 0 ||
--		    attr->port_num > MLX5_CAP_GEN(dev->mdev, num_ports)) {
-+		    attr->port_num > dev->num_ports) {
- 			mlx5_ib_dbg(dev, "invalid port number %d. number of ports is %d\n",
- 				    attr->port_num, dev->num_ports);
- 			return -EINVAL;
+-	rsvd &= ~APIC_EILVT_MASKED;
++	rsvd = new & ~APIC_EILVT_MASKED;
+ 	if (rsvd && rsvd != vector)
+ 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
+ 			offset, rsvd);
 -- 
 2.39.2
 
