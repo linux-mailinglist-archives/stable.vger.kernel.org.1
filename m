@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA3E7039A3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 257A97035CB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244451AbjEORoc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
+        id S243379AbjEORCt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244624AbjEORoM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A441795A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:50 -0700 (PDT)
+        with ESMTP id S243560AbjEORCZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A666B9019
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45CDC62E49
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568EEC433D2;
-        Mon, 15 May 2023 17:41:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F8C162A6C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13305C433EF;
+        Mon, 15 May 2023 17:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172509;
-        bh=rMz+8QLtZEdcH+H2l6Hxp52PEn2mjsIRSrVT5TEW1yU=;
+        s=korg; t=1684170008;
+        bh=C9NqJ/XM3DvZ12PBA5SStdrYT+fZS8XNvP0Acs9n2gQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pvLJ1mqpSkAX3IEXwcUZ0kJ50EQERJQR3UEoCVk0gA9ipNNEzeDEn3nXcs8QslSw+
-         pFHTALgQclJctJi5Bgu7d1+PF5ko5oY7/9N8rRHydPM2llVnUkz7cOC3p8dMlhV24K
-         c6X/XPVD+Ld/Laq1I1/YUSJQmGQ+B6/psgy2w1dQ=
+        b=jP3QDxIrcdCicLvLYkpYafvMpYGElz3eutsyfoiZ4E6Zx4Wq4IpYzVfIAZ2ityw0e
+         1waGW0NJEzJJq/HFPPh/dVz1Thov1AIkMfGQNkfiRwfnjAhq9yqpxgNQYzsNQzJFiM
+         AiZ7kchzau06vzF0ryFQF5cIv5h3ICzUhEW23WkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Wenjing Liu <Wenjing.Liu@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Robin Chen <robin.chen@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 177/381] wifi: iwlwifi: fw: move memset before early return
+Subject: [PATCH 6.3 216/246] drm/amd/display: hpd rx irq not working with eDP interface
 Date:   Mon, 15 May 2023 18:27:08 +0200
-Message-Id: <20230515161744.814454751@linuxfoundation.org>
+Message-Id: <20230515161729.076296251@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,51 +59,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Robin Chen <robin.chen@amd.com>
 
-[ Upstream commit 8ce437dd5b2e4adef13aa4ecce07392f9966b1ab ]
+[ Upstream commit eeefe7c4820b6baa0462a8b723ea0a3b5846ccae ]
 
-Clang static analysis reports this representative issue
-dbg.c:1455:6: warning: Branch condition evaluates to
-a garbage value
-  if (!rxf_data.size)
-       ^~~~~~~~~~~~~~
+[Why]
+This is the fix for the defect of commit ab144f0b4ad6
+("drm/amd/display: Allow individual control of eDP hotplug support").
 
-This check depends on iwl_ini_get_rxf_data() to clear
-rxf_data but the function can return early without
-doing the clear.  So move the memset before the early
-return.
+[How]
+To revise the default eDP hotplug setting and use the enum to git rid
+of the magic number for different options.
 
-Fixes: cc9b6012d34b ("iwlwifi: yoyo: use hweight_long instead of bit manipulating")
-Signed-off-by: Tom Rix <trix@redhat.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230414130637.872a7175f1ff.I33802a77a91998276992b088fbe25f61c87c33ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP hotplug support")
+Cc: stable@vger.kernel.org
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Robin Chen <robin.chen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_types.h          | 7 +++++++
+ drivers/gpu/drm/amd/display/dc/link/link_factory.c | 9 +++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 419eaa5cf0b50..79d08e5d9a81c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1372,13 +1372,13 @@ static void iwl_ini_get_rxf_data(struct iwl_fw_runtime *fwrt,
- 	if (!data)
- 		return;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index f28b8597cc1e6..cba65766ef47b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1086,4 +1086,11 @@ struct dc_dpia_bw_alloc {
+ };
  
-+	memset(data, 0, sizeof(*data));
+ #define MAX_SINKS_PER_LINK 4
 +
- 	/* make sure only one bit is set in only one fid */
- 	if (WARN_ONCE(hweight_long(fid1) + hweight_long(fid2) != 1,
- 		      "fid1=%x, fid2=%x\n", fid1, fid2))
- 		return;
++enum dc_hpd_enable_select {
++	HPD_EN_FOR_ALL_EDP = 0,
++	HPD_EN_FOR_PRIMARY_EDP_ONLY,
++	HPD_EN_FOR_SECONDARY_EDP_ONLY,
++};
++
+ #endif /* DC_TYPES_H_ */
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+index aeb26a4d539e9..8aaf14afa4271 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -274,14 +274,18 @@ static bool dc_link_construct_phy(struct dc_link *link,
+ 				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
  
--	memset(data, 0, sizeof(*data));
--
- 	if (fid1) {
- 		fifo_idx = ffs(fid1) - 1;
- 		if (WARN_ONCE(fifo_idx >= MAX_NUM_LMAC, "fifo_idx=%d\n",
+ 			switch (link->dc->config.allow_edp_hotplug_detection) {
+-			case 1: // only the 1st eDP handles hotplug
++			case HPD_EN_FOR_ALL_EDP:
++				link->irq_source_hpd_rx =
++						dal_irq_get_rx_source(link->hpd_gpio);
++				break;
++			case HPD_EN_FOR_PRIMARY_EDP_ONLY:
+ 				if (link->link_index == 0)
+ 					link->irq_source_hpd_rx =
+ 						dal_irq_get_rx_source(link->hpd_gpio);
+ 				else
+ 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+-			case 2: // only the 2nd eDP handles hotplug
++			case HPD_EN_FOR_SECONDARY_EDP_ONLY:
+ 				if (link->link_index == 1)
+ 					link->irq_source_hpd_rx =
+ 						dal_irq_get_rx_source(link->hpd_gpio);
+@@ -289,6 +293,7 @@ static bool dc_link_construct_phy(struct dc_link *link,
+ 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+ 			default:
++				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+ 			}
+ 		}
 -- 
 2.39.2
 
