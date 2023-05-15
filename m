@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E3477039E3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CB5B7039EE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244636AbjEORqi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40228 "EHLO
+        id S244616AbjEORqv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244639AbjEORqQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0609214E76
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:34 -0700 (PDT)
+        with ESMTP id S244620AbjEORqa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFFBDC52
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9786262E9D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CE8C433EF;
-        Mon, 15 May 2023 17:44:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 345C762EAB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2180EC4339B;
+        Mon, 15 May 2023 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172673;
-        bh=96xJQ/2uB8QceE5ijnDHeqsXxx2vhniFS4ziP/WEReg=;
+        s=korg; t=1684172706;
+        bh=PsqgKafZcqs7T4IVecJejKrs8cnA6FFjnjY/okz6uSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jLy+qCQ5KqvUO7nmJli1XD/9jxZrOxYFzT5BqRIdkzoiwQPmLl+LFbYhFsGae7dB4
-         09rl32faQPUyTbaa0gYtMTRp/EzmvUB/QrOGKEQILVpJNeF+AggHfDYv3YRHP3qAeQ
-         g0bZF201ed/A4Ou3UEIOEDNPDgqmBXsH1mu4GPGI=
+        b=cy7hB/67gVQDaZlFOPyVhNGrFuKUMV8WIIWq3rDBKN3MP3iOJQ/LKYvqHfSI7QoKs
+         2eufMEVTEhKEi5VGDO3Dp9XexJVt72FAdDhiwHQibJj610V6FyHRlttvyEA9qddIRZ
+         tN0UQVOvxoFOGe67g0UhjLWruqwHsUJVOU3KXrxQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/381] usb: mtu3: fix kernel panic at qmu transfer done irq handler
-Date:   Mon, 15 May 2023 18:27:53 +0200
-Message-Id: <20230515161746.761176362@linuxfoundation.org>
+Subject: [PATCH 5.10 223/381] firmware: stratix10-svc: Fix an NULL vs IS_ERR() bug in probe
+Date:   Mon, 15 May 2023 18:27:54 +0200
+Message-Id: <20230515161746.800339847@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
 References: <20230515161736.775969473@linuxfoundation.org>
@@ -43,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,71 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chunfeng Yun <chunfeng.yun@mediatek.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d28f4091ea7ec3510fd6a3c6d433234e7a2bef14 ]
+[ Upstream commit e1d6ca042e62c2a69513235f8629eb6e62ca79c5 ]
 
-When handle qmu transfer irq, it will unlock @mtu->lock before give back
-request, if another thread handle disconnect event at the same time, and
-try to disable ep, it may lock @mtu->lock and free qmu ring, then qmu
-irq hanlder may get a NULL gpd, avoid the KE by checking gpd's value before
-handling it.
+The svc_create_memory_pool() function returns error pointers.  It never
+returns NULL.  Fix the check.
 
-e.g.
-qmu done irq on cpu0                 thread running on cpu1
-
-qmu_done_tx()
-  handle gpd [0]
-    mtu3_requ_complete()        mtu3_gadget_ep_disable()
-      unlock @mtu->lock
-        give back request         lock @mtu->lock
-                                    mtu3_ep_disable()
-                                      mtu3_gpd_ring_free()
-                                   unlock @mtu->lock
-      lock @mtu->lock
-    get next gpd [1]
-
-[1]: goto [0] to handle next gpd, and next gpd may be NULL.
-
-Fixes: 48e0d3735aa5 ("usb: mtu3: supports new QMU format")
-Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
-Link: https://lore.kernel.org/r/20230417025203.18097-3-chunfeng.yun@mediatek.com
+Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5f9a8cb4-5a4f-460b-9cdc-2fae6c5b7922@kili.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/mtu3/mtu3_qmu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/firmware/stratix10-svc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/mtu3/mtu3_qmu.c b/drivers/usb/mtu3/mtu3_qmu.c
-index 2ea3157ddb6e2..e65586147965d 100644
---- a/drivers/usb/mtu3/mtu3_qmu.c
-+++ b/drivers/usb/mtu3/mtu3_qmu.c
-@@ -210,6 +210,7 @@ static struct qmu_gpd *advance_enq_gpd(struct mtu3_gpd_ring *ring)
- 	return ring->enqueue;
- }
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 7dd0ac1a0cfc7..78a446cb43486 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -989,8 +989,8 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+ 		return ret;
  
-+/* @dequeue may be NULL if ring is unallocated or freed */
- static struct qmu_gpd *advance_deq_gpd(struct mtu3_gpd_ring *ring)
- {
- 	if (ring->dequeue < ring->end)
-@@ -484,7 +485,7 @@ static void qmu_done_tx(struct mtu3 *mtu, u8 epnum)
- 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
- 		__func__, epnum, gpd, gpd_current, ring->enqueue);
+ 	genpool = svc_create_memory_pool(pdev, sh_memory);
+-	if (!genpool)
+-		return -ENOMEM;
++	if (IS_ERR(genpool))
++		return PTR_ERR(genpool);
  
--	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
-+	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
- 
- 		mreq = next_request(mep);
- 
-@@ -523,7 +524,7 @@ static void qmu_done_rx(struct mtu3 *mtu, u8 epnum)
- 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
- 		__func__, epnum, gpd, gpd_current, ring->enqueue);
- 
--	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
-+	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
- 
- 		mreq = next_request(mep);
- 
+ 	/* allocate service controller and supporting channel */
+ 	controller = devm_kzalloc(dev, sizeof(*controller), GFP_KERNEL);
 -- 
 2.39.2
 
