@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE057039CC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8498E7036B9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244657AbjEORqE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
+        id S243730AbjEORNM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:13:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244655AbjEORpl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E27BC16917
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:31 -0700 (PDT)
+        with ESMTP id S243724AbjEORMv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD8F9EC6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F00162303
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746EDC433EF;
-        Mon, 15 May 2023 17:43:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52E3B62B69
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F58AC433D2;
+        Mon, 15 May 2023 17:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172610;
-        bh=V2P2IWRP2SkXaZu2UiuELMz/7c/Jx9eLzPAf4iEWwT8=;
+        s=korg; t=1684170651;
+        bh=pVqg07gdpgIise+Um/2jKBpIYgaa3ToU/n0phW34iZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hMCKHQ3KG7jBq+/H/OsdhdbGfyo4qU73GivG6yokFIL7L6+p2tASKc3XgjHaSUQ6g
-         wGqwrWFh/eBTNHRhwcbTWlfet9q5dvuBNpwFHW03P7XOaJ2kxwu5C6P/7KkO8/3mXM
-         crhfdOqyWsMvqgVT5NzRFe8XAzmK6uN4r65WTOeY=
+        b=YrgSsXQ8Sa/oZYf1bHoHLlstcm34YHyVYP4jCmGDL++RjcVDECe9kkM3fsng94usU
+         1D3lNpopgBfbBURTjkJPIZbRgPBS0NTQ50RvMFSZxf8FJnzrsvYxUcSLO7iY2/WV+5
+         6p7RVhnxwoJUenfQwt2hXp5IXjt34uP0JRRym6Bg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Ross Zwisler <zwisler@google.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 210/381] ia64: mm/contig: fix section mismatch warning/error
+Subject: [PATCH 6.1 198/239] drm/i915: Check pipe source size when using skl+ scalers
 Date:   Mon, 15 May 2023 18:27:41 +0200
-Message-Id: <20230515161746.281920216@linuxfoundation.org>
+Message-Id: <20230515161727.673150333@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +57,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 58deeb4ef3b054498747d0929d94ac53ab90981f ]
+[ Upstream commit d944eafed618a8507270b324ad9d5405bb7f0b3e ]
 
-alloc_per_cpu_data() is called by find_memory(), which is marked as
-__init.  Therefore alloc_per_cpu_data() can also be marked as __init to
-remedy this modpost problem.
+The skl+ scalers only sample 12 bits of PIPESRC so we can't
+do any plane scaling at all when the pipe source size is >4k.
 
-WARNING: modpost: vmlinux.o: section mismatch in reference: alloc_per_cpu_data (section: .text) -> memblock_alloc_try_nid (section: .init.text)
+Make sure the pipe source size is also below the scaler's src
+size limits. Might not be 100% accurate, but should at least be
+safe. We can refine the limits later if we discover that recent
+hw is less restricted.
 
-Link: https://lkml.kernel.org/r/20230223034258.12917-1-rdunlap@infradead.org
-Fixes: 4b9ddc7cf272 ("[IA64] Fix section mismatch in contig.c version of per_cpu_init()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Tested-by: Ross Zwisler <zwisler@google.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8357
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230418175528.13117-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 691248d4135fe3fae64b4ee0676bc96a7fd6950c)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/ia64/mm/contig.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/skl_scaler.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
-index e30e360beef84..c638e012ad051 100644
---- a/arch/ia64/mm/contig.c
-+++ b/arch/ia64/mm/contig.c
-@@ -79,7 +79,7 @@ void *per_cpu_init(void)
- 	return __per_cpu_start + __per_cpu_offset[smp_processor_id()];
- }
+diff --git a/drivers/gpu/drm/i915/display/skl_scaler.c b/drivers/gpu/drm/i915/display/skl_scaler.c
+index e6ec5ed0d00ec..90f42f63128ec 100644
+--- a/drivers/gpu/drm/i915/display/skl_scaler.c
++++ b/drivers/gpu/drm/i915/display/skl_scaler.c
+@@ -105,6 +105,8 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	const struct drm_display_mode *adjusted_mode =
+ 		&crtc_state->hw.adjusted_mode;
++	int pipe_src_w = drm_rect_width(&crtc_state->pipe_src);
++	int pipe_src_h = drm_rect_height(&crtc_state->pipe_src);
+ 	int min_src_w, min_src_h, min_dst_w, min_dst_h;
+ 	int max_src_w, max_src_h, max_dst_w, max_dst_h;
  
--static inline void
-+static inline __init void
- alloc_per_cpu_data(void)
- {
- 	size_t size = PERCPU_PAGE_SIZE * num_possible_cpus();
+@@ -196,6 +198,21 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
+ 		return -EINVAL;
+ 	}
+ 
++	/*
++	 * The pipe scaler does not use all the bits of PIPESRC, at least
++	 * on the earlier platforms. So even when we're scaling a plane
++	 * the *pipe* source size must not be too large. For simplicity
++	 * we assume the limits match the scaler source size limits. Might
++	 * not be 100% accurate on all platforms, but good enough for now.
++	 */
++	if (pipe_src_w > max_src_w || pipe_src_h > max_src_h) {
++		drm_dbg_kms(&dev_priv->drm,
++			    "scaler_user index %u.%u: pipe src size %ux%u "
++			    "is out of scaler range\n",
++			    crtc->pipe, scaler_user, pipe_src_w, pipe_src_h);
++		return -EINVAL;
++	}
++
+ 	/* mark this plane as a scaler user in crtc_state */
+ 	scaler_state->scaler_users |= (1 << scaler_user);
+ 	drm_dbg_kms(&dev_priv->drm, "scaler_user index %u.%u: "
 -- 
 2.39.2
 
