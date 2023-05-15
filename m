@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CE9C703AB9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C62F7038C1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245139AbjEORzP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53868 "EHLO
+        id S243550AbjEOReg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238730AbjEORyU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C71D160AC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:52:28 -0700 (PDT)
+        with ESMTP id S244325AbjEOReS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2B419BF7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BA9962FA9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EF8C433EF;
-        Mon, 15 May 2023 17:52:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 59EC662D5A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D923C433EF;
+        Mon, 15 May 2023 17:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173147;
-        bh=5eqfMdkm1GRfIbtTsF8Dk5XmqJ1QDZtKc+3ZyUOaTdo=;
+        s=korg; t=1684171937;
+        bh=VrWsb2kRQw+fErr23gXJEMqklrdRjVJeQWSzcPK/e6w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oX5tBTDe3EuCblSk5vHHnHInuGy35+XZtdGxR++P6qsLspiG97oX7rQTpMHjpNvNb
-         ffCuKmzs7zqid3i7z7zOSZIGkFnEhe1zfKqnlAGMyzVTf9JoKHQ9JWMu9xEaJa8ixC
-         n9R5zKf878jFOxP7sdpeEsvNe/d4Q394ira9UXLE=
+        b=tAUEKfvRnlALihyV10N48lpBkOMfQpdoAX44HJk9IzVyCnHempU4qZ4m71Z0azZY7
+         h+Mp5Uk9EyN4AGsOOGnL0nEdF++oRZrcwkgFdt11Jspamb0ONgQ/tPP+6cisxYLuTp
+         aKVJtr0IKKzwhpz0M6ni3Kbim/CD4hWnNzhnjisM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
-        Tao Zhou <tao.zhou1@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 353/381] drm/amdgpu: disable sdma ecc irq only when sdma RAS is enabled in suspend
+        patches@lists.linux.dev, stable@kernel.org,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 127/134] ext4: bail out of ext4_xattr_ibody_get() fails for any reason
 Date:   Mon, 15 May 2023 18:30:04 +0200
-Message-Id: <20230515161752.823764660@linuxfoundation.org>
+Message-Id: <20230515161707.399649056@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,60 +53,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 8b229ada2669b74fdae06c83fbfda5a5a99fc253 upstream.
+commit 2a534e1d0d1591e951f9ece2fb460b2ff92edabd upstream.
 
-sdma_v4_0_ip is shared on a few asics, but in sdma_v4_0_hw_fini,
-driver unconditionally disables ecc_irq which is only enabled on
-those asics enabling sdma ecc. This will introduce a warning in
-suspend cycle on those chips with sdma ip v4.0, while without
-sdma ecc. So this patch correct this.
+In ext4_update_inline_data(), if ext4_xattr_ibody_get() fails for any
+reason, it's best if we just fail as opposed to stumbling on,
+especially if the failure is EFSCORRUPTED.
 
-[ 7283.166354] RIP: 0010:amdgpu_irq_put+0x45/0x70 [amdgpu]
-[ 7283.167001] RSP: 0018:ffff9a5fc3967d08 EFLAGS: 00010246
-[ 7283.167019] RAX: ffff98d88afd3770 RBX: 0000000000000001 RCX: 0000000000000000
-[ 7283.167023] RDX: 0000000000000000 RSI: ffff98d89da30390 RDI: ffff98d89da20000
-[ 7283.167025] RBP: ffff98d89da20000 R08: 0000000000036838 R09: 0000000000000006
-[ 7283.167028] R10: ffffd5764243c008 R11: 0000000000000000 R12: ffff98d89da30390
-[ 7283.167030] R13: ffff98d89da38978 R14: ffffffff999ae15a R15: ffff98d880130105
-[ 7283.167032] FS:  0000000000000000(0000) GS:ffff98d996f00000(0000) knlGS:0000000000000000
-[ 7283.167036] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7283.167039] CR2: 00000000f7a9d178 CR3: 00000001c42ea000 CR4: 00000000003506e0
-[ 7283.167041] Call Trace:
-[ 7283.167046]  <TASK>
-[ 7283.167048]  sdma_v4_0_hw_fini+0x38/0xa0 [amdgpu]
-[ 7283.167704]  amdgpu_device_ip_suspend_phase2+0x101/0x1a0 [amdgpu]
-[ 7283.168296]  amdgpu_device_suspend+0x103/0x180 [amdgpu]
-[ 7283.168875]  amdgpu_pmops_freeze+0x21/0x60 [amdgpu]
-[ 7283.169464]  pci_pm_freeze+0x54/0xc0
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Cc: stable@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/ext4/inline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -1979,9 +1979,11 @@ static int sdma_v4_0_hw_fini(void *handl
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -360,7 +360,7 @@ static int ext4_update_inline_data(handl
  
--	for (i = 0; i < adev->sdma.num_instances; i++) {
--		amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
--			       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__SDMA)) {
-+		for (i = 0; i < adev->sdma.num_instances; i++) {
-+			amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
-+				       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+		}
- 	}
+ 	error = ext4_xattr_ibody_get(inode, i.name_index, i.name,
+ 				     value, len);
+-	if (error == -ENODATA)
++	if (error < 0)
+ 		goto out;
  
- 	sdma_v4_0_ctx_switch_enable(adev, false);
+ 	BUFFER_TRACE(is.iloc.bh, "get_write_access");
 
 
