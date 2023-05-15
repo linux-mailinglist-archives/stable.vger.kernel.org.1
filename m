@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F0370332E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 805977036FD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242629AbjEOQeL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37276 "EHLO
+        id S243815AbjEORPy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242732AbjEOQeH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:07 -0400
+        with ESMTP id S243823AbjEORPY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06EC30E5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF12D06C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 814DE627CB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759DCC433EF;
-        Mon, 15 May 2023 16:33:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61530620CE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3559FC433D2;
+        Mon, 15 May 2023 17:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168438;
-        bh=EpYlJNF+0s0XmcTZ4AMNPOfFki33Ky44iAcvkzFITKM=;
+        s=korg; t=1684170846;
+        bh=eV07xSRNLhte9c73M6SfOKOpux8alZZFXYqdV0ZCBDw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q/YOwMOFlz/lHPrusWYvQzC1vO+rpQ3WC9IQzhryAqjxCjStnqMkbQ3PKHRxF7+p6
-         7cTAFXqUbIYRbyAa5BHO406BoJAm+Je4OjEULaQFQfVFcfhOaV7eCaM4bzv9pLk1UR
-         e/c473se5x6wVfgPQavx1eEIg8okLhOio2M2KnKI=
+        b=rAw/CbEl9UhMiJQaZNGMtwTWcDqsY55vjyAtqKNdGaXgduCGQWMKxnkvPr/i5+BIL
+         m4jDiRra5HWPuePoxhzwsIMfN2wQxUXyfT2T5fTkulIAJW+jbnQC2l6an/CQ4smsc1
+         Sw5XRb9/wGycRMhjjkUkjn7o+r03h4ePvBV0im8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Devesh Sharma <devesh.s.sharma@oracle.com>,
+        Zhu Yanjun <yanjun.zhu@linux.dev>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 049/116] ia64: mm/contig: fix section mismatch warning/error
+Subject: [PATCH 6.2 020/242] RDMA/rxe: Remove rxe_alloc()
 Date:   Mon, 15 May 2023 18:25:46 +0200
-Message-Id: <20230515161659.893798511@linuxfoundation.org>
+Message-Id: <20230515161722.539186970@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +56,249 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit 58deeb4ef3b054498747d0929d94ac53ab90981f ]
+[ Upstream commit 72a03627443d5bc7032ab98bd784740cd8a76f8a ]
 
-alloc_per_cpu_data() is called by find_memory(), which is marked as
-__init.  Therefore alloc_per_cpu_data() can also be marked as __init to
-remedy this modpost problem.
+Currently all the object types in the rxe driver are allocated in
+rdma-core except for MRs. By moving tha kzalloc() call outside of
+the pool code the rxe_alloc() subroutine can be eliminated and code
+checking for MR as a special case can be removed.
 
-WARNING: modpost: vmlinux.o: section mismatch in reference: alloc_per_cpu_data (section: .text) -> memblock_alloc_try_nid (section: .init.text)
+This patch moves the kzalloc() and kfree_rcu() calls into the mr
+registration and destruction verbs. It removes that code from
+rxe_pool.c including the rxe_alloc() subroutine which is no longer
+used.
 
-Link: https://lkml.kernel.org/r/20230223034258.12917-1-rdunlap@infradead.org
-Fixes: 4b9ddc7cf272 ("[IA64] Fix section mismatch in contig.c version of per_cpu_init()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20230213225551.12437-1-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Reviewed-by: Devesh Sharma <devesh.s.sharma@oracle.com>
+Reviewed-by: Devesh Sharma <devesh.s.sharma@oracle.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 78b26a335310 ("RDMA/rxe: Remove tasklet call from rxe_cq.c")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/ia64/mm/contig.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_mr.c    |  2 +-
+ drivers/infiniband/sw/rxe/rxe_pool.c  | 46 ---------------------
+ drivers/infiniband/sw/rxe/rxe_pool.h  |  3 --
+ drivers/infiniband/sw/rxe/rxe_verbs.c | 59 +++++++++++++++++++--------
+ 4 files changed, 44 insertions(+), 66 deletions(-)
 
-diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
-index 52715a71aede0..179d354e02321 100644
---- a/arch/ia64/mm/contig.c
-+++ b/arch/ia64/mm/contig.c
-@@ -129,7 +129,7 @@ void *per_cpu_init(void)
- 	return __per_cpu_start + __per_cpu_offset[smp_processor_id()];
+diff --git a/drivers/infiniband/sw/rxe/rxe_mr.c b/drivers/infiniband/sw/rxe/rxe_mr.c
+index 5e9a03831bf9f..b10aa1580a644 100644
+--- a/drivers/infiniband/sw/rxe/rxe_mr.c
++++ b/drivers/infiniband/sw/rxe/rxe_mr.c
+@@ -731,7 +731,7 @@ int rxe_dereg_mr(struct ib_mr *ibmr, struct ib_udata *udata)
+ 		return -EINVAL;
+ 
+ 	rxe_cleanup(mr);
+-
++	kfree_rcu(mr);
+ 	return 0;
  }
  
--static inline void
-+static inline __init void
- alloc_per_cpu_data(void)
+diff --git a/drivers/infiniband/sw/rxe/rxe_pool.c b/drivers/infiniband/sw/rxe/rxe_pool.c
+index 1151c0b5cceab..6215c6de3a840 100644
+--- a/drivers/infiniband/sw/rxe/rxe_pool.c
++++ b/drivers/infiniband/sw/rxe/rxe_pool.c
+@@ -116,55 +116,12 @@ void rxe_pool_cleanup(struct rxe_pool *pool)
+ 	WARN_ON(!xa_empty(&pool->xa));
+ }
+ 
+-void *rxe_alloc(struct rxe_pool *pool)
+-{
+-	struct rxe_pool_elem *elem;
+-	void *obj;
+-	int err;
+-
+-	if (WARN_ON(!(pool->type == RXE_TYPE_MR)))
+-		return NULL;
+-
+-	if (atomic_inc_return(&pool->num_elem) > pool->max_elem)
+-		goto err_cnt;
+-
+-	obj = kzalloc(pool->elem_size, GFP_KERNEL);
+-	if (!obj)
+-		goto err_cnt;
+-
+-	elem = (struct rxe_pool_elem *)((u8 *)obj + pool->elem_offset);
+-
+-	elem->pool = pool;
+-	elem->obj = obj;
+-	kref_init(&elem->ref_cnt);
+-	init_completion(&elem->complete);
+-
+-	/* allocate index in array but leave pointer as NULL so it
+-	 * can't be looked up until rxe_finalize() is called
+-	 */
+-	err = xa_alloc_cyclic(&pool->xa, &elem->index, NULL, pool->limit,
+-			      &pool->next, GFP_KERNEL);
+-	if (err < 0)
+-		goto err_free;
+-
+-	return obj;
+-
+-err_free:
+-	kfree(obj);
+-err_cnt:
+-	atomic_dec(&pool->num_elem);
+-	return NULL;
+-}
+-
+ int __rxe_add_to_pool(struct rxe_pool *pool, struct rxe_pool_elem *elem,
+ 				bool sleepable)
  {
- 	cpu_data = __alloc_bootmem(PERCPU_PAGE_SIZE * num_possible_cpus(),
+ 	int err;
+ 	gfp_t gfp_flags;
+ 
+-	if (WARN_ON(pool->type == RXE_TYPE_MR))
+-		return -EINVAL;
+-
+ 	if (atomic_inc_return(&pool->num_elem) > pool->max_elem)
+ 		goto err_cnt;
+ 
+@@ -275,9 +232,6 @@ int __rxe_cleanup(struct rxe_pool_elem *elem, bool sleepable)
+ 	if (pool->cleanup)
+ 		pool->cleanup(elem);
+ 
+-	if (pool->type == RXE_TYPE_MR)
+-		kfree_rcu(elem->obj);
+-
+ 	atomic_dec(&pool->num_elem);
+ 
+ 	return err;
+diff --git a/drivers/infiniband/sw/rxe/rxe_pool.h b/drivers/infiniband/sw/rxe/rxe_pool.h
+index 9d83cb32092ff..b42e26427a702 100644
+--- a/drivers/infiniband/sw/rxe/rxe_pool.h
++++ b/drivers/infiniband/sw/rxe/rxe_pool.h
+@@ -54,9 +54,6 @@ void rxe_pool_init(struct rxe_dev *rxe, struct rxe_pool *pool,
+ /* free resources from object pool */
+ void rxe_pool_cleanup(struct rxe_pool *pool);
+ 
+-/* allocate an object from pool */
+-void *rxe_alloc(struct rxe_pool *pool);
+-
+ /* connect already allocated object to pool */
+ int __rxe_add_to_pool(struct rxe_pool *pool, struct rxe_pool_elem *elem,
+ 				bool sleepable);
+diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
+index 9ae7cf93365c7..6803ac76ae572 100644
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -867,10 +867,17 @@ static struct ib_mr *rxe_get_dma_mr(struct ib_pd *ibpd, int access)
+ 	struct rxe_dev *rxe = to_rdev(ibpd->device);
+ 	struct rxe_pd *pd = to_rpd(ibpd);
+ 	struct rxe_mr *mr;
++	int err;
+ 
+-	mr = rxe_alloc(&rxe->mr_pool);
+-	if (!mr)
+-		return ERR_PTR(-ENOMEM);
++	mr = kzalloc(sizeof(*mr), GFP_KERNEL);
++	if (!mr) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++
++	err = rxe_add_to_pool(&rxe->mr_pool, mr);
++	if (err)
++		goto err_free;
+ 
+ 	rxe_get(pd);
+ 	mr->ibmr.pd = ibpd;
+@@ -878,8 +885,12 @@ static struct ib_mr *rxe_get_dma_mr(struct ib_pd *ibpd, int access)
+ 
+ 	rxe_mr_init_dma(access, mr);
+ 	rxe_finalize(mr);
+-
+ 	return &mr->ibmr;
++
++err_free:
++	kfree(mr);
++err_out:
++	return ERR_PTR(err);
+ }
+ 
+ static struct ib_mr *rxe_reg_user_mr(struct ib_pd *ibpd,
+@@ -893,9 +904,15 @@ static struct ib_mr *rxe_reg_user_mr(struct ib_pd *ibpd,
+ 	struct rxe_pd *pd = to_rpd(ibpd);
+ 	struct rxe_mr *mr;
+ 
+-	mr = rxe_alloc(&rxe->mr_pool);
+-	if (!mr)
+-		return ERR_PTR(-ENOMEM);
++	mr = kzalloc(sizeof(*mr), GFP_KERNEL);
++	if (!mr) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++
++	err = rxe_add_to_pool(&rxe->mr_pool, mr);
++	if (err)
++		goto err_free;
+ 
+ 	rxe_get(pd);
+ 	mr->ibmr.pd = ibpd;
+@@ -903,14 +920,16 @@ static struct ib_mr *rxe_reg_user_mr(struct ib_pd *ibpd,
+ 
+ 	err = rxe_mr_init_user(rxe, start, length, iova, access, mr);
+ 	if (err)
+-		goto err1;
++		goto err_cleanup;
+ 
+ 	rxe_finalize(mr);
+-
+ 	return &mr->ibmr;
+ 
+-err1:
++err_cleanup:
+ 	rxe_cleanup(mr);
++err_free:
++	kfree(mr);
++err_out:
+ 	return ERR_PTR(err);
+ }
+ 
+@@ -925,9 +944,15 @@ static struct ib_mr *rxe_alloc_mr(struct ib_pd *ibpd, enum ib_mr_type mr_type,
+ 	if (mr_type != IB_MR_TYPE_MEM_REG)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	mr = rxe_alloc(&rxe->mr_pool);
+-	if (!mr)
+-		return ERR_PTR(-ENOMEM);
++	mr = kzalloc(sizeof(*mr), GFP_KERNEL);
++	if (!mr) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++
++	err = rxe_add_to_pool(&rxe->mr_pool, mr);
++	if (err)
++		goto err_free;
+ 
+ 	rxe_get(pd);
+ 	mr->ibmr.pd = ibpd;
+@@ -935,14 +960,16 @@ static struct ib_mr *rxe_alloc_mr(struct ib_pd *ibpd, enum ib_mr_type mr_type,
+ 
+ 	err = rxe_mr_init_fast(max_num_sg, mr);
+ 	if (err)
+-		goto err1;
++		goto err_cleanup;
+ 
+ 	rxe_finalize(mr);
+-
+ 	return &mr->ibmr;
+ 
+-err1:
++err_cleanup:
+ 	rxe_cleanup(mr);
++err_free:
++	kfree(mr);
++err_out:
+ 	return ERR_PTR(err);
+ }
+ 
 -- 
 2.39.2
 
