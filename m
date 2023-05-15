@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11C07703AAF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BD5B7038CF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244829AbjEORyI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53946 "EHLO
+        id S242000AbjEORfP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243346AbjEORxr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:53:47 -0400
+        with ESMTP id S244394AbjEORes (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C8E3C3D;
-        Mon, 15 May 2023 10:51:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CE04C9D2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70FD562F55;
-        Mon, 15 May 2023 17:50:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3196FC433D2;
-        Mon, 15 May 2023 17:50:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04FD962D78
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFD3C433EF;
+        Mon, 15 May 2023 17:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173024;
-        bh=TIZDeQVkkjTF/wP3p4B70cxMgyU+BR6heqHpnz7WagQ=;
+        s=korg; t=1684171978;
+        bh=YaKpcYMfhpzCAgxQh6NzqvOe+6CNql0leETsJbowNL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JrGFLPQJKQI9m16qLYJL2riPrhuY2Mo3tMQFAyurxCSgw9nVf7q7PpLNnwtXITPPg
-         iNdOaBgFMXTGkgVjN6O8tftnV9PNnSIGcN/JVM0CoiRe+tfN9A1kBgyiGRaR+QATHh
-         JyOR63sclizc8buiuFlqlSzG5efLLNoxqcX1/lFE=
+        b=tHnPZHqWsYr3Ig1A6tHncpAqG6LVfn5sZkxFXm1Tq2XlP/Ab/qBmqRvUua6f73Zde
+         3yzj98KyiEjBqclWaOpI9d6Z/tdi/1obDHZRiyYyItaWjn1EitdYiZPME6uLNC8leF
+         XNvYXUJmhuppt6jPEQsJN7MJroMs9rGPnnhPSnXI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        devicetree@vger.kernel.org, Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-sh@vger.kernel.org
-Subject: [PATCH 5.10 343/381] sh: init: use OF_EARLY_FLATTREE for early init
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.15 117/134] ksmbd: not allow guest user on multichannel
 Date:   Mon, 15 May 2023 18:29:54 +0200
-Message-Id: <20230515161752.358306563@linuxfoundation.org>
+Message-Id: <20230515161707.035402891@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,89 +54,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 6cba655543c7959f8a6d2979b9d40a6a66b7ed4f upstream.
+[ Upstream commit 3353ab2df5f68dab7da8d5ebb427a2d265a1f2b2 ]
 
-When CONFIG_OF_EARLY_FLATTREE and CONFIG_SH_DEVICE_TREE are not set,
-SH3 build fails with a call to early_init_dt_scan(), so in
-arch/sh/kernel/setup.c and arch/sh/kernel/head_32.S, use
-CONFIG_OF_EARLY_FLATTREE instead of CONFIG_OF_FLATTREE.
+This patch return STATUS_NOT_SUPPORTED if binding session is guest.
 
-Fixes this build error:
-../arch/sh/kernel/setup.c: In function 'sh_fdt_init':
-../arch/sh/kernel/setup.c:262:26: error: implicit declaration of function 'early_init_dt_scan' [-Werror=implicit-function-declaration]
-  262 |         if (!dt_virt || !early_init_dt_scan(dt_virt)) {
-
-Fixes: 03767daa1387 ("sh: fix build regression with CONFIG_OF && !CONFIG_OF_FLATTREE")
-Fixes: eb6b6930a70f ("sh: fix memory corruption of unflattened device tree")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Suggested-by: Rob Herring <robh+dt@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: devicetree@vger.kernel.org
-Cc: Rich Felker <dalias@libc.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org
 Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-4-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20480
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/head_32.S |    6 +++---
- arch/sh/kernel/setup.c   |    4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ fs/ksmbd/smb2pdu.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/sh/kernel/head_32.S
-+++ b/arch/sh/kernel/head_32.S
-@@ -64,7 +64,7 @@ ENTRY(_stext)
- 	ldc	r0, r6_bank
- #endif
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 61d6d4b6b56ac..51d495688f45e 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1462,7 +1462,7 @@ static int ntlm_authenticate(struct ksmbd_work *work)
+ 		 * Reuse session if anonymous try to connect
+ 		 * on reauthetication.
+ 		 */
+-		if (ksmbd_anonymous_user(user)) {
++		if (conn->binding == false && ksmbd_anonymous_user(user)) {
+ 			ksmbd_free_user(user);
+ 			return 0;
+ 		}
+@@ -1476,7 +1476,7 @@ static int ntlm_authenticate(struct ksmbd_work *work)
+ 		sess->user = user;
+ 	}
  
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- 	mov	r4, r12		! Store device tree blob pointer in r12
- #endif
- 	
-@@ -315,7 +315,7 @@ ENTRY(_stext)
- 10:		
- #endif
+-	if (user_guest(sess->user)) {
++	if (conn->binding == false && user_guest(sess->user)) {
+ 		rsp->SessionFlags = SMB2_SESSION_FLAG_IS_GUEST_LE;
+ 	} else {
+ 		struct authenticate_message *authblob;
+@@ -1720,6 +1720,11 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 			goto out_err;
+ 		}
  
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- 	mov.l	8f, r0		! Make flat device tree available early.
- 	jsr	@r0
- 	 mov	r12, r4
-@@ -346,7 +346,7 @@ ENTRY(stack_start)
- 5:	.long	start_kernel
- 6:	.long	cpu_init
- 7:	.long	init_thread_union
--#if defined(CONFIG_OF_FLATTREE)
-+#if defined(CONFIG_OF_EARLY_FLATTREE)
- 8:	.long	sh_fdt_init
- #endif
++		if (user_guest(sess->user)) {
++			rc = -EOPNOTSUPP;
++			goto out_err;
++		}
++
+ 		conn->binding = true;
+ 	} else if ((conn->dialect < SMB30_PROT_ID ||
+ 		    server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL) &&
+@@ -1831,6 +1836,8 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 		rsp->hdr.Status = STATUS_NETWORK_SESSION_EXPIRED;
+ 	else if (rc == -ENOMEM)
+ 		rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
++	else if (rc == -EOPNOTSUPP)
++		rsp->hdr.Status = STATUS_NOT_SUPPORTED;
+ 	else if (rc)
+ 		rsp->hdr.Status = STATUS_LOGON_FAILURE;
  
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -244,7 +244,7 @@ void __init __weak plat_early_device_set
- {
- }
- 
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- void __ref sh_fdt_init(phys_addr_t dt_phys)
- {
- 	static int done = 0;
-@@ -329,7 +329,7 @@ void __init setup_arch(char **cmdline_p)
- 	/* Let earlyprintk output early console messages */
- 	sh_early_platform_driver_probe("earlyprintk", 1, 1);
- 
--#ifdef CONFIG_OF_FLATTREE
-+#ifdef CONFIG_OF_EARLY_FLATTREE
- #ifdef CONFIG_USE_BUILTIN_DTB
- 	unflatten_and_copy_device_tree();
- #else
+-- 
+2.39.2
+
 
 
