@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90174703909
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A15970349D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244479AbjEORiR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
+        id S243010AbjEOQu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:50:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244360AbjEORiB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:01 -0400
+        with ESMTP id S243100AbjEOQuP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2334DDA1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D315B8A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFB5D62DC4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E69BC433EF;
-        Mon, 15 May 2023 17:34:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA0DA6295D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE97EC4339B;
+        Mon, 15 May 2023 16:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172080;
-        bh=oV2Sx8WR+OBUk97E11P04I05mKcvjMkEKE2O3zCZ1d0=;
+        s=korg; t=1684169408;
+        bh=G9zu7M9hMJi/JlGJIC5x2rGeXqrPlGS/I0skrk1HoNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eipeR5a5dOIcTtIpuoQZEK5scaanWpavUVJEwo0Ko0HFfiu8aQZgeI0TMWFYAXUxC
-         YY7JX2GodTRh7aGicDoxERvLg0zJ6uygKQ8VgQqU0Y+iMZZonxVsh3wB6x+lQGcpfv
-         qXs+6NwJe3aGfHGPZ/L/xVATjFoZ/6Tw0TbvVdgQ=
+        b=MsJUmVPPqbrWA3R80rgBqPgpktyCxT8On5uX7HDaLIdaWlQ1BSWM+Us3nO5y9WkPv
+         s7VD4nCtAmb44gTK6u2qyyV6u0MeQMkVWNUkjfKrpcKXPav1GmCVDaCkReao1esB4Z
+         IatFB6Vs97qWhcg140us4TETDsYe4YryNwnq/XY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 008/381] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 047/246] r8152: fix flow control issue of RTL8156A
 Date:   Mon, 15 May 2023 18:24:19 +0200
-Message-Id: <20230515161737.136928608@linuxfoundation.org>
+Message-Id: <20230515161723.998653172@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,90 +54,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Hayes Wang <hayeswang@realtek.com>
 
-commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
+[ Upstream commit 8ceda6d5a1e5402fd852e6cc59a286ce3dc545ee ]
 
-Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
-SL8563. The modem supports the NCM mode. Interface 0 is used for running
-the AT commands. Interface 12 is the ADB interface.
+The feature of flow control becomes abnormal, if the device sends a
+pause frame and the tx/rx is disabled before sending a release frame. It
+causes the lost of packets.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1782 ProdID=4055 Rev=04.04
-S:  Manufacturer=Unisoc Phone
-S:  Product=Unisoc Phone
-S:  SerialNumber=<redacted>
-C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Set PLA_RX_FIFO_FULL and PLA_RX_FIFO_EMPTY to zeros before disabling the
+tx/rx. And, toggle FC_PATCH_TASK before enabling tx/rx to reset the flow
+control patch and timer. Then, the hardware could clear the state and
+the flow control becomes normal after enabling tx/rx.
 
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Besides, remove inline for fc_pause_on_auto() and fc_pause_off_auto().
+
+Fixes: 195aae321c82 ("r8152: support new chips")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/usb/r8152.c | 56 ++++++++++++++++++++++++++---------------
+ 1 file changed, 36 insertions(+), 20 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -595,6 +595,11 @@ static void option_instat_callback(struc
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 0fc4b959edc18..afd50e90d1fee 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -5986,6 +5986,25 @@ static void rtl8153_disable(struct r8152 *tp)
+ 	r8153_aldps_en(tp, true);
+ }
  
-+/* UNISOC (Spreadtrum) products */
-+#define UNISOC_VENDOR_ID			0x1782
-+/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
-+#define TOZED_PRODUCT_LT70C			0x4055
++static u32 fc_pause_on_auto(struct r8152 *tp)
++{
++	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 6 * 1024);
++}
 +
- /* Device flags */
++static u32 fc_pause_off_auto(struct r8152 *tp)
++{
++	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 14 * 1024);
++}
++
++static void r8156_fc_parameter(struct r8152 *tp)
++{
++	u32 pause_on = tp->fc_pause_on ? tp->fc_pause_on : fc_pause_on_auto(tp);
++	u32 pause_off = tp->fc_pause_off ? tp->fc_pause_off : fc_pause_off_auto(tp);
++
++	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, pause_on / 16);
++	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, pause_off / 16);
++}
++
+ static int rtl8156_enable(struct r8152 *tp)
+ {
+ 	u32 ocp_data;
+@@ -5994,6 +6013,7 @@ static int rtl8156_enable(struct r8152 *tp)
+ 	if (test_bit(RTL8152_UNPLUG, &tp->flags))
+ 		return -ENODEV;
  
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2225,6 +2230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
++	r8156_fc_parameter(tp);
+ 	set_tx_qlen(tp);
+ 	rtl_set_eee_plus(tp);
+ 	r8153_set_rx_early_timeout(tp);
+@@ -6025,9 +6045,24 @@ static int rtl8156_enable(struct r8152 *tp)
+ 		ocp_write_word(tp, MCU_TYPE_USB, USB_L1_CTRL, ocp_data);
+ 	}
+ 
++	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_FW_TASK);
++	ocp_data &= ~FC_PATCH_TASK;
++	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_TASK, ocp_data);
++	usleep_range(1000, 2000);
++	ocp_data |= FC_PATCH_TASK;
++	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_TASK, ocp_data);
++
+ 	return rtl_enable(tp);
+ }
+ 
++static void rtl8156_disable(struct r8152 *tp)
++{
++	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, 0);
++	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, 0);
++
++	rtl8153_disable(tp);
++}
++
+ static int rtl8156b_enable(struct r8152 *tp)
+ {
+ 	u32 ocp_data;
+@@ -6429,25 +6464,6 @@ static void rtl8153c_up(struct r8152 *tp)
+ 	r8153b_u1u2en(tp, true);
+ }
+ 
+-static inline u32 fc_pause_on_auto(struct r8152 *tp)
+-{
+-	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 6 * 1024);
+-}
+-
+-static inline u32 fc_pause_off_auto(struct r8152 *tp)
+-{
+-	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 14 * 1024);
+-}
+-
+-static void r8156_fc_parameter(struct r8152 *tp)
+-{
+-	u32 pause_on = tp->fc_pause_on ? tp->fc_pause_on : fc_pause_on_auto(tp);
+-	u32 pause_off = tp->fc_pause_off ? tp->fc_pause_off : fc_pause_off_auto(tp);
+-
+-	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, pause_on / 16);
+-	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, pause_off / 16);
+-}
+-
+ static void rtl8156_change_mtu(struct r8152 *tp)
+ {
+ 	u32 rx_max_size = mtu_to_size(tp->netdev->mtu);
+@@ -9340,7 +9356,7 @@ static int rtl_ops_init(struct r8152 *tp)
+ 	case RTL_VER_10:
+ 		ops->init		= r8156_init;
+ 		ops->enable		= rtl8156_enable;
+-		ops->disable		= rtl8153_disable;
++		ops->disable		= rtl8156_disable;
+ 		ops->up			= rtl8156_up;
+ 		ops->down		= rtl8156_down;
+ 		ops->unload		= rtl8153_unload;
+-- 
+2.39.2
+
 
 
