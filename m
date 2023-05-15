@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F27817035D9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9277039C0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243444AbjEORDh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:03:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40744 "EHLO
+        id S244578AbjEORpo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243445AbjEORDV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:03:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E96BA5F6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:01:16 -0700 (PDT)
+        with ESMTP id S244661AbjEORpU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 348E116909
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 077A062A90
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB83FC433D2;
-        Mon, 15 May 2023 17:00:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E9A1624D7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5A8C433D2;
+        Mon, 15 May 2023 17:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170033;
-        bh=25k/maKvTjokGF7S74GJjyHlScOMw2b5fZgwxGk+au4=;
+        s=korg; t=1684172589;
+        bh=I1gjs/dqDsEvpT52N82iIXa5uIH0QL9Eb+ptCs56eVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t1K3srPWnyLBX9Hq1dCv0FEGaP7SVIdH3ekJc/rzIWZH1pHTbsDkhPt0nq+v1wOWE
-         oQoPvoNDaeD4m+R/7vajXDKnT7yjWIPdDAzgiqzAqm5WMhdOW5K2zb4idrzs6F/nTw
-         FblB8Ks4aMnJF9oEJ1o9qLqeJtuoeBGmm+PnRHiI=
+        b=zgD2vqVBXAC4YMCBHUzNK7bekHVHXfhSQlKRo1bb4hmIS21gz28i0e5WHDv+mS6D3
+         A1lDosr3EiEBoWLvrFv/inhoWBotAaAote82sVW/F7bHpeA8TRqH/KgDyOcl8XGjqT
+         G0PR+0n05Ssu9+qLK7TTttOmBARYugBIAnMu5kas=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.3 242/246] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 203/381] ASoC: es8316: Handle optional IRQ assignment
 Date:   Mon, 15 May 2023 18:27:34 +0200
-Message-Id: <20230515161729.915456481@linuxfoundation.org>
+Message-Id: <20230515161745.971691574@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,105 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 8a5299a1278eadf1e08a598a5345c376206f171e upstream.
+[ Upstream commit 39db65a0a17b54915b269d3685f253a4731f344c ]
 
-For different reasons, fsl-spi driver performs bits_per_word
-modifications for different reasons:
-- On CPU mode, to minimise amount of interrupts
-- On CPM/QE mode to work around controller byte order
+The driver is able to work fine without relying on a mandatory interrupt
+being assigned to the I2C device. This is only needed when making use of
+the jack-detect support.
 
-For CPU mode that's done in fsl_spi_prepare_message() while
-for CPM mode that's done in fsl_spi_setup_transfer().
+However, the following warning message is always emitted when there is
+no such interrupt available:
 
-Reunify all of it in fsl_spi_prepare_message(), and catch
-impossible cases early through master's bits_per_word_mask
-instead of returning EINVAL later.
+  es8316 0-0011: Failed to get IRQ 0: -22
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
+Do not attempt to request an IRQ if it is not available/valid. This also
+ensures the rather misleading message is not displayed anymore.
+
+Also note the IRQ validation relies on commit dab472eb931bc291 ("i2c /
+ACPI: Use 0 to indicate that device does not have interrupt assigned").
+
+Fixes: 822257661031 ("ASoC: es8316: Add jack-detect support")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230328094901.50763-1-cristian.ciocaltea@collabora.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c |   46 +++++++++++++++++++++-------------------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
+ sound/soc/codecs/es8316.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -177,26 +177,6 @@ static int mspi_apply_cpu_mode_quirks(st
- 	return bits_per_word;
- }
+diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
+index aa23e4e671897..bc3d46617a113 100644
+--- a/sound/soc/codecs/es8316.c
++++ b/sound/soc/codecs/es8316.c
+@@ -807,12 +807,14 @@ static int es8316_i2c_probe(struct i2c_client *i2c_client,
+ 	es8316->irq = i2c_client->irq;
+ 	mutex_init(&es8316->lock);
  
--static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
--				struct spi_device *spi,
--				int bits_per_word)
--{
--	/* CPM/QE uses Little Endian for words > 8
--	 * so transform 16 and 32 bits words into 8 bits
--	 * Unfortnatly that doesn't work for LSB so
--	 * reject these for now */
--	/* Note: 32 bits word, LSB works iff
--	 * tfcr/rfcr is set to CPMFCR_GBL */
--	if (spi->mode & SPI_LSB_FIRST &&
--	    bits_per_word > 8)
--		return -EINVAL;
--	if (bits_per_word <= 8)
--		return bits_per_word;
--	if (bits_per_word == 16 || bits_per_word == 32)
--		return 8; /* pretend its 8 bits */
--	return -EINVAL;
--}
--
- static int fsl_spi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
- {
-@@ -224,9 +204,6 @@ static int fsl_spi_setup_transfer(struct
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else
--		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
--							  bits_per_word);
- 
- 	if (bits_per_word < 0)
- 		return bits_per_word;
-@@ -361,6 +338,19 @@ static int fsl_spi_prepare_message(struc
- 				t->bits_per_word = 32;
- 			else if ((t->len & 1) == 0)
- 				t->bits_per_word = 16;
-+		} else {
-+			/*
-+			 * CPM/QE uses Little Endian for words > 8
-+			 * so transform 16 and 32 bits words into 8 bits
-+			 * Unfortnatly that doesn't work for LSB so
-+			 * reject these for now
-+			 * Note: 32 bits word, LSB works iff
-+			 * tfcr/rfcr is set to CPMFCR_GBL
-+			 */
-+			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
-+				return -EINVAL;
-+			if (t->bits_per_word == 16 || t->bits_per_word == 32)
-+				t->bits_per_word = 8; /* pretend its 8 bits */
- 		}
+-	ret = devm_request_threaded_irq(dev, es8316->irq, NULL, es8316_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT | IRQF_NO_AUTOEN,
+-					"es8316", es8316);
+-	if (ret) {
+-		dev_warn(dev, "Failed to get IRQ %d: %d\n", es8316->irq, ret);
+-		es8316->irq = -ENXIO;
++	if (es8316->irq > 0) {
++		ret = devm_request_threaded_irq(dev, es8316->irq, NULL, es8316_irq,
++						IRQF_TRIGGER_HIGH | IRQF_ONESHOT | IRQF_NO_AUTOEN,
++						"es8316", es8316);
++		if (ret) {
++			dev_warn(dev, "Failed to get IRQ %d: %d\n", es8316->irq, ret);
++			es8316->irq = -ENXIO;
++		}
  	}
- 	return fsl_spi_setup_transfer(m->spi, first);
-@@ -594,8 +584,14 @@ static struct spi_master *fsl_spi_probe(
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
- 		fsl_spi_grlib_probe(dev);
  
--	master->bits_per_word_mask =
--		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
-+	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
-+	else
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
-+
-+	master->bits_per_word_mask &=
- 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
- 
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
+ 	return devm_snd_soc_register_component(&i2c_client->dev,
+-- 
+2.39.2
+
 
 
