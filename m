@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E72DC703434
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46386703714
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242946AbjEOQpu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50016 "EHLO
+        id S243920AbjEORQk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:16:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242949AbjEOQpt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:49 -0400
+        with ESMTP id S243770AbjEORQV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274E14C3A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9440AD2DC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 905C4628F8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EFCC433D2;
-        Mon, 15 May 2023 16:45:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1202862BBE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4A0C433EF;
+        Mon, 15 May 2023 17:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169145;
-        bh=/psOibmtnnkcz1+tirmhsBiDgkCvd5+0ZG4x9ICNoaM=;
+        s=korg; t=1684170909;
+        bh=RcMf99sVVFYOzFuBxPyij6kdwnRsBoKd96FJsfVFXdc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EvlvoFyjxHYiZH95gksnfDne9WNDMyq+/hYZaXkB4JesVG3okW+heuXFpQgAJardC
-         xWXDKuRB1vfVHRIpBkqiCV3CNAYQHa7eQNUNX5oE1Hk9ybbSLbqMd86w0C8SunJ2AM
-         lRJgcqj4+GE9P/O2cbBgRco7hB0zqWfdiKKJcnBQ=
+        b=nnuQwEz9VjSnmn+vgdQgl7dtVqYIHTOJCsBGIkj4qXHpn1XzRlx0Dq4vge37l6HAw
+         j4LRuOmpQqJxS/eCqxclHsuvbKI0hjvJQVQjQxc2wk/9aepvXwiIePSH3uMCY21Q5Y
+         5xXj0g6cQgXw8MaAEnxbmvkIY5WnRXtB8XJVTjTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 127/191] nilfs2: fix infinite loop in nilfs_mdt_get_block()
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 038/242] octeontx2-pf: mcs: Match macsec ethertype along with DMAC
 Date:   Mon, 15 May 2023 18:26:04 +0200
-Message-Id: <20230515161711.951499733@linuxfoundation.org>
+Message-Id: <20230515161723.061955871@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,71 +57,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit a6a491c048882e7e424d407d32cba0b52d9ef2bf upstream.
+[ Upstream commit 57d00d4364f314485092667d2a48718985515deb ]
 
-If the disk image that nilfs2 mounts is corrupted and a virtual block
-address obtained by block lookup for a metadata file is invalid,
-nilfs_bmap_lookup_at_level() may return the same internal return code as
--ENOENT, meaning the block does not exist in the metadata file.
+On CN10KB silicon a single hardware macsec block is
+present and offloads macsec operations for all the
+ethernet LMACs. TCAM match with macsec ethertype 0x88e5
+alone at RX side is not sufficient to distinguish all the
+macsec interfaces created on top of netdevs. Hence append
+the DMAC of the macsec interface too. Otherwise the first
+created macsec interface only receives all the macsec traffic.
 
-This duplication of return codes confuses nilfs_mdt_get_block(), causing
-it to read and create a metadata block indefinitely.
-
-In particular, if this happens to the inode metadata file, ifile,
-semaphore i_rwsem can be left held, causing task hangs in lock_mount.
-
-Fix this issue by making nilfs_bmap_lookup_at_level() treat virtual block
-address translation failures with -ENOENT as metadata corruption instead
-of returning the error code.
-
-Link: https://lkml.kernel.org/r/20230430193046.6769-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com
-  Link: https://syzkaller.appspot.com/bug?extid=221d75710bde87fa0e97
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/bmap.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ .../net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c  | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/bmap.c
-+++ b/fs/nilfs2/bmap.c
-@@ -67,20 +67,28 @@ int nilfs_bmap_lookup_at_level(struct ni
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 9ec5f38d38a84..f699209978fef 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -9,6 +9,7 @@
+ #include <net/macsec.h>
+ #include "otx2_common.h"
  
- 	down_read(&bmap->b_sem);
- 	ret = bmap->b_ops->bop_lookup(bmap, key, level, ptrp);
--	if (ret < 0) {
--		ret = nilfs_bmap_convert_error(bmap, __func__, ret);
-+	if (ret < 0)
- 		goto out;
--	}
-+
- 	if (NILFS_BMAP_USE_VBN(bmap)) {
- 		ret = nilfs_dat_translate(nilfs_bmap_get_dat(bmap), *ptrp,
- 					  &blocknr);
- 		if (!ret)
- 			*ptrp = blocknr;
-+		else if (ret == -ENOENT) {
-+			/*
-+			 * If there was no valid entry in DAT for the block
-+			 * address obtained by b_ops->bop_lookup, then pass
-+			 * internal code -EINVAL to nilfs_bmap_convert_error
-+			 * to treat it as metadata corruption.
-+			 */
-+			ret = -EINVAL;
-+		}
++#define MCS_TCAM0_MAC_DA_MASK		GENMASK_ULL(47, 0)
+ #define MCS_TCAM0_MAC_SA_MASK		GENMASK_ULL(63, 48)
+ #define MCS_TCAM1_MAC_SA_MASK		GENMASK_ULL(31, 0)
+ #define MCS_TCAM1_ETYPE_MASK		GENMASK_ULL(47, 32)
+@@ -237,8 +238,10 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
+ 				     struct cn10k_mcs_rxsc *rxsc, u8 hw_secy_id)
+ {
+ 	struct macsec_rx_sc *sw_rx_sc = rxsc->sw_rxsc;
++	struct macsec_secy *secy = rxsc->sw_secy;
+ 	struct mcs_flowid_entry_write_req *req;
+ 	struct mbox *mbox = &pfvf->mbox;
++	u64 mac_da;
+ 	int ret;
+ 
+ 	mutex_lock(&mbox->lock);
+@@ -249,11 +252,16 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
+ 		goto fail;
  	}
  
-  out:
- 	up_read(&bmap->b_sem);
--	return ret;
-+	return nilfs_bmap_convert_error(bmap, __func__, ret);
- }
++	mac_da = ether_addr_to_u64(secy->netdev->dev_addr);
++
++	req->data[0] = FIELD_PREP(MCS_TCAM0_MAC_DA_MASK, mac_da);
++	req->mask[0] = ~0ULL;
++	req->mask[0] = ~MCS_TCAM0_MAC_DA_MASK;
++
+ 	req->data[1] = FIELD_PREP(MCS_TCAM1_ETYPE_MASK, ETH_P_MACSEC);
+ 	req->mask[1] = ~0ULL;
+ 	req->mask[1] &= ~MCS_TCAM1_ETYPE_MASK;
  
- int nilfs_bmap_lookup_contig(struct nilfs_bmap *bmap, __u64 key, __u64 *ptrp,
+-	req->mask[0] = ~0ULL;
+ 	req->mask[2] = ~0ULL;
+ 	req->mask[3] = ~0ULL;
+ 
+-- 
+2.39.2
+
 
 
