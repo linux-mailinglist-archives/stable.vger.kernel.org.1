@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D36D7036E3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE467703A04
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243724AbjEORO6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54844 "EHLO
+        id S244523AbjEORri (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:47:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243879AbjEOROe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:34 -0400
+        with ESMTP id S244740AbjEORrE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:47:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A70CDC4C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5A918AA6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B53462BA0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B140C4339E;
-        Mon, 15 May 2023 17:12:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC86462ECC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC548C4339B;
+        Mon, 15 May 2023 17:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170777;
-        bh=i+0uhNL/s6JlcY4VsUa34/rHeNTI4T2+5VPmsV6/KQw=;
+        s=korg; t=1684172750;
+        bh=B0dc+X20qnU9diwPfh02fiSyjPTI2BGH3xj9ZDXA+i0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=neK+Af88fzrjkKnIaADYPVXoSweOz3btuCWO8tk1F+V1AME9EMTuC25bhS5H5fEtO
-         iYJtdUwweAQA6pfHGWbjcIuExrCYrXxbI2YYO/QoihpLxQLZQtiLbAsLBPwRwpfypK
-         9EDwDZ5v1F5oIXJt3LSVrqMQPg0GAsJO62S7XGxk=
+        b=dRWCVEQcpbUjJ4RjfpcN1PDQZt33/K+rPcQPOO+AOOcnxHHzVpwTHnDU/3OaD0DeR
+         qelin9cm92vYwj30U75PT/9q+mXZY1irJuWjF5dV4ah9AgboRNK6RaqETeCsnIOHOU
+         tptrTzKPNM7FWsPoeo0qwQ9dKuSCAJ0eVMnZRJjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.1 214/239] ksmbd: destroy expired sessions
+        patches@lists.linux.dev,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 226/381] staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
 Date:   Mon, 15 May 2023 18:27:57 +0200
-Message-Id: <20230515161728.146532919@linuxfoundation.org>
+Message-Id: <20230515161746.926079841@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,190 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
 
-[ Upstream commit ea174a91893956450510945a0c5d1a10b5323656 ]
+[ Upstream commit 3fac2397f562eb669ddc2f45867a253f3fc26184 ]
 
-client can indefinitely send smb2 session setup requests with
-the SessionId set to 0, thus indefinitely spawning new sessions,
-and causing indefinite memory usage. This patch limit to the number
-of sessions using expired timeout and session state.
+When loading the driver for rtl8192e, the W_DISABLE# switch is working as
+intended. But when the WLAN is turned off in software and then turned on
+again the W_DISABLE# does not work anymore. Reason for this is that in
+the function _rtl92e_dm_check_rf_ctrl_gpio() the bfirst_after_down is
+checked and returned when true. bfirst_after_down is set true when
+switching the WLAN off in software. But it is not set to false again
+when WLAN is turned on again.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20478
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Add bfirst_after_down = false in _rtl92e_sta_up to reset bit and fix
+above described bug.
+
+Fixes: 94a799425eee ("From: wlanfae <wlanfae@realtek.com> [PATCH 1/8] rtl8192e: Import new version of driver from realtek")
+Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Link: https://lore.kernel.org/r/20230418200201.GA17398@matrix-ESPRIMO-P710
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/mgmt/user_session.c | 68 ++++++++++++++++++++----------------
- fs/ksmbd/mgmt/user_session.h |  1 +
- fs/ksmbd/smb2pdu.c           |  1 +
- fs/ksmbd/smb2pdu.h           |  2 ++
- 4 files changed, 41 insertions(+), 31 deletions(-)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
-index 69b85a98e2c35..b809f7987b9f4 100644
---- a/fs/ksmbd/mgmt/user_session.c
-+++ b/fs/ksmbd/mgmt/user_session.c
-@@ -174,70 +174,73 @@ static struct ksmbd_session *__session_lookup(unsigned long long id)
- 	struct ksmbd_session *sess;
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+index 99c27d6b42333..291f98251f7f7 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -770,6 +770,7 @@ static int _rtl92e_sta_up(struct net_device *dev, bool is_silent_reset)
+ 	else
+ 		netif_wake_queue(dev);
  
- 	hash_for_each_possible(sessions_table, sess, hlist, id) {
--		if (id == sess->id)
-+		if (id == sess->id) {
-+			sess->last_active = jiffies;
- 			return sess;
-+		}
- 	}
- 	return NULL;
++	priv->bfirst_after_down = false;
+ 	return 0;
  }
  
-+static void ksmbd_expire_session(struct ksmbd_conn *conn)
-+{
-+	unsigned long id;
-+	struct ksmbd_session *sess;
-+
-+	xa_for_each(&conn->sessions, id, sess) {
-+		if (sess->state != SMB2_SESSION_VALID ||
-+		    time_after(jiffies,
-+			       sess->last_active + SMB2_SESSION_TIMEOUT)) {
-+			xa_erase(&conn->sessions, sess->id);
-+			ksmbd_session_destroy(sess);
-+			continue;
-+		}
-+	}
-+}
-+
- int ksmbd_session_register(struct ksmbd_conn *conn,
- 			   struct ksmbd_session *sess)
- {
- 	sess->dialect = conn->dialect;
- 	memcpy(sess->ClientGUID, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
-+	ksmbd_expire_session(conn);
- 	return xa_err(xa_store(&conn->sessions, sess->id, sess, GFP_KERNEL));
- }
- 
--static int ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
-+static void ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
- {
- 	struct channel *chann;
- 
- 	chann = xa_erase(&sess->ksmbd_chann_list, (long)conn);
- 	if (!chann)
--		return -ENOENT;
-+		return;
- 
- 	kfree(chann);
--
--	return 0;
- }
- 
- void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
- {
- 	struct ksmbd_session *sess;
-+	unsigned long id;
- 
--	if (conn->binding) {
--		int bkt;
--
--		down_write(&sessions_table_lock);
--		hash_for_each(sessions_table, bkt, sess, hlist) {
--			if (!ksmbd_chann_del(conn, sess)) {
--				up_write(&sessions_table_lock);
--				goto sess_destroy;
--			}
-+	xa_for_each(&conn->sessions, id, sess) {
-+		ksmbd_chann_del(conn, sess);
-+		if (xa_empty(&sess->ksmbd_chann_list)) {
-+			xa_erase(&conn->sessions, sess->id);
-+			ksmbd_session_destroy(sess);
- 		}
--		up_write(&sessions_table_lock);
--	} else {
--		unsigned long id;
--
--		xa_for_each(&conn->sessions, id, sess) {
--			if (!ksmbd_chann_del(conn, sess))
--				goto sess_destroy;
--		}
--	}
--
--	return;
--
--sess_destroy:
--	if (xa_empty(&sess->ksmbd_chann_list)) {
--		xa_erase(&conn->sessions, sess->id);
--		ksmbd_session_destroy(sess);
- 	}
- }
- 
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
- 					   unsigned long long id)
- {
--	return xa_load(&conn->sessions, id);
-+	struct ksmbd_session *sess;
-+
-+	sess = xa_load(&conn->sessions, id);
-+	if (sess)
-+		sess->last_active = jiffies;
-+	return sess;
- }
- 
- struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id)
-@@ -246,6 +249,8 @@ struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id)
- 
- 	down_read(&sessions_table_lock);
- 	sess = __session_lookup(id);
-+	if (sess)
-+		sess->last_active = jiffies;
- 	up_read(&sessions_table_lock);
- 
- 	return sess;
-@@ -324,6 +329,7 @@ static struct ksmbd_session *__session_create(int protocol)
- 	if (ksmbd_init_file_table(&sess->file_table))
- 		goto error;
- 
-+	sess->last_active = jiffies;
- 	sess->state = SMB2_SESSION_IN_PROGRESS;
- 	set_session_flag(sess, protocol);
- 	xa_init(&sess->tree_conns);
-diff --git a/fs/ksmbd/mgmt/user_session.h b/fs/ksmbd/mgmt/user_session.h
-index 44a3c67b2bd92..51f38e5b61abb 100644
---- a/fs/ksmbd/mgmt/user_session.h
-+++ b/fs/ksmbd/mgmt/user_session.h
-@@ -59,6 +59,7 @@ struct ksmbd_session {
- 	__u8				smb3signingkey[SMB3_SIGN_KEY_SIZE];
- 
- 	struct ksmbd_file_table		file_table;
-+	unsigned long			last_active;
- };
- 
- static inline int test_session_flag(struct ksmbd_session *sess, int bit)
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 6c26934272ad5..d3f33194faf1a 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1860,6 +1860,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
- 			if (sess->user && sess->user->flags & KSMBD_USER_FLAG_DELAY_SESSION)
- 				try_delay = true;
- 
-+			sess->last_active = jiffies;
- 			sess->state = SMB2_SESSION_EXPIRED;
- 			if (try_delay)
- 				ssleep(5);
-diff --git a/fs/ksmbd/smb2pdu.h b/fs/ksmbd/smb2pdu.h
-index f4baa9800f6ee..dd10f8031606b 100644
---- a/fs/ksmbd/smb2pdu.h
-+++ b/fs/ksmbd/smb2pdu.h
-@@ -61,6 +61,8 @@ struct preauth_integrity_info {
- #define SMB2_SESSION_IN_PROGRESS	BIT(0)
- #define SMB2_SESSION_VALID		BIT(1)
- 
-+#define SMB2_SESSION_TIMEOUT		(10 * HZ)
-+
- struct create_durable_req_v2 {
- 	struct create_context ccontext;
- 	__u8   Name[8];
 -- 
 2.39.2
 
