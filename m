@@ -2,50 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDA5703655
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B30D6703953
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243721AbjEORJH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47520 "EHLO
+        id S244547AbjEORlR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:41:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243635AbjEORIr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:47 -0400
+        with ESMTP id S244542AbjEORk4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F9FA5D8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E8519BE0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:38:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B38E62ACC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:06:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75065C433EF;
-        Mon, 15 May 2023 17:06:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B556862DD3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:38:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF9FC433EF;
+        Mon, 15 May 2023 17:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170384;
-        bh=/hCoPzC1Z4mecYydAZNyBRehqRp2i53PfOZdDfeVMpY=;
+        s=korg; t=1684172294;
+        bh=B5Vh63GZ5qlHy4lvhtOCM0ahM4ltWuWP31HpFqjMVXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s6h+sFnlpZl35pkcx1XxezZDivRpRoQsDE9RYWW1d7xXmU6vhhILsmLOqeidCHj74
-         gW0j4NPas9kNzdP3fllzOXHgDZPLGlYonBgxJhQmCTHvBakgyCvg+1TKNMVu/HGaHK
-         fOEI0LhuSCf11PmSBJpEMHzfxUXOlkoljIfc3Z0Y=
+        b=ilmwcQnGPdcZTFivyvUnv1SUpDtG9bpcYFKnxsL4dDfylJTEX78wZiyGDw45LWYdl
+         ZU3/x0q3LwokNO07g+1pVhiZxwRp8WP9zGpASISRYgX8O3i6k6+cteEK7VbeCOO5Ev
+         J95iE1uX0UAXWjwp53A1kouwKNvcyPhClpgYQyhE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Sujai Buvaneswaran <Sujai.Buvaneswaran@intel.com>,
-        Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-        George Kuruvinakunnel <george.kuruvinakunnel@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/239] ice: block LAN in case of VF to VF offload
-Date:   Mon, 15 May 2023 18:25:49 +0200
-Message-Id: <20230515161724.256937761@linuxfoundation.org>
+Subject: [PATCH 5.10 099/381] ACPI: processor: Fix evaluating _PDC method when running as Xen dom0
+Date:   Mon, 15 May 2023 18:25:50 +0200
+Message-Id: <20230515161741.287015992@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,50 +56,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 9f699b71c2f31c51bd1483a20e1c8ddc5986a8c9 ]
+[ Upstream commit 073828e954459b883f23e53999d31e4c55ab9654 ]
 
-VF to VF traffic shouldn't go outside. To enforce it, set only the loopback
-enable bit in case of all ingress type rules added via the tc tool.
+In ACPI systems, the OS can direct power management, as opposed to the
+firmware.  This OS-directed Power Management is called OSPM.  Part of
+telling the firmware that the OS going to direct power management is
+making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
+methods must be evaluated for every processor object.  If these _PDC
+calls are not completed for every processor it can lead to
+inconsistency and later failures in things like the CPU frequency
+driver.
 
-Fixes: 0d08a441fb1a ("ice: ndo_setup_tc implementation for PF")
-Reported-by: Sujai Buvaneswaran <Sujai.Buvaneswaran@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: George Kuruvinakunnel <george.kuruvinakunnel@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In a Xen system, the dom0 kernel is responsible for system-wide power
+management.  The dom0 kernel is in charge of OSPM.  However, the
+number of CPUs available to dom0 can be different than the number of
+CPUs physically present on the system.
+
+This leads to a problem: the dom0 kernel needs to evaluate _PDC for
+all the processors, but it can't always see them.
+
+In dom0 kernels, ignore the existing ACPI method for determining if a
+processor is physically present because it might not be accurate.
+Instead, ask the hypervisor for this information.
+
+Fix this by introducing a custom function to use when running as Xen
+dom0 in order to check whether a processor object matches a CPU that's
+online.  Such checking is done using the existing information fetched
+by the Xen pCPU subsystem, extending it to also store the ACPI ID.
+
+This ensures that _PDC method gets evaluated for all physically online
+CPUs, regardless of the number of CPUs made available to dom0.
+
+Fixes: 5d554a7bb064 ("ACPI: processor: add internal processor_physically_present()")
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/processor_pdc.c | 11 +++++++++++
+ drivers/xen/pcpu.c           | 20 ++++++++++++++++++++
+ include/xen/xen.h            | 11 +++++++++++
+ 3 files changed, 42 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index 71cb15fcf63b9..652ef09eeb305 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -693,17 +693,18 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 	 * results into order of switch rule evaluation.
- 	 */
- 	rule_info.priority = 7;
-+	rule_info.flags_info.act_valid = true;
+diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+index 813f1b78c16a9..c0d2d9a2c0d58 100644
+--- a/drivers/acpi/processor_pdc.c
++++ b/drivers/acpi/processor_pdc.c
+@@ -14,6 +14,8 @@
+ #include <linux/acpi.h>
+ #include <acpi/processor.h>
  
- 	if (fltr->direction == ICE_ESWITCH_FLTR_INGRESS) {
- 		rule_info.sw_act.flag |= ICE_FLTR_RX;
- 		rule_info.sw_act.src = hw->pf_id;
- 		rule_info.rx = true;
-+		rule_info.flags_info.act = ICE_SINGLE_ACT_LB_ENABLE;
- 	} else {
- 		rule_info.sw_act.flag |= ICE_FLTR_TX;
- 		rule_info.sw_act.src = vsi->idx;
- 		rule_info.rx = false;
- 		rule_info.flags_info.act = ICE_SINGLE_ACT_LAN_ENABLE;
--		rule_info.flags_info.act_valid = true;
++#include <xen/xen.h>
++
+ #include "internal.h"
+ 
+ #define _COMPONENT              ACPI_PROCESSOR_COMPONENT
+@@ -50,6 +52,15 @@ static bool __init processor_physically_present(acpi_handle handle)
+ 		return false;
  	}
  
- 	/* specify the cookie as filter_rule_id */
++	if (xen_initial_domain())
++		/*
++		 * When running as a Xen dom0 the number of processors Linux
++		 * sees can be different from the real number of processors on
++		 * the system, and we still need to execute _PDC for all of
++		 * them.
++		 */
++		return xen_processor_present(acpi_id);
++
+ 	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
+ 	cpuid = acpi_get_cpuid(handle, type, acpi_id);
+ 
+diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
+index 9cf7085a260b4..4581217e31fea 100644
+--- a/drivers/xen/pcpu.c
++++ b/drivers/xen/pcpu.c
+@@ -58,6 +58,7 @@ struct pcpu {
+ 	struct list_head list;
+ 	struct device dev;
+ 	uint32_t cpu_id;
++	uint32_t acpi_id;
+ 	uint32_t flags;
+ };
+ 
+@@ -249,6 +250,7 @@ static struct pcpu *create_and_register_pcpu(struct xenpf_pcpuinfo *info)
+ 
+ 	INIT_LIST_HEAD(&pcpu->list);
+ 	pcpu->cpu_id = info->xen_cpuid;
++	pcpu->acpi_id = info->acpi_id;
+ 	pcpu->flags = info->flags;
+ 
+ 	/* Need hold on xen_pcpu_lock before pcpu list manipulations */
+@@ -416,3 +418,21 @@ static int __init xen_pcpu_init(void)
+ 	return ret;
+ }
+ arch_initcall(xen_pcpu_init);
++
++#ifdef CONFIG_ACPI
++bool __init xen_processor_present(uint32_t acpi_id)
++{
++	const struct pcpu *pcpu;
++	bool online = false;
++
++	mutex_lock(&xen_pcpu_lock);
++	list_for_each_entry(pcpu, &xen_pcpus, list)
++		if (pcpu->acpi_id == acpi_id) {
++			online = pcpu->flags & XEN_PCPU_FLAGS_ONLINE;
++			break;
++		}
++	mutex_unlock(&xen_pcpu_lock);
++
++	return online;
++}
++#endif
+diff --git a/include/xen/xen.h b/include/xen/xen.h
+index 43efba045acc7..5a6a2ab675bed 100644
+--- a/include/xen/xen.h
++++ b/include/xen/xen.h
+@@ -61,4 +61,15 @@ void xen_free_unpopulated_pages(unsigned int nr_pages, struct page **pages);
+ #include <xen/balloon.h>
+ #endif
+ 
++#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI) && defined(CONFIG_X86)
++bool __init xen_processor_present(uint32_t acpi_id);
++#else
++#include <linux/bug.h>
++static inline bool xen_processor_present(uint32_t acpi_id)
++{
++	BUG();
++	return false;
++}
++#endif
++
+ #endif	/* _XEN_XEN_H */
 -- 
 2.39.2
 
