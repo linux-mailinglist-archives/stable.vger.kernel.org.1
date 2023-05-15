@@ -2,55 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC4D703ACD
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E4670388D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240034AbjEORzv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:55:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53386 "EHLO
+        id S244243AbjEORdK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245124AbjEORzN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC47120BA;
-        Mon, 15 May 2023 10:53:22 -0700 (PDT)
+        with ESMTP id S241917AbjEORcn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA2A7100EA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53EE662F7A;
-        Mon, 15 May 2023 17:51:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379CBC433D2;
-        Mon, 15 May 2023 17:50:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65A3162D2F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A557C433EF;
+        Mon, 15 May 2023 17:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173059;
-        bh=Ty9DPaKzbqBJz2YbO+x5qaO1VH7G0U+WgyWhAR3rbZY=;
+        s=korg; t=1684171824;
+        bh=9JocLLhjUGRPiDlQgVLXCCxvhK53WTs2yG+5ioh7kZ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U0B/xg5WR+Fy5lHdg4IgNNE5WRZsm7aOrz83439xYNPrs2vKcbpWaovZtNrrmcTdT
-         hEaSt4OcNJI4qewocf3zngN+Vjv2d+7AEcB/bmALUPXVHXMyA8+XlsxWeOLZluO6E7
-         YnfRWK3YRMZsBFQTiM1pypeKXjBAHHZ3U3qcvCyM=
+        b=ppbTmqO2cKF0odIO4zFtv/RiKAd38zK69F7rezP/auLhe9VKqG4d3S7fCHbHJp/Qz
+         jAz7EZNYB9wzx+uSkQo0HDo1Tz8pqWWRItafp2PVOWaolkta7lG6PTUZEFkp6NnF2O
+         uxXknaIZmzgfxJ9QnI32vTvsqFCH7+RbJNIh8m3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 317/381] rxrpc: Fix hard call timeout units
+        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
+        Tao Zhou <tao.zhou1@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 091/134] drm/amdgpu/gfx: disable gfx9 cp_ecc_error_irq only when enabling legacy gfx ras
 Date:   Mon, 15 May 2023 18:29:28 +0200
-Message-Id: <20230515161751.128690115@linuxfoundation.org>
+Message-Id: <20230515161706.198232756@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,45 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 0d098d83c5d9e107b2df7f5e11f81492f56d2fe7 ]
+commit 4a76680311330aefe5074bed8f06afa354b85c48 upstream.
 
-The hard call timeout is specified in the RXRPC_SET_CALL_TIMEOUT cmsg in
-seconds, so fix the point at which sendmsg() applies it to the call to
-convert to jiffies from seconds, not milliseconds.
+gfx9 cp_ecc_error_irq is only enabled when legacy gfx ras is assert.
+So in gfx_v9_0_hw_fini, interrupt disablement for cp_ecc_error_irq
+should be executed under such condition, otherwise, an amdgpu_irq_put
+calltrace will occur.
 
-Fixes: a158bdd3247b ("rxrpc: Fix timeout of a call that hasn't yet been granted a channel")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 7283.170322] RIP: 0010:amdgpu_irq_put+0x45/0x70 [amdgpu]
+[ 7283.170964] RSP: 0018:ffff9a5fc3967d00 EFLAGS: 00010246
+[ 7283.170967] RAX: ffff98d88afd3040 RBX: ffff98d89da20000 RCX: 0000000000000000
+[ 7283.170969] RDX: 0000000000000000 RSI: ffff98d89da2bef8 RDI: ffff98d89da20000
+[ 7283.170971] RBP: ffff98d89da20000 R08: ffff98d89da2ca18 R09: 0000000000000006
+[ 7283.170973] R10: ffffd5764243c008 R11: 0000000000000000 R12: 0000000000001050
+[ 7283.170975] R13: ffff98d89da38978 R14: ffffffff999ae15a R15: ffff98d880130105
+[ 7283.170978] FS:  0000000000000000(0000) GS:ffff98d996f00000(0000) knlGS:0000000000000000
+[ 7283.170981] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 7283.170983] CR2: 00000000f7a9d178 CR3: 00000001c42ea000 CR4: 00000000003506e0
+[ 7283.170986] Call Trace:
+[ 7283.170988]  <TASK>
+[ 7283.170989]  gfx_v9_0_hw_fini+0x1c/0x6d0 [amdgpu]
+[ 7283.171655]  amdgpu_device_ip_suspend_phase2+0x101/0x1a0 [amdgpu]
+[ 7283.172245]  amdgpu_device_suspend+0x103/0x180 [amdgpu]
+[ 7283.172823]  amdgpu_pmops_freeze+0x21/0x60 [amdgpu]
+[ 7283.173412]  pci_pm_freeze+0x54/0xc0
+[ 7283.173419]  ? __pfx_pci_pm_freeze+0x10/0x10
+[ 7283.173425]  dpm_run_callback+0x98/0x200
+[ 7283.173430]  __device_suspend+0x164/0x5f0
+
+v2: drop gfx11 as it's fixed in a different solution by retiring cp_ecc_irq funcs(Hawking)
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/sendmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index a670553159abe..1882fea719035 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -753,7 +753,7 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
- 		fallthrough;
- 	case 1:
- 		if (p.call.timeouts.hard > 0) {
--			j = msecs_to_jiffies(p.call.timeouts.hard);
-+			j = p.call.timeouts.hard * HZ;
- 			now = jiffies;
- 			j += now;
- 			WRITE_ONCE(call->expect_term_by, j);
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -4018,7 +4018,8 @@ static int gfx_v9_0_hw_fini(void *handle
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
+-	amdgpu_irq_put(adev, &adev->gfx.cp_ecc_error_irq, 0);
++	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__GFX))
++		amdgpu_irq_put(adev, &adev->gfx.cp_ecc_error_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
+ 
 
 
