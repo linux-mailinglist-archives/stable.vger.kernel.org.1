@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A107033E2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD12703906
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242565AbjEOQmb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45532 "EHLO
+        id S243854AbjEORiK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242883AbjEOQm3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:42:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C1146A9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:24 -0700 (PDT)
+        with ESMTP id S244065AbjEORhx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED0E4C9C9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 798F1628B1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8C6C433EF;
-        Mon, 15 May 2023 16:42:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FC9B62DA8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F63FC433D2;
+        Mon, 15 May 2023 17:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168943;
-        bh=9mfTpl/fDFD5RuG++U2FVTrjiOwftWwVOOAONrbEaZ4=;
+        s=korg; t=1684172110;
+        bh=W5b+sfXG6vdvGdFoAhDY6Q/wLz64qFKhxa/mkAulGxE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cGyQRpZKMWGAVjyoMm7UOdP6XgObAYBb4Dk0w4T+ATYdc7PCLJGvIRhrF8iwmCB8L
-         Ld7VOI8dqddlkuyuVLxePqPbkbeTekajwU3tQmUGy3cORTvGIzXSWwUeEsoMAOUQs2
-         02Ju05OXdsVFNU00elFNdOcGmtfAVb64vQbgh4ts=
+        b=oIO6GrWIELwqwQBvk+6zvQAffPIveZki6D4hy+5k4iUzGY86IGb2orJ5uGuk9EIan
+         INjFLyK4aYeuEJD3az0hXUMZDdp0Zerh/+LSy3ft3iNOcNZALCdWTi0Rxw6pIjATP7
+         /2qUyQR5HzPj4A6C0wyP6WwGOEy+id4eupXgXa+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 062/191] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 048/381] ubifs: Fix memleak when insert_old_idx() failed
 Date:   Mon, 15 May 2023 18:24:59 +0200
-Message-Id: <20230515161709.462215852@linuxfoundation.org>
+Message-Id: <20230515161739.011724691@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +53,222 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 905a9241e4e8c15d2c084fee916280514848fe35 ]
+commit b5fda08ef213352ac2df7447611eb4d383cce929 upstream.
 
-If there is a failure during copy_from_user or user-provided data buffer
-is invalid, rtl_debugfs_set_write_rfreg should return negative error code
-instead of a positive value count.
+Following process will cause a memleak for copied up znode:
 
-Fix this bug by returning correct error code. Moreover, the check of buffer
-against null is removed since it will be handled by copy_from_user.
+dirty_cow_znode
+  zn = copy_znode(c, znode);
+  err = insert_old_idx(c, zbr->lnum, zbr->offs);
+  if (unlikely(err))
+     return ERR_PTR(err);   // No one refers to zn.
 
-Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230326053138.91338-1-harperchen1110@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fetch a reproducer in [Link].
+
+Function copy_znode() is split into 2 parts: resource allocation
+and znode replacement, insert_old_idx() is split in similar way,
+so resource cleanup could be done in error handling path without
+corrupting metadata(mem & disk).
+It's okay that old index inserting is put behind of add_idx_dirt(),
+old index is used in layout_leb_in_gaps(), so the two processes do
+not depend on each other.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216705
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ubifs/tnc.c |  137 ++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 87 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
-index cead66f7eb9f5..deacc7a28d3a7 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
-@@ -416,8 +416,8 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
+--- a/fs/ubifs/tnc.c
++++ b/fs/ubifs/tnc.c
+@@ -44,6 +44,33 @@ enum {
+ 	NOT_ON_MEDIA = 3,
+ };
  
- 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
++static void do_insert_old_idx(struct ubifs_info *c,
++			      struct ubifs_old_idx *old_idx)
++{
++	struct ubifs_old_idx *o;
++	struct rb_node **p, *parent = NULL;
++
++	p = &c->old_idx.rb_node;
++	while (*p) {
++		parent = *p;
++		o = rb_entry(parent, struct ubifs_old_idx, rb);
++		if (old_idx->lnum < o->lnum)
++			p = &(*p)->rb_left;
++		else if (old_idx->lnum > o->lnum)
++			p = &(*p)->rb_right;
++		else if (old_idx->offs < o->offs)
++			p = &(*p)->rb_left;
++		else if (old_idx->offs > o->offs)
++			p = &(*p)->rb_right;
++		else {
++			ubifs_err(c, "old idx added twice!");
++			kfree(old_idx);
++		}
++	}
++	rb_link_node(&old_idx->rb, parent, p);
++	rb_insert_color(&old_idx->rb, &c->old_idx);
++}
++
+ /**
+  * insert_old_idx - record an index node obsoleted since the last commit start.
+  * @c: UBIFS file-system description object
+@@ -69,35 +96,15 @@ enum {
+  */
+ static int insert_old_idx(struct ubifs_info *c, int lnum, int offs)
+ {
+-	struct ubifs_old_idx *old_idx, *o;
+-	struct rb_node **p, *parent = NULL;
++	struct ubifs_old_idx *old_idx;
  
--	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
--		return count;
-+	if (copy_from_user(tmp, buffer, tmp_len))
-+		return -EFAULT;
+ 	old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
+ 	if (unlikely(!old_idx))
+ 		return -ENOMEM;
+ 	old_idx->lnum = lnum;
+ 	old_idx->offs = offs;
++	do_insert_old_idx(c, old_idx);
  
- 	tmp[tmp_len] = '\0';
+-	p = &c->old_idx.rb_node;
+-	while (*p) {
+-		parent = *p;
+-		o = rb_entry(parent, struct ubifs_old_idx, rb);
+-		if (lnum < o->lnum)
+-			p = &(*p)->rb_left;
+-		else if (lnum > o->lnum)
+-			p = &(*p)->rb_right;
+-		else if (offs < o->offs)
+-			p = &(*p)->rb_left;
+-		else if (offs > o->offs)
+-			p = &(*p)->rb_right;
+-		else {
+-			ubifs_err(c, "old idx added twice!");
+-			kfree(old_idx);
+-			return 0;
+-		}
+-	}
+-	rb_link_node(&old_idx->rb, parent, p);
+-	rb_insert_color(&old_idx->rb, &c->old_idx);
+ 	return 0;
+ }
  
-@@ -427,7 +427,7 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
- 	if (num != 4) {
- 		rtl_dbg(rtlpriv, COMP_ERR, DBG_DMESG,
- 			"Format is <path> <addr> <mask> <data>\n");
--		return count;
-+		return -EINVAL;
- 	}
+@@ -199,23 +206,6 @@ static struct ubifs_znode *copy_znode(st
+ 	__set_bit(DIRTY_ZNODE, &zn->flags);
+ 	__clear_bit(COW_ZNODE, &zn->flags);
  
- 	rtl_set_rfreg(hw, path, addr, bitmask, data);
--- 
-2.39.2
-
+-	ubifs_assert(c, !ubifs_zn_obsolete(znode));
+-	__set_bit(OBSOLETE_ZNODE, &znode->flags);
+-
+-	if (znode->level != 0) {
+-		int i;
+-		const int n = zn->child_cnt;
+-
+-		/* The children now have new parent */
+-		for (i = 0; i < n; i++) {
+-			struct ubifs_zbranch *zbr = &zn->zbranch[i];
+-
+-			if (zbr->znode)
+-				zbr->znode->parent = zn;
+-		}
+-	}
+-
+-	atomic_long_inc(&c->dirty_zn_cnt);
+ 	return zn;
+ }
+ 
+@@ -234,6 +224,42 @@ static int add_idx_dirt(struct ubifs_inf
+ }
+ 
+ /**
++ * replace_znode - replace old znode with new znode.
++ * @c: UBIFS file-system description object
++ * @new_zn: new znode
++ * @old_zn: old znode
++ * @zbr: the branch of parent znode
++ *
++ * Replace old znode with new znode in TNC.
++ */
++static void replace_znode(struct ubifs_info *c, struct ubifs_znode *new_zn,
++			  struct ubifs_znode *old_zn, struct ubifs_zbranch *zbr)
++{
++	ubifs_assert(c, !ubifs_zn_obsolete(old_zn));
++	__set_bit(OBSOLETE_ZNODE, &old_zn->flags);
++
++	if (old_zn->level != 0) {
++		int i;
++		const int n = new_zn->child_cnt;
++
++		/* The children now have new parent */
++		for (i = 0; i < n; i++) {
++			struct ubifs_zbranch *child = &new_zn->zbranch[i];
++
++			if (child->znode)
++				child->znode->parent = new_zn;
++		}
++	}
++
++	zbr->znode = new_zn;
++	zbr->lnum = 0;
++	zbr->offs = 0;
++	zbr->len = 0;
++
++	atomic_long_inc(&c->dirty_zn_cnt);
++}
++
++/**
+  * dirty_cow_znode - ensure a znode is not being committed.
+  * @c: UBIFS file-system description object
+  * @zbr: branch of znode to check
+@@ -265,21 +291,32 @@ static struct ubifs_znode *dirty_cow_zno
+ 		return zn;
+ 
+ 	if (zbr->len) {
+-		err = insert_old_idx(c, zbr->lnum, zbr->offs);
+-		if (unlikely(err))
+-			return ERR_PTR(err);
++		struct ubifs_old_idx *old_idx;
++
++		old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
++		if (unlikely(!old_idx)) {
++			err = -ENOMEM;
++			goto out;
++		}
++		old_idx->lnum = zbr->lnum;
++		old_idx->offs = zbr->offs;
++
+ 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
+-	} else
+-		err = 0;
++		if (err) {
++			kfree(old_idx);
++			goto out;
++		}
+ 
+-	zbr->znode = zn;
+-	zbr->lnum = 0;
+-	zbr->offs = 0;
+-	zbr->len = 0;
++		do_insert_old_idx(c, old_idx);
++	}
++
++	replace_znode(c, zn, znode, zbr);
+ 
+-	if (unlikely(err))
+-		return ERR_PTR(err);
+ 	return zn;
++
++out:
++	kfree(zn);
++	return ERR_PTR(err);
+ }
+ 
+ /**
 
 
