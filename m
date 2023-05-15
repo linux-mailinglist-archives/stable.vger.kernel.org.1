@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C457034DE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 204CC7033CB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243112AbjEOQxc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
+        id S242510AbjEOQlf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243211AbjEOQxG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:06 -0400
+        with ESMTP id S242860AbjEOQld (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D9B6E9A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:52:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8971A40F4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 299F0629B5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:52:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF87C4339C;
-        Mon, 15 May 2023 16:52:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F03C6288B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1230FC433EF;
+        Mon, 15 May 2023 16:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169565;
-        bh=iH6muFLsBl4cq/ZQjPh2dctKTGePJn46wlTWW4YhjpU=;
+        s=korg; t=1684168890;
+        bh=8i/JvyJzl4/l64YOefdgKj3GkQ/Fwr088NYA7QpuCa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m2tfsSwQxpe8fDPtzNUK8bPwCrUoXWcLTonGa8hdVfPPUcNHhZ62O6vi7boCeVJj4
-         7wSb/rpDh2yxPUnGsy/Y+nfIBJbPk6XidB/M8cp29l33HfBhLFlKk9txcaj97lZcdb
-         w7GSd0cPzbwaZ7meL6aXcGk6FIDixCKi/C6Rw3/Q=
+        b=Me2MJXsTuYTABMbtF/zVfIBavKwsUQjdT6Lr9yAneAgbYUbMx/hHSDbh/liTMNZmJ
+         3L4Es7nJyXTzo0tfR1YHadrNqx14o2D6t6A305jr2vhAfxCJVA4Xrgzz/titqLO+NB
+         T9xRIgtKbe2eTi8xzR7/21/Uzi4wvZEMRGy33QEg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kan Liang <kan.liang@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 099/246] perf record: Fix "read LOST count failed" msg with sample read
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 4.19 074/191] ixgbe: Enable setting RSS table to default values
 Date:   Mon, 15 May 2023 18:25:11 +0200
-Message-Id: <20230515161725.554726716@linuxfoundation.org>
+Message-Id: <20230515161709.954097935@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,57 +56,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 07d85ba9d04e1ebd282f656a29ddf08c5b7b32a2 ]
+[ Upstream commit e85d3d55875f7a1079edfbc4e4e98d6f8aea9ac7 ]
 
-Hundreds of "read LOST count failed" error messages may be displayed,
-when the below command is launched.
+ethtool uses `ETHTOOL_GRXRINGS` to compute how many queues are supported
+by RSS. The driver should return the smaller of either:
+  - The maximum number of RSS queues the device supports, OR
+  - The number of RX queues configured
 
-perf record -e '{cpu/mem-loads-aux/,cpu/event=0xcd,umask=0x1/}:S' -a
+Prior to this change, running `ethtool -X $iface default` fails if the
+number of queues configured is larger than the number supported by RSS,
+even though changing the queue count correctly resets the flowhash to
+use all supported queues.
 
-According to the commit 89e3106fa25fb1b6 ("libperf: Handle read format
-in perf_evsel__read()"), the PERF_FORMAT_GROUP is only available for
-the leader. However, the record__read_lost_samples() goes through every
-entry of an evlist, which includes both leader and member. The member
-event errors out and triggers the error message. Since there may be
-hundreds of CPUs on a server, the message will be printed hundreds of
-times, which is very annoying.
+Other drivers (for example, i40e) will succeed but the flow hash will
+reset to support the maximum number of queues supported by RSS, even if
+that amount is smaller than the configured amount.
 
-The message itself is correct, but the pr_err is a overkill. Other error
-messages in the record__read_lost_samples() are all pr_debug. To make
-the output format consistent, change the pr_err("read LOST count
-failed\n"); to pr_debug("read LOST count failed\n");.
-User can still get the message via -v option.
+Prior to this change:
 
-Fixes: e3a23261ad06d598 ("perf record: Read and inject LOST_SAMPLES events")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230301150413.27011-1-kan.liang@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+$ sudo ethtool -L eth1 combined 20
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 20 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+   24:      8     9    10    11    12    13    14    15
+   32:      0     1     2     3     4     5     6     7
+...
+
+You can see that the flowhash was correctly set to use the maximum
+number of queues supported by the driver (16).
+
+However, asking the NIC to reset to "default" fails:
+
+$ sudo ethtool -X eth1 default
+Cannot set RX flow hash configuration: Invalid argument
+
+After this change, the flowhash can be reset to default which will use
+all of the available RSS queues (16) or the configured queue count,
+whichever is smaller.
+
+Starting with eth1 which has 10 queues and a flowhash distributing to
+all 10 queues:
+
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 10 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9     0     1     2     3     4     5
+   16:      6     7     8     9     0     1     2     3
+...
+
+Increasing the queue count to 48 resets the flowhash to distribute to 16
+queues, as it did before this patch:
+
+$ sudo ethtool -L eth1 combined 48
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Due to the other bugfix in this series, the flowhash can be set to use
+queues 0-5:
+
+$ sudo ethtool -X eth1 equal 5
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     0     1     2
+    8:      3     4     0     1     2     3     4     0
+   16:      1     2     3     4     0     1     2     3
+...
+
+Due to this bugfix, the flowhash can be reset to default and use 16
+queues:
+
+$ sudo ethtool -X eth1 default
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Fixes: 91cd94bfe4f0 ("ixgbe: add basic support for setting and getting nfc controls")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index 8374117e66f6e..be7c0c29d15b0 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -1866,7 +1866,7 @@ static void __record__read_lost_samples(struct record *rec, struct evsel *evsel,
- 	int id_hdr_size;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index a852f9c920742..3d361557a63a3 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -2539,6 +2539,14 @@ static int ixgbe_get_rss_hash_opts(struct ixgbe_adapter *adapter,
+ 	return 0;
+ }
  
- 	if (perf_evsel__read(&evsel->core, cpu_idx, thread_idx, &count) < 0) {
--		pr_err("read LOST count failed\n");
-+		pr_debug("read LOST count failed\n");
- 		return;
- 	}
++static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
++{
++	if (adapter->hw.mac.type < ixgbe_mac_X550)
++		return 16;
++	else
++		return 64;
++}
++
+ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 			   u32 *rule_locs)
+ {
+@@ -2547,7 +2555,8 @@ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
  
+ 	switch (cmd->cmd) {
+ 	case ETHTOOL_GRXRINGS:
+-		cmd->data = adapter->num_rx_queues;
++		cmd->data = min_t(int, adapter->num_rx_queues,
++				  ixgbe_rss_indir_tbl_max(adapter));
+ 		ret = 0;
+ 		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+@@ -2949,14 +2958,6 @@ static int ixgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
+ 	return ret;
+ }
+ 
+-static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
+-{
+-	if (adapter->hw.mac.type < ixgbe_mac_X550)
+-		return 16;
+-	else
+-		return 64;
+-}
+-
+ static u32 ixgbe_get_rxfh_key_size(struct net_device *netdev)
+ {
+ 	return IXGBE_RSS_KEY_SIZE;
 -- 
 2.39.2
 
