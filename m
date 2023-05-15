@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08D117036A4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8CA070375F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243423AbjEORMM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54908 "EHLO
+        id S244041AbjEORUb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243678AbjEORLw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:52 -0400
+        with ESMTP id S244086AbjEORUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F8A8A6B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA257EF0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A2A162102
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363FCC433EF;
-        Mon, 15 May 2023 17:10:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6738B62C0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4420EC433EF;
+        Mon, 15 May 2023 17:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170607;
-        bh=JcLaq3QYEJasR+9EsD9hKaOel5WXA83OZFLuOqh4isY=;
+        s=korg; t=1684171074;
+        bh=bbkozpOWt7WgJLi8h6ASpfTzrpzJFcoj0J/g80+si5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZRKocXv889I01WbG0Rl2ZoCBXDKAk8uk9riuE/q79n29eSC0oqrHvLMBskOMYj53Q
-         qMfhgwO1L1vhuauCRBtSEyqDdKzqKXKADT3AzDL4R+YfTfiGOegCrYqu6HvOUf1V+n
-         3mPqGj0xSKFEEp3ITvGaXjvXrIe8W9Kov2qsQWv4=
+        b=BfJ2pMp1eWmjBEhIbYCpNIbenaQxmWaNITzddtb/kyON6Osayi/9G/SwZRX/evjjL
+         dKK+fA4L6ZGDfVVIazt/Dcpz0txvQyt2kxOCjGhZMhJdSjJ73dqaxsrI0Whcc+2RIR
+         t57FImMTeLauTpZiIIm/kOr89Wzq4488JflNdPM4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.1 155/239] drm/i915/dsi: Use unconditional msleep() instead of intel_dsi_msleep()
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 092/242] net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()
 Date:   Mon, 15 May 2023 18:26:58 +0200
-Message-Id: <20230515161726.331153356@linuxfoundation.org>
+Message-Id: <20230515161724.671015328@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,146 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit c8c2969bfcba5fcba3a5b078315c1b586d927d9f upstream.
+[ Upstream commit 93e0401e0fc0c54b0ac05b687cd135c2ac38187c ]
 
-The intel_dsi_msleep() helper skips sleeping if the MIPI-sequences have
-a version of 3 or newer and the panel is in vid-mode.
+The call to phy_stop() races with the later call to phy_disconnect(),
+resulting in concurrent phy_suspend() calls being run from different
+CPUs. The final call to phy_disconnect() ensures that the PHY is
+stopped and suspended, too.
 
-This is based on the big comment around line 730 which starts with
-"Panel enable/disable sequences from the VBT spec.", where
-the "v3 video mode seq" column does not have any wait t# entries.
-
-Checking the Windows driver shows that it does always honor
-the VBT delays independent of the version of the VBT sequences.
-
-Commit 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for
-the panel_on_delay when there is no reset-deassert MIPI-sequence")
-switched to a direct msleep() instead of intel_dsi_msleep()
-when there is no MIPI_SEQ_DEASSERT_RESET sequence, to fix
-the panel on an Acer Aspire Switch 10 E SW3-016 not turning on.
-
-And now testing on a Nextbook Ares 8A shows that panel_on_delay
-must always be honored otherwise the panel will not turn on.
-
-Instead of only always using regular msleep() for panel_on_delay
-do as Windows does and always use regular msleep() everywhere
-were intel_dsi_msleep() is used and drop the intel_dsi_msleep()
-helper.
-
-Changes in v2:
-- Replace all intel_dsi_msleep() calls instead of just
-  the intel_dsi_msleep(panel_on_delay) call
-
-Cc: stable@vger.kernel.org
-Fixes: 6fdb335f1c9c ("drm/i915/dsi: Use unconditional msleep for the panel_on_delay when there is no reset-deassert MIPI-sequence")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230425194441.68086-1-hdegoede@redhat.com
-(cherry picked from commit fa83c12132f71302f7d4b02758dc0d46048d3f5f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c       |    2 +-
- drivers/gpu/drm/i915/display/intel_dsi_vbt.c |   11 -----------
- drivers/gpu/drm/i915/display/intel_dsi_vbt.h |    1 -
- drivers/gpu/drm/i915/display/vlv_dsi.c       |   22 +++++-----------------
- 4 files changed, 6 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -1210,7 +1210,7 @@ static void gen11_dsi_powerup_panel(stru
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index d937daa8ee883..f28ffc31df220 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3465,7 +3465,6 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
  
- 	/* panel power on related mipi dsi vbt sequences */
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
--	intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
-+	msleep(intel_dsi->panel_on_delay);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
---- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-+++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-@@ -762,17 +762,6 @@ void intel_dsi_vbt_exec_sequence(struct
- 		gpiod_set_value_cansleep(intel_dsi->gpio_backlight, 0);
- }
+-	phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
  
--void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec)
--{
--	struct intel_connector *connector = intel_dsi->attached_connector;
--
--	/* For v3 VBTs in vid-mode the delays are part of the VBT sequences */
--	if (is_vid_mode(intel_dsi) && connector->panel.vbt.dsi.seq_version >= 3)
--		return;
--
--	msleep(msec);
--}
--
- void intel_dsi_log_params(struct intel_dsi *intel_dsi)
- {
- 	struct drm_i915_private *i915 = to_i915(intel_dsi->base.base.dev);
---- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
-+++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.h
-@@ -16,7 +16,6 @@ void intel_dsi_vbt_gpio_init(struct inte
- void intel_dsi_vbt_gpio_cleanup(struct intel_dsi *intel_dsi);
- void intel_dsi_vbt_exec_sequence(struct intel_dsi *intel_dsi,
- 				 enum mipi_seq seq_id);
--void intel_dsi_msleep(struct intel_dsi *intel_dsi, int msec);
- void intel_dsi_log_params(struct intel_dsi *intel_dsi);
- 
- #endif /* __INTEL_DSI_VBT_H__ */
---- a/drivers/gpu/drm/i915/display/vlv_dsi.c
-+++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
-@@ -782,7 +782,6 @@ static void intel_dsi_pre_enable(struct
- {
- 	struct intel_dsi *intel_dsi = enc_to_intel_dsi(encoder);
- 	struct intel_crtc *crtc = to_intel_crtc(pipe_config->uapi.crtc);
--	struct intel_connector *connector = to_intel_connector(conn_state->connector);
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
- 	enum pipe pipe = crtc->pipe;
- 	enum port port;
-@@ -830,21 +829,10 @@ static void intel_dsi_pre_enable(struct
- 	if (!IS_GEMINILAKE(dev_priv))
- 		intel_dsi_prepare(encoder, pipe_config);
- 
-+	/* Give the panel time to power-on and then deassert its reset */
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_ON);
--
--	/*
--	 * Give the panel time to power-on and then deassert its reset.
--	 * Depending on the VBT MIPI sequences version the deassert-seq
--	 * may contain the necessary delay, intel_dsi_msleep() will skip
--	 * the delay in that case. If there is no deassert-seq, then an
--	 * unconditional msleep is used to give the panel time to power-on.
--	 */
--	if (connector->panel.vbt.dsi.sequence[MIPI_SEQ_DEASSERT_RESET]) {
--		intel_dsi_msleep(intel_dsi, intel_dsi->panel_on_delay);
--		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
--	} else {
--		msleep(intel_dsi->panel_on_delay);
--	}
-+	msleep(intel_dsi->panel_on_delay);
-+	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DEASSERT_RESET);
- 
- 	if (IS_GEMINILAKE(dev_priv)) {
- 		glk_cold_boot = glk_dsi_enable_io(encoder);
-@@ -878,7 +866,7 @@ static void intel_dsi_pre_enable(struct
- 		msleep(20); /* XXX */
- 		for_each_dsi_port(port, intel_dsi->ports)
- 			dpi_send_cmd(intel_dsi, TURN_ON, false, port);
--		intel_dsi_msleep(intel_dsi, 100);
-+		msleep(100);
- 
- 		intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
- 
-@@ -1006,7 +994,7 @@ static void intel_dsi_post_disable(struc
- 	/* Assert reset */
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_ASSERT_RESET);
- 
--	intel_dsi_msleep(intel_dsi, intel_dsi->panel_off_delay);
-+	msleep(intel_dsi->panel_off_delay);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_POWER_OFF);
- 
- 	intel_dsi->panel_power_off_time = ktime_get_boottime();
+-- 
+2.39.2
+
 
 
