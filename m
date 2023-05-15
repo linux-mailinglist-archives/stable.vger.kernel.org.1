@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0674703927
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6203A7034C2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244515AbjEORjf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
+        id S243144AbjEOQwD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244360AbjEORjU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:20 -0400
+        with ESMTP id S243119AbjEOQvq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0AA27ECD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52F0413A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 853C962DB7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620A6C4339B;
-        Mon, 15 May 2023 17:36:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E405462988
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF51C433EF;
+        Mon, 15 May 2023 16:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172176;
-        bh=+iYddzZqTkHD1v2HoPk0FvWXkSxfqBwiXR7KesdAUac=;
+        s=korg; t=1684169504;
+        bh=3vXHZr452gE1buZe1gFxXS74w6NY4/2gmvCI41Jjwao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tB5NTNcw5sr0vUaEzyCx9R5MwlrEKXDXRjewpikoZovCM90r88H3Qd7vgJBvIhwcM
-         B9Wul8z7tvpyYkZAMKRaM+8/U8nCngMh3s8k+iROgwG8mxCjAF33T5TxCt9uDs3mv0
-         lQNugB1YrBy9EVf5RlGpUf10x3OlA7yZ8iBwGUz4=
+        b=fH6SO+K2/xlYVRd1XaIfqcKARK/3uPJ3CaeHikT8aX5xHhAY7tIyLnqgsdtv/0hSM
+         /6WjnehGntUtcdMqnECrelkmf1+k9HtHhfzG8GCkOweSP70U3SvNai6QTNS4PEElPM
+         bAJY/vcN9vL58S6KSOyBlnXHA1qenwLTKJiEY+r8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan McDowell <noodles@earth.li>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 039/381] crypto: safexcel - Cleanup ring IRQ workqueues on load failure
+        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+ef6edd9f1baaa54d6235@syzkaller.appspotmail.com
+Subject: [PATCH 6.3 078/246] ethtool: Fix uninitialized number of lanes
 Date:   Mon, 15 May 2023 18:24:50 +0200
-Message-Id: <20230515161738.587940837@linuxfoundation.org>
+Message-Id: <20230515161724.914061600@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,154 +57,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonathan McDowell <noodles@earth.li>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit ca25c00ccbc5f942c63897ed23584cfc66e8ec81 upstream.
+[ Upstream commit 9ad685dbfe7e856bbf17a7177b64676d324d6ed7 ]
 
-A failure loading the safexcel driver results in the following warning
-on boot, because the IRQ affinity has not been correctly cleaned up.
-Ensure we clean up the affinity and workqueues on a failure to load the
-driver.
+It is not possible to set the number of lanes when setting link modes
+using the legacy IOCTL ethtool interface. Since 'struct
+ethtool_link_ksettings' is not initialized in this path, drivers receive
+an uninitialized number of lanes in 'struct
+ethtool_link_ksettings::lanes'.
 
-crypto-safexcel: probe of f2800000.crypto failed with error -2
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 232 at kernel/irq/manage.c:1913 free_irq+0x300/0x340
-Modules linked in: hwmon mdio_i2c crypto_safexcel(+) md5 sha256_generic libsha256 authenc libdes omap_rng rng_core nft_masq nft_nat nft_chain_nat nf_nat nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables libcrc32c nfnetlink fuse autofs4
-CPU: 1 PID: 232 Comm: systemd-udevd Tainted: G        W          6.1.6-00002-g9d4898824677 #3
-Hardware name: MikroTik RB5009 (DT)
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : free_irq+0x300/0x340
-lr : free_irq+0x2e0/0x340
-sp : ffff800008fa3890
-x29: ffff800008fa3890 x28: 0000000000000000 x27: 0000000000000000
-x26: ffff8000008e6dc0 x25: ffff000009034cac x24: ffff000009034d50
-x23: 0000000000000000 x22: 000000000000004a x21: ffff0000093e0d80
-x20: ffff000009034c00 x19: ffff00000615fc00 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 000075f5c1584c5e
-x14: 0000000000000017 x13: 0000000000000000 x12: 0000000000000040
-x11: ffff000000579b60 x10: ffff000000579b62 x9 : ffff800008bbe370
-x8 : ffff000000579dd0 x7 : 0000000000000000 x6 : ffff000000579e18
-x5 : ffff000000579da8 x4 : ffff800008ca0000 x3 : ffff800008ca0188
-x2 : 0000000013033204 x1 : ffff000009034c00 x0 : ffff8000087eadf0
-Call trace:
- free_irq+0x300/0x340
- devm_irq_release+0x14/0x20
- devres_release_all+0xa0/0x100
- device_unbind_cleanup+0x14/0x60
- really_probe+0x198/0x2d4
- __driver_probe_device+0x74/0xdc
- driver_probe_device+0x3c/0x110
- __driver_attach+0x8c/0x190
- bus_for_each_dev+0x6c/0xc0
- driver_attach+0x20/0x30
- bus_add_driver+0x148/0x1fc
- driver_register+0x74/0x120
- __platform_driver_register+0x24/0x30
- safexcel_init+0x48/0x1000 [crypto_safexcel]
- do_one_initcall+0x4c/0x1b0
- do_init_module+0x44/0x1cc
- load_module+0x1724/0x1be4
- __do_sys_finit_module+0xbc/0x110
- __arm64_sys_finit_module+0x1c/0x24
- invoke_syscall+0x44/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x20/0x80
- el0_svc+0x14/0x4c
- el0t_64_sync_handler+0xb0/0xb4
- el0t_64_sync+0x148/0x14c
----[ end trace 0000000000000000 ]---
+When this information is later queried from drivers, it results in the
+ethtool code making decisions based on uninitialized memory, leading to
+the following KMSAN splat [1]. In practice, this most likely only
+happens with the tun driver that simply returns whatever it got in the
+set operation.
 
-Fixes: 1b44c5a60c13 ("inside-secure - add SafeXcel EIP197 crypto engine driver")
-Signed-off-by: Jonathan McDowell <noodles@earth.li>
-Cc: stable@vger.kernel.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As far as I can tell, this uninitialized memory is not leaked to user
+space thanks to the 'ethtool_ops->cap_link_lanes_supported' check in
+linkmodes_prepare_data().
+
+Fix by initializing the structure in the IOCTL path. Did not find any
+more call sites that pass an uninitialized structure when calling
+'ethtool_ops::set_link_ksettings()'.
+
+[1]
+BUG: KMSAN: uninit-value in ethnl_update_linkmodes net/ethtool/linkmodes.c:273 [inline]
+BUG: KMSAN: uninit-value in ethnl_set_linkmodes+0x190b/0x19d0 net/ethtool/linkmodes.c:333
+ ethnl_update_linkmodes net/ethtool/linkmodes.c:273 [inline]
+ ethnl_set_linkmodes+0x190b/0x19d0 net/ethtool/linkmodes.c:333
+ ethnl_default_set_doit+0x88d/0xde0 net/ethtool/netlink.c:640
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x141a/0x14c0 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x3f8/0x750 net/netlink/af_netlink.c:2577
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf41/0x1270 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x127d/0x1430 net/netlink/af_netlink.c:1942
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+ ___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+ __sys_sendmsg net/socket.c:2584 [inline]
+ __do_sys_sendmsg net/socket.c:2593 [inline]
+ __se_sys_sendmsg net/socket.c:2591 [inline]
+ __x64_sys_sendmsg+0x36b/0x540 net/socket.c:2591
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was stored to memory at:
+ tun_get_link_ksettings+0x37/0x60 drivers/net/tun.c:3544
+ __ethtool_get_link_ksettings+0x17b/0x260 net/ethtool/ioctl.c:441
+ ethnl_set_linkmodes+0xee/0x19d0 net/ethtool/linkmodes.c:327
+ ethnl_default_set_doit+0x88d/0xde0 net/ethtool/netlink.c:640
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x141a/0x14c0 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x3f8/0x750 net/netlink/af_netlink.c:2577
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf41/0x1270 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x127d/0x1430 net/netlink/af_netlink.c:1942
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+ ___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+ __sys_sendmsg net/socket.c:2584 [inline]
+ __do_sys_sendmsg net/socket.c:2593 [inline]
+ __se_sys_sendmsg net/socket.c:2591 [inline]
+ __x64_sys_sendmsg+0x36b/0x540 net/socket.c:2591
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was stored to memory at:
+ tun_set_link_ksettings+0x37/0x60 drivers/net/tun.c:3553
+ ethtool_set_link_ksettings+0x600/0x690 net/ethtool/ioctl.c:609
+ __dev_ethtool net/ethtool/ioctl.c:3024 [inline]
+ dev_ethtool+0x1db9/0x2a70 net/ethtool/ioctl.c:3078
+ dev_ioctl+0xb07/0x1270 net/core/dev_ioctl.c:524
+ sock_do_ioctl+0x295/0x540 net/socket.c:1213
+ sock_ioctl+0x729/0xd90 net/socket.c:1316
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl+0x222/0x400 fs/ioctl.c:856
+ __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Local variable link_ksettings created at:
+ ethtool_set_link_ksettings+0x54/0x690 net/ethtool/ioctl.c:577
+ __dev_ethtool net/ethtool/ioctl.c:3024 [inline]
+ dev_ethtool+0x1db9/0x2a70 net/ethtool/ioctl.c:3078
+
+Fixes: 012ce4dd3102 ("ethtool: Extend link modes settings uAPI with lanes")
+Reported-and-tested-by: syzbot+ef6edd9f1baaa54d6235@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/netdev/0000000000004bb41105fa70f361@google.com/
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/safexcel.c |   37 +++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ net/ethtool/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/inside-secure/safexcel.c
-+++ b/drivers/crypto/inside-secure/safexcel.c
-@@ -1634,19 +1634,23 @@ static int safexcel_probe_generic(void *
- 						     &priv->ring[i].rdr);
- 		if (ret) {
- 			dev_err(dev, "Failed to initialize rings\n");
--			return ret;
-+			goto err_cleanup_rings;
- 		}
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 646b3e490c71a..f0c646a17700f 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -573,8 +573,8 @@ static int ethtool_get_link_ksettings(struct net_device *dev,
+ static int ethtool_set_link_ksettings(struct net_device *dev,
+ 				      void __user *useraddr)
+ {
++	struct ethtool_link_ksettings link_ksettings = {};
+ 	int err;
+-	struct ethtool_link_ksettings link_ksettings;
  
- 		priv->ring[i].rdr_req = devm_kcalloc(dev,
- 			EIP197_DEFAULT_RING_SIZE,
- 			sizeof(*priv->ring[i].rdr_req),
- 			GFP_KERNEL);
--		if (!priv->ring[i].rdr_req)
--			return -ENOMEM;
-+		if (!priv->ring[i].rdr_req) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+ 	ASSERT_RTNL();
  
- 		ring_irq = devm_kzalloc(dev, sizeof(*ring_irq), GFP_KERNEL);
--		if (!ring_irq)
--			return -ENOMEM;
-+		if (!ring_irq) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
- 
- 		ring_irq->priv = priv;
- 		ring_irq->ring = i;
-@@ -1660,7 +1664,8 @@ static int safexcel_probe_generic(void *
- 						ring_irq);
- 		if (irq < 0) {
- 			dev_err(dev, "Failed to get IRQ ID for ring %d\n", i);
--			return irq;
-+			ret = irq;
-+			goto err_cleanup_rings;
- 		}
- 
- 		priv->ring[i].irq = irq;
-@@ -1672,8 +1677,10 @@ static int safexcel_probe_generic(void *
- 		snprintf(wq_name, 9, "wq_ring%d", i);
- 		priv->ring[i].workqueue =
- 			create_singlethread_workqueue(wq_name);
--		if (!priv->ring[i].workqueue)
--			return -ENOMEM;
-+		if (!priv->ring[i].workqueue) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
- 
- 		priv->ring[i].requests = 0;
- 		priv->ring[i].busy = false;
-@@ -1690,16 +1697,26 @@ static int safexcel_probe_generic(void *
- 	ret = safexcel_hw_init(priv);
- 	if (ret) {
- 		dev_err(dev, "HW init failed (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
- 
- 	ret = safexcel_register_algorithms(priv);
- 	if (ret) {
- 		dev_err(dev, "Failed to register algorithms (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
- 
- 	return 0;
-+
-+err_cleanup_rings:
-+	for (i = 0; i < priv->config.rings; i++) {
-+		if (priv->ring[i].irq)
-+			irq_set_affinity_hint(priv->ring[i].irq, NULL);
-+		if (priv->ring[i].workqueue)
-+			destroy_workqueue(priv->ring[i].workqueue);
-+	}
-+
-+	return ret;
- }
- 
- static void safexcel_hw_reset_rings(struct safexcel_crypto_priv *priv)
+-- 
+2.39.2
+
 
 
