@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA14E7033B7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0674703927
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242844AbjEOQkm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43544 "EHLO
+        id S244515AbjEORjf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242878AbjEOQka (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB48170C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:40:29 -0700 (PDT)
+        with ESMTP id S244360AbjEORjU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0AA27ECD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E48E6287E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048B7C433D2;
-        Mon, 15 May 2023 16:40:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 853C962DB7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620A6C4339B;
+        Mon, 15 May 2023 17:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168828;
-        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
+        s=korg; t=1684172176;
+        bh=+iYddzZqTkHD1v2HoPk0FvWXkSxfqBwiXR7KesdAUac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q2FT/oSZW8DXz0mvj+nCf7Y6FZL+e7eHGUYx1gU3F+kUfe66orPcHEQ9HMcyJY4h0
-         7qIJ2WjB4io4zk63Y22tmJq+aYtvzqmTMJrLz+14++lOBrwMW27f9tVnRo4kxW5a5j
-         +YXOehS+2OwfY9HS0GPC/sBSaD3z3nF8JopPFkxk=
+        b=tB5NTNcw5sr0vUaEzyCx9R5MwlrEKXDXRjewpikoZovCM90r88H3Qd7vgJBvIhwcM
+         B9Wul8z7tvpyYkZAMKRaM+8/U8nCngMh3s8k+iROgwG8mxCjAF33T5TxCt9uDs3mv0
+         lQNugB1YrBy9EVf5RlGpUf10x3OlA7yZ8iBwGUz4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 053/191] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+        patches@lists.linux.dev, Jonathan McDowell <noodles@earth.li>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 039/381] crypto: safexcel - Cleanup ring IRQ workqueues on load failure
 Date:   Mon, 15 May 2023 18:24:50 +0200
-Message-Id: <20230515161709.138140642@linuxfoundation.org>
+Message-Id: <20230515161738.587940837@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,77 +53,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: Jonathan McDowell <noodles@earth.li>
 
-[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
+commit ca25c00ccbc5f942c63897ed23584cfc66e8ec81 upstream.
 
-Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
-wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
+A failure loading the safexcel driver results in the following warning
+on boot, because the IRQ affinity has not been correctly cleaned up.
+Ensure we clean up the affinity and workqueues on a failure to load the
+driver.
 
-For some reason we have no corresponding check for SO_PASSSEC.
+crypto-safexcel: probe of f2800000.crypto failed with error -2
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 232 at kernel/irq/manage.c:1913 free_irq+0x300/0x340
+Modules linked in: hwmon mdio_i2c crypto_safexcel(+) md5 sha256_generic libsha256 authenc libdes omap_rng rng_core nft_masq nft_nat nft_chain_nat nf_nat nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables libcrc32c nfnetlink fuse autofs4
+CPU: 1 PID: 232 Comm: systemd-udevd Tainted: G        W          6.1.6-00002-g9d4898824677 #3
+Hardware name: MikroTik RB5009 (DT)
+pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : free_irq+0x300/0x340
+lr : free_irq+0x2e0/0x340
+sp : ffff800008fa3890
+x29: ffff800008fa3890 x28: 0000000000000000 x27: 0000000000000000
+x26: ffff8000008e6dc0 x25: ffff000009034cac x24: ffff000009034d50
+x23: 0000000000000000 x22: 000000000000004a x21: ffff0000093e0d80
+x20: ffff000009034c00 x19: ffff00000615fc00 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000000000000000 x15: 000075f5c1584c5e
+x14: 0000000000000017 x13: 0000000000000000 x12: 0000000000000040
+x11: ffff000000579b60 x10: ffff000000579b62 x9 : ffff800008bbe370
+x8 : ffff000000579dd0 x7 : 0000000000000000 x6 : ffff000000579e18
+x5 : ffff000000579da8 x4 : ffff800008ca0000 x3 : ffff800008ca0188
+x2 : 0000000013033204 x1 : ffff000009034c00 x0 : ffff8000087eadf0
+Call trace:
+ free_irq+0x300/0x340
+ devm_irq_release+0x14/0x20
+ devres_release_all+0xa0/0x100
+ device_unbind_cleanup+0x14/0x60
+ really_probe+0x198/0x2d4
+ __driver_probe_device+0x74/0xdc
+ driver_probe_device+0x3c/0x110
+ __driver_attach+0x8c/0x190
+ bus_for_each_dev+0x6c/0xc0
+ driver_attach+0x20/0x30
+ bus_add_driver+0x148/0x1fc
+ driver_register+0x74/0x120
+ __platform_driver_register+0x24/0x30
+ safexcel_init+0x48/0x1000 [crypto_safexcel]
+ do_one_initcall+0x4c/0x1b0
+ do_init_module+0x44/0x1cc
+ load_module+0x1724/0x1be4
+ __do_sys_finit_module+0xbc/0x110
+ __arm64_sys_finit_module+0x1c/0x24
+ invoke_syscall+0x44/0x110
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x20/0x80
+ el0_svc+0x14/0x4c
+ el0t_64_sync_handler+0xb0/0xb4
+ el0t_64_sync+0x148/0x14c
+---[ end trace 0000000000000000 ]---
 
-In the recvmsg(2) doc we have:
-       MSG_CTRUNC
-              indicates that some control data was discarded due to lack
-              of space in the buffer for ancillary data.
-
-So, we need to set MSG_CTRUNC flag for all types of SCM.
-
-This change can break applications those don't check MSG_CTRUNC flag.
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-v2:
-- commit message was rewritten according to Eric's suggestion
-Acked-by: Paul Moore <paul@paul-moore.com>
-
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1b44c5a60c13 ("inside-secure - add SafeXcel EIP197 crypto engine driver")
+Signed-off-by: Jonathan McDowell <noodles@earth.li>
+Cc: stable@vger.kernel.org
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/scm.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/crypto/inside-secure/safexcel.c |   37 +++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index 1ce365f4c2560..585adc1346bd0 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
+--- a/drivers/crypto/inside-secure/safexcel.c
++++ b/drivers/crypto/inside-secure/safexcel.c
+@@ -1634,19 +1634,23 @@ static int safexcel_probe_generic(void *
+ 						     &priv->ring[i].rdr);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to initialize rings\n");
+-			return ret;
++			goto err_cleanup_rings;
  		}
- 	}
- }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return test_bit(SOCK_PASSSEC, &sock->flags);
-+}
- #else
- static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
- { }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SECURITY_NETWORK */
  
- static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
- 				struct scm_cookie *scm, int flags)
- {
- 	if (!msg->msg_control) {
--		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
-+		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
-+		    scm_has_secdata(sock))
- 			msg->msg_flags |= MSG_CTRUNC;
- 		scm_destroy(scm);
- 		return;
--- 
-2.39.2
-
+ 		priv->ring[i].rdr_req = devm_kcalloc(dev,
+ 			EIP197_DEFAULT_RING_SIZE,
+ 			sizeof(*priv->ring[i].rdr_req),
+ 			GFP_KERNEL);
+-		if (!priv->ring[i].rdr_req)
+-			return -ENOMEM;
++		if (!priv->ring[i].rdr_req) {
++			ret = -ENOMEM;
++			goto err_cleanup_rings;
++		}
+ 
+ 		ring_irq = devm_kzalloc(dev, sizeof(*ring_irq), GFP_KERNEL);
+-		if (!ring_irq)
+-			return -ENOMEM;
++		if (!ring_irq) {
++			ret = -ENOMEM;
++			goto err_cleanup_rings;
++		}
+ 
+ 		ring_irq->priv = priv;
+ 		ring_irq->ring = i;
+@@ -1660,7 +1664,8 @@ static int safexcel_probe_generic(void *
+ 						ring_irq);
+ 		if (irq < 0) {
+ 			dev_err(dev, "Failed to get IRQ ID for ring %d\n", i);
+-			return irq;
++			ret = irq;
++			goto err_cleanup_rings;
+ 		}
+ 
+ 		priv->ring[i].irq = irq;
+@@ -1672,8 +1677,10 @@ static int safexcel_probe_generic(void *
+ 		snprintf(wq_name, 9, "wq_ring%d", i);
+ 		priv->ring[i].workqueue =
+ 			create_singlethread_workqueue(wq_name);
+-		if (!priv->ring[i].workqueue)
+-			return -ENOMEM;
++		if (!priv->ring[i].workqueue) {
++			ret = -ENOMEM;
++			goto err_cleanup_rings;
++		}
+ 
+ 		priv->ring[i].requests = 0;
+ 		priv->ring[i].busy = false;
+@@ -1690,16 +1697,26 @@ static int safexcel_probe_generic(void *
+ 	ret = safexcel_hw_init(priv);
+ 	if (ret) {
+ 		dev_err(dev, "HW init failed (%d)\n", ret);
+-		return ret;
++		goto err_cleanup_rings;
+ 	}
+ 
+ 	ret = safexcel_register_algorithms(priv);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register algorithms (%d)\n", ret);
+-		return ret;
++		goto err_cleanup_rings;
+ 	}
+ 
+ 	return 0;
++
++err_cleanup_rings:
++	for (i = 0; i < priv->config.rings; i++) {
++		if (priv->ring[i].irq)
++			irq_set_affinity_hint(priv->ring[i].irq, NULL);
++		if (priv->ring[i].workqueue)
++			destroy_workqueue(priv->ring[i].workqueue);
++	}
++
++	return ret;
+ }
+ 
+ static void safexcel_hw_reset_rings(struct safexcel_crypto_priv *priv)
 
 
