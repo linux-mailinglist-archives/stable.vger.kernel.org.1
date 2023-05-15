@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AF3703B3F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A917039D8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243684AbjEOSBO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60436 "EHLO
+        id S244670AbjEORqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244754AbjEOSAo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0C71FA4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:07 -0700 (PDT)
+        with ESMTP id S244523AbjEORqC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5023BE738
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A74DA62FCE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B670FC433EF;
-        Mon, 15 May 2023 17:57:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEDAC62E94
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C434FC433D2;
+        Mon, 15 May 2023 17:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173436;
-        bh=53YffIpCKJJArZLDQiOeo/YoB/OhL7KayjvtOlSRLe8=;
+        s=korg; t=1684172645;
+        bh=yVHtOSh96vcPvf96GHnuM9QQ9aFcp3NBW3kwfes67Uc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B5rt6eFMhj8+abIgUc1N1hCZGgI5IEb61f4vjlRZWT3BlhHpO479jgnyqjgL9yf0n
-         LA5uIQS3NM1N55E7Yzff/0vjzB/lYzTgi8SyFWRPoULR2Xu9T0L6xRxbg/xAVBQFmS
-         qdC9LqgmnxWjGaPO8pLw6ms+TtYdQxwRfrNigSWY=
+        b=mVIql56zIUoZvM2UNfgP03IfXdgWCWcRDuHSSSHkdINhMqB+ezFtEi+gmGYdfMcks
+         niVQpvgYq0nnVgIIPTMI66Sg5dGzcCU+2UQ3ttOU0ZDV08IOE1/F6AmvS4SJbnxQ8Y
+         scRRRYnwxEvGydgPJnikjvJMmQwXXPXuxlw0lk+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quentin Monnet <quentin@isovalent.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 093/282] bpftool: Fix bug for long instructions in program CFG dumps
+Subject: [PATCH 5.10 220/381] usb: gadget: tegra-xudc: Fix crash in vbus_draw
 Date:   Mon, 15 May 2023 18:27:51 +0200
-Message-Id: <20230515161725.052390064@linuxfoundation.org>
+Message-Id: <20230515161746.680241993@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,44 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quentin Monnet <quentin@isovalent.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 67cf52cdb6c8fa6365d29106555dacf95c9fd374 ]
+[ Upstream commit 5629d31955297ca47b9283c64fff70f2f34aa528 ]
 
-When dumping the control flow graphs for programs using the 16-byte long
-load instruction, we need to skip the second part of this instruction
-when looking for the next instruction to process. Otherwise, we end up
-printing "BUG_ld_00" from the kernel disassembler in the CFG.
+Commit ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+populated the vbus_draw callback for the Tegra XUDC driver. The function
+tegra_xudc_gadget_vbus_draw(), that was added by this commit, assumes
+that the pointer 'curr_usbphy' has been initialised, which is not always
+the case because this is only initialised when the USB role is updated.
+Fix this crash, by checking that the 'curr_usbphy' is valid before
+dereferencing.
 
-Fixes: efcef17a6d65 ("tools: bpftool: generate .dot graph from CFG information")
-Signed-off-by: Quentin Monnet <quentin@isovalent.com>
-Link: https://lore.kernel.org/r/20230405132120.59886-3-quentin@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230405181854.42355-1-jonathanh@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/xlated_dumper.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/xlated_dumper.c b/tools/bpf/bpftool/xlated_dumper.c
-index 5b91ee65a0802..762ca450d1980 100644
---- a/tools/bpf/bpftool/xlated_dumper.c
-+++ b/tools/bpf/bpftool/xlated_dumper.c
-@@ -363,8 +363,15 @@ void dump_xlated_for_graph(struct dump_data *dd, void *buf_start, void *buf_end,
- 	struct bpf_insn *insn_start = buf_start;
- 	struct bpf_insn *insn_end = buf_end;
- 	struct bpf_insn *cur = insn_start;
-+	bool double_insn = false;
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index 3ebc8c5416e30..66d5f6a85c848 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -2154,7 +2154,7 @@ static int tegra_xudc_gadget_vbus_draw(struct usb_gadget *gadget,
  
- 	for (; cur <= insn_end; cur++) {
-+		if (double_insn) {
-+			double_insn = false;
-+			continue;
-+		}
-+		double_insn = cur->code == (BPF_LD | BPF_IMM | BPF_DW);
-+
- 		printf("% 4d: ", (int)(cur - insn_start + start_idx));
- 		print_bpf_insn(&cbs, cur, true);
- 		if (cur != insn_end)
+ 	dev_dbg(xudc->dev, "%s: %u mA\n", __func__, m_a);
+ 
+-	if (xudc->curr_usbphy->chg_type == SDP_TYPE)
++	if (xudc->curr_usbphy && xudc->curr_usbphy->chg_type == SDP_TYPE)
+ 		ret = usb_phy_set_power(xudc->curr_usbphy, m_a);
+ 
+ 	return ret;
 -- 
 2.39.2
 
