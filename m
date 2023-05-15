@@ -2,149 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD192702ADA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 12:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D472702ADD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 12:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240446AbjEOKqO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 06:46:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38416 "EHLO
+        id S240848AbjEOKs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 06:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjEOKqN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 06:46:13 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BED1B8;
-        Mon, 15 May 2023 03:46:11 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QKbXT5xcdz6J6k4;
-        Mon, 15 May 2023 18:42:01 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 15 May
- 2023 11:46:08 +0100
-Date:   Mon, 15 May 2023 11:46:07 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     <linux-cxl@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/5] cxl/hdm: Use 4-byte reads to retrieve HDM decoder
- base+limit
-Message-ID: <20230515114607.00004647@Huawei.com>
-In-Reply-To: <168149844056.792294.8224490474529733736.stgit@dwillia2-xfh.jf.intel.com>
-References: <168149842935.792294.13212627946146993066.stgit@dwillia2-xfh.jf.intel.com>
-        <168149844056.792294.8224490474529733736.stgit@dwillia2-xfh.jf.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S240807AbjEOKs4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 06:48:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEE7187;
+        Mon, 15 May 2023 03:48:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 608CA611F3;
+        Mon, 15 May 2023 10:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5E8C433D2;
+        Mon, 15 May 2023 10:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684147734;
+        bh=GMNZQGOM7OSk9SMRxPFbPrzw+HMjjcK+CNPMsFGAKCk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Mw/l9ln6He8vMUNGmGMX/QlUn71yBZBMFO4zTC8FhnL6zFl55lRO4lBeJsEk+tw0Q
+         b6yz4tRVCy+a5PY3AzkSIiYjKfwPuH5amOAstRRsLxcpUy+ca4TeK8haLpKfyJEgv6
+         /cu5yP54pKm5KfT2MLnqT/Y5t4Drn75/G6wRZq+Jg5zMW1Ns3lS1hYcRpYAszzndLn
+         m10AhCLBvK+rGIFfMtU4AV5fhsO+okzW5Jd1Px6XtSS5kTKb4MJIuLAW0hvJDNXy3V
+         yLJRB10r7EE8ftyGGmvr3Am6NcbmDMwBtwQzpthkUsXQJX10ttw6QKqfu3oCVLplsh
+         9ySJDGvXw9XpA==
+From:   Christian Brauner <brauner@kernel.org>
+To:     David Woodhouse <dwmw2@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Fabian Frederick <fabf@skynet.be>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        KaiGai Kohei <kaigai@ak.jp.nec.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Christian Brauner <brauner@kernel.org>,
+        Tim Gardner <tim.gardner@canonical.com>,
+        kernel test robot <lkp@intel.com>,
+        Ron Economos <re@w6rz.net>,
+        Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] jffs2: reduce stack usage in jffs2_build_xattr_subsystem()
+Date:   Mon, 15 May 2023 12:46:50 +0200
+Message-Id: <20230515-sinnbild-boten-fa2d5510a52c@brauner>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230506045612.16616-1-ansuelsmth@gmail.com>
+References: <20230506045612.16616-1-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=800; i=brauner@kernel.org; h=from:subject:message-id; bh=RW8BK9FlWjXjDRheFHaERdpy80bDkJQX/aatmJS8jy0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQk8U7Z+vRO/vOf6864nTnvkdIUFy3sOyklLylUcHXd8Wb7 x1cPd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkygGG/7mn8xYI3VxXGrjlzVm5jA e7ly3ye6dl9+Kky/+LeydxnY5l+GfYsPelreH3r7u37/zy0kbjgTTbEdUIPRXXdTtnMke/V+YEAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 14 Apr 2023 11:54:00 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> The CXL specification mandates that 4-byte registers must be accessed
-> with 4-byte access cycles. CXL 3.0 8.2.3 "Component Register Layout and
-> Definition" states that the behavior is undefined if (2) 32-bit
-> registers are accessed as an 8-byte quantity. It turns out that at least
-> one hardware implementation is sensitive to this in practice. The @size
-> variable results in zero with:
+On Sat, 06 May 2023 06:56:12 +0200, Christian Marangi wrote:
+> Use kcalloc() for allocation/flush of 128 pointers table to
+> reduce stack usage.
 > 
->     size = readq(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
+> Function now returns -ENOMEM or 0 on success.
 > 
-> ...and the correct size with:
+> stackusage
+> Before:
+> ./fs/jffs2/xattr.c:775  jffs2_build_xattr_subsystem     1208
+> dynamic,bounded
 > 
->     lo = readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
->     hi = readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(which));
->     size = (hi << 32) + lo;
+> [...]
 
-Hmm. Annoying that there isn't an always present split version of the
-ioread64_hi_lo like there effectively is for hi_low_readq()
+I assume I was Cced to pick this up. I'm happy to do that. If this is
+rather supposed to go through the jffs2 tree then please tell me so we
+can drop it.
 
-Mind you, why was this using the ioread64_hi_lo() variant rather
-than hi_lo_readq()?  Far as I can tell that wouldn't have suffered
-from this problem in the first place.
+Applied to the vfs.misc branch of the vfs/vfs.git tree.
+Patches in the vfs.misc branch should appear in linux-next soon.
 
-There is at least one other direct user of that function, so maybe
-we should just use it here as well?
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Jonathan
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.misc
 
-> 
-> Fixes: d17d0540a0db ("cxl/core/hdm: Add CXL standard decoder enumeration to the core")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/cxl/core/hdm.c |   20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-> index 35b338b716fe..6fdf7981ddc7 100644
-> --- a/drivers/cxl/core/hdm.c
-> +++ b/drivers/cxl/core/hdm.c
-> @@ -1,6 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /* Copyright(c) 2022 Intel Corporation. All rights reserved. */
-> -#include <linux/io-64-nonatomic-hi-lo.h>
->  #include <linux/seq_file.h>
->  #include <linux/device.h>
->  #include <linux/delay.h>
-> @@ -785,8 +784,8 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
->  			    int *target_map, void __iomem *hdm, int which,
->  			    u64 *dpa_base, struct cxl_endpoint_dvsec_info *info)
->  {
-> +	u64 size, base, skip, dpa_size, lo, hi;
->  	struct cxl_endpoint_decoder *cxled;
-> -	u64 size, base, skip, dpa_size;
->  	bool committed;
->  	u32 remainder;
->  	int i, rc;
-> @@ -801,8 +800,12 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
->  							which, info);
->  
->  	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(which));
-> -	base = ioread64_hi_lo(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(which));
-> -	size = ioread64_hi_lo(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
-> +	lo = readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(which));
-> +	hi = readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(which));
-> +	base = (hi << 32) + lo;
-> +	lo = readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
-> +	hi = readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(which));
-> +	size = (hi << 32) + lo;
->  	committed = !!(ctrl & CXL_HDM_DECODER0_CTRL_COMMITTED);
->  	cxld->commit = cxl_decoder_commit;
->  	cxld->reset = cxl_decoder_reset;
-> @@ -865,8 +868,9 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
->  		return rc;
->  
->  	if (!info) {
-> -		target_list.value =
-> -			ioread64_hi_lo(hdm + CXL_HDM_DECODER0_TL_LOW(which));
-> +		lo = readl(hdm + CXL_HDM_DECODER0_TL_LOW(which));
-> +		hi = readl(hdm + CXL_HDM_DECODER0_TL_HIGH(which));
-> +		target_list.value = (hi << 32) + lo;
->  		for (i = 0; i < cxld->interleave_ways; i++)
->  			target_map[i] = target_list.target_id[i];
->  
-> @@ -883,7 +887,9 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
->  			port->id, cxld->id, size, cxld->interleave_ways);
->  		return -ENXIO;
->  	}
-> -	skip = ioread64_hi_lo(hdm + CXL_HDM_DECODER0_SKIP_LOW(which));
-> +	lo = readl(hdm + CXL_HDM_DECODER0_SKIP_LOW(which));
-> +	hi = readl(hdm + CXL_HDM_DECODER0_SKIP_HIGH(which));
-> +	skip = (hi << 32) + lo;
->  	cxled = to_cxl_endpoint_decoder(&cxld->dev);
->  	rc = devm_cxl_dpa_reserve(cxled, *dpa_base + skip, dpa_size, skip);
->  	if (rc) {
-> 
-
+[1/1] jffs2: reduce stack usage in jffs2_build_xattr_subsystem()
+      https://git.kernel.org/vfs/vfs/c/493e7cebb906
