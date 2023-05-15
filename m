@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8D67039AC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A047C703794
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244597AbjEORpC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38606 "EHLO
+        id S244098AbjEORW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244648AbjEORoq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2BA19F3A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:21 -0700 (PDT)
+        with ESMTP id S244048AbjEORWl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9B813C3E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EEC262E69
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123CDC433D2;
-        Mon, 15 May 2023 17:42:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32F0262C52
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37442C433EF;
+        Mon, 15 May 2023 17:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172537;
-        bh=Px/ML4B8PjQayR4JZES95cGLAD0o0bTKjyGcOnGFH+E=;
+        s=korg; t=1684171224;
+        bh=Ae/KnBJRs/9YKdb7zUKyLXsHGQk4IBiw0Xmo6TCRyvI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H5XQZvsoiR0ASOxBhn2uGBEY1z/duATE7jOq6giZNS6s8YkHfyBhmeqml/uiGpU/l
-         FP6jpkU3cMq1rFkf36jOpHI2AST3dJTTDzsLzALXchXktr+pGZt42g7gh/2D/Y+3Zk
-         yUudAWW62WPRYeDQLJuF67hEzSXgjP/ZWAourLz4=
+        b=yZFRqvu+H2E/om6dghUb+VNQUuqCdf/33cDaBy58DEWXDxLzkQJMXcgKRGLp764P8
+         A/hZpanBlDNqa1ugB6ltu5D8XDkizFVGGVvChgkl0cDews1UzF2vNI2YE8Zc71gKrS
+         gB9gudise3sYg/fP6yN1AVeJcb9PiaswXeSNvjuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Dmitrii Dolgov <9erthalion6@gmail.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/381] netfilter: nf_tables: dont write table validation state without mutex
-Date:   Mon, 15 May 2023 18:27:16 +0200
-Message-Id: <20230515161745.172175855@linuxfoundation.org>
+Subject: [PATCH 6.2 111/242] perf stat: Separate bperf from bpf_profiler
+Date:   Mon, 15 May 2023 18:27:17 +0200
+Message-Id: <20230515161725.234246254@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,84 +58,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Dmitrii Dolgov <9erthalion6@gmail.com>
 
-[ Upstream commit 9a32e9850686599ed194ccdceb6cd3dd56b2d9b9 ]
+[ Upstream commit ecc68ee216c6c5b2f84915e1441adf436f1b019b ]
 
-The ->cleanup callback needs to be removed, this doesn't work anymore as
-the transaction mutex is already released in the ->abort function.
+It seems that perf stat -b <prog id> doesn't produce any results:
 
-Just do it after a successful validation pass, this either happens
-from commit or abort phases where transaction mutex is held.
+    $ perf stat -e cycles -b 4 -I 10000 -vvv
+    Control descriptor is not initialized
+    cycles: 0 0 0
+                time        counts unit      events
+	10.007641640    <not supported>      cycles
 
-Fixes: f102d66b335a ("netfilter: nf_tables: use dedicated mutex to guard transactions")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Looks like this happens because fentry/fexit progs are getting loaded, but the
+corresponding perf event is not enabled and not added into the events bpf map.
+I think there is some mixing up between two type of bpf support, one for bperf
+and one for bpf_profiler. Both are identified via evsel__is_bpf, based on which
+perf events are enabled, but for the latter (bpf_profiler) a perf event is
+required. Using evsel__is_bperf to check only bperf produces expected results:
+
+    $ perf stat -e cycles -b 4 -I 10000 -vvv
+    Control descriptor is not initialized
+    ------------------------------------------------------------
+    perf_event_attr:
+      size                             136
+      sample_type                      IDENTIFIER
+      read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
+      disabled                         1
+      exclude_guest                    1
+    ------------------------------------------------------------
+    sys_perf_event_open: pid -1  cpu 0  group_fd -1  flags 0x8 = 3
+    ------------------------------------------------------------
+    [...perf_event_attr for other CPUs...]
+    ------------------------------------------------------------
+    cycles: 309426 169009 169009
+		time             counts unit events
+	10.010091271             309426      cycles
+
+The final numbers correspond (at least in the level of magnitude) to the
+same metric obtained via bpftool.
+
+Fixes: 112cb56164bc2108 ("perf stat: Introduce config stat.bpf-counter-events")
+Reviewed-by: Song Liu <song@kernel.org>
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+Tested-by: Song Liu <song@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230412182316.11628-1-9erthalion6@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter/nfnetlink.h | 1 -
- net/netfilter/nf_tables_api.c       | 8 ++------
- net/netfilter/nfnetlink.c           | 2 --
- 3 files changed, 2 insertions(+), 9 deletions(-)
+ tools/perf/builtin-stat.c | 4 ++--
+ tools/perf/util/evsel.h   | 5 +++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/netfilter/nfnetlink.h b/include/linux/netfilter/nfnetlink.h
-index 791d516e1e880..0518ca72b7616 100644
---- a/include/linux/netfilter/nfnetlink.h
-+++ b/include/linux/netfilter/nfnetlink.h
-@@ -39,7 +39,6 @@ struct nfnetlink_subsystem {
- 	int (*commit)(struct net *net, struct sk_buff *skb);
- 	int (*abort)(struct net *net, struct sk_buff *skb,
- 		     enum nfnl_abort_action action);
--	void (*cleanup)(struct net *net);
- 	bool (*valid_genid)(struct net *net, u32 genid);
- };
- 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 2143edafba772..7bb716df7afce 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7442,6 +7442,8 @@ static int nf_tables_validate(struct net *net)
- 			if (nft_table_validate(net, table) < 0)
- 				return -EAGAIN;
- 		}
-+
-+		nft_validate_state_update(net, NFT_VALIDATE_SKIP);
- 		break;
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 387dc9c9e7bee..682db49eef4cb 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -773,7 +773,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 		counter->reset_group = false;
+ 		if (bpf_counter__load(counter, &target))
+ 			return -1;
+-		if (!evsel__is_bpf(counter))
++		if (!(evsel__is_bperf(counter)))
+ 			all_counters_use_bpf = false;
  	}
  
-@@ -8273,11 +8275,6 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 	return 0;
+@@ -789,7 +789,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 
+ 		if (counter->reset_group || counter->errored)
+ 			continue;
+-		if (evsel__is_bpf(counter))
++		if (evsel__is_bperf(counter))
+ 			continue;
+ try_again:
+ 		if (create_perf_stat_counter(counter, &stat_config, &target,
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index d572be41b9608..2899c97d997cd 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -269,6 +269,11 @@ static inline bool evsel__is_bpf(struct evsel *evsel)
+ 	return evsel->bpf_counter_ops != NULL;
  }
  
--static void nf_tables_cleanup(struct net *net)
--{
--	nft_validate_state_update(net, NFT_VALIDATE_SKIP);
--}
--
- static int nf_tables_abort(struct net *net, struct sk_buff *skb,
- 			   enum nfnl_abort_action action)
- {
-@@ -8309,7 +8306,6 @@ static const struct nfnetlink_subsystem nf_tables_subsys = {
- 	.cb		= nf_tables_cb,
- 	.commit		= nf_tables_commit,
- 	.abort		= nf_tables_abort,
--	.cleanup	= nf_tables_cleanup,
- 	.valid_genid	= nf_tables_valid_genid,
- 	.owner		= THIS_MODULE,
- };
-diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
-index d3df66a39b5e0..edf386a020b9e 100644
---- a/net/netfilter/nfnetlink.c
-+++ b/net/netfilter/nfnetlink.c
-@@ -530,8 +530,6 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			goto replay_abort;
- 		}
- 	}
--	if (ss->cleanup)
--		ss->cleanup(net);
++static inline bool evsel__is_bperf(struct evsel *evsel)
++{
++	return evsel->bpf_counter_ops != NULL && list_empty(&evsel->bpf_counter_list);
++}
++
+ #define EVSEL__MAX_ALIASES 8
  
- 	nfnl_err_deliver(&err_list, oskb);
- 	kfree_skb(skb);
+ extern const char *const evsel__hw_cache[PERF_COUNT_HW_CACHE_MAX][EVSEL__MAX_ALIASES];
 -- 
 2.39.2
 
