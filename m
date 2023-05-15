@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5AD2703810
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6684D703A33
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244074AbjEOR1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
+        id S244743AbjEORtn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:49:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244085AbjEOR0p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:45 -0400
+        with ESMTP id S244772AbjEORtP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5647A265
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C880B183F5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5F1A62CEC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C5AC433D2;
-        Mon, 15 May 2023 17:25:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A7BF62F08
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9E8C4339C;
+        Mon, 15 May 2023 17:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171529;
-        bh=6bc4r8hhPwLpn7u/K2gooVQoh0VagQRG8DT/taaWISk=;
+        s=korg; t=1684172845;
+        bh=mL4nPDLBkDAHaAhR6Wj/Qg5nlG2e+y3wJlpYaZo17bU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=as8XZoejRq+EaiHNFos9ShTahpiRirVqO3t3b/97O/UIku9WOEOaVAGA4sQXWXUdv
-         Plk4BM0LZgernK7Si+4zORTFD3Naa6xlNayjkyvwaT+5Dkco0/3DWwZECF9taA/p/W
-         mtQOIW5E/2Va2Da3FeSk2zULAOYM1+8trNe+UVlw=
+        b=R6SscyzwKWPA00Gs9zp7mA673bEav7fGTpcoOk9UQEyG8d715ixrV9g2Wv7J+FfxF
+         kdjy7lOQi0G5rgj314bY+q1YfCUH8R57SkqLz3pIDl/J9BNDtyE9wOp7ehvHx1OEhQ
+         gBMkmlGOBbWBv8Gpn2N4hK1SNYWOkaUg0JxJbehg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 6.2 209/242] drm/msm/adreno: adreno_gpu: Use suspend() instead of idle() on load error
+        patches@lists.linux.dev, Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.10 284/381] dm integrity: call kmem_cache_destroy() in dm_integrity_init() error path
 Date:   Mon, 15 May 2023 18:28:55 +0200
-Message-Id: <20230515161728.204147882@linuxfoundation.org>
+Message-Id: <20230515161749.609088288@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +52,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit 3eeca5e5f3100435b06a5b5d86daa3d135a8a4bd upstream.
+commit 6b79a428c02769f2a11f8ae76bf866226d134887 upstream.
 
-The adreno_load_gpu() path is guarded by an error check on
-adreno_load_fw(). This function is responsible for loading
-Qualcomm-only-signed binaries (e.g. SQE and GMU FW for A6XX), but it
-does not take the vendor-signed ZAP blob into account.
+Otherwise the journal_io_cache will leak if dm_register_target() fails.
 
-By embedding the SQE (and GMU, if necessary) firmware into the
-initrd/kernel, we can trigger and unfortunate path that would not bail
-out early and proceed with gpu->hw_init(). That will fail, as the ZAP
-loader path will not find the firmware and return back to
-adreno_load_gpu().
-
-This error path involves pm_runtime_put_sync() which then calls idle()
-instead of suspend(). This is suboptimal, as it means that we're not
-going through the clean shutdown sequence. With at least A619_holi, this
-makes the GPU not wake up until it goes through at least one more
-start-fail-stop cycle. The pm_runtime_put_sync that appears in the error
-path actually does not guarantee that because of the earlier enabling of
-runtime autosuspend.
-
-Fix that by using pm_runtime_put_sync_suspend to force a clean shutdown.
-
-Test cases:
-1. All firmware baked into kernel
-2. error loading ZAP fw in initrd -> load from rootfs at DE start
-
-Both succeed on A619_holi (SM6375) and A630 (SDM845).
-
-Fixes: 0d997f95b70f ("drm/msm/adreno: fix runtime PM imbalance at gpu load")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/530001/
-Link: https://lore.kernel.org/r/20230330231517.2747024-1-konrad.dybcio@linaro.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-integrity.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -465,7 +465,7 @@ struct msm_gpu *adreno_load_gpu(struct d
- 	return gpu;
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -4481,11 +4481,13 @@ static int __init dm_integrity_init(void
+ 	}
  
- err_put_rpm:
--	pm_runtime_put_sync(&pdev->dev);
-+	pm_runtime_put_sync_suspend(&pdev->dev);
- err_disable_rpm:
- 	pm_runtime_disable(&pdev->dev);
+ 	r = dm_register_target(&integrity_target);
+-
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		kmem_cache_destroy(journal_io_cache);
++		return r;
++	}
  
+-	return r;
++	return 0;
+ }
+ 
+ static void __exit dm_integrity_exit(void)
 
 
