@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09D37703606
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCB207033AE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243615AbjEORFm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47460 "EHLO
+        id S242463AbjEOQkM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:40:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243728AbjEORFK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFE03A5C7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:46 -0700 (PDT)
+        with ESMTP id S242869AbjEOQkG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DA740F3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:40:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B25062AA0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:03:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBDBC433EF;
-        Mon, 15 May 2023 17:03:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 473A462868
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39179C433D2;
+        Mon, 15 May 2023 16:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170208;
-        bh=raCX9WUgfqOZi14x93hzX1BIg0zygivWFbyyPr6PfVc=;
+        s=korg; t=1684168803;
+        bh=1N7eNSNY1ukaWHXW3Xn2yQuREBJugGp2vtfk62fbrx8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uY0EfPWCXBhAilJsJsK3LeKhO3Y2C46WS5t17ggMGI0gEKTDqpBi1by0ZoV5BJpZh
-         LZxrpNq8o5LReKcLEB0x8smYdJXOAOY9kFO1KotltrrGS7XsoJc9N0c3P8QIj3RXoO
-         yPEyYBJ/ciuQJwbPMmmdkO1ml/vuKgDBOrRnUDRE=
+        b=jvym79zmUitlcH2cfFihMBuPgJp85Asza9IoIqmpPucEn/BZwQGPHa5otBD7+WUos
+         KLkB5Y14cRQn6Mn0klJkoXTLb4FJ+gvQwBgO6XUx5tu7m9OveUA7GkS1v1GclzGjq8
+         gnOXFeV//4Eq+hY60kvFsMFluk3Vrr4HoKfyYCBA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
-        Mathias Krause <minipli@grsecurity.net>,
-        Sean Christopherson <seanjc@google.com>,
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Yang Shi <yang.shi@linux.alibaba.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Qian Cai <cai@gmx.us>, Zhong Jiang <zhongjiang@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/239] KVM: x86/mmu: Avoid indirect call for get_cr3
+Subject: [PATCH 4.19 046/191] debugobjects: Move printk out of db->lock critical sections
 Date:   Mon, 15 May 2023 18:24:43 +0200
-Message-Id: <20230515161722.194357382@linuxfoundation.org>
+Message-Id: <20230515161708.872191992@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,130 +58,254 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 2fdcc1b324189b5fb20655baebd40cd82e2bdf0c ]
+[ Upstream commit d5f34153e526903abe71869dbbc898bfc0f69373 ]
 
-Most of the time, calls to get_guest_pgd result in calling
-kvm_read_cr3 (the exception is only nested TDP).  Hardcode
-the default instead of using the get_cr3 function, avoiding
-a retpoline if they are enabled.
+The db->lock is a raw spinlock and so the lock hold time is supposed
+to be short. This will not be the case when printk() is being involved
+in some of the critical sections. In order to avoid the long hold time,
+in case some messages need to be printed, the debug_object_is_on_stack()
+and debug_print_object() calls are now moved out of those critical
+sections.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lore.kernel.org/r/20230322013731.102955-2-minipli@grsecurity.net
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>	# backport to v6.1.x
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yang Shi <yang.shi@linux.alibaba.com>
+Cc: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc: Qian Cai <cai@gmx.us>
+Cc: Zhong Jiang <zhongjiang@huawei.com>
+Link: https://lkml.kernel.org/r/20190520141450.7575-6-longman@redhat.com
+Stable-dep-of: 63a759694eed ("debugobject: Prevent init race with static objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/mmu.c         | 31 ++++++++++++++++++++-----------
- arch/x86/kvm/mmu/paging_tmpl.h |  2 +-
- 2 files changed, 21 insertions(+), 12 deletions(-)
+ lib/debugobjects.c | 58 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 39 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index b6f96d47e596d..f2a10c7d13697 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -232,6 +232,20 @@ static struct kvm_mmu_role_regs vcpu_to_role_regs(struct kvm_vcpu *vcpu)
- 	return regs;
- }
- 
-+static unsigned long get_guest_cr3(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_read_cr3(vcpu);
-+}
-+
-+static inline unsigned long kvm_mmu_get_guest_pgd(struct kvm_vcpu *vcpu,
-+						  struct kvm_mmu *mmu)
-+{
-+	if (IS_ENABLED(CONFIG_RETPOLINE) && mmu->get_guest_pgd == get_guest_cr3)
-+		return kvm_read_cr3(vcpu);
-+
-+	return mmu->get_guest_pgd(vcpu);
-+}
-+
- static inline bool kvm_available_flush_tlb_with_range(void)
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 6e2baf9e9eb27..6909a6e51de83 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -429,6 +429,7 @@ static void
+ __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
  {
- 	return kvm_x86_ops.tlb_remote_flush_with_range;
-@@ -3661,7 +3675,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
- 	int quadrant, i, r;
- 	hpa_t root;
+ 	enum debug_obj_state state;
++	bool check_stack = false;
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+@@ -448,7 +449,7 @@ __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
+ 			debug_objects_oom();
+ 			return;
+ 		}
+-		debug_object_is_on_stack(addr, onstack);
++		check_stack = true;
+ 	}
  
--	root_pgd = mmu->get_guest_pgd(vcpu);
-+	root_pgd = kvm_mmu_get_guest_pgd(vcpu, mmu);
- 	root_gfn = root_pgd >> PAGE_SHIFT;
+ 	switch (obj->state) {
+@@ -459,20 +460,23 @@ __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
+ 		break;
  
- 	if (mmu_check_root(vcpu, root_gfn))
-@@ -4112,7 +4126,7 @@ static bool kvm_arch_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	arch.token = alloc_apf_token(vcpu);
- 	arch.gfn = gfn;
- 	arch.direct_map = vcpu->arch.mmu->root_role.direct;
--	arch.cr3 = vcpu->arch.mmu->get_guest_pgd(vcpu);
-+	arch.cr3 = kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu);
- 
- 	return kvm_setup_async_pf(vcpu, cr2_or_gpa,
- 				  kvm_vcpu_gfn_to_hva(vcpu, gfn), &arch);
-@@ -4131,7 +4145,7 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
+ 	case ODEBUG_STATE_ACTIVE:
+-		debug_print_object(obj, "init");
+ 		state = obj->state;
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
++		debug_print_object(obj, "init");
+ 		debug_object_fixup(descr->fixup_init, addr, state);
  		return;
  
- 	if (!vcpu->arch.mmu->root_role.direct &&
--	      work->arch.cr3 != vcpu->arch.mmu->get_guest_pgd(vcpu))
-+	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
- 		return;
+ 	case ODEBUG_STATE_DESTROYED:
++		raw_spin_unlock_irqrestore(&db->lock, flags);
+ 		debug_print_object(obj, "init");
+-		break;
++		return;
+ 	default:
+ 		break;
+ 	}
  
- 	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true);
-@@ -4488,11 +4502,6 @@ void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd)
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
++	if (check_stack)
++		debug_object_is_on_stack(addr, onstack);
  }
- EXPORT_SYMBOL_GPL(kvm_mmu_new_pgd);
  
--static unsigned long get_cr3(struct kvm_vcpu *vcpu)
--{
--	return kvm_read_cr3(vcpu);
--}
+ /**
+@@ -530,6 +534,8 @@ int debug_object_activate(void *addr, struct debug_obj_descr *descr)
+ 
+ 	obj = lookup_object(addr, db);
+ 	if (obj) {
++		bool print_object = false;
++
+ 		switch (obj->state) {
+ 		case ODEBUG_STATE_INIT:
+ 		case ODEBUG_STATE_INACTIVE:
+@@ -538,14 +544,14 @@ int debug_object_activate(void *addr, struct debug_obj_descr *descr)
+ 			break;
+ 
+ 		case ODEBUG_STATE_ACTIVE:
+-			debug_print_object(obj, "activate");
+ 			state = obj->state;
+ 			raw_spin_unlock_irqrestore(&db->lock, flags);
++			debug_print_object(obj, "activate");
+ 			ret = debug_object_fixup(descr->fixup_activate, addr, state);
+ 			return ret ? 0 : -EINVAL;
+ 
+ 		case ODEBUG_STATE_DESTROYED:
+-			debug_print_object(obj, "activate");
++			print_object = true;
+ 			ret = -EINVAL;
+ 			break;
+ 		default:
+@@ -553,10 +559,13 @@ int debug_object_activate(void *addr, struct debug_obj_descr *descr)
+ 			break;
+ 		}
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
++		if (print_object)
++			debug_print_object(obj, "activate");
+ 		return ret;
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
++
+ 	/*
+ 	 * We are here when a static object is activated. We
+ 	 * let the type specific code confirm whether this is
+@@ -588,6 +597,7 @@ void debug_object_deactivate(void *addr, struct debug_obj_descr *descr)
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
++	bool print_object = false;
+ 
+ 	if (!debug_objects_enabled)
+ 		return;
+@@ -605,24 +615,27 @@ void debug_object_deactivate(void *addr, struct debug_obj_descr *descr)
+ 			if (!obj->astate)
+ 				obj->state = ODEBUG_STATE_INACTIVE;
+ 			else
+-				debug_print_object(obj, "deactivate");
++				print_object = true;
+ 			break;
+ 
+ 		case ODEBUG_STATE_DESTROYED:
+-			debug_print_object(obj, "deactivate");
++			print_object = true;
+ 			break;
+ 		default:
+ 			break;
+ 		}
+-	} else {
++	}
++
++	raw_spin_unlock_irqrestore(&db->lock, flags);
++	if (!obj) {
+ 		struct debug_obj o = { .object = addr,
+ 				       .state = ODEBUG_STATE_NOTAVAILABLE,
+ 				       .descr = descr };
+ 
+ 		debug_print_object(&o, "deactivate");
++	} else if (print_object) {
++		debug_print_object(obj, "deactivate");
+ 	}
 -
- static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
- 			   unsigned int access)
- {
-@@ -5043,7 +5052,7 @@ static void init_kvm_tdp_mmu(struct kvm_vcpu *vcpu,
- 	context->page_fault = kvm_tdp_page_fault;
- 	context->sync_page = nonpaging_sync_page;
- 	context->invlpg = NULL;
--	context->get_guest_pgd = get_cr3;
-+	context->get_guest_pgd = get_guest_cr3;
- 	context->get_pdptr = kvm_pdptr_read;
- 	context->inject_page_fault = kvm_inject_page_fault;
- 
-@@ -5193,7 +5202,7 @@ static void init_kvm_softmmu(struct kvm_vcpu *vcpu,
- 
- 	kvm_init_shadow_mmu(vcpu, cpu_role);
- 
--	context->get_guest_pgd     = get_cr3;
-+	context->get_guest_pgd     = get_guest_cr3;
- 	context->get_pdptr         = kvm_pdptr_read;
- 	context->inject_page_fault = kvm_inject_page_fault;
+-	raw_spin_unlock_irqrestore(&db->lock, flags);
  }
-@@ -5207,7 +5216,7 @@ static void init_kvm_nested_mmu(struct kvm_vcpu *vcpu,
+ EXPORT_SYMBOL_GPL(debug_object_deactivate);
+ 
+@@ -637,6 +650,7 @@ void debug_object_destroy(void *addr, struct debug_obj_descr *descr)
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
++	bool print_object = false;
+ 
+ 	if (!debug_objects_enabled)
+ 		return;
+@@ -656,20 +670,22 @@ void debug_object_destroy(void *addr, struct debug_obj_descr *descr)
+ 		obj->state = ODEBUG_STATE_DESTROYED;
+ 		break;
+ 	case ODEBUG_STATE_ACTIVE:
+-		debug_print_object(obj, "destroy");
+ 		state = obj->state;
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
++		debug_print_object(obj, "destroy");
+ 		debug_object_fixup(descr->fixup_destroy, addr, state);
  		return;
  
- 	g_context->cpu_role.as_u64   = new_mode.as_u64;
--	g_context->get_guest_pgd     = get_cr3;
-+	g_context->get_guest_pgd     = get_guest_cr3;
- 	g_context->get_pdptr         = kvm_pdptr_read;
- 	g_context->inject_page_fault = kvm_inject_page_fault;
+ 	case ODEBUG_STATE_DESTROYED:
+-		debug_print_object(obj, "destroy");
++		print_object = true;
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ out_unlock:
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
++	if (print_object)
++		debug_print_object(obj, "destroy");
+ }
+ EXPORT_SYMBOL_GPL(debug_object_destroy);
  
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 5ab5f94dcb6fd..1f4f5e703f136 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -324,7 +324,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 	trace_kvm_mmu_pagetable_walk(addr, access);
- retry_walk:
- 	walker->level = mmu->cpu_role.base.level;
--	pte           = mmu->get_guest_pgd(vcpu);
-+	pte           = kvm_mmu_get_guest_pgd(vcpu, mmu);
- 	have_ad       = PT_HAVE_ACCESSED_DIRTY(mmu);
+@@ -698,9 +714,9 @@ void debug_object_free(void *addr, struct debug_obj_descr *descr)
  
- #if PTTYPE == 64
+ 	switch (obj->state) {
+ 	case ODEBUG_STATE_ACTIVE:
+-		debug_print_object(obj, "free");
+ 		state = obj->state;
+ 		raw_spin_unlock_irqrestore(&db->lock, flags);
++		debug_print_object(obj, "free");
+ 		debug_object_fixup(descr->fixup_free, addr, state);
+ 		return;
+ 	default:
+@@ -773,6 +789,7 @@ debug_object_active_state(void *addr, struct debug_obj_descr *descr,
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
++	bool print_object = false;
+ 
+ 	if (!debug_objects_enabled)
+ 		return;
+@@ -788,22 +805,25 @@ debug_object_active_state(void *addr, struct debug_obj_descr *descr,
+ 			if (obj->astate == expect)
+ 				obj->astate = next;
+ 			else
+-				debug_print_object(obj, "active_state");
++				print_object = true;
+ 			break;
+ 
+ 		default:
+-			debug_print_object(obj, "active_state");
++			print_object = true;
+ 			break;
+ 		}
+-	} else {
++	}
++
++	raw_spin_unlock_irqrestore(&db->lock, flags);
++	if (!obj) {
+ 		struct debug_obj o = { .object = addr,
+ 				       .state = ODEBUG_STATE_NOTAVAILABLE,
+ 				       .descr = descr };
+ 
+ 		debug_print_object(&o, "active_state");
++	} else if (print_object) {
++		debug_print_object(obj, "active_state");
+ 	}
+-
+-	raw_spin_unlock_irqrestore(&db->lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(debug_object_active_state);
+ 
+@@ -839,10 +859,10 @@ static void __debug_check_no_obj_freed(const void *address, unsigned long size)
+ 
+ 			switch (obj->state) {
+ 			case ODEBUG_STATE_ACTIVE:
+-				debug_print_object(obj, "free");
+ 				descr = obj->descr;
+ 				state = obj->state;
+ 				raw_spin_unlock_irqrestore(&db->lock, flags);
++				debug_print_object(obj, "free");
+ 				debug_object_fixup(descr->fixup_free,
+ 						   (void *) oaddr, state);
+ 				goto repeat;
 -- 
 2.39.2
 
