@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D94703ABC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 775887038C5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238300AbjEORzR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:55:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53980 "EHLO
+        id S244300AbjEORer (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244825AbjEORyg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6885C18874
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:52:37 -0700 (PDT)
+        with ESMTP id S244422AbjEORe1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3C27DBA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EAF7262FAB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CD1C433D2;
-        Mon, 15 May 2023 17:52:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6916562D64
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618EAC433EF;
+        Mon, 15 May 2023 17:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173153;
-        bh=wi48QZ5lCPLV07SPshzqrrdxuNTYzOoDpTd/4Dv2mqI=;
+        s=korg; t=1684171943;
+        bh=aE9UsRmS8Li8e9KBbVKuzfJCISCPSaJ/QcwEHqP0PdI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fKcSrq613IMEntCdO8+W8NICkMKhyUAXA7yKtEGZOKTN36qcgULipeX5iOfvZmxuA
-         H/CshhTAmU6aRPemnoWjDQJMBpJp4VII8Pi97Os+DJZlxEBrCIq3btUJlQJCNFgRIP
-         9HmtcbvkLqu6QVcep2Afre+QkNciLXyLEbcHMBUA=
+        b=amUHFDGJNbUJ1nLFnNLj1eePE+GWpyGAV8LyHJKud8+ToOsFFk6C8omKOYz7iNO6z
+         QSn/G6NHyXyZsBY0CXYwk3pOgVIvFS/og98SUYBhoMnAXXQBxSMs4euohX/BwmF1u6
+         qdnG8l4j1Mu9O1lLweAhmLE+TjXD82apYU8jGTOk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
-        Jason Gerecke <jason.gerecke@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 5.10 355/381] HID: wacom: insert timestamp to packed Bluetooth (BT) events
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com,
+        syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 129/134] ext4: fix invalid free tracking in ext4_xattr_move_to_block()
 Date:   Mon, 15 May 2023 18:30:06 +0200
-Message-Id: <20230515161752.914299454@linuxfoundation.org>
+Message-Id: <20230515161707.459107944@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,109 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 17d793f3ed53080dab6bbeabfc82de890c901001 upstream.
+commit b87c7cdf2bed4928b899e1ce91ef0d147017ba45 upstream.
 
-To fully utilize the BT polling/refresh rate, a few input events
-are sent together to reduce event delay. This causes issue to the
-timestamp generated by input_sync since all the events in the same
-packet would pretty much have the same timestamp. This patch inserts
-time interval to the events by averaging the total time used for
-sending the packet.
+In ext4_xattr_move_to_block(), the value of the extended attribute
+which we need to move to an external block may be allocated by
+kvmalloc() if the value is stored in an external inode.  So at the end
+of the function the code tried to check if this was the case by
+testing entry->e_value_inum.
 
-This decision was mainly based on observing the actual time interval
-between each BT polling. The interval doesn't seem to be constant,
-due to the network and system environment. So, using solutions other
-than averaging doesn't end up with valid timestamps.
+However, at this point, the pointer to the xattr entry is no longer
+valid, because it was removed from the original location where it had
+been stored.  So we could end up calling kvfree() on a pointer which
+was not allocated by kvmalloc(); or we could also potentially leak
+memory by not freeing the buffer when it should be freed.  Fix this by
+storing whether it should be freed in a separate variable.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Reviewed-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230430160426.581366-1-tytso@mit.edu
+Link: https://syzkaller.appspot.com/bug?id=5c2aee8256e30b55ccf57312c16d88417adbd5e1
+Link: https://syzkaller.appspot.com/bug?id=41a6b5d4917c0412eb3b3c3c604965bed7d7420b
+Reported-by: syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com
+Reported-by: syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |   26 ++++++++++++++++++++++++++
- drivers/hid/wacom_wac.h |    1 +
- 2 files changed, 27 insertions(+)
+ fs/ext4/xattr.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1265,6 +1265,9 @@ static void wacom_intuos_pro2_bt_pen(str
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2563,6 +2563,7 @@ static int ext4_xattr_move_to_block(hand
+ 		.in_inode = !!entry->e_value_inum,
+ 	};
+ 	struct ext4_xattr_ibody_header *header = IHDR(inode, raw_inode);
++	int needs_kvfree = 0;
+ 	int error;
  
- 	struct input_dev *pen_input = wacom->pen_input;
- 	unsigned char *data = wacom->data;
-+	int number_of_valid_frames = 0;
-+	int time_interval = 15000000;
-+	ktime_t time_packet_received = ktime_get();
- 	int i;
- 
- 	if (wacom->features.type == INTUOSP2_BT ||
-@@ -1285,12 +1288,30 @@ static void wacom_intuos_pro2_bt_pen(str
- 		wacom->id[0] |= (wacom->serial[0] >> 32) & 0xFFFFF;
- 	}
- 
-+	/* number of valid frames */
- 	for (i = 0; i < pen_frames; i++) {
- 		unsigned char *frame = &data[i*pen_frame_len + 1];
- 		bool valid = frame[0] & 0x80;
-+
-+		if (valid)
-+			number_of_valid_frames++;
-+	}
-+
-+	if (number_of_valid_frames) {
-+		if (wacom->hid_data.time_delayed)
-+			time_interval = ktime_get() - wacom->hid_data.time_delayed;
-+		time_interval /= number_of_valid_frames;
-+		wacom->hid_data.time_delayed = time_packet_received;
-+	}
-+
-+	for (i = 0; i < number_of_valid_frames; i++) {
-+		unsigned char *frame = &data[i*pen_frame_len + 1];
-+		bool valid = frame[0] & 0x80;
- 		bool prox = frame[0] & 0x40;
- 		bool range = frame[0] & 0x20;
- 		bool invert = frame[0] & 0x10;
-+		int frames_number_reversed = number_of_valid_frames - i - 1;
-+		int event_timestamp = time_packet_received - frames_number_reversed * time_interval;
- 
- 		if (!valid)
- 			continue;
-@@ -1303,6 +1324,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 			wacom->tool[0] = 0;
- 			wacom->id[0] = 0;
- 			wacom->serial[0] = 0;
-+			wacom->hid_data.time_delayed = 0;
- 			return;
+ 	is = kzalloc(sizeof(struct ext4_xattr_ibody_find), GFP_NOFS);
+@@ -2585,7 +2586,7 @@ static int ext4_xattr_move_to_block(hand
+ 			error = -ENOMEM;
+ 			goto out;
  		}
+-
++		needs_kvfree = 1;
+ 		error = ext4_xattr_inode_get(inode, entry, buffer, value_size);
+ 		if (error)
+ 			goto out;
+@@ -2624,7 +2625,7 @@ static int ext4_xattr_move_to_block(hand
  
-@@ -1339,6 +1361,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 						 get_unaligned_le16(&frame[11]));
- 			}
- 		}
-+
- 		if (wacom->tool[0]) {
- 			input_report_abs(pen_input, ABS_PRESSURE, get_unaligned_le16(&frame[5]));
- 			if (wacom->features.type == INTUOSP2_BT ||
-@@ -1362,6 +1385,9 @@ static void wacom_intuos_pro2_bt_pen(str
- 
- 		wacom->shared->stylus_in_proximity = prox;
- 
-+		/* add timestamp to unpack the frames */
-+		input_set_timestamp(pen_input, event_timestamp);
-+
- 		input_sync(pen_input);
- 	}
- }
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -320,6 +320,7 @@ struct hid_data {
- 	int bat_connected;
- 	int ps_connected;
- 	bool pad_input_event_flag;
-+	int time_delayed;
- };
- 
- struct wacom_remote_data {
+ out:
+ 	kfree(b_entry_name);
+-	if (entry->e_value_inum && buffer)
++	if (needs_kvfree && buffer)
+ 		kvfree(buffer);
+ 	if (is)
+ 		brelse(is->iloc.bh);
 
 
