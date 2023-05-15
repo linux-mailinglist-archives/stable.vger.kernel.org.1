@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 163767033FF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB4570396C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242645AbjEOQnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46866 "EHLO
+        id S242397AbjEORmZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:42:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242901AbjEOQnl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:41 -0400
+        with ESMTP id S231290AbjEORl4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC0F469C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460CBDD9B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C625C6221C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB860C433D2;
-        Mon, 15 May 2023 16:43:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26B0162E1E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0FDC433EF;
+        Mon, 15 May 2023 17:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169018;
-        bh=26mI+EMAj6RgnTLQYmPlNyfcRTi1EK1AZMJwmxc08iw=;
+        s=korg; t=1684172368;
+        bh=dch7WtzjMTYDS9PpiIpH7KWt4RFcGNW29fpz+GherIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xb4WPb7jJ00RiAS3SxEEX6iTRnNy6MroOFU/9GRwGEB7IDMPXzavI0mxkg3Gmk/bL
-         OCyL4bR35gIwlIwmgBHYDVXkCS+cFG0rHO+pHH3TYhX2NjSFaZSHsuplKomssT8HkV
-         GlWxaOYERwrfasdIkkdB2nBDf+HE5NZmvMVmn60M=
+        b=xhfzYp2O/1KNw2v+cWZRtjEF7lWvZzB7ckHMecyzgxg2uAKOkAZJWJRwFUvBIno4S
+         e2f72lSjdRK3/tfR5/wtU21VJFmqA4nuynGh5UtVfz4IOfbKb8VNWGr3ucVrotAlMO
+         nYTvvMQxzWQqhiIsE2K5cDF1Nzykq0wsFHX0EKCs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Brendan Cunningham <bcunningham@cornelisnetworks.com>,
-        Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 115/191] IB/hfi1: Fix SDMA mmu_rb_node not being evicted in LRU order
-Date:   Mon, 15 May 2023 18:25:52 +0200
-Message-Id: <20230515161711.447022231@linuxfoundation.org>
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        Qiang Yu <yuq825@gmail.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 102/381] drm/lima/lima_drv: Add missing unwind goto in lima_pdev_probe()
+Date:   Mon, 15 May 2023 18:25:53 +0200
+Message-Id: <20230515161741.403092600@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,91 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 9fe8fec5e43d5a80f43cbf61aaada1b047a1eb61 ]
+[ Upstream commit c5647cae2704e58d1c4e5fedbf63f11bca6376c9 ]
 
-hfi1_mmu_rb_remove_unless_exact() did not move mmu_rb_node objects in
-mmu_rb_handler->lru_list after getting a cache hit on an mmu_rb_node.
+Smatch reports:
+drivers/gpu/drm/lima/lima_drv.c:396 lima_pdev_probe() warn:
+	missing unwind goto?
 
-As a result, hfi1_mmu_rb_evict() was not guaranteed to evict truly
-least-recently used nodes.
+Store return value in err and goto 'err_out0' which has
+lima_sched_slab_fini() before returning.
 
-This could be a performance issue for an application when that
-application:
-- Uses some long-lived buffers frequently.
-- Uses a large number of buffers once.
-- Hits the mmu_rb_handler cache size or pinned-page limits, forcing
-  mmu_rb_handler cache entries to be evicted.
-
-In this case, the one-time use buffers cause the long-lived buffer
-entries to eventually filter to the end of the LRU list where
-hfi1_mmu_rb_evict() will consider evicting a frequently-used long-lived
-entry instead of evicting one of the one-time use entries.
-
-Fix this by inserting new mmu_rb_node at the tail of
-mmu_rb_handler->lru_list and move mmu_rb_ndoe to the tail of
-mmu_rb_handler->lru_list when the mmu_rb_node is a hit in
-hfi1_mmu_rb_remove_unless_exact(). Change hfi1_mmu_rb_evict() to evict
-from the head of mmu_rb_handler->lru_list instead of the tail.
-
-Fixes: 0636e9ab8355 ("IB/hfi1: Add cache evict LRU list")
-Signed-off-by: Brendan Cunningham <bcunningham@cornelisnetworks.com>
-Signed-off-by: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Link: https://lore.kernel.org/r/168088635931.3027109.10423156330761536044.stgit@252.162.96.66.static.eigbox.net
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: a1d2a6339961 ("drm/lima: driver for ARM Mali4xx GPUs")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230314052711.4061652-1-harshit.m.mogalapalli@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/mmu_rb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/lima/lima_drv.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/mmu_rb.c b/drivers/infiniband/hw/hfi1/mmu_rb.c
-index e1c7996c018ef..513a297b4ff0e 100644
---- a/drivers/infiniband/hw/hfi1/mmu_rb.c
-+++ b/drivers/infiniband/hw/hfi1/mmu_rb.c
-@@ -175,7 +175,7 @@ int hfi1_mmu_rb_insert(struct mmu_rb_handler *handler,
- 		goto unlock;
- 	}
- 	__mmu_int_rb_insert(mnode, &handler->root);
--	list_add(&mnode->list, &handler->lru_list);
-+	list_add_tail(&mnode->list, &handler->lru_list);
+diff --git a/drivers/gpu/drm/lima/lima_drv.c b/drivers/gpu/drm/lima/lima_drv.c
+index ab460121fd52c..65dc0dc2c119a 100644
+--- a/drivers/gpu/drm/lima/lima_drv.c
++++ b/drivers/gpu/drm/lima/lima_drv.c
+@@ -392,8 +392,10 @@ static int lima_pdev_probe(struct platform_device *pdev)
  
- 	ret = handler->ops->insert(handler->ops_arg, mnode);
- 	if (ret) {
-@@ -222,8 +222,10 @@ bool hfi1_mmu_rb_remove_unless_exact(struct mmu_rb_handler *handler,
- 	spin_lock_irqsave(&handler->lock, flags);
- 	node = __mmu_rb_search(handler, addr, len);
- 	if (node) {
--		if (node->addr == addr && node->len == len)
-+		if (node->addr == addr && node->len == len) {
-+			list_move_tail(&node->list, &handler->lru_list);
- 			goto unlock;
-+		}
- 		__mmu_int_rb_remove(node, &handler->root);
- 		list_del(&node->list); /* remove from LRU list */
- 		ret = true;
-@@ -244,8 +246,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
- 	INIT_LIST_HEAD(&del_list);
+ 	/* Allocate and initialize the DRM device. */
+ 	ddev = drm_dev_alloc(&lima_drm_driver, &pdev->dev);
+-	if (IS_ERR(ddev))
+-		return PTR_ERR(ddev);
++	if (IS_ERR(ddev)) {
++		err = PTR_ERR(ddev);
++		goto err_out0;
++	}
  
- 	spin_lock_irqsave(&handler->lock, flags);
--	list_for_each_entry_safe_reverse(rbnode, ptr, &handler->lru_list,
--					 list) {
-+	list_for_each_entry_safe(rbnode, ptr, &handler->lru_list, list) {
- 		if (handler->ops->evict(handler->ops_arg, rbnode, evict_arg,
- 					&stop)) {
- 			__mmu_int_rb_remove(rbnode, &handler->root);
-@@ -257,9 +258,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
- 	}
- 	spin_unlock_irqrestore(&handler->lock, flags);
- 
--	while (!list_empty(&del_list)) {
--		rbnode = list_first_entry(&del_list, struct mmu_rb_node, list);
--		list_del(&rbnode->list);
-+	list_for_each_entry_safe(rbnode, ptr, &del_list, list) {
- 		handler->ops->remove(handler->ops_arg, rbnode);
- 	}
- }
+ 	ddev->dev_private = ldev;
+ 	ldev->ddev = ddev;
 -- 
 2.39.2
 
