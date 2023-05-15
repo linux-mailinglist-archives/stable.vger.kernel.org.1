@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A5D703397
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA5D703485
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242836AbjEOQjD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:39:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42176 "EHLO
+        id S243056AbjEOQtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242831AbjEOQjA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D69B819A5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:58 -0700 (PDT)
+        with ESMTP id S243043AbjEOQtN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDAF74EF3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CB916285C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D0AC433D2;
-        Mon, 15 May 2023 16:38:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5297362943
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63897C433EF;
+        Mon, 15 May 2023 16:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168737;
-        bh=tbAGR8olSID+ZXh68YMbQgpn1M1MrEf6vi/Iqaw5Vyo=;
+        s=korg; t=1684169351;
+        bh=9rT+Y6aXRDPTKiDPkTYJnkAxv0bUZFtppkSXbIrdG60=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fR6gZp5uaWKCItUMGNhcP9dSVamtIMyJ/yyCt5BKwu4HfvtoFIhCQM2yUPauablg5
-         eCrmXCMm+4+hqtpPTlYi6bad5bNGIGl5JaJJOoKWUiYGzBZ0oFDR6s2VY+4evBYvt6
-         uMTubvY5HKY7euwWf2HnehWZPsuzJaFnwTBatceQ=
+        b=w+96DAsxsPqnWj2rttwkfmu3c2oHHdnPAiBO+WgHlbZASWu8Z1C4O5C5sF/tiF+e3
+         6lIXLJl+J8HTetonwnm6aGmWELL+zJce/GAEr30MHNBrqBDf8TRBgCaHpgH8Sy0tUt
+         akFxlak9Ye9oF1qWG0+v268u+8QrtfR9+cRa0org=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 005/191] ASoC: Intel: bytcr_rt5640: Add quirk for the Acer Iconia One 7 B1-750
-Date:   Mon, 15 May 2023 18:24:02 +0200
-Message-Id: <20230515161707.401676269@linuxfoundation.org>
+Subject: [PATCH 6.3 031/246] octeontx2-pf: mcs: Clear stats before freeing resource
+Date:   Mon, 15 May 2023 18:24:03 +0200
+Message-Id: <20230515161723.538059454@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,45 +57,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit e38c5e80c3d293a883c6f1d553f2146ec0bda35e ]
+[ Upstream commit 815debbbf7b52026462c37eea3be70d6377a7a9a ]
 
-The Acer Iconia One 7 B1-750 tablet mostly works fine with the defaults
-for an Bay Trail CR tablet. Except for the internal mic, instead of
-an analog mic on IN3 a digital mic on DMIC1 is uses.
+When freeing MCS hardware resources like SecY, SC and
+SA the corresponding stats needs to be cleared. Otherwise
+previous stats are shown in newly created macsec interfaces.
 
-Add a quirk with these settings for this tablet.
-
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230322145332.131525-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ .../net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c    | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -400,6 +400,18 @@ static int byt_rt5640_aif1_hw_params(str
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index f699209978fef..13faca9add9f4 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -150,11 +150,20 @@ static void cn10k_mcs_free_rsrc(struct otx2_nic *pfvf, enum mcs_direction dir,
+ 				enum mcs_rsrc_type type, u16 hw_rsrc_id,
+ 				bool all)
+ {
++	struct mcs_clear_stats *clear_req;
+ 	struct mbox *mbox = &pfvf->mbox;
+ 	struct mcs_free_rsrc_req *req;
  
- /* Please keep this list alphabetically sorted */
- static const struct dmi_system_id byt_rt5640_quirk_table[] = {
-+	{	/* Acer Iconia One 7 B1-750 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "VESPA2"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
-+					BYT_RT5640_JD_SRC_JD1_IN4P |
-+					BYT_RT5640_OVCD_TH_1500UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{	/* Acer Iconia Tab 8 W1-810 */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Acer"),
+ 	mutex_lock(&mbox->lock);
+ 
++	clear_req = otx2_mbox_alloc_msg_mcs_clear_stats(mbox);
++	if (!clear_req)
++		goto fail;
++
++	clear_req->id = hw_rsrc_id;
++	clear_req->type = type;
++	clear_req->dir = dir;
++
+ 	req = otx2_mbox_alloc_msg_mcs_free_resources(mbox);
+ 	if (!req)
+ 		goto fail;
+-- 
+2.39.2
+
 
 
