@@ -2,46 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B02F70376D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EDB070343B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244061AbjEORVI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
+        id S242960AbjEOQqK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244060AbjEORUy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:54 -0400
+        with ESMTP id S242953AbjEOQqI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C91E712E84
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768E14EE1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E75C46210B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20DFC433D2;
-        Mon, 15 May 2023 17:18:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14E2C628F7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DE9C433EF;
+        Mon, 15 May 2023 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171109;
-        bh=Jd3aJODT4d4LfBTMdpjN8/ygqz9655eDj8d0HUGLa6A=;
+        s=korg; t=1684169166;
+        bh=HbJ1+XyUzUEKfatXuPxWCn+ESfHt5skSLLvHFihRKMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ecV13AUZClXN9gFLJVZnZR3ez3LLqlUL8qbJmIO+g9te9VB50jIhdKP8d1nkfq/8b
-         EcKP62tNd/w7nXG+MUKyIQGIt9IRksUX6LCmTbWUS533hSGEa1GLfspO7pfK1Hsdz8
-         bK65pvfTn/Uh3KxzCGBNMZ1Ksa1jgMZousNVR0Pg=
+        b=JqTHmNedr4+cP+qzama27CgUQdRlcXI0xON0H/CYtCqigavkyW2/rISGuJJB0j67U
+         SDGG/83Lb+4F39d9S240+acWQX7n79p/W7jgLNMgSelMXhrxHMAE+UxSxn1dvPcMer
+         tRf3trKdMtHLC2cwJH6ciatOi4U0QZjMZWTX+7KA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 075/242] octeontx2-pf: Disable packet I/O for graceful exit
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@kernel.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 164/191] perf vendor events power9: Remove UTF-8 characters from JSON files
 Date:   Mon, 15 May 2023 18:26:41 +0200
-Message-Id: <20230515161724.151934784@linuxfoundation.org>
+Message-Id: <20230515161713.393498528@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +62,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit c926252205c424c4842dbdbe02f8e3296f623204 ]
+[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
 
-At the stage of enabling packet I/O in otx2_open, If mailbox
-timeout occurs then interface ends up in down state where as
-hardware packet I/O is enabled. Hence disable packet I/O also
-before bailing out.
+Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
+events") added and updated power9 PMU JSON events. However some of the
+JSON events which are part of other.json and pipeline.json files,
+contains UTF-8 characters in their brief description.  Having UTF-8
+character could breaks the perf build on some distros.
 
-Fixes: 1ea0166da050 ("octeontx2-pf: Fix the device state on error")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix this issue by removing the UTF-8 characters from other.json and
+pipeline.json files.
+
+Result without the fix:
+
+  [command]# file -i pmu-events/arch/powerpc/power9/*
+  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
+  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
+  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
+  [command]#
+
+Result with the fix:
+
+  [command]# file -i pmu-events/arch/powerpc/power9/*
+  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
+  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
+  [command]#
+
+Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Disha Goel <disgoel@linux.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
+Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
+ tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 3489553ad7010..23eee2b3d4081 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1835,13 +1835,22 @@ int otx2_open(struct net_device *netdev)
- 		otx2_dmacflt_reinstall_flows(pf);
- 
- 	err = otx2_rxtx_enable(pf, true);
--	if (err)
-+	/* If a mbox communication error happens at this point then interface
-+	 * will end up in a state such that it is in down state but hardware
-+	 * mcam entries are enabled to receive the packets. Hence disable the
-+	 * packet I/O.
-+	 */
-+	if (err == EIO)
-+		goto err_disable_rxtx;
-+	else if (err)
- 		goto err_tx_stop_queues;
- 
- 	otx2_do_set_rx_mode(pf);
- 
- 	return 0;
- 
-+err_disable_rxtx:
-+	otx2_rxtx_enable(pf, false);
- err_tx_stop_queues:
- 	netif_tx_stop_all_queues(netdev);
- 	netif_carrier_off(netdev);
+diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
+index 48cf4f920b3ff..064341c0df575 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
++++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
+@@ -1417,7 +1417,7 @@
+   {,
+     "EventCode": "0x45054",
+     "EventName": "PM_FMA_CMPL",
+-    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
++    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
+   },
+   {,
+     "EventCode": "0x201E8",
+@@ -2017,7 +2017,7 @@
+   {,
+     "EventCode": "0xC0BC",
+     "EventName": "PM_LSU_FLUSH_OTHER",
+-    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
++    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
+   },
+   {,
+     "EventCode": "0x5094",
+diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
+index b4772f54a2718..e2f2ed0a35496 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
++++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
+@@ -442,7 +442,7 @@
+   {,
+     "EventCode": "0x4D052",
+     "EventName": "PM_2FLOP_CMPL",
+-    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
++    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
+   },
+   {,
+     "EventCode": "0x1F142",
 -- 
 2.39.2
 
