@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3C66703398
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D79703488
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242843AbjEOQjN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42176 "EHLO
+        id S243032AbjEOQtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242830AbjEOQjD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:03 -0400
+        with ESMTP id S243034AbjEOQtQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB1C40CD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A010559B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A1A362853
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A91C433EF;
-        Mon, 15 May 2023 16:39:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCDD962943
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012C5C433D2;
+        Mon, 15 May 2023 16:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168740;
-        bh=Gy57csLcaAWWB0mx0c3QjN/ePODeXw2Bu4FNBHPqwyA=;
+        s=korg; t=1684169354;
+        bh=D+nVR6YJ6wziewKaom6jQtPAN2+qliognPODIvsi3EE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BpmT6UadFswcPgvDfH0SqTrQQo30US2/M/YinEfnuYu8wbyI/83y9X4f4SXRUBjoT
-         r8LkMLPKif3ku0f15vTFbFruf1SiTyU1UOLy5vk8Zv7EecVLljqum/DWCRlM1+KuUo
-         Q/jBAK3PLPZmj/wh4Lc9WVrSUVMeU6FkTfmPhvmo=
+        b=KUMm3wIySgL3XRyHa+QTQ6PVtVRNJBt3ivyYtFk3S3LPdrWfnfndefvSLTUz6Rj5B
+         PYebWAnIGzlMfD9QC3yAil2I9HGmo1aCRZ2uzZKkaVuO/P2xjWuWnhU/5RG0ckKUmO
+         ft+3bEYv8ou+qsU44ObSFdg5B0T29kWpaUjkwVfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiping Ma <jiping.ma2@windriver.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Gou Hao <gouhao@uniontech.com>
-Subject: [PATCH 4.19 006/191] stmmac: debugfs entry name is not be changed when udev rename device name.
-Date:   Mon, 15 May 2023 18:24:03 +0200
-Message-Id: <20230515161707.431008921@linuxfoundation.org>
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 032/246] octeontx2-pf: mcs: Fix shared counters logic
+Date:   Mon, 15 May 2023 18:24:04 +0200
+Message-Id: <20230515161723.566068867@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,82 +57,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiping Ma <jiping.ma2@windriver.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit 481a7d154cbbd5ca355cc01cc8969876b240eded upstream.
+[ Upstream commit 9bdfe61054fb2b989eb58df20bf99c0cf67e3038 ]
 
-Add one notifier for udev changes net device name.
-Fixes: b6601323ef9e ("net: stmmac: debugfs entry name is not be changed when udev rename")
+Macsec stats like InPktsLate and InPktsDelayed share
+same counter in hardware. If SecY replay_protect is true
+then counter represents InPktsLate otherwise InPktsDelayed.
+This mode change was tracked based on protect_frames
+instead of replay_protect mistakenly. Similarly InPktsUnchecked
+and InPktsOk share same counter and mode change was tracked
+based on validate_check instead of validate_disabled.
+This patch fixes those problems.
 
-Signed-off-by: Jiping Ma <jiping.ma2@windriver.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   32 ++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  | 14 +++++++-------
+ .../ethernet/marvell/octeontx2/nic/otx2_common.h   |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -114,6 +114,7 @@ MODULE_PARM_DESC(chain_mode, "To use cha
- static irqreturn_t stmmac_interrupt(int irq, void *dev_id);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 13faca9add9f4..3ad8d7ef20be6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -1014,7 +1014,7 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
  
- #ifdef CONFIG_DEBUG_FS
-+static const struct net_device_ops stmmac_netdev_ops;
- static int stmmac_init_fs(struct net_device *dev);
- static void stmmac_exit_fs(struct net_device *dev);
- #endif
-@@ -4034,6 +4035,34 @@ static const struct file_operations stmm
- 	.release = single_release,
- };
+ 	/* Check if sync is really needed */
+ 	if (secy->validate_frames == txsc->last_validate_frames &&
+-	    secy->protect_frames == txsc->last_protect_frames)
++	    secy->replay_protect == txsc->last_replay_protect)
+ 		return;
  
-+/* Use network device events to rename debugfs file entries.
-+ */
-+static int stmmac_device_event(struct notifier_block *unused,
-+			       unsigned long event, void *ptr)
-+{
-+	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct stmmac_priv *priv = netdev_priv(dev);
-+
-+	if (dev->netdev_ops != &stmmac_netdev_ops)
-+		goto done;
-+
-+	switch (event) {
-+	case NETDEV_CHANGENAME:
-+		if (priv->dbgfs_dir)
-+			priv->dbgfs_dir = debugfs_rename(stmmac_fs_dir,
-+							 priv->dbgfs_dir,
-+							 stmmac_fs_dir,
-+							 dev->name);
-+		break;
-+	}
-+done:
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block stmmac_notifier = {
-+	.notifier_call = stmmac_device_event,
-+};
-+
- static int stmmac_init_fs(struct net_device *dev)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
-@@ -4072,6 +4101,8 @@ static int stmmac_init_fs(struct net_dev
- 		return -ENOMEM;
+ 	cn10k_mcs_secy_stats(pfvf, txsc->hw_secy_id_rx, &rx_rsp, MCS_RX, true);
+@@ -1036,19 +1036,19 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
+ 		rxsc->stats.InPktsInvalid += sc_rsp.pkt_invalid_cnt;
+ 		rxsc->stats.InPktsNotValid += sc_rsp.pkt_notvalid_cnt;
+ 
+-		if (txsc->last_protect_frames)
++		if (txsc->last_replay_protect)
+ 			rxsc->stats.InPktsLate += sc_rsp.pkt_late_cnt;
+ 		else
+ 			rxsc->stats.InPktsDelayed += sc_rsp.pkt_late_cnt;
+ 
+-		if (txsc->last_validate_frames == MACSEC_VALIDATE_CHECK)
++		if (txsc->last_validate_frames == MACSEC_VALIDATE_DISABLED)
+ 			rxsc->stats.InPktsUnchecked += sc_rsp.pkt_unchecked_cnt;
+ 		else
+ 			rxsc->stats.InPktsOK += sc_rsp.pkt_unchecked_cnt;
  	}
  
-+	register_netdevice_notifier(&stmmac_notifier);
-+
- 	return 0;
+ 	txsc->last_validate_frames = secy->validate_frames;
+-	txsc->last_protect_frames = secy->protect_frames;
++	txsc->last_replay_protect = secy->replay_protect;
  }
  
-@@ -4079,6 +4110,7 @@ static void stmmac_exit_fs(struct net_de
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
+ static int cn10k_mdo_open(struct macsec_context *ctx)
+@@ -1117,7 +1117,7 @@ static int cn10k_mdo_add_secy(struct macsec_context *ctx)
+ 	txsc->sw_secy = secy;
+ 	txsc->encoding_sa = secy->tx_sc.encoding_sa;
+ 	txsc->last_validate_frames = secy->validate_frames;
+-	txsc->last_protect_frames = secy->protect_frames;
++	txsc->last_replay_protect = secy->replay_protect;
  
-+	unregister_netdevice_notifier(&stmmac_notifier);
- 	debugfs_remove_recursive(priv->dbgfs_dir);
- }
- #endif /* CONFIG_DEBUG_FS */
+ 	list_add(&txsc->entry, &cfg->txsc_list);
+ 
+@@ -1538,12 +1538,12 @@ static int cn10k_mdo_get_rx_sc_stats(struct macsec_context *ctx)
+ 	rxsc->stats.InPktsInvalid += rsp.pkt_invalid_cnt;
+ 	rxsc->stats.InPktsNotValid += rsp.pkt_notvalid_cnt;
+ 
+-	if (secy->protect_frames)
++	if (secy->replay_protect)
+ 		rxsc->stats.InPktsLate += rsp.pkt_late_cnt;
+ 	else
+ 		rxsc->stats.InPktsDelayed += rsp.pkt_late_cnt;
+ 
+-	if (secy->validate_frames == MACSEC_VALIDATE_CHECK)
++	if (secy->validate_frames == MACSEC_VALIDATE_DISABLED)
+ 		rxsc->stats.InPktsUnchecked += rsp.pkt_unchecked_cnt;
+ 	else
+ 		rxsc->stats.InPktsOK += rsp.pkt_unchecked_cnt;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index 3d22cc6a2804a..f42b2b65bfd7b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -389,7 +389,7 @@ struct cn10k_mcs_txsc {
+ 	struct cn10k_txsc_stats stats;
+ 	struct list_head entry;
+ 	enum macsec_validation_type last_validate_frames;
+-	bool last_protect_frames;
++	bool last_replay_protect;
+ 	u16 hw_secy_id_tx;
+ 	u16 hw_secy_id_rx;
+ 	u16 hw_flow_id;
+-- 
+2.39.2
+
 
 
