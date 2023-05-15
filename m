@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD216703323
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 934AF7033ED
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240587AbjEOQdn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36806 "EHLO
+        id S242228AbjEOQnH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234849AbjEOQdm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3D230ED
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:34 -0700 (PDT)
+        with ESMTP id S242894AbjEOQnF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 978FD49D2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55174627C0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FB5C433EF;
-        Mon, 15 May 2023 16:33:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77260627D2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCC0C433A0;
+        Mon, 15 May 2023 16:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168413;
-        bh=d9P0oSvCc74Gj+kWRbi7jGzC0aVuIpRL7lB0mWSqU7A=;
+        s=korg; t=1684168974;
+        bh=8O+kAZRqcXrBLWJwN/QLcaRb/hlFHY6MSSCIJjzt5ec=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nig7tHkpx3YP3+sZkqtHXffvJIpzLMyE8ZCHxcUZG5ULUhFBi6FVk0uu6NdpSBTGv
-         c53Cyqw4GSPzyGSCdTY7qHShS7xicQjJd0ltzziEnNspkMg8j/ZdgLaHKbIzJ3pdzV
-         R1fgoUHuTuSzfxi9FODeb3LoBM/sjYwWiz1wwkQw=
+        b=Moyo1gvBfNbX8AmK9QlGF0ROvFXifEZuuBfP6B0RUt9zzp5Ht1WaegTc8Kf8qPvQw
+         g9+NPhsTqVT6/6ogzXgqjenGhn6lDnzplook9kGhUfoNOgNmaoxYhllZsCA4BhZbuD
+         v7rJwsEbSYdVPPoWi1Myozj5dSgldEONyeK+SRPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 042/116] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
+Subject: [PATCH 4.19 102/191] staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
 Date:   Mon, 15 May 2023 18:25:39 +0200
-Message-Id: <20230515161659.658406662@linuxfoundation.org>
+Message-Id: <20230515161710.950438449@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,35 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liu Jian <liujian56@huawei.com>
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
 
-[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
+[ Upstream commit 3fac2397f562eb669ddc2f45867a253f3fc26184 ]
 
-This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
+When loading the driver for rtl8192e, the W_DISABLE# switch is working as
+intended. But when the WLAN is turned off in software and then turned on
+again the W_DISABLE# does not work anymore. Reason for this is that in
+the function _rtl92e_dm_check_rf_ctrl_gpio() the bfirst_after_down is
+checked and returned when true. bfirst_after_down is set true when
+switching the WLAN off in software. But it is not set to false again
+when WLAN is turned on again.
 
-This patch introduces a possible null-ptr-def problem. Revert it. And the
-fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
-btsdio: fix use after free bug in btsdio_remove due to race condition").
+Add bfirst_after_down = false in _rtl92e_sta_up to reset bit and fix
+above described bug.
 
-Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 94a799425eee ("From: wlanfae <wlanfae@realtek.com> [PATCH 1/8] rtl8192e: Import new version of driver from realtek")
+Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Link: https://lore.kernel.org/r/20230418200201.GA17398@matrix-ESPRIMO-P710
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btsdio.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
-index bd55bf7a9914c..20142bc77554c 100644
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -353,7 +353,6 @@ static void btsdio_remove(struct sdio_func *func)
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+index da73998bc5f70..d5ef1986bde4d 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -778,6 +778,7 @@ static int _rtl92e_sta_up(struct net_device *dev, bool is_silent_reset)
+ 	else
+ 		netif_wake_queue(dev);
  
- 	BT_DBG("func %p", func);
- 
--	cancel_work_sync(&data->work);
- 	if (!data)
- 		return;
++	priv->bfirst_after_down = false;
+ 	return 0;
+ }
  
 -- 
 2.39.2
