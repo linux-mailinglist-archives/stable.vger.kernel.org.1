@@ -2,133 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 666D9702D3D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 14:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67DC1702D7A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 15:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241693AbjEOM5d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 08:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45070 "EHLO
+        id S242185AbjEONFw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 09:05:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242133AbjEOM5B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 08:57:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4197D18F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 05:56:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S242189AbjEONFU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 09:05:20 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9370273E;
+        Mon, 15 May 2023 06:04:54 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D06D4623CB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 12:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE161C433D2;
-        Mon, 15 May 2023 12:56:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684155406;
-        bh=pTmqVCoVVAd1QgjekfktsMQChX+h1KsaXLWHnF/vNhs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FV5hU/TIKaBlvZoMfqAbVdCSTbXBF06JsM6pjj/UoQiRvgg3SKWo12250s1PvXDSL
-         Ts0AUmSpb5rviX40Q3K7l34ecnwtClcQniUcwYtq4Zzn9ups6vOBesHzMkQ8fHv1iP
-         GLO8vv+ptZcHsFYlhRWf4rrYtCHUAA6aQqxQzmO4=
-Date:   Mon, 15 May 2023 14:56:43 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     stable@vger.kernel.org, John Ogness <john.ogness@linutronix.de>,
-        Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH 5.10.y] printk: declare printk_deferred_{enter,safe}() in
- include/linux/printk.h
-Message-ID: <2023051537-embargo-scouting-a849@gregkh>
-References: <2023042446-gills-morality-d566@gregkh>
- <767ab028-d946-98d5-4a13-d6ed6df77763@I-love.SAKURA.ne.jp>
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4QKfjD11sHz9sZF;
+        Mon, 15 May 2023 15:04:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1684155888;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=aReNDZORAsT9vC55Sza0lixh/dFu7bUAxE370evU9U0=;
+        b=HSExI2TLDxPazFnZAhnKWQUKsI6/VM6N+LUj1nR7G4Y7GRJ6gfBbOk0RF06aColi9xPiBa
+        /U/Z1KcwTbjQVNFIwxzbB7jsVd28JkDLRx/6kDpAsD0MmBQ76sasbnfF7UjVXE9++vChoi
+        xtWF6odERRxAzWeNS71fwHdE7e2pCu9R+6ckEDKfYPcgP1qN5lm0mOe5CKjbgBrW1kTjSx
+        FrkhdrEpzvkaQo/r5pecksfU6TV7Jg7Hz+P9IU2N2XVmg4qFw7cvDVuVZTmDRtOB+JQ9/Y
+        oiaR4fLB7SbbHAtblk6utPSe3Kxcrc9ULpFftEnT4Az7zBQkXUn/ElwbCAmWdA==
+Message-ID: <bc4d10f2-6ded-bed3-1d81-7e09292adf6f@mailbox.org>
+Date:   Mon, 15 May 2023 15:04:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <767ab028-d946-98d5-4a13-d6ed6df77763@I-love.SAKURA.ne.jp>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH AUTOSEL 6.1 4/9] drm/amd/display: Do not set drr on pipe
+ commit
+Content-Language: en-CA
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     felipe.clark@amd.com, Aric.Cyr@amd.com, wenjing.liu@amd.com,
+        dri-devel@lists.freedesktop.org, Jun.Lei@amd.com,
+        airlied@gmail.com, jiapeng.chong@linux.alibaba.com,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        amd-gfx@lists.freedesktop.org, aurabindo.pillai@amd.com,
+        Alvin.Lee2@amd.com, harry.wentland@amd.com, sunpeng.li@amd.com,
+        mwen@igalia.com, Daniel Wheeler <daniel.wheeler@amd.com>,
+        Dillon.Varone@amd.com, Wesley Chalmers <Wesley.Chalmers@amd.com>,
+        qingqing.zhuo@amd.com, Xinhui.Pan@amd.com, daniel@ffwll.ch,
+        Alex Deucher <alexander.deucher@amd.com>,
+        christian.koenig@amd.com
+References: <20230511193945.623476-1-sashal@kernel.org>
+ <20230511193945.623476-4-sashal@kernel.org>
+From:   =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel.daenzer@mailbox.org>
+In-Reply-To: <20230511193945.623476-4-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: yjitohq9diod3ii4o71ztepm4eueahaa
+X-MBO-RS-ID: 14971900af013488b0a
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, May 14, 2023 at 01:41:27PM +0900, Tetsuo Handa wrote:
-> commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
+On 5/11/23 21:39, Sasha Levin wrote:
+> From: Wesley Chalmers <Wesley.Chalmers@amd.com>
 > 
-> [This patch implements subset of original commit 85e3e7fbbb72 ("printk:
-> remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
-> potential deadlock on zonelist_update_seq seqlock") depends on, for
-> commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
-> build_all_zonelists and page allocation") was backported to stable.]
+> [ Upstream commit 474f01015ffdb74e01c2eb3584a2822c64e7b2be ]
 > 
-> All NMI contexts are handled the same as the safe context: store the
-> message and defer printing. There is no need to have special NMI
-> context tracking for this. Using in_nmi() is enough.
+> [WHY]
+> Writing to DRR registers such as OTG_V_TOTAL_MIN on the same frame as a
+> pipe commit can cause underflow.
 > 
-> There are several parts of the kernel that are manually calling into
-> the printk NMI context tracking in order to cause general printk
-> deferred printing:
+> [HOW]
+> Move DMUB p-state delegate into optimze_bandwidth; enabling FAMS sets
+> optimized_required.
 > 
->     arch/arm/kernel/smp.c
->     arch/powerpc/kexec/crash.c
->     kernel/trace/trace.c
-> 
-> For arm/kernel/smp.c and powerpc/kexec/crash.c, provide a new
-> function pair printk_deferred_enter/exit that explicitly achieves the
-> same objective.
-> 
-> For ftrace, remove the printk context manipulation completely. It was
-> added in commit 03fc7f9c99c1 ("printk/nmi: Prevent deadlock when
-> accessing the main log buffer in NMI"). The purpose was to enforce
-> storing messages directly into the ring buffer even in NMI context.
-> It really should have only modified the behavior in NMI context.
-> There is no need for a special behavior any longer. All messages are
-> always stored directly now. The console deferring is handled
-> transparently in vprintk().
-> 
-> Signed-off-by: John Ogness <john.ogness@linutronix.de>
-> [pmladek@suse.com: Remove special handling in ftrace.c completely.
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
-> Link: https://lore.kernel.org/r/20210715193359.25946-5-john.ogness@linutronix.de
-> [penguin-kernel: Copy only printk_deferred_{enter,safe}() definition ]
-> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-> ---
->  include/linux/printk.h | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/include/linux/printk.h b/include/linux/printk.h
-> index fe7eb2351610..344f6da3d4c3 100644
-> --- a/include/linux/printk.h
-> +++ b/include/linux/printk.h
-> @@ -623,4 +623,23 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
->  #define print_hex_dump_bytes(prefix_str, prefix_type, buf, len)	\
->  	print_hex_dump_debug(prefix_str, prefix_type, 16, 1, buf, len, true)
->  
-> +#ifdef CONFIG_PRINTK
-> +extern void __printk_safe_enter(void);
-> +extern void __printk_safe_exit(void);
-> +/*
-> + * The printk_deferred_enter/exit macros are available only as a hack for
-> + * some code paths that need to defer all printk console printing. Interrupts
-> + * must be disabled for the deferred duration.
-> + */
-> +#define printk_deferred_enter __printk_safe_enter
-> +#define printk_deferred_exit __printk_safe_exit
-> +#else
-> +static inline void printk_deferred_enter(void)
-> +{
-> +}
-> +static inline void printk_deferred_exit(void)
-> +{
-> +}
-> +#endif
-> +
->  #endif
-> -- 
-> 2.34.1
-> 
-> 
+> This change expects that Freesync requests are blocked when
+> optimized_required is true.
 
-All now queued up, thanks.
+This change caused a regression, see https://patchwork.freedesktop.org/patch/532240/?series=116487&rev=1#comment_972234 / 9deeb132-a317-7419-e9da-cbc0a379c0eb@daenzer.net .
 
-greg k-h
+
+-- 
+Earthling Michel Dänzer            |                  https://redhat.com
+Libre software enthusiast          |         Mesa and Xwayland developer
+
