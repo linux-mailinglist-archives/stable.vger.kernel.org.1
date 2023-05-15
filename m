@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 088A270345E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3CB703666
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242576AbjEOQrf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52696 "EHLO
+        id S243609AbjEORJn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242073AbjEOQre (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:47:34 -0400
+        with ESMTP id S243713AbjEORJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B55559E9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4607683
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F35B762912
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAAFC4339B;
-        Mon, 15 May 2023 16:47:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2B6B62B10
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C64C433EF;
+        Mon, 15 May 2023 17:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169237;
-        bh=JIRY4KI0oa0rFkCpTiczzmNYECTJbWVQ4KyF9q0KfAE=;
+        s=korg; t=1684170435;
+        bh=e4QBGwX+Izxjh1QZWTpkp9px+pDzxg0KWgSxmDigml8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SMcScnKw9e8JFvzZm81KSyYWqUNPjVgIV4dOCpGepY+FDHzgP+UrrtBd7gBx8PkyC
-         SaSEN6WwYphr++jFXzAvDWoZd5MADtAMc233A79A8BCaCl3frnNBnMJkuhmOqr/YVy
-         w3duHWk7FMbVR1j1lbrY+haNTQzoTscWMg1/bswQ=
+        b=h9y4h9FGCQbDeAWE/GuoT1EtWguihFEeUEoBcVd/rO2stJIp4Gc7HkRRxqevVpBJX
+         p1L+zQYmLo4dV/utXNZgyYsMGEuPL4tTaLnaP/X1djUxvY/LkI155IDHRqdV82Y78X
+         sDo/max3NjhbpWFjcIAK6zN9PQ8g2uMvLpvmb+FA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hawking Zhang <Hawking.Zhang@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Rex Zhu <Rex.Zhu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 156/191] drm/amdgpu: Add amdgpu_gfx_off_ctrl function
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 130/239] SMB3: force unmount was failing to close deferred close files
 Date:   Mon, 15 May 2023 18:26:33 +0200
-Message-Id: <20230515161713.093283569@linuxfoundation.org>
+Message-Id: <20230515161725.595698424@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,120 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rex Zhu <Rex.Zhu@amd.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit d23ee13fba23a3039971a976b2c4857cb5ba9c73 ]
+commit 2cb6f968775a9fd60c90a6042b9550bcec3ea087 upstream.
 
-v2:
-   1. drop the special handling for the hw IP
-      suggested by hawking and Christian.
-   2. refine the variable name suggested by Flora.
+In investigating a failure with xfstest generic/392 it
+was noticed that mounts were reusing a superblock that should
+already have been freed. This turned out to be related to
+deferred close files keeping a reference count until the
+closetimeo expired.
 
-This funciton as the entry of gfx off feature.
-we arbitrat gfx off feature enable/disable in this
-function.
+Currently the only way an fs knows that mount is beginning is
+when force unmount is called, but when this, ie umount_begin(),
+is called all deferred close files on the share (tree
+connection) should be closed immediately (unless shared by
+another mount) to avoid using excess resources on the server
+and to avoid reusing a superblock which should already be freed.
 
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Rex Zhu <Rex.Zhu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 2397e3d8d2e1 ("drm/amdgpu: add a missing lock for AMDGPU_SCHED")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In umount_begin, close all deferred close handles for that
+share if this is the last mount using that share on this
+client (ie send the SMB3 close request over the wire for those
+that have been already closed by the app but that we have
+kept a handle lease open for and have not sent closes to the
+server for yet).
+
+Reported-by: David Howells <dhowells@redhat.com>
+Acked-by: Bharath SM <bharathsm@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 78c09634f7dc ("Cifs: Fix kernel oops caused by deferred close for files.")
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h        |  5 +++
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  2 ++
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c    | 36 ++++++++++++++++++++++
- 3 files changed, 43 insertions(+)
+ fs/cifs/cifsfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index acbd33fcb73d3..624864148f1d6 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -950,6 +950,10 @@ struct amdgpu_gfx {
- 	/* NGG */
- 	struct amdgpu_ngg		ngg;
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -743,6 +743,7 @@ static void cifs_umount_begin(struct sup
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
  
-+	/* gfx off */
-+	bool                            gfx_off_state; /* true: enabled, false: disabled */
-+	struct mutex                    gfx_off_mutex;
-+	uint32_t                        gfx_off_req_count; /* default 1, enable gfx off: dec 1, disable gfx off: add 1 */
- 	/* pipe reservation */
- 	struct mutex			pipe_reserve_mutex;
- 	DECLARE_BITMAP			(pipe_reserve_bitmap, AMDGPU_MAX_COMPUTE_QUEUES);
-@@ -1776,6 +1780,7 @@ void amdgpu_device_program_register_sequence(struct amdgpu_device *adev,
- 					     const u32 array_size);
- 
- bool amdgpu_device_is_px(struct drm_device *dev);
-+void amdgpu_gfx_off_ctrl(struct amdgpu_device *adev, bool enable);
- /* atpx handler */
- #if defined(CONFIG_VGA_SWITCHEROO)
- void amdgpu_register_atpx_handler(void);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 102b05b8f0c2b..fed1097c64690 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2369,6 +2369,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	mutex_init(&adev->gfx.gpu_clock_mutex);
- 	mutex_init(&adev->srbm_mutex);
- 	mutex_init(&adev->gfx.pipe_reserve_mutex);
-+	mutex_init(&adev->gfx.gfx_off_mutex);
- 	mutex_init(&adev->grbm_idx_mutex);
- 	mutex_init(&adev->mn_lock);
- 	mutex_init(&adev->virt.vf_errors.lock);
-@@ -2396,6 +2397,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	INIT_DELAYED_WORK(&adev->late_init_work,
- 			  amdgpu_device_ip_late_init_func_handler);
- 
-+	adev->gfx.gfx_off_req_count = 1;
- 	adev->pm.ac_power = power_supply_is_system_supplied() > 0 ? true : false;
- 
- 	/* Registers mapping */
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index eeaa2e825858b..889d1266f3ae7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -340,3 +340,39 @@ void amdgpu_gfx_compute_mqd_sw_fini(struct amdgpu_device *adev)
- 			      &ring->mqd_gpu_addr,
- 			      &ring->mqd_ptr);
- }
-+
-+/* amdgpu_gfx_off_ctrl - Handle gfx off feature enable/disable
-+ *
-+ * @adev: amdgpu_device pointer
-+ * @bool enable true: enable gfx off feature, false: disable gfx off feature
-+ *
-+ * 1. gfx off feature will be enabled by gfx ip after gfx cg gp enabled.
-+ * 2. other client can send request to disable gfx off feature, the request should be honored.
-+ * 3. other client can cancel their request of disable gfx off feature
-+ * 4. other client should not send request to enable gfx off feature before disable gfx off feature.
-+ */
-+
-+void amdgpu_gfx_off_ctrl(struct amdgpu_device *adev, bool enable)
-+{
-+	if (!(adev->powerplay.pp_feature & PP_GFXOFF_MASK))
-+		return;
-+
-+	if (!adev->powerplay.pp_funcs->set_powergating_by_smu)
-+		return;
-+
-+	mutex_lock(&adev->gfx.gfx_off_mutex);
-+
-+	if (!enable)
-+		adev->gfx.gfx_off_req_count++;
-+	else if (adev->gfx.gfx_off_req_count > 0)
-+		adev->gfx.gfx_off_req_count--;
-+
-+	if (enable && !adev->gfx.gfx_off_state && !adev->gfx.gfx_off_req_count) {
-+		if (!amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_GFX, true))
-+			adev->gfx.gfx_off_state = true;
-+	} else if (!enable && adev->gfx.gfx_off_state) {
-+		if (!amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_GFX, false))
-+			adev->gfx.gfx_off_state = false;
-+	}
-+	mutex_unlock(&adev->gfx.gfx_off_mutex);
-+}
--- 
-2.39.2
-
++	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
 
 
