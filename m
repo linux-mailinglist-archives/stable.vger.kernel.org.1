@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D20D2703B05
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A2EA7036A6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244667AbjEOR6o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:58:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
+        id S243829AbjEORMQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244883AbjEOR62 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:28 -0400
+        with ESMTP id S243743AbjEORMA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C282C1A3A6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE7A5B88
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9DBA62E5F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD644C433D2;
-        Mon, 15 May 2023 17:55:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E0746230D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E63BC4339B;
+        Mon, 15 May 2023 17:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173346;
-        bh=NkoBwVlEJcnNqD7JqgFKB5DxIBG6OFh2GUxiKfnxso8=;
+        s=korg; t=1684170614;
+        bh=ZjGJnrsQOBRnvi2od35x2ihN9KRPXfLa2dOw0BLSXYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mLv8kHGEEIRavL2pd+acgMTK23sgdQqEbmIDz1TVzh1Foo4Ob8IPwbO+Jxwhl0KVw
-         1siSLZxpEWS+havL59mQRJk8G9JWWYivWagKfJHSueTUKynqT0Uof+7gVGhJte5YaS
-         7hTgu7Y8idPvKzy43SOGDSQmncEnlPvnwNOXMzYE=
+        b=XrVTgJBETFAhwr7YiowXzvcsOJc+Lk6YvkVPvNdfcbw+k9vlaq25eYHgRgtaExI7J
+         s584puYxZpDUTczKcarDdI7m6fof4Q4f1j73flf0Sz+ncWi0yeeghyVYOqRl2gkAdR
+         1F51nrW4DRR426DqcrBmhLDAbABz/Lhtq0le9l08=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YAN SHI <m202071378@hust.edu.cn>,
-        kernel test robot <lkp@intel.com>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/282] regulator: stm32-pwr: fix of_iomap leak
+        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 179/239] drm/amd: Use `amdgpu_ucode_*` helpers for MES
 Date:   Mon, 15 May 2023 18:27:22 +0200
-Message-Id: <20230515161724.159064551@linuxfoundation.org>
+Message-Id: <20230515161727.037220396@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +54,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YAN SHI <m202071378@hust.edu.cn>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit c4a413e56d16a2ae84e6d8992f215c4dcc7fac20 ]
+commit 11e0b0067ec0707e8e598a5f9a547ab618ae7982 upstream.
 
-Smatch reports:
-drivers/regulator/stm32-pwr.c:166 stm32_pwr_regulator_probe() warn:
-'base' from of_iomap() not released on lines: 151,166.
+The `amdgpu_ucode_request` helper will ensure that the return code for
+missing firmware is -ENODEV so that early_init can fail.
 
-In stm32_pwr_regulator_probe(), base is not released
-when devm_kzalloc() fails to allocate memory or
-devm_regulator_register() fails to register a new regulator device,
-which may cause a leak.
+The `amdgpu_ucode_release` helper provides symmetry for releasing firmware.
 
-To fix this issue, replace of_iomap() with
-devm_platform_ioremap_resource(). devm_platform_ioremap_resource()
-is a specialized function for platform devices.
-It allows 'base' to be automatically released whether the probe
-function succeeds or fails.
-
-Besides, use IS_ERR(base) instead of !base
-as the return value of devm_platform_ioremap_resource()
-can either be a pointer to the remapped memory or
-an ERR_PTR() encoded error code if the operation fails.
-
-Fixes: dc62f951a6a8 ("regulator: stm32-pwr: Fix return value check in stm32_pwr_regulator_probe()")
-Signed-off-by: YAN SHI <m202071378@hust.edu.cn>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202304111750.o2643eJN-lkp@intel.com/
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230412033529.18890-1-m202071378@hust.edu.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/stm32-pwr.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |   10 ++--------
+ drivers/gpu/drm/amd/amdgpu/mes_v10_1.c  |   10 +---------
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |   10 +---------
+ 3 files changed, 4 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/regulator/stm32-pwr.c b/drivers/regulator/stm32-pwr.c
-index e0e627b0106e0..b94da49923767 100644
---- a/drivers/regulator/stm32-pwr.c
-+++ b/drivers/regulator/stm32-pwr.c
-@@ -129,17 +129,16 @@ static const struct regulator_desc stm32_pwr_desc[] = {
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -1438,11 +1438,7 @@ int amdgpu_mes_init_microcode(struct amd
+ 	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes%s.bin",
+ 		ucode_prefix,
+ 		pipe == AMDGPU_MES_SCHED_PIPE ? "" : "1");
+-	r = request_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
+-	if (r)
+-		goto out;
+-
+-	r = amdgpu_ucode_validate(adev->mes.fw[pipe]);
++	r = amdgpu_ucode_request(adev, &adev->mes.fw[pipe], fw_name);
+ 	if (r)
+ 		goto out;
  
- static int stm32_pwr_regulator_probe(struct platform_device *pdev)
- {
--	struct device_node *np = pdev->dev.of_node;
- 	struct stm32_pwr_reg *priv;
- 	void __iomem *base;
- 	struct regulator_dev *rdev;
- 	struct regulator_config config = { };
- 	int i, ret = 0;
- 
--	base = of_iomap(np, 0);
--	if (!base) {
-+	base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(base)) {
- 		dev_err(&pdev->dev, "Unable to map IO memory\n");
--		return -ENOMEM;
-+		return PTR_ERR(base);
+@@ -1482,9 +1478,7 @@ int amdgpu_mes_init_microcode(struct amd
  	}
  
- 	config.dev = &pdev->dev;
--- 
-2.39.2
-
+ 	return 0;
+-
+ out:
+-	release_firmware(adev->mes.fw[pipe]);
+-	adev->mes.fw[pipe] = NULL;
++	amdgpu_ucode_release(&adev->mes.fw[pipe]);
+ 	return r;
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v10_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v10_1.c
+@@ -375,13 +375,6 @@ static const struct amdgpu_mes_funcs mes
+ 	.resume_gang = mes_v10_1_resume_gang,
+ };
+ 
+-static void mes_v10_1_free_microcode(struct amdgpu_device *adev,
+-				     enum admgpu_mes_pipe pipe)
+-{
+-	release_firmware(adev->mes.fw[pipe]);
+-	adev->mes.fw[pipe] = NULL;
+-}
+-
+ static int mes_v10_1_allocate_ucode_buffer(struct amdgpu_device *adev,
+ 					   enum admgpu_mes_pipe pipe)
+ {
+@@ -975,8 +968,7 @@ static int mes_v10_1_sw_fini(void *handl
+ 		amdgpu_bo_free_kernel(&adev->mes.eop_gpu_obj[pipe],
+ 				      &adev->mes.eop_gpu_addr[pipe],
+ 				      NULL);
+-
+-		mes_v10_1_free_microcode(adev, pipe);
++		amdgpu_ucode_release(&adev->mes.fw[pipe]);
+ 	}
+ 
+ 	amdgpu_bo_free_kernel(&adev->gfx.kiq.ring.mqd_obj,
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -453,13 +453,6 @@ static const struct amdgpu_mes_funcs mes
+ 	.misc_op = mes_v11_0_misc_op,
+ };
+ 
+-static void mes_v11_0_free_microcode(struct amdgpu_device *adev,
+-				     enum admgpu_mes_pipe pipe)
+-{
+-	release_firmware(adev->mes.fw[pipe]);
+-	adev->mes.fw[pipe] = NULL;
+-}
+-
+ static int mes_v11_0_allocate_ucode_buffer(struct amdgpu_device *adev,
+ 					   enum admgpu_mes_pipe pipe)
+ {
+@@ -1063,8 +1056,7 @@ static int mes_v11_0_sw_fini(void *handl
+ 		amdgpu_bo_free_kernel(&adev->mes.eop_gpu_obj[pipe],
+ 				      &adev->mes.eop_gpu_addr[pipe],
+ 				      NULL);
+-
+-		mes_v11_0_free_microcode(adev, pipe);
++		amdgpu_ucode_release(&adev->mes.fw[pipe]);
+ 	}
+ 
+ 	amdgpu_bo_free_kernel(&adev->gfx.kiq.ring.mqd_obj,
 
 
