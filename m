@@ -2,166 +2,1216 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96A11703A87
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FC870389C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242564AbjEORwM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:52:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47206 "EHLO
+        id S243933AbjEORdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244527AbjEORvx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:51:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5224C9C7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:43 -0700 (PDT)
+        with ESMTP id S244320AbjEORdU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBEBDD9B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E3FC62F36
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EFBC4339B;
-        Mon, 15 May 2023 17:49:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5A4D62D2D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECFCC433EF;
+        Mon, 15 May 2023 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172978;
-        bh=CQLT/bsvAJd2jCdkCfQb3EdAHZfQbieJuhsfPHb1y0o=;
+        s=korg; t=1684171866;
+        bh=fa4JRdBULqjFkwiO4E8cH16Jv6ifq5XuvDQxDMqSXIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0f7HTAQZkAqyqxUYdXxwdSlCoclCSHCY8j17koLM+Fi6PBQ1MpIm+LQJDu3ltmSxn
-         gaO6c8Qes9whu8jyErN7uCKFZ7vDk6WxfIdjLuvm1q0Q24mwR9kzReW2j6oCFvJ7VT
-         n3JYZanTiKg/X1NpmiL15ogIQmVB6hZjU27bmNpc=
+        b=z6mIDdfaGi/FM9VOMC9KkRtH5dPUlP+AIM0QX06fZNAXGwSUpkisNb9dti4zER+2H
+         qS9+7StWgGf4lOczFkjrHKuKsYOejUkFjKHp8aPCCVl4Z+5sfU78NBh8YkI9KC2yuC
+         sKvXqP+0Mq8I1b8x5Qm0IxhIlTBuAUbiGPFD2J34=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@kernel.com>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 329/381] perf vendor events power9: Remove UTF-8 characters from JSON files
+        patches@lists.linux.dev, Matt Roper <matthew.d.roper@intel.com>,
+        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
+        "Taylor, Clinton A" <clinton.a.taylor@intel.com>,
+        Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+        Sasha Levin <sashal@kernel.org>, Taylor@vger.kernel.org
+Subject: [PATCH 5.15 103/134] drm/i915/dg2: Add additional HDMI pixel clock frequencies
 Date:   Mon, 15 May 2023 18:29:40 +0200
-Message-Id: <20230515161751.672234096@linuxfoundation.org>
+Message-Id: <20230515161706.555085166@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_75_100
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Taylor, Clinton A <clinton.a.taylor@intel.com>
 
-[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
+[ Upstream commit 11c7faa61d136cef92506e4e77d0e6c6e01428bc ]
 
-Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
-events") added and updated power9 PMU JSON events. However some of the
-JSON events which are part of other.json and pipeline.json files,
-contains UTF-8 characters in their brief description.  Having UTF-8
-character could breaks the perf build on some distros.
+Using the BSPEC algorithm add addition HDMI pixel clocks to the existing
+table.
 
-Fix this issue by removing the UTF-8 characters from other.json and
-pipeline.json files.
+v2: remove 297000 unused entry
 
-Result without the fix:
-
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Result with the fix:
-
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+Signed-off-by: Taylor, Clinton A <clinton.a.taylor@intel.com>
+Reviewed-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+[mattrope: Fixed minor whitepsace issue flagged by checkpatch]
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220801234856.2832317-1-clinton.a.taylor@intel.com
+Stable-dep-of: d46746b8b13c ("drm/i915/dg2: Add HDMI pixel clock frequencies 267.30 and 319.89 MHz")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
- tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_snps_phy.c | 1116 +++++++++++++++++
+ 1 file changed, 1116 insertions(+)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 3f69422c21f99..f10bd554521a0 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -1417,7 +1417,7 @@
-   {
-     "EventCode": "0x45054",
-     "EventName": "PM_FMA_CMPL",
--    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
-+    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
-   },
-   {
-     "EventCode": "0x201E8",
-@@ -2017,7 +2017,7 @@
-   {
-     "EventCode": "0xC0BC",
-     "EventName": "PM_LSU_FLUSH_OTHER",
--    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
-+    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
-   },
-   {
-     "EventCode": "0x5094",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-index d0265f255de2b..723bffa41c448 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-@@ -442,7 +442,7 @@
-   {
-     "EventCode": "0x4D052",
-     "EventName": "PM_2FLOP_CMPL",
--    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
-+    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
-   },
-   {
-     "EventCode": "0x1F142",
+diff --git a/drivers/gpu/drm/i915/display/intel_snps_phy.c b/drivers/gpu/drm/i915/display/intel_snps_phy.c
+index 1e6ba0a377265..2030ef0b599f0 100644
+--- a/drivers/gpu/drm/i915/display/intel_snps_phy.c
++++ b/drivers/gpu/drm/i915/display/intel_snps_phy.c
+@@ -583,6 +583,1086 @@ static const struct intel_mpllb_state dg2_hdmi_148_5 = {
+ };
+ 
+ /* values in the below table are calculted using the algo */
++static const struct intel_mpllb_state dg2_hdmi_25200 = {
++	.clock = 25200,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 5) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 128) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 41943) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 2621),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_27027 = {
++	.clock = 27027,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 5) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 140) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 31876) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 46555),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_28320 = {
++	.clock = 28320,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 5) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 148) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 40894) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 30408),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_30240 = {
++	.clock = 30240,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 5) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 160) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 50331) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 42466),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_31500 = {
++	.clock = 31500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 68) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 26214) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 26214),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_36000 = {
++	.clock = 36000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 82) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 39321) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 39320),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_40000 = {
++	.clock = 40000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 2),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 96) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_49500 = {
++	.clock = 49500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 1),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 126) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 13107) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 13107),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_50000 = {
++	.clock = 50000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 1),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 128) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_57284 = {
++	.clock = 57284,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 150) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 42886) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 49701),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_58000 = {
++	.clock = 58000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 4) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 152) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 52428) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 52427),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_65000 = {
++	.clock = 65000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 72) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_71000 = {
++	.clock = 71000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 80) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 52428) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 52427),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_74176 = {
++	.clock = 74176,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 86) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 22334) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 43829),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_75000 = {
++	.clock = 75000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 88) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_78750 = {
++	.clock = 78750,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 2),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 94) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_85500 = {
++	.clock = 85500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 2),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 104) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 26214) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 26214),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_88750 = {
++	.clock = 88750,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 15) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 1),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 110) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_106500 = {
++	.clock = 106500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 138) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 13107) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 13107),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_108000 = {
++	.clock = 108000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 140) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 26214) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 26214),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_115500 = {
++	.clock = 115500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 152) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 26214) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 26214),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_119000 = {
++	.clock = 119000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 3) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 158) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 13107) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 13107),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_135000 = {
++	.clock = 135000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 15) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 76) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 0),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_138500 = {
++	.clock = 138500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 78) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 26214) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 26214),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_147160 = {
++	.clock = 147160,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 84) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 56623) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 6815),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_148352 = {
++	.clock = 148352,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 86) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 22334) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 43829),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_154000 = {
++	.clock = 154000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 13) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 2),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 90) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 39321) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 39320),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_162000 = {
++	.clock = 162000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 2),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 96) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 52428) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 52427),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_209800 = {
++	.clock = 209800,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 134) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 60293) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 7864),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_262750 = {
++	.clock = 262750,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 72) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 36044) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 52427),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_268500 = {
++	.clock = 268500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 7) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 74) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 45875) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 13107),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_296703 = {
++	.clock = 296703,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 86) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 22321) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 36804),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_241500 = {
++	.clock = 241500,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 160) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 39321) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 39320),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_497750 = {
++	.clock = 497750,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 15) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 0),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 166) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 36044) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 52427),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_592000 = {
++	.clock = 592000,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 86) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 13107) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 13107),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
++static const struct intel_mpllb_state dg2_hdmi_593407 = {
++	.clock = 593407,
++	.ref_control =
++		REG_FIELD_PREP(SNPS_PHY_REF_CONTROL_REF_RANGE, 3),
++	.mpllb_cp =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT, 6) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP, 14) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_INT_GS, 64) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_CP_PROP_GS, 124),
++	.mpllb_div =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_DIV5_CLK_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_TX_CLK_DIV, 0) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_PMIX_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_V2I, 2) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FREQ_VCO, 3),
++	.mpllb_div2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_REF_CLK_DIV, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_MULTIPLIER, 86) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_HDMI_DIV, 1),
++	.mpllb_fracn1 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_CGG_UPDATE_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_EN, 1) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_DEN, 65535),
++	.mpllb_fracn2 =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_QUOT, 22328) |
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_FRACN_REM, 7549),
++	.mpllb_sscen =
++		REG_FIELD_PREP(SNPS_PHY_MPLLB_SSC_UP_SPREAD, 1),
++};
++
+ static const struct intel_mpllb_state dg2_hdmi_297 = {
+ 	.clock = 297000,
+ 	.ref_control =
+@@ -649,6 +1729,42 @@ static const struct intel_mpllb_state *dg2_hdmi_tables[] = {
+ 	&dg2_hdmi_148_5,
+ 	&dg2_hdmi_297,
+ 	&dg2_hdmi_594,
++	&dg2_hdmi_25200,
++	&dg2_hdmi_27027,
++	&dg2_hdmi_28320,
++	&dg2_hdmi_30240,
++	&dg2_hdmi_31500,
++	&dg2_hdmi_36000,
++	&dg2_hdmi_40000,
++	&dg2_hdmi_49500,
++	&dg2_hdmi_50000,
++	&dg2_hdmi_57284,
++	&dg2_hdmi_58000,
++	&dg2_hdmi_65000,
++	&dg2_hdmi_71000,
++	&dg2_hdmi_74176,
++	&dg2_hdmi_75000,
++	&dg2_hdmi_78750,
++	&dg2_hdmi_85500,
++	&dg2_hdmi_88750,
++	&dg2_hdmi_106500,
++	&dg2_hdmi_108000,
++	&dg2_hdmi_115500,
++	&dg2_hdmi_119000,
++	&dg2_hdmi_135000,
++	&dg2_hdmi_138500,
++	&dg2_hdmi_147160,
++	&dg2_hdmi_148352,
++	&dg2_hdmi_154000,
++	&dg2_hdmi_162000,
++	&dg2_hdmi_209800,
++	&dg2_hdmi_241500,
++	&dg2_hdmi_262750,
++	&dg2_hdmi_268500,
++	&dg2_hdmi_296703,
++	&dg2_hdmi_497750,
++	&dg2_hdmi_592000,
++	&dg2_hdmi_593407,
+ 	NULL,
+ };
+ 
 -- 
 2.39.2
 
