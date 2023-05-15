@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0909703AD9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47504703771
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242522AbjEOR4M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51512 "EHLO
+        id S244064AbjEORVM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244816AbjEORzd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:33 -0400
+        with ESMTP id S244070AbjEORU6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F6919F34
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E228012E9F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B6E62FC1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F61C433EF;
-        Mon, 15 May 2023 17:53:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C343C620B2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DADC433D2;
+        Mon, 15 May 2023 17:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173203;
-        bh=nmFQvOCzYYwpWKQu+Di3E93wuWGc7ZqlPuGOy0C+7c0=;
+        s=korg; t=1684171128;
+        bh=EnQHNNnWRJ9wA3vFxST/Puftf64q6UJyO9WhgEOAGFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sXh7G5Vu6VhyCjtfQWzSvU6TcCkgKZQmdcqLEX0tPB4B0+zD2dlPBxJOcZvdwIi5E
-         +6sSQOxfFrOqXYycR3PYLP7QUO7orehZd9NiFkVnZpLpAocE2Qp0W9Rxh3Nv0CFvlG
-         PpE9zNjiou+wqriNICJhyWr9wafEdt0OiCTXDf2w=
+        b=xggbH7u0uw9NBuvtV7gJ5WBvKkxkl9q8ZX0AxNG5KtHI0NCz06IOEJBtlRTAB8Vah
+         CFUECYtN2o4/++duV/vFkgjKngIGaOhrBQ/a8AqgvgKI+c4HPjIQMevadzD4DKlpgg
+         jrTxIkz0k5CQXJnP9Jxp3W1vG/jOdUiezE2cU5kg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.4 019/282] kheaders: Use array declaration instead of char
+        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 071/242] octeontx2-af: Update correct mask to filter IPv4 fragments
 Date:   Mon, 15 May 2023 18:26:37 +0200
-Message-Id: <20230515161722.851502942@linuxfoundation.org>
+Message-Id: <20230515161724.033894252@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,80 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+From: Suman Ghosh <sumang@marvell.com>
 
-commit b69edab47f1da8edd8e7bfdf8c70f51a2a5d89fb upstream.
+[ Upstream commit 2075bf150ddf320df02c05e242774dc0f73be1a1 ]
 
-Under CONFIG_FORTIFY_SOURCE, memcpy() will check the size of destination
-and source buffers. Defining kernel_headers_data as "char" would trip
-this check. Since these addresses are treated as byte arrays, define
-them as arrays (as done everywhere else).
+During the initial design, the IPv4 ip_flag mask was set to 0xff.
+Which results to filter only fragmets with (fragment_offset == 0).
+As part of the fix, updated the mask to 0x20 to filter all the
+fragmented packets irrespective of the fragment_offset value.
 
-This was seen with:
-
-  $ cat /sys/kernel/kheaders.tar.xz >> /dev/null
-
-  detected buffer overflow in memcpy
-  kernel BUG at lib/string_helpers.c:1027!
-  ...
-  RIP: 0010:fortify_panic+0xf/0x20
-  [...]
-  Call Trace:
-   <TASK>
-   ikheaders_read+0x45/0x50 [kheaders]
-   kernfs_fop_read_iter+0x1a4/0x2f0
-  ...
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/bpf/20230302112130.6e402a98@kernel.org/
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Jakub Kicinski <kuba@kernel.org>
-Fixes: 43d8ce9d65a5 ("Provide in-kernel headers to make extending kernel easier")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230302224946.never.243-kees@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c672e3727989 ("octeontx2-pf: Add support to filter packet based on IP fragment")
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kheaders.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/kheaders.c b/kernel/kheaders.c
-index 8f69772af77b..42163c9e94e5 100644
---- a/kernel/kheaders.c
-+++ b/kernel/kheaders.c
-@@ -26,15 +26,15 @@ asm (
- "	.popsection				\n"
- );
- 
--extern char kernel_headers_data;
--extern char kernel_headers_data_end;
-+extern char kernel_headers_data[];
-+extern char kernel_headers_data_end[];
- 
- static ssize_t
- ikheaders_read(struct file *file,  struct kobject *kobj,
- 	       struct bin_attribute *bin_attr,
- 	       char *buf, loff_t off, size_t len)
- {
--	memcpy(buf, &kernel_headers_data + off, len);
-+	memcpy(buf, &kernel_headers_data[off], len);
- 	return len;
- }
- 
-@@ -48,8 +48,8 @@ static struct bin_attribute kheaders_attr __ro_after_init = {
- 
- static int __init ikheaders_init(void)
- {
--	kheaders_attr.size = (&kernel_headers_data_end -
--			      &kernel_headers_data);
-+	kheaders_attr.size = (kernel_headers_data_end -
-+			      kernel_headers_data);
- 	return sysfs_create_bin_file(kernel_kobj, &kheaders_attr);
- }
- 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+index 044cc211424ed..8392f63e433fc 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+@@ -544,7 +544,7 @@ static int otx2_tc_prepare_flow(struct otx2_nic *nic, struct otx2_tc_flow *node,
+ 		if (match.mask->flags & FLOW_DIS_IS_FRAGMENT) {
+ 			if (ntohs(flow_spec->etype) == ETH_P_IP) {
+ 				flow_spec->ip_flag = IPV4_FLAG_MORE;
+-				flow_mask->ip_flag = 0xff;
++				flow_mask->ip_flag = IPV4_FLAG_MORE;
+ 				req->features |= BIT_ULL(NPC_IPFRAG_IPV4);
+ 			} else if (ntohs(flow_spec->etype) == ETH_P_IPV6) {
+ 				flow_spec->next_header = IPPROTO_FRAGMENT;
 -- 
-2.40.1
+2.39.2
 
 
 
