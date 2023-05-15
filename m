@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6081703972
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C4FA703700
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244595AbjEORmi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        id S243911AbjEORP5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244445AbjEORmN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:13 -0400
+        with ESMTP id S243818AbjEORP3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 362DA1436F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4DC7EE6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F33E762E24
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFA9C433EF;
-        Mon, 15 May 2023 17:39:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78C9762B92
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807BAC433EF;
+        Mon, 15 May 2023 17:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172387;
-        bh=tMvaJayk0pDyZE6NfK/mC365QWqIusj13MEH/ewxCKk=;
+        s=korg; t=1684170855;
+        bh=TPCEFs6Gs0KWg4bFSeNpTS70JR5mYKAK7iYjeH5spc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U1M33+LnPwHGXOjUA8i0OgOjeXCadBNvmOD9vhJ7G0FVVDqYwV46Ht/tD1gl+ZseX
-         BIgINDULwZ7CIh7Qij6hyDvPz/UwgxWqFb/DoOm/w9qQ013iosFgfdubYdiLrRGEqA
-         rRFvohfosBVB1qJaHYXamjqZmSMUai8Pw9AbS+BE=
+        b=fPqeSpaHJk0tvJN++EPSsKS2Vq/iwWTuPTmrVthM75/30+DmabhYOmqlVSiJlvL4B
+         m59ZODTRAukm9mB/CiPfyN+OiCXPK6viwY0KUnLWb5Pzn0b79EzMqcwui4muRDxCsw
+         WOBykNzaj3S7PRaiplBNKjHJH/C1UraHceYVfy3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Adam Skladowski <a39.skl@gmail.com>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/381] drm: msm: adreno: Disable preemption on Adreno 510
+Subject: [PATCH 6.2 023/242] ASoC: Intel: soc-acpi-byt: Fix "WM510205" match no longer working
 Date:   Mon, 15 May 2023 18:25:49 +0200
-Message-Id: <20230515161741.237101320@linuxfoundation.org>
+Message-Id: <20230515161722.626651950@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Skladowski <a39.skl@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 010c8bbad2cb8c33c47963e29f051f1e917e45a5 ]
+[ Upstream commit c963e2ec095cb3f855890be53f56f5a6c6fbe371 ]
 
-Downstream driver appears to not support preemption on A510 target,
-trying to use one make device slow and fill log with rings related errors.
-Set num_rings to 1 to disable preemption.
+Commit 7e1d728a94ca ("ASoC: Intel: soc-acpi-byt: Add new WM5102 ACPI HID")
+added an extra HID to wm5102_comp_ids.codecs, but it forgot to bump
+wm5102_comp_ids.num_codecs, causing the last codec HID in the codecs list
+to no longer work.
 
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: e20c9284c8f2 ("drm/msm/adreno: Add support for Adreno 510 GPU")
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/526898/
-Link: https://lore.kernel.org/r/20230314221757.13096-1-a39.skl@gmail.com
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Bump wm5102_comp_ids.num_codecs to fix this.
+
+Fixes: 7e1d728a94ca ("ASoC: Intel: soc-acpi-byt: Add new WM5102 ACPI HID")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230421183714.35186-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/soc/intel/common/soc-acpi-intel-byt-match.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 6f84db97e20e8..0fcba2bc26b8e 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -1569,6 +1569,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
- 	struct a5xx_gpu *a5xx_gpu = NULL;
- 	struct adreno_gpu *adreno_gpu;
- 	struct msm_gpu *gpu;
-+	unsigned int nr_rings;
- 	int ret;
+diff --git a/sound/soc/intel/common/soc-acpi-intel-byt-match.c b/sound/soc/intel/common/soc-acpi-intel-byt-match.c
+index db5a92b9875a8..87c44f284971a 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-byt-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-byt-match.c
+@@ -124,7 +124,7 @@ static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
+ };
  
- 	if (!pdev) {
-@@ -1589,7 +1590,12 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ static const struct snd_soc_acpi_codecs wm5102_comp_ids = {
+-	.num_codecs = 2,
++	.num_codecs = 3,
+ 	.codecs = { "10WM5102", "WM510204", "WM510205"},
+ };
  
- 	check_speed_bin(&pdev->dev);
- 
--	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 4);
-+	nr_rings = 4;
-+
-+	if (adreno_is_a510(adreno_gpu))
-+		nr_rings = 1;
-+
-+	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
- 	if (ret) {
- 		a5xx_destroy(&(a5xx_gpu->base.base));
- 		return ERR_PTR(ret);
 -- 
 2.39.2
 
