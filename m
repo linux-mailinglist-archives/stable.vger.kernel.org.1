@@ -2,161 +2,229 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 156E070422C
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 02:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62E61704232
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 02:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230236AbjEPAQR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 20:16:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50754 "EHLO
+        id S242979AbjEPARL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 20:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242502AbjEPAQR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 20:16:17 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DDA5B88
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:15 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1aae90f5ebcso759365ad.1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684196175; x=1686788175;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T6gh2qYVut9aSylVwiYmVdq2jPzWcix3qnUjMW+9u1Y=;
-        b=4DT4IrQPyQsz4h+dcRk/i2LEM+ilSfmH36PEG55MInjjTBGxQELkAy2DYSBQDQwIaO
-         4X9iQxrb0bD6WqOfmbVD1TRc+OSr1/fhNSat4Lh1WFRxQfsuAIolN8800kDElXhNXelP
-         LlqIpSwDtJPlkSMJL3mCFlcx7Mpde4o4iDk7xUzqFS4y8VdInEFgNXsvhb5OVozPBqPC
-         P5nDQrkneFxH9jJ+OustYYE3W7BHQQzUaU7WXrV/bo2+IfYJL0t8d7cDO2VZ7sGKINON
-         QPt9EIBsy+JHePYNsII5qP0NAJTzYMjlpMKd/qeQ7nDio77QEz76JhMEYmYceqmrZ+oQ
-         Ji3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684196175; x=1686788175;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T6gh2qYVut9aSylVwiYmVdq2jPzWcix3qnUjMW+9u1Y=;
-        b=DB5xOi67JaEpf49yyJmiQM2r9/Jt71ZTLcO6xUYMZp4VY/PcG/+UXyCk9ckOj4CjYc
-         L05o2CSLkqLX1+BP19K1JsCX6ZbniZOg11dBfaxJ3bQfCKYlvTqnFKCMZq+nEAofgjx8
-         5di9I/dDePDWrqUOsFdtTL5WNRJuz9lXUgCId18oIFKBUevGrC5pVi8OgVqQQiRZ7mpF
-         0KT3yEUt0k08aGXvMOlLKwkkW88iHDg7X4wN5DwjSOBiePbXLwmuKZ1FHpZsLhGGL9Ds
-         jPfMeQZpz1fHSpDoc+N+IQuv/MWdGJzYH8EIOI1VEQ82xG1idAUWfQ9c0iJe2NlQSyGZ
-         RNfA==
-X-Gm-Message-State: AC+VfDxsEfQaYHcz9CSwPLkFR/HDKdYdl86fAxvSIjsm2Cl5hxtxpvkm
-        Xbd/iJ5vcm0LsUrEMuB1vz4DAA==
-X-Google-Smtp-Source: ACHHUZ6F8d7WPH/3QMv++9pQyJNemJ8pH/5jv3HUHQFDdhHoClEdG/sj9VEr8QKBhfu3MpNJ0Ldv3Q==
-X-Received: by 2002:a17:903:2281:b0:1aa:dfdf:9232 with SMTP id b1-20020a170903228100b001aadfdf9232mr30882plh.16.1684196174906;
-        Mon, 15 May 2023 17:16:14 -0700 (PDT)
-Received: from google.com ([2620:15c:2d3:205:c825:9c0b:b4be:8ee4])
-        by smtp.gmail.com with ESMTPSA id z21-20020aa791d5000000b006260526cf0csm12286564pfa.116.2023.05.15.17.16.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 May 2023 17:16:14 -0700 (PDT)
-Date:   Mon, 15 May 2023 17:16:09 -0700
-From:   Peter Collingbourne <pcc@google.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
- swap_free()
-Message-ID: <ZGLLSYuedMsViDQG@google.com>
-References: <20230512235755.1589034-1-pcc@google.com>
- <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
+        with ESMTP id S245075AbjEPARK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 20:17:10 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C816A59;
+        Mon, 15 May 2023 17:17:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1684196227; x=1715732227;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3qCc4lrxbIqSTQGHVLOT4C7rUIdo224L9qeY9TuGc8Q=;
+  b=Ua9BNfGJ9jw3t3OBj6koXFyebEFmO9sH57m1WRUU2uT67IpjV/rrwL1q
+   aYCGPOZlNF3ewcozZSZspcCz0x202x3nIVxj1tcsccR+/4yyLjqZ7BbK7
+   8e0r29gQ9o6b1rj1KaCGH+TSQVOns0TIEZZHax9jRQwXf70vLtvRgrcUv
+   3QKgVS7EsU6VIxt08z8nIgCPn7bLbc36ECt502swC/BNMtIvrSHmJYa/p
+   mDaKa3oSwrrSFu2QyUq2A2udT9O0pumRX5S6TpOPrH3qh12NK6ZfRqncb
+   ujJLG2C4xAT2ZbgctbNoRUI9yOIlL6qruFHJyIGyevL+q2ewA2wXeRAXU
+   g==;
+X-IronPort-AV: E=Sophos;i="5.99,277,1677567600"; 
+   d="scan'208";a="213430595"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 15 May 2023 17:17:06 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 15 May 2023 17:17:05 -0700
+Received: from localhost (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Mon, 15 May 2023 17:17:05 -0700
+From:   Sagar Biradar <sagar.biradar@microchip.com>
+To:     Don Brace <don.brace@microchip.com>,
+        Sagar Biradar <sagar.biradar@microchip.com>,
+        Gilbert Wu <gilbert.wu@microchip.com>,
+        <linux-scsi@vger.kernel.org>,
+        Martin Petersen <martin.petersen@oracle.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Brian King <brking@linux.vnet.ibm.com>,
+        <stable@vger.kernel.org>, Tom White <tom.white@microchip.com>
+Subject: [PATCH v3] aacraid: reply queue mapping to CPUs based of IRQ affinity
+Date:   Mon, 15 May 2023 17:17:03 -0700
+Message-ID: <20230516001703.5384-1-sagar.biradar@microchip.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> On 13.05.23 01:57, Peter Collingbourne wrote:
-> > Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-> > the call to swap_free() before the call to set_pte_at(), which meant that
-> > the MTE tags could end up being freed before set_pte_at() had a chance
-> > to restore them. One other possibility was to hook arch_do_swap_page(),
-> > but this had a number of problems:
-> > 
-> > - The call to the hook was also after swap_free().
-> > 
-> > - The call to the hook was after the call to set_pte_at(), so there was a
-> >    racy window where uninitialized metadata may be exposed to userspace.
-> >    This likely also affects SPARC ADI, which implements this hook to
-> >    restore tags.
-> > 
-> > - As a result of commit 1eba86c096e3 ("mm: change page type prior to
-> >    adding page table entry"), we were also passing the new PTE as the
-> >    oldpte argument, preventing the hook from knowing the swap index.
-> > 
-> > Fix all of these problems by moving the arch_do_swap_page() call before
-> > the call to free_page(), and ensuring that we do not set orig_pte until
-> > after the call.
-> > 
-> > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> > Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
-> > Cc: <stable@vger.kernel.org> # 6.1
-> > Fixes: ca827d55ebaa ("mm, swap: Add infrastructure for saving page metadata on swap")
-> > Fixes: 1eba86c096e3 ("mm: change page type prior to adding page table entry")
-> 
-> I'm confused. You say c145e0b47c77 changed something (which was after above
-> commits), indicate that it fixes two other commits, and indicate "6.1" as
-> stable which does not apply to any of these commits.
+Fix the IO hang that arises because of MSIx vector not
+having a mapped online CPU upon receiving completion.
 
-Sorry, the situation is indeed a bit confusing.
+The SCSI cmds take the blk_mq route, which is setup during the init.
+The reserved cmds fetch the vector_no from mq_map after the init
+is complete and before the init, they use 0 - as per the norm.
 
-- In order to make the arch_do_swap_page() hook suitable for fixing the
-  bug introduced by c145e0b47c77, patch 1 addresses a number of issues,
-  including fixing bugs introduced by ca827d55ebaa and 1eba86c096e3,
-  but we haven't fixed the c145e0b47c77 bug yet, so there's no Fixes:
-  tag for it yet.
+Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
+Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
+---
+ drivers/scsi/aacraid/aacraid.h  |  1 +
+ drivers/scsi/aacraid/comminit.c |  2 +-
+ drivers/scsi/aacraid/commsup.c  |  6 +++++-
+ drivers/scsi/aacraid/linit.c    | 14 ++++++++++++++
+ drivers/scsi/aacraid/src.c      | 25 +++++++++++++++++++++++--
+ 5 files changed, 44 insertions(+), 4 deletions(-)
 
-- Patch 2, relying on the fixes in patch 1, makes MTE install an
-  arch_do_swap_page() hook (indirectly, by making arch_swap_restore()
-  also hook arch_do_swap_page()), thereby fixing the c145e0b47c77 bug.
+diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
+index 5e115e8b2ba4..7c6efde75da6 100644
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -1678,6 +1678,7 @@ struct aac_dev
+ 	u32			handle_pci_error;
+ 	bool			init_reset;
+ 	u8			soft_reset_support;
++	u8			use_map_queue;
+ };
+ 
+ #define aac_adapter_interrupt(dev) \
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index bd99c5492b7d..53924912417e 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -630,6 +630,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 
+ 	if (aac_is_src(dev))
+ 		aac_define_int_mode(dev);
++
+ 	/*
+ 	 *	Ok now init the communication subsystem
+ 	 */
+@@ -657,4 +658,3 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 
+ 	return dev;
+ }
+-
+diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
+index deb32c9f4b3e..3f062e4013ab 100644
+--- a/drivers/scsi/aacraid/commsup.c
++++ b/drivers/scsi/aacraid/commsup.c
+@@ -223,8 +223,12 @@ int aac_fib_setup(struct aac_dev * dev)
+ struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd *scmd)
+ {
+ 	struct fib *fibptr;
++	u32 blk_tag;
++	int i;
+ 
+-	fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
++	blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
++	i = blk_mq_unique_tag_to_tag(blk_tag);
++	fibptr = &dev->fibs[i];
+ 	/*
+ 	 *	Null out fields that depend on being zero at the start of
+ 	 *	each I/O
+diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
+index 5ba5c18b77b4..fa53a9b3341b 100644
+--- a/drivers/scsi/aacraid/linit.c
++++ b/drivers/scsi/aacraid/linit.c
+@@ -34,6 +34,7 @@
+ #include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/msdos_partition.h>
++#include <linux/blk-mq-pci.h>
+ 
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_cmnd.h>
+@@ -505,6 +506,15 @@ static int aac_slave_configure(struct scsi_device *sdev)
+ 	return 0;
+ }
+ 
++static void aac_map_queues(struct Scsi_Host *shost)
++{
++	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
++
++	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
++				aac->pdev, 0);
++	aac->use_map_queue = true;
++}
++
+ /**
+  *	aac_change_queue_depth		-	alter queue depths
+  *	@sdev:	SCSI device we are considering
+@@ -1489,6 +1499,7 @@ static struct scsi_host_template aac_driver_template = {
+ 	.bios_param			= aac_biosparm,
+ 	.shost_groups			= aac_host_groups,
+ 	.slave_configure		= aac_slave_configure,
++	.map_queues			= aac_map_queues,
+ 	.change_queue_depth		= aac_change_queue_depth,
+ 	.sdev_groups			= aac_dev_groups,
+ 	.eh_abort_handler		= aac_eh_abort,
+@@ -1776,6 +1787,8 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	shost->max_lun = AAC_MAX_LUN;
+ 
+ 	pci_set_drvdata(pdev, shost);
++	shost->nr_hw_queues = aac->max_msix;
++	shost->host_tagset = 1;
+ 
+ 	error = scsi_add_host(shost, &pdev->dev);
+ 	if (error)
+@@ -1908,6 +1921,7 @@ static void aac_remove_one(struct pci_dev *pdev)
+ 	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
+ 
+ 	aac_cancel_rescan_worker(aac);
++	aac->use_map_queue = false;
+ 	scsi_remove_host(shost);
+ 
+ 	__aac_shutdown(aac);
+diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
+index 11ef58204e96..61949f374188 100644
+--- a/drivers/scsi/aacraid/src.c
++++ b/drivers/scsi/aacraid/src.c
+@@ -493,6 +493,10 @@ static int aac_src_deliver_message(struct fib *fib)
+ #endif
+ 
+ 	u16 vector_no;
++	struct scsi_cmnd *scmd;
++	u32 blk_tag;
++	struct Scsi_Host *shost = dev->scsi_host_ptr;
++	struct blk_mq_queue_map *qmap;
+ 
+ 	atomic_inc(&q->numpending);
+ 
+@@ -505,8 +509,25 @@ static int aac_src_deliver_message(struct fib *fib)
+ 		if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
+ 			&& dev->sa_firmware)
+ 			vector_no = aac_get_vector(dev);
+-		else
+-			vector_no = fib->vector_no;
++		else {
++			if (!fib->vector_no || !fib->callback_data) {
++				if (shost && dev->use_map_queue) {
++					qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
++					vector_no = qmap->mq_map[raw_smp_processor_id()];
++				}
++				/*
++				 *	We hardcode the vector_no for
++				 *	reserved commands as a valid shost is
++				 *	absent during the init
++				 */
++				else
++					vector_no = 0;
++			} else {
++				scmd = (struct scsi_cmnd *)fib->callback_data;
++				blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
++				vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
++			}
++		}
+ 
+ 		if (native_hba) {
+ 			if (fib->flags & FIB_CONTEXT_FLAG_NATIVE_HBA_TMF) {
+-- 
+2.29.0
 
-- 6.1 is the first stable version in which all 3 commits in my Fixes: tags
-  are present, so that is the version that I've indicated in my stable
-  tag for this series. In theory patch 1 could be applied to older kernel
-  versions, but it wouldn't fix any problems that we are facing with MTE
-  (because it only fixes problems relating to the arch_do_swap_page()
-  hook, which older kernel versions don't hook with MTE), and there are
-  some merge conflicts if we go back further anyway. If the SPARC folks
-  (the previous only user of this hook) want to fix these issues with ADI,
-  they can propose their own backport.
-
-> > @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >   	VM_BUG_ON(!folio_test_anon(folio) ||
-> >   			(pte_write(pte) && !PageAnonExclusive(page)));
-> >   	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
-> > -	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
-> >   	folio_unlock(folio);
-> >   	if (folio != swapcache && swapcache) {
-> 
-> 
-> You are moving the folio_free_swap() call after the folio_ref_count(folio)
-> == 1 check, which means that such (previously) swapped pages that are
-> exclusive cannot be detected as exclusive.
-
-Ack. I will fix this in v2.
-
-Peter
