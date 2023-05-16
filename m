@@ -2,60 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 263B8704F9D
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 15:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E02E704F9E
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 15:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233327AbjEPNnc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 09:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54696 "EHLO
+        id S232548AbjEPNne (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 09:43:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232377AbjEPNnb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 09:43:31 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8055B80
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 06:43:30 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f27977aed6so5758259e87.2
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 06:43:30 -0700 (PDT)
+        with ESMTP id S231921AbjEPNnd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 09:43:33 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E7C5264
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 06:43:32 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ac81d2bfbcso151744501fa.3
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 06:43:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kvaser.com; s=google; t=1684244608; x=1686836608;
+        d=kvaser.com; s=google; t=1684244610; x=1686836610;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5NVzQFwvew968h4U+Y1dDfo1zepT864PRVELa6Ou4Mw=;
-        b=avDzM8EBD2cvW0UiagGCPoS423E/8SMyRBPrBqlkWiGCtqOljFedOd9/O5uDjTANJA
-         GK443og3wkyKqJvTD6DVbjtj7WgIRL7NjnKPHfLZ2hOyr/K7VywYX0xgrgVrbZ3oICAZ
-         OmVJlKvT4jUzMr7cgNzQtcBcA3wB8hRsuPV2iRBec2999QYxxDVWL3M+ka0uOgXisneO
-         DEMq6O8tMSa6Lmt4tKNao8SOATzagKtURgDBRSgfuxYoZAxIaMMU0Ws0KSrgsEC/1wFB
-         HsWSxb/KI+oMLHmqeztpYD0/msiEQ7EnzP7o5v6oY7ic+LWDbgoOGFTEEIVKpNyXGqrH
-         Ignw==
+        bh=ZVx1X/gwP3O7S/acEluGud38z490UszSjPAa5tTq1SA=;
+        b=TtsZfDOxTuNsE27DN6kpPXzY1SDVnobgvWGQgiDLhx9C/6aI1MZgZxmY5vWgti3XOV
+         /LY/XOkF/3vy3ozKfdNK8WCAAXPB9tw0vC/4/A2nra6okzurMEXKkYgSjFOG8ZqwCrdJ
+         l+0bxY4F8j2vS/oA9GHy2okxy+kdzqBh/aSYKzVu8yIBqLlU5/z+5a/0VyILOsFC7zNs
+         EifElpevwqWGZatqvSGRLrxUprEOMxU/sESV3wT5CeJfM4JG93vBlS2EJTNye+is8t51
+         ae/I+XO5mj6K7Rr3Se/Xl3/6rwP1wlXLUjVXtVT/nejvPiBqlYiUan7GzjisoUblt6Qi
+         af9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684244608; x=1686836608;
+        d=1e100.net; s=20221208; t=1684244610; x=1686836610;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5NVzQFwvew968h4U+Y1dDfo1zepT864PRVELa6Ou4Mw=;
-        b=ITePOi19muuHE5cVJK/zQN2v1nGK8+/Kcf34t3hYJ8NV1KsMtZosDXd2JOBNiFTIyA
-         4un+4rtnY1DQuvmDyOz6cCYmhLr3cMqHY9aonc4rYlS41IIPK90BWBf1IUU1tRt+4HVk
-         FbCjCw8gwDws1TPgkLnwK2gnB0IxfQr1YmjqD0U916Z9FuGWGVX3VWambJHDcm7h+p6D
-         v8CxwcxR+GfU2XfQoQOBVW5faIwovpZrXTUX/jJ2zSrc6d/b9HDLXjIutT+D3/dbd7CN
-         VZp9OmNn//sIqCKBMWiCg3FWH7qfZjey0jSC2C5GZl4YTqIMTTgJXVktDYjViXXvBEQ5
-         jiuQ==
-X-Gm-Message-State: AC+VfDwxV6jxxzgTF2wK12YyIn4/fq/OZEOFyqOATF+69JQudlQlm5Tk
-        hotJ/3q+lS2rdAjIpDlXkbytIQ==
-X-Google-Smtp-Source: ACHHUZ63viSkfFOt5QEIR7bOdK9/c1iR/5FAEmZeGIQPTEI7+BvjZRsFa+uLHi5F7LuX5IvH7QQBrA==
-X-Received: by 2002:a19:ac01:0:b0:4eb:3fb2:c56d with SMTP id g1-20020a19ac01000000b004eb3fb2c56dmr7517169lfc.12.1684244608623;
-        Tue, 16 May 2023 06:43:28 -0700 (PDT)
+        bh=ZVx1X/gwP3O7S/acEluGud38z490UszSjPAa5tTq1SA=;
+        b=BwcEFbdI9VEqi3ZH6STfPB4WE9hvhRfrCnZ5tgTDnHp2w4mIguvlJIUTWnRoy6kQ9x
+         4QIb+fV3z0OVn226JB6FeJ+fFs+GKEICZGabstuvWN756ZOu0T10LcD5dkBCBJ5pgudl
+         /jXwK+0PLh1DzGdoPHtAVcM6AFBCN73YT0bqN5o7KIcNa5ct+HOMHQE4v6fmXbCDdSHh
+         t5MQ/JATkgRD9427jeW/+9TH5KM0VQ2kXUFKSXcOcpPx2V1eYEiufmP3U8X/GvnjLkw1
+         WlvfwuoZnj2f8mzWqqfgQ8CAkmGqkuLr5fdWmMgNNyYcXPGZ/hbUhD3M01bFsUNuU9z1
+         0JQg==
+X-Gm-Message-State: AC+VfDzheb8sKNKBW3/YJvb9CLX9PK+o5h53EANSVzfZ0ya0Zpm2AWWC
+        Llr8ZdX8dn/yTjmXbxrH1x809JbFiDplHBym4FRohw==
+X-Google-Smtp-Source: ACHHUZ4J6X6FsP+hxQfYBZ+Llw27Sb70tt4L2tuHrTFJmYGd89/NDsRYu9W8c9zg5O13WhWJRa3ZEQ==
+X-Received: by 2002:a19:f709:0:b0:4ea:fa78:3662 with SMTP id z9-20020a19f709000000b004eafa783662mr8360810lfe.39.1684244610402;
+        Tue, 16 May 2023 06:43:30 -0700 (PDT)
 Received: from archyz.. (h-98-128-173-232.A785.priv.bahnhof.se. [98.128.173.232])
-        by smtp.gmail.com with ESMTPSA id l26-20020ac24a9a000000b004f13b59307asm2962558lfp.232.2023.05.16.06.43.27
+        by smtp.gmail.com with ESMTPSA id l26-20020ac24a9a000000b004f13b59307asm2962558lfp.232.2023.05.16.06.43.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 06:43:28 -0700 (PDT)
+        Tue, 16 May 2023 06:43:30 -0700 (PDT)
 From:   Jimmy Assarsson <extja@kvaser.com>
 To:     linux-can@vger.kernel.org
 Cc:     Jimmy Assarsson <jimmyassarsson@gmail.com>, stable@vger.kernel.org,
         Jimmy Assarsson <extja@kvaser.com>
-Subject: [PATCH 1/6] can: kvaser_pciefd: Set CAN_STATE_STOPPED in kvaser_pciefd_stop()
-Date:   Tue, 16 May 2023 15:43:13 +0200
-Message-Id: <20230516134318.104279-2-extja@kvaser.com>
+Subject: [PATCH 2/6] can: kvaser_pciefd: Clear listen-only bit if not explicitly requested
+Date:   Tue, 16 May 2023 15:43:14 +0200
+Message-Id: <20230516134318.104279-3-extja@kvaser.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230516134318.104279-1-extja@kvaser.com>
 References: <20230516134318.104279-1-extja@kvaser.com>
@@ -64,36 +64,36 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Set can.state to CAN_STATE_STOPPED in kvaser_pciefd_stop().
-Without this fix, wrong CAN state was repported after the interface was
-brought down.
+The listen-only bit was never cleared, causing the controller to
+always use listen-only mode, if previously set.
 
 Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
 ---
- drivers/net/can/kvaser_pciefd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/kvaser_pciefd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 53e8a914c88b..867b421b9506 100644
+index 867b421b9506..cdc894d12885 100644
 --- a/drivers/net/can/kvaser_pciefd.c
 +++ b/drivers/net/can/kvaser_pciefd.c
-@@ -719,6 +719,7 @@ static int kvaser_pciefd_stop(struct net_device *netdev)
- 		iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 		del_timer(&can->bec_poll_timer);
- 	}
-+	can->can.state = CAN_STATE_STOPPED;
- 	close_candev(netdev);
+@@ -554,6 +554,8 @@ static void kvaser_pciefd_setup_controller(struct kvaser_pciefd_can *can)
  
- 	return ret;
+ 	if (can->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
+ 		mode |= KVASER_PCIEFD_KCAN_MODE_LOM;
++	else
++		mode &= ~KVASER_PCIEFD_KCAN_MODE_LOM;
+ 
+ 	mode |= KVASER_PCIEFD_KCAN_MODE_EEN;
+ 	mode |= KVASER_PCIEFD_KCAN_MODE_EPEN;
 -- 
 2.40.0
 
