@@ -2,581 +2,200 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65377704FF7
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 15:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB92705034
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 16:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232589AbjEPNyp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 09:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37556 "EHLO
+        id S232529AbjEPOIB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Tue, 16 May 2023 10:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232206AbjEPNyo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 09:54:44 -0400
-Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D8B1FC2
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 06:54:20 -0700 (PDT)
-Received: by mail-vs1-xe2c.google.com with SMTP id ada2fe7eead31-43483520faaso8508697137.0
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 06:54:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684245258; x=1686837258;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VhWShmDJ2D9NIRvijbp0Qn/QaA9taQvDt1a8RmXcogw=;
-        b=O57DIxjy1Xc3sNHH0MrW/WE8dMYKOZhPCEm95bbd6gXjAe7C3Hf9/JdwDat3Qo+I6C
-         QJh2GRdeODfjeM691TTXSLJ7YtOPMzeQX8AcJsWpVQ2O9ts95Bd0HBHISkK1GnlfyHns
-         ntIZg//0TjIvnp7qNpfiOSMkkW1MqAPn7LP7hKDQF5MiVNG6KAu1Pir6d3RnL8BVUpOY
-         46WTugftDmyMr2PvjeXEuFKd/MS8TRoBpBdueHya/lVJNlnn+eii7FUN7pRj7Oxh9xSk
-         gKNyXY94vWKQg0KJI2sa6KCO7cIPNYoOyZkxoiNgsHNrRh6JXg7g8vPxPSeybyzSu5MB
-         +3kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684245258; x=1686837258;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VhWShmDJ2D9NIRvijbp0Qn/QaA9taQvDt1a8RmXcogw=;
-        b=LIQ4w2Ptlm55YHLifIYTKYJGmGK+zIpC2nUgKLJksrkCR6a2kkJpm4FLAXewrpnR22
-         vi4n+MycP5ixsLVCr9S8NCkDly6Efp89vfap+xcrQkcPDaT5bZ8rYQM4pwlyjO2FCVNm
-         fNazThZBvgiUYs9cjut0CG2LjB9h4mLZfz5MSW/vGqaDpJlYAofamSnvzGsbxOVNAVlq
-         WzFY3Gqd+5y2VuHjuakc8VcwjwlsPIEwFFKKOohBaQZzwh5UmG2JVaepkaLHeo0nQOR4
-         FT+yVHMwes9HC/iUuxowvsyvh3VCmYZEG0/c27HXMhbiS2ryI2Fr3eFChpZ92C3kbp8G
-         47gQ==
-X-Gm-Message-State: AC+VfDxc10JVyBmG6igO9TH8saB88RIiKtgDTWVlMgJ+oNobHJ9Lw6ul
-        faVTwUJe0CsG3J4xDi1drfqa/jdGOA/i0K+N1g1R2A==
-X-Google-Smtp-Source: ACHHUZ6PPXq7zfVMp+g4ZtdyK7QvqxUi0r8kPWInCXLO7YN83y3cyeiX80bd2YkHWnNP+WAscugxKswDI1eA0AvyprA=
-X-Received: by 2002:a67:f3cb:0:b0:434:4deb:e89 with SMTP id
- j11-20020a67f3cb000000b004344deb0e89mr14769682vsn.12.1684245257777; Tue, 16
- May 2023 06:54:17 -0700 (PDT)
+        with ESMTP id S232528AbjEPOIA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 10:08:00 -0400
+X-Greylist: delayed 3750 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 16 May 2023 07:07:57 PDT
+Received: from nef.ens.fr (nef2.ens.fr [129.199.96.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84271FFB
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 07:07:57 -0700 (PDT)
+X-ENS-nef-client:   129.199.127.85 ( name = mail.phys.ens.fr )
+Received: from mail.phys.ens.fr (mail.phys.ens.fr [129.199.127.85])
+          by nef.ens.fr (8.14.4/1.01.28121999) with ESMTP id 34GD4wZS020651
+          ; Tue, 16 May 2023 15:04:59 +0200
+Received: from skaro.localnet (agn47-h01-176-151-100-134.dsl.sta.abo.bbox.fr [176.151.100.134])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by mail.phys.ens.fr (Postfix) with ESMTPSA id C2CB01A108E;
+        Tue, 16 May 2023 15:04:53 +0200 (CEST)
+From:   =?ISO-8859-1?Q?=C9ric?= Brunet <eric.brunet@ens.fr>
+To:     stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, ville.syrjala@linux.intel.com,
+        jouni.hogander@intel.com, jani.nikula@intel.com,
+        gregkh@linuxfoundation.org
+Subject: Regression on drm/i915, with bisected commit
+Date:   Tue, 16 May 2023 15:04:53 +0200
+Message-ID: <3236901.44csPzL39Z@skaro>
 MIME-Version: 1.0
-References: <20230515161721.545370111@linuxfoundation.org>
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 16 May 2023 19:24:06 +0530
-Message-ID: <CA+G9fYu6ZOu_We2GMP0sFnSovOsqd6waW7oKS-Y1VPrjdibu5Q@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/239] 6.1.29-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        Michal Clapinski <mclapinski@google.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        LTP List <ltp@lists.linux.it>,
-        Aaron Lewis <aaronlewis@google.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Rudi Heitbaum <rudi@heitbaum.com>,
-        ZhangPeng <zhangpeng362@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="iso-8859-1"
+X-Rspamd-Queue-Id: C2CB01A108E
+X-Spamd-Bar: /
+X-Spamd-Result: default: False [-0.56 / 150.00];
+         ARC_NA(0.00)[];
+         R_SPF_NEUTRAL(0.00)[?all:c];
+         FROM_HAS_DN(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         HFILTER_HOSTNAME_4(2.50)[agn47-h01-176-151-100-134.dsl.sta.abo.bbox.fr];
+         MIME_GOOD(-0.10)[text/plain];
+         TO_DN_NONE(0.00)[];
+         HFILTER_HELO_IP_A(1.00)[skaro.localnet];
+         RCPT_COUNT_FIVE(0.00)[6];
+         DMARC_NA(0.00)[ens.fr];
+         HFILTER_HELO_NORES_A_OR_MX(0.30)[skaro.localnet];
+         RBL_BLOCKLISTDE_FAIL(0.00)[134.100.151.176.bl.blocklist.de:query timed out];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         IP_SCORE(-1.76)[ip: (-0.16), ipnet: 176.128.0.0/10(-4.87), asn: 5410(-3.66), country: FR(-0.09)];
+         RCVD_COUNT_ZERO(0.00)[0];
+         FROM_EQ_ENVFROM(0.00)[];
+         R_DKIM_NA(0.00)[];
+         MID_RHS_NOT_FQDN(0.50)[];
+         ASN(0.00)[asn:5410, ipnet:176.128.0.0/10, country:FR];
+         MIME_TRACE(0.00)[0:+];
+         BAYES_HAM(-3.00)[100.00%]
+X-Rspamd-Server: mail
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.4.3 (nef.ens.fr [129.199.96.32]); Tue, 16 May 2023 15:04:59 +0200 (CEST)
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 15 May 2023 at 22:31, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.29 release.
-> There are 239 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.29-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-
-
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm64, arm, x86_64, and i386.
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-We have recently upgraded our selftest sources to stable-rc 6.3 and
-running on stable rc 6.1 kernel.
-
-List of test regressions:
-=3D=3D=3D=3D=3D=3D=3D=3D
-kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-kselftest-memfd
-  - memfd_memfd_test
-
-kselftest-rseq
-  - rseq_basic_test
-
- kselftest-kvm
-  - kvm_hyperv_features
-  - kvm_xapic_state_test
-
-ltp-commands
-  - mkfs01_ntfs_sh
-
-Details:
-=3D=3D=3D=3D=3D
-
-# selftests: membarrier: membarrier_test_single_thread
-# TAP version 13
-# 1..18
-# Bail out! sys membarrier MEMBARRIER_CMD_GET_REGISTRATIONS test:
-flags =3D 0, errno =3D 22
-# # Planned tests !=3D run tests (18 !=3D 0)
-# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-not ok 1 selftests: membarrier: membarrier_test_single_thread # exit=3D1
-# selftests: membarrier: membarrier_test_multi_thread
-# TAP version 13
-# 1..16
-# ok 1 sys_membarrier available
-# ok 2 sys membarrier invalid command test: command =3D -1, flags =3D 0,
-errno =3D 22. Failed as expected
-# ok 3 sys membarrier MEMBARRIER_CMD_QUERY invalid flags test: flags =3D
-1, errno =3D 22. Failed as expected
-# ok 4 sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED not registered
-failure test: flags =3D 0, errno =3D 1
-# ok 5 sys membarrier MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE not
-registered failure test: flags =3D 0, errno =3D 1
-# ok 6 sys membarrier MEMBARRIER_CMD_GLOBAL test: flags =3D 0
-# ok 7 sys membarrier MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED test: flags=
- =3D 0
-# Bail out! sys membarrier MEMBARRIER_CMD_GET_REGISTRATIONS test:
-flags =3D 0, errno =3D 22
-# # Planned tests !=3D run tests (16 !=3D 7)
-# # Totals: pass:7 fail:0 xfail:0 xpass:0 skip:0 error:0
-not ok 2 selftests: membarrier: membarrier_test_multi_thread # exit=3D1
-
-=3D=3D=3D=3D=3D=3D=3D=3D
-
-kselftest: Running tests in memfd
-TAP version 13
-1..3
-# selftests: memfd: memfd_test
-# Aborted
-not ok 1 selftests: memfd: memfd_test # exit=3D134
-
-=3D=3D=3D=3D=3D=3D=3D=3D
-
-kselftest: Running tests in rseq
-TAP version 13
-1..9
-# selftests: rseq: basic_test
-# basic_test: rseq.h:204: rseq_current_node_id: Assertion
-`rseq_node_id_available()' failed.
-# ./kselftest/runner.sh: line 35:  1709 Aborted
-         /usr/bin/timeout --foreground \"$kselftest_timeout\" $1
-not ok 1 selftests: rseq: basic_test # exit=3D134
-# selftests: rseq: basic_percpu_ops_test
-# spinlock
-# percpu_list
-ok 2 selftests: rseq: basic_percpu_ops_test
-# selftests: rseq: basic_percpu_ops_mm_cid_test
-# spinlock
-# percpu_list
-ok 3 selftests: rseq: basic_percpu_ops_mm_cid_test
-# selftests: rseq: param_test
-ok 4 selftests: rseq: param_test
-# selftests: rseq: param_test_benchmark
-ok 5 selftests: rseq: param_test_benchmark
-# selftests: rseq: param_test_compare_twice
-ok 6 selftests: rseq: param_test_compare_twice
-# selftests: rseq: param_test_mm_cid
-# Error: cpu id getter unavailable
-not ok 7 selftests: rseq: param_test_mm_cid # exit=3D255
-# selftests: rseq: param_test_mm_cid_benchmark
-# Error: cpu id getter unavailable
-not ok 8 selftests: rseq: param_test_mm_cid_benchmark # exit=3D255
-# selftests: rseq: param_test_mm_cid_compare_twice
-# Error: cpu id getter unavailable
-not ok 9 selftests: rseq: param_test_mm_cid_compare_twice # exit=3D255
-
-=3D=3D=3D=3D=3D=3D
-
-# selftests: kvm: hyperv_features
-# Testing access to Hyper-V specific MSRs
-# =3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
-#   x86_64/hyperv_features.c:498: false
-#   pid=3D1043 tid=3D1043 errno=3D4 - Interrupted system call
-#      1 0x0000000000403722: ?? ??:0
-#      2 0x00007fc1e890157a: ?? ??:0
-#      3 0x00007fc1e890162f: ?? ??:0
-#      4 0x00000000004037c4: ?? ??:0
-#   Failed guest assert: !vector at x86_64/hyperv_features.c:58
-# MSR =3D 40000118, arg1 =3D d, arg2 =3D 0
-not ok 10 selftests: kvm: hyperv_features # exit=3D254
-
-# selftests: kvm: xapic_state_test
-# =3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
-#   x86_64/xapic_state_test.c:147: apic_id =3D=3D expected
-#   pid=3D2175 tid=3D2175 errno=3D4 - Interrupted system call
-#      1 0x0000000000402bac: ?? ??:0
-#      2 0x00000000004025ba: ?? ??:0
-#      3 0x00007f0040cd457a: ?? ??:0
-#      4 0x00007f0040cd462f: ?? ??:0
-#      5 0x0000000000402624: ?? ??:0
-#   APIC_ID not set back to xAPIC format; wanted =3D 1000000, got =3D 1
-not ok 46 selftests: kvm: xapic_state_test # exit=3D254
-
-=3D=3D=3D=3D
-
-tst_device.c:93:[  147.226163] loop0: detected capacity change from 0 to 61=
-4400
- TINFO: Found free device 0 '/dev/loop0'
-mkfs01 1 TINFO: timeout per run is 0h 50m 0s
-mkfs01 1 TPASS: 'mkfs -t ntfs  /dev/loop0 ' passed.
-mkfs01 2 TINFO: Mounting device: mount -t ntfs /dev/loop0
-/scratch/ltp-zKu0Zn6L6o/LTP_mkfs01.ULVi9nN6XF/mntpoint
-modprobe: FATAL: Module fuse not found in directory /lib/modules/6.2.16-rc1
-ntfs-3g-mount: fuse device is missing, try 'modprobe fuse' as root
-mkfs01 2 TBROK: Failed to mount device ntfs type: mount exit =3D 21
-[  166.420602] I/O error, dev loop0, sector 614272 op 0x0:(READ) flags
-0x80700 phys_seg 1 prio class 2
-
-Steps to reproduce:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-# To install tuxrun on your system globally:
-# sudo pip3 install -U tuxrun=3D=3D0.42.0
-#
-# See https://tuxrun.org/ for complete documentation.
-
-tuxrun   \
- --runtime podman   \
- --device qemu-x86_64   \
- --boot-args rw   \
- --kernel https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq4UnS1BC=
-krcnT51kVe9rFF0k1/bzImage
-  \
- --modules https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq4UnS1B=
-CkrcnT51kVe9rFF0k1/modules.tar.xz
-  \
- --rootfs https://storage.tuxboot.com/debian/bookworm/amd64/rootfs.ext4.xz =
-  \
- --parameters SKIPFILE=3Dskipfile-lkft.yaml   \
- --parameters KSELFTEST=3Dhttps://storage.tuxsuite.com/public/linaro/lkft/b=
-uilds/2PeR5CFkuV3xkzzYLrOV8JHT9ie/kselftest.tar.xz
-  \
- --image docker.io/lavasoftware/lava-dispatcher:2023.01.0020.gc1598238f   \
- --tests kselftest-membarrier   \
- --timeouts boot=3D15
-
-Test log links and details,
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-membarrier: test_multi_thread:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
- - https://lkft.validation.linaro.org/scheduler/job/6427965#L1776
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020997/suite/kselftest-membarrier/test/mem=
-barrier_membarrier_test_multi_thread/history/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17021028/suite/kselftest-membarrier/test/mem=
-barrier_membarrier_test_multi_thread/details/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020997/suite/kselftest-membarrier/tests/
-
-
-memfd_test:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020879/suite/kselftest-memfd/test/memfd_me=
-mfd_test/history/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17007742/suite/kselftest-memfd/tests/
-
-rseq_basic_test:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020993/suite/kselftest-rseq/test/rseq_basi=
-c_test/history/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020993/suite/kselftest-rseq/test/rseq_basi=
-c_test/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020993/suite/kselftest-rseq/test/rseq_basi=
-c_test/details/
-
-
-kvm: kvm_hyperv_features and kvm_xapic_state_test:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020070/suite/kselftest-kvm/test/kvm_hyperv=
-_features/history/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020070/suite/kselftest-kvm/test/kvm_hyperv=
-_features/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17020070/suite/kselftest-kvm/test/kvm_xapic_=
-state_test/history/
-
-ltp-commands: mkfs01_ntfs_sh:
-=3D=3D=3D=3D=3D=3D=3D=3D
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
-1.28-240-gb82733c0ff99/testrun/17019910/suite/ltp-commands/test/mkfs01_ntfs=
-_sh/history/
-
-## Build
-* kernel: 6.1.29-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: b82733c0ff99435bb7eb5ed4ea2e1c1fd69e7ebb
-* git describe: v6.1.28-240-gb82733c0ff99
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.2=
-8-240-gb82733c0ff99
-
-## Test Regressions (compared to v6.1.28)
-
-* bcm2711-rpi-4-b, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* bcm2711-rpi-4-b, kselftest-memfd
-  - memfd_memfd_test
-
-* dragonboard-410c, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* dragonboard-410c, kselftest-memfd
-  - memfd_memfd_test
-
-* fvp-aemva, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* fvp-aemva, kselftest-memfd
-  - memfd_memfd_test
-
-* i386, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* i386, kselftest-memfd
-  - memfd_memfd_test
-
-* juno-r2, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* juno-r2, kselftest-memfd
-  - memfd_memfd_test
-
-* qemu-arm64, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu-arm64, kselftest-memfd
-  - memfd_memfd_test
-
-* qemu-armv7, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu-i386, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu-i386, kselftest-memfd
-  - memfd_memfd_test
-
-* qemu-x86_64, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu-x86_64, kselftest-memfd
-  - memfd_memfd_test
-
-* qemu_i386, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu_i386, kselftest-memfd
-  - memfd_memfd_test
-
-* qemu_x86_64, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu_x86_64, kselftest-memfd
-  - memfd_memfd_test
-
-* x15, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* x15, kselftest-rseq
-  - rseq_basic_test
-
-* x15, ltp-commands
-  - mkfs01_ntfs_sh
-
-* x86, kselftest-kvm
-  - kvm_hyperv_features
-  - kvm_xapic_state_test
-
-* x86, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* x86, kselftest-memfd
-  - memfd_memfd_test
-
-* x86, kselftest-rseq
-  - rseq_basic_test
-  - rseq_run_param_test_sh
-
-* x86-kasan, ltp-commands
-  - mkfs01_ntfs_sh
-
-
-## Metric Regressions (compared to v6.1.28)
-
-## Test Fixes (compared to v6.1.28)
-
-## Metric Fixes (compared to v6.1.28)
-
-## Test result summary
-total: 161145, pass: 139501, fail: 3428, skip: 17949, xfail: 267
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 151 total, 150 passed, 1 failed
-* arm64: 54 total, 53 passed, 1 failed
-* i386: 41 total, 38 passed, 3 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 8 total, 8 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 16 total, 15 passed, 1 failed
-* s390: 16 total, 16 passed, 0 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 46 passed, 0 failed
-
-## Test suites summary
-* boot
-* fwts
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Hello all,
+
+I have a HP Elite x360 1049 G9 2-in-1 notebook running fedora 38 with an Adler 
+Lake intel video card.
+
+After upgrading to kernel 6.2.13 (as packaged by fedora), I started seeing 
+severe video glitches made of random pixels in a vertical band occupying about 
+20% of my screen, on the right. The glitches would happen both with X.org and 
+wayland.
+
+I checked that vanilla 6.2.12 does not have the bug and that both vanilla 
+6.2.13 and vanilla 6.3.2 do have the bug.
+
+I bisected the problem to commit e2b789bc3dc34edc87ffb85634967d24ed351acb (it 
+is a one-liner reproduced at the end of this message).
+
+I checked that vanilla 6.3.2 with this commit reverted does not have the bug.
+
+I am CC-ing every e-mail appearing in this commit , I hope this is ok, and I 
+apologize if it is not.
+
+I have filled a fedora bug report about this, see https://bugzilla.redhat.com/
+show_bug.cgi?id=2203549 . You will find there a small video (made with fedora 
+kernel 2.6.14) demonstrating the issue.
+
+Some more details:
+
+% sudo lspci -vk -s 00:02.0
+00:02.0 VGA compatible controller: Intel Corporation Alder Lake-UP3 GT2 [Iris 
+Xe Graphics] (rev 0c) (prog-if 00 [VGA controller])
+        DeviceName: Onboard IGD
+        Subsystem: Hewlett-Packard Company Device 896d
+        Flags: bus master, fast devsel, latency 0, IRQ 143
+        Memory at 603c000000 (64-bit, non-prefetchable) [size=16M]
+        Memory at 4000000000 (64-bit, prefetchable) [size=256M]
+        I/O ports at 3000 [size=64]
+        Expansion ROM at 000c0000 [virtual] [disabled] [size=128K]
+        Capabilities: [40] Vendor Specific Information: Len=0c <?>
+        Capabilities: [70] Express Root Complex Integrated Endpoint, MSI 00
+        Capabilities: [ac] MSI: Enable+ Count=1/1 Maskable+ 64bit-
+        Capabilities: [d0] Power Management version 2
+        Capabilities: [100] Process Address Space ID (PASID)
+        Capabilities: [200] Address Translation Service (ATS)
+        Capabilities: [300] Page Request Interface (PRI)
+        Capabilities: [320] Single Root I/O Virtualization (SR-IOV)
+        Kernel driver in use: i915
+        Kernel modules: i915
+
+Relevant kernel boot messages: (appart from timestamps, these lines are 
+identical for 6.2.12 and 6.2.14):
+
+[    2.790043] i915 0000:00:02.0: vgaarb: deactivate vga console
+[    2.790089] i915 0000:00:02.0: [drm] Using Transparent Hugepages
+[    2.790497] i915 0000:00:02.0: vgaarb: changed VGA decodes: 
+olddecodes=io+mem,decodes=io+mem:owns=io+mem
+[    2.793812] i915 0000:00:02.0: [drm] Finished loading DMC firmware i915/
+adlp_dmc_ver2_16.bin (v2.16)
+[    2.825058] i915 0000:00:02.0: [drm] GuC firmware i915/adlp_guc_70.bin 
+version 70.5.1
+[    2.825061] i915 0000:00:02.0: [drm] HuC firmware i915/tgl_huc.bin version 
+7.9.3
+[    2.842906] i915 0000:00:02.0: [drm] HuC authenticated
+[    2.843778] i915 0000:00:02.0: [drm] GuC submission enabled
+[    2.843779] i915 0000:00:02.0: [drm] GuC SLPC enabled
+[    2.844200] i915 0000:00:02.0: [drm] GuC RC: enabled
+[    2.845010] i915 0000:00:02.0: [drm] Protected Xe Path (PXP) protected 
+content support initialized
+[    3.964766] [drm] Initialized i915 1.6.0 20201103 for 0000:00:02.0 on minor 
+1
+[    3.968403] ACPI: video: Video Device [GFX0] (multi-head: yes  rom: no  
+post: no)
+[    3.968981] input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/
+PNP0A08:00/LNXVIDEO:00/input/input18
+[    3.977892] fbcon: i915drmfb (fb0) is primary device
+[    3.977899] fbcon: Deferring console take-over
+[    3.977904] i915 0000:00:02.0: [drm] fb0: i915drmfb frame buffer device
+[    4.026120] i915 0000:00:02.0: [drm] Selective fetch area calculation 
+failed in pipe A
+
+Is there anything else I should provide? I am willing to run some tests, of 
+course.
+
+Thanks for your help,
+
+Éric Brunet
+
+=================================================
+
+commit e2b789bc3dc34edc87ffb85634967d24ed351acb (HEAD)
+Author: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Date:   Wed Mar 29 20:24:33 2023 +0300
+
+    drm/i915: Fix fast wake AUX sync len
+    
+    commit e1c71f8f918047ce822dc19b42ab1261ed259fd1 upstream.
+    
+    Fast wake should use 8 SYNC pulses for the preamble
+    and 10-16 SYNC pulses for the precharge. Reduce our
+    fast wake SYNC count to match the maximum value.
+    We also use the maximum precharge length for normal
+    AUX transactions.
+    
+    Cc: stable@vger.kernel.org
+    Cc: Jouni Högander <jouni.hogander@intel.com>
+    Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+    Link: https://patchwork.freedesktop.org/patch/msgid/
+20230329172434.18744-1-ville.syrjala@linux.intel.com
+    Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+    (cherry picked from commit 605f7c73133341d4b762cbd9a22174cc22d4c38b)
+    Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.c b/drivers/gpu/drm/
+i915/display/intel_dp_aux.c
+index 664bebdecea7..d5fed2eb66d2 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_aux.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+@@ -166,7 +166,7 @@ static u32 skl_get_aux_send_ctl(struct intel_dp *intel_dp,
+              DP_AUX_CH_CTL_TIME_OUT_MAX |
+              DP_AUX_CH_CTL_RECEIVE_ERROR |
+              (send_bytes << DP_AUX_CH_CTL_MESSAGE_SIZE_SHIFT) |
+-             DP_AUX_CH_CTL_FW_SYNC_PULSE_SKL(32) |
++             DP_AUX_CH_CTL_FW_SYNC_PULSE_SKL(24) |
+              DP_AUX_CH_CTL_SYNC_PULSE_SKL(32);
+ 
+        if (intel_tc_port_in_tbt_alt_mode(dig_port))
+
+
