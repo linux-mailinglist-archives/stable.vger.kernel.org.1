@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED1F704918
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 11:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030227048D5
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 11:16:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231869AbjEPJYZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 05:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
+        id S232041AbjEPJQl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 05:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231441AbjEPJYJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 05:24:09 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF03E52;
-        Tue, 16 May 2023 02:23:33 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-965fc25f009so2271745266b.3;
-        Tue, 16 May 2023 02:23:33 -0700 (PDT)
+        with ESMTP id S232053AbjEPJQZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 05:16:25 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8D06A4D;
+        Tue, 16 May 2023 02:15:33 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f42c865535so80501955e9.1;
+        Tue, 16 May 2023 02:15:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684229011; x=1686821011;
+        d=gmail.com; s=20221208; t=1684228479; x=1686820479;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aaoa0fYi/eKZjvnkX5ryATxZDZXTxrAGQl4PfS6nayQ=;
-        b=AY1yaVFDAZwnTdB13XBpeSp6XnyvdT+IIofbTHrTN14ibXDaqCyJcw/8vApM34/hvf
-         F5+e6TbEQePGty8IssRPlKC90TltqPRfD6WHtHkcebiQM0hQL5whQhy56OWP1k6lRwOp
-         10KMgTwr2wfQFSka28FEdkprIdlZxUMEYCJQsXEfWzfvXo+dL1epTUsO7++UXup/+oha
-         x6mKCDb3w4xy+l5D8t3HWmsGyvjl1kGrXj89iMwoej1QComy69UwfChcHdoXfJpR5NP6
-         Mn5tJwnNAD9LRDsLoTmsbSC3sNqI7lO4gqqAJUBoVzgYAOZ8fnwPmgb2x6C+GtV28X8b
-         f+Sg==
+        bh=cRWUjVainBSLk+Ch+fZFNLT9kQJZkSXu5GrlLii7+xI=;
+        b=hNRIsgzrO8MWE4d56GVZ5AJ5PZuIXk5NuKmXxjOEHrctHlrH5rPw5Yvq+XRysw7YDw
+         YWiNnlX8y9CZvHQ7IOKjsb55k49PEbNKtYFvzpp8OxGF6nAiPrGIVVATlEfWw+FAdIRL
+         AVIEb88SGUvVkyA+1smMQHrZLXgZjHPABJa+huUyFRJhdFvRs6Tw3nMVkYiDHlNZR6xj
+         wYJdJOD18qY92Khd26sLnr/aGnjBQTfNLu8W7SU5jQlJqfksSdpVHgNoB5hHDZuyzd7q
+         qxNUwRQu8hwql7P61OW/KD1mlDz5izZ2eJllGkpDdirjQBawiyCA+KVpNqsgyWrpSyNN
+         KW9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684229011; x=1686821011;
+        d=1e100.net; s=20221208; t=1684228479; x=1686820479;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aaoa0fYi/eKZjvnkX5ryATxZDZXTxrAGQl4PfS6nayQ=;
-        b=J/TT6Pa4ReBAfWwW2Gxw3xLGXS9qYHQvJeWFbci1YOyd4eA7AEUbY236qI9aA9eOf+
-         8wMUmrvoxri3kXALYY0xdrQKchaThwpU9PBv8TNVSktTdF0SRTlsHuz34bq+NuusE2G3
-         3asCFaV02ctvVtp81/LEeV0f8Gqq0FevpVnSkmRPlUl/2sqin6HC7arqkyjQigzUObz0
-         UOgmT9wqekTDBo1D9hDH8/gdd/t3uvNEgGPy28B1NIA7l20bSLlI85h9nbTwUpIQZAA3
-         ysUQahxKbsWPglPszJj9LCtsKe7eSm1stUSMgj0GWsqUFIAiQhnXQtfCSdBMATFogF8/
-         zqNw==
-X-Gm-Message-State: AC+VfDwzWTh/1/7gNkG7jYuPk8kLTYiJ3c0mEU/yzw8zBX71/kaikvVG
-        IYlavDXvuQ6q1e1MacpPzZglKqxEMm4=
-X-Google-Smtp-Source: ACHHUZ5UmGPABv6aBli65iKjKR1PNtrcM+N9BOKW/B9/gd9mSjf+GAaxcp4MBDgKIVkPhrFEt+SpzQ==
-X-Received: by 2002:a1c:7507:0:b0:3f1:9acf:8682 with SMTP id o7-20020a1c7507000000b003f19acf8682mr23295633wmc.17.1684228323628;
-        Tue, 16 May 2023 02:12:03 -0700 (PDT)
+        bh=cRWUjVainBSLk+Ch+fZFNLT9kQJZkSXu5GrlLii7+xI=;
+        b=UZ1CIqkqq7ZMPOlr1G5FqLj3VJW/j6TVS44FhuhlX90HkCRmBdcpxQOB/+rIYHjiht
+         iVciPlF+GdmodYrhy4xgeo5mQUmFbQQhdZ+Q47JDc0iQYbi10L92p1786pEadxIeLP0G
+         6xfAePbIo2XhOcPBU3VPW2NFvLZ4XHGv7Gd/MnzO0TFyGMph4EblUhKpR+/RXWir4Nj7
+         697BK/+5Jd9GgF66JYPlmvXqszDttZSvU2dCefcTbFuAoFbyfSCfQhVKpuNazQMSxJFB
+         K1HkKWVmkSRj9epSukOICc/5SAnyBaGXGhtHF0Esh9LvaFD7Ontbz8jmGFO53YN7g4Te
+         eSww==
+X-Gm-Message-State: AC+VfDzrT3BOgfMxoF444A4cZ8I89S3d4np1OWwbvO/XlwUvb0RLSIg6
+        5s8TVr1Txs1+7KoI+PTmcAs=
+X-Google-Smtp-Source: ACHHUZ4f1wIwlxc0TmyeaUQQkL1OqyRolgs2zO8TgR6ZeNh2y9jWnu9DSJjEeyx0TmU2vTz0Xm0OjA==
+X-Received: by 2002:a05:600c:2292:b0:3f4:fa56:3186 with SMTP id 18-20020a05600c229200b003f4fa563186mr7682785wmf.14.1684228478895;
+        Tue, 16 May 2023 02:14:38 -0700 (PDT)
 Received: from debian ([63.135.72.41])
-        by smtp.gmail.com with ESMTPSA id d8-20020a1c7308000000b003f1751016desm1601921wmb.28.2023.05.16.02.12.02
+        by smtp.gmail.com with ESMTPSA id w12-20020a05600c474c00b003f07ef4e3e0sm33140975wmo.0.2023.05.16.02.14.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 02:12:03 -0700 (PDT)
-Date:   Tue, 16 May 2023 10:12:01 +0100
+        Tue, 16 May 2023 02:14:38 -0700 (PDT)
+Date:   Tue, 16 May 2023 10:14:36 +0100
 From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -57,13 +57,13 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
         rwarsow@gmx.de
-Subject: Re: [PATCH 5.4 000/282] 5.4.243-rc1 review
-Message-ID: <ZGNI4Q0K6HyU13eM@debian>
-References: <20230515161722.146344674@linuxfoundation.org>
+Subject: Re: [PATCH 5.10 000/381] 5.10.180-rc1 review
+Message-ID: <ZGNJfAPd8eeVoCJ3@debian>
+References: <20230515161736.775969473@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -76,16 +76,16 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hi Greg,
 
-On Mon, May 15, 2023 at 06:26:18PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.243 release.
-> There are 282 patches in this series, all will be posted as a response
+On Mon, May 15, 2023 at 06:24:11PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.180 release.
+> There are 381 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Build test (gcc version 11.3.1 20230511):
-mips: 65 configs -> no failure
-arm: 106 configs -> no failure
-arm64: 2 configs -> no failure
+mips: 63 configs -> no failure
+arm: 104 configs -> no failure
+arm64: 3 configs -> 1 failure
 x86_64: 4 configs -> no failure
 alpha allmodconfig -> no failure
 powerpc allmodconfig -> no failure
@@ -93,12 +93,23 @@ riscv allmodconfig -> no failure
 s390 allmodconfig -> no failure
 xtensa allmodconfig -> no failure
 
+arm64 allmodconfig build fails with the error:
+
+/gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid_ipa':
+(.hyp.text+0x1a4c): undefined reference to `__kvm_nvhe_memset'
+/gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid':
+(.hyp.text+0x1b20): undefined reference to `__kvm_nvhe_memset'
+/gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_flush_cpu_context':
+(.hyp.text+0x1b80): undefined reference to `__kvm_nvhe_memset'
+
 
 Boot test:
 x86_64: Booted on my test laptop. No regression.
 x86_64: Booted on qemu. No regression. [1]
+arm64: Booted on rpi4b (4GB model). No regression. [2]
 
-[1]. https://openqa.qa.codethink.co.uk/tests/3528
+[1]. https://openqa.qa.codethink.co.uk/tests/3530
+[2]. https://openqa.qa.codethink.co.uk/tests/3531
 
 
 Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
