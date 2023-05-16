@@ -2,170 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE55704379
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 04:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE13F7043C5
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 04:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbjEPCfg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 22:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
+        id S229484AbjEPC7x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 22:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbjEPCfd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 22:35:33 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598837298
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 19:35:31 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1aae90f5ebcso772885ad.1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 19:35:31 -0700 (PDT)
+        with ESMTP id S229812AbjEPC7w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 22:59:52 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C8E40D3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 19:59:51 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-3f4e7ce15c4so28089791cf.0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 19:59:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684204531; x=1686796531;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LMBjYQfNrE6XjpDNQgsEFZW5LIEYARmq7ri2dsjhSck=;
-        b=Y9M5TADWZmKtWP/pjJc/AL6uypfuLC3F175I1lHhKkjmCaaG0uqoZBHO8dNAmzCurF
-         mSuWZAiDqzx99dwMuAC3x1Sm3in8ctWriOZNyqdyM7/l2GYAbTStuAUCVC/TGugUIbXB
-         VIyiv88/gu3mEghvmAZsxlsqlEgqy5tEtiv5+5GzubDW94Sn9J2GxUJ22Olh+HZPtgGG
-         O9YC/yXBcZOdAxFeBxjmQInlps6eDlKo0aZymWEcgDqLH/dXkhtGv5b5bRv4BUdiPtI3
-         ZrS7uKquQVk1kRRSUApyhR44WIY4nh6IJeRqRjIPyPBkGp/x0+5jbKTcgKFcbPEEePwf
-         SGxQ==
+        d=gmail.com; s=20221208; t=1684205991; x=1686797991;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2/CcS1dDO7WfV4NALb8qhhxWtiUQDoacwREUk6cWew=;
+        b=d8uWc8JMUuTEzZ7Lqwg8dTJcrk6rQTB8pc0AYIPgRs1ORkU+CNzpyLY1A+Ksd2wLnh
+         D5Z5JwSwJZYanPy83JBOahNLVGGUT5hqnQZUBlVQ4aeyfneHKOQqoHxt8ZGGybwxUN21
+         zkLDLuNH6wfxibqrdCjWeCnBplhfwFL9WtH3ENoeuWsMdoX/qDCKG68CjiotFovSKp6d
+         bitGN3YEYMMOEDew2RkL/XVEITFkUpgHaZgttJrFFA8HLx6WJ7cqFzN43yyiOboj77tF
+         kVmVpNkdFZ1wkNYxEWwgw7qPDlGsaU8tkIj0LOCQLKuPYaGPx9i4oZ1/CYxpam1n5Bpr
+         R2UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684204531; x=1686796531;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LMBjYQfNrE6XjpDNQgsEFZW5LIEYARmq7ri2dsjhSck=;
-        b=aVCPweKW6d9cret5nKgkbVV54dUHkF+XCHKcSqppWAfxChA1NPT5wZEnifp161FUIb
-         L4oQtUMwo8syvDHPWbp+bk/iNzSAXndsYfg788f9UgpQYnQoMlXiXt+MG7Ys3N6D21Ne
-         CwHy/m5t5yCqKBR3SijLIguTO0UiWtoZXJejtolhVbv/GMp+cJYuZtnOPQF+kfzKvUJV
-         Ae2954c5TbTH+0qUm5gtTsrIGjvB4cNUUi25EGcFF/JocCpr2LUp/dTBlFr71pEcmwBi
-         0cT0y8vXxOGyEBKE0KTSKdI9IAtXHivDGZFPnI9eew0pnWiEr4D5d6KfDhooPf9JBKFj
-         yOEA==
-X-Gm-Message-State: AC+VfDwBclRp/xXh8cP9R4VV0rppU/IjGQhBNWJFJT5J7wMCghE4Cy1+
-        eA3RolI94S7ir1KzD3gBm8Ydww==
-X-Google-Smtp-Source: ACHHUZ5JXRMgy2Sy3iucvOjzvE5J55mKVFuuRALHbThX2oA4vZEbQg9phtDXVle1ISQ5G6F2JuLD2g==
-X-Received: by 2002:a17:902:c1d3:b0:19c:c5d4:afd2 with SMTP id c19-20020a170902c1d300b0019cc5d4afd2mr9124plc.11.1684204530548;
-        Mon, 15 May 2023 19:35:30 -0700 (PDT)
-Received: from google.com ([2620:15c:2d3:205:c825:9c0b:b4be:8ee4])
-        by smtp.gmail.com with ESMTPSA id t23-20020a634457000000b0051afa49e07asm12283006pgk.50.2023.05.15.19.35.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 May 2023 19:35:30 -0700 (PDT)
-Date:   Mon, 15 May 2023 19:35:24 -0700
-From:   Peter Collingbourne <pcc@google.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
- swap_free()
-Message-ID: <ZGLr7CzUL0A+mCRp@google.com>
-References: <20230512235755.1589034-1-pcc@google.com>
- <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
- <ZGLLSYuedMsViDQG@google.com>
+        d=1e100.net; s=20221208; t=1684205991; x=1686797991;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2/CcS1dDO7WfV4NALb8qhhxWtiUQDoacwREUk6cWew=;
+        b=Nw3xyboLRrW2K28bNWqQ++8dsjBxo723FMbkkjXqRMBOqEy3n8WTfAQHc43i+Ml/+u
+         +ldUrOnoxmL+iSAnr+heagufLH3l8Yn92BO8aFh/ybJWbpjV3YNNG44UZDyFEtBGZn1X
+         kj2bi/mF0Hc/qA0y99azMT4wQoWuYNKTp32tdbPVzBxdJA2P/nS01VFqb3PV9OsyU1Pq
+         zAR5pKHNLvPCgQ9wk7x7DSLbW5SImrE55VAQfxXTlKHvCUSYrqt+FddP7nzPERchxKI+
+         CQps7JE3EfUZ//zHRBYZD8i7lzvLH8YKwOYfQlc+7Jn/tROGSc+ttj3/hgpjjpRkXqVq
+         XllQ==
+X-Gm-Message-State: AC+VfDzfX9Mu6HSimNEQSrNrkOE8PcuiTlU3McSELfT8XNw9UHepmQih
+        i92z1ntKNmlt9i4fh+zY8Is=
+X-Google-Smtp-Source: ACHHUZ4KkzqGcYXEDTqp9CcGfAsnDvZdU6Lef0A8iS1eRs8Tp/0BG3OSZ4T2r/6AqxY4beYp9WmSWA==
+X-Received: by 2002:a05:622a:1828:b0:3ef:4efa:7042 with SMTP id t40-20020a05622a182800b003ef4efa7042mr58421143qtc.62.1684205990710;
+        Mon, 15 May 2023 19:59:50 -0700 (PDT)
+Received: from [192.168.1.105] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
+        by smtp.gmail.com with ESMTPSA id a5-20020a05620a124500b00755951e48desm268917qkl.135.2023.05.15.19.59.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 May 2023 19:59:49 -0700 (PDT)
+Message-ID: <7b830074-a08b-4dd8-a9b7-9fe11cbc0d79@gmail.com>
+Date:   Mon, 15 May 2023 19:59:47 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZGLLSYuedMsViDQG@google.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 4.19 163/191] net: bcmgenet: Remove phy_stop() from
+ bcmgenet_netif_stop()
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+References: <20230515161707.203549282@linuxfoundation.org>
+ <20230515161713.356981889@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230515161713.356981889@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 05:16:09PM -0700, Peter Collingbourne wrote:
-> On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> > On 13.05.23 01:57, Peter Collingbourne wrote:
-> > > Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-> > > the call to swap_free() before the call to set_pte_at(), which meant that
-> > > the MTE tags could end up being freed before set_pte_at() had a chance
-> > > to restore them. One other possibility was to hook arch_do_swap_page(),
-> > > but this had a number of problems:
-> > > 
-> > > - The call to the hook was also after swap_free().
-> > > 
-> > > - The call to the hook was after the call to set_pte_at(), so there was a
-> > >    racy window where uninitialized metadata may be exposed to userspace.
-> > >    This likely also affects SPARC ADI, which implements this hook to
-> > >    restore tags.
-> > > 
-> > > - As a result of commit 1eba86c096e3 ("mm: change page type prior to
-> > >    adding page table entry"), we were also passing the new PTE as the
-> > >    oldpte argument, preventing the hook from knowing the swap index.
-> > > 
-> > > Fix all of these problems by moving the arch_do_swap_page() call before
-> > > the call to free_page(), and ensuring that we do not set orig_pte until
-> > > after the call.
-> > > 
-> > > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > > Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> > > Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
-> > > Cc: <stable@vger.kernel.org> # 6.1
-> > > Fixes: ca827d55ebaa ("mm, swap: Add infrastructure for saving page metadata on swap")
-> > > Fixes: 1eba86c096e3 ("mm: change page type prior to adding page table entry")
-> > 
-> > I'm confused. You say c145e0b47c77 changed something (which was after above
-> > commits), indicate that it fixes two other commits, and indicate "6.1" as
-> > stable which does not apply to any of these commits.
-> 
-> Sorry, the situation is indeed a bit confusing.
-> 
-> - In order to make the arch_do_swap_page() hook suitable for fixing the
->   bug introduced by c145e0b47c77, patch 1 addresses a number of issues,
->   including fixing bugs introduced by ca827d55ebaa and 1eba86c096e3,
->   but we haven't fixed the c145e0b47c77 bug yet, so there's no Fixes:
->   tag for it yet.
-> 
-> - Patch 2, relying on the fixes in patch 1, makes MTE install an
->   arch_do_swap_page() hook (indirectly, by making arch_swap_restore()
->   also hook arch_do_swap_page()), thereby fixing the c145e0b47c77 bug.
-> 
-> - 6.1 is the first stable version in which all 3 commits in my Fixes: tags
->   are present, so that is the version that I've indicated in my stable
->   tag for this series. In theory patch 1 could be applied to older kernel
->   versions, but it wouldn't fix any problems that we are facing with MTE
->   (because it only fixes problems relating to the arch_do_swap_page()
->   hook, which older kernel versions don't hook with MTE), and there are
->   some merge conflicts if we go back further anyway. If the SPARC folks
->   (the previous only user of this hook) want to fix these issues with ADI,
->   they can propose their own backport.
-> 
-> > > @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >   	VM_BUG_ON(!folio_test_anon(folio) ||
-> > >   			(pte_write(pte) && !PageAnonExclusive(page)));
-> > >   	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
-> > > -	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
-> > >   	folio_unlock(folio);
-> > >   	if (folio != swapcache && swapcache) {
-> > 
-> > 
-> > You are moving the folio_free_swap() call after the folio_ref_count(folio)
-> > == 1 check, which means that such (previously) swapped pages that are
-> > exclusive cannot be detected as exclusive.
-> 
-> Ack. I will fix this in v2.
 
-I gave this some thought and concluded that the added complexity needed
-to make this hook suitable for arm64 without breaking sparc probably
-isn't worth it in the end, and as I explained in patch 2, sparc ought
-to be moving away from this hook anyway. So in v2 I replaced patches 1
-and 2 with a patch that adds a direct call to the arch_swap_restore()
-hook before the call to swap_free().
 
-Peter
+On 5/15/2023 9:26 AM, Greg Kroah-Hartman wrote:
+> From: Florian Fainelli <f.fainelli@gmail.com>
+> 
+> [ Upstream commit 93e0401e0fc0c54b0ac05b687cd135c2ac38187c ]
+> 
+> The call to phy_stop() races with the later call to phy_disconnect(),
+> resulting in concurrent phy_suspend() calls being run from different
+> CPUs. The final call to phy_disconnect() ensures that the PHY is
+> stopped and suspended, too.
+> 
+> Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+Please drop this patch from all the stable queue for now until this one 
+gets accepted:
+
+https://lore.kernel.org/lkml/20230515025608.2587012-1-f.fainelli@gmail.com/
+
+thanks a lot!
+-- 
+Florian
