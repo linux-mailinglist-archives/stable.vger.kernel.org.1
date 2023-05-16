@@ -2,229 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E61704232
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 02:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A9C704239
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 02:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242979AbjEPARL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 20:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51526 "EHLO
+        id S245188AbjEPATs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 20:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245075AbjEPARK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 20:17:10 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C816A59;
-        Mon, 15 May 2023 17:17:07 -0700 (PDT)
+        with ESMTP id S244856AbjEPATr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 20:19:47 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A18D6E8A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1684196227; x=1715732227;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3qCc4lrxbIqSTQGHVLOT4C7rUIdo224L9qeY9TuGc8Q=;
-  b=Ua9BNfGJ9jw3t3OBj6koXFyebEFmO9sH57m1WRUU2uT67IpjV/rrwL1q
-   aYCGPOZlNF3ewcozZSZspcCz0x202x3nIVxj1tcsccR+/4yyLjqZ7BbK7
-   8e0r29gQ9o6b1rj1KaCGH+TSQVOns0TIEZZHax9jRQwXf70vLtvRgrcUv
-   3QKgVS7EsU6VIxt08z8nIgCPn7bLbc36ECt502swC/BNMtIvrSHmJYa/p
-   mDaKa3oSwrrSFu2QyUq2A2udT9O0pumRX5S6TpOPrH3qh12NK6ZfRqncb
-   ujJLG2C4xAT2ZbgctbNoRUI9yOIlL6qruFHJyIGyevL+q2ewA2wXeRAXU
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684196387; x=1715732387;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=4U46PVwQJLgW+Vl8Kx+BVXEcb3nvvxhpNLneH88J8H4=;
+  b=E+uUeHabYMevtkdlxjLzV4NiBr/8dkDVd8RbjkpXjDpfXIhsa7esLy3A
+   cXmzXkRUX3/iX060T6/D9vETEOfczJLGdAg4Kj++Af16ND9pAcckFwfgS
+   aWIRKLhIoyxAGO00KGSoLdYEnpwLfOtkQu9JJQOSCYBDSaaMVJwPG+PvK
+   ufAcNwgotf6y671+7mqou6xOKHl15YcJbZFKJ5DXk4NVg5cml2cpfojLm
+   f4GDbAr0K0II9XQmRfZGbMRDYxk5WHxLTYKeYiG4X7lTYW/grRIALqWoM
+   Ep0Lp9uJGN53Fk4dumVvwTcVxpiEj+mEEgz59+CwP8Bpbk8TTxWjruFwP
    g==;
-X-IronPort-AV: E=Sophos;i="5.99,277,1677567600"; 
-   d="scan'208";a="213430595"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 15 May 2023 17:17:06 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 15 May 2023 17:17:05 -0700
-Received: from localhost (10.10.115.15) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
- Transport; Mon, 15 May 2023 17:17:05 -0700
-From:   Sagar Biradar <sagar.biradar@microchip.com>
-To:     Don Brace <don.brace@microchip.com>,
-        Sagar Biradar <sagar.biradar@microchip.com>,
-        Gilbert Wu <gilbert.wu@microchip.com>,
-        <linux-scsi@vger.kernel.org>,
-        Martin Petersen <martin.petersen@oracle.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Brian King <brking@linux.vnet.ibm.com>,
-        <stable@vger.kernel.org>, Tom White <tom.white@microchip.com>
-Subject: [PATCH v3] aacraid: reply queue mapping to CPUs based of IRQ affinity
-Date:   Mon, 15 May 2023 17:17:03 -0700
-Message-ID: <20230516001703.5384-1-sagar.biradar@microchip.com>
-X-Mailer: git-send-email 2.29.0
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="331704962"
+X-IronPort-AV: E=Sophos;i="5.99,277,1677571200"; 
+   d="scan'208";a="331704962"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2023 17:19:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="790857636"
+X-IronPort-AV: E=Sophos;i="5.99,277,1677571200"; 
+   d="scan'208";a="790857636"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 15 May 2023 17:19:45 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pyiPo-0006mg-1h;
+        Tue, 16 May 2023 00:19:44 +0000
+Date:   Tue, 16 May 2023 08:19:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Sagar Biradar <sagar.biradar@microchip.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3] aacraid: reply queue mapping to CPUs based of IRQ
+ affinity
+Message-ID: <ZGLL/THrnaGX4J9o@e0f96cf4e6cd>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230516001703.5384-1-sagar.biradar@microchip.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix the IO hang that arises because of MSIx vector not
-having a mapped online CPU upon receiving completion.
+Hi,
 
-The SCSI cmds take the blk_mq route, which is setup during the init.
-The reserved cmds fetch the vector_no from mq_map after the init
-is complete and before the init, they use 0 - as per the norm.
+Thanks for your patch.
 
-Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
-Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
----
- drivers/scsi/aacraid/aacraid.h  |  1 +
- drivers/scsi/aacraid/comminit.c |  2 +-
- drivers/scsi/aacraid/commsup.c  |  6 +++++-
- drivers/scsi/aacraid/linit.c    | 14 ++++++++++++++
- drivers/scsi/aacraid/src.c      | 25 +++++++++++++++++++++++--
- 5 files changed, 44 insertions(+), 4 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
-index 5e115e8b2ba4..7c6efde75da6 100644
---- a/drivers/scsi/aacraid/aacraid.h
-+++ b/drivers/scsi/aacraid/aacraid.h
-@@ -1678,6 +1678,7 @@ struct aac_dev
- 	u32			handle_pci_error;
- 	bool			init_reset;
- 	u8			soft_reset_support;
-+	u8			use_map_queue;
- };
- 
- #define aac_adapter_interrupt(dev) \
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index bd99c5492b7d..53924912417e 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -630,6 +630,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
- 
- 	if (aac_is_src(dev))
- 		aac_define_int_mode(dev);
-+
- 	/*
- 	 *	Ok now init the communication subsystem
- 	 */
-@@ -657,4 +658,3 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
- 
- 	return dev;
- }
--
-diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
-index deb32c9f4b3e..3f062e4013ab 100644
---- a/drivers/scsi/aacraid/commsup.c
-+++ b/drivers/scsi/aacraid/commsup.c
-@@ -223,8 +223,12 @@ int aac_fib_setup(struct aac_dev * dev)
- struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd *scmd)
- {
- 	struct fib *fibptr;
-+	u32 blk_tag;
-+	int i;
- 
--	fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
-+	blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
-+	i = blk_mq_unique_tag_to_tag(blk_tag);
-+	fibptr = &dev->fibs[i];
- 	/*
- 	 *	Null out fields that depend on being zero at the start of
- 	 *	each I/O
-diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
-index 5ba5c18b77b4..fa53a9b3341b 100644
---- a/drivers/scsi/aacraid/linit.c
-+++ b/drivers/scsi/aacraid/linit.c
-@@ -34,6 +34,7 @@
- #include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/msdos_partition.h>
-+#include <linux/blk-mq-pci.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_cmnd.h>
-@@ -505,6 +506,15 @@ static int aac_slave_configure(struct scsi_device *sdev)
- 	return 0;
- }
- 
-+static void aac_map_queues(struct Scsi_Host *shost)
-+{
-+	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
-+
-+	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
-+				aac->pdev, 0);
-+	aac->use_map_queue = true;
-+}
-+
- /**
-  *	aac_change_queue_depth		-	alter queue depths
-  *	@sdev:	SCSI device we are considering
-@@ -1489,6 +1499,7 @@ static struct scsi_host_template aac_driver_template = {
- 	.bios_param			= aac_biosparm,
- 	.shost_groups			= aac_host_groups,
- 	.slave_configure		= aac_slave_configure,
-+	.map_queues			= aac_map_queues,
- 	.change_queue_depth		= aac_change_queue_depth,
- 	.sdev_groups			= aac_dev_groups,
- 	.eh_abort_handler		= aac_eh_abort,
-@@ -1776,6 +1787,8 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	shost->max_lun = AAC_MAX_LUN;
- 
- 	pci_set_drvdata(pdev, shost);
-+	shost->nr_hw_queues = aac->max_msix;
-+	shost->host_tagset = 1;
- 
- 	error = scsi_add_host(shost, &pdev->dev);
- 	if (error)
-@@ -1908,6 +1921,7 @@ static void aac_remove_one(struct pci_dev *pdev)
- 	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
- 
- 	aac_cancel_rescan_worker(aac);
-+	aac->use_map_queue = false;
- 	scsi_remove_host(shost);
- 
- 	__aac_shutdown(aac);
-diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
-index 11ef58204e96..61949f374188 100644
---- a/drivers/scsi/aacraid/src.c
-+++ b/drivers/scsi/aacraid/src.c
-@@ -493,6 +493,10 @@ static int aac_src_deliver_message(struct fib *fib)
- #endif
- 
- 	u16 vector_no;
-+	struct scsi_cmnd *scmd;
-+	u32 blk_tag;
-+	struct Scsi_Host *shost = dev->scsi_host_ptr;
-+	struct blk_mq_queue_map *qmap;
- 
- 	atomic_inc(&q->numpending);
- 
-@@ -505,8 +509,25 @@ static int aac_src_deliver_message(struct fib *fib)
- 		if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
- 			&& dev->sa_firmware)
- 			vector_no = aac_get_vector(dev);
--		else
--			vector_no = fib->vector_no;
-+		else {
-+			if (!fib->vector_no || !fib->callback_data) {
-+				if (shost && dev->use_map_queue) {
-+					qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
-+					vector_no = qmap->mq_map[raw_smp_processor_id()];
-+				}
-+				/*
-+				 *	We hardcode the vector_no for
-+				 *	reserved commands as a valid shost is
-+				 *	absent during the init
-+				 */
-+				else
-+					vector_no = 0;
-+			} else {
-+				scmd = (struct scsi_cmnd *)fib->callback_data;
-+				blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
-+				vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
-+			}
-+		}
- 
- 		if (native_hba) {
- 			if (fib->flags & FIB_CONTEXT_FLAG_NATIVE_HBA_TMF) {
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH v3] aacraid: reply queue mapping to CPUs based of IRQ affinity
+Link: https://lore.kernel.org/stable/20230516001703.5384-1-sagar.biradar%40microchip.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.29.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
+
+
 
