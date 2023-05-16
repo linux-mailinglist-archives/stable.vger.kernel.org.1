@@ -2,102 +2,354 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21601705723
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 21:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C45705792
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 21:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229827AbjEPTct (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 15:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53646 "EHLO
+        id S230225AbjEPTka (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 15:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjEPTct (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 15:32:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751E53C0A;
-        Tue, 16 May 2023 12:32:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 129996373F;
-        Tue, 16 May 2023 19:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF40C433D2;
-        Tue, 16 May 2023 19:32:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684265567;
-        bh=WBnwfoUdwMV1Gu+XaFHfWeScAtyaISLBR5Bwfq3CzQY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=Lnx2M4IFPeFpS0vIWlzOSuxKenTmpzWiVrEcOMTLCpwMMpiDt20WgxmFFj0sh4I3U
-         G1H4Dc2COxind+KG4cfY5aN2MWvrStV/rIefo0lXw9av/CUDRnkLyLXfNhuiYc8YpC
-         eWLDCr/Av6FsPZOK4IHFEZdiJj8A7jjPfTAmaJVLVemLg55a+rvw54Y696IsfnMq4j
-         hkCMNtRU+yQIa28y+Bfzs8nuN3p+cwIuv7IB98De50VRRrG7JLFpXZr0o9GQBMBBoC
-         FnlYFwlEWIx5uqA57dpYCGiqhY9k2sjodskyMFYAPV0mBTsjLilqmAC+93rI5sq5iO
-         3HP2/lHYWQ2lw==
-Date:   Tue, 16 May 2023 14:32:45 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Acid Bong <acidbong@tilde.cafe>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Message-ID: <ZGPaXfV6+RUb6fXs@bhelgaas>
+        with ESMTP id S230210AbjEPTk2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 15:40:28 -0400
+Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21012A269
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:40:03 -0700 (PDT)
+Received: by mail-vk1-xa31.google.com with SMTP id 71dfb90a1353d-452f0e27a86so13280e0c.3
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684265957; x=1686857957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bl0KxKY/sUcM54GB5tUsJdCgfaOj1mAl6bkpff/gM1k=;
+        b=dsbLYDRucXeFfy0Q/wCYCvEpNLRRzLYvTikvSdUg55vOz24AO+E/QwEMZYFCLgsIUL
+         TP2kqL/XSO9xo4qYSlxpIMcnDRh93iGsYH1x1Of0ShspCO1GxrShBtdFerCbFQ7XNOOS
+         h1ROfA6eOs4GIHyR6q/h/4u+C8FOWvtUBAr35zxQeSISTQ+fm7utqJjvjB9bP+jW+ys1
+         oT2uZk/G+oUv+KhJPlOiv/tHPy5vl/Y6MWIsLReICSp28OninHw7eMvOT97IJ4XYogrk
+         fq5n2E8l+4lUW3JwfVBNlMCpWk91W3x46+13OI/IntSRkIJHnKz2tn+HbVkm/e/9QXEi
+         ZVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684265957; x=1686857957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bl0KxKY/sUcM54GB5tUsJdCgfaOj1mAl6bkpff/gM1k=;
+        b=lMt7HO77FhKL6rfAzFBRXj2f9uexLwY5OOBhJ2uXxM46pf4fM7sTM4MDuLvAd0VFjR
+         u20GCapu7jh6Exe+ynq8bwYcXzyqPxCn2kYzI0REAVp1C6q1vQ3JceEgvBKa1aWu7HeD
+         zJ56FK81Z49ubQZSxAiRC9p3Pqy7u0SSQP0E6jCnypZs/zim+8WClyYnAq5IYJygOGCB
+         GxhKTtzdi73hAneEC1zdUIvGj2bSZFnyH5mqeajIHmZ9c2mKP9uS1eaqL4O+K0XL5GHG
+         NLTIpJ/MEdIfMCktAYhDfz3GK9fe4jBi+ed1iFK3qMbfz/hecyAQVnrTTKBbBoqrNpGf
+         odPw==
+X-Gm-Message-State: AC+VfDy6cWrNbFpYdHKAwlAOumxYHhnVnJZh+nzQNn9MpZB/pi+S+LNY
+        fXucIedNhjDKmeoPh6ByHziexVJJ1vCENRKjPIdD3g==
+X-Google-Smtp-Source: ACHHUZ5vIZUSmno0LG6tQNjwPdpLccVbcF3x/foJyasbY5MnT2o8uMNXCaMfo51qg7XyO1B4jwPULmnkSizsP8h04ik=
+X-Received: by 2002:a1f:bf47:0:b0:453:9057:1693 with SMTP id
+ p68-20020a1fbf47000000b0045390571693mr7211731vkf.5.1684265956844; Tue, 16 May
+ 2023 12:39:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A5B9D233-A082-4C60-9DCB-2B0A2081C089@tilde.cafe>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 17 May 2023 01:09:05 +0530
+Message-ID: <CA+G9fYtjmJS893BLx7ggwMXvqzqpiRU7BrvgRjE8d+epJYLrGQ@mail.gmail.com>
+Subject: Re: [PATCH 4.19 000/191] 4.19.283-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4 <linux-ext4@vger.kernel.org>,
+        linux-cifs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 16, 2023 at 01:26:23PM +0300, Acid Bong wrote:
-> >Can you collect the complete dmesg log and output of "sudo lspci -vv"
-> >and post them somewhere (https://bugzilla.kernel.org is a good place)?
-> `lspci -vvnn` output is linked in the head of the thread. Append .txt to make it readable in the browser (I only understood it after the upload).
-> 
-> >Ideally the dmesg would be from the most recent kernel you have.
+On Mon, 15 May 2023 at 22:09, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Speaking of that, a couple of questions:
-> 
-> 1) Should I post them with or without pci=nomsi/noaer? The problem
-> with disabling it is that it floods the logs so fast, that they
-> reach 700M in 5-7 minutes, and, when rotation is enabled (my
-> parameters are default, up to 10 copies 10M each), all pre-flood
-> data is lost instantly.
+> This is the start of the stable review cycle for the 4.19.283 release.
+> There are 191 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.19.283-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-You're seeing AER logging, and that's what I'm interested in, so if
-you could do one quick boot *without* "pci=nomsi" and "pci=noaer",
-that would be great.  Then turn it off again so you don't drown in
-logs.
+Results from Linaro=E2=80=99s test farm.
+Regressions on arm64, arm, x86_64 and i386.
 
-The snippet from [1] shows a few messages related to 00:1c.5, and it
-would be useful to know if there are errors related to other devices
-as well.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Something like "head -c500K /var/log/dmesg > file" should be plenty.
+1) ltp-syscalls fallocate06 - FAILS on arm and arm64 on 4.19 and 4.14.
 
-> Also I'm currently bisecting the kernel with MSI disabled in the
-> config. But I'm keeping the parameter in the bootloader for cases
-> when I'm using Gentoo's prebuilt kernel.
-> 
-> 2) Can I delete messages by ufw? They contain MACs of my router,
-> laptop and cellphone and I don't really wanna share them
+2) We have recently upgraded our selftest sources to stable-rc 6.3 and
+running on stable rc 6.1, 5.15, 5.10, 5.4, 4.19 and 4.14 kernels.
 
-Sure, delete those.
+List of test regressions:
+=3D=3D=3D=3D=3D=3D=3D=3D
 
-> 3) I'm not savvy in logs, how exactly should I share dmesg? `dmesg >
-> file`? /var/log/syslog? I already know kern.log doesn't contain
-> logind and some other messages that are present in dmesg
-> 
-> 4) Should we continue in this thread or rather start a new one?
+ltp-syscalls
+  - fallocate06
 
-Good point, a new thread would probably be better.
+kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
 
-Bjorn
+kselftest-memfd
+  - memfd_memfd_test
 
-[1] https://lore.kernel.org/all/CRWCUOAB4JKZ.3EKQN1TFFMVQL@bong/
+kselftest-rseq
+  - rseq_basic_test
+
+ kselftest-kvm
+  - kvm_xapic_state_test
+
+=3D=3D=3D=3D=3D=3D
+
+ltp-syscalls
+  - fallocate06 - FAILS on arm and arm64 on 4.19 and 4.14
+
+fallocate06.c:155: TFAIL: fallocate(FALLOC_FL_PUNCH_HOLE |
+FALLOC_FL_KEEP_SIZE) failed unexpectedly: ENOSPC (28)
+
+Test log links,
+=3D=3D=3D=3D=3D=3D=3D=3D
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4=
+.19.282-192-g373cdd8d6123/testrun/17027069/suite/ltp-syscalls/test/fallocat=
+e06/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4=
+.19.282-192-g373cdd8d6123/testrun/17027069/suite/ltp-syscalls/test/fallocat=
+e06/log
+
+NOTE:
+The logs are the same as reported on other email reports.
+link,
+ - https://lore.kernel.org/stable/CA+G9fYu6ZOu_We2GMP0sFnSovOsqd6waW7oKS-Y1=
+VPrjdibu5Q@mail.gmail.com/
+
+## Build
+* kernel: 4.19.283-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.19.y
+* git commit: 373cdd8d6123d6ed489c5a5b91a0ab5b206ba0e4
+* git describe: v4.19.282-192-g373cdd8d6123
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
+.282-192-g373cdd8d6123
+
+## Test Regressions (compared to v4.19.279-173-g8ca3c8d28616)
+
+* dragonboard-410c, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* dragonboard-410c, kselftest-rseq
+  - rseq_basic_test
+
+* dragonboard-410c, ltp-syscalls
+  - fallocate06
+
+* i386, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* i386, kselftest-rseq
+  - rseq_basic_test
+  - rseq_run_param_test_sh
+
+* juno-r2, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* juno-r2, kselftest-rseq
+  - rseq_basic_test
+
+* juno-r2, ltp-syscalls
+  - fallocate06
+
+* juno-r2-compat, ltp-syscalls
+  - fallocate06
+
+* juno-r2-kasan, ltp-syscalls
+  - fallocate06
+
+* qemu_i386, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* qemu_i386, kselftest-rseq
+  - rseq_basic_test
+  - rseq_run_param_test_sh
+
+* qemu_x86_64, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* qemu_x86_64, kselftest-rseq
+  - rseq_basic_test
+
+* x15, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* x15, kselftest-rseq
+  - rseq_basic_test
+
+* x86, kselftest-kvm
+  - kvm_xapic_state_test
+
+* x86, kselftest-membarrier
+  - membarrier_membarrier_test_multi_thread
+  - membarrier_membarrier_test_single_thread
+
+* x86, kselftest-rseq
+  - rseq_basic_test
+
+## Metric Regressions (compared to v4.19.279-173-g8ca3c8d28616)
+
+## Test Fixes (compared to v4.19.279-173-g8ca3c8d28616)
+
+## Metric Fixes (compared to v4.19.279-173-g8ca3c8d28616)
+
+## Test result summary
+total: 80130, pass: 68396, fail: 2694, skip: 8901, xfail: 139
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 111 total, 106 passed, 5 failed
+* arm64: 37 total, 32 passed, 5 failed
+* i386: 21 total, 18 passed, 3 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 6 total, 6 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 31 total, 26 passed, 5 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
