@@ -2,112 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C95AA7047A7
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 10:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 737A87047ED
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 10:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjEPIWB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 04:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43246 "EHLO
+        id S230136AbjEPIfb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 04:35:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230419AbjEPIV7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 04:21:59 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14904EC2;
-        Tue, 16 May 2023 01:21:57 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1ae2c8734fcso8888185ad.0;
-        Tue, 16 May 2023 01:21:57 -0700 (PDT)
+        with ESMTP id S230117AbjEPIf3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 04:35:29 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48DE3BA;
+        Tue, 16 May 2023 01:35:28 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-96649b412easo1813729466b.0;
+        Tue, 16 May 2023 01:35:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684225317; x=1686817317;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i1tMLW6DSWJAntE+I5KuWI3/gKXK9s6L51FeppahMts=;
-        b=fXe2aaHfUQG2KOp4zGNCfvmgZMOcSYl/YktISj9YlZz4cdvcya36Mdbk26BupTyeex
-         Nb1IdMYvTqX3V6gE0sYW6C6tn3aWXd5WlOZHIoZ9VrSCiA3llbJ41s1n0bSfgIUd72KS
-         KIMokZRQfhzRLvHhiWmHgZ0QR8Ked/BGPmTu+8g3kmsSTB0yJLsT0krOEA6cAfzs5OOe
-         dP7ufWH70Da1Yfpmaaugb1KDjmUhYGbAzDZM/IG4w6qDwQ7jtdg8AFfiG1saB2CkArVa
-         Id7JRSZOH4WWaymFgeeYkwBYsBKlXA7hrHyzXIk9C5Jnx15q+7p8WPmtoTu/4Xdui+IC
-         Ql1g==
+        d=gmail.com; s=20221208; t=1684226127; x=1686818127;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P8e4NHYJl0ojx/fa43Z8pAIL3TomPVIv+YLhEdD0YsE=;
+        b=MIvVQBlSFw6cKp8JrUYDItCgBnwdr++cjK8DsRaCR3avEUKQ5+59oc8fk2bJ+t0jmf
+         rvMV/pTTcBwK9MyFjCUNPmLqRsMU4ttaFEZVMm9SADp+7XrPGRXHerKFfPoFEwbz04nc
+         QnKmdJCjeCB32/OGwZC5RGoUxh9cYQt8vlVqYFfLfL3bYi50lCZbMG9tbL37hzEPoIZj
+         63tq32DQDu8ArbxUYd6uEF5j9nSPj8eoYVxfG0GV8FlBLiJ7N/B6njnStgwNxwjh/0e/
+         AX1GxxILtsC6cN3lm9iqVwoOevKFN4tdyeZZWdK4Q2d7PlnUxSzANEQbR7C6pW+fomOi
+         tcIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684225317; x=1686817317;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i1tMLW6DSWJAntE+I5KuWI3/gKXK9s6L51FeppahMts=;
-        b=GZsAFh5gI0WL1nbaXVLGTvp5UWzqCa+5YFMbIt9PIhvy7Ev8jCU0ExQNlVOPFGOLHa
-         us2HmHL+BNBX7fYMrhg0+17d30oSK0qsNtPqOo8RKmq2ra8+QRQcx8vFBnjEww8JwZjQ
-         92mwVXwR+PH8sUtk+W9Ol4z7STOHjb4qUIJzLK9GR63xrH1p0ZAvjkPYSDst6yc45CHK
-         k9rH0ZByOvgPPEHlL8/5Nac+hrreAGJOUBiwgxYL7qdze77u/MEI43Rc05CgsJh/fBzn
-         k8vyQ4IM06MAMPuLulo9aOn7SB2q1tMQYRMi/+NH9Oi9rVCbSKbcUuMNcOOKoDxNhQuP
-         LuVg==
-X-Gm-Message-State: AC+VfDwj9nMUUVXI0BtJHADktlllcSAUGUx6MckA5LhHAqLnToPC4vf0
-        CTaJDyA7fHhalexnShLYwfZdpPD6wuA=
-X-Google-Smtp-Source: ACHHUZ6r+lC3evUL4hZ/DojRzT+Z0EuyD4+mKiusnp97fHqX7MLzfh2KfqRInTuiytCLFBBt9rGzlA==
-X-Received: by 2002:a17:903:2452:b0:1ad:bc86:851 with SMTP id l18-20020a170903245200b001adbc860851mr26642602pls.45.1684225317073;
-        Tue, 16 May 2023 01:21:57 -0700 (PDT)
-Received: from debian.me (subs03-180-214-233-73.three.co.id. [180.214.233.73])
-        by smtp.gmail.com with ESMTPSA id l6-20020a170902d34600b001a800e03cf9sm14841603plk.256.2023.05.16.01.21.55
+        d=1e100.net; s=20221208; t=1684226127; x=1686818127;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P8e4NHYJl0ojx/fa43Z8pAIL3TomPVIv+YLhEdD0YsE=;
+        b=Yjw3zKQw5O0+dwE1CfT5jRGA52nezaGEyMDj1hBWHRDu6CDNQAyy8Z8cjRBeqLu0Mp
+         D3rCIrb32FOGWBTSXtCaGk7yXz97uEEZCv/c6adOxlAUHrQSeiMuZ0FweyMLVLopDFDx
+         n+WHKPOjh9kupCxM/eSdcpUL7CbHl/H+hudc7nFHohTimxEcdU7QaaMupPech1xl4U6J
+         j2Y7Q4SFLJ9+tdOEfpipRDclfOws04RGrV50gL6ekpQ2+VFUuGhfNSPZo1zwLKGCzBY+
+         KRIDXeG28Ku7zQTFGVenkJtM4efV/mPjh6d3VHp38Qls/n2wZj1ImMB69H8xXYCMtv5k
+         XJlA==
+X-Gm-Message-State: AC+VfDwE/CDrTwJoWbZIAsG3/AgoEIM1aW2r5Q4psBuzIC91JGYXbT9n
+        30b1jltBP99dWBaKsJrEE60=
+X-Google-Smtp-Source: ACHHUZ770YWb+27ocY0i/HufgaFXPBUzmRTEQY6c6vHTnhLHiM0YjdJifL5YooavC4/oGYDzNSv03Q==
+X-Received: by 2002:a17:906:6a24:b0:96a:2b5a:f013 with SMTP id qw36-20020a1709066a2400b0096a2b5af013mr20490261ejc.62.1684226126482;
+        Tue, 16 May 2023 01:35:26 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id ib8-20020a1709072c6800b0094f67ea6598sm10659250ejc.193.2023.05.16.01.35.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 01:21:56 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id CCC32106212; Tue, 16 May 2023 15:21:51 +0700 (WIB)
-Date:   Tue, 16 May 2023 15:21:51 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.15 000/371] 5.15.111-rc1 review
-Message-ID: <ZGM9Hw8eNLr3Ay4/@debian.me>
-References: <20230508094811.912279944@linuxfoundation.org>
+        Tue, 16 May 2023 01:35:25 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id 6B030BE2DE0; Tue, 16 May 2023 10:35:24 +0200 (CEST)
+Date:   Tue, 16 May 2023 10:35:24 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 5.10 000/381] 5.10.180-rc1 review
+Message-ID: <ZGNATKe3U0oXHICX@eldamar.lan>
+References: <20230515161736.775969473@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8VmfzJecd+40CVXP"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Greg,
 
---8VmfzJecd+40CVXP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, May 08, 2023 at 11:43:21AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.111 release.
-> There are 371 patches in this series, all will be posted as a response
+On Mon, May 15, 2023 at 06:24:11PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.180 release.
+> There are 381 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->=20
+> 
+> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> Anything received after that time might be too late.
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+The build fails here with:
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+sound/soc/intel/boards/sof_sdw.c:187:6: error: ‘RT711_JD2_100K’ undeclared here (not in a function)
+  187 |      RT711_JD2_100K),
+      |      ^~~~~~~~~~~~~~
+make[7]: *** [scripts/Makefile.build:286: sound/soc/intel/boards/sof_sdw.o] Error 1
+make[6]: *** [scripts/Makefile.build:503: sound/soc/intel/boards] Error 2
+make[5]: *** [scripts/Makefile.build:503: sound/soc/intel] Error 2
+make[4]: *** [scripts/Makefile.build:503: sound/soc] Error 2
+make[3]: *** [Makefile:1828: sound] Error 2
 
---=20
-An old man doll... just what I always wanted! - Clara
+I did mention it in
+https://lore.kernel.org/stable/ZFuHEML1r5Xd6S7g@eldamar.lan/ as well but I
+guess it felt trough the cracks back then.
 
---8VmfzJecd+40CVXP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZGM9HAAKCRD2uYlJVVFO
-o8pxAP9jb21peI8gAYzgNHmohZHbJNs2E1nGig2qbFWQsb8BfwEAzYBNzMugQtH9
-ePnO8axssFE7feYe3fEblNxw/mqtpw0=
-=RTB5
------END PGP SIGNATURE-----
-
---8VmfzJecd+40CVXP--
+Regards,
+Salvatore
