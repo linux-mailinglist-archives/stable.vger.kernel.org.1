@@ -2,108 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E361705E7F
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 06:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DFB0705F2E
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 07:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjEQEAa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 00:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41128 "EHLO
+        id S231820AbjEQFXc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 01:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjEQEA3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 00:00:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 741D03A8D;
-        Tue, 16 May 2023 21:00:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE38064182;
-        Wed, 17 May 2023 04:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 554D0C433A1;
-        Wed, 17 May 2023 04:00:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684296024;
-        bh=VcGyi2cEUycSSurqDF8cL5uSfKMIcWqmuHxfeGZBgC0=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=CGBD3luDeY/n8Zq/uEbNLWm7TlmvbUPovje+ovN/geBzLfpxHH9wcdW9xzpdb2nHQ
-         sDj5CtCj18/CTkBD/nS8f3zMX3omETsddAvr58IY5wDsAgOvzoW4l9TMnR/dEKtsbK
-         TSZav9csSzAWWYIMuHrMm1Ugp8yCmr+LkhwxZPAttDK19UWIx2g+zVtEtuw/oD6kR+
-         DQsMqsOmmLKZiRxR/G2u3NhAPQLPSw/NgqjrFZS9BeLQ0TpVGcIhVdiN3a6GrUPdrS
-         /YtMR6K0WIQbOw+b7wytcYZSKOE6i1yPpp3Hmweszqk6rH3eGqrMTvLTGmYGaLwfVp
-         wzQOlSlEJP9rw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 41451C73FE2;
-        Wed, 17 May 2023 04:00:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/9] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168429602426.23839.18000337535981617540.git-patchwork-notify@kernel.org>
-Date:   Wed, 17 May 2023 04:00:24 +0000
-References: <20230515204722.1000957-2-mkl@pengutronix.de>
-In-Reply-To: <20230515204722.1000957-2-mkl@pengutronix.de>
-To:     Marc Kleine-Budde <mkl@pengutronix.de>
-Cc:     netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        linux-can@vger.kernel.org, kernel@pengutronix.de,
-        socketcan@hartkopp.net, o.rempel@pengutronix.de,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229738AbjEQFXc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 01:23:32 -0400
+Received: from ya.lv (ya.lv [138.201.201.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 395433C0C
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 22:23:29 -0700 (PDT)
+Received: by ya.lv (Postfix, from userid 5002)
+        id AF6359226F7; Wed, 17 May 2023 08:23:26 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ya.lv AF6359226F7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.lv; s=default;
+        t=1684301006; bh=LXIFG7ThwtsIlMQqkRnVjpb44hg5fDbovpAu19v6BoA=;
+        h=Date:From:Subject:From;
+        b=Js0l9QoW1O7YB3zaLqa9kI3BiQmEMd7B7rWOM/mulpBLjZYsKdvCulBVo2IksShR/
+         auhrapfp6x2qfSqMs56rsxAJTxU1My0PUBiSCb/IxNlmuUVfAw2AHPstnBJ5aiP8zG
+         XAsLZmS2WEfJY5JcpgUDRNRRnblpXTDKB4E8bdeI=
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_40,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,
+        RCVD_IN_SBL_CSS,SPF_HELO_PASS,SPF_PASS,TVD_SPACE_RATIO,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
+Received: from dummy.faircode.eu (unknown [31.12.94.42])
+        by ya.lv (Postfix) with ESMTPSA id 37F549226EB;
+        Wed, 17 May 2023 08:23:19 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ya.lv 37F549226EB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.lv; s=default;
+        t=1684301005; bh=LXIFG7ThwtsIlMQqkRnVjpb44hg5fDbovpAu19v6BoA=;
+        h=Date:From:Subject:From;
+        b=a2Wfvn4UW+038PL8vqBSZ5g9BnIEc+14bbzcEq0bb8R2r/NfWqO0l9IHgFz7fAA3Z
+         LTSkbPLh0HXeilJoBzKxzypCiCUCR4ukwizUXcQoCytGvXv3x2UJyrDOpSoB/G2+3p
+         P2zkgUxfGjk82idWogU81bxNUkxm4PA4DsOyZgjE=
+Date:   Tue, 16 May 2023 09:45:17 +0000 (UTC)
+From:   TRANSPARENCY <TRANSPARENCY@YA.LV>
+Message-ID: <c6b43d04-771e-479b-bcc6-4fe3dcc41247@YA.LV>
+Subject: Sel4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Correlation-ID: <c6b43d04-771e-479b-bcc6-4fe3dcc41247@YA.LV>
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: ya.lv]
+        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+        *      [score: 0.2537]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [31.12.94.42 listed in zen.spamhaus.org]
+        *  1.0 MISSING_HEADERS Missing To: header
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  1.0 DATE_IN_PAST_12_24 Date: is 12 to 24 hours before Received:
+        *      date
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 TVD_SPACE_RATIO No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
-
-On Mon, 15 May 2023 22:47:14 +0200 you wrote:
-> From: Oliver Hartkopp <socketcan@hartkopp.net>
-> 
-> The control message provided by isotp support MSG_CMSG_COMPAT but
-> blocked recvmsg() syscalls that have set this flag, i.e. on 32bit user
-> space on 64 bit kernels.
-> 
-> Link: https://github.com/hartkopp/can-isotp/issues/59
-> Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-> Suggested-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-> Fixes: 42bf50a1795a ("can: isotp: support MSG_TRUNC flag when reading from socket")
-> Link: https://lore.kernel.org/20230505110308.81087-2-mkl@pengutronix.de
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,1/9] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
-    https://git.kernel.org/netdev/net/c/db2773d65b02
-  - [net,2/9] can: j1939: recvmsg(): allow MSG_CMSG_COMPAT flag
-    https://git.kernel.org/netdev/net/c/1db080cbdbab
-  - [net,3/9] can: dev: fix missing CAN XL support in can_put_echo_skb()
-    https://git.kernel.org/netdev/net/c/6bffdc38f993
-  - [net,4/9] can: CAN_BXCAN should depend on ARCH_STM32
-    https://git.kernel.org/netdev/net/c/4920bded3ee0
-  - [net,5/9] dt-bindings: net: can: add "st,can-secondary" property
-    https://git.kernel.org/netdev/net/c/caf78f0f4919
-  - [net,6/9] ARM: dts: stm32f429: put can2 in secondary mode
-    https://git.kernel.org/netdev/net/c/6b443faa313c
-  - [net,7/9] ARM: dts: stm32: add pin map for CAN controller on stm32f7
-    https://git.kernel.org/netdev/net/c/011644249686
-  - [net,8/9] can: bxcan: add support for single peripheral configuration
-    https://git.kernel.org/netdev/net/c/85a79b971164
-  - [net,9/9] ARM: dts: stm32: add CAN support on stm32f746
-    https://git.kernel.org/netdev/net/c/0920ccdf41e3
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+https://privatebin.net/?9d5908aef3630cab#5XZMAUpCjLBQBkufJcTBmHSBwceMydWQ4Ek61E8pBAoG
