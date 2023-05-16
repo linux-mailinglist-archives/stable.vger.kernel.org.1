@@ -2,114 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F32704A61
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 12:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 379C2704A7D
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 12:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbjEPKWl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 06:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50532 "EHLO
+        id S230447AbjEPK0w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 06:26:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231483AbjEPKWk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 06:22:40 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7310C35AE;
-        Tue, 16 May 2023 03:22:39 -0700 (PDT)
-Date:   Tue, 16 May 2023 10:22:37 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1684232557;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rJ71UFwUGW1XXqTAk35MZr6o6B5VIiNS0mmzaMOE5UY=;
-        b=j+kyH2+/B3siM08d+fgKHCAv+TQFWKfUioX37OZnOD+SlI+LMp58mxh6Sd/ewa6vxU3rUY
-        IUuUO1ptjOGqGXIshA6sS0mvmdo3uVqkB/x0skEO3/Lu2+ihLuu2yQeyxVib0qCur2n8Vh
-        CrrA19wHKrjI8vLdJWNQ30yqQys5obcobw1JAfZTm3pEomE1JMLNnBghwZfX33iNmN+PRB
-        0f1bKeZOK1kxs9DWMXh1vZGTorfEzVS7KoLQGeeFo70JvRIv6y2SQTsDmbnRfu54DWZLNC
-        UGAcB54oeO+ndRSXKX8pPxXHUZNLOgtdQbTrI0faN1jUNE64K9az+1Hs5W290Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1684232557;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rJ71UFwUGW1XXqTAk35MZr6o6B5VIiNS0mmzaMOE5UY=;
-        b=l5vxn1ux3JBxOf31MM3BNyunoVYnp7mrcsgANeun7KDI6E4eHxF5CYVCFnogQGnOp2gX/C
-        BTrR2P3OeiiieZBQ==
-From:   "irqchip-bot for Jiaxun Yang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-kernel@vger.kernel.org
-Subject: [irqchip: irq/irqchip-fixes] irqchip/mips-gic: Don't touch vl_map if
- a local interrupt is not routable
-Cc:     stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Marc Zyngier <maz@kernel.org>, tglx@linutronix.de
-In-Reply-To: <20230424103156.66753-2-jiaxun.yang@flygoat.com>
-References: <20230424103156.66753-2-jiaxun.yang@flygoat.com>
+        with ESMTP id S232319AbjEPK0S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 06:26:18 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1402035AE
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 03:25:54 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-50db91640d3so13183570a12.0
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 03:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1684232752; x=1686824752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GcHjdDfyIIWSoYZsMKiovdJIzlCJDyDWihIY5HPNKSk=;
+        b=09Uuq7KAj8zEHmVegWg7KtyLu6hRs5VQUBMzjtD7rQEkluf3IHiWxtpn0nm7y9MJta
+         z9hy5NMSZ3bAUKf/1RXLDFaleBuyedybLh6AY6mzcGtnULaHa/4lNBeBLz1AIlKqRV+N
+         5ccU+YbWLMxQNH56maTj5Emc7CzxtI1c8eiDTgM5++DWrCyCCXT/jpH9o4uQuSF4/V8j
+         FmaxS5i9IW6CPu/QYbz9JhPDn6npgWG+R4hyKrpjDdbegI/cRugdoGNG4yM5W8aeGDHg
+         evgLy9HQH63y2e5mWYkfGZCZH+yKlDPLuWqw6LfTXnNvkXrbY0/k2yZPN7qlpgN4G6Az
+         9pog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684232752; x=1686824752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GcHjdDfyIIWSoYZsMKiovdJIzlCJDyDWihIY5HPNKSk=;
+        b=GA0bQ71Bv5zfJO8BGsvvTPtku1WpSz7rAgXTMwNerGjnNfprYV1bBe4g/rPBMhVI7n
+         zoZ+qyo4d3mRuJgLmoE7l8Ur7U/BigxN11TWrnnlL6YOmqx+u1d0ZaVoNtkQrIQ29fp9
+         Iou3MQUWqHgq9OO+zm5guTeud9NkaIEw7iXxwRh61zEDhBfL/zepy0vyGqIvZbI+c1vZ
+         O7Iww9NneHK+8OsKJU7vyR6v7KtpDZEylqFgx5zrw5I2TMdHdT9ooy6M8+ypZSxV15Iq
+         423Jjnb5KVPbhhPGQLd9XaPbFSW4hJDVgpuAYki77FONCQX0Ke5OcG0P1KIP+uz3sfCn
+         QuzQ==
+X-Gm-Message-State: AC+VfDzIwoqw1BaRGMlYdwKbeiEfM8qkW8DS/31qOz4Y+wOXgq+LgDQe
+        q8Tq7D6xuwSE7VsZixz/rczjx1o5wMZDItHFNKyg+w==
+X-Google-Smtp-Source: ACHHUZ4Py2BEwM/zYFqwdmvdALvRvslKgYDWCfid+TfFBoSRh8Jf+bEtGy/xN1Na8gpQaP9M+fvBNv3P3iCUQtSvbWs=
+X-Received: by 2002:a17:907:168d:b0:969:f677:11b9 with SMTP id
+ hc13-20020a170907168d00b00969f67711b9mr27788487ejc.54.1684232752473; Tue, 16
+ May 2023 03:25:52 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <168423255748.404.10699109053196675106.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
+Date:   Tue, 16 May 2023 19:25:41 +0900
+Message-ID: <CAKL4bV4bam5Aa5zhYPqZJE5Pjt4fGCn0SsisHD+pYdBH60ca0Q@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/239] 6.1.29-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the irq/irqchip-fixes branch of irqchip:
+Hi Greg
 
-Commit-ID:     2c6c9c049510163090b979ea5f92a68ae8d93c45
-Gitweb:        https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms/2c6c9c049510163090b979ea5f92a68ae8d93c45
-Author:        Jiaxun Yang <jiaxun.yang@flygoat.com>
-AuthorDate:    Mon, 24 Apr 2023 11:31:55 +01:00
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Tue, 16 May 2023 10:59:28 +01:00
+On Tue, May 16, 2023 at 2:05=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.29 release.
+> There are 239 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.29-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-irqchip/mips-gic: Don't touch vl_map if a local interrupt is not routable
+6.1.29-rc1 tested.
 
-When a GIC local interrupt is not routable, it's vl_map will be used
-to control some internal states for core (providing IPTI, IPPCI, IPFDC
-input signal for core). Overriding it will interfere core's intetrupt
-controller.
+x86_64
 
-Do not touch vl_map if a local interrupt is not routable, we are not
-going to remap it.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Before dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on
-irq_cpu_online()"), if a local interrupt is not routable, then it won't
-be requested from GIC Local domain, and thus gic_all_vpes_irq_cpu_online
-won't be called for that particular interrupt.
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P, arch linux)
 
-Fixes: dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230424103156.66753-2-jiaxun.yang@flygoat.com
----
- drivers/irqchip/irq-mips-gic.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 046c355..b568d55 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -399,6 +399,8 @@ static void gic_all_vpes_irq_cpu_online(void)
- 		unsigned int intr = local_intrs[i];
- 		struct gic_all_vpes_chip_data *cd;
- 
-+		if (!gic_local_irq_is_routable(intr))
-+			continue;
- 		cd = &gic_all_vpes_chip_data[intr];
- 		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
- 		if (cd->mask)
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
