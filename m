@@ -2,56 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F6CD704170
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 01:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 156E070422C
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 02:16:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343573AbjEOXkK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 19:40:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37870 "EHLO
+        id S230236AbjEPAQR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 20:16:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245712AbjEOXkK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 19:40:10 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF7A065BA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:07 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1aae90f5ebcso755695ad.1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:07 -0700 (PDT)
+        with ESMTP id S242502AbjEPAQR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 20:16:17 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DDA5B88
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:15 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1aae90f5ebcso759365ad.1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684194007; x=1686786007;
+        d=google.com; s=20221208; t=1684196175; x=1686788175;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OVvfLhysB+0iy4Qip8pj9vBPM/PIR3p9BpZ5jtYRcn4=;
-        b=oBqogYyzknr4yKRxw88qq274R/foRD0iU/4HpnVOmOYsJgB4y5e/onJdHb/QjS00Ed
-         3Oz/6ggqipp+vbvqqyTlo1tQwx1kMcflJJiXMvfznOaemX9PTVS3ByDZYXsO8B3ksLSq
-         K+SAlJQ/OtK/9aukf6yJMaDdbGwQU4fdViCLeVkzX/FppvxiLP4wSN7uUSFeQJr3Z1px
-         ATNgFB5RUw9/DrL0w71804OatLnEKT5KVKQAG/AmmN6WkOOzxsj02txLLBVvt8AdYefl
-         sGIk+rEemv4t/FX6klsq7LCxyCh4RfJkGSsJp3CQh4wlg/cyV3A3/pEXzqC9H7JEuWAS
-         gPtw==
+        bh=T6gh2qYVut9aSylVwiYmVdq2jPzWcix3qnUjMW+9u1Y=;
+        b=4DT4IrQPyQsz4h+dcRk/i2LEM+ilSfmH36PEG55MInjjTBGxQELkAy2DYSBQDQwIaO
+         4X9iQxrb0bD6WqOfmbVD1TRc+OSr1/fhNSat4Lh1WFRxQfsuAIolN8800kDElXhNXelP
+         LlqIpSwDtJPlkSMJL3mCFlcx7Mpde4o4iDk7xUzqFS4y8VdInEFgNXsvhb5OVozPBqPC
+         P5nDQrkneFxH9jJ+OustYYE3W7BHQQzUaU7WXrV/bo2+IfYJL0t8d7cDO2VZ7sGKINON
+         QPt9EIBsy+JHePYNsII5qP0NAJTzYMjlpMKd/qeQ7nDio77QEz76JhMEYmYceqmrZ+oQ
+         Ji3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684194007; x=1686786007;
+        d=1e100.net; s=20221208; t=1684196175; x=1686788175;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OVvfLhysB+0iy4Qip8pj9vBPM/PIR3p9BpZ5jtYRcn4=;
-        b=eDzst6q8D/sbuDAA9IkjhMu2t2+q9cZZAb/pWC90dWLpKdIh1km8rjKokaKxDb3jPd
-         M1objtPU7jfOOnzpcVjUV0sJ//e4Sm4bAtpAaFREz7m8cpe98qaf065/jlPcxayZ58M2
-         OJtGKteB417HPdIrCTunDduexzcHr94nOqFGHXxRQZtkywS7b0jn6rjYhvSYWUCSQBUO
-         ZcVtzYiQ3MjbDpMoDlB1LizILDp+n4iDd7AIK4HvQoG28lo9WVbmRjdule8thFIFACKZ
-         VKXNkjITxzLazQWCPRr5WrVB5jRaMixyRLycCSe6DxYNULfiTqiH99E5ipTsEXU6aZyq
-         +TIA==
-X-Gm-Message-State: AC+VfDyNJvUbIbHad6xmzZ2IvUiuvTAQtsjKGG3GGryCPrs5b845Iy6Y
-        f19GJniDSMRqDg+9nfWUDcWFDw==
-X-Google-Smtp-Source: ACHHUZ4vbTiXqAKlKE7aAVYgqKytq/j0IcMhHUt5I1ncbJwmtNoHqSAS9l5md56bjM7O5Ol8rpfclQ==
-X-Received: by 2002:a17:902:ec85:b0:1a6:970f:8572 with SMTP id x5-20020a170902ec8500b001a6970f8572mr17131plg.3.1684194006948;
-        Mon, 15 May 2023 16:40:06 -0700 (PDT)
+        bh=T6gh2qYVut9aSylVwiYmVdq2jPzWcix3qnUjMW+9u1Y=;
+        b=DB5xOi67JaEpf49yyJmiQM2r9/Jt71ZTLcO6xUYMZp4VY/PcG/+UXyCk9ckOj4CjYc
+         L05o2CSLkqLX1+BP19K1JsCX6ZbniZOg11dBfaxJ3bQfCKYlvTqnFKCMZq+nEAofgjx8
+         5di9I/dDePDWrqUOsFdtTL5WNRJuz9lXUgCId18oIFKBUevGrC5pVi8OgVqQQiRZ7mpF
+         0KT3yEUt0k08aGXvMOlLKwkkW88iHDg7X4wN5DwjSOBiePbXLwmuKZ1FHpZsLhGGL9Ds
+         jPfMeQZpz1fHSpDoc+N+IQuv/MWdGJzYH8EIOI1VEQ82xG1idAUWfQ9c0iJe2NlQSyGZ
+         RNfA==
+X-Gm-Message-State: AC+VfDxsEfQaYHcz9CSwPLkFR/HDKdYdl86fAxvSIjsm2Cl5hxtxpvkm
+        Xbd/iJ5vcm0LsUrEMuB1vz4DAA==
+X-Google-Smtp-Source: ACHHUZ6F8d7WPH/3QMv++9pQyJNemJ8pH/5jv3HUHQFDdhHoClEdG/sj9VEr8QKBhfu3MpNJ0Ldv3Q==
+X-Received: by 2002:a17:903:2281:b0:1aa:dfdf:9232 with SMTP id b1-20020a170903228100b001aadfdf9232mr30882plh.16.1684196174906;
+        Mon, 15 May 2023 17:16:14 -0700 (PDT)
 Received: from google.com ([2620:15c:2d3:205:c825:9c0b:b4be:8ee4])
-        by smtp.gmail.com with ESMTPSA id d6-20020aa78686000000b00640ddad2e0dsm12303707pfo.47.2023.05.15.16.40.05
+        by smtp.gmail.com with ESMTPSA id z21-20020aa791d5000000b006260526cf0csm12286564pfa.116.2023.05.15.17.16.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 May 2023 16:40:06 -0700 (PDT)
-Date:   Mon, 15 May 2023 16:40:01 -0700
+        Mon, 15 May 2023 17:16:14 -0700 (PDT)
+Date:   Mon, 15 May 2023 17:16:09 -0700
 From:   Peter Collingbourne <pcc@google.com>
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     David Hildenbrand <david@redhat.com>,
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
         <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -69,292 +69,94 @@ Cc:     David Hildenbrand <david@redhat.com>,
         stable@vger.kernel.org
 Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
  swap_free()
-Message-ID: <ZGLC0T32sgVkG5kX@google.com>
+Message-ID: <ZGLLSYuedMsViDQG@google.com>
 References: <20230512235755.1589034-1-pcc@google.com>
  <20230512235755.1589034-2-pcc@google.com>
  <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
- <ZGJtJobLrBg3PtHm@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZGJtJobLrBg3PtHm@arm.com>
+In-Reply-To: <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 06:34:30PM +0100, Catalin Marinas wrote:
-> On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> > On 13.05.23 01:57, Peter Collingbourne wrote:
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index 01a23ad48a04..83268d287ff1 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -3914,19 +3914,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >   		}
-> > >   	}
-> > > -	/*
-> > > -	 * Remove the swap entry and conditionally try to free up the swapcache.
-> > > -	 * We're already holding a reference on the page but haven't mapped it
-> > > -	 * yet.
-> > > -	 */
-> > > -	swap_free(entry);
-> > > -	if (should_try_to_free_swap(folio, vma, vmf->flags))
-> > > -		folio_free_swap(folio);
-> > > -
-> > > -	inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> > > -	dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> > >   	pte = mk_pte(page, vma->vm_page_prot);
-> > > -
-> > >   	/*
-> > >   	 * Same logic as in do_wp_page(); however, optimize for pages that are
-> > >   	 * certainly not shared either because we just allocated them without
-> > > @@ -3946,8 +3934,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >   		pte = pte_mksoft_dirty(pte);
-> > >   	if (pte_swp_uffd_wp(vmf->orig_pte))
-> > >   		pte = pte_mkuffd_wp(pte);
-> > > +	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
-> > >   	vmf->orig_pte = pte;
-> > > +	/*
-> > > +	 * Remove the swap entry and conditionally try to free up the swapcache.
-> > > +	 * We're already holding a reference on the page but haven't mapped it
-> > > +	 * yet.
-> > > +	 */
-> > > +	swap_free(entry);
-> > > +	if (should_try_to_free_swap(folio, vma, vmf->flags))
-> > > +		folio_free_swap(folio);
-> > > +
-> > > +	inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> > > +	dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> > > +
-> > >   	/* ksm created a completely new copy */
-> > >   	if (unlikely(folio != swapcache && swapcache)) {
-> > >   		page_add_new_anon_rmap(page, vma, vmf->address);
-> > > @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >   	VM_BUG_ON(!folio_test_anon(folio) ||
-> > >   			(pte_write(pte) && !PageAnonExclusive(page)));
-> > >   	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
-> > > -	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
-> > >   	folio_unlock(folio);
-> > >   	if (folio != swapcache && swapcache) {
+On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
+> On 13.05.23 01:57, Peter Collingbourne wrote:
+> > Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+> > the call to swap_free() before the call to set_pte_at(), which meant that
+> > the MTE tags could end up being freed before set_pte_at() had a chance
+> > to restore them. One other possibility was to hook arch_do_swap_page(),
+> > but this had a number of problems:
 > > 
+> > - The call to the hook was also after swap_free().
 > > 
-> > You are moving the folio_free_swap() call after the folio_ref_count(folio)
-> > == 1 check, which means that such (previously) swapped pages that are
-> > exclusive cannot be detected as exclusive.
+> > - The call to the hook was after the call to set_pte_at(), so there was a
+> >    racy window where uninitialized metadata may be exposed to userspace.
+> >    This likely also affects SPARC ADI, which implements this hook to
+> >    restore tags.
 > > 
-> > There must be a better way to handle MTE here.
+> > - As a result of commit 1eba86c096e3 ("mm: change page type prior to
+> >    adding page table entry"), we were also passing the new PTE as the
+> >    oldpte argument, preventing the hook from knowing the swap index.
 > > 
-> > Where are the tags stored, how is the location identified, and when are they
-> > effectively restored right now?
+> > Fix all of these problems by moving the arch_do_swap_page() call before
+> > the call to free_page(), and ensuring that we do not set orig_pte until
+> > after the call.
+> > 
+> > Signed-off-by: Peter Collingbourne <pcc@google.com>
+> > Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
+> > Cc: <stable@vger.kernel.org> # 6.1
+> > Fixes: ca827d55ebaa ("mm, swap: Add infrastructure for saving page metadata on swap")
+> > Fixes: 1eba86c096e3 ("mm: change page type prior to adding page table entry")
 > 
-> I haven't gone through Peter's patches yet but a pretty good description
-> of the problem is here:
-> https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/.
-> I couldn't reproduce it with my swap setup but both Qun-wei and Peter
-> triggered it.
+> I'm confused. You say c145e0b47c77 changed something (which was after above
+> commits), indicate that it fixes two other commits, and indicate "6.1" as
+> stable which does not apply to any of these commits.
 
-In order to reproduce this bug it is necessary for the swap slot cache
-to be disabled, which is unlikely to occur during normal operation. I
-was only able to reproduce the bug by disabling it forcefully with the
-following patch:
+Sorry, the situation is indeed a bit confusing.
 
-diff --git a/mm/swap_slots.c b/mm/swap_slots.c
-index 0bec1f705f8e0..25afba16980c7 100644
---- a/mm/swap_slots.c
-+++ b/mm/swap_slots.c
-@@ -79,7 +79,7 @@ void disable_swap_slots_cache_lock(void)
- 
- static void __reenable_swap_slots_cache(void)
- {
--	swap_slot_cache_enabled = has_usable_swap();
-+	swap_slot_cache_enabled = false;
- }
- 
- void reenable_swap_slots_cache_unlock(void)
+- In order to make the arch_do_swap_page() hook suitable for fixing the
+  bug introduced by c145e0b47c77, patch 1 addresses a number of issues,
+  including fixing bugs introduced by ca827d55ebaa and 1eba86c096e3,
+  but we haven't fixed the c145e0b47c77 bug yet, so there's no Fixes:
+  tag for it yet.
 
-With that I can trigger the bug on an MTE-utilizing process by running
-a program that enumerates the process's private anonymous mappings and
-calls process_madvise(MADV_PAGEOUT) on all of them.
+- Patch 2, relying on the fixes in patch 1, makes MTE install an
+  arch_do_swap_page() hook (indirectly, by making arch_swap_restore()
+  also hook arch_do_swap_page()), thereby fixing the c145e0b47c77 bug.
 
-> When a tagged page is swapped out, the arm64 code stores the metadata
-> (tags) in a local xarray indexed by the swap pte. When restoring from
-> swap, the arm64 set_pte_at() checks this xarray using the old swap pte
-> and spills the tags onto the new page. Apparently something changed in
-> the kernel recently that causes swap_range_free() to be called before
-> set_pte_at(). The arm64 arch_swap_invalidate_page() frees the metadata
-> from the xarray and the subsequent set_pte_at() won't find it.
+- 6.1 is the first stable version in which all 3 commits in my Fixes: tags
+  are present, so that is the version that I've indicated in my stable
+  tag for this series. In theory patch 1 could be applied to older kernel
+  versions, but it wouldn't fix any problems that we are facing with MTE
+  (because it only fixes problems relating to the arch_do_swap_page()
+  hook, which older kernel versions don't hook with MTE), and there are
+  some merge conflicts if we go back further anyway. If the SPARC folks
+  (the previous only user of this hook) want to fix these issues with ADI,
+  they can propose their own backport.
+
+> > @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >   	VM_BUG_ON(!folio_test_anon(folio) ||
+> >   			(pte_write(pte) && !PageAnonExclusive(page)));
+> >   	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
+> > -	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
+> >   	folio_unlock(folio);
+> >   	if (folio != swapcache && swapcache) {
 > 
-> If we have the page, the metadata can be restored before set_pte_at()
-> and I guess that's what Peter is trying to do (again, I haven't looked
-> at the details yet; leaving it for tomorrow).
 > 
-> Is there any other way of handling this? E.g. not release the metadata
-> in arch_swap_invalidate_page() but later in set_pte_at() once it was
-> restored. But then we may leak this metadata if there's no set_pte_at()
-> (the process mapping the swap entry died).
+> You are moving the folio_free_swap() call after the folio_ref_count(folio)
+> == 1 check, which means that such (previously) swapped pages that are
+> exclusive cannot be detected as exclusive.
 
-Another problem that I can see with this approach is that it does not
-respect reference counts for swap entries, and it's unclear whether that
-can be done in a non-racy fashion.
-
-Another approach that I considered was to move the hook to swap_readpage()
-as in the patch below (sorry, it only applies to an older version
-of Android's android14-6.1 branch and not mainline, but you get the
-idea). But during a stress test (running the aforementioned program that
-calls process_madvise(MADV_PAGEOUT) in a loop during an Android "monkey"
-test) I discovered the following racy use-after-free that can occur when
-two tasks T1 and T2 concurrently restore the same page:
-
-T1:                  | T2:
-arch_swap_readpage() |
-                     | arch_swap_readpage() -> mte_restore_tags() -> xe_load()
-swap_free()          |
-                     | arch_swap_readpage() -> mte_restore_tags() -> mte_restore_page_tags()
-
-We can avoid it by taking the swap_info_struct::lock spinlock in
-mte_restore_tags(), but it seems like it would lead to lock contention.
+Ack. I will fix this in v2.
 
 Peter
-
-diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
-index 3f8199ba265a1..99c8be073f107 100644
---- a/arch/arm64/include/asm/mte.h
-+++ b/arch/arm64/include/asm/mte.h
-@@ -25,7 +25,7 @@ unsigned long mte_copy_tags_to_user(void __user *to, void *from,
- 				    unsigned long n);
- int mte_save_tags(struct page *page);
- void mte_save_page_tags(const void *page_addr, void *tag_storage);
--bool mte_restore_tags(swp_entry_t entry, struct page *page);
-+void mte_restore_tags(struct page *page);
- void mte_restore_page_tags(void *page_addr, const void *tag_storage);
- void mte_invalidate_tags(int type, pgoff_t offset);
- void mte_invalidate_tags_area(int type);
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 812373cff4eec..32d3c661a0eee 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1054,11 +1054,11 @@ static inline void arch_swap_invalidate_area(int type)
- 		mte_invalidate_tags_area(type);
- }
- 
--#define __HAVE_ARCH_SWAP_RESTORE
--static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
-+#define __HAVE_ARCH_SWAP_READPAGE
-+static inline void arch_swap_readpage(struct page *page)
- {
--	if (system_supports_mte() && mte_restore_tags(entry, &folio->page))
--		set_page_mte_tagged(&folio->page);
-+	if (system_supports_mte())
-+  		mte_restore_tags(page);
- }
- 
- #endif /* CONFIG_ARM64_MTE */
-diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-index 84a085d536f84..176f094ecaa1e 100644
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -38,15 +38,6 @@ EXPORT_SYMBOL_GPL(mte_async_or_asymm_mode);
- static void mte_sync_page_tags(struct page *page, pte_t old_pte,
- 			       bool check_swap, bool pte_is_tagged)
- {
--	if (check_swap && is_swap_pte(old_pte)) {
--		swp_entry_t entry = pte_to_swp_entry(old_pte);
--
--		if (!non_swap_entry(entry) && mte_restore_tags(entry, page)) {
--			set_page_mte_tagged(page);
--			return;
--		}
--	}
--
- 	if (!pte_is_tagged)
- 		return;
- 
-diff --git a/arch/arm64/mm/mteswap.c b/arch/arm64/mm/mteswap.c
-index 70f913205db99..3fe7774f32b3c 100644
---- a/arch/arm64/mm/mteswap.c
-+++ b/arch/arm64/mm/mteswap.c
-@@ -46,21 +46,23 @@ int mte_save_tags(struct page *page)
- 	return 0;
- }
- 
--bool mte_restore_tags(swp_entry_t entry, struct page *page)
-+void mte_restore_tags(struct page *page)
- {
-+	swp_entry_t entry = folio_swap_entry(page_folio(page));
- 	void *tags = xa_load(&mte_pages, entry.val);
- 
- 	if (!tags)
--		return false;
-+		return;
- 
- 	/*
- 	 * Test PG_mte_tagged again in case it was racing with another
- 	 * set_pte_at().
- 	 */
--	if (!test_and_set_bit(PG_mte_tagged, &page->flags))
-+	if (!test_and_set_bit(PG_mte_tagged, &page->flags)) {
- 		mte_restore_page_tags(page_address(page), tags);
--
--	return true;
-+		if (kasan_hw_tags_enabled())
-+			page_kasan_tag_reset(page);
-+	}
- }
- 
- void mte_invalidate_tags(int type, pgoff_t offset)
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 5f0d7d0b9471b..eea1e545595ca 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -793,8 +793,8 @@ static inline void arch_swap_invalidate_area(int type)
- }
- #endif
- 
--#ifndef __HAVE_ARCH_SWAP_RESTORE
--static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
-+#ifndef __HAVE_ARCH_SWAP_READPAGE
-+static inline void arch_swap_readpage(struct page *page)
- {
- }
- #endif
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 3a5f921b932e8..a2f53dbeca7b3 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -470,6 +470,12 @@ int swap_readpage(struct page *page, bool synchronous,
- 	}
- 	delayacct_swapin_start();
- 
-+	/*
-+	 * Some architectures may have to restore extra metadata to the
-+	 * page when reading from swap.
-+	 */
-+	arch_swap_readpage(page);
-+
- 	if (frontswap_load(page) == 0) {
- 		SetPageUptodate(page);
- 		unlock_page(page);
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 0b335607bf2ad..82ccf1e6efe5d 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1784,12 +1784,6 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	}
- 	folio_wait_writeback(folio);
- 
--	/*
--	 * Some architectures may have to restore extra metadata to the
--	 * folio after reading from swap.
--	 */
--	arch_swap_restore(swap, folio);
--
- 	if (shmem_should_replace_folio(folio, gfp)) {
- 		error = shmem_replace_folio(&folio, gfp, info, index);
- 		if (error)
