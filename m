@@ -2,119 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8D7704E5E
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 14:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C29BE704E6E
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 14:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233344AbjEPM5H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 08:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38160 "EHLO
+        id S233204AbjEPM7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 08:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233299AbjEPM4t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 08:56:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BCF6527B
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 05:55:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684241705;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TcyEykK3oU2aR43SsclKXEYSiS1KO2O1iEjSHmGB+ZA=;
-        b=QIinT1Bq33qM668UTlKPZQeQX/cCakAmjgFC3YPZrucatyR/BaJHzxqZUZHkQVh/f40CaJ
-        0dhAd92s851jwIA9LddxPnnliForEXU6gyRDKOB3nPiLGYiJ003OB7ZbAtyBfDvIrT0Yzi
-        BmYq25+MH+fMj4QOSufJq7bzZnsc1fs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-304-dMjNfUTlNW6BZDaIgtdiww-1; Tue, 16 May 2023 08:55:04 -0400
-X-MC-Unique: dMjNfUTlNW6BZDaIgtdiww-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f50aa22cd2so14197005e9.1
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 05:55:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684241703; x=1686833703;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TcyEykK3oU2aR43SsclKXEYSiS1KO2O1iEjSHmGB+ZA=;
-        b=f5JtxyQiMNjULrtWRr6zAtSXh0mTrdAfo16WpYYjKgssf52OsmxVQ8qzEIYtTQkf6N
-         RDmsT3sLtsvwTaaNN3RnYhlLZZrB7M1qGtdBkCh/1qdpFa7dv6dJKYIA9sB1zlBmN4Lj
-         7dWqKNhj9UU5vIFAWFx7J8HNXaPSmQW90/u3PINr1QEWNcrKgBO05BZdephrr1CC14UO
-         +Q5WNldA4mfBM0UArwYIOSmlGEQMcxDaap/nvTFe6So6n2sYSmwEI1NlRp4hp4Ri57gP
-         OX7HpSFQKfMW/up6ZVH0ethunkgddvGNMaR/sPGi/VP/u7P/oqWcH3bR32dFiTl95C7A
-         Hspg==
-X-Gm-Message-State: AC+VfDy8wGJn4YQDVzvVrlNDOyFr3w9m3hEEs+KF1OB5jhGfh/0Djvvi
-        2UOp9ddLiqGyrU2zwvSBYAOLZCfAjdFd3vccYK79JkBnzqj31CB+FCihhRgxhFZToJWXwmp2JPB
-        sL8pYqJPCBjj0A6hL
-X-Received: by 2002:a7b:cc93:0:b0:3f4:2bb3:a5bb with SMTP id p19-20020a7bcc93000000b003f42bb3a5bbmr16864216wma.9.1684241703484;
-        Tue, 16 May 2023 05:55:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4O9DSGlObFp5mEh5qki+n58oAVDuOhHeEbfmxQ1l2nAU4LVaY/g/d7eIH3LFkvzUt+akGc6A==
-X-Received: by 2002:a7b:cc93:0:b0:3f4:2bb3:a5bb with SMTP id p19-20020a7bcc93000000b003f42bb3a5bbmr16864199wma.9.1684241703121;
-        Tue, 16 May 2023 05:55:03 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74f:2500:1e3a:9ee0:5180:cc13? (p200300cbc74f25001e3a9ee05180cc13.dip0.t-ipconnect.de. [2003:cb:c74f:2500:1e3a:9ee0:5180:cc13])
-        by smtp.gmail.com with ESMTPSA id o2-20020a1c7502000000b003f195d540d9sm2256533wmc.14.2023.05.16.05.55.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 May 2023 05:55:02 -0700 (PDT)
-Message-ID: <72fc50da-c3b9-b71b-209b-9413a8693f13@redhat.com>
-Date:   Tue, 16 May 2023 14:55:01 +0200
+        with ESMTP id S232966AbjEPM7X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 08:59:23 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 989C25248;
+        Tue, 16 May 2023 05:59:01 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34GBJqJU003802;
+        Tue, 16 May 2023 12:57:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=ooIszafhZntFwAFrRjm+YK/b9Svr96m9RF4ZndvUYGQ=;
+ b=i7GGjjh0fv+QPXFP6cwv0q9yKvXiuAjH2LuT/XlPi7DNou94D9/LKiucip0FwvOXEupe
+ zus59nguv9Yn6JHXN2N4ZckCh/RsRcm/ySazFtA1e0p8U1kKJlpusSNfvjdhoDfgluLX
+ KRieEmo5joSr58Kb7YFXjeiAKrCHAZ1Q7m4X040AW4KJGi2+0LuMFTdYFB3hwfwl8hfM
+ ZjHqEZTkPpcaorjqsXjr1vY7pPYwOs1V9t9I8gNSOt4BoS9gjjbtvHuIyBkO0cu8dhOo
+ joS1CO8oSx6SDSIrWaeEDbFemdYyRaQJn8vCz6Yb1ihBvxTufwzwXTHbcGW3Qd0mM3A6 bQ== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qkkde321x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 12:57:42 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34GCvf7Q013666
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 12:57:42 GMT
+Received: from [10.252.212.215] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Tue, 16 May
+ 2023 05:57:36 -0700
+Message-ID: <049c7e3e-eaf2-0253-bf5b-83b9e8f949ab@quicinc.com>
+Date:   Tue, 16 May 2023 18:27:33 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 3/4] mm: page_table_check: Make it dependent on
- EXCLUSIVE_SYSTEM_RAM
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 00/18] Venus QoL / maintainability fixes
 Content-Language: en-US
-To:     Ruihan Li <lrh2000@pku.edu.cn>, linux-mm@kvack.org,
-        linux-usb@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-References: <20230515130958.32471-1-lrh2000@pku.edu.cn>
- <20230515130958.32471-4-lrh2000@pku.edu.cn>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230515130958.32471-4-lrh2000@pku.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Dikshita Agarwal <dikshita@qti.qualcomm.com>,
+        Mansur Alisha Shaik <mansur@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Dikshita Agarwal <quic_dikshita@quicinc.com>
+CC:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Marijn Suijten" <marijn.suijten@somainline.org>,
+        <stable@vger.kernel.org>
+References: <20230228-topic-venus-v2-0-d95d14949c79@linaro.org>
+ <f9904e82-4756-2add-3c7e-e019ce966515@linaro.org>
+From:   Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <f9904e82-4756-2add-3c7e-e019ce966515@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: qUj_6eWhD4UKgMSzasX94rUMbBJsya9s
+X-Proofpoint-ORIG-GUID: qUj_6eWhD4UKgMSzasX94rUMbBJsya9s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-16_06,2023-05-16_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0
+ mlxscore=0 mlxlogscore=653 malwarescore=0 spamscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305160108
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 15.05.23 15:09, Ruihan Li wrote:
-> Without EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary
-> physical memory regions into the userspace via /dev/mem. At the same
-> time, pages may change their properties (e.g., from anonymous pages to
-> named pages) while they are still being mapped in the userspace, leading
-> to "corruption" detected by the page table check.
+
+On 5/12/2023 8:31 AM, Bryan O'Donoghue wrote:
+> On 04/05/2023 09:00, Konrad Dybcio wrote:
+>> Tested on 8250, but pretty please test it on your boards too!
 > 
-> To avoid these false positives, this patch makes PAGE_TABLE_CHECK
-> depends on EXCLUSIVE_SYSTEM_RAM. This dependency is understandable
-> because PAGE_TABLE_CHECK is a hardening technique but /dev/mem without
-> STRICT_DEVMEM (i.e., !EXCLUSIVE_SYSTEM_RAM) is itself a security
-> problem.
+> What's the definition of test here ?
 > 
-> Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be
-> mapped via /dev/mem. However, these pages are always considered as named
-> pages, so they won't break the logic used in the page table check.
+> I ran this
 > 
-> Cc: <stable@vger.kernel.org> # 5.17
-> Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+> ffplay -codec:video h264_v4l2m2m FantasticFour-ROTSS.mp4
+> 
+> and this
+> 
+> ffplay -codec:video vp8_v4l2m2m /mnt/big-buck-bunny_trailer.webm
+> 
+> on db410c with no errors. Then again I applied and disapplied the 8x8 264 fix to
+> that branch and saw no discernable difference so I'm not very confident we have
+> good coverage.
+> 
+> @Stan @Vikash could you give some suggested tests for coverage here ?
 
-Acked-by: David Hildenbrand <david@redhat.com>
+I could think of below test aspects for this series
+1. Suspend Resume
+2. Concurrency test
+3. Module load -> video usecase -> module unload -> module load -> video
+usecase. This would ensure video firmware is reloaded and functional.
+4. Video playback and encode for all supported resolution and codecs.
+5. In general, video playback with more test content.
 
--- 
-Thanks,
+I would be testing the series with stability test suite on CrOS. That would be
+either on sc7180 or sc7280 setup.
 
-David / dhildenb
+Konrad, you can post the new version as one patch needs to be dropped. Test can
+be done on the new version. There are few patches in the series pending review,
+which can be done in parallel.
 
+-Vikash
+
+> 
+> @Konrad - get a db410c !
+> 
+> My superficial first-pass on this series looks good but, before giving a
+> Tested-by here, I think we should define a set of coverage tests, run them - the
+> upper end on sm8250 and lower end msm8916 "makes sense to me"
+> 
+> 20? different gstreamer tests at different formats and different sizes on our
+> selected platforms db410c, rb5, rb3 I have - also an 820 I haven't booted and an
+> enforce sdm660.
+> 
+> Which tests will we use to validate this series and subsequent series to ensure
+> we don't have more regressions ?
+> 
+> ---
+> bod
