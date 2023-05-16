@@ -2,374 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E653E7056D7
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 21:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77DF17056F3
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 21:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbjEPTLA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 15:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42022 "EHLO
+        id S229523AbjEPTTM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 15:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjEPTK7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 15:10:59 -0400
-Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B699E7A
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:10:55 -0700 (PDT)
-Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-44fa6454576so14006e0c.0
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:10:55 -0700 (PDT)
+        with ESMTP id S229483AbjEPTTL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 15:19:11 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC917DA7
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:19:10 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-53063897412so7144252a12.0
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684264254; x=1686856254;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V8x8LxGklgASWXZfIUthjDXUkwKPEritGvTuKqAgnQ0=;
-        b=rz08wUqcXD8OcEBKedTtkVBhAppQzz0VK+GCNxbHThHVOIRTsMYRL1MHxURw/W83Q0
-         F4SrKTApeZZAms45OIqzawbeo9YDium1biqIPXbvvk4kOos7ZnUesA2cIr2NsUM0em+P
-         4tKwJ/jNzZvYwksMA4rXMGtSUEIhvsK/KUz2BtooZ3fOKggdH3SCcz8cf3vOxOdejLPV
-         vG5F4pW5InAGmbhNbVm80ANfjfqngP72I25Rv8waFPlOvGt7f6HzT8hPO562ejb1ZKQR
-         FKpbQnsGkyH63Da/a3y/koig1lujZt2Zk8/sLpGofC/LhGpGGemNR7nPedZS69NAJKcf
-         8j4g==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684264750; x=1686856750;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=0EqpNqgZsevT5xAqHb/uzEVM35HIUICcfZyWaHXiX2E=;
+        b=wSElPkIgQgTYfjLbO+oc/gOZk+LttiFE/UaenSj/K2TNZMc9gIpl4mVjx5Vi865f/i
+         G3KSLcnYJSk9hG/ImrP9uLgW+TzzYtfdbrHgLABPFGXQnvo1gaYwm00vFP0aID6HVQG0
+         J079agioSwczrF1DAyjsOPoSnsguV0XGxm0+1TtoDPDaPGhse7ZEC3hNlMGAJxPAMB2A
+         acKvWEnqLHnhCeYj4ZehPhQ/VZsuW0tghLY+OtIi9RdTWObOUrivxMlvrhKBw9NkuTxw
+         sGk2GHTJ8L0Vwy4a59wIZ8aLbMue1cfd9fJSihUZeu9wicDlLj5/OW7OMrC6UvIEDWjP
+         ZXHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684264254; x=1686856254;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V8x8LxGklgASWXZfIUthjDXUkwKPEritGvTuKqAgnQ0=;
-        b=PxAZC9koGyFcIa5SAdPmtje4u1h4AhN67xLu73KOZQednUuWoavhiDkSw1K7Hpe1RX
-         KmKNwHvpKtBHvMycxdW9gGCIOm09KF7dzjBn1EB9TzWEfDPW1tSI93PBwort89NwatJm
-         fYlV2n7WyNdjiu/1h53GmbfnZpaidrG/JITlIP+u79RZo6JIbmHUU7LtTBhfamOLhnHh
-         2qf+2QLwPrCywD+zzHwXuJ/IOESKXs6dzhxcog3f7vwCkwd3OC84ML/ZnzkW3ABWicFU
-         7qyPXc9BgbTqQtzE8XjnpOMZUqW90zYJhT0HqHXDR5VDzjRWHFexc8SgrwX3GGby89m2
-         X3lA==
-X-Gm-Message-State: AC+VfDyPrdi/E/R5uoh7YEB9GV2X9cJ+Ee2TamQIQwB73Ei/avS81uC4
-        3fgZRXFTq1se+wbc89wVzqYsENpJXvdeUcXKUrQULg==
-X-Google-Smtp-Source: ACHHUZ6dGkU+ycU8IPZ+Acm/4+36px6HNGpUVUCJH2Zo0BZ4QFgRC7w8fTc46inQ4m60BrVWOuQBG/kmEohIUsgwlso=
-X-Received: by 2002:a1f:e601:0:b0:3ea:7af1:9ea4 with SMTP id
- d1-20020a1fe601000000b003ea7af19ea4mr12398365vkh.12.1684264254241; Tue, 16
- May 2023 12:10:54 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684264750; x=1686856750;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0EqpNqgZsevT5xAqHb/uzEVM35HIUICcfZyWaHXiX2E=;
+        b=H9eP18sxvUkDUCDtqLyU6+T4hQ+X3VPIl3Q0Nzh0rUuPZnPo7tuOr7xeCTFNGmaYdo
+         Ylq52q45MHGvdAt+/KxQThBk/WcFMn9C+ZX2YNZxBov4OYiOtOqqgZXCwEvbNUDOeiU7
+         yLHVyQZyIRrL06f/8FqS9WTEJgjV20EXRexWYuDvhRNVrJ3HoOB7yU1DNVgSPZZ9sago
+         NMi4vwbMhRVTZgMTux92XhxG5KD7qp76atE7TFOI1ofUROdTGPcvjGaKQWxxaxuYCA/C
+         Ly7gPerOSIdc1WK8raYE5eLPyN8/MfzvGg2zcRmJ5rDVMC6MzJtWf02u8d4XY3RS/Qnr
+         QrRw==
+X-Gm-Message-State: AC+VfDypyP8ysHLbJepSc2nVJbAEz9STUTLGhbqr2eipUfTFDn/qX4DF
+        251rQxES619M2pYqhUBU3GdTxsQEI9Af0fyW4RqCkw==
+X-Google-Smtp-Source: ACHHUZ6tmYJD2K5+I4OMvN7GHoCqOsNiqc6D96Siy6qSYcYYfwkozPAtMiVNrpbQG/+hP7pgMF0Rvw==
+X-Received: by 2002:a05:6a20:938f:b0:103:9871:7403 with SMTP id x15-20020a056a20938f00b0010398717403mr28035968pzh.31.1684264749986;
+        Tue, 16 May 2023 12:19:09 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id k13-20020aa792cd000000b0063f1430dd57sm13685651pfa.49.2023.05.16.12.19.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 May 2023 12:19:09 -0700 (PDT)
+Message-ID: <6463d72d.a70a0220.b5e9c.b7cb@mx.google.com>
+Date:   Tue, 16 May 2023 12:19:09 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230515161722.146344674@linuxfoundation.org>
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 17 May 2023 00:40:42 +0530
-Message-ID: <CA+G9fYv8K9D-fYghwQxLUZKJ1B3=+HC+u5zy3nrNWUN5sMwtZw@mail.gmail.com>
-Subject: Re: [PATCH 5.4 000/282] 5.4.243-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        Tobias Klauser <tklauser@distanz.ch>,
-        Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.1.28-238-g3eb27d124b83
+X-Kernelci-Report-Type: test
+Subject: stable-rc/queue/6.1 baseline: 95 runs,
+ 1 regressions (v6.1.28-238-g3eb27d124b83)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 15 May 2023 at 23:23, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.243 release.
-> There are 282 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.243-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+stable-rc/queue/6.1 baseline: 95 runs, 1 regressions (v6.1.28-238-g3eb27d12=
+4b83)
 
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm64, arm, x86_64 and i386.
+Regressions Summary
+-------------------
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-We have recently upgraded our selftest sources to stable-rc 6.3 and
-running on stable rc 6.1, 5.15, 5.10, 5.4, 4.19 and 4.14 kernels.
-
-List of test regressions:
-=3D=3D=3D=3D=3D=3D=3D=3D
-
-kselftest-clone3
-  - clone3_clone3
-
-kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-kselftest-memfd
-  - memfd_memfd_test
-
-kselftest-rseq
-  - rseq_basic_test
-
- kselftest-kvm
-  - kvm_xapic_state_test
+platform  | arch | lab          | compiler | defconfig           | regressi=
+ons
+----------+------+--------------+----------+---------------------+---------=
+---
+beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
+   =
 
 
-Test log:
--------
-kselftest-clone3
-  - clone3_clone3
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
+el/v6.1.28-238-g3eb27d124b83/plan/baseline/
 
-# selftests: clone3: clone3
-# TAP version 13
-# 1..18
-# # clone3() syscall supported
-...
-# # [1352] Trying clone3() with flags 0x80 (size 0)
-# # Invalid argument - Failed to create new process
-# # [1352] clone3() with flags says: -22 expected 0
-# not ok 18 [1352] Result (-22) is different than expected (0)
-# # Totals: pass:17 fail:1 xfail:0 xpass:0 skip:0 error:0
-not ok 1 selftests: clone3: clone3 # exit=3D1
-
-links,
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.=
-4.242-283-gb6ac0ac1f533/testrun/17021938/suite/kselftest-clone3/test/clone3=
-_clone3/history/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.=
-4.242-283-gb6ac0ac1f533/testrun/17021938/suite/kselftest-clone3/test/clone3=
-_clone3/log
-
-NOTE:
-The logs are the same as reported on other email reports.
-link,
- - https://lore.kernel.org/stable/CA+G9fYu6ZOu_We2GMP0sFnSovOsqd6waW7oKS-Y1=
-VPrjdibu5Q@mail.gmail.com/
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/6.1
+  Describe: v6.1.28-238-g3eb27d124b83
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      3eb27d124b83d4ddc4e2cf46a904ce4cc8adf6f3 =
 
 
-## Build
-* kernel: 5.4.243-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.4.y
-* git commit: b6ac0ac1f533c625d5f4a295133abc8c9e4635ea
-* git describe: v5.4.242-283-gb6ac0ac1f533
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-42-283-gb6ac0ac1f533
 
-## Test Regressions (compared to v5.4.238-245-g41e24252f52b)
+Test Regressions
+---------------- =
 
-* dragonboard-410c, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
 
-* dragonboard-410c, kselftest-memfd
-  - memfd_memfd_test
 
-* dragonboard-410c, kselftest-rseq
-  - rseq_basic_test
+platform  | arch | lab          | compiler | defconfig           | regressi=
+ons
+----------+------+--------------+----------+---------------------+---------=
+---
+beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
+   =
 
-* i386, kselftest-membarrier
-  - membarrier_membarrier_test_single_thread
 
-* i386, kselftest-memfd
-  - memfd_memfd_test
+  Details:     https://kernelci.org/test/plan/id/6463a5fdd8f34d87222e8622
 
-* i386, kselftest-rseq
-  - rseq_basic_test
-  - rseq_run_param_test_sh
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.28-23=
+8-g3eb27d124b83/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle=
+-xm.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.28-23=
+8-g3eb27d124b83/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle=
+-xm.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230512.0/armel/rootfs.cpio.gz =
 
-* juno-r2, kselftest-clone3
-  - clone3_clone3
 
-* juno-r2, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
 
-* juno-r2, kselftest-memfd
-  - memfd_memfd_test
+  * baseline.login: https://kernelci.org/test/case/id/6463a5fdd8f34d87222e8=
+623
+        failing since 26 days (last pass: v6.1.22-477-g2128d4458cbc, first =
+fail: v6.1.22-474-gecc61872327e) =
 
-* juno-r2, kselftest-rseq
-  - rseq_basic_test
-
-* qemu_i386, kselftest-clone3
-  - clone3_clone3
-
-* qemu_i386, kselftest-rseq
-  - rseq_basic_test
-  - rseq_run_param_test_sh
-
-* qemu_x86_64, kselftest-clone3
-  - clone3_clone3
-
-* qemu_x86_64, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* qemu_x86_64, kselftest-memfd
-  - memfd_memfd_test
-
-* qemu_x86_64, kselftest-rseq
-  - rseq_basic_test
-
-* x15, kselftest-clone3
-  - clone3_clone3
-
-* x15, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* x15, kselftest-rseq
-  - rseq_basic_test
-
-* x86, kselftest-clone3
-  - clone3_clone3
-
-* x86, kselftest-kvm
-  - kvm_xapic_state_test
-
-* x86, kselftest-membarrier
-  - membarrier_membarrier_test_multi_thread
-  - membarrier_membarrier_test_single_thread
-
-* x86, kselftest-memfd
-  - memfd_memfd_test
-
-* x86, kselftest-rseq
-  - rseq_basic_test
-
-## Metric Regressions (compared to v5.4.238-245-g41e24252f52b)
-
-## Test Fixes (compared to v5.4.238-245-g41e24252f52b)
-
-## Metric Fixes (compared to v5.4.238-245-g41e24252f52b)
-
-## Test result summary
-total: 129092, pass: 109664, fail: 3182, skip: 16058, xfail: 188
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 148 total, 147 passed, 1 failed
-* arm64: 48 total, 42 passed, 6 failed
-* i386: 30 total, 22 passed, 8 failed
-* mips: 30 total, 29 passed, 1 failed
-* parisc: 8 total, 8 passed, 0 failed
-* powerpc: 33 total, 32 passed, 1 failed
-* riscv: 15 total, 12 passed, 3 failed
-* s390: 8 total, 8 passed, 0 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 41 total, 39 passed, 2 failed
-
-## Test suites summary
-* boot
-* fwts
-* igt-gpu-tools
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
+ =20
