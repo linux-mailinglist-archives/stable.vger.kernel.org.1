@@ -2,137 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4DC7043E9
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 05:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 490CA7043FB
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 05:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjEPDVk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 23:21:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41260 "EHLO
+        id S229460AbjEPDeH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 23:34:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjEPDVj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 23:21:39 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B2D33A9A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:21:38 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-64a9335a8e7so2450700b3a.0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:21:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684207297; x=1686799297;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U4CR7r9P0D+uaqkaIx6fapzx2kuozxDM9DaNLSDKImc=;
-        b=NfDF2HdM33dCyNp577phUzF0k8Zz9/1SugNKca6vLHVyuSLeNIOnrFfS5RZwmAFv/1
-         UmrfPZ88TaNxXCihhq1oqe1K+GJz9lACCxl4IleUcTcNyFoCoOnItZ7HAV9NazWcM7ZV
-         4lD8kseGGvtcGozm4NO/ZyJ6LotIrxsg6numCRwgxUOH0DMTyxQsnL7rDGWCItwXp4i4
-         9XmmfysKfwfb42qQuiSUVpv6pdSbv9NNiVWZmjsyJJlevKR2xTZ6/QIqbI5T9PrQRZSo
-         QzuubPR8VuecZAi2cBL6x8dufti6dOfuXWLFkaOuP/87L9euDWEGdThC9lRBN3Twq6Pg
-         cIfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684207297; x=1686799297;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U4CR7r9P0D+uaqkaIx6fapzx2kuozxDM9DaNLSDKImc=;
-        b=YdyPmWFvVk2eWGm67Gv1u9FzBa0JU0ERgzunWVxMxD2vesacl6IPGUbzEzeoofOg8R
-         onaX6r40K9A7XuYULsRkcnAQkCb/XINtE6NhF5iuipasKp0tLt3If2OVJ63bt5Wyd+1U
-         hKyZDXA2B93pm35F+LZ+QghIPAcH4wrkd1sZRauYMZ6Wi+dU0lurT0sv+8CAA/ZQP1yv
-         33i8m2zbyhsc5OgLoL3P6nFCx9EC4fTkPZw8/dv3cowvlB+QkG0spYliMpa+Z3SPVr64
-         M5rVR9HDlpAZUje456FDf6cStkYnTk74m7ZUmfKoI4i5W5RHAPhoow27z2NMOrp3OO4x
-         eqPw==
-X-Gm-Message-State: AC+VfDwX8BIzR1pRtyAUHx7HCvCvUSWB0ssssgPEZGnk+4mRY9vObanr
-        EhvI1NtHB4FS6HYSDEaIHAs=
-X-Google-Smtp-Source: ACHHUZ7e5tDKANNTWZtP3qzSy47X2RAGAE9iRS9Qv2Fy40LqfsmqrnIzZX0NLeji4yc5/fNiUjwmww==
-X-Received: by 2002:a05:6a21:6d8e:b0:105:66d3:8572 with SMTP id wl14-20020a056a216d8e00b0010566d38572mr10305852pzb.24.1684207297497;
-        Mon, 15 May 2023 20:21:37 -0700 (PDT)
-Received: from [192.168.1.105] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id s21-20020aa78d55000000b00640f01e130fsm12416325pfe.124.2023.05.15.20.21.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 May 2023 20:21:36 -0700 (PDT)
-Message-ID: <0b0a5c4c-fa1e-f2c4-d350-fccc3f2eb3c5@gmail.com>
-Date:   Mon, 15 May 2023 20:21:35 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 5.4 151/282] serial: 8250: Add missing wakeup event
- reporting
-Content-Language: en-US
-From:   Florian Fainelli <f.fainelli@gmail.com>
+        with ESMTP id S229694AbjEPDeG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 23:34:06 -0400
+Received: from qproxy4-pub.mail.unifiedlayer.com (qproxy4-pub.mail.unifiedlayer.com [66.147.248.250])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73491732
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:34:04 -0700 (PDT)
+Received: from gproxy2-pub.mail.unifiedlayer.com (gproxy2-pub.mail.unifiedlayer.com [69.89.18.3])
+        by qproxy4.mail.unifiedlayer.com (Postfix) with ESMTP id DCE728026902
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 03:34:03 +0000 (UTC)
+Received: from cmgw15.mail.unifiedlayer.com (unknown [10.0.90.130])
+        by progateway4.mail.pro1.eigbox.com (Postfix) with ESMTP id 3D5D21004717C
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 03:33:33 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id ylRNpYuq28ZwDylRNpRb2h; Tue, 16 May 2023 03:33:33 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=FfLyeLy6 c=1 sm=1 tr=0 ts=6462f98d
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
+ a=P0xRbXHiH_UA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=h/tK2v/1MFviao6VL+xeDTCM617+EXo2+kdWN5I3PvQ=; b=42Q9iyr7ufzKsN7RFafn+3cvIO
+        0nqu1nzkHQx736vGHSY5LPaBhenqQy1h3eIubXHAvG2NQ7GcUdQULVqDvxyjl6saGtvIQDKIw0KqX
+        0b342otRNPssZNbtlTEK7DFNZzLziSVF9QSynx5GoVw1hR9r5axX/RBbIQZHYh4T8MT+iLSH9ckK6
+        CUxF6nQY/LX7uy2avXz7xx6b10/TQA/z3YeU/HiGwWXGYXf4gSLKwnTYd3lVO2Pxn2SfU/uuZ9hW3
+        Qn2XOHAs1/qL2fe+pfGK5ohSl80PhOdXk3JApktCXxLW34k+Axnk9bmxcNhl3/XRWcoHDny4k6MaH
+        E0eXe5mA==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:38850 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <re@w6rz.net>)
+        id 1pylRM-002ErI-FF;
+        Mon, 15 May 2023 21:33:32 -0600
+Subject: Re: [PATCH 6.3 000/246] 6.3.3-rc1 review
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-References: <20230515161722.146344674@linuxfoundation.org>
- <20230515161726.751095012@linuxfoundation.org>
- <e6f7f148-4bbe-c3c0-6c1f-1637e9999811@gmail.com>
-In-Reply-To: <e6f7f148-4bbe-c3c0-6c1f-1637e9999811@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <202ca5f3-da32-3e3f-23cd-3d322b8dbd5a@w6rz.net>
+Date:   Mon, 15 May 2023 20:33:30 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1pylRM-002ErI-FF
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:38850
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
 X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 5/15/23 9:23 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.3 release.
+> There are 246 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-On 5/15/2023 8:11 PM, Florian Fainelli wrote:
-> 
-> 
-> On 5/15/2023 9:28 AM, Greg Kroah-Hartman wrote:
->> From: Florian Fainelli <f.fainelli@gmail.com>
->>
->> [ Upstream commit 0ba9e3a13c6adfa99e32b2576d20820ab10ad48a ]
->>
->> An 8250 UART configured as a wake-up source would not have reported
->> itself through sysfs as being the source of wake-up, correct that.
->>
->> Fixes: b3b708fa2780 ("wake up from a serial port")
->> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
->> Link: 
->> https://lore.kernel.org/r/20230414170241.2016255-1-f.fainelli@gmail.com
->> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>   drivers/tty/serial/8250/8250_port.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/tty/serial/8250/8250_port.c 
->> b/drivers/tty/serial/8250/8250_port.c
->> index 907130244e1f5..3d369481d4db1 100644
->> --- a/drivers/tty/serial/8250/8250_port.c
->> +++ b/drivers/tty/serial/8250/8250_port.c
->> @@ -19,6 +19,7 @@
->>   #include <linux/moduleparam.h>
->>   #include <linux/ioport.h>
->>   #include <linux/init.h>
->> +#include <linux/irq.h>
->>   #include <linux/console.h>
->>   #include <linux/sysrq.h>
->>   #include <linux/delay.h>
->> @@ -1840,6 +1841,7 @@ int serial8250_handle_irq(struct uart_port 
->> *port, unsigned int iir)
->>       unsigned char status;
->>       unsigned long flags;
->>       struct uart_8250_port *up = up_to_u8250p(port);
->> +    struct tty_port *tport = &port->state->port;
-> 
-> Looks like we need to drop this second declaration since we have the 
-> same one a few lines above. It did not show in the patch context, but it 
-> is there and it will cause:
-> 
-> drivers/tty/serial/8250/8250_port.c: In function 'serial8250_handle_irq':
-> drivers/tty/serial/8250/8250_port.c:1845:19: error: redefinition of 'tport'
->    struct tty_port *tport = &port->state->port;
->                     ^~~~~
-> drivers/tty/serial/8250/8250_port.c:1841:19: note: previous definition 
-> of 'tport' was here
->    struct tty_port *tport = &port->state->port;
+Tested-by: Ron Economos <re@w6rz.net>
 
-Sorry this was a result of a bad merge on my side as I had already 
-applied the patch locally, this is fine!
--- 
-Florian
