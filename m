@@ -2,136 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77DF17056F3
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 21:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21601705723
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 21:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjEPTTM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 15:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46782 "EHLO
+        id S229827AbjEPTct (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 15:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjEPTTL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 15:19:11 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC917DA7
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:19:10 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-53063897412so7144252a12.0
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 12:19:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684264750; x=1686856750;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=0EqpNqgZsevT5xAqHb/uzEVM35HIUICcfZyWaHXiX2E=;
-        b=wSElPkIgQgTYfjLbO+oc/gOZk+LttiFE/UaenSj/K2TNZMc9gIpl4mVjx5Vi865f/i
-         G3KSLcnYJSk9hG/ImrP9uLgW+TzzYtfdbrHgLABPFGXQnvo1gaYwm00vFP0aID6HVQG0
-         J079agioSwczrF1DAyjsOPoSnsguV0XGxm0+1TtoDPDaPGhse7ZEC3hNlMGAJxPAMB2A
-         acKvWEnqLHnhCeYj4ZehPhQ/VZsuW0tghLY+OtIi9RdTWObOUrivxMlvrhKBw9NkuTxw
-         sGk2GHTJ8L0Vwy4a59wIZ8aLbMue1cfd9fJSihUZeu9wicDlLj5/OW7OMrC6UvIEDWjP
-         ZXHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684264750; x=1686856750;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0EqpNqgZsevT5xAqHb/uzEVM35HIUICcfZyWaHXiX2E=;
-        b=H9eP18sxvUkDUCDtqLyU6+T4hQ+X3VPIl3Q0Nzh0rUuPZnPo7tuOr7xeCTFNGmaYdo
-         Ylq52q45MHGvdAt+/KxQThBk/WcFMn9C+ZX2YNZxBov4OYiOtOqqgZXCwEvbNUDOeiU7
-         yLHVyQZyIRrL06f/8FqS9WTEJgjV20EXRexWYuDvhRNVrJ3HoOB7yU1DNVgSPZZ9sago
-         NMi4vwbMhRVTZgMTux92XhxG5KD7qp76atE7TFOI1ofUROdTGPcvjGaKQWxxaxuYCA/C
-         Ly7gPerOSIdc1WK8raYE5eLPyN8/MfzvGg2zcRmJ5rDVMC6MzJtWf02u8d4XY3RS/Qnr
-         QrRw==
-X-Gm-Message-State: AC+VfDypyP8ysHLbJepSc2nVJbAEz9STUTLGhbqr2eipUfTFDn/qX4DF
-        251rQxES619M2pYqhUBU3GdTxsQEI9Af0fyW4RqCkw==
-X-Google-Smtp-Source: ACHHUZ6tmYJD2K5+I4OMvN7GHoCqOsNiqc6D96Siy6qSYcYYfwkozPAtMiVNrpbQG/+hP7pgMF0Rvw==
-X-Received: by 2002:a05:6a20:938f:b0:103:9871:7403 with SMTP id x15-20020a056a20938f00b0010398717403mr28035968pzh.31.1684264749986;
-        Tue, 16 May 2023 12:19:09 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id k13-20020aa792cd000000b0063f1430dd57sm13685651pfa.49.2023.05.16.12.19.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 12:19:09 -0700 (PDT)
-Message-ID: <6463d72d.a70a0220.b5e9c.b7cb@mx.google.com>
-Date:   Tue, 16 May 2023 12:19:09 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229458AbjEPTct (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 15:32:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751E53C0A;
+        Tue, 16 May 2023 12:32:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 129996373F;
+        Tue, 16 May 2023 19:32:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF40C433D2;
+        Tue, 16 May 2023 19:32:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684265567;
+        bh=WBnwfoUdwMV1Gu+XaFHfWeScAtyaISLBR5Bwfq3CzQY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Lnx2M4IFPeFpS0vIWlzOSuxKenTmpzWiVrEcOMTLCpwMMpiDt20WgxmFFj0sh4I3U
+         G1H4Dc2COxind+KG4cfY5aN2MWvrStV/rIefo0lXw9av/CUDRnkLyLXfNhuiYc8YpC
+         eWLDCr/Av6FsPZOK4IHFEZdiJj8A7jjPfTAmaJVLVemLg55a+rvw54Y696IsfnMq4j
+         hkCMNtRU+yQIa28y+Bfzs8nuN3p+cwIuv7IB98De50VRRrG7JLFpXZr0o9GQBMBBoC
+         FnlYFwlEWIx5uqA57dpYCGiqhY9k2sjodskyMFYAPV0mBTsjLilqmAC+93rI5sq5iO
+         3HP2/lHYWQ2lw==
+Date:   Tue, 16 May 2023 14:32:45 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Acid Bong <acidbong@tilde.cafe>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Message-ID: <ZGPaXfV6+RUb6fXs@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v6.1.28-238-g3eb27d124b83
-X-Kernelci-Report-Type: test
-Subject: stable-rc/queue/6.1 baseline: 95 runs,
- 1 regressions (v6.1.28-238-g3eb27d124b83)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A5B9D233-A082-4C60-9DCB-2B0A2081C089@tilde.cafe>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/6.1 baseline: 95 runs, 1 regressions (v6.1.28-238-g3eb27d12=
-4b83)
+On Tue, May 16, 2023 at 01:26:23PM +0300, Acid Bong wrote:
+> >Can you collect the complete dmesg log and output of "sudo lspci -vv"
+> >and post them somewhere (https://bugzilla.kernel.org is a good place)?
+> `lspci -vvnn` output is linked in the head of the thread. Append .txt to make it readable in the browser (I only understood it after the upload).
+> 
+> >Ideally the dmesg would be from the most recent kernel you have.
+>
+> Speaking of that, a couple of questions:
+> 
+> 1) Should I post them with or without pci=nomsi/noaer? The problem
+> with disabling it is that it floods the logs so fast, that they
+> reach 700M in 5-7 minutes, and, when rotation is enabled (my
+> parameters are default, up to 10 copies 10M each), all pre-flood
+> data is lost instantly.
 
-Regressions Summary
--------------------
+You're seeing AER logging, and that's what I'm interested in, so if
+you could do one quick boot *without* "pci=nomsi" and "pci=noaer",
+that would be great.  Then turn it off again so you don't drown in
+logs.
 
-platform  | arch | lab          | compiler | defconfig           | regressi=
-ons
-----------+------+--------------+----------+---------------------+---------=
----
-beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
-   =
+The snippet from [1] shows a few messages related to 00:1c.5, and it
+would be useful to know if there are errors related to other devices
+as well.
 
+Something like "head -c500K /var/log/dmesg > file" should be plenty.
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
-el/v6.1.28-238-g3eb27d124b83/plan/baseline/
+> Also I'm currently bisecting the kernel with MSI disabled in the
+> config. But I'm keeping the parameter in the bootloader for cases
+> when I'm using Gentoo's prebuilt kernel.
+> 
+> 2) Can I delete messages by ufw? They contain MACs of my router,
+> laptop and cellphone and I don't really wanna share them
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/6.1
-  Describe: v6.1.28-238-g3eb27d124b83
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      3eb27d124b83d4ddc4e2cf46a904ce4cc8adf6f3 =
+Sure, delete those.
 
+> 3) I'm not savvy in logs, how exactly should I share dmesg? `dmesg >
+> file`? /var/log/syslog? I already know kern.log doesn't contain
+> logind and some other messages that are present in dmesg
+> 
+> 4) Should we continue in this thread or rather start a new one?
 
+Good point, a new thread would probably be better.
 
-Test Regressions
----------------- =
+Bjorn
 
-
-
-platform  | arch | lab          | compiler | defconfig           | regressi=
-ons
-----------+------+--------------+----------+---------------------+---------=
----
-beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
-   =
-
-
-  Details:     https://kernelci.org/test/plan/id/6463a5fdd8f34d87222e8622
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.28-23=
-8-g3eb27d124b83/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle=
--xm.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.28-23=
-8-g3eb27d124b83/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle=
--xm.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/6463a5fdd8f34d87222e8=
-623
-        failing since 26 days (last pass: v6.1.22-477-g2128d4458cbc, first =
-fail: v6.1.22-474-gecc61872327e) =
-
- =20
+[1] https://lore.kernel.org/all/CRWCUOAB4JKZ.3EKQN1TFFMVQL@bong/
