@@ -2,68 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E209704822
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 10:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CBA770483C
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 10:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbjEPIre convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Tue, 16 May 2023 04:47:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60314 "EHLO
+        id S230330AbjEPIyZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 04:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231689AbjEPIr2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 04:47:28 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CEB6AD
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 01:47:26 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-55a5a830238so127781297b3.3
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 01:47:26 -0700 (PDT)
+        with ESMTP id S230408AbjEPIyZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 04:54:25 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC4EBD;
+        Tue, 16 May 2023 01:54:24 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-64a9335a8e7so3963308b3a.0;
+        Tue, 16 May 2023 01:54:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684227264; x=1686819264;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qs/7Ze1koAlsm5VE1mt/ZaAC7P2mkk2AOe4o4H+TXhY=;
+        b=Q1mZzol7NxDDcA+ExVSYU416UvOvHQjarH9Vhi3Hb9071xfeMYxg/aAMScUEnmbfya
+         AeriSjcgR6+enOmXIG+yKmwb775aC+bOzI5ZrDjunOL+/p//771T9L91+cFBY3VeoHEw
+         C8RlA/bhqFlvWtbvssBEMdv1dXZJoLrl4hKuXfwzxVuQc8vfDc71pRfyx8I298if8oGZ
+         3n/QTjbDyZa4ytB2oiXpZM/QBIKLfsTNfPFx19VfTpnzBrS4Vcxzc2x242tPqXXpivZl
+         2E92vU+NdAIGEOfHmNzRD7AigDhzYQH0RXLBKPsYQULpC/mVUhsCLr8qARQhfWRyRPI/
+         iEfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684226845; x=1686818845;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g5Fr1JqN2Ov4AHR8zy4YwIGPB2ZpmLeycQl8ETfUv/E=;
-        b=NCMsV0V0SyzBQZTFD8XsDe+q0zRIVVo/nBnMdZgDlmQq6vkpUECufSE+d6CF0e6bTM
-         apzqhYXWDSFjxHmgUxFXlkkxP3HIc+bDzas1/5bcHLk1KGzsSwbWVg2bav8hr8PkZQGu
-         ZO9y8inJ5tvkPSFLXQJYR2ea+OnYnVMcRlSIP7UNOOKswIaCbWVECTW4awNY9qpGJoku
-         bCg9tu6wAu1duGDyZJkvG71ssW8OCSRcPsz/St9lc4nREPx/tvKATpUledJWSA6tPN+/
-         dH5Y3W+A1vCE65kzQwDpMQBGEbQUmB/BKbPA2h2yeFX3m/zSL+sN0RW7fvmvIeI8hYqy
-         hd1A==
-X-Gm-Message-State: AC+VfDyhYPfeMHItHxjP9nxHWWUpBe1MSZAIYRU0aOs+1bwQx3ZHAk2U
-        c8Eb31GsGBudpDbGVdTBsd6TjvV2gmNmww==
-X-Google-Smtp-Source: ACHHUZ40djfIZJsPCTUScFYB96JEAvp6KvX8usDKccClKjSQkLWPiAEKc4YaDOgh5HGCz0IhRqW1Nw==
-X-Received: by 2002:a0d:dbcf:0:b0:55a:e0db:98d1 with SMTP id d198-20020a0ddbcf000000b0055ae0db98d1mr35436796ywe.41.1684226845443;
-        Tue, 16 May 2023 01:47:25 -0700 (PDT)
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com. [209.85.128.174])
-        by smtp.gmail.com with ESMTPSA id l7-20020a0dfb07000000b00545a08184c9sm446597ywf.89.2023.05.16.01.47.24
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 May 2023 01:47:24 -0700 (PDT)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-55a8019379fso127966357b3.0
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 01:47:24 -0700 (PDT)
-X-Received: by 2002:a0d:d4c3:0:b0:55a:9d84:2e4e with SMTP id
- w186-20020a0dd4c3000000b0055a9d842e4emr32699001ywd.18.1684226844519; Tue, 16
- May 2023 01:47:24 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684227264; x=1686819264;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qs/7Ze1koAlsm5VE1mt/ZaAC7P2mkk2AOe4o4H+TXhY=;
+        b=f2QRUt6U2NDd4Yk3cUVpbZcC+zVr2yr7HiyjrIDY1iSjQwdoYejP2xAkMOZcSbBQz+
+         gZ1bs/1Fxk2LXKZr1MGf4/SrBPEgQkfq/Gb+en6c7CvW7hAv0PeUjPpFt+AdlDjECsY+
+         PRGWo/FX5Rig/yJTxpWtQ0Ifc5v3G3vi44IhHghsiscnjoG489uLKneomiLJRcCs3cfT
+         HxKaIudP/eksFLfjW9VA16jzq7zk3etP/b1rifik1WsAnn3VSUfRFDYUMtynWOVCKHjb
+         0mSjDZsZDnvSJVqanWIHI5w9Drl9Da6ODGiD9InHkKoRZDSbi0NThxwPtN2hMf/rHicj
+         qX8Q==
+X-Gm-Message-State: AC+VfDxcbokzSksU5Ol3ocO+QFWcOZHA/xv4sJXRE/IbaVlSVCeuyzyZ
+        /FUlpRbCkfBUp9M9aqbXDr1oEZPRUP0=
+X-Google-Smtp-Source: ACHHUZ7FAm2N6rYgyI7z56LkGLy2JrcqBECUBs3LbN0MXNUIu2TCC7TajgNt8E0bYKfQcaFCJJa5Yg==
+X-Received: by 2002:a17:902:ecd0:b0:1ac:76a6:a1f with SMTP id a16-20020a170902ecd000b001ac76a60a1fmr36362638plh.16.1684227263596;
+        Tue, 16 May 2023 01:54:23 -0700 (PDT)
+Received: from debian.me (subs03-180-214-233-73.three.co.id. [180.214.233.73])
+        by smtp.gmail.com with ESMTPSA id y5-20020a1709027c8500b001a98f844e60sm14889934pll.263.2023.05.16.01.54.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 May 2023 01:54:22 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id A37D01069A7; Tue, 16 May 2023 15:54:19 +0700 (WIB)
+Date:   Tue, 16 May 2023 15:54:19 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.2 000/242] 6.2.16-rc1 review
+Message-ID: <ZGNEu12M/Xa7vAt/@debian.me>
+References: <20230515161721.802179972@linuxfoundation.org>
 MIME-Version: 1.0
-References: <20230515161707.203549282@linuxfoundation.org> <20230515161707.460071056@linuxfoundation.org>
-In-Reply-To: <20230515161707.460071056@linuxfoundation.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 16 May 2023 10:47:13 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWjkZ-FAKrwQkoyZRHLpyvaVYT0NvAUwaCs+30qC2VZmA@mail.gmail.com>
-Message-ID: <CAMuHMdWjkZ-FAKrwQkoyZRHLpyvaVYT0NvAUwaCs+30qC2VZmA@mail.gmail.com>
-Subject: Re: [PATCH 4.19 007/191] IMA: allow/fix UML builds
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4kN2eSG9PT4RUYXb"
+Content-Disposition: inline
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,71 +78,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
 
-On Mon, May 15, 2023 at 6:39 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> From: Randy Dunlap <rdunlap@infradead.org>
->
-> commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
->
-> UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
-> NO_IOMEM).
+--4kN2eSG9PT4RUYXb
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-0bbadafdc49d is in v5.14.
-Was it backported to older versions?
+On Mon, May 15, 2023 at 06:25:26PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.2.16 release.
+> There are 242 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
->
-> Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
->
-> ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
-> ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
-> ld: security/integrity/ima/ima_init.o: in function `ima_init':
-> ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
-> ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
-> ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
-> ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
->
-> Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
-> is set, regardless of the UML Kconfig setting.
-> This updates TCG_TPM from =m to =y and fixes the linker errors.
->
-> Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
-> Cc: Stable <stable@vger.kernel.org> # v5.14+
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-"v5.14+"
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: linux-um@lists.infradead.org
-> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  security/integrity/ima/Kconfig |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> --- a/security/integrity/ima/Kconfig
-> +++ b/security/integrity/ima/Kconfig
-> @@ -7,7 +7,7 @@ config IMA
->         select CRYPTO_HMAC
->         select CRYPTO_SHA1
->         select CRYPTO_HASH_INFO
-> -       select TCG_TPM if HAS_IOMEM && !UML
-> +       select TCG_TPM if HAS_IOMEM
->         select TCG_TIS if TCG_TPM && X86
->         select TCG_CRB if TCG_TPM && ACPI
->         select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Gr{oetje,eeting}s,
+--4kN2eSG9PT4RUYXb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-                        Geert
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZGNEsgAKCRD2uYlJVVFO
+o7MQAP4roA5DQA/rKJNf1HNYRbcObFNB6vTfm23+KXqkwA8fSgD+I47N+Mvkk1GI
+ZUNmn/Sl7NAYnsGlvicbpZTc3OeFvQo=
+=eVSk
+-----END PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--4kN2eSG9PT4RUYXb--
