@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F176704625
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 09:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1227070462C
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 09:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231235AbjEPHTF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 03:19:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
+        id S231246AbjEPHTd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 03:19:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbjEPHTE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 03:19:04 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1421F10D7;
-        Tue, 16 May 2023 00:19:02 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64389a44895so10880056b3a.1;
-        Tue, 16 May 2023 00:19:02 -0700 (PDT)
+        with ESMTP id S231253AbjEPHT1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 03:19:27 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C03C4421F;
+        Tue, 16 May 2023 00:19:25 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-517c840f181so7415884a12.3;
+        Tue, 16 May 2023 00:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684221541; x=1686813541;
+        d=gmail.com; s=20221208; t=1684221565; x=1686813565;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Od08TnngvcBflncwckirl6kWgx6glKrr7yMRy+3aZSY=;
-        b=CAJyKRIESx3DfkZiuoGMR4C2xu1LepvOjbj6Zf2LgOQd1bzGTAjhH4yPeI3lg7tDaH
-         w0yUUTLG1/8KEf/itsWApFOTAJ1oU7cARMd5yqayzEAi2Vkwyo3yYlUMRBcv5y0xIw7Q
-         hhWKGL62YQI23mtOfagnADtYQEzNXSLjoNn3X1v31IVS1Iy4f63BBSTK9iaopbhcJvjn
-         OniRvKfVVXe1LcYkBrXdP9fjYD3IgAW8igRwMTFSKHeGCpz1zahdxk9mnkIJqi5ZDd5i
-         iCErNFvyRYDpVPPKSgHXQ1VJpZp3BkG35TDTLQyzUYbYE/MKcj27OAPYONJ5FxnOe70T
-         MTEw==
+        bh=BaoLZ/dBLXvTx6mYn8gtFpoeO4MZOVPTvDmN/MOLVfI=;
+        b=elodM/SNoJ9U0KRWKOkpJzY7sFOiiAwcySNutlxkuaECCMGs57bNTYUgGLf7apLnmF
+         mU/pSRkqEVZ+7rPyRZ8YnO5x6wQkUTqvaRf83bRRsM+c240BE9sqFwEfNXNWfv/FNwJA
+         Abife5G2U8Ob1Vo7SKvledXlBqRahn+vDQEt128UyR/hVyMcaCWGJ9fEZW2nu06zUDc0
+         mWDQhiS8sp9WifrjGN17a5aB1CK9y9Xn+g2KbKBlwWt6GeKGgh/BvMhR11+zQ/z+XWCm
+         PJ6B9ImSBH/O+DzeIXV5HWmld40h6QxUu5PlUm4lP7A2N1biHL1brTeyyC47cMr4CWJ/
+         Nj7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684221541; x=1686813541;
+        d=1e100.net; s=20221208; t=1684221565; x=1686813565;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Od08TnngvcBflncwckirl6kWgx6glKrr7yMRy+3aZSY=;
-        b=HyHhHRd9CjdbCgNXa7njBBN7zmTmjSLxYMIGuvapiox9pfz5FiD3u5dDJ7GW+lCohi
-         n1L1AKL8wXv3w7dYyXh+Y/aRsRlE5qg36Py0Dv68TzXYGDBn67dDVv3raof6uVcfL4Lg
-         6M9ZqjEpBc8T2EhNMRJ/oRMvbAZV9G06anRvA4fgNpqxMywF7jK/dCWG6PdZzZrghGDR
-         KV+ZDYhqU8arMdEIpx5VbKqnOrlup/ILOLsb/EdLDb6D8INYYbULeB6VAv3NdbcUEuQN
-         ikj3Ex9mL1LFnMqYRx1sutLOla+p6z/MOQGY0X9YEXbWoGCKD2nRGSoh08OuJjf9HO1o
-         s1RA==
-X-Gm-Message-State: AC+VfDzEIsU7wJEUA8FGYZe+4eOKahWR2YdNhpZAosefKkEiLkWbczy1
-        VYlYXhN7fqoh5jhGMencWNE=
-X-Google-Smtp-Source: ACHHUZ5AkOuj7oHM//GSH6XREd6vp5E5lGilnWXlY/BIudf1XEHGTKjV4eeZLBZZGIOSbXLwRuYEyA==
-X-Received: by 2002:a05:6a00:10d3:b0:641:3ca2:1aec with SMTP id d19-20020a056a0010d300b006413ca21aecmr47315732pfu.27.1684221541531;
-        Tue, 16 May 2023 00:19:01 -0700 (PDT)
+        bh=BaoLZ/dBLXvTx6mYn8gtFpoeO4MZOVPTvDmN/MOLVfI=;
+        b=iB1TFAn/AF/zBkbmguFL3okx7V8A2xvaIqRkMCtbZnyHnQGbVPyWJp+dfDZFcCGbms
+         NT2v/XOsu1jRUV5rTnzhy/RQVnYrnm2vgjuxrQZ05q6PB2DpWE3kfbVVPGu3Pz8z5La2
+         mxp7kMKkOrBkzsDVC0Ma8ujkjWxH5dL7K2iHgKm/gkUG43Rl96UgpCGrCcZdB4gjgteI
+         DHEhLm1KhLHTsHLgDUtysTa0x/3lPjQzOvg5GIpU05SZvDrarRoqcctOfH3189GhO97W
+         gHaZQTavb4qODEdYjiFrJY1MXxOlldR3VrV1G2OLfyYM4unG2P+t+6jgOfZjs5c/HqRe
+         j7Xw==
+X-Gm-Message-State: AC+VfDwI8W+YxVg3pdg9KEbxQC2YEtzCfFuUl7HmnZBoMtArjrwhe83i
+        B3LviwNvyFZlp/8nmRv3mFPSlDR8z/eK5Q==
+X-Google-Smtp-Source: ACHHUZ7zmE9tB+Tt39iDRwR5jnUySn9p2UAGvLn4sbEBRIBIZD0ChrIJ6ul7+Gsmvs3NAPZH9ShHOQ==
+X-Received: by 2002:a05:6a20:8f10:b0:102:345f:593b with SMTP id b16-20020a056a208f1000b00102345f593bmr28960762pzk.4.1684221565221;
+        Tue, 16 May 2023 00:19:25 -0700 (PDT)
 Received: from localhost.localdomain ([203.205.141.15])
-        by smtp.googlemail.com with ESMTPSA id 17-20020aa79251000000b006468222af91sm12849830pfp.48.2023.05.16.00.18.55
+        by smtp.googlemail.com with ESMTPSA id 17-20020aa79251000000b006468222af91sm12849830pfp.48.2023.05.16.00.19.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 00:19:01 -0700 (PDT)
+        Tue, 16 May 2023 00:19:24 -0700 (PDT)
 From:   Ze Gao <zegao2021@gmail.com>
 X-Google-Original-From: Ze Gao <zegao@tencent.com>
 To:     Steven Rostedt <rostedt@goodmis.org>,
@@ -71,9 +71,9 @@ Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         bpf@vger.kernel.org, Conor Dooley <conor@kernel.org>,
         Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
         Ze Gao <zegao@tencent.com>, stable@vger.kernel.org
-Subject: [PATCH v2 1/4] rethook: use preempt_{disable, enable}_notrace in rethook_trampoline_handler
-Date:   Tue, 16 May 2023 15:18:27 +0800
-Message-Id: <20230516071830.8190-2-zegao@tencent.com>
+Subject: [PATCH v2 3/4] fprobe: add recursion detection in fprobe_exit_handler
+Date:   Tue, 16 May 2023 15:18:29 +0800
+Message-Id: <20230516071830.8190-4-zegao@tencent.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230516071830.8190-1-zegao@tencent.com>
 References: <20230516071830.8190-1-zegao@tencent.com>
@@ -89,41 +89,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This patch replaces preempt_{disable, enable} with its corresponding
-notrace version in rethook_trampoline_handler so no worries about stack
-recursion or overflow introduced by preempt_count_{add, sub} under
-fprobe + rethook context.
+fprobe_hander and fprobe_kprobe_handler has guarded ftrace recursion
+detection but fprobe_exit_handler has not, which possibly introduce
+recursive calls if the fprobe exit callback calls any traceable
+functions. Checking in fprobe_hander or fprobe_kprobe_handler
+is not enough and misses this case.
 
-Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
+So add recursion free guard the same way as fprobe_hander. Since
+ftrace recursion check does not employ ip(s), so here use entry_ip and
+entry_parent_ip the same as fprobe_handler.
+
+Fixes: 5b0ab78998e3 ("fprobe: Add exit_handler support")
 Signed-off-by: Ze Gao <zegao@tencent.com>
+Cc: stable@vger.kernel.org
 Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: <stable@vger.kernel.org>
 ---
- kernel/trace/rethook.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/fprobe.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/kernel/trace/rethook.c b/kernel/trace/rethook.c
-index 32c3dfdb4d6a..60f6cb2b486b 100644
---- a/kernel/trace/rethook.c
-+++ b/kernel/trace/rethook.c
-@@ -288,7 +288,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
- 	 * These loops must be protected from rethook_free_rcu() because those
- 	 * are accessing 'rhn->rethook'.
- 	 */
--	preempt_disable();
-+	preempt_disable_notrace();
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index 097c740799ba..a9580a88cc15 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -17,6 +17,7 @@
+ struct fprobe_rethook_node {
+ 	struct rethook_node node;
+ 	unsigned long entry_ip;
++	unsigned long entry_parent_ip;
+ 	char data[];
+ };
  
- 	/*
- 	 * Run the handler on the shadow stack. Do not unlink the list here because
-@@ -321,7 +321,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
- 		first = first->next;
- 		rethook_recycle(rhn);
+@@ -39,6 +40,7 @@ static inline void __fprobe_handler(unsigned long ip, unsigned long
+ 		}
+ 		fpr = container_of(rh, struct fprobe_rethook_node, node);
+ 		fpr->entry_ip = ip;
++		fpr->entry_parent_ip = parent_ip;
+ 		if (fp->entry_data_size)
+ 			entry_data = fpr->data;
  	}
--	preempt_enable();
-+	preempt_enable_notrace();
+@@ -114,14 +116,25 @@ static void fprobe_exit_handler(struct rethook_node *rh, void *data,
+ {
+ 	struct fprobe *fp = (struct fprobe *)data;
+ 	struct fprobe_rethook_node *fpr;
++	int bit;
  
- 	return correct_ret_addr;
+ 	if (!fp || fprobe_disabled(fp))
+ 		return;
+ 
+ 	fpr = container_of(rh, struct fprobe_rethook_node, node);
+ 
++	/* we need to assure no calls to traceable functions in-between the
++	 * end of fprobe_handler and the beginning of fprobe_exit_handler.
++	 */
++	bit = ftrace_test_recursion_trylock(fpr->entry_ip, fpr->entry_parent_ip);
++	if (bit < 0) {
++		fp->nmissed++;
++		return;
++	}
++
+ 	fp->exit_handler(fp, fpr->entry_ip, regs,
+ 			 fp->entry_data_size ? (void *)fpr->data : NULL);
++	ftrace_test_recursion_unlock(bit);
  }
+ NOKPROBE_SYMBOL(fprobe_exit_handler);
+ 
 -- 
 2.40.1
 
