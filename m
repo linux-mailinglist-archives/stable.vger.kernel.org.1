@@ -2,82 +2,301 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C436704D2F
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 13:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E333D704D46
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 14:04:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231893AbjEPL6V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 07:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54194 "EHLO
+        id S232578AbjEPMEX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 08:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbjEPL6U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 07:58:20 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A313630F6;
-        Tue, 16 May 2023 04:58:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1684238298; i=rwarsow@gmx.de;
-        bh=QyVpxP7UV0IwM3SDkHTYWapR+jd4VTxIP29MvcY+U2w=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=NM5XpW7BmcvfcgjctJoJIaAMvKnZjJz8SKkGxM+rch1Pqef+kfBTkFcnv6cJi9b6r
-         6nqVzHJmSzPM9egDx8Msukcn7x8ECG+mdXN/OmUVfF/lvfBRD6bxImJ8ROR8XjwXUP
-         7DRuEsjAPANmM1KsvY7xLMwwYJVJCS8oOz9DDUfnmzWULcQIR8aHjWLWPW5Rgw6CYv
-         sYGTvvSP6/9JkuDai9gNiKzPGjjOQmuqFu9QZUSFIbHAwJLs2PZVu5iwQvv5R6vWbp
-         /LxY9O89sFn7qkwyzV/VLY8VRsjBVx9gAfxdO+U+zh9WFxeROmDYa1oaMhapWSY/SC
-         qpKbtPRNBwssA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.32.42]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N17Ye-1q9MbD3o9C-012VNd; Tue, 16
- May 2023 13:58:17 +0200
-Message-ID: <2ad80788-dda4-a277-f5dc-50784db4815f@gmx.de>
-Date:   Tue, 16 May 2023 13:58:17 +0200
+        with ESMTP id S231433AbjEPMEW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 08:04:22 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F53F10D2
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 05:04:20 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id a1e0cc1a2514c-77d049b9040so3228558241.1
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 05:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684238659; x=1686830659;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ClAd7kaJxhhiqMPyIHCwtBikQzkldIOZUtX2fRaU4lE=;
+        b=QZo9npq+JCKzLkhoeg9ayogi3R2kQI9jOax1xXK2LQYuOAm+L/a7U4lTUZtboluA72
+         zw65D5qmoQTPVhGBC1pg2YqlOxgLt0n44P9t5+cU0XJCeC4PDC1HNk00vtO81LluJRqg
+         HsWLjLhlvDIsBUQu5ELGimSe6Nt+mIJscHmh2APyq+3YaN615xFfnVBHjfOQ9gD7TpSm
+         HubM8U87Md8+wzhM8pyVzdbTiLiutaeFOdU7x7rQR//cx7zYqBxQTzXa4mr/kBuFhkf6
+         uS5K9NNQGvQen4dqQlBf16yezfy7brVyXmQH5dwO/Gm9aYb5ZLXRtVC2Hpflvbbp4GeL
+         ZVzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684238659; x=1686830659;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ClAd7kaJxhhiqMPyIHCwtBikQzkldIOZUtX2fRaU4lE=;
+        b=g3PpVxkh/mybG4GAIAB9dqJcUlwMvNknY3WfaXs8/6QxThvYGsZTKpbTpCPBCLBa7h
+         95Y7h266M5JYUuhoV+7FYluyOSRRdoneeFWtwF5NErBAc8K6YlOOoWcWr008YDvpp8dU
+         3yOng3hjtS67VERuJCCs3QxcZf/GlOCPsTlTJz38RqEhzjer17htP6hka+vfrvmPq3zH
+         ayREqy8EYanMLDO3In8y7blvs35bMou6RIZgxVDvbdfcMNxrGtTsRSaBbdKkEe4SJYTu
+         2C/JtKe+OKR1q1sUuC4CtRoME9Dk7LPTSpGVVa/n0Ek6kncwFub9v8esAZ4xpabMz+Ir
+         tRDg==
+X-Gm-Message-State: AC+VfDygJ1IFC9BSbCpvKOWOLDRrwt8yVkZgSASsJbBnKdC5H9vkWi/T
+        5fze6GCLkJgpn7TSkxUcGMPFueOyMj8P2irM/jTP6g==
+X-Google-Smtp-Source: ACHHUZ49uZYsYDaDRYtoIDZDcaWVG4RZfAPVRGC5Hy5OgI916EGbdwAu0anrxy5g4iK+N/xyPuYR0pqw/cAGNNf2HP0=
+X-Received: by 2002:a05:6102:6d0:b0:436:50b6:efdb with SMTP id
+ m16-20020a05610206d000b0043650b6efdbmr4247374vsg.3.1684238659339; Tue, 16 May
+ 2023 05:04:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.3 000/246] 6.3.3-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:HVDhhVqsSQvk2Fq8aXYmP3tiFC4dtfRqFRkzA5A8N5+qeF4cm3C
- gE8OavSajbfkxU8+PbhWPvqb6z/j315JQzUGTL34+HzaVZpLz4VvBkpLdDVla/xefeElmho
- 0jWU8VZ2I/9aE4OVwAU8ODn+0LVYPbTVXTzounI7OLj6fajxlYe+w3dTpKt4lp6PVWTTnOZ
- 63F6fBQB7aJTsFfPfFlsw==
-UI-OutboundReport: notjunk:1;M01:P0:q1ArLY9+Kas=;xJwpEuZvbt29oNx3JUd9j+pMSRG
- 1BvHojq/5eFQ1b5hkMpX2ajcc6xxsHzYEAMfgNlEtfpc4M63/L0iyH87dVSefOjaBSnY5VzrI
- JX0hC0B7NTxP3vzK2SWmHDC6jloOBaMhmVHHEaei2EKS5PFdqY5in66tX7Ld7BGFKVvq5J+sp
- RqU/dTwqMMe7E9ba/WnjxWKMeRpKWqftlt67+/Pr4le5CHJZY0julp8f3uoud6/1JMfch90ta
- 2aKvboRFAxyDm8zqiKjSKerhNmltJxg0ETZdUu/xO39R5xu82MsJX+tjDdPGgRctBb7Pe4BGp
- RdQzMgSq73mwI7WkUimpEkwsrfYqoyVpBU07ylWt6o4jz6qzGBwc8gGbpoZU5Sb3ger00wCDK
- AuCfF328UioYODL44pS4m4RfINu9Hz10Ls2UQ1q+tSHhmoCTjcQT6THFbvZ6l56SACvQLNk81
- 0AYJmFPq9oDQ1PBuZ6oUpqRkLVyZN/SqPrB17ftU7OLpDi27WWhmEAQeZ6hqsZjd1eahH478P
- b0WDdJkJv37XHKDU3HeeNOAOlvrr9Zp2h1wXKxyMKs+ra5SP48xfI/83JumrtIb2qUnP32j24
- 0zzCLGFSCovaFshjGJEmvNtUFjN8WE577UXxK/qZysoHAhtGs6OGaFtyeJTX6UdCblCqtlCzT
- 0vbKCez4TY5pwk4QW8S0qyF+cchE4Fotany/QQ6C0xAycXSjN3VuqAzjFyXyEw3wrLh5VzKUy
- 8AUUcj8YY1ZdbwPfavJgzrYOP9bMNnl2Z6/A2FoMD37a/8vAu3Ky1wN0DxXynD56eHci0WcY3
- rHo9cr9ak1Dzok7/ChJ8tXngRa066y4/K2gFcY+qQHZfnwqhsDvbd2I5v/qf8atnBjSQYP//F
- g6g0hPN0BpmioYBdIbuk81dTcXT9zO4YbsEHy/UxFmSVSg9AQYXOi+Ya5ftC/2Oi6kgEfpt8y
- 3oR8ew==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FAKE_REPLY_A1,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 16 May 2023 17:34:08 +0530
+Message-ID: <CA+G9fYt6ZCmUykF3TLvgwCh7EdERDeN9ZgmGmjm54o1QgpOWZA@mail.gmail.com>
+Subject: Re: [PATCH 6.2 000/242] 6.2.16-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Mon, 15 May 2023 at 22:43, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.2.16 release.
+> There are 242 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.2.16-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.2.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-6.3.3-rc1
+Results from Linaro=E2=80=99s test farm.
+Regressions on arm, x86_64, and i386.
 
-compiles, boots and runs here on x86_64
-(Intel i5-11400, gcc 13.x)
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Thanks
+LTP commands test case mkfs01_ntfs_sh fails on following stable-rc
+ - 6.2.16-rc1.
+ - 6.1.29-rc1
+ - 5.15.112-rc1
+ - 5.10.180-rc1
+ - 5.4.243-rc1
+ - 4.19.283-rc1
+ - 4.14.315-rc1
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+LTP commands,
+  - mkfs01_ntfs_sh
 
+Test log:
+=3D=3D=3D=3D=3D=3D=3D
+tst_device.c:93:[  147.226163] loop0: detected capacity change from 0 to 61=
+4400
+ TINFO: Found free device 0 '/dev/loop0'
+mkfs01 1 TINFO: timeout per run is 0h 50m 0s
+mkfs01 1 TPASS: 'mkfs -t ntfs  /dev/loop0 ' passed.
+mkfs01 2 TINFO: Mounting device: mount -t ntfs /dev/loop0
+/scratch/ltp-zKu0Zn6L6o/LTP_mkfs01.ULVi9nN6XF/mntpoint
+modprobe: FATAL: Module fuse not found in directory /lib/modules/6.2.16-rc1
+ntfs-3g-mount: fuse device is missing, try 'modprobe fuse' as root
+mkfs01 2 TBROK: Failed to mount device ntfs type: mount exit =3D 21
+[  166.420602] I/O error, dev loop0, sector 614272 op 0x0:(READ) flags
+0x80700 phys_seg 1 prio class 2
+
+
+Test log:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.2.y/build/v6.=
+2.15-243-g704eace42a14/testrun/17019981/suite/ltp-commands/test/mkfs01_ntfs=
+_sh/log
+
+Test history:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.=
+1.28-240-gb82733c0ff99/testrun/17019910/suite/ltp-commands/test/mkfs01_ntfs=
+_sh/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.2.y/build/v6.=
+2.15-243-g704eace42a14/testrun/17020198/suite/ltp-commands/test/mkfs01_ntfs=
+_sh/history/
+
+
+## Build
+* kernel: 6.2.16-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.2.y
+* git commit: 704eace42a1426c1ef49afee9db673752a7b7c73
+* git describe: v6.2.15-243-g704eace42a14
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.2.y/build/v6.2.1=
+5-243-g704eace42a14
+
+## Test Regressions (compared to v6.2.15)
+
+* x15, ltp-commands
+  - mkfs01_ntfs_sh
+
+* x86, ltp-commands
+  - mkfs01_ntfs_sh
+
+
+* x86-kasan, ltp-commands
+  - mkfs01_ntfs_sh
+
+* x86_64-clang, ltp-commands
+  - mkfs01_ntfs_sh
+
+
+## Metric Regressions (compared to v6.2.15)
+
+## Test Fixes (compared to v6.2.15)
+
+## Metric Fixes (compared to v6.2.15)
+
+## Test result summary
+total: 178929, pass: 153909, fail: 3053, skip: 21665, xfail: 302
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 142 passed, 3 failed
+* arm64: 54 total, 53 passed, 1 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 8 total, 8 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 26 total, 25 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 7 passed, 1 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bo[
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
