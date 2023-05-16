@@ -2,69 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3052070440C
-	for <lists+stable@lfdr.de>; Tue, 16 May 2023 05:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B06704410
+	for <lists+stable@lfdr.de>; Tue, 16 May 2023 05:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbjEPDmO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 23:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47484 "EHLO
+        id S229996AbjEPDnR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 23:43:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjEPDmL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 23:42:11 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC37559A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:42:10 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1ae3f6e5d70so73315ad.1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:42:10 -0700 (PDT)
+        with ESMTP id S229913AbjEPDnJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 23:43:09 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E81C6A7B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:42:34 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-250252e4113so9316044a91.0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:42:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684208530; x=1686800530;
+        d=gmail.com; s=20221208; t=1684208553; x=1686800553;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DFTJu2wWhYQ+AebqISrsV3BzsJGQ1gjBy5fDqwWThPU=;
-        b=FuXYm+fiZHMEo5guN7d++FfpXJN6u5oxhpvcxFVGg6PbJ4wBSOjv66aUOwKpyA3U0V
-         HOCTSZCLAkr6K37D1L4m/ckwVX+LLSS3BPmTQKz9SfTSUoM/tnY/zM32iKCr/W0o857P
-         iAp7AZenciZf2rkHHjuEJYhpKblMQcs8+VYQeZsdNRw6b1CG7XsZo+e/pIa/XRY1GT55
-         iB7SKD7Z8mKvc2nazIbLeFF0+Dq0VGNmdRg3o6Qs8WyfCTUwPWNnmX7N3dYNH/4MTIU7
-         216o+NhZoIhQMNSxSLw3WFDr2Grcj8k4erTCunquP/XXoubPGTXNWpf7m4F4Ok0jnRpu
-         T3wg==
+        bh=IWEDbA0e08o53RdV5T/MGMWQcP1SW07qkBJKSLgM8nI=;
+        b=h80UC7Ki97MZ46YYh1nY9kuKHzsLOFKTnlpXGemW/gRc9Gnrr4AMdiGeszYgZb1+nY
+         tHxXS2G/pM1HnbAgHs3EFRFTnZpT3D89PRQnzeunJNJ3Tyj467jY7+lUQ5yjeCOk2j1f
+         ngz159R+oxID5ksOq83NNowOGBJaAZVKeHeYrvG+G+I359a0S2FY5sRp/qKx+gDFiC6G
+         mHvCr2Cp70B5huhQnt3Gj7vGZU9aCanbNHuKbu5b6eIs0GU8Sw32UjqBn8sGGX7AYhMx
+         /W3LQS1QU/HvUZl2pAqV08WTyxE7F79tR7RFlcJVj0Kc2xu7wseXC4qEq8QX+fBlbGpI
+         L0OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684208530; x=1686800530;
+        d=1e100.net; s=20221208; t=1684208553; x=1686800553;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFTJu2wWhYQ+AebqISrsV3BzsJGQ1gjBy5fDqwWThPU=;
-        b=PBJkgRhAICpGnQPuC9tMV1PD6/n7uyJOZAbnW5CI4SShi3i5nELPTfIAReLcpg6w0U
-         mzDD9lzvW1uk4xAQ/E1AZ3heZoOdRM4kk91/8XJUQmhukNOi6Q3h4ZNRX62R89LfSONX
-         jqdzVlX/aQGpApOtQW9bSbMVBNes54Ox1LJTkGEJfK2QT+gkrx41wtw6cWn4/yawXwkr
-         ceKrVYiI6HfcTLb6/snPs+EomkIJYONAHyxgGKjwDdqt81IRaE77RYhAHGlqnUOQ/I8h
-         w+WIphVpxxNuojJrdHzTnnVgOW2OJv6aMXrJRHqWGqODh6GG82AUoOX2ZRC1DdOJohBU
-         RM1Q==
-X-Gm-Message-State: AC+VfDz3XVUr0gKQSv5rkJcjsq4lkQgqd/ocbH2V2Pvk2wT2yV3woZDw
-        dWU+x/ZUF2o3lNduduEYuLc=
-X-Google-Smtp-Source: ACHHUZ5QHROk1+S9ZSJaGrSriCpQumHU09tIOc6zj87tmZ1bH4SeFfrxAMeNhjT+uiG/t6T/YFEtgQ==
-X-Received: by 2002:a17:903:22c6:b0:1ac:3739:9969 with SMTP id y6-20020a17090322c600b001ac37399969mr47047977plg.48.1684208530023;
-        Mon, 15 May 2023 20:42:10 -0700 (PDT)
+        bh=IWEDbA0e08o53RdV5T/MGMWQcP1SW07qkBJKSLgM8nI=;
+        b=GS0J7HIvglEY09Q9esXAO74mC4Sd53vmUW5Em549O9dSm+bqMDCemVYQJntErNndae
+         w5ghqd7GtSZty/OTDTMS9tJ3Zur2UJcbR5ow11uk+Gti3rrijL54h7H3k8IMMUkGJDXA
+         IG24WIsZE8OsIKRgaOd8YdAtgb7kbUnfZrjwsRZhUHALIYK4LxbFdqYUXvh8ooEqDj4D
+         unRMiYgfiHWH3Y6tu4FJdoW+oo7UwFbRBD29aPqfBdk73BtHfTwwIfWPZjZBtudXQHtD
+         JDbDv9T67CrhZPs7IsX3kEvmAbp/pX3kl6mbsETtozwXNJ3qdEQRzTqyn/ZvrcuKRhMs
+         r/0A==
+X-Gm-Message-State: AC+VfDy1aXI3aAIkNivIqPi1U8kCk7F+qZntkyv1lhIr/CrdtRpsBcFK
+        2obOAgXhhaQdAZIWuayI3Ew=
+X-Google-Smtp-Source: ACHHUZ7UvyyRZgqWaf2Op3DDkAzg3ZLkzTaA+ZfXZMwDEnbtBULVfCxaMPEjD6V+B+gluMnzbVEsWw==
+X-Received: by 2002:a17:90b:160e:b0:24e:37c6:9681 with SMTP id la14-20020a17090b160e00b0024e37c69681mr36241498pjb.38.1684208553605;
+        Mon, 15 May 2023 20:42:33 -0700 (PDT)
 Received: from [192.168.1.105] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id iy3-20020a170903130300b001ab1cdb4295sm14266252plb.130.2023.05.15.20.42.08
+        by smtp.gmail.com with ESMTPSA id nl17-20020a17090b385100b0024e49b53c24sm402972pjb.10.2023.05.15.20.42.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 May 2023 20:42:09 -0700 (PDT)
-Message-ID: <9574bc6c-ad0d-9847-4925-4cff7e4514a1@gmail.com>
-Date:   Mon, 15 May 2023 20:42:08 -0700
+        Mon, 15 May 2023 20:42:32 -0700 (PDT)
+Message-ID: <a7843640-7fc9-379f-8a21-a2e599f742d8@gmail.com>
+Date:   Mon, 15 May 2023 20:42:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: Re: [PATCH 6.1 089/239] net: bcmgenet: Remove phy_stop() from
+Subject: Re: [PATCH 6.2 092/242] net: bcmgenet: Remove phy_stop() from
  bcmgenet_netif_stop()
 Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-References: <20230515161721.545370111@linuxfoundation.org>
- <20230515161724.344429171@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
+ <20230515161724.671015328@linuxfoundation.org>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230515161724.344429171@linuxfoundation.org>
+In-Reply-To: <20230515161724.671015328@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -79,7 +79,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 
-On 5/15/2023 9:25 AM, Greg Kroah-Hartman wrote:
+On 5/15/2023 9:26 AM, Greg Kroah-Hartman wrote:
 > From: Florian Fainelli <f.fainelli@gmail.com>
 > 
 > [ Upstream commit 93e0401e0fc0c54b0ac05b687cd135c2ac38187c ]
