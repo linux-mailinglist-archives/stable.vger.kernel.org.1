@@ -2,53 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 154DA708BE1
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 00:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B56B708D1D
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 02:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbjERWqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 18:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53400 "EHLO
+        id S229591AbjESAzt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 20:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbjERWqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 18:46:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E6BBE69;
-        Thu, 18 May 2023 15:46:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A2FB6097D;
-        Thu, 18 May 2023 22:46:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BC3C433EF;
-        Thu, 18 May 2023 22:46:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684449977;
-        bh=5jbb66fGEZu6UT2i6W8aN8eC7k6vi7bEWizHOjF7QwM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=tnH9q6TK5ot5KvSSx3RmIhm1BwQNKRa5zTtopxojt5TtLF5XXPJR7d6pyGvlATs12
-         FvO4pYjaUAYnl4D48vff5Q2jHna0ro2hG2f+1kbOyUOp9wFst6NUGlq9W5kPprEkwJ
-         RTgBGYpRyalfgpQ2UFZwT9JsaeOk9d3BoGilo1NLoDEa6v4pF7P1iQ8/IMIPy1FOfC
-         0AYFC/vfx/P6ogmgnPJVtkhunME8EUiNxad/8ncyEt17wFzBP3wKcxJNzA9QLY+ZuH
-         PxR9AaBdRHRYVn9P1BfJJt2GGockWJrWlR8Xat+k2OQLr3ZpRCVfkOgL4Msh/dQJdC
-         M/vZRUJIpVRvw==
-Date:   Thu, 18 May 2023 17:46:16 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Shaohua Li <shaohua.li@intel.com>,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI/ASPM: Handle link retraining race
-Message-ID: <ZGaquEqo/psIH14Y@bhelgaas>
+        with ESMTP id S229497AbjESAzs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 20:55:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E35F2E4D
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 17:54:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684457669;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=f96iNuTi84eLWb3Z+iggP7f8ewPuNSvr3skMKi09rbM=;
+        b=dM7+dEmNm/chc9uhtJg0mMLrOWO+G8TTmiDiDJam80+Vu2t43jzuedQyYsiJT9bZwUxUAm
+        1Ep8rVuHMHFGjLlnAl6eBXCT+0N0v3pSm5pgj4XQt1EXGZzwojH1ZgUtdGoam+EiW+2AVk
+        LjjSfjuZ3lhZwPPiWBp0rnIRjKpPYSE=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-382-i3FwaXKAM8ipkkM_HTkXUg-1; Thu, 18 May 2023 20:54:27 -0400
+X-MC-Unique: i3FwaXKAM8ipkkM_HTkXUg-1
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-25353056618so1210552a91.1
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 17:54:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684457667; x=1687049667;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f96iNuTi84eLWb3Z+iggP7f8ewPuNSvr3skMKi09rbM=;
+        b=PyaJFZY9yB8eoMGYK5Y4bRDzA6ARdwXwpwBxJWEJAMIb7RWkfNzoV1L6t4Jbi65uSz
+         aBq4ffM6ZmFsqmWUqRKJfBRQ2lFQBgOEK8esu8DUxI6kZfc8UvtOmotN82A3bWgFADXv
+         zJIQvgyKG4anQuyPxgy7ed2nOZxfhE7k+TxH+YHpi9dWeGJHsoSvDnFB1bzaZ89VibcM
+         OkURvPgqnK6TxedfSP3dmqg3pcwsmNmDCxcarAYcx5i2HA2lXuMXQrF8lKOcUfVMZtld
+         hCdieVQAr07y7CohNHcmis0R4gizr+VInEgdH2nFUliDbhZmBJqLIlD/lCXgzKYjhR1K
+         Chog==
+X-Gm-Message-State: AC+VfDzBh9DT7FPT5svg7o7+vGyMLhVeqvGU8TQC51qRQhG+rOzjXMQ/
+        Gm/O0AHag5JdvcsWaap5sp4Nf4AHZkgbgrwm+dJ95gcensxR2GzyGTEpluIE2bi+WXGdxth/SqH
+        B8eMrFQ5sCzE9Spkq
+X-Received: by 2002:a17:90a:c294:b0:253:572f:79b1 with SMTP id f20-20020a17090ac29400b00253572f79b1mr432517pjt.28.1684457666786;
+        Thu, 18 May 2023 17:54:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7UuNCd+sTzCpEeBOZhefKOD7eRn5MTOqSYdMvU+3BhbYiezoPDzpQDisW8qK4DGipblXUTSQ==
+X-Received: by 2002:a17:90a:c294:b0:253:572f:79b1 with SMTP id f20-20020a17090ac29400b00253572f79b1mr432502pjt.28.1684457666487;
+        Thu, 18 May 2023 17:54:26 -0700 (PDT)
+Received: from [10.72.12.110] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id e7-20020a17090a280700b0024b9e62c1d9sm289559pjd.41.2023.05.18.17.54.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 May 2023 17:54:26 -0700 (PDT)
+Message-ID: <60e8e576-1097-c874-a7f6-ad79556950f7@redhat.com>
+Date:   Wed, 17 May 2023 22:04:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] ceph: force updating the msg pointer in non-split case
+Content-Language: en-US
+To:     Ilya Dryomov <idryomov@gmail.com>
+Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org,
+        Frank Schilder <frans@dtu.dk>
+References: <20230517052404.99904-1-xiubli@redhat.com>
+ <CAOi1vP8e6NrrrV5TLYS-DpkjQN6LhfqkptR5_ue94HcHJV_2ag@mail.gmail.com>
+ <b121586f-d628-a8e3-5802-298c1431f0e5@redhat.com>
+ <CAOi1vP-vA0WAw6Jb69QDt=43fw8rgS7KvLrvKF5bEqgOS_TzUQ@mail.gmail.com>
+ <11105fba-dce6-d54e-a75d-2673e4b5f3cf@redhat.com>
+ <CAOi1vP-xT56QYsne-n-fjSoDitEbeaEQNuxA_sKKbR=M+V7baA@mail.gmail.com>
+ <5391b06a-2bb6-05f2-dd7c-c96f259ba443@redhat.com>
+ <CAOi1vP8Gwk8AwZh6X2Kss1o=pCmuboG1pNYcYNQiKF+YLVTm_Q@mail.gmail.com>
+From:   Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <CAOi1vP8Gwk8AwZh6X2Kss1o=pCmuboG1pNYcYNQiKF+YLVTm_Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230502083923.34562-1-ilpo.jarvinen@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,216 +89,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 02, 2023 at 11:39:23AM +0300, Ilpo Järvinen wrote:
-> Implementation Note at the end of PCIe r6.0.1 sec 7.5.3.7 recommends
-> handling LTSSM race to ensure link retraining acquires correct
-> parameters from the LNKCTL register. According to the implementation
-> note, LTSSM might transition into Recovery or Configuration state
-> independently of the driver requesting it, and if retraining due to
-> such an event is still ongoing, the value written into the LNKCTL
-> register might not be considered by the link retraining.
-> 
-> Ensure link training bit is clear before toggling link retraining bit
-> to meet the requirements of the Implementation Note.
-> 
-> Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-> Suggested-by: Lukas Wunner <lukas@wunner.de>
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Reviewed-by: Lukas Wunner <lukas@wunner.de>
-> Cc: stable@vger.kernel.org
 
-Thanks for this!
+On 5/17/23 21:56, Ilya Dryomov wrote:
+> On Wed, May 17, 2023 at 3:33â€¯PM Xiubo Li <xiubli@redhat.com> wrote:
+>>
+>> On 5/17/23 21:11, Ilya Dryomov wrote:
+>>> On Wed, May 17, 2023 at 2:46â€¯PM Xiubo Li <xiubli@redhat.com> wrote:
+>>>> On 5/17/23 19:29, Ilya Dryomov wrote:
+>>>>> On Wed, May 17, 2023 at 1:04â€¯PM Xiubo Li <xiubli@redhat.com> wrote:
+>>>>>> On 5/17/23 18:31, Ilya Dryomov wrote:
+>>>>>>> On Wed, May 17, 2023 at 7:24â€¯AM <xiubli@redhat.com> wrote:
+>>>>>>>> From: Xiubo Li <xiubli@redhat.com>
+>>>>>>>>
+>>>>>>>> When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
+>>>>>>>> request may still contain a list of 'split_realms', and we need
+>>>>>>>> to skip it anyway. Or it will be parsed as a corrupt snaptrace.
+>>>>>>>>
+>>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>>> Cc: Frank Schilder <frans@dtu.dk>
+>>>>>>>> Reported-by: Frank Schilder <frans@dtu.dk>
+>>>>>>>> URL: https://tracker.ceph.com/issues/61200
+>>>>>>>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+>>>>>>>> ---
+>>>>>>>>      fs/ceph/snap.c | 3 +++
+>>>>>>>>      1 file changed, 3 insertions(+)
+>>>>>>>>
+>>>>>>>> diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
+>>>>>>>> index 0e59e95a96d9..d95dfe16b624 100644
+>>>>>>>> --- a/fs/ceph/snap.c
+>>>>>>>> +++ b/fs/ceph/snap.c
+>>>>>>>> @@ -1114,6 +1114,9 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
+>>>>>>>>                                     continue;
+>>>>>>>>                             adjust_snap_realm_parent(mdsc, child, realm->ino);
+>>>>>>>>                     }
+>>>>>>>> +       } else {
+>>>>>>>> +               p += sizeof(u64) * num_split_inos;
+>>>>>>>> +               p += sizeof(u64) * num_split_realms;
+>>>>>>>>             }
+>>>>>>>>
+>>>>>>>>             /*
+>>>>>>>> --
+>>>>>>>> 2.40.1
+>>>>>>>>
+>>>>>>> Hi Xiubo,
+>>>>>>>
+>>>>>>> This code appears to be very old -- it goes back to the initial commit
+>>>>>>> 963b61eb041e ("ceph: snapshot management") in 2009.  Do you have an
+>>>>>>> explanation for why this popped up only now?
+>>>>>> As I remembered we hit this before in one cu BZ last year, but I
+>>>>>> couldn't remember exactly which one.  But I am not sure whether @Jeff
+>>>>>> saw this before I joint ceph team.
+>>>>>>
+>>>>>>
+>>>>>>> Has MDS always been including split_inos and split_realms arrays in
+>>>>>>> !CEPH_SNAP_OP_SPLIT case or is this a recent change?  If it's a recent
+>>>>>>> change, I'd argue that this needs to be addressed on the MDS side.
+>>>>>> While in MDS side for the _UPDATE op it won't send the 'split_realm'
+>>>>>> list just before the commit in 2017:
+>>>>>>
+>>>>>> commit 93e7267757508520dfc22cff1ab20558bd4a44d4
+>>>>>> Author: Yan, Zheng <zyan@redhat.com>
+>>>>>> Date:   Fri Jul 21 21:40:46 2017 +0800
+>>>>>>
+>>>>>>         mds: send snap related messages centrally during mds recovery
+>>>>>>
+>>>>>>         sending CEPH_SNAP_OP_SPLIT and CEPH_SNAP_OP_UPDATE messages to
+>>>>>>         clients centrally in MDCache::open_snaprealms()
+>>>>>>
+>>>>>>         Signed-off-by: "Yan, Zheng" <zyan@redhat.com>
+>>>>>>
+>>>>>> Before this commit it will only send the 'split_realm' list for the
+>>>>>> _SPLIT op.
+>>>>> It sounds like we have the culprit.  This should be treated as
+>>>>> a regression and fixed on the MDS side.  I don't see a justification
+>>>>> for putting useless data on the wire.
+>>>> But we still need this patch to make it to work with the old ceph releases.
+>>> This is debatable:
+>>>
+>>> - given that no one noticed this for so long, the likelihood of MDS
+>>>     sending a CEPH_SNAP_OP_UPDATE message with bogus split_inos and
+>>>     split_realms arrays is very low
+>>>
+>>> - MDS side fix would be backported to supported Ceph releases
+>>>
+>>> - people who are running unsupported Ceph releases (i.e. aren't
+>>>     updating) are unlikely to be diligently updating their kernel clients
+>> Just searched the ceph tracker and I found another 3 trackers have the
+>> same issue:
+>>
+>> https://tracker.ceph.com/issues/57817
+>> https://tracker.ceph.com/issues/57703
+>> https://tracker.ceph.com/issues/57686
+>>
+>> So plusing this time and the previous CU case:
+>>
+>> https://www.spinics.net/lists/ceph-users/msg77106.html
+>>
+>> I have seen at least 5 times.
+>>
+>> All this are reproduced when doing MDS failover, and this is the root
+>> cause in MDS side.
+> OK, given that the fixup in the kernel client is small, it seems
+> justified.  But, please, add a comment in the new else branch saying
+> that it's there only to work around a bug in the MDS.
 
-The existing pcie_retrain_link() and pcie_wait_for_retrain() both
-return bool, but neither is named as a predicate, and it's always a
-little hard for me to keep track of what the true/false return values
-mean.
+> Thanks,
+>
+>                  Ilya
+>
 
-I propose tweaking them so they both return 0 for success or
--ETIMEDOUT for failure.  What do you think?  It does make the patch
-bigger, which is kind of unfortunate.
-
-Bjorn
-
-commit f55ef626b57f ("PCI/ASPM: Avoid link retraining race")
-parent e8d05f522fae
-Author: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Date:   Tue May 2 11:39:23 2023 +0300
-
-    PCI/ASPM: Avoid link retraining race
-    
-    PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
-    then waiting for the Link Training bit to be clear before setting the
-    Retrain Link bit.
-    
-    This avoids a race where the LTSSM may not use the updated parameters if it
-    is already in the midst of link training because of other normal link
-    activity.
-    
-    Wait for the Link Training bit to be clear before toggling the Retrain Link
-    bit to ensure that the LTSSM uses the updated link control parameters.
-    
-    [bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
-    both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
-    Suggested-by: Lukas Wunner <lukas@wunner.de>
-    Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-    Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
-    Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-    Reviewed-by: Lukas Wunner <lukas@wunner.de>
-    Cc: stable@vger.kernel.org
-
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 72cdb30a924a..3aa73ecdf86f 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -193,12 +193,39 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
- }
- 
--static bool pcie_retrain_link(struct pcie_link_state *link)
-+static int pcie_wait_for_retrain(struct pci_dev *pdev)
- {
--	struct pci_dev *parent = link->pdev;
- 	unsigned long end_jiffies;
- 	u16 reg16;
- 
-+	/* Wait for Link Training to be cleared by hardware */
-+	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-+	do {
-+		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
-+		if (!(reg16 & PCI_EXP_LNKSTA_LT))
-+			return 0;
-+		msleep(1);
-+	} while (time_before(jiffies, end_jiffies));
-+
-+	return -ETIMEDOUT;
-+}
-+
-+static int pcie_retrain_link(struct pcie_link_state *link)
-+{
-+	struct pci_dev *parent = link->pdev;
-+	int rc;
-+	u16 reg16;
-+
-+	/*
-+	 * Ensure the updated LNKCTL parameters are used during link
-+	 * training by checking that there is no ongoing link training to
-+	 * avoid LTSSM race as recommended in Implementation Note at the
-+	 * end of PCIe r6.0.1 sec 7.5.3.7.
-+	 */
-+	rc = pcie_wait_for_retrain(parent);
-+	if (rc)
-+		return rc;
-+
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
- 	reg16 |= PCI_EXP_LNKCTL_RL;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-@@ -212,15 +239,7 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
- 		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
- 	}
- 
--	/* Wait for link training end. Break out after waiting for timeout */
--	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
--	do {
--		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
--		if (!(reg16 & PCI_EXP_LNKSTA_LT))
--			break;
--		msleep(1);
--	} while (time_before(jiffies, end_jiffies));
--	return !(reg16 & PCI_EXP_LNKSTA_LT);
-+	return pcie_wait_for_retrain(parent);
- }
- 
- /*
-@@ -289,15 +308,15 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
- 		reg16 &= ~PCI_EXP_LNKCTL_CCC;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
- 
--	if (pcie_retrain_link(link))
--		return;
-+	if (pcie_retrain_link(link)) {
- 
--	/* Training failed. Restore common clock configurations */
--	pci_err(parent, "ASPM: Could not configure common clock\n");
--	list_for_each_entry(child, &linkbus->devices, bus_list)
--		pcie_capability_write_word(child, PCI_EXP_LNKCTL,
-+		/* Training failed. Restore common clock configurations */
-+		pci_err(parent, "ASPM: Could not configure common clock\n");
-+		list_for_each_entry(child, &linkbus->devices, bus_list)
-+			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
- 					   child_reg[PCI_FUNC(child->devfn)]);
--	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
-+		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
-+	}
- }
- 
- /* Convert L0s latency encoding to ns */
-
-> ---
->  drivers/pci/pcie/aspm.c | 37 +++++++++++++++++++++++++++----------
->  1 file changed, 27 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index 66d7514ca111..dde1ef13d0d1 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -193,12 +193,37 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
->  	link->clkpm_disable = blacklist ? 1 : 0;
->  }
->  
-> +static bool pcie_wait_for_retrain(struct pci_dev *pdev)
-> +{
-> +	unsigned long end_jiffies;
-> +	u16 reg16;
-> +
-> +	/* Wait for link training end. Break out after waiting for timeout */
-> +	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-> +	do {
-> +		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
-> +		if (!(reg16 & PCI_EXP_LNKSTA_LT))
-> +			break;
-> +		msleep(1);
-> +	} while (time_before(jiffies, end_jiffies));
-> +
-> +	return !(reg16 & PCI_EXP_LNKSTA_LT);
-> +}
-> +
->  static bool pcie_retrain_link(struct pcie_link_state *link)
->  {
->  	struct pci_dev *parent = link->pdev;
-> -	unsigned long end_jiffies;
->  	u16 reg16;
->  
-> +	/*
-> +	 * Ensure the updated LNKCTL parameters are used during link
-> +	 * training by checking that there is no ongoing link training to
-> +	 * avoid LTSSM race as recommended in Implementation Note at the end
-> +	 * of PCIe r6.0.1 sec 7.5.3.7.
-> +	 */
-> +	if (!pcie_wait_for_retrain(parent))
-> +		return false;
-> +
->  	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
->  	reg16 |= PCI_EXP_LNKCTL_RL;
->  	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-> @@ -212,15 +237,7 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
->  		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
->  	}
->  
-> -	/* Wait for link training end. Break out after waiting for timeout */
-> -	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-> -	do {
-> -		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
-> -		if (!(reg16 & PCI_EXP_LNKSTA_LT))
-> -			break;
-> -		msleep(1);
-> -	} while (time_before(jiffies, end_jiffies));
-> -	return !(reg16 & PCI_EXP_LNKSTA_LT);
-> +	return pcie_wait_for_retrain(parent);
->  }
->  
->  /*
-> -- 
-> 2.30.2
-> 
