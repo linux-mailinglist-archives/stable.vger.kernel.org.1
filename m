@@ -2,124 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E626E7084C4
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 17:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220E07085B7
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 18:13:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231177AbjERPUr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 11:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
+        id S229482AbjERQNA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 12:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbjERPUq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 11:20:46 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FEAC118
-        for <stable@vger.kernel.org>; Thu, 18 May 2023 08:20:44 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f450815d0bso21425635e9.0
-        for <stable@vger.kernel.org>; Thu, 18 May 2023 08:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684423243; x=1687015243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XCPm1akb6BbLPko9px5lmXGBrzu2duK5lo70N69pAEE=;
-        b=Ne/UPhCc9WQKSc787xomPdDYPwxg4W8c6tbZ07r9CzCj6EmksPg99DBwqaJF5NFBZC
-         NUtAtVAyDGennyXYV2i4lOMiE4LyGgOtNc6eQHRnRZJxNy9rGOziVX04MAwyGUuS+yDA
-         NZK+KlILJzqRYW0H4dcibgrXjn4R6VywPDywbiwTPLT74PoU7w8V8rfm8YMjII3kmE34
-         Q0q5Lw3q9IAZgB4GKbAG4cLqN1tQdb2vW+TOLqCcrSKLFkYzBWl/BsBkBpY6BMhGRn/U
-         /nVTjq8Q3iBxTo6DUALXQsu9CJiZKNlxKEVwVehG0/TB8gHPKJHTRlofJEyGj9y56V+L
-         J+IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684423243; x=1687015243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XCPm1akb6BbLPko9px5lmXGBrzu2duK5lo70N69pAEE=;
-        b=T5VeTye+aY9VsWi8DVJEnd4VG29Jz6aSfFsRpTku6yVghv0D49vy+XBSqfnxsSpGlh
-         /jV/ZaYz4KpNW5zonhLCbG7h9uUOZybjiPbbK8YgTqH1T9Q35YQPrVlqr9tFe/YCZDnm
-         I+EpsNea/LHTmAOnJnZIHD4xMmGO/jvEEmUukXrPaJvlAMv984NQFyv5HJmdSfog10HQ
-         pKhD/zBct7j0iz57SZsjx7kJnUCyLX6e1XQa/Rz/RFteKI2aucTKQC7eWXxJLF7EkAtO
-         kVxL7lkpjqdZNVVDJMpaknyW6mvvULa0Ta3wXOeyi2ZM2MOp4o8atvxxEYQKJSG7+fwx
-         +YIQ==
-X-Gm-Message-State: AC+VfDx45gsD+WJmMs/bJLRD1PXD5b7IwTGCd0a16jcZMsSQyy2faYUs
-        HBS9E2dPIXJ+3/GQEhQh5sdicA==
-X-Google-Smtp-Source: ACHHUZ5xD/+MlJa8vEMmo2J+KEoOydoyk7Hm4U48l6iwhxmS0woFUxQD68+seOXHOXVH4m2UzG69+g==
-X-Received: by 2002:a5d:4bcb:0:b0:306:2b56:d268 with SMTP id l11-20020a5d4bcb000000b003062b56d268mr1551443wrt.15.1684423242902;
-        Thu, 18 May 2023 08:20:42 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id o14-20020adfe80e000000b0030644bdefd8sm2479736wrm.52.2023.05.18.08.20.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 May 2023 08:20:41 -0700 (PDT)
-Date:   Thu, 18 May 2023 18:20:37 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Cc:     linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
-Subject: Re: [RESEND PATCH v5 2/3] test_firmware: fix a memory leak with reqs
- buffer
-Message-ID: <828b1d4c-dac8-4a64-9f1d-452762dc07bd@kili.mountain>
-References: <20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr>
- <20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr>
- <256bc822-ba20-c41a-1f3b-5b6aacead32e@alu.unizg.hr>
- <f9212fd0-0a52-4076-a97a-c5af8de194cf@kili.mountain>
- <72257758-a0e6-1118-f397-431ac9ec3059@alu.unizg.hr>
+        with ESMTP id S229582AbjERQM6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 12:12:58 -0400
+X-Greylist: delayed 12472 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 18 May 2023 09:12:53 PDT
+Received: from puskom.unisbablitar.ac.id (unknown [36.66.216.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF7AE68
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 09:12:52 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by puskom.unisbablitar.ac.id (Postfix) with ESMTP id 3BDBF2C5365;
+        Thu, 18 May 2023 03:10:09 +0700 (WIB)
+Received: from puskom.unisbablitar.ac.id ([127.0.0.1])
+        by localhost (puskom.unisbablitar.ac.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id sa0SAY63iq6U; Thu, 18 May 2023 03:10:01 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by puskom.unisbablitar.ac.id (Postfix) with ESMTP id 756E82C50EA;
+        Thu, 18 May 2023 03:09:46 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 puskom.unisbablitar.ac.id 756E82C50EA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisbablitar.ac.id;
+        s=65594E22-FAEF-11E9-AC00-7BF9109A8870; t=1684354186;
+        bh=txycSiCzWMZdBftZ6p+Hlkov2Ks8VQ2zsXx/qxMWAYI=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=k5+kMubtTwCw4iplV4ghTvqHA2+aZ7WiaLBTLXIQmRL/o64PDj2Cv7tPEjcIxJ4xf
+         W3gl4nBgNrdMp0ot0/1pDoDPiQlg+ZAktjtgwb/clc1Gly9OQemj6rH+OOcVsBrv2N
+         IKkFMDcxvuGSTntQaE78qhbFZNoKkRxwtsd/08U6skTf4Q3COCsP1/H775hodXYkGF
+         neUBoUzUYXgCPsKnO5mBA7CnRZcaVCZXg7rm1VT34z9YuGlLsUa1JRjVhCGOLcZ+9S
+         CTOybaj/hMZCCiaha/1mdee1piC/Hb9b73YS61XwW30RQb2tQXGw0e5cvoEeIitqeI
+         DsGRYgazEogDg==
+X-Virus-Scanned: amavisd-new at unisbablitar.ac.id
+Received: from puskom.unisbablitar.ac.id ([127.0.0.1])
+        by localhost (puskom.unisbablitar.ac.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id F8TqhdQXqw-r; Thu, 18 May 2023 03:09:46 +0700 (WIB)
+Received: from [192.168.88.20] (unknown [181.214.93.85])
+        by puskom.unisbablitar.ac.id (Postfix) with ESMTPSA id ACE9E2C53B5;
+        Thu, 18 May 2023 03:09:27 +0700 (WIB)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <72257758-a0e6-1118-f397-431ac9ec3059@alu.unizg.hr>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Re:
+To:     Recipients <deddysetyawan@unisbablitar.ac.id>
+From:   "Cristy Davis" <deddysetyawan@unisbablitar.ac.id>
+Date:   Wed, 17 May 2023 21:09:08 +0100
+Reply-To: owenthomas3244@gmail.com
+Message-Id: <20230517200927.ACE9E2C53B5@puskom.unisbablitar.ac.id>
+X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        MONEY_FROM_MISSP,RDNS_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [owenthomas3244[at]gmail.com]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 MONEY_FROM_MISSP Lots of money and misspaced From
+        *  2.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 12, 2023 at 08:58:58PM +0200, Mirsad Goran Todorovac wrote:
-> On 12. 05. 2023. 15:09, Dan Carpenter wrote:
-> > On Fri, May 12, 2023 at 02:34:29PM +0200, Mirsad Todorovac wrote:
-> > > > @@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
-> > > >    	mutex_lock(&test_fw_mutex);
-> > > > +	if (test_fw_config->reqs) {
-> > > > +		rc = -EBUSY;
-> > > > +		goto out_bail;
-> > > > +	}
-> > > > +
-> > > >    	test_fw_config->reqs =
-> > > >    		vzalloc(array3_size(sizeof(struct test_batched_req),
-> > > >    				    test_fw_config->num_requests, 2));
-> > > 
-> > > I was just thinking, since returning -EBUSY for the case of already allocated
-> > > test_fw_config->reqs was your suggestion and your idea, maybe it would be OK
-> > > to properly reflect that in Co-developed-by: or Signed-off-by: , but if I
-> > > understood well, the CoC requires that I am explicitly approved of those?
-> > > 
-> > 
-> > If everyone else is okay, let's just apply this as-is.  You did all the
-> > hard bits.
-> > 
-> > regards,
-> > dan carpenter
-> 
-> If it is OK with you, then I hope I have your Reviewed-by:
->
+Good day to you, my name is Cristy Davis, winner of $70 million Powerball j=
+ackpot held in February 12, 2020. Based on the Epidemic corona-virus diseas=
+e (COVID-19) which is befall the whole wild world, I and my family have dec=
+ided to donate $850,000 U.S. Dollars to charity to help you and the poor in=
+ your community and to enable you and your family to stay safe and stay in =
+a good height . Please email my assistant Thomas Owen for more information =
+to guide you to receive my donation. via Email (owenthomas3244@gmail.com) a=
+nd below is the link for reconfirmation of my winning.
 
-Wow.  Sorry for all the delay on this.
+https://powerball.com/winner-story/mi-lottery-waterford-woman-wins-70-milli=
+on-powerball-jackpot
 
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Friendly greetings,
 
-> I'm kinda still uncertain about the proper procedure.
-> This certainly isn't "the perfect patch" :-)
-
-Heh.
-
-regards,
-dan carpenter
-
+Regards
+Mrs. Cristy Davis
