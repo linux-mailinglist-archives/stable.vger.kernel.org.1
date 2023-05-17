@@ -2,109 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32892706491
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 11:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387987064D6
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 12:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjEQJv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 05:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53742 "EHLO
+        id S229780AbjEQKDl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 06:03:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjEQJv2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 05:51:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 399E440E6;
-        Wed, 17 May 2023 02:51:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C873D63DB1;
-        Wed, 17 May 2023 09:51:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87A8C433D2;
-        Wed, 17 May 2023 09:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684317084;
-        bh=PiIX9F7CgLx+hd6tbKAUBlwKVOg63Kqvs7tVepmIrnI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E2/zGuNuFCzdxhmxUOhm7YSe3r4jzd5mPfUYEJXuphNIXjHVx7hj1kJHju/xS7NWg
-         UuZAp6B0MT0X50OrPm2dcEZqnEZt+wM06l7pKpBJZ8GBVm4vc5B9Zg76+x+UGj4VBn
-         PyFOSl4rkI0OkFeGlSTnZzPuD9Blr+m8wrk7o54o=
-Date:   Wed, 17 May 2023 11:51:21 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de
-Subject: Re: [PATCH 5.10 000/381] 5.10.180-rc1 review
-Message-ID: <2023051704-catnip-vitality-d6cb@gregkh>
-References: <20230515161736.775969473@linuxfoundation.org>
- <ZGNJfAPd8eeVoCJ3@debian>
- <2023051711-thespian-sponsor-8878@gregkh>
- <CA+G9fYvw6HJopruUn4QKPCcqbdgw++AFf1wnwMP9hP1rJsmq3g@mail.gmail.com>
+        with ESMTP id S229949AbjEQKDk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 06:03:40 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EFB230C1
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 03:03:38 -0700 (PDT)
+Message-ID: <f36d0a4f-6a7b-653f-8f10-f9a87999d029@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1684317815; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hOv6CsIx1f54meav43d67GxYm//0h4sJ37ZVe84q8Mc=;
+        b=oyma1cowN1NenRixALL4KKfRCt+9kiz+nczY+HujnfmZj2Sfo1uGpnPQGZFA3fIvQc442w
+        P+MbWRDxeol4WNz2uVklidEjA9IyrosunQ0YjL+5e2eCs3bGl84O9Lmc1b/kc8n7kUXMY5
+        sba8Z9C3hQ/M+0pf3VPC5gtzrb7KghkwY8YJmenn7pFRS9LL6v5DN8VT2tk1uGhGvF4a7j
+        AGJptcVQ6qAmnOTsqYtWEIRbo3eE/oiLHpiT8X67UWL9coCWl8t0/yakg9D1KPhHBMHfio
+        67+BMQ1SS+EAyNgD5apYbcinongJYPsp+fvqKxER7bkC/0H197NaW8h9JivSzg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1684317815; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hOv6CsIx1f54meav43d67GxYm//0h4sJ37ZVe84q8Mc=;
+        b=Z0EqxQ0UXNv94GWkzbeScJFyqUxNHl311/0CtxWUOOvbHPNLXntHa+/+ObIOOQFVtK5l8e
+        /R4oBmBIo/ZdeQDA==
+Date:   Wed, 17 May 2023 12:06:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYvw6HJopruUn4QKPCcqbdgw++AFf1wnwMP9hP1rJsmq3g@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: steffen.kothe@linutronix.de
+Subject: Re: [PATCH 4/5] nvmem: core: fix registration vs use race
+Content-Language: en-US
+To:     Christian Gabriel <christian.gabriel@linutronix.de>
+Cc:     review@linutronix.de,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        stable@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+References: <20230517092024.188665-1-christian.gabriel@linutronix.de>
+ <20230517092024.188665-5-christian.gabriel@linutronix.de>
+From:   Steffen Kothe <steffen.kothe@linutronix.de>
+Organization: Linutronix GmbH
+In-Reply-To: <20230517092024.188665-5-christian.gabriel@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 17, 2023 at 03:11:48PM +0530, Naresh Kamboju wrote:
-> On Wed, 17 May 2023 at 14:21, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, May 16, 2023 at 10:14:36AM +0100, Sudip Mukherjee (Codethink) wrote:
-> > > Hi Greg,
-> > >
-> > > On Mon, May 15, 2023 at 06:24:11PM +0200, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 5.10.180 release.
-> > > > There are 381 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > >
-> > > Build test (gcc version 11.3.1 20230511):
-> > > mips: 63 configs -> no failure
-> > > arm: 104 configs -> no failure
-> > > arm64: 3 configs -> 1 failure
-> > > x86_64: 4 configs -> no failure
-> > > alpha allmodconfig -> no failure
-> > > powerpc allmodconfig -> no failure
-> > > riscv allmodconfig -> no failure
-> > > s390 allmodconfig -> no failure
-> > > xtensa allmodconfig -> no failure
-> > >
-> > > arm64 allmodconfig build fails with the error:
-> > >
-> > > /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid_ipa':
-> > > (.hyp.text+0x1a4c): undefined reference to `__kvm_nvhe_memset'
-> > > /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid':
-> > > (.hyp.text+0x1b20): undefined reference to `__kvm_nvhe_memset'
-> > > /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_flush_cpu_context':
-> > > (.hyp.text+0x1b80): undefined reference to `__kvm_nvhe_memset'
-> >
-> > That's odd, I don't see that symbol anywhere in the tree at all.
-> >
-> > And the only arm-related kvm changes don't have those symbols either
-> > (the other kvm changes are x86-only)
-> >
-> > Also, no one else has seen this issue.  Can you bisect?
+On 17.05.23 11:20, Christian Gabriel wrote:
+> From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 > 
-> This is an old issue,
-> Many other reported long back [1]
+> The i.MX6 CPU frequency driver sometimes fails to register at boot time
+> due to nvmem_cell_read_u32() sporadically returning -ENOENT.
 > 
-> [1] https://lore.kernel.org/stable/CADYN=9KSKQx816id-zWepV-E3ozph3k2_i9Rhs6QseFv0hkPfg@mail.gmail.com/
+> This happens because there is a window where __nvmem_device_get() in
+> of_nvmem_cell_get() is able to return the nvmem device, but as cells
+> have been setup, nvmem_find_cell_entry_by_node() returns NULL.
+> 
+> The occurs because the nvmem core registration code violates one of the
+> fundamental principles of kernel programming: do not publish data
+> structures before their setup is complete.
+> 
+> Fix this by making nvmem core code conform with this principle.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: eace75cfdcf7 ("nvmem: Add a simple NVMEM framework for nvmem providers")
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+(cherry picked from ab3428cfd9aa2f3463ee4b2909b5bb2193bd0c4a)
+> Signed-off-by: Christian Gabriel <christian.gabriel@linutronix.de>
 
-Then maybe someone should submit it properly for inclusion?
+Please add the (cherry-picked line above your SoB)
 
-thanks,
+Than add my:
+	Reviewed-by: Steffen Kothe <steffen.kothe@linutronix.de>
 
-greg k-h
+> ---
+>   drivers/nvmem/core.c | 16 +++++++---------
+>   1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+> index 84f4078216a3..6aa8947c4d57 100644
+> --- a/drivers/nvmem/core.c
+> +++ b/drivers/nvmem/core.c
+> @@ -418,16 +418,10 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+>   
+>   	device_initialize(&nvmem->dev);
+>   
+> -	dev_dbg(&nvmem->dev, "Registering nvmem device %s\n", config->name);
+> -
+> -	rval = device_add(&nvmem->dev);
+> -	if (rval)
+> -		goto err_put_device;
+> -
+>   	if (config->compat) {
+>   		rval = nvmem_sysfs_setup_compat(nvmem, config);
+>   		if (rval)
+> -			goto err_device_del;
+> +			goto err_put_device;
+>   	}
+>   
+>   	if (config->cells) {
+> @@ -444,6 +438,12 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+>   	if (rval)
+>   		goto err_remove_cells;
+>   
+> +	dev_dbg(&nvmem->dev, "Registering nvmem device %s\n", config->name);
+> +
+> +	rval = device_add(&nvmem->dev);
+> +	if (rval)
+> +		goto err_remove_cells;
+> +
+>   	blocking_notifier_call_chain(&nvmem_notifier, NVMEM_ADD, nvmem);
+>   
+>   	return nvmem;
+> @@ -453,8 +453,6 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+>   err_teardown_compat:
+>   	if (config->compat)
+>   		nvmem_sysfs_remove_compat(nvmem, config);
+> -err_device_del:
+> -	device_del(&nvmem->dev);
+>   err_put_device:
+>   	put_device(&nvmem->dev);
+>   
+
+Mit freundlichen Grüßen / Kind Regards
+-- 
+Steffen Kothe
+Linutronix GmbH | Bahnhofstrasse 3 | D-88690 Uhldingen-Mühlhofen
+Phone: +49 7556 25 999 38; Fax.: +49 7556 25 999 99
+
+Hinweise zum Datenschutz finden Sie hier (Informations on data privacy
+can be found here): https://linutronix.de/kontakt/Datenschutz.php
+
+Linutronix GmbH | Firmensitz (Registered Office): Uhldingen-Mühlhofen |
+Registergericht (Registration Court): Amtsgericht Freiburg i.Br., HRB700
+806 | Geschäftsführer (Managing Directors): Heinz Egger, Thomas Gleixner,
+Sharon Heck, Yulia Beck, Tiffany Silva
+
