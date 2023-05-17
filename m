@@ -2,268 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE61705CB4
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 03:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 211F3705CD1
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 04:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbjEQB5l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 21:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55964 "EHLO
+        id S231638AbjEQCHI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 22:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231528AbjEQB5l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 21:57:41 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972283ABA
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:57:38 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1aaf702c3ccso36985ad.1
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:57:38 -0700 (PDT)
+        with ESMTP id S229601AbjEQCHH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 22:07:07 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F14F30F9;
+        Tue, 16 May 2023 19:07:06 -0700 (PDT)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34GJxwom020535;
+        Wed, 17 May 2023 02:06:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=8lCZFzU60EallCnNVZ7daw5QAuW15JvvpYVq2OTb+Ug=;
+ b=ZfiPCCUILeKuw5GUUCkfnfve/Kn7Utr8D02ETQzHWuX8UKFj8hXCve4A2Tbc+XGMxBDY
+ eGk2J5o/59jVK2J+u8E+vWn2dCFa8cJpL+qMTUKtOwqfEMLbvDThE5ZISVqyjyXocB2h
+ QPW4JZFsm+XtuMX+LlklkKPTGO4Xkon5x1rFUIXlXJyP9TwzfS0yvLUvRvQFs0YdmpdM
+ 40dpSvI7Hd0ggK5Uo0WYDW/emLsvV/3ewAU1QxM2742D5I4GOsxn3exdOOR6AL4/brxV
+ qMBhN+zaAH5los8HgLJ9oSiO2m8p/9OE4LBo9T0+E+9SacRWCvFcXPCgoA9SdWCZvKvi vQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qj1524p4t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 May 2023 02:06:39 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 34GNJgAO025017;
+        Wed, 17 May 2023 02:06:39 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2047.outbound.protection.outlook.com [104.47.74.47])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3qj104trvw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 May 2023 02:06:39 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FT0jf/+uSjrid6JOWwgYRfrtjSg7DPTJPtnw2CgVZCgnN5tCGcfvcJukl0VAgvWiJPKo3xeF1JDsft2AIs4YhdbTTyF5xWitPEQlBI5iYZyj8WsusF+EJDcP1BHaCwzm+hOIcNKII1kJXMlPbreNvLvfthDnblybKhxY8YLyFSm10oOhFUWGv0Zwcirgc62tJEfqr3edjpVVitOTqUwFr74TleAUVcmalx+0Yeq7d5INas9fR/W0PL//wVCL4PgNo0/vCAnsFKlqzRowgJfsEUUqhrhBPRvXZ3EAr3qYy9blDsfBbfC9gMhlcvnY2nW88oBGJ5Glo6GIIwSiv8D/1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8lCZFzU60EallCnNVZ7daw5QAuW15JvvpYVq2OTb+Ug=;
+ b=Q03pcLL7RNx/ZrSf81aKMoIr34iNZLft0GggSXDbTNFUqqczGiv2axC6vFJ7+nvjpHBcvqjAtd688EOV2aXjPyO11rtqdzcR4e0e4HYhMSzxf/VOdZsc+eYAhyhXrd795RQ13Tih/U13WrXyijIpC6I8JiO2LGyW+wbBmxeMnkWNrFDY6oJTwqyFqsAV7aVQ7Szl9HIvLZYD5qiMo8MFQh+AK443I6ALRc5239WSH6QhZFaeTbQr4fbBR+6e1n+3hUsgPb6TsRfZVxNyR4IYyIOxfl7QfDrRj0wLDzHYSSP7tiYkqnQI8VH5ApUQ8dmcaTJBYVhHun2aremd1cC9zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684288658; x=1686880658;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m17guDOQ12FqooxLGjI6njqGM315YV7VFvugPBs5F1U=;
-        b=G2g3cTJEzvXtAGyeMhLS3Tp9CGxqFe6bTGp67/QaCOul7DNRgJGVysoeOKGC6MU8Nb
-         hcrR9i5M+H1GAD6TiKPgXwlBK2V4d6vyMIHTJ0OLyBi1jK65vk+LYjCEeImS/ubCtS8I
-         Xk6hgCWAsni/4am19MdEQGg1M/jj6BqX/ao6Sjgx/2/jffC2BBbPodTR+rwFNr1yLpr9
-         gzee4ygUv8v7j5MaMN3CO+z3tx3czXQR8M7yLggRMS8L15H8eOJefxg3AxRD9XVtqRew
-         uzL7IMLaRr+A2T694VFyzbxIx/Bzg3Z8L9Ex5UWi+KcvOKpiPj0GhcXopupfoJUwKyLG
-         J0pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684288658; x=1686880658;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m17guDOQ12FqooxLGjI6njqGM315YV7VFvugPBs5F1U=;
-        b=HgNAxzlGh93ZLIrASVv6lrN1UoSYwWWN9kq+XMc1VixaDyO5wqB9l5Q7RZu1Bn1rMl
-         9opaA5OSlMuj46u9TaRDILB/WkVU32CH7Vq2/MhSD9FXD/FEoAqTk8BALPINtqhzPq0x
-         9JkJZyVxJscj3pV9uQUowSFryTzWjEtSxE7uTJwk6WdqpZAkM0BPHfdyR/x8WVE+P7LK
-         ylMrDydKMntC60k5XmCADXhVo2OSy/lHAPirJNNIDz/YhIRnNOHSN8A2rJSA1Ds/ikHF
-         ls38tC+L/a1Nk6IstRY8dREQ6JBtdewPqS4/zOoXD1vF4ekIJKKaMXlQydIyrj+h6eah
-         8RmQ==
-X-Gm-Message-State: AC+VfDyncA0WBSVxS7cqcCuwNwqwopAzM3ueZevsCN2D31U5ArSoome2
-        ua2T4tDWJfOfZmS3eqEW98OboEUGJqQpd7VIi9Ur/A==
-X-Google-Smtp-Source: ACHHUZ5TQRoxJBA+VrCOoj6SjVxOZ9tveqCruPZC8f50f90jN5fWSAtn66U8gRT/dRMCPRrIuOzIJoSdzUpr6zs+1O0=
-X-Received: by 2002:a17:902:ea09:b0:1ae:513a:944d with SMTP id
- s9-20020a170902ea0900b001ae513a944dmr71548plg.8.1684288657779; Tue, 16 May
- 2023 18:57:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230512235755.1589034-1-pcc@google.com> <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
- <ZGLC0T32sgVkG5kX@google.com> <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
-In-Reply-To: <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
-From:   Peter Collingbourne <pcc@google.com>
-Date:   Tue, 16 May 2023 18:57:26 -0700
-Message-ID: <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before swap_free()
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8lCZFzU60EallCnNVZ7daw5QAuW15JvvpYVq2OTb+Ug=;
+ b=bbv82rodKCbwP/wNXl1lOO3pk40/PTQf1JldknGTqVWTZnbGafMUWs45E67zC+3TS6GzCS6Ry8qQDM/eDdGN/AJl5ugel8y8M+vkWrmDEC2DTntJwLLwVd5iAzGIlK3Q/Pvh0tu7yUM5wOwp69qKBdhsHDs+FjBokknazMGxJx0=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by DM4PR10MB6279.namprd10.prod.outlook.com (2603:10b6:8:ba::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Wed, 17 May
+ 2023 02:06:37 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::9a52:4c2f:9ec1:5f16]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::9a52:4c2f:9ec1:5f16%7]) with mapi id 15.20.6387.033; Wed, 17 May 2023
+ 02:06:37 +0000
+To:     Juergen Gross <jgross@suse.com>
+Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
+References: <20230511123432.5793-1-jgross@suse.com>
+Date:   Tue, 16 May 2023 22:06:23 -0400
+In-Reply-To: <20230511123432.5793-1-jgross@suse.com> (Juergen Gross's message
+        of "Thu, 11 May 2023 14:34:32 +0200")
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P123CA0153.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:188::14) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|DM4PR10MB6279:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3735435f-b0fc-46c1-beeb-08db567b5873
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 61zoY9S/ugrKMjT+vat9zXOD/PZ2NPHo/KJlY3S3UDgweF++Wfnm629vjOCZAgPtVTFZbezRW+KkLlWHuRVShkc/olpID9xRBZ6rb6N0V+L2s7EFnxf+XpXnyPhIaCyenXy1PkSXgxoKIGDa1U7W+Uw6XZ+nyMgHU6iLcz9wsFYBC1xVrj5kPWTbtwz6pFRYfioUmqdxjxQOl4+5eYdRgwySl67UFApoNAZRPVyaXVHRVfOh/YGI3wmUKjG3ezAjUguni2jRsWKPaMxlWXjFGl0gZeG0q5JEHYLaFVz0qg6RBbzRP9ituxvURaz/Y25j5RUvaxx7elFqbI6D/XqfR9nS0uJjfnLmxt2qCqa13ScYH39E/eSZdMMflIdJbvpKm8KZX7ypCDHOGAKu3TNI/905PkMhSiXo+5z8j4u6pOTmgfy+12jaLYanfW1nXpoU24GCG8e5jwoTgJJvELWJBiwLbWtHdJnBXu69WTpfswFazJqoMlK08Ndofrv+U0yQytbei2cVWiYqm24n4WxfavwVZn0xOdEc2AyYZq45egS/sOjnCC1Ct+M0iR0iBWBl
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(39860400002)(136003)(376002)(366004)(451199021)(86362001)(54906003)(316002)(4326008)(66476007)(66556008)(36916002)(66946007)(6916009)(478600001)(2906002)(8936002)(6666004)(5660300002)(8676002)(4744005)(38100700002)(186003)(6512007)(6506007)(26005)(41300700001)(6486002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CPXxLOtNqygWc0rZR11ubbWLb11QmANoOUjAvsS6MEUKuafMVftbIBKbod0q?=
+ =?us-ascii?Q?uwSQ4bxpGGwgz5HZbBUsPetjr6F4WDyuw9o5SkTwQWh+DIv884mdYu55mbrv?=
+ =?us-ascii?Q?qfZx4P2DBaPaFLkhT37F6LedQx6ILFvaGQrOlQmiucRI4T5W6S/06SD+lMI7?=
+ =?us-ascii?Q?OLBzYZ+9AA9aFt98ylm7YXku+kpkoiaCG3Ed28/LYz3oZUx/eMTCaceWfCf1?=
+ =?us-ascii?Q?hRxtZf2C0pTK+Sfvba9iIRmq9n99bT0GOVg6kky2hFt51VQovzJnukclM6Db?=
+ =?us-ascii?Q?GLcK1INz/4AVTO/7dE4TnHUW8xtN7ayUKgu/9DJ1IT6fLvtdKAy871zsvBuQ?=
+ =?us-ascii?Q?I5kG3XP1/ouJwHRMSp/fQkzatda3WcSYVxRXL33oKHwl637tFwgEl3g4zMXx?=
+ =?us-ascii?Q?5QUB0TYgzzfwse7fgNKcYDfbsn7VwjnVAa/KR2wjZCcbm8WkPmIvASRqjJ8S?=
+ =?us-ascii?Q?gvx7tlPLRCWllbtwSWZEoSslFJZGzcTJ0VpHeZk3Hyc3hKne45NFKNhE1SAZ?=
+ =?us-ascii?Q?sK0LvvzCxhe+LITy4Hx7J6mSEvAhuVJFgsUwXAwLzZzwvpQLpzBBgChuxhKd?=
+ =?us-ascii?Q?+vdqf9MgyWWmmb25EsyQdsu4tYQgP0/eqZmbRwyjUgUoYQXiYSWEQeqLocil?=
+ =?us-ascii?Q?LWsR3l+VHGQPraDRQRWsDUP1O1bQqLuJ2spRO8s2BUyZ9MY5DCuOfFowLrIa?=
+ =?us-ascii?Q?fqIAT3JKbP5ccjcReFVD6IgU2DXWdstIQKuobgdMqCXCj4pX8GW967QKfXnG?=
+ =?us-ascii?Q?IxxKP+4OrsZnX/EyZJFCXVCpb++2llgg3HUgdcv2Cfat87Lal7/Yu8CjOUe8?=
+ =?us-ascii?Q?9jy3BVllP6+T61+M39cVE/lQvFYQW3TwCHP+b2urIgbYzh0dJ8Afi3kwvDCd?=
+ =?us-ascii?Q?c/Vyuj+IT06sQUYzdNQ8iNKZjLnOUimwOupdr8RfeovF54PpqdjRj5VxzkLg?=
+ =?us-ascii?Q?dgfMAsPpZoTrjRURkTB7Dg9rxjAhi2EEKUS43slGhcdFtWxIPe3LUnrPLk18?=
+ =?us-ascii?Q?rVuQKTl1XwcjDHlRxg3MRuzS/8zxc5RkrS1nZYtzpUFuRFHGO8CbdtYD0EFQ?=
+ =?us-ascii?Q?mME+jOX9V76dxlI4FV0XJd4lUMhGb6FaivU2VoKTLu5kuDYE39CQTnWvFpoU?=
+ =?us-ascii?Q?eJfnLil6Rt4aI6pLiDSmn5lVPJjSAY4bN049qGSAGBKRT8fQluPHoWcE3B4a?=
+ =?us-ascii?Q?A6P5HoMNMNj+izrFhmeV3y+MS+X48rkje1iKCxEmkQDNvojYuzJKqEtuwmjQ?=
+ =?us-ascii?Q?flfua4LpLz9vYivL+WlupiU4GjCpUyH6N7w1gEyJmhPQVf5/G4kUd3yO/4QQ?=
+ =?us-ascii?Q?SlLyX5Al37UvVF7LY+wPJu0xZuTHsHoBDCECe0xQVeUSsfaDmSdolXnWYySP?=
+ =?us-ascii?Q?uywPm+txFtDligDRi1xRs1PmEqd601vMT4pYT/A6ctZjrFN86vh17d95FGlH?=
+ =?us-ascii?Q?fivDacEV10DHtsGEIR8FZjWPjGpTLXUPKOK3CYkagaPB54gp6xxMra7d/tdu?=
+ =?us-ascii?Q?OfnW1UR4ISz0E2eQQ66fzbywWnAU4BClmQBkZP4NR/AxkrYisBTZQhZ21mvA?=
+ =?us-ascii?Q?Sp8BPNOUqqltQUTf44Q9NPiw9tSqwSZnpd8KD7q8kSDHlMR3YTWjEaWmMIbt?=
+ =?us-ascii?Q?Gw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Mh/GsQwz3Mzugdim+z1iUPI+M8jrgtUaBg4QbxxFUahEpj8KcKK8F+WiF2IrTigUckcoBzS9BUFCdm7/SPJPEaJpQg8H/fKQFGByJb5GGdxEQEcva1ymMPSGIXBWPscHhUpcQpbiKdaa82m+2CQxzi2t8AxCpi44S9g9RS7sZG1B7D6oBu+KPvAORn5UBDV5xYVMxE6FNJS4d2YIXCrnUgox7P7IOY1KVE3qoCeYg5rXRfoVH+IzOYPPMxHLEsdppBHExaXRMB+ZFULRRiltrGWbcR2VWQgPqveop2YgVwOmHXkLHnE21ETvBvOkgLotgtMqJqZVoGUTvL7oKPD8QXMir6wvFF5QYNRPnAzm2OCRJyCh7m7UXV+od9rDA2FihxWbFEJWwcytZOBlJevL/ID7tC7ETG9MMJUURnKXnvmFJh0ZL4ohvVyFurE2GyCWFHB7Fg9/mrlqE0Lrdy1wzl6SWdjZDI4dgIOgAn4aZpwnXt7+THxlzh4qOJTTUymi+pcTk6Jr+7lCu3xz/urbQsEBofuubixj2/mNnOq45go+BSUUGaJ7Hyd/fe/EpJPgvTpeIPh7sLSmNV5W2jUDTDrHud4oQ1qQaXY1kN61vQqSCWQUpW5mK6S5mPmq/hkxONOa5FIZFrbKn26WmCHa3ZdOBHN7PiX789u0lJoD/Ggpp1NbVBBniERtSFyY4gLaN95GTTltWxHelQqecMydZ/1QX3w9P9wNZbtSaJJi+upB/avr/YRQeEtfs9tUm01FvfYUmRtAj3nfJnaQ3KOaxRmfAPxKTb9zXAL5RYQo6m6GRoUIXm/s1l4bTE3cb0c5
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3735435f-b0fc-46c1-beeb-08db567b5873
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 02:06:36.9283
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oNjGh/WTHGEPi41XJ0riFH4iduSjvGyALGDTwrqN6yT/5b2DZXeWz/cN+KKv4auRr79SqL5GvTTBWu3must9WiZVzJLPck2qAsUlckDCJB8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6279
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-16_14,2023-05-16_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
+ mlxlogscore=687 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305170015
+X-Proofpoint-GUID: SN3SD6_FJpzxTsITdVjVnXpxQcep0Rr2
+X-Proofpoint-ORIG-GUID: SN3SD6_FJpzxTsITdVjVnXpxQcep0Rr2
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 16, 2023 at 5:35=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 16.05.23 01:40, Peter Collingbourne wrote:
-> > On Mon, May 15, 2023 at 06:34:30PM +0100, Catalin Marinas wrote:
-> >> On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> >>> On 13.05.23 01:57, Peter Collingbourne wrote:
-> >>>> diff --git a/mm/memory.c b/mm/memory.c
-> >>>> index 01a23ad48a04..83268d287ff1 100644
-> >>>> --- a/mm/memory.c
-> >>>> +++ b/mm/memory.c
-> >>>> @@ -3914,19 +3914,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>>>                    }
-> >>>>            }
-> >>>> -  /*
-> >>>> -   * Remove the swap entry and conditionally try to free up the swa=
-pcache.
-> >>>> -   * We're already holding a reference on the page but haven't mapp=
-ed it
-> >>>> -   * yet.
-> >>>> -   */
-> >>>> -  swap_free(entry);
-> >>>> -  if (should_try_to_free_swap(folio, vma, vmf->flags))
-> >>>> -          folio_free_swap(folio);
-> >>>> -
-> >>>> -  inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> >>>> -  dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> >>>>            pte =3D mk_pte(page, vma->vm_page_prot);
-> >>>> -
-> >>>>            /*
-> >>>>             * Same logic as in do_wp_page(); however, optimize for p=
-ages that are
-> >>>>             * certainly not shared either because we just allocated =
-them without
-> >>>> @@ -3946,8 +3934,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>>>                    pte =3D pte_mksoft_dirty(pte);
-> >>>>            if (pte_swp_uffd_wp(vmf->orig_pte))
-> >>>>                    pte =3D pte_mkuffd_wp(pte);
-> >>>> +  arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
-te);
-> >>>>            vmf->orig_pte =3D pte;
-> >>>> +  /*
-> >>>> +   * Remove the swap entry and conditionally try to free up the swa=
-pcache.
-> >>>> +   * We're already holding a reference on the page but haven't mapp=
-ed it
-> >>>> +   * yet.
-> >>>> +   */
-> >>>> +  swap_free(entry);
-> >>>> +  if (should_try_to_free_swap(folio, vma, vmf->flags))
-> >>>> +          folio_free_swap(folio);
-> >>>> +
-> >>>> +  inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> >>>> +  dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> >>>> +
-> >>>>            /* ksm created a completely new copy */
-> >>>>            if (unlikely(folio !=3D swapcache && swapcache)) {
-> >>>>                    page_add_new_anon_rmap(page, vma, vmf->address);
-> >>>> @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>>>            VM_BUG_ON(!folio_test_anon(folio) ||
-> >>>>                            (pte_write(pte) && !PageAnonExclusive(pag=
-e)));
-> >>>>            set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
-> >>>> -  arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
-te);
-> >>>>            folio_unlock(folio);
-> >>>>            if (folio !=3D swapcache && swapcache) {
-> >>>
-> >>>
-> >>> You are moving the folio_free_swap() call after the folio_ref_count(f=
-olio)
-> >>> =3D=3D 1 check, which means that such (previously) swapped pages that=
- are
-> >>> exclusive cannot be detected as exclusive.
-> >>>
-> >>> There must be a better way to handle MTE here.
-> >>>
-> >>> Where are the tags stored, how is the location identified, and when a=
-re they
-> >>> effectively restored right now?
-> >>
-> >> I haven't gone through Peter's patches yet but a pretty good descripti=
-on
-> >> of the problem is here:
-> >> https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.c=
-amel@mediatek.com/.
-> >> I couldn't reproduce it with my swap setup but both Qun-wei and Peter
-> >> triggered it.
-> >
-> > In order to reproduce this bug it is necessary for the swap slot cache
-> > to be disabled, which is unlikely to occur during normal operation. I
-> > was only able to reproduce the bug by disabling it forcefully with the
-> > following patch:
-> >
-> > diff --git a/mm/swap_slots.c b/mm/swap_slots.c
-> > index 0bec1f705f8e0..25afba16980c7 100644
-> > --- a/mm/swap_slots.c
-> > +++ b/mm/swap_slots.c
-> > @@ -79,7 +79,7 @@ void disable_swap_slots_cache_lock(void)
-> >
-> >   static void __reenable_swap_slots_cache(void)
-> >   {
-> > -     swap_slot_cache_enabled =3D has_usable_swap();
-> > +     swap_slot_cache_enabled =3D false;
-> >   }
-> >
-> >   void reenable_swap_slots_cache_unlock(void)
-> >
-> > With that I can trigger the bug on an MTE-utilizing process by running
-> > a program that enumerates the process's private anonymous mappings and
-> > calls process_madvise(MADV_PAGEOUT) on all of them.
-> >
-> >> When a tagged page is swapped out, the arm64 code stores the metadata
-> >> (tags) in a local xarray indexed by the swap pte. When restoring from
-> >> swap, the arm64 set_pte_at() checks this xarray using the old swap pte
-> >> and spills the tags onto the new page. Apparently something changed in
-> >> the kernel recently that causes swap_range_free() to be called before
-> >> set_pte_at(). The arm64 arch_swap_invalidate_page() frees the metadata
-> >> from the xarray and the subsequent set_pte_at() won't find it.
-> >>
-> >> If we have the page, the metadata can be restored before set_pte_at()
-> >> and I guess that's what Peter is trying to do (again, I haven't looked
-> >> at the details yet; leaving it for tomorrow).
-> >>
-> >> Is there any other way of handling this? E.g. not release the metadata
-> >> in arch_swap_invalidate_page() but later in set_pte_at() once it was
-> >> restored. But then we may leak this metadata if there's no set_pte_at(=
-)
-> >> (the process mapping the swap entry died).
-> >
-> > Another problem that I can see with this approach is that it does not
-> > respect reference counts for swap entries, and it's unclear whether tha=
-t
-> > can be done in a non-racy fashion.
-> >
-> > Another approach that I considered was to move the hook to swap_readpag=
-e()
-> > as in the patch below (sorry, it only applies to an older version
-> > of Android's android14-6.1 branch and not mainline, but you get the
-> > idea). But during a stress test (running the aforementioned program tha=
-t
-> > calls process_madvise(MADV_PAGEOUT) in a loop during an Android "monkey=
-"
-> > test) I discovered the following racy use-after-free that can occur whe=
-n
-> > two tasks T1 and T2 concurrently restore the same page:
-> >
-> > T1:                  | T2:
-> > arch_swap_readpage() |
-> >                       | arch_swap_readpage() -> mte_restore_tags() -> x=
-e_load()
-> > swap_free()          |
-> >                       | arch_swap_readpage() -> mte_restore_tags() -> m=
-te_restore_page_tags()
-> >
-> > We can avoid it by taking the swap_info_struct::lock spinlock in
-> > mte_restore_tags(), but it seems like it would lead to lock contention.
-> >
->
-> Would the idea be to fail swap_readpage() on the one that comes last,
-> simply retrying to lookup the page?
 
-The idea would be that T2's arch_swap_readpage() could potentially not
-find tags if it ran after swap_free(), so T2 would produce a page
-without restored tags. But that wouldn't matter, because T1 reaching
-swap_free() means that T2 will follow the goto at [1] after waiting
-for T1 to unlock at [2], and T2's page will be discarded.
+Juergen,
 
-> This might be a naive question, but how does MTE play along with shared
-> anonymous pages?
+> Some callers of scsi_execute_cmd() (like e.g. sd_spinup_disk()) are
+> passing an uninitialized struct sshdr and don't look at the return
+> value of scsi_execute_cmd() before looking at the contents of that
+> struct.
 
-It should work fine. shmem_writepage() calls swap_writepage() which
-calls arch_prepare_to_swap() to write the tags. And
-shmem_swapin_folio() has a call to arch_swap_restore() to restore
-them.
+Which callers? sd_spinup_disk() appears to do the right thing...
 
-Peter
-
-[1] https://github.com/torvalds/linux/blob/f1fcbaa18b28dec10281551dfe6ed3a3=
-ed80e3d6/mm/memory.c#L3881
-[2] https://github.com/torvalds/linux/blob/f1fcbaa18b28dec10281551dfe6ed3a3=
-ed80e3d6/mm/memory.c#L4006
+-- 
+Martin K. Petersen	Oracle Linux Engineering
