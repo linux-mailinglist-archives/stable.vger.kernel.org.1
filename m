@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0178B706A07
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 15:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD72706A08
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 15:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231585AbjEQNiW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 09:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47426 "EHLO
+        id S231828AbjEQNiY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 09:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231450AbjEQNiV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 09:38:21 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE14C4C33
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 06:38:19 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2acb6571922so7321111fa.0
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 06:38:19 -0700 (PDT)
+        with ESMTP id S231697AbjEQNiX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 09:38:23 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49C8C524C
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 06:38:20 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2ac7462d9f1so7657801fa.2
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 06:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1684330698; x=1686922698;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=Ly7Sv2grDSLouanjUEzIq82Frd3YseMb/l+QstdnfJQ=;
-        b=Dmvjct3gKXrPwPz7AhbdmHWwAuq2Es9vmNFvfxgsoJNv6V9hWhvklATBORJJB5qbJt
-         SV9VuHyHeiRFiMEl95USGDcvXq2EPact/RuQUMxHVytPsTpks6NzwLuxYWb4aojhRIUJ
-         Kd0wr9k/gjJeQS968vAdXqSZXpwdmQ/FQjJ5csPZErJn8sEUa7PCLxVkhNfItBtvLa3u
-         9WNV5VDFJGiNXHII+fxMMk+RvOAk+QFnWFTH5w7+uMwa2BlV9ygrWx16O0jKwHQh0qjw
-         UiSOh2bhAcYqZD1IQ+4AbiseFvrEej/lZ8vhXZqbd+D+hNv1PHkj+7Sf0Xc0vSzC7tdk
-         Wfyg==
+        b=FVanGQ7UhIPc14wGSoSU9P5nxPegIGBIJGLEQ6HW0kut5U8i5IZKs6x5pa7Ya0T1R1
+         dkB7tS3jVwc8Lnl1YLry5/x/o0JAMCkLbPIdIF8HDlmGUemXlagttlFNWWrdR9XHjyGV
+         tjrOmMcBnO7L1zCobRPnKLGKK4zd1Drx0NFiZY1DxMIbq0hy4ntFBzI8ZmJc81OE+bCY
+         pSIYXWwG0UghjbT37Y1i1UfFy3HhWHu2chb+MUoS9i+wb4DN+MSaUre3DDiLqIOfgH1h
+         HatzUo4nf9krpPHqBpu5JiUnrMv/pAJF2js+GaFKNUr5fiPpH+XK8iplfkT0kGEJe5ns
+         JUqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20221208; t=1684330698; x=1686922698;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=Ly7Sv2grDSLouanjUEzIq82Frd3YseMb/l+QstdnfJQ=;
-        b=i6i5AQ84fISf6xyagL19y98BvdJDxe8zbQd7w6yjPU1/noZsZl+Q03dp6Wcamewm7T
-         t/YXBsNPG4y9cT6EzhT+K7lsgrf0qXGpO1snRDBs4aZQvrEIogk9/sjb0idJ9QPssl4W
-         nIUdUNJMU7IOlC2exq6DsRpHEqvTycuiMD1Y5Rc67BX2tJ4CcwG1/oSaA5kL7IVuuqpZ
-         R6YWY3QM8asUIhcGQVdwPwJhgD8cJPo2IfTw19R0WwqTcXkqMo7XnYVUa1yGLLZa1p+L
-         QMPcONSaHMwq4/K4iPlrKTdQxMpzuJ+T6AZ0ZXPDpvLK14gGtYhoSwolFeVdWr1wV1Cq
-         3zoA==
-X-Gm-Message-State: AC+VfDw91Cfd2upxi1QjgVU80bp2n0CoWlVFzHTUp9MQLOHxGmAYbHVr
-        F3U00Sp51Lzg069Q3x9JLaVzpA==
-X-Google-Smtp-Source: ACHHUZ5Zu6JBSjwmINQDKUtIcahDxpmKHXodYC2lqIyuKqZL4e7Pd3b00VZy7nQ5kCBe7qVZ7NygVQ==
-X-Received: by 2002:a2e:780d:0:b0:2a7:8b35:8270 with SMTP id t13-20020a2e780d000000b002a78b358270mr10375545ljc.35.1684330697871;
-        Wed, 17 May 2023 06:38:17 -0700 (PDT)
+        b=agnsXyFV1Qn1wnNyyu/tpiqpPsnGydPJjJ4T7HEEZvoXaQo6J8MBMyk/WeHccgcc1i
+         wpDPWzCbZK90vUmYYDotQiJ5w9ah1ZcxrYYtS5XsZdALVytUBG5MlMKurUsgbfBfbw57
+         u76wwUcdmV7dw6XerAwLzJmARyMoRYU9x3nda44BlCoxmd1r5vK3pPuXkLTTzwn+mm34
+         dJ2DPFui2feJZD0wJoA5lTDiJO5H5qLbn8VuA9HCms1PFVaLQJ7Ofuplf7JOl/BoNRNG
+         O5dq6fdUDsWeItYL6WVF6ZomZ2g03crjlz/GXIFWtmgWJiaHnjx2Nlvx0HqmdkY3otjN
+         J9LQ==
+X-Gm-Message-State: AC+VfDxBqBzs/6+hs+twOFuDrLbusrUVmWTb84Zy2lybbipxZ71D60Uv
+        OOnIWwKjuM3vGaX1XW+Dfa0Dig==
+X-Google-Smtp-Source: ACHHUZ4Pt8XTxNqNgz54l1AgVbsFbbcC6PgjLhNgPTdYxZrVGR67m+sT8N9rrUZlW7usxz9+f7pesg==
+X-Received: by 2002:a2e:80c6:0:b0:2aa:43cd:57c9 with SMTP id r6-20020a2e80c6000000b002aa43cd57c9mr9471731ljg.36.1684330698554;
+        Wed, 17 May 2023 06:38:18 -0700 (PDT)
 Received: from ta1.c.googlers.com.com (61.215.228.35.bc.googleusercontent.com. [35.228.215.61])
         by smtp.gmail.com with ESMTPSA id k2-20020a2e8882000000b002addd80bc8csm1784844lji.66.2023.05.17.06.38.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 06:38:17 -0700 (PDT)
+        Wed, 17 May 2023 06:38:18 -0700 (PDT)
 From:   Tudor Ambarus <tudor.ambarus@linaro.org>
 To:     bjorn@mork.no, joneslee@google.com, oliver@neukum.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
@@ -59,11 +59,12 @@ Cc:     linux-usb@vger.kernel.org, netdev@vger.kernel.org,
         stable@vger.kernel.org,
         syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com
 Subject: [PATCH] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize
-Date:   Wed, 17 May 2023 13:38:07 +0000
-Message-ID: <20230517133808.1873695-1-tudor.ambarus@linaro.org>
+Date:   Wed, 17 May 2023 13:38:08 +0000
+Message-ID: <20230517133808.1873695-2-tudor.ambarus@linaro.org>
 X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-In-Reply-To: <87wnklivun.fsf@miraculix.mork.no>
+In-Reply-To: <20230517133808.1873695-1-tudor.ambarus@linaro.org>
 References: <87wnklivun.fsf@miraculix.mork.no>
+ <20230517133808.1873695-1-tudor.ambarus@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
