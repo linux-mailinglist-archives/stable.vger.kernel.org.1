@@ -2,90 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A5B7062D1
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDAB67062EF
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjEQI2u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 04:28:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47100 "EHLO
+        id S229901AbjEQIcO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 04:32:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbjEQI2Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:28:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE24B3AB0;
-        Wed, 17 May 2023 01:28:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C9E46439B;
-        Wed, 17 May 2023 08:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D46C4339C;
-        Wed, 17 May 2023 08:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684312101;
-        bh=Dk3FoDyyLxuyBINUs34Am5WqC6Ckf7i4P5ahfp4vBmU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mXNT9PQdfqj5oEOTaB1+pMn1PrkbyvYRtTuhQc4us6r1FiPtpKQAhzFnzwN2JIfr5
-         r1K7CZJ3sofH0+G6vz8v83SO0SGrLr3SLuDunhNXwEeYfSat1G7d42U+553yZdlr3J
-         MElFjy+8mshbqgyIkAyHkaA7ZFBMVjHeMWaNZ2lE=
-Date:   Wed, 17 May 2023 10:28:19 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Salvatore Bonaccorso <carnil@debian.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.10 000/381] 5.10.180-rc1 review
-Message-ID: <2023051756-shield-reenter-80fe@gregkh>
-References: <20230515161736.775969473@linuxfoundation.org>
- <ZGNATKe3U0oXHICX@eldamar.lan>
+        with ESMTP id S230434AbjEQIbr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:31:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428A85269
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:30:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684312224;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lCs/dUVErnBMZp0vS+8RY4FN1qN1vupcxjp7vnWl9AY=;
+        b=QmrmO1VSBEEHkB+x8d8E2JOrmT/jf3u37fwy5iUN52Y5TrUCuWup7f0TmnmC7qjMJ6Rujb
+        HLm0az9R4Ik4Clzohlr7Jtl29Xxi7/GvuxgK5inXNkY0+ioqxhyqHuFmpfHQWaOtgxUcdw
+        30qnTle4XWldeYhpSp3lGatsrX2zsFA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-DJUEN3zNMxKCOFxFIcy3yg-1; Wed, 17 May 2023 04:30:23 -0400
+X-MC-Unique: DJUEN3zNMxKCOFxFIcy3yg-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f433a2308bso39900965e9.0
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:30:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684312222; x=1686904222;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lCs/dUVErnBMZp0vS+8RY4FN1qN1vupcxjp7vnWl9AY=;
+        b=gHUWhbQwhYDq98pY5pfG4PJUyJLhYRoyzzsNZkJn1nS2uS2g0Ly1iCQlR7nlDAZCMJ
+         qIvhMk9qTtRHfoMx8H7nFEwGWlOdZ7v+IK6QposaTlg2hSg+qdihIRo4Yo94pdQXidDI
+         Ge9Oj3UvQJ0O902G8LAVY5WVgJmCekv2nN55JlfsG1MplcadVFxLpcFQqB0zLF5tFZwm
+         uAfs+yWodL+efLV0RLIbfWrsLuNR6gja4S8+25Z+xmMKIclhi6HHGwwxyTCDUo9LIVLh
+         GtxSDUi5tO52CXn4cLeN5DUo7Brt+c1dhQ0Dp25PYaA8ubd5So9ZgJwu+Q7b4L1bUJmo
+         m7Ew==
+X-Gm-Message-State: AC+VfDx1PI9QSSxGCarQ+hzaowL/IdhfRr4FmrIOjYtOpfVu1V8Kha7g
+        jT80Q7ddRIXZS/vceYF5K1yWdP50c551ky2uNsCHM3kbUN0x1/xv7KTpBvW2IEhrwe4gwbF36A/
+        7Banj8zrp4isCzcb3
+X-Received: by 2002:a05:600c:2216:b0:3f4:2a69:409 with SMTP id z22-20020a05600c221600b003f42a690409mr1004161wml.11.1684312222177;
+        Wed, 17 May 2023 01:30:22 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ60ueDQkDZtQuGOk/I42qgBFTunk166hxYz0WpLHJyNYPGp1WKcavGoULbbUgQf9jhOxrPOmA==
+X-Received: by 2002:a05:600c:2216:b0:3f4:2a69:409 with SMTP id z22-20020a05600c221600b003f42a690409mr1004132wml.11.1684312221771;
+        Wed, 17 May 2023 01:30:21 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c707:3900:757e:83f8:a99d:41ae? (p200300cbc7073900757e83f8a99d41ae.dip0.t-ipconnect.de. [2003:cb:c707:3900:757e:83f8:a99d:41ae])
+        by smtp.gmail.com with ESMTPSA id l8-20020a1c7908000000b003f506e6ff83sm1421875wme.22.2023.05.17.01.30.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 May 2023 01:30:21 -0700 (PDT)
+Message-ID: <c9f1fc7c-62a2-4768-7992-52e34ec36d0f@redhat.com>
+Date:   Wed, 17 May 2023 10:30:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZGNATKe3U0oXHICX@eldamar.lan>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
+ swap_free()
+Content-Language: en-US
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "surenb@google.com" <surenb@google.com>,
+        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
+        <chinwen.chang@mediatek.com>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
+        <Kuan-Ying.Lee@mediatek.com>,
+        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        vincenzo.frascino@arm.com,
+        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
+        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        stable@vger.kernel.org
+References: <20230512235755.1589034-1-pcc@google.com>
+ <20230512235755.1589034-2-pcc@google.com>
+ <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
+ <ZGLC0T32sgVkG5kX@google.com>
+ <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
+ <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 16, 2023 at 10:35:24AM +0200, Salvatore Bonaccorso wrote:
-> Hi Greg,
+>> Would the idea be to fail swap_readpage() on the one that comes last,
+>> simply retrying to lookup the page?
 > 
-> On Mon, May 15, 2023 at 06:24:11PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.10.180 release.
-> > There are 381 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
-> > Anything received after that time might be too late.
-> 
-> The build fails here with:
-> 
-> sound/soc/intel/boards/sof_sdw.c:187:6: error: ‘RT711_JD2_100K’ undeclared here (not in a function)
->   187 |      RT711_JD2_100K),
->       |      ^~~~~~~~~~~~~~
-> make[7]: *** [scripts/Makefile.build:286: sound/soc/intel/boards/sof_sdw.o] Error 1
-> make[6]: *** [scripts/Makefile.build:503: sound/soc/intel/boards] Error 2
-> make[5]: *** [scripts/Makefile.build:503: sound/soc/intel] Error 2
-> make[4]: *** [scripts/Makefile.build:503: sound/soc] Error 2
-> make[3]: *** [Makefile:1828: sound] Error 2
-> 
-> I did mention it in
-> https://lore.kernel.org/stable/ZFuHEML1r5Xd6S7g@eldamar.lan/ as well but I
-> guess it felt trough the cracks back then.
+> The idea would be that T2's arch_swap_readpage() could potentially not
+> find tags if it ran after swap_free(), so T2 would produce a page
+> without restored tags. But that wouldn't matter, because T1 reaching
+> swap_free() means that T2 will follow the goto at [1] after waiting
+> for T1 to unlock at [2], and T2's page will be discarded.
 
-Sorry I missed this back then, now dropped.  Interesting that almost no
-other build testing caught this, it's a hard driver to enable...
+Ah, right.
 
-thanks,
+> 
+>> This might be a naive question, but how does MTE play along with shared
+>> anonymous pages?
+> 
+> It should work fine. shmem_writepage() calls swap_writepage() which
+> calls arch_prepare_to_swap() to write the tags. And
+> shmem_swapin_folio() has a call to arch_swap_restore() to restore
+> them.
 
-greg k-h
+Sorry, I meant actual anonymous memory pages, not shmem. Like, anonymous 
+pages that are COW-shared due to fork() or KSM.
+
+How does MTE, in general, interact with that? Assume one process ends up 
+modifying the tags ... and the page is COW-shared with a different 
+process that should not observe these tag modifications.
+
+-- 
+Thanks,
+
+David / dhildenb
+
