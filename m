@@ -2,229 +2,227 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 032A270727F
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 21:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3B270728C
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 21:52:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbjEQTob (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 15:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
+        id S229607AbjEQTws (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 15:52:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjEQTo0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 15:44:26 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1E744A3
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 12:44:19 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae58e4b295so6151885ad.2
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 12:44:19 -0700 (PDT)
+        with ESMTP id S229449AbjEQTws (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 15:52:48 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB254680;
+        Wed, 17 May 2023 12:52:44 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-3094910b150so76589f8f.0;
+        Wed, 17 May 2023 12:52:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684352658; x=1686944658;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=quu0IMUuNGOzV5e9SK/jmuvfseDzsVs0rfMgsSrn7i0=;
-        b=NcdRi6Ua/K7bKfsvB2Gi/ql6s15f29CDOInR581+BVN2LVVwD1v3fQZNuTIxVC0gXy
-         Z9iQPGIUG11aAEvpXz/jjKIMWIb/4GXQFXOwm5XigfaiBhIH9EvxHtgvrrX2sootv18M
-         FGaOtRgsfWmT19tQE6EcoIflqhJXObfPtzsPM1SGqHZBb8NfNLFMQub6V3xy+64fG1Ej
-         sTAgxfOkZud3k9UPa5CwBYuyFc4lcOQJ1LZ3f8VVN7Iluw0pL3MX0cJ5IUL2zhjJmqt9
-         42c0zxUNo3F5WBzT4oygOZ6Te6hOkFhyktOyUjm/cHKLCBrfXzMOagqz+gHyHnPaR16L
-         Jf8g==
+        d=gmail.com; s=20221208; t=1684353163; x=1686945163;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4q3W+L+Vfzur/6BczG0eeOcwKoF74+LjwJDCgGx6qc=;
+        b=o+I1q9Iyd1Ji/bc6jZ27mS1G7Q/l1EhT1fbrhwtT7UD8BxyI1gd9Ued7rIwOYH2yMQ
+         C9Ru2mFlgaVkcBjcwQ44dOeY7rEy8eI+naDPQL248WoWr//6XTpXXOoECT0PMXn5G0Ui
+         x5nB8OAyvGrwOcWZR8JfxmrTdMwgMrZCdXoRLMfscmx3kCDl6GS8sD8QIG7DCkjL33Wp
+         Z3yGotDEmT70Ap32/maDFe1dcuESZF5AQUsIfNqlKgqQwiOo6sZrKiWZNHsyWQmgXlgT
+         YF+iohssdBkj30ZtISID8n4csOt+ZZd+EdVwpgoRkgsuJJTc1ySSRLMyVdFXkAXWWcOr
+         3QEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684352658; x=1686944658;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=quu0IMUuNGOzV5e9SK/jmuvfseDzsVs0rfMgsSrn7i0=;
-        b=SbnTOfh+6+WI7mPH0G9YSYaM5haeBE3UN7ljcU1W9bht4EQzVqXaOJFEJ2o3GiCo/e
-         siQbFKuuhjSf+yD6Uf6XwZI1JV1dNHivO2R+hiF1dDGGGetTgC8Xc2HmaJXA9szrLqLV
-         Sh9UDTWws/56NNB5AEz8UGPBO7lKHjSCcWwD+mU0yGVGcEvf+epDvOum143gP8C9Ym0V
-         sIKLfXKnGTe62Dn1v4jx+Dx4DcYi3kjqj2B6OceO0j9zcNUf12pUW0mKS+ue0Svaj4fP
-         cNTsRwYa3PsOUBJbv/xytpJTxq4OHgmL8AYQxzCu4kg+Oax1XlzCaz/b9rXXMl5jzl/C
-         Inbg==
-X-Gm-Message-State: AC+VfDxUPOh507excgZxMiU1+MWpN1ShO6pvly9RGvHMuVGcQjOL+bCT
-        K4JN1WINPkMu50hOEBto/ksgYyzD9YSbaiYtNbgfHQ==
-X-Google-Smtp-Source: ACHHUZ4SM8PO+PShVh7fmVX3hCrttoIwifhAOeKALz7CdeBZ0VKALWoFcyUGDSCAlv3Lo4JauWjdFQ==
-X-Received: by 2002:a17:903:41ca:b0:1ac:3fe0:d6ad with SMTP id u10-20020a17090341ca00b001ac3fe0d6admr50908385ple.65.1684352658136;
-        Wed, 17 May 2023 12:44:18 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id a14-20020a170902ecce00b001ab016e7916sm8614671plh.234.2023.05.17.12.44.17
+        d=1e100.net; s=20221208; t=1684353163; x=1686945163;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V4q3W+L+Vfzur/6BczG0eeOcwKoF74+LjwJDCgGx6qc=;
+        b=E2b5e+nOCMRfucgYpqxmnDRhloYlkW+LXIS4WFhqjRy4imZUjKYCik9guQbqmlJXmr
+         cpsjVkZLx9hzSRc4I3V5ftT01VS1LS/MIdTtR5hj9xwXnAyUG0yqs+BUmbg9xhQnDzkW
+         gHR96M/HkxOsHMCTwFOAUpvTJKG6OUCFtOslmsuyW3OC27vEvdGLLGQprOqHVVRA/QpR
+         ylDvfFsmi4V8LXG/T44sm+femY5RmLNIfd6NsSVSX3dYyu+BD8aoFtkTa+GiytjtQbyR
+         f81K+WaU6f2CahXiOQASqLi9skfSptHFSJcBXCfHM8npiTvFqsWecFI2A4eHT2+U0zVK
+         ikrg==
+X-Gm-Message-State: AC+VfDwSmLDNAtOuvdPcjf6oBKxTmbCG5Bxy4v2nQ+3q7ywhW8RQb+G1
+        sO/Kp4q7q2zTq1IvCGQFVxg=
+X-Google-Smtp-Source: ACHHUZ5mwvh4XOkXKTtv9V5ZRaNwlIKSDc48Iq+CI+ICJNOSp0D3mpqak5mT4LiKmJ5M2zjcwpIDlg==
+X-Received: by 2002:a05:6000:1a4e:b0:2fb:ad8:288f with SMTP id t14-20020a0560001a4e00b002fb0ad8288fmr1590414wry.11.1684353162805;
+        Wed, 17 May 2023 12:52:42 -0700 (PDT)
+Received: from debian ([167.98.27.226])
+        by smtp.gmail.com with ESMTPSA id m19-20020a7bcb93000000b003f4247fbb5fsm3101349wmi.10.2023.05.17.12.52.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 12:44:17 -0700 (PDT)
-Message-ID: <64652e91.170a0220.a9b46.0b75@mx.google.com>
-Date:   Wed, 17 May 2023 12:44:17 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 17 May 2023 12:52:42 -0700 (PDT)
+Date:   Wed, 17 May 2023 20:52:40 +0100
+From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 5.10 000/381] 5.10.180-rc1 review
+Message-ID: <ZGUwiOkAc25BPi7M@debian>
+References: <20230515161736.775969473@linuxfoundation.org>
+ <ZGNJfAPd8eeVoCJ3@debian>
+ <2023051711-thespian-sponsor-8878@gregkh>
+ <CA+G9fYvw6HJopruUn4QKPCcqbdgw++AFf1wnwMP9hP1rJsmq3g@mail.gmail.com>
+ <2023051704-catnip-vitality-d6cb@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.180
-X-Kernelci-Report-Type: test
-Subject: stable-rc/linux-5.10.y baseline: 161 runs, 2 regressions (v5.10.180)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/mixed; boundary="vH2dFomHXNO2tTaN"
+Content-Disposition: inline
+In-Reply-To: <2023051704-catnip-vitality-d6cb@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 161 runs, 2 regressions (v5.10.180)
 
-Regressions Summary
--------------------
+--vH2dFomHXNO2tTaN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
+On Wed, May 17, 2023 at 11:51:21AM +0200, Greg Kroah-Hartman wrote:
+> On Wed, May 17, 2023 at 03:11:48PM +0530, Naresh Kamboju wrote:
+> > On Wed, 17 May 2023 at 14:21, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Tue, May 16, 2023 at 10:14:36AM +0100, Sudip Mukherjee (Codethink) wrote:
+> > > > Hi Greg,
+> > > >
+> > > > On Mon, May 15, 2023 at 06:24:11PM +0200, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 5.10.180 release.
+> > > > > There are 381 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > >
+> > > > Build test (gcc version 11.3.1 20230511):
+> > > > mips: 63 configs -> no failure
+> > > > arm: 104 configs -> no failure
+> > > > arm64: 3 configs -> 1 failure
+> > > > x86_64: 4 configs -> no failure
+> > > > alpha allmodconfig -> no failure
+> > > > powerpc allmodconfig -> no failure
+> > > > riscv allmodconfig -> no failure
+> > > > s390 allmodconfig -> no failure
+> > > > xtensa allmodconfig -> no failure
+> > > >
+> > > > arm64 allmodconfig build fails with the error:
+> > > >
+> > > > /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid_ipa':
+> > > > (.hyp.text+0x1a4c): undefined reference to `__kvm_nvhe_memset'
+> > > > /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid':
+> > > > (.hyp.text+0x1b20): undefined reference to `__kvm_nvhe_memset'
+> > > > /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_flush_cpu_context':
+> > > > (.hyp.text+0x1b80): undefined reference to `__kvm_nvhe_memset'
+> > >
+> > > That's odd, I don't see that symbol anywhere in the tree at all.
+> > >
+> > > And the only arm-related kvm changes don't have those symbols either
+> > > (the other kvm changes are x86-only)
+> > >
+> > > Also, no one else has seen this issue.  Can you bisect?
+> > 
+> > This is an old issue,
+> > Many other reported long back [1]
+> > 
+> > [1] https://lore.kernel.org/stable/CADYN=9KSKQx816id-zWepV-E3ozph3k2_i9Rhs6QseFv0hkPfg@mail.gmail.com/
+> 
+> Then maybe someone should submit it properly for inclusion?
 
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
+Attached the backported patch. Also verified that my build failure is fixed with it.
+
+-- 
+Regards
+Sudip
+
+--vH2dFomHXNO2tTaN
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-KVM-arm64-Link-position-independent-string-routines-.patch"
+
+From f57cddd458d9d49e39c061960014ec6f09187ac0 Mon Sep 17 00:00:00 2001
+From: Will Deacon <will@kernel.org>
+Date: Fri, 19 Mar 2021 10:01:10 +0000
+Subject: [PATCH] KVM: arm64: Link position-independent string routines into .hyp.text
+
+commit 7b4a7b5e6fefd15f708f959dd43e188444e252ec upstream
+
+Pull clear_page(), copy_page(), memcpy() and memset() into the nVHE hyp
+code and ensure that we always execute the '__pi_' entry point on the
+offchance that it changes in future.
+
+[ qperret: Commit title nits and added linker script alias ]
+
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Quentin Perret <qperret@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20210319100146.1149909-3-qperret@google.com
+[sudip: adjust context]
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+---
+ arch/arm64/include/asm/hyp_image.h |  3 +++
+ arch/arm64/kernel/image-vars.h     | 11 +++++++++++
+ arch/arm64/kvm/hyp/nvhe/Makefile   |  4 ++++
+ 3 files changed, 18 insertions(+)
+
+diff --git a/arch/arm64/include/asm/hyp_image.h b/arch/arm64/include/asm/hyp_image.h
+index daa1a1da539e7..e068427560510 100644
+--- a/arch/arm64/include/asm/hyp_image.h
++++ b/arch/arm64/include/asm/hyp_image.h
+@@ -31,6 +31,9 @@
+  */
+ #define KVM_NVHE_ALIAS(sym)	kvm_nvhe_sym(sym) = sym;
+ 
++/* Defines a linker script alias for KVM nVHE hyp symbols */
++#define KVM_NVHE_ALIAS_HYP(first, sec)	kvm_nvhe_sym(first) = kvm_nvhe_sym(sec);
++
+ #endif /* LINKER_SCRIPT */
+ 
+ #endif /* __ARM64_HYP_IMAGE_H__ */
+diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+index c615b285ff5b3..48e43b29a2d5f 100644
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -103,6 +103,17 @@ KVM_NVHE_ALIAS(gic_nonsecure_priorities);
+ KVM_NVHE_ALIAS(__start___kvm_ex_table);
+ KVM_NVHE_ALIAS(__stop___kvm_ex_table);
+ 
++/* Position-independent library routines */
++KVM_NVHE_ALIAS_HYP(clear_page, __pi_clear_page);
++KVM_NVHE_ALIAS_HYP(copy_page, __pi_copy_page);
++KVM_NVHE_ALIAS_HYP(memcpy, __pi_memcpy);
++KVM_NVHE_ALIAS_HYP(memset, __pi_memset);
++
++#ifdef CONFIG_KASAN
++KVM_NVHE_ALIAS_HYP(__memcpy, __pi_memcpy);
++KVM_NVHE_ALIAS_HYP(__memset, __pi_memset);
++#endif
++
+ #endif /* CONFIG_KVM */
+ 
+ #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
+diff --git a/arch/arm64/kvm/hyp/nvhe/Makefile b/arch/arm64/kvm/hyp/nvhe/Makefile
+index ddde15fe85f2f..230bba1a6716b 100644
+--- a/arch/arm64/kvm/hyp/nvhe/Makefile
++++ b/arch/arm64/kvm/hyp/nvhe/Makefile
+@@ -6,9 +6,13 @@
+ asflags-y := -D__KVM_NVHE_HYPERVISOR__
+ ccflags-y := -D__KVM_NVHE_HYPERVISOR__
+ 
++lib-objs := clear_page.o copy_page.o memcpy.o memset.o
++lib-objs := $(addprefix ../../../lib/, $(lib-objs))
++
+ obj-y := timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o hyp-init.o host.o hyp-main.o
+ obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
+ 	 ../fpsimd.o ../hyp-entry.o
++obj-y += $(lib-objs)
+ 
+ ##
+ ## Build rules for compiling nVHE hyp code
+-- 
+2.30.2
 
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.180/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.180
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      4c893ff55907c61456bcb917781c0dd687a1e123 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464fac09fcf27863c2e85fb
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464fac09fcf27863c2e8600
-        failing since 49 days (last pass: v5.10.176, first fail: v5.10.176-=
-105-g18265b240021)
-
-    2023-05-17T16:02:58.081826  + set +x
-
-    2023-05-17T16:02:58.088203  <8>[   11.150917] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10357946_1.4.2.3.1>
-
-    2023-05-17T16:02:58.193067  / # #
-
-    2023-05-17T16:02:58.293871  export SHELL=3D/bin/sh
-
-    2023-05-17T16:02:58.294123  #
-
-    2023-05-17T16:02:58.394738  / # export SHELL=3D/bin/sh. /lava-10357946/=
-environment
-
-    2023-05-17T16:02:58.394987  =
-
-
-    2023-05-17T16:02:58.495585  / # . /lava-10357946/environment/lava-10357=
-946/bin/lava-test-runner /lava-10357946/1
-
-    2023-05-17T16:02:58.495934  =
-
-
-    2023-05-17T16:02:58.500890  / # /lava-10357946/bin/lava-test-runner /la=
-va-10357946/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464fa5c50ad3393442e860c
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464fa5c50ad3393442e8611
-        failing since 49 days (last pass: v5.10.176, first fail: v5.10.176-=
-105-g18265b240021)
-
-    2023-05-17T16:01:20.729872  + set +x<8>[   13.631892] <LAVA_SIGNAL_ENDR=
-UN 0_dmesg 10357886_1.4.2.3.1>
-
-    2023-05-17T16:01:20.729956  =
-
-
-    2023-05-17T16:01:20.831536  #
-
-    2023-05-17T16:01:20.831751  =
-
-
-    2023-05-17T16:01:20.932344  / # #export SHELL=3D/bin/sh
-
-    2023-05-17T16:01:20.932540  =
-
-
-    2023-05-17T16:01:21.033070  / # export SHELL=3D/bin/sh. /lava-10357886/=
-environment
-
-    2023-05-17T16:01:21.033293  =
-
-
-    2023-05-17T16:01:21.133939  / # . /lava-10357886/environment/lava-10357=
-886/bin/lava-test-runner /lava-10357886/1
-
-    2023-05-17T16:01:21.134240  =
-
- =
-
-    ... (13 line(s) more)  =
-
- =20
+--vH2dFomHXNO2tTaN--
