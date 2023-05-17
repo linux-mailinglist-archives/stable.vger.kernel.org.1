@@ -2,57 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E421705C80
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 03:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE61705CB4
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 03:57:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbjEQBhg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 21:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48056 "EHLO
+        id S231685AbjEQB5l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 21:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjEQBhf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 21:37:35 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6DEBA
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:37:34 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-33164ec77ccso57295ab.0
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:37:34 -0700 (PDT)
+        with ESMTP id S231528AbjEQB5l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 21:57:41 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972283ABA
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:57:38 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1aaf702c3ccso36985ad.1
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684287454; x=1686879454;
+        d=google.com; s=20221208; t=1684288658; x=1686880658;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QLugHt0XGPwYTpMjCAQObsffP9JpeGqJnJJt+CEzfkw=;
-        b=bVTAd5SO8NoTEqY8WvVpici8dg2AJF+dp7I0LnvvkPfdcwDNGaZNyd9AJHKI6atf4y
-         I9ui03BXIdH2uqHnitcgCBq151W6TYHraYtG2uM/cA42aUOG7SDWjT46iPhVHOLfQhpd
-         cLb4pgJrYFz7Z5x95Vtw17j5uuh9OE9rEnwI+PUr5ySb9Ls5pnIYhqFZhb0HxHid9mhm
-         +U6Es6zGE5ho/3P3faKVgUhZ6BhfRl6P4WvBQIV5PP0GUfkZwrDFuiCs1HQrGfB+L9bl
-         pxBmE0eDGdapX3w/SzQd370Pn2582BdELI3PnyXY8L5KR22eCiB0cF07R8UJxHQgFxV7
-         6erg==
+        bh=m17guDOQ12FqooxLGjI6njqGM315YV7VFvugPBs5F1U=;
+        b=G2g3cTJEzvXtAGyeMhLS3Tp9CGxqFe6bTGp67/QaCOul7DNRgJGVysoeOKGC6MU8Nb
+         hcrR9i5M+H1GAD6TiKPgXwlBK2V4d6vyMIHTJ0OLyBi1jK65vk+LYjCEeImS/ubCtS8I
+         Xk6hgCWAsni/4am19MdEQGg1M/jj6BqX/ao6Sjgx/2/jffC2BBbPodTR+rwFNr1yLpr9
+         gzee4ygUv8v7j5MaMN3CO+z3tx3czXQR8M7yLggRMS8L15H8eOJefxg3AxRD9XVtqRew
+         uzL7IMLaRr+A2T694VFyzbxIx/Bzg3Z8L9Ex5UWi+KcvOKpiPj0GhcXopupfoJUwKyLG
+         J0pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684287454; x=1686879454;
+        d=1e100.net; s=20221208; t=1684288658; x=1686880658;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QLugHt0XGPwYTpMjCAQObsffP9JpeGqJnJJt+CEzfkw=;
-        b=Lpolni44caFLy9TgRXXht2KBWbhRsOfi1HpuRuHdJbDRmvqzgPnDRpeTh+nXPT416a
-         25k3FaJSVcLNdeqS3/2hmuTG0nUl4+IMQYKgZRZ9xX2vVoM0PguSdUpAwqLq3sMj2reW
-         gnmR6a2LeXzxZ0pyx7Xi4Dov9KQ0VVVs0TELHfva9u3Ev9Djq7YJK5giGM0WIiu8lSQU
-         JsWlehCoc5woyiUTqPVy0BVjfdWfm70EBqZso2Q0b1VCqMv0Gms78xrr0yZ7ivpKM/sJ
-         k6tRXyDiuXQhAcC+NhDA3GL1UYUpozdpA3IbYbfZYfXxonxkaVBf4x8cllV44iThWWt5
-         O2ww==
-X-Gm-Message-State: AC+VfDxUKNLh9dP7PWzeoEZ6MMmN8Oelvrf5Jgs3ONYqmrlPOO4uZnkj
-        QenQ/60gnB+h49ua2jK7iGZK1FA3f6i2+A2p1m8EQw==
-X-Google-Smtp-Source: ACHHUZ6dZfD1Ix5kE87yhR1ityHzz0e/73f67Hdq1xOZtlUzUQebA+DIVW/8Pry1HP7JugJAoQpPKt/YljP3mLUFfFU=
-X-Received: by 2002:a05:6e02:1a4a:b0:331:948c:86f3 with SMTP id
- u10-20020a056e021a4a00b00331948c86f3mr64152ilv.19.1684287453632; Tue, 16 May
- 2023 18:37:33 -0700 (PDT)
+        bh=m17guDOQ12FqooxLGjI6njqGM315YV7VFvugPBs5F1U=;
+        b=HgNAxzlGh93ZLIrASVv6lrN1UoSYwWWN9kq+XMc1VixaDyO5wqB9l5Q7RZu1Bn1rMl
+         9opaA5OSlMuj46u9TaRDILB/WkVU32CH7Vq2/MhSD9FXD/FEoAqTk8BALPINtqhzPq0x
+         9JkJZyVxJscj3pV9uQUowSFryTzWjEtSxE7uTJwk6WdqpZAkM0BPHfdyR/x8WVE+P7LK
+         ylMrDydKMntC60k5XmCADXhVo2OSy/lHAPirJNNIDz/YhIRnNOHSN8A2rJSA1Ds/ikHF
+         ls38tC+L/a1Nk6IstRY8dREQ6JBtdewPqS4/zOoXD1vF4ekIJKKaMXlQydIyrj+h6eah
+         8RmQ==
+X-Gm-Message-State: AC+VfDyncA0WBSVxS7cqcCuwNwqwopAzM3ueZevsCN2D31U5ArSoome2
+        ua2T4tDWJfOfZmS3eqEW98OboEUGJqQpd7VIi9Ur/A==
+X-Google-Smtp-Source: ACHHUZ5TQRoxJBA+VrCOoj6SjVxOZ9tveqCruPZC8f50f90jN5fWSAtn66U8gRT/dRMCPRrIuOzIJoSdzUpr6zs+1O0=
+X-Received: by 2002:a17:902:ea09:b0:1ae:513a:944d with SMTP id
+ s9-20020a170902ea0900b001ae513a944dmr71548plg.8.1684288657779; Tue, 16 May
+ 2023 18:57:37 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230512235755.1589034-1-pcc@google.com> <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com> <91246137-a3d2-689f-8ff6-eccc0e61c8fe@redhat.com>
-In-Reply-To: <91246137-a3d2-689f-8ff6-eccc0e61c8fe@redhat.com>
+ <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
+ <ZGLC0T32sgVkG5kX@google.com> <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
+In-Reply-To: <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
 From:   Peter Collingbourne <pcc@google.com>
-Date:   Tue, 16 May 2023 18:37:22 -0700
-Message-ID: <CAMn1gO4cbEmpDzkdN10DyaGe=2Wg4Y19-v8gHRqgQoD4Bxd+cw@mail.gmail.com>
+Date:   Tue, 16 May 2023 18:57:26 -0700
+Message-ID: <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
 Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before swap_free()
 To:     David Hildenbrand <david@redhat.com>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
@@ -77,141 +78,192 @@ X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 16, 2023 at 5:31=E2=80=AFAM David Hildenbrand <david@redhat.com=
+On Tue, May 16, 2023 at 5:35=E2=80=AFAM David Hildenbrand <david@redhat.com=
 > wrote:
 >
-> On 15.05.23 19:34, Catalin Marinas wrote:
-> > On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> >> On 13.05.23 01:57, Peter Collingbourne wrote:
-> >>> diff --git a/mm/memory.c b/mm/memory.c
-> >>> index 01a23ad48a04..83268d287ff1 100644
-> >>> --- a/mm/memory.c
-> >>> +++ b/mm/memory.c
-> >>> @@ -3914,19 +3914,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>>             }
-> >>>     }
-> >>> -   /*
-> >>> -    * Remove the swap entry and conditionally try to free up the swa=
+> On 16.05.23 01:40, Peter Collingbourne wrote:
+> > On Mon, May 15, 2023 at 06:34:30PM +0100, Catalin Marinas wrote:
+> >> On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
+> >>> On 13.05.23 01:57, Peter Collingbourne wrote:
+> >>>> diff --git a/mm/memory.c b/mm/memory.c
+> >>>> index 01a23ad48a04..83268d287ff1 100644
+> >>>> --- a/mm/memory.c
+> >>>> +++ b/mm/memory.c
+> >>>> @@ -3914,19 +3914,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>>>                    }
+> >>>>            }
+> >>>> -  /*
+> >>>> -   * Remove the swap entry and conditionally try to free up the swa=
 pcache.
-> >>> -    * We're already holding a reference on the page but haven't mapp=
+> >>>> -   * We're already holding a reference on the page but haven't mapp=
 ed it
-> >>> -    * yet.
-> >>> -    */
-> >>> -   swap_free(entry);
-> >>> -   if (should_try_to_free_swap(folio, vma, vmf->flags))
-> >>> -           folio_free_swap(folio);
-> >>> -
-> >>> -   inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> >>> -   dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> >>>     pte =3D mk_pte(page, vma->vm_page_prot);
-> >>> -
-> >>>     /*
-> >>>      * Same logic as in do_wp_page(); however, optimize for pages tha=
-t are
-> >>>      * certainly not shared either because we just allocated them wit=
-hout
-> >>> @@ -3946,8 +3934,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>>             pte =3D pte_mksoft_dirty(pte);
-> >>>     if (pte_swp_uffd_wp(vmf->orig_pte))
-> >>>             pte =3D pte_mkuffd_wp(pte);
-> >>> +   arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
+> >>>> -   * yet.
+> >>>> -   */
+> >>>> -  swap_free(entry);
+> >>>> -  if (should_try_to_free_swap(folio, vma, vmf->flags))
+> >>>> -          folio_free_swap(folio);
+> >>>> -
+> >>>> -  inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
+> >>>> -  dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
+> >>>>            pte =3D mk_pte(page, vma->vm_page_prot);
+> >>>> -
+> >>>>            /*
+> >>>>             * Same logic as in do_wp_page(); however, optimize for p=
+ages that are
+> >>>>             * certainly not shared either because we just allocated =
+them without
+> >>>> @@ -3946,8 +3934,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>>>                    pte =3D pte_mksoft_dirty(pte);
+> >>>>            if (pte_swp_uffd_wp(vmf->orig_pte))
+> >>>>                    pte =3D pte_mkuffd_wp(pte);
+> >>>> +  arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
 te);
-> >>>     vmf->orig_pte =3D pte;
-> >>> +   /*
-> >>> +    * Remove the swap entry and conditionally try to free up the swa=
+> >>>>            vmf->orig_pte =3D pte;
+> >>>> +  /*
+> >>>> +   * Remove the swap entry and conditionally try to free up the swa=
 pcache.
-> >>> +    * We're already holding a reference on the page but haven't mapp=
+> >>>> +   * We're already holding a reference on the page but haven't mapp=
 ed it
-> >>> +    * yet.
-> >>> +    */
-> >>> +   swap_free(entry);
-> >>> +   if (should_try_to_free_swap(folio, vma, vmf->flags))
-> >>> +           folio_free_swap(folio);
-> >>> +
-> >>> +   inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> >>> +   dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> >>> +
-> >>>     /* ksm created a completely new copy */
-> >>>     if (unlikely(folio !=3D swapcache && swapcache)) {
-> >>>             page_add_new_anon_rmap(page, vma, vmf->address);
-> >>> @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>>     VM_BUG_ON(!folio_test_anon(folio) ||
-> >>>                     (pte_write(pte) && !PageAnonExclusive(page)));
-> >>>     set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
-> >>> -   arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
+> >>>> +   * yet.
+> >>>> +   */
+> >>>> +  swap_free(entry);
+> >>>> +  if (should_try_to_free_swap(folio, vma, vmf->flags))
+> >>>> +          folio_free_swap(folio);
+> >>>> +
+> >>>> +  inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
+> >>>> +  dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
+> >>>> +
+> >>>>            /* ksm created a completely new copy */
+> >>>>            if (unlikely(folio !=3D swapcache && swapcache)) {
+> >>>>                    page_add_new_anon_rmap(page, vma, vmf->address);
+> >>>> @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>>>            VM_BUG_ON(!folio_test_anon(folio) ||
+> >>>>                            (pte_write(pte) && !PageAnonExclusive(pag=
+e)));
+> >>>>            set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
+> >>>> -  arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
 te);
-> >>>     folio_unlock(folio);
-> >>>     if (folio !=3D swapcache && swapcache) {
+> >>>>            folio_unlock(folio);
+> >>>>            if (folio !=3D swapcache && swapcache) {
+> >>>
+> >>>
+> >>> You are moving the folio_free_swap() call after the folio_ref_count(f=
+olio)
+> >>> =3D=3D 1 check, which means that such (previously) swapped pages that=
+ are
+> >>> exclusive cannot be detected as exclusive.
+> >>>
+> >>> There must be a better way to handle MTE here.
+> >>>
+> >>> Where are the tags stored, how is the location identified, and when a=
+re they
+> >>> effectively restored right now?
 > >>
-> >>
-> >> You are moving the folio_free_swap() call after the folio_ref_count(fo=
-lio)
-> >> =3D=3D 1 check, which means that such (previously) swapped pages that =
-are
-> >> exclusive cannot be detected as exclusive.
-> >>
-> >> There must be a better way to handle MTE here.
-> >>
-> >> Where are the tags stored, how is the location identified, and when ar=
-e they
-> >> effectively restored right now?
+> >> I haven't gone through Peter's patches yet but a pretty good descripti=
+on
+> >> of the problem is here:
+> >> https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.c=
+amel@mediatek.com/.
+> >> I couldn't reproduce it with my swap setup but both Qun-wei and Peter
+> >> triggered it.
 > >
-> > I haven't gone through Peter's patches yet but a pretty good descriptio=
+> > In order to reproduce this bug it is necessary for the swap slot cache
+> > to be disabled, which is unlikely to occur during normal operation. I
+> > was only able to reproduce the bug by disabling it forcefully with the
+> > following patch:
+> >
+> > diff --git a/mm/swap_slots.c b/mm/swap_slots.c
+> > index 0bec1f705f8e0..25afba16980c7 100644
+> > --- a/mm/swap_slots.c
+> > +++ b/mm/swap_slots.c
+> > @@ -79,7 +79,7 @@ void disable_swap_slots_cache_lock(void)
+> >
+> >   static void __reenable_swap_slots_cache(void)
+> >   {
+> > -     swap_slot_cache_enabled =3D has_usable_swap();
+> > +     swap_slot_cache_enabled =3D false;
+> >   }
+> >
+> >   void reenable_swap_slots_cache_unlock(void)
+> >
+> > With that I can trigger the bug on an MTE-utilizing process by running
+> > a program that enumerates the process's private anonymous mappings and
+> > calls process_madvise(MADV_PAGEOUT) on all of them.
+> >
+> >> When a tagged page is swapped out, the arm64 code stores the metadata
+> >> (tags) in a local xarray indexed by the swap pte. When restoring from
+> >> swap, the arm64 set_pte_at() checks this xarray using the old swap pte
+> >> and spills the tags onto the new page. Apparently something changed in
+> >> the kernel recently that causes swap_range_free() to be called before
+> >> set_pte_at(). The arm64 arch_swap_invalidate_page() frees the metadata
+> >> from the xarray and the subsequent set_pte_at() won't find it.
+> >>
+> >> If we have the page, the metadata can be restored before set_pte_at()
+> >> and I guess that's what Peter is trying to do (again, I haven't looked
+> >> at the details yet; leaving it for tomorrow).
+> >>
+> >> Is there any other way of handling this? E.g. not release the metadata
+> >> in arch_swap_invalidate_page() but later in set_pte_at() once it was
+> >> restored. But then we may leak this metadata if there's no set_pte_at(=
+)
+> >> (the process mapping the swap entry died).
+> >
+> > Another problem that I can see with this approach is that it does not
+> > respect reference counts for swap entries, and it's unclear whether tha=
+t
+> > can be done in a non-racy fashion.
+> >
+> > Another approach that I considered was to move the hook to swap_readpag=
+e()
+> > as in the patch below (sorry, it only applies to an older version
+> > of Android's android14-6.1 branch and not mainline, but you get the
+> > idea). But during a stress test (running the aforementioned program tha=
+t
+> > calls process_madvise(MADV_PAGEOUT) in a loop during an Android "monkey=
+"
+> > test) I discovered the following racy use-after-free that can occur whe=
 n
-> > of the problem is here:
-> > https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.ca=
-mel@mediatek.com/.
-> > I couldn't reproduce it with my swap setup but both Qun-wei and Peter
-> > triggered it.
+> > two tasks T1 and T2 concurrently restore the same page:
 > >
-> > When a tagged page is swapped out, the arm64 code stores the metadata
-> > (tags) in a local xarray indexed by the swap pte. When restoring from
-> > swap, the arm64 set_pte_at() checks this xarray using the old swap pte
-> > and spills the tags onto the new page. Apparently something changed in
-> > the kernel recently that causes swap_range_free() to be called before
-> > set_pte_at(). The arm64 arch_swap_invalidate_page() frees the metadata
-> > from the xarray and the subsequent set_pte_at() won't find it.
+> > T1:                  | T2:
+> > arch_swap_readpage() |
+> >                       | arch_swap_readpage() -> mte_restore_tags() -> x=
+e_load()
+> > swap_free()          |
+> >                       | arch_swap_readpage() -> mte_restore_tags() -> m=
+te_restore_page_tags()
 > >
-> > If we have the page, the metadata can be restored before set_pte_at()
-> > and I guess that's what Peter is trying to do (again, I haven't looked
-> > at the details yet; leaving it for tomorrow).
->
-> Thanks for the details! I was missing that we also have a hook in
-> swap_range_free().
->
+> > We can avoid it by taking the swap_info_struct::lock spinlock in
+> > mte_restore_tags(), but it seems like it would lead to lock contention.
 > >
-> > Is there any other way of handling this? E.g. not release the metadata
-> > in arch_swap_invalidate_page() but later in set_pte_at() once it was
-> > restored. But then we may leak this metadata if there's no set_pte_at()
-> > (the process mapping the swap entry died).
 >
-> That was my immediate thought: do we really have to hook into
-> swap_range_free() at all?
+> Would the idea be to fail swap_readpage() on the one that comes last,
+> simply retrying to lookup the page?
 
-As I alluded to in another reply, without the hook in
-swap_range_free() I think we would either end up with a race or an
-effective memory leak in the arch code that maintains the metadata for
-swapped out pages, as there would be no way for the arch-specific code
-to know when it is safe to free it after swapin.
+The idea would be that T2's arch_swap_readpage() could potentially not
+find tags if it ran after swap_free(), so T2 would produce a page
+without restored tags. But that wouldn't matter, because T1 reaching
+swap_free() means that T2 will follow the goto at [1] after waiting
+for T1 to unlock at [2], and T2's page will be discarded.
 
-> And I also wondered why we have to do this
-> from set_pte_at() and not do this explicitly (maybe that's the other
-> arch_* callback on the swapin path).
+> This might be a naive question, but how does MTE play along with shared
+> anonymous pages?
 
-I don't think it's necessary, as the set_pte_at() call sites for
-swapped in pages are known. I'd much rather do this via an explicit
-hook at those call sites, as the existing approach of implicit
-restoring seems too subtle and easy to be overlooked when refactoring,
-as we have seen with this bug. In the end we only have 3 call sites
-for the hook and hopefully the comments that I'm adding are sufficient
-to ensure that any new swapin code should end up with a call to the
-hook in the right place.
+It should work fine. shmem_writepage() calls swap_writepage() which
+calls arch_prepare_to_swap() to write the tags. And
+shmem_swapin_folio() has a call to arch_swap_restore() to restore
+them.
 
 Peter
+
+[1] https://github.com/torvalds/linux/blob/f1fcbaa18b28dec10281551dfe6ed3a3=
+ed80e3d6/mm/memory.c#L3881
+[2] https://github.com/torvalds/linux/blob/f1fcbaa18b28dec10281551dfe6ed3a3=
+ed80e3d6/mm/memory.c#L4006
