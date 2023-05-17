@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D698C706799
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 14:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEC6870680B
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 14:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231503AbjEQMJD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 08:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50432 "EHLO
+        id S231671AbjEQMZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 08:25:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231556AbjEQMIu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 08:08:50 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C445BAA
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:07:46 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2502346bea0so576263a91.2
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:07:46 -0700 (PDT)
+        with ESMTP id S231672AbjEQMZz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 08:25:55 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3842E5FE6
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:25:44 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1ae3c204e0aso6397925ad.2
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:25:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684325265; x=1686917265;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684326343; x=1686918343;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=SCIV6BDE04wXcylEyZCZ0UuKDZ0UfrXTB68cwsBkb9k=;
-        b=O0VaRA5drn0thgf0ZXqmA0Nzjfgkn3Zsd0sY5XFAYBrWm2er0arfYSdqmrHj2gvxuC
-         FyyPZAL1NIZbsYSCpaQ0x4zAiaL9eHAMlZxKavVkPzoXpH9/gFkjT5pxslFQ0Xo0BU36
-         Fh804P1737/FV1m4F51ELSnpRjq1CtXyVduiWaugLAy9yByytH9fmhpry0Q44jzbG0lA
-         DKkk0xZULUkdHVwdTt87RzMF9qR1Axv13Nl8Pcr2Ji3EztZ6rtFDTO7GaUwItRN3WupN
-         GdShm9bFatxh4tXbWtssI9zymN3JrOGpw0jvUV2mWmbCQ11xDx8/ZhlHla+7kKZQOoYm
-         No+w==
+        bh=b4ySgg3s6CZgZJRJXZwizoTuIgkme/AKQSTVz3Qx5nA=;
+        b=Uwe3DEYzT52GYJnKU8GyKN0Rka8ipDwQwZ3MRrSHCZwoRl1A5U2gWjN9bkLiFchnkC
+         xr8o5xRcDAl7KC21pnD1+QnK+7xj/PPeCghcD4StXP5AvPMOZdD0kJmCL493Zqx6Vawc
+         GUiMBswXgrni8auuXzMnUsNYLndpho8ez2Ud6oYOGmaHCbc7tg2K2nSQdVzdh6ibbcix
+         luzNf0OSd12Lgv1dNGVklhsCgvTpkf0xSSH1CtwoCOSm/B+TpBXMTU2CYljlutkYTEJh
+         xE8NQ+xJz5knU+xlX8ddL0Miz2xcZXlKXUMHnix3hvTuDieHmVwOPvS5snQ0tOk0Qwjf
+         Ge/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684325265; x=1686917265;
+        d=1e100.net; s=20221208; t=1684326343; x=1686918343;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SCIV6BDE04wXcylEyZCZ0UuKDZ0UfrXTB68cwsBkb9k=;
-        b=MTOxQCiCcCMavrOzdtPum6aQ2l99tpukzoPszPMXQleNC7GkqWmOnBSz/mDThTT0+x
-         gvaAX2o3swDDHVfnxbR+HOtDN1Yk3IZ4SOEeTrf0VNlkAGcoayIW1Pj8tEXhmYP6SNqK
-         YZrj4W9O0t0v3alTOfvufmVLYNOayx22FR7yn1JY8QPToxbWNpQZfSRQujVmjzI9HJe4
-         R6KEZfu3Bf9YffsOja2eo5sIBmFbTHIhjPXctCfgFsAB56uHGU7FSBGnmIpaQgPSEZcF
-         CXmvG7mXjji1CrSwjGcPacsRi//ikzJlRtPDjwLZYZC4iPYLNhB0FHIBMGFRMVyxS7qs
-         XyGA==
-X-Gm-Message-State: AC+VfDwcIkMSerUcDnjcEppDxgIxX8AWYptLAblI/78cxlNtgstGm6jz
-        yNn69mwMDnctz9zbh5SwLLzDWR9zt87VoJYgL7+i7Q==
-X-Google-Smtp-Source: ACHHUZ7C/JogEf23/z7L9Igb2JhqDCwysOThvT8CMszPNxRbv6hVmC2nw1nmH83plbwh9nwLyMK+ZA==
-X-Received: by 2002:a17:90b:2307:b0:24e:165d:8f65 with SMTP id mt7-20020a17090b230700b0024e165d8f65mr39670250pjb.5.1684325264531;
-        Wed, 17 May 2023 05:07:44 -0700 (PDT)
+        bh=b4ySgg3s6CZgZJRJXZwizoTuIgkme/AKQSTVz3Qx5nA=;
+        b=NfTg50vg1F0KljziQtFAzAxB4mkwi3r0YEgpElIXls2hrwx+SGsi2hVOiN5sIcUgQa
+         J3LeVEMe/8Ov3vGvk0apmjbkXoRpI1qkvhaAOwUFZsF0x5wkY0bzHRbDwO/P8+GPVU/L
+         WCySb2OK3pInd7dGTj94sMxe2Gzthh/JBBP7PS6zSxFK6vHPZvyIFqdTjXUj2lIKxY6S
+         TXmBWCOInsCiecKf2nMRHdtCeEPqzsXJqX7hdGBXiWj+J1wVSNq0iwoRVRbVN2YxXIoJ
+         TztoB65iCiCVPSN92xcQYBMB7jAO7QPrwHNZS4Xg3AlpQhQZchhPpeh7g26ErCxCPqis
+         RudQ==
+X-Gm-Message-State: AC+VfDyv/q6pM1cRA2/7CXoDBT+tB3ZHZTtdpmzP2RWft6MpPzu7KieI
+        2uE4a7Ug/3JBm+rUErUtE3gnk0D8k0VqhKxuSCchJA==
+X-Google-Smtp-Source: ACHHUZ74sTBh1WEkUzVVXPSSZcNv4QfFPIkZrM8NIJfRS+qys/14W0Gk5nljFSZk0w7p4r9Yfl1+fg==
+X-Received: by 2002:a17:902:e54b:b0:1ac:712d:2032 with SMTP id n11-20020a170902e54b00b001ac712d2032mr44752696plf.50.1684326342489;
+        Wed, 17 May 2023 05:25:42 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id u3-20020a17090a890300b002502161b063sm1383898pjn.54.2023.05.17.05.07.43
+        by smtp.gmail.com with ESMTPSA id i3-20020a17090332c300b001ac4d3d3f72sm17419958plr.296.2023.05.17.05.25.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 05:07:43 -0700 (PDT)
-Message-ID: <6464c38f.170a0220.cf5fa.2172@mx.google.com>
-Date:   Wed, 17 May 2023 05:07:43 -0700 (PDT)
+        Wed, 17 May 2023 05:25:41 -0700 (PDT)
+Message-ID: <6464c7c5.170a0220.5d178.1b01@mx.google.com>
+Date:   Wed, 17 May 2023 05:25:41 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Tree: stable
-X-Kernelci-Kernel: v5.15.112
+X-Kernelci-Branch: queue/5.15
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.15.111-133-g7ffe4e3b2d69
 X-Kernelci-Report-Type: build
-Subject: stable/linux-5.15.y build: 185 builds: 4 failed, 181 passed, 14 errors,
- 7 warnings (v5.15.112)
+Subject: stable-rc/queue/5.15 build: 179 builds: 3 failed, 176 passed,
+ 10 errors, 5 warnings (v5.15.111-133-g7ffe4e3b2d69)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -72,24 +72,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-5.15.y build: 185 builds: 4 failed, 181 passed, 14 errors, 7 w=
-arnings (v5.15.112)
+stable-rc/queue/5.15 build: 179 builds: 3 failed, 176 passed, 10 errors, 5 =
+warnings (v5.15.111-133-g7ffe4e3b2d69)
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.15.y/k=
-ernel/v5.15.112/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.111-133-g7ffe4e3b2d69/
 
-Tree: stable
-Branch: linux-5.15.y
-Git Describe: v5.15.112
-Git Commit: 9d6bde853685609a631871d7c12be94fdf8d912e
+Tree: stable-rc
+Branch: queue/5.15
+Git Describe: v5.15.111-133-g7ffe4e3b2d69
+Git Commit: 7ffe4e3b2d695018234dc6ba8fd39cf5a1e28332
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
+e-rc.git
 Built: 7 unique architectures
 
 Build Failures Detected:
-
-arm:
-    rpc_defconfig: (gcc-10) FAIL
 
 mips:
     decstation_64_defconfig: (gcc-10) FAIL
@@ -104,7 +101,6 @@ arc:
 arm64:
 
 arm:
-    rpc_defconfig (gcc-10): 4 errors
 
 i386:
 
@@ -126,22 +122,15 @@ riscv:
 
 x86_64:
     x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+kselftest (gcc-10): 1 warning
     x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook+kselftest (gcc-10): 1 warning
 
 Errors summary:
 
     10   expr: syntax error: unexpected argument =E2=80=980xffffffff8000000=
 0=E2=80=99
-    2    arm-linux-gnueabihf-gcc: error: unrecognized -march target: armv3m
-    2    arm-linux-gnueabihf-gcc: error: missing argument to =E2=80=98-marc=
-h=3D=E2=80=99
 
 Warnings summary:
 
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x4d: unr=
-eachable instruction
     2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
 eachable instruction
     1    drivers/block/paride/bpck.c:32: warning: "PC" redefined
@@ -179,13 +168,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -381,28 +370,18 @@ s, 0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
 
 ---------------------------------------------------------------------------=
 -----
 defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
 ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook+kselftest (arm64, gcc-10) =E2=80=94 PASS, 0 erro=
-rs, 0 warnings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-defconfig+kselftest (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -751,11 +730,6 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-multi_v7_defconfig+kselftest (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
 mvebu_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
@@ -920,19 +894,6 @@ on mismatches
 
 Warnings:
     drivers/block/paride/bpck.c:32: warning: "PC" redefined
-
----------------------------------------------------------------------------=
------
-rpc_defconfig (arm, gcc-10) =E2=80=94 FAIL, 4 errors, 0 warnings, 0 section=
- mismatches
-
-Errors:
-    arm-linux-gnueabihf-gcc: error: unrecognized -march target: armv3m
-    arm-linux-gnueabihf-gcc: error: missing argument to =E2=80=98-march=3D=
-=E2=80=99
-    arm-linux-gnueabihf-gcc: error: unrecognized -march target: armv3m
-    arm-linux-gnueabihf-gcc: error: missing argument to =E2=80=98-march=3D=
-=E2=80=99
 
 ---------------------------------------------------------------------------=
 -----
@@ -1143,29 +1104,11 @@ ble instruction
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig+kselftest (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
-ning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x4d: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
 x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
 1 warning, 0 section mismatches
 
 Warnings:
     arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook+kselftest (x86_64, gcc-10) =E2=80=94 PASS, =
-0 errors, 1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x4d: unreacha=
 ble instruction
 
 ---------------------------------------------------------------------------=
