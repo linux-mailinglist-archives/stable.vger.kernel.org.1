@@ -2,269 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D80EA7068AF
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 14:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CB647068BB
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 14:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231732AbjEQMyx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 08:54:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36220 "EHLO
+        id S231383AbjEQM4i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 08:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231894AbjEQMyv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 08:54:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444C030FA
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684328047;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mHTfZR4DmySVBGqP0IgRsrjd//ky9wlaLgZZZamAJdM=;
-        b=JK4OVXFMYIPciUdG36qMvzzkyUUBK9JnPMVMvCo1pHakonkDAxMS8Xbm7SJHuApOBXJc+C
-        IsA9d/gSQVmBa3Uir+E4gdY/VKEoNp617hnDaQEV6QulGs9guriXMrMh7apyrRORJD9a64
-        JflRaNGNwSzrZuXv74/vvYtHKwrukDk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-mz0sGRaMNhi3QqfFXO5pJg-1; Wed, 17 May 2023 08:54:06 -0400
-X-MC-Unique: mz0sGRaMNhi3QqfFXO5pJg-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-95847b4b4e7so96526466b.3
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:54:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684328045; x=1686920045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mHTfZR4DmySVBGqP0IgRsrjd//ky9wlaLgZZZamAJdM=;
-        b=BqLwSz2tGqKZX/hTt5H1oGwPFhAdDJBSEn+v21s8UkUj3IYiXmywZWbwW2mGFC2x0D
-         KbXCTvBGxj6O57v9C2EBA2Xy1DLTNpBr3F8KSu6pr1n4GXXRDUphuooR1jV011yQYkDh
-         RWgCQhLG/iOer39xQOvoFMIWWdSQZwKjUp5FTwrdRAfE7qKHWbiCDPlFli/KxwBQMrCM
-         6alXTl54uhghf507+sEnSVIF5T3QK/Lkrt11JQnqVnUa4mA11Bt9dzmZfz8LxOqLGu0c
-         TSRqDuWtN67gIc50Mxkk7ERBWTR0ZNwEmN55he7Z0yVDsVLzHGGNgbzznc4nnFOihGDB
-         Us3Q==
-X-Gm-Message-State: AC+VfDwg7BtXUcviudQMf1mIREUcB2iXmpQQEhbJu+b82+TWK3BtzrbJ
-        mh5l8VV9/UfftQ27X1ZOzJWmcG7yrsKW2UjHyugR1f9YEOrTw3GDLnzz406kA7/BbrXSX1o4rZO
-        Efg1QqrrBioMw8WzQ4a0rUVfB2KM9xOKI
-X-Received: by 2002:a17:907:2d90:b0:966:40ad:3aec with SMTP id gt16-20020a1709072d9000b0096640ad3aecmr34357199ejc.6.1684328045163;
-        Wed, 17 May 2023 05:54:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5tNCsdkXmPxY+ujZKTMogRd5IMUkSwkSWB8UF0YOOMs28VAH0IGzCLBhDUgH38nAxHckD9PRctX3LA98LzREs=
-X-Received: by 2002:a17:907:2d90:b0:966:40ad:3aec with SMTP id
- gt16-20020a1709072d9000b0096640ad3aecmr34357110ejc.6.1684328043809; Wed, 17
- May 2023 05:54:03 -0700 (PDT)
+        with ESMTP id S231787AbjEQM4f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 08:56:35 -0400
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7747A35A4
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 05:56:33 -0700 (PDT)
+Received: from [213.219.167.32] (helo=deadeye)
+        by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1pzGhj-0006ek-3f; Wed, 17 May 2023 14:56:31 +0200
+Received: from ben by deadeye with local (Exim 4.96)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1pzGhi-00Ars2-2v;
+        Wed, 17 May 2023 14:56:30 +0200
+Message-ID: <80d3ba7a1b8b7d65713f66ca3562a5ec4971c5ee.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 076/529] crypto: ccp: Use the stack for small SEV
+ command buffers
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Julien Cristau <jcristau@debian.org>
+Date:   Wed, 17 May 2023 14:56:21 +0200
+In-Reply-To: <20230310133808.495306749@linuxfoundation.org>
+References: <20230310133804.978589368@linuxfoundation.org>
+         <20230310133808.495306749@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-zgyW4vL2SFqadL66P0cX"
+User-Agent: Evolution 3.46.4-1 
 MIME-Version: 1.0
-References: <20230517052404.99904-1-xiubli@redhat.com> <CAOi1vP8e6NrrrV5TLYS-DpkjQN6LhfqkptR5_ue94HcHJV_2ag@mail.gmail.com>
- <b121586f-d628-a8e3-5802-298c1431f0e5@redhat.com> <d6ae6f9e-07f5-0120-2cc6-b5f3f2ddca5f@redhat.com>
- <CACPzV1=BUwKBBbThawt-PnJRoKnvwCNAd9AGPSH2mHVW_6zSZw@mail.gmail.com>
-In-Reply-To: <CACPzV1=BUwKBBbThawt-PnJRoKnvwCNAd9AGPSH2mHVW_6zSZw@mail.gmail.com>
-From:   Venky Shankar <vshankar@redhat.com>
-Date:   Wed, 17 May 2023 18:23:27 +0530
-Message-ID: <CACPzV1=q4C6pJ7L7jdPRuM=AQic93Muv=3rpZ_-y=cJ4ouYcww@mail.gmail.com>
-Subject: Re: [PATCH] ceph: force updating the msg pointer in non-split case
-To:     Xiubo Li <xiubli@redhat.com>
-Cc:     Ilya Dryomov <idryomov@gmail.com>, ceph-devel@vger.kernel.org,
-        jlayton@kernel.org, stable@vger.kernel.org,
-        Frank Schilder <frans@dtu.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 213.219.167.32
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 17, 2023 at 6:18=E2=80=AFPM Venky Shankar <vshankar@redhat.com>=
- wrote:
->
-> Hey Xiubo,
->
-> On Wed, May 17, 2023 at 4:45=E2=80=AFPM Xiubo Li <xiubli@redhat.com> wrot=
-e:
-> >
-> >
-> > On 5/17/23 19:04, Xiubo Li wrote:
-> > >
-> > > On 5/17/23 18:31, Ilya Dryomov wrote:
-> > >> On Wed, May 17, 2023 at 7:24=E2=80=AFAM <xiubli@redhat.com> wrote:
-> > >>> From: Xiubo Li <xiubli@redhat.com>
-> > >>>
-> > >>> When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
-> > >>> request may still contain a list of 'split_realms', and we need
-> > >>> to skip it anyway. Or it will be parsed as a corrupt snaptrace.
-> > >>>
-> > >>> Cc: stable@vger.kernel.org
-> > >>> Cc: Frank Schilder <frans@dtu.dk>
-> > >>> Reported-by: Frank Schilder <frans@dtu.dk>
-> > >>> URL: https://tracker.ceph.com/issues/61200
-> > >>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> > >>> ---
-> > >>>   fs/ceph/snap.c | 3 +++
-> > >>>   1 file changed, 3 insertions(+)
-> > >>>
-> > >>> diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-> > >>> index 0e59e95a96d9..d95dfe16b624 100644
-> > >>> --- a/fs/ceph/snap.c
-> > >>> +++ b/fs/ceph/snap.c
-> > >>> @@ -1114,6 +1114,9 @@ void ceph_handle_snap(struct ceph_mds_client
-> > >>> *mdsc,
-> > >>>                                  continue;
-> > >>>                          adjust_snap_realm_parent(mdsc, child,
-> > >>> realm->ino);
-> > >>>                  }
-> > >>> +       } else {
-> > >>> +               p +=3D sizeof(u64) * num_split_inos;
-> > >>> +               p +=3D sizeof(u64) * num_split_realms;
-> > >>>          }
-> > >>>
-> > >>>          /*
-> > >>> --
-> > >>> 2.40.1
-> > >>>
-> > >> Hi Xiubo,
-> > >>
-> > >> This code appears to be very old -- it goes back to the initial comm=
-it
-> > >> 963b61eb041e ("ceph: snapshot management") in 2009.  Do you have an
-> > >> explanation for why this popped up only now?
-> > >
-> > > As I remembered we hit this before in one cu BZ last year, but I
-> > > couldn't remember exactly which one.  But I am not sure whether @Jeff
-> > > saw this before I joint ceph team.
-> > >
-> > @Venky,
-> >
-> > Do you remember which one ? As I remembered this is why we fixed the
-> > snaptrace issue by blocking all the IOs and at the same time
-> > blocklisting the kclient before.
-> >
-> > Before the kcleint won't dump the corrupted msg and we don't know what
-> > was wrong with the msg and also we added code to dump the msg in the
-> > above fix.
->
-> The "corrupted" snaptrace issue happened just after the mds asserted
-> hitting the metadata corruption (dentry first corrupted) and it
-> _seemed_ that this corruption somehow triggered a corrupted snaptrace
-> to be sent to the client.
 
-[sent message a bit early - cotd...]
+--=-zgyW4vL2SFqadL66P0cX
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-But I think you found the issue - the message dump did help and its
-not related to the dentry first corruption.
+On Fri, 2023-03-10 at 14:33 +0100, Greg Kroah-Hartman wrote:
+> From: Sean Christopherson <seanjc@google.com>
+>=20
+> [ Upstream commit e4a9af799e5539b0feb99571f0aaed5a3c81dc5a ]
+>=20
+> For commands with small input/output buffers, use the local stack to
+> "allocate" the structures used to communicate with the PSP.   Now that
+> __sev_do_cmd_locked() gracefully handles vmalloc'd buffers, there's no
+> reason to avoid using the stack, e.g. CONFIG_VMAP_STACK=3Dy will just wor=
+k.
+[...]
 
->
-> >
-> > Thanks
-> >
-> > - Xiubo
-> >
-> > >
-> > >> Has MDS always been including split_inos and split_realms arrays in
-> > >> !CEPH_SNAP_OP_SPLIT case or is this a recent change?  If it's a rece=
-nt
-> > >> change, I'd argue that this needs to be addressed on the MDS side.
-> > >
-> > > While in MDS side for the _UPDATE op it won't send the 'split_realm'
-> > > list just before the commit in 2017:
-> > >
-> > > commit 93e7267757508520dfc22cff1ab20558bd4a44d4
-> > > Author: Yan, Zheng <zyan@redhat.com>
-> > > Date:   Fri Jul 21 21:40:46 2017 +0800
-> > >
-> > >     mds: send snap related messages centrally during mds recovery
-> > >
-> > >     sending CEPH_SNAP_OP_SPLIT and CEPH_SNAP_OP_UPDATE messages to
-> > >     clients centrally in MDCache::open_snaprealms()
-> > >
-> > >     Signed-off-by: "Yan, Zheng" <zyan@redhat.com>
-> > >
-> > > Before this commit it will only send the 'split_realm' list for the
-> > > _SPLIT op.
-> > >
-> > >
-> > > The following the snaptrace:
-> > >
-> > > [Wed May 10 16:03:06 2023] header: 00000000: 05 00 00 00 00 00 00 00
-> > > 00 00 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023] header: 00000010: 12 03 7f 00 01 00 00 01
-> > > 00 00 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023] header: 00000020: 00 00 00 00 02 01 00 00
-> > > 00 00 00 00 00 01 00 00  ................
-> > > [Wed May 10 16:03:06 2023] header: 00000030: 00 98 0d 60
-> > > 93                                   ...`.
-> > > [Wed May 10 16:03:06 2023]  front: 00000000: 00 00 00 00 00 00 00 00
-> > > 00 00 00 00 00 00 00 00  ................ <<=3D=3D The op is 0, which=
- is
-> > > 'CEPH_SNAP_OP_UPDATE'
-> > > [Wed May 10 16:03:06 2023]  front: 00000010: 0c 00 00 00 88 00 00 00
-> > > d1 c0 71 38 00 01 00 00  ..........q8....           <<=3D=3D The '0c'=
- is
-> > > the split_realm number
-> > > [Wed May 10 16:03:06 2023]  front: 00000020: 22 c8 71 38 00 01 00 00
-> > > d7 c7 71 38 00 01 00 00  ".q8......q8....       <<=3D=3D All the 'q8'=
- are
-> > > the ino#
-> > > [Wed May 10 16:03:06 2023]  front: 00000030: d9 c7 71 38 00 01 00 00
-> > > d4 c7 71 38 00 01 00 00  ..q8......q8....
-> > > [Wed May 10 16:03:06 2023]  front: 00000040: f1 c0 71 38 00 01 00 00
-> > > d4 c0 71 38 00 01 00 00  ..q8......q8....
-> > > [Wed May 10 16:03:06 2023]  front: 00000050: 20 c8 71 38 00 01 00 00
-> > > 1d c8 71 38 00 01 00 00   .q8......q8....
-> > > [Wed May 10 16:03:06 2023]  front: 00000060: ec c0 71 38 00 01 00 00
-> > > d6 c0 71 38 00 01 00 00  ..q8......q8....
-> > > [Wed May 10 16:03:06 2023]  front: 00000070: ef c0 71 38 00 01 00 00
-> > > 6a 11 2d 1a 00 01 00 00  ..q8....j.-.....
-> > > [Wed May 10 16:03:06 2023]  front: 00000080: 01 00 00 00 00 00 00 00
-> > > 01 00 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 00000090: ee 01 00 00 00 00 00 00
-> > > 01 00 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 000000a0: 00 00 00 00 00 00 00 00
-> > > 01 00 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 000000b0: 01 09 00 00 00 00 00 00
-> > > 00 00 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 000000c0: 01 00 00 00 00 00 00 00
-> > > 02 09 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 000000d0: 05 00 00 00 00 00 00 00
-> > > 01 09 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 000000e0: ff 08 00 00 00 00 00 00
-> > > fd 08 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023]  front: 000000f0: fb 08 00 00 00 00 00 00
-> > > f9 08 00 00 00 00 00 00  ................
-> > > [Wed May 10 16:03:06 2023] footer: 00000000: ca 39 06 07 00 00 00 00
-> > > 00 00 00 00 42 06 63 61  .9..........B.ca
-> > > [Wed May 10 16:03:06 2023] footer: 00000010: 7b 4b 5d 2d
-> > > 05                                   {K]-.
-> > >
-> > >
-> > > And if the split_realm number equals to sizeof(ceph_mds_snap_realm) +
-> > > extra snap buffer size by coincidence, the above 'corrupted' snaptrac=
-e
-> > > will be parsed by kclient too and kclient won't give any warning, but
-> > > it will corrupted the snaprealm and capsnap info in kclient.
-> > >
-> > >
-> > > Thanks
-> > >
-> > > - Xiubo
-> > >
-> > >
-> > >> Thanks,
-> > >>
-> > >>                  Ilya
-> > >>
-> >
->
->
-> --
-> Cheers,
-> Venky
+Julien Cristau reported a regression in ccp - the
+WARN_ON_ONCE(!virt_addr_valid(data)) is now being triggered.  I believe
+this was introduced by the above commit, which depends on:
 
+commit 8347b99473a313be6549a5b940bc3c56a71be81c
+Author: Sean Christopherson <seanjc@google.com>
+Date:   Tue Apr 6 15:49:48 2021 -0700
+=20
+    crypto: ccp: Play nice with vmalloc'd memory for SEV command structs
 
+Ben.
 
 --=20
-Cheers,
-Venky
+Ben Hutchings
+The two most common things in the universe are hydrogen and stupidity.
 
+--=-zgyW4vL2SFqadL66P0cX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmRkzvUACgkQ57/I7JWG
+EQkkMg//RUl7/6vp8OIA+Wt8Ty2kxl4iA7gXe1a+FN3lFH2dKSzfHJN38yIRWYO4
+kCjk8askHFe86TJNGNTez2NQJxbzTUEOLxiOD4BBUhGuP1W3ZcszIP3/oMushw+9
+9kFCx8+5WA5Nhf7QVg3K229sE8hoBCI/rc89evfw4K/xSpgwXr29IUfLCvTI8N1h
+LZe5uuZ8th4y8nziupev/QWsiJ1nVgOHSquWDRUT9GVBcNv4XinELRjd4d1ez/ln
+jCWcXv9QXZTMu1NqYiGer2lhXcvJ1cDCd/sQgidYqZPMHOVNndO5rlxML4RRbJvs
+3yN72WtRd0D3r0RBbQOI/aZR7Z/UxoxJ1Omted78gGB5xdyYgJitg6VwNFg9TGc/
+YGtHARF5SGdLRaahIcaMlRnZPmQrqur87Gv0ZRFfaP4Y/VOwknxARatnJZMYUoXI
+eZfHYKCX2I/+obRRdWLbaEQhmjcYxrsvpIUoMoQ3xIiaQfO84haJrQC82ZfKm618
+dfPXp4m0i4UuWVuczB+WgX9Axgx2aAuV8FEXsITQs0lylpyNw9WvR4Wunv/V8NJQ
+3f806X2e/aHLtDdplWqytVAe+I226UmelrGWGC/cPjsgBs7pL57HcqWaWvpliuO5
+d2hx7kzmSFCK1f1jWQ/mk09srmb232s0mwFlByThaAsTdK2f3Xg=
+=qllS
+-----END PGP SIGNATURE-----
+
+--=-zgyW4vL2SFqadL66P0cX--
