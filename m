@@ -2,193 +2,229 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7CFF707230
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 21:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032A270727F
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 21:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjEQTa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 15:30:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51244 "EHLO
+        id S229614AbjEQTob (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 15:44:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbjEQTa7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 15:30:59 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E47F2D4C
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 12:30:45 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f42c865535so12415555e9.1
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 12:30:45 -0700 (PDT)
+        with ESMTP id S229937AbjEQTo0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 15:44:26 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1E744A3
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 12:44:19 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae58e4b295so6151885ad.2
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 12:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684351843; x=1686943843;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kr6d+SVFbfwYxIPjljC34mJyItAu8XtQrptOaS6bxCg=;
-        b=pTywBKfDEzxgMMRn1O7n7Bu7DpCtUMiUnA9TozAVvTcvnqgBngngXxxNzXmoYVgmgN
-         UiIKIZ2nBAPofUsKGmMpILySj3BIeGh+Okto7boZE/LwpuLNFHFyZUwFyTWMUeeuBheU
-         RCU54V52MfMOL/VMQvCaIGPeIYnG/7T3Vt1K8Q+NQ7VkengF/OGehsVi0PySozvS7Y0s
-         rO6P24MntlSklmN00A2XNSMlPfG+9pr8dh8h9RNrlg+j8+rPiQ0oXTk5lf0M2HvNmGZ/
-         /y5xRQi4Yw4tsHyqtWAKtwF8JVLbFXWghf35nw4NgxGkmPbFKJ/gmiOdoBdVglSTdvYJ
-         wh2Q==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684352658; x=1686944658;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=quu0IMUuNGOzV5e9SK/jmuvfseDzsVs0rfMgsSrn7i0=;
+        b=NcdRi6Ua/K7bKfsvB2Gi/ql6s15f29CDOInR581+BVN2LVVwD1v3fQZNuTIxVC0gXy
+         Z9iQPGIUG11aAEvpXz/jjKIMWIb/4GXQFXOwm5XigfaiBhIH9EvxHtgvrrX2sootv18M
+         FGaOtRgsfWmT19tQE6EcoIflqhJXObfPtzsPM1SGqHZBb8NfNLFMQub6V3xy+64fG1Ej
+         sTAgxfOkZud3k9UPa5CwBYuyFc4lcOQJ1LZ3f8VVN7Iluw0pL3MX0cJ5IUL2zhjJmqt9
+         42c0zxUNo3F5WBzT4oygOZ6Te6hOkFhyktOyUjm/cHKLCBrfXzMOagqz+gHyHnPaR16L
+         Jf8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684351843; x=1686943843;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kr6d+SVFbfwYxIPjljC34mJyItAu8XtQrptOaS6bxCg=;
-        b=MbXBTeg8TmQutAt5igpdDIB6Kw+btrEUDUwkfxhvI/9gmgLiI13Cry5X7CVjtcuTcS
-         XUcBj8kM6XVG8pASVvNoHf5y04em03sjXrLNoZX+/hcphsYDfKS2qSySFc1YAcZAl1rl
-         MzGOVb3eJT7Zsw/q//t0dsICL6aCwOABnwHfVocrkcFi62Uwjk3fWyo5EiDaIUAbgb8E
-         Op4wFXCWq4P2VcirwOWZaTfRMAV349FwURNxkhv5MtpAbiWpIrAB7l90RGZpcsXCh6Mz
-         LaUBnr8LYPKI1Jtbgr7zIFoVFNpL9pbNVpGPu5X/68K770FuX6Lp8x1zRQG2bbResMyu
-         5JSg==
-X-Gm-Message-State: AC+VfDxeyY5ImGdWbbp6lyEHMaKzvgMe/Apt6AYWgALwAeinM802PRF8
-        gQHUqN1BvPH3v66zG2iDM9kHGXGFkDl7LA7EAUg=
-X-Google-Smtp-Source: ACHHUZ4FRheMWXHyKIux0JaXVWwYgCtMCMdH62mabjG8tjCmij2PXX4ulOpYJu1EOl9Ams43uo24FQ==
-X-Received: by 2002:a7b:cd89:0:b0:3f4:247a:ddce with SMTP id y9-20020a7bcd89000000b003f4247addcemr24569698wmj.36.1684351843658;
-        Wed, 17 May 2023 12:30:43 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id p5-20020a7bcc85000000b003f4248dcfcbsm3074911wma.30.2023.05.17.12.30.34
+        d=1e100.net; s=20221208; t=1684352658; x=1686944658;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=quu0IMUuNGOzV5e9SK/jmuvfseDzsVs0rfMgsSrn7i0=;
+        b=SbnTOfh+6+WI7mPH0G9YSYaM5haeBE3UN7ljcU1W9bht4EQzVqXaOJFEJ2o3GiCo/e
+         siQbFKuuhjSf+yD6Uf6XwZI1JV1dNHivO2R+hiF1dDGGGetTgC8Xc2HmaJXA9szrLqLV
+         Sh9UDTWws/56NNB5AEz8UGPBO7lKHjSCcWwD+mU0yGVGcEvf+epDvOum143gP8C9Ym0V
+         sIKLfXKnGTe62Dn1v4jx+Dx4DcYi3kjqj2B6OceO0j9zcNUf12pUW0mKS+ue0Svaj4fP
+         cNTsRwYa3PsOUBJbv/xytpJTxq4OHgmL8AYQxzCu4kg+Oax1XlzCaz/b9rXXMl5jzl/C
+         Inbg==
+X-Gm-Message-State: AC+VfDxUPOh507excgZxMiU1+MWpN1ShO6pvly9RGvHMuVGcQjOL+bCT
+        K4JN1WINPkMu50hOEBto/ksgYyzD9YSbaiYtNbgfHQ==
+X-Google-Smtp-Source: ACHHUZ4SM8PO+PShVh7fmVX3hCrttoIwifhAOeKALz7CdeBZ0VKALWoFcyUGDSCAlv3Lo4JauWjdFQ==
+X-Received: by 2002:a17:903:41ca:b0:1ac:3fe0:d6ad with SMTP id u10-20020a17090341ca00b001ac3fe0d6admr50908385ple.65.1684352658136;
+        Wed, 17 May 2023 12:44:18 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id a14-20020a170902ecce00b001ab016e7916sm8614671plh.234.2023.05.17.12.44.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 12:30:42 -0700 (PDT)
-Date:   Wed, 17 May 2023 22:30:29 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org, Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Shuah Khan <shuah@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: arm64: fp-stress: BUG: KFENCE: memory corruption in
- fpsimd_release_task
-Message-ID: <2d9a04d8-c09e-49aa-95eb-32b4679f7eba@kili.mountain>
-References: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
+        Wed, 17 May 2023 12:44:17 -0700 (PDT)
+Message-ID: <64652e91.170a0220.a9b46.0b75@mx.google.com>
+Date:   Wed, 17 May 2023 12:44:17 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.10.180
+X-Kernelci-Report-Type: test
+Subject: stable-rc/linux-5.10.y baseline: 161 runs, 2 regressions (v5.10.180)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I don't know this code at all so probably this is dumb...  I don't
-undestand how vec_set_vector_length() ensures that sme_state_size()
-stays in sync with the actual size allocated in sme_alloc()
+stable-rc/linux-5.10.y baseline: 161 runs, 2 regressions (v5.10.180)
 
-arch/arm64/kernel/fpsimd.c
-   847  int vec_set_vector_length(struct task_struct *task, enum vec_type type,
-   848                            unsigned long vl, unsigned long flags)
-                                               ^^^
-"vl" comes from the user and is 0-u16max.
+Regressions Summary
+-------------------
 
-   849  {
-   850          if (flags & ~(unsigned long)(PR_SVE_VL_INHERIT |
-   851                                       PR_SVE_SET_VL_ONEXEC))
-   852                  return -EINVAL;
-   853  
-   854          if (!sve_vl_valid(vl))
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-valid values are '16-8192'
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-   855                  return -EINVAL;
-   856  
-   857          /*
-   858           * Clamp to the maximum vector length that VL-agnostic code
-   859           * can work with.  A flag may be assigned in the future to
-   860           * allow setting of larger vector lengths without confusing
-   861           * older software.
-   862           */
-   863          if (vl > VL_ARCH_MAX)
-   864                  vl = VL_ARCH_MAX;
 
-Now 16-256'
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
+nel/v5.10.180/plan/baseline/
 
-   865  
-   866          vl = find_supported_vector_length(type, vl);
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.10.y
+  Describe: v5.10.180
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      4c893ff55907c61456bcb917781c0dd687a1e123 =
 
-type is ARM64_VEC_SVE.  I've looked at this function for a while and
-I don't see anything which ensures that "vl" is less than the current
-value.
 
-   867  
-   868          if (flags & (PR_SVE_VL_INHERIT |
-   869                       PR_SVE_SET_VL_ONEXEC))
-   870                  task_set_vl_onexec(task, type, vl);
-   871          else
-   872                  /* Reset VL to system default on next exec: */
-   873                  task_set_vl_onexec(task, type, 0);
-   874  
-   875          /* Only actually set the VL if not deferred: */
-   876          if (flags & PR_SVE_SET_VL_ONEXEC)
 
-Assume the PR_SVE_SET_VL_ONEXEC flag is not set.
+Test Regressions
+---------------- =
 
-   877                  goto out;
-   878  
-   879          if (vl == task_get_vl(task, type))
 
-This checks if the flag is == and if so we are done.
 
-   880                  goto out;
-   881  
-   882          /*
-   883           * To ensure the FPSIMD bits of the SVE vector registers are preserved,
-   884           * write any live register state back to task_struct, and convert to a
-   885           * regular FPSIMD thread.
-   886           */
-   887          if (task == current) {
-   888                  get_cpu_fpsimd_context();
-   889  
-   890                  fpsimd_save();
-   891          }
-   892  
-   893          fpsimd_flush_task_state(task);
-   894          if (test_and_clear_tsk_thread_flag(task, TIF_SVE) ||
-   895              thread_sm_enabled(&task->thread)) {
-   896                  sve_to_fpsimd(task);
-   897                  task->thread.fp_type = FP_STATE_FPSIMD;
-   898          }
-   899  
-   900          if (system_supports_sme() && type == ARM64_VEC_SME) {
-   901                  task->thread.svcr &= ~(SVCR_SM_MASK |
-   902                                         SVCR_ZA_MASK);
-   903                  clear_thread_flag(TIF_SME);
-   904          }
-   905  
-   906          if (task == current)
-   907                  put_cpu_fpsimd_context();
-   908  
-   909          /*
-   910           * Force reallocation of task SVE and SME state to the correct
-   911           * size on next use:
-   912           */
-   913          sve_free(task);
-   914          if (system_supports_sme() && type == ARM64_VEC_SME)
-   915                  sme_free(task);
-   916  
-   917          task_set_vl(task, type, vl);
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-"vl" is set here.  This is fine if we are setting it to a smaller value,
-but if we are setting it to a larger value then I think we need to
-realloc the ->sme_state buffer.
 
-When we call sme_alloc() it will say the buffer is already allocated
-and just zero out what we need for "vl", but the existing buffer is too
-small.
+  Details:     https://kernelci.org/test/plan/id/6464fac09fcf27863c2e85fb
 
-   918  
-   919  out:
-   920          update_tsk_thread_flag(task, vec_vl_inherit_flag(type),
-   922  
-   923          return 0;
-   924  }
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
+x360-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
+x360-12b-ca0010nr-n4020-octopus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230512.0/x86/rootfs.cpio.gz =
 
-regards,
-dan carpenter
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6464fac09fcf27863c2e8600
+        failing since 49 days (last pass: v5.10.176, first fail: v5.10.176-=
+105-g18265b240021)
+
+    2023-05-17T16:02:58.081826  + set +x
+
+    2023-05-17T16:02:58.088203  <8>[   11.150917] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10357946_1.4.2.3.1>
+
+    2023-05-17T16:02:58.193067  / # #
+
+    2023-05-17T16:02:58.293871  export SHELL=3D/bin/sh
+
+    2023-05-17T16:02:58.294123  #
+
+    2023-05-17T16:02:58.394738  / # export SHELL=3D/bin/sh. /lava-10357946/=
+environment
+
+    2023-05-17T16:02:58.394987  =
+
+
+    2023-05-17T16:02:58.495585  / # . /lava-10357946/environment/lava-10357=
+946/bin/lava-test-runner /lava-10357946/1
+
+    2023-05-17T16:02:58.495934  =
+
+
+    2023-05-17T16:02:58.500890  / # /lava-10357946/bin/lava-test-runner /la=
+va-10357946/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6464fa5c50ad3393442e860c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
+x360-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+80/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
+x360-14-G1-sona.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230512.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6464fa5c50ad3393442e8611
+        failing since 49 days (last pass: v5.10.176, first fail: v5.10.176-=
+105-g18265b240021)
+
+    2023-05-17T16:01:20.729872  + set +x<8>[   13.631892] <LAVA_SIGNAL_ENDR=
+UN 0_dmesg 10357886_1.4.2.3.1>
+
+    2023-05-17T16:01:20.729956  =
+
+
+    2023-05-17T16:01:20.831536  #
+
+    2023-05-17T16:01:20.831751  =
+
+
+    2023-05-17T16:01:20.932344  / # #export SHELL=3D/bin/sh
+
+    2023-05-17T16:01:20.932540  =
+
+
+    2023-05-17T16:01:21.033070  / # export SHELL=3D/bin/sh. /lava-10357886/=
+environment
+
+    2023-05-17T16:01:21.033293  =
+
+
+    2023-05-17T16:01:21.133939  / # . /lava-10357886/environment/lava-10357=
+886/bin/lava-test-runner /lava-10357886/1
+
+    2023-05-17T16:01:21.134240  =
+
+ =
+
+    ... (13 line(s) more)  =
+
+ =20
