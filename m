@@ -2,65 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADD2B7062A5
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252F57062B7
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbjEQIWT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 17 May 2023 04:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42284 "EHLO
+        id S230022AbjEQIZV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 04:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbjEQIWS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:22:18 -0400
-X-Greylist: delayed 129158 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 May 2023 01:22:14 PDT
-Received: from smtp.netmagic.net (smtp.netmagic.net [206.14.125.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED15A358B
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:22:14 -0700 (PDT)
-Received: from IP-221-107.dataclub.eu (ip-221-107.dataclub.info [46.183.221.107] (may be forged))
-        (authenticated bits=0)
-        by smtp.netmagic.net (8.14.4/8.14.4) with ESMTP id 34FJYATF009365;
-        Mon, 15 May 2023 13:17:41 -0700
-Message-Id: <202305152017.34FJYATF009365@smtp.netmagic.net>
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S229530AbjEQIZS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:25:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456023AB0;
+        Wed, 17 May 2023 01:25:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0AD861B57;
+        Wed, 17 May 2023 08:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF939C433D2;
+        Wed, 17 May 2023 08:25:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684311916;
+        bh=D4xYj/ffWaf6yFGrSCStz7pFKHZB3TOO0GJfC1pppgU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LqrWgC9VxAQC35NdfAAssqVV+TJ+7Jt2cSmTvmKGx0TDMOr/k05l765D5/26HGP79
+         Aa/lQOUjwerywVg66ukujU87tqdO4Ppp4s5py0opqWqPzt36Lg4R9TQySz1RtPaleH
+         LFcc1sDSn1O9ExvSq8juLoDwpWRZlsxEgrEAzV8M=
+Date:   Wed, 17 May 2023 10:25:13 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 5.4 000/282] 5.4.243-rc1 review
+Message-ID: <2023051738-bullfrog-dreamily-79a4@gregkh>
+References: <20230515161722.146344674@linuxfoundation.org>
+ <739bd109-b32d-46f1-b382-e55f34efc11a@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Loan Finance.
-To:     Recipients <mcaceres@netmagic.net>
-From:   "Initiating Officer" <mcaceres@netmagic.net>
-Date:   Mon, 15 May 2023 23:17:33 +0300
-Reply-To: ibrahimtafa411@gmail.com
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <739bd109-b32d-46f1-b382-e55f34efc11a@roeck-us.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greetings,
+On Tue, May 16, 2023 at 08:52:13PM -0700, Guenter Roeck wrote:
+> On Mon, May 15, 2023 at 06:26:18PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.4.243 release.
+> > There are 282 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> > Anything received after that time might be too late.
+> > 
+> 
+> Build results:
+> 	total: 159 pass: 159 fail: 0
+> Qemu test results:
+> 	total: 455 pass: 454 fail: 1
+> Failed tests:
+> 	arm:sabrelite:multi_v7_defconfig:mtd2:mem256:net,default:imx6dl-sabrelite:rootfs
+> 
+> As far as I can see, the second SPI interface fails to instantiate.
+> 
+> [   21.491528] spi_imx 2008000.spi: bitbang start failed with -22
+> 
+> There are also various new warnings in clock code.
+> 
+> [   21.492631] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:986 clk_core_disable+0x124/0x2e4
+> [   21.497524] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:845 clk_core_unprepare+0x268/0x388
+> 
+> The warnings in clock code are gone after reverting all changes introducing
+> PM support for imx spi code. The boot failure is gone after reverting the
+> gpio conversion. In total, I reverted the following patches to fix the
+> boot and warning problems.
+> 
+> d6fcaa127cc6 Revert "spi: imx/fsl-lpspi: Convert to GPIO descriptors"
+> 9783b21b591d Revert "spi: imx: enable runtime pm support"
+> 4a8bdbf7462b Revert "spi: spi-imx: using pm_runtime_resume_and_get instead of pm_runtime_get_sync"
+> e6c5f497ff35 Revert "spi: imx: Don't skip cleanup in remove's error path"
+> d6ea758df74f Revert "spi: imx: fix runtime pm support for !CONFIG_PM"
+> b9dbd028c970 Revert "spi: imx: fix reference leak in two imx operations"
+> 
+> Is this really 5.4 material ?
 
+You are right, this isn't 5.4 material (and really not 5.10 either for
+some of these changes.)  I'll go drop them all from 5.4.y and 5.10.y and
+push out -rc2 releases soon.
 
-I am a loan Initiating officer of a UAE based loan finance company,
+Thanks for the testing and review.
 
-who are ready to fund projects outside the UAE. 
-
-We grant loans of various amounts to both Corporate and 
-
-Private entities at a low interest rate of 2% percent interest per annum.
-
- The Loan terms are very flexible and interesting.
-
-
-Kindly revert back to us if you have projects that needs loan 
-
-
-funding for further discussion and negotiation:
-
-
-Thanks
-
-
-Loan Initiating Officer
+greg k-h
