@@ -2,391 +2,487 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8411070671A
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 13:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 242D570674F
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 13:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231376AbjEQLq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 07:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
+        id S230385AbjEQL7r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 07:59:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231377AbjEQLq4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 07:46:56 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3815C4C0E
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 04:46:53 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1ae52ce3250so5264675ad.2
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 04:46:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684324012; x=1686916012;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w4TT/BMksx54mCC9/VfF7c6kITEjgm9D+5k2o9fOKfE=;
-        b=hpwkBxsb7uBVHAelyayYZkj2bDII2OVUiLqqzX8mgKwO69le5VpB5+efstjXefGvTo
-         wa8AneTX10/lxjIloJoI9+78R0fp5P1xR7E558k32/xSerIgx9KFCby/Xvot72WHRyqS
-         lkPjiQm/4QRX4adMmOWg/C5/wuAeHsyheqL0biepDqyxnNs4vYwyeDHy90VOv3kC+s9A
-         6W+qksuBtCSrQZgVwX/fp9KgVUmw1Cf1vMwmylg9LL6Mph429ABkAznz7V+0sPHCl496
-         kEL1YUYlDtrhAJZT2Y8UoY0BUY4BxmfQw/doGKaIYjRCun95ReWL8AcVF1ryULt4F0xH
-         xsDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684324012; x=1686916012;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w4TT/BMksx54mCC9/VfF7c6kITEjgm9D+5k2o9fOKfE=;
-        b=ON+DFs3J9Qd8OU1bCJ7B2j10Z3ndogtdVwAwBjKNxnnTFbYEEIKQCKqc/qzgVBQm7i
-         20aYz8bGrJHzYhRX0bCpbbrEcCK9/strNXG9fcBdjvXxyZXGa8kjJbeibAj1pYeJYFkZ
-         ovnIChEDT9hSIc59ud1T0xsPfCXjUMiCVDTYs+GEE2ud4rOHuNonVMM+FERY18cjPwn1
-         5lixqoFRXKAJDPn9SkNVzQIWM12HOqZsYsYmRy70vq0AuOi/9ni/bMpPvj0iijI46fJK
-         EMN9lyaS6CLzJW7sYTIPZXdVRjzVwzvccBJ4iPsqu2XLIGHw/evK2xK5AieE1c6VDHZ+
-         WcGw==
-X-Gm-Message-State: AC+VfDydkW2Y+RG8dliGaFrYyBv/stDGA1VJ6z8+DYyQffBM9fJPqZWH
-        A+l4TQ5zi3GglLyfWGJonG2D
-X-Google-Smtp-Source: ACHHUZ4oqr91CLRgt9TjP5dL4wajLtQsJCf+57ZAsLWzhI3zUkUMu21KeMTJBcYLnPJbEbC6yR0D2Q==
-X-Received: by 2002:a17:902:b70f:b0:1a1:b3bb:cd5b with SMTP id d15-20020a170902b70f00b001a1b3bbcd5bmr40785658pls.62.1684324012593;
-        Wed, 17 May 2023 04:46:52 -0700 (PDT)
-Received: from localhost.localdomain ([117.207.26.28])
-        by smtp.gmail.com with ESMTPSA id s12-20020a17090aba0c00b0025289bc1ce4sm1366971pjr.17.2023.05.17.04.46.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 04:46:52 -0700 (PDT)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     andersson@kernel.org, bp@alien8.de, mchehab@kernel.org
-Cc:     james.morse@arm.com, rric@kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dmitry.baryshkov@linaro.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH v8 2/2] EDAC/qcom: Get rid of hardcoded register offsets
-Date:   Wed, 17 May 2023 17:16:35 +0530
-Message-Id: <20230517114635.76358-3-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230517114635.76358-1-manivannan.sadhasivam@linaro.org>
-References: <20230517114635.76358-1-manivannan.sadhasivam@linaro.org>
+        with ESMTP id S229824AbjEQL7q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 07:59:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986BF3586;
+        Wed, 17 May 2023 04:59:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F7FB61309;
+        Wed, 17 May 2023 11:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33538C433D2;
+        Wed, 17 May 2023 11:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684324783;
+        bh=0ONZTZ0bcX9O/YkkpR1ylf7q30ePiv2FvvoUWYiTMr0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=O9cOMP5xxzGG10IGfoR5yZM5zgIMuxv+mXpKl6bWK5S30duEGqsGtzOsrQIstv3Uc
+         p8ByAMVB5TyepNHqXW7lkEMLhz7+psDdKdejsVqbbGl9A+wb1xlPUd3s2GBFd41lrq
+         EOkdY2qYCLjFfJS2Y2E2esCXyusNaWEgjjtSfYRM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc:     lwn@lwn.net, jslaby@suse.cz,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.315
+Date:   Wed, 17 May 2023 13:59:39 +0200
+Message-Id: <2023051739-machinist-secluding-0747@gregkh>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The LLCC EDAC register offsets varies between each SoC. Hardcoding the
-register offsets won't work and will often result in crash due to
-accessing the wrong locations.
+I'm announcing the release of the 4.14.315 kernel.
 
-Hence, get the register offsets from the LLCC driver matching the
-individual SoCs.
+All users of the 4.14 kernel series must upgrade.
 
-Cc: <stable@vger.kernel.org> # 6.0: 5365cea199c7 ("soc: qcom: llcc: Rename reg_offset structs to reflect LLCC version")
-Cc: <stable@vger.kernel.org> # 6.0: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
-Cc: <stable@vger.kernel.org> # 6.0
-Fixes: a6e9d7ef252c ("soc: qcom: llcc: Add configuration data for SM8450 SoC")
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/edac/qcom_edac.c           | 116 ++++++++++++++---------------
- include/linux/soc/qcom/llcc-qcom.h |   6 --
- 2 files changed, 58 insertions(+), 64 deletions(-)
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-diff --git a/drivers/edac/qcom_edac.c b/drivers/edac/qcom_edac.c
-index 6140001f21c4..b2db545c6810 100644
---- a/drivers/edac/qcom_edac.c
-+++ b/drivers/edac/qcom_edac.c
-@@ -21,30 +21,9 @@
- #define TRP_SYN_REG_CNT                 6
- #define DRP_SYN_REG_CNT                 8
- 
--#define LLCC_COMMON_STATUS0             0x0003000c
- #define LLCC_LB_CNT_MASK                GENMASK(31, 28)
- #define LLCC_LB_CNT_SHIFT               28
- 
--/* Single & double bit syndrome register offsets */
--#define TRP_ECC_SB_ERR_SYN0             0x0002304c
--#define TRP_ECC_DB_ERR_SYN0             0x00020370
--#define DRP_ECC_SB_ERR_SYN0             0x0004204c
--#define DRP_ECC_DB_ERR_SYN0             0x00042070
--
--/* Error register offsets */
--#define TRP_ECC_ERROR_STATUS1           0x00020348
--#define TRP_ECC_ERROR_STATUS0           0x00020344
--#define DRP_ECC_ERROR_STATUS1           0x00042048
--#define DRP_ECC_ERROR_STATUS0           0x00042044
--
--/* TRP, DRP interrupt register offsets */
--#define DRP_INTERRUPT_STATUS            0x00041000
--#define TRP_INTERRUPT_0_STATUS          0x00020480
--#define DRP_INTERRUPT_CLEAR             0x00041008
--#define DRP_ECC_ERROR_CNTR_CLEAR        0x00040004
--#define TRP_INTERRUPT_0_CLEAR           0x00020484
--#define TRP_ECC_ERROR_CNTR_CLEAR        0x00020440
--
- /* Mask and shift macros */
- #define ECC_DB_ERR_COUNT_MASK           GENMASK(4, 0)
- #define ECC_DB_ERR_WAYS_MASK            GENMASK(31, 16)
-@@ -60,15 +39,6 @@
- #define DRP_TRP_INT_CLEAR               GENMASK(1, 0)
- #define DRP_TRP_CNT_CLEAR               GENMASK(1, 0)
- 
--/* Config registers offsets*/
--#define DRP_ECC_ERROR_CFG               0x00040000
--
--/* Tag RAM, Data RAM interrupt register offsets */
--#define CMN_INTERRUPT_0_ENABLE          0x0003001c
--#define CMN_INTERRUPT_2_ENABLE          0x0003003c
--#define TRP_INTERRUPT_0_ENABLE          0x00020488
--#define DRP_INTERRUPT_ENABLE            0x0004100c
--
- #define SB_ERROR_THRESHOLD              0x1
- #define SB_ERROR_THRESHOLD_SHIFT        24
- #define SB_DB_TRP_INTERRUPT_ENABLE      0x3
-@@ -88,9 +58,6 @@ enum {
- static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	[LLCC_DRAM_CE] = {
- 		.name = "DRAM Single-bit",
--		.synd_reg = DRP_ECC_SB_ERR_SYN0,
--		.count_status_reg = DRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = DRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = DRP_SYN_REG_CNT,
- 		.count_mask = ECC_SB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_SB_ERR_WAYS_MASK,
-@@ -98,9 +65,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- 	[LLCC_DRAM_UE] = {
- 		.name = "DRAM Double-bit",
--		.synd_reg = DRP_ECC_DB_ERR_SYN0,
--		.count_status_reg = DRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = DRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = DRP_SYN_REG_CNT,
- 		.count_mask = ECC_DB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_DB_ERR_WAYS_MASK,
-@@ -108,9 +72,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- 	[LLCC_TRAM_CE] = {
- 		.name = "TRAM Single-bit",
--		.synd_reg = TRP_ECC_SB_ERR_SYN0,
--		.count_status_reg = TRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = TRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = TRP_SYN_REG_CNT,
- 		.count_mask = ECC_SB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_SB_ERR_WAYS_MASK,
-@@ -118,9 +79,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- 	[LLCC_TRAM_UE] = {
- 		.name = "TRAM Double-bit",
--		.synd_reg = TRP_ECC_DB_ERR_SYN0,
--		.count_status_reg = TRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = TRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = TRP_SYN_REG_CNT,
- 		.count_mask = ECC_DB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_DB_ERR_WAYS_MASK,
-@@ -128,7 +86,7 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- };
- 
--static int qcom_llcc_core_setup(struct regmap *llcc_bcast_regmap)
-+static int qcom_llcc_core_setup(struct llcc_drv_data *drv, struct regmap *llcc_bcast_regmap)
- {
- 	u32 sb_err_threshold;
- 	int ret;
-@@ -137,31 +95,31 @@ static int qcom_llcc_core_setup(struct regmap *llcc_bcast_regmap)
- 	 * Configure interrupt enable registers such that Tag, Data RAM related
- 	 * interrupts are propagated to interrupt controller for servicing
- 	 */
--	ret = regmap_update_bits(llcc_bcast_regmap, CMN_INTERRUPT_2_ENABLE,
-+	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->cmn_interrupt_2_enable,
- 				 TRP0_INTERRUPT_ENABLE,
- 				 TRP0_INTERRUPT_ENABLE);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_update_bits(llcc_bcast_regmap, TRP_INTERRUPT_0_ENABLE,
-+	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->trp_interrupt_0_enable,
- 				 SB_DB_TRP_INTERRUPT_ENABLE,
- 				 SB_DB_TRP_INTERRUPT_ENABLE);
- 	if (ret)
- 		return ret;
- 
- 	sb_err_threshold = (SB_ERROR_THRESHOLD << SB_ERROR_THRESHOLD_SHIFT);
--	ret = regmap_write(llcc_bcast_regmap, DRP_ECC_ERROR_CFG,
-+	ret = regmap_write(llcc_bcast_regmap, drv->edac_reg_offset->drp_ecc_error_cfg,
- 			   sb_err_threshold);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_update_bits(llcc_bcast_regmap, CMN_INTERRUPT_2_ENABLE,
-+	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->cmn_interrupt_2_enable,
- 				 DRP0_INTERRUPT_ENABLE,
- 				 DRP0_INTERRUPT_ENABLE);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_write(llcc_bcast_regmap, DRP_INTERRUPT_ENABLE,
-+	ret = regmap_write(llcc_bcast_regmap, drv->edac_reg_offset->drp_interrupt_enable,
- 			   SB_DB_DRP_INTERRUPT_ENABLE);
- 	return ret;
- }
-@@ -175,24 +133,28 @@ qcom_llcc_clear_error_status(int err_type, struct llcc_drv_data *drv)
- 	switch (err_type) {
- 	case LLCC_DRAM_CE:
- 	case LLCC_DRAM_UE:
--		ret = regmap_write(drv->bcast_regmap, DRP_INTERRUPT_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->drp_interrupt_clear,
- 				   DRP_TRP_INT_CLEAR);
- 		if (ret)
- 			return ret;
- 
--		ret = regmap_write(drv->bcast_regmap, DRP_ECC_ERROR_CNTR_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->drp_ecc_error_cntr_clear,
- 				   DRP_TRP_CNT_CLEAR);
- 		if (ret)
- 			return ret;
- 		break;
- 	case LLCC_TRAM_CE:
- 	case LLCC_TRAM_UE:
--		ret = regmap_write(drv->bcast_regmap, TRP_INTERRUPT_0_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->trp_interrupt_0_clear,
- 				   DRP_TRP_INT_CLEAR);
- 		if (ret)
- 			return ret;
- 
--		ret = regmap_write(drv->bcast_regmap, TRP_ECC_ERROR_CNTR_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->trp_ecc_error_cntr_clear,
- 				   DRP_TRP_CNT_CLEAR);
- 		if (ret)
- 			return ret;
-@@ -205,16 +167,54 @@ qcom_llcc_clear_error_status(int err_type, struct llcc_drv_data *drv)
- 	return ret;
- }
- 
-+struct qcom_llcc_syn_regs {
-+	u32 synd_reg;
-+	u32 count_status_reg;
-+	u32 ways_status_reg;
-+};
-+
-+static void get_reg_offsets(struct llcc_drv_data *drv, int err_type,
-+			    struct qcom_llcc_syn_regs *syn_regs)
-+{
-+	const struct llcc_edac_reg_offset *edac_reg_offset = drv->edac_reg_offset;
-+
-+	switch (err_type) {
-+	case LLCC_DRAM_CE:
-+		syn_regs->synd_reg = edac_reg_offset->drp_ecc_sb_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->drp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->drp_ecc_error_status0;
-+		break;
-+	case LLCC_DRAM_UE:
-+		syn_regs->synd_reg = edac_reg_offset->drp_ecc_db_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->drp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->drp_ecc_error_status0;
-+		break;
-+	case LLCC_TRAM_CE:
-+		syn_regs->synd_reg = edac_reg_offset->trp_ecc_sb_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->trp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->trp_ecc_error_status0;
-+		break;
-+	case LLCC_TRAM_UE:
-+		syn_regs->synd_reg = edac_reg_offset->trp_ecc_db_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->trp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->trp_ecc_error_status0;
-+		break;
-+	}
-+}
-+
- /* Dump Syndrome registers data for Tag RAM, Data RAM bit errors*/
- static int
- dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- {
- 	struct llcc_edac_reg_data reg_data = edac_reg_data[err_type];
-+	struct qcom_llcc_syn_regs regs = { };
- 	int err_cnt, err_ways, ret, i;
- 	u32 synd_reg, synd_val;
- 
-+	get_reg_offsets(drv, err_type, &regs);
-+
- 	for (i = 0; i < reg_data.reg_cnt; i++) {
--		synd_reg = reg_data.synd_reg + (i * 4);
-+		synd_reg = regs.synd_reg + (i * 4);
- 		ret = regmap_read(drv->regmaps[bank], synd_reg,
- 				  &synd_val);
- 		if (ret)
-@@ -224,7 +224,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- 			    reg_data.name, i, synd_val);
- 	}
- 
--	ret = regmap_read(drv->regmaps[bank], reg_data.count_status_reg,
-+	ret = regmap_read(drv->regmaps[bank], regs.count_status_reg,
- 			  &err_cnt);
- 	if (ret)
- 		goto clear;
-@@ -234,7 +234,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- 	edac_printk(KERN_CRIT, EDAC_LLCC, "%s: Error count: 0x%4x\n",
- 		    reg_data.name, err_cnt);
- 
--	ret = regmap_read(drv->regmaps[bank], reg_data.ways_status_reg,
-+	ret = regmap_read(drv->regmaps[bank], regs.ways_status_reg,
- 			  &err_ways);
- 	if (ret)
- 		goto clear;
-@@ -295,7 +295,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
- 
- 	/* Iterate over the banks and look for Tag RAM or Data RAM errors */
- 	for (i = 0; i < drv->num_banks; i++) {
--		ret = regmap_read(drv->regmaps[i], DRP_INTERRUPT_STATUS,
-+		ret = regmap_read(drv->regmaps[i], drv->edac_reg_offset->drp_interrupt_status,
- 				  &drp_error);
- 
- 		if (!ret && (drp_error & SB_ECC_ERROR)) {
-@@ -310,7 +310,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
- 		if (!ret)
- 			irq_rc = IRQ_HANDLED;
- 
--		ret = regmap_read(drv->regmaps[i], TRP_INTERRUPT_0_STATUS,
-+		ret = regmap_read(drv->regmaps[i], drv->edac_reg_offset->trp_interrupt_0_status,
- 				  &trp_error);
- 
- 		if (!ret && (trp_error & SB_ECC_ERROR)) {
-@@ -342,7 +342,7 @@ static int qcom_llcc_edac_probe(struct platform_device *pdev)
- 	int ecc_irq;
- 	int rc;
- 
--	rc = qcom_llcc_core_setup(llcc_driv_data->bcast_regmap);
-+	rc = qcom_llcc_core_setup(llcc_driv_data, llcc_driv_data->bcast_regmap);
- 	if (rc)
- 		return rc;
- 
-diff --git a/include/linux/soc/qcom/llcc-qcom.h b/include/linux/soc/qcom/llcc-qcom.h
-index 423220e66026..93417ba1ead4 100644
---- a/include/linux/soc/qcom/llcc-qcom.h
-+++ b/include/linux/soc/qcom/llcc-qcom.h
-@@ -69,9 +69,6 @@ struct llcc_slice_desc {
- /**
-  * struct llcc_edac_reg_data - llcc edac registers data for each error type
-  * @name: Name of the error
-- * @synd_reg: Syndrome register address
-- * @count_status_reg: Status register address to read the error count
-- * @ways_status_reg: Status register address to read the error ways
-  * @reg_cnt: Number of registers
-  * @count_mask: Mask value to get the error count
-  * @ways_mask: Mask value to get the error ways
-@@ -80,9 +77,6 @@ struct llcc_slice_desc {
-  */
- struct llcc_edac_reg_data {
- 	char *name;
--	u64 synd_reg;
--	u64 count_status_reg;
--	u64 ways_status_reg;
- 	u32 reg_cnt;
- 	u32 count_mask;
- 	u32 ways_mask;
--- 
-2.25.1
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                                    |    2 
+ arch/arm/boot/dts/exynos4412-itop-elite.dts                 |    2 
+ arch/arm/boot/dts/s5pv210.dtsi                              |    2 
+ arch/arm64/include/asm/debug-monitors.h                     |    1 
+ arch/arm64/kernel/debug-monitors.c                          |    5 
+ arch/arm64/kernel/kgdb.c                                    |    2 
+ arch/ia64/mm/contig.c                                       |    2 
+ arch/mips/fw/lib/cmdline.c                                  |    2 
+ arch/parisc/kernel/real2.S                                  |    5 
+ arch/powerpc/kernel/rtas.c                                  |    2 
+ arch/powerpc/platforms/512x/clock-commonclk.c               |    2 
+ arch/powerpc/platforms/embedded6xx/flipper-pic.c            |    2 
+ arch/powerpc/platforms/embedded6xx/hlwd-pic.c               |    2 
+ arch/powerpc/platforms/embedded6xx/wii.c                    |    4 
+ arch/powerpc/sysdev/tsi108_pci.c                            |    5 
+ arch/sh/kernel/cpu/sh4/sq.c                                 |    2 
+ arch/sh/kernel/nmi_debug.c                                  |    4 
+ arch/sh/math-emu/sfp-util.h                                 |    4 
+ arch/x86/kernel/apic/apic.c                                 |    5 
+ arch/x86/kernel/apic/io_apic.c                              |   14 -
+ drivers/block/drbd/drbd_receiver.c                          |    2 
+ drivers/bluetooth/btsdio.c                                  |    1 
+ drivers/clk/clk-conf.c                                      |   12 -
+ drivers/clk/rockchip/clk-rk3399.c                           |    2 
+ drivers/dma/at_xdmac.c                                      |    5 
+ drivers/gpu/drm/drm_probe_helper.c                          |    5 
+ drivers/gpu/drm/rockchip/rockchip_drm_gem.c                 |    3 
+ drivers/gpu/drm/vgem/vgem_fence.c                           |    1 
+ drivers/hid/wacom_wac.c                                     |   12 -
+ drivers/i2c/busses/i2c-omap.c                               |    2 
+ drivers/iio/adc/palmas_gpadc.c                              |    2 
+ drivers/infiniband/hw/hfi1/mmu_rb.c                         |   13 -
+ drivers/infiniband/sw/rdmavt/qp.c                           |    2 
+ drivers/macintosh/Kconfig                                   |    1 
+ drivers/macintosh/windfarm_smu_sat.c                        |    1 
+ drivers/md/dm-flakey.c                                      |    4 
+ drivers/md/dm-integrity.c                                   |    8 
+ drivers/md/dm-ioctl.c                                       |    7 
+ drivers/md/raid10.c                                         |   23 +
+ drivers/media/pci/dm1105/dm1105.c                           |    1 
+ drivers/media/pci/ttpci/av7110_av.c                         |    4 
+ drivers/media/platform/sti/bdisp/bdisp-v4l2.c               |    2 
+ drivers/mtd/ubi/eba.c                                       |   19 +
+ drivers/net/ethernet/amd/nmclan_cs.c                        |    2 
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c            |   23 +
+ drivers/net/wireless/ath/ath5k/eeprom.c                     |    2 
+ drivers/net/wireless/ath/ath6kl/bmi.c                       |    2 
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c                  |    4 
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c |    5 
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c            |   10 
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c             |    3 
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c      |    1 
+ drivers/of/device.c                                         |    7 
+ drivers/phy/tegra/xusb.c                                    |    2 
+ drivers/power/supply/generic-adc-battery.c                  |    3 
+ drivers/s390/block/dasd.c                                   |    2 
+ drivers/scsi/megaraid.c                                     |    1 
+ drivers/spi/spi-fsl-spi.c                                   |   12 -
+ drivers/spmi/spmi.c                                         |    3 
+ drivers/staging/iio/resolver/ad2s1210.c                     |    2 
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c                |    1 
+ drivers/target/iscsi/iscsi_target.c                         |   16 -
+ drivers/tty/serial/8250/8250.h                              |   12 +
+ drivers/tty/serial/8250/8250_port.c                         |   16 +
+ drivers/tty/serial/fsl_lpuart.c                             |    2 
+ drivers/tty/tty_io.c                                        |    4 
+ drivers/tty/tty_ioctl.c                                     |   45 ++-
+ drivers/usb/chipidea/core.c                                 |    2 
+ drivers/usb/dwc3/core.c                                     |    1 
+ drivers/usb/serial/option.c                                 |    6 
+ fs/btrfs/ctree.c                                            |   32 ++
+ fs/btrfs/ioctl.c                                            |    5 
+ fs/btrfs/print-tree.c                                       |    6 
+ fs/cifs/smb2ops.c                                           |    2 
+ fs/ext4/inline.c                                            |   14 +
+ fs/ext4/mballoc.c                                           |    6 
+ fs/ext4/super.c                                             |   19 +
+ fs/ext4/xattr.c                                             |    5 
+ fs/fs-writeback.c                                           |    2 
+ fs/nfs/nfs4state.c                                          |    4 
+ fs/nilfs2/bmap.c                                            |   16 +
+ fs/nilfs2/segment.c                                         |    5 
+ fs/pstore/pmsg.c                                            |    7 
+ fs/reiserfs/xattr_security.c                                |    8 
+ fs/ubifs/dir.c                                              |    1 
+ fs/ubifs/tnc.c                                              |    9 
+ include/linux/printk.h                                      |   19 +
+ include/linux/sunrpc/sched.h                                |    3 
+ include/linux/tty.h                                         |    2 
+ include/linux/vt_buffer.h                                   |    2 
+ include/net/netfilter/nf_tables.h                           |   30 ++
+ include/net/scm.h                                           |   13 +
+ include/uapi/linux/btrfs.h                                  |    1 
+ include/uapi/linux/const.h                                  |    2 
+ kernel/events/core.c                                        |    4 
+ kernel/trace/ring_buffer.c                                  |    4 
+ mm/page_alloc.c                                             |   16 +
+ net/8021q/vlan_dev.c                                        |    2 
+ net/bluetooth/hci_sock.c                                    |    9 
+ net/core/skbuff.c                                           |    3 
+ net/ipv4/ip_output.c                                        |   16 +
+ net/ipv6/sit.c                                              |    8 
+ net/netfilter/nf_tables_api.c                               |  139 ++++++++----
+ net/netfilter/nft_dynset.c                                  |   22 +
+ net/netfilter/nft_immediate.c                               |    6 
+ net/netfilter/nft_lookup.c                                  |   21 +
+ net/netfilter/nft_objref.c                                  |   21 +
+ net/netfilter/nft_set_hash.c                                |    2 
+ net/packet/af_packet.c                                      |   20 -
+ net/packet/diag.c                                           |    4 
+ net/packet/internal.h                                       |   26 +-
+ net/sched/act_mirred.c                                      |    2 
+ net/sunrpc/clnt.c                                           |    3 
+ net/sunrpc/sched.c                                          |    1 
+ security/selinux/Makefile                                   |    4 
+ sound/usb/caiaq/input.c                                     |    1 
+ tools/perf/bench/bench.h                                    |    4 
+ tools/perf/bench/futex-hash.c                               |   12 -
+ tools/perf/bench/futex-lock-pi.c                            |   11 
+ tools/perf/builtin-sched.c                                  |    2 
+ tools/perf/pmu-events/arch/powerpc/power9/other.json        |    4 
+ tools/perf/pmu-events/arch/powerpc/power9/pipeline.json     |    2 
+ tools/perf/util/auxtrace.c                                  |    5 
+ tools/perf/util/sort.c                                      |    3 
+ tools/perf/util/symbol-elf.c                                |    2 
+ 125 files changed, 705 insertions(+), 277 deletions(-)
+
+Adrian Hunter (1):
+      perf auxtrace: Fix address filter entire kernel size
+
+Alexander Mikhalitsyn (1):
+      scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+
+Alexey V. Vissarionov (1):
+      wifi: ath6kl: minor fix for allocation size
+
+Anastasia Belova (1):
+      btrfs: print-tree: parent bytenr must be aligned to sector size
+
+Arnaldo Carvalho de Melo (2):
+      perf sched: Cast PTHREAD_STACK_MIN to int as it may turn into sysconf(__SC_THREAD_STACK_MIN_VALUE)
+      perf bench: Share some global variables to fix build with gcc 10
+
+Arınç ÜNAL (1):
+      USB: serial: option: add UNISOC vendor and TOZED LT70C product
+
+Bitterblue Smith (1):
+      wifi: rtl8xxxu: RTL8192EU always needs full init
+
+Christoph Böhmwalder (1):
+      drbd: correctly submit flush bio on barrier
+
+Christophe Leroy (1):
+      spi: fsl-spi: Fix CPM/QE mode Litte Endian
+
+Claudiu Beznea (1):
+      dmaengine: at_xdmac: do not enable all cyclic channels
+
+Clément Léger (1):
+      clk: add missing of_node_put() in "assigned-clocks" property parsing
+
+Cong Wang (1):
+      sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()
+
+Dai Ngo (1):
+      SUNRPC: remove the maximum number of retries in call_bind_status
+
+Dan Carpenter (2):
+      media: av7110: prevent underflow in write_ts_to_decoder()
+      wifi: ath5k: fix an off by one check in ath5k_eeprom_read_freq_list()
+
+Danila Chernetsov (1):
+      scsi: megaraid: Fix mega_cmd_done() CMDID_INT_CMDS
+
+Dom Cobley (1):
+      drm/probe-helper: Cancel previous job before starting new one
+
+Emmanuel Grumbach (1):
+      wifi: iwlwifi: make the loop for card preparation effective
+
+Eric Dumazet (2):
+      net/packet: convert po->origdev to an atomic flag
+      net/packet: convert po->auxdata to an atomic flag
+
+Fedor Pchelkin (1):
+      wifi: ath6kl: reduce WARN to dev_dbg() in callback
+
+Filipe Manana (1):
+      btrfs: fix btrfs_prev_leaf() to not return the same key twice
+
+Florian Fainelli (1):
+      serial: 8250: Add missing wakeup event reporting
+
+Florian Westphal (1):
+      netfilter: nf_tables: split set destruction in deactivate and destroy phase
+
+Gaosheng Cui (1):
+      phy: tegra: xusb: Add missing tegra_xusb_port_unregister for usb2_port and ulpi_port
+
+Gencen Gan (1):
+      net: amd: Fix link leak when verifying config failed
+
+Greg Kroah-Hartman (1):
+      Linux 4.14.315
+
+Helge Deller (1):
+      parisc: Fix argument pointer in real64_call_asm()
+
+Ilpo Järvinen (2):
+      tty: Prevent writing chars during tcsetattr TCSADRAIN/FLUSH
+      serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
+
+Jiasheng Jiang (1):
+      media: bdisp: Add missing check for create_workqueue
+
+Jiaxun Yang (1):
+      MIPS: fw: Allow firmware to pass a empty env
+
+Jishnu Prakash (1):
+      spmi: Add a check for remove callback when removing a SPMI driver
+
+Jisoo Jang (1):
+      wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
+
+Joe Damato (2):
+      ixgbe: Allow flow hash to be set via ethtool
+      ixgbe: Enable setting RSS table to default values
+
+Johan Hovold (1):
+      USB: dwc3: fix runtime pm imbalance on unbind
+
+Johannes Berg (2):
+      ring-buffer: Sync IRQ works before buffer destruction
+      wifi: iwlwifi: mvm: check firmware response size
+
+John Paul Adrian Glaubitz (1):
+      sh: sq: Fix incorrect element size for allocating bitmap buffer
+
+John Stultz (1):
+      pstore: Revert pmsg_lock back to a normal mutex
+
+Kajol Jain (1):
+      perf vendor events power9: Remove UTF-8 characters from JSON files
+
+Kevin Brodsky (1):
+      uapi/linux/const.h: prefer ISO-friendly __typeof__
+
+Krzysztof Kozlowski (2):
+      ARM: dts: exynos: fix WM8960 clock name in Itop Elite
+      ARM: dts: s5pv210: correct MIPI CSIS clock name
+
+Kuniyuki Iwashima (2):
+      tcp/udp: Fix memleaks of sk and zerocopy skbs with TX timestamp.
+      af_packet: Don't send zero-byte data in packet_sendmsg_spkt().
+
+Liang He (1):
+      macintosh/windfarm_smu_sat: Add missing of_node_put()
+
+Liu Jian (1):
+      Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
+
+Markus Elfring (1):
+      perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
+
+Maxim Korotkov (1):
+      writeback: fix call of incorrect macro
+
+Maíra Canal (1):
+      drm/vgem: add missing mutex_destroy
+
+Mike Christie (1):
+      scsi: target: iscsit: Fix TAS handling during conn cleanup
+
+Mike Snitzer (2):
+      dm integrity: call kmem_cache_destroy() in dm_integrity_init() error path
+      dm ioctl: fix nested locking in table_clear() to remove deadlock concern
+
+Mikulas Patocka (1):
+      dm flakey: fix a crash with invalid table line
+
+Miquel Raynal (1):
+      of: Fix modalias string generation
+
+Mårten Lindahl (1):
+      ubifs: Free memory for tmpfile name
+
+Natalia Petrova (1):
+      RDMA/rdmavt: Delete unnecessary NULL check
+
+Nathan Lynch (1):
+      powerpc/rtas: use memmove for potentially overlapping buffer copy
+
+Nuno Sá (1):
+      staging: iio: resolver: ads1210: fix config mode
+
+Ondrej Mosnacek (1):
+      selinux: fix Makefile dependencies of flask.h
+
+Pablo Neira Ayuso (5):
+      netfilter: nf_tables: unbind set in rule from commit path
+      netfilter: nft_hash: fix nft_hash_deactivate
+      netfilter: nf_tables: use-after-free in failing rule with bound set
+      netfilter: nf_tables: bogus EBUSY when deleting set after flush
+      netfilter: nf_tables: deactivate anonymous set from preparation phase
+
+Patrick Kelsey (1):
+      IB/hfi1: Fix SDMA mmu_rb_node not being evicted in LRU order
+
+Patrik Dahlström (1):
+      iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+
+Paul Moore (1):
+      selinux: ensure av_permissions.h is built when needed
+
+Pawel Witek (1):
+      cifs: fix pcchunk length type in smb2_copychunk_range
+
+Philipp Hortmann (1):
+      staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
+
+Ping Cheng (1):
+      HID: wacom: Set a default resolution for older tablets
+
+Qu Wenruo (1):
+      btrfs: scrub: reject unsupported scrub flags
+
+Quentin Schulz (1):
+      clk: rockchip: rk3399: allow clk_cifout to force clk_cifout_src to reparent
+
+Randy Dunlap (8):
+      linux/vt_buffer.h: allow either builtin or modular for macros
+      ia64: mm/contig: fix section mismatch warning/error
+      powerpc/mpc512x: fix resource printk format warning
+      powerpc/wii: fix resource printk format warnings
+      powerpc/sysdev/tsi108: fix resource printk format warnings
+      macintosh: via-pmu-led: requires ATA to be set
+      sh: math-emu: fix macro redefined warning
+      sh: nmi_debug: fix return value of __setup handler
+
+Reid Tonking (1):
+      i2c: omap: Fix standard mode false ACK readings
+
+Rob Clark (1):
+      drm/rockchip: Drop unbalanced obj unref
+
+Roberto Sassu (1):
+      reiserfs: Add security prefix to xattr name in reiserfs_security_write()
+
+Ruihan Li (1):
+      bluetooth: Perform careful capability checks in hci_sock_ioctl()
+
+Ruliang Lin (1):
+      ALSA: caiaq: input: Add error handling for unsupported input methods in `snd_usb_caiaq_input_init`
+
+Ryusuke Konishi (2):
+      nilfs2: do not write dirty data after degenerating to read-only
+      nilfs2: fix infinite loop in nilfs_mdt_get_block()
+
+Saurabh Sengar (1):
+      x86/ioapic: Don't return 0 from arch_dynirq_lower_bound()
+
+Sebastian Reichel (1):
+      power: supply: generic-adc-battery: fix unit scaling
+
+Shenwei Wang (1):
+      tty: serial: fsl_lpuart: adjust buffer length to the intended size
+
+Stefan Haberland (1):
+      s390/dasd: fix hanging blockdevice after request requeue
+
+Sumit Garg (1):
+      arm64: kgdb: Set PSTATE.SS to 1 to re-enable single-step
+
+Tetsuo Handa (2):
+      printk: declare printk_deferred_{enter,safe}() in include/linux/printk.h
+      mm/page_alloc: fix potential deadlock on zonelist_update_seq seqlock
+
+Theodore Ts'o (5):
+      ext4: improve error recovery code paths in __ext4_remount()
+      ext4: add bounds checking in get_max_inline_xattr_value_size()
+      ext4: bail out of ext4_xattr_ibody_get() fails for any reason
+      ext4: remove a BUG_ON in ext4_mb_release_group_pa()
+      ext4: fix invalid free tracking in ext4_xattr_move_to_block()
+
+Trond Myklebust (1):
+      NFSv4.1: Always send a RECLAIM_COMPLETE after establishing lease
+
+Tudor Ambarus (1):
+      ext4: avoid a potential slab-out-of-bounds in ext4_group_desc_csum
+
+Uros Bizjak (1):
+      x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
+
+Vadim Fedorenko (1):
+      vlan: partially enable SIOCSHWTSTAMP in container
+
+Victor Nogueira (1):
+      net/sched: act_mirred: Add carrier check
+
+Wang YanQing (1):
+      ubi: Fix return value overwrite issue in try_write_vid_and_data()
+
+Yang Jihong (2):
+      perf/core: Fix hardlockup failure caused by perf throttle
+      perf symbols: Fix return incorrect build_id size in elf_read_build_id()
+
+Yinhao Hu (1):
+      usb: chipidea: fix missing goto in `ci_hdrc_probe`
+
+Yu Kuai (1):
+      md/raid10: fix leak of 'r10bio->remaining' for recovery
+
+Zheng Wang (1):
+      media: dm1105: Fix use after free bug in dm1105_remove due to race condition
+
+Zhihao Cheng (1):
+      Revert "ubifs: dirty_cow_znode: Fix memleak in error handling path"
+
+Ziyang Xuan (1):
+      ipv4: Fix potential uninit variable access bug in __ip_make_skb()
 
