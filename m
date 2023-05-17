@@ -2,175 +2,216 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D73705B8F
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 02:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E421705C80
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 03:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbjEQADD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 20:03:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41900 "EHLO
+        id S230363AbjEQBhg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 21:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjEQADC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 20:03:02 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2119.outbound.protection.outlook.com [40.107.243.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21802728;
-        Tue, 16 May 2023 17:03:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ImbS6N7B/vKshAfbjCUFfvKJBsgOQd/cTxgYn4V9QLenWsF44ntLS9sEnN4J3izjrTe17YNYLkrOYbkVe6D7joo4225ZxT9BWf2CzzYQejpWQTywiwti9LHzwOmZbmVbe26dqPCYXAL4WUb9QduviK/fAyAhCV3R7NKJhTPQmiTzRZHMVovcTprTtO8QvBF7ajsmKeMHfsjzDl4NEzJqkcmNBT1TxmOiK3yEWebqtBvvcprabXYrn5EKgsRpnk9HNU0m8f9KHpP8fLoLoT0EwQETqEoTpW+feg9XZndMUMv6zx3/FKyB+mdA11oCUq1IBUKVBVl8Ebk81rW4nO02JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kO7og7l5Io5mx8eD6ObA2UUW5gfwk+Alp4RxnxOqfQo=;
- b=ayhqv5j/8sZaQHly/8lUrLNEC4ZEmu2f7UKvXvMp+CvBM0B4moG+0GQhFIP9G1eW73eUIfxGhsMI2h7+YJXG9AnOe7/YWW55uFEk95tkKoXGa3MWYTwDGk6aD2b2lJ7WR42ILvLbTW24I5is4y4Py9DoUIVTkykrMUuYjrEsiD1S4ToRBpxzXhNeEhQbq/qvC9saQCIjCYNsKoaly/pz45IuM+bLh5MB8HMc9oZ3Q+2sL4jcOC56a+Z9qMRInQF5A/aupuQ1zfde4VpN/2mEvodhHHFGsGLo2p2EuCQ6E0LYz+qk+JkXpPIPYtyjhWT/49O/elbXxrqvvy2OcURs4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kO7og7l5Io5mx8eD6ObA2UUW5gfwk+Alp4RxnxOqfQo=;
- b=Q2MAjvck4wKYYvEb+0OaPJOgMC+zmWQqgTVOOQ8OwSOF7nW7q4pZX3h3hj7+WW3/N0VA04l9l6br04yN0E1zR86Ms2KDuSLcz3u4E3fLX2wTkoVQDvP9bHMHEX/B9prLMC0djHjC5v4dnAQQ8/MH9cjsvmJWH+qsAeVuEjuRbMk=
-Received: from SA1PR21MB1335.namprd21.prod.outlook.com (2603:10b6:806:1f2::11)
- by MN0PR21MB3724.namprd21.prod.outlook.com (2603:10b6:208:3d2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.3; Wed, 17 May
- 2023 00:02:58 +0000
-Received: from SA1PR21MB1335.namprd21.prod.outlook.com
- ([fe80::c454:256a:ce51:e983]) by SA1PR21MB1335.namprd21.prod.outlook.com
- ([fe80::c454:256a:ce51:e983%4]) with mapi id 15.20.6433.001; Wed, 17 May 2023
- 00:02:57 +0000
-From:   Dexuan Cui <decui@microsoft.com>
-To:     'Lorenzo Pieralisi' <lpieralisi@kernel.org>
-CC:     "'bhelgaas@google.com'" <bhelgaas@google.com>,
-        "'davem@davemloft.net'" <davem@davemloft.net>,
-        "'edumazet@google.com'" <edumazet@google.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Jake Oshins <jakeo@microsoft.com>,
-        "'kuba@kernel.org'" <kuba@kernel.org>,
-        "'kw@linux.com'" <kw@linux.com>, KY Srinivasan <kys@microsoft.com>,
-        "'leon@kernel.org'" <leon@kernel.org>,
-        "'linux-pci@vger.kernel.org'" <linux-pci@vger.kernel.org>,
-        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        "'pabeni@redhat.com'" <pabeni@redhat.com>,
-        "'robh@kernel.org'" <robh@kernel.org>,
-        "'saeedm@nvidia.com'" <saeedm@nvidia.com>,
-        "'wei.liu@kernel.org'" <wei.liu@kernel.org>,
-        Long Li <longli@microsoft.com>,
-        "'boqun.feng@gmail.com'" <boqun.feng@gmail.com>,
-        Saurabh Singh Sengar <ssengar@microsoft.com>,
-        "'helgaas@kernel.org'" <helgaas@kernel.org>,
-        "'linux-hyperv@vger.kernel.org'" <linux-hyperv@vger.kernel.org>,
-        "'linux-kernel@vger.kernel.org'" <linux-kernel@vger.kernel.org>,
-        "'linux-rdma@vger.kernel.org'" <linux-rdma@vger.kernel.org>,
-        "'netdev@vger.kernel.org'" <netdev@vger.kernel.org>,
-        Jose Teuttli Carranco <josete@microsoft.com>,
-        "'stable@vger.kernel.org'" <stable@vger.kernel.org>
-Subject: RE: [PATCH v3 6/6] PCI: hv: Use async probing to reduce boot time
-Thread-Topic: [PATCH v3 6/6] PCI: hv: Use async probing to reduce boot time
-Thread-Index: AQHZgxiydynY9JdEwE2LUDobn6ASSK9TueZQgAnkUiA=
-Date:   Wed, 17 May 2023 00:02:57 +0000
-Message-ID: <SA1PR21MB133549FB41041ED218E2C73BBF7E9@SA1PR21MB1335.namprd21.prod.outlook.com>
-References: <20230420024037.5921-1-decui@microsoft.com>
- <20230420024037.5921-7-decui@microsoft.com> <ZFtUgCVaneGVKBsW@lpieralisi>
- <SA1PR21MB13355D8F2A7AC6CA91FE1D1BBF779@SA1PR21MB1335.namprd21.prod.outlook.com>
-In-Reply-To: <SA1PR21MB13355D8F2A7AC6CA91FE1D1BBF779@SA1PR21MB1335.namprd21.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=9404ba2f-9e11-476c-bee1-b05b22020f31;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-05-10T16:54:12Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB1335:EE_|MN0PR21MB3724:EE_
-x-ms-office365-filtering-correlation-id: ff757fb2-e045-4d42-f9c4-08db566a125f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: VascPjmolAdNaKgF52ReMSN4HSinJyp5NBnX4NB6D91FyQ5xwYCy6ugy1T0U3/TetcEyvFJ7VeHuCKayHHSAKVfWiwgYwlzzCi0aNEzQU/emdLfyfczpJPVHawbEX1ZDp/P43rK6r1dzC3ru+jFGhj0P6jXkuttcafH9/NWXJycHBEldP8UOCMjGLf/x2j/c2Df3Gredz4MNWO7kpNtTLmSI0Pk0X5LTQll/uKMwY/ThAFpJM9touXvrY9+gD7aQELDAXZRqYk9b+4V/atsRcd//wSmIFdnO+MwHrEQ+Xj8PrxwQcmWV5o4dUKCZOWMpuAF3NFoG77cj4WbuHHb4zPypBb+AvFHWgywTh5bVMiYrZCzHf5V4wb6rDw95zd4hjv3Ee34JRyzDradyzCmV3iSMzXMRV8amDs/A1vWPI2/jLP96torPzDxP+3jjB5c25PqaLYaas+Jd3rFezCnDUzL/oNb+s+Vni87OAWYyqHMUYARpkqCpJhBlRgLW0IbPayUjhR5ArofuItXzXzAM65ytqhBZmtdia9SONjpOUYHSnNmz27XHSjgG7MIk5TV8DGaVfQ6wfpc8BRgnwvakXWi+p4qOzDrKvyenelPR6kYGdD9BFNa3ZqOqNQZ2Vb32OChg1HuxPKJw3u6FFK0qoQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1335.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39860400002)(366004)(346002)(376002)(451199021)(122000001)(38070700005)(38100700002)(86362001)(82960400001)(82950400001)(33656002)(786003)(55016003)(5660300002)(4326008)(316002)(71200400001)(8676002)(9686003)(52536014)(53546011)(6506007)(7416002)(186003)(8936002)(6916009)(8990500004)(41300700001)(66476007)(2906002)(54906003)(66446008)(64756008)(7696005)(66946007)(478600001)(10290500003)(966005)(4744005)(66556008)(76116006)(83380400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?CmWMeiVdpCxf7kSg+7gmOHBlGZVlPhoacVn84WF05ORPG4Xx9V11Z/kI29sN?=
- =?us-ascii?Q?SNBbXq2bP7vGDmV0JZumU+Wzerf0im5ne8JIO77SkbXLuvK3bb7hwyYNKhUA?=
- =?us-ascii?Q?ZSe0M8lQNYdprKheh28R9aW9p4uX4axdoXa//y//T2lkINEHnY5INYWRnC+7?=
- =?us-ascii?Q?rW0OBTrX9/adyDHCM4XoZQhPfPL1TOjVsVMMs0FAG4eFMuiRoRj3H1LFl/bG?=
- =?us-ascii?Q?EhuFRyLA6PxNqTdbRAbXeHVYqhz2U4hoJqvXJrskq7zhQ9BHx6UJruEBZiW+?=
- =?us-ascii?Q?Dj6xxMLvOWAvYZAHFOySObE09vPbd9H+lw0ljYe+56Bvx+DC7kcI7BEwbfkn?=
- =?us-ascii?Q?JcHfXFukfz72QHtKcd2m2jAZH+K1VnbJVdmfzfj3/nIb0/r50+mX3etllXw3?=
- =?us-ascii?Q?C+LHvSaTc8/vSiJlgTzFa7uoGO8QXta5ja49s7ViWAoYBeFz+UcEP9nPhx6t?=
- =?us-ascii?Q?kmDzibUhywd1sI5B9hECInvDewBwgjJkujxewM20Pwf/ITF88tYF7YbK7aGM?=
- =?us-ascii?Q?0CNx380g/WUzIrjb0Dh9pBF1V7HvUxZvmnuFlLnp4EtSS9RiCQ/gPTFDJRd0?=
- =?us-ascii?Q?Z17iAjEd4zkCPMV9D3U56uphPNP1SBgSM66vSL44AvR1cOFaFFiBshXSaVA2?=
- =?us-ascii?Q?tHf4D/vdBfCF/tXZef9i756BEM4fN2EqluYe5E7ejWm2/jch8HXd7m8d+87I?=
- =?us-ascii?Q?zbVSHfH0pcUXKMZe9l0LfR19badTwEJv8TZg5GJEAFuygo0gX45PRGxKyZWD?=
- =?us-ascii?Q?dr2u0CTcYZAcC9q3RvdcV1nCSb0WkUQXyS3H8poD3pVGv2fHlsVC8XX3HCLQ?=
- =?us-ascii?Q?KReZqCaSc9huOfle7cDwT/A/lzlrcg1XmSXrf3CJ9qXdNdPH4q99Wv43QLPk?=
- =?us-ascii?Q?oqtfsSDVTRtJzPEk/WrAAKpTrcVKyy7iSyTCYIUtgqFj6bP4718a6qLxE3RD?=
- =?us-ascii?Q?4MT7pRZlM0k19Zu/SJZz669YbWhQA9tuIxpLVX8NEh6BKAGfWz2EFXkMttVz?=
- =?us-ascii?Q?8qW1QNKR1VbiNVGXy/+jUIABLFNIbZbvc+mHmicaTTvOqCLZ3K/8egnhfUW7?=
- =?us-ascii?Q?utgN7RTGtLiI5sqfvOyhjdmyS1zjTepNwtygJny6WfzAMYHc1FRgT1IXeWvS?=
- =?us-ascii?Q?0s67BQyeKX9o82nuBTCfUlSkkKds9aaMdxk8Pw8ckDg1Ji9L77u5oXw6ur12?=
- =?us-ascii?Q?sfI4+rreaVjZYMuHmnbIp/HrE+skUBcbC1kCAc+F45B75RDqKBFl5+L/GiNe?=
- =?us-ascii?Q?RfLshW4PqK+h4d9Od8sy2Ae3352W1ZTbaobn7ojMOpZbjFiIPwgfQzZjXjgZ?=
- =?us-ascii?Q?Waf1lD5rtNbtTrGgM0xb+sSXOsXvfqwVOA0ALO/5EzhKpgKyNIgJ/DYoOey9?=
- =?us-ascii?Q?FZpe1HQm2oXWmMOGJC+XRlnMTLWAbvRaF1kIEznizpM6+BW87bzdNuseKe2d?=
- =?us-ascii?Q?spmRtGprObzcZFCfKMrOg8s0Z4tPbbtHhcnTrp9z8wlMkjM9a4bqzmoK8rlo?=
- =?us-ascii?Q?uzHBt6vJ73IlHVuUx6QUEEV9t6fcGV/H3zlu5N+4WBVHWb1irm05Y9BZzLZU?=
- =?us-ascii?Q?nBra61X1wtDpSfiomkm7tTFjaDghiYAycyq1vvIFykrkOQ46U+rSRF3LcmfO?=
- =?us-ascii?Q?p1jsIdICacvkNYr0sVXVZnIMXZl/FK1sfsQPCvAPdbgU?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S230127AbjEQBhf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 21:37:35 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6DEBA
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:37:34 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-33164ec77ccso57295ab.0
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 18:37:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684287454; x=1686879454;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QLugHt0XGPwYTpMjCAQObsffP9JpeGqJnJJt+CEzfkw=;
+        b=bVTAd5SO8NoTEqY8WvVpici8dg2AJF+dp7I0LnvvkPfdcwDNGaZNyd9AJHKI6atf4y
+         I9ui03BXIdH2uqHnitcgCBq151W6TYHraYtG2uM/cA42aUOG7SDWjT46iPhVHOLfQhpd
+         cLb4pgJrYFz7Z5x95Vtw17j5uuh9OE9rEnwI+PUr5ySb9Ls5pnIYhqFZhb0HxHid9mhm
+         +U6Es6zGE5ho/3P3faKVgUhZ6BhfRl6P4WvBQIV5PP0GUfkZwrDFuiCs1HQrGfB+L9bl
+         pxBmE0eDGdapX3w/SzQd370Pn2582BdELI3PnyXY8L5KR22eCiB0cF07R8UJxHQgFxV7
+         6erg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684287454; x=1686879454;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QLugHt0XGPwYTpMjCAQObsffP9JpeGqJnJJt+CEzfkw=;
+        b=Lpolni44caFLy9TgRXXht2KBWbhRsOfi1HpuRuHdJbDRmvqzgPnDRpeTh+nXPT416a
+         25k3FaJSVcLNdeqS3/2hmuTG0nUl4+IMQYKgZRZ9xX2vVoM0PguSdUpAwqLq3sMj2reW
+         gnmR6a2LeXzxZ0pyx7Xi4Dov9KQ0VVVs0TELHfva9u3Ev9Djq7YJK5giGM0WIiu8lSQU
+         JsWlehCoc5woyiUTqPVy0BVjfdWfm70EBqZso2Q0b1VCqMv0Gms78xrr0yZ7ivpKM/sJ
+         k6tRXyDiuXQhAcC+NhDA3GL1UYUpozdpA3IbYbfZYfXxonxkaVBf4x8cllV44iThWWt5
+         O2ww==
+X-Gm-Message-State: AC+VfDxUKNLh9dP7PWzeoEZ6MMmN8Oelvrf5Jgs3ONYqmrlPOO4uZnkj
+        QenQ/60gnB+h49ua2jK7iGZK1FA3f6i2+A2p1m8EQw==
+X-Google-Smtp-Source: ACHHUZ6dZfD1Ix5kE87yhR1ityHzz0e/73f67Hdq1xOZtlUzUQebA+DIVW/8Pry1HP7JugJAoQpPKt/YljP3mLUFfFU=
+X-Received: by 2002:a05:6e02:1a4a:b0:331:948c:86f3 with SMTP id
+ u10-20020a056e021a4a00b00331948c86f3mr64152ilv.19.1684287453632; Tue, 16 May
+ 2023 18:37:33 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1335.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff757fb2-e045-4d42-f9c4-08db566a125f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2023 00:02:57.7606
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WZtrxCU7Xl2PCvp7aBGgnm3GixonjaYK+I8Mwqxp5bQfoxPeRLCOwCGWMTnYm3C8/9Z8+vBJH0dER4vTL43NVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR21MB3724
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230512235755.1589034-1-pcc@google.com> <20230512235755.1589034-2-pcc@google.com>
+ <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com> <91246137-a3d2-689f-8ff6-eccc0e61c8fe@redhat.com>
+In-Reply-To: <91246137-a3d2-689f-8ff6-eccc0e61c8fe@redhat.com>
+From:   Peter Collingbourne <pcc@google.com>
+Date:   Tue, 16 May 2023 18:37:22 -0700
+Message-ID: <CAMn1gO4cbEmpDzkdN10DyaGe=2Wg4Y19-v8gHRqgQoD4Bxd+cw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before swap_free()
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "surenb@google.com" <surenb@google.com>,
+        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
+        <chinwen.chang@mediatek.com>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
+        <Kuan-Ying.Lee@mediatek.com>,
+        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        vincenzo.frascino@arm.com,
+        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
+        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> From: Dexuan Cui
-> Sent: Wednesday, May 10, 2023 10:12 AM
-> To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > ...
-> > This patch should be split, first thing is to fix and document what
-> > you are changing for pci_{lock,unlock}_rescan_remove() then add
-> > asynchronous probing.
+On Tue, May 16, 2023 at 5:31=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 15.05.23 19:34, Catalin Marinas wrote:
+> > On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
+> >> On 13.05.23 01:57, Peter Collingbourne wrote:
+> >>> diff --git a/mm/memory.c b/mm/memory.c
+> >>> index 01a23ad48a04..83268d287ff1 100644
+> >>> --- a/mm/memory.c
+> >>> +++ b/mm/memory.c
+> >>> @@ -3914,19 +3914,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>>             }
+> >>>     }
+> >>> -   /*
+> >>> -    * Remove the swap entry and conditionally try to free up the swa=
+pcache.
+> >>> -    * We're already holding a reference on the page but haven't mapp=
+ed it
+> >>> -    * yet.
+> >>> -    */
+> >>> -   swap_free(entry);
+> >>> -   if (should_try_to_free_swap(folio, vma, vmf->flags))
+> >>> -           folio_free_swap(folio);
+> >>> -
+> >>> -   inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
+> >>> -   dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
+> >>>     pte =3D mk_pte(page, vma->vm_page_prot);
+> >>> -
+> >>>     /*
+> >>>      * Same logic as in do_wp_page(); however, optimize for pages tha=
+t are
+> >>>      * certainly not shared either because we just allocated them wit=
+hout
+> >>> @@ -3946,8 +3934,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>>             pte =3D pte_mksoft_dirty(pte);
+> >>>     if (pte_swp_uffd_wp(vmf->orig_pte))
+> >>>             pte =3D pte_mkuffd_wp(pte);
+> >>> +   arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
+te);
+> >>>     vmf->orig_pte =3D pte;
+> >>> +   /*
+> >>> +    * Remove the swap entry and conditionally try to free up the swa=
+pcache.
+> >>> +    * We're already holding a reference on the page but haven't mapp=
+ed it
+> >>> +    * yet.
+> >>> +    */
+> >>> +   swap_free(entry);
+> >>> +   if (should_try_to_free_swap(folio, vma, vmf->flags))
+> >>> +           folio_free_swap(folio);
+> >>> +
+> >>> +   inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
+> >>> +   dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
+> >>> +
+> >>>     /* ksm created a completely new copy */
+> >>>     if (unlikely(folio !=3D swapcache && swapcache)) {
+> >>>             page_add_new_anon_rmap(page, vma, vmf->address);
+> >>> @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >>>     VM_BUG_ON(!folio_test_anon(folio) ||
+> >>>                     (pte_write(pte) && !PageAnonExclusive(page)));
+> >>>     set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
+> >>> -   arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_p=
+te);
+> >>>     folio_unlock(folio);
+> >>>     if (folio !=3D swapcache && swapcache) {
+> >>
+> >>
+> >> You are moving the folio_free_swap() call after the folio_ref_count(fo=
+lio)
+> >> =3D=3D 1 check, which means that such (previously) swapped pages that =
+are
+> >> exclusive cannot be detected as exclusive.
+> >>
+> >> There must be a better way to handle MTE here.
+> >>
+> >> Where are the tags stored, how is the location identified, and when ar=
+e they
+> >> effectively restored right now?
 > >
-> > Lorenzo
-> Ok, I'll split this patch into two.
->=20
-> Thanks for reviewing the patch.
-> Can you please give an "Acked-by" or "Reviewed-by" to patch 1~5
-> if they look good to you? The first 5 patches have been there for a
-> while, and they already got Michael's Reviewed-by.
+> > I haven't gone through Peter's patches yet but a pretty good descriptio=
+n
+> > of the problem is here:
+> > https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.ca=
+mel@mediatek.com/.
+> > I couldn't reproduce it with my swap setup but both Qun-wei and Peter
+> > triggered it.
+> >
+> > When a tagged page is swapped out, the arm64 code stores the metadata
+> > (tags) in a local xarray indexed by the swap pte. When restoring from
+> > swap, the arm64 set_pte_at() checks this xarray using the old swap pte
+> > and spills the tags onto the new page. Apparently something changed in
+> > the kernel recently that causes swap_range_free() to be called before
+> > set_pte_at(). The arm64 arch_swap_invalidate_page() frees the metadata
+> > from the xarray and the subsequent set_pte_at() won't find it.
+> >
+> > If we have the page, the metadata can be restored before set_pte_at()
+> > and I guess that's what Peter is trying to do (again, I haven't looked
+> > at the details yet; leaving it for tomorrow).
+>
+> Thanks for the details! I was missing that we also have a hook in
+> swap_range_free().
+>
+> >
+> > Is there any other way of handling this? E.g. not release the metadata
+> > in arch_swap_invalidate_page() but later in set_pte_at() once it was
+> > restored. But then we may leak this metadata if there's no set_pte_at()
+> > (the process mapping the swap entry died).
+>
+> That was my immediate thought: do we really have to hook into
+> swap_range_free() at all?
 
-Hi Lorenzo, Bjorn and all,
-Ping -- it would be great to have your Acked-by or Reviewed-by for
-patch 1 to 5.
-=20
-> I hope the first 5 patches can go through the hyperv-fixes branch in
-> the hyperv tree
-> https://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux.git/log/?h=
-=3Dhyp
-> erv-fixes
-> since they are specific to Hyper-V.
->=20
-> After the first 5 patches are in, I can refer to the commit IDs, and I
-> will split this patch (patch 6).
->=20
-> Thanks,
-> Dexuan
+As I alluded to in another reply, without the hook in
+swap_range_free() I think we would either end up with a race or an
+effective memory leak in the arch code that maintains the metadata for
+swapped out pages, as there would be no way for the arch-specific code
+to know when it is safe to free it after swapin.
 
+> And I also wondered why we have to do this
+> from set_pte_at() and not do this explicitly (maybe that's the other
+> arch_* callback on the swapin path).
+
+I don't think it's necessary, as the set_pte_at() call sites for
+swapped in pages are known. I'd much rather do this via an explicit
+hook at those call sites, as the existing approach of implicit
+restoring seems too subtle and easy to be overlooked when refactoring,
+as we have seen with this bug. In the end we only have 3 call sites
+for the hook and hopefully the comments that I'm adding are sufficient
+to ensure that any new swapin code should end up with a call to the
+hook in the right place.
+
+Peter
