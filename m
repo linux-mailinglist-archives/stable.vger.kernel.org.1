@@ -2,96 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AB83705D92
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 04:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99DE0705E2D
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 05:38:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231773AbjEQC5u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 22:57:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
+        id S232481AbjEQDiF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 23:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjEQC5s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 22:57:48 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960072705;
-        Tue, 16 May 2023 19:57:44 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-643990c5373so200834b3a.1;
-        Tue, 16 May 2023 19:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684292264; x=1686884264;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8hhWsXrhhZhUyOAd+do84J/5IkDaxDP38fgUKTDS9po=;
-        b=I0nd20kpV5l6NQNhNgzvawU9SA6riyj1/DSyTP0RDTDFlY/UAKsR/upbbc9q3zMksh
-         Kmisjoji5bAxbawPtyXcrQY4ITobRdK9HzK06Yb000+cda/RkGrDED0PSG9Leef6Lxgp
-         yz+d59u/lggvkb5+Z2aDdnnZKfwXqxOdFVFD/pQwqxYzlg86yx23w9N9vz/lP0JlQZkR
-         k4nx9OZhM3WWil6JYK7uWAx1aJszmNfumz3EDhGZ8nM+IenyLfEWwkil1LB0SPIoWDto
-         LD4EFn7GTmCwjBAa9znkZkiWDtwRqjIOsFsfjFGzxni1jASeHKTIRA6EYpfR4azhiFh/
-         P49w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684292264; x=1686884264;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8hhWsXrhhZhUyOAd+do84J/5IkDaxDP38fgUKTDS9po=;
-        b=avgf2epn0dEcHAOD7cZnYvoH+CJpHUkE0h+519L1KnnFxIcZdinW/a+ElaL0CZY7Wt
-         R4J8HvuKisE2ft9KWTpaU/2odPMxLDGJAhFhjXLMc+AtxnD5T/0k1dVQIRcMYbJeZ3FV
-         OGpl4IIgHBX7arPfphtAXzrP0ioKzfoTWeHsWAcKTmyq5v1MBJO9GDxKdI5WoLb3ljAk
-         Y21Smocqzh1oxqV2CUtOpmCynA9EJ9fA6/R9Ot0AAKpXPLF0KbuZij6w0gVsP5H0OT/t
-         cZw22MlYoYLEY4O77DrdmOFZD2ZtywB1RtQQttG7EIRXX4xHyKACvg71LZFXvMiXJU4v
-         mw2w==
-X-Gm-Message-State: AC+VfDy9okIDKeftUgbDVWLymCwlDcHV9G2u1HGuaE11BUBSAwcQZy+/
-        nGq8yi8BN8OsTcjabTM3ScA=
-X-Google-Smtp-Source: ACHHUZ4SkYvhKzyOuwuMkeSAGtRizlHOIh7L633LB33QjkzLke1sBtx0dyY6basPkaFBJBD5rsiPaQ==
-X-Received: by 2002:a05:6a20:3d09:b0:100:5f62:be76 with SMTP id y9-20020a056a203d0900b001005f62be76mr43080303pzi.54.1684292264065;
-        Tue, 16 May 2023 19:57:44 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id r15-20020a170903020f00b001a1a8e98e93sm16265340plh.287.2023.05.16.19.57.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 19:57:43 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 16 May 2023 19:57:42 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.15 000/134] 5.15.112-rc1 review
-Message-ID: <a56446b6-ce5e-407d-acaf-94e7680a89b0@roeck-us.net>
-References: <20230515161702.887638251@linuxfoundation.org>
+        with ESMTP id S231646AbjEQDiE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 23:38:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E0E40E4;
+        Tue, 16 May 2023 20:38:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CAF6364155;
+        Wed, 17 May 2023 03:38:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 26D7AC4339E;
+        Wed, 17 May 2023 03:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684294682;
+        bh=m52AwY8jkOJZBA18hcFlrV08AkqFHGhpvAceGFKRUa8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=uUxUMpZU1izkwKReHCQeOCvSUV87028CpR6qFoGkd5w6DeYMDd8hZUxU0PYw4ujce
+         8VXrvtL9NIXm15qahHmShhhMdqldmqITbPQeD4npE3Zo6OYO7i/UMyAJmWOmlMOOVQ
+         ybidG2prTxL17aFy09snRwt8/mI3T4NAwRvf8Ml8gceee/awLrIa1Yfr0/mMCmSkJa
+         QIW2WAbS2ZRfOLH2KwRm1jVI/MLYxg19YK2bv8JAuBuK2NcrKX2GZ5Bz/WeTo13X9Y
+         79na5Z2L9mNMD0Aa3RAfhkPjsmzKGntR3JzryEzd1rDoYuS+PgSS9jZ8ZT/Rsoiwtt
+         y6y4Ywk9A169w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0909AC73FE2;
+        Wed, 17 May 2023 03:38:02 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 6.3 022/246] rxrpc: Fix potential data race in
+ rxrpc_wait_to_be_connected()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168429468203.3680.17732082530948499467.git-patchwork-notify@kernel.org>
+Date:   Wed, 17 May 2023 03:38:02 +0000
+References: <20230515161723.275161336@linuxfoundation.org>
+In-Reply-To: <20230515161723.275161336@linuxfoundation.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        syzbot+ebc945fdb4acd72cba78@syzkaller.appspotmail.com,
+        dhowells@redhat.com, marc.dionne@auristor.com, dvyukov@google.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-afs@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+        sashal@kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 06:27:57PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.112 release.
-> There are 134 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello:
+
+This series was applied to bpf/bpf-next.git (master)
+by Arnaldo Carvalho de Melo <acme@redhat.com>:
+
+On Mon, 15 May 2023 18:23:54 +0200 you wrote:
+> From: David Howells <dhowells@redhat.com>
 > 
-> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
-> Anything received after that time might be too late.
+> [ Upstream commit 2b5fdc0f5caa505afe34d608e2eefadadf2ee67a ]
 > 
+> Inside the loop in rxrpc_wait_to_be_connected() it checks call->error to
+> see if it should exit the loop without first checking the call state.  This
+> is probably safe as if call->error is set, the call is dead anyway, but we
+> should probably wait for the call state to have been set to completion
+> first, lest it cause surprise on the way out.
+> 
+> [...]
 
-Build results:
-	total: 160 pass: 160 fail: 0
-Qemu test results:
-	total: 499 pass: 499 fail: 0
+Here is the summary with links:
+  - [6.3,022/246] rxrpc: Fix potential data race in rxrpc_wait_to_be_connected()
+    (no matching commit)
+  - [6.3,051/246] rxrpc: Fix hard call timeout units
+    (no matching commit)
+  - [6.3,052/246] rxrpc: Make it so that a waiting process can be aborted
+    (no matching commit)
+  - [6.3,053/246] rxrpc: Fix timeout of a call that hasnt yet been granted a channel
+    (no matching commit)
+  - [6.3,100/246] perf lock contention: Fix compiler builtin detection
+    https://git.kernel.org/bpf/bpf-next/c/17535a33a9c1
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Guenter
+
