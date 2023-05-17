@@ -2,44 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B7967072EC
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 22:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5337072F5
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 22:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjEQUXi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 16:23:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52242 "EHLO
+        id S229711AbjEQUZH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 16:25:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjEQUXi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 16:23:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DC083C2;
-        Wed, 17 May 2023 13:23:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C12B16413A;
-        Wed, 17 May 2023 20:23:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E1FC433EF;
-        Wed, 17 May 2023 20:23:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1684355014;
-        bh=s/o+4rTL60GSvSZvydUTn4TvaP+YyMjAhYmr6DjR+vI=;
-        h=Date:To:From:Subject:From;
-        b=BgbODp7G4p83BwE/8Oeb2KCTORMcx2vU1km+QjMrw1K5o5tG2Uss2XEoh+2gntjRh
-         Rg56+owxEcakPWJQ994n29lf+0paMHl03M7w02dfbWmCLpSOUgfwsUMMVuZG5Iv8eY
-         ehcRff8ZgpfTAubm3f30JtchFC0baaa2r9+vUClE=
-Date:   Wed, 17 May 2023 13:23:33 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        rppt@kernel.org, mark.rutland@arm.com, lstoakes@gmail.com,
-        Liam.Howlett@oracle.com, peterx@redhat.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230517202334.22E1FC433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229701AbjEQUZH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 16:25:07 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F38B7D91
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 13:25:04 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ac87e7806aso12166231fa.3
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 13:25:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684355103; x=1686947103;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9e0TlWFJ4jnKLP48QttQ1EhOBYVUZ/hqG3PCu64KDjk=;
+        b=Nm5Z48j4L7l8aONmFdB0bPU503Vez21R0xjklG6FwEm856DgC0jTlLh+LlXqicg9qu
+         4QiujrQQnAlQmpGznZRLaJS0taDoMnPZF0fgC593g6VuQpcatPf44UBi+XCH2pFTvlX2
+         BC2ORFGHCscs4pmVjFlnUMH4E62Ct1kBs/t0HnljUAZMpgH3Y1zGadvgLslKTGJSO1Fh
+         cwKFiji4dhv5uhD+JJ+BkPgOCwIMJ9CpQgVWzJiohylg3lr0ZloBKQIepl1KEjkKxbxc
+         58fIpFL6oCDH/jROlikNU312tkq1IHEJUIE6DbHep1CHdHAyhU326KvOo9K9d+6NhEZL
+         Z7ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684355103; x=1686947103;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9e0TlWFJ4jnKLP48QttQ1EhOBYVUZ/hqG3PCu64KDjk=;
+        b=XWrvdyJ7RXfF50/DnPXSPTxnm3/ALP/FVHfKa84tcwNsSvf9sa2uvFZSV08IjXcxIS
+         SfQmyhgeedNIxnXOUFQCLgzZxm/QbWudSQ4DmLeczVsEncdGn4JpcmzhK10x4RTgmNyH
+         a0Usl3bMAvpRcL5kN6T7j6+fptwkNcUckvxGJbO/aNP7L5ZRe12JJR4k8eqsbu0qQnxa
+         WeFUu9G+LaMuuWEf7H/St9PQ7arAssOVPfc1BwChyJ3uA86IT5pl5VXLhLculdF/v5Ps
+         NRQyWgDaNoT7IqvYyXCGkr3sUCbOrfy8GFMQ5reCGfrGewvGiC9hAj/SfPaBrxJlBRs3
+         vztA==
+X-Gm-Message-State: AC+VfDwflap5fkU2bd155ammLlDbTnIeEev52zkdTMY09pSjvk86Ii0V
+        drQ2AJrGq2Yu5C+kyX96JHIqZA==
+X-Google-Smtp-Source: ACHHUZ6AK0LriX0PjEwJvvd7rb1hrYTCrIWnDjpQQbNIWK8Yk/0ibBUzwrlcrCwrjv2/dIYoYawb3g==
+X-Received: by 2002:a2e:7a13:0:b0:2a6:1682:3a1e with SMTP id v19-20020a2e7a13000000b002a616823a1emr9930406ljc.31.1684355102763;
+        Wed, 17 May 2023 13:25:02 -0700 (PDT)
+Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
+        by smtp.gmail.com with ESMTPSA id s23-20020a2e9c17000000b002ad90280503sm4079780lji.138.2023.05.17.13.25.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 May 2023 13:25:02 -0700 (PDT)
+Message-ID: <763ab7b6-9e97-a2ee-2d49-5b666ca63941@linaro.org>
+Date:   Wed, 17 May 2023 22:25:00 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 00/18] Venus QoL / maintainability fixes
+Content-Language: en-US
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Vikash Garodia <quic_vgarodia@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Dikshita Agarwal <dikshita@qti.qualcomm.com>,
+        Mansur Alisha Shaik <mansur@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Dikshita Agarwal <quic_dikshita@quicinc.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        stable@vger.kernel.org
+References: <20230228-topic-venus-v2-0-d95d14949c79@linaro.org>
+ <f9904e82-4756-2add-3c7e-e019ce966515@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <f9904e82-4756-2add-3c7e-e019ce966515@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -47,122 +90,46 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch titled
-     Subject: mm/uffd: fix vma operation where start addr cuts part of vma
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch
+On 12.05.2023 05:01, Bryan O'Donoghue wrote:
+> On 04/05/2023 09:00, Konrad Dybcio wrote:
+>> Tested on 8250, but pretty please test it on your boards too!
+> 
+> What's the definition of test here ?
+> 
+> I ran this
+> 
+> ffplay -codec:video h264_v4l2m2m FantasticFour-ROTSS.mp4
+> 
+> and this
+> 
+> ffplay -codec:video vp8_v4l2m2m /mnt/big-buck-bunny_trailer.webm
+> 
+> on db410c with no errors. Then again I applied and disapplied the 8x8 264 fix to that branch and saw no discernable difference so I'm not very confident we have good coverage.
+I don't think we have any coverage at all, especially considering
+there were 1 or 2 patches fixing vdec not working at all in the past
+few months.. Maybe CrOS has some internal pipelines for this.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> 
+> @Stan @Vikash could you give some suggested tests for coverage here ?
+> 
+> @Konrad - get a db410c !
+Don't think they're even made anymore!
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+> 
+> My superficial first-pass on this series looks good but, before giving a Tested-by here, I think we should define a set of coverage tests, run them - the upper end on sm8250 and lower end msm8916 "makes sense to me"
+> 
+> 20? different gstreamer tests at different formats and different sizes on our selected platforms db410c, rb5, rb3 I have - also an 820 I haven't booted and an enforce sdm660.
+> 
+> Which tests will we use to validate this series and subsequent series to ensure we don't have more regressions ?
+Personally I've done:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+- boot and check if venus still probes and doesn't shout in dmesg
+- decode and re-encode a H264 file
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+which is far from perfect..
 
-------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/uffd: fix vma operation where start addr cuts part of vma
-Date: Wed, 17 May 2023 15:09:15 -0400
-
-Patch series "mm/uffd: Fix vma merge/split", v2.
-
-This series contains two patches that fix vma merge/split for userfaultfd
-on two separate issues.
-
-Patch 1 fixes a regression since 6.1+ due to something we overlooked when
-converting to maple tree apis.  The plan is we use patch 1 to replace the
-commit "2f628010799e (mm: userfaultfd: avoid passing an invalid range to
-vma_merge())" in mm-hostfixes-unstable tree if possible, so as to bring
-uffd vma operations back aligned with the rest code again.
-
-Patch 2 fixes a long standing issue that vma can be left unmerged even if
-we can for either uffd register or unregister.
-
-Many thanks to Lorenzo on either noticing this issue from the assert
-movement patch, looking at this problem, and also provided a reproducer on
-the unmerged vma issue [1].
-
-[1] https://gist.github.com/lorenzo-stoakes/a11a10f5f479e7a977fc456331266e0e
-
-
-This patch (of 2):
-
-It seems vma merging with uffd paths is broken with either
-register/unregister, where right now we can feed wrong parameters to
-vma_merge() and it's found by recent patch which moved asserts upwards in
-vma_merge() by Lorenzo Stoakes:
-
-https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
-
-It's possible that "start" is contained within vma but not clamped to its
-start.  We need to convert this into either "cannot merge" case or "can
-merge" case 4 which permits subdivision of prev by assigning vma to prev. 
-As we loop, each subsequent VMA will be clamped to the start.
-
-This patch will eliminate the report and make sure vma_merge() calls will
-become legal again.
-
-One thing to mention is that the "Fixes: 29417d292bd0" below is there only
-to help explain where the warning can start to trigger, the real commit to
-fix should be 69dbe6daf104.  Commit 29417d292bd0 helps us to identify the
-issue, but unfortunately we may want to keep it in Fixes too just to ease
-kernel backporters for easier tracking.
-
-Link: https://lkml.kernel.org/r/20230517190916.3429499-1-peterx@redhat.com
-Link: https://lkml.kernel.org/r/20230517190916.3429499-2-peterx@redhat.com
-Fixes: 29417d292bd0 ("mm/mmap/vma_merge: always check invariants")
-Fixes: 69dbe6daf104 ("userfaultfd: use maple tree iterator to iterate VMAs")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Closes: https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/userfaultfd.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
---- a/fs/userfaultfd.c~mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma
-+++ a/fs/userfaultfd.c
-@@ -1459,6 +1459,8 @@ static int userfaultfd_register(struct u
- 
- 	vma_iter_set(&vmi, start);
- 	prev = vma_prev(&vmi);
-+	if (vma->vm_start < start)
-+		prev = vma;
- 
- 	ret = 0;
- 	for_each_vma_range(vmi, vma, end) {
-@@ -1625,6 +1627,9 @@ static int userfaultfd_unregister(struct
- 
- 	vma_iter_set(&vmi, start);
- 	prev = vma_prev(&vmi);
-+	if (vma->vm_start < start)
-+		prev = vma;
-+
- 	ret = 0;
- 	for_each_vma_range(vmi, vma, end) {
- 		cond_resched();
-_
-
-Patches currently in -mm which might be from peterx@redhat.com are
-
-mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch
-mm-uffd-allow-vma-to-merge-as-much-as-possible.patch
-
+Konrad
+> 
+> ---
+> bod
