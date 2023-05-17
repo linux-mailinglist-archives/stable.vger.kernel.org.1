@@ -2,62 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDAB67062EF
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C2D7062F4
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229901AbjEQIcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 04:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47566 "EHLO
+        id S230350AbjEQId3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 04:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230434AbjEQIbr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:31:47 -0400
+        with ESMTP id S230009AbjEQIc6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:32:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428A85269
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:30:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B37055AE
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:31:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684312224;
+        s=mimecast20190719; t=1684312278;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lCs/dUVErnBMZp0vS+8RY4FN1qN1vupcxjp7vnWl9AY=;
-        b=QmrmO1VSBEEHkB+x8d8E2JOrmT/jf3u37fwy5iUN52Y5TrUCuWup7f0TmnmC7qjMJ6Rujb
-        HLm0az9R4Ik4Clzohlr7Jtl29Xxi7/GvuxgK5inXNkY0+ioqxhyqHuFmpfHQWaOtgxUcdw
-        30qnTle4XWldeYhpSp3lGatsrX2zsFA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=+87hwHfuK6j4i/fuLrmFREP9Nl0u0nKS6+0RzbNzN84=;
+        b=O6PMMZZ9/gwFw0XRtwBY0K5AXmr1h3tMjG6AhBCDjQ1ps6ot/s6qEwJ7RcI/w0948OXmAq
+        JFWi6wHVQKz44cfm4+FubutqbNBbv/nUixuNYSjU8DQSMZZvy/FhmTG2gWLaIsyPEVlix8
+        h91sSe0U7XrwfP5m2Jax4/QyTwWL/iA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-DJUEN3zNMxKCOFxFIcy3yg-1; Wed, 17 May 2023 04:30:23 -0400
-X-MC-Unique: DJUEN3zNMxKCOFxFIcy3yg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f433a2308bso39900965e9.0
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:30:23 -0700 (PDT)
+ us-mta-76-gK92faqeOz22_2DjsP7L0A-1; Wed, 17 May 2023 04:31:17 -0400
+X-MC-Unique: gK92faqeOz22_2DjsP7L0A-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3093b0cf714so178384f8f.2
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:31:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684312222; x=1686904222;
+        d=1e100.net; s=20221208; t=1684312276; x=1686904276;
         h=content-transfer-encoding:in-reply-to:organization:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lCs/dUVErnBMZp0vS+8RY4FN1qN1vupcxjp7vnWl9AY=;
-        b=gHUWhbQwhYDq98pY5pfG4PJUyJLhYRoyzzsNZkJn1nS2uS2g0Ly1iCQlR7nlDAZCMJ
-         qIvhMk9qTtRHfoMx8H7nFEwGWlOdZ7v+IK6QposaTlg2hSg+qdihIRo4Yo94pdQXidDI
-         Ge9Oj3UvQJ0O902G8LAVY5WVgJmCekv2nN55JlfsG1MplcadVFxLpcFQqB0zLF5tFZwm
-         uAfs+yWodL+efLV0RLIbfWrsLuNR6gja4S8+25Z+xmMKIclhi6HHGwwxyTCDUo9LIVLh
-         GtxSDUi5tO52CXn4cLeN5DUo7Brt+c1dhQ0Dp25PYaA8ubd5So9ZgJwu+Q7b4L1bUJmo
-         m7Ew==
-X-Gm-Message-State: AC+VfDx1PI9QSSxGCarQ+hzaowL/IdhfRr4FmrIOjYtOpfVu1V8Kha7g
-        jT80Q7ddRIXZS/vceYF5K1yWdP50c551ky2uNsCHM3kbUN0x1/xv7KTpBvW2IEhrwe4gwbF36A/
-        7Banj8zrp4isCzcb3
-X-Received: by 2002:a05:600c:2216:b0:3f4:2a69:409 with SMTP id z22-20020a05600c221600b003f42a690409mr1004161wml.11.1684312222177;
-        Wed, 17 May 2023 01:30:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ60ueDQkDZtQuGOk/I42qgBFTunk166hxYz0WpLHJyNYPGp1WKcavGoULbbUgQf9jhOxrPOmA==
-X-Received: by 2002:a05:600c:2216:b0:3f4:2a69:409 with SMTP id z22-20020a05600c221600b003f42a690409mr1004132wml.11.1684312221771;
-        Wed, 17 May 2023 01:30:21 -0700 (PDT)
+        bh=+87hwHfuK6j4i/fuLrmFREP9Nl0u0nKS6+0RzbNzN84=;
+        b=VEYgBW7VfZtRah9OmclaqROjjv1KP+098Q1VwaglnTI6SwnZVvxNLd7YSdDzCCK0fv
+         9ewgVSPPtuDapDrvzOcN6LwsjM6b7BIK3H8oODNlbiBdcpsau+45QCluhMUHhqUgt3oY
+         hE8o3VPaKLs+Pcd15zLxJqcEnfWggDnaoOSjJ1vVv+/mOzHUNB4yJa7jzPMV51OqKa62
+         JxSkwhDI+B9EguWhBDp0uporS6ndXhIKrXgw1hUSHcZdbm6sDcjf0uNGEytGF4nXt9/8
+         OOjPP5e15doFRCo+d0+15s2qJhlR7N/uFvXGLS6rfDycjZHoIa3skoGuY8qYm4481jU9
+         5uqQ==
+X-Gm-Message-State: AC+VfDzMvA/GMqSJW62W/wICh2SRC+p6SiU+eQGMcGRMnOAKlDYS0Cum
+        xo6YDEN0aNKpo1icPZfyZyqQ6Tlue4CJqWzaVfwc8jp2C+jw7NutlNXMG9AJS1/7QyCN31AcqyU
+        PgAyWxGkZ/skBMg2F
+X-Received: by 2002:a5d:5221:0:b0:2fb:703d:1915 with SMTP id i1-20020a5d5221000000b002fb703d1915mr26788405wra.43.1684312276040;
+        Wed, 17 May 2023 01:31:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5QaVKwS34M34vksP3fcVTyCM0DHux/DI1V9/o+0472vKaGysoi00ZT1X872bnMVy2FbYiUrw==
+X-Received: by 2002:a5d:5221:0:b0:2fb:703d:1915 with SMTP id i1-20020a5d5221000000b002fb703d1915mr26788385wra.43.1684312275770;
+        Wed, 17 May 2023 01:31:15 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c707:3900:757e:83f8:a99d:41ae? (p200300cbc7073900757e83f8a99d41ae.dip0.t-ipconnect.de. [2003:cb:c707:3900:757e:83f8:a99d:41ae])
-        by smtp.gmail.com with ESMTPSA id l8-20020a1c7908000000b003f506e6ff83sm1421875wme.22.2023.05.17.01.30.20
+        by smtp.gmail.com with ESMTPSA id q28-20020a056000137c00b003078bb639bdsm1934194wrz.68.2023.05.17.01.31.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 01:30:21 -0700 (PDT)
-Message-ID: <c9f1fc7c-62a2-4768-7992-52e34ec36d0f@redhat.com>
-Date:   Wed, 17 May 2023 10:30:19 +0200
+        Wed, 17 May 2023 01:31:15 -0700 (PDT)
+Message-ID: <86142559-f15c-938a-a0eb-1ea590cb5e91@redhat.com>
+Date:   Wed, 17 May 2023 10:31:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
@@ -84,12 +84,11 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
 References: <20230512235755.1589034-1-pcc@google.com>
  <20230512235755.1589034-2-pcc@google.com>
  <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
- <ZGLC0T32sgVkG5kX@google.com>
- <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
- <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
+ <91246137-a3d2-689f-8ff6-eccc0e61c8fe@redhat.com>
+ <CAMn1gO4cbEmpDzkdN10DyaGe=2Wg4Y19-v8gHRqgQoD4Bxd+cw@mail.gmail.com>
 From:   David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
+In-Reply-To: <CAMn1gO4cbEmpDzkdN10DyaGe=2Wg4Y19-v8gHRqgQoD4Bxd+cw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -102,32 +101,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->> Would the idea be to fail swap_readpage() on the one that comes last,
->> simply retrying to lookup the page?
+
+>>> Is there any other way of handling this? E.g. not release the metadata
+>>> in arch_swap_invalidate_page() but later in set_pte_at() once it was
+>>> restored. But then we may leak this metadata if there's no set_pte_at()
+>>> (the process mapping the swap entry died).
+>>
+>> That was my immediate thought: do we really have to hook into
+>> swap_range_free() at all?
 > 
-> The idea would be that T2's arch_swap_readpage() could potentially not
-> find tags if it ran after swap_free(), so T2 would produce a page
-> without restored tags. But that wouldn't matter, because T1 reaching
-> swap_free() means that T2 will follow the goto at [1] after waiting
-> for T1 to unlock at [2], and T2's page will be discarded.
+> As I alluded to in another reply, without the hook in
+> swap_range_free() I think we would either end up with a race or an
+> effective memory leak in the arch code that maintains the metadata for
+> swapped out pages, as there would be no way for the arch-specific code
+> to know when it is safe to free it after swapin.
 
-Ah, right.
+Agreed, hooking swap_range_free() is actually cleaner (also considering 
+COW-shared pages).
 
 > 
->> This might be a naive question, but how does MTE play along with shared
->> anonymous pages?
+>> And I also wondered why we have to do this
+>> from set_pte_at() and not do this explicitly (maybe that's the other
+>> arch_* callback on the swapin path).
 > 
-> It should work fine. shmem_writepage() calls swap_writepage() which
-> calls arch_prepare_to_swap() to write the tags. And
-> shmem_swapin_folio() has a call to arch_swap_restore() to restore
-> them.
+> I don't think it's necessary, as the set_pte_at() call sites for
+> swapped in pages are known. I'd much rather do this via an explicit
+> hook at those call sites, as the existing approach of implicit
+> restoring seems too subtle and easy to be overlooked when refactoring,
+> as we have seen with this bug. In the end we only have 3 call sites
+> for the hook and hopefully the comments that I'm adding are sufficient
+> to ensure that any new swapin code should end up with a call to the
+> hook in the right place.
 
-Sorry, I meant actual anonymous memory pages, not shmem. Like, anonymous 
-pages that are COW-shared due to fork() or KSM.
 
-How does MTE, in general, interact with that? Assume one process ends up 
-modifying the tags ... and the page is COW-shared with a different 
-process that should not observe these tag modifications.
+Agreed, much cleaner, thanks!
 
 -- 
 Thanks,
