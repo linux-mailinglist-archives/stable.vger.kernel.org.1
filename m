@@ -2,626 +2,520 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C20706DC8
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 18:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DAE2706DD2
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 18:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjEQQPP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 12:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42486 "EHLO
+        id S229460AbjEQQQo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 12:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbjEQQPL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 12:15:11 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F082E93D7
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 09:15:02 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6439d505274so698782b3a.0
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 09:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1684340102; x=1686932102;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pJ1/vFlw7Pn8jdpjPzTy/sHGlOMBn20EXmNAp0GOAv4=;
-        b=Qg9SwRWeryD4OPcrpeEW/D6yUZqCYs/0pO4PqP/Y2GQE5cyI74DLGlx8MV1+c1YkDN
-         Ajw/KWfnIok6V16s6bbRFUS9aS5oCJcB09XYqQ4197BDPlLkReZZHhRzkIqKlL9cQhae
-         Iei6McZhYhlqJvRLXoqGnz217B/PzsGJhMlqpU7JhArAWdEIFFygfQIJtzbsNha8E7jZ
-         cViyNUuJ6u4dDiFu5UJNvXQ+o8hyhr/QZOCP+wZK5WGpSG3KtnTIfsFTxocQdstjAbxu
-         1Jcxr7U5N/A6I53BB905xJeKCs741LkI1LzDg+SG49PxZK8TJWWw15jTsBPWwj7znyYf
-         bxqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684340102; x=1686932102;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pJ1/vFlw7Pn8jdpjPzTy/sHGlOMBn20EXmNAp0GOAv4=;
-        b=j+2g1eHXN/l1sb6F+9BwXbQXZ0OeocrxqKlmHi2cJd09noaREj4qdnl56Pqr7r+kQz
-         /H3dGYNnaO1nNEQZccT7nUaV/BI6Z1QURWLJeosTZiV2LGXKqXA6J4WyBFXdo5c8Kgi/
-         GxZ6aexSp0wThPyhqYP0taW4mSrEa5Bx2IPuhktTJXEaU5mUCZBom+wrnjTmJqXDHBDk
-         FwutRy1+lJOQtcPf+ahYKx+39SpHxvtYQQkF37l983jgvKIL5k71/hLsrO8srrPMSH4S
-         SLHBFGHi1wqQ+lN4o955OKtb74MTvG6AeTykf0/DAHpOnSx1vmeN37MFf6Ow9FJBWT5N
-         hhUw==
-X-Gm-Message-State: AC+VfDzUDSFmu9c0qtVWG1H4FXvd29iyDXvn2kbyp4nE8rvd7kA7zwmj
-        isbCQ4/GIhsY2nPJl6C0EtUUrEAsf8vcK9mIhHIjVw==
-X-Google-Smtp-Source: ACHHUZ7NjkbObuWhM+9Pqx3Be6uZ/tSKuRXy2MO1TBgVVMpRe72ZJS1YavDtE8LkKIvnNfWrNAqtiA==
-X-Received: by 2002:a05:6a21:3298:b0:104:beb4:da38 with SMTP id yt24-20020a056a21329800b00104beb4da38mr22191557pzb.35.1684340101816;
-        Wed, 17 May 2023 09:15:01 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id h7-20020a635747000000b0052cbd854927sm15344617pgm.18.2023.05.17.09.15.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 09:15:01 -0700 (PDT)
-Message-ID: <6464fd85.630a0220.aa23d.c542@mx.google.com>
-Date:   Wed, 17 May 2023 09:15:01 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229453AbjEQQQn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 12:16:43 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22449618E;
+        Wed, 17 May 2023 09:16:40 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pzJpM-0001xB-IX; Wed, 17 May 2023 18:16:36 +0200
+Message-ID: <9300def5-2319-eeff-55d2-f67da3ff0bae@leemhuis.info>
+Date:   Wed, 17 May 2023 18:16:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable
-X-Kernelci-Kernel: v6.1.29
-X-Kernelci-Report-Type: test
-Subject: stable/linux-6.1.y baseline: 157 runs, 9 regressions (v6.1.29)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [iwlwifi] 6.3 regression, AX201 crash on traffic activity with
+ Pixel 7, bisected
+Content-Language: en-US, de-DE
+To:     "Greenman, Gregory" <gregory.greenman@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "evgeny.niki4off@gmail.com" <evgeny.niki4off@gmail.com>
+References: <CAPrf5XXD8COh6DK9s41uvgJ5V57nenUQVeb1f=cFVqaWDN++dA@mail.gmail.com>
+ <86b8e66e2df6e46d2102bda470a82a8a40fa84fe.camel@intel.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <86b8e66e2df6e46d2102bda470a82a8a40fa84fe.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1684340200;88264f77;
+X-HE-SMSGID: 1pzJpM-0001xB-IX
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.1.y baseline: 157 runs, 9 regressions (v6.1.29)
-
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-mt8183-kukui-...uniper-sku16 | arm64  | lab-collabora | gcc-10   | defconfi=
-g+arm64-chromebook   | 2          =
-
-
-  Details:  https://kernelci.org/test/job/stable/branch/linux-6.1.y/kernel/=
-v6.1.29/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable
-  Branch:   linux-6.1.y
-  Describe: v6.1.29
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git
-  SHA:      fa74641fb6b93a19ccb50579886ecc98320230f9 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c8d3664587110d2e8631
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C436=
-FA-Flip-hatch.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C436=
-FA-Flip-hatch.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c8d3664587110d2e8636
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:29:53.839504  <8>[   10.123547] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10352476_1.4.2.3.1>
-
-    2023-05-17T12:29:53.843039  + set +x
-
-    2023-05-17T12:29:53.944729  /#
-
-    2023-05-17T12:29:54.045509   # #export SHELL=3D/bin/sh
-
-    2023-05-17T12:29:54.045748  =
-
-
-    2023-05-17T12:29:54.146324  / # export SHELL=3D/bin/sh. /lava-10352476/=
-environment
-
-    2023-05-17T12:29:54.146536  =
-
-
-    2023-05-17T12:29:54.247143  / # . /lava-10352476/environment/lava-10352=
-476/bin/lava-test-runner /lava-10352476/1
-
-    2023-05-17T12:29:54.247448  =
-
-
-    2023-05-17T12:29:54.252379  / # /lava-10352476/bin/lava-test-runner /la=
-va-10352476/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c8b873c6fc94202e8630
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-CM14=
-00CXA-dalboz.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-CM14=
-00CXA-dalboz.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c8b873c6fc94202e8635
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:29:24.191386  + set<8>[   11.110977] <LAVA_SIGNAL_ENDRUN =
-0_dmesg 10352541_1.4.2.3.1>
-
-    2023-05-17T12:29:24.191823   +x
-
-    2023-05-17T12:29:24.295155  / # #
-
-    2023-05-17T12:29:24.396117  export SHELL=3D/bin/sh
-
-    2023-05-17T12:29:24.396922  #
-
-    2023-05-17T12:29:24.498204  / # export SHELL=3D/bin/sh. /lava-10352541/=
-environment
-
-    2023-05-17T12:29:24.498429  =
-
-
-    2023-05-17T12:29:24.599011  / # . /lava-10352541/environment/lava-10352=
-541/bin/lava-test-runner /lava-10352541/1
-
-    2023-05-17T12:29:24.599312  =
-
-
-    2023-05-17T12:29:24.603869  / # /lava-10352541/bin/lava-test-runner /la=
-va-10352541/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c8b7f8f24fbdd02e8634
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-cx94=
-00-volteer.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-cx94=
-00-volteer.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c8b7f8f24fbdd02e8639
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:29:23.792119  <8>[   10.932055] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10352488_1.4.2.3.1>
-
-    2023-05-17T12:29:23.792659  + set +x
-
-    2023-05-17T12:29:23.898651  =
-
-
-    2023-05-17T12:29:24.000688  / # #export SHELL=3D/bin/sh
-
-    2023-05-17T12:29:24.001390  =
-
-
-    2023-05-17T12:29:24.102754  / # export SHELL=3D/bin/sh. /lava-10352488/=
-environment
-
-    2023-05-17T12:29:24.102944  =
-
-
-    2023-05-17T12:29:24.203625  / # . /lava-10352488/environment/lava-10352=
-488/bin/lava-test-runner /lava-10352488/1
-
-    2023-05-17T12:29:24.203932  =
-
-
-    2023-05-17T12:29:24.209022  / # /lava-10352488/bin/lava-test-runner /la=
-va-10352488/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c9827cab060a152e8612
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x360-1=
-2b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x360-1=
-2b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c9827cab060a152e8617
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:32:55.510159  + set +x
-
-    2023-05-17T12:32:55.516635  <8>[   10.670050] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10352537_1.4.2.3.1>
-
-    2023-05-17T12:32:55.621116  / # #
-
-    2023-05-17T12:32:55.721742  export SHELL=3D/bin/sh
-
-    2023-05-17T12:32:55.721947  #
-
-    2023-05-17T12:32:55.822503  / # export SHELL=3D/bin/sh. /lava-10352537/=
-environment
-
-    2023-05-17T12:32:55.822731  =
-
-
-    2023-05-17T12:32:55.923307  / # . /lava-10352537/environment/lava-10352=
-537/bin/lava-test-runner /lava-10352537/1
-
-    2023-05-17T12:32:55.923603  =
-
-
-    2023-05-17T12:32:55.928055  / # /lava-10352537/bin/lava-test-runner /la=
-va-10352537/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c8d90b16ea0dda2e8613
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x360-1=
-4-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x360-1=
-4-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c8d90b16ea0dda2e8618
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:29:57.182066  <8>[   10.343835] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10352530_1.4.2.3.1>
-
-    2023-05-17T12:29:57.185488  + set +x
-
-    2023-05-17T12:29:57.291601  =
-
-
-    2023-05-17T12:29:57.393394  / # #export SHELL=3D/bin/sh
-
-    2023-05-17T12:29:57.394208  =
-
-
-    2023-05-17T12:29:57.495686  / # export SHELL=3D/bin/sh. /lava-10352530/=
-environment
-
-    2023-05-17T12:29:57.496470  =
-
-
-    2023-05-17T12:29:57.597944  / # . /lava-10352530/environment/lava-10352=
-530/bin/lava-test-runner /lava-10352530/1
-
-    2023-05-17T12:29:57.599071  =
-
-
-    2023-05-17T12:29:57.604180  / # /lava-10352530/bin/lava-test-runner /la=
-va-10352530/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c85429900cca3a2e85f8
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x360-1=
-4a-cb0001xx-zork.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x360-1=
-4a-cb0001xx-zork.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c85429900cca3a2e85fd
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:27:48.009235  + set<8>[   11.093065] <LAVA_SIGNAL_ENDRUN =
-0_dmesg 10352540_1.4.2.3.1>
-
-    2023-05-17T12:27:48.009657   +x
-
-    2023-05-17T12:27:48.119410  / # #
-
-    2023-05-17T12:27:48.221581  export SHELL=3D/bin/sh
-
-    2023-05-17T12:27:48.221808  #
-
-    2023-05-17T12:27:48.322499  / # export SHELL=3D/bin/sh. /lava-10352540/=
-environment
-
-    2023-05-17T12:27:48.323205  =
-
-
-    2023-05-17T12:27:48.424634  / # . /lava-10352540/environment/lava-10352=
-540/bin/lava-test-runner /lava-10352540/1
-
-    2023-05-17T12:27:48.425779  =
-
-
-    2023-05-17T12:27:48.431470  / # /lava-10352540/bin/lava-test-runner /la=
-va-10352540/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464c86b11b56df2152e8662
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-lenovo-TP=
-ad-C13-Yoga-zork.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-lenovo-TP=
-ad-C13-Yoga-zork.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464c86b11b56df2152e8667
-        failing since 47 days (last pass: v6.1.21, first fail: v6.1.22)
-
-    2023-05-17T12:28:11.777652  + set<8>[   11.667843] <LAVA_SIGNAL_ENDRUN =
-0_dmesg 10352507_1.4.2.3.1>
-
-    2023-05-17T12:28:11.777745   +x
-
-    2023-05-17T12:28:11.881925  / # #
-
-    2023-05-17T12:28:11.982459  export SHELL=3D/bin/sh
-
-    2023-05-17T12:28:11.982685  #
-
-    2023-05-17T12:28:12.083189  / # export SHELL=3D/bin/sh. /lava-10352507/=
-environment
-
-    2023-05-17T12:28:12.083368  =
-
-
-    2023-05-17T12:28:12.183845  / # . /lava-10352507/environment/lava-10352=
-507/bin/lava-test-runner /lava-10352507/1
-
-    2023-05-17T12:28:12.184138  =
-
-
-    2023-05-17T12:28:12.189156  / # /lava-10352507/bin/lava-test-runner /la=
-va-10352507/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-mt8183-kukui-...uniper-sku16 | arm64  | lab-collabora | gcc-10   | defconfi=
-g+arm64-chromebook   | 2          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6464ccc8fb24a6f0802e85e9
-
-  Results:     166 PASS, 5 FAIL, 0 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/arm=
-64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui-ja=
-cuzzi-juniper-sku16.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.1.y/v6.1.29/arm=
-64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui-ja=
-cuzzi-juniper-sku16.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230512.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.mt6577-auxadc-probed: https://kernelci.org/test/case/id=
-/6464ccc8fb24a6f0802e85ed
-        failing since 5 days (last pass: v6.1.27, first fail: v6.1.28)
-
-    2023-05-17T12:46:49.509594  /lava-10353188/1/../bin/lava-test-case
-
-    2023-05-17T12:46:49.516149  <8>[   23.027182] <LAVA_SIGNAL_TESTCASE TES=
-T_CASE_ID=3Dmt6577-auxadc-probed RESULT=3Dfail>
-   =
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6464ccc8fb24a6f0802e8679
-        failing since 5 days (last pass: v6.1.27, first fail: v6.1.28)
-
-    2023-05-17T12:46:44.033585  + set +x
-
-    2023-05-17T12:46:44.040270  <8>[   17.550074] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10353188_1.5.2.3.1>
-
-    2023-05-17T12:46:44.145769  / # #
-
-    2023-05-17T12:46:44.246461  export SHELL=3D/bin/sh
-
-    2023-05-17T12:46:44.246638  #
-
-    2023-05-17T12:46:44.347141  / # export SHELL=3D/bin/sh. /lava-10353188/=
-environment
-
-    2023-05-17T12:46:44.347325  =
-
-
-    2023-05-17T12:46:44.447839  / # . /lava-10353188/environment/lava-10353=
-188/bin/lava-test-runner /lava-10353188/1
-
-    2023-05-17T12:46:44.448139  =
-
-
-    2023-05-17T12:46:44.453088  / # /lava-10353188/bin/lava-test-runner /la=
-va-10353188/1
- =
-
-    ... (13 line(s) more)  =
-
- =20
+Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+for once, to make this easily accessible to everyone.
+
+This looks stalled.
+
+Gregory, Evgeny afaics provided some of the data you asked for here:
+https://bugzilla.kernel.org/show_bug.cgi?id=217419
+
+But then afaics nothing happened anymore. Or was progress made and I
+just missed it?
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=217419
+#regzbot poke
+
+
+On 07.05.23 14:35, Greenman, Gregory wrote:
+> Hi,
+> 
+> On Fri, 2023-05-05 at 02:29 +0500, evgeny nikiforov wrote:
+>> Hello
+>> I have a laptop with Intel Wi-Fi 6 AX201.
+>> After updating from 6.2 to 6.3, I'm experiencing wifi crashes, wifi
+>> restart when traffic is flowing with Pixel 7 Pro (wifi 6E/802.11ax).
+>> Other older wifi devices probably not affected (tried Xiaomi pad with
+>> wifi 5/802.11ac).
+>> Tested with iperf3 in both directions, rsyncing Pixel photos to
+>> laptop, via router (wifi 5) or via Pixel wifi hotspot.
+>> The whole system freezes for seconds, no cursor movements possible at
+>> these moments (libinput "Touch jump detected and discarded" in logs
+>> indicating this).
+>> No problem with the 6.2 kernel.
+>>
+>> Bisecting leads to this commit of bumping FW API to 74
+>> 9ad1e7e5b0c488e4518edd698238a87ac6a73caa,
+>> looking strange to me, but reverting from 74 to 72 in 6.3 indeed
+>> successful with no crash.
+>>
+>> May 05 00:58:55 wpa_supplicant[862]: TDLS: Creating peer entry for
+>> ca:0e:48:5e:0d:f2
+>> May 05 00:58:56 wpa_supplicant[862]: TDLS: Dialog Token in TPK M1 88
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Error sending ADD_STA:
+>> time out after 2000ms.
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Current CMD queue
+>> read_ptr 222 write_ptr 223
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Transport status:
+>> 0x0000004A, valid: 6
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Loaded firmware version:
+>> 74.a5e9588b.0 QuZ-a0-hr-b0-74.ucode
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000084 |
+>> NMI_INTERRUPT_UNKNOWN
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x000022F0 | trm_hw_status0
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | trm_hw_status1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x004CC44C | branchlink2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00008A7E | interruptlink1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00008A7E | interruptlink2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x004C402C | data1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x01000000 | data2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | data3
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x98001858 | beacon time
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x36EE67BE | tsf low
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | tsf hi
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | time gp1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x0A2DDA07 | time gp2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000001 | uCode revision type
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x0000004A | uCode version major
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0xA5E9588B | uCode version minor
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000351 | hw version
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x18C89001 | board version
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x80FAFD0B | hcmd
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00020000 | isr0
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | isr1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x28F04002 | isr2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00C3030C | isr3
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | isr4
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x04D2001C | last cmd Id
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x004C402C | wait_event
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | l2p_control
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | l2p_duration
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | l2p_mhvalid
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | l2p_addr_match
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000048 | lmpm_pmg_sel
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | timestamp
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00008854 | flow_handler
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Transport status:
+>> 0x0000004A, valid: 7
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x20000066 | NMI_INTERRUPT_HOST
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | umac branchlink1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x80456052 | umac branchlink2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x804725A6 | umac interruptlink1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x804658FE | umac interruptlink2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x01000000 | umac data1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x804658FE | umac data2
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000000 | umac data3
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x0000004A | umac major
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0xA5E9588B | umac minor
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x0A2DDA05 | frame pointer
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0xC0887EB0 | stack pointer
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00DE0118 | last host cmd
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00004008 | isr status reg
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: IML/ROM dump:
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000003 | IML/ROM error/state
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00005799 | IML/ROM data1
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000080 | IML/ROM
+>> WFPM_AUTH_KEY_0
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: Fseq Registers:
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x60000041 | FSEQ_ERROR_CODE
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00290033 | FSEQ_TOP_INIT_VERSION
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00090006 |
+>> FSEQ_CNVIO_INIT_VERSION
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x0000A482 | FSEQ_OTP_VERSION
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x00000003 |
+>> FSEQ_TOP_CONTENT_VERSION
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x4552414E | FSEQ_ALIVE_TOKEN
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x20000302 | FSEQ_CNVI_ID
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x01300504 | FSEQ_CNVR_ID
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x20000302 | CNVI_AUX_MISC_CHIP
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x01300504 | CNVR_AUX_MISC_CHIP
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x05B0905B |
+>> CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: 0x0000025B |
+>> CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+>> May 05 00:58:58 kernel: iwlwifi 0000:00:14.3: WRT: Collecting data:
+>> ini trigger 4 fired (delay=0ms).
+>> May 05 00:58:58 kernel: ieee80211 phy0: Hardware restart was requested
+>> May 05 00:59:00 gnome-shell[1450]: libinput error: event10 -
+>> MSFT0004:00 06CB:CE2D Touchpad: kernel bug: Touch jump detected and
+>> discarded.
+>> May 05 00:59:00 gnome-shell[1450]: See
+>> https://wayland.freedesktop.org/libinput/doc/1.23.0/touchpad-jumping-cursors.html
+>> for details
+>> May 05 00:59:02 kernel: ------------[ cut here ]------------
+>> May 05 00:59:02 kernel: WARNING: CPU: 2 PID: 862 at
+>> drivers/net/wireless/intel/iwlwifi/mvm/../iwl-trans.h:1362
+>> iwl_mvm_wait_sta_queues_empty+0x92/0xc0 [iwlmvm]
+>> May 05 00:59:02 kernel: Modules linked in: ccm snd_seq_dummy
+>> snd_hrtimer snd_seq rfcomm snd_seq_device cmac algif_hash
+>> algif_skcipher af_alg bridge stp llc bnep
+>> snd_ctl_led snd_soc_skl_hda_dsp snd_soc_intel_hda_dsp_common
+>> snd_sof_probes snd_soc_hdac_hdmi hid_sensor_prox hid_sensor_trigger
+>> industrialio_triggered_buffer
+>> hid_sensor_iio_common kfifo_buf industrialio hid_sensor_custom
+>> hid_sensor_hub intel_ishtp_hid vfat fat snd_hda_codec_hdmi
+>> snd_hda_codec_realtek
+>> snd_hda_codec_generic iwlmvm ledtrig_audio snd_soc_dmic
+>> snd_sof_pci_intel_tgl snd_sof_intel_hda_common btusb btrtl
+>> snd_soc_hdac_hda btbcm snd_sof_pci btintel
+>> snd_sof_xtensa_dsp joydev btmtk mousedev snd_sof_intel_hda mac80211
+>> bluetooth snd_sof snd_sof_utils snd_hda_ext_core
+>> snd_soc_acpi_intel_match snd_soc_acpi crc16
+>> uvcvideo ecdh_generic snd_soc_core videobuf2_vmalloc videobuf2_memops
+>> snd_compress uvc videobuf2_v4l2 snd_hda_intel videodev
+>> snd_intel_dspcfg snd_hda_codec
+>> iTCO_wdt hid_multitouch x86_pkg_temp_thermal intel_pmc_bxt
+>> intel_powerclamp coretemp kvm_intel
+>> May 05 00:59:02 kernel:  videobuf2_common mc libarc4 kvm iwlwifi
+>> mei_pxp mei_hdcp iTCO_vendor_support pmt_telemetry intel_rapl_msr
+>> snd_hwdep irqbypass pmt_class
+>> snd_hda_core rapl snd_pcm intel_cstate snd_timer cfg80211 intel_uncore
+>> spi_nor processor_thermal_device_pci_legacy pcspkr snd mei_me
+>> ucsi_acpi
+>> intel_soc_dts_iosf intel_ish_ipc processor_thermal_device
+>> processor_thermal_rfim typec_ucsi mtd intel_lpss_pci i2c_i801
+>> processor_thermal_mbox intel_lpss roles
+>> i2c_smbus mei soundcore wmi_bmof processor_thermal_rapl idma64
+>> intel_vsec typec intel_ishtp intel_rapl_common i2c_hid_acpi igen6_edac
+>> ideapad_laptop i2c_hid
+>> platform_profile rfkill int3403_thermal int340x_thermal_zone intel_hid
+>> int3400_thermal acpi_thermal_rel sparse_keymap acpi_pad mac_hid
+>> usbip_host usbip_core
+>> pkcs8_key_parser dm_multipath sg fuse crypto_user loop zram ip_tables
+>> x_tables dm_crypt cbc encrypted_keys trusted asn1_encoder tee dm_mod
+>> sdhci_pci cqhci
+>> crct10dif_pclmul crc32_pclmul sdhci polyval_clmulni polyval_generic
+>> nvme serio_raw mmc_core gf128mul atkbd
+>> May 05 00:59:02 kernel:  ghash_clmulni_intel libps2 sha512_ssse3
+>> vivaldi_fmap nvme_core aesni_intel crypto_simd i8042 cryptd xhci_pci
+>> spi_intel_pci spi_intel
+>> nvme_common xhci_pci_renesas serio i915 i2c_algo_bit drm_buddy
+>> intel_gtt video wmi drm_display_helper cec ttm btrfs blake2b_generic
+>> xor raid6_pq libcrc32c
+>> crc32c_generic crc32c_intel
+>> May 05 00:59:02 kernel: CPU: 2 PID: 862 Comm: wpa_supplicant Not
+>> tainted 6.3.1 #46 872b0abba9595f0d8ed586113c455b0be8334e0d
+>> May 05 00:59:02 kernel: Hardware name: LENOVO 82L3/LNVNB161216, BIOS
+>> GDCN63WW(V2.08) 09/26/2022
+>> May 05 00:59:02 kernel: RIP:
+>> 0010:iwl_mvm_wait_sta_queues_empty+0x92/0xc0 [iwlmvm]
+>> May 05 00:59:02 kernel: Code: c3 28 4c 39 eb 75 b4 31 c0 5b 5d 41 5c
+>> 41 5d 41 5e c3 cc cc cc cc 0f 0b b8 f4 fd ff ff 5b 5d 41 5c 41 5d 41
+>> 5e c3 cc cc cc cc <0f>
+>> 0b 48 8b 7f 40 48 c7 c1 40 fb 96 c1 48 c7 c2 2e 00 98 c1 31 f6
+>> May 05 00:59:02 kernel: RSP: 0018:ffffb4e74472f7a8 EFLAGS: 00010293
+>> May 05 00:59:02 kernel: RAX: ffffffffc141d6d0 RBX: ffffa04dc5ff6d10
+>> RCX: ffffa04dc6b220c8
+>> May 05 00:59:02 kernel: RDX: 0000000000000001 RSI: 0000000000000004
+>> RDI: ffffa04dc30e0028
+>> May 05 00:59:02 kernel: RBP: 0000000000000004 R08: 0000000000000000
+>> R09: 0000000000000000
+>> May 05 00:59:02 kernel: R10: 0000000000000001 R11: 0000000000000100
+>> R12: ffffa04dc5ff6cfc
+>> May 05 00:59:02 kernel: R13: ffffa04dc5ff6e78 R14: ffffa04dc6b22088
+>> R15: 0000000000000000
+>> May 05 00:59:02 kernel: FS:  00007fa743655ec0(0000)
+>> GS:ffffa0512fa80000(0000) knlGS:0000000000000000
+>> May 05 00:59:02 kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> May 05 00:59:02 kernel: CR2: 000055665036a000 CR3: 0000000108e2e006
+>> CR4: 0000000000f70ee0
+>> May 05 00:59:02 kernel: PKRU: 55555554
+>> May 05 00:59:02 kernel: Call Trace:
+>> May 05 00:59:02 kernel:  <TASK>
+>> May 05 00:59:02 kernel:  iwl_mvm_mac_flush+0x182/0x2e0 [iwlmvm
+>> 6d10fca3210c7a35f49263fea34411a52b4718fd]
+>> May 05 00:59:02 kernel:  __ieee80211_flush_queues+0xaf/0x250 [mac80211
+>> fdf58da67d59aa11fd56ae8c66d9a6051a561028]
+>> May 05 00:59:02 kernel:  ieee80211_tdls_mgmt+0x104/0x420 [mac80211
+>> fdf58da67d59aa11fd56ae8c66d9a6051a561028]
+>> May 05 00:59:02 kernel:  nl80211_tdls_mgmt+0x110/0x210 [cfg80211
+>> 60e8cee0162d4fb4509cf55476b07c3f6e97646f]
+>> May 05 00:59:02 kernel:  genl_family_rcv_msg_doit.isra.0+0xe3/0x140
+>> May 05 00:59:02 kernel:  genl_rcv_msg+0x1b6/0x2c0
+>> May 05 00:59:02 kernel:  ? __pfx_nl80211_pre_doit+0x10/0x10 [cfg80211
+>> 60e8cee0162d4fb4509cf55476b07c3f6e97646f]
+>> May 05 00:59:02 kernel:  ? __pfx_nl80211_tdls_mgmt+0x10/0x10 [cfg80211
+>> 60e8cee0162d4fb4509cf55476b07c3f6e97646f]
+>> May 05 00:59:02 kernel:  ? __pfx_nl80211_post_doit+0x10/0x10 [cfg80211
+>> 60e8cee0162d4fb4509cf55476b07c3f6e97646f]
+>> May 05 00:59:02 kernel:  ? __pfx_genl_rcv_msg+0x10/0x10
+>> May 05 00:59:02 kernel:  netlink_rcv_skb+0x58/0x110
+>> May 05 00:59:02 kernel:  genl_rcv+0x28/0x40
+>> May 05 00:59:02 kernel:  netlink_unicast+0x19e/0x290
+>> May 05 00:59:02 kernel:  netlink_sendmsg+0x254/0x4d0
+>> May 05 00:59:02 kernel:  sock_sendmsg+0x93/0xa0
+>> May 05 00:59:02 kernel:  ____sys_sendmsg+0x27d/0x310
+>> May 05 00:59:02 kernel:  ? copy_msghdr_from_user+0x7d/0xc0
+>> May 05 00:59:02 kernel:  ___sys_sendmsg+0x9a/0xe0
+>> May 05 00:59:02 kernel:  __sys_sendmsg+0x7a/0xd0
+>> May 05 00:59:02 kernel:  do_syscall_64+0x5c/0x90
+>> May 05 00:59:02 kernel:  ? do_syscall_64+0x6b/0x90
+>> May 05 00:59:02 kernel:  ? _copy_from_user+0x4a/0x60
+>> May 05 00:59:02 kernel:  ? netlink_setsockopt+0x323/0x4a0
+>> May 05 00:59:02 kernel:  ? __sys_setsockopt+0xf2/0x1d0
+>> May 05 00:59:02 kernel:  ? syscall_exit_to_user_mode+0x1b/0x40
+>> May 05 00:59:02 kernel:  ? do_syscall_64+0x6b/0x90
+>> May 05 00:59:02 kernel:  ? do_syscall_64+0x6b/0x90
+>> May 05 00:59:02 kernel:  ? syscall_exit_to_user_mode+0x1b/0x40
+>> May 05 00:59:02 kernel:  ? do_syscall_64+0x6b/0x90
+>> May 05 00:59:02 kernel:  ? do_syscall_64+0x6b/0x90
+>> May 05 00:59:02 kernel:  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+>> May 05 00:59:02 kernel: RIP: 0033:0x7fa743122e64
+>> May 05 00:59:02 kernel: Code: 15 f9 de 0c 00 f7 d8 64 89 02 48 c7 c0
+>> ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 80 3d 9d 66 0d 00 00 74 13 b8
+>> 2e 00 00 00 0f 05 <48>
+>> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+>> May 05 00:59:02 kernel: RSP: 002b:00007ffc48fa8da8 EFLAGS: 00000202
+>> ORIG_RAX: 000000000000002e
+>> May 05 00:59:02 kernel: RAX: ffffffffffffffda RBX: 0000560c9d3059d0
+>> RCX: 00007fa743122e64
+>> May 05 00:59:02 kernel: RDX: 0000000000000000 RSI: 00007ffc48fa8de0
+>> RDI: 0000000000000006
+>> May 05 00:59:02 kernel: RBP: 0000560c9d3a9d10 R08: 0000000000000004
+>> R09: 0000000000000001
+>> May 05 00:59:02 kernel: R10: 00007ffc48fa8ec0 R11: 0000000000000202
+>> R12: 0000560c9d305cb0
+>> May 05 00:59:02 kernel: R13: 00007ffc48fa8de0 R14: 0000000000000000
+>> R15: 00007ffc48fa8ec0
+>> May 05 00:59:02 kernel:  </TASK>
+>> May 05 00:59:02 kernel: ---[ end trace 0000000000000000 ]---
+>> May 05 00:59:02 kernel: iwlwifi 0000:00:14.3: iwl_trans_wait_txq_empty
+>> bad state = 0
+>> May 05 00:59:02 wpa_supplicant[862]: wlan0: CTRL-EVENT-REGDOM-CHANGE
+>> init=DRIVER type=WORLD
+>> May 05 00:59:02 wpa_supplicant[862]: wlan0: CTRL-EVENT-SIGNAL-CHANGE
+>> above=1 signal=-46 noise=9999 txrate=26000
+>> May 05 00:59:03 wpa_supplicant[862]: TDLS: Creating peer entry for
+>> ca:0e:48:5e:0d:f2
+>> May 05 00:59:04 wpa_supplicant[862]: TDLS: Dialog Token in TPK M1 90
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Error sending ADD_STA:
+>> time out after 2000ms.
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Current CMD queue
+>> read_ptr 80 write_ptr 81
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Transport status:
+>> 0x0000004A, valid: 6
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Loaded firmware version:
+>> 74.a5e9588b.0 QuZ-a0-hr-b0-74.ucode
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000084 |
+>> NMI_INTERRUPT_UNKNOWN
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0080A210 | trm_hw_status0
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | trm_hw_status1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x004CC44C | branchlink2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x004C2616 | interruptlink1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x004C2616 | interruptlink2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00014D94 | data1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x01000000 | data2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | data3
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x08C189F2 | beacon time
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x3766D630 | tsf low
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | tsf hi
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | time gp1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00379615 | time gp2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000001 | uCode revision type
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0000004A | uCode version major
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0xA5E9588B | uCode version minor
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000351 | hw version
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x18C89001 | board version
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x80C8F400 | hcmd
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x24020000 | isr0
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x01000000 | isr1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x08F0000A | isr2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00C300CC | isr3
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | isr4
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0200001C | last cmd Id
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00014D94 | wait_event
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000080 | l2p_control
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00010034 | l2p_duration
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0000003F | l2p_mhvalid
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x000000CE | l2p_addr_match
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000009 | lmpm_pmg_sel
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | timestamp
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0000A8A8 | flow_handler
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Transport status:
+>> 0x0000004A, valid: 7
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x20000066 | NMI_INTERRUPT_HOST
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | umac branchlink1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x80456052 | umac branchlink2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x804725A6 | umac interruptlink1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x804725A6 | umac interruptlink2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x01000000 | umac data1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x804725A6 | umac data2
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | umac data3
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0000004A | umac major
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0xA5E9588B | umac minor
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00379613 | frame pointer
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0xC0886260 | stack pointer
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00500118 | last host cmd
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000000 | isr status reg
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: IML/ROM dump:
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000003 | IML/ROM error/state
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00005751 | IML/ROM data1
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000080 | IML/ROM
+>> WFPM_AUTH_KEY_0
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: Fseq Registers:
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x60000000 | FSEQ_ERROR_CODE
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x80290033 | FSEQ_TOP_INIT_VERSION
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00090006 |
+>> FSEQ_CNVIO_INIT_VERSION
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0000A482 | FSEQ_OTP_VERSION
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x00000003 |
+>> FSEQ_TOP_CONTENT_VERSION
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x4552414E | FSEQ_ALIVE_TOKEN
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x20000302 | FSEQ_CNVI_ID
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x01300504 | FSEQ_CNVR_ID
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x20000302 | CNVI_AUX_MISC_CHIP
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x01300504 | CNVR_AUX_MISC_CHIP
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x05B0905B |
+>> CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: 0x0000025B |
+>> CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: WRT: Collecting data:
+>> ini trigger 4 fired (delay=0ms).
+>> May 05 00:59:06 kernel: ieee80211 phy0: Hardware restart was requested
+>> May 05 00:59:06 kernel: iwlwifi 0000:00:14.3: iwl_trans_wait_txq_empty
+>> bad state = 0
+>> May 05 00:59:11 wpa_supplicant[862]: wlan0: CTRL-EVENT-REGDOM-CHANGE
+>> init=DRIVER type=WORLD
+>> May 05 00:59:11 wpa_supplicant[862]: wlan0: CTRL-EVENT-SIGNAL-CHANGE
+>> above=1 signal=-46 noise=9999 txrate=26000
+>> May 05 00:59:20 wpa_supplicant[862]: wlan0: CTRL-EVENT-SIGNAL-CHANGE
+>> above=1 signal=-39 noise=9999 txrate=234000
+>>
+>>
+>> $ iperf3 -s
+>> -----------------------------------------------------------
+>> Server listening on 5201 (test #1)
+>> -----------------------------------------------------------
+>> Accepted connection from 192.168.1.121, port 45048
+>> [  5] local 192.168.1.179 port 5201 connected to 192.168.1.121 port 45058
+>> [ ID] Interval           Transfer     Bitrate
+>> [  5]   0.00-1.00   sec  21.2 KBytes   174 Kbits/sec
+>> [  5]   1.00-2.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   2.00-3.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   3.00-4.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   4.00-5.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   5.00-6.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   6.00-7.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   8.00-9.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   9.00-10.00  sec  0.00 Bytes  0.00 bits/sec
+>> [  5]  10.00-10.13  sec  0.00 Bytes  0.00 bits/sec
+>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>> [ ID] Interval           Transfer     Bitrate
+>> [  5]   0.00-10.13  sec  21.2 KBytes  17.2 Kbits/sec                  receiver
+>> -----------------------------------------------------------
+>> Server listening on 5201 (test #2)
+>> -----------------------------------------------------------
+>> Accepted connection from 192.168.1.121, port 52066
+>> [  5] local 192.168.1.179 port 5201 connected to 192.168.1.121 port 52082
+>> [ ID] Interval           Transfer     Bitrate
+>> [  5]   0.00-1.00   sec  16.2 MBytes   136 Mbits/sec
+>> [  5]   1.00-2.00   sec  8.06 MBytes  67.5 Mbits/sec
+>> [  5]   2.00-3.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   3.00-4.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   4.00-5.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   5.00-6.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   6.00-7.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec
+>> [  5]   8.00-9.00   sec  11.9 MBytes   100 Mbits/sec
+>> [  5]   9.00-10.00  sec  4.60 MBytes  38.6 Mbits/sec
+>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>> [ ID] Interval           Transfer     Bitrate
+>> [  5]   0.00-10.01  sec  40.8 MBytes  34.2 Mbits/sec                  receiver
+>>
+>>
+>> Linux 6.2.14, no crash, good performance:
+>> May 05 00:35:22 kernel: iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION:
+>> FSEQ Version: 89.3.35.37
+>> May 05 00:35:22 kernel: iwlwifi 0000:00:14.3: loaded firmware version
+>> 72.daa05125.0 QuZ-a0-hr-b0-72.ucode op_mode iwlmvm
+>> May 05 00:35:23 kernel: iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi
+>> 6 AX201 160MHz, REV=0x351
+>> May 05 00:35:23 kernel: iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
+>> May 05 01:03:35 wpa_supplicant[845]: TDLS: Creating peer entry for
+>> ca:0e:48:5e:0d:f2
+>> May 05 01:03:36 wpa_supplicant[845]: TDLS: Dialog Token in TPK M1 92
+>> May 05 01:03:36 wpa_supplicant[845]: nl80211: kernel reports: key
+>> addition failed
+>> May 05 01:03:36 wpa_supplicant[845]: TDLS: Failed to set TPK to the driver
+>> May 05 01:03:36 kernel: iwlwifi 0000:00:14.3: Unhandled alg: 0x2000707
+>>
+>> $ iperf3 -s
+>> -----------------------------------------------------------
+>> Server listening on 5201 (test #1)
+>> -----------------------------------------------------------
+>> Accepted connection from 192.168.1.121, port 39920
+>> [  5] local 192.168.1.179 port 5201 connected to 192.168.1.121 port 39934
+>> [ ID] Interval           Transfer     Bitrate
+>> [  5]   0.00-1.00   sec  17.8 MBytes   149 Mbits/sec
+>> [  5]   1.00-2.00   sec  9.93 MBytes  83.3 Mbits/sec
+>> [  5]   2.00-3.00   sec  27.8 MBytes   233 Mbits/sec
+>> [  5]   3.00-4.00   sec  32.9 MBytes   276 Mbits/sec
+>> [  5]   4.00-5.00   sec  32.7 MBytes   274 Mbits/sec
+>> [  5]   5.00-6.00   sec  33.4 MBytes   280 Mbits/sec
+>> [  5]   6.00-7.00   sec  32.0 MBytes   269 Mbits/sec
+>> [  5]   7.00-8.00   sec  32.6 MBytes   273 Mbits/sec
+>> [  5]   8.00-9.00   sec  32.5 MBytes   273 Mbits/sec
+>> [  5]   9.00-10.00  sec  33.2 MBytes   278 Mbits/sec
+>> [  5]  10.00-10.04  sec  1.28 MBytes   270 Mbits/sec
+>> - - - - - - - - - - - - - - - - - - - - - - - - -
+>> [ ID] Interval           Transfer     Bitrate
+>> [  5]   0.00-10.04  sec   286 MBytes   239 Mbits/sec                  receiver
+> 
+> Thanks for the report. It looks like there's some problem with TDLS.
+> I'd like to ask you to collect some debug data, if possible.
+> Firstly, please provide a firmware dump as per the instructions provided in [1].
+> Additionally, it would be helpful if you could test our latest driver from [2],
+> which contains commits that have not yet been submitted upstream. And the last
+> request - could you please open a bugzilla ticket and share the debug data there,
+> the process is also described in [1].
+> 
+> [1] https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/backport-iwlwifi.git
