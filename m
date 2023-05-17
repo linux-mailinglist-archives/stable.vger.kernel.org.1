@@ -2,119 +2,140 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0363A706546
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 12:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F84670654F
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 12:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230350AbjEQKbk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 06:31:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50298 "EHLO
+        id S230296AbjEQKdG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 06:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbjEQKbj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 06:31:39 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD7A3A80;
-        Wed, 17 May 2023 03:31:26 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-50be17a1eceso1016369a12.2;
-        Wed, 17 May 2023 03:31:26 -0700 (PDT)
+        with ESMTP id S230268AbjEQKdE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 06:33:04 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7840C40E5
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 03:33:03 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-5341737d7aeso493371a12.2
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 03:33:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684319484; x=1686911484;
+        d=google.com; s=20221208; t=1684319583; x=1686911583;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jN2Qt6wopwsb1soSBiO1ksV6jX/xuz/JqjaDyhZdAzU=;
-        b=o3BDKCwKTkT31Lg+1H59ZpTNXUahuFguoXQwVOZTIYsd3qPeEBFmKCeF1qTCKlZ5/D
-         1KgVdHOnyIRYy8DzXvRDWA4arFfqV26JcX65FBGdGfrmAKpvl5UHAC7g7MDLrn048aUX
-         X1imOYkJNDeP1ja6Abk13jXhlIysdiA030N5H4Yu7s1s+Pv4PGaM0nmRSJkFKHa4PMnB
-         NPIOycbULdhaGQrzjrFU2wrMQVX8p6FsWv1tkQ4vJ0ryON9PRo8pmPlbdPambNztlp+g
-         P4OtNBAN2CCO0HP/t2JXB0psYRMtRaDiyl9Lq+KxgdxmE3XhBCEt1hYNCg1Zbq3dV/3D
-         SHEw==
+        bh=I+yMSRIvro+oycNAw5kvcuepkix/lZDUJXF17xDJqQs=;
+        b=r79UGOC27PdAxNjuhydpx7NpMnekSB4YkiixqH6+hR3Gn3K6V4tG7PdEPzQUuu3VwZ
+         RagVi1Ho5iB5GIKbC7A3u5cjAh+JUIpRyh/8EapJzQ2Cejk0drmRiq4NM+BIWMBLyS7Z
+         9PNyLcuQ4rDCtpC2LVUP5eejvj276UFY+yZk8cXHMXCyB07zS0DOX2bsuKDDJeUpvQBs
+         t1Lb+Eytf9VfC/Ck2ak8USU5L6Kd+Igx6iEEn4UChj5bx0AKMnm3UMgkgGEH2KSQP19A
+         iUXJeK81eLwgmFs5xr+cuhWT4MI0mjsrxyhv6H8OsvGXoBB8rRojw13sA3ac0knI8MZH
+         3hoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684319484; x=1686911484;
+        d=1e100.net; s=20221208; t=1684319583; x=1686911583;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jN2Qt6wopwsb1soSBiO1ksV6jX/xuz/JqjaDyhZdAzU=;
-        b=exkCapbBA7QSZEqt1xwil+JxwmN4b8XpbCWVgDzdUyC+YHF7cJgOPjWotmvmcXJlJY
-         68IvVmx8L7bD3YaQveiLce4eZGR/E4lhhEeYwPdEHImxFl2MGA6dmcde80Ym+/NARiLV
-         C6UOR8xWqQMVZNdcVbGrId19DaS5wDpnEgcIixRSMoiJU/Fm1x2qWE55l51U5Bs7GLIj
-         abkmTdoLQcA0SMlC0aVPayCrE2LL8nMHFPGH8QP9YgDzhpD/ujL5bS+/xqdiF5urgo6Y
-         7HLReI0o5JRlYVDyDG2JXfE8zjvMqCkRvcKKXczEDPSN4d7O/bmkSIRvrLbeYTu9U2vb
-         hUZQ==
-X-Gm-Message-State: AC+VfDyGqKJ1IlPw/04xfLMV0p3DXDBEpVUH83e0eoXdoMbgXnIjolXD
-        y56PsZROdWrAftpAFbbHPVRIm6PobjOPGE9P39U=
-X-Google-Smtp-Source: ACHHUZ5x4IdMM2FXItbpDrPQGuKOzYB4tamRNFVWupGDPKTGSrBunps9PHXI0UIug4gw0BseSFROyr760D9cGfqMKcg=
-X-Received: by 2002:a17:907:7da0:b0:96a:ed6e:7d58 with SMTP id
- oz32-20020a1709077da000b0096aed6e7d58mr13577830ejc.7.1684319484414; Wed, 17
- May 2023 03:31:24 -0700 (PDT)
+        bh=I+yMSRIvro+oycNAw5kvcuepkix/lZDUJXF17xDJqQs=;
+        b=dv3dvWP6LXefxIGFqUBardnuqUgIBF4PmZveggafZztOsYPfd08V0XSkamdZTB9jYf
+         thSItSHJYREtiGcxD3qf0b50kIsVtFUupOMuUwwWO7KGFERAGUCw+irtqsg3R87CmCe3
+         IRMkaJ3Yk+GlfkLPPbKXZt7lzlk0WDvA2cKPfbW44ZkuEFCa6c+HKwELLihSajXkf0fK
+         D1UCf58OXsQxJIjR+qH3C3k6MG/ZM3YdNt16NS9l4eJOdELcujpBnIQP9SIAw+ZhESQ8
+         h37EOO6BjMJ5DHOBNX0WWsfQgnf+vGM1Ux5GY1q8HtM0eaIEpjqZge1/sZjoR1C2/TG6
+         b6DQ==
+X-Gm-Message-State: AC+VfDxkigfB7kUum+cYrqPDUknLbm7h59+6Gmr2zBEuhSVtmH636Ns7
+        eqoXqT82ShhcmVXfjD4iAMCInaVgR3w+6PKSF9RmXQ==
+X-Google-Smtp-Source: ACHHUZ5bej71Yrq9WYwKrmyFW3dhsSue92Dc+g42m5WumdLoNEzoGk9RNULOlBkJyOzvQxp9xBZQAMMICk3ItIE6ubM=
+X-Received: by 2002:a17:902:b593:b0:1ad:ea13:1918 with SMTP id
+ a19-20020a170902b59300b001adea131918mr16342513pls.69.1684319582817; Wed, 17
+ May 2023 03:33:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230517052404.99904-1-xiubli@redhat.com>
-In-Reply-To: <20230517052404.99904-1-xiubli@redhat.com>
-From:   Ilya Dryomov <idryomov@gmail.com>
-Date:   Wed, 17 May 2023 12:31:12 +0200
-Message-ID: <CAOi1vP8e6NrrrV5TLYS-DpkjQN6LhfqkptR5_ue94HcHJV_2ag@mail.gmail.com>
-Subject: Re: [PATCH] ceph: force updating the msg pointer in non-split case
-To:     xiubli@redhat.com
-Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org,
-        Frank Schilder <frans@dtu.dk>
+References: <20230407030741.3163220-1-badhri@google.com> <0cf8c588b701d7cf25ffe1a9217b81716e6a5c51.camel@alistair23.me>
+ <1ac16f0a-3cca-40ca-c444-82719f85a24c@leemhuis.info>
+In-Reply-To: <1ac16f0a-3cca-40ca-c444-82719f85a24c@leemhuis.info>
+From:   Badhri Jagan Sridharan <badhri@google.com>
+Date:   Wed, 17 May 2023 03:32:26 -0700
+Message-ID: <CAPTae5Kdd8kYdiFhGys9jrJnTQj30_ibJ1AGmBw1xwsXpDkqPw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] usb: gadget: udc: core: Invoke usb_gadget_connect
+ only when started
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Alistair <alistair@alistair23.me>, gregkh@linuxfoundation.org,
+        stern@rowland.harvard.edu, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Francesco Dolcini <francesco@dolcini.it>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 17, 2023 at 7:24=E2=80=AFAM <xiubli@redhat.com> wrote:
->
-> From: Xiubo Li <xiubli@redhat.com>
->
-> When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
-> request may still contain a list of 'split_realms', and we need
-> to skip it anyway. Or it will be parsed as a corrupt snaptrace.
->
-> Cc: stable@vger.kernel.org
-> Cc: Frank Schilder <frans@dtu.dk>
-> Reported-by: Frank Schilder <frans@dtu.dk>
-> URL: https://tracker.ceph.com/issues/61200
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->  fs/ceph/snap.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-> index 0e59e95a96d9..d95dfe16b624 100644
-> --- a/fs/ceph/snap.c
-> +++ b/fs/ceph/snap.c
-> @@ -1114,6 +1114,9 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
->                                 continue;
->                         adjust_snap_realm_parent(mdsc, child, realm->ino)=
-;
->                 }
-> +       } else {
-> +               p +=3D sizeof(u64) * num_split_inos;
-> +               p +=3D sizeof(u64) * num_split_realms;
->         }
->
->         /*
-> --
-> 2.40.1
->
+Hi Thorsten,
 
-Hi Xiubo,
-
-This code appears to be very old -- it goes back to the initial commit
-963b61eb041e ("ceph: snapshot management") in 2009.  Do you have an
-explanation for why this popped up only now?
-
-Has MDS always been including split_inos and split_realms arrays in
-!CEPH_SNAP_OP_SPLIT case or is this a recent change?  If it's a recent
-change, I'd argue that this needs to be addressed on the MDS side.
+Francesso  had shared the stack dump as well at
+https://lore.kernel.org/all/ZGMm2sxN6wW%2FEWrR@francesco-nb.int.toradex.com=
+/.
+I am working on a fix based on that. Going to share it in the next
+hour and would be requesting Franceso and others help to see if the
+regression goes away.
 
 Thanks,
+Badhri
 
-                Ilya
+
+On Wed, May 17, 2023 at 3:23=E2=80=AFAM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> [CCing Francesco Dolcini; and the regression list too, as it should be
+> in the loop for regressions:
+> https://docs.kernel.org/admin-guide/reporting-regressions.html]
+>
+> On 16.05.23 14:53, Alistair wrote:
+> > On Fri, 2023-04-07 at 03:07 +0000, Badhri Jagan Sridharan wrote:
+> >> usb_udc_connect_control does not check to see if the udc has already
+> >> been started. This causes gadget->ops->pullup to be called through
+> >> usb_gadget_connect when invoked from usb_udc_vbus_handler even before
+> >> usb_gadget_udc_start is called. Guard this by checking for udc-
+> >>> started
+> >> in usb_udc_connect_control before invoking usb_gadget_connect.
+> > [...]
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 628ef0d273a6 ("usb: udc: add usb_udc_vbus_handler")
+> >> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> >
+> > This patch causes a kernel hang when trying to boot with the
+> > usb/chipidea/udc.c driver.
+> >
+> > The call stack below causes the hang:
+> >
+> >  - gadget_bind_driver(struct device *dev)
+> >     - mutex_lock(&udc->connect_lock);
+> >     - usb_gadget_udc_start_locked(struct usb_udc *udc)
+> >         - udc->gadget->ops->udc_start(udc->gadget, udc->driver)
+> >
+> > At which point we are calling ci_udc_start(..), but with the
+> > connect_lock mutex locked.
+> >
+> > ci_udc_start() then calls usb_udc_vbus_handler() which tries to lock
+> > the connect_lock while it's already locked. Resulting in a kernel hang.
+> >
+> > Reverting this patch fixes the hang.
+>
+> Not my area of expertise, but I guess it might be the same error as this
+> one:
+>
+> https://lore.kernel.org/all/ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com=
+/
+>
+> Francesco sent a revert on Friday, but no reaction from Badhri Jagan
+> Sridharan or Greg yet afaics.
+>
+> https://lore.kernel.org/all/20230512131435.205464-1-francesco@dolcini.it/
+>
+> Ciao, Thorsten
