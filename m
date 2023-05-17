@@ -2,71 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0201D705CF5
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 04:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91464705D0E
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 04:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231810AbjEQCO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 22:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37518 "EHLO
+        id S231881AbjEQCV1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 22:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231755AbjEQCOY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 22:14:24 -0400
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 734F75B87
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 19:13:52 -0700 (PDT)
-Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-33164ec77ccso61385ab.0
-        for <stable@vger.kernel.org>; Tue, 16 May 2023 19:13:52 -0700 (PDT)
+        with ESMTP id S231860AbjEQCV0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 22:21:26 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BACE110CF
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 19:21:25 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-ba8338f2103so234816276.1
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 19:21:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684289631; x=1686881631;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1684290085; x=1686882085;
+        h=content-transfer-encoding:cc:to:from:subject:references
+         :mime-version:message-id:in-reply-to:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J9H9xxY0IRCExY9H0nSI5ZkiuSsdqps+Roz6yPP7WfA=;
-        b=rshD+IoTAeqt1ylgFUS6t+KhyG6Irx7kcgC3HeFkd7U21A71Qmq1wGP4Heqs1TyrUC
-         RD58Q1x2mJ2EErmTXTA56YQmQJAYBDFoOLQgmt/E4R9VXFA8Br8/S/SvkbJOTbyYYz8b
-         elnk0vUY5RroWJ5sW36rpHNpM99N3Z4GjcZ37ctYATRLVKC8ZSWkXQW8m++XxR7EV6No
-         bMEoKVr+H1tTtWfxcmtj9rjIyiKXgBlyVd5G0H1F5BT85VVKdPQJY6ogi9hoYm9eQ/5Z
-         YZA849oauL0LAwAoxKgEbZSwauNLnCppPcaiOCQeEnFOj3iAOd8Fn0ZIrtawBjcq6fg0
-         eNbQ==
+        bh=icy+EhZ3UBgzX+LkBKZmwy9I7D5yLVOL3MyBuUnW0II=;
+        b=kU3u/jVPNbJOPkDSOv1M9xE9gA7eqoTFhSdZQD4qt7SNgcYJYLu77i/2peyYkaoM+E
+         1CklaeTAYSmTwv8Km5dGKi7C0WCfutgqDI2sGNHRkPp+sdYNdJ963Ikhl8N6lfTWY03r
+         Jc0A1tNgoUDHR5FiwBDbsHV8XCGmQ1kAqZSfPSuC5DautA1wUknPrMKD4FBEPRXJM1cI
+         zDV47+hqam9u7nttpZOONvGIAgOZpyS9w/3N1M0W8GoFsxZc0Tu51VmRu5U30nbsUdLv
+         KRfdPlHe57ebRvFOgibo1B8s53lcdE03PGn3ebRw8zfKd/8XLAR3q4VID38yQeldPd39
+         cHzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684289631; x=1686881631;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J9H9xxY0IRCExY9H0nSI5ZkiuSsdqps+Roz6yPP7WfA=;
-        b=f1dZprVG0BFdWGDNyf1JAqBVP4kqf1AKlqGuvUx/SyXjkhxxjZ2IVnAJW6xsElsZ6C
-         /G7APChYZv2493JjxSpDE98ABCbXVs3iAMRZDqFAdupA4WXO65jL3A32QkQ1JfVqgLUk
-         xoMfAE1tedQknW32PzVfmwEAFV/8PJCh7iNavEyixS92GqFGOUCxgGftVypGiHJgJCtq
-         5ki1k3pIKbyZxzZkOlrgsq/fnUvirSrCNGsGA/lymFvRrlMLYtXXWvR6gXV+Fu+YstFt
-         AzXBb0XZtEa8oyTaPu/YICaA8v8C7OOh5Lm5znM7keXkB9WqT5bcxms96odtokdjU9mh
-         IiaQ==
-X-Gm-Message-State: AC+VfDy9Ay5dBZAbT8qLDjzGnh/eRCnER3nhk6i/+4kTNUW+5C5vflKl
-        paNitEp4ABXqmrH5K/CdFCbv5x/WQXzdN9EpHNdr5w==
-X-Google-Smtp-Source: ACHHUZ6nP3vNUbS8Y+1y5SYoY+bj5/YtxVVRjlTpt6WH7z8whziPYI19nahZr4YBtm3V4uBd0oNOkf1nFEcsG+h7VUU=
-X-Received: by 2002:a05:6e02:1523:b0:335:a48:f668 with SMTP id
- i3-20020a056e02152300b003350a48f668mr79515ilu.15.1684289631318; Tue, 16 May
- 2023 19:13:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230512235755.1589034-1-pcc@google.com> <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGLLSYuedMsViDQG@google.com>
- <efd5fb89-4f60-bee1-c183-5a9f89209718@redhat.com>
-In-Reply-To: <efd5fb89-4f60-bee1-c183-5a9f89209718@redhat.com>
+        d=1e100.net; s=20221208; t=1684290085; x=1686882085;
+        h=content-transfer-encoding:cc:to:from:subject:references
+         :mime-version:message-id:in-reply-to:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=icy+EhZ3UBgzX+LkBKZmwy9I7D5yLVOL3MyBuUnW0II=;
+        b=RJpIUEpGOsdKCdRqiogVHrPRRjhjvvFZ6zoV4NdwbEZf3jQybrHqnWYRk/BKrV3ZVk
+         ws9cl8LdvhOIxHYo9Btg/DcVJzdRI9FCswxpbE9AdPB036ztpPrMwSrjxQID66uc1QLz
+         9mD2AmBR3fbtd4vzUPFxSg780AQNe5xLM0bc1LdPxaCHVIBTAI7l+GpwWJJJWgAJiwns
+         StmtPacCiQOKaetzRYjlLpxs3Xn4kAqDjQW4CSzvrRjDQ5oVVkzq6lqYzL6n0sLbd6EX
+         kCDVjufHW0MPALmrp2pFfUc8YFgZwbhj0CoqN3F1Xy/YNDUMn2sWHmcOjywHUB80Vwqc
+         nOyg==
+X-Gm-Message-State: AC+VfDxBmmrelTKuFiulSkpa6sfWWYy1P8ItSUWOp11vSmxHZm8u6E5l
+        3hfngDLRmZlAO4Nr++e9nFmzgtE=
+X-Google-Smtp-Source: ACHHUZ6HltqTMi815u6+g2acsl5ZG5UZd+Y+2Rbyffv/trwosDfbc8rLxY0NJ38GbW8keQ8pFoFL1ds=
+X-Received: from pcc-desktop.svl.corp.google.com ([2620:15c:2d3:205:b3a7:7c59:b96b:adaa])
+ (user=pcc job=sendgmr) by 2002:a5b:309:0:b0:ba6:a54d:1cae with SMTP id
+ j9-20020a5b0309000000b00ba6a54d1caemr8869621ybp.0.1684290085477; Tue, 16 May
+ 2023 19:21:25 -0700 (PDT)
+Date:   Tue, 16 May 2023 19:21:11 -0700
+In-Reply-To: <20230517022115.3033604-1-pcc@google.com>
+Message-Id: <20230517022115.3033604-2-pcc@google.com>
+Mime-Version: 1.0
+References: <20230517022115.3033604-1-pcc@google.com>
+X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
+Subject: [PATCH v3 1/3] mm: Call arch_swap_restore() from do_swap_page()
 From:   Peter Collingbourne <pcc@google.com>
-Date:   Tue, 16 May 2023 19:13:40 -0700
-Message-ID: <CAMn1gO55p_Vz0wrSqHxJ0nw_bncEyja8=mBedY29=8UdC3ejww@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before swap_free()
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     Peter Collingbourne <pcc@google.com>,
+        "=?UTF-8?q?Qun-wei=20Lin=20=28=E6=9E=97=E7=BE=A4=E5=B4=B4=29?=" 
         <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         "surenb@google.com" <surenb@google.com>,
-        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
+        "david@redhat.com" <david@redhat.com>,
+        "=?UTF-8?q?Chinwen=20Chang=20=28=E5=BC=B5=E9=8C=A6=E6=96=87=29?=" 
         <chinwen.chang@mediatek.com>,
         "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
+        "=?UTF-8?q?Kuan-Ying=20Lee=20=28=E6=9D=8E=E5=86=A0=E7=A9=8E=29?=" 
         <Kuan-Ying.Lee@mediatek.com>,
-        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+        "=?UTF-8?q?Casper=20Li=20=28=E6=9D=8E=E4=B8=AD=E6=A6=AE=29?=" 
+        <casper.li@mediatek.com>,
         "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
         vincenzo.frascino@arm.com,
         Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
@@ -74,117 +76,56 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
+        USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 16, 2023 at 5:40=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 16.05.23 02:16, Peter Collingbourne wrote:
-> > On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> >> On 13.05.23 01:57, Peter Collingbourne wrote:
-> >>> Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") mo=
-ved
-> >>> the call to swap_free() before the call to set_pte_at(), which meant =
-that
-> >>> the MTE tags could end up being freed before set_pte_at() had a chanc=
-e
-> >>> to restore them. One other possibility was to hook arch_do_swap_page(=
-),
-> >>> but this had a number of problems:
-> >>>
-> >>> - The call to the hook was also after swap_free().
-> >>>
-> >>> - The call to the hook was after the call to set_pte_at(), so there w=
-as a
-> >>>     racy window where uninitialized metadata may be exposed to usersp=
-ace.
-> >>>     This likely also affects SPARC ADI, which implements this hook to
-> >>>     restore tags.
-> >>>
-> >>> - As a result of commit 1eba86c096e3 ("mm: change page type prior to
-> >>>     adding page table entry"), we were also passing the new PTE as th=
-e
-> >>>     oldpte argument, preventing the hook from knowing the swap index.
-> >>>
-> >>> Fix all of these problems by moving the arch_do_swap_page() call befo=
-re
-> >>> the call to free_page(), and ensuring that we do not set orig_pte unt=
-il
-> >>> after the call.
-> >>>
-> >>> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> >>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> >>> Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f84104=
-9b8c61020c510678965
-> >>> Cc: <stable@vger.kernel.org> # 6.1
-> >>> Fixes: ca827d55ebaa ("mm, swap: Add infrastructure for saving page me=
-tadata on swap")
-> >>> Fixes: 1eba86c096e3 ("mm: change page type prior to adding page table=
- entry")
-> >>
-> >> I'm confused. You say c145e0b47c77 changed something (which was after =
-above
-> >> commits), indicate that it fixes two other commits, and indicate "6.1"=
- as
-> >> stable which does not apply to any of these commits.
-> >
-> > Sorry, the situation is indeed a bit confusing.
-> >
-> > - In order to make the arch_do_swap_page() hook suitable for fixing the
-> >    bug introduced by c145e0b47c77, patch 1 addresses a number of issues=
-,
-> >    including fixing bugs introduced by ca827d55ebaa and 1eba86c096e3,
-> >    but we haven't fixed the c145e0b47c77 bug yet, so there's no Fixes:
-> >    tag for it yet.
-> >
-> > - Patch 2, relying on the fixes in patch 1, makes MTE install an
-> >    arch_do_swap_page() hook (indirectly, by making arch_swap_restore()
-> >    also hook arch_do_swap_page()), thereby fixing the c145e0b47c77 bug.
-> >
->
-> Oh. That's indeed confusing. Maybe that should all be squashed to have
-> one logical fix for the overall problem. It's especially confusing
-> because this patch here fixes the other two issues touches code moved by
-> c145e0b47c77.
+Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+the call to swap_free() before the call to set_pte_at(), which meant that
+the MTE tags could end up being freed before set_pte_at() had a chance
+to restore them. Fix it by adding a call to the arch_swap_restore() hook
+before the call to swap_free().
 
-Maybe. It can sometimes be hard to reconcile "one logical change per
-patch" with "bug requires more than one logical change to fix" though.
-Fortunately in this case I think we have an approach that fixes the
-bug in one logical change, with some followup patches to clean things
-up.
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61=
+020c510678965
+Cc: <stable@vger.kernel.org> # 6.1
+Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+Reported-by: Qun-wei Lin (=E6=9E=97=E7=BE=A4=E5=B4=B4) <Qun-wei.Lin@mediate=
+k.com>
+Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d43=
+4.camel@mediatek.com/
+---
+v2:
+- Call arch_swap_restore() directly instead of via arch_do_swap_page()
 
-> > - 6.1 is the first stable version in which all 3 commits in my Fixes: t=
-ags
-> >    are present, so that is the version that I've indicated in my stable
-> >    tag for this series. In theory patch 1 could be applied to older ker=
-nel
-> >    versions, but it wouldn't fix any problems that we are facing with M=
-TE
-> >    (because it only fixes problems relating to the arch_do_swap_page()
-> >    hook, which older kernel versions don't hook with MTE), and there ar=
-e
-> >    some merge conflicts if we go back further anyway. If the SPARC folk=
-s
-> >    (the previous only user of this hook) want to fix these issues with =
-ADI,
-> >    they can propose their own backport.
->
-> Sometimes, it's a good idea to not specify a stable version and rather
-> let the Fixes: tags imply that.
+ mm/memory.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Yeah, but sometimes it's hard to say which way would be more
-efficient. Either we spend time discussing why the version is
-necessary or Greg spends time trying to apply patches to the wrong
-trees because I wasn't more explicit...
+diff --git a/mm/memory.c b/mm/memory.c
+index f69fbc251198..fc25764016b3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		}
+ 	}
+=20
++	/*
++	 * Some architectures may have to restore extra metadata to the page
++	 * when reading from swap. This metadata may be indexed by swap entry
++	 * so this must be called before swap_free().
++	 */
++	arch_swap_restore(entry, folio);
++
+ 	/*
+ 	 * Remove the swap entry and conditionally try to free up the swapcache.
+ 	 * We're already holding a reference on the page but haven't mapped it
+--=20
+2.40.1.606.ga4b1b128d6-goog
 
-Peter
