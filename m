@@ -2,138 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0033E705E37
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 05:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15577705E45
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 05:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232486AbjEQDmT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 23:42:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60792 "EHLO
+        id S232537AbjEQDp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 23:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbjEQDmR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 23:42:17 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130DF35A4;
-        Tue, 16 May 2023 20:42:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684294936; x=1715830936;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version:content-transfer-encoding;
-  bh=bEq3/lkC7Pzz/AEGPXybBFp4PDg/dC0oORu6X+NdoEA=;
-  b=aIE3v1CCyqGb9c5+TfNpGJCHUP7fsEUqr4jx57vekT+CzIidHll86n/B
-   6+zq6PDJBlIyWT166yz+Osye/S1ohqOM6672v7sJrZz4/mPEs8xnzcK+s
-   pvgJIGJSV8lrcXitW2PrqhEZgd0OW6RMajZDGXOCxJu1u5qrFGrMhWHDe
-   2sMPJCencB/OLFAeove1TYm0Qa5REf1nkMjWgjY6YKJXNzsyspx5HNw5V
-   rscap0z4iUqcOWAEFE6+Rx/eF7dXcXTPCR1wJlUcwoNd8wMJwKHEe5Dfb
-   EGaT0uBqGJ8FEFLytWlRLKFSJ6lZiRx6Z+rbn+JbVZeicZv/v8K/UTknx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="379842594"
-X-IronPort-AV: E=Sophos;i="5.99,280,1677571200"; 
-   d="scan'208";a="379842594"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 20:42:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="948103305"
-X-IronPort-AV: E=Sophos;i="5.99,280,1677571200"; 
-   d="scan'208";a="948103305"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 20:42:11 -0700
-From:   "Huang, Ying" <ying.huang@intel.com>
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        =?utf-8?B?UXVuLXdlaSBMaW4g?= =?utf-8?B?KOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        =?utf-8?Q?C?=
-         =?utf-8?Q?hinwen_Chang_=28=E5=BC=B5=E9=8C=A6=E6=96=87=29?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        =?utf-8?Q?Kuan-Ying_Lee_=28=E6=9D=8E?=
-         =?utf-8?Q?=E5=86=A0=E7=A9=8E=29?= <Kuan-Ying.Lee@mediatek.com>,
-        =?utf-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        with ESMTP id S232532AbjEQDp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 23:45:27 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9920430E8;
+        Tue, 16 May 2023 20:45:26 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1ae454844edso2995535ad.1;
+        Tue, 16 May 2023 20:45:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684295126; x=1686887126;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2uMSZdlVzbxeM11qsVcr0sdcteuxEXHjRqP1IVvopNU=;
+        b=NaiABcWCkvK2DCfRgsRBZ/BumHoPpPMfbt+vLGTc6mJZBbSsqJ0Qfs1mqA7kr8myUo
+         s7kSI/PYlCeuqR4ZbKL9S1vhuAY+ZO32SdCRVFiTtC3/xKk1CUQDuNXIMAh3wyt3/G64
+         rQWz6cmVHkWp9jnZhxAKMfX2GMLup8u+aKqErt2ZO3RuFuVlpDjKXH4tL2d1zxJYDeRP
+         ECA8Kbi6BULm0yKVVaAKuR3xEaYyCpEWicvFRD1kFGuO1KsnamVYvfWDtne7SmUss8Bi
+         uvPjR3V/VweHcFPDZkGddzvzmyH6a+8PLhXzZqGWD0Fq589AY6UlUaV1QRpGrKEEYisb
+         4R5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684295126; x=1686887126;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2uMSZdlVzbxeM11qsVcr0sdcteuxEXHjRqP1IVvopNU=;
+        b=J4BMx1ya4BmdmL60ryHoZmFvThJnrJXVEsA4vdF+wvjX71fsKpl64LeKeqnxFlOyVq
+         QEUQOs0rJDItpbkNRvO+3x0+tWwkz/AQwIQDnRGtJ9ui79RLcyIG6vN20E7FiaN1sP7T
+         5SrOkl+Zz7d6If6NC1Vbnc4kBMmQF27lwNUtHit1JJL187YnhZWUoKwF1Edz/yeos7P6
+         myzJKHEae5nFuj9f7REe7tTz9POnjw031fjJjoj11L+O2oaAuetDEnWmy9jV4U8O8g6u
+         ACC0fT7y76A52gcmAdI5MZCnQoRu5Cgcszo9AXpOxjkUOWURQ1QPXI4MsILLiSqPV7rn
+         gfAg==
+X-Gm-Message-State: AC+VfDyjoN6lbjda/o5PRHkG9YQOxIoPx17PieAjPcXwOqyS+OrOcx1u
+        fVN1woXYoNTgCG1Q9EEA3kA=
+X-Google-Smtp-Source: ACHHUZ4VwlgfLZwJWUKsSA1KMAjkQD96iP+U3wN3PhFLqe4E4WOUqEU/zeGOhl4OyE2MLWqyzdNQQQ==
+X-Received: by 2002:a17:903:32c5:b0:1aa:e5cd:647a with SMTP id i5-20020a17090332c500b001aae5cd647amr54727835plr.23.1684295126019;
+        Tue, 16 May 2023 20:45:26 -0700 (PDT)
+Received: from localhost.localdomain ([203.205.141.83])
+        by smtp.googlemail.com with ESMTPSA id t2-20020a170902e84200b001a19196af48sm16336746plg.64.2023.05.16.20.45.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 May 2023 20:45:25 -0700 (PDT)
+From:   Ze Gao <zegao2021@gmail.com>
+X-Google-Original-From: Ze Gao <zegao@tencent.com>
+To:     Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>, x86@kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org,
+        Conor Dooley <conor@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Yonghong Song <yhs@fb.com>, Ze Gao <zegao@tencent.com>,
         stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm: Call arch_swap_restore() from do_swap_page()
-References: <20230517022115.3033604-1-pcc@google.com>
-        <20230517022115.3033604-2-pcc@google.com>
-Date:   Wed, 17 May 2023 11:40:58 +0800
-In-Reply-To: <20230517022115.3033604-2-pcc@google.com> (Peter Collingbourne's
-        message of "Tue, 16 May 2023 19:21:11 -0700")
-Message-ID: <87353v7hh1.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+Subject: [PATCH v3 1/4] rethook: use preempt_{disable, enable}_notrace in rethook_trampoline_handler
+Date:   Wed, 17 May 2023 11:45:06 +0800
+Message-Id: <20230517034510.15639-2-zegao@tencent.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230517034510.15639-1-zegao@tencent.com>
+References: <20230517034510.15639-1-zegao@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Peter Collingbourne <pcc@google.com> writes:
+This patch replaces preempt_{disable, enable} with its corresponding
+notrace version in rethook_trampoline_handler so no worries about stack
+recursion or overflow introduced by preempt_count_{add, sub} under
+fprobe + rethook context.
 
-> Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-> the call to swap_free() before the call to set_pte_at(), which meant that
-> the MTE tags could end up being freed before set_pte_at() had a chance
-> to restore them. Fix it by adding a call to the arch_swap_restore() hook
-> before the call to swap_free().
->
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c=
-61020c510678965
-> Cc: <stable@vger.kernel.org> # 6.1
-> Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-> Reported-by: Qun-wei Lin (=E6=9E=97=E7=BE=A4=E5=B4=B4) <Qun-wei.Lin@media=
-tek.com>
-> Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d=
-434.camel@mediatek.com/
-> ---
-> v2:
-> - Call arch_swap_restore() directly instead of via arch_do_swap_page()
->
->  mm/memory.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index f69fbc251198..fc25764016b3 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  		}
->  	}
->=20=20
-> +	/*
-> +	 * Some architectures may have to restore extra metadata to the page
-> +	 * when reading from swap. This metadata may be indexed by swap entry
-> +	 * so this must be called before swap_free().
-> +	 */
-> +	arch_swap_restore(entry, folio);
-> +
->  	/*
->  	 * Remove the swap entry and conditionally try to free up the swapcache.
->  	 * We're already holding a reference on the page but haven't mapped it
+Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
+Signed-off-by: Ze Gao <zegao@tencent.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20230516071830.8190-2-zegao@tencent.com
+---
+ kernel/trace/rethook.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Should you add
+diff --git a/kernel/trace/rethook.c b/kernel/trace/rethook.c
+index 32c3dfdb4d6a..60f6cb2b486b 100644
+--- a/kernel/trace/rethook.c
++++ b/kernel/trace/rethook.c
+@@ -288,7 +288,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
+ 	 * These loops must be protected from rethook_free_rcu() because those
+ 	 * are accessing 'rhn->rethook'.
+ 	 */
+-	preempt_disable();
++	preempt_disable_notrace();
+ 
+ 	/*
+ 	 * Run the handler on the shadow stack. Do not unlink the list here because
+@@ -321,7 +321,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
+ 		first = first->next;
+ 		rethook_recycle(rhn);
+ 	}
+-	preempt_enable();
++	preempt_enable_notrace();
+ 
+ 	return correct_ret_addr;
+ }
+-- 
+2.40.1
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-
-for 1/3 and 2/3.
-
-It looks good for me for swap code related part.  Feel free to add
-
-Acked-by: "Huang, Ying" <ying.huang@intel.com>
-
-to 1/3 and 2/3.
-
-Best Regards,
-Huang, Ying
