@@ -2,111 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05EC1705F07
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 06:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52EF4705F3D
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 07:25:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230403AbjEQE6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 00:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60776 "EHLO
+        id S232241AbjEQFZN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 01:25:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjEQE6j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 00:58:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661A235A0;
-        Tue, 16 May 2023 21:58:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S232253AbjEQFZK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 01:25:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6438E420B
+        for <stable@vger.kernel.org>; Tue, 16 May 2023 22:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684301062;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=jw9brB41FDXz2jgQEbr8oqsvxh/JrmUeFZGSqLXLrYE=;
+        b=QmwAGcYjd9RcrfTg78JiQed55QPJNYcoYe0Z7mD4IhrId/mgReA9kVnBMnkAaJBPuAmwzh
+        H18TMBOK243Oe+m52qJA5RtXLTBc6xGpTNIs5hBbiOhn7CV1Ylcw05f79IdpEtmh+3vtoW
+        LTuMZ++QXIgg1wyYlfWAtPHowSc6XCw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-625-YYpC63RgMhCNkxUfHHUVFQ-1; Wed, 17 May 2023 01:24:19 -0400
+X-MC-Unique: YYpC63RgMhCNkxUfHHUVFQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F02846416A;
-        Wed, 17 May 2023 04:58:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5962CC433D2;
-        Wed, 17 May 2023 04:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684299517;
-        bh=JXO7heg5WUZNlDmWN57OsaeJjG0fLyTe1q0jhMPHx8s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LGnmx7T2UPfkCaLcykQ0xfMavWGp2hBEAtVEAMg+GX4izdX9own4BrEBiSTKQbx2X
-         mETpWoBKxajo9ApB+RLkYyg2EQdoB69w6sYFGGLylRYtPo/CuqyqD97bpEspbZOU0i
-         MSGChGqoyURojFqKlALzEPKGVVCQ8e6qwTNcBLYumWqd/gmeRzyards7t4nwTDAufh
-         PBaF2FzSJkbXvyXxc1Mzk2GXyZHdEs2DDu9yT9HJV2tybtVJVj3U0OGQDxkK6ZLohW
-         g1btsIpyrnR3QWR9cxg1S0dBH82zN408AnNgr0U1u/xt+Yajs+ZS8jia6Zw4Nad3Xk
-         tybf/8myBcU8g==
-Date:   Tue, 16 May 2023 21:58:36 -0700
-From:   "Darrick J. Wong" <djwong@kernel.org>
-To:     Jan Kara <jack@suse.cz>
-Cc:     Ted Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] ext4: Fix possible corruption when moving a directory
-Message-ID: <20230517045836.GA11594@frogsfrogsfrogs>
-References: <20230126112221.11866-1-jack@suse.cz>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7E25B2A59544;
+        Wed, 17 May 2023 05:24:18 +0000 (UTC)
+Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-110.pek2.redhat.com [10.72.12.110])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CF80E14171C0;
+        Wed, 17 May 2023 05:24:13 +0000 (UTC)
+From:   xiubli@redhat.com
+To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
+Cc:     jlayton@kernel.org, vshankar@redhat.com,
+        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org,
+        Frank Schilder <frans@dtu.dk>
+Subject: [PATCH] ceph: force updating the msg pointer in non-split case
+Date:   Wed, 17 May 2023 13:24:04 +0800
+Message-Id: <20230517052404.99904-1-xiubli@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230126112221.11866-1-jack@suse.cz>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jan 26, 2023 at 12:22:21PM +0100, Jan Kara wrote:
-> When we are renaming a directory to a different directory, we need to
-> update '..' entry in the moved directory. However nothing prevents moved
-> directory from being modified and even converted from the inline format
-> to the normal format. When such race happens the rename code gets
-> confused and we crash. Fix the problem by locking the moved directory.
+From: Xiubo Li <xiubli@redhat.com>
 
-Four months later, I have a question --
+When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
+request may still contain a list of 'split_realms', and we need
+to skip it anyway. Or it will be parsed as a corrupt snaptrace.
 
-Is it necessary for ext4_cross_rename to inode_lock_nested on both
-old.inode and new.inode?  We're resetting the dotdot entries on both
-children in that case, which means that we also need to lock out inline
-data conversions, right?
+Cc: stable@vger.kernel.org
+Cc: Frank Schilder <frans@dtu.dk>
+Reported-by: Frank Schilder <frans@dtu.dk>
+URL: https://tracker.ceph.com/issues/61200
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
+ fs/ceph/snap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---D
+diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
+index 0e59e95a96d9..d95dfe16b624 100644
+--- a/fs/ceph/snap.c
++++ b/fs/ceph/snap.c
+@@ -1114,6 +1114,9 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
+ 				continue;
+ 			adjust_snap_realm_parent(mdsc, child, realm->ino);
+ 		}
++	} else {
++		p += sizeof(u64) * num_split_inos;
++		p += sizeof(u64) * num_split_realms;
+ 	}
+ 
+ 	/*
+-- 
+2.40.1
 
-> CC: stable@vger.kernel.org
-> Fixes: 32f7f22c0b52 ("ext4: let ext4_rename handle inline dir")
-> Signed-off-by: Jan Kara <jack@suse.cz>
-> ---
->  fs/ext4/namei.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-> index dd28453d6ea3..270fbcba75b6 100644
-> --- a/fs/ext4/namei.c
-> +++ b/fs/ext4/namei.c
-> @@ -3872,9 +3872,16 @@ static int ext4_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
->  			if (new.dir != old.dir && EXT4_DIR_LINK_MAX(new.dir))
->  				goto end_rename;
->  		}
-> +		/*
-> +		 * We need to protect against old.inode directory getting
-> +		 * converted from inline directory format into a normal one.
-> +		 */
-> +		inode_lock_nested(old.inode, I_MUTEX_NONDIR2);
->  		retval = ext4_rename_dir_prepare(handle, &old);
-> -		if (retval)
-> +		if (retval) {
-> +			inode_unlock(old.inode);
->  			goto end_rename;
-> +		}
->  	}
->  	/*
->  	 * If we're renaming a file within an inline_data dir and adding or
-> @@ -4006,6 +4013,8 @@ static int ext4_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
->  	} else {
->  		ext4_journal_stop(handle);
->  	}
-> +	if (old.dir_bh)
-> +		inode_unlock(old.inode);
->  release_bh:
->  	brelse(old.dir_bh);
->  	brelse(old.bh);
-> -- 
-> 2.35.3
-> 
