@@ -2,158 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F05D9706314
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E958A706355
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbjEQIjN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 04:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55334 "EHLO
+        id S231128AbjEQIvL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 04:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230255AbjEQIi4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:38:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B357293
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:37:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684312647;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2WdsMZLBHDWxr+KE0TdL6QcbjY/uUPjF0RV3EGhnsZw=;
-        b=g8h+buq4ycapyIo6TDbyMgIGK0MxFUWjlSvn3GVR6z7qXvz8x0LAfm5yQ5OEFzRqtsULpg
-        XknOZPB+dUAzX3cuUTFYzvP2TmITFAWdhdcH7bKVp+cXlXEzz5dNz5WFQO0+V2dHFBRTr7
-        iFiRQnvdJeopIFincMLig3krI2b+lAM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-OBXdDoM0MZKbH3SVo5D5kg-1; Wed, 17 May 2023 04:37:25 -0400
-X-MC-Unique: OBXdDoM0MZKbH3SVo5D5kg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f422150893so3076455e9.2
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:37:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684312644; x=1686904644;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2WdsMZLBHDWxr+KE0TdL6QcbjY/uUPjF0RV3EGhnsZw=;
-        b=eK7xGTbhNkhDgWrvNj/aJwFPkEAsLA1Bz0s7rG9rN57v9GGJeMJqBq+c5JQ7idbamg
-         mSbePTvHL552wAIJ3lq/pVlm3kbGYrWptOiirjH1/jwI29uMCI/t/NZb7V+4MxIJV9E6
-         p+wL0j8x/IFuyXtmhff0PN/J6lPYLW0hXhRLDJydWP4Dv83lWCpi8l5j3d8TM21Dq2jg
-         5xQkEFilD7RZcFcqRT89XCIz4Hf7dQ+/0v7MYyDk22v8uYZui+DjiZLn7SVHq48hAKzz
-         0LLj6ezM5LE7NeW2u6hzCsFPkrevj0By4yrvI1Iu8TILHHsoL53EC9VsrZ4sjqd6PHZE
-         Cmvw==
-X-Gm-Message-State: AC+VfDwHW4/EOGmjRQ6GHakEtJI6n7Hr/K7qSBKZ00sXOBN0MsPxObnp
-        q+PZz7qlvKTnAYZpKL940qp16unrSqVTdaRh1XuM247iUj+5Q8lLlU9TA4TJCKaYy7LHxrzGCAL
-        ZlKlYTKCSV+j4t5hT
-X-Received: by 2002:a1c:c917:0:b0:3f5:e88:3c47 with SMTP id f23-20020a1cc917000000b003f50e883c47mr4936720wmb.16.1684312644149;
-        Wed, 17 May 2023 01:37:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5seF8sdv4aMaOlfOfXp3k6cNnu+uya6/Hj+LErqDQsaKaN6SKX7/RsdZpo0rj3XBuvVgPmIg==
-X-Received: by 2002:a1c:c917:0:b0:3f5:e88:3c47 with SMTP id f23-20020a1cc917000000b003f50e883c47mr4936689wmb.16.1684312643761;
-        Wed, 17 May 2023 01:37:23 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c707:3900:757e:83f8:a99d:41ae? (p200300cbc7073900757e83f8a99d41ae.dip0.t-ipconnect.de. [2003:cb:c707:3900:757e:83f8:a99d:41ae])
-        by smtp.gmail.com with ESMTPSA id g3-20020a5d6983000000b0030795b2be15sm1962333wru.103.2023.05.17.01.37.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 01:37:23 -0700 (PDT)
-Message-ID: <12704c8f-6727-62ec-d48b-31246755dbdd@redhat.com>
-Date:   Wed, 17 May 2023 10:37:22 +0200
+        with ESMTP id S231124AbjEQIvK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:51:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D611BC3;
+        Wed, 17 May 2023 01:51:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB90C63821;
+        Wed, 17 May 2023 08:51:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B5EC433EF;
+        Wed, 17 May 2023 08:51:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684313466;
+        bh=8BhycqlJAWzVNQ8w1EwRwdnYUlS3UWhW4kfx4xXZ0b8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sOjSHfCZ48rD2SR98tO++PRNtsXhs6EKNm0br8Hqx+xvy5HUKhtRxZCbI3YATetfY
+         fRdfyk4RlHM6Yk2pAk11e9YOWJQj/3k+vMoO1UX97D1QBScn7FYIi5/9YZ5CBX1EFd
+         Z5zMgsNwvdAlS9M8CizEpLOeM2qjnZqmIR+5ipYI=
+Date:   Wed, 17 May 2023 10:51:03 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de
+Subject: Re: [PATCH 5.10 000/381] 5.10.180-rc1 review
+Message-ID: <2023051711-thespian-sponsor-8878@gregkh>
+References: <20230515161736.775969473@linuxfoundation.org>
+ <ZGNJfAPd8eeVoCJ3@debian>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/3] mm: Call arch_swap_restore() from do_swap_page()
-Content-Language: en-US
-To:     "Huang, Ying" <ying.huang@intel.com>,
-        Peter Collingbourne <pcc@google.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-References: <20230517022115.3033604-1-pcc@google.com>
- <20230517022115.3033604-2-pcc@google.com>
- <87353v7hh1.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <87353v7hh1.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZGNJfAPd8eeVoCJ3@debian>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 17.05.23 05:40, Huang, Ying wrote:
-> Peter Collingbourne <pcc@google.com> writes:
+On Tue, May 16, 2023 at 10:14:36AM +0100, Sudip Mukherjee (Codethink) wrote:
+> Hi Greg,
 > 
->> Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
->> the call to swap_free() before the call to set_pte_at(), which meant that
->> the MTE tags could end up being freed before set_pte_at() had a chance
->> to restore them. Fix it by adding a call to the arch_swap_restore() hook
->> before the call to swap_free().
->>
->> Signed-off-by: Peter Collingbourne <pcc@google.com>
->> Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
->> Cc: <stable@vger.kernel.org> # 6.1
->> Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
->> Reported-by: Qun-wei Lin (林群崴) <Qun-wei.Lin@mediatek.com>
->> Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
->> ---
->> v2:
->> - Call arch_swap_restore() directly instead of via arch_do_swap_page()
->>
->>   mm/memory.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index f69fbc251198..fc25764016b3 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>   		}
->>   	}
->>   
->> +	/*
->> +	 * Some architectures may have to restore extra metadata to the page
->> +	 * when reading from swap. This metadata may be indexed by swap entry
->> +	 * so this must be called before swap_free().
->> +	 */
->> +	arch_swap_restore(entry, folio);
->> +
->>   	/*
->>   	 * Remove the swap entry and conditionally try to free up the swapcache.
->>   	 * We're already holding a reference on the page but haven't mapped it
+> On Mon, May 15, 2023 at 06:24:11PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.10.180 release.
+> > There are 381 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
 > 
-> Should you add
+> Build test (gcc version 11.3.1 20230511):
+> mips: 63 configs -> no failure
+> arm: 104 configs -> no failure
+> arm64: 3 configs -> 1 failure
+> x86_64: 4 configs -> no failure
+> alpha allmodconfig -> no failure
+> powerpc allmodconfig -> no failure
+> riscv allmodconfig -> no failure
+> s390 allmodconfig -> no failure
+> xtensa allmodconfig -> no failure
 > 
-> Suggested-by: David Hildenbrand <david@redhat.com>
+> arm64 allmodconfig build fails with the error:
 > 
-> for 1/3 and 2/3.
+> /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid_ipa':
+> (.hyp.text+0x1a4c): undefined reference to `__kvm_nvhe_memset'
+> /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_tlb_flush_vmid':
+> (.hyp.text+0x1b20): undefined reference to `__kvm_nvhe_memset'
+> /gcc/bin/aarch64-linux-ld: arch/arm64/kvm/hyp/nvhe/kvm_nvhe.o: in function `__kvm_nvhe___kvm_flush_cpu_context':
+> (.hyp.text+0x1b80): undefined reference to `__kvm_nvhe_memset'
 
-For 1/3, I think I rather only explained the problem in the first patch 
-and didn't really suggest this.
+That's odd, I don't see that symbol anywhere in the tree at all.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+And the only arm-related kvm changes don't have those symbols either
+(the other kvm changes are x86-only)
 
--- 
-Thanks,
+Also, no one else has seen this issue.  Can you bisect?
 
-David / dhildenb
+thanks,
 
+greg k-h
