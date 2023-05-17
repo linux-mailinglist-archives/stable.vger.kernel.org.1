@@ -2,219 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7551706C4C
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 17:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 324A3706C34
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 17:07:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbjEQPL5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 11:11:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40778 "EHLO
+        id S231135AbjEQPHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 11:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231148AbjEQPL5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 11:11:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560179EF1
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 08:10:53 -0700 (PDT)
+        with ESMTP id S232005AbjEQPHL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 11:07:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA02DC49
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 08:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684336252;
+        s=mimecast20190719; t=1684335931;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q5RzGFulK/iTq2evWpXpL8oUCIJPeQE5nH6dqifw1CU=;
-        b=Iabu6Ube3zmwmXfRr/YxCDX4ljgBOnQb/qD848BDp6fkYB8pOZKAz8JeFUXD3R+GLoNdTn
-        FuNKiIBLHbsV2liIbqWMvY542hg9l+/RnEyoMuwPPe9kXcym/VrfjDZoKhM9WVT5xRvVk+
-        HDglNPWT0JCdFS34w6TyhffzM2Yv2eo=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=5R80nbUZwWFiHdR78rMDNlvBGteEPIxCifWqkv+jAN8=;
+        b=cXCnBerYyBuztBZKPgcnZRocb3bw/Nt7ekfOkIWZZnmEFg+mC6aHP6qslkQcDgJca+p5+I
+        a7Xt0KmrJc49IuLTSZpZjQb3dGud7NDwKH29+BdrK1vNCYlOGKgzCqaD8COYcNzQdUzNdl
+        ryTUWqKCPQnCxwYLDzxY1F0KnVe6EmY=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-IqwPsUKiOSavb12_pO14_g-1; Wed, 17 May 2023 11:03:49 -0400
-X-MC-Unique: IqwPsUKiOSavb12_pO14_g-1
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-4f225b6dc0dso632460e87.2
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 08:03:48 -0700 (PDT)
+ us-mta-617-KiuX7KALNsOUYPgKTGCfFg-1; Wed, 17 May 2023 11:04:14 -0400
+X-MC-Unique: KiuX7KALNsOUYPgKTGCfFg-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-61b6f717b6eso1822376d6.0
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 08:04:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684335828; x=1686927828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1684335853; x=1686927853;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Q5RzGFulK/iTq2evWpXpL8oUCIJPeQE5nH6dqifw1CU=;
-        b=hjCvcefpQz7/TN+GLbGfCDHYjaN86YezhHL++NoC8JvXK4cLVH/ioR4HJ7Bav3UmHh
-         Nfw+Kc6Q+1NxImk0oimV62OZ1eQvIiw5Sxwu6VOq9dFR93xvSDh/dQQjXqxosJ48ct4L
-         Kip9lw/LNrjqXtXTAC/XHRRTlNlqycDRrKmunFLwkJ+1RjDULTKPOZYbAO81Bax0GkKz
-         sU07nfo11TUmfCo3yfMo/FDSKQ6Z1xnlWXb3WgY6sBJ9IdJP8ua9FWXcU7BtajJEl5gU
-         A+aeJHkG9MRrm4tGV+N7kBIHUvA2PoGc4btnU6Rln6aoWSbs/hUhoPPE8J2YTPCSomOt
-         eNzA==
-X-Gm-Message-State: AC+VfDy3hZOA/6XIyZrzlV6Du13YJHQhOX3QfPBHlIPnywom01SmjfN5
-        NOVwFiXsok2iEEsdalqiDLtVxp9Aj1RWrjahgHpWOx5YPYC1cJP/8x2h8P5or1O8BJ0QwQj55OY
-        kgCImrV0v43OoEx/84sCoUu9lfmxPooWh
-X-Received: by 2002:ac2:5458:0:b0:4d7:44c9:9f4b with SMTP id d24-20020ac25458000000b004d744c99f4bmr361312lfn.1.1684335827603;
-        Wed, 17 May 2023 08:03:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5LXtHar+ysIQvmo0FD8jbym7qM023KL1r+AqdmXTs4zNdKVfcXQqjR1J7e0IzaXRZiNxdm/VFpYCf0ah6xbkI=
-X-Received: by 2002:ac2:5458:0:b0:4d7:44c9:9f4b with SMTP id
- d24-20020ac25458000000b004d744c99f4bmr361293lfn.1.1684335827100; Wed, 17 May
- 2023 08:03:47 -0700 (PDT)
+        bh=5R80nbUZwWFiHdR78rMDNlvBGteEPIxCifWqkv+jAN8=;
+        b=a/t83fC9Z9FWUk3U36gNRG5PGfCwj0IUtHIC18DPOzg+sRlhRtW9wVnFFalhiO4C1R
+         5fSZnxbWswm50knsCTXgNSJEECnGs8X+F2V0+MaOgFIZHdNW2PSXOXLC+SXX/76hMdOf
+         cZtI51UFKOgSl726NwUdJ1h9968G0ob9Tr9kirrvelVsZYz6TzcmQA/moTR6kffYAfm0
+         5Ao8BbMQd+09wp0GP7zYeWzVHbQzzx23/PDED1Df30FW4fc4g38FaFgjKixkYS1pkYpc
+         kf19UOyO0wWOIm8JuSh3WHN2DrCQ4U4mH0MkAGfN/1MkSXAILl8YBA9MZyb8vQtOtwz1
+         BdwQ==
+X-Gm-Message-State: AC+VfDydHyvR/mO6FQbR3QpNyG6pJC5IzOIC/5hiEnZdWk3hJcvOf0jW
+        bRJoZqNiMFHchldjKXN2K/+XTXb40fTV8SArwtTCWsPecnYrNI8qus2N5PgCpZoLgiUWLPilQpD
+        ykRfeZiPY0uNBR5IB
+X-Received: by 2002:a05:6214:cc8:b0:623:5678:1285 with SMTP id 8-20020a0562140cc800b0062356781285mr5664665qvx.2.1684335852781;
+        Wed, 17 May 2023 08:04:12 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4A7kugtT7Bx+EHF80tM99neHimNnRwy8AYQ2bdr/AsAi1MAhOSAI8qAPppaefRrYgb8kIRbA==
+X-Received: by 2002:a05:6214:cc8:b0:623:5678:1285 with SMTP id 8-20020a0562140cc800b0062356781285mr5664630qvx.2.1684335852517;
+        Wed, 17 May 2023 08:04:12 -0700 (PDT)
+Received: from x1n.. (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca. [70.24.86.62])
+        by smtp.gmail.com with ESMTPSA id u10-20020a05620a120a00b0074d4cf8f9fcsm661141qkj.107.2023.05.17.08.04.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 May 2023 08:04:11 -0700 (PDT)
+From:   Peter Xu <peterx@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Lorenzo Stoakes <lstoakes@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Mike Rapoport <rppt@kernel.org>, peterx@redhat.com,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-stable <stable@vger.kernel.org>
+Subject: [PATCH 1/2] mm/uffd: Fix vma operation where start addr cuts part of vma
+Date:   Wed, 17 May 2023 11:04:07 -0400
+Message-Id: <20230517150408.3411044-2-peterx@redhat.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230517150408.3411044-1-peterx@redhat.com>
+References: <20230517150408.3411044-1-peterx@redhat.com>
 MIME-Version: 1.0
-References: <20230517052404.99904-1-xiubli@redhat.com> <CAOi1vP8e6NrrrV5TLYS-DpkjQN6LhfqkptR5_ue94HcHJV_2ag@mail.gmail.com>
- <b121586f-d628-a8e3-5802-298c1431f0e5@redhat.com> <CAOi1vP-vA0WAw6Jb69QDt=43fw8rgS7KvLrvKF5bEqgOS_TzUQ@mail.gmail.com>
- <CAJ4mKGbp3Csdy56hcnHLam6asCv9tMSANL_YzD6pM+NV3eQicA@mail.gmail.com> <CAOi1vP90QTPTtTmjRrskX4WEJKcPs52phS0C383eZxHmG4q5zQ@mail.gmail.com>
-In-Reply-To: <CAOi1vP90QTPTtTmjRrskX4WEJKcPs52phS0C383eZxHmG4q5zQ@mail.gmail.com>
-From:   Gregory Farnum <gfarnum@redhat.com>
-Date:   Wed, 17 May 2023 08:03:34 -0700
-Message-ID: <CAJ4mKGZUvrVHsEX-==kD9x_ArSL5FD_k0PDmYT4e6mo_80Ah_g@mail.gmail.com>
-Subject: Re: [PATCH] ceph: force updating the msg pointer in non-split case
-To:     Ilya Dryomov <idryomov@gmail.com>
-Cc:     Xiubo Li <xiubli@redhat.com>, ceph-devel@vger.kernel.org,
-        jlayton@kernel.org, vshankar@redhat.com, stable@vger.kernel.org,
-        Frank Schilder <frans@dtu.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 17, 2023 at 7:27=E2=80=AFAM Ilya Dryomov <idryomov@gmail.com> w=
-rote:
->
-> On Wed, May 17, 2023 at 3:59=E2=80=AFPM Gregory Farnum <gfarnum@redhat.co=
-m> wrote:
-> >
-> > On Wed, May 17, 2023 at 4:33=E2=80=AFAM Ilya Dryomov <idryomov@gmail.co=
-m> wrote:
-> > >
-> > > On Wed, May 17, 2023 at 1:04=E2=80=AFPM Xiubo Li <xiubli@redhat.com> =
-wrote:
-> > > >
-> > > >
-> > > > On 5/17/23 18:31, Ilya Dryomov wrote:
-> > > > > On Wed, May 17, 2023 at 7:24=E2=80=AFAM <xiubli@redhat.com> wrote=
-:
-> > > > >> From: Xiubo Li <xiubli@redhat.com>
-> > > > >>
-> > > > >> When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
-> > > > >> request may still contain a list of 'split_realms', and we need
-> > > > >> to skip it anyway. Or it will be parsed as a corrupt snaptrace.
-> > > > >>
-> > > > >> Cc: stable@vger.kernel.org
-> > > > >> Cc: Frank Schilder <frans@dtu.dk>
-> > > > >> Reported-by: Frank Schilder <frans@dtu.dk>
-> > > > >> URL: https://tracker.ceph.com/issues/61200
-> > > > >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> > > > >> ---
-> > > > >>   fs/ceph/snap.c | 3 +++
-> > > > >>   1 file changed, 3 insertions(+)
-> > > > >>
-> > > > >> diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-> > > > >> index 0e59e95a96d9..d95dfe16b624 100644
-> > > > >> --- a/fs/ceph/snap.c
-> > > > >> +++ b/fs/ceph/snap.c
-> > > > >> @@ -1114,6 +1114,9 @@ void ceph_handle_snap(struct ceph_mds_clie=
-nt *mdsc,
-> > > > >>                                  continue;
-> > > > >>                          adjust_snap_realm_parent(mdsc, child, r=
-ealm->ino);
-> > > > >>                  }
-> > > > >> +       } else {
-> > > > >> +               p +=3D sizeof(u64) * num_split_inos;
-> > > > >> +               p +=3D sizeof(u64) * num_split_realms;
-> > > > >>          }
-> > > > >>
-> > > > >>          /*
-> > > > >> --
-> > > > >> 2.40.1
-> > > > >>
-> > > > > Hi Xiubo,
-> > > > >
-> > > > > This code appears to be very old -- it goes back to the initial c=
-ommit
-> > > > > 963b61eb041e ("ceph: snapshot management") in 2009.  Do you have =
-an
-> > > > > explanation for why this popped up only now?
-> > > >
-> > > > As I remembered we hit this before in one cu BZ last year, but I
-> > > > couldn't remember exactly which one.  But I am not sure whether @Je=
-ff
-> > > > saw this before I joint ceph team.
-> > > >
-> > > >
-> > > > > Has MDS always been including split_inos and split_realms arrays =
-in
-> > > > > !CEPH_SNAP_OP_SPLIT case or is this a recent change?  If it's a r=
-ecent
-> > > > > change, I'd argue that this needs to be addressed on the MDS side=
-.
-> > > >
-> > > > While in MDS side for the _UPDATE op it won't send the 'split_realm=
-'
-> > > > list just before the commit in 2017:
-> > > >
-> > > > commit 93e7267757508520dfc22cff1ab20558bd4a44d4
-> > > > Author: Yan, Zheng <zyan@redhat.com>
-> > > > Date:   Fri Jul 21 21:40:46 2017 +0800
-> > > >
-> > > >      mds: send snap related messages centrally during mds recovery
-> > > >
-> > > >      sending CEPH_SNAP_OP_SPLIT and CEPH_SNAP_OP_UPDATE messages to
-> > > >      clients centrally in MDCache::open_snaprealms()
-> > > >
-> > > >      Signed-off-by: "Yan, Zheng" <zyan@redhat.com>
-> > > >
-> > > > Before this commit it will only send the 'split_realm' list for the
-> > > > _SPLIT op.
-> > >
-> > > It sounds like we have the culprit.  This should be treated as
-> > > a regression and fixed on the MDS side.  I don't see a justification
-> > > for putting useless data on the wire.
-> >
-> > I don't really understand this viewpoint. We can treat it as an MDS
-> > regression if we want, but it's a six-year-old patch so this is in
-> > nearly every version of server code anybody's running. Why wouldn't we
-> > fix it on both sides?
->
-> Well, if I didn't speak up chances are we wouldn't have identified the
-> regression in the MDS at all.  People seem to have this perception that
-> the client is somehow "easier" to fix, assume that the server is always
-> doing the right thing and default to patching the client.  I'm just
-> trying to push back on that.
->
-> In this particular case, after understanding the scope of the issue
-> _and_ getting a committal for the MDS side fix, I approved taking the
-> kernel client patch in an earlier reply.
->
-> >
-> > On Wed, May 17, 2023 at 4:07=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wr=
-ote:
-> > > And if the split_realm number equals to sizeof(ceph_mds_snap_realm) +
-> > > extra snap buffer size by coincidence, the above 'corrupted' snaptrac=
-e
-> > > will be parsed by kclient too and kclient won't give any warning, but=
- it
-> > > will corrupted the snaprealm and capsnap info in kclient.
-> >
-> > I'm a bit confused about this patch, but I also don't follow the
-> > kernel client code much so please forgive my ignorance. The change
-> > you've made is still only invoked inside of the CEPH_SNAP_OP_SPLIT
-> > case, so clearly the kclient *mostly* does the right thing when these
->
-> No, it's invoked outside: it introduces a "op !=3D CEPH_SNAP_OP_SPLIT"
-> branch.
+It seems vma merging with uffd paths is broken with either
+register/unregister, where right now we can feed wrong parameters to
+vma_merge() and it's found by recent patch which moved asserts upwards in
+vma_merge() by Lorenzo Stoakes:
 
-Oh I mis-parsed the braces/spacing there.
+https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
 
-I'm still not getting how the precise size is causing the problem =E2=80=94
-obviously this isn't an unheard-of category of issue, but the fact
-that it works until the count matches a magic number is odd. Is that
-ceph_decode_need macro being called from ceph_update_snap_trace just
-skipping over the split data somehow? *puzzled*
--Greg
+The problem is in the current code base we didn't fixup "prev" for the case
+where "start" address can be within the "prev" vma section.  In that case
+we should have "prev" points to the current vma rather than the previous
+one when feeding to vma_merge().
 
->
-> Thanks,
->
->                 Ilya
->
+This patch will eliminate the report and make sure vma_merge() calls will
+become legal again.
+
+One thing to mention is that the "Fixes: 29417d292bd0" below is there only
+to help explain where the warning can start to trigger, the real commit to
+fix should be 69dbe6daf104.  Commit 29417d292bd0 helps us to identify the
+issue, but unfortunately we may want to keep it in Fixes too just to ease
+kernel backporters for easier tracking.
+
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 29417d292bd0 ("mm/mmap/vma_merge: always check invariants")
+Fixes: 69dbe6daf104 ("userfaultfd: use maple tree iterator to iterate VMAs")
+Closes: https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
+Cc: linux-stable <stable@vger.kernel.org>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ fs/userfaultfd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 0fd96d6e39ce..17c8c345dac4 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1459,6 +1459,8 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 
+ 	vma_iter_set(&vmi, start);
+ 	prev = vma_prev(&vmi);
++	if (vma->vm_start < start)
++		prev = vma;
+ 
+ 	ret = 0;
+ 	for_each_vma_range(vmi, vma, end) {
+@@ -1625,6 +1627,9 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 
+ 	vma_iter_set(&vmi, start);
+ 	prev = vma_prev(&vmi);
++	if (vma->vm_start < start)
++		prev = vma;
++
+ 	ret = 0;
+ 	for_each_vma_range(vmi, vma, end) {
+ 		cond_resched();
+-- 
+2.39.1
 
