@@ -2,131 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F3C27064FE
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 12:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C4D706508
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 12:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjEQKS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 06:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44074 "EHLO
+        id S229542AbjEQKXx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 06:23:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjEQKS6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 06:18:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB15340CF
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 03:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684318695;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VO8kS0tlMDmjStKGPZ02CpcX5eueZJZ6rX71I8VGfNg=;
-        b=ThL9vhalYBBO8id+jor9ijxVM9+9kZbJ7pyZR/o3FuOkSZt1ZnjLvFP3PnFlFzwgEDpv7+
-        eSLhI5ZndePkUJ5/Vyr4SB0T77G2Ujf0GgpjuswcDVvugZ4l8ERpZnZKBMdwS5yWW4S+gv
-        S93HbnkdnV1GcBjid1hKYdWRt7VqX7A=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-et8Wvw2WO72afHszZe8HHA-1; Wed, 17 May 2023 06:18:14 -0400
-X-MC-Unique: et8Wvw2WO72afHszZe8HHA-1
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-50bc456a94dso618506a12.1
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 03:18:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684318693; x=1686910693;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VO8kS0tlMDmjStKGPZ02CpcX5eueZJZ6rX71I8VGfNg=;
-        b=Id1c8QXORmVUUFh7Xz9BReKOWbXfPFO1u0FATJPF9x7JFyypwV8xnsxSmrFeiOwaOG
-         o63lI9mSB05XA0XrJANkoyoAFTE2dsU8usRMmnpr9eJ7q2AXMDjcORH9f7S8Iwi56wHp
-         vydcl0F8giF83a11ca3D/6mE8Uj1foDF8MK8lFiUgBjzq7eXNMfGs2v1swb77+eBu5QY
-         IROQFOjRafGGjBSRC8ei6P+XrEKs4AU88c+cemNThUR7j9X980noE/RY2ZM5tSxIl+su
-         4op2nH8yxzz/rRSvgurdCE5UntKG7ACzDnKbzx0IDgRRl8mVN8uUW1aUR1+F33fpK7V+
-         aTXQ==
-X-Gm-Message-State: AC+VfDzXS1pWv0+V+agYKWhdfalO1bSnKBjl4gLqRlVus9+qhZ6ZBJ23
-        v2cwJgu/KE9VEYdNNGFkdPgt4xdnH59kIdKpHXcgbiNXCIi8QhF+K/gPeAQL5i80pdS067LgYta
-        ZyhA442u3Aa5EQNoX
-X-Received: by 2002:aa7:d8c7:0:b0:50b:c4fb:770f with SMTP id k7-20020aa7d8c7000000b0050bc4fb770fmr1555042eds.34.1684318693049;
-        Wed, 17 May 2023 03:18:13 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4N949aPI7PbDK1bzrwrLZKfDGBjlleUFDD3GoCm+EHJRnE4sQd5PiK68L7e9P5jJuHW2iMPQ==
-X-Received: by 2002:aa7:d8c7:0:b0:50b:c4fb:770f with SMTP id k7-20020aa7d8c7000000b0050bc4fb770fmr1555016eds.34.1684318692692;
-        Wed, 17 May 2023 03:18:12 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id t21-20020aa7d715000000b0050bc041d2a8sm8956601edq.15.2023.05.17.03.18.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 03:18:12 -0700 (PDT)
-Message-ID: <b3175daa-956b-9311-d209-e5837dd3de2e@redhat.com>
-Date:   Wed, 17 May 2023 12:18:11 +0200
+        with ESMTP id S229501AbjEQKXw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 06:23:52 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CC823C33;
+        Wed, 17 May 2023 03:23:50 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pzEJp-00072y-2T; Wed, 17 May 2023 12:23:41 +0200
+Message-ID: <1ac16f0a-3cca-40ca-c444-82719f85a24c@leemhuis.info>
+Date:   Wed, 17 May 2023 12:23:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH] drm: panel-orientation-quirks: Change Air's quirk to
- support Air Plus
-Content-Language: en-US, nl
-To:     Maya Matuszczyk <maccraft123mc@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>
-Cc:     stable@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-References: <20230515184843.1552612-1-maccraft123mc@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230515184843.1552612-1-maccraft123mc@gmail.com>
+Subject: Re: [PATCH v4 1/2] usb: gadget: udc: core: Invoke usb_gadget_connect
+ only when started
+To:     Alistair <alistair@alistair23.me>,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
+        colin.i.king@gmail.com, xuetao09@huawei.com,
+        quic_eserrao@quicinc.com, water.zhangjiantao@huawei.com,
+        peter.chen@freescale.com, balbi@ti.com
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Francesco Dolcini <francesco@dolcini.it>
+References: <20230407030741.3163220-1-badhri@google.com>
+ <0cf8c588b701d7cf25ffe1a9217b81716e6a5c51.camel@alistair23.me>
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <0cf8c588b701d7cf25ffe1a9217b81716e6a5c51.camel@alistair23.me>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1684319030;5427161a;
+X-HE-SMSGID: 1pzEJp-00072y-2T
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+[CCing Francesco Dolcini; and the regression list too, as it should be
+in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-On 5/15/23 20:48, Maya Matuszczyk wrote:
-> It turned out that Aya Neo Air Plus had a different board name than
-> expected.
-> This patch changes Aya Neo Air's quirk to account for that, as both
-> devices share "Air" in DMI product name.
+On 16.05.23 14:53, Alistair wrote:
+> On Fri, 2023-04-07 at 03:07 +0000, Badhri Jagan Sridharan wrote:
+>> usb_udc_connect_control does not check to see if the udc has already
+>> been started. This causes gadget->ops->pullup to be called through
+>> usb_gadget_connect when invoked from usb_udc_vbus_handler even before
+>> usb_gadget_udc_start is called. Guard this by checking for udc-
+>>> started
+>> in usb_udc_connect_control before invoking usb_gadget_connect.
+> [...]
+>> Cc: stable@vger.kernel.org
+>> Fixes: 628ef0d273a6 ("usb: udc: add usb_udc_vbus_handler")
+>> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
 > 
-> Tested on Air claiming to be an Air Pro, and on Air Plus.
+> This patch causes a kernel hang when trying to boot with the
+> usb/chipidea/udc.c driver.
 > 
-> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-
-Thanks, patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-I have just pushed this to drm-misc-fixes, so it should get
-send to Linus with the next drm-fixes pull-req.
-
-Regards,
-
-Hans
-
-
-
-
-> ---
->  drivers/gpu/drm/drm_panel_orientation_quirks.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The call stack below causes the hang:
 > 
-> diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-> index b1a38e6ce2f8..0cb646cb04ee 100644
-> --- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-> +++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-> @@ -179,7 +179,7 @@ static const struct dmi_system_id orientation_data[] = {
->  	}, {	/* AYA NEO AIR */
->  		.matches = {
->  		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-> -		  DMI_MATCH(DMI_BOARD_NAME, "AIR"),
-> +		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
->  		},
->  		.driver_data = (void *)&lcd1080x1920_leftside_up,
->  	}, {	/* AYA NEO NEXT */
+>  - gadget_bind_driver(struct device *dev)
+>     - mutex_lock(&udc->connect_lock);
+>     - usb_gadget_udc_start_locked(struct usb_udc *udc)
+>         - udc->gadget->ops->udc_start(udc->gadget, udc->driver)
+> 
+> At which point we are calling ci_udc_start(..), but with the
+> connect_lock mutex locked.
+> 
+> ci_udc_start() then calls usb_udc_vbus_handler() which tries to lock
+> the connect_lock while it's already locked. Resulting in a kernel hang.
+> 
+> Reverting this patch fixes the hang.
 
+Not my area of expertise, but I guess it might be the same error as this
+one:
+
+https://lore.kernel.org/all/ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com/
+
+Francesco sent a revert on Friday, but no reaction from Badhri Jagan
+Sridharan or Greg yet afaics.
+
+https://lore.kernel.org/all/20230512131435.205464-1-francesco@dolcini.it/
+
+Ciao, Thorsten
