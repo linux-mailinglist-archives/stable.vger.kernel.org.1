@@ -2,62 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C2D7062F4
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7C1706305
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 10:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230350AbjEQId3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 04:33:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47360 "EHLO
+        id S230387AbjEQIhI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 04:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbjEQIc6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:32:58 -0400
+        with ESMTP id S229755AbjEQIgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 04:36:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B37055AE
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:31:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0027C61AB
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684312278;
+        s=mimecast20190719; t=1684312486;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+87hwHfuK6j4i/fuLrmFREP9Nl0u0nKS6+0RzbNzN84=;
-        b=O6PMMZZ9/gwFw0XRtwBY0K5AXmr1h3tMjG6AhBCDjQ1ps6ot/s6qEwJ7RcI/w0948OXmAq
-        JFWi6wHVQKz44cfm4+FubutqbNBbv/nUixuNYSjU8DQSMZZvy/FhmTG2gWLaIsyPEVlix8
-        h91sSe0U7XrwfP5m2Jax4/QyTwWL/iA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=WoyE4KJMZkzKP/aXFBkcgtSqzW5vCFF351V1GgKfqTs=;
+        b=K1pZIcFPbED6EDpwG2Wx+TZzAosf3CUEOD0cI7FdjjDNSwjy3ZgXwWvZFw72zpROwEqiSx
+        j1Iml5RxmYlbAjzdroUSxiXjPkm01E38cgI5pWySx3PgKMxMcL/LF73RsU5wBMaN9lwk7b
+        Gd899R4pkM1ca9MugHFnag4lCMPTYDA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-gK92faqeOz22_2DjsP7L0A-1; Wed, 17 May 2023 04:31:17 -0400
-X-MC-Unique: gK92faqeOz22_2DjsP7L0A-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3093b0cf714so178384f8f.2
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:31:17 -0700 (PDT)
+ us-mta-184-Qyhb1xqSPzaaofN-ba6Vtw-1; Wed, 17 May 2023 04:34:45 -0400
+X-MC-Unique: Qyhb1xqSPzaaofN-ba6Vtw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f348182ffcso3464655e9.3
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 01:34:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684312276; x=1686904276;
+        d=1e100.net; s=20221208; t=1684312484; x=1686904484;
         h=content-transfer-encoding:in-reply-to:organization:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+87hwHfuK6j4i/fuLrmFREP9Nl0u0nKS6+0RzbNzN84=;
-        b=VEYgBW7VfZtRah9OmclaqROjjv1KP+098Q1VwaglnTI6SwnZVvxNLd7YSdDzCCK0fv
-         9ewgVSPPtuDapDrvzOcN6LwsjM6b7BIK3H8oODNlbiBdcpsau+45QCluhMUHhqUgt3oY
-         hE8o3VPaKLs+Pcd15zLxJqcEnfWggDnaoOSjJ1vVv+/mOzHUNB4yJa7jzPMV51OqKa62
-         JxSkwhDI+B9EguWhBDp0uporS6ndXhIKrXgw1hUSHcZdbm6sDcjf0uNGEytGF4nXt9/8
-         OOjPP5e15doFRCo+d0+15s2qJhlR7N/uFvXGLS6rfDycjZHoIa3skoGuY8qYm4481jU9
-         5uqQ==
-X-Gm-Message-State: AC+VfDzMvA/GMqSJW62W/wICh2SRC+p6SiU+eQGMcGRMnOAKlDYS0Cum
-        xo6YDEN0aNKpo1icPZfyZyqQ6Tlue4CJqWzaVfwc8jp2C+jw7NutlNXMG9AJS1/7QyCN31AcqyU
-        PgAyWxGkZ/skBMg2F
-X-Received: by 2002:a5d:5221:0:b0:2fb:703d:1915 with SMTP id i1-20020a5d5221000000b002fb703d1915mr26788405wra.43.1684312276040;
-        Wed, 17 May 2023 01:31:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5QaVKwS34M34vksP3fcVTyCM0DHux/DI1V9/o+0472vKaGysoi00ZT1X872bnMVy2FbYiUrw==
-X-Received: by 2002:a5d:5221:0:b0:2fb:703d:1915 with SMTP id i1-20020a5d5221000000b002fb703d1915mr26788385wra.43.1684312275770;
-        Wed, 17 May 2023 01:31:15 -0700 (PDT)
+        bh=WoyE4KJMZkzKP/aXFBkcgtSqzW5vCFF351V1GgKfqTs=;
+        b=Z+KrHCGkc4gYcY8TALgNcjaT3/w0yI58YN8fXVgOvFpiXhuRDvlLFzDhg2Xl7XLOce
+         v5tzl6JDcQoocc+kwTRMVc7rNGamBZd1DCAVOWmgiXZQacUWwVK9xT/25XTRt3wa0xD8
+         /GZUrhqkyipPCcdexmUtVfXjqXQSrs0qzXdSm1e6ynyf6sCOCoG9lduUjwACMKrpl2xm
+         GUkzdl+ANBeFBq5P6e06SXGsmSSKsnNgqyfJRiHXg0uumE6WQCevLy6sN5dtyMM90Q8Y
+         pQgvBENyaJSeipVDBFHP0hkoL066qoPW45J3PuuAy139z/RNLBGy+WJyd9J10izViRT1
+         WbAw==
+X-Gm-Message-State: AC+VfDzJaIPMbveCD+dDFtp9/tCDMFz1relxBMD0ThsVuCoKup04ot/W
+        snL5ASGSo/hd44wfQkhn7mp46Iy5/21YaghBmZIlLS7ecq1rpyxaHxKTXotp1GlUFvGreTga3ak
+        L4mCNlIZZYKGRFExB
+X-Received: by 2002:a05:600c:2307:b0:3f4:2cf3:a542 with SMTP id 7-20020a05600c230700b003f42cf3a542mr18563288wmo.6.1684312483860;
+        Wed, 17 May 2023 01:34:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ69xCz2yc3tWerUY2z+evrEEbLpsBdhPCID8fyE+1EMtIzuO7zBap/5z+L7vWNzh3MQYaHFXA==
+X-Received: by 2002:a05:600c:2307:b0:3f4:2cf3:a542 with SMTP id 7-20020a05600c230700b003f42cf3a542mr18563263wmo.6.1684312483462;
+        Wed, 17 May 2023 01:34:43 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c707:3900:757e:83f8:a99d:41ae? (p200300cbc7073900757e83f8a99d41ae.dip0.t-ipconnect.de. [2003:cb:c707:3900:757e:83f8:a99d:41ae])
-        by smtp.gmail.com with ESMTPSA id q28-20020a056000137c00b003078bb639bdsm1934194wrz.68.2023.05.17.01.31.14
+        by smtp.gmail.com with ESMTPSA id 7-20020a05600c028700b003f182cc55c4sm1505469wmk.12.2023.05.17.01.34.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 01:31:15 -0700 (PDT)
-Message-ID: <86142559-f15c-938a-a0eb-1ea590cb5e91@redhat.com>
-Date:   Wed, 17 May 2023 10:31:14 +0200
+        Wed, 17 May 2023 01:34:43 -0700 (PDT)
+Message-ID: <a9312c59-215a-1213-459e-bf42af555f0c@redhat.com>
+Date:   Wed, 17 May 2023 10:34:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
@@ -83,58 +83,108 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         stable@vger.kernel.org
 References: <20230512235755.1589034-1-pcc@google.com>
  <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
- <91246137-a3d2-689f-8ff6-eccc0e61c8fe@redhat.com>
- <CAMn1gO4cbEmpDzkdN10DyaGe=2Wg4Y19-v8gHRqgQoD4Bxd+cw@mail.gmail.com>
+ <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
+ <ZGLLSYuedMsViDQG@google.com> <ZGLr7CzUL0A+mCRp@google.com>
 From:   David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <CAMn1gO4cbEmpDzkdN10DyaGe=2Wg4Y19-v8gHRqgQoD4Bxd+cw@mail.gmail.com>
+In-Reply-To: <ZGLr7CzUL0A+mCRp@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
->>> Is there any other way of handling this? E.g. not release the metadata
->>> in arch_swap_invalidate_page() but later in set_pte_at() once it was
->>> restored. But then we may leak this metadata if there's no set_pte_at()
->>> (the process mapping the swap entry died).
+On 16.05.23 04:35, Peter Collingbourne wrote:
+> On Mon, May 15, 2023 at 05:16:09PM -0700, Peter Collingbourne wrote:
+>> On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
+>>> On 13.05.23 01:57, Peter Collingbourne wrote:
+>>>> Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+>>>> the call to swap_free() before the call to set_pte_at(), which meant that
+>>>> the MTE tags could end up being freed before set_pte_at() had a chance
+>>>> to restore them. One other possibility was to hook arch_do_swap_page(),
+>>>> but this had a number of problems:
+>>>>
+>>>> - The call to the hook was also after swap_free().
+>>>>
+>>>> - The call to the hook was after the call to set_pte_at(), so there was a
+>>>>     racy window where uninitialized metadata may be exposed to userspace.
+>>>>     This likely also affects SPARC ADI, which implements this hook to
+>>>>     restore tags.
+>>>>
+>>>> - As a result of commit 1eba86c096e3 ("mm: change page type prior to
+>>>>     adding page table entry"), we were also passing the new PTE as the
+>>>>     oldpte argument, preventing the hook from knowing the swap index.
+>>>>
+>>>> Fix all of these problems by moving the arch_do_swap_page() call before
+>>>> the call to free_page(), and ensuring that we do not set orig_pte until
+>>>> after the call.
+>>>>
+>>>> Signed-off-by: Peter Collingbourne <pcc@google.com>
+>>>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
+>>>> Cc: <stable@vger.kernel.org> # 6.1
+>>>> Fixes: ca827d55ebaa ("mm, swap: Add infrastructure for saving page metadata on swap")
+>>>> Fixes: 1eba86c096e3 ("mm: change page type prior to adding page table entry")
+>>>
+>>> I'm confused. You say c145e0b47c77 changed something (which was after above
+>>> commits), indicate that it fixes two other commits, and indicate "6.1" as
+>>> stable which does not apply to any of these commits.
 >>
->> That was my immediate thought: do we really have to hook into
->> swap_range_free() at all?
+>> Sorry, the situation is indeed a bit confusing.
+>>
+>> - In order to make the arch_do_swap_page() hook suitable for fixing the
+>>    bug introduced by c145e0b47c77, patch 1 addresses a number of issues,
+>>    including fixing bugs introduced by ca827d55ebaa and 1eba86c096e3,
+>>    but we haven't fixed the c145e0b47c77 bug yet, so there's no Fixes:
+>>    tag for it yet.
+>>
+>> - Patch 2, relying on the fixes in patch 1, makes MTE install an
+>>    arch_do_swap_page() hook (indirectly, by making arch_swap_restore()
+>>    also hook arch_do_swap_page()), thereby fixing the c145e0b47c77 bug.
+>>
+>> - 6.1 is the first stable version in which all 3 commits in my Fixes: tags
+>>    are present, so that is the version that I've indicated in my stable
+>>    tag for this series. In theory patch 1 could be applied to older kernel
+>>    versions, but it wouldn't fix any problems that we are facing with MTE
+>>    (because it only fixes problems relating to the arch_do_swap_page()
+>>    hook, which older kernel versions don't hook with MTE), and there are
+>>    some merge conflicts if we go back further anyway. If the SPARC folks
+>>    (the previous only user of this hook) want to fix these issues with ADI,
+>>    they can propose their own backport.
+>>
+>>>> @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>>>    	VM_BUG_ON(!folio_test_anon(folio) ||
+>>>>    			(pte_write(pte) && !PageAnonExclusive(page)));
+>>>>    	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
+>>>> -	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
+>>>>    	folio_unlock(folio);
+>>>>    	if (folio != swapcache && swapcache) {
+>>>
+>>>
+>>> You are moving the folio_free_swap() call after the folio_ref_count(folio)
+>>> == 1 check, which means that such (previously) swapped pages that are
+>>> exclusive cannot be detected as exclusive.
+>>
+>> Ack. I will fix this in v2.
 > 
-> As I alluded to in another reply, without the hook in
-> swap_range_free() I think we would either end up with a race or an
-> effective memory leak in the arch code that maintains the metadata for
-> swapped out pages, as there would be no way for the arch-specific code
-> to know when it is safe to free it after swapin.
+> I gave this some thought and concluded that the added complexity needed
+> to make this hook suitable for arm64 without breaking sparc probably
+> isn't worth it in the end, and as I explained in patch 2, sparc ought
+> to be moving away from this hook anyway. So in v2 I replaced patches 1
+> and 2 with a patch that adds a direct call to the arch_swap_restore()
+> hook before the call to swap_free().
 
-Agreed, hooking swap_range_free() is actually cleaner (also considering 
-COW-shared pages).
+As a side note, I recall that sparc code might be a bit fragile and 
+eventually broken already (arch_unmap_one()):
 
-> 
->> And I also wondered why we have to do this
->> from set_pte_at() and not do this explicitly (maybe that's the other
->> arch_* callback on the swapin path).
-> 
-> I don't think it's necessary, as the set_pte_at() call sites for
-> swapped in pages are known. I'd much rather do this via an explicit
-> hook at those call sites, as the existing approach of implicit
-> restoring seems too subtle and easy to be overlooked when refactoring,
-> as we have seen with this bug. In the end we only have 3 call sites
-> for the hook and hopefully the comments that I'm adding are sufficient
-> to ensure that any new swapin code should end up with a call to the
-> hook in the right place.
-
-
-Agreed, much cleaner, thanks!
+https://lkml.kernel.org/r/d98bd1f9-e9b7-049c-7bde-3348b074eb18@redhat.com
 
 -- 
 Thanks,
