@@ -2,119 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E991705E60
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 05:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E361705E7F
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 06:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjEQDwT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 23:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38206 "EHLO
+        id S229623AbjEQEAa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 00:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231881AbjEQDwR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 23:52:17 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C6A271B;
-        Tue, 16 May 2023 20:52:16 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-25343f0c693so165524a91.3;
-        Tue, 16 May 2023 20:52:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684295536; x=1686887536;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AUXFRmo2MSjUiP3pz0lzOFDLD9CCDZHx5JZ6kXK49MA=;
-        b=YTS0qcj/hG4UhEBJb3/I8+r3muMeN3UAkFTzlWc4pOy86nF2hlfHA7HHcNw0QA7WdU
-         ysiWX5b8G7mWmzoet7jUv0bFKWPXaFJCHGreU3hWRcOHCJ91BupPc//853th0Mt1i532
-         qPVklvWPJCLhju91sHhOKM0X9nff7OeDHtkF66UZ29B5Evjc+jmIXfyoqPHMdDShJ3BQ
-         ZHYT50y+Y8kahR3mv8MVczj1df2eQup+P8Y/Dbss7EWF7wkJWVFSve4Qw47huUc9Zif2
-         We61ylGUJVMi4FZGqwYlGVTiwjh33TAlQiujlpl/9sUV7YLcaMxo4EeSI5ailX3IuKHP
-         Wdsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684295536; x=1686887536;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AUXFRmo2MSjUiP3pz0lzOFDLD9CCDZHx5JZ6kXK49MA=;
-        b=b4OabB9Ija9US2/g4w2cqTTV7Xr4FUK4c3+i9SZzF37U8UTiMUHR8WgE5NIxFTlCh6
-         TD2D/iS5HyOI396Juvd37jBYk7kCr7bf+lps2IB4h0i+i0Tr8NTIuExaNeoNbnpkPclW
-         g4KUQ/Yonb07SYu7jqp58Ph37cWNgohbqoucRiFvTkxpYyQQKqw0Eg8YcgbswB3MMykz
-         ETmroYOQBxeK4+4RqJEX815tAqYPmS+LVeBL+kXWgD8rTl9UvqtrVqgUAarPXgFVYUSC
-         XeCS8xEZQbUb0TjM49eKfqoRSASt/bAkD1/ubmLvQHRdTaSYWEUqMVyr+8wy5Iq7ZCsv
-         jgOA==
-X-Gm-Message-State: AC+VfDzF/FWHfynifFB7EQWssD9NJ9gqnQ36DSQQpfwCZ7p48491SIeJ
-        AUnuv1h2oLa+Mm5SgsY7cLkL0UUluFg=
-X-Google-Smtp-Source: ACHHUZ5FxCBS+0YcXJo3FhDTsN4EFNwO8RkcXyTXtu4z6LvH4lM5z60eFxhe/fPZQebwejl0so7hAg==
-X-Received: by 2002:a17:90b:350:b0:250:1905:ae78 with SMTP id fh16-20020a17090b035000b002501905ae78mr39147491pjb.15.1684295535825;
-        Tue, 16 May 2023 20:52:15 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t17-20020a639551000000b00519c3475f21sm14303276pgn.46.2023.05.16.20.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 20:52:15 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 16 May 2023 20:52:13 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.4 000/282] 5.4.243-rc1 review
-Message-ID: <739bd109-b32d-46f1-b382-e55f34efc11a@roeck-us.net>
-References: <20230515161722.146344674@linuxfoundation.org>
+        with ESMTP id S229437AbjEQEA3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 00:00:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 741D03A8D;
+        Tue, 16 May 2023 21:00:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE38064182;
+        Wed, 17 May 2023 04:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 554D0C433A1;
+        Wed, 17 May 2023 04:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684296024;
+        bh=VcGyi2cEUycSSurqDF8cL5uSfKMIcWqmuHxfeGZBgC0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=CGBD3luDeY/n8Zq/uEbNLWm7TlmvbUPovje+ovN/geBzLfpxHH9wcdW9xzpdb2nHQ
+         sDj5CtCj18/CTkBD/nS8f3zMX3omETsddAvr58IY5wDsAgOvzoW4l9TMnR/dEKtsbK
+         TSZav9csSzAWWYIMuHrMm1Ugp8yCmr+LkhwxZPAttDK19UWIx2g+zVtEtuw/oD6kR+
+         DQsMqsOmmLKZiRxR/G2u3NhAPQLPSw/NgqjrFZS9BeLQ0TpVGcIhVdiN3a6GrUPdrS
+         /YtMR6K0WIQbOw+b7wytcYZSKOE6i1yPpp3Hmweszqk6rH3eGqrMTvLTGmYGaLwfVp
+         wzQOlSlEJP9rw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 41451C73FE2;
+        Wed, 17 May 2023 04:00:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/9] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168429602426.23839.18000337535981617540.git-patchwork-notify@kernel.org>
+Date:   Wed, 17 May 2023 04:00:24 +0000
+References: <20230515204722.1000957-2-mkl@pengutronix.de>
+In-Reply-To: <20230515204722.1000957-2-mkl@pengutronix.de>
+To:     Marc Kleine-Budde <mkl@pengutronix.de>
+Cc:     netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        linux-can@vger.kernel.org, kernel@pengutronix.de,
+        socketcan@hartkopp.net, o.rempel@pengutronix.de,
+        stable@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 06:26:18PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.243 release.
-> There are 282 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Marc Kleine-Budde <mkl@pengutronix.de>:
+
+On Mon, 15 May 2023 22:47:14 +0200 you wrote:
+> From: Oliver Hartkopp <socketcan@hartkopp.net>
 > 
-> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
-> Anything received after that time might be too late.
+> The control message provided by isotp support MSG_CMSG_COMPAT but
+> blocked recvmsg() syscalls that have set this flag, i.e. on 32bit user
+> space on 64 bit kernels.
 > 
+> Link: https://github.com/hartkopp/can-isotp/issues/59
+> Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+> Suggested-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+> Fixes: 42bf50a1795a ("can: isotp: support MSG_TRUNC flag when reading from socket")
+> Link: https://lore.kernel.org/20230505110308.81087-2-mkl@pengutronix.de
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> 
+> [...]
 
-Build results:
-	total: 159 pass: 159 fail: 0
-Qemu test results:
-	total: 455 pass: 454 fail: 1
-Failed tests:
-	arm:sabrelite:multi_v7_defconfig:mtd2:mem256:net,default:imx6dl-sabrelite:rootfs
+Here is the summary with links:
+  - [net,1/9] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
+    https://git.kernel.org/netdev/net/c/db2773d65b02
+  - [net,2/9] can: j1939: recvmsg(): allow MSG_CMSG_COMPAT flag
+    https://git.kernel.org/netdev/net/c/1db080cbdbab
+  - [net,3/9] can: dev: fix missing CAN XL support in can_put_echo_skb()
+    https://git.kernel.org/netdev/net/c/6bffdc38f993
+  - [net,4/9] can: CAN_BXCAN should depend on ARCH_STM32
+    https://git.kernel.org/netdev/net/c/4920bded3ee0
+  - [net,5/9] dt-bindings: net: can: add "st,can-secondary" property
+    https://git.kernel.org/netdev/net/c/caf78f0f4919
+  - [net,6/9] ARM: dts: stm32f429: put can2 in secondary mode
+    https://git.kernel.org/netdev/net/c/6b443faa313c
+  - [net,7/9] ARM: dts: stm32: add pin map for CAN controller on stm32f7
+    https://git.kernel.org/netdev/net/c/011644249686
+  - [net,8/9] can: bxcan: add support for single peripheral configuration
+    https://git.kernel.org/netdev/net/c/85a79b971164
+  - [net,9/9] ARM: dts: stm32: add CAN support on stm32f746
+    https://git.kernel.org/netdev/net/c/0920ccdf41e3
 
-As far as I can see, the second SPI interface fails to instantiate.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-[   21.491528] spi_imx 2008000.spi: bitbang start failed with -22
 
-There are also various new warnings in clock code.
-
-[   21.492631] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:986 clk_core_disable+0x124/0x2e4
-[   21.497524] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:845 clk_core_unprepare+0x268/0x388
-
-The warnings in clock code are gone after reverting all changes introducing
-PM support for imx spi code. The boot failure is gone after reverting the
-gpio conversion. In total, I reverted the following patches to fix the
-boot and warning problems.
-
-d6fcaa127cc6 Revert "spi: imx/fsl-lpspi: Convert to GPIO descriptors"
-9783b21b591d Revert "spi: imx: enable runtime pm support"
-4a8bdbf7462b Revert "spi: spi-imx: using pm_runtime_resume_and_get instead of pm_runtime_get_sync"
-e6c5f497ff35 Revert "spi: imx: Don't skip cleanup in remove's error path"
-d6ea758df74f Revert "spi: imx: fix runtime pm support for !CONFIG_PM"
-b9dbd028c970 Revert "spi: imx: fix reference leak in two imx operations"
-
-Is this really 5.4 material ?
-
-Guenter
