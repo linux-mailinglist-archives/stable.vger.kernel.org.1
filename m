@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0493670754C
+	by mail.lfdr.de (Postfix) with ESMTP id 6305570754D
 	for <lists+stable@lfdr.de>; Thu, 18 May 2023 00:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229543AbjEQWZb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 18:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60640 "EHLO
+        id S229547AbjEQWZc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 18:25:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjEQWZW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 18:25:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8146F1B5;
-        Wed, 17 May 2023 15:25:21 -0700 (PDT)
+        with ESMTP id S229523AbjEQWZX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 18:25:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5E7469B;
+        Wed, 17 May 2023 15:25:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0628963CF2;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1270064030;
+        Wed, 17 May 2023 22:25:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EDAC433D2;
         Wed, 17 May 2023 22:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DF0C433EF;
-        Wed, 17 May 2023 22:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1684362320;
-        bh=TJDCyBo3lztrbPhdzkpsnF14C96RYsxIWrAKTKBBnI8=;
+        s=korg; t=1684362321;
+        bh=53wndtcDJtgEtN7NJ0mhOjhpOoV2t6mxGqpp4bKU5Tw=;
         h=Date:To:From:Subject:From;
-        b=xC94swDOf7z9Aax6tum2n1PgKfpzu1oBkJZJScQdsHA3CPE5E5PayZoEBGbJIVnwA
-         MURa7UVIOfL59ZhwR7gXwHALDCbfripnREp+Lk6ANOEIwr0Px0UvjIovfAESN0ldO9
-         2z7FipNVHgiXZsXy6qG85q2nZ2oWyvTGQyzaidwg=
-Date:   Wed, 17 May 2023 15:25:19 -0700
-To:     mm-commits@vger.kernel.org, vitaly.wool@konsulko.com,
-        stable@vger.kernel.org, sjenning@redhat.com, ngupta@vflare.org,
-        minchan@kernel.org, hannes@cmpxchg.org, ddstreet@ieee.org,
-        chrisl@kernel.org, cerasuolodomenico@gmail.com,
-        akpm@linux-foundation.org
+        b=iSJhJEZmsy//irmRMz675wzSfhKqjUUooUHVcJEUU4cHW+uNEWDf20ebuEQcgudi3
+         vJ4nftlghgfNeY2s0ZBkn4xXud2XxYbj2w9QSKDb3EVv296jkW3tYiDNXuRJs12ug8
+         vfL7C5poVA97krS1Y+VBF85z0fVgJw3N77/tSM5g=
+Date:   Wed, 17 May 2023 15:25:20 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-fix-zswap-writeback-race-condition.patch removed from -mm tree
-Message-Id: <20230517222520.57DF0C433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-use-after-free-bug-of-nilfs_root-in-nilfs_evict_inode.patch removed from -mm tree
+Message-Id: <20230517222521.67EDAC433D2@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,103 +46,77 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm: fix zswap writeback race condition
+     Subject: nilfs2: fix use-after-free bug of nilfs_root in nilfs_evict_inode()
 has been removed from the -mm tree.  Its filename was
-     mm-fix-zswap-writeback-race-condition.patch
+     nilfs2-fix-use-after-free-bug-of-nilfs_root-in-nilfs_evict_inode.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Subject: mm: fix zswap writeback race condition
-Date: Wed, 3 May 2023 17:12:00 +0200
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix use-after-free bug of nilfs_root in nilfs_evict_inode()
+Date: Wed, 10 May 2023 00:29:56 +0900
 
-The zswap writeback mechanism can cause a race condition resulting in
-memory corruption, where a swapped out page gets swapped in with data that
-was written to a different page.
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  However, since
+nilfs_evict_inode() uses nilfs_root for some cleanup operations, it may
+cause use-after-free read if inodes are left in "garbage_list" and
+released by nilfs_dispose_list() at the end of nilfs_detach_log_writer().
 
-The race unfolds like this:
-1. a page with data A and swap offset X is stored in zswap
-2. page A is removed off the LRU by zpool driver for writeback in
-   zswap-shrink work, data for A is mapped by zpool driver
-3. user space program faults and invalidates page entry A, offset X is
-   considered free
-4. kswapd stores page B at offset X in zswap (zswap could also be
-   full, if so, page B would then be IOed to X, then skip step 5.)
-5. entry A is replaced by B in tree->rbroot, this doesn't affect the
-   local reference held by zswap-shrink work
-6. zswap-shrink work writes back A at X, and frees zswap entry A
-7. swapin of slot X brings A in memory instead of B
+Fix this issue by modifying nilfs_evict_inode() to only clear inode
+without additional metadata changes that use nilfs_root if the file system
+is degraded to read-only or the writer is detached.
 
-The fix:
-Once the swap page cache has been allocated (case ZSWAP_SWAPCACHE_NEW),
-zswap-shrink work just checks that the local zswap_entry reference is
-still the same as the one in the tree.  If it's not the same it means that
-it's either been invalidated or replaced, in both cases the writeback is
-aborted because the local entry contains stale data.
-
-Reproducer:
-I originally found this by running `stress` overnight to validate my work
-on the zswap writeback mechanism, it manifested after hours on my test
-machine.  The key to make it happen is having zswap writebacks, so
-whatever setup pumps /sys/kernel/debug/zswap/written_back_pages should do
-the trick.
-
-In order to reproduce this faster on a vm, I setup a system with ~100M of
-available memory and a 500M swap file, then running `stress --vm 1
---vm-bytes 300000000 --vm-stride 4000` makes it happen in matter of tens
-of minutes.  One can speed things up even more by swinging
-/sys/module/zswap/parameters/max_pool_percent up and down between, say, 20
-and 1; this makes it reproduce in tens of seconds.  It's crucial to set
-`--vm-stride` to something other than 4096 otherwise `stress` won't
-realize that memory has been corrupted because all pages would have the
-same data.
-
-Link: https://lkml.kernel.org/r/20230503151200.19707-1-cerasuolodomenico@gmail.com
-Signed-off-by: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Chris Li (Google) <chrisl@kernel.org>
-Cc: Dan Streetman <ddstreet@ieee.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Nitin Gupta <ngupta@vflare.org>
-Cc: Seth Jennings <sjenning@redhat.com>
-Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Link: https://lkml.kernel.org/r/20230509152956.8313-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+78d4495558999f55d1da@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000099e5ac05fb1c3b85@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/zswap.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/nilfs2/inode.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/mm/zswap.c~mm-fix-zswap-writeback-race-condition
-+++ a/mm/zswap.c
-@@ -1020,6 +1020,22 @@ static int zswap_writeback_entry(struct
- 		goto fail;
+--- a/fs/nilfs2/inode.c~nilfs2-fix-use-after-free-bug-of-nilfs_root-in-nilfs_evict_inode
++++ a/fs/nilfs2/inode.c
+@@ -917,6 +917,7 @@ void nilfs_evict_inode(struct inode *ino
+ 	struct nilfs_transaction_info ti;
+ 	struct super_block *sb = inode->i_sb;
+ 	struct nilfs_inode_info *ii = NILFS_I(inode);
++	struct the_nilfs *nilfs;
+ 	int ret;
  
- 	case ZSWAP_SWAPCACHE_NEW: /* page is locked */
+ 	if (inode->i_nlink || !ii->i_root || unlikely(is_bad_inode(inode))) {
+@@ -929,6 +930,23 @@ void nilfs_evict_inode(struct inode *ino
+ 
+ 	truncate_inode_pages_final(&inode->i_data);
+ 
++	nilfs = sb->s_fs_info;
++	if (unlikely(sb_rdonly(sb) || !nilfs->ns_writer)) {
 +		/*
-+		 * Having a local reference to the zswap entry doesn't exclude
-+		 * swapping from invalidating and recycling the swap slot. Once
-+		 * the swapcache is secured against concurrent swapping to and
-+		 * from the slot, recheck that the entry is still current before
-+		 * writing.
++		 * If this inode is about to be disposed after the file system
++		 * has been degraded to read-only due to file system corruption
++		 * or after the writer has been detached, do not make any
++		 * changes that cause writes, just clear it.
++		 * Do this check after read-locking ns_segctor_sem by
++		 * nilfs_transaction_begin() in order to avoid a race with
++		 * the writer detach operation.
 +		 */
-+		spin_lock(&tree->lock);
-+		if (zswap_rb_search(&tree->rbroot, entry->offset) != entry) {
-+			spin_unlock(&tree->lock);
-+			delete_from_swap_cache(page_folio(page));
-+			ret = -ENOMEM;
-+			goto fail;
-+		}
-+		spin_unlock(&tree->lock);
++		clear_inode(inode);
++		nilfs_clear_inode(inode);
++		nilfs_transaction_abort(sb);
++		return;
++	}
 +
- 		/* decompress */
- 		acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
- 		dlen = PAGE_SIZE;
+ 	/* TODO: some of the following operations may fail.  */
+ 	nilfs_truncate_bmap(ii, 0);
+ 	nilfs_mark_inode_dirty(inode);
 _
 
-Patches currently in -mm which might be from cerasuolodomenico@gmail.com are
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
 
+nilfs2-fix-incomplete-buffer-cleanup-in-nilfs_btnode_abort_change_key.patch
 
