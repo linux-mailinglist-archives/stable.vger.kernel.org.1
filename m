@@ -2,160 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D11DA705E4E
-	for <lists+stable@lfdr.de>; Wed, 17 May 2023 05:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E991705E60
+	for <lists+stable@lfdr.de>; Wed, 17 May 2023 05:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232599AbjEQDqB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 16 May 2023 23:46:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34730 "EHLO
+        id S229533AbjEQDwT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 16 May 2023 23:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232577AbjEQDps (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 23:45:48 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC804ECF;
-        Tue, 16 May 2023 20:45:38 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1ae3fe67980so4102875ad.3;
-        Tue, 16 May 2023 20:45:38 -0700 (PDT)
+        with ESMTP id S231881AbjEQDwR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 16 May 2023 23:52:17 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C6A271B;
+        Tue, 16 May 2023 20:52:16 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-25343f0c693so165524a91.3;
+        Tue, 16 May 2023 20:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684295138; x=1686887138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TpQR3cccQnkFxa/VBlSDTBSv5SyL5gibvWrL1LrLMho=;
-        b=UERCSL4JnKxWSII93BWPVPBBwK6uL6PmIwlr8ZXOKLlNtpxo5SuSIG9NCdRoUWZOoZ
-         +hYxmrQqH/Q8Nn729aEESqAHFErEnG5gxcYEkikRN8HovztUkVCPnfidYHdjmfJn+l6e
-         gPuj5+IyFNkSWsVE10FucW4qXqClKG6/w9Wcd6mq92qXTmFiEFyl9MK0fjfWsOjlNaiE
-         QByDM+aLJ9R3qtw1YAJQhEHVvBAURJgNELbn6b65JIvslmWs6VSBHTubnpB57vEVbPCm
-         +o0szfsEnOcquAkSel2xOZHbDEFVqFPW+K6B6MfoBO6zQxqzqLXJyy1b1eY7ngteuAgP
-         EiJw==
+        d=gmail.com; s=20221208; t=1684295536; x=1686887536;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AUXFRmo2MSjUiP3pz0lzOFDLD9CCDZHx5JZ6kXK49MA=;
+        b=YTS0qcj/hG4UhEBJb3/I8+r3muMeN3UAkFTzlWc4pOy86nF2hlfHA7HHcNw0QA7WdU
+         ysiWX5b8G7mWmzoet7jUv0bFKWPXaFJCHGreU3hWRcOHCJ91BupPc//853th0Mt1i532
+         qPVklvWPJCLhju91sHhOKM0X9nff7OeDHtkF66UZ29B5Evjc+jmIXfyoqPHMdDShJ3BQ
+         ZHYT50y+Y8kahR3mv8MVczj1df2eQup+P8Y/Dbss7EWF7wkJWVFSve4Qw47huUc9Zif2
+         We61ylGUJVMi4FZGqwYlGVTiwjh33TAlQiujlpl/9sUV7YLcaMxo4EeSI5ailX3IuKHP
+         Wdsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684295138; x=1686887138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1684295536; x=1686887536;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TpQR3cccQnkFxa/VBlSDTBSv5SyL5gibvWrL1LrLMho=;
-        b=RKdobhXpfuoQxTdnrJmdVxhPJ5Dnkh+KCUsJx/VqgEgSySy9ABMHXM8j8mhkkD86Go
-         5baR2bC9Wb4rPYXMhs5ow9mNWZvArVb+Z+/RV57UL7X0SZuae3ksSzMwhze7m0cgzXdC
-         nfJbN2exVCNCXSgPYI8cdO/OSNRX9XO2C7u2T/bQ1w/5ZNVJR3YN595/dTbImC+9f/XA
-         7dZg7AcYENfDT3h1JYUWp1oq+FOjHrf1oofDu9rjUTWsE51+ejzQvmiHXrKKZFZvO8QQ
-         zdqdYXDAlIOt8he4OSXhKRce58sm12cbzUJxkKs/B80WsxsehK9NNB3dOYEte3RbU5M7
-         s8UA==
-X-Gm-Message-State: AC+VfDx6Jx39R1Cu8ClguI54YsgEJJQX6HALFPazakLttX7p5B3uXQFb
-        bP9uZinnmhyyl2qVWN4bHpI=
-X-Google-Smtp-Source: ACHHUZ72TBl2qjdRobeJYwihGY/op1xZOYs590vrrpWwxotkrQx2nlDtr1JT0DXq9EF6bOCOpjSqyw==
-X-Received: by 2002:a17:902:9897:b0:1ab:253e:6906 with SMTP id s23-20020a170902989700b001ab253e6906mr37006175plp.67.1684295138247;
-        Tue, 16 May 2023 20:45:38 -0700 (PDT)
-Received: from localhost.localdomain ([203.205.141.83])
-        by smtp.googlemail.com with ESMTPSA id t2-20020a170902e84200b001a19196af48sm16336746plg.64.2023.05.16.20.45.32
+        bh=AUXFRmo2MSjUiP3pz0lzOFDLD9CCDZHx5JZ6kXK49MA=;
+        b=b4OabB9Ija9US2/g4w2cqTTV7Xr4FUK4c3+i9SZzF37U8UTiMUHR8WgE5NIxFTlCh6
+         TD2D/iS5HyOI396Juvd37jBYk7kCr7bf+lps2IB4h0i+i0Tr8NTIuExaNeoNbnpkPclW
+         g4KUQ/Yonb07SYu7jqp58Ph37cWNgohbqoucRiFvTkxpYyQQKqw0Eg8YcgbswB3MMykz
+         ETmroYOQBxeK4+4RqJEX815tAqYPmS+LVeBL+kXWgD8rTl9UvqtrVqgUAarPXgFVYUSC
+         XeCS8xEZQbUb0TjM49eKfqoRSASt/bAkD1/ubmLvQHRdTaSYWEUqMVyr+8wy5Iq7ZCsv
+         jgOA==
+X-Gm-Message-State: AC+VfDzF/FWHfynifFB7EQWssD9NJ9gqnQ36DSQQpfwCZ7p48491SIeJ
+        AUnuv1h2oLa+Mm5SgsY7cLkL0UUluFg=
+X-Google-Smtp-Source: ACHHUZ5FxCBS+0YcXJo3FhDTsN4EFNwO8RkcXyTXtu4z6LvH4lM5z60eFxhe/fPZQebwejl0so7hAg==
+X-Received: by 2002:a17:90b:350:b0:250:1905:ae78 with SMTP id fh16-20020a17090b035000b002501905ae78mr39147491pjb.15.1684295535825;
+        Tue, 16 May 2023 20:52:15 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id t17-20020a639551000000b00519c3475f21sm14303276pgn.46.2023.05.16.20.52.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 20:45:37 -0700 (PDT)
-From:   Ze Gao <zegao2021@gmail.com>
-X-Google-Original-From: Ze Gao <zegao@tencent.com>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, x86@kernel.org,
-        bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org,
-        Conor Dooley <conor@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Yonghong Song <yhs@fb.com>, Ze Gao <zegao@tencent.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v3 3/4] fprobe: add recursion detection in fprobe_exit_handler
-Date:   Wed, 17 May 2023 11:45:08 +0800
-Message-Id: <20230517034510.15639-4-zegao@tencent.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230517034510.15639-1-zegao@tencent.com>
-References: <20230517034510.15639-1-zegao@tencent.com>
+        Tue, 16 May 2023 20:52:15 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 16 May 2023 20:52:13 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 5.4 000/282] 5.4.243-rc1 review
+Message-ID: <739bd109-b32d-46f1-b382-e55f34efc11a@roeck-us.net>
+References: <20230515161722.146344674@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-fprobe_hander and fprobe_kprobe_handler has guarded ftrace recursion
-detection but fprobe_exit_handler has not, which possibly introduce
-recursive calls if the fprobe exit callback calls any traceable
-functions. Checking in fprobe_hander or fprobe_kprobe_handler
-is not enough and misses this case.
+On Mon, May 15, 2023 at 06:26:18PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.243 release.
+> There are 282 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 17 May 2023 16:16:37 +0000.
+> Anything received after that time might be too late.
+> 
 
-So add recursion free guard the same way as fprobe_hander. Since
-ftrace recursion check does not employ ip(s), so here use entry_ip and
-entry_parent_ip the same as fprobe_handler.
+Build results:
+	total: 159 pass: 159 fail: 0
+Qemu test results:
+	total: 455 pass: 454 fail: 1
+Failed tests:
+	arm:sabrelite:multi_v7_defconfig:mtd2:mem256:net,default:imx6dl-sabrelite:rootfs
 
-Fixes: 5b0ab78998e3 ("fprobe: Add exit_handler support")
-Signed-off-by: Ze Gao <zegao@tencent.com>
-Cc: stable@vger.kernel.org
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/linux-trace-kernel/20230516071830.8190-4-zegao@tencent.com
----
- kernel/trace/fprobe.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+As far as I can see, the second SPI interface fails to instantiate.
 
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 097c740799ba..281b58c7dd14 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -17,6 +17,7 @@
- struct fprobe_rethook_node {
- 	struct rethook_node node;
- 	unsigned long entry_ip;
-+	unsigned long entry_parent_ip;
- 	char data[];
- };
- 
-@@ -39,6 +40,7 @@ static inline void __fprobe_handler(unsigned long ip, unsigned long
- 		}
- 		fpr = container_of(rh, struct fprobe_rethook_node, node);
- 		fpr->entry_ip = ip;
-+		fpr->entry_parent_ip = parent_ip;
- 		if (fp->entry_data_size)
- 			entry_data = fpr->data;
- 	}
-@@ -114,14 +116,26 @@ static void fprobe_exit_handler(struct rethook_node *rh, void *data,
- {
- 	struct fprobe *fp = (struct fprobe *)data;
- 	struct fprobe_rethook_node *fpr;
-+	int bit;
- 
- 	if (!fp || fprobe_disabled(fp))
- 		return;
- 
- 	fpr = container_of(rh, struct fprobe_rethook_node, node);
- 
-+	/*
-+	 * we need to assure no calls to traceable functions in-between the
-+	 * end of fprobe_handler and the beginning of fprobe_exit_handler.
-+	 */
-+	bit = ftrace_test_recursion_trylock(fpr->entry_ip, fpr->entry_parent_ip);
-+	if (bit < 0) {
-+		fp->nmissed++;
-+		return;
-+	}
-+
- 	fp->exit_handler(fp, fpr->entry_ip, regs,
- 			 fp->entry_data_size ? (void *)fpr->data : NULL);
-+	ftrace_test_recursion_unlock(bit);
- }
- NOKPROBE_SYMBOL(fprobe_exit_handler);
- 
--- 
-2.40.1
+[   21.491528] spi_imx 2008000.spi: bitbang start failed with -22
 
+There are also various new warnings in clock code.
+
+[   21.492631] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:986 clk_core_disable+0x124/0x2e4
+[   21.497524] WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:845 clk_core_unprepare+0x268/0x388
+
+The warnings in clock code are gone after reverting all changes introducing
+PM support for imx spi code. The boot failure is gone after reverting the
+gpio conversion. In total, I reverted the following patches to fix the
+boot and warning problems.
+
+d6fcaa127cc6 Revert "spi: imx/fsl-lpspi: Convert to GPIO descriptors"
+9783b21b591d Revert "spi: imx: enable runtime pm support"
+4a8bdbf7462b Revert "spi: spi-imx: using pm_runtime_resume_and_get instead of pm_runtime_get_sync"
+e6c5f497ff35 Revert "spi: imx: Don't skip cleanup in remove's error path"
+d6ea758df74f Revert "spi: imx: fix runtime pm support for !CONFIG_PM"
+b9dbd028c970 Revert "spi: imx: fix reference leak in two imx operations"
+
+Is this really 5.4 material ?
+
+Guenter
