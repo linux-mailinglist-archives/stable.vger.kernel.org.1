@@ -2,116 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 670D1707F62
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 13:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 986CA70824E
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 15:13:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231223AbjERLee (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 07:34:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58826 "EHLO
+        id S231321AbjERNNA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 09:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231124AbjERLea (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 07:34:30 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53DD19B2;
-        Thu, 18 May 2023 04:34:28 -0700 (PDT)
-Received: from [192.168.2.250] (109-252-144-198.dynamic.spd-mgts.ru [109.252.144.198])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id C504E6605961;
-        Thu, 18 May 2023 12:34:26 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1684409667;
-        bh=QGfLG06H7/U3BYZ2IKDliNOlA1/w+8cf8eGRzQrKSkc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=ReEuLbo+ZoRiGPuEqfc355zLJYQLW/j0zJtoZKXX7WJ8tEgE6K/H/+pn7T+EJ6lFi
-         OI3oE0y4fE8XV9Zk8Cv47W/8A381cLjR2o58XCwkcGX3dB6meWTOuu3+dJXwmxB0lP
-         GZsnHQzJoKqlSHV8hiY2NYPvOALtrMsEPr5ZmnvTloTJyoYTusbbOfC7kLfOCyJQK/
-         zYZZClz9sffjwFVUIXgYiyO5zOAGTfcMSuz7pPhkZogrzPRA26o9hph3b3vHxK+IwW
-         CAiLOyQLCp3qRgHQM8pupTbCFkGEWmpoOFFuHOd+9czl220YX9QnjTwMJXfdnNMVeO
-         bzVptJnCr7dGA==
-Message-ID: <a0581bf1-8420-858f-6d9d-91c4824739a2@collabora.com>
-Date:   Thu, 18 May 2023 14:34:24 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v6 2/5] i2c: core: run atomic i2c xfer when !preemptible
-Content-Language: en-US
-To:     Benjamin Bara <bbara93@gmail.com>, Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee@kernel.org>, rafael.j.wysocki@intel.com
-Cc:     peterz@infradead.org, jonathanh@nvidia.com,
-        richard.leitner@linux.dev, treding@nvidia.com,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-tegra@vger.kernel.org,
-        Benjamin Bara <benjamin.bara@skidata.com>,
+        with ESMTP id S231428AbjERNMs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 09:12:48 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2226D19B0
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 06:12:15 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-643846c006fso2014255b3a.0
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 06:12:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684415528; x=1687007528;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hGN2Xn1/y4nxz6sqvPsCN0vbEykHl0P+bF4ElA00DBs=;
+        b=X9kB1RU8NBGfYG40MfB604JqrcQdmVSVkWBpnHu4TuhqnEsk96TZ3ri7trsBxqHuas
+         pxEPdABtEctmjOmDEczsOynfWSkwswLsWhhi+HK8MJHvwZ18U67AzKg5zOmZsuAscJ7H
+         Ami77IW9/BI1gbdicZ3KuRKsFW+MFATedONala6OI/M2shsoKD+TPFyC+GjyHCLtr50H
+         POgPfe+ikUd3ZcKy/W3yezzb2OayBpKJpMXJyK5U70RoIrgHqbxgNUZTedEAk4uoazMv
+         1IlgAE4SCDEm+XFnbfgNAPmQiYuLv+bIrWlW9NxkHLLcP5akqwmKGOOp+6l5zVygSDms
+         53ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684415528; x=1687007528;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hGN2Xn1/y4nxz6sqvPsCN0vbEykHl0P+bF4ElA00DBs=;
+        b=bmalLowX2OaaTwFd4lXyYuAdOUi2VuBAwiMKjLkzq53lvzZ+jcPz1t+nEZewVxr53V
+         HisR2OtU14/P0UWL34OHy4AWA3owjEyyhn/UVJ5DKnINT4/MYXb1NXBYsrA24oSj8c2R
+         Ahhg1pLZ+FV4trohGvbUOUngJb2ry9MwPJreabzZaf2E1Pjx75/HLPkvbzMLmyfrPYgl
+         cMnK6U0QRN+2/Fw55oQzYUho+mX9gUDEFYhWvLVW1Ekeq39lU/VengzFDdJqyqqmelUF
+         MwElC9KmUfdRNAnDQ3F19gZs186aUmrrf0Cv4sgpGnlAPDSQQsPQZrVlJ57bdGG0EotE
+         UOYQ==
+X-Gm-Message-State: AC+VfDzxKPTXCQ++WkRlTKos94pQj/IPe9cP/hBU2fL+8lqsNpGIBH+M
+        TR2TTgpstzBjMag8v5rmShtklPaidKA=
+X-Google-Smtp-Source: ACHHUZ5zAZ8IAGdmbuDU0W9FVajNnoEGidt01DFtxp2ppa1598wb5+MlB8N2Z7u0ygkAIoZ8bc2JHQ==
+X-Received: by 2002:a05:6a20:d817:b0:100:132e:c7c4 with SMTP id iv23-20020a056a20d81700b00100132ec7c4mr2080684pzb.11.1684415528069;
+        Thu, 18 May 2023 06:12:08 -0700 (PDT)
+Received: from debian.me (subs03-180-214-233-78.three.co.id. [180.214.233.78])
+        by smtp.gmail.com with ESMTPSA id cq20-20020a17090af99400b002535a0f2028sm1676081pjb.51.2023.05.18.06.12.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 May 2023 06:12:07 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 58CE21069DF; Thu, 18 May 2023 14:39:30 +0700 (WIB)
+Date:   Thu, 18 May 2023 14:39:29 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     =?utf-8?B?w4lyaWM=?= Brunet <eric.brunet@ens.fr>,
         stable@vger.kernel.org
-References: <20230327-tegra-pmic-reboot-v6-0-af44a4cd82e9@skidata.com>
- <20230327-tegra-pmic-reboot-v6-2-af44a4cd82e9@skidata.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20230327-tegra-pmic-reboot-v6-2-af44a4cd82e9@skidata.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Cc:     regressions@lists.linux.dev, ville.syrjala@linux.intel.com,
+        jouni.hogander@intel.com, jani.nikula@intel.com,
+        gregkh@linuxfoundation.org
+Subject: Re: Regression on drm/i915, with bisected commit
+Message-ID: <ZGXWMdTactecOP/0@debian.me>
+References: <3236901.44csPzL39Z@skaro>
+ <ZGQXELf3MSt4oUsR@debian.me>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+8GRMAJR8db13eJZ"
+Content-Disposition: inline
+In-Reply-To: <ZGQXELf3MSt4oUsR@debian.me>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/9/23 22:03, Benjamin Bara wrote:
-> From: Benjamin Bara <benjamin.bara@skidata.com>
-> 
-> Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
-> disabled. However, non-atomic i2c transfers require preemption (e.g. in
-> wait_for_completion() while waiting for the DMA).
-> 
-> panic() calls preempt_disable_notrace() before calling
-> emergency_restart(). Therefore, if an i2c device is used for the
-> restart, the xfer should be atomic. This avoids warnings like:
-> 
-> [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-> [   12.676926] Voluntary context switch within RCU read-side critical section!
-> ...
-> [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-> [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-> ...
-> [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-> [   13.001050]  machine_restart from panic+0x2a8/0x32c
-> 
-> Use !preemptible() instead, which is basically the same check as
-> pre-v5.2.
-> 
-> Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-> Cc: stable@vger.kernel.org # v5.2+
-> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Acked-by: Wolfram Sang <wsa@kernel.org>
-> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-> ---
->  drivers/i2c/i2c-core.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-> index 1247e6e6e975..05b8b8dfa9bd 100644
-> --- a/drivers/i2c/i2c-core.h
-> +++ b/drivers/i2c/i2c-core.h
-> @@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
->   */
->  static inline bool i2c_in_atomic_xfer_mode(void)
->  {
-> -	return system_state > SYSTEM_RUNNING && irqs_disabled();
-> +	return system_state > SYSTEM_RUNNING && !preemptible();
->  }
->  
->  static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
-> 
 
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+--+8GRMAJR8db13eJZ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Best regards,
-Dmitry
+On Wed, May 17, 2023 at 06:51:44AM +0700, Bagas Sanjaya wrote:
+> On Tue, May 16, 2023 at 03:04:53PM +0200, =C3=89ric Brunet wrote:
+> > Hello all,
+> >=20
+> > I have a HP Elite x360 1049 G9 2-in-1 notebook running fedora 38 with a=
+n Adler=20
+> > Lake intel video card.
+> >=20
+> > After upgrading to kernel 6.2.13 (as packaged by fedora), I started see=
+ing=20
+> > severe video glitches made of random pixels in a vertical band occupyin=
+g about=20
+> > 20% of my screen, on the right. The glitches would happen both with X.o=
+rg and=20
+> > wayland.
+> >=20
+> > I checked that vanilla 6.2.12 does not have the bug and that both vanil=
+la=20
+> > 6.2.13 and vanilla 6.3.2 do have the bug.
+> >=20
+> > I bisected the problem to commit e2b789bc3dc34edc87ffb85634967d24ed351a=
+cb (it=20
+> > is a one-liner reproduced at the end of this message).
+> >=20
+> > I checked that vanilla 6.3.2 with this commit reverted does not have th=
+e bug.
+> >=20
 
+There is a similar regression reported on freedesktop gitlab tracker
+(by different reporter):
+
+#regzbot link: https://gitlab.freedesktop.org/drm/intel/-/issues/8475
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--+8GRMAJR8db13eJZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZGXWIQAKCRD2uYlJVVFO
+o2gVAQDLNFodNLRIMTBFAijZkPKoToY4dzUk95BosvRCNP6VbAEAoYrMSgfiQ1ia
+4HVtW1MqhLC+Vw0FeyIoUxK/jq1PPQ0=
+=7rEA
+-----END PGP SIGNATURE-----
+
+--+8GRMAJR8db13eJZ--
