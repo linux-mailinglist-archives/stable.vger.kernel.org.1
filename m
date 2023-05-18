@@ -2,200 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34368707954
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 06:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A17D97079C0
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 07:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbjERExS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 00:53:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44762 "EHLO
+        id S229668AbjERFob (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 01:44:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjERExS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 00:53:18 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86112693;
-        Wed, 17 May 2023 21:53:16 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id CBFFB1F74D;
-        Thu, 18 May 2023 04:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1684385594; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=dU3g2TFNel7/mtylcwF6Urz1FR7CgmiQ4S1MWDIfah4=;
-        b=IgDOyJp1EG/qrBRpPOz4jHiH8ZxPqROwmlNwZr4EDOrQoXtDmWpS/mBRRMOIw3lTtvbAUy
-        9DYmDZq9hlbTZqOPVC8EqenHiE7VtoMYROu0EZFVyGwm7++loOWfL7xyOCaZf6CujBxXkU
-        /fV3qFfl5nBXsTtYgaiZ7ZO11JIeRCM=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9848C138F5;
-        Thu, 18 May 2023 04:53:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id BQKpIzqvZWRqYAAAMHmgww
-        (envelope-from <jgross@suse.com>); Thu, 18 May 2023 04:53:14 +0000
-Message-ID: <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
-Date:   Thu, 18 May 2023 06:53:14 +0200
+        with ESMTP id S229586AbjERFo3 (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 18 May 2023 01:44:29 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20601.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eae::601])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5432738
+        for <Stable@vger.kernel.org>; Wed, 17 May 2023 22:44:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=So7WPD/lRN8oj7BJxOaNKdZ4mZOVZW9ivmKT9hu2fQ7cNG45lLv/+Qn1Lz18qiuUkYl1x7Li/YiN5p1v4yUGgTY0SKN6Y+QWyORtG3yHcGEULmNyLOx9Sx8yQKI8ee6fSkeuik3QhLBd7Go6TMVDnFoqa33oCfXdpN85xH9JFJ15Ed5l78/721FHlTDhhdWnAeaeuMq7/zxYBusTACv/jOI3xELzPSflY34/pkTt+yI1pU+MSwv30iug0l92LTLvOxJ7W1Y27DewPulsjmo+7CVBjqHT48RyLcObp7tQqyA0GcipOjnQL2PiUQh7u62I0MKDp8hh66DCuwJBAGCyCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M5EJt2+oWJS7Sx0ocMWdV7uTBLtWo7AhPHsSqoGDgX8=;
+ b=Oml59ysCPy6vkkhTK3Tjz1yc5CTOZ3NmyxZAZCA51Q0ku93HIPk00DhUPkTimzc9wKznv1lSMRyH5yuFd0BpjQT5sT8gclLWadj2zKC65fq8E/uzi+jxApV/P6g8xsPhXd9ZKElgryU6yGESE0NM/Mp8VfBbd6pVbFjQb7b7HpZmvakkGqF9v626IAbNhaAH2TjC5Ldw8JM3bHjhl08xFRDLDdMEgY2KIbSqQawr/ggB/F3RSjzbwBTrX11TZkfgrnRUngW+L7DN1nCfAtBp9I2RwULJtCLkrKF0SvlomCna3CxvqWEwqBLcjDig976FMm3lThPee21yNyH4mQKVSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M5EJt2+oWJS7Sx0ocMWdV7uTBLtWo7AhPHsSqoGDgX8=;
+ b=d3WV2NOGbphwOWJH++YscSEdLEYHEj9b76JILjvYWwH5oblKC1KKb5edVzEogN4r+XNNzmuARFSM0lZWEsuauopSoeo28vBB5+iCy7shGM9virkyRgyF1znvIzo1htWD7LmGWwoqd7mpjEe+1sYMK80uC8em0V0Zy8lc8SwHW24=
+Received: from BN0PR03CA0006.namprd03.prod.outlook.com (2603:10b6:408:e6::11)
+ by CY8PR12MB7097.namprd12.prod.outlook.com (2603:10b6:930:63::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.30; Thu, 18 May
+ 2023 05:44:21 +0000
+Received: from BN8NAM11FT028.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:e6:cafe::22) by BN0PR03CA0006.outlook.office365.com
+ (2603:10b6:408:e6::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.19 via Frontend
+ Transport; Thu, 18 May 2023 05:44:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT028.mail.protection.outlook.com (10.13.176.225) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6411.19 via Frontend Transport; Thu, 18 May 2023 05:44:21 +0000
+Received: from kali.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 18 May
+ 2023 00:44:17 -0500
+From:   Vasant Hegde <vasant.hegde@amd.com>
+To:     <iommu@lists.linux.dev>, <joro@8bytes.org>
+CC:     <suravee.suthikulpanit@amd.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        <Stable@vger.kernel.org>
+Subject: [PATCH] iommu/amd/pgtbl_v2: Fix domain max address
+Date:   Thu, 18 May 2023 05:43:51 +0000
+Message-ID: <20230518054351.9626-1-vasant.hegde@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Content-Language: en-US
-To:     John Garry <john.g.garry@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
-References: <20230511123432.5793-1-jgross@suse.com>
- <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
- <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
- <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
-From:   Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
-In-Reply-To: <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------0YLph03U21dwa7hmV1rNcJeY"
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT028:EE_|CY8PR12MB7097:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b291859-8ca3-4573-618e-08db5762edf1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +HzrwJ0JKYYtr1I/rvfMEF4kajxh0EvcaOU2/vPEmAg7ufMtDHBo098cwijtDoeaZmUy/zaoUeHU6nc24pD5Bf9Iyd7eOeUppuC8zRydCit+jJMhtszQAj13NPt/Y9/SXdz5ubUpvF2yXTuMdF+kTDTlj16NZcFPVSXizC3Rt86DyzdtMl/xeTk7e4NMYXgSlzk2MphuDqsQOtMft+PaqnmOhBwKb2hcvQoloVZGhDP0SJoVZ3S0kIkgX5lAXLX6x/lsTM7mqcwf4euYDZxdWKk+64XfjLinSAvvNrw02DVtGr9rekbbaVpj+bAdMm8wgEiXMv7h2j2rZ2jY1GpXV/QlW9J3mJce62oRrdtWNda4Wfay/rs1j7IJSYLFpJEzIx6UEUFhcOM/sYajW19ElZd+pYQA7Ch4Td3w8lrRn7NIiWvJdaTymhrB3hiWW2SbhST2jdCcM47fWCwp7DOcMMyMCL8r42q0kcHSU9RP9ef0vkIvMWe08Gn8Glvb3tgiKQptc4N/gpV8Foa/36ecOZIwDXbsg5Ed9FGomAfHZ8xgSdhoHNnYIqf4JVP1BWegWMLl36zbw4ZAd30h2UWbekK+z94MnFpdehAmO9sFdfcyAKfF1uZA4FPBmsayTmkVBxFtfHPZJ2vQikJtGoJWM3cRN6zBTKbjYYBpz3E9agbe6LrzuVCUUBNLtkxuOPMDrRw220lzSr7AuHxXexXNtfbrqBOBvwxb7CaWG9I2V1kVRgCvP4eYsNliDGrC0vTPhWlF/DjQmbY6E7LwSJVijg==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(376002)(136003)(39860400002)(451199021)(46966006)(36840700001)(40470700004)(82310400005)(83380400001)(47076005)(336012)(426003)(36860700001)(316002)(82740400003)(41300700001)(2906002)(4326008)(81166007)(356005)(478600001)(40480700001)(54906003)(5660300002)(7696005)(70206006)(26005)(70586007)(2616005)(40460700003)(8676002)(86362001)(8936002)(16526019)(44832011)(36756003)(110136005)(1076003)(186003)(6666004)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 05:44:21.3019
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b291859-8ca3-4573-618e-08db5762edf1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT028.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7097
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------0YLph03U21dwa7hmV1rNcJeY
-Content-Type: multipart/mixed; boundary="------------sXLgrPQOvEJ2lCg0c0fNOTSc";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: John Garry <john.g.garry@oracle.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
-Message-ID: <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
-Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
-References: <20230511123432.5793-1-jgross@suse.com>
- <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
- <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
- <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
-In-Reply-To: <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
+IOMMU v2 page table supports 4 level (47 bit) or 5 level (56 bit) virtual
+address space. Current code assumes it can support 64bit IOVA address
+space. If IOVA allocator allocates virtual address > 47/56 bit (depending
+on page table level) then it will do wrong mapping and cause invalid
+translation.
 
---------------sXLgrPQOvEJ2lCg0c0fNOTSc
-Content-Type: multipart/mixed; boundary="------------Deb0hiwjyTcmRu6pYJgabK7i"
+Hence adjust aperture size to use max address supported by the page table.
 
---------------Deb0hiwjyTcmRu6pYJgabK7i
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
+Cc: <Stable@vger.kernel.org>  # v6.0+
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+---
+ drivers/iommu/amd/iommu.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-T24gMTcuMDUuMjMgMTc6MDUsIEpvaG4gR2Fycnkgd3JvdGU6DQo+IE9uIDE3LzA1LzIwMjMg
-MDU6NTQsIEp1ZXJnZW4gR3Jvc3Mgd3JvdGU6DQo+PiBPbiAxNy4wNS4yMyAwNDowNiwgTWFy
-dGluIEsuIFBldGVyc2VuIHdyb3RlOg0KPj4+DQo+Pj4gSnVlcmdlbiwNCj4+Pg0KPj4+PiBT
-b21lIGNhbGxlcnMgb2Ygc2NzaV9leGVjdXRlX2NtZCgpIChsaWtlIGUuZy4gc2Rfc3BpbnVw
-X2Rpc2soKSkgYXJlDQo+Pj4+IHBhc3NpbmcgYW4gdW5pbml0aWFsaXplZCBzdHJ1Y3Qgc3No
-ZHIgYW5kIGRvbid0IGxvb2sgYXQgdGhlIHJldHVybg0KPj4+PiB2YWx1ZSBvZiBzY3NpX2V4
-ZWN1dGVfY21kKCkgYmVmb3JlIGxvb2tpbmcgYXQgdGhlIGNvbnRlbnRzIG9mIHRoYXQNCj4+
-Pj4gc3RydWN0Lg0KPj4+DQo+Pj4gV2hpY2ggY2FsbGVycz8gc2Rfc3BpbnVwX2Rpc2soKSBh
-cHBlYXJzIHRvIGRvIHRoZSByaWdodCB0aGluZy4uLg0KPj4+DQo+Pg0KPj4gTm90IHJlYWxs
-eS4gSXQgaXMgY2FsbGluZyBtZWRpYV9ub3RfcHJlc2VudCgpIGRpcmVjdGx5IGFmdGVyIHRo
-ZSBjYWxsIG9mDQo+PiBzY3NpX2V4ZWN1dGVfY21kKCkgd2l0aG91dCBjaGVja2luZyB0aGUg
-cmVzdWx0LiANCj4gDQo+IElzIHRoZXJlIGEgcmVhc29uIHRoYXQgY2FsbGVycyBvZiBzY3Np
-X2V4ZWN1dGVfY21kKCkgYXJlIG5vdCBhbHdheXMgY2hlY2tpbmcgdGhlIA0KPiByZXN1bHQg
-Zm9yIGEgbmVnYXRpdmUgZXJyb3IgY29kZSAoYmVmb3JlIGV4YW1pbmluZyB0aGUgYnVmZmVy
-KT8NCg0KSSBkb24ndCBrbm93Lg0KDQpJJ3ZlIHN0dW1ibGVkIG92ZXIgdGhlIHByb2JsZW0g
-d2hpbGUgbG9va2luZyBpbnRvIHRoZSBjb2RlIGR1ZSB0byBhbmFseXppbmcgYQ0KY3VzdG9t
-ZXIncyBwcm9ibGVtLiBJJ20gbm8gU0NTSSBleHBlcnQsIGJ1dCB0aGUgY3VzdG9tZXIgd2Fz
-IHJ1bm5pbmcgWGVuIGFuZA0KdGhlcmUgd2FzIHRoZSBzdXNwaWNpb24gdGhpcyBjb3VsZCBi
-ZSBhbiB1bmRlcmx5aW5nIFhlbiBpc3N1ZSAod2hpY2ggaXMgbXkNCmFyZWEgb2YgaW50ZXJl
-c3QpLg0KDQpJdCBiZWNhbWUgY2xlYXIgcmF0aGVyIHF1aWNrbHkgdGhhdCB0aGUgdW5pbml0
-aWFsaXplZCBzc2hkciB3YXNuJ3QgdGhlIHJvb3QNCmNhdXNlIG9mIHRoZSBjdXN0b21lcidz
-IHByb2JsZW1zLCBidXQgSSB0aG91Z2h0IGl0IHNob3VsZCBiZSBmaXhlZCBhbnl3YXkuIEFz
-DQp0aGVyZSBzZWVtIHRvIGJlIHF1aXRlIHNvbWUgcHJvYmxlbWF0aWMgY2FsbGVycyBvZiBz
-Y3NpX2V4ZWN1dGVfY21kKCksIEkndmUNCmNob3NlbiB0byBhZGQgdGhlIG1pbmltYWwgbmVl
-ZGVkIGluaXRpYWxpemF0aW9uIG9mIHNzaGRyIHRvIHNjc2lfZXhlY3V0ZV9jbWQoKQ0KaW5z
-dGVhZCBvZiB0cnlpbmcgdG8gZml4IGFsbCBjYWxsZXJzLg0KDQpSZWFzb25pbmcgd2h5IHRo
-ZSBjb2RlIGlzIGxvb2tpbmcgbGlrZSBpdCBkb2VzIGlzIHN1cmVseSBub3Qgd2hhdCBfSV8g
-d2FudCB0bw0KZG8uDQoNCg0KSnVlcmdlbg0K
---------------Deb0hiwjyTcmRu6pYJgabK7i
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 5aaa4cf84506..e14c7c666745 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2128,6 +2128,15 @@ static struct protection_domain *protection_domain_alloc(unsigned int type)
+ 	return NULL;
+ }
+ 
++static inline u64 dma_max_address(void)
++{
++	if (amd_iommu_pgtable == AMD_IOMMU_V1)
++		return ~0ULL;
++
++	/* V2 with 4/5 level page table */
++	return ((1ULL << PM_LEVEL_SHIFT(amd_iommu_gpt_level)) - 1);
++}
++
+ static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
+ {
+ 	struct protection_domain *domain;
+@@ -2144,7 +2153,7 @@ static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
+ 		return NULL;
+ 
+ 	domain->domain.geometry.aperture_start = 0;
+-	domain->domain.geometry.aperture_end   = ~0ULL;
++	domain->domain.geometry.aperture_end   = dma_max_address();
+ 	domain->domain.geometry.force_aperture = true;
+ 
+ 	return &domain->domain;
+-- 
+2.31.1
 
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-jR/i1DG86lem3iBDXzXsZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
-
---------------Deb0hiwjyTcmRu6pYJgabK7i--
-
---------------sXLgrPQOvEJ2lCg0c0fNOTSc--
-
---------------0YLph03U21dwa7hmV1rNcJeY
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmRlrzoFAwAAAAAACgkQsN6d1ii/Ey9l
-Nwf/dNei0Pl/zUVyyvKbyHMntT1j8ar3DK3QFQ5NiCrjpwartHJGGjnJ76JCxJhDIaH3iZ0MjDUQ
-DGHtvDcbqSfq81FBV+JZdqPR1aWedbRtgRIxLd/c/VxWbZeFJl2XrAO+OR+8AXfhUWv26Xl1v5zn
-vdnSvX6oRk2aGEzLZ8E+WcrMjlTDNmjdk5AhAkssln6b+M36xXKWJHy/04tXbDg9MBJUmiir5Wfr
-/x/XTCwYffgp7a8XAkHvLskTP1/tZWpx5EXcHFDpZLQoZ2+PnZ0BjCkOXU7xV8p0VMeYGIRSmySw
-uozZEZDeo9WQNgnItonsIRWedk1CilEeeoMpFO/xew==
-=N7bv
------END PGP SIGNATURE-----
-
---------------0YLph03U21dwa7hmV1rNcJeY--
