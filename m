@@ -2,50 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B08708668
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 19:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0C170871B
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 19:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjERRJI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 13:09:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
+        id S229840AbjERRp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 13:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjERRJH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 13:09:07 -0400
+        with ESMTP id S229829AbjERRp2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 13:45:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C544AB;
-        Thu, 18 May 2023 10:09:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1964810CE;
+        Thu, 18 May 2023 10:45:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21F5861889;
-        Thu, 18 May 2023 17:09:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AB5C433EF;
-        Thu, 18 May 2023 17:09:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92DD5650D3;
+        Thu, 18 May 2023 17:45:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E47C433D2;
+        Thu, 18 May 2023 17:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684429745;
-        bh=Qm04zr0gSo5j8CHzYq69b7TQ96spiaJHuZriamU5aFQ=;
+        s=k20201202; t=1684431925;
+        bh=lrNR3Kj8pwFUL4gmGaZGPGna/6gQVw84egS4nJteM9A=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=D84hh/0XA0ozwmpMMrs4sFMjViu1VoMJRP6GWM9Nzg3Up7bN7caKpV+nTl3MqSE1d
-         2NBAnTfzjAD+g8HuVJ7QmIzi1/HxdzPKIK9dphKMBDa5z8cnSyFyt2FSp0sw6gBhxz
-         YEFfZijdUynl4EAAUyfNkjp4jfMtyusPQjHEL05u7ss+GrZB3ljzTBw6c8+xFkVA+x
-         ZfST8N5IG0x9P2h8dw5bbzeiyz3mHqkXy4l61rZWSMhuHGkLzCJwetSsznX9PZBsNA
-         U3kjzI4foq3gcY9jB29N7xoIAW8NYOJF1SdxMDIKfNmnLuaoWMmi0T2OG4lmZJcKHF
-         AzVFuF88OdTUw==
-Date:   Thu, 18 May 2023 13:09:04 -0400
+        b=jsAPYUpOGrJjow4IZQA8Vn9fegedOfdXtFRGY1bmYYo19X1SUsnAOamSK1TdB/aIg
+         em2keJtu12XgSiWFyoWI5s41Vvsq+e4tKQ1nmZlbjjevZYT+eRUMZZ4IWLKbFVq4o2
+         B6N+W/CZKnGp9ACxHnWwjaEjeiXWMrIotVilRL1r8WayjPpbDd8EguOaV7aWYt99lG
+         NcWuWTuaweS6Hn+2CLAYH4KOCTHD+iVXW4pt/RT02SImUgE3xfGYDypUaPyIKztjbD
+         SNddghEDcllERzPdhV/BWqeX453R8n/1nUS5ukBAwnK0TE68QIbgD8m/XM5gbVThDZ
+         Q63PWwsg6sUuQ==
+Date:   Thu, 18 May 2023 13:45:23 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
+To:     Alexandre Ghiti <alex@ghiti.fr>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Svyatoslav Ryhel <clamor95@gmail.com>, lgirdwood@gmail.com,
-        perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org
-Subject: Re: [PATCH AUTOSEL 6.3 01/24] ASoC: jack: allow multiple interrupt
- per gpio
-Message-ID: <ZGZbsIMIa6qgU0ht@sashalap>
-References: <20230507003022.4070535-1-sashal@kernel.org>
- <ZFg2ZWqEBkPsJk+Y@finisterre.sirena.org.uk>
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>, paul.walmsley@sifive.com,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu,
+        linux-riscv@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.3 5/7] riscv: Unconditionnally select
+ KASAN_VMALLOC if KASAN
+Message-ID: <ZGZkM98lOHUEF4mA@sashalap>
+References: <20230509035455.59524-1-sashal@kernel.org>
+ <20230509035455.59524-5-sashal@kernel.org>
+ <bea1128b-903c-a7d0-9929-d9667999bb6d@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZFg2ZWqEBkPsJk+Y@finisterre.sirena.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bea1128b-903c-a7d0-9929-d9667999bb6d@ghiti.fr>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,20 +61,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 08, 2023 at 08:38:13AM +0900, Mark Brown wrote:
->On Sat, May 06, 2023 at 08:29:57PM -0400, Sasha Levin wrote:
->> From: Svyatoslav Ryhel <clamor95@gmail.com>
->>
->> [ Upstream commit a2d4051b0bd6dffcd736888ae89a550d6f60b060 ]
->>
->> This feature is required for coupled hp-mic quirk used
->> by some Nvidia Tegra 3 based devices work properly.
+On Fri, May 12, 2023 at 11:51:03AM +0200, Alexandre Ghiti wrote:
+>Hi Sasha,
 >
->This is a new feature, why is it being backported to stable?
+>On 5/9/23 05:54, Sasha Levin wrote:
+>>From: Alexandre Ghiti <alexghiti@rivosinc.com>
+>>
+>>[ Upstream commit 864046c512c2cd8418dc928b91981fb12a80396c ]
+>>
+>>If KASAN is enabled, VMAP_STACK depends on KASAN_VMALLOC so enable
+>>KASAN_VMALLOC with KASAN so that we can enable VMAP_STACK by default.
+>>
+>>Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+>>Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+>>Link: https://lore.kernel.org/r/20230203075232.274282-7-alexghiti@rivosinc.com
+>>Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>---
+>>  arch/riscv/Kconfig | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>>diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+>>index eb7f29a412f87..d6aad84efb95e 100644
+>>--- a/arch/riscv/Kconfig
+>>+++ b/arch/riscv/Kconfig
+>>@@ -118,6 +118,7 @@ config RISCV
+>>  	select HAVE_SYSCALL_TRACEPOINTS
+>>  	select IRQ_DOMAIN
+>>  	select IRQ_FORCED_THREADING
+>>+	select KASAN_VMALLOC if KASAN
+>>  	select MODULES_USE_ELF_RELA if MODULES
+>>  	select MODULE_SECTIONS if MODULES
+>>  	select OF
+>
+>
+>KASAN_VMALLOC is broken for any kernel < 6.4, so this one should not 
+>be backported to any kernel (5.15, 6.1, 6.2, 6.3).
 
-The quirk aspect of it :)
-
-I can drop it and the other patch you've pointed out.
+Ack, dropped. Thanks!
 
 -- 
 Thanks,
