@@ -2,95 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FDB707BAF
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 10:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F01707CA9
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 11:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbjERIP1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 18 May 2023 04:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49556 "EHLO
+        id S230192AbjERJT5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 05:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbjERIP0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 04:15:26 -0400
-Received: from nef.ens.fr (nef2.ens.fr [129.199.96.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B6626BB
-        for <stable@vger.kernel.org>; Thu, 18 May 2023 01:15:23 -0700 (PDT)
-X-ENS-nef-client:   129.199.127.85 ( name = mail.phys.ens.fr )
-Received: from mail.phys.ens.fr (mail.phys.ens.fr [129.199.127.85])
-          by nef.ens.fr (8.14.4/1.01.28121999) with ESMTP id 34I8EVjQ019440
-          ; Thu, 18 May 2023 10:14:31 +0200
-Received: from skaro.localnet (unknown [176.151.100.134])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by mail.phys.ens.fr (Postfix) with ESMTPSA id B19771A1A55;
-        Thu, 18 May 2023 10:14:30 +0200 (CEST)
-From:   =?ISO-8859-1?Q?=C9ric?= Brunet <eric.brunet@ens.fr>
-To:     Ville =?ISO-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        jouni.hogander@intel.com, jani.nikula@intel.com,
-        gregkh@linuxfoundation.org
-Subject: Re: Regression on drm/i915, with bisected commit
-Date:   Thu, 18 May 2023 10:14:30 +0200
-Message-ID: <5681706.DvuYhMxLoT@skaro>
-In-Reply-To: <ZGU56n66OAe0DqN3@intel.com>
-References: <3236901.44csPzL39Z@skaro> <ZGU56n66OAe0DqN3@intel.com>
+        with ESMTP id S230171AbjERJTy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 05:19:54 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64EF31FDC;
+        Thu, 18 May 2023 02:19:53 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-965ddb2093bso283803466b.2;
+        Thu, 18 May 2023 02:19:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684401592; x=1686993592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r/ogxbD5+bl5v/DEfPIW7lqt5YyocC+feHk+FrEPWiA=;
+        b=IHAOhEjpe+D1c8dHcvyVKHJtGm0Nwx+KJXDxwrsrn4sUBZUpL0Bf9Jp8sODEWhFGOV
+         7FcLsWvz4z4Z5rdYQio6ziNR6cbxbfLbKlYxkZhveTm7HGtq2TNM3CZovuR1vVx4zDrK
+         7YhV5zPAkUFU4HC+5oMIDmVfgfDjn7JhBWGtsfCkp85iLi4wOz729pgu3XwOPzjn2vpr
+         BhQnHnr2yuAJ+goZwRjLsxXc6jiCKKueJamXPcwyxcExxV7PEU2YG1HIbzbqU0bvt4Oz
+         q6+CYNVcqQ1bUvAJxKkY0AiQmCWhOn3zyhOInnJo8f5bXXfkw+B+QSPp/KcQ89/ev1Ff
+         z7Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684401592; x=1686993592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r/ogxbD5+bl5v/DEfPIW7lqt5YyocC+feHk+FrEPWiA=;
+        b=Uq8tVlaeKoCpwaN13WA6JmbIfaYbElVLeEjEyNq9jNgnfns3bv0wN1EWi6tPxuOP08
+         n1g9DibrTi8Ie+pbaNBgd8fjySgTG9RUmKh29Mdh26MOyxbznDgEL076tAUi8gpbLlhP
+         ZniJxLB014KQEQx2h+QPAGUsNQkDKlZ0pyleztT0rnTv/OOkXRwEcHhdV1alcAGwsuQ9
+         Oes1+6MUs530LTRji1Uo/TrRI2aosrLr/LbIff1r2GXZfcEU8RqOESbpktRTktkgpYuF
+         QLoT3zSRCSBWO/89HKGufVhS1P0AkGlaHSM8RCOu39+rpD0f8HhsaWS/MBlLfV1AvASg
+         1rag==
+X-Gm-Message-State: AC+VfDzlbWOsyKS4NozdNm8bQ1U0wBIW7lqB/zXMbsIpYpqg4RSASAXx
+        ZqYO3X8izZ9zt9kiB7OBTp9ArnZ7ONpWSkNcD6E=
+X-Google-Smtp-Source: ACHHUZ5KjNxQM1w4wj0w6CBuoO01AEK2Q5cNz4PKUtAvtyiz9CKwPUF3OXBvnpUl6/cDIe9HIWo1E+G4+NYcDD7KIQQ=
+X-Received: by 2002:a17:907:2d8d:b0:969:71aa:3da0 with SMTP id
+ gt13-20020a1709072d8d00b0096971aa3da0mr39808213ejc.35.1684401591521; Thu, 18
+ May 2023 02:19:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="iso-8859-1"
-X-Rspamd-Queue-Id: B19771A1A55
-X-Spamd-Bar: /
-X-Spamd-Result: default: False [-0.38 / 150.00];
-         ARC_NA(0.00)[];
-         R_SPF_NEUTRAL(0.00)[?all];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         MIME_TRACE(0.00)[0:+];
-         DMARC_NA(0.00)[ens.fr];
-         RCPT_COUNT_FIVE(0.00)[6];
-         HFILTER_HELO_IP_A(1.00)[skaro.localnet];
-         HFILTER_HELO_NORES_A_OR_MX(0.30)[skaro.localnet];
-         NEURAL_HAM(-0.00)[-1.000,0];
-         IP_SCORE(-1.76)[ip: (-0.16), ipnet: 176.128.0.0/10(-4.87), asn: 5410(-3.66), country: FR(-0.09)];
-         RCVD_COUNT_ZERO(0.00)[0];
-         FROM_EQ_ENVFROM(0.00)[];
-         R_DKIM_NA(0.00)[];
-         MID_RHS_NOT_FQDN(0.50)[];
-         ASN(0.00)[asn:5410, ipnet:176.128.0.0/10, country:FR];
-         HFILTER_HOSTNAME_UNKNOWN(2.50)[];
-         BAYES_HAM(-2.92)[99.66%];
-         ONCE_RECEIVED(0.10)[]
-X-Rspamd-Server: mail
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.4.3 (nef.ens.fr [129.199.96.32]); Thu, 18 May 2023 10:14:31 +0200 (CEST)
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230518014723.148327-1-xiubli@redhat.com>
+In-Reply-To: <20230518014723.148327-1-xiubli@redhat.com>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Thu, 18 May 2023 11:19:39 +0200
+Message-ID: <CAOi1vP8yHgtX6YZKcOwWE_KFARtHL65SE5ykyKHQfasMnj2t4Q@mail.gmail.com>
+Subject: Re: [PATCH v2] ceph: force updating the msg pointer in non-split case
+To:     xiubli@redhat.com
+Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org,
+        Frank Schilder <frans@dtu.dk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Le mercredi 17 mai 2023, 22:32:42 CEST Ville Syrjälä a écrit :
-> On Tue, May 16, 2023 at 03:04:53PM +0200, Éric Brunet wrote:
-> > Hello all,
-> > 
-> > I have a HP Elite x360 1049 G9 2-in-1 notebook running fedora 38 with an
-> > Adler Lake intel video card.
-> > 
-> > After upgrading to kernel 6.2.13 (as packaged by fedora), I started seeing
-> > severe video glitches made of random pixels in a vertical band occupying
-> > about 20% of my screen, on the right. The glitches would happen both with
-> > X.org and wayland.
-> 
-> Please file a bug at https://gitlab.freedesktop.org/drm/intel/issues/new
-> boot with "log_buf_len=4M drm.debug=0xe" passed to kernel cmdline, and
-> attach the resulting dmesg to the bug.
+On Thu, May 18, 2023 at 3:48=E2=80=AFAM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
+> request may still contain a list of 'split_realms', and we need
+> to skip it anyway. Or it will be parsed as a corrupt snaptrace.
+>
+> Cc: stable@vger.kernel.org
+> Cc: Frank Schilder <frans@dtu.dk>
+> Reported-by: Frank Schilder <frans@dtu.dk>
+> URL: https://tracker.ceph.com/issues/61200
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>
+> V2:
+> - Add a detail comment for the code.
+>
+>
+>  fs/ceph/snap.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
+> index 0e59e95a96d9..0f00f977c0f0 100644
+> --- a/fs/ceph/snap.c
+> +++ b/fs/ceph/snap.c
+> @@ -1114,6 +1114,19 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc=
+,
+>                                 continue;
+>                         adjust_snap_realm_parent(mdsc, child, realm->ino)=
+;
+>                 }
+> +       } else {
+> +               /*
+> +                * In non-SPLIT op case both the 'num_split_inos' and
+> +                * 'num_split_realms' should always be 0 and this will
+> +                * do nothing. But the MDS has one bug that in one of
+> +                * the UPDATE op cases it will pass a 'split_realms'
+> +                * list by mistake, and then will corrupted the snap
+> +                * trace in ceph_update_snap_trace().
+> +                *
+> +                * So we should skip them anyway here.
+> +                */
+> +               p +=3D sizeof(u64) * num_split_inos;
+> +               p +=3D sizeof(u64) * num_split_realms;
+>         }
+>
+>         /*
+> --
+> 2.40.1
+>
 
-Thank you for your answer, I have just opened the issue as requested.
+LGTM, staged for 6.4-rc3 with a slightly amended comment.
 
-https://gitlab.freedesktop.org/drm/intel/-/issues/8480
+Thanks,
 
-Éric Brunet
-
-
+                Ilya
