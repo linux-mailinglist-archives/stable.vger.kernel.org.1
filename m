@@ -2,90 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3347F7088BE
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 21:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10031708904
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 22:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbjERTya (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 15:54:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36600 "EHLO
+        id S230060AbjERUG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 16:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjERTy3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 15:54:29 -0400
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370EAE43;
-        Thu, 18 May 2023 12:54:29 -0700 (PDT)
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2533b600d35so2450520a91.1;
-        Thu, 18 May 2023 12:54:29 -0700 (PDT)
+        with ESMTP id S229988AbjERUG0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 16:06:26 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19EE5E4F
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 13:06:25 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-33164ec77ccso32525ab.0
+        for <stable@vger.kernel.org>; Thu, 18 May 2023 13:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684440384; x=1687032384;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Llsf50DWFe4C4yt4CKwUU/mwMek/qP2tT3Isdnsoo/E=;
+        b=QwXTDrd3SJelts9j+j9UzmNzyhPBsTx2joXvlvK05j+iopzqy0g9YNVbc9veuyqgMD
+         qbVeu5jMKxAi/rsKorhn3MvqigHN/I2VcoIXJs5aNs4l+vYlCjbftWTkCxz7vRmY57ES
+         1DdYCsLvRAD6/IsVfHo1cS5qvxvdOAIzxkwihEHTLui58+fkSG3dN/p7n7LUdVsT0xpD
+         /b2xfk43CpN5V1eIN8EpmA9KcBJE6or8NOBuz7fm/BdSvFOSxA5YnnQlVwI10hCaoyRO
+         FTcRnrMxDZBg/ZDevgMwGxAglwWPl/9PBkJ4wGXsPxt8iq20b6C8i1ONFvL8SjRuScx4
+         6zEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684439668; x=1687031668;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6wdolwlpbuv2Z12HD1Qbe+hXD0bhyAObpIkruQgw9vI=;
-        b=e9BiXNihF9FTyIjrZScNXkCH4Hn/NBHj4VVpn43Xf2oo6KyRJmLH1P2poO8C4jN6+f
-         Se1Wb5OV9R7Ugrjya0wrr0vLQn8D+OTCVfClSTGj8NH+oh9QSGa6sdfbdph84Jmk1xsh
-         5WMilT+4CsgQO+JJ7pPytLQ8RDHoUoNopPKXdD6u63uGn/O3OgC4bhjx5QToh6xeeJNq
-         p88lwPzH+VQEGVoY5j1F++YkREd6ORnUc7Kbo/eEnIwgr+t8WBadF15Tn1g8kZ42wwLF
-         o8cdpDOgfC40JON2ppLgeofts8Khr9djVy54ZZMXHc2tvoRgkElPLN5n2v39MhEhTGJ9
-         tRew==
-X-Gm-Message-State: AC+VfDzOWYDFC2Ea5wkyjl2ykJOLohykFgxVrCI0m3t1n2WLcwep/fFG
-        iTu5drBqd1SdAxUGEWJ85fk=
-X-Google-Smtp-Source: ACHHUZ5TQGnA/Statr8aMHj1h3GJXjV7HU3FBcQB+q5BARW6/JrZa8g/nC+IO/uynKlh4wlbluvaLA==
-X-Received: by 2002:a17:90a:e393:b0:253:78a7:6d with SMTP id b19-20020a17090ae39300b0025378a7006dmr787435pjz.4.1684439668593;
-        Thu, 18 May 2023 12:54:28 -0700 (PDT)
-Received: from [192.168.51.14] ([98.51.102.78])
-        by smtp.gmail.com with ESMTPSA id r14-20020a17090a454e00b002528588560fsm75797pjm.13.2023.05.18.12.54.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 May 2023 12:54:27 -0700 (PDT)
-Message-ID: <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
-Date:   Thu, 18 May 2023 12:54:27 -0700
+        d=1e100.net; s=20221208; t=1684440384; x=1687032384;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Llsf50DWFe4C4yt4CKwUU/mwMek/qP2tT3Isdnsoo/E=;
+        b=d0pNhWxla4cwp5/yZaBcUlaiKNsVHqMLQPGi03Asnz76uhdZmtcfCIal3H7hdk2xMz
+         U8nHM0rlzT4Bax+5wc7/cGjKYwi2HsDqoG3bgZiaxCUpMrdrjAQpXrg0i1uBhf+7juX2
+         7Yfc9J0uEsEJ3uDEtGyweQLJLHcBdi/6mlf+7s6B8DRIxrdxvAf1eewuPcHCMLlPxKO+
+         /rA6xdw0wCOxyRErwNkUO60KUBYgQprEH3ROZP3vOa8DjPpqqVW/OqmwBbx/1RKUFNdd
+         1y9APV5aCAQ2OF31W8Rdp1EG88AKOLPv3KuEyVM7awxTEqEeE2lpWUTrDdliHstQSJSH
+         ybWA==
+X-Gm-Message-State: AC+VfDxkgv7WHD8RP5CZuGqeFIH1uQ+N/yIbk5BVjCxGvhzgEA5DpFt8
+        /ZQpsRizBwedwfnJ4TpgKx+2Xfh8lzIusxuzHroMCg==
+X-Google-Smtp-Source: ACHHUZ7TnKSs1H8nCSexD5mn0PX6Pbdp7GYAtzTugz6CaARe7amjq9yGFwtzRQzLMzOtQyHpMHkr74j3WGyUaTolUEQ=
+X-Received: by 2002:a05:6e02:12cc:b0:335:f8e9:2791 with SMTP id
+ i12-20020a056e0212cc00b00335f8e92791mr26729ilm.18.1684440384333; Thu, 18 May
+ 2023 13:06:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
-Content-Language: en-US
-To:     John Garry <john.g.garry@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
-References: <20230511123432.5793-1-jgross@suse.com>
- <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
- <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
- <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
- <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
- <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230512235755.1589034-1-pcc@google.com> <20230512235755.1589034-2-pcc@google.com>
+ <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
+ <ZGLC0T32sgVkG5kX@google.com> <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
+ <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com> <c9f1fc7c-62a2-4768-7992-52e34ec36d0f@redhat.com>
+In-Reply-To: <c9f1fc7c-62a2-4768-7992-52e34ec36d0f@redhat.com>
+From:   Peter Collingbourne <pcc@google.com>
+Date:   Thu, 18 May 2023 13:06:13 -0700
+Message-ID: <CAMn1gO7t0S7CmeU=59Lq10N0WvrKebM=W91W7sa+SQoG13Uppw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before swap_free()
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "surenb@google.com" <surenb@google.com>,
+        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
+        <chinwen.chang@mediatek.com>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
+        <Kuan-Ying.Lee@mediatek.com>,
+        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        vincenzo.frascino@arm.com,
+        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
+        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/18/23 03:57, John Garry wrote:
-> I think it's better to fix up the callers.
+On Wed, May 17, 2023 at 1:30=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> >> Would the idea be to fail swap_readpage() on the one that comes last,
+> >> simply retrying to lookup the page?
+> >
+> > The idea would be that T2's arch_swap_readpage() could potentially not
+> > find tags if it ran after swap_free(), so T2 would produce a page
+> > without restored tags. But that wouldn't matter, because T1 reaching
+> > swap_free() means that T2 will follow the goto at [1] after waiting
+> > for T1 to unlock at [2], and T2's page will be discarded.
+>
+> Ah, right.
+>
+> >
+> >> This might be a naive question, but how does MTE play along with share=
+d
+> >> anonymous pages?
+> >
+> > It should work fine. shmem_writepage() calls swap_writepage() which
+> > calls arch_prepare_to_swap() to write the tags. And
+> > shmem_swapin_folio() has a call to arch_swap_restore() to restore
+> > them.
+>
+> Sorry, I meant actual anonymous memory pages, not shmem. Like, anonymous
+> pages that are COW-shared due to fork() or KSM.
+>
+> How does MTE, in general, interact with that? Assume one process ends up
+> modifying the tags ... and the page is COW-shared with a different
+> process that should not observe these tag modifications.
 
-+1
+Tag modifications cause write faults if the page is read-only, so for
+COW shared pages we would end up copying the page in the usual way,
+which on arm64 would copy the tags as well via the copy_highpage hook
+(see arch/arm64/mm/copypage.c).
 
-> Further to that, I dislike 
-> how we pass a pointer to this local sshdr structure. I would prefer if 
-> scsi_execute_cmd() could kmalloc() the mem for these buffers and the 
-> callers could handle free'ing them - I can put together a patch for 
-> that, to see what people think.
-
-sizeof(struct scsi_sense_hdr) = 8. Using kmalloc() to allocate an eight 
-byte data structure sounds like overkill to me. Additionally, making 
-scsi_execute_cmd() allocate struct scsi_sense_hdr and letting the 
-callers free that data structure will make it harder to review whether 
-or not any memory leaks are triggered. No such review is necessary if 
-the scsi_execute_cmd() caller allocates that data structure on the stack.
-
-Bart.
+Peter
