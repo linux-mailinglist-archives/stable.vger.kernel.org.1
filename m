@@ -2,60 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF7DC708655
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 19:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B08708668
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 19:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbjERRDH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 18 May 2023 13:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43226 "EHLO
+        id S229476AbjERRJI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 18 May 2023 13:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbjERRDE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 13:03:04 -0400
+        with ESMTP id S229570AbjERRJH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 18 May 2023 13:09:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE1CB10DF;
-        Thu, 18 May 2023 10:03:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C544AB;
+        Thu, 18 May 2023 10:09:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 534BA61A1D;
-        Thu, 18 May 2023 17:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3E1C4339B;
-        Thu, 18 May 2023 17:03:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21F5861889;
+        Thu, 18 May 2023 17:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AB5C433EF;
+        Thu, 18 May 2023 17:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684429382;
-        bh=VCCeLI373vWJ8f/V7BOKXbKqCsAysHhGwbaiZFbiJmk=;
+        s=k20201202; t=1684429745;
+        bh=Qm04zr0gSo5j8CHzYq69b7TQ96spiaJHuZriamU5aFQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EueXkezxKj8nsJY6EorpUBrXyGljC2oM1QZ+ceid8fG1IVIYkpXDLZkMjfRN5QDB2
-         Z150nRe+/hVcuOORPtXaJpq4vHrFh8+lRXxhG/NhNmUcALYlk8/5i6PNh4+43oSnVT
-         4LI0+bZ40SX2fM6qVvrG0jDp5dQs+XT/WTGa2QkUUaLUvwBpF5wuoZ9PSErDbJN6cc
-         JizqUfJeuDqzlpg2rmHRyHJcq256RFrmrFcK1qdYxA3QbC0y+2vZZzwQ7TNEfbXvgs
-         oMjAOzZmPeCxnng3UUPTAvmK0inbvh5x+G0+ctVTPM+n0HmhH10s8Y0aZynM8QFKsz
-         mpq6yWqZTxQhg==
-Date:   Thu, 18 May 2023 13:03:01 -0400
+        b=D84hh/0XA0ozwmpMMrs4sFMjViu1VoMJRP6GWM9Nzg3Up7bN7caKpV+nTl3MqSE1d
+         2NBAnTfzjAD+g8HuVJ7QmIzi1/HxdzPKIK9dphKMBDa5z8cnSyFyt2FSp0sw6gBhxz
+         YEFfZijdUynl4EAAUyfNkjp4jfMtyusPQjHEL05u7ss+GrZB3ljzTBw6c8+xFkVA+x
+         ZfST8N5IG0x9P2h8dw5bbzeiyz3mHqkXy4l61rZWSMhuHGkLzCJwetSsznX9PZBsNA
+         U3kjzI4foq3gcY9jB29N7xoIAW8NYOJF1SdxMDIKfNmnLuaoWMmi0T2OG4lmZJcKHF
+         AzVFuF88OdTUw==
+Date:   Thu, 18 May 2023 13:09:04 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-kernel@vger.kernel.org,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-        Johan Almbladh <johan.almbladh@anyfinetworks.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "paulburton@kernel.org" <paulburton@kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        bpf@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.3 08/59] bpf, mips: Implement DADDI workarounds
- for JIT
-Message-ID: <ZGZaRfsA/FTvZcsX@sashalap>
-References: <20230504194142.3805425-1-sashal@kernel.org>
- <20230504194142.3805425-8-sashal@kernel.org>
- <50FCC591-D86A-46A3-AF4A-DD68D2FACC78@flygoat.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Svyatoslav Ryhel <clamor95@gmail.com>, lgirdwood@gmail.com,
+        perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org
+Subject: Re: [PATCH AUTOSEL 6.3 01/24] ASoC: jack: allow multiple interrupt
+ per gpio
+Message-ID: <ZGZbsIMIa6qgU0ht@sashalap>
+References: <20230507003022.4070535-1-sashal@kernel.org>
+ <ZFg2ZWqEBkPsJk+Y@finisterre.sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <50FCC591-D86A-46A3-AF4A-DD68D2FACC78@flygoat.com>
+In-Reply-To: <ZFg2ZWqEBkPsJk+Y@finisterre.sirena.org.uk>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -66,34 +56,20 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 05, 2023 at 01:04:14PM +0100, Jiaxun Yang wrote:
->
->
->> 2023年5月4日 20:40，Sasha Levin <sashal@kernel.org> 写道：
+On Mon, May 08, 2023 at 08:38:13AM +0900, Mark Brown wrote:
+>On Sat, May 06, 2023 at 08:29:57PM -0400, Sasha Levin wrote:
+>> From: Svyatoslav Ryhel <clamor95@gmail.com>
 >>
->> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> [ Upstream commit a2d4051b0bd6dffcd736888ae89a550d6f60b060 ]
 >>
->> [ Upstream commit bbefef2f07080cd502a93cb1c529e1c8a6c4ac8e ]
->>
->> For DADDI errata we just workaround by disable immediate operation
->> for BPF_ADD / BPF_SUB to avoid generation of DADDIU.
->>
->> All other use cases in JIT won't cause overflow thus they are all safe.
->>
->> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Acked-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
->> Link: https://lore.kernel.org/bpf/20230228113305.83751-2-jiaxun.yang@flygoat.com
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> This feature is required for coupled hp-mic quirk used
+>> by some Nvidia Tegra 3 based devices work properly.
 >
->Hi Sasha,
->
->I think this patch should count as a functional improvement instead of regression fix.
->
->Please drop it from stable queue.
+>This is a new feature, why is it being backported to stable?
 
-Dropped, thanks!
+The quirk aspect of it :)
+
+I can drop it and the other patch you've pointed out.
 
 -- 
 Thanks,
