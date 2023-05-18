@@ -2,54 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13215707795
-	for <lists+stable@lfdr.de>; Thu, 18 May 2023 03:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965337077AD
+	for <lists+stable@lfdr.de>; Thu, 18 May 2023 03:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229827AbjERBsx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 17 May 2023 21:48:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42320 "EHLO
+        id S229453AbjERBwT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 17 May 2023 21:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbjERBsv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 21:48:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B52102
-        for <stable@vger.kernel.org>; Wed, 17 May 2023 18:48:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684374482;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=PqsWIf6K4TW/GQ1yMBTqaw73BkuEKsboj7/HFri0j+U=;
-        b=BHCt77Eq+Bm9FnT0fEX5Im0JRLgrTnlc9gbqcyjSY/XBGZIcJiSTbXRk6/69gf6mK7pHUY
-        vJe6UpC5MCDbOR382BcqniGYXufEG/wUz6D5sLdo3ZqWAqWvmY0y1GWNNSPZTz5O/ovEiu
-        KOphj9qDbqdHktkRGUc2Uxd+6QEngmw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-182-VHXJpoPvPESeIvBgiaHs7g-1; Wed, 17 May 2023 21:47:59 -0400
-X-MC-Unique: VHXJpoPvPESeIvBgiaHs7g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F41AD80067D;
-        Thu, 18 May 2023 01:47:58 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-110.pek2.redhat.com [10.72.12.110])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 181242166B31;
-        Thu, 18 May 2023 01:47:53 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com,
-        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org,
-        Frank Schilder <frans@dtu.dk>
-Subject: [PATCH v2] ceph: force updating the msg pointer in non-split case
-Date:   Thu, 18 May 2023 09:47:23 +0800
-Message-Id: <20230518014723.148327-1-xiubli@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        with ESMTP id S229882AbjERBwS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 17 May 2023 21:52:18 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C372C30FD
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 18:51:52 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-55a9614c154so23198417b3.2
+        for <stable@vger.kernel.org>; Wed, 17 May 2023 18:51:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684374708; x=1686966708;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zXh/O/V/WptHcvZP+JCdTYTDP4LQ9st6a4OKh85bxLg=;
+        b=IfmQuyHqbPtqNnhVieMu9NzCq4te8XLyLb/DhJuRmnprCTKiLUdOcW6g3y2jB1dgkw
+         YFNcIF+OSbv5phj/j2mXjZK1mFlyvAe2aq1crDGN0RreDGx/deLCWh8WLU8nvJ4Gpn0x
+         ochjMURbmABoRK5v6ctPRm/1GCnTeHPXmZ6bpCP4+Il3DO8AmNxg0xbQHm0/ZovoBPe+
+         pA6kO/hvzAML1E0cPRlo4hwhaSAM0ELQy2CxzL/77SQq/Dko6cvu5yudJ7m4L03nAFUQ
+         dXAFgjMf4adYvGjw99XcYjUepdrxgpym8kGLufrd3hhSNPGeUvt8xanCRGPdyEEyPAFX
+         lNsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684374708; x=1686966708;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zXh/O/V/WptHcvZP+JCdTYTDP4LQ9st6a4OKh85bxLg=;
+        b=PesG5Ho/rd/iGIm8VWyfAMFW0Q6maK9qGSEAsHOje1EDozSIpFHKli17OSbR2THBTw
+         c9CDVpqO0shk70dIWA73bV/2/+voP/Ulhet+X1A/I5sut9aNXkgXxhaSZfjAiVM8bGnE
+         dPvwyKgWshJT/0M1Vn3ZuNAzCtEyFY30p5Ac0MX8uCz+6y1bFwoz3qaqHC4EoEYQ1PqD
+         R1dZvDSCwesiqPRpuQzXdTnD/btym2KtDdTIwz9HwyllIzBtu4TmGmWze2ZIXpc6KMLM
+         e0INQfvAWF12W8eHO+w4XusIbzsOHo7LEQBEGYajWO5cH+8YrpwGoQ2G6aovovsCJ0tX
+         S7iA==
+X-Gm-Message-State: AC+VfDzP7BI7bXKQ3M0UGD3DN2KDrwt9/sJCEqqDMKILiF80pZ44/LO1
+        0vIYkWF1lslLkze+/hxt4Sz0i7GY5Hk=
+X-Google-Smtp-Source: ACHHUZ5YR3a7R9JsHjBo5Xw0oxDMRKd1Rw9K1kdyGq6xvpeMZdMrKgm1WLSCiFPT5VQPXfLP5Z5nDA2kPAA=
+X-Received: from pandoh.svl.corp.google.com ([2620:15c:2c5:11:2f7e:7405:7496:cdec])
+ (user=pandoh job=sendgmr) by 2002:a0d:ec09:0:b0:54c:2409:c306 with SMTP id
+ q9-20020a0dec09000000b0054c2409c306mr93492ywn.6.1684374708680; Wed, 17 May
+ 2023 18:51:48 -0700 (PDT)
+Date:   Wed, 17 May 2023 18:50:54 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
+Message-ID: <20230518015054.2223833-1-pandoh@google.com>
+Subject: [PATCH RESEND] iommu/amd: Fix domain flush size when syncing iotlb
+From:   Jon Pan-Doh <pandoh@google.com>
+To:     Joerg Roedel <joro@8bytes.org>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc:     Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+        iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Jon Pan-Doh <pandoh@google.com>, stable@vger.kernel.org,
+        Gary Zibrat <gzibrat@google.com>,
+        Sudheer Dantuluri <dantuluris@google.com>,
+        Nadav Amit <namit@vmware.com>,
+        Vasant Hegde <vasant.hegde@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,50 +71,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+When running on an AMD vIOMMU, we observed multiple invalidations (of
+decreasing power of 2 aligned sizes) when unmapping a single page.
 
-When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
-request may still contain a list of 'split_realms', and we need
-to skip it anyway. Or it will be parsed as a corrupt snaptrace.
+Domain flush takes gather bounds (end-start) as size param. However,
+gather->end is defined as the last inclusive address (start + size - 1).
+This leads to an off by 1 error.
 
-Cc: stable@vger.kernel.org
-Cc: Frank Schilder <frans@dtu.dk>
-Reported-by: Frank Schilder <frans@dtu.dk>
-URL: https://tracker.ceph.com/issues/61200
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
+With this patch, verified that 1 invalidation occurs when unmapping a
+single page.
+
+Fixes: a270be1b3fdf ("iommu/amd: Use only natural aligned flushes in a VM")
+Cc: <stable@vger.kernel.org> # 5.15.x
+Suggested-by: Gary Zibrat <gzibrat@google.com>
+Tested-by: Sudheer Dantuluri <dantuluris@google.com>
+Acked-by: Nadav Amit <namit@vmware.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jon Pan-Doh <pandoh@google.com>
 ---
+ drivers/iommu/amd/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V2:
-- Add a detail comment for the code.
-
-
- fs/ceph/snap.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-index 0e59e95a96d9..0f00f977c0f0 100644
---- a/fs/ceph/snap.c
-+++ b/fs/ceph/snap.c
-@@ -1114,6 +1114,19 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
- 				continue;
- 			adjust_snap_realm_parent(mdsc, child, realm->ino);
- 		}
-+	} else {
-+		/*
-+		 * In non-SPLIT op case both the 'num_split_inos' and
-+		 * 'num_split_realms' should always be 0 and this will
-+		 * do nothing. But the MDS has one bug that in one of
-+		 * the UPDATE op cases it will pass a 'split_realms'
-+		 * list by mistake, and then will corrupted the snap
-+		 * trace in ceph_update_snap_trace().
-+		 *
-+		 * So we should skip them anyway here.
-+		 */
-+		p += sizeof(u64) * num_split_inos;
-+		p += sizeof(u64) * num_split_realms;
- 	}
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 5a505ba5467e..da45b1ab042d 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2378,7 +2378,7 @@ static void amd_iommu_iotlb_sync(struct iommu_domain *domain,
+ 	unsigned long flags;
  
- 	/*
+ 	spin_lock_irqsave(&dom->lock, flags);
+-	domain_flush_pages(dom, gather->start, gather->end - gather->start, 1);
++	domain_flush_pages(dom, gather->start, gather->end - gather->start + 1, 1);
+ 	amd_iommu_domain_flush_complete(dom);
+ 	spin_unlock_irqrestore(&dom->lock, flags);
+ }
 -- 
-2.40.1
+2.40.0.634.g4ca3ef3211-goog
 
