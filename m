@@ -2,131 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A20709DB1
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 19:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5148E709DFC
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 19:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbjESRRf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 13:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56918 "EHLO
+        id S229695AbjESR1g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 13:27:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230361AbjESRRe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 13:17:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AFE49E
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 10:16:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684516606;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yR/NkvCfvmT4S31V3jI5qchDRG5AoNbgq8Ky6KegdPs=;
-        b=ZJIqtpMZPh7QhNfu+0h8rFoKRV9EL0MeFmKtCrtu02pfydIB7vFWigGUeSkodT+M6Oe9gK
-        VPM6JvpqouubGhFfRJmuZBIxRtKygG8xDSUUdlwIlQSNvUktl7qlZik2tPPZv10A9QVoOo
-        GMQKHSw6X4BNxkZEhfGV15YqsAxUAcw=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-rznDYlaLNN268rHXZLr7qA-1; Fri, 19 May 2023 13:16:45 -0400
-X-MC-Unique: rznDYlaLNN268rHXZLr7qA-1
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-3f39abae298so24909781cf.1
-        for <Stable@vger.kernel.org>; Fri, 19 May 2023 10:16:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684516605; x=1687108605;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yR/NkvCfvmT4S31V3jI5qchDRG5AoNbgq8Ky6KegdPs=;
-        b=cxH2U04eV6ve26TzG5QKOdrKURBwKOsJ2OU7qSHUtCMdzMbc5I5UAjd6PztbGJ5nqR
-         5AsAiPRvfT9MrfpDw8WGvEbRyziNuzpRIsNMklqYARWndNWSltYvJD0V5qF3FWni2u3O
-         nGAnF3TaK7uVLTnixNvy0zSDV6KlsPodH6/uJA4foMfSFE3yXP8/I6TNSnu/KSRJ3Tax
-         meWNVZAvE/qRw03XgRrwgLqClC3AbuBZnuf/OBZ6cx0sL6tFT7ph+o0FaLSWbCTkYD7V
-         G7pBZJfjq2CTVqqv3PWd1FBG8HAdKpFK12AqpEg0fX/rvYnv2l/FynqTk0Gm4utkvHqb
-         JKKg==
-X-Gm-Message-State: AC+VfDxAWZsWp9oRnGLY6OvTSJT0s4vAaoSchEcTXZM3HfzAOWFyT6or
-        qlUsvJ9hw1o+jNf6FbqomKkwkd+EMaUSf9vn0am+zsGkkqd52oV/VYXpVDEQPjYYBWvF2pKJwSm
-        Wvwc9pLPbT7dZTI2s
-X-Received: by 2002:a05:622a:64d:b0:3f2:eaa:6b0f with SMTP id a13-20020a05622a064d00b003f20eaa6b0fmr3715108qtb.68.1684516604784;
-        Fri, 19 May 2023 10:16:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7VP2sdXzCif5qwDVtl6gpXZ991V9IZ7QuC40clV6OSnUYaAaVN7v50hwqgdKY/Xz+tUl5c3A==
-X-Received: by 2002:a05:622a:64d:b0:3f2:eaa:6b0f with SMTP id a13-20020a05622a064d00b003f20eaa6b0fmr3715071qtb.68.1684516604226;
-        Fri, 19 May 2023 10:16:44 -0700 (PDT)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id u13-20020a05620a120d00b0074d1d3b2143sm1236524qkj.118.2023.05.19.10.16.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 10:16:43 -0700 (PDT)
-Date:   Fri, 19 May 2023 10:16:42 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Vasant Hegde <vasant.hegde@amd.com>
-Cc:     iommu@lists.linux.dev, joro@8bytes.org,
-        suravee.suthikulpanit@amd.com, Stable@vger.kernel.org
-Subject: Re: [PATCH] iommu/amd/pgtbl_v2: Fix domain max address
-Message-ID: <2meuricmfok2vumlsw4lq3ut2ulrbhmlzwfsxoo6krfa4wt5ux@j2d65uzpierq>
-References: <20230518054351.9626-1-vasant.hegde@amd.com>
+        with ESMTP id S229792AbjESR1b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 13:27:31 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id A6506BB
+        for <stable@vger.kernel.org>; Fri, 19 May 2023 10:27:29 -0700 (PDT)
+Received: (qmail 45355 invoked by uid 1000); 19 May 2023 13:27:28 -0400
+Date:   Fri, 19 May 2023 13:27:28 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Badhri Jagan Sridharan <badhri@google.com>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
+        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2] usb: gadget: udc: core: Offload usb_udc_vbus_handler
+ processing
+Message-ID: <a2305ca6-d343-473d-b220-556a2c2e7833@rowland.harvard.edu>
+References: <20230519043041.1593578-1-badhri@google.com>
+ <c181c8ef-f342-4a31-9b8c-e1fa14ad214e@rowland.harvard.edu>
+ <a1d064e7-9847-4e2e-b74a-4ae4f39d3f04@rowland.harvard.edu>
+ <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230518054351.9626-1-vasant.hegde@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 18, 2023 at 05:43:51AM +0000, Vasant Hegde wrote:
-> IOMMU v2 page table supports 4 level (47 bit) or 5 level (56 bit) virtual
-> address space. Current code assumes it can support 64bit IOVA address
-> space. If IOVA allocator allocates virtual address > 47/56 bit (depending
-> on page table level) then it will do wrong mapping and cause invalid
-> translation.
+On Fri, May 19, 2023 at 08:44:57AM -0700, Badhri Jagan Sridharan wrote:
+> On Fri, May 19, 2023 at 8:07 AM Alan Stern <stern@rowland.harvard.edu> wrote:
+> >
+> > On Fri, May 19, 2023 at 10:49:49AM -0400, Alan Stern wrote:
+> > > On Fri, May 19, 2023 at 04:30:41AM +0000, Badhri Jagan Sridharan wrote:
+> > > > chipidea udc calls usb_udc_vbus_handler from udc_start gadget
+> > > > ops causing a deadlock. Avoid this by offloading usb_udc_vbus_handler
+> > > > processing.
+> > >
+> > > Look, this is way overkill.
+> > >
+> > > usb_udc_vbus_handler() has only two jobs to do: set udc->vbus and call
+> > > usb_udc_connect_control().  Furthermore, it gets called from only two
+> > > drivers: chipidea and max3420.
+> > >
+> > > Why not have the callers set udc->vbus themselves and then call
+> > > usb_gadget_{dis}connect() directly?  Then we could eliminate
+> > > usb_udc_vbus_handler() entirely.  And the unnecessary calls -- the ones
+> > > causing deadlocks -- from within udc_start() and udc_stop() handlers can
+> > > be removed with no further consequence.
+> > >
+> > > This approach simplifies and removes code.  Whereas your approach
+> > > complicates and adds code for no good reason.
+> >
+> > I changed my mind.
+> >
+> > After looking more closely, I found the comment in gadget.h about
+> > ->disconnect() callbacks happening in interrupt context.  This means we
+> > cannot use a mutex to protect the associated state, and therefore the
+> > connect_lock _must_ be a spinlock, not a mutex.
 > 
-> Hence adjust aperture size to use max address supported by the page table.
+> Quick observation so that I don't misunderstand.
+> I already see gadget->udc->driver->disconnect(gadget) being called with
+> udc_lock being held.
 > 
-> Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
-> Cc: <Stable@vger.kernel.org>  # v6.0+
-> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+>                mutex_lock(&udc_lock);
+>                if (gadget->udc->driver)
+>                        gadget->udc->driver->disconnect(gadget);
+>                mutex_unlock(&udc_lock);
+> 
+> The below patch seems to have introduced it:
+> 1016fc0c096c USB: gadget: Fix obscure lockdep violation for udc_mutex
 
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com
+Hmmm...  You're right about this.  A big problem with the USB gadget 
+framework is that it does not clearly state which routines have to run 
+in process context and which have to run in interrupt/atomic context.  
+People therefore don't think about it and frequently get it wrong.
 
-> ---
->  drivers/iommu/amd/iommu.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-> index 5aaa4cf84506..e14c7c666745 100644
-> --- a/drivers/iommu/amd/iommu.c
-> +++ b/drivers/iommu/amd/iommu.c
-> @@ -2128,6 +2128,15 @@ static struct protection_domain *protection_domain_alloc(unsigned int type)
->  	return NULL;
->  }
->  
-> +static inline u64 dma_max_address(void)
-> +{
-> +	if (amd_iommu_pgtable == AMD_IOMMU_V1)
-> +		return ~0ULL;
-> +
-> +	/* V2 with 4/5 level page table */
-> +	return ((1ULL << PM_LEVEL_SHIFT(amd_iommu_gpt_level)) - 1);
-> +}
-> +
->  static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
->  {
->  	struct protection_domain *domain;
-> @@ -2144,7 +2153,7 @@ static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
->  		return NULL;
->  
->  	domain->domain.geometry.aperture_start = 0;
-> -	domain->domain.geometry.aperture_end   = ~0ULL;
-> +	domain->domain.geometry.aperture_end   = dma_max_address();
->  	domain->domain.geometry.force_aperture = true;
->  
->  	return &domain->domain;
-> -- 
-> 2.31.1
-> 
+So now the problem is that the UDC or transceiver driver may detect 
+(typically in an interrupt handler) that VBUS power has appeared or 
+disappeared, and it wants to tell the core to adjust the D+/D- pullup 
+signals appropriately.  The core notifies the UDC driver about this, and 
+then in the case of a disconnection, it has to notify the gadget driver.  
+But notifying the gadget driver requires process context for the 
+udc_lock mutex, the ultimate reason being that disconnect notifications 
+can race with gadget driver binding and unbinding.
 
+If we could prevent those races in some other way then we wouldn't need 
+to hold udc_lock in usb_gadget_disconnect().  This seems like a sensible 
+thing to do in any case; the UDC core should never allow a connection to 
+occur before a gadget driver is bound or after it is unbound.
+
+The first approach that occurs to me is to add a boolean allow_connect 
+flag to struct usb_udc, together with a global spinlock to synchronize 
+access to it.  Then usb_gadget_disconnect() could check the flag before 
+calling driver->disconnect(), gadget_bind_driver() could set the flag 
+before calling usb_udc_connect_control(), and gadget_unbind_driver() 
+could clear the flag before calling usb_gadget_disconnect().
+
+(Another possible approach would be to change gadget->deactivated into a 
+counter.  It would still need to be synchronized by a spinlock, 
+however.)
+
+This will simplify matters considerably.  udc_lock can remain a mutex 
+and the deadlock problem should go away.
+
+Do you want to try adding allow_connect as described here or would you 
+prefer that I do it?
+
+(And in any case, we should prevent the udc_start and udc_stop callbacks 
+in the chipidea and max3420 drivers from trying to update the connection 
+status.)
+
+Alan Stern
