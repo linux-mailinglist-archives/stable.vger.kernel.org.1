@@ -2,132 +2,232 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92C017092E5
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 11:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5E6709314
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 11:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231162AbjESJWY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 05:22:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60952 "EHLO
+        id S229980AbjESJa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 05:30:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229876AbjESJWX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 05:22:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCA3E47
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 02:21:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684488100;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TWFb7su+l+wO5tmP1uJaxoMrwLD0GIgYT9evuWTAj54=;
-        b=W1CH98enTEKi0X4/rQPxKTROeFhJJYHmjKScmE2p1eV+I5neulShL2oQ8TVbM2oPkLtlbO
-        IW7/SL1sCq6MDsXlnh+ANWjj9iI0VC83HYChyLkJGFpdcDxKCyr4B5mO5YV341Zig4jNvF
-        2T/xjXhlGIHq8R2LH2F9iwV1v0KE4UI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-5ZiQNMvYMouxYLRQEp29Qw-1; Fri, 19 May 2023 05:21:38 -0400
-X-MC-Unique: 5ZiQNMvYMouxYLRQEp29Qw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f5df65fa35so5343625e9.3
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 02:21:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684488097; x=1687080097;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TWFb7su+l+wO5tmP1uJaxoMrwLD0GIgYT9evuWTAj54=;
-        b=BqyTGQEGrVoKDGQWXsuX6RI+mvGWJeSR4jlSwAfojPO+DM2379wFnw9a3Sn+yBMUkS
-         G8lgTPUmmUOspyhxufMYMZujTA6ZjZ1hll+baz1J/rT6KYG1eU+sZJDmZC4hlgBRuPI8
-         3b4oU7OprjFTth9m0lAEaAki7Qbn7o4SW54Ir3knVPaybsEtNEtd0DM3UjUJUxH7MRLS
-         ekMKg4WqcPnmITCdYHy7nn2CZJm0TrelvcYcaitCCw9aowEAQRZntAlGjk0lwybtXo7F
-         z8L8tr1ZCxRpDtovuemmwYvB5MipO8WB9dvWF5FVH0MJcMbQwuDc0jPdwjcYkibAZa8/
-         joZA==
-X-Gm-Message-State: AC+VfDx9rVDrPlid1EJCIKJPunfAJu9+8/kGFgejY8BzsPDx2bPOB4PN
-        0zWqMbRLJG0Y9t51lh0YJxvB22wYGCqnHbcpi7s/XOC/eaOkAWzWOQ/1DTcS3OEppwDYD3nziNE
-        PoPB1fC+zpxvERPVM
-X-Received: by 2002:a1c:f20b:0:b0:3f4:16bc:bd1b with SMTP id s11-20020a1cf20b000000b003f416bcbd1bmr778346wmc.39.1684488097707;
-        Fri, 19 May 2023 02:21:37 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6dz0PcxB7344vGoAWPy4CcML6krGk716U287/gC5ZmUcy5HC+h9blZEghWa25ztRBkBdRg8Q==
-X-Received: by 2002:a1c:f20b:0:b0:3f4:16bc:bd1b with SMTP id s11-20020a1cf20b000000b003f416bcbd1bmr778313wmc.39.1684488097347;
-        Fri, 19 May 2023 02:21:37 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c722:9d00:7421:54d8:9227:a3e8? (p200300cbc7229d00742154d89227a3e8.dip0.t-ipconnect.de. [2003:cb:c722:9d00:7421:54d8:9227:a3e8])
-        by smtp.gmail.com with ESMTPSA id m16-20020a7bce10000000b003f435652aaesm1753343wmc.11.2023.05.19.02.21.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 May 2023 02:21:36 -0700 (PDT)
-Message-ID: <80f45fec-3e91-c7b3-7fb4-1aa9355c627a@redhat.com>
-Date:   Fri, 19 May 2023 11:21:35 +0200
+        with ESMTP id S230435AbjESJa5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 05:30:57 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BEBE42;
+        Fri, 19 May 2023 02:30:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684488656; x=1716024656;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=3QfHmYRgUcLgG7yswANAS21WIRJnHhTTVTEGJa0Yw9M=;
+  b=aNPhWBtEmbfUJGCuZ6C/AS1LQLE60/QVbdL7GBDcF4QLgw8fDKmv35IX
+   GRxdptbCE+iSlpzfX2C+kniw7UWt8Pa+NvDFJsLv++Gr85rzsD7nPXu+Q
+   DPr4xMclzMPMflAUzxoyKws2UV0ZMLzkIY3Ahu15uBcw08ADcsI3d1qmN
+   3soASoX/Gc9vAxa3Z2qsu0Lo/Ut+h+EWiA6L9leF2skbCUjuSkZSJ7w5I
+   LLyJBOxL1Uz4RaONjT+mS9H5bQllEPwjfnmjLli0fXVyLROq71YLEtGBV
+   cj9oR4/sbXBCmHPnmKwALIjHZGl1T7dAq1bZi+Dgi1mmwveHRZ62DSAHq
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="336920982"
+X-IronPort-AV: E=Sophos;i="6.00,176,1681196400"; 
+   d="scan'208";a="336920982"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 02:30:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="792315594"
+X-IronPort-AV: E=Sophos;i="6.00,176,1681196400"; 
+   d="scan'208";a="792315594"
+Received: from iannetti-mobl.ger.corp.intel.com ([10.252.43.241])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 02:30:36 -0700
+Date:   Fri, 19 May 2023 12:30:34 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Shaohua Li <shaohua.li@intel.com>,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-pci@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI/ASPM: Handle link retraining race
+In-Reply-To: <ZGaquEqo/psIH14Y@bhelgaas>
+Message-ID: <777a753-42f0-6616-5cc0-fceb157acc2@linux.intel.com>
+References: <ZGaquEqo/psIH14Y@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-References: <20230512235755.1589034-1-pcc@google.com>
- <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com> <ZGJtJobLrBg3PtHm@arm.com>
- <ZGLC0T32sgVkG5kX@google.com>
- <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
- <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
- <c9f1fc7c-62a2-4768-7992-52e34ec36d0f@redhat.com>
- <CAMn1gO7t0S7CmeU=59Lq10N0WvrKebM=W91W7sa+SQoG13Uppw@mail.gmail.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
- swap_free()
-In-Reply-To: <CAMn1gO7t0S7CmeU=59Lq10N0WvrKebM=W91W7sa+SQoG13Uppw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; BOUNDARY="8323329-1530899728-1684488455=:1681"
+Content-ID: <94817ff1-4e4b-68c8-52bb-a4221219ee2@linux.intel.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->> Sorry, I meant actual anonymous memory pages, not shmem. Like, anonymous
->> pages that are COW-shared due to fork() or KSM.
->>
->> How does MTE, in general, interact with that? Assume one process ends up
->> modifying the tags ... and the page is COW-shared with a different
->> process that should not observe these tag modifications.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-1530899728-1684488455=:1681
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <1d89f724-36b9-5e14-7d6f-7ac47fa9bb14@linux.intel.com>
+
+On Thu, 18 May 2023, Bjorn Helgaas wrote:
+
+> On Tue, May 02, 2023 at 11:39:23AM +0300, Ilpo Järvinen wrote:
+> > Implementation Note at the end of PCIe r6.0.1 sec 7.5.3.7 recommends
+> > handling LTSSM race to ensure link retraining acquires correct
+> > parameters from the LNKCTL register. According to the implementation
+> > note, LTSSM might transition into Recovery or Configuration state
+> > independently of the driver requesting it, and if retraining due to
+> > such an event is still ongoing, the value written into the LNKCTL
+> > register might not be considered by the link retraining.
+> > 
+> > Ensure link training bit is clear before toggling link retraining bit
+> > to meet the requirements of the Implementation Note.
+> > 
+> > Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+> > Suggested-by: Lukas Wunner <lukas@wunner.de>
+> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> > Reviewed-by: Lukas Wunner <lukas@wunner.de>
+> > Cc: stable@vger.kernel.org
 > 
-> Tag modifications cause write faults if the page is read-only, so for
-> COW shared pages we would end up copying the page in the usual way,
-> which on arm64 would copy the tags as well via the copy_highpage hook
-> (see arch/arm64/mm/copypage.c).
+> Thanks for this!
+> 
+> The existing pcie_retrain_link() and pcie_wait_for_retrain() both
+> return bool, but neither is named as a predicate, and it's always a
+> little hard for me to keep track of what the true/false return values
+> mean.
+> 
+> I propose tweaking them so they both return 0 for success or
+> -ETIMEDOUT for failure.  What do you think?  It does make the patch
+> bigger, which is kind of unfortunate.
 
-Oh, that makes sense, thanks for pointing that out!
+It's better, yes, unless stable folks think it's not a minimal change.
 
-... and I can spot that KSM also checks the tag when de-duplicating: 
-pages_identical() ends up calling memcmp_pages(), which knows how to 
-deal with tags.
+As a confirmation for your return tweak improving things, I recall that I 
+had to be careful with the bool in this case for the reasons you mention 
+(it requires more mental capacity and verification which way the return 
+is).
 
-Interestingly, calc_checksum() does not seem to care about tags. But 
-that simply implies that pages with the same content have same checksum, 
-independent of the tag. And pages_identical() is the single source of truth.
+(Also, expect the error handling reindent to cause a conflict with the RMW 
+series.)
 
 -- 
-Thanks,
+ i.
 
-David / dhildenb
 
+> commit f55ef626b57f ("PCI/ASPM: Avoid link retraining race")
+> parent e8d05f522fae
+> Author: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Date:   Tue May 2 11:39:23 2023 +0300
+> 
+>     PCI/ASPM: Avoid link retraining race
+>     
+>     PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
+>     then waiting for the Link Training bit to be clear before setting the
+>     Retrain Link bit.
+>     
+>     This avoids a race where the LTSSM may not use the updated parameters if it
+>     is already in the midst of link training because of other normal link
+>     activity.
+>     
+>     Wait for the Link Training bit to be clear before toggling the Retrain Link
+>     bit to ensure that the LTSSM uses the updated link control parameters.
+>     
+>     [bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
+>     both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
+>     Suggested-by: Lukas Wunner <lukas@wunner.de>
+>     Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+>     Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
+>     Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>     Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>     Reviewed-by: Lukas Wunner <lukas@wunner.de>
+>     Cc: stable@vger.kernel.org
+> 
+> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+> index 72cdb30a924a..3aa73ecdf86f 100644
+> --- a/drivers/pci/pcie/aspm.c
+> +++ b/drivers/pci/pcie/aspm.c
+> @@ -193,12 +193,39 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
+>  	link->clkpm_disable = blacklist ? 1 : 0;
+>  }
+>  
+> -static bool pcie_retrain_link(struct pcie_link_state *link)
+> +static int pcie_wait_for_retrain(struct pci_dev *pdev)
+>  {
+> -	struct pci_dev *parent = link->pdev;
+>  	unsigned long end_jiffies;
+>  	u16 reg16;
+>  
+> +	/* Wait for Link Training to be cleared by hardware */
+> +	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
+> +	do {
+> +		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
+> +		if (!(reg16 & PCI_EXP_LNKSTA_LT))
+> +			return 0;
+> +		msleep(1);
+> +	} while (time_before(jiffies, end_jiffies));
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +static int pcie_retrain_link(struct pcie_link_state *link)
+> +{
+> +	struct pci_dev *parent = link->pdev;
+> +	int rc;
+> +	u16 reg16;
+> +
+> +	/*
+> +	 * Ensure the updated LNKCTL parameters are used during link
+> +	 * training by checking that there is no ongoing link training to
+> +	 * avoid LTSSM race as recommended in Implementation Note at the
+> +	 * end of PCIe r6.0.1 sec 7.5.3.7.
+> +	 */
+> +	rc = pcie_wait_for_retrain(parent);
+> +	if (rc)
+> +		return rc;
+> +
+>  	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+>  	reg16 |= PCI_EXP_LNKCTL_RL;
+>  	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+> @@ -212,15 +239,7 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
+>  		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+>  	}
+>  
+> -	/* Wait for link training end. Break out after waiting for timeout */
+> -	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
+> -	do {
+> -		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
+> -		if (!(reg16 & PCI_EXP_LNKSTA_LT))
+> -			break;
+> -		msleep(1);
+> -	} while (time_before(jiffies, end_jiffies));
+> -	return !(reg16 & PCI_EXP_LNKSTA_LT);
+> +	return pcie_wait_for_retrain(parent);
+>  }
+>  
+>  /*
+> @@ -289,15 +308,15 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
+>  		reg16 &= ~PCI_EXP_LNKCTL_CCC;
+>  	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+>  
+> -	if (pcie_retrain_link(link))
+> -		return;
+> +	if (pcie_retrain_link(link)) {
+>  
+> -	/* Training failed. Restore common clock configurations */
+> -	pci_err(parent, "ASPM: Could not configure common clock\n");
+> -	list_for_each_entry(child, &linkbus->devices, bus_list)
+> -		pcie_capability_write_word(child, PCI_EXP_LNKCTL,
+> +		/* Training failed. Restore common clock configurations */
+> +		pci_err(parent, "ASPM: Could not configure common clock\n");
+> +		list_for_each_entry(child, &linkbus->devices, bus_list)
+> +			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
+>  					   child_reg[PCI_FUNC(child->devfn)]);
+> -	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
+> +		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
+> +	}
+>  }
+>  
+>  /* Convert L0s latency encoding to ns */
+--8323329-1530899728-1684488455=:1681--
