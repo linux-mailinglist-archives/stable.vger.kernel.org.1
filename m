@@ -2,85 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 573E7709CFD
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 18:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB66709DA2
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 19:13:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbjESQyj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 12:54:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42144 "EHLO
+        id S231716AbjESRNC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 13:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231495AbjESQyi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 12:54:38 -0400
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50633183;
-        Fri, 19 May 2023 09:54:32 -0700 (PDT)
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-52cbd7d0c37so2361094a12.3;
-        Fri, 19 May 2023 09:54:32 -0700 (PDT)
+        with ESMTP id S231501AbjESRM7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 13:12:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E71021AC
+        for <stable@vger.kernel.org>; Fri, 19 May 2023 10:12:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684516324;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ERQYZtyC8yrGAR4Lpp1idLfOrOHvWlcfV8KyOPQ1tKc=;
+        b=FMGT2McLEFCvfcgmfLzvhFOzYsnubNeJGg54Xo4q4kQI3VotHoJVBAE4Qjw3QLrjJcPqlM
+        X1QiFk44PjlNkGcWn26nrWWhw+XpicKi3HhKyZJnWUMsNN07qJMMvI4d7+tg+vCf/CDPtS
+        p13ifmZFTcsG2jVFjDBJ9Fiwq8Y22SQ=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-m4QCubHWN6qk_HFLSa3f6Q-1; Fri, 19 May 2023 13:12:02 -0400
+X-MC-Unique: m4QCubHWN6qk_HFLSa3f6Q-1
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-3f687cd5971so16121981cf.2
+        for <stable@vger.kernel.org>; Fri, 19 May 2023 10:12:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684515271; x=1687107271;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+6sL1zh81H7p+vovqWIWNUf8ZF820CXjdaBKyZVEoU=;
-        b=AThduqBjaOIgNxr59hNXhWKoru8UZ8GOHD8u3zk37gbv7gDynLuiTVDaGKiXEttj0m
-         zB5VW+J0W6lMdr9pe8u+NeT+q14jC2EwdSt8YMI5+eelbxdvtZga6kiz2YqOZAPVNIJx
-         ZWUw993T8QPPu6n9JHXPXEWABkfSfLtipeVAzzewucETyQ3pK2dZdgGfzR/cpquLciHN
-         HsuD7oQCbcNHSqE1fGul/+hQboR4gABASo9xF6GWpmgjKZqzt6rz+XYh739zc34xI3ud
-         2cJyBvuP7E+icZi3vwKSMbVycO7G/Hj5g46yfdp2qItgRHrDwmo4IcEX0M1LVBdcG9eG
-         g3FA==
-X-Gm-Message-State: AC+VfDyOU1PI6rN+wZ5y9Qcc7WiLRusrUegSz9KSOofJc3PP7X4S2d9s
-        PBjhGyI09mWcWHlizwRpNhY=
-X-Google-Smtp-Source: ACHHUZ5xQWXcqU5uPdGu1VrDpxJcpNDxqBkEmGqAsrAA9IeiDyVyt3PCTj43IT2YKCmNW27myH6IbA==
-X-Received: by 2002:a17:902:7fc9:b0:1ab:63e:67b0 with SMTP id t9-20020a1709027fc900b001ab063e67b0mr2690758plb.54.1684515271361;
-        Fri, 19 May 2023 09:54:31 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:42a4:88db:5ed8:43d0? ([2620:15c:211:201:42a4:88db:5ed8:43d0])
-        by smtp.gmail.com with ESMTPSA id p6-20020a170902b08600b001ae46ccd19esm3695287plr.63.2023.05.19.09.54.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 May 2023 09:54:30 -0700 (PDT)
-Message-ID: <c9f0bc23-d5c1-23ba-2752-d89be9fef04a@acm.org>
-Date:   Fri, 19 May 2023 09:54:28 -0700
+        d=1e100.net; s=20221208; t=1684516322; x=1687108322;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ERQYZtyC8yrGAR4Lpp1idLfOrOHvWlcfV8KyOPQ1tKc=;
+        b=JvIgX5k5uam/FNy0D3OQvNw1UPCx01btoJqvJkRyyh03nPbMyaKliv5Fyl3ZtgN/vD
+         ihQ5q/BRRLAQFJQdLH+/lg+3stG+pzHLYEAa6dn17QxLkG/1TQrr/3pmLk041VlB6RU7
+         GaQxPZM+mUD7RastG5jiOuIxenNmYvEb/eFeP/5L9+hAqE5kMfyLguyh3ioueWZp5e38
+         M3+2z9SJn8c4OZdNW+BweE6PO3Av/DGaQenWHlB8AqGJb66ScCXn82PeuBlR7JPZSwID
+         mabcYjrkVrHiGWSHWFGaLwCJQ2Ok0yHE6GKmIjWvb9d5+H+esUbGm7Y5sTOHDee26CR2
+         kOlw==
+X-Gm-Message-State: AC+VfDyMxvUjC9jUQtWjN4vufdXXM2k6wgQsg6JUBSRrXXgzOyQ+3Pz8
+        iEcl9lrpl8JiA8aeFLU70g+D+o0ntG/Ky7QDOuofadycGM20fnUHY5op1dE6SOc87Ydg4RIja1p
+        Qq+a7r+kb0naMQeiS
+X-Received: by 2002:a05:622a:1825:b0:3ef:57c1:ad7 with SMTP id t37-20020a05622a182500b003ef57c10ad7mr4366685qtc.30.1684516321956;
+        Fri, 19 May 2023 10:12:01 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7X7UOP6hwcDTnkt/WJyzqcvnBaxy/NW3l8Evf1CMoFj8Fx9tS5A74/hQNR+L1ll2twROxXHA==
+X-Received: by 2002:a05:622a:1825:b0:3ef:57c1:ad7 with SMTP id t37-20020a05622a182500b003ef57c10ad7mr4366425qtc.30.1684516319215;
+        Fri, 19 May 2023 10:11:59 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id cm26-20020a05622a251a00b003f394decd08sm1421041qtb.62.2023.05.19.10.11.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 May 2023 10:11:58 -0700 (PDT)
+Date:   Fri, 19 May 2023 10:11:56 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jon Pan-Doh <pandoh@google.com>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Gary Zibrat <gzibrat@google.com>,
+        Sudheer Dantuluri <dantuluris@google.com>,
+        Nadav Amit <namit@vmware.com>,
+        Vasant Hegde <vasant.hegde@amd.com>
+Subject: Re: [PATCH RESEND] iommu/amd: Fix domain flush size when syncing
+ iotlb
+Message-ID: <5vcww4kwofeftpqyfckyacystlw2g3eiwg47liul34yzyibclh@pas4sdd5j5fc>
+References: <20230518015054.2223833-1-pandoh@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
-Content-Language: en-US
-To:     John Garry <john.g.garry@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
-References: <20230511123432.5793-1-jgross@suse.com>
- <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
- <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
- <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
- <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
- <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
- <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
- <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230518015054.2223833-1-pandoh@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/19/23 09:06, John Garry wrote:
-> Sure, what I describe is ideal, but I still just dislike passing both 
-> sensebuf and hdr into scsi_execute_cmd(). The semantics of how 
-> scsi_execute_cmd() treats them is vague.
+On Wed, May 17, 2023 at 06:50:54PM -0700, Jon Pan-Doh wrote:
+> When running on an AMD vIOMMU, we observed multiple invalidations (of
+> decreasing power of 2 aligned sizes) when unmapping a single page.
+> 
+> Domain flush takes gather bounds (end-start) as size param. However,
+> gather->end is defined as the last inclusive address (start + size - 1).
+> This leads to an off by 1 error.
+> 
+> With this patch, verified that 1 invalidation occurs when unmapping a
+> single page.
+> 
+> Fixes: a270be1b3fdf ("iommu/amd: Use only natural aligned flushes in a VM")
+> Cc: <stable@vger.kernel.org> # 5.15.x
+> Suggested-by: Gary Zibrat <gzibrat@google.com>
+> Tested-by: Sudheer Dantuluri <dantuluris@google.com>
+> Acked-by: Nadav Amit <namit@vmware.com>
+> Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+> Signed-off-by: Jon Pan-Doh <pandoh@google.com>
+> ---
 
-Is this something that can be addressed by improving the 
-scsi_execute_cmd() documentation?
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com
 
-Thanks,
-
-Bart.
+>  drivers/iommu/amd/iommu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> index 5a505ba5467e..da45b1ab042d 100644
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+> @@ -2378,7 +2378,7 @@ static void amd_iommu_iotlb_sync(struct iommu_domain *domain,
+>  	unsigned long flags;
+>  
+>  	spin_lock_irqsave(&dom->lock, flags);
+> -	domain_flush_pages(dom, gather->start, gather->end - gather->start, 1);
+> +	domain_flush_pages(dom, gather->start, gather->end - gather->start + 1, 1);
+>  	amd_iommu_domain_flush_complete(dom);
+>  	spin_unlock_irqrestore(&dom->lock, flags);
+>  }
+> -- 
+> 2.40.0.634.g4ca3ef3211-goog
+> 
 
