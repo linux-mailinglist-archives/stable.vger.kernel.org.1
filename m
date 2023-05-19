@@ -2,141 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D39709A5C
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 16:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DD0709A62
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 16:50:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232062AbjESOsh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 10:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35604 "EHLO
+        id S230116AbjESOuA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 10:50:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231717AbjESOsd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 10:48:33 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EBD8C9
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 07:48:32 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-96f7bf29550so66379766b.3
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 07:48:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1684507711; x=1687099711;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=osK35APNMHUOM/vspbNmY4dm4o7cSGGXI42PTW0uu8s=;
-        b=ZYjh30K7khuwsHmxdTGgS+WoY9zJgx6/9/pcc1JbuvgcIEsldCdXXJbEp4NACjCKaD
-         LMW1h53HHwQnKpmODQx7uXNQn0+JuBNgZS2Zh/7IejB20vSK2D1Unr6kMSuPVMXAFhiZ
-         9ZeWiBl87aFZW9wBv1Nh3DLuN2movq9+fC554=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684507711; x=1687099711;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=osK35APNMHUOM/vspbNmY4dm4o7cSGGXI42PTW0uu8s=;
-        b=hmSK05q6mE8zCTk0oCJMus4jhVJYpPFlAvx2MlXqcOlBVEwuqnDTuD6KLk65gS4Icg
-         BZWq1CEN3cKIy6QfBxy1Qf46V0Rf0tpxXQ2sqR56nmL1AdkJfk7X7tjS+jIWK4xEV1NY
-         pUlNaT+JmfKL6ZswYYdTiqUhoFUXThirNI3aI151F6XAeyBOyzwt56PZJ1XVVixrDP/W
-         5AiAbvZKiKtHHMLPn5RiBe4sFbdef0veEGVJ3pSzIRANrLpNaPBfhVr3239a893pG2To
-         OWrWzL1lkDZWIHTzf2Sm2bBUJvsy7t4FTgd+K8A57hh9rRdnVLoHbNUPGSvBkmb2Ix7m
-         7Iag==
-X-Gm-Message-State: AC+VfDzxNCM8rD/79me85BHWtH6FbfpXS0QSLDVs8FKLQQt55KCSH9gB
-        wxmxLlUIJm6z8QT4OKULlqAUPQ==
-X-Google-Smtp-Source: ACHHUZ4sIn6w3qgGaOnZt7gYsC2ndgI+MwJv4U/AftjTcUf/UQqUnAD4mNaTZk8Vvatu2vHjziPdfA==
-X-Received: by 2002:a17:906:d54a:b0:94e:f738:514f with SMTP id cr10-20020a170906d54a00b0094ef738514fmr2090904ejc.13.1684507710607;
-        Fri, 19 May 2023 07:48:30 -0700 (PDT)
-Received: from alco.roam.corp.google.com ([2620:0:1059:10:62fd:274b:c2ab:69bb])
-        by smtp.gmail.com with ESMTPSA id a2-20020a17090680c200b0096a68648329sm2349437ejx.214.2023.05.19.07.48.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 07:48:30 -0700 (PDT)
-From:   Ricardo Ribalda <ribalda@chromium.org>
-Date:   Fri, 19 May 2023 16:47:39 +0200
-Subject: [PATCH v7 4/4] riscv/purgatory: Remove PGO flags
+        with ESMTP id S231124AbjESOt7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 10:49:59 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 451181AC
+        for <stable@vger.kernel.org>; Fri, 19 May 2023 07:49:49 -0700 (PDT)
+Received: (qmail 40001 invoked by uid 1000); 19 May 2023 10:49:49 -0400
+Date:   Fri, 19 May 2023 10:49:49 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Badhri Jagan Sridharan <badhri@google.com>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
+        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2] usb: gadget: udc: core: Offload usb_udc_vbus_handler
+ processing
+Message-ID: <c181c8ef-f342-4a31-9b8c-e1fa14ad214e@rowland.harvard.edu>
+References: <20230519043041.1593578-1-badhri@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230321-kexec_clang16-v7-4-b05c520b7296@chromium.org>
-References: <20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org>
-In-Reply-To: <20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org>
-To:     Eric Biederman <ebiederm@xmission.com>,
-        Philipp Rudo <prudo@linux.vnet.ibm.com>,
-        Dave Young <dyoung@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Tom Rix <trix@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>
-Cc:     Baoquan He <bhe@redhat.com>, Philipp Rudo <prudo@redhat.com>,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Ross Zwisler <zwisler@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Simon Horman <horms@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org,
-        Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org,
-        Palmer Dabbelt <palmer@rivosinc.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1298; i=ribalda@chromium.org;
- h=from:subject:message-id; bh=wdnk6GxBa5T/HIlvuq8XoXYQQFQFk4mx9eVuJiQf83M=;
- b=owEBbQKS/ZANAwAKAdE30T7POsSIAcsmYgBkZ4wzePFk89/IBhUZr9SWcIl2QkwFBFu2gEcYe
- /5y+YTRvGqJAjMEAAEKAB0WIQREDzjr+/4oCDLSsx7RN9E+zzrEiAUCZGeMMwAKCRDRN9E+zzrE
- iEJ9EACWgKvSdCRvRA4/lyxhvVHQgJQ0PCNnOhH3hpa3YJPoHyQLHQ8AWvcvBMla51KPtthYLTN
- RttNdzciI8SyWtWAc62LCy0wqaKDS+qbrbvVnUEYDgzqyCjq/gSxRky4clrjmFzUvY2wNCRfWMt
- yFLtWzm5iYd4N7d07L87XEKmPRitblqcy/VsPL9EMUutCQ5OQlaaSRto36SmkRf9nkrMPPzCH+2
- qNNS8PY2lNeGzUvTDAi7F00EDf/PLWQ7pXaKeJeU56IsYS8v1VUoNdkx04R/AIO8TBdqwsDZhhD
- UqPLLPRwecZmAks5n575AFj+ZFRtUPueG6J2aQ1ndVzS+8/OTyW1xxwogq6fkwr44uXalhe3YxJ
- aUOnvtCxh06L48mQLfdlx1JhUTlhZ1AtVysiezFN9EedPP27rIgxpSSgnEwsjDWJny3YJfbGJQN
- Zk7DDEwAQLAN3GaT+i/K2X8PEHG6+A5SkFE+wZe5WKERCdPLVGgWjIYwaqXDAvGK/5DfORHun85
- 2qC2ReqZtGwpWhUfg6jJ4cFTsiNbkYy31b1T5/9BqXT5dBqfAuVU/QKYqg5qb4ciKtKesTLLV1H
- ZydnfO9MMJNG6tjvelUtgGQRPqf1ea9Lob19/0XoQrWh8oifHm8eWWisKYfQY/1ExftAFpZCeA5
- BmR9KbCqwO2lwOg==
-X-Developer-Key: i=ribalda@chromium.org; a=openpgp;
- fpr=9EC3BB66E2FC129A6F90B39556A0D81F9F782DA9
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230519043041.1593578-1-badhri@google.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.
-This is not supported by kexec and crashes the system.
+On Fri, May 19, 2023 at 04:30:41AM +0000, Badhri Jagan Sridharan wrote:
+> chipidea udc calls usb_udc_vbus_handler from udc_start gadget
+> ops causing a deadlock. Avoid this by offloading usb_udc_vbus_handler
+> processing.
 
-Cc: stable@vger.kernel.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
- arch/riscv/purgatory/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
+Look, this is way overkill.
 
-diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
-index 5730797a6b40..bd2e27f82532 100644
---- a/arch/riscv/purgatory/Makefile
-+++ b/arch/riscv/purgatory/Makefile
-@@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- CFLAGS_string.o := -D__DISABLE_EXPORTS
- CFLAGS_ctype.o := -D__DISABLE_EXPORTS
- 
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-+
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
+usb_udc_vbus_handler() has only two jobs to do: set udc->vbus and call 
+usb_udc_connect_control().  Furthermore, it gets called from only two 
+drivers: chipidea and max3420.
 
--- 
-2.40.1.698.g37aff9b760-goog
+Why not have the callers set udc->vbus themselves and then call 
+usb_gadget_{dis}connect() directly?  Then we could eliminate 
+usb_udc_vbus_handler() entirely.  And the unnecessary calls -- the ones 
+causing deadlocks -- from within udc_start() and udc_stop() handlers can 
+be removed with no further consequence.
 
+This approach simplifies and removes code.  Whereas your approach 
+complicates and adds code for no good reason.
+
+Alan Stern
