@@ -2,182 +2,221 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B9370A295
-	for <lists+stable@lfdr.de>; Sat, 20 May 2023 00:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE32B70A333
+	for <lists+stable@lfdr.de>; Sat, 20 May 2023 01:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjESWAw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 18:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39440 "EHLO
+        id S231904AbjESXIz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 19:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjESWAv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 18:00:51 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 651D5B1;
-        Fri, 19 May 2023 15:00:49 -0700 (PDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34JLhFa9015362;
-        Fri, 19 May 2023 22:00:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=wnvNsv1icuwL1D/NTAiU+oUoyuZDdRtvGjXWiWLxUBU=;
- b=aRabyg28XSHuUC7ki6C7dggI7q++T+f+38ZqXb+fy7mc4Gtzcblr59ycrM6KyTihq4MR
- 4bFSvOFJvGMlPsZhUYO9h9kqOk6kj16rO3UFbUDk7Fd/dajLTdaUfKFmKlzF3rTqWVlJ
- vHGIh6QLb3YXQbE9vTP/v8KoDX/MQRZ2dCunQkI6so9nwGtDxRM2KSUP3TLrmgczeLeV
- Z8k4BJvhBmREWTmTYj55k/qHc+wjPFVGCpYnPE65KVea73RJde4UxiOrNzBzaBziLjts
- FoGDDnF48SJYBjEx6iVB/f8SaOVEui5uUk+gLn5emEcve/cHE3xn7NTczmGlZ+Kkq+pz lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qph938b0v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 May 2023 22:00:43 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34JLxEZj027664;
-        Fri, 19 May 2023 22:00:43 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qph938b0a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 May 2023 22:00:43 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-        by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34JK7h8O017930;
-        Fri, 19 May 2023 22:00:41 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
-        by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3qj265s01k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 May 2023 22:00:41 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-        by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34JM0eYq39059838
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 19 May 2023 22:00:40 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 980A558068;
-        Fri, 19 May 2023 22:00:40 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C7F4658066;
-        Fri, 19 May 2023 22:00:39 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 19 May 2023 22:00:39 +0000 (GMT)
-Message-ID: <2dfb8122-2304-8f2e-9059-61b0dcb79ab6@linux.ibm.com>
-Date:   Fri, 19 May 2023 18:00:39 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2] tpm: tpm_vtpm_proxy: fix a race condition in
- /dev/vtpmx creation
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230515222554.2783592-1-jarkko@kernel.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230515222554.2783592-1-jarkko@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bDS-H2UweQNxSI3FShZJ-7Mcw4sKlolj
-X-Proofpoint-GUID: NBhnOWMVWBTTrNd9MU56zMnWFvvKaDG4
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S231809AbjESXIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 19:08:50 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 440D710E9;
+        Fri, 19 May 2023 16:08:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1684537718; x=1716073718;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eAWOn2w9AIVkaoHGQ7vTYvv0RYDxPkd1bCIzCbpyLx8=;
+  b=AShUuWkraFkEjuJMIuTAG0papvL621y05tlvXo2Korr3dxqKdFz8jIjN
+   oHt0QPrKaoKTz5JwImigy/Ne+4WpnEIqdkZhw5Pe4VhPHekwuX4z5dE+T
+   EQYRJmSCYNi1SYAYNr1MSyURZb46kV4XpjyPHl1JC/SBjCVP1g4NGLqux
+   kJXfbRkxfX8++pxgIYlaTXC880ET8ML0PRXdAOWIs8Neuv9h4STozMTew
+   kNBOYyQI214Xt1ui4Uw+5GIQ589glaQnh1kv/8hJVSSdIWJddSFeqdWC/
+   bH9zEBrCUMuXWOP+dRy73R9lIreq7LD1vxKJSgyweGlNWGuzzwj82wIWt
+   g==;
+X-IronPort-AV: E=Sophos;i="6.00,178,1681196400"; 
+   d="scan'208";a="214096556"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 19 May 2023 16:08:37 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 19 May 2023 16:08:37 -0700
+Received: from localhost (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Fri, 19 May 2023 16:08:37 -0700
+From:   Sagar Biradar <sagar.biradar@microchip.com>
+To:     Don Brace <don.brace@microchip.com>,
+        Sagar Biradar <sagar.biradar@microchip.com>,
+        Gilbert Wu <gilbert.wu@microchip.com>,
+        <linux-scsi@vger.kernel.org>,
+        Martin Petersen <martin.petersen@oracle.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Brian King <brking@linux.vnet.ibm.com>,
+        <stable@vger.kernel.org>, Tom White <tom.white@microchip.com>
+Subject: [PATCH v4] aacraid: reply queue mapping to CPUs based of IRQ affinity
+Date:   Fri, 19 May 2023 16:08:34 -0700
+Message-ID: <20230519230834.27436-1-sagar.biradar@microchip.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-19_16,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- bulkscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0
- clxscore=1015 malwarescore=0 priorityscore=1501 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305190187
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Fix the IO hang that arises because of MSIx vector not
+having a mapped online CPU upon receiving completion.
 
+The SCSI cmds take the blk_mq route, which is setup during the init.
+The reserved cmds fetch the vector_no from mq_map after the init
+is complete and before the init, they use 0 - as per the norm.
 
-On 5/15/23 18:25, Jarkko Sakkinen wrote:
-> From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
-> 
-> /dev/vtpmx is made visible before 'workqueue' is initialized, which can
-> lead to a memory corruption in the worst case scenario.
-> 
-> Address this by initializing 'workqueue' as the very first step of the
-> driver initialization.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6f99612e2500 ("tpm: Proxy driver for supporting multiple emulated TPMs")
-> Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
-> ---
-> v2:
-> - Replace vtpmx_cleanup() with destroy_workqueue():
->    https://lore.kernel.org/linux-integrity/CSLCEYDKKWWE.36POIXVT65SLE@suppilovahvero/
-> - Fix typo:
->    https://lore.kernel.org/linux-integrity/4651cf1c-423d-05c2-b4c3-9d829a2eadf4@linux.ibm.com/
-> ---
->   drivers/char/tpm/tpm_vtpm_proxy.c | 30 +++++++-----------------------
->   1 file changed, 7 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
-> index 5c865987ba5c..30e953988cab 100644
-> --- a/drivers/char/tpm/tpm_vtpm_proxy.c
-> +++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-> @@ -683,37 +683,21 @@ static struct miscdevice vtpmx_miscdev = {
->   	.fops = &vtpmx_fops,
->   };
->   
-> -static int vtpmx_init(void)
-> -{
-> -	return misc_register(&vtpmx_miscdev);
-> -}
-> -
-> -static void vtpmx_cleanup(void)
-> -{
-> -	misc_deregister(&vtpmx_miscdev);
-> -}
-> -
->   static int __init vtpm_module_init(void)
->   {
->   	int rc;
->   
-> -	rc = vtpmx_init();
-> -	if (rc) {
-> -		pr_err("couldn't create vtpmx device\n");
-> -		return rc;
-> -	}
-> -
->   	workqueue = create_workqueue("tpm-vtpm");
->   	if (!workqueue) {
->   		pr_err("couldn't create workqueue\n");
-> -		rc = -ENOMEM;
-> -		goto err_vtpmx_cleanup;
-> +		return -ENOMEM;
->   	}
->   
-> -	return 0;
-> -
-> -err_vtpmx_cleanup:
-> -	vtpmx_cleanup();
-> +	rc = misc_register(&vtpmx_miscdev);
-> +	if (rc) {
-> +		pr_err("couldn't create vtpmx device\n");
-> +		destroy_workqueue(workqueue);
-> +	}
->   
->   	return rc;
->   }
-> @@ -721,7 +705,7 @@ static int __init vtpm_module_init(void)
->   static void __exit vtpm_module_exit(void)
->   {
->   	destroy_workqueue(workqueue);
-> -	vtpmx_cleanup();
-> +	misc_deregister(&vtpmx_miscdev);
->   }
->   
->   module_init(vtpm_module_init);
+Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
+Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
+---
+ drivers/scsi/aacraid/aacraid.h  |  1 +
+ drivers/scsi/aacraid/comminit.c |  1 -
+ drivers/scsi/aacraid/commsup.c  |  6 +++++-
+ drivers/scsi/aacraid/linit.c    | 14 ++++++++++++++
+ drivers/scsi/aacraid/src.c      | 25 +++++++++++++++++++++++--
+ 5 files changed, 43 insertions(+), 4 deletions(-)
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
+index 5e115e8b2ba4..7c6efde75da6 100644
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -1678,6 +1678,7 @@ struct aac_dev
+ 	u32			handle_pci_error;
+ 	bool			init_reset;
+ 	u8			soft_reset_support;
++	u8			use_map_queue;
+ };
+ 
+ #define aac_adapter_interrupt(dev) \
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index bd99c5492b7d..a5483e7e283a 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -657,4 +657,3 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 
+ 	return dev;
+ }
+-
+diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
+index deb32c9f4b3e..3f062e4013ab 100644
+--- a/drivers/scsi/aacraid/commsup.c
++++ b/drivers/scsi/aacraid/commsup.c
+@@ -223,8 +223,12 @@ int aac_fib_setup(struct aac_dev * dev)
+ struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd *scmd)
+ {
+ 	struct fib *fibptr;
++	u32 blk_tag;
++	int i;
+ 
+-	fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
++	blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
++	i = blk_mq_unique_tag_to_tag(blk_tag);
++	fibptr = &dev->fibs[i];
+ 	/*
+ 	 *	Null out fields that depend on being zero at the start of
+ 	 *	each I/O
+diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
+index 5ba5c18b77b4..9caf8c314ce1 100644
+--- a/drivers/scsi/aacraid/linit.c
++++ b/drivers/scsi/aacraid/linit.c
+@@ -19,6 +19,7 @@
+ 
+ #include <linux/compat.h>
+ #include <linux/blkdev.h>
++#include <linux/blk-mq-pci.h>
+ #include <linux/completion.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+@@ -505,6 +506,15 @@ static int aac_slave_configure(struct scsi_device *sdev)
+ 	return 0;
+ }
+ 
++static void aac_map_queues(struct Scsi_Host *shost)
++{
++	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
++
++	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
++				aac->pdev, 0);
++	aac->use_map_queue = true;
++}
++
+ /**
+  *	aac_change_queue_depth		-	alter queue depths
+  *	@sdev:	SCSI device we are considering
+@@ -1489,6 +1499,7 @@ static struct scsi_host_template aac_driver_template = {
+ 	.bios_param			= aac_biosparm,
+ 	.shost_groups			= aac_host_groups,
+ 	.slave_configure		= aac_slave_configure,
++	.map_queues			= aac_map_queues,
+ 	.change_queue_depth		= aac_change_queue_depth,
+ 	.sdev_groups			= aac_dev_groups,
+ 	.eh_abort_handler		= aac_eh_abort,
+@@ -1776,6 +1787,8 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	shost->max_lun = AAC_MAX_LUN;
+ 
+ 	pci_set_drvdata(pdev, shost);
++	shost->nr_hw_queues = aac->max_msix;
++	shost->host_tagset = 1;
+ 
+ 	error = scsi_add_host(shost, &pdev->dev);
+ 	if (error)
+@@ -1908,6 +1921,7 @@ static void aac_remove_one(struct pci_dev *pdev)
+ 	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
+ 
+ 	aac_cancel_rescan_worker(aac);
++	aac->use_map_queue = false;
+ 	scsi_remove_host(shost);
+ 
+ 	__aac_shutdown(aac);
+diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
+index 11ef58204e96..61949f374188 100644
+--- a/drivers/scsi/aacraid/src.c
++++ b/drivers/scsi/aacraid/src.c
+@@ -493,6 +493,10 @@ static int aac_src_deliver_message(struct fib *fib)
+ #endif
+ 
+ 	u16 vector_no;
++	struct scsi_cmnd *scmd;
++	u32 blk_tag;
++	struct Scsi_Host *shost = dev->scsi_host_ptr;
++	struct blk_mq_queue_map *qmap;
+ 
+ 	atomic_inc(&q->numpending);
+ 
+@@ -505,8 +509,25 @@ static int aac_src_deliver_message(struct fib *fib)
+ 		if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
+ 			&& dev->sa_firmware)
+ 			vector_no = aac_get_vector(dev);
+-		else
+-			vector_no = fib->vector_no;
++		else {
++			if (!fib->vector_no || !fib->callback_data) {
++				if (shost && dev->use_map_queue) {
++					qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
++					vector_no = qmap->mq_map[raw_smp_processor_id()];
++				}
++				/*
++				 *	We hardcode the vector_no for
++				 *	reserved commands as a valid shost is
++				 *	absent during the init
++				 */
++				else
++					vector_no = 0;
++			} else {
++				scmd = (struct scsi_cmnd *)fib->callback_data;
++				blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
++				vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
++			}
++		}
+ 
+ 		if (native_hba) {
+ 			if (fib->flags & FIB_CONTEXT_FLAG_NATIVE_HBA_TMF) {
+-- 
+2.29.0
+
