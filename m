@@ -2,142 +2,186 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68C8E709B83
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 17:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66303709C00
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 18:06:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232077AbjESPph (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 11:45:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
+        id S229489AbjESQG4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 12:06:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231438AbjESPpg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 11:45:36 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243E61B3
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 08:45:35 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d2a87b9daso1129485b3a.0
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 08:45:35 -0700 (PDT)
+        with ESMTP id S229514AbjESQGz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 12:06:55 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57406C2;
+        Fri, 19 May 2023 09:06:54 -0700 (PDT)
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34JFxQWn017508;
+        Fri, 19 May 2023 16:06:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=9o1Rl+R0+BLLs701dgjwBH3aOPkU7Me8N74m/L3R/HU=;
+ b=GdDwLZ8K6pTtrxKCQY3S0ErnhkavRRNjBPzkM1cv2SGUZcWbTAYnY928SDlHR/OTxQum
+ RNHuHZt2s7RGcA83toONtXfgQsiw0DkXTBVsAPF/EYf9vBx+l4MWGNgwM5Fe5cGxCkO5
+ cemHS7dQe3PbYcmyQMzR0bOLW0BIQ8i+AmWpo4+Q8TaXzH/fjXuuRCw40Yxy12K3SZZE
+ xmRxA4a/P8N4Wz0a0R5HkPNuioEWMhDk78RlN2833dOdNdJcrwP5AQlNgKB9Rk81bW6p
+ ZrqACJPoOBYrZt8ABGNy07N9wZU6WtggqtsybGjaGae324hN9O8b2kiEAzOuXY2NRSgF dQ== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qj33v2jtd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 May 2023 16:06:11 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 34JEPaib039993;
+        Fri, 19 May 2023 16:06:10 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2103.outbound.protection.outlook.com [104.47.70.103])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3qj1080t79-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 May 2023 16:06:10 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mS+QNG8WMVfBKMblTx5ZCX2nIglHdSo+ARthHfaDQuHkESM0jgbsgzoMyTXiwhlnjji6nbkHHleELmfRUWpd3xas+uSO+LUDGaPlgo36IF+x+Vx/+isdUr3TuFV20xD995Mu7NyVCPFF3NeCpB05D4llB19GepQglYe+nA0hzLAgPbmL+Bn/rS645gMNrsp8dRpQ9s77g6R5WsBO/PwP4mDIC+7Gje+xfFZbz+ieEmtF2AeaqSy5qdtw1HPA/F1DF+8S/CXB6Yw884FHY5qE7YyDaXb4w/Jsefq8gm2J6pAuF7L6qFyTmPouzTBTFLpTBUiDLUvDTg5DvEirgZOpcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9o1Rl+R0+BLLs701dgjwBH3aOPkU7Me8N74m/L3R/HU=;
+ b=ALL2fMRNYBxkyL+5/SsjRh7QCXZxboqUQgushvoKzPzLvQupockDL/T6ADdJwCTX+Aug5Cm8DMuK6f3obfN42gxgkL2aCfRU4bVJ6wvrk8Dm34Eyg6loRY+V+3P5iB0u0z5hlBKoI/lgqkCICD1SczY0sWc+uU68zUDl6j48EXc5grgRoOeDbyntmsakbvq/IeP886v6rxppKtFn0jgmleuQ+CRDQzMOEBNOmI7DkbIusuo/usOKnC/rKum+Vw7QCc1g/eHmYWguT/mXXiUBFIKHbro1s+TGywihakhn28vVTdLio0IPdTwueN2ocHGk6i3F6oQV7De0TH10XepObQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684511134; x=1687103134;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y2a0D7KFX+ar40EIbBe/MkP/xIi7gWSnepHbZAaa39s=;
-        b=z+DaZqUGK2GmR/Q17ULz20uJOBy6Lmw+vzrQNMl3iZNg/9wAn7b4seGkZHo0xnS9xx
-         Gcu4eEqcqiQKH2xDd28qO6NSvWCfp3vOBeaITHOKMO7hdcx0iHKzxBIDAYuwduI6SOBk
-         FzqqtQ7cx1c2o4nzjOVPr1ng5padPy/Tf88RDxc6UU/fxX3AjpIFg6sz6bste5Tkkz5v
-         d6cGHEdCYZ5dHY7urcxMNL05cxAPRF60k62douajvXwYZd2E2HE14lm+837sklFqQaBs
-         vItR2qw3pLSeo2Lpp8iQpl3GMsfOhrESPGjWs03fy4VpPUckiBdjGzqY3xGJ031CmFRZ
-         crHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684511134; x=1687103134;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y2a0D7KFX+ar40EIbBe/MkP/xIi7gWSnepHbZAaa39s=;
-        b=cgGkxtLOFw2dnl7C8EPNG09lAgb1iZAAhbqVI/O5jEhY8+G0C/+WidfA2YwarygqN3
-         mXjQGSPhCy2Iuiu0oz5LWF4eG/FT79FfNRPNN2rC84UBgUnzdp4j/I/PmhTI4Uyd0WYp
-         Z0JXxQlIuskNOYucFgWUZuFXvm9diMJErRz3TVhgccWgqUyM8abh95AWrrh90ZSWNP3e
-         iWAGPVL3uY4dUge9sanSZ/qatiwi7I4mxpCqDmMOipX828t390ALR75r5eylZS7cqP5H
-         5sOzcJrq8/IuU+Ck0ko40SeA8zQ3nxs4L3ES2FKrPtBagUiG1bcj5NiofqdZ/fry3+vU
-         JKvQ==
-X-Gm-Message-State: AC+VfDz2nq/Nc7AWKRkh9MUbZSsgtikBZxwCuF+QL7wUfzdBaY6VPdRn
-        0lgiv492ooitYgsgkmKBuCRyiFxbCxPwWx70WdFw3A==
-X-Google-Smtp-Source: ACHHUZ6zD7XL7L3zGIBrXWRqHA0dw1kaq1aUdYJyMWJaUhDF95bGm/7VnfBvKezUi10cZoSykitcggxtmKh0shz7Rbs=
-X-Received: by 2002:a17:902:eb46:b0:1ac:9cad:1845 with SMTP id
- i6-20020a170902eb4600b001ac9cad1845mr3189607pli.18.1684511134420; Fri, 19 May
- 2023 08:45:34 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9o1Rl+R0+BLLs701dgjwBH3aOPkU7Me8N74m/L3R/HU=;
+ b=iPDJECjY6wNCzZHoBeNfEfvA+WAO6Q9MQsIeBJjc3cU11Scyf7+j9uhq36ZdIg2bDFAz/mA/1JgPx8COzFtKOmOVXlMkkBsXPkQosZROszDgBI5sayp4Ypo6CtccUsPG0dwLLtohYIFSKAMU0KrDvZAT8BGPOh7QELj3pzxo8ho=
+Received: from DM6PR10MB4313.namprd10.prod.outlook.com (2603:10b6:5:212::20)
+ by PH0PR10MB5642.namprd10.prod.outlook.com (2603:10b6:510:f9::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.21; Fri, 19 May
+ 2023 16:06:08 +0000
+Received: from DM6PR10MB4313.namprd10.prod.outlook.com
+ ([fe80::8456:ba59:80ec:d804]) by DM6PR10MB4313.namprd10.prod.outlook.com
+ ([fe80::8456:ba59:80ec:d804%7]) with mapi id 15.20.6411.021; Fri, 19 May 2023
+ 16:06:08 +0000
+Message-ID: <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
+Date:   Fri, 19 May 2023 17:06:03 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
+To:     Bart Van Assche <bvanassche@acm.org>,
+        Juergen Gross <jgross@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
+References: <20230511123432.5793-1-jgross@suse.com>
+ <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
+ <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
+ <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
+ <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
+ <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
+ <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
+Content-Language: en-US
+From:   John Garry <john.g.garry@oracle.com>
+Organization: Oracle Corporation
+In-Reply-To: <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P191CA0044.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:657::15) To DM6PR10MB4313.namprd10.prod.outlook.com
+ (2603:10b6:5:212::20)
 MIME-Version: 1.0
-References: <20230519043041.1593578-1-badhri@google.com> <c181c8ef-f342-4a31-9b8c-e1fa14ad214e@rowland.harvard.edu>
- <a1d064e7-9847-4e2e-b74a-4ae4f39d3f04@rowland.harvard.edu>
-In-Reply-To: <a1d064e7-9847-4e2e-b74a-4ae4f39d3f04@rowland.harvard.edu>
-From:   Badhri Jagan Sridharan <badhri@google.com>
-Date:   Fri, 19 May 2023 08:44:57 -0700
-Message-ID: <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: gadget: udc: core: Offload usb_udc_vbus_handler processing
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
-        xuetao09@huawei.com, quic_eserrao@quicinc.com,
-        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
-        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
-        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        Francesco Dolcini <francesco.dolcini@toradex.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR10MB4313:EE_|PH0PR10MB5642:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d75bbde-7843-4290-a271-08db5882f4d2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pm4VzWet83V+q5DqAYYu1gPHpFf7sD7m79oB/lCioqx/XJxmDl9VcDtiOxqCvhDBI2shpQb62fkJtO7BvcksjsrxulQsBjmKHvasTSzI/1AKGC9067iR7+sD07sX+fcJ2yW3gIPxESCsKdbZ0VfyKj9n8fPvzdaxXLk3KYbIUkhNOQZiun+xSBlXPhdKX2hTiscTHO1Fmcd8kjHshODas9z8gOJD1OBcZvDJYU9UpWyHgaG6RVtgWi383UFzv3tnswa2EzaZQYh938yWLHtjYECuvl0/YQTtLwmwAGeMm6360It3L1E1HSPmZtTA1xlQbtm9U+xZkul5cLJzjzYuILJan9xJqOqj3ioDO+JgPZviUv0O9pfx3lE4JZnZ5VNZb/Li5i6vmf6YMLsZBUFT+6uyudIomHWCFCYaXhrdtMXGXlQgrnUmnRldTiT37rW6TvzXwYZwvwjIsaX3yeJSsWgCkw8aGs/gw+jgv/aZoY5xpm88Tp3dLe25cbp+SOAk2swfwZ5FGpy+K9g4HjRRNdyJSPtcEeAl7sDV6/jAXeLi2WgSDdGeEKhD7s+R8bEun1s6MkZ/2X2t8eu9/gBjJuay7EjYzV8/ulQsvyQzxTCDOveYY3TVDfoZdis8chxJ9wXUDpSFYoNgQz5unwTo8Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB4313.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(346002)(396003)(376002)(136003)(366004)(451199021)(31686004)(66899021)(4326008)(6636002)(66476007)(478600001)(36916002)(66556008)(66946007)(316002)(110136005)(31696002)(36756003)(86362001)(26005)(186003)(6506007)(6512007)(53546011)(2616005)(5660300002)(8676002)(4744005)(8936002)(2906002)(6666004)(6486002)(41300700001)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RW92Z1NtWkYzV1MvZDdGbXQxeDAxY3lZdzJBVnZ4Y0x2UGhlL09YeGFiYmYv?=
+ =?utf-8?B?aFY3YitmQXFrS0RDNFdGRXFoWmNDTEIrcHh3V1NKVzJZb3E5NUFrM25wNExK?=
+ =?utf-8?B?REVIaUpKOEFENnlyUW1BT3Bpd2NreTR6TWJFTGR3U0kxQmZmV2g2UTNReGNF?=
+ =?utf-8?B?Q2R0bG5QRDZ5cnNSN0RqaWRiVjRLL0hFaUJkaFBXL2IzUnlpSWJ6UTd3OEIz?=
+ =?utf-8?B?SU85SkcwM0t2Z2QzV3ZFRTNiT2dITjRZWVV4QmYxcXJXeHpoc2lsbjNaUjRp?=
+ =?utf-8?B?SEx1emdGcWsrajVvUGxnWnVnTTJSOFV3MEw1djZNd1l6eVk3MENoUWlyYmVS?=
+ =?utf-8?B?cmxtRHN5T0psVXZBb0dDTXVidlpsOGlPbzZoQ0hLZk8wK1BwY2xTRXRTaldI?=
+ =?utf-8?B?Ykx6R092VTVQTWI3VGRFQW9yTStadXdyVVVqY3NqSzNwWXF4ZkUva3FTNXJh?=
+ =?utf-8?B?MFNodXA4Z0pkbGhpeUFUbWRwdDZZSXUzNXdNcDRKeHB2em90ck5tOS9SSmts?=
+ =?utf-8?B?M2FyN2VqN0lCTEMrbzgrK09tcVVselFhZlhyOGUrSEY3a1ZDanVIdlJaSEx3?=
+ =?utf-8?B?TCtXK0NaVlM0aVhMbVZzTFN6cmc2NVBDckszMzVZd1NFWWNrVlI1dk85M0x3?=
+ =?utf-8?B?U0FzL1FRUU5mN2dFV2ltUFhScVY5QTFSNG90RngxZlBNSWloTkNLdHlENDJS?=
+ =?utf-8?B?VkdHOGdoVjZhUHFjZ0JlMWFZTEZiL1VhQWtHWGVLTkNFRnI1TDEzSkMxS1Ni?=
+ =?utf-8?B?eG9sYVExaitBWVE4L3FTY2dzMGtKOFRYdWlwK0lqbkQwYzF0QjMxdkgvbGhJ?=
+ =?utf-8?B?RXFDMmQzTlIveTljWkJHbktXZDgrMnJadm4rVTBUdVhOZHpkVTZUZFRxczVC?=
+ =?utf-8?B?TjVHRXlnV3BmaTB0TytOL2VReHA2L3VzMGYzRytCK29ZU29FbEpsMHdxSDM0?=
+ =?utf-8?B?RVlUZmx5VEJMeHJ5ZjdaRGN1REpIUzVUb3RWMmEwUldJZXEzMjQrMjM5SEZP?=
+ =?utf-8?B?ZG1pY0V2VmZSVkFDbjZUd1ZoeHVndmZnSGtsTFpncEs0M3hBV2xHbEhNWS9w?=
+ =?utf-8?B?Vy9Sd2hlYmRVeEhsMjd3dnRudUJDWU04c3M0TmVFVGtHT01pb2ptU0t2MTlF?=
+ =?utf-8?B?OGR0ZjViaDJCaC96cWQwOEJTVm9nVC95dTVGanRLNWtXalo4dDIwVkdQb0JT?=
+ =?utf-8?B?eVlyeXFWRUlxK0h5QVNDTUdsZDdZeUdHTXk3cmFlbFVOUjdZUkFXejJXU1dh?=
+ =?utf-8?B?cEowYjVVaUZIWDBQNlMrWEZLWXR0UnZaTzFOeDd5WEliWmYwbmpVRFNHdFVK?=
+ =?utf-8?B?R0VWUFJYKy9JeFpRMzIrK1FPY2lOOHYzNHYwWUs1WXArRENRN1BpTTVQQmVv?=
+ =?utf-8?B?eTg0R0o4OVNta0VCYjNwNmJSTmh1cExYQW1qRFQrQXg4aXhmVkg4OTVmd1cv?=
+ =?utf-8?B?bXRIVitpZ3JMYWFrS1BKV0xjU25EVWM2NnZJa0czOUtmR0ttMzlJVWRvV1hk?=
+ =?utf-8?B?Ly9XazUvZnZxQ01OUG8zWjM4ODdGN3poYm1FdWxjZlBiZ09NR2FDSkk1V3JT?=
+ =?utf-8?B?RERWS1NJcG1RaTVkTHMzYm1xNk81Q0xmMmcyVEhESmVkZU5URGpFaVVKZGI1?=
+ =?utf-8?B?NTI1ck5HbiswT1h4cEFvQ1lOa0NzVmhKbDdLdDVIZk9XLzg0NkF2RnRHRG43?=
+ =?utf-8?B?YitCTVRoUHFCRGJjOGl5K2Zxd3FRcVhKdUFIQThZWEk1UEY2elZ0Q2MzbXFr?=
+ =?utf-8?B?OHhqTDRDQVBIWFRCdFduRDc4Y0R5NlhsUFJZMllPemVkeWVXNjdudjJyUFVB?=
+ =?utf-8?B?T1BVcUhVTnZ0YnpqeUFwRHBXZzIvRGhmMDZCZEJvY3FyVHl6QThmSThUZ2Fl?=
+ =?utf-8?B?NXFzcnZ4WC90SnJEWXdLQitQZmZNOFZGYmlDYk41SldyT1pUN2VVbHlVb1c0?=
+ =?utf-8?B?dzNvRkhrRTNjMXBsZHMxajhIQmorWmdzVlBlZWdaRzVSakJVWlpuQlV2RFNM?=
+ =?utf-8?B?VkJyVVdTOFRlMkxXbXgrUnFZeERkSDBDN1d5YUQxVmZGYWNvd2w0aFNoRVJT?=
+ =?utf-8?B?ZUhmaVd6dUFwNWhSVC9IU0lkOGRLWVB1K3lNUWQwMmdGUGt1QjJTMXJMMEdW?=
+ =?utf-8?Q?Qb+DoHKyHf+2/iehVqDri1tQX?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: X6q/bqbbSNTrQrZHCH77kIDwrWpbI5tXtK+SPqjfb/yPUY9qn0HU0uj9JxNd3SYVDt/CiPQPW8XgWWpPgKYd+EZi/4vJ6zg87EAeVTK0Yo2Trl8Oc6f70mShy40sHPJn+tsY6vFUyxi8XB9dPhyhCwBp3zqoXJnFdVw97bxu4ZEeow8QDMITH4w52Cn3Jmlq24a7nDLaL+4AMNnuQOf2CeI0EVFhCrSlasGBG9vDxhgt/bbkz8zyW3bEFExlxuh14OWcIcF/FgV50uTCKxOte7IwXGEJUqE3l9EZOPkIzFszW5Rrfl2TBE45ZU6l4kSMsqIdhvqK7Hod++0HhdbdcuIabJTaCuaiOdBQOzpL7q1xXTOdvIgfkhkj6JaeJZwAO9IGzoB2ctvtIv4xf1tW+f2Yg8rpy9qm/9Z8O2R6MnfltE9xdoT+7KtR+Rp+KxFP5sPrQ0TtdyVBqCR5j3/AtzT/GR9PzStLFhnRreA+HughHBg3ZmIAIz+5c3sUEpsmCn2w4+7j2UuRIt4qXF0PZUefdu3vAksxkOYhFBWAVDzwLgNGuxlnRnUwmZ2i+T4MNmYrmtIEWFXcR11Ww0MX5oFSK4tDakHPFzyvbn+/qm0hMBljDuaTZvop1Ibm/VGAjAP6x2zpb2A83tw4nO4f5sE//MvSqAUfU1OUUSiUUqIes8FFQ9J67ZSZtToGk3Xsx8C3KWliXeI4LBYiAXiXjMnFTLIh0Wb5cKfbgASNIU7PRRIkjwuyVX9qeIyFTINoWyAFBNIJvOSN/jbvzCNzL1XuJL4KP9cEptbTx1V1C3q+C4l9xesGWAo+thh68dKF4tkEBzu+2YItMGGz93D9NA==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d75bbde-7843-4290-a271-08db5882f4d2
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4313.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2023 16:06:08.1768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 36EMGQ2h04D6uLkDQudhKowpiB1Vdy2kgklz02KQ5gMcS1gV5ta1/R+9vGglndokSZrv1zT5b9VlCGiSNOxkeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB5642
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-19_11,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
+ mlxscore=0 phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305190137
+X-Proofpoint-GUID: 3P83intpm1Y_yROOjAaqeM9lFkywRMMe
+X-Proofpoint-ORIG-GUID: 3P83intpm1Y_yROOjAaqeM9lFkywRMMe
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 19, 2023 at 8:07=E2=80=AFAM Alan Stern <stern@rowland.harvard.e=
-du> wrote:
->
-> On Fri, May 19, 2023 at 10:49:49AM -0400, Alan Stern wrote:
-> > On Fri, May 19, 2023 at 04:30:41AM +0000, Badhri Jagan Sridharan wrote:
-> > > chipidea udc calls usb_udc_vbus_handler from udc_start gadget
-> > > ops causing a deadlock. Avoid this by offloading usb_udc_vbus_handler
-> > > processing.
-> >
-> > Look, this is way overkill.
-> >
-> > usb_udc_vbus_handler() has only two jobs to do: set udc->vbus and call
-> > usb_udc_connect_control().  Furthermore, it gets called from only two
-> > drivers: chipidea and max3420.
-> >
-> > Why not have the callers set udc->vbus themselves and then call
-> > usb_gadget_{dis}connect() directly?  Then we could eliminate
-> > usb_udc_vbus_handler() entirely.  And the unnecessary calls -- the ones
-> > causing deadlocks -- from within udc_start() and udc_stop() handlers ca=
-n
-> > be removed with no further consequence.
-> >
-> > This approach simplifies and removes code.  Whereas your approach
-> > complicates and adds code for no good reason.
->
-> I changed my mind.
->
-> After looking more closely, I found the comment in gadget.h about
-> ->disconnect() callbacks happening in interrupt context.  This means we
-> cannot use a mutex to protect the associated state, and therefore the
-> connect_lock _must_ be a spinlock, not a mutex.
+On 18/05/2023 20:54, Bart Van Assche wrote:
+> 
+>> Further to that, I dislike how we pass a pointer to this local sshdr 
+>> structure. I would prefer if scsi_execute_cmd() could kmalloc() the 
+>> mem for these buffers and the callers could handle free'ing them - I 
+>> can put together a patch for that, to see what people think.
+> 
+> sizeof(struct scsi_sense_hdr) = 8. Using kmalloc() to allocate an eight 
+> byte data structure sounds like overkill to me. Additionally, making 
+> scsi_execute_cmd() allocate struct scsi_sense_hdr and letting the 
+> callers free that data structure will make it harder to review whether 
+> or not any memory leaks are triggered. No such review is necessary if 
+> the scsi_execute_cmd() caller allocates that data structure on the stack.
 
-Quick observation so that I don't misunderstand.
-I already see gadget->udc->driver->disconnect(gadget) being called with
-udc_lock being held.
+Sure, what I describe is ideal, but I still just dislike passing both 
+sensebuf and hdr into scsi_execute_cmd(). The semantics of how 
+scsi_execute_cmd() treats them is vague.
 
-               mutex_lock(&udc_lock);
-               if (gadget->udc->driver)
-                       gadget->udc->driver->disconnect(gadget);
-               mutex_unlock(&udc_lock);
-
-The below patch seems to have introduced it:
-1016fc0c096c USB: gadget: Fix obscure lockdep violation for udc_mutex
-
-Are you referring to some other ->disconnect() callback ? If so, can you po=
-int
-me to which one ?
-
->
-> This also probably means that udc_start and udc_stop callbacks should
-> not be invoked with the lock held.  In fact, you might want to avoid
-> using the lock at all with gadget_bind_driver() and
-> gadget_unbind_driver() -- use it only in the functions that these
-> routines call.
->
-> So it appears the whole connect_lock thing needs to be redesigned with
-> these ideas in mind.  However, it's still true that the UDC drivers
-> shouldn't try to set the connection state from within their udc_start
-> and udc_stop callbacks, because the core takes care of this
-> automatically.
->
-> Alan Stern
-
-Thanks for your inputs !
-Badhri
+Thanks,
+John
