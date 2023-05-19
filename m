@@ -2,185 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDBA6709C32
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 18:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBB7709C46
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 18:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbjESQOc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 12:14:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45192 "EHLO
+        id S229842AbjESQVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 12:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbjESQOZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 12:14:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F0451702;
-        Fri, 19 May 2023 09:14:11 -0700 (PDT)
+        with ESMTP id S229969AbjESQVS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 12:21:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A058CC9;
+        Fri, 19 May 2023 09:21:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1D2F658E3;
-        Fri, 19 May 2023 16:14:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6892EC433D2;
-        Fri, 19 May 2023 16:14:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684512850;
-        bh=TwVB5CNSXyBVdSL/6LkxFooRKToo+KuulE1fK+6TWiU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=an6dx7WYENUIuO0UUU/CeaARtR2AEC8jO0IdQfgoTVS9HnvSu8QKBaZriuhSPFqum
-         o7MWw7/5CaDgT7t5JNyiNZ5k6rMVyTbPFVx1bvlQWElr8JInoYxFY4eHEtzJoDJs2+
-         fwM12wF7I59VKlvT5VNTmPuhgVnqcAp5c1Q9Z5KH0MObXvxLHkpmQWZQxlFmIpa7TG
-         G0NtQnFGZuIMeuq465DNgSP6F7teQfyIEo13XtQs53kF3AQL04Qrqek3xVviMHb3Cc
-         GbWGJy0xvU7HyVThstPYl08kMJQenGhVTnq0RULwripMuadfBEBkMfzTJLg2uFE2Qy
-         1W6gBLo2PxmAQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lee Jones <lee@kernel.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, jassisinghbrar@gmail.com
-Subject: [PATCH AUTOSEL 4.14] mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()
-Date:   Fri, 19 May 2023 12:14:07 -0400
-Message-Id: <20230519161407.2757637-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BC396591C;
+        Fri, 19 May 2023 16:21:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48C8C433D2;
+        Fri, 19 May 2023 16:21:12 +0000 (UTC)
+Date:   Fri, 19 May 2023 17:21:09 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Peter Collingbourne <pcc@google.com>,
+        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "surenb@google.com" <surenb@google.com>,
+        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
+        <chinwen.chang@mediatek.com>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
+        <Kuan-Ying.Lee@mediatek.com>,
+        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        vincenzo.frascino@arm.com,
+        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
+        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
+ swap_free()
+Message-ID: <ZGeh9SSz9DZpfnhC@arm.com>
+References: <20230512235755.1589034-1-pcc@google.com>
+ <20230512235755.1589034-2-pcc@google.com>
+ <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
+ <ZGJtJobLrBg3PtHm@arm.com>
+ <ZGLC0T32sgVkG5kX@google.com>
+ <851940cd-64f1-9e59-3de9-b50701a99281@redhat.com>
+ <CAMn1gO79e+v3ceNY0YfwrYTvU1monKWmTedXsYjtucmM7s=MVA@mail.gmail.com>
+ <c9f1fc7c-62a2-4768-7992-52e34ec36d0f@redhat.com>
+ <CAMn1gO7t0S7CmeU=59Lq10N0WvrKebM=W91W7sa+SQoG13Uppw@mail.gmail.com>
+ <80f45fec-3e91-c7b3-7fb4-1aa9355c627a@redhat.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80f45fec-3e91-c7b3-7fb4-1aa9355c627a@redhat.com>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+On Fri, May 19, 2023 at 11:21:35AM +0200, David Hildenbrand wrote:
+> > > Sorry, I meant actual anonymous memory pages, not shmem. Like, anonymous
+> > > pages that are COW-shared due to fork() or KSM.
+> > > 
+> > > How does MTE, in general, interact with that? Assume one process ends up
+> > > modifying the tags ... and the page is COW-shared with a different
+> > > process that should not observe these tag modifications.
+> > 
+> > Tag modifications cause write faults if the page is read-only, so for
+> > COW shared pages we would end up copying the page in the usual way,
+> > which on arm64 would copy the tags as well via the copy_highpage hook
+> > (see arch/arm64/mm/copypage.c).
+> 
+> Oh, that makes sense, thanks for pointing that out!
+> 
+> ... and I can spot that KSM also checks the tag when de-duplicating:
+> pages_identical() ends up calling memcmp_pages(), which knows how to deal
+> with tags.
+> 
+> Interestingly, calc_checksum() does not seem to care about tags. But that
+> simply implies that pages with the same content have same checksum,
+> independent of the tag. And pages_identical() is the single source of truth.
 
-[ Upstream commit 2d1e952a2b8e5e92d8d55ac88a7cf7ca5ea591ad ]
+That was my assumption at the time, there would be a memcmp_pages() in
+case of checksum collision.
 
-If a user can make copy_from_user() fail, there is a potential for
-UAF/DF due to a lack of locking around the allocation, use and freeing
-of the data buffers.
-
-This issue is not theoretical.  I managed to author a POC for it:
-
-    BUG: KASAN: double-free in kfree+0x5c/0xac
-    Free of addr ffff29280be5de00 by task poc/356
-    CPU: 1 PID: 356 Comm: poc Not tainted 6.1.0-00001-g961aa6552c04-dirty #20
-    Hardware name: linux,dummy-virt (DT)
-    Call trace:
-     dump_backtrace.part.0+0xe0/0xf0
-     show_stack+0x18/0x40
-     dump_stack_lvl+0x64/0x80
-     print_report+0x188/0x48c
-     kasan_report_invalid_free+0xa0/0xc0
-     ____kasan_slab_free+0x174/0x1b0
-     __kasan_slab_free+0x18/0x24
-     __kmem_cache_free+0x130/0x2e0
-     kfree+0x5c/0xac
-     mbox_test_message_write+0x208/0x29c
-     full_proxy_write+0x90/0xf0
-     vfs_write+0x154/0x440
-     ksys_write+0xcc/0x180
-     __arm64_sys_write+0x44/0x60
-     invoke_syscall+0x60/0x190
-     el0_svc_common.constprop.0+0x7c/0x160
-     do_el0_svc+0x40/0xf0
-     el0_svc+0x2c/0x6c
-     el0t_64_sync_handler+0xf4/0x120
-     el0t_64_sync+0x18c/0x190
-
-    Allocated by task 356:
-     kasan_save_stack+0x3c/0x70
-     kasan_set_track+0x2c/0x40
-     kasan_save_alloc_info+0x24/0x34
-     __kasan_kmalloc+0xb8/0xc0
-     kmalloc_trace+0x58/0x70
-     mbox_test_message_write+0x6c/0x29c
-     full_proxy_write+0x90/0xf0
-     vfs_write+0x154/0x440
-     ksys_write+0xcc/0x180
-     __arm64_sys_write+0x44/0x60
-     invoke_syscall+0x60/0x190
-     el0_svc_common.constprop.0+0x7c/0x160
-     do_el0_svc+0x40/0xf0
-     el0_svc+0x2c/0x6c
-     el0t_64_sync_handler+0xf4/0x120
-     el0t_64_sync+0x18c/0x190
-
-    Freed by task 357:
-     kasan_save_stack+0x3c/0x70
-     kasan_set_track+0x2c/0x40
-     kasan_save_free_info+0x38/0x5c
-     ____kasan_slab_free+0x13c/0x1b0
-     __kasan_slab_free+0x18/0x24
-     __kmem_cache_free+0x130/0x2e0
-     kfree+0x5c/0xac
-     mbox_test_message_write+0x208/0x29c
-     full_proxy_write+0x90/0xf0
-     vfs_write+0x154/0x440
-     ksys_write+0xcc/0x180
-     __arm64_sys_write+0x44/0x60
-     invoke_syscall+0x60/0x190
-     el0_svc_common.constprop.0+0x7c/0x160
-     do_el0_svc+0x40/0xf0
-     el0_svc+0x2c/0x6c
-     el0t_64_sync_handler+0xf4/0x120
-     el0t_64_sync+0x18c/0x190
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mailbox/mailbox-test.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 546ba140f83d2..c23acd994d783 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -16,6 +16,7 @@
- #include <linux/kernel.h>
- #include <linux/mailbox_client.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/poll.h>
-@@ -43,6 +44,7 @@ struct mbox_test_device {
- 	char			*signal;
- 	char			*message;
- 	spinlock_t		lock;
-+	struct mutex		mutex;
- 	wait_queue_head_t	waitq;
- 	struct fasync_struct	*async_queue;
- };
-@@ -114,6 +116,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&tdev->mutex);
-+
- 	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
- 	if (!tdev->message)
- 		return -ENOMEM;
-@@ -148,6 +152,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 	kfree(tdev->message);
- 	tdev->signal = NULL;
- 
-+	mutex_unlock(&tdev->mutex);
-+
- 	return ret < 0 ? ret : count;
- }
- 
-@@ -396,6 +402,7 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, tdev);
- 
- 	spin_lock_init(&tdev->lock);
-+	mutex_init(&tdev->mutex);
- 
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
 -- 
-2.39.2
-
+Catalin
