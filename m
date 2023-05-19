@@ -2,141 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA46470A1D5
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 23:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53A1A70A227
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 23:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230148AbjESVgs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 17:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
+        id S231627AbjESVwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 17:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbjESVgq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 17:36:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 348D3101;
-        Fri, 19 May 2023 14:36:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 987EE65B4A;
-        Fri, 19 May 2023 21:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9D8C433EF;
-        Fri, 19 May 2023 21:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1684532204;
-        bh=lcxzIwud3uwyoYHfMBUjGwWcA9PjFfYZ22J6kz88vu4=;
-        h=Date:To:From:Subject:From;
-        b=tqUiLnsTecyQvteNmNuaqRUhqbzWvVDcpRuyiAqOhYsQnZZNsIuabT+xoU7KdHDmH
-         iCE0BrxixSe3Ifd9F34W8Y/AuDhMJvfqdFQ8v5CxxxznEnbCXYamNVG4fU3VbRFGUe
-         aFJzV3ZlvLcoG3R6fmrwsrnOERFCbOxKjj5WVePU=
-Date:   Fri, 19 May 2023 14:36:43 -0700
-To:     mm-commits@vger.kernel.org, zwisler@google.com, trix@redhat.com,
-        tglx@linutronix.de, stable@vger.kernel.org, rostedt@goodmis.org,
-        prudo@redhat.com, paul.walmsley@sifive.com, palmer@rivosinc.com,
-        palmer@dabbelt.com, npiggin@gmail.com, ndesaulniers@google.com,
-        nathan@kernel.org, mpe@ellerman.id.au, mingo@redhat.com,
-        hpa@zytor.com, horms@kernel.org, ebiederm@xmission.com,
-        dyoung@redhat.com, dave.hansen@linux.intel.com,
-        christophe.leroy@csgroup.eu, bp@alien8.de, bhe@redhat.com,
-        aou@eecs.berkeley.edu, ribalda@chromium.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + riscv-purgatory-remove-pgo-flags.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230519213643.EA9D8C433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231693AbjESVwa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 17:52:30 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC4E10F8
+        for <stable@vger.kernel.org>; Fri, 19 May 2023 14:52:11 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-561afe72a73so52008017b3.0
+        for <stable@vger.kernel.org>; Fri, 19 May 2023 14:52:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1684533130; x=1687125130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ezXSeNe7/yIUHA40nQ1HzfdzkERT0quxzTGuCdKKnYc=;
+        b=I61PPPq4ulT4nc6hqI7x5CMT0VuokZIcep7PHOMPcQ/p96Y/m27mzAbcpNodlOSpzw
+         ezyd5jIzljQqMHJI2rXN3focGzbFt30gPTtrOglo3bFmaPY8DpAuAGXR6p2sYGSFkOfx
+         OX4Pd8tkaAIrIUJ6xe5lwICzYuQUEI70OUshd82BgEI3hN79GFnF3+UBu/idgi/e7EEX
+         kAg+tg2APxx/r7lDuR4er0c5yNejZZXeT+WfePwnf9pY9EP4MLYKyHj7Y2nSjRnOBfzu
+         0Qq79Vk3cqdVCtm67Rjak3J7/WcWhVpOWZ0QXsmMz+D74teIM8C/VaPMgZnYFxq8u+IR
+         UR3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684533130; x=1687125130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ezXSeNe7/yIUHA40nQ1HzfdzkERT0quxzTGuCdKKnYc=;
+        b=MfeEHZFewjoV9MY0Pv/CvBjrQ3VlJipSCBz5OB6VbLNm0BxD0JF9EbODWNVYRgZllY
+         1CLwfUcokWR4IjVCR2PS28YGP1B/SzHAQH1pVC+GHc7Lw70qmIJgsVwmJdvgSHfZHETT
+         Kok7Fuq1CmYfN7AbGtRSCiiV85AZU6E4egqhw9mzEwRUSkleyG3+afR+YXq9WDbLj+4a
+         ewHIsoTYydmc3g+79yXT893E7ijFOvQKFCg12Fr75u0ctOrZEF68sBSGg8eyX1y00wyq
+         THqGkprl+UiWBTIlMOHpDDgJVkGzijg6zzoDtGyWDULa9nvESerFNX6PcXuuzXKUs255
+         ST+w==
+X-Gm-Message-State: AC+VfDxCZmDr5MFg6gAQkfwNvJ9wpGalz4JUgb0s65Yrk3k5rRzV0vcs
+        9O2R3zKzmbKQnw68TmFEwZMrMQr1axMNT5clDuIwt7Dw6GCGSo0=
+X-Google-Smtp-Source: ACHHUZ7ni7yIXIClyu8KfLfSeYBwQD3QR1eReHQhnABUYS5cFfAkBOyTz77fNzOHEUdH2HkvTRuarKn1+mqHV7TGUbo=
+X-Received: by 2002:a81:4854:0:b0:561:9092:d60a with SMTP id
+ v81-20020a814854000000b005619092d60amr3629979ywa.42.1684533130035; Fri, 19
+ May 2023 14:52:10 -0700 (PDT)
+MIME-Version: 1.0
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 19 May 2023 17:51:59 -0400
+Message-ID: <CAHC9VhRPvkdk6t1zkx+Y-QVP_vJRSxp+wuOO0YjyppNDLTNg7g@mail.gmail.com>
+Subject: Stable backport of de3004c874e7 ("ocfs2: Switch to security_inode_init_security()")
+To:     stable@vger.kernel.org
+Cc:     Valentin Vidic <vvidic@valentin-vidic.from.hr>,
+        linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello,
 
-The patch titled
-     Subject: riscv/purgatory: remove PGO flags
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     riscv-purgatory-remove-pgo-flags.patch
+I would like to request the backport of the commit below to address a
+kernel panic in ocfs2 that was identified by Valentin Vidi=C4=87 in this
+thread:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/riscv-purgatory-remove-pgo-flags.patch
+https://lore.kernel.org/linux-security-module/20230401214151.1243189-1-vvid=
+ic@valentin-vidic.from.hr
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+While Valentin provides his own patch in the original message, the
+preferred patch is one that went up to Linus during the last merge
+window; Valentin has tested the patch and confirmed that it resolved
+the reported problem.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+  commit de3004c874e740304cc4f4a83d6200acb511bbda
+  Author: Roberto Sassu <roberto.sassu@huawei.com>
+  Date:   Tue Mar 14 09:17:16 2023 +0100
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+   ocfs2: Switch to security_inode_init_security()
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+   In preparation for removing security_old_inode_init_security(), switch t=
+o
+   security_inode_init_security().
 
-------------------------------------------------------
-From: Ricardo Ribalda <ribalda@chromium.org>
-Subject: riscv/purgatory: remove PGO flags
-Date: Fri, 19 May 2023 16:47:39 +0200
+   Extend the existing ocfs2_initxattrs() to take the
+   ocfs2_security_xattr_info structure from fs_info, and populate the
+   name/value/len triple with the first xattr provided by LSMs.
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.  This is not supported by kexec and crashes the
-system.
+   As fs_info was not used before, ocfs2_initxattrs() can now handle the ca=
+se
+   of replicating the behavior of security_old_inode_init_security(), i.e.
+   just obtaining the xattr, in addition to setting all xattrs provided by
+   LSMs.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-4-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: <stable@vger.kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+   Supporting multiple xattrs is not currently supported where
+   security_old_inode_init_security() was called (mknod, symlink), as it
+   requires non-trivial changes that can be done at a later time. Like for
+   reiserfs, even if EVM is invoked, it will not provide an xattr (if it is
+   not the first to set it, its xattr will be discarded; if it is the first=
+,
+   it does not have xattrs to calculate the HMAC on).
 
- arch/riscv/purgatory/Makefile |    5 +++++
- 1 file changed, 5 insertions(+)
+   Finally, since security_inode_init_security(), unlike
+   security_old_inode_init_security(), returns zero instead of -EOPNOTSUPP =
+if
+   no xattrs were provided by LSMs or if inodes are private, additionally
+   check in ocfs2_init_security_get() if the xattr name is set.
 
---- a/arch/riscv/purgatory/Makefile~riscv-purgatory-remove-pgo-flags
-+++ a/arch/riscv/purgatory/Makefile
-@@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- CFLAGS_string.o := -D__DISABLE_EXPORTS
- CFLAGS_ctype.o := -D__DISABLE_EXPORTS
- 
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-+
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
-_
+   If not, act as if security_old_inode_init_security() returned -EOPNOTSUP=
+P,
+   and set si->enable to zero to notify to the functions following
+   ocfs2_init_security_get() that no xattrs are available.
 
-Patches currently in -mm which might be from ribalda@chromium.org are
+   Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+   Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+   Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+   Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+   Signed-off-by: Paul Moore <paul@paul-moore.com>
 
-kexec-support-purgatories-with-texthot-sections.patch
-x86-purgatory-remove-pgo-flags.patch
-powerpc-purgatory-remove-pgo-flags.patch
-riscv-purgatory-remove-pgo-flags.patch
-
+--=20
+paul-moore.com
