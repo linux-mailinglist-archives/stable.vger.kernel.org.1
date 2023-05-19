@@ -2,132 +2,222 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5148E709DFC
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 19:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95900709E5D
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 19:40:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbjESR1g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 13:27:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
+        id S229706AbjESRkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 13:40:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbjESR1b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 13:27:31 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id A6506BB
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 10:27:29 -0700 (PDT)
-Received: (qmail 45355 invoked by uid 1000); 19 May 2023 13:27:28 -0400
-Date:   Fri, 19 May 2023 13:27:28 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
-        xuetao09@huawei.com, quic_eserrao@quicinc.com,
-        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
-        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
-        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v2] usb: gadget: udc: core: Offload usb_udc_vbus_handler
- processing
-Message-ID: <a2305ca6-d343-473d-b220-556a2c2e7833@rowland.harvard.edu>
-References: <20230519043041.1593578-1-badhri@google.com>
- <c181c8ef-f342-4a31-9b8c-e1fa14ad214e@rowland.harvard.edu>
- <a1d064e7-9847-4e2e-b74a-4ae4f39d3f04@rowland.harvard.edu>
- <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com>
+        with ESMTP id S232112AbjESRjv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 13:39:51 -0400
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AA07110;
+        Fri, 19 May 2023 10:39:32 -0700 (PDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2533a03388dso2487217a91.2;
+        Fri, 19 May 2023 10:39:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684517971; x=1687109971;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NlT8GEH5lbEwlZ4d5mlGb7rM37FNi1N4tAe26jo88Zc=;
+        b=BXU8Rw/DXYCMFiHJnx/pnGqaBnyzRvOVloAx3kJsEfgLrZR3n0H+/Nld/l51RVqRM/
+         nSyR+zRYtIHcmzjU5AxDghclRAVstChUkFPTOHFb3fgQNYEq/TiFQ8rSvmxK6XirtAYH
+         4gEw3/ZniK7ulD9ySpnIPvPyuJ17Nuaafl6WPIBNwxtIzPuRs+LEkD2BSN5A/JAUL/H5
+         DDN35ynP8djmELpwYlmmF7cMwvnLFEQwjTn+4rjjoDBJvuY4y2cIfJRbF5h4BsBwgDj6
+         wkBz2pst1rlejR9SucklkTkqKxTCWGVqXI3IOrHXLGKKZrZh2HUp4SmUrrw3v48s1huV
+         //eA==
+X-Gm-Message-State: AC+VfDxPE/p1DiqaSqrxrnt/NdYyTF/kec3BA1ANGTeygTFbrJNSswMp
+        uY3K0xNgWc0WSCxfE/DujQU=
+X-Google-Smtp-Source: ACHHUZ51XtrJSl7wsMLkDn77hps4d2yG8e3x+ZPqzfxBT5MH+8vJneXhdKo5F/AjLJQRSPYR2VVETg==
+X-Received: by 2002:a17:90b:180e:b0:250:85ba:6c3d with SMTP id lw14-20020a17090b180e00b0025085ba6c3dmr2732038pjb.6.1684517971305;
+        Fri, 19 May 2023 10:39:31 -0700 (PDT)
+Received: from ?IPV6:2620:15c:211:201:102a:f960:4ec2:663d? ([2620:15c:211:201:102a:f960:4ec2:663d])
+        by smtp.gmail.com with ESMTPSA id i22-20020a17090adc1600b002471deb13fcsm1787730pjv.6.2023.05.19.10.39.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 May 2023 10:39:30 -0700 (PDT)
+Message-ID: <ff04d098-17cc-42c5-cf72-2128fb43114e@acm.org>
+Date:   Fri, 19 May 2023 10:39:27 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
+Content-Language: en-US
+To:     John Garry <john.g.garry@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
+References: <20230511123432.5793-1-jgross@suse.com>
+ <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
+ <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
+ <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
+ <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
+ <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
+ <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
+ <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
+ <c9f0bc23-d5c1-23ba-2752-d89be9fef04a@acm.org>
+ <611e1210-d89b-9046-ac3f-68a89af6159e@oracle.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <611e1210-d89b-9046-ac3f-68a89af6159e@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 19, 2023 at 08:44:57AM -0700, Badhri Jagan Sridharan wrote:
-> On Fri, May 19, 2023 at 8:07 AM Alan Stern <stern@rowland.harvard.edu> wrote:
-> >
-> > On Fri, May 19, 2023 at 10:49:49AM -0400, Alan Stern wrote:
-> > > On Fri, May 19, 2023 at 04:30:41AM +0000, Badhri Jagan Sridharan wrote:
-> > > > chipidea udc calls usb_udc_vbus_handler from udc_start gadget
-> > > > ops causing a deadlock. Avoid this by offloading usb_udc_vbus_handler
-> > > > processing.
-> > >
-> > > Look, this is way overkill.
-> > >
-> > > usb_udc_vbus_handler() has only two jobs to do: set udc->vbus and call
-> > > usb_udc_connect_control().  Furthermore, it gets called from only two
-> > > drivers: chipidea and max3420.
-> > >
-> > > Why not have the callers set udc->vbus themselves and then call
-> > > usb_gadget_{dis}connect() directly?  Then we could eliminate
-> > > usb_udc_vbus_handler() entirely.  And the unnecessary calls -- the ones
-> > > causing deadlocks -- from within udc_start() and udc_stop() handlers can
-> > > be removed with no further consequence.
-> > >
-> > > This approach simplifies and removes code.  Whereas your approach
-> > > complicates and adds code for no good reason.
-> >
-> > I changed my mind.
-> >
-> > After looking more closely, I found the comment in gadget.h about
-> > ->disconnect() callbacks happening in interrupt context.  This means we
-> > cannot use a mutex to protect the associated state, and therefore the
-> > connect_lock _must_ be a spinlock, not a mutex.
-> 
-> Quick observation so that I don't misunderstand.
-> I already see gadget->udc->driver->disconnect(gadget) being called with
-> udc_lock being held.
-> 
->                mutex_lock(&udc_lock);
->                if (gadget->udc->driver)
->                        gadget->udc->driver->disconnect(gadget);
->                mutex_unlock(&udc_lock);
-> 
-> The below patch seems to have introduced it:
-> 1016fc0c096c USB: gadget: Fix obscure lockdep violation for udc_mutex
+On 5/19/23 10:12, John Garry wrote:
+> If only we could pass the actual scsi_cmnd sense buffer to the caller...
 
-Hmmm...  You're right about this.  A big problem with the USB gadget 
-framework is that it does not clearly state which routines have to run 
-in process context and which have to run in interrupt/atomic context.  
-People therefore don't think about it and frequently get it wrong.
+How about something like the totally untested patch below?
 
-So now the problem is that the UDC or transceiver driver may detect 
-(typically in an interrupt handler) that VBUS power has appeared or 
-disappeared, and it wants to tell the core to adjust the D+/D- pullup 
-signals appropriately.  The core notifies the UDC driver about this, and 
-then in the case of a disconnection, it has to notify the gadget driver.  
-But notifying the gadget driver requires process context for the 
-udc_lock mutex, the ultimate reason being that disconnect notifications 
-can race with gadget driver binding and unbinding.
+Thanks,
 
-If we could prevent those races in some other way then we wouldn't need 
-to hold udc_lock in usb_gadget_disconnect().  This seems like a sensible 
-thing to do in any case; the UDC core should never allow a connection to 
-occur before a gadget driver is bound or after it is unbound.
+Bart.
 
-The first approach that occurs to me is to add a boolean allow_connect 
-flag to struct usb_udc, together with a global spinlock to synchronize 
-access to it.  Then usb_gadget_disconnect() could check the flag before 
-calling driver->disconnect(), gadget_bind_driver() could set the flag 
-before calling usb_udc_connect_control(), and gadget_unbind_driver() 
-could clear the flag before calling usb_gadget_disconnect().
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 7bb12deab70c..7ff8d5c263f0 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -379,15 +379,14 @@ static int ata_get_identity(struct ata_port *ap, struct scsi_device *sdev,
+  int ata_cmd_ioctl(struct scsi_device *scsidev, void __user *arg)
+  {
+  	int rc = 0;
+-	u8 sensebuf[SCSI_SENSE_BUFFERSIZE];
++	u8 *sensebuf = NULL;
+  	u8 scsi_cmd[MAX_COMMAND_SIZE];
+  	u8 args[4], *argbuf = NULL;
+  	int argsize = 0;
+  	struct scsi_sense_hdr sshdr;
+  	const struct scsi_exec_args exec_args = {
+  		.sshdr = &sshdr,
+-		.sense = sensebuf,
+-		.sense_len = sizeof(sensebuf),
++		.sense = &sensebuf,
+  	};
+  	int cmd_result;
 
-(Another possible approach would be to change gadget->deactivated into a 
-counter.  It would still need to be synchronized by a spinlock, 
-however.)
+@@ -397,7 +396,6 @@ int ata_cmd_ioctl(struct scsi_device *scsidev, void __user *arg)
+  	if (copy_from_user(args, arg, sizeof(args)))
+  		return -EFAULT;
 
-This will simplify matters considerably.  udc_lock can remain a mutex 
-and the deadlock problem should go away.
+-	memset(sensebuf, 0, sizeof(sensebuf));
+  	memset(scsi_cmd, 0, sizeof(scsi_cmd));
 
-Do you want to try adding allow_connect as described here or would you 
-prefer that I do it?
+  	if (args[3]) {
+@@ -469,6 +467,7 @@ int ata_cmd_ioctl(struct scsi_device *scsidev, void __user *arg)
+  	 && copy_to_user(arg + sizeof(args), argbuf, argsize))
+  		rc = -EFAULT;
+  error:
++	scsi_free_sense_buffer(sensebuf);
+  	kfree(argbuf);
+  	return rc;
+  }
+@@ -487,15 +486,14 @@ int ata_cmd_ioctl(struct scsi_device *scsidev, void __user *arg)
+  int ata_task_ioctl(struct scsi_device *scsidev, void __user *arg)
+  {
+  	int rc = 0;
+-	u8 sensebuf[SCSI_SENSE_BUFFERSIZE];
++	u8 *sensebuf = NULL;
+  	u8 scsi_cmd[MAX_COMMAND_SIZE];
+  	u8 args[7];
+  	struct scsi_sense_hdr sshdr;
+  	int cmd_result;
+  	const struct scsi_exec_args exec_args = {
+  		.sshdr = &sshdr,
+-		.sense = sensebuf,
+-		.sense_len = sizeof(sensebuf),
++		.sense = &sensebuf,
+  	};
 
-(And in any case, we should prevent the udc_start and udc_stop callbacks 
-in the chipidea and max3420 drivers from trying to update the connection 
-status.)
+  	if (arg == NULL)
+@@ -504,7 +502,6 @@ int ata_task_ioctl(struct scsi_device *scsidev, void __user *arg)
+  	if (copy_from_user(args, arg, sizeof(args)))
+  		return -EFAULT;
 
-Alan Stern
+-	memset(sensebuf, 0, sizeof(sensebuf));
+  	memset(scsi_cmd, 0, sizeof(scsi_cmd));
+  	scsi_cmd[0]  = ATA_16;
+  	scsi_cmd[1]  = (3 << 1); /* Non-data */
+@@ -557,6 +554,7 @@ int ata_task_ioctl(struct scsi_device *scsidev, void __user *arg)
+  	}
+
+   error:
++	scsi_free_sense_buffer(sensebuf);
+  	return rc;
+  }
+
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 6bc1a9380e69..8197023e9077 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -210,9 +210,6 @@ int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
+
+  	if (!args)
+  		args = &default_args;
+-	else if (WARN_ON_ONCE(args->sense &&
+-			      args->sense_len != SCSI_SENSE_BUFFERSIZE))
+-		return -EINVAL;
+
+  	req = scsi_alloc_request(sdev->request_queue, opf, args->req_flags);
+  	if (IS_ERR(req))
+@@ -248,8 +245,10 @@ int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
+
+  	if (args->resid)
+  		*args->resid = scmd->resid_len;
+-	if (args->sense)
+-		memcpy(args->sense, scmd->sense_buffer, SCSI_SENSE_BUFFERSIZE);
++	if (args->sense) {
++		*args->sense = scmd->sense_buffer;
++		scmd->sense_buffer = NULL;
++	}
+  	if (args->sshdr)
+  		scsi_normalize_sense(scmd->sense_buffer, scmd->sense_len,
+  				     args->sshdr);
+@@ -1825,6 +1824,12 @@ static int scsi_mq_init_request(struct blk_mq_tag_set *set, struct request *rq,
+  	return ret;
+  }
+
++void scsi_free_sense_buffer(u8 *sense_buffer)
++{
++	kmem_cache_free(scsi_sense_cache, sense_buffer);
++}
++EXPORT_SYMBOL_GPL(scsi_free_sense_buffer);
++
+  static void scsi_mq_exit_request(struct blk_mq_tag_set *set, struct request *rq,
+  				 unsigned int hctx_idx)
+  {
+diff --git a/include/scsi/scsi.h b/include/scsi/scsi.h
+index ec093594ba53..7c37ef11c71a 100644
+--- a/include/scsi/scsi.h
++++ b/include/scsi/scsi.h
+@@ -217,4 +217,6 @@ static inline bool scsi_status_is_good(int status)
+  		(status == SAM_STAT_COMMAND_TERMINATED));
+  }
+
++void scsi_free_sense_buffer(u8 *sense_buffer);
++
+  #endif /* _SCSI_SCSI_H */
+diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
+index f10a008e5bfa..9f713fcb150e 100644
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -460,8 +460,7 @@ extern void scsi_sanitize_inquiry_string(unsigned char *s, int len);
+
+  /* Optional arguments to scsi_execute_cmd */
+  struct scsi_exec_args {
+-	unsigned char *sense;		/* sense buffer */
+-	unsigned int sense_len;		/* sense buffer len */
++	unsigned char **sense;		/* sense buffer */
+  	struct scsi_sense_hdr *sshdr;	/* decoded sense header */
+  	blk_mq_req_flags_t req_flags;	/* BLK_MQ_REQ flags */
+  	int scmd_flags;			/* SCMD flags */
+
