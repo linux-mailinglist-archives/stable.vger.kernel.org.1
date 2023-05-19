@@ -2,75 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBDB3709C8F
-	for <lists+stable@lfdr.de>; Fri, 19 May 2023 18:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 573E7709CFD
+	for <lists+stable@lfdr.de>; Fri, 19 May 2023 18:54:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbjESQjY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 12:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59836 "EHLO
+        id S231513AbjESQyj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 12:54:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbjESQjX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 12:39:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6226EC9;
-        Fri, 19 May 2023 09:39:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2BAB65935;
-        Fri, 19 May 2023 16:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B3DC433A4;
-        Fri, 19 May 2023 16:39:18 +0000 (UTC)
-Date:   Fri, 19 May 2023 17:39:15 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm: Call arch_swap_restore() from do_swap_page()
-Message-ID: <ZGemMxjj6sC2H7bW@arm.com>
-References: <20230517022115.3033604-1-pcc@google.com>
- <20230517022115.3033604-2-pcc@google.com>
+        with ESMTP id S231495AbjESQyi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 12:54:38 -0400
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50633183;
+        Fri, 19 May 2023 09:54:32 -0700 (PDT)
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-52cbd7d0c37so2361094a12.3;
+        Fri, 19 May 2023 09:54:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684515271; x=1687107271;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r+6sL1zh81H7p+vovqWIWNUf8ZF820CXjdaBKyZVEoU=;
+        b=AThduqBjaOIgNxr59hNXhWKoru8UZ8GOHD8u3zk37gbv7gDynLuiTVDaGKiXEttj0m
+         zB5VW+J0W6lMdr9pe8u+NeT+q14jC2EwdSt8YMI5+eelbxdvtZga6kiz2YqOZAPVNIJx
+         ZWUw993T8QPPu6n9JHXPXEWABkfSfLtipeVAzzewucETyQ3pK2dZdgGfzR/cpquLciHN
+         HsuD7oQCbcNHSqE1fGul/+hQboR4gABASo9xF6GWpmgjKZqzt6rz+XYh739zc34xI3ud
+         2cJyBvuP7E+icZi3vwKSMbVycO7G/Hj5g46yfdp2qItgRHrDwmo4IcEX0M1LVBdcG9eG
+         g3FA==
+X-Gm-Message-State: AC+VfDyOU1PI6rN+wZ5y9Qcc7WiLRusrUegSz9KSOofJc3PP7X4S2d9s
+        PBjhGyI09mWcWHlizwRpNhY=
+X-Google-Smtp-Source: ACHHUZ5xQWXcqU5uPdGu1VrDpxJcpNDxqBkEmGqAsrAA9IeiDyVyt3PCTj43IT2YKCmNW27myH6IbA==
+X-Received: by 2002:a17:902:7fc9:b0:1ab:63e:67b0 with SMTP id t9-20020a1709027fc900b001ab063e67b0mr2690758plb.54.1684515271361;
+        Fri, 19 May 2023 09:54:31 -0700 (PDT)
+Received: from ?IPV6:2620:15c:211:201:42a4:88db:5ed8:43d0? ([2620:15c:211:201:42a4:88db:5ed8:43d0])
+        by smtp.gmail.com with ESMTPSA id p6-20020a170902b08600b001ae46ccd19esm3695287plr.63.2023.05.19.09.54.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 May 2023 09:54:30 -0700 (PDT)
+Message-ID: <c9f0bc23-d5c1-23ba-2752-d89be9fef04a@acm.org>
+Date:   Fri, 19 May 2023 09:54:28 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230517022115.3033604-2-pcc@google.com>
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
+Content-Language: en-US
+To:     John Garry <john.g.garry@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
+References: <20230511123432.5793-1-jgross@suse.com>
+ <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
+ <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
+ <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
+ <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
+ <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
+ <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
+ <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 16, 2023 at 07:21:11PM -0700, Peter Collingbourne wrote:
-> Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-> the call to swap_free() before the call to set_pte_at(), which meant that
-> the MTE tags could end up being freed before set_pte_at() had a chance
-> to restore them. Fix it by adding a call to the arch_swap_restore() hook
-> before the call to swap_free().
-> 
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
-> Cc: <stable@vger.kernel.org> # 6.1
-> Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-> Reported-by: Qun-wei Lin (林群崴) <Qun-wei.Lin@mediatek.com>
-> Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
+On 5/19/23 09:06, John Garry wrote:
+> Sure, what I describe is ideal, but I still just dislike passing both 
+> sensebuf and hdr into scsi_execute_cmd(). The semantics of how 
+> scsi_execute_cmd() treats them is vague.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Is this something that can be addressed by improving the 
+scsi_execute_cmd() documentation?
+
+Thanks,
+
+Bart.
+
