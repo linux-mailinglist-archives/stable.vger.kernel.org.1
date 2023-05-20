@@ -2,50 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8830770A887
-	for <lists+stable@lfdr.de>; Sat, 20 May 2023 16:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC7D70A91E
+	for <lists+stable@lfdr.de>; Sat, 20 May 2023 18:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbjETOk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 20 May 2023 10:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51950 "EHLO
+        id S229762AbjETQ33 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 20 May 2023 12:29:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbjETOkZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 20 May 2023 10:40:25 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58854115
-        for <stable@vger.kernel.org>; Sat, 20 May 2023 07:40:23 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q0Nkr-0000nv-M2; Sat, 20 May 2023 16:40:21 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q0Nkp-001Ytj-Pd; Sat, 20 May 2023 16:40:19 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q0Nko-006IeT-Ud; Sat, 20 May 2023 16:40:18 +0200
-Date:   Sat, 20 May 2023 16:40:18 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc:     stable-commits@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>
-Subject: Re: Patch "iommu/arm-smmu: Drop if with an always false condition"
- has been added to the 6.3-stable tree
-Message-ID: <20230520144018.h6qqwvnsldawu4kx@pengutronix.de>
-References: <20230520014938.2798196-1-sashal@kernel.org>
+        with ESMTP id S229523AbjETQ32 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 20 May 2023 12:29:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C929124;
+        Sat, 20 May 2023 09:29:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 302F360F78;
+        Sat, 20 May 2023 16:29:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FB6C433AA;
+        Sat, 20 May 2023 16:29:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684600166;
+        bh=fTnQ3UUQGfx5X0prFzXPtTRMKF/u+s4ExF23SjpumIk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=h1/lwdsQrUsOzmAxQPXk6OZR3fcv4Y6H1DgMU6+bALEJ5Ksl6aoJOox9GpBrAjN9Q
+         xESjjU6gHJdRsTJogcOk8ud56izKpWovyso07qMC5bFSrdOcS0d6eQCQeMdaVFo3bw
+         AtQt/L0HU5EHi3yc9fZXYtTUdKqnilRWUKVLqfbQ=
+Date:   Sat, 20 May 2023 17:29:23 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Carlos Llamas <cmllamas@google.com>
+Cc:     Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Jann Horn <jannh@google.com>, stable@vger.kernel.org,
+        Minchan Kim <minchan@kernel.org>,
+        Yang Shi <yang.shi@linux.alibaba.com>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Todd Kjos <tkjos@google.com>
+Subject: Re: [PATCH] binder: fix UAF of alloc->vma in race with munmap()
+Message-ID: <2023052002-nervy-juggling-c7a1@gregkh>
+References: <20230519195950.1775656-1-cmllamas@google.com>
+ <2023052032-lemon-backed-ccf2@gregkh>
+ <ZGjCWI6kpaNuNiya@google.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="evf6xr4666n7b3me"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230520014938.2798196-1-sashal@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+In-Reply-To: <ZGjCWI6kpaNuNiya@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,60 +67,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sat, May 20, 2023 at 12:51:36PM +0000, Carlos Llamas wrote:
+> On Sat, May 20, 2023 at 10:55:02AM +0100, Greg Kroah-Hartman wrote:
+> > On Fri, May 19, 2023 at 07:59:49PM +0000, Carlos Llamas wrote:
+> > > [ cmllamas: clean forward port from commit 015ac18be7de ("binder: fix
+> > >   UAF of alloc->vma in race with munmap()") in 5.10 stable. It is needed
+> > >   in mainline after the revert of commit a43cfc87caaf ("android: binder:
+> > >   stop saving a pointer to the VMA") as pointed out by Liam. The commit
+> > >   log and tags have been tweaked to reflect this. ]
+> > > 
+> > > In commit 720c24192404 ("ANDROID: binder: change down_write to
+> > > down_read") binder assumed the mmap read lock is sufficient to protect
+> > > alloc->vma inside binder_update_page_range(). This used to be accurate
+> > > until commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
+> > > munmap"), which now downgrades the mmap_lock after detaching the vma
+> > > from the rbtree in munmap(). Then it proceeds to teardown and free the
+> > > vma with only the read lock held.
+> > > 
+> > > This means that accesses to alloc->vma in binder_update_page_range() now
+> > > will race with vm_area_free() in munmap() and can cause a UAF as shown
+> > > in the following KASAN trace:
+> > > 
+> > >   ==================================================================
+> > >   BUG: KASAN: use-after-free in vm_insert_page+0x7c/0x1f0
+> > >   Read of size 8 at addr ffff16204ad00600 by task server/558
+> > > 
+> > >   CPU: 3 PID: 558 Comm: server Not tainted 5.10.150-00001-gdc8dcf942daa #1
+> > >   Hardware name: linux,dummy-virt (DT)
+> > >   Call trace:
+> > >    dump_backtrace+0x0/0x2a0
+> > >    show_stack+0x18/0x2c
+> > >    dump_stack+0xf8/0x164
+> > >    print_address_description.constprop.0+0x9c/0x538
+> > >    kasan_report+0x120/0x200
+> > >    __asan_load8+0xa0/0xc4
+> > >    vm_insert_page+0x7c/0x1f0
+> > >    binder_update_page_range+0x278/0x50c
+> > >    binder_alloc_new_buf+0x3f0/0xba0
+> > >    binder_transaction+0x64c/0x3040
+> > >    binder_thread_write+0x924/0x2020
+> > >    binder_ioctl+0x1610/0x2e5c
+> > >    __arm64_sys_ioctl+0xd4/0x120
+> > >    el0_svc_common.constprop.0+0xac/0x270
+> > >    do_el0_svc+0x38/0xa0
+> > >    el0_svc+0x1c/0x2c
+> > >    el0_sync_handler+0xe8/0x114
+> > >    el0_sync+0x180/0x1c0
+> > > 
+> > >   Allocated by task 559:
+> > >    kasan_save_stack+0x38/0x6c
+> > >    __kasan_kmalloc.constprop.0+0xe4/0xf0
+> > >    kasan_slab_alloc+0x18/0x2c
+> > >    kmem_cache_alloc+0x1b0/0x2d0
+> > >    vm_area_alloc+0x28/0x94
+> > >    mmap_region+0x378/0x920
+> > >    do_mmap+0x3f0/0x600
+> > >    vm_mmap_pgoff+0x150/0x17c
+> > >    ksys_mmap_pgoff+0x284/0x2dc
+> > >    __arm64_sys_mmap+0x84/0xa4
+> > >    el0_svc_common.constprop.0+0xac/0x270
+> > >    do_el0_svc+0x38/0xa0
+> > >    el0_svc+0x1c/0x2c
+> > >    el0_sync_handler+0xe8/0x114
+> > >    el0_sync+0x180/0x1c0
+> > > 
+> > >   Freed by task 560:
+> > >    kasan_save_stack+0x38/0x6c
+> > >    kasan_set_track+0x28/0x40
+> > >    kasan_set_free_info+0x24/0x4c
+> > >    __kasan_slab_free+0x100/0x164
+> > >    kasan_slab_free+0x14/0x20
+> > >    kmem_cache_free+0xc4/0x34c
+> > >    vm_area_free+0x1c/0x2c
+> > >    remove_vma+0x7c/0x94
+> > >    __do_munmap+0x358/0x710
+> > >    __vm_munmap+0xbc/0x130
+> > >    __arm64_sys_munmap+0x4c/0x64
+> > >    el0_svc_common.constprop.0+0xac/0x270
+> > >    do_el0_svc+0x38/0xa0
+> > >    el0_svc+0x1c/0x2c
+> > >    el0_sync_handler+0xe8/0x114
+> > >    el0_sync+0x180/0x1c0
+> > > 
+> > >   [...]
+> > >   ==================================================================
+> > > 
+> > > To prevent the race above, revert back to taking the mmap write lock
+> > > inside binder_update_page_range(). One might expect an increase of mmap
+> > > lock contention. However, binder already serializes these calls via top
+> > > level alloc->mutex. Also, there was no performance impact shown when
+> > > running the binder benchmark tests.
+> > > 
+> > > Fixes: c0fd2101781e ("Revert "android: binder: stop saving a pointer to the VMA"")
+> > 
+> > I can't find this commit in any tree, are you sure it's correct?
+> 
+> The commit comes from your char-misc-linus branch, it hasn't really
+> landed in mainline yet. I added this tag to make sure this fix is
+> bounded to the revert otherwise it exposes the UAF. I know I'm relying
+> on a merge, so let me know if I should drop the tag instead.
 
---evf6xr4666n7b3me
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ah, no, that works, thanks, I'll queue it up.
 
-Hello,
-
-On Fri, May 19, 2023 at 09:49:37PM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
->=20
->     iommu/arm-smmu: Drop if with an always false condition
->=20
-> to the 6.3-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->=20
-> The filename of the patch is:
->      iommu-arm-smmu-drop-if-with-an-always-false-conditio.patch
-> and it can be found in the queue-6.3 subdirectory.
->=20
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-
-I'd not add that patch to stable. It's just about dropping an
-
-	if (false) {
-		something();
-	}
-
-The compiler probably isn't able to see that the condition is always
-false, so the only benefit is that the patch makes the compiled code a
-bit smaller.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---evf6xr4666n7b3me
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRo29IACgkQj4D7WH0S
-/k5fFggArD0Zr9RzqV30Bq+j0n2YKq7fpDn5GvIzL8YKDDv9a7gj//9IcwZigH+d
-cLNTWPOqHxrWSOFbwMRfqg6Q6v44wtFI3sf4oc37IyGaPe6D9lhIpU4dKIw2IVje
-NahEdiX6VkY2tb2P2QoXOM/ukrOFIAXrBDqrIkoAUKTfXYmOuHz26dLZ73F8lyvP
-eLQKNwJBaJy24JDLyObrlFbAGryZGuSjO8utC9FT2FrHciqcTwamhF3zVweKqWMT
-6CaftGErtWe/xUQMB87o1BGUBk4/zHMXLBDuvLMZ5Wxza1Bm5Zt6Mh24gC3mvEVf
-l8tnmqSWDH+rz1C0PwzmaCurh2+I2A==
-=opvh
------END PGP SIGNATURE-----
-
---evf6xr4666n7b3me--
+greg k-h
