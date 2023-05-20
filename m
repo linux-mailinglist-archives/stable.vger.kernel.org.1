@@ -2,69 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0C770A419
-	for <lists+stable@lfdr.de>; Sat, 20 May 2023 02:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2930670A4A1
+	for <lists+stable@lfdr.de>; Sat, 20 May 2023 04:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229779AbjETAub (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 19 May 2023 20:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38682 "EHLO
+        id S229595AbjETCaz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 19 May 2023 22:30:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjETAub (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 20:50:31 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B2BC19A
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 17:50:30 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-76c64ddee11so14687939f.2
-        for <stable@vger.kernel.org>; Fri, 19 May 2023 17:50:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684543830; x=1687135830;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O7HlAEARWXacHZe2CUvQqsqGHJ815Kco+WM8X5uUNNY=;
-        b=JuOAe0knbk36WqRRMH1G1J4HBIv0HMYJUJ46crEPVw9kDBTOq/wR+coj1+ItM9d0s+
-         /GDhEEzc+liohyK8zfIcUn4An1DSb2vFayfnXEdVXu5tivapkbctLe7nhmwdd+Pw81kR
-         rFv54V3JsMcmrbPmyIPrBUdtvrXl9ccGdGPJ/I0jiaTNDpldYr4blO9sH5/XZvU3zTBB
-         3Mp9sJ6zmN0/1iFuEh+OBj16xgeyfB+AzUBnJxYRXRDHXyGWdIRpfIL/EC4xct365Mjc
-         WD/3Xs6xwcvKhS0U+NXWoTxEO/zIpCySfma4a+i+CGsJHJNLviH2w0nPNtO1tDZAnsuO
-         2TUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684543830; x=1687135830;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O7HlAEARWXacHZe2CUvQqsqGHJ815Kco+WM8X5uUNNY=;
-        b=M0kIbwCqJu2jYdfICmj338WzJyyWYpFRYb9Ki6SmSf7Xxt77Mvy64s12bEgv7rCKmz
-         9GTB53GhfI45KHGXEiDBLp9v4vcowDg7IeX1svJBkEIp6UN24XEekrz+xVr2bwtzVlHx
-         QhoXMd/BFobOoRA4UJGyZQBZ21aMfiSunBCDOf0HR4vpLr/+WtsmamfzkS8xjJz0YUVW
-         3R3ApOGDeNf/x1uy3dDbxML+hpqojMsBLXvNWGpfuic4izAHbKYLJqZAf3q9JLl1XRpb
-         0xjNz9MClaQZJlBYPZcL1J0KLT8a9od88Qxh3BQ7aJpxB0CxX2Ycus5B9JlhcYSGhmMZ
-         YHkA==
-X-Gm-Message-State: AC+VfDyGtJXJmyNWTMI+TnniBI3qgcV1bWUKbCkpJC2j9GII1oED4hDo
-        G4oct5gw07OHlUGblDrZPrAXhB2Vfgs6D68vkrQ=
-X-Google-Smtp-Source: ACHHUZ7HLFjTMMHHfoTW6y1oZBsuBM/8F16XR6re1Lyx/IIJHG+SYRX6iJFXMJz66FccvPFYBS2FvBj+rSEIIZd99BQ=
-X-Received: by 2002:a5d:930a:0:b0:76c:8674:81e7 with SMTP id
- l10-20020a5d930a000000b0076c867481e7mr2339770ion.21.1684543829949; Fri, 19
- May 2023 17:50:29 -0700 (PDT)
+        with ESMTP id S229543AbjETCaz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 19 May 2023 22:30:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA3461B0;
+        Fri, 19 May 2023 19:30:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 672D365B1A;
+        Sat, 20 May 2023 02:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF210C433EF;
+        Sat, 20 May 2023 02:30:49 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+        Huacai Chen <chenhuacai@loongson.cn>, stable@vger.kernel.org,
+        Jun Yi <yijun@loongson.cn>
+Subject: [PATCH] LoongArch: Fix perf event id calculation
+Date:   Sat, 20 May 2023 10:30:00 +0800
+Message-Id: <20230520023001.3491257-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Received: by 2002:a05:6638:140a:b0:40b:bd58:65fe with HTTP; Fri, 19 May 2023
- 17:50:29 -0700 (PDT)
-Reply-To: americabnkcapitalloan@outlook.com
-From:   Amadeo Giannini <nschc97@gmail.com>
-Date:   Sat, 20 May 2023 01:50:29 +0100
-Message-ID: <CAB1PbNw=j5yCjGHrxoyf=ORa7SJ2F0QiCw54iHVsOzygcEp_aA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looking for a loan? How much do you need and the time to pay it back?
-Contact us now! Amadeo Giannini.
+LoongArch PMCFG has 10bit event id rather than 8 bit, so fix it.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jun Yi <yijun@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kernel/perf_event.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/loongarch/kernel/perf_event.c b/arch/loongarch/kernel/perf_event.c
+index ff28f99b47d7..0491bf453cd4 100644
+--- a/arch/loongarch/kernel/perf_event.c
++++ b/arch/loongarch/kernel/perf_event.c
+@@ -271,7 +271,7 @@ static void loongarch_pmu_enable_event(struct hw_perf_event *evt, int idx)
+ 	WARN_ON(idx < 0 || idx >= loongarch_pmu.num_counters);
+ 
+ 	/* Make sure interrupt enabled. */
+-	cpuc->saved_ctrl[idx] = M_PERFCTL_EVENT(evt->event_base & 0xff) |
++	cpuc->saved_ctrl[idx] = M_PERFCTL_EVENT(evt->event_base) |
+ 		(evt->config_base & M_PERFCTL_CONFIG_MASK) | CSR_PERFCTRL_IE;
+ 
+ 	cpu = (event->cpu >= 0) ? event->cpu : smp_processor_id();
+@@ -594,7 +594,7 @@ static struct pmu pmu = {
+ 
+ static unsigned int loongarch_pmu_perf_event_encode(const struct loongarch_perf_event *pev)
+ {
+-	return (pev->event_id & 0xff);
++	return M_PERFCTL_EVENT(pev->event_id);
+ }
+ 
+ static const struct loongarch_perf_event *loongarch_pmu_map_general_event(int idx)
+@@ -849,7 +849,7 @@ static void resume_local_counters(void)
+ 
+ static const struct loongarch_perf_event *loongarch_pmu_map_raw_event(u64 config)
+ {
+-	raw_event.event_id = config & 0xff;
++	raw_event.event_id = M_PERFCTL_EVENT(config);
+ 
+ 	return &raw_event;
+ }
+-- 
+2.39.1
+
