@@ -2,142 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27CD170ADAC
-	for <lists+stable@lfdr.de>; Sun, 21 May 2023 13:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F90F70AE16
+	for <lists+stable@lfdr.de>; Sun, 21 May 2023 14:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230518AbjEULqe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 21 May 2023 07:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37756 "EHLO
+        id S229719AbjEUMe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 21 May 2023 08:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231865AbjEUKqi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 21 May 2023 06:46:38 -0400
-Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8655A1A4;
-        Sun, 21 May 2023 03:46:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
-        t=1684665977; bh=ROm0pJOZNyVDKEAis1Y6Eci8XLW7KJHTxO8fnKHcE5k=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=mH+YJ27HMqhNsQjU+h8lFEiVcwuIQDEP7IoCIvHgdTVn5XPDbyx19NbUrmnYvOaFY
-         LOz2TDlA91owpQ0zButjzTnK2/BYfFDlFq7NDtdtvjCcCYE8oKF4fEKKN+1qRGpem8
-         GUqAhxAxB55f5Pt/rh+uzS/s8WEO7YeePbFRbjAU=
-Received: from [100.100.57.122] (unknown [58.34.185.106])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by mailbox.box.xen0n.name (Postfix) with ESMTPSA id 4A09A60115;
-        Sun, 21 May 2023 18:46:17 +0800 (CST)
-Message-ID: <4a08b133-4ead-083e-4ddb-519e12a0dad6@xen0n.name>
-Date:   Sun, 21 May 2023 18:46:16 +0800
+        with ESMTP id S229528AbjEUMe1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 21 May 2023 08:34:27 -0400
+X-Greylist: delayed 51041 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 21 May 2023 05:34:22 PDT
+Received: from mail.ncmrwf.gov.in (mail.ncmrwf.gov.in [14.139.63.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E966CB8
+        for <stable@vger.kernel.org>; Sun, 21 May 2023 05:34:22 -0700 (PDT)
+Received: from mail.ncmrwf.gov.in (localhost.localdomain [127.0.0.1])
+        by mail.ncmrwf.gov.in (Postfix) with ESMTP id A05CF403808;
+        Sat, 20 May 2023 16:47:55 +0530 (IST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ncmrwf.gov.in;
+        s=default; t=1684581476;
+        bh=ewEU7FMfsTGgeBjtgrXdSZ1dCzsn+hL+cN7zxUoaYu8=;
+        h=Date:Subject:From:Reply-To:To;
+        b=JEznN0zy21u6mfMkM/yCVsuvosH915AqO18ljlbqozRJAkbZco8jVtS9oxDTMooA5
+         6rpeARuXzCaKssb1VEBQdFl0el4cqu7V7XROsSqEQzdJMM5upcrp8pd1LzNZuKCk7w
+         vJBbqcuu1GJ0hxNc00yYvuyVX7NgIAtSrYb8tT6w=
+Received: from 129.205.96.146
+        (SquirrelMail authenticated user archana)
+        by mail.ncmrwf.gov.in with HTTP;
+        Sat, 20 May 2023 16:47:55 +0530
+Message-ID: <65b8222c556c13ec62cdefcc33d8daa4.squirrel@mail.ncmrwf.gov.in>
+Date:   Sat, 20 May 2023 16:47:55 +0530
+Subject: Re: Can we talk
+From:   "Gen Kim Cheng" <cheng5@ncmrwf.gov.in>
+Reply-To: kimcheng660@gmail.com
+User-Agent: SquirrelMail/1.4.22-3.el6
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.1
-Subject: Re: [PATCH V1 3/4] irqchip/loongson-liointc: Fix IRQ trigger polarity
-Content-Language: en-US
-To:     Jianmin Lv <lvjianmin@loongson.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
-References: <20230520063818.27208-1-lvjianmin@loongson.cn>
- <20230520063818.27208-4-lvjianmin@loongson.cn>
-From:   WANG Xuerui <kernel@xen0n.name>
-In-Reply-To: <20230520063818.27208-4-lvjianmin@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain;charset=iso-8859-1
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Priority: 3 (Normal)
+Importance: Normal
+To:     undisclosed-recipients:;
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,RCVD_IN_SBL_CSS,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5003]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [129.205.96.146 listed in zen.spamhaus.org]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [14.139.63.149 listed in bl.score.senderscore.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [kimcheng660[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023/5/20 14:38, Jianmin Lv wrote:
-> For IRQ controller INT_POLARITY regitser of Loongson-2K CPU
 
-"For the INT_POLARITY register of Loongson-2K series IRQ controller"?
+Please can we talk?
 
-> series, '0' indicates high level or rising edge triggered IRQ,
-> '1' indicates low level or falling edge triggered IRQ.
 
-Remove the two "IRQ"s; the topic is "polarity", not "IRQs".
 
-Also please mention the source of this information; I've checked the 
-Loongson 2K1000LA User Manual v1.0 and it seems a similar description is 
-found in Table 9-2, Section 9.3 (中断寄存器描述 / Description of the Interrupt 
-Registers). It mentioned "Intpol_0" and "Intpol_1" but the description 
-is consistent with the wording here.
 
-> 
-> For Loongson-3A CPU series, setting INT_POLARITY register is not
-> supported and writting it has no effect.
 
-Only 3A and not the whole Loongson-3 series?
-
-Also typo: "writing".
-
-> 
-> So trigger polarity setting shouled be fixed for Loongson-2K CPU
-> series.
-
-The changes seem to be just inversion of the polarity flags. It should 
-be correct given your description, and not affect Loongson-3 series 
-because it's supposed to behave as noops; it may be better to move the 
-explanation regarding Loongson-3 behavior to code comment (e.g. 
-somewhere near the definition of LIOINTC_REG_INTC_POL) so it's 
-immediately visible to drive-by readers not familiar with LoongArch 
-internals, without them having to dig through commit history to see this.
-
-> 
-> Fixes: 17343d0b4039 ("irqchip/loongson-liointc: Support to set IRQ type for ACPI path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-> Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-
-Again, who's the proper author for this patch? Given the tags it seems 
-the author should be Chong Qiao, but I didn't see an Author: line at the 
-beginning.
-
-> ---
->   drivers/irqchip/irq-loongson-liointc.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/irqchip/irq-loongson-liointc.c b/drivers/irqchip/irq-loongson-liointc.c
-> index 8d00a9ad5b00..9a9c2bf048a3 100644
-> --- a/drivers/irqchip/irq-loongson-liointc.c
-> +++ b/drivers/irqchip/irq-loongson-liointc.c
-> @@ -116,19 +116,19 @@ static int liointc_set_type(struct irq_data *data, unsigned int type)
->   	switch (type) {
->   	case IRQ_TYPE_LEVEL_HIGH:
->   		liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, false);
-> -		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
-> +		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
->   		break;
->   	case IRQ_TYPE_LEVEL_LOW:
->   		liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, false);
-> -		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
-> +		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
->   		break;
->   	case IRQ_TYPE_EDGE_RISING:
->   		liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, true);
-> -		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
-> +		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
->   		break;
->   	case IRQ_TYPE_EDGE_FALLING:
->   		liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, true);
-> -		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
-> +		liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
->   		break;
->   	default:
->   		irq_gc_unlock_irqrestore(gc, flags);
-
--- 
-WANG "xen0n" Xuerui
-
-Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
 
