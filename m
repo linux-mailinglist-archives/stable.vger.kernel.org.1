@@ -2,99 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72CC170AA73
-	for <lists+stable@lfdr.de>; Sat, 20 May 2023 20:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB0C70AA9D
+	for <lists+stable@lfdr.de>; Sat, 20 May 2023 21:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232413AbjETS2d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 20 May 2023 14:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48866 "EHLO
+        id S229625AbjETTHr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 20 May 2023 15:07:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232263AbjETS1f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 20 May 2023 14:27:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C0FE56;
-        Sat, 20 May 2023 11:26:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C865B60F92;
-        Sat, 20 May 2023 18:24:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF89C4331F;
-        Sat, 20 May 2023 18:24:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684607085;
-        bh=vJMFvbfb1riHt08Qatx5dIhEfYslvuhQrxIlacgSUL0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=un3sGc1U61ctJ29V/iAJwB+RzcsWnWJhi1hrbhsJq79NtTEzF41M4RzMBqWd6xd2k
-         SdEqTOGTL9hOqd04X+SbyYK4ocbVba9IIQhsBgvnBdBEUvnSNoqxzd0+3iicC3a0ot
-         iAjx+ofsC6z6ZNQ8uANwMWIrLQKKGaMc2uGBrgA53fC0GfCVG6ewtgwDaUdn9juMGl
-         mzv8hp5E/EE2Y9unLAkz3z45aTpI/W0CnZYwAqDMlyH6u3J+QTyJimuooqfJMBqXVp
-         xDC4UPT+n5tFgmXbpmjgRnV8My9rUISQKP5b2WC9nZ1drwrUaD37IVDLLZAUbVNQjx
-         /nTgBajrZTszw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ivan Orlov <ivan.orlov0322@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
-        josef@toxicpanda.com, linux-block@vger.kernel.org,
-        nbd@other.debian.org
-Subject: [PATCH AUTOSEL 4.14 4/4] nbd: Fix debugfs_create_dir error checking
-Date:   Sat, 20 May 2023 14:24:29 -0400
-Message-Id: <20230520182432.866012-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230520182432.866012-1-sashal@kernel.org>
-References: <20230520182432.866012-1-sashal@kernel.org>
+        with ESMTP id S229570AbjETTHr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 20 May 2023 15:07:47 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BBFFB
+        for <stable@vger.kernel.org>; Sat, 20 May 2023 12:07:46 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id 4fb4d7f45d1cf-510d1972d5aso6557895a12.0
+        for <stable@vger.kernel.org>; Sat, 20 May 2023 12:07:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684609664; x=1687201664;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cIuacTUe55V68yxCoo7ary9vLzT4+1nPwynRvBBZauw=;
+        b=a0waQjhy6xEt8PQ9Uc4/uQRzb4dLsPP3P6zclGSDsPLn6+HPr8dQMP7F9BmvJpVlfq
+         2OwwI7VYETzyS7NM+Ab4OkcKkF67HvhK+UHeCuStwJPROgX+gbTrAujs1ikJzgRV1p4L
+         KKBzlkOjAJzmQ2q9HG/JVArxjTF9ZtJm0gJKDL9Deu49KuFujDqIUnOKgxBbxmEvNn74
+         zWXFxiDK0vQVGqxnGE7zqvQHkd22bi/B3h/3NG5rQlHiX9n05+fbBOnw0r/nakZ6QrY8
+         FxmK7SRO/Fso8s4s7BhOMcozX2k6gWQzjDl+wjH+LExjUaSRnFNS1GWHnXGG6rFwCSpC
+         QAHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684609664; x=1687201664;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cIuacTUe55V68yxCoo7ary9vLzT4+1nPwynRvBBZauw=;
+        b=j937Iu7UxBv1So+OjHGtSzZ6Lbs7GlgDJxVeprhGsNVmeRq3A8W2CZRTadVUFd7psM
+         nNwDqZDc8S9lj7nAsTdCohBsRIMvByZVWrvzilcsLrM49sccTyMf0UVhQuJXOdbPd/AN
+         ALkrcqx7ijSbUmwSW8/AiuvHYjWnjOJHzLHkURGeIs5Ubtd53tpgS8xY6NKsBhgPhw5y
+         rplkwIX3yZu2J1XOpgghY5ZslZdwI080KbrZOv6HL0HGaFegGFMTXI3QHlTP4FmVkPao
+         MBZMFc1KBcChztNpFz4kUlDUO073pxg+TTNcCATZQ9gY/UT6mbVCywAwaEvE49jkCu80
+         t2Cg==
+X-Gm-Message-State: AC+VfDxoMZQ9gqsvKS1jTPVVyQoWNX1HqVyStMKeux9/0iPgifFviW/h
+        UsedNuQK+aqsc98ZhUNtC4NqeN+7kGk8hLve5KE=
+X-Google-Smtp-Source: ACHHUZ6U3ngg0z9G3MUa5zw9PhiXJLFyUaxii4SzslfPMeu7nI4VHLtKddwBBPawXQQIdDwkvve3jSdgWzwDvwI98dU=
+X-Received: by 2002:aa7:da0a:0:b0:50d:d98a:dd15 with SMTP id
+ r10-20020aa7da0a000000b0050dd98add15mr4305472eds.38.1684609664473; Sat, 20
+ May 2023 12:07:44 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a54:2e82:0:b0:211:a898:1fe5 with HTTP; Sat, 20 May 2023
+ 12:07:43 -0700 (PDT)
+Reply-To: sharharshalom@gmail.com
+From:   Shahar shalom <anwarialima4@gmail.com>
+Date:   Sat, 20 May 2023 19:07:43 +0000
+Message-ID: <CAJQzuVfz-KE2Z23ko7AsPe5whWDy7n7V=13z59YqiiTdAAkuzw@mail.gmail.com>
+Subject: =?UTF-8?B?5YaN5Lya?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ivan Orlov <ivan.orlov0322@gmail.com>
-
-[ Upstream commit 4913cfcf014c95f0437db2df1734472fd3e15098 ]
-
-The debugfs_create_dir function returns ERR_PTR in case of error, and the
-only correct way to check if an error occurred is 'IS_ERR' inline function.
-This patch will replace the null-comparison with IS_ERR.
-
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Link: https://lore.kernel.org/r/20230512130533.98709-1-ivan.orlov0322@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/block/nbd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index f01b8860ba143..eb2ca7f6ab3ab 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1531,7 +1531,7 @@ static int nbd_dev_dbg_init(struct nbd_device *nbd)
- 		return -EIO;
- 
- 	dir = debugfs_create_dir(nbd_name(nbd), nbd_dbg_dir);
--	if (!dir) {
-+	if (IS_ERR(dir)) {
- 		dev_err(nbd_to_dev(nbd), "Failed to create debugfs dir for '%s'\n",
- 			nbd_name(nbd));
- 		return -EIO;
-@@ -1557,7 +1557,7 @@ static int nbd_dbg_init(void)
- 	struct dentry *dbg_dir;
- 
- 	dbg_dir = debugfs_create_dir("nbd", NULL);
--	if (!dbg_dir)
-+	if (IS_ERR(dbg_dir))
- 		return -EIO;
- 
- 	nbd_dbg_dir = dbg_dir;
--- 
-2.39.2
-
+LS0gDQrkuIrlkajmn5DkuKrml7blgJnlr4TkuobkuIDlsIHpgq7ku7bnu5nkvaDvvIzmnJ/mnJsN
+CuaUtuWIsOS9oOeahOWbnuS/oe+8jOS9huS7pOaIkeaDiuiutueahOaYr+S9oOS7juadpeayoeac
+iei0ueW/g+WbnuWkjeOAgg0K6K+35Zue5aSN6L+b5LiA5q2l55qE6Kej6YeK44CCDQoNCuiCg+eE
+tu+8jA0K5rKZ5ZOI5bCU5bmz5a6JDQo=
