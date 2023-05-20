@@ -2,189 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 068DE70A82F
-	for <lists+stable@lfdr.de>; Sat, 20 May 2023 14:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8830770A887
+	for <lists+stable@lfdr.de>; Sat, 20 May 2023 16:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjETMvn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 20 May 2023 08:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33726 "EHLO
+        id S230014AbjETOk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 20 May 2023 10:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjETMvm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 20 May 2023 08:51:42 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108C4119
-        for <stable@vger.kernel.org>; Sat, 20 May 2023 05:51:41 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-64d341bdedcso1143027b3a.3
-        for <stable@vger.kernel.org>; Sat, 20 May 2023 05:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684587100; x=1687179100;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fvksPvcW9/BwWwqx3x3C7igF5scaXtkrAufgr545+GQ=;
-        b=OAebyS1cBwk/ma7tiPc4QuTItbZ9/mXYHVw1DmAdEPkGdAP4avZ6hCADccsC15RokO
-         2OzlrVRECBdNkselPkidDiui/kNPBTh0kgsG1dbyZn9zQYwdRpkfbQZchVUOy4LA2jac
-         KOh7zgM4IepREaw0Att2xBKmU3oz7pqXLi2sTaw4+d5lMIHzZZ7yFoJ554Gv/fkp6hDY
-         yybqFbZ+x5mESCnMoobAJOO4RnOy8QFPEsYmL8fYYHy0aN0gXbldKAV6SOQEBCyFDuTJ
-         4UxpeqGPnwKQVSpQzKfyIll8ULnacRSWooWiIjyH6nxA9w1gw8ZZVB3w6xusfkyJ916/
-         XpoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684587100; x=1687179100;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fvksPvcW9/BwWwqx3x3C7igF5scaXtkrAufgr545+GQ=;
-        b=l1IcPo5iCifrwBSCpVWDmYY0BVAGzLGwY1h+3a9Y5nB4/wLxu0KZlnuZQhFxXOEC12
-         mhe6KYpHhQ7/JGMHYGNQdGT7vVllsVeb31PvxYqVbfH1Lv0NZOsh02zbgNNSKo//N1+y
-         Qhy0JwY+WjstEhHDwXNiZSIsdIExSazrJol9J7KT7ORSzMc28hJ28VgNJcmt5WVPCB0U
-         6f/GuWbn1Y2bDD+WpLE9yu/cZYrBlXcKypRtjIC0EcT6IM/zOmSmf8yOTZ8yk7I3hByk
-         /3wiqOrCSHPayy93a+85iYqPAUsWvVwwWGHoBn04NreGseZOOpgRFPEud1wFJocdXaE0
-         no7g==
-X-Gm-Message-State: AC+VfDwChxePUSXiWT4wYHZeJAy0M24/eGPtwzUoUNO6hKBwiC764xJG
-        U/KpKCpT84mhdVRhFgwPG3oi0w==
-X-Google-Smtp-Source: ACHHUZ6yIom9GvNQSGOy9d7SE0TTsEwPJfnzkuT7YtbmIwNbyxBfx1K37IPGR+b6pMcAr+y8wDH2sA==
-X-Received: by 2002:a05:6a20:3d09:b0:105:fd78:cb41 with SMTP id y9-20020a056a203d0900b00105fd78cb41mr6024444pzi.54.1684587100158;
-        Sat, 20 May 2023 05:51:40 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id x7-20020a62fb07000000b0063d670ad850sm1245073pfm.92.2023.05.20.05.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 May 2023 05:51:39 -0700 (PDT)
-Date:   Sat, 20 May 2023 12:51:36 +0000
-From:   Carlos Llamas <cmllamas@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, kernel-team@android.com,
-        Jann Horn <jannh@google.com>, stable@vger.kernel.org,
-        Minchan Kim <minchan@kernel.org>,
-        Yang Shi <yang.shi@linux.alibaba.com>,
-        Liam Howlett <liam.howlett@oracle.com>,
-        Todd Kjos <tkjos@google.com>
-Subject: Re: [PATCH] binder: fix UAF of alloc->vma in race with munmap()
-Message-ID: <ZGjCWI6kpaNuNiya@google.com>
-References: <20230519195950.1775656-1-cmllamas@google.com>
- <2023052032-lemon-backed-ccf2@gregkh>
+        with ESMTP id S229464AbjETOkZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 20 May 2023 10:40:25 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58854115
+        for <stable@vger.kernel.org>; Sat, 20 May 2023 07:40:23 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q0Nkr-0000nv-M2; Sat, 20 May 2023 16:40:21 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q0Nkp-001Ytj-Pd; Sat, 20 May 2023 16:40:19 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q0Nko-006IeT-Ud; Sat, 20 May 2023 16:40:18 +0200
+Date:   Sat, 20 May 2023 16:40:18 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc:     stable-commits@vger.kernel.org, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>
+Subject: Re: Patch "iommu/arm-smmu: Drop if with an always false condition"
+ has been added to the 6.3-stable tree
+Message-ID: <20230520144018.h6qqwvnsldawu4kx@pengutronix.de>
+References: <20230520014938.2798196-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="evf6xr4666n7b3me"
 Content-Disposition: inline
-In-Reply-To: <2023052032-lemon-backed-ccf2@gregkh>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <20230520014938.2798196-1-sashal@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, May 20, 2023 at 10:55:02AM +0100, Greg Kroah-Hartman wrote:
-> On Fri, May 19, 2023 at 07:59:49PM +0000, Carlos Llamas wrote:
-> > [ cmllamas: clean forward port from commit 015ac18be7de ("binder: fix
-> >   UAF of alloc->vma in race with munmap()") in 5.10 stable. It is needed
-> >   in mainline after the revert of commit a43cfc87caaf ("android: binder:
-> >   stop saving a pointer to the VMA") as pointed out by Liam. The commit
-> >   log and tags have been tweaked to reflect this. ]
-> > 
-> > In commit 720c24192404 ("ANDROID: binder: change down_write to
-> > down_read") binder assumed the mmap read lock is sufficient to protect
-> > alloc->vma inside binder_update_page_range(). This used to be accurate
-> > until commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
-> > munmap"), which now downgrades the mmap_lock after detaching the vma
-> > from the rbtree in munmap(). Then it proceeds to teardown and free the
-> > vma with only the read lock held.
-> > 
-> > This means that accesses to alloc->vma in binder_update_page_range() now
-> > will race with vm_area_free() in munmap() and can cause a UAF as shown
-> > in the following KASAN trace:
-> > 
-> >   ==================================================================
-> >   BUG: KASAN: use-after-free in vm_insert_page+0x7c/0x1f0
-> >   Read of size 8 at addr ffff16204ad00600 by task server/558
-> > 
-> >   CPU: 3 PID: 558 Comm: server Not tainted 5.10.150-00001-gdc8dcf942daa #1
-> >   Hardware name: linux,dummy-virt (DT)
-> >   Call trace:
-> >    dump_backtrace+0x0/0x2a0
-> >    show_stack+0x18/0x2c
-> >    dump_stack+0xf8/0x164
-> >    print_address_description.constprop.0+0x9c/0x538
-> >    kasan_report+0x120/0x200
-> >    __asan_load8+0xa0/0xc4
-> >    vm_insert_page+0x7c/0x1f0
-> >    binder_update_page_range+0x278/0x50c
-> >    binder_alloc_new_buf+0x3f0/0xba0
-> >    binder_transaction+0x64c/0x3040
-> >    binder_thread_write+0x924/0x2020
-> >    binder_ioctl+0x1610/0x2e5c
-> >    __arm64_sys_ioctl+0xd4/0x120
-> >    el0_svc_common.constprop.0+0xac/0x270
-> >    do_el0_svc+0x38/0xa0
-> >    el0_svc+0x1c/0x2c
-> >    el0_sync_handler+0xe8/0x114
-> >    el0_sync+0x180/0x1c0
-> > 
-> >   Allocated by task 559:
-> >    kasan_save_stack+0x38/0x6c
-> >    __kasan_kmalloc.constprop.0+0xe4/0xf0
-> >    kasan_slab_alloc+0x18/0x2c
-> >    kmem_cache_alloc+0x1b0/0x2d0
-> >    vm_area_alloc+0x28/0x94
-> >    mmap_region+0x378/0x920
-> >    do_mmap+0x3f0/0x600
-> >    vm_mmap_pgoff+0x150/0x17c
-> >    ksys_mmap_pgoff+0x284/0x2dc
-> >    __arm64_sys_mmap+0x84/0xa4
-> >    el0_svc_common.constprop.0+0xac/0x270
-> >    do_el0_svc+0x38/0xa0
-> >    el0_svc+0x1c/0x2c
-> >    el0_sync_handler+0xe8/0x114
-> >    el0_sync+0x180/0x1c0
-> > 
-> >   Freed by task 560:
-> >    kasan_save_stack+0x38/0x6c
-> >    kasan_set_track+0x28/0x40
-> >    kasan_set_free_info+0x24/0x4c
-> >    __kasan_slab_free+0x100/0x164
-> >    kasan_slab_free+0x14/0x20
-> >    kmem_cache_free+0xc4/0x34c
-> >    vm_area_free+0x1c/0x2c
-> >    remove_vma+0x7c/0x94
-> >    __do_munmap+0x358/0x710
-> >    __vm_munmap+0xbc/0x130
-> >    __arm64_sys_munmap+0x4c/0x64
-> >    el0_svc_common.constprop.0+0xac/0x270
-> >    do_el0_svc+0x38/0xa0
-> >    el0_svc+0x1c/0x2c
-> >    el0_sync_handler+0xe8/0x114
-> >    el0_sync+0x180/0x1c0
-> > 
-> >   [...]
-> >   ==================================================================
-> > 
-> > To prevent the race above, revert back to taking the mmap write lock
-> > inside binder_update_page_range(). One might expect an increase of mmap
-> > lock contention. However, binder already serializes these calls via top
-> > level alloc->mutex. Also, there was no performance impact shown when
-> > running the binder benchmark tests.
-> > 
-> > Fixes: c0fd2101781e ("Revert "android: binder: stop saving a pointer to the VMA"")
-> 
-> I can't find this commit in any tree, are you sure it's correct?
 
-The commit comes from your char-misc-linus branch, it hasn't really
-landed in mainline yet. I added this tag to make sure this fix is
-bounded to the revert otherwise it exposes the UAF. I know I'm relying
-on a merge, so let me know if I should drop the tag instead.
+--evf6xr4666n7b3me
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
---
-Carlos Llamas
+Hello,
+
+On Fri, May 19, 2023 at 09:49:37PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>=20
+>     iommu/arm-smmu: Drop if with an always false condition
+>=20
+> to the 6.3-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>=20
+> The filename of the patch is:
+>      iommu-arm-smmu-drop-if-with-an-always-false-conditio.patch
+> and it can be found in the queue-6.3 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+
+I'd not add that patch to stable. It's just about dropping an
+
+	if (false) {
+		something();
+	}
+
+The compiler probably isn't able to see that the condition is always
+false, so the only benefit is that the patch makes the compiled code a
+bit smaller.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--evf6xr4666n7b3me
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRo29IACgkQj4D7WH0S
+/k5fFggArD0Zr9RzqV30Bq+j0n2YKq7fpDn5GvIzL8YKDDv9a7gj//9IcwZigH+d
+cLNTWPOqHxrWSOFbwMRfqg6Q6v44wtFI3sf4oc37IyGaPe6D9lhIpU4dKIw2IVje
+NahEdiX6VkY2tb2P2QoXOM/ukrOFIAXrBDqrIkoAUKTfXYmOuHz26dLZ73F8lyvP
+eLQKNwJBaJy24JDLyObrlFbAGryZGuSjO8utC9FT2FrHciqcTwamhF3zVweKqWMT
+6CaftGErtWe/xUQMB87o1BGUBk4/zHMXLBDuvLMZ5Wxza1Bm5Zt6Mh24gC3mvEVf
+l8tnmqSWDH+rz1C0PwzmaCurh2+I2A==
+=opvh
+-----END PGP SIGNATURE-----
+
+--evf6xr4666n7b3me--
