@@ -2,119 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E982270B09F
-	for <lists+stable@lfdr.de>; Sun, 21 May 2023 23:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A54670B20D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 01:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230119AbjEUVOJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Sun, 21 May 2023 17:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
+        id S229571AbjEUXgF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 21 May 2023 19:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229993AbjEUVOD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 21 May 2023 17:14:03 -0400
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 368E6B4;
-        Sun, 21 May 2023 14:14:00 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 224F8616B2D5;
-        Sun, 21 May 2023 23:13:58 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id rrieuuPGfCQW; Sun, 21 May 2023 23:13:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 5F4AA616B2E1;
-        Sun, 21 May 2023 23:13:57 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id o4O3u6pDXA4P; Sun, 21 May 2023 23:13:57 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 34319616B2D5;
-        Sun, 21 May 2023 23:13:57 +0200 (CEST)
-Date:   Sun, 21 May 2023 23:13:56 +0200 (CEST)
-From:   Richard Weinberger <richard@nod.at>
-To:     =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-Cc:     anton ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Christopher Obbard <chris.obbard@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>,
-        kuba <kuba@kernel.org>, James Morris <jmorris@namei.org>,
-        Jeff Xu <jeffxu@google.com>, Kees Cook <keescook@chromium.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Ritesh Raj Sarraf <ritesh@collabora.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sjoerd Simons <sjoerd@collabora.com>,
-        Willem de Bruijn <willemb@google.com>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-kselftest <linux-kselftest@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Message-ID: <133970354.9328381.1684703636966.JavaMail.zimbra@nod.at>
-In-Reply-To: <20230309165455.175131-2-mic@digikod.net>
-References: <20230309165455.175131-1-mic@digikod.net> <20230309165455.175131-2-mic@digikod.net>
-Subject: Re: [PATCH v1 1/5] hostfs: Fix ephemeral inodes
+        with ESMTP id S229481AbjEUXgE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 21 May 2023 19:36:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F7CB3;
+        Sun, 21 May 2023 16:36:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A69160DDC;
+        Sun, 21 May 2023 23:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DEAC433D2;
+        Sun, 21 May 2023 23:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684712162;
+        bh=6nUdXTj1YWB3dC08Dz7To7PYeNpaxsKM7k8BJ+xBhyw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SS9u1hEromXAd86hzV3s7TFV5ceqSjrEPOnTaHEWmariNPw+WwZhRJkaE27qbhdyn
+         xisjpj2zHV1Ulx+SePxbiKlaoqXinaXwg3fLwprg95aLmBRZ8ndW6CifvRP7I5pOYe
+         LLNHfKMJUQDCytS9qpT8hzST1l57VIwxd/AZEqHeeqPkqO/aBv6oCDVnn9ga3/QqLb
+         fubaH1sZpCp+cL65sSsA23ZFScQfXCpGY1hdeREsuLdFzoOYGKc9oVvq0N8IOvyBjh
+         jl52AsY7Ruh5yoiVNxspk7QOhwCFyDo5i3xm180zBPE2zEUS58aPxtc+heGl56lCZy
+         l9Wfxfk3/xFwA==
+Date:   Sun, 21 May 2023 19:36:01 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     stable@vger.kernel.org, stable-commits@vger.kernel.org,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>
+Subject: Re: Patch "iommu/arm-smmu: Drop if with an always false condition"
+ has been added to the 6.3-stable tree
+Message-ID: <ZGqq4apFeKPMgUsd@sashalap>
+References: <20230520014938.2798196-1-sashal@kernel.org>
+ <20230520144018.h6qqwvnsldawu4kx@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
-Thread-Topic: hostfs: Fix ephemeral inodes
-Thread-Index: tKJAlvYqiwgTPVoEW6hlXkXRgBTN3A==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230520144018.h6qqwvnsldawu4kx@pengutronix.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
------ Ursprüngliche Mail -----
-> Von: "Mickaël Salaün" <mic@digikod.net>
-> hostfs creates a new inode for each opened or created file, which created
-> useless inode allocations and forbade identifying a host file with a kernel
-> inode.
-> 
-> Fix this uncommon filesystem behavior by tying kernel inodes to host
-> file's inode and device IDs.  Even if the host filesystem inodes may be
-> recycled, this cannot happen while a file referencing it is open, which
-> is the case with hostfs.  It should be noted that hostfs inode IDs may
-> not be unique for the same hostfs superblock because multiple host's
-> (backed) superblocks may be used.
-> 
-> Delete inodes when dropping them to force backed host's file descriptors
-> closing.
-> 
-> This enables to entirely remove ARCH_EPHEMERAL_INODES, and then makes
-> Landlock fully supported by UML.  This is very useful for testing
-> (ongoing and backported) changes.
+On Sat, May 20, 2023 at 04:40:18PM +0200, Uwe Kleine-K�nig wrote:
+>Hello,
+>
+>On Fri, May 19, 2023 at 09:49:37PM -0400, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     iommu/arm-smmu: Drop if with an always false condition
+>>
+>> to the 6.3-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      iommu-arm-smmu-drop-if-with-an-always-false-conditio.patch
+>> and it can be found in the queue-6.3 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>
+>I'd not add that patch to stable. It's just about dropping an
+>
+>	if (false) {
+>		something();
+>	}
+>
+>The compiler probably isn't able to see that the condition is always
+>false, so the only benefit is that the patch makes the compiled code a
+>bit smaller.
 
-Removing ARCH_EPHEMERAL_INODES should be a patch on its own, IMHO.
+Dropped, thanks!
 
-> These changes also factor out and simplify some helpers thanks to the
-> new hostfs_inode_update() and the hostfs_iget() revamp: read_name(),
-> hostfs_create(), hostfs_lookup(), hostfs_mknod(), and
-> hostfs_fill_sb_common().
-> 
-> A following commit with new Landlock tests check this new hostfs inode
-> consistency.
-> 
-> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: <stable@vger.kernel.org> # 5.15.x: ce72750f04d6: hostfs: Fix writeback of
-> dirty pages
-> Cc: <stable@vger.kernel.org> # 5.15+
-
-I'm not sure whether this patch qualifies as stable material.
-While I fully agree that the current behavoir is odd, nothing user visible
-is really broken so far.
-
-> Signed-off-by: Mickaël Salaün <mic@digikod.net>
-> Link: https://lore.kernel.org/r/20230309165455.175131-2-mic@digikod.net
-
-Other than that, patch looks good to me.
-
+-- 
 Thanks,
-//richard
+Sasha
