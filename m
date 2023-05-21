@@ -2,84 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F90F70AE16
-	for <lists+stable@lfdr.de>; Sun, 21 May 2023 14:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E982270B09F
+	for <lists+stable@lfdr.de>; Sun, 21 May 2023 23:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229719AbjEUMe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 21 May 2023 08:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59114 "EHLO
+        id S230119AbjEUVOJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Sun, 21 May 2023 17:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbjEUMe1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 21 May 2023 08:34:27 -0400
-X-Greylist: delayed 51041 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 21 May 2023 05:34:22 PDT
-Received: from mail.ncmrwf.gov.in (mail.ncmrwf.gov.in [14.139.63.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E966CB8
-        for <stable@vger.kernel.org>; Sun, 21 May 2023 05:34:22 -0700 (PDT)
-Received: from mail.ncmrwf.gov.in (localhost.localdomain [127.0.0.1])
-        by mail.ncmrwf.gov.in (Postfix) with ESMTP id A05CF403808;
-        Sat, 20 May 2023 16:47:55 +0530 (IST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ncmrwf.gov.in;
-        s=default; t=1684581476;
-        bh=ewEU7FMfsTGgeBjtgrXdSZ1dCzsn+hL+cN7zxUoaYu8=;
-        h=Date:Subject:From:Reply-To:To;
-        b=JEznN0zy21u6mfMkM/yCVsuvosH915AqO18ljlbqozRJAkbZco8jVtS9oxDTMooA5
-         6rpeARuXzCaKssb1VEBQdFl0el4cqu7V7XROsSqEQzdJMM5upcrp8pd1LzNZuKCk7w
-         vJBbqcuu1GJ0hxNc00yYvuyVX7NgIAtSrYb8tT6w=
-Received: from 129.205.96.146
-        (SquirrelMail authenticated user archana)
-        by mail.ncmrwf.gov.in with HTTP;
-        Sat, 20 May 2023 16:47:55 +0530
-Message-ID: <65b8222c556c13ec62cdefcc33d8daa4.squirrel@mail.ncmrwf.gov.in>
-Date:   Sat, 20 May 2023 16:47:55 +0530
-Subject: Re: Can we talk
-From:   "Gen Kim Cheng" <cheng5@ncmrwf.gov.in>
-Reply-To: kimcheng660@gmail.com
-User-Agent: SquirrelMail/1.4.22-3.el6
+        with ESMTP id S229993AbjEUVOD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 21 May 2023 17:14:03 -0400
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 368E6B4;
+        Sun, 21 May 2023 14:14:00 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by lithops.sigma-star.at (Postfix) with ESMTP id 224F8616B2D5;
+        Sun, 21 May 2023 23:13:58 +0200 (CEST)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id rrieuuPGfCQW; Sun, 21 May 2023 23:13:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by lithops.sigma-star.at (Postfix) with ESMTP id 5F4AA616B2E1;
+        Sun, 21 May 2023 23:13:57 +0200 (CEST)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id o4O3u6pDXA4P; Sun, 21 May 2023 23:13:57 +0200 (CEST)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+        by lithops.sigma-star.at (Postfix) with ESMTP id 34319616B2D5;
+        Sun, 21 May 2023 23:13:57 +0200 (CEST)
+Date:   Sun, 21 May 2023 23:13:56 +0200 (CEST)
+From:   Richard Weinberger <richard@nod.at>
+To:     =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+Cc:     anton ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Christopher Obbard <chris.obbard@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>,
+        kuba <kuba@kernel.org>, James Morris <jmorris@namei.org>,
+        Jeff Xu <jeffxu@google.com>, Kees Cook <keescook@chromium.org>,
+        Paul Moore <paul@paul-moore.com>,
+        Ritesh Raj Sarraf <ritesh@collabora.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sjoerd Simons <sjoerd@collabora.com>,
+        Willem de Bruijn <willemb@google.com>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-kselftest <linux-kselftest@vger.kernel.org>,
+        LSM <linux-security-module@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Message-ID: <133970354.9328381.1684703636966.JavaMail.zimbra@nod.at>
+In-Reply-To: <20230309165455.175131-2-mic@digikod.net>
+References: <20230309165455.175131-1-mic@digikod.net> <20230309165455.175131-2-mic@digikod.net>
+Subject: Re: [PATCH v1 1/5] hostfs: Fix ephemeral inodes
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-To:     undisclosed-recipients:;
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,RCVD_IN_SBL_CSS,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5003]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [129.205.96.146 listed in zen.spamhaus.org]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [14.139.63.149 listed in bl.score.senderscore.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [kimcheng660[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *******
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [195.201.40.130]
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
+Thread-Topic: hostfs: Fix ephemeral inodes
+Thread-Index: tKJAlvYqiwgTPVoEW6hlXkXRgBTN3A==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+----- Ursprüngliche Mail -----
+> Von: "Mickaël Salaün" <mic@digikod.net>
+> hostfs creates a new inode for each opened or created file, which created
+> useless inode allocations and forbade identifying a host file with a kernel
+> inode.
+> 
+> Fix this uncommon filesystem behavior by tying kernel inodes to host
+> file's inode and device IDs.  Even if the host filesystem inodes may be
+> recycled, this cannot happen while a file referencing it is open, which
+> is the case with hostfs.  It should be noted that hostfs inode IDs may
+> not be unique for the same hostfs superblock because multiple host's
+> (backed) superblocks may be used.
+> 
+> Delete inodes when dropping them to force backed host's file descriptors
+> closing.
+> 
+> This enables to entirely remove ARCH_EPHEMERAL_INODES, and then makes
+> Landlock fully supported by UML.  This is very useful for testing
+> (ongoing and backported) changes.
 
-Please can we talk?
+Removing ARCH_EPHEMERAL_INODES should be a patch on its own, IMHO.
 
+> These changes also factor out and simplify some helpers thanks to the
+> new hostfs_inode_update() and the hostfs_iget() revamp: read_name(),
+> hostfs_create(), hostfs_lookup(), hostfs_mknod(), and
+> hostfs_fill_sb_common().
+> 
+> A following commit with new Landlock tests check this new hostfs inode
+> consistency.
+> 
+> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+> Cc: Johannes Berg <johannes@sipsolutions.net>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: <stable@vger.kernel.org> # 5.15.x: ce72750f04d6: hostfs: Fix writeback of
+> dirty pages
+> Cc: <stable@vger.kernel.org> # 5.15+
 
+I'm not sure whether this patch qualifies as stable material.
+While I fully agree that the current behavoir is odd, nothing user visible
+is really broken so far.
 
+> Signed-off-by: Mickaël Salaün <mic@digikod.net>
+> Link: https://lore.kernel.org/r/20230309165455.175131-2-mic@digikod.net
 
+Other than that, patch looks good to me.
 
-
+Thanks,
+//richard
