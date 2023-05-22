@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8916270C958
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C37CF70C667
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235304AbjEVTrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
+        id S233890AbjEVTRd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235295AbjEVTrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:08 -0400
+        with ESMTP id S233857AbjEVTRd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:17:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4C5102
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9B010C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ADF6562AA8
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF214C4339B;
-        Mon, 22 May 2023 19:46:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49C63627B5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C83C433D2;
+        Mon, 22 May 2023 19:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784820;
-        bh=6GbWtGmzbcMcnB/aZ2+KdHHZjSJyaqwYgo3gkI9WLwA=;
+        s=korg; t=1684783049;
+        bh=0CnpnWHhueVW+AM7Dlck8DuMyDaa9/bWKWA1W2Z5Gcw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qCEHQmSEQZnKibj9BPpOPf8MxffrsdzYLd5lIgmTBzgY1WAfYVQYL3t8cbag/1ec4
-         mTyO5zKjVhndgXFRNaLiWB69+AcAfMSRCVCnhlhF06ygEM6uYpjmG6PnSUb5pUJQ7+
-         0Wo09LbZA8wCuLzOqlfriuICxNE20lNiXHAs87jg=
+        b=nWrGLBg3VGjPMD17VUm1wvIQhz+nDa5CtDuTThNL+Ul0BieLmQaMBfT99khIG7NBe
+         OlRHGVcGE/zuecyOA80bEWXkvkSbNe3+nz50bkB+r2mzvMtK3RGeWynPfkyYSVQsLO
+         XeVUZs4DKsXvkdCJ5ydb5bjVkVQjZuHZk4/OulsI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        patches@lists.linux.dev, Edward Lo <edward.lo@ambergroup.io>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 213/364] drm/msm/dpu: Remove duplicate register defines from INTF
+Subject: [PATCH 5.15 094/203] fs/ntfs3: Add length check in indx_get_root
 Date:   Mon, 22 May 2023 20:08:38 +0100
-Message-Id: <20230522190418.044732811@linuxfoundation.org>
+Message-Id: <20230522190357.591446602@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +54,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Edward Lo <edward.lo@ambergroup.io>
 
-[ Upstream commit 202c044203ac5860e3025169105368d99f9bc6a2 ]
+[ Upstream commit 08e8cf5f2d9ec383a2e339a2711b62a54ff3fba0 ]
 
-The INTF_FRAME_LINE_COUNT_EN, INTF_FRAME_COUNT and INTF_LINE_COUNT
-registers are already defined higher up, in the right place when sorted
-numerically.
+This adds a length check to guarantee the retrieved index root is legit.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/534231/
-Link: https://lore.kernel.org/r/20230411-dpu-intf-te-v4-8-27ce1a5ab5c6@somainline.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+[  162.459513] BUG: KASAN: use-after-free in hdr_find_e.isra.0+0x10c/0x320
+[  162.460176] Read of size 2 at addr ffff8880037bca99 by task mount/243
+[  162.460851]
+[  162.461252] CPU: 0 PID: 243 Comm: mount Not tainted 6.0.0-rc7 #42
+[  162.461744] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+[  162.462609] Call Trace:
+[  162.462954]  <TASK>
+[  162.463276]  dump_stack_lvl+0x49/0x63
+[  162.463822]  print_report.cold+0xf5/0x689
+[  162.464608]  ? unwind_get_return_address+0x3a/0x60
+[  162.465766]  ? hdr_find_e.isra.0+0x10c/0x320
+[  162.466975]  kasan_report+0xa7/0x130
+[  162.467506]  ? _raw_spin_lock_irq+0xc0/0xf0
+[  162.467998]  ? hdr_find_e.isra.0+0x10c/0x320
+[  162.468536]  __asan_load2+0x68/0x90
+[  162.468923]  hdr_find_e.isra.0+0x10c/0x320
+[  162.469282]  ? cmp_uints+0xe0/0xe0
+[  162.469557]  ? cmp_sdh+0x90/0x90
+[  162.469864]  ? ni_find_attr+0x214/0x300
+[  162.470217]  ? ni_load_mi+0x80/0x80
+[  162.470479]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[  162.470931]  ? ntfs_bread_run+0x190/0x190
+[  162.471307]  ? indx_get_root+0xe4/0x190
+[  162.471556]  ? indx_get_root+0x140/0x190
+[  162.471833]  ? indx_init+0x1e0/0x1e0
+[  162.472069]  ? fnd_clear+0x115/0x140
+[  162.472363]  ? _raw_spin_lock_irqsave+0x100/0x100
+[  162.472731]  indx_find+0x184/0x470
+[  162.473461]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[  162.474429]  ? indx_find_buffer+0x2d0/0x2d0
+[  162.474704]  ? do_syscall_64+0x3b/0x90
+[  162.474962]  dir_search_u+0x196/0x2f0
+[  162.475381]  ? ntfs_nls_to_utf16+0x450/0x450
+[  162.475661]  ? ntfs_security_init+0x3d6/0x440
+[  162.475906]  ? is_sd_valid+0x180/0x180
+[  162.476191]  ntfs_extend_init+0x13f/0x2c0
+[  162.476496]  ? ntfs_fix_post_read+0x130/0x130
+[  162.476861]  ? iput.part.0+0x286/0x320
+[  162.477325]  ntfs_fill_super+0x11e0/0x1b50
+[  162.477709]  ? put_ntfs+0x1d0/0x1d0
+[  162.477970]  ? vsprintf+0x20/0x20
+[  162.478258]  ? set_blocksize+0x95/0x150
+[  162.478538]  get_tree_bdev+0x232/0x370
+[  162.478789]  ? put_ntfs+0x1d0/0x1d0
+[  162.479038]  ntfs_fs_get_tree+0x15/0x20
+[  162.479374]  vfs_get_tree+0x4c/0x130
+[  162.479729]  path_mount+0x654/0xfe0
+[  162.480124]  ? putname+0x80/0xa0
+[  162.480484]  ? finish_automount+0x2e0/0x2e0
+[  162.480894]  ? putname+0x80/0xa0
+[  162.481467]  ? kmem_cache_free+0x1c4/0x440
+[  162.482280]  ? putname+0x80/0xa0
+[  162.482714]  do_mount+0xd6/0xf0
+[  162.483264]  ? path_mount+0xfe0/0xfe0
+[  162.484782]  ? __kasan_check_write+0x14/0x20
+[  162.485593]  __x64_sys_mount+0xca/0x110
+[  162.486024]  do_syscall_64+0x3b/0x90
+[  162.486543]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[  162.487141] RIP: 0033:0x7f9d374e948a
+[  162.488324] Code: 48 8b 0d 11 fa 2a 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 008
+[  162.489728] RSP: 002b:00007ffe30e73d18 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
+[  162.490971] RAX: ffffffffffffffda RBX: 0000561cdb43a060 RCX: 00007f9d374e948a
+[  162.491669] RDX: 0000561cdb43a260 RSI: 0000561cdb43a2e0 RDI: 0000561cdb442af0
+[  162.492050] RBP: 0000000000000000 R08: 0000561cdb43a280 R09: 0000000000000020
+[  162.492459] R10: 00000000c0ed0000 R11: 0000000000000206 R12: 0000561cdb442af0
+[  162.493183] R13: 0000561cdb43a260 R14: 0000000000000000 R15: 00000000ffffffff
+[  162.493644]  </TASK>
+[  162.493908]
+[  162.494214] The buggy address belongs to the physical page:
+[  162.494761] page:000000003e38a3d5 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x37bc
+[  162.496064] flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
+[  162.497278] raw: 000fffffc0000000 ffffea00000df1c8 ffffea00000df008 0000000000000000
+[  162.498928] raw: 0000000000000000 0000000000240000 00000000ffffffff 0000000000000000
+[  162.500542] page dumped because: kasan: bad access detected
+[  162.501057]
+[  162.501242] Memory state around the buggy address:
+[  162.502230]  ffff8880037bc980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.502977]  ffff8880037bca00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.503522] >ffff8880037bca80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.503963]                             ^
+[  162.504370]  ffff8880037bcb00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.504766]  ffff8880037bcb80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+
+Signed-off-by: Edward Lo <edward.lo@ambergroup.io>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c | 5 -----
- 1 file changed, 5 deletions(-)
+ fs/ntfs3/index.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-index 7ce66bf3f4c8d..b2a94b9a3e987 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-@@ -56,11 +56,6 @@
- #define   INTF_TPG_RGB_MAPPING          0x11C
- #define   INTF_PROG_FETCH_START         0x170
- #define   INTF_PROG_ROT_START           0x174
--
--#define   INTF_FRAME_LINE_COUNT_EN      0x0A8
--#define   INTF_FRAME_COUNT              0x0AC
--#define   INTF_LINE_COUNT               0x0B0
--
- #define   INTF_MUX                      0x25C
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index f62e0df7a7b4e..1ae3b310869d6 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -934,6 +934,7 @@ struct INDEX_ROOT *indx_get_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	struct ATTR_LIST_ENTRY *le = NULL;
+ 	struct ATTRIB *a;
+ 	const struct INDEX_NAMES *in = &s_index_names[indx->type];
++	struct INDEX_ROOT *root = NULL;
  
- #define INTF_CFG_ACTIVE_H_EN	BIT(29)
+ 	a = ni_find_attr(ni, NULL, &le, ATTR_ROOT, in->name, in->name_len, NULL,
+ 			 mi);
+@@ -943,7 +944,15 @@ struct INDEX_ROOT *indx_get_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	if (attr)
+ 		*attr = a;
+ 
+-	return resident_data_ex(a, sizeof(struct INDEX_ROOT));
++	root = resident_data_ex(a, sizeof(struct INDEX_ROOT));
++
++	/* length check */
++	if (root && offsetof(struct INDEX_ROOT, ihdr) + le32_to_cpu(root->ihdr.used) >
++			le32_to_cpu(a->res.data_size)) {
++		return NULL;
++	}
++
++	return root;
+ }
+ 
+ static int indx_write(struct ntfs_index *indx, struct ntfs_inode *ni,
 -- 
 2.39.2
 
