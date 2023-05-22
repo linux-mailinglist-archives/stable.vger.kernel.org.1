@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7BA170C9EF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D1E70C83B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235438AbjEVTxS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47030 "EHLO
+        id S234963AbjEVTgj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235432AbjEVTxN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:13 -0400
+        with ESMTP id S234966AbjEVTgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20C40C1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5038E5C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BEAB62B49
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73A8C4339B;
-        Mon, 22 May 2023 19:53:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AA6862941
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F9CC433D2;
+        Mon, 22 May 2023 19:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785192;
-        bh=ot84JLftX/MyUOeon+g4lcPXlfsk36amFyeoRnplP0E=;
+        s=korg; t=1684784177;
+        bh=EJ13Fx/DKWxbry0ap5oavVsMUnZHlbGjWxgrIBLgoko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=isdegWEArCrh0044eM4VlAdMplYquxOnJcoWBHa2M7h+k3jxf/MsTvFVQ0uB7qp+Z
-         +sLxbCRPZObPH1MDcmv+FUrzw85iaNrIXtaxAEZ4BRGdYlu7+k2zABRQWK1tjqm4bS
-         lHpmz9oAoxEJFgFVPK45NMFCv0eVrHMj4BE8M1jQ=
+        b=r4JZi9q0BusIFBu6u0wreoTvC/zM00q8xGWzePshG+xhi69VXxRV90sSOpqej7O0f
+         Z3Abg/x+Z0GM/hVT1r4EW0R/sZrtagt9sA6wR+7+PNj14wCXPdt7/pydeyXGSa/rsp
+         adHRl1TuJrdHG8msylqszbAflNdOUhLjnsUPzpnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 340/364] drm/amdgpu/gfx11: Adjust gfxoff before powergating on gfx11 as well
+        patches@lists.linux.dev, Iuliana Prodan <iuliana.prodan@nxp.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 288/292] remoteproc: imx_dsp_rproc: Fix kernel test robot sparse warning
 Date:   Mon, 22 May 2023 20:10:45 +0100
-Message-Id: <20230522190421.270621172@linuxfoundation.org>
+Message-Id: <20230522190413.146750631@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-commit 11fbdda2ab6bf049e2869139c07016022b4e045b upstream.
+[ Upstream commit 3c497f624d40171ebead1a6705793100d92ecb85 ]
 
-(Bas: speculative change to mirror gfx10/gfx9)
+This patch fixes the kernel test robot warning reported here:
 
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+https://lore.kernel.org/bpf/642f916b.pPIKZ%2Fl%2F%2Fbw8tvIH%25lkp@intel.com/T/
+
+Fixes: 408ec1ff0caa ("remoteproc: imx_dsp_rproc: Add custom memory copy implementation for i.MX DSP Cores")
+Link: https://lore.kernel.org/r/20230407161429.3973177-1-mathieu.poirier@linaro.org
+Tested-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/remoteproc/imx_dsp_rproc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -5135,8 +5135,14 @@ static int gfx_v11_0_set_powergating_sta
- 		break;
- 	case IP_VERSION(11, 0, 1):
- 	case IP_VERSION(11, 0, 4):
-+		if (!enable)
-+			amdgpu_gfx_off_ctrl(adev, false);
-+
- 		gfx_v11_cntl_pg(adev, enable);
--		amdgpu_gfx_off_ctrl(adev, enable);
-+
-+		if (enable)
-+			amdgpu_gfx_off_ctrl(adev, true);
-+
- 		break;
- 	default:
- 		break;
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index e8e23f6b85563..dcd07a6a5e945 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -727,12 +727,12 @@ static void imx_dsp_rproc_kick(struct rproc *rproc, int vqid)
+  * The IRAM is part of the HiFi DSP.
+  * According to hw specs only 32-bits writes are allowed.
+  */
+-static int imx_dsp_rproc_memcpy(void *dest, const void *src, size_t size)
++static int imx_dsp_rproc_memcpy(void *dst, const void *src, size_t size)
+ {
++	void __iomem *dest = (void __iomem *)dst;
+ 	const u8 *src_byte = src;
+ 	const u32 *source = src;
+ 	u32 affected_mask;
+-	u32 *dst = dest;
+ 	int i, q, r;
+ 	u32 tmp;
+ 
+@@ -745,7 +745,7 @@ static int imx_dsp_rproc_memcpy(void *dest, const void *src, size_t size)
+ 
+ 	/* copy data in units of 32 bits at a time */
+ 	for (i = 0; i < q; i++)
+-		writel(source[i], &dst[i]);
++		writel(source[i], dest + i * 4);
+ 
+ 	if (r) {
+ 		affected_mask = GENMASK(8 * r, 0);
+@@ -776,8 +776,8 @@ static int imx_dsp_rproc_memcpy(void *dest, const void *src, size_t size)
+  */
+ static int imx_dsp_rproc_memset(void *addr, u8 value, size_t size)
+ {
++	void __iomem *tmp_dst = (void __iomem *)addr;
+ 	u32 tmp_val = value;
+-	u32 *tmp_dst = addr;
+ 	u32 affected_mask;
+ 	int q, r;
+ 	u32 tmp;
+-- 
+2.39.2
+
 
 
