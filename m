@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D1D870C78F
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 779C670C974
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234747AbjEVTbI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
+        id S235334AbjEVTsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234726AbjEVTbI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:08 -0400
+        with ESMTP id S235332AbjEVTsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D72A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A7099
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F6166290F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7348C433D2;
-        Mon, 22 May 2023 19:31:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E85362288
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0875EC433D2;
+        Mon, 22 May 2023 19:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783865;
-        bh=b+6djv0q5AkcWLxwdFXmX5eKE+nJkRY7oEiHVh+dZQI=;
+        s=korg; t=1684784902;
+        bh=hevuUaafnQDno/ja7gymowu2GAob2tn5axga5T45V4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XGGzPn8VmhlCckWiLuNKuJ9yIxV2V2H+Tqdq4JquQJMFyhHBldnS0XL07iS/mAA1E
-         bYGo9TbTuWcnL0IhDMcPd5DG9S8tn4YHuUd/D1C9i5Tz9sq/rhRXRY8hYL3ly7BHJA
-         Mm2XNjK2daqBsNneH81P1OwS1QZV/+xuvDSMDKFM=
+        b=JUoey35NGTKTpEPfHx/NGbKHXb6NBDjynPUSfPTMxPYpWLR5gYsAui1OXcOHBkzcX
+         aiypn6mR51hqgXCXiXZ88qMJKG4mOj2UQa1krVAooFu+ctFX7Hi05JgJ7Sv52mN9bF
+         ZJYqWv8t66meviteUb8XisFtvw/NaARki08uSrBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+        =?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/292] SUNRPC: always free ctxt when freeing deferred request
+Subject: [PATCH 6.3 239/364] net: dsa: rzn1-a5psw: fix STP states handling
 Date:   Mon, 22 May 2023 20:09:04 +0100
-Message-Id: <20230522190410.635875197@linuxfoundation.org>
+Message-Id: <20230522190418.678628155@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,265 +56,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: NeilBrown <neilb@suse.de>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit 948f072ada23e0a504c5e4d7d71d4c83bd0785ec ]
+[ Upstream commit ebe9bc50952757b4b25eaf514da7c464196c9606 ]
 
-Since the ->xprt_ctxt pointer was added to svc_deferred_req, it has not
-been sufficient to use kfree() to free a deferred request.  We may need
-to free the ctxt as well.
+stp_set_state() should actually allow receiving BPDU while in LEARNING
+mode which is not the case. Additionally, the BLOCKEN bit does not
+actually forbid sending forwarded frames from that port. To fix this, add
+a5psw_port_tx_enable() function which allows to disable TX. However, while
+its name suggest that TX is totally disabled, it is not and can still
+allow to send BPDUs even if disabled. This can be done by using forced
+forwarding with the switch tagging mechanism but keeping "filtering"
+disabled (which is already the case in the rzn1-a5sw tag driver). With
+these fixes, STP support is now functional.
 
-As freeing the ctxt is all that ->xpo_release_rqst() does, we repurpose
-it to explicit do that even when the ctxt is not stored in an rqst.
-So we now have ->xpo_release_ctxt() which is given an xprt and a ctxt,
-which may have been taken either from an rqst or from a dreq.  The
-caller is now responsible for clearing that pointer after the call to
-->xpo_release_ctxt.
-
-We also clear dr->xprt_ctxt when the ctxt is moved into a new rqst when
-revisiting a deferred request.  This ensures there is only one pointer
-to the ctxt, so the risk of double freeing in future is reduced.  The
-new code in svc_xprt_release which releases both the ctxt and any
-rq_deferred depends on this.
-
-Fixes: 773f91b2cf3f ("SUNRPC: Fix NFSD's request deferral on RDMA transports")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 888cdb892b61 ("net: dsa: rzn1-a5psw: add Renesas RZ/N1 advanced 5 port switch driver")
+Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/svc_rdma.h          |  2 +-
- include/linux/sunrpc/svc_xprt.h          |  2 +-
- net/sunrpc/svc_xprt.c                    | 23 +++++++++++++-----
- net/sunrpc/svcsock.c                     | 30 +++++++++++++-----------
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c  | 11 ++++-----
- net/sunrpc/xprtrdma/svc_rdma_transport.c |  2 +-
- 6 files changed, 41 insertions(+), 29 deletions(-)
+ drivers/net/dsa/rzn1_a5psw.c | 57 ++++++++++++++++++++++++++++++------
+ drivers/net/dsa/rzn1_a5psw.h |  1 +
+ 2 files changed, 49 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/sunrpc/svc_rdma.h b/include/linux/sunrpc/svc_rdma.h
-index 24aa159d29a7f..fbc4bd423b355 100644
---- a/include/linux/sunrpc/svc_rdma.h
-+++ b/include/linux/sunrpc/svc_rdma.h
-@@ -176,7 +176,7 @@ extern struct svc_rdma_recv_ctxt *
- extern void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
- 				   struct svc_rdma_recv_ctxt *ctxt);
- extern void svc_rdma_flush_recv_queues(struct svcxprt_rdma *rdma);
--extern void svc_rdma_release_rqst(struct svc_rqst *rqstp);
-+extern void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *ctxt);
- extern int svc_rdma_recvfrom(struct svc_rqst *);
- 
- /* svc_rdma_rw.c */
-diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
-index d42a75b3be102..e882fe16a5008 100644
---- a/include/linux/sunrpc/svc_xprt.h
-+++ b/include/linux/sunrpc/svc_xprt.h
-@@ -23,7 +23,7 @@ struct svc_xprt_ops {
- 	int		(*xpo_sendto)(struct svc_rqst *);
- 	int		(*xpo_result_payload)(struct svc_rqst *, unsigned int,
- 					      unsigned int);
--	void		(*xpo_release_rqst)(struct svc_rqst *);
-+	void		(*xpo_release_ctxt)(struct svc_xprt *xprt, void *ctxt);
- 	void		(*xpo_detach)(struct svc_xprt *);
- 	void		(*xpo_free)(struct svc_xprt *);
- 	void		(*xpo_secure_port)(struct svc_rqst *rqstp);
-diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
-index b4306cf1b458c..8117d0e08d5a2 100644
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -534,13 +534,23 @@ void svc_reserve(struct svc_rqst *rqstp, int space)
+diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
+index 8a419e2ffe2a4..e2549cb31d008 100644
+--- a/drivers/net/dsa/rzn1_a5psw.c
++++ b/drivers/net/dsa/rzn1_a5psw.c
+@@ -120,6 +120,22 @@ static void a5psw_port_mgmtfwd_set(struct a5psw *a5psw, int port, bool enable)
+ 	a5psw_port_pattern_set(a5psw, port, A5PSW_PATTERN_MGMTFWD, enable);
  }
- EXPORT_SYMBOL_GPL(svc_reserve);
  
-+static void free_deferred(struct svc_xprt *xprt, struct svc_deferred_req *dr)
++static void a5psw_port_tx_enable(struct a5psw *a5psw, int port, bool enable)
 +{
-+	if (!dr)
-+		return;
++	u32 mask = A5PSW_PORT_ENA_TX(port);
++	u32 reg = enable ? mask : 0;
 +
-+	xprt->xpt_ops->xpo_release_ctxt(xprt, dr->xprt_ctxt);
-+	kfree(dr);
++	/* Even though the port TX is disabled through TXENA bit in the
++	 * PORT_ENA register, it can still send BPDUs. This depends on the tag
++	 * configuration added when sending packets from the CPU port to the
++	 * switch port. Indeed, when using forced forwarding without filtering,
++	 * even disabled ports will be able to send packets that are tagged.
++	 * This allows to implement STP support when ports are in a state where
++	 * forwarding traffic should be stopped but BPDUs should still be sent.
++	 */
++	a5psw_reg_rmw(a5psw, A5PSW_PORT_ENA, mask, reg);
 +}
 +
- static void svc_xprt_release(struct svc_rqst *rqstp)
+ static void a5psw_port_enable_set(struct a5psw *a5psw, int port, bool enable)
  {
- 	struct svc_xprt	*xprt = rqstp->rq_xprt;
+ 	u32 port_ena = 0;
+@@ -292,6 +308,22 @@ static int a5psw_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+ 	return 0;
+ }
  
--	xprt->xpt_ops->xpo_release_rqst(rqstp);
-+	xprt->xpt_ops->xpo_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
-+	rqstp->rq_xprt_ctxt = NULL;
- 
--	kfree(rqstp->rq_deferred);
-+	free_deferred(xprt, rqstp->rq_deferred);
- 	rqstp->rq_deferred = NULL;
- 
- 	pagevec_release(&rqstp->rq_pvec);
-@@ -1059,7 +1069,7 @@ static void svc_delete_xprt(struct svc_xprt *xprt)
- 	spin_unlock_bh(&serv->sv_lock);
- 
- 	while ((dr = svc_deferred_dequeue(xprt)) != NULL)
--		kfree(dr);
-+		free_deferred(xprt, dr);
- 
- 	call_xpt_users(xprt);
- 	svc_xprt_put(xprt);
-@@ -1181,8 +1191,8 @@ static void svc_revisit(struct cache_deferred_req *dreq, int too_many)
- 	if (too_many || test_bit(XPT_DEAD, &xprt->xpt_flags)) {
- 		spin_unlock(&xprt->xpt_lock);
- 		trace_svc_defer_drop(dr);
-+		free_deferred(xprt, dr);
- 		svc_xprt_put(xprt);
--		kfree(dr);
- 		return;
- 	}
- 	dr->xprt = NULL;
-@@ -1227,14 +1237,13 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
- 		dr->addrlen = rqstp->rq_addrlen;
- 		dr->daddr = rqstp->rq_daddr;
- 		dr->argslen = rqstp->rq_arg.len >> 2;
--		dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
- 
- 		/* back up head to the start of the buffer and copy */
- 		skip = rqstp->rq_arg.len - rqstp->rq_arg.head[0].iov_len;
- 		memcpy(dr->args, rqstp->rq_arg.head[0].iov_base - skip,
- 		       dr->argslen << 2);
- 	}
--	WARN_ON_ONCE(rqstp->rq_xprt_ctxt != dr->xprt_ctxt);
-+	dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
- 	rqstp->rq_xprt_ctxt = NULL;
- 	trace_svc_defer(rqstp);
- 	svc_xprt_get(rqstp->rq_xprt);
-@@ -1268,6 +1277,8 @@ static noinline int svc_deferred_recv(struct svc_rqst *rqstp)
- 	rqstp->rq_daddr       = dr->daddr;
- 	rqstp->rq_respages    = rqstp->rq_pages;
- 	rqstp->rq_xprt_ctxt   = dr->xprt_ctxt;
++static void a5psw_port_learning_set(struct a5psw *a5psw, int port, bool learn)
++{
++	u32 mask = A5PSW_INPUT_LEARN_DIS(port);
++	u32 reg = !learn ? mask : 0;
 +
-+	dr->xprt_ctxt = NULL;
- 	svc_xprt_received(rqstp->rq_xprt);
- 	return dr->argslen << 2;
- }
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 815baf308236a..7107fbcbff343 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -111,27 +111,27 @@ static void svc_reclassify_socket(struct socket *sock)
- #endif
- 
- /**
-- * svc_tcp_release_rqst - Release transport-related resources
-- * @rqstp: request structure with resources to be released
-+ * svc_tcp_release_ctxt - Release transport-related resources
-+ * @xprt: the transport which owned the context
-+ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
-  *
-  */
--static void svc_tcp_release_rqst(struct svc_rqst *rqstp)
-+static void svc_tcp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
++	a5psw_reg_rmw(a5psw, A5PSW_INPUT_LEARN, mask, reg);
++}
++
++static void a5psw_port_rx_block_set(struct a5psw *a5psw, int port, bool block)
++{
++	u32 mask = A5PSW_INPUT_LEARN_BLOCK(port);
++	u32 reg = block ? mask : 0;
++
++	a5psw_reg_rmw(a5psw, A5PSW_INPUT_LEARN, mask, reg);
++}
++
+ static void a5psw_flooding_set_resolution(struct a5psw *a5psw, int port,
+ 					  bool set)
  {
- }
+@@ -344,28 +376,35 @@ static void a5psw_port_bridge_leave(struct dsa_switch *ds, int port,
  
- /**
-- * svc_udp_release_rqst - Release transport-related resources
-- * @rqstp: request structure with resources to be released
-+ * svc_udp_release_ctxt - Release transport-related resources
-+ * @xprt: the transport which owned the context
-+ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
-  *
-  */
--static void svc_udp_release_rqst(struct svc_rqst *rqstp)
-+static void svc_udp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
+ static void a5psw_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
  {
--	struct sk_buff *skb = rqstp->rq_xprt_ctxt;
-+	struct sk_buff *skb = ctxt;
+-	u32 mask = A5PSW_INPUT_LEARN_DIS(port) | A5PSW_INPUT_LEARN_BLOCK(port);
++	bool learning_enabled, rx_enabled, tx_enabled;
+ 	struct a5psw *a5psw = ds->priv;
+-	u32 reg = 0;
  
--	if (skb) {
--		rqstp->rq_xprt_ctxt = NULL;
-+	if (skb)
- 		consume_skb(skb);
--	}
+ 	switch (state) {
+ 	case BR_STATE_DISABLED:
+ 	case BR_STATE_BLOCKING:
+-		reg |= A5PSW_INPUT_LEARN_DIS(port);
+-		reg |= A5PSW_INPUT_LEARN_BLOCK(port);
+-		break;
+ 	case BR_STATE_LISTENING:
+-		reg |= A5PSW_INPUT_LEARN_DIS(port);
++		rx_enabled = false;
++		tx_enabled = false;
++		learning_enabled = false;
+ 		break;
+ 	case BR_STATE_LEARNING:
+-		reg |= A5PSW_INPUT_LEARN_BLOCK(port);
++		rx_enabled = false;
++		tx_enabled = false;
++		learning_enabled = true;
+ 		break;
+ 	case BR_STATE_FORWARDING:
+-	default:
++		rx_enabled = true;
++		tx_enabled = true;
++		learning_enabled = true;
+ 		break;
++	default:
++		dev_err(ds->dev, "invalid STP state: %d\n", state);
++		return;
+ 	}
+ 
+-	a5psw_reg_rmw(a5psw, A5PSW_INPUT_LEARN, mask, reg);
++	a5psw_port_learning_set(a5psw, port, learning_enabled);
++	a5psw_port_rx_block_set(a5psw, port, !rx_enabled);
++	a5psw_port_tx_enable(a5psw, port, tx_enabled);
  }
  
- union svc_pktinfo_u {
-@@ -559,7 +559,8 @@ static int svc_udp_sendto(struct svc_rqst *rqstp)
- 	unsigned int sent;
- 	int err;
+ static void a5psw_port_fast_age(struct dsa_switch *ds, int port)
+diff --git a/drivers/net/dsa/rzn1_a5psw.h b/drivers/net/dsa/rzn1_a5psw.h
+index b4fbf453ff741..b869192eef3f7 100644
+--- a/drivers/net/dsa/rzn1_a5psw.h
++++ b/drivers/net/dsa/rzn1_a5psw.h
+@@ -19,6 +19,7 @@
+ #define A5PSW_PORT_OFFSET(port)		(0x400 * (port))
  
--	svc_udp_release_rqst(rqstp);
-+	svc_udp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
-+	rqstp->rq_xprt_ctxt = NULL;
- 
- 	svc_set_cmsg_data(rqstp, cmh);
- 
-@@ -631,7 +632,7 @@ static const struct svc_xprt_ops svc_udp_ops = {
- 	.xpo_recvfrom = svc_udp_recvfrom,
- 	.xpo_sendto = svc_udp_sendto,
- 	.xpo_result_payload = svc_sock_result_payload,
--	.xpo_release_rqst = svc_udp_release_rqst,
-+	.xpo_release_ctxt = svc_udp_release_ctxt,
- 	.xpo_detach = svc_sock_detach,
- 	.xpo_free = svc_sock_free,
- 	.xpo_has_wspace = svc_udp_has_wspace,
-@@ -1159,7 +1160,8 @@ static int svc_tcp_sendto(struct svc_rqst *rqstp)
- 	unsigned int sent;
- 	int err;
- 
--	svc_tcp_release_rqst(rqstp);
-+	svc_tcp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
-+	rqstp->rq_xprt_ctxt = NULL;
- 
- 	atomic_inc(&svsk->sk_sendqlen);
- 	mutex_lock(&xprt->xpt_mutex);
-@@ -1204,7 +1206,7 @@ static const struct svc_xprt_ops svc_tcp_ops = {
- 	.xpo_recvfrom = svc_tcp_recvfrom,
- 	.xpo_sendto = svc_tcp_sendto,
- 	.xpo_result_payload = svc_sock_result_payload,
--	.xpo_release_rqst = svc_tcp_release_rqst,
-+	.xpo_release_ctxt = svc_tcp_release_ctxt,
- 	.xpo_detach = svc_tcp_sock_detach,
- 	.xpo_free = svc_sock_free,
- 	.xpo_has_wspace = svc_tcp_has_wspace,
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-index 5242ad121450b..53a7cb2f6c07d 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -239,21 +239,20 @@ void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
- }
- 
- /**
-- * svc_rdma_release_rqst - Release transport-specific per-rqst resources
-- * @rqstp: svc_rqst being released
-+ * svc_rdma_release_ctxt - Release transport-specific per-rqst resources
-+ * @xprt: the transport which owned the context
-+ * @vctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
-  *
-  * Ensure that the recv_ctxt is released whether or not a Reply
-  * was sent. For example, the client could close the connection,
-  * or svc_process could drop an RPC, before the Reply is sent.
-  */
--void svc_rdma_release_rqst(struct svc_rqst *rqstp)
-+void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *vctxt)
- {
--	struct svc_rdma_recv_ctxt *ctxt = rqstp->rq_xprt_ctxt;
--	struct svc_xprt *xprt = rqstp->rq_xprt;
-+	struct svc_rdma_recv_ctxt *ctxt = vctxt;
- 	struct svcxprt_rdma *rdma =
- 		container_of(xprt, struct svcxprt_rdma, sc_xprt);
- 
--	rqstp->rq_xprt_ctxt = NULL;
- 	if (ctxt)
- 		svc_rdma_recv_ctxt_put(rdma, ctxt);
- }
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index 94b20fb471356..f776f0cb471f0 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -81,7 +81,7 @@ static const struct svc_xprt_ops svc_rdma_ops = {
- 	.xpo_recvfrom = svc_rdma_recvfrom,
- 	.xpo_sendto = svc_rdma_sendto,
- 	.xpo_result_payload = svc_rdma_result_payload,
--	.xpo_release_rqst = svc_rdma_release_rqst,
-+	.xpo_release_ctxt = svc_rdma_release_ctxt,
- 	.xpo_detach = svc_rdma_detach,
- 	.xpo_free = svc_rdma_free,
- 	.xpo_has_wspace = svc_rdma_has_wspace,
+ #define A5PSW_PORT_ENA			0x8
++#define A5PSW_PORT_ENA_TX(port)		BIT(port)
+ #define A5PSW_PORT_ENA_RX_SHIFT		16
+ #define A5PSW_PORT_ENA_TX_RX(port)	(BIT((port) + A5PSW_PORT_ENA_RX_SHIFT) | \
+ 					 BIT(port))
 -- 
 2.39.2
 
