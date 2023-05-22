@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B9E70C684
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0837270C978
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234249AbjEVTTL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
+        id S235336AbjEVTse (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234297AbjEVTTG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:06 -0400
+        with ESMTP id S235269AbjEVTsd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2605918B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCAD9C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B75BB627F5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7464C433EF;
-        Mon, 22 May 2023 19:18:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA5BF622BD
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6490C433D2;
+        Mon, 22 May 2023 19:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783136;
-        bh=M9RLjLDGeDfjFAwgBMSFL6aqMfP9RBJrOcfIZrfgzBs=;
+        s=korg; t=1684784911;
+        bh=d0qDdDGbiLrFmJua8/hH1F3y4GKnKStL7u34TP8zoO8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s9aSgQX6W1MbfvFku+vQ/nV8ZN2ju4UzOsnJTo5sgoBmiK+t6bFMHpXCQV1427/DZ
-         P0rmKtahWcPBHQ6sEASQop99G233d+lXHQBcifH+AYeJrXrhhM5uqYN3rHeYwjTi5l
-         wfnIKQDXimTnKlaRSv4ZRFBi04ef/n79P21EzRXg=
+        b=P1o4cAoNVo5lb98s30cq2raOTSpOvvGvw8Gj7aJlBpkC9+nQRZ/LsuoeJ0Hk1KB3Q
+         WSxz7Qf/WHQ0Xqo29cr4DJdy3ENeC9ycRgb8C/BgKLIp3OYqQC43LgAV88lBC8V+Sd
+         pCwhK1CggMMDVOIs4ATt9DnX0saaDOErIoepCmY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
+        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
+        Hao Lan <lanhao@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/203] vsock: avoid to close connected socket after the timeout
+Subject: [PATCH 6.3 242/364] net: hns3: fix sending pfc frames after reset issue
 Date:   Mon, 22 May 2023 20:09:07 +0100
-Message-Id: <20230522190358.379540682@linuxfoundation.org>
+Message-Id: <20230522190418.750636736@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,49 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhuang Shengen <zhuangshengen@huawei.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
+[ Upstream commit f14db07064727dd3bc0906c77a6d2759c1bbb395 ]
 
-When client and server establish a connection through vsock,
-the client send a request to the server to initiate the connection,
-then start a timer to wait for the server's response. When the server's
-RESPONSE message arrives, the timer also times out and exits. The
-server's RESPONSE message is processed first, and the connection is
-established. However, the client's timer also times out, the original
-processing logic of the client is to directly set the state of this vsock
-to CLOSE and return ETIMEDOUT. It will not notify the server when the port
-is released, causing the server port remain.
-when client's vsock_connect timeout，it should check sk state is
-ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
-is established, the client should not set the sk state to CLOSE
+To prevent the system from abnormally sending PFC frames after an
+abnormal reset. The hns3 driver notifies the firmware to disable pfc
+before reset.
 
-Note: I encountered this issue on kernel-4.18, which can be fixed by
-this patch. Then I checked the latest code in the community
-and found similar issue.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Fixes: 35d93a30040c ("net: hns3: adjust the process of PF reset")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
+ .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c |  4 ++--
+ .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h |  5 +++++
+ 3 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index dc36a46ce0e75..9a65a2f195853 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1415,7 +1415,7 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
- 			vsock_transport_cancel_pkt(vsk);
- 			vsock_remove_connected(vsk);
- 			goto out_wait;
--		} else if (timeout == 0) {
-+		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
- 			err = -ETIMEDOUT;
- 			sk->sk_state = TCP_CLOSE;
- 			sock->state = SS_UNCONNECTED;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 07ad5f35219e2..50e956d6c3b25 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -8053,12 +8053,15 @@ static void hclge_ae_stop(struct hnae3_handle *handle)
+ 	/* If it is not PF reset or FLR, the firmware will disable the MAC,
+ 	 * so it only need to stop phy here.
+ 	 */
+-	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) &&
+-	    hdev->reset_type != HNAE3_FUNC_RESET &&
+-	    hdev->reset_type != HNAE3_FLR_RESET) {
+-		hclge_mac_stop_phy(hdev);
+-		hclge_update_link_status(hdev);
+-		return;
++	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state)) {
++		hclge_pfc_pause_en_cfg(hdev, HCLGE_PFC_TX_RX_DISABLE,
++				       HCLGE_PFC_DISABLE);
++		if (hdev->reset_type != HNAE3_FUNC_RESET &&
++		    hdev->reset_type != HNAE3_FLR_RESET) {
++			hclge_mac_stop_phy(hdev);
++			hclge_update_link_status(hdev);
++			return;
++		}
+ 	}
+ 
+ 	hclge_reset_tqp(handle);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+index 4a33f65190e2b..922c0da3660c7 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+@@ -171,8 +171,8 @@ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
+ 	return hclge_cmd_send(&hdev->hw, &desc, 1);
+ }
+ 
+-static int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
+-				  u8 pfc_bitmap)
++int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
++			   u8 pfc_bitmap)
+ {
+ 	struct hclge_desc desc;
+ 	struct hclge_pfc_en_cmd *pfc = (struct hclge_pfc_en_cmd *)desc.data;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
+index 68f28a98e380b..dd6f1fd486cf2 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
+@@ -164,6 +164,9 @@ struct hclge_bp_to_qs_map_cmd {
+ 	u32 rsvd1;
+ };
+ 
++#define HCLGE_PFC_DISABLE	0
++#define HCLGE_PFC_TX_RX_DISABLE	0
++
+ struct hclge_pfc_en_cmd {
+ 	u8 tx_rx_en_bitmap;
+ 	u8 pri_en_bitmap;
+@@ -235,6 +238,8 @@ void hclge_tm_schd_info_update(struct hclge_dev *hdev, u8 num_tc);
+ void hclge_tm_pfc_info_update(struct hclge_dev *hdev);
+ int hclge_tm_dwrr_cfg(struct hclge_dev *hdev);
+ int hclge_tm_init_hw(struct hclge_dev *hdev, bool init);
++int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
++			   u8 pfc_bitmap);
+ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
+ int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
+ void hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
 -- 
 2.39.2
 
