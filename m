@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF4F70C737
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55F3F70C936
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234636AbjEVT1O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:27:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48658 "EHLO
+        id S235280AbjEVTp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234633AbjEVT1N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99250CD
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:12 -0700 (PDT)
+        with ESMTP id S235258AbjEVTpz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB872139
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25EF4628BA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C55C433EF;
-        Mon, 22 May 2023 19:27:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58CF462A8B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688DBC4339B;
+        Mon, 22 May 2023 19:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783631;
-        bh=eDAFbRTWheX6wqUdnZQ2u5zCbnmhV7R6tselF0fsGAs=;
+        s=korg; t=1684784749;
+        bh=rHX3+4HNWpaIyjXC4vG2Ai1ck+Uw7+0j3VesE1SKAFk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JEKVmPhYvw6D4Ql+TcBZBkAUWnZB54kURdk+Ox1Gf0xQe78SG/tm0CMs3DcrHON61
-         A01PkDpj8Cr3kA7Y+9v2weaD52Fect31sBJEZqbT/+8sJPL3ulNg/Y9uPLGq2H09OM
-         CwTA4JN0EGSnXay7vwoMCLgkEITC95IcvkxffaYc=
+        b=hVZU0m/yTaiZdI5cR2TIbSbl5XqgvXZrqUMlyG2IUCfFiE/bfItuY/yUsjtjBywQZ
+         XU1MFXUu64mmIXXN6V6qrLQZQutxBJNRY1cKqE8dl935zGh8g4DxN2iOlBgBOlzShg
+         lmOHIezBMss6JQ04kGBM59sjUyCQ+H2tFrsb/58w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Horman <horms@kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/292] ipvs: Update width of source for ip_vs_sync_conn_options
+Subject: [PATCH 6.3 161/364] HID: apple: Set the tilde quirk flag on the Geyser 3
 Date:   Mon, 22 May 2023 20:07:46 +0100
-Message-Id: <20230522190408.693645469@linuxfoundation.org>
+Message-Id: <20230522190416.764238317@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,88 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Horman <horms@kernel.org>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit e3478c68f6704638d08f437cbc552ca5970c151a ]
+[ Upstream commit 29e1ecc197d410ee59c8877098d54cf417075f7d ]
 
-In ip_vs_sync_conn_v0() copy is made to struct ip_vs_sync_conn_options.
-That structure looks like this:
+I was finally able to obtain a MacBook1,1 to test and I've now confirmed
+that it has the tilde key quirk as well:
 
-struct ip_vs_sync_conn_options {
-        struct ip_vs_seq        in_seq;
-        struct ip_vs_seq        out_seq;
-};
+Product    Model  Year  System      CPU    Shape  Labels     Country  Quirky
+============================================================================
+05ac:0218  A1181  2006  MacBook1,1  T2500  ISO    British    13       Yes
 
-The source of the copy is the in_seq field of struct ip_vs_conn.  Whose
-type is struct ip_vs_seq. Thus we can see that the source - is not as
-wide as the amount of data copied, which is the width of struct
-ip_vs_sync_conn_option.
-
-The copy is safe because the next field in is another struct ip_vs_seq.
-Make use of struct_group() to annotate this.
-
-Flagged by gcc-13 as:
-
- In file included from ./include/linux/string.h:254,
-                  from ./include/linux/bitmap.h:11,
-                  from ./include/linux/cpumask.h:12,
-                  from ./arch/x86/include/asm/paravirt.h:17,
-                  from ./arch/x86/include/asm/cpuid.h:62,
-                  from ./arch/x86/include/asm/processor.h:19,
-                  from ./arch/x86/include/asm/timex.h:5,
-                  from ./include/linux/timex.h:67,
-                  from ./include/linux/time32.h:13,
-                  from ./include/linux/time.h:60,
-                  from ./include/linux/stat.h:19,
-                  from ./include/linux/module.h:13,
-                  from net/netfilter/ipvs/ip_vs_sync.c:38:
- In function 'fortify_memcpy_chk',
-     inlined from 'ip_vs_sync_conn_v0' at net/netfilter/ipvs/ip_vs_sync.c:606:3:
- ./include/linux/fortify-string.h:529:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-   529 |                         __read_overflow2_field(q_size_field, size);
-       |
-
-Compile tested only.
-
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Link: https://lore.kernel.org/r/20230404024829.13982-1-alexhenrie24@gmail.com
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_vs.h             | 6 ++++--
- net/netfilter/ipvs/ip_vs_sync.c | 2 +-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/hid/hid-apple.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-index 1fca6a88114ad..abc46f05762e6 100644
---- a/include/net/ip_vs.h
-+++ b/include/net/ip_vs.h
-@@ -549,8 +549,10 @@ struct ip_vs_conn {
- 	 */
- 	struct ip_vs_app        *app;           /* bound ip_vs_app object */
- 	void                    *app_data;      /* Application private data */
--	struct ip_vs_seq        in_seq;         /* incoming seq. struct */
--	struct ip_vs_seq        out_seq;        /* outgoing seq. struct */
-+	struct_group(sync_conn_opt,
-+		struct ip_vs_seq  in_seq;       /* incoming seq. struct */
-+		struct ip_vs_seq  out_seq;      /* outgoing seq. struct */
-+	);
- 
- 	const struct ip_vs_pe	*pe;
- 	char			*pe_data;
-diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-index 4963fec815da3..d4fe7bb4f853a 100644
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -603,7 +603,7 @@ static void ip_vs_sync_conn_v0(struct netns_ipvs *ipvs, struct ip_vs_conn *cp,
- 	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
- 		struct ip_vs_sync_conn_options *opt =
- 			(struct ip_vs_sync_conn_options *)&s[1];
--		memcpy(opt, &cp->in_seq, sizeof(*opt));
-+		memcpy(opt, &cp->sync_conn_opt, sizeof(*opt));
- 	}
- 
- 	m->nr_conns++;
+diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
+index 5c145775482bc..e2c73a78b5972 100644
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -875,7 +875,8 @@ static const struct hid_device_id apple_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER3_ANSI),
+ 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER3_ISO),
+-		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
++		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN |
++			APPLE_ISO_TILDE_QUIRK },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER3_JIS),
+ 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN |
+ 			APPLE_RDESC_JIS },
 -- 
 2.39.2
 
