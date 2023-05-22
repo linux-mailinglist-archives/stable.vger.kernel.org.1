@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D0970C5E1
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5174670C73B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233161AbjEVTNK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        id S234643AbjEVT11 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:27:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233203AbjEVTNJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:09 -0400
+        with ESMTP id S234648AbjEVT10 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC9C8129
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B247118
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AECC626FF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24639C433D2;
-        Mon, 22 May 2023 19:13:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C65D8628BA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EEEC433D2;
+        Mon, 22 May 2023 19:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782783;
-        bh=Af0K9tTI4FM2AI1k/cHxUo0GFsKprbtakhGYgol+xQs=;
+        s=korg; t=1684783643;
+        bh=jKJQM7Amchlo/TIBhIhoRm4akaWOf6RtKsRisaHbqM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F/raNy8T1McIREL+rS9pYR96W4wt/cG06Ubh5gwQ4xN6QtVzq74A7tqcovx2OEfYN
-         wvjKefcqYt87vnD6aN5bUNBC+Q5mjaaosi5X3IkuPKj9cUAFAysEfSJ1AVtC1YyeB5
-         M0njTI6seM3xlkT4xLCmA6mRD02DqTQ5pUkK0JoM=
+        b=RX+y0dkxPMyeLSLZfB31YVMooeVZESr5rNu4ADnSiHhdneQoVPBopduQqc6ZW6GTC
+         bDkht1M4PRBjtRgIA6oWWRts+lj/02BabqV9m0978Fl3lDKxhoTR4nMa//sol8usak
+         W9LdD9P9Giriw3H3RZVRlEHyctRxP768MCv+zKiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/203] net: datagram: fix data-races in datagram_poll()
+Subject: [PATCH 6.1 086/292] scsi: message: mptlan: Fix use after free bug in mptlan_remove() due to race condition
 Date:   Mon, 22 May 2023 20:07:23 +0100
-Message-Id: <20230522190355.483808827@linuxfoundation.org>
+Message-Id: <20230522190408.124501742@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,67 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 5bca1d081f44c9443e61841842ce4e9179d327b6 ]
+[ Upstream commit f486893288f3e9b171b836f43853a6426515d800 ]
 
-datagram_poll() runs locklessly, we should add READ_ONCE()
-annotations while reading sk->sk_err, sk->sk_shutdown and sk->sk_state.
+mptlan_probe() calls mpt_register_lan_device() which initializes the
+&priv->post_buckets_task workqueue. A call to
+mpt_lan_wake_post_buckets_task() will subsequently start the work.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230509173131.3263780-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+During driver unload in mptlan_remove() the following race may occur:
+
+CPU0                  CPU1
+
+                    |mpt_lan_post_receive_buckets_work()
+mptlan_remove()     |
+  free_netdev()     |
+    kfree(dev);     |
+                    |
+                    | dev->mtu
+                    |   //use
+
+Fix this by finishing the work prior to cleaning up in mptlan_remove().
+
+[mkp: we really should remove mptlan instead of attempting to fix it]
+
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Link: https://lore.kernel.org/r/20230318081635.796479-1-zyytlz.wz@163.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/datagram.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/message/fusion/mptlan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index 28e5f921dcaf4..1ff8241217a9c 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -799,18 +799,21 @@ __poll_t datagram_poll(struct file *file, struct socket *sock,
+diff --git a/drivers/message/fusion/mptlan.c b/drivers/message/fusion/mptlan.c
+index 142eb5d5d9df6..de2e7bcf47847 100644
+--- a/drivers/message/fusion/mptlan.c
++++ b/drivers/message/fusion/mptlan.c
+@@ -1433,7 +1433,9 @@ mptlan_remove(struct pci_dev *pdev)
  {
- 	struct sock *sk = sock->sk;
- 	__poll_t mask;
-+	u8 shutdown;
+ 	MPT_ADAPTER 		*ioc = pci_get_drvdata(pdev);
+ 	struct net_device	*dev = ioc->netdev;
++	struct mpt_lan_priv *priv = netdev_priv(dev);
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 
- 	/* exceptional events? */
--	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
-+	if (READ_ONCE(sk->sk_err) ||
-+	    !skb_queue_empty_lockless(&sk->sk_error_queue))
- 		mask |= EPOLLERR |
- 			(sock_flag(sk, SOCK_SELECT_ERR_QUEUE) ? EPOLLPRI : 0);
- 
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	shutdown = READ_ONCE(sk->sk_shutdown);
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
--	if (sk->sk_shutdown == SHUTDOWN_MASK)
-+	if (shutdown == SHUTDOWN_MASK)
- 		mask |= EPOLLHUP;
- 
- 	/* readable? */
-@@ -819,10 +822,12 @@ __poll_t datagram_poll(struct file *file, struct socket *sock,
- 
- 	/* Connection-based need to check for termination and startup */
- 	if (connection_based(sk)) {
--		if (sk->sk_state == TCP_CLOSE)
-+		int state = READ_ONCE(sk->sk_state);
-+
-+		if (state == TCP_CLOSE)
- 			mask |= EPOLLHUP;
- 		/* connection hasn't started yet? */
--		if (sk->sk_state == TCP_SYN_SENT)
-+		if (state == TCP_SYN_SENT)
- 			return mask;
- 	}
- 
++	cancel_delayed_work_sync(&priv->post_buckets_task);
+ 	if(dev != NULL) {
+ 		unregister_netdev(dev);
+ 		free_netdev(dev);
 -- 
 2.39.2
 
