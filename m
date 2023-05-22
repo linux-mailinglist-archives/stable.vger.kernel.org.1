@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE8170C72A
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4374C70C615
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:15:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234629AbjEVT0f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48056 "EHLO
+        id S233984AbjEVTO7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234632AbjEVT0f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53AD4A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:34 -0700 (PDT)
+        with ESMTP id S234083AbjEVTOw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C99102
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DECEB628B2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E29C433D2;
-        Mon, 22 May 2023 19:26:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCCAC62734
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF12C433D2;
+        Mon, 22 May 2023 19:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783593;
-        bh=UitNJATXfwLU//5VZHJZ1rqVgYxAGa2r5kH97N86JqI=;
+        s=korg; t=1684782879;
+        bh=IjdKdNtNgSH9NqSq033UUdLL5Sfm0bJbX0T0TivktFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K8hEUdJMsUOa3MoQniNNH4XhLIKvUuDh3fWL3VIUuOuqarTHQidklT5B9JMetSb39
-         J7PlErpcGeEH2nzgGN3/Nhqv4MRlnZ/GwhAoX+X21SO7gmap55OIwzjHxjmGASkVQZ
-         mpT+7Atxc+LHl2lIJkGNsb8/fw1Pja4M5SjSr3Qg=
+        b=dbMUyQScOwTv7ja+r+XLmEPc+lLVP4X0FJMYqICDvPJtMuGn3nAMYv7KlmhFtsIk+
+         YQmadGmmWoRwk9a0OW9VTaq21F0HkFGAtB/HWrhMafl5pziC2bGCMh3BciT9YHGdlP
+         ReON+1E2nWNE4ck1P2IeaUCvoer/sd8qCqmek0ng=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/292] md: fix soft lockup in status_resync
+        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/203] refscale: Move shutdown from wait_event() to wait_event_idle()
 Date:   Mon, 22 May 2023 20:07:34 +0100
-Message-Id: <20230522190408.396795454@linuxfoundation.org>
+Message-Id: <20230522190355.799336206@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,62 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 6efddf1e32e2a264694766ca485a4f5e04ee82a7 ]
+[ Upstream commit 6bc6e6b27524304aadb9c04611ddb1c84dd7617a ]
 
-status_resync() will calculate 'curr_resync - recovery_active' to show
-user a progress bar like following:
+The ref_scale_shutdown() kthread/function uses wait_event() to wait for
+the refscale test to complete.  However, although the read-side tests
+are normally extremely fast, there is no law against specifying a very
+large value for the refscale.loops module parameter or against having
+a slow read-side primitive.  Either way, this might well trigger the
+hung-task timeout.
 
-[============>........]  resync = 61.4%
+This commit therefore replaces those wait_event() calls with calls to
+wait_event_idle(), which do not trigger the hung-task timeout.
 
-'curr_resync' and 'recovery_active' is updated in md_do_sync(), and
-status_resync() can read them concurrently, hence it's possible that
-'curr_resync - recovery_active' can overflow to a huge number. In this
-case status_resync() will be stuck in the loop to print a large amount
-of '=', which will end up soft lockup.
-
-Fix the problem by setting 'resync' to MD_RESYNC_ACTIVE in this case,
-this way resync in progress will be reported to user.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230310073855.1337560-3-yukuai1@huaweicloud.com
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/rcu/refscale.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index d5c362b1602b6..bb73a541bb193 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8028,16 +8028,16 @@ static int status_resync(struct seq_file *seq, struct mddev *mddev)
- 	} else if (resync > max_sectors) {
- 		resync = max_sectors;
- 	} else {
--		resync -= atomic_read(&mddev->recovery_active);
--		if (resync < MD_RESYNC_ACTIVE) {
--			/*
--			 * Resync has started, but the subtraction has
--			 * yielded one of the special values. Force it
--			 * to active to ensure the status reports an
--			 * active resync.
--			 */
-+		res = atomic_read(&mddev->recovery_active);
-+		/*
-+		 * Resync has started, but the subtraction has overflowed or
-+		 * yielded one of the special values. Force it to active to
-+		 * ensure the status reports an active resync.
-+		 */
-+		if (resync < res || resync - res < MD_RESYNC_ACTIVE)
- 			resync = MD_RESYNC_ACTIVE;
--		}
-+		else
-+			resync -= res;
- 	}
+diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
+index 66dc14cf5687e..5abb0cf52803a 100644
+--- a/kernel/rcu/refscale.c
++++ b/kernel/rcu/refscale.c
+@@ -777,7 +777,7 @@ ref_scale_cleanup(void)
+ static int
+ ref_scale_shutdown(void *arg)
+ {
+-	wait_event(shutdown_wq, shutdown_start);
++	wait_event_idle(shutdown_wq, shutdown_start);
  
- 	if (resync == MD_RESYNC_NONE) {
+ 	smp_mb(); // Wake before output.
+ 	ref_scale_cleanup();
 -- 
 2.39.2
 
