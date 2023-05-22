@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26A2770C908
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B601E70C72E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235197AbjEVToT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39048 "EHLO
+        id S234622AbjEVT0r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:26:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235202AbjEVToS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:18 -0400
+        with ESMTP id S234632AbjEVT0r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B5DA9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF6BA3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A64B622FF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CF4C433EF;
-        Mon, 22 May 2023 19:44:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5457628B0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE42BC433D2;
+        Mon, 22 May 2023 19:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784656;
-        bh=BtPkO18/e+3C4IFXUIq3q0flnNM/h1ir5gCnW4D5pNg=;
+        s=korg; t=1684783605;
+        bh=ULgldKHcQe/oiOaENBpSwoJGPj/4CsTxUBA9RRpJm0E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cHyd2IBwZvQpuPnpUO79krdp3yv9ziRp2pNhUVZXH+T4jXuYB7oX+zYMiYRshZeIo
-         j/Gjqd/WdQGBpqnh7PZ/Ijm6HmV234aBg7e9SW/N0MBLKnPbUaxcC5rdLSfJG/cl8l
-         H3tArjLRswnLzgV0kFOU5sy60a3ZZy/4NpLgGi74=
+        b=sIgj5gmhlc7G1F4hDVITQwRw8nxMZG6IMB+pim7XzHgah69gOvNyfZlvUBz6tnDoX
+         ukR9/SBKuWO0gCfUT9JiF40Pqdu5ziZjtWN+TGTtyC0Ert9f/H8TZGqdIz0KymfzR8
+         OO/RJu/n4TgLrNCDjVvLWJSF7wFlxzmm7y01Wfug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 153/364] HID: logitech-hidpp: Dont use the USB serial for USB devices
+Subject: [PATCH 6.1 101/292] wifi: iwlwifi: mvm: fix ptk_pn memory leak
 Date:   Mon, 22 May 2023 20:07:38 +0100
-Message-Id: <20230522190416.575812631@linuxfoundation.org>
+Message-Id: <20230522190408.495957190@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,99 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7ad1fe0da0fa91bf920b79ab05ae97bfabecc4f4 ]
+[ Upstream commit d066a530af8e1833c7ea2cef7784004700c85f79 ]
 
-For devices that support the 0x0003 feature (Device Information) version 4,
-set the serial based on the output of that feature, rather than relying
-on the usbhid code setting the USB serial.
+If adding a key to firmware fails we leak the allocated ptk_pn.
+This shouldn't happen in practice, but we should still fix it.
 
-This should allow the serial when connected through USB to (nearly)
-match the one when connected through a unifying receiver.
-
-For example, on the serials on a G903 wired/wireless mouse:
-- Unifying: 4067-e8-ce-cd-45
-- USB before patch: 017C385C3837
-- USB after patch: c086-e8-ce-cd-45
-
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Link: https://lore.kernel.org/r/20230302130117.3975-1-hadess@hadess.net
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.99446ffd02bc.I82a2ad6ec1395f188e0a1677cc619e3fcb1feac9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 51 ++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 5fc88a0632978..66380876937f6 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -947,6 +947,55 @@ static int hidpp_root_get_protocol_version(struct hidpp_device *hidpp)
- 	return 0;
- }
- 
-+/* -------------------------------------------------------------------------- */
-+/* 0x0003: Device Information                                                 */
-+/* -------------------------------------------------------------------------- */
-+
-+#define HIDPP_PAGE_DEVICE_INFORMATION			0x0003
-+
-+#define CMD_GET_DEVICE_INFO				0x00
-+
-+static int hidpp_get_serial(struct hidpp_device *hidpp, u32 *serial)
-+{
-+	struct hidpp_report response;
-+	u8 feature_type;
-+	u8 feature_index;
-+	int ret;
-+
-+	ret = hidpp_root_get_feature(hidpp, HIDPP_PAGE_DEVICE_INFORMATION,
-+				     &feature_index,
-+				     &feature_type);
-+	if (ret)
-+		return ret;
-+
-+	ret = hidpp_send_fap_command_sync(hidpp, feature_index,
-+					  CMD_GET_DEVICE_INFO,
-+					  NULL, 0, &response);
-+	if (ret)
-+		return ret;
-+
-+	/* See hidpp_unifying_get_serial() */
-+	*serial = *((u32 *)&response.rap.params[1]);
-+	return 0;
-+}
-+
-+static int hidpp_serial_init(struct hidpp_device *hidpp)
-+{
-+	struct hid_device *hdev = hidpp->hid_dev;
-+	u32 serial;
-+	int ret;
-+
-+	ret = hidpp_get_serial(hidpp, &serial);
-+	if (ret)
-+		return ret;
-+
-+	snprintf(hdev->uniq, sizeof(hdev->uniq), "%04x-%4phD",
-+		 hdev->product, &serial);
-+	dbg_hid("HID++ DeviceInformation: Got serial: %s\n", hdev->uniq);
-+
-+	return 0;
-+}
-+
- /* -------------------------------------------------------------------------- */
- /* 0x0005: GetDeviceNameType                                                  */
- /* -------------------------------------------------------------------------- */
-@@ -4210,6 +4259,8 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 
- 	if (hidpp->quirks & HIDPP_QUIRK_UNIFYING)
- 		hidpp_unifying_init(hidpp);
-+	else if (hid_is_usb(hidpp->hid_dev))
-+		hidpp_serial_init(hidpp);
- 
- 	connected = hidpp_root_get_protocol_version(hidpp) == 0;
- 	atomic_set(&hidpp->connected, connected);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index a841268e0709f..801098c5183b6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3445,7 +3445,7 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mvm_sta *mvmsta = NULL;
+-	struct iwl_mvm_key_pn *ptk_pn;
++	struct iwl_mvm_key_pn *ptk_pn = NULL;
+ 	int keyidx = key->keyidx;
+ 	int ret, i;
+ 	u8 key_offset;
+@@ -3590,6 +3590,10 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 		if (ret) {
+ 			IWL_WARN(mvm, "set key failed\n");
+ 			key->hw_key_idx = STA_KEY_IDX_INVALID;
++			if (ptk_pn) {
++				RCU_INIT_POINTER(mvmsta->ptk_pn[keyidx], NULL);
++				kfree(ptk_pn);
++			}
+ 			/*
+ 			 * can't add key for RX, but we don't need it
+ 			 * in the device for TX so still return 0,
 -- 
 2.39.2
 
