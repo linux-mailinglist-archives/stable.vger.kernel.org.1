@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24A2F70C991
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94AF370C809
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235358AbjEVTtb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43832 "EHLO
+        id S234935AbjEVTf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235354AbjEVTt3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:29 -0400
+        with ESMTP id S234956AbjEVTf2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3309999
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6982AE73
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD30B62ADA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44D1C433D2;
-        Mon, 22 May 2023 19:49:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B906862974
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44E0C433D2;
+        Mon, 22 May 2023 19:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784967;
-        bh=HptRQFeY9D7ErN7SyC7hV4Of2ITb+zyC4rmhmx/ASas=;
+        s=korg; t=1684784028;
+        bh=Qiq8JinTG1xVOvAAUVF/QILIKE1b2itUzLVSAyVn2eo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nZU/VowOGrliqZq7VW9EvvN3CtXnssjNQr0Kb0PCwkeahFiRloNbUnBqjQ5rDVcc7
-         KwR7JSXeZtTST/fHBx+RquhtF0EE+efv0Qwj4pp3LyteM2mDJDHAKW7syeiPgH4Z4j
-         4E2BbMrGoQa4EaQrFEIAxrIZ36/ax2i6rDZ/+wUM=
+        b=fjtOOfUvb+dxoscJBQbubAlGFhCdK0K++QnBivTLXAjovv02AD8X+jlx05dNf+I1t
+         wLStIPs4Z9G7nPT3B1cg0KYb31KvvAQBAGl0jYcnVEvXv8mcT5v44MrIr7DJkiyDXz
+         A42E4yrUVrO2DsbtoSMb8oVcDBrnuG1wo5/0H05Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dawid Wesierski <dawidx.wesierski@intel.com>,
-        Kamil Maziarz <kamil.maziarz@intel.com>,
-        Jacob Keller <Jacob.e.keller@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 264/364] ice: Fix ice VF reset during iavf initialization
+Subject: [PATCH 6.1 212/292] wifi: iwlwifi: mvm: dont trust firmware n_channels
 Date:   Mon, 22 May 2023 20:09:29 +0100
-Message-Id: <20230522190419.317047753@linuxfoundation.org>
+Message-Id: <20230522190411.257393468@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,166 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dawid Wesierski <dawidx.wesierski@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7255355a0636b4eff08d5e8139c77d98f151c4fc ]
+[ Upstream commit 682b6dc29d98e857e6ca4bbc077c7dc2899b7473 ]
 
-Fix the current implementation that causes ice_trigger_vf_reset()
-to start resetting the VF even when the VF-NIC is still initializing.
+If the firmware sends us a corrupted MCC response with
+n_channels much larger than the command response can be,
+we might copy far too much (uninitialized) memory and
+even crash if the n_channels is large enough to make it
+run out of the one page allocated for the FW response.
 
-When we reset NIC with ice driver it can interfere with
-iavf-vf initialization e.g. during consecutive resets induced by ice
+Fix that by checking the lengths. Doing a < comparison
+would be sufficient, but the firmware should be doing
+it correctly, so check more strictly.
 
-iavf                ice
-  |                  |
-  |<-----------------|
-  |            ice resets vf
- iavf                |
- reset               |
- start               |
-  |<-----------------|
-  |             ice resets vf
-  |             causing iavf
-  |             initialization
-  |             error
-  |                  |
- iavf
- reset
- end
-
-This leads to a series of -53 errors
-(failed to init adminq) from the IAVF.
-
-Change the state of the vf_state field to be not active when the IAVF
-is still initializing. Make sure to wait until receiving the message on
-the message box to ensure that the vf is ready and initializded.
-
-In simple terms we use the ACTIVE flag to make sure that the ice
-driver knows if the iavf is ready for another reset
-
-  iavf                  ice
-    |                    |
-    |                    |
-    |<------------- ice resets vf
-  iavf           vf_state != ACTIVE
-  reset                  |
-  start                  |
-    |                    |
-    |                    |
-  iavf                   |
-  reset-------> vf_state == ACTIVE
-  end              ice resets vf
-    |                    |
-    |                    |
-
-Fixes: c54d209c78b8 ("ice: Wait for VF to be reset/ready before configuration")
-Signed-off-by: Dawid Wesierski <dawidx.wesierski@intel.com>
-Signed-off-by: Kamil Maziarz <kamil.maziarz@intel.com>
-Acked-by: Jacob Keller <Jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: dcaf9f5ecb6f ("iwlwifi: mvm: add MCC update FW API")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230514120631.d7b233139eb4.I51fd319df8e9d41881fc8450e83d78049518a79a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c    |  8 ++++----
- drivers/net/ethernet/intel/ice/ice_vf_lib.c   | 19 +++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_vf_lib.h   |  1 +
- drivers/net/ethernet/intel/ice/ice_virtchnl.c |  1 +
- 4 files changed, 25 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 0cc05e54a7815..d4206db7d6d54 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1181,7 +1181,7 @@ int ice_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool ena)
- 	if (!vf)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index 6d18a1fd649b9..fdf60afb0f3f2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -445,6 +445,11 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
+ 		struct iwl_mcc_update_resp *mcc_resp = (void *)pkt->data;
  
--	ret = ice_check_vf_ready_for_cfg(vf);
-+	ret = ice_check_vf_ready_for_reset(vf);
- 	if (ret)
- 		goto out_put_vf;
+ 		n_channels =  __le32_to_cpu(mcc_resp->n_channels);
++		if (iwl_rx_packet_payload_len(pkt) !=
++		    struct_size(mcc_resp, channels, n_channels)) {
++			resp_cp = ERR_PTR(-EINVAL);
++			goto exit;
++		}
+ 		resp_len = sizeof(struct iwl_mcc_update_resp) +
+ 			   n_channels * sizeof(__le32);
+ 		resp_cp = kmemdup(mcc_resp, resp_len, GFP_KERNEL);
+@@ -456,6 +461,11 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
+ 		struct iwl_mcc_update_resp_v3 *mcc_resp_v3 = (void *)pkt->data;
  
-@@ -1296,7 +1296,7 @@ int ice_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
- 		goto out_put_vf;
- 	}
- 
--	ret = ice_check_vf_ready_for_cfg(vf);
-+	ret = ice_check_vf_ready_for_reset(vf);
- 	if (ret)
- 		goto out_put_vf;
- 
-@@ -1350,7 +1350,7 @@ int ice_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
- 		return -EOPNOTSUPP;
- 	}
- 
--	ret = ice_check_vf_ready_for_cfg(vf);
-+	ret = ice_check_vf_ready_for_reset(vf);
- 	if (ret)
- 		goto out_put_vf;
- 
-@@ -1663,7 +1663,7 @@ ice_set_vf_port_vlan(struct net_device *netdev, int vf_id, u16 vlan_id, u8 qos,
- 	if (!vf)
- 		return -EINVAL;
- 
--	ret = ice_check_vf_ready_for_cfg(vf);
-+	ret = ice_check_vf_ready_for_reset(vf);
- 	if (ret)
- 		goto out_put_vf;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 0e57bd1b85fd4..59524a7c88c5f 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -185,6 +185,25 @@ int ice_check_vf_ready_for_cfg(struct ice_vf *vf)
- 	return 0;
- }
- 
-+/**
-+ * ice_check_vf_ready_for_reset - check if VF is ready to be reset
-+ * @vf: VF to check if it's ready to be reset
-+ *
-+ * The purpose of this function is to ensure that the VF is not in reset,
-+ * disabled, and is both initialized and active, thus enabling us to safely
-+ * initialize another reset.
-+ */
-+int ice_check_vf_ready_for_reset(struct ice_vf *vf)
-+{
-+	int ret;
-+
-+	ret = ice_check_vf_ready_for_cfg(vf);
-+	if (!ret && !test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states))
-+		ret = -EAGAIN;
-+
-+	return ret;
-+}
-+
- /**
-  * ice_trigger_vf_reset - Reset a VF on HW
-  * @vf: pointer to the VF structure
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index ef30f05b5d02e..3fc6a0a8d9554 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -215,6 +215,7 @@ u16 ice_get_num_vfs(struct ice_pf *pf);
- struct ice_vsi *ice_get_vf_vsi(struct ice_vf *vf);
- bool ice_is_vf_disabled(struct ice_vf *vf);
- int ice_check_vf_ready_for_cfg(struct ice_vf *vf);
-+int ice_check_vf_ready_for_reset(struct ice_vf *vf);
- void ice_set_vf_state_dis(struct ice_vf *vf);
- bool ice_is_any_vf_in_unicast_promisc(struct ice_pf *pf);
- void
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index e24e3f5017ca6..d8c66baf4eb41 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -3908,6 +3908,7 @@ void ice_vc_process_vf_msg(struct ice_pf *pf, struct ice_rq_event_info *event)
- 		ice_vc_notify_vf_link_state(vf);
- 		break;
- 	case VIRTCHNL_OP_RESET_VF:
-+		clear_bit(ICE_VF_STATE_ACTIVE, vf->vf_states);
- 		ops->reset_vf(vf);
- 		break;
- 	case VIRTCHNL_OP_ADD_ETH_ADDR:
+ 		n_channels =  __le32_to_cpu(mcc_resp_v3->n_channels);
++		if (iwl_rx_packet_payload_len(pkt) !=
++		    struct_size(mcc_resp_v3, channels, n_channels)) {
++			resp_cp = ERR_PTR(-EINVAL);
++			goto exit;
++		}
+ 		resp_len = sizeof(struct iwl_mcc_update_resp) +
+ 			   n_channels * sizeof(__le32);
+ 		resp_cp = kzalloc(resp_len, GFP_KERNEL);
 -- 
 2.39.2
 
