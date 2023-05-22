@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 152F570C5EB
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EDB570C8DD
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233669AbjEVTNb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36730 "EHLO
+        id S235149AbjEVTnC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233505AbjEVTNa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144DFB0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:29 -0700 (PDT)
+        with ESMTP id S235137AbjEVTm7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C028E6A
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97FB761F18
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44E1C433EF;
-        Mon, 22 May 2023 19:13:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E282762A47
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA843C433D2;
+        Mon, 22 May 2023 19:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782808;
-        bh=jI3uk4PPjDCwaMqslo425e4OgafCaL7S6yLQ3gZtULQ=;
+        s=korg; t=1684784559;
+        bh=FW2ugkxW1F+fvXMDfPEAfROTBQzUMBbSyiwPDTSt0Og=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nKwm2YFFWepxUJ4/aAeOrPTr/B8KVr4UdTd0pn+KoWoSOI7xh8r9u74dJ0kPRKSZC
-         cuqrbS0+6NqWfwpUp2wGbw3SPAgMctOGppGYjFZcKAcEL0zrANVoc5nP930PuGOJ+H
-         i9FLECIwG2TPMu2zG8XB2tn0Gl2MFqxNcJHfw2zg=
+        b=oP06y60KqMBiRufhNlnpPBXtrCWWD6282BbC2yySFLo/dzcc7xNmKvPuGjzWSOoA8
+         KWbbmwd9BL01NPVyEz2PMeojehQYx6PbJzWNi/gzoPi8JxG/wg9kk1nuhUSx5YmMEW
+         2yfImON7L5cqHKJPvP3a+cEKZZJPGuKItwB49LoY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Victor Hassan <victor@allwinnertech.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/203] tick/broadcast: Make broadcast device replacement work correctly
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 124/364] block, bfq: Fix division by zero error on zero wsum
 Date:   Mon, 22 May 2023 20:07:09 +0100
-Message-Id: <20230522190355.086309530@linuxfoundation.org>
+Message-Id: <20230522190415.897379399@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,272 +53,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit f9d36cf445ffff0b913ba187a3eff78028f9b1fb ]
+[ Upstream commit e53413f8deedf738a6782cc14cc00bd5852ccf18 ]
 
-When a tick broadcast clockevent device is initialized for one shot mode
-then tick_broadcast_setup_oneshot() OR's the periodic broadcast mode
-cpumask into the oneshot broadcast cpumask.
+When the weighted sum is zero the calculation of limit causes
+a division by zero error. Fix this by continuing to the next level.
 
-This is required when switching from periodic broadcast mode to oneshot
-broadcast mode to ensure that CPUs which are waiting for periodic
-broadcast are woken up on the next tick.
+This was discovered by running as root:
 
-But it is subtly broken, when an active broadcast device is replaced and
-the system is already in oneshot (NOHZ/HIGHRES) mode. Victor observed
-this and debugged the issue.
+stress-ng --ioprio 0
 
-Then the OR of the periodic broadcast CPU mask is wrong as the periodic
-cpumask bits are sticky after tick_broadcast_enable() set it for a CPU
-unless explicitly cleared via tick_broadcast_disable().
+Fixes divison by error oops:
 
-That means that this sets all other CPUs which have tick broadcasting
-enabled at that point unconditionally in the oneshot broadcast mask.
+[  521.450556] divide error: 0000 [#1] SMP NOPTI
+[  521.450766] CPU: 2 PID: 2684464 Comm: stress-ng-iopri Not tainted 6.2.1-1280.native #1
+[  521.451117] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+[  521.451627] RIP: 0010:bfqq_request_over_limit+0x207/0x400
+[  521.451875] Code: 01 48 8d 0c c8 74 0b 48 8b 82 98 00 00 00 48 8d 0c c8 8b 85 34 ff ff ff 48 89 ca 41 0f af 41 50 48 d1 ea 48 98 48 01 d0 31 d2 <48> f7 f1 41 39 41 48 89 85 34 ff ff ff 0f 8c 7b 01 00 00 49 8b 44
+[  521.452699] RSP: 0018:ffffb1af84eb3948 EFLAGS: 00010046
+[  521.452938] RAX: 000000000000003c RBX: 0000000000000000 RCX: 0000000000000000
+[  521.453262] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffb1af84eb3978
+[  521.453584] RBP: ffffb1af84eb3a30 R08: 0000000000000001 R09: ffff8f88ab8a4ba0
+[  521.453905] R10: 0000000000000000 R11: 0000000000000001 R12: ffff8f88ab8a4b18
+[  521.454224] R13: ffff8f8699093000 R14: 0000000000000001 R15: ffffb1af84eb3970
+[  521.454549] FS:  00005640b6b0b580(0000) GS:ffff8f88b3880000(0000) knlGS:0000000000000000
+[  521.454912] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  521.455170] CR2: 00007ffcbcae4e38 CR3: 00000002e46de001 CR4: 0000000000770ee0
+[  521.455491] PKRU: 55555554
+[  521.455619] Call Trace:
+[  521.455736]  <TASK>
+[  521.455837]  ? bfq_request_merge+0x3a/0xc0
+[  521.456027]  ? elv_merge+0x115/0x140
+[  521.456191]  bfq_limit_depth+0xc8/0x240
+[  521.456366]  __blk_mq_alloc_requests+0x21a/0x2c0
+[  521.456577]  blk_mq_submit_bio+0x23c/0x6c0
+[  521.456766]  __submit_bio+0xb8/0x140
+[  521.457236]  submit_bio_noacct_nocheck+0x212/0x300
+[  521.457748]  submit_bio_noacct+0x1a6/0x580
+[  521.458220]  submit_bio+0x43/0x80
+[  521.458660]  ext4_io_submit+0x23/0x80
+[  521.459116]  ext4_do_writepages+0x40a/0xd00
+[  521.459596]  ext4_writepages+0x65/0x100
+[  521.460050]  do_writepages+0xb7/0x1c0
+[  521.460492]  __filemap_fdatawrite_range+0xa6/0x100
+[  521.460979]  file_write_and_wait_range+0xbf/0x140
+[  521.461452]  ext4_sync_file+0x105/0x340
+[  521.461882]  __x64_sys_fsync+0x67/0x100
+[  521.462305]  ? syscall_exit_to_user_mode+0x2c/0x1c0
+[  521.462768]  do_syscall_64+0x3b/0xc0
+[  521.463165]  entry_SYSCALL_64_after_hwframe+0x5a/0xc4
+[  521.463621] RIP: 0033:0x5640b6c56590
+[  521.464006] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 80 3d 71 70 0e 00 00 74 17 b8 4a 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
 
-If the affected CPUs were already idle and had their bits set in the
-oneshot broadcast mask then this does no harm. But for non idle CPUs
-which were not set this corrupts their state.
-
-On their next invocation of tick_broadcast_enable() they observe the bit
-set, which indicates that the broadcast for the CPU is already set up.
-As a consequence they fail to update the broadcast event even if their
-earliest expiring timer is before the actually programmed broadcast
-event.
-
-If the programmed broadcast event is far in the future, then this can
-cause stalls or trigger the hung task detector.
-
-Avoid this by telling tick_broadcast_setup_oneshot() explicitly whether
-this is the initial switch over from periodic to oneshot broadcast which
-must take the periodic broadcast mask into account. In the case of
-initialization of a replacement device this prevents that the broadcast
-oneshot mask is modified.
-
-There is a second problem with broadcast device replacement in this
-function. The broadcast device is only armed when the previous state of
-the device was periodic.
-
-That is correct for the switch from periodic broadcast mode to oneshot
-broadcast mode as the underlying broadcast device could operate in
-oneshot state already due to lack of periodic state in hardware. In that
-case it is already armed to expire at the next tick.
-
-For the replacement case this is wrong as the device is in shutdown
-state. That means that any already pending broadcast event will not be
-armed.
-
-This went unnoticed because any CPU which goes idle will observe that
-the broadcast device has an expiry time of KTIME_MAX and therefore any
-CPUs next timer event will be earlier and cause a reprogramming of the
-broadcast device. But that does not guarantee that the events of the
-CPUs which were already in idle are delivered on time.
-
-Fix this by arming the newly installed device for an immediate event
-which will reevaluate the per CPU expiry times and reprogram the
-broadcast device accordingly. This is simpler than caching the last
-expiry time in yet another place or saving it before the device exchange
-and handing it down to the setup function. Replacement of broadcast
-devices is not a frequent operation and usually happens once somewhere
-late in the boot process.
-
-Fixes: 9c336c9935cf ("tick/broadcast: Allow late registered device to enter oneshot mode")
-Reported-by: Victor Hassan <victor@allwinnertech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/87pm7d2z1i.ffs@tglx
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://lore.kernel.org/r/20230413133009.1605335-1-colin.i.king@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-broadcast.c | 120 +++++++++++++++++++++++++----------
- 1 file changed, 88 insertions(+), 32 deletions(-)
+ block/bfq-iosched.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
-index f7fe6fe361731..0916cc9adb828 100644
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -35,14 +35,15 @@ static __cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(tick_broadcast_lock);
- #ifdef CONFIG_TICK_ONESHOT
- static DEFINE_PER_CPU(struct clock_event_device *, tick_oneshot_wakeup_device);
- 
--static void tick_broadcast_setup_oneshot(struct clock_event_device *bc);
-+static void tick_broadcast_setup_oneshot(struct clock_event_device *bc, bool from_periodic);
- static void tick_broadcast_clear_oneshot(int cpu);
- static void tick_resume_broadcast_oneshot(struct clock_event_device *bc);
- # ifdef CONFIG_HOTPLUG_CPU
- static void tick_broadcast_oneshot_offline(unsigned int cpu);
- # endif
- #else
--static inline void tick_broadcast_setup_oneshot(struct clock_event_device *bc) { BUG(); }
-+static inline void
-+tick_broadcast_setup_oneshot(struct clock_event_device *bc, bool from_periodic) { BUG(); }
- static inline void tick_broadcast_clear_oneshot(int cpu) { }
- static inline void tick_resume_broadcast_oneshot(struct clock_event_device *bc) { }
- # ifdef CONFIG_HOTPLUG_CPU
-@@ -264,7 +265,7 @@ int tick_device_uses_broadcast(struct clock_event_device *dev, int cpu)
- 		if (tick_broadcast_device.mode == TICKDEV_MODE_PERIODIC)
- 			tick_broadcast_start_periodic(bc);
- 		else
--			tick_broadcast_setup_oneshot(bc);
-+			tick_broadcast_setup_oneshot(bc, false);
- 		ret = 1;
- 	} else {
- 		/*
-@@ -500,7 +501,7 @@ void tick_broadcast_control(enum tick_broadcast_mode mode)
- 			if (tick_broadcast_device.mode == TICKDEV_MODE_PERIODIC)
- 				tick_broadcast_start_periodic(bc);
- 			else
--				tick_broadcast_setup_oneshot(bc);
-+				tick_broadcast_setup_oneshot(bc, false);
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index d9ed3108c17af..bac977da4eb5b 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -649,6 +649,8 @@ static bool bfqq_request_over_limit(struct bfq_queue *bfqq, int limit)
+ 					sched_data->service_tree[i].wsum;
+ 			}
  		}
- 	}
- out:
-@@ -1016,48 +1017,101 @@ static inline ktime_t tick_get_next_period(void)
- /**
-  * tick_broadcast_setup_oneshot - setup the broadcast device
-  */
--static void tick_broadcast_setup_oneshot(struct clock_event_device *bc)
-+static void tick_broadcast_setup_oneshot(struct clock_event_device *bc,
-+					 bool from_periodic)
- {
- 	int cpu = smp_processor_id();
-+	ktime_t nexttick = 0;
- 
- 	if (!bc)
- 		return;
- 
--	/* Set it up only once ! */
--	if (bc->event_handler != tick_handle_oneshot_broadcast) {
--		int was_periodic = clockevent_state_periodic(bc);
--
--		bc->event_handler = tick_handle_oneshot_broadcast;
--
-+	/*
-+	 * When the broadcast device was switched to oneshot by the first
-+	 * CPU handling the NOHZ change, the other CPUs will reach this
-+	 * code via hrtimer_run_queues() -> tick_check_oneshot_change()
-+	 * too. Set up the broadcast device only once!
-+	 */
-+	if (bc->event_handler == tick_handle_oneshot_broadcast) {
- 		/*
--		 * We must be careful here. There might be other CPUs
--		 * waiting for periodic broadcast. We need to set the
--		 * oneshot_mask bits for those and program the
--		 * broadcast device to fire.
-+		 * The CPU which switched from periodic to oneshot mode
-+		 * set the broadcast oneshot bit for all other CPUs which
-+		 * are in the general (periodic) broadcast mask to ensure
-+		 * that CPUs which wait for the periodic broadcast are
-+		 * woken up.
-+		 *
-+		 * Clear the bit for the local CPU as the set bit would
-+		 * prevent the first tick_broadcast_enter() after this CPU
-+		 * switched to oneshot state to program the broadcast
-+		 * device.
-+		 *
-+		 * This code can also be reached via tick_broadcast_control(),
-+		 * but this cannot avoid the tick_broadcast_clear_oneshot()
-+		 * as that would break the periodic to oneshot transition of
-+		 * secondary CPUs. But that's harmless as the below only
-+		 * clears already cleared bits.
- 		 */
-+		tick_broadcast_clear_oneshot(cpu);
-+		return;
-+	}
-+
-+
-+	bc->event_handler = tick_handle_oneshot_broadcast;
-+	bc->next_event = KTIME_MAX;
-+
-+	/*
-+	 * When the tick mode is switched from periodic to oneshot it must
-+	 * be ensured that CPUs which are waiting for periodic broadcast
-+	 * get their wake-up at the next tick.  This is achieved by ORing
-+	 * tick_broadcast_mask into tick_broadcast_oneshot_mask.
-+	 *
-+	 * For other callers, e.g. broadcast device replacement,
-+	 * tick_broadcast_oneshot_mask must not be touched as this would
-+	 * set bits for CPUs which are already NOHZ, but not idle. Their
-+	 * next tick_broadcast_enter() would observe the bit set and fail
-+	 * to update the expiry time and the broadcast event device.
-+	 */
-+	if (from_periodic) {
- 		cpumask_copy(tmpmask, tick_broadcast_mask);
-+		/* Remove the local CPU as it is obviously not idle */
- 		cpumask_clear_cpu(cpu, tmpmask);
--		cpumask_or(tick_broadcast_oneshot_mask,
--			   tick_broadcast_oneshot_mask, tmpmask);
-+		cpumask_or(tick_broadcast_oneshot_mask, tick_broadcast_oneshot_mask, tmpmask);
- 
--		if (was_periodic && !cpumask_empty(tmpmask)) {
--			ktime_t nextevt = tick_get_next_period();
-+		/*
-+		 * Ensure that the oneshot broadcast handler will wake the
-+		 * CPUs which are still waiting for periodic broadcast.
-+		 */
-+		nexttick = tick_get_next_period();
-+		tick_broadcast_init_next_event(tmpmask, nexttick);
- 
--			clockevents_switch_state(bc, CLOCK_EVT_STATE_ONESHOT);
--			tick_broadcast_init_next_event(tmpmask, nextevt);
--			tick_broadcast_set_event(bc, cpu, nextevt);
--		} else
--			bc->next_event = KTIME_MAX;
--	} else {
- 		/*
--		 * The first cpu which switches to oneshot mode sets
--		 * the bit for all other cpus which are in the general
--		 * (periodic) broadcast mask. So the bit is set and
--		 * would prevent the first broadcast enter after this
--		 * to program the bc device.
-+		 * If the underlying broadcast clock event device is
-+		 * already in oneshot state, then there is nothing to do.
-+		 * The device was already armed for the next tick
-+		 * in tick_handle_broadcast_periodic()
- 		 */
--		tick_broadcast_clear_oneshot(cpu);
-+		if (clockevent_state_oneshot(bc))
-+			return;
- 	}
-+
-+	/*
-+	 * When switching from periodic to oneshot mode arm the broadcast
-+	 * device for the next tick.
-+	 *
-+	 * If the broadcast device has been replaced in oneshot mode and
-+	 * the oneshot broadcast mask is not empty, then arm it to expire
-+	 * immediately in order to reevaluate the next expiring timer.
-+	 * @nexttick is 0 and therefore in the past which will cause the
-+	 * clockevent code to force an event.
-+	 *
-+	 * For both cases the programming can be avoided when the oneshot
-+	 * broadcast mask is empty.
-+	 *
-+	 * tick_broadcast_set_event() implicitly switches the broadcast
-+	 * device to oneshot state.
-+	 */
-+	if (!cpumask_empty(tick_broadcast_oneshot_mask))
-+		tick_broadcast_set_event(bc, cpu, nexttick);
- }
- 
- /*
-@@ -1066,14 +1120,16 @@ static void tick_broadcast_setup_oneshot(struct clock_event_device *bc)
- void tick_broadcast_switch_to_oneshot(void)
- {
- 	struct clock_event_device *bc;
-+	enum tick_device_mode oldmode;
- 	unsigned long flags;
- 
- 	raw_spin_lock_irqsave(&tick_broadcast_lock, flags);
- 
-+	oldmode = tick_broadcast_device.mode;
- 	tick_broadcast_device.mode = TICKDEV_MODE_ONESHOT;
- 	bc = tick_broadcast_device.evtdev;
- 	if (bc)
--		tick_broadcast_setup_oneshot(bc);
-+		tick_broadcast_setup_oneshot(bc, oldmode == TICKDEV_MODE_PERIODIC);
- 
- 	raw_spin_unlock_irqrestore(&tick_broadcast_lock, flags);
- }
++		if (!wsum)
++			continue;
+ 		limit = DIV_ROUND_CLOSEST(limit * entity->weight, wsum);
+ 		if (entity->allocated >= limit) {
+ 			bfq_log_bfqq(bfqq->bfqd, bfqq,
 -- 
 2.39.2
 
