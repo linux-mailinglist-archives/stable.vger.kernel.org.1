@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F66970C832
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE8A70C9E8
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234950AbjEVTgX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
+        id S235400AbjEVTxB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:53:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234943AbjEVTgT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F549130
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:03 -0700 (PDT)
+        with ESMTP id S235473AbjEVTwz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4AEE0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F27061FEC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A997C433D2;
-        Mon, 22 May 2023 19:35:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9898362B2E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC46C433EF;
+        Mon, 22 May 2023 19:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784150;
-        bh=4B8Kln1Me7JXk/BtrvrkqkydSBOmyQSP5HpAgFEclsw=;
+        s=korg; t=1684785173;
+        bh=K2wgt1pG60Qr7mIgVaviwaIIgCgQR1ZCUpXPldOiMbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EbJDY5RVAysyjZtPruc1Ivrci+pSE/HipsULYdrnsFP0lPtgZhEv5obuRk0TGe9UR
-         MAHYCkJdrbYb7iqnQlNGbvtDl9YCVrQ22XURqjbpsF7ZPBM6mD2JZzqHGtgRZwogtF
-         3rmQ5qxfWZfmDo8Pef9AP7q3CXCma+KB3exjoNn4=
+        b=EuFkK37g/iYeIFYA0SM7AllHZC7lRg/sWgaqINVFa5OWUoHm9Z9wfNazJpJK0mgxa
+         u5XI8j9RgVwpbKR3gH6nJQ1JWydKC1bt+GZWglzYYkGEmydL7NTj9o9Ie4jpRNAdT6
+         4wf7o7Et30hJA+kxMJGFv0iJH7paDNKuxARBBvow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1 280/292] powerpc/64s/radix: Fix soft dirty tracking
-Date:   Mon, 22 May 2023 20:10:37 +0100
-Message-Id: <20230522190412.941322506@linuxfoundation.org>
+        patches@lists.linux.dev, Stephen Boyd <swboyd@chromium.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.3 333/364] serial: qcom-geni: fix enabling deactivated interrupt
+Date:   Mon, 22 May 2023 20:10:38 +0100
+Message-Id: <20230522190421.101400885@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +53,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 66b2ca086210732954a7790d63d35542936fc664 upstream.
+commit 5f949f140f73696f64acb89a1f16ff9153d017e0 upstream.
 
-It was reported that soft dirty tracking doesn't work when using the
-Radix MMU.
+The driver have a race, experienced only with PREEMPT_RT patchset:
 
-The tracking is supposed to work by clearing the soft dirty bit for a
-mapping and then write protecting the PTE. If/when the page is written
-to, a page fault occurs and the soft dirty bit is added back via
-pte_mkdirty(). For example in wp_page_reuse():
+CPU0                         | CPU1
+==================================================================
+qcom_geni_serial_probe       |
+  uart_add_one_port          |
+                             | serdev_drv_probe
+                             |   qca_serdev_probe
+                             |     serdev_device_open
+                             |       uart_open
+                             |         uart_startup
+                             |           qcom_geni_serial_startup
+                             |             enable_irq
+                             |               __irq_startup
+                             |                 WARN_ON()
+                             |                 IRQ not activated
+  request_threaded_irq       |
+    irq_domain_activate_irq  |
 
-	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
-		update_mmu_cache(vma, vmf->address, vmf->pte);
+The warning:
 
-Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
-radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
-meaning the soft dirty bit is not set even though the page has been
-written to.
+  894000.serial: ttyHS1 at MMIO 0x894000 (irq = 144, base_baud = 0) is a MSM
+  serial serial0: tty port ttyHS1 registered
+  WARNING: CPU: 7 PID: 107 at kernel/irq/chip.c:241 __irq_startup+0x78/0xd8
+  ...
+  qcom_geni_serial 894000.serial: serial engine reports 0 RX bytes in!
 
-Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
-changed in radix__ptep_set_access_flags().
+Adding UART port triggers probe of child serial devices - serdev and
+eventually Qualcomm Bluetooth hci_qca driver.  This opens UART port
+which enables the interrupt before it got activated in
+request_threaded_irq().  The issue originates in commit f3974413cf02
+("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup") and discussion on
+mailing list [1].  However the above commit does not explain why the
+uart_add_one_port() is moved above requesting interrupt.
 
-Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
-Cc: stable@vger.kernel.org # v4.7+
-Reported-by: Dan Horák <dan@danny.cz>
-Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230511114224.977423-1-mpe@ellerman.id.au
+[1] https://lore.kernel.org/all/5d9f3dfa.1c69fb81.84c4b.30bf@mx.google.com/
+
+Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
+Cc: <stable@vger.kernel.org>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230505152301.2181270-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct
- 				  pte_t entry, unsigned long address, int psize)
- {
- 	struct mm_struct *mm = vma->vm_mm;
--	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
--					      _PAGE_RW | _PAGE_EXEC);
-+	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
-+					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1665,19 +1665,18 @@ static int qcom_geni_serial_probe(struct
+ 	uport->private_data = &port->private_data;
+ 	platform_set_drvdata(pdev, port);
  
- 	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
+-	ret = uart_add_one_port(drv, uport);
+-	if (ret)
+-		return ret;
+-
+ 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
+ 			IRQF_TRIGGER_HIGH, port->name, uport);
+ 	if (ret) {
+ 		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
+-		uart_remove_one_port(drv, uport);
+ 		return ret;
+ 	}
+ 
++	ret = uart_add_one_port(drv, uport);
++	if (ret)
++		return ret;
++
  	/*
+ 	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
+ 	 * enabled/disabled from dev_pm_arm_wake_irq during system
 
 
