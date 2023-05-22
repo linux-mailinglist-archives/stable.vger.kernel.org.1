@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4FBD70C620
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C667B70C95B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234043AbjEVTPU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        id S235322AbjEVTrN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234108AbjEVTPN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:13 -0400
+        with ESMTP id S235312AbjEVTrL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713F01BC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C264A132
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41CCD6274F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEFBC433D2;
-        Mon, 22 May 2023 19:15:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2C1562AA7
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5BEC433EF;
+        Mon, 22 May 2023 19:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782906;
-        bh=3fpaRboYcqUlbocVLOskDfs/gJs5uexvY27qqE4VTgk=;
+        s=korg; t=1684784826;
+        bh=Z5MW+7Uyjs8ZxbT9xpRDInLLzeI14n182uK6ADFW0BA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SiaL9PD8AJloqs/W2EtL9rbcFpre9hAPNCyFmobNa8QrgWUDLB3Tskx/fZOvvgNTM
-         6DgWB99uGpuuVLTOeod2cqSJAUKYYkMruQqGCFWa/+LAD+eAWeNZok6+Jm3RBBK72l
-         cV9fQhdIZOvIvijRgiCpiwZM7fHQYpI+4BEZHDMQ=
+        b=eccUtz3AauxZA7hEZ12+jWNuv0WlweOtC0clht/88Q058at0/NHJXUL37KxnNA615
+         MPy57OY6HsgnrzCy60YPMv3FnopOZkxOjuSzCwH6xEiC9HOSAYaoTzM7uATkkhF0VA
+         mvXk8ih7TQI2zrYWaN5zoZTllNZ2glCGZLgZwzmI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/203] wifi: iwlwifi: pcie: Fix integer overflow in iwl_write_to_user_buf
+Subject: [PATCH 6.3 188/364] cifs: missing lock when updating session status
 Date:   Mon, 22 May 2023 20:08:13 +0100
-Message-Id: <20230522190356.900744525@linuxfoundation.org>
+Message-Id: <20230522190417.434256514@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 58d1b717879bfeabe09b35e41ad667c79933eb2e ]
+[ Upstream commit 943fb67b090212f1d3789eb7796b1c9045c62fd6 ]
 
-An integer overflow occurs in the iwl_write_to_user_buf() function,
-which is called by the iwl_dbgfs_monitor_data_read() function.
+Coverity noted a place where we were not grabbing
+the ses_lock when setting (and checking) ses_status.
 
-static bool iwl_write_to_user_buf(char __user *user_buf, ssize_t count,
-				  void *buf, ssize_t *size,
-				  ssize_t *bytes_copied)
-{
-	int buf_size_left = count - *bytes_copied;
-
-	buf_size_left = buf_size_left - (buf_size_left % sizeof(u32));
-	if (*size > buf_size_left)
-		*size = buf_size_left;
-
-If the user passes a SIZE_MAX value to the "ssize_t count" parameter,
-the ssize_t count parameter is assigned to "int buf_size_left".
-Then compare "*size" with "buf_size_left" . Here, "buf_size_left" is a
-negative number, so "*size" is assigned "buf_size_left" and goes into
-the third argument of the copy_to_user function, causing a heap overflow.
-
-This is not a security vulnerability because iwl_dbgfs_monitor_data_read()
-is a debugfs operation with 0400 privileges.
-
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230414130637.2d80ace81532.Iecfba549e0e0be21bbb0324675392e42e75bd5ad@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Addresses-Coverity: 1536833 ("Data race condition (MISSING_LOCK)")
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cifs/connect.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index ee325950de9d2..04e1f3829e96b 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2778,7 +2778,7 @@ static bool iwl_write_to_user_buf(char __user *user_buf, ssize_t count,
- 				  void *buf, ssize_t *size,
- 				  ssize_t *bytes_copied)
- {
--	int buf_size_left = count - *bytes_copied;
-+	ssize_t buf_size_left = count - *bytes_copied;
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 59a10330e299b..8e9a672320ab7 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -1918,18 +1918,22 @@ void __cifs_put_smb_ses(struct cifs_ses *ses)
+ 	/* ses_count can never go negative */
+ 	WARN_ON(ses->ses_count < 0);
  
- 	buf_size_left = buf_size_left - (buf_size_left % sizeof(u32));
- 	if (*size > buf_size_left)
++	spin_lock(&ses->ses_lock);
+ 	if (ses->ses_status == SES_GOOD)
+ 		ses->ses_status = SES_EXITING;
+ 
+-	cifs_free_ipc(ses);
+-
+ 	if (ses->ses_status == SES_EXITING && server->ops->logoff) {
++		spin_unlock(&ses->ses_lock);
++		cifs_free_ipc(ses);
+ 		xid = get_xid();
+ 		rc = server->ops->logoff(xid, ses);
+ 		if (rc)
+ 			cifs_server_dbg(VFS, "%s: Session Logoff failure rc=%d\n",
+ 				__func__, rc);
+ 		_free_xid(xid);
++	} else {
++		spin_unlock(&ses->ses_lock);
++		cifs_free_ipc(ses);
+ 	}
+ 
+ 	spin_lock(&cifs_tcp_ses_lock);
 -- 
 2.39.2
 
