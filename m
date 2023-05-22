@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDE7470C988
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0D470C782
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235344AbjEVTtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43648 "EHLO
+        id S234723AbjEVTaW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:30:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235353AbjEVTtD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:03 -0400
+        with ESMTP id S234740AbjEVTaV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:30:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0361CA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEEF19C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:30:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DE4362AB8
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2F0C433D2;
-        Mon, 22 May 2023 19:48:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70B46628F9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E34CC433D2;
+        Mon, 22 May 2023 19:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784939;
-        bh=mO/eYo87LZnDISgIRHfQ6gSxtt7tkJ4BYakrd4KU43I=;
+        s=korg; t=1684783819;
+        bh=m4T4wpyQCQgdJqiEPvFCSaUMvmA4Ris8Ph6gOl5wHjA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zT3oWDFQPbnpjrssVo+TAYMaCxdugJdC6zF0RgMuPUTCYy+jT1L/9S6dxfMFmvvu+
-         4fAE4r0wcW0cBhycXF4rJsOo3l9Ol8Y4jbo0YkYCVIwMtwRr3Y6+sTxo99xWe1BoNu
-         YdovQq6HJe6SB1DtfunUz+xscSVNn5ooUa2ZX+0g=
+        b=V0b+PYlWyXSsfRGbdG/z9rIyVkLbhBcMNP5AkqwlQb32HAmUk2MwiOXQx0pp/8RBA
+         6LPFAVdmnlzRCe03K2r2ifPQ697cjSqZFWxg1jEdGaXtfgDO2FYpVNVPlz1DYE9O4j
+         hLF6L0waFc84+C7MQOykfmQeqCg1fZMzsK8ytM+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 224/364] net: fec: Better handle pm_runtime_get() failing in .remove()
+Subject: [PATCH 6.1 172/292] vsock: avoid to close connected socket after the timeout
 Date:   Mon, 22 May 2023 20:08:49 +0100
-Message-Id: <20230522190418.307139944@linuxfoundation.org>
+Message-Id: <20230522190410.263166510@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Zhuang Shengen <zhuangshengen@huawei.com>
 
-[ Upstream commit f816b9829b19394d318e01953aa3b2721bca040d ]
+[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
 
-In the (unlikely) event that pm_runtime_get() (disguised as
-pm_runtime_resume_and_get()) fails, the remove callback returned an
-error early. The problem with this is that the driver core ignores the
-error value and continues removing the device. This results in a
-resource leak. Worse the devm allocated resources are freed and so if a
-callback of the driver is called later the register mapping is already
-gone which probably results in a crash.
+When client and server establish a connection through vsock,
+the client send a request to the server to initiate the connection,
+then start a timer to wait for the server's response. When the server's
+RESPONSE message arrives, the timer also times out and exits. The
+server's RESPONSE message is processed first, and the connection is
+established. However, the client's timer also times out, the original
+processing logic of the client is to directly set the state of this vsock
+to CLOSE and return ETIMEDOUT. It will not notify the server when the port
+is released, causing the server port remain.
+when client's vsock_connect timeout，it should check sk state is
+ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
+is established, the client should not set the sk state to CLOSE
 
-Fixes: a31eda65ba21 ("net: fec: fix clock count mis-match")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230510200020.1534610-1-u.kleine-koenig@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note: I encountered this issue on kernel-4.18, which can be fixed by
+this patch. Then I checked the latest code in the community
+and found similar issue.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/vmw_vsock/af_vsock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 42ec6ca3bf035..241df41d500f1 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -4478,9 +4478,11 @@ fec_drv_remove(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 	int ret;
- 
--	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
--		return ret;
-+		dev_err(&pdev->dev,
-+			"Failed to resume device in remove callback (%pe)\n",
-+			ERR_PTR(ret));
- 
- 	cancel_work_sync(&fep->tx_timeout_work);
- 	fec_ptp_stop(pdev);
-@@ -4493,8 +4495,13 @@ fec_drv_remove(struct platform_device *pdev)
- 		of_phy_deregister_fixed_link(np);
- 	of_node_put(fep->phy_node);
- 
--	clk_disable_unprepare(fep->clk_ahb);
--	clk_disable_unprepare(fep->clk_ipg);
-+	/* After pm_runtime_get_sync() failed, the clks are still off, so skip
-+	 * disabling them again.
-+	 */
-+	if (ret >= 0) {
-+		clk_disable_unprepare(fep->clk_ahb);
-+		clk_disable_unprepare(fep->clk_ipg);
-+	}
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 884eca7f6743a..8360c790a8a01 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1427,7 +1427,7 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 			vsock_transport_cancel_pkt(vsk);
+ 			vsock_remove_connected(vsk);
+ 			goto out_wait;
+-		} else if (timeout == 0) {
++		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+ 			err = -ETIMEDOUT;
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
 -- 
 2.39.2
 
