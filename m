@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BF5270C744
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A82570C5E7
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234669AbjEVT1n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:27:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49148 "EHLO
+        id S233477AbjEVTNU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:13:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234656AbjEVT1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BE49A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:36 -0700 (PDT)
+        with ESMTP id S233207AbjEVTNU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50271FE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 904E5628BF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A027CC433D2;
-        Mon, 22 May 2023 19:27:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC61861EE4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87F1C433EF;
+        Mon, 22 May 2023 19:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783655;
-        bh=E07pA8KKJnqqxrmgH5WZJuyo/K+xJNWQXY1afkOewto=;
+        s=korg; t=1684782798;
+        bh=16YV59Y5TWHm0xMUgJjSMPqUjND4p5xiiAKBu0eMgTg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r2E3QvXnmaUc97iZ37F8W62SBoUlhb0Zp6lD0oPNwQx0zz5PuYhESpVMoFmPCEDiO
-         ZxMYRlAMzDe9VUOD+7gEj6pWl/CIsqd7qYMDCbWoHf3OEAd/f88Wz27Ew4YklpT+ZU
-         IWMiMiuIQNPUH/arVXCXF/gq/jji/q42nB3wGq2w=
+        b=hzZ3mxHJqwEgD974E6fhYYMUst6SNIoq6LttNX+/pyaAO/sdccLZ42iqf9zL2Hmyf
+         de0mXjs4GtPqee4P30k0Z9/bYdrnp3eIKCS4KWCCoXFCKb/6qoMhRBMoKFFDgzbIMs
+         j+zBtSgieMPS9kyoadBBgpNvoz5qN61e33skhPjs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/292] ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()
-Date:   Mon, 22 May 2023 20:07:27 +0100
-Message-Id: <20230522190408.224181819@linuxfoundation.org>
+        patches@lists.linux.dev, Austin Kim <austindh.kim@gmail.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 024/203] ext4: remove an unused variable warning with CONFIG_QUOTA=n
+Date:   Mon, 22 May 2023 20:07:28 +0100
+Message-Id: <20230522190355.631183227@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,126 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Austin Kim <austindh.kim@gmail.com>
 
-[ Upstream commit 93cdf49f6eca5e23f6546b8f28457b2e6a6961d9 ]
+[ Upstream commit 3bbef91bdd2180c67407285ba160b023eb4d5306 ]
 
-When the length of best extent found is less than the length of goal extent
-we need to make sure that the best extent atleast covers the start of the
-original request. This is done by adjusting the ac_b_ex.fe_logical (logical
-start) of the extent.
+The 'enable_quota' variable is only used in an CONFIG_QUOTA.
+With CONFIG_QUOTA=n, compiler causes a harmless warning:
 
-While doing so, the current logic sometimes results in the best extent's
-logical range overflowing the goal extent. Since this best extent is later
-added to the inode preallocation list, we have a possibility of introducing
-overlapping preallocations. This is discussed in detail here [1].
+fs/ext4/super.c: In function ‘ext4_remount’:
+fs/ext4/super.c:5840:6: warning: variable ‘enable_quota’ set but not used
+  [-Wunused-but-set-variable]
+  int enable_quota = 0;
+              ^~~~~
 
-As per Jan's suggestion, to fix this, replace the existing logic with the
-below logic for adjusting best extent as it keeps fragmentation in check
-while ensuring logical range of best extent doesn't overflow out of goal
-extent:
+Move 'enable_quota' into the same #ifdef CONFIG_QUOTA block
+to remove an unused variable warning.
 
-1. Check if best extent can be kept at end of goal range and still cover
-   original start.
-2. Else, check if best extent can be kept at start of goal range and still
-   cover original start.
-3. Else, keep the best extent at start of original request.
-
-Also, add a few extra BUG_ONs that might help catch errors faster.
-
-[1] https://lore.kernel.org/r/Y+OGkVvzPN0RMv0O@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
-
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Austin Kim <austindh.kim@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/f96aca6d415b36d1f90db86c1a8cd7e2e9d7ab0e.1679731817.git.ojaswin@linux.ibm.com
+Link: https://lore.kernel.org/r/20210824034929.GA13415@raspberrypi
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting r/w until quota is re-enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 49 ++++++++++++++++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 18 deletions(-)
+ fs/ext4/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 21f09bcffbbaa..32d88757a780e 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4321,6 +4321,7 @@ static void ext4_mb_use_inode_pa(struct ext4_allocation_context *ac,
- 	BUG_ON(start < pa->pa_pstart);
- 	BUG_ON(end > pa->pa_pstart + EXT4_C2B(sbi, pa->pa_len));
- 	BUG_ON(pa->pa_free < len);
-+	BUG_ON(ac->ac_b_ex.fe_len <= 0);
- 	pa->pa_free -= len;
- 
- 	mb_debug(ac->ac_sb, "use %llu/%d from inode pa %p\n", start, len, pa);
-@@ -4650,10 +4651,8 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 	pa = ac->ac_pa;
- 
- 	if (ac->ac_b_ex.fe_len < ac->ac_g_ex.fe_len) {
--		int winl;
--		int wins;
--		int win;
--		int offs;
-+		int new_bex_start;
-+		int new_bex_end;
- 
- 		/* we can't allocate as much as normalizer wants.
- 		 * so, found space must get proper lstart
-@@ -4661,26 +4660,40 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
- 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
- 
--		/* we're limited by original request in that
--		 * logical block must be covered any way
--		 * winl is window we can move our chunk within */
--		winl = ac->ac_o_ex.fe_logical - ac->ac_g_ex.fe_logical;
-+		/*
-+		 * Use the below logic for adjusting best extent as it keeps
-+		 * fragmentation in check while ensuring logical range of best
-+		 * extent doesn't overflow out of goal extent:
-+		 *
-+		 * 1. Check if best ex can be kept at end of goal and still
-+		 *    cover original start
-+		 * 2. Else, check if best ex can be kept at start of goal and
-+		 *    still cover original start
-+		 * 3. Else, keep the best ex at start of original request.
-+		 */
-+		new_bex_end = ac->ac_g_ex.fe_logical +
-+			EXT4_C2B(sbi, ac->ac_g_ex.fe_len);
-+		new_bex_start = new_bex_end - EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
-+		if (ac->ac_o_ex.fe_logical >= new_bex_start)
-+			goto adjust_bex;
- 
--		/* also, we should cover whole original request */
--		wins = EXT4_C2B(sbi, ac->ac_b_ex.fe_len - ac->ac_o_ex.fe_len);
-+		new_bex_start = ac->ac_g_ex.fe_logical;
-+		new_bex_end =
-+			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
-+		if (ac->ac_o_ex.fe_logical < new_bex_end)
-+			goto adjust_bex;
- 
--		/* the smallest one defines real window */
--		win = min(winl, wins);
-+		new_bex_start = ac->ac_o_ex.fe_logical;
-+		new_bex_end =
-+			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
- 
--		offs = ac->ac_o_ex.fe_logical %
--			EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
--		if (offs && offs < win)
--			win = offs;
-+adjust_bex:
-+		ac->ac_b_ex.fe_logical = new_bex_start;
- 
--		ac->ac_b_ex.fe_logical = ac->ac_o_ex.fe_logical -
--			EXT4_NUM_B2C(sbi, win);
- 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
- 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
-+		BUG_ON(new_bex_end > (ac->ac_g_ex.fe_logical +
-+				      EXT4_C2B(sbi, ac->ac_g_ex.fe_len)));
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index e6cd2bf9508e4..ca0997fcd1215 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5742,10 +5742,10 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	unsigned long old_sb_flags, vfs_flags;
+ 	struct ext4_mount_options old_opts;
+-	int enable_quota = 0;
+ 	ext4_group_t g;
+ 	int err = 0;
+ #ifdef CONFIG_QUOTA
++	int enable_quota = 0;
+ 	int i, j;
+ 	char *to_free[EXT4_MAXQUOTAS];
+ #endif
+@@ -5951,7 +5951,9 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 					err = -EROFS;
+ 					goto restore_opts;
+ 				}
++#ifdef CONFIG_QUOTA
+ 			enable_quota = 1;
++#endif
+ 		}
  	}
  
- 	/* preallocation can change ac_b_ex, thus we store actually
 -- 
 2.39.2
 
