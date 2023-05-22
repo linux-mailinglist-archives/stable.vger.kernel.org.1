@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C187070C64D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9AB70C986
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234144AbjEVTQ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38908 "EHLO
+        id S232016AbjEVTtJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234148AbjEVTQv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:51 -0400
+        with ESMTP id S235355AbjEVTtE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD80132
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6483DE0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69D0162718
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DCAC433EF;
-        Mon, 22 May 2023 19:16:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0119F62ACE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C81C433D2;
+        Mon, 22 May 2023 19:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783003;
-        bh=SFPij9mW/5QXM/6lAuWCAAFQMhaBu82pBitK6JydqyI=;
+        s=korg; t=1684784942;
+        bh=5jxCto4hJq2efuUvk4ixGadKa3amTgIrg6XeEauGtvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CgnJcz7KZcxK6EbWLaCXYImUGR0SR8EOhqv7ZDtDaP3BHXdzP+2rrAZWa2VM6GnO7
-         38swdw28sqhnwYCptSZDlCTFyjo6VJ85UjabknL8XVXEfBfAaJpueSU4xoXyifj+n6
-         KIlnkJc9EDcdn4iorjp+ls3GQKm2trO9kZ3zbENI=
+        b=FRnTf5QGMJ1FYsSXNqf1oIUT0gWSvmwrtYFg3saobfJBY/eGsOt3xDde0hf+K7w0a
+         eSXLgPUx9KQ1RDe29Wde3TdZlzOl1sAzSfkOhTCffMI5xNFI65/NwkqaX1wewbnvuu
+         +VO0tZceTA7nT7KbN+fn9SXQXGMcMsed/FjHAcyY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fae <faenkhauser@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/203] platform/x86: hp-wmi: add micmute to hp_wmi_keymap struct
+Subject: [PATCH 6.3 225/364] net: phy: dp83867: add w/a for packet errors seen with short cables
 Date:   Mon, 22 May 2023 20:08:50 +0100
-Message-Id: <20230522190357.915193062@linuxfoundation.org>
+Message-Id: <20230522190418.330086576@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +57,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fae <faenkhauser@gmail.com>
+From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-[ Upstream commit decab2825c3ef9b154c6f76bce40872ffb41c36f ]
+[ Upstream commit 0b01db274028f5acd207332686ffc92ac77491ac ]
 
-Fixes micmute key of HP Envy X360 ey0xxx.
+Introduce the W/A for packet errors seen with short cables (<1m) between
+two DP83867 PHYs.
 
-Signed-off-by: Fae <faenkhauser@gmail.com>
-Link: https://lore.kernel.org/r/20230425063644.11828-1-faenkhauser@gmail.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+The W/A recommended by DM requires FFE Equalizer Configuration tuning by
+writing value 0x0E81 to DSP_FFE_CFG register (0x012C), surrounded by hard
+and soft resets as follows:
+
+write_reg(0x001F, 0x8000); //hard reset
+write_reg(DSP_FFE_CFG, 0x0E81);
+write_reg(0x001F, 0x4000); //soft reset
+
+Since  DP83867 PHY DM says "Changing this register to 0x0E81, will not
+affect Long Cable performance.", enable the W/A by default.
+
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/dp83867.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index 2f06e94ef37f7..8c845d263429f 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -156,6 +156,7 @@ struct bios_rfkill2_state {
- static const struct key_entry hp_wmi_keymap[] = {
- 	{ KE_KEY, 0x02,    { KEY_BRIGHTNESSUP } },
- 	{ KE_KEY, 0x03,    { KEY_BRIGHTNESSDOWN } },
-+	{ KE_KEY, 0x270,   { KEY_MICMUTE } },
- 	{ KE_KEY, 0x20e6,  { KEY_PROG1 } },
- 	{ KE_KEY, 0x20e8,  { KEY_MEDIA } },
- 	{ KE_KEY, 0x2142,  { KEY_MEDIA } },
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 89cd821f1f466..9f7ff88200484 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -42,6 +42,7 @@
+ #define DP83867_STRAP_STS1	0x006E
+ #define DP83867_STRAP_STS2	0x006f
+ #define DP83867_RGMIIDCTL	0x0086
++#define DP83867_DSP_FFE_CFG	0x012c
+ #define DP83867_RXFCFG		0x0134
+ #define DP83867_RXFPMD1	0x0136
+ #define DP83867_RXFPMD2	0x0137
+@@ -910,8 +911,27 @@ static int dp83867_phy_reset(struct phy_device *phydev)
+ 
+ 	usleep_range(10, 20);
+ 
+-	return phy_modify(phydev, MII_DP83867_PHYCTRL,
++	err = phy_modify(phydev, MII_DP83867_PHYCTRL,
+ 			 DP83867_PHYCR_FORCE_LINK_GOOD, 0);
++	if (err < 0)
++		return err;
++
++	/* Configure the DSP Feedforward Equalizer Configuration register to
++	 * improve short cable (< 1 meter) performance. This will not affect
++	 * long cable performance.
++	 */
++	err = phy_write_mmd(phydev, DP83867_DEVADDR, DP83867_DSP_FFE_CFG,
++			    0x0e81);
++	if (err < 0)
++		return err;
++
++	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
++	if (err < 0)
++		return err;
++
++	usleep_range(10, 20);
++
++	return 0;
+ }
+ 
+ static void dp83867_link_change_notify(struct phy_device *phydev)
 -- 
 2.39.2
 
