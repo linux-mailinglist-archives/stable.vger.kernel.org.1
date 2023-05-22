@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FEC170C639
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 990FE70C63C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233998AbjEVTQW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
+        id S234044AbjEVTQc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234183AbjEVTQG (ORCPT
+        with ESMTP id S233997AbjEVTQG (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6BCCA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58336E5E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFE266274F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF20C433D2;
-        Mon, 22 May 2023 19:15:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14E4162762
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31794C433D2;
+        Mon, 22 May 2023 19:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782951;
-        bh=sxrXFG9zskyTrjrIVOYCIzQ7hBRzHxYT6ADBMRecYQM=;
+        s=korg; t=1684782953;
+        bh=RIs3bOZOYO+vIpkypdWAjJCJO9m9XDgB9ZN7hJMrgeE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0G8KTrcnc4waSIcT23j1ocJBT0HXBmBaCUBEwFPy+pEkEZ54bvZTWdHklDGCQdZ6F
-         7yqUkC15WsXldiJqyeUApMnlyHZ5XZWqfYnoU/8U0AhH8DqWM8ruvs6kXsmExcX4m8
-         VoFz7BO9nJPwZSACnQ0JDLwaI2WLTtHzTsGh08uw=
+        b=RSGJvYgApsdpzN6Jf7fYRVzC4zB/vqL1DRgNzRcZKR8Iy6PmExDq45otszIHGSbxz
+         hITXVsAksdC+YULjeEGZlptggd9aMRzIUyM22O1d0I8+hOWyw+f3z5HO2tt3Ykj8sz
+         l58c9FdOK1FlerHLlkGMpre1h2xo6dIGJRgYS874=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        syzbot+45d4691b1ed3c48eba05@syzkaller.appspotmail.com,
+        Andreas Gruenbacher <agruenba@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/203] scsi: message: mptlan: Fix use after free bug in mptlan_remove() due to race condition
-Date:   Mon, 22 May 2023 20:08:03 +0100
-Message-Id: <20230522190356.628289619@linuxfoundation.org>
+Subject: [PATCH 5.15 060/203] gfs2: Fix inode height consistency check
+Date:   Mon, 22 May 2023 20:08:04 +0100
+Message-Id: <20230522190356.655605594@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
 References: <20230522190354.935300867@linuxfoundation.org>
@@ -54,52 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit f486893288f3e9b171b836f43853a6426515d800 ]
+[ Upstream commit cfcdb5bad34f600aed7613c3c1a5e618111f77b7 ]
 
-mptlan_probe() calls mpt_register_lan_device() which initializes the
-&priv->post_buckets_task workqueue. A call to
-mpt_lan_wake_post_buckets_task() will subsequently start the work.
+The maximum allowed height of an inode's metadata tree depends on the
+filesystem block size; it is lower for bigger-block filesystems.  When
+reading in an inode, make sure that the height doesn't exceed the
+maximum allowed height.
 
-During driver unload in mptlan_remove() the following race may occur:
+Arrays like sd_heightsize are sized to be big enough for any filesystem
+block size; they will often be slightly bigger than what's needed for a
+specific filesystem.
 
-CPU0                  CPU1
-
-                    |mpt_lan_post_receive_buckets_work()
-mptlan_remove()     |
-  free_netdev()     |
-    kfree(dev);     |
-                    |
-                    | dev->mtu
-                    |   //use
-
-Fix this by finishing the work prior to cleaning up in mptlan_remove().
-
-[mkp: we really should remove mptlan instead of attempting to fix it]
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Link: https://lore.kernel.org/r/20230318081635.796479-1-zyytlz.wz@163.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: syzbot+45d4691b1ed3c48eba05@syzkaller.appspotmail.com
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/message/fusion/mptlan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/gfs2/glops.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/message/fusion/mptlan.c b/drivers/message/fusion/mptlan.c
-index 3261cac762def..ec3ee356078db 100644
---- a/drivers/message/fusion/mptlan.c
-+++ b/drivers/message/fusion/mptlan.c
-@@ -1427,7 +1427,9 @@ mptlan_remove(struct pci_dev *pdev)
- {
- 	MPT_ADAPTER 		*ioc = pci_get_drvdata(pdev);
- 	struct net_device	*dev = ioc->netdev;
-+	struct mpt_lan_priv *priv = netdev_priv(dev);
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 450032b4c886e..558932ad89d5d 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -394,6 +394,7 @@ static int inode_go_demote_ok(const struct gfs2_glock *gl)
  
-+	cancel_delayed_work_sync(&priv->post_buckets_task);
- 	if(dev != NULL) {
- 		unregister_netdev(dev);
- 		free_netdev(dev);
+ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ {
++	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
+ 	const struct gfs2_dinode *str = buf;
+ 	struct timespec64 atime;
+ 	u16 height, depth;
+@@ -440,7 +441,7 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	/* i_diskflags and i_eattr must be set before gfs2_set_inode_flags() */
+ 	gfs2_set_inode_flags(inode);
+ 	height = be16_to_cpu(str->di_height);
+-	if (unlikely(height > GFS2_MAX_META_HEIGHT))
++	if (unlikely(height > sdp->sd_max_height))
+ 		goto corrupt;
+ 	ip->i_height = (u8)height;
+ 
 -- 
 2.39.2
 
