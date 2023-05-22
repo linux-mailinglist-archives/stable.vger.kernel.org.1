@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5801970C6C3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B561E70C87F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234446AbjEVTWM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:22:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43996 "EHLO
+        id S234979AbjEVTj2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234432AbjEVTWL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:22:11 -0400
+        with ESMTP id S235015AbjEVTjU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:39:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99999C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08FC189
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:39:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56D8062845
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F010C433D2;
-        Mon, 22 May 2023 19:22:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BB4A629D4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:39:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F075C433EF;
+        Mon, 22 May 2023 19:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783329;
-        bh=gAUBsWyO0p7jLkHmMBecTnVlqWSf7pDnb+5mlPoaquc=;
+        s=korg; t=1684784352;
+        bh=mIB3l9BdA6uhO4z5EAAkj6sa6ef/c0CC3vMn4OhXiD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yVCP9g+Z3iXrGB1e44Iy80PUcGpu8nBvk8Z6xLm+WTQEnASQUb44xjyoi1uzVE68X
-         cX6dangdccsyl1C3NjfnexD7k92+lF/4sl3CMMIOfgE9T0UesI4H3EIO3mOgh+Jqyq
-         CgLGDL9VMmZFhPCnGApOjCJFOSWpeldBGa1nyl5o=
+        b=Fcj5HUKszPplgu0PfPFD8O8PtJMusOXuy7F0ZcL/8KsMMNVU+W9dHxMOUpWnGRj6e
+         SgXxFkWx7TzTS3+67h43R1l+5rnrNAICcpNo1FsB6eqZyXKx6wCB9xPZV7vir6Lh5x
+         QLNK8lSIp4V9oGk5NoOrCoBKO/X2ojlRTHxCFefc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sui Jingfeng <suijingfeng@loongson.cn>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Iuliana Prodan <iuliana.prodan@nxp.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/292] drm/fbdev-generic: prohibit potential out-of-bounds access
+Subject: [PATCH 6.3 053/364] remoteproc: imx_dsp_rproc: Add custom memory copy implementation for i.MX DSP Cores
 Date:   Mon, 22 May 2023 20:05:58 +0100
-Message-Id: <20230522190405.920296946@linuxfoundation.org>
+Message-Id: <20230522190414.133249741@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,133 +54,230 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
 
-[ Upstream commit c8687694bb1f5c48134f152f8c5c2e53483eb99d ]
+[ Upstream commit 408ec1ff0caa340c57eecf4cbd14ef0132036a50 ]
 
-The fbdev test of IGT may write after EOF, which lead to out-of-bound
-access for drm drivers with fbdev-generic. For example, run fbdev test
-on a x86+ast2400 platform, with 1680x1050 resolution, will cause the
-linux kernel hang with the following call trace:
+The IRAM is part of the HiFi DSP.
+According to hardware specification only 32-bits write are allowed
+otherwise we get a Kernel panic.
 
-  Oops: 0000 [#1] PREEMPT SMP PTI
-  [IGT] fbdev: starting subtest eof
-  Workqueue: events drm_fb_helper_damage_work [drm_kms_helper]
-  [IGT] fbdev: starting subtest nullptr
+Therefore add a custom memory copy and memset functions to deal with
+the above restriction.
 
-  RIP: 0010:memcpy_erms+0xa/0x20
-  RSP: 0018:ffffa17d40167d98 EFLAGS: 00010246
-  RAX: ffffa17d4eb7fa80 RBX: ffffa17d40e0aa80 RCX: 00000000000014c0
-  RDX: 0000000000001a40 RSI: ffffa17d40e0b000 RDI: ffffa17d4eb80000
-  RBP: ffffa17d40167e20 R08: 0000000000000000 R09: ffff89522ecff8c0
-  R10: ffffa17d4e4c5000 R11: 0000000000000000 R12: ffffa17d4eb7fa80
-  R13: 0000000000001a40 R14: 000000000000041a R15: ffffa17d40167e30
-  FS:  0000000000000000(0000) GS:ffff895257380000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffffa17d40e0b000 CR3: 00000001eaeca006 CR4: 00000000001706e0
-  Call Trace:
-   <TASK>
-   ? drm_fbdev_generic_helper_fb_dirty+0x207/0x330 [drm_kms_helper]
-   drm_fb_helper_damage_work+0x8f/0x170 [drm_kms_helper]
-   process_one_work+0x21f/0x430
-   worker_thread+0x4e/0x3c0
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0xf4/0x120
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x2c/0x50
-   </TASK>
-  CR2: ffffa17d40e0b000
-  ---[ end trace 0000000000000000 ]---
-
-The is because damage rectangles computed by
-drm_fb_helper_memory_range_to_clip() function is not guaranteed to be
-bound in the screen's active display area. Possible reasons are:
-
-1) Buffers are allocated in the granularity of page size, for mmap system
-   call support. The shadow screen buffer consumed by fbdev emulation may
-   also choosed be page size aligned.
-
-2) The DIV_ROUND_UP() used in drm_fb_helper_memory_range_to_clip()
-   will introduce off-by-one error.
-
-For example, on a 16KB page size system, in order to store a 1920x1080
-XRGB framebuffer, we need allocate 507 pages. Unfortunately, the size
-1920*1080*4 can not be divided exactly by 16KB.
-
- 1920 * 1080 * 4 = 8294400 bytes
- 506 * 16 * 1024 = 8290304 bytes
- 507 * 16 * 1024 = 8306688 bytes
-
- line_length = 1920*4 = 7680 bytes
-
- 507 * 16 * 1024 / 7680 = 1081.6
-
- off / line_length = 507 * 16 * 1024 / 7680 = 1081
- DIV_ROUND_UP(507 * 16 * 1024, 7680) will yeild 1082
-
-memcpy_toio() typically issue the copy line by line, when copy the last
-line, out-of-bound access will be happen. Because:
-
- 1082 * line_length = 1082 * 7680 = 8309760, and 8309760 > 8306688
-
-Note that userspace may still write to the invisiable area if a larger
-buffer than width x stride is exposed. But it is not a big issue as
-long as there still have memory resolve the access if not drafting so
-far.
-
- - Also limit the y1 (Daniel)
- - keep fix patch it to minimal (Daniel)
- - screen_size is page size aligned because of it need mmap (Thomas)
- - Adding fixes tag (Thomas)
-
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Fixes: aa15c677cc34 ("drm/fb-helper: Fix vertical damage clipping")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/dri-devel/ad44df29-3241-0d9e-e708-b0338bf3c623@189.cn/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230420030500.1578756-1-suijingfeng@loongson.cn
+Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Link: https://lore.kernel.org/r/20230221170356.27923-1-iuliana.prodan@oss.nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_fb_helper.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/remoteproc/imx_dsp_rproc.c | 187 ++++++++++++++++++++++++++++-
+ 1 file changed, 186 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index 06cd2f8c27734..76e46713b2f0c 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -708,19 +708,27 @@ static void drm_fb_helper_damage(struct fb_info *info, u32 x, u32 y,
- static void drm_fb_helper_memory_range_to_clip(struct fb_info *info, off_t off, size_t len,
- 					       struct drm_rect *clip)
- {
-+	u32 line_length = info->fix.line_length;
-+	u32 fb_height = info->var.yres;
- 	off_t end = off + len;
- 	u32 x1 = 0;
--	u32 y1 = off / info->fix.line_length;
-+	u32 y1 = off / line_length;
- 	u32 x2 = info->var.xres;
--	u32 y2 = DIV_ROUND_UP(end, info->fix.line_length);
-+	u32 y2 = DIV_ROUND_UP(end, line_length);
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index 506ec9565716b..e8e23f6b85563 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -721,6 +721,191 @@ static void imx_dsp_rproc_kick(struct rproc *rproc, int vqid)
+ 		dev_err(dev, "%s: failed (%d, err:%d)\n", __func__, vqid, err);
+ }
+ 
++/*
++ * Custom memory copy implementation for i.MX DSP Cores
++ *
++ * The IRAM is part of the HiFi DSP.
++ * According to hw specs only 32-bits writes are allowed.
++ */
++static int imx_dsp_rproc_memcpy(void *dest, const void *src, size_t size)
++{
++	const u8 *src_byte = src;
++	const u32 *source = src;
++	u32 affected_mask;
++	u32 *dst = dest;
++	int i, q, r;
++	u32 tmp;
 +
-+	/* Don't allow any of them beyond the bottom bound of display area */
-+	if (y1 > fb_height)
-+		y1 = fb_height;
-+	if (y2 > fb_height)
-+		y2 = fb_height;
- 
- 	if ((y2 - y1) == 1) {
- 		/*
- 		 * We've only written to a single scanline. Try to reduce
- 		 * the number of horizontal pixels that need an update.
- 		 */
--		off_t bit_off = (off % info->fix.line_length) * 8;
--		off_t bit_end = (end % info->fix.line_length) * 8;
-+		off_t bit_off = (off % line_length) * 8;
-+		off_t bit_end = (end % line_length) * 8;
- 
- 		x1 = bit_off / info->var.bits_per_pixel;
- 		x2 = DIV_ROUND_UP(bit_end, info->var.bits_per_pixel);
++	/* destination must be 32bit aligned */
++	if (!IS_ALIGNED((uintptr_t)dest, 4))
++		return -EINVAL;
++
++	q = size / 4;
++	r = size % 4;
++
++	/* copy data in units of 32 bits at a time */
++	for (i = 0; i < q; i++)
++		writel(source[i], &dst[i]);
++
++	if (r) {
++		affected_mask = GENMASK(8 * r, 0);
++
++		/*
++		 * first read the 32bit data of dest, then change affected
++		 * bytes, and write back to dest.
++		 * For unaffected bytes, it should not be changed
++		 */
++		tmp = readl(dest + q * 4);
++		tmp &= ~affected_mask;
++
++		/* avoid reading after end of source */
++		for (i = 0; i < r; i++)
++			tmp |= (src_byte[q * 4 + i] << (8 * i));
++
++		writel(tmp, dest + q * 4);
++	}
++
++	return 0;
++}
++
++/*
++ * Custom memset implementation for i.MX DSP Cores
++ *
++ * The IRAM is part of the HiFi DSP.
++ * According to hw specs only 32-bits writes are allowed.
++ */
++static int imx_dsp_rproc_memset(void *addr, u8 value, size_t size)
++{
++	u32 tmp_val = value;
++	u32 *tmp_dst = addr;
++	u32 affected_mask;
++	int q, r;
++	u32 tmp;
++
++	/* destination must be 32bit aligned */
++	if (!IS_ALIGNED((uintptr_t)addr, 4))
++		return -EINVAL;
++
++	tmp_val |= tmp_val << 8;
++	tmp_val |= tmp_val << 16;
++
++	q = size / 4;
++	r = size % 4;
++
++	while (q--)
++		writel(tmp_val, tmp_dst++);
++
++	if (r) {
++		affected_mask = GENMASK(8 * r, 0);
++
++		/*
++		 * first read the 32bit data of addr, then change affected
++		 * bytes, and write back to addr.
++		 * For unaffected bytes, it should not be changed
++		 */
++		tmp = readl(tmp_dst);
++		tmp &= ~affected_mask;
++
++		tmp |= (tmp_val & affected_mask);
++		writel(tmp, tmp_dst);
++	}
++
++	return 0;
++}
++
++/*
++ * imx_dsp_rproc_elf_load_segments() - load firmware segments to memory
++ * @rproc: remote processor which will be booted using these fw segments
++ * @fw: the ELF firmware image
++ *
++ * This function loads the firmware segments to memory, where the remote
++ * processor expects them.
++ *
++ * Return: 0 on success and an appropriate error code otherwise
++ */
++static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, const struct firmware *fw)
++{
++	struct device *dev = &rproc->dev;
++	const void *ehdr, *phdr;
++	int i, ret = 0;
++	u16 phnum;
++	const u8 *elf_data = fw->data;
++	u8 class = fw_elf_get_class(fw);
++	u32 elf_phdr_get_size = elf_size_of_phdr(class);
++
++	ehdr = elf_data;
++	phnum = elf_hdr_get_e_phnum(class, ehdr);
++	phdr = elf_data + elf_hdr_get_e_phoff(class, ehdr);
++
++	/* go through the available ELF segments */
++	for (i = 0; i < phnum; i++, phdr += elf_phdr_get_size) {
++		u64 da = elf_phdr_get_p_paddr(class, phdr);
++		u64 memsz = elf_phdr_get_p_memsz(class, phdr);
++		u64 filesz = elf_phdr_get_p_filesz(class, phdr);
++		u64 offset = elf_phdr_get_p_offset(class, phdr);
++		u32 type = elf_phdr_get_p_type(class, phdr);
++		void *ptr;
++
++		if (type != PT_LOAD || !memsz)
++			continue;
++
++		dev_dbg(dev, "phdr: type %d da 0x%llx memsz 0x%llx filesz 0x%llx\n",
++			type, da, memsz, filesz);
++
++		if (filesz > memsz) {
++			dev_err(dev, "bad phdr filesz 0x%llx memsz 0x%llx\n",
++				filesz, memsz);
++			ret = -EINVAL;
++			break;
++		}
++
++		if (offset + filesz > fw->size) {
++			dev_err(dev, "truncated fw: need 0x%llx avail 0x%zx\n",
++				offset + filesz, fw->size);
++			ret = -EINVAL;
++			break;
++		}
++
++		if (!rproc_u64_fit_in_size_t(memsz)) {
++			dev_err(dev, "size (%llx) does not fit in size_t type\n",
++				memsz);
++			ret = -EOVERFLOW;
++			break;
++		}
++
++		/* grab the kernel address for this device address */
++		ptr = rproc_da_to_va(rproc, da, memsz, NULL);
++		if (!ptr) {
++			dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
++				memsz);
++			ret = -EINVAL;
++			break;
++		}
++
++		/* put the segment where the remote processor expects it */
++		if (filesz) {
++			ret = imx_dsp_rproc_memcpy(ptr, elf_data + offset, filesz);
++			if (ret) {
++				dev_err(dev, "memory copy failed for da 0x%llx memsz 0x%llx\n",
++					da, memsz);
++				break;
++			}
++		}
++
++		/* zero out remaining memory for this segment */
++		if (memsz > filesz) {
++			ret = imx_dsp_rproc_memset(ptr + filesz, 0, memsz - filesz);
++			if (ret) {
++				dev_err(dev, "memset failed for da 0x%llx memsz 0x%llx\n",
++					da, memsz);
++				break;
++			}
++		}
++	}
++
++	return ret;
++}
++
+ static int imx_dsp_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+ {
+ 	if (rproc_elf_load_rsc_table(rproc, fw))
+@@ -735,7 +920,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
+ 	.start		= imx_dsp_rproc_start,
+ 	.stop		= imx_dsp_rproc_stop,
+ 	.kick		= imx_dsp_rproc_kick,
+-	.load		= rproc_elf_load_segments,
++	.load		= imx_dsp_rproc_elf_load_segments,
+ 	.parse_fw	= imx_dsp_rproc_parse_fw,
+ 	.sanity_check	= rproc_elf_sanity_check,
+ 	.get_boot_addr	= rproc_elf_get_boot_addr,
 -- 
 2.39.2
 
