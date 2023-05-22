@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D269D70C69C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D8970C826
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234335AbjEVTUI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:20:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42914 "EHLO
+        id S234968AbjEVTgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234331AbjEVTUI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:20:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD3CCA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:20:07 -0700 (PDT)
+        with ESMTP id S234949AbjEVTgL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACE23E50
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFF5462813
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A7FC433EF;
-        Mon, 22 May 2023 19:20:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9751162970
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3852C433D2;
+        Mon, 22 May 2023 19:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783206;
-        bh=U3P9dNwB8DV/Rop6FMzC5XzKUBQRzhwDijTCPCD82u0=;
+        s=korg; t=1684784116;
+        bh=lxwGDSxdaQjbSM6AnjPAuhTXSpLtvj68Nnf9e3IxRbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s+k2dTvxIKOHKZynMInSQIOMeXkOY9zEtDv6CFdDLqi+c6Rd07v+JM2jK4fD4PFTQ
-         CGXQPquqnEIcmyyux9idQjLNe/sDBCXNjAITluB64PcR3P7PZcG0hDdZY8PNe6c5yf
-         SS588GnMf6w2RcvKP9plxAT5c0ib/rq97BUisoVY=
+        b=ezPCVafjpQkdk5xNw/V49vNl9Os+ixSE7SJxJeOECF+JP+qm/Kse482L0dCyyPWnQ
+         FtmrCxY0zUFbJOgX6ASoAQuQ4xQWo8Wz2N1w+ufUKDwzul0hqlaoeVmBevQdLb3eZ7
+         PE05b1EcpI3+VPaWL2BxyBnVCBPeDtmouB2+rBqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ai Chao <aichao@kylinos.cn>,
+        patches@lists.linux.dev, Jeremy Soller <jeremy@system76.com>,
+        Tim Crawford <tcrawford@system76.com>,
         Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 173/203] ALSA: hda/realtek: Add a quirk for HP EliteDesk 805
+Subject: [PATCH 6.1 240/292] ALSA: hda/realtek: Add quirk for Clevo L140AU
 Date:   Mon, 22 May 2023 20:09:57 +0100
-Message-Id: <20230522190359.783679359@linuxfoundation.org>
+Message-Id: <20230522190411.949572213@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,15 +54,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ai Chao <aichao@kylinos.cn>
+From: Jeremy Soller <jeremy@system76.com>
 
-commit 90670ef774a8b6700c38ce1222e6aa263be54d5f upstream.
+commit 0a6b36c5dc3dda0196f4fb65bdb34c38b8d060c3 upstream.
 
-Add a quirk for HP EliteDesk 805 to fixup ALC3867 headset MIC no sound.
+Fixes headset detection on Clevo L140AU.
 
-Signed-off-by: Ai Chao <aichao@kylinos.cn>
+Signed-off-by: Jeremy Soller <jeremy@system76.com>
+Signed-off-by: Tim Crawford <tcrawford@system76.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230506022653.2074343-1-aichao@kylinos.cn
+Link: https://lore.kernel.org/r/20230505163651.21257-1-tcrawford@system76.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -70,13 +72,13 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -11246,6 +11246,7 @@ static const struct snd_pci_quirk alc662
- 	SND_PCI_QUIRK(0x103c, 0x1632, "HP RP5800", ALC662_FIXUP_HP_RP5800),
- 	SND_PCI_QUIRK(0x103c, 0x870c, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
- 	SND_PCI_QUIRK(0x103c, 0x8719, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
-+	SND_PCI_QUIRK(0x103c, 0x872b, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
- 	SND_PCI_QUIRK(0x103c, 0x873e, "HP", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x103c, 0x877e, "HP 288 Pro G6", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x103c, 0x885f, "HP 288 Pro G8", ALC671_FIXUP_HP_HEADSET_MIC2),
+@@ -9618,6 +9618,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1558, 0x7716, "Clevo NS50PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x7717, "Clevo NS70PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x7718, "Clevo L140PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x7724, "Clevo L140AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x8228, "Clevo NR40BU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x8520, "Clevo NH50D[CD]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x8521, "Clevo NH77D[CD]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 
 
