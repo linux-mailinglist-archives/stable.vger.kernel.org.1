@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13F3670C9C7
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A4170C6C0
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235421AbjEVTwK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:52:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45414 "EHLO
+        id S234429AbjEVTWC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235428AbjEVTwB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:01 -0400
+        with ESMTP id S234385AbjEVTWB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:22:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0162B192
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FBC9C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA53F62B1C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1124DC433D2;
-        Mon, 22 May 2023 19:51:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A4D16283F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEC0C433EF;
+        Mon, 22 May 2023 19:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785087;
-        bh=lxwGDSxdaQjbSM6AnjPAuhTXSpLtvj68Nnf9e3IxRbc=;
+        s=korg; t=1684783319;
+        bh=cb7aqYljqCAssm8eJcAFsWCaMqpLtRttikRJcxlpB6g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jujkQ99ZlM2WuZ+IEwzrdU48VNlwYEzQ0wFYIWOYRsAm3JEPIf8iv+OBvw7EHl8Sf
-         Vz/fVjQUfcwRMvx2XTs/ip3ya1IedWonhHXZ6h7bs6OGl5BpUFHotmYrbUSuXmp0H9
-         L33iVOq2xxPyMilzpMyR3xUX++qBfzJtQv2NQHCw=
+        b=PvgeUxyQVVYzPGJjncdeC5h8u4RSO2VxdtXiWaYb1KdUkurW+Gb6thsQYe8ucstaQ
+         3yxnYEdKpgSey1D+H90waY5ldC6RBpMMHE9Upr23STPczs2IrDtKHDFNMxHbJP4mjn
+         sUrhvTCPIweRE2WJDrUs4pZicUqGAFfeB5140Jds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Soller <jeremy@system76.com>,
-        Tim Crawford <tcrawford@system76.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.3 303/364] ALSA: hda/realtek: Add quirk for Clevo L140AU
-Date:   Mon, 22 May 2023 20:10:08 +0100
-Message-Id: <20230522190420.347177576@linuxfoundation.org>
+        patches@lists.linux.dev, Gustav Johansson <gustajo@axis.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 185/203] ksmbd: smb2: Allow messages padded to 8byte boundary
+Date:   Mon, 22 May 2023 20:10:09 +0100
+Message-Id: <20230522190400.132016337@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,31 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeremy Soller <jeremy@system76.com>
+From: Gustav Johansson <gustajo@axis.com>
 
-commit 0a6b36c5dc3dda0196f4fb65bdb34c38b8d060c3 upstream.
+commit e7b8b8ed9960bf699bf4029f482d9e869c094ed6 upstream.
 
-Fixes headset detection on Clevo L140AU.
+clc length is now accepted to <= 8 less than length,
+rather than < 8.
 
-Signed-off-by: Jeremy Soller <jeremy@system76.com>
-Signed-off-by: Tim Crawford <tcrawford@system76.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230505163651.21257-1-tcrawford@system76.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Solve issues on some of Axis's smb clients which send
+messages where clc length is 8 bytes less than length.
+
+The specific client was running kernel 4.19.217 with
+smb dialect 3.0.2 on armv7l.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustav Johansson <gustajo@axis.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ksmbd/smb2misc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9618,6 +9618,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1558, 0x7716, "Clevo NS50PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x7717, "Clevo NS70PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x7718, "Clevo L140PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1558, 0x7724, "Clevo L140AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x8228, "Clevo NR40BU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x8520, "Clevo NH50D[CD]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x8521, "Clevo NH77D[CD]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+--- a/fs/ksmbd/smb2misc.c
++++ b/fs/ksmbd/smb2misc.c
+@@ -422,8 +422,11 @@ int ksmbd_smb2_check_message(struct ksmb
+ 
+ 		/*
+ 		 * Allow a message that padded to 8byte boundary.
++		 * Linux 4.19.217 with smb 3.0.2 are sometimes
++		 * sending messages where the cls_len is exactly
++		 * 8 bytes less than len.
+ 		 */
+-		if (clc_len < len && (len - clc_len) < 8)
++		if (clc_len < len && (len - clc_len) <= 8)
+ 			goto validate_credit;
+ 
+ 		pr_err_ratelimited(
 
 
