@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F79070C709
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF0270C90D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbjEVTZL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46890 "EHLO
+        id S235226AbjEVTob (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234603AbjEVTZK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:10 -0400
+        with ESMTP id S235221AbjEVToa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE94FDC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5109C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4251162887
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7C9C433EF;
-        Mon, 22 May 2023 19:25:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32742621A1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A83C433EF;
+        Mon, 22 May 2023 19:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783506;
-        bh=D+wuOHg6R7CJWY3bYojxWdGcJZwwjiNX5wonRIceHJM=;
+        s=korg; t=1684784668;
+        bh=FJKz7GuFKFBOzfkNFgYGuEfZN2BQnBKG66ivIzIIz98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JD1H7canhkXTC2r0mF6K0ILwIA7j+rBw9/jwX2bSamLsavBbG9qtYnworyx9sq7/a
-         htQY9IDnQ0iYQNzRaIOYC9wHHOv3OgrQ0GBAqnoXn+Mp5YdcByeoQPSJop922LDAAN
-         shFpvFSZ6y2O3Wofd/2BxZpXy2UxZza1iQTJvzvI=
+        b=OkMDW7n5OFUO/VNwQkwuQHBOVBKA6n56LF3uiU0OPiLLmIuIxQYZzxzfuicoZZss9
+         RUeIGqYbAU2XRPj19e4mZ7Mkv6lv4He46tTLMX9ucNPMBDPK4TAY5E0nIj7XOxNvD2
+         fLHfT7B6zIX+6a9IlJS0HAwb3wkk1/qQqAW91rz0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/292] ACPI: video: Remove desktops without backlight DMI quirks
+Subject: [PATCH 6.3 119/364] net/sched: pass netlink extack to mqprio and taprio offload
 Date:   Mon, 22 May 2023 20:07:04 +0100
-Message-Id: <20230522190407.634819135@linuxfoundation.org>
+Message-Id: <20230522190415.764146810@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,82 +56,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit abe4f5ae5efa6a63c7d5abfa07eb02bb56b4654e ]
+[ Upstream commit c54876cd5961ce0f8e74807f79a6739cd6b35ddf ]
 
-After the recent backlight changes acpi_video# backlight devices are only
-registered when explicitly requested from the cmdline, by DMI quirk or by
-the GPU driver.
+With the multiplexed ndo_setup_tc() model which lacks a first-class
+struct netlink_ext_ack * argument, the only way to pass the netlink
+extended ACK message down to the device driver is to embed it within the
+offload structure.
 
-This means that we no longer get false-positive backlight control support
-advertised on desktop boards.
+Do this for struct tc_mqprio_qopt_offload and struct tc_taprio_qopt_offload.
 
-Remove the 3 DMI quirks for desktop boards where the false-positive issue
-was fixed through quirks before. Note many more desktop boards were
-affected but we never build a full quirk list for this.
+Since struct tc_taprio_qopt_offload also contains a tc_mqprio_qopt_offload
+structure, and since device drivers might effectively reuse their mqprio
+implementation for the mqprio portion of taprio, we make taprio set the
+extack in both offload structures to point at the same netlink extack
+message.
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+In fact, the taprio handling is a bit more tricky, for 2 reasons.
+
+First is because the offload structure has a longer lifetime than the
+extack structure. The driver is supposed to populate the extack
+synchronously from ndo_setup_tc() and leave it alone afterwards.
+To not have any use-after-free surprises, we zero out the extack pointer
+when we leave taprio_enable_offload().
+
+The second reason is because taprio does overwrite the extack message on
+ndo_setup_tc() error. We need to switch to the weak form of setting an
+extack message, which preserves a potential message set by the driver.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 35 -----------------------------------
- 1 file changed, 35 deletions(-)
+ include/net/pkt_sched.h |  2 ++
+ net/sched/sch_mqprio.c  |  5 ++++-
+ net/sched/sch_taprio.c  | 12 ++++++++++--
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 0556c4720d3fa..b6d429a2bcb62 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -130,12 +130,6 @@ static int video_detect_force_native(const struct dmi_system_id *d)
- 	return 0;
- }
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index 2016839991a42..fc688c7e95951 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -167,6 +167,7 @@ struct tc_mqprio_caps {
+ struct tc_mqprio_qopt_offload {
+ 	/* struct tc_mqprio_qopt must always be the first element */
+ 	struct tc_mqprio_qopt qopt;
++	struct netlink_ext_ack *extack;
+ 	u16 mode;
+ 	u16 shaper;
+ 	u32 flags;
+@@ -194,6 +195,7 @@ struct tc_taprio_sched_entry {
  
--static int video_detect_force_none(const struct dmi_system_id *d)
--{
--	acpi_backlight_dmi = acpi_backlight_none;
--	return 0;
--}
--
- static const struct dmi_system_id video_detect_dmi_table[] = {
- 	/*
- 	 * Models which should use the vendor backlight interface,
-@@ -752,35 +746,6 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
- 		},
- 	},
--
--	/*
--	 * Desktops which falsely report a backlight and which our heuristics
--	 * for this do not catch.
--	 */
--	{
--	 .callback = video_detect_force_none,
--	 /* Dell OptiPlex 9020M */
--	 .matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 9020M"),
--		},
--	},
--	{
--	 .callback = video_detect_force_none,
--	 /* GIGABYTE GB-BXBT-2807 */
--	 .matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
--		DMI_MATCH(DMI_PRODUCT_NAME, "GB-BXBT-2807"),
--		},
--	},
--	{
--	 .callback = video_detect_force_none,
--	 /* MSI MS-7721 */
--	 .matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "MSI"),
--		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
--		},
--	},
- 	{ },
- };
+ struct tc_taprio_qopt_offload {
+ 	struct tc_mqprio_qopt_offload mqprio;
++	struct netlink_ext_ack *extack;
+ 	u8 enable;
+ 	ktime_t base_time;
+ 	u64 cycle_time;
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 48ed87b91086e..fc6225f15fcdb 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -33,9 +33,12 @@ static int mqprio_enable_offload(struct Qdisc *sch,
+ 				 const struct tc_mqprio_qopt *qopt,
+ 				 struct netlink_ext_ack *extack)
+ {
+-	struct tc_mqprio_qopt_offload mqprio = {.qopt = *qopt};
+ 	struct mqprio_sched *priv = qdisc_priv(sch);
+ 	struct net_device *dev = qdisc_dev(sch);
++	struct tc_mqprio_qopt_offload mqprio = {
++		.qopt = *qopt,
++		.extack = extack,
++	};
+ 	int err, i;
  
+ 	switch (priv->mode) {
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 1f469861eae32..cbad430191721 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1520,7 +1520,9 @@ static int taprio_enable_offload(struct net_device *dev,
+ 		return -ENOMEM;
+ 	}
+ 	offload->enable = 1;
++	offload->extack = extack;
+ 	mqprio_qopt_reconstruct(dev, &offload->mqprio.qopt);
++	offload->mqprio.extack = extack;
+ 	taprio_sched_to_offload(dev, sched, offload, &caps);
+ 
+ 	for (tc = 0; tc < TC_MAX_QUEUE; tc++)
+@@ -1528,14 +1530,20 @@ static int taprio_enable_offload(struct net_device *dev,
+ 
+ 	err = ops->ndo_setup_tc(dev, TC_SETUP_QDISC_TAPRIO, offload);
+ 	if (err < 0) {
+-		NL_SET_ERR_MSG(extack,
+-			       "Device failed to setup taprio offload");
++		NL_SET_ERR_MSG_WEAK(extack,
++				    "Device failed to setup taprio offload");
+ 		goto done;
+ 	}
+ 
+ 	q->offloaded = true;
+ 
+ done:
++	/* The offload structure may linger around via a reference taken by the
++	 * device driver, so clear up the netlink extack pointer so that the
++	 * driver isn't tempted to dereference data which stopped being valid
++	 */
++	offload->extack = NULL;
++	offload->mqprio.extack = NULL;
+ 	taprio_offload_free(offload);
+ 
+ 	return err;
 -- 
 2.39.2
 
