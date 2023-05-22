@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C426970C85C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58A0070C85F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235055AbjEVTiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
+        id S235016AbjEVTi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:38:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234981AbjEVTiE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:38:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282281B4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:51 -0700 (PDT)
+        with ESMTP id S235079AbjEVTiI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:38:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17051E53
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08F0B629BA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:37:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F0BC433D2;
-        Mon, 22 May 2023 19:37:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EAC362942
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:37:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BEDC433D2;
+        Mon, 22 May 2023 19:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784270;
-        bh=wcPrRZpEDEfzIL6EutWqvhuGin8sQyUmN9QAKd9FjXg=;
+        s=korg; t=1684784273;
+        bh=FCJMa3AMPs6r+xc67aJ5KFsUBal607gCT9m48m08n9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f6VTE6KAzJRQhi0/hIxHdI9szxfM2psZMn21vhfbhD2tuMcBKLXKwzaC9cGfG27Pn
-         nJRmGnm6BPbX8iFKDg6C6HsayT4B/Bejk/Ap/LUb1h3j3eqIxdJvCXA1+elXW3krSm
-         CicNMqIQF30b2ehZVXTxXzEW8S8YSXFozwDknfs8=
+        b=Vi0wad3G4h3azWy95N/2fCxs5+K6mMjNHJQEMZa+EdFqzYylqWdN8fUFHe8LgIBqG
+         uV/NSBYPIkdIeFTGVNBsxcH8XuVhRAuN0N4tJpCcTQ+ikqPabbOdSgJqh6kq/Xw4I0
+         +tmACovbPGq+P5RldlxPtnU1uT7fhrf29Ga4CE0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 026/364] net: mscc: ocelot: fix stat counter register values
-Date:   Mon, 22 May 2023 20:05:31 +0100
-Message-Id: <20230522190413.483815939@linuxfoundation.org>
+Subject: [PATCH 6.3 027/364] drm/sched: Check scheduler work queue before calling timeout handling
+Date:   Mon, 22 May 2023 20:05:32 +0100
+Message-Id: <20230522190413.508388237@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
 References: <20230522190412.801391872@linuxfoundation.org>
@@ -46,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,60 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Foster <colin.foster@in-advantage.com>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-[ Upstream commit cdc2e28e214fe9315cdd7e069c1c8e2428f93427 ]
+[ Upstream commit 2da5bffe9eaa5819a868e8eaaa11b3fd0f16a691 ]
 
-Commit d4c367650704 ("net: mscc: ocelot: keep ocelot_stat_layout by reg
-address, not offset") organized the stats counters for Ocelot chips, namely
-the VSC7512 and VSC7514. A few of the counter offsets were incorrect, and
-were caught by this warning:
+During an IGT GPU reset test we see again oops despite of
+commit 0c8c901aaaebc9 (drm/sched: Check scheduler ready before calling
+timeout handling).
 
-WARNING: CPU: 0 PID: 24 at drivers/net/ethernet/mscc/ocelot_stats.c:909
-ocelot_stats_init+0x1fc/0x2d8
-reg 0x5000078 had address 0x220 but reg 0x5000079 has address 0x214,
-bulking broken!
+It uses ready condition whether to call drm_sched_fault which unwind
+the TDR leads to GPU reset.
+However it looks the ready condition is overloaded with other meanings,
+for example, for the following stack is related GPU reset :
 
-Fix these register offsets.
+0  gfx_v9_0_cp_gfx_start
+1  gfx_v9_0_cp_gfx_resume
+2  gfx_v9_0_cp_resume
+3  gfx_v9_0_hw_init
+4  gfx_v9_0_resume
+5  amdgpu_device_ip_resume_phase2
 
-Fixes: d4c367650704 ("net: mscc: ocelot: keep ocelot_stat_layout by reg address, not offset")
-Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+does the following:
+	/* start the ring */
+	gfx_v9_0_cp_gfx_start(adev);
+	ring->sched.ready = true;
+
+The same approach is for other ASICs as well :
+gfx_v8_0_cp_gfx_resume
+gfx_v10_0_kiq_resume, etc...
+
+As a result, our GPU reset test causes GPU fault which calls unconditionally gfx_v9_0_fault
+and then drm_sched_fault. However now it depends on whether the interrupt service routine
+drm_sched_fault is executed after gfx_v9_0_cp_gfx_start is completed which sets the ready
+field of the scheduler to true even  for uninitialized schedulers and causes oops vs
+no fault or when ISR  drm_sched_fault is completed prior  gfx_v9_0_cp_gfx_start and
+NULL pointer dereference does not occur.
+
+Use the field timeout_wq  to prevent oops for uninitialized schedulers.
+The field could be initialized by the work queue of resetting the domain.
+
+v1: Corrections to commit message (Luben)
+
+Fixes: 11b3b9f461c5c4 ("drm/sched: Check scheduler ready before calling timeout handling")
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Link: https://lore.kernel.org/r/20230510135111.58631-1-vitaly.prosyak@amd.com
+Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
+Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/vsc7514_regs.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/scheduler/sched_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mscc/vsc7514_regs.c b/drivers/net/ethernet/mscc/vsc7514_regs.c
-index ef6fd3f6be309..5595bfe84bbbb 100644
---- a/drivers/net/ethernet/mscc/vsc7514_regs.c
-+++ b/drivers/net/ethernet/mscc/vsc7514_regs.c
-@@ -307,15 +307,15 @@ static const u32 vsc7514_sys_regmap[] = {
- 	REG(SYS_COUNT_DROP_YELLOW_PRIO_4,		0x000218),
- 	REG(SYS_COUNT_DROP_YELLOW_PRIO_5,		0x00021c),
- 	REG(SYS_COUNT_DROP_YELLOW_PRIO_6,		0x000220),
--	REG(SYS_COUNT_DROP_YELLOW_PRIO_7,		0x000214),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_0,		0x000218),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_1,		0x00021c),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_2,		0x000220),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_3,		0x000224),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_4,		0x000228),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_5,		0x00022c),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_6,		0x000230),
--	REG(SYS_COUNT_DROP_GREEN_PRIO_7,		0x000234),
-+	REG(SYS_COUNT_DROP_YELLOW_PRIO_7,		0x000224),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_0,		0x000228),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_1,		0x00022c),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_2,		0x000230),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_3,		0x000234),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_4,		0x000238),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_5,		0x00023c),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_6,		0x000240),
-+	REG(SYS_COUNT_DROP_GREEN_PRIO_7,		0x000244),
- 	REG(SYS_RESET_CFG,				0x000508),
- 	REG(SYS_CMID,					0x00050c),
- 	REG(SYS_VLAN_ETYPE_CFG,				0x000510),
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 1e08cc5a17029..78c959eaef0c5 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -308,7 +308,7 @@ static void drm_sched_start_timeout(struct drm_gpu_scheduler *sched)
+  */
+ void drm_sched_fault(struct drm_gpu_scheduler *sched)
+ {
+-	if (sched->ready)
++	if (sched->timeout_wq)
+ 		mod_delayed_work(sched->timeout_wq, &sched->work_tdr, 0);
+ }
+ EXPORT_SYMBOL(drm_sched_fault);
 -- 
 2.39.2
 
