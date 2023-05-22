@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6241670C72B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 954D470C613
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234631AbjEVT0i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
+        id S229916AbjEVTO6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234607AbjEVT0i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:38 -0400
+        with ESMTP id S234067AbjEVTOv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D415A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A049F184
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1E47628B0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60B8C433D2;
-        Mon, 22 May 2023 19:26:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 807FF62741
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0BDC433D2;
+        Mon, 22 May 2023 19:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783596;
-        bh=3GSBUhY4XFVwAmzrq8kLTerlqC+UbOa971PCDsctxdA=;
+        s=korg; t=1684782881;
+        bh=fSRXvkSoEHCRc62ZWrDhTobb7JgjvIJpvM5rZzK2XuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XOZ5VdiKCF8eZTpeCibdwPa++sHrCTred4gE7tiUy8eoakDpejS0ax2OuiNIPlLy2
-         9MEtTe6x7yZ+mLTZS3WvI7Xy4CVfbzPw5yqImkYL3NZSZ9VhhUQdoythOCZ4dnmpZC
-         UdSfIrLlCfQ4jmnWozh+CxtML2IAqNJYRYG7uMII=
+        b=X33Gw8BToa17Ocy6OyM9LQLKZTJernGSJpW7ktlylIvRe0U7AruFLfxtEz+4ZprPD
+         WcyX5hd/h3QiuvyeK46Aungz3WxiSJQEPvjFOT8++7JNJJnW+qT7VjZ3OlWmy/Pw2o
+         V0VK/OLe+PdBcp/m/31C7OUG5Xuc9oe8mQ3iO6dY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Gabay <daniel.gabay@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Zqiang <qiang1.zhang@intel.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/292] wifi: iwlwifi: pcie: fix possible NULL pointer dereference
+Subject: [PATCH 5.15 031/203] rcu: Protect rcu_print_task_exp_stall() ->exp_tasks access
 Date:   Mon, 22 May 2023 20:07:35 +0100
-Message-Id: <20230522190408.421141746@linuxfoundation.org>
+Message-Id: <20230522190355.828360421@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Zqiang <qiang1.zhang@intel.com>
 
-[ Upstream commit b655b9a9f8467684cfa8906713d33b71ea8c8f54 ]
+[ Upstream commit 3c1566bca3f8349f12b75d0a2d5e4a20ad6262ec ]
 
-It is possible that iwl_pci_probe() will fail and free the trans,
-then afterwards iwl_pci_remove() will be called and crash by trying
-to access trans which is already freed, fix it.
+For kernels built with CONFIG_PREEMPT_RCU=y, the following scenario can
+result in a NULL-pointer dereference:
 
-iwlwifi 0000:01:00.0: Detected crf-id 0xa5a5a5a2, cnv-id 0xa5a5a5a2
-		      wfpm id 0xa5a5a5a2
-iwlwifi 0000:01:00.0: Can't find a correct rfid for crf id 0x5a2
-...
-BUG: kernel NULL pointer dereference, address: 0000000000000028
-...
-RIP: 0010:iwl_pci_remove+0x12/0x30 [iwlwifi]
-pci_device_remove+0x3e/0xb0
-device_release_driver_internal+0x103/0x1f0
-driver_detach+0x4c/0x90
-bus_remove_driver+0x5c/0xd0
-driver_unregister+0x31/0x50
-pci_unregister_driver+0x40/0x90
-iwl_pci_unregister_driver+0x15/0x20 [iwlwifi]
-__exit_compat+0x9/0x98 [iwlwifi]
-__x64_sys_delete_module+0x147/0x260
+           CPU1                                           CPU2
+rcu_preempt_deferred_qs_irqrestore                rcu_print_task_exp_stall
+  if (special.b.blocked)                            READ_ONCE(rnp->exp_tasks) != NULL
+    raw_spin_lock_rcu_node
+    np = rcu_next_node_entry(t, rnp)
+    if (&t->rcu_node_entry == rnp->exp_tasks)
+      WRITE_ONCE(rnp->exp_tasks, np)
+      ....
+      raw_spin_unlock_irqrestore_rcu_node
+                                                    raw_spin_lock_irqsave_rcu_node
+                                                    t = list_entry(rnp->exp_tasks->prev,
+                                                        struct task_struct, rcu_node_entry)
+                                                    (if rnp->exp_tasks is NULL, this
+                                                       will dereference a NULL pointer)
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230413213309.082f6e21341b.I0db21d7fa9a828d571ca886713bd0b5d0b6e1e5c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The problem is that CPU2 accesses the rcu_node structure's->exp_tasks
+field without holding the rcu_node structure's ->lock and CPU2 did
+not observe CPU1's change to rcu_node structure's ->exp_tasks in time.
+Therefore, if CPU1 sets rcu_node structure's->exp_tasks pointer to NULL,
+then CPU2 might dereference that NULL pointer.
+
+This commit therefore holds the rcu_node structure's ->lock while
+accessing that structure's->exp_tasks field.
+
+[ paulmck: Apply Frederic Weisbecker feedback. ]
+
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Zqiang <qiang1.zhang@intel.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/rcu/tree_exp.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 85fadd1ef1ff3..afe6cc15c845f 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1685,6 +1685,9 @@ static void iwl_pci_remove(struct pci_dev *pdev)
- {
- 	struct iwl_trans *trans = pci_get_drvdata(pdev);
+diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
+index f9fb2793b0193..f46c0c1a5eb35 100644
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -708,9 +708,11 @@ static int rcu_print_task_exp_stall(struct rcu_node *rnp)
+ 	int ndetected = 0;
+ 	struct task_struct *t;
  
-+	if (!trans)
-+		return;
-+
- 	iwl_drv_stop(trans->drv);
- 
- 	iwl_trans_pcie_free(trans);
+-	if (!READ_ONCE(rnp->exp_tasks))
+-		return 0;
+ 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
++	if (!rnp->exp_tasks) {
++		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
++		return 0;
++	}
+ 	t = list_entry(rnp->exp_tasks->prev,
+ 		       struct task_struct, rcu_node_entry);
+ 	list_for_each_entry_continue(t, &rnp->blkd_tasks, rcu_node_entry) {
 -- 
 2.39.2
 
