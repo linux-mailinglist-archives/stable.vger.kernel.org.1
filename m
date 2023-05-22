@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A696370C70E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 152F570C5EB
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234590AbjEVTZY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47036 "EHLO
+        id S233669AbjEVTNb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:13:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234618AbjEVTZW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:22 -0400
+        with ESMTP id S233505AbjEVTNa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F571132
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144DFB0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93B9E62887
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771A1C433EF;
-        Mon, 22 May 2023 19:25:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97FB761F18
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44E1C433EF;
+        Mon, 22 May 2023 19:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783518;
-        bh=o8g0UgeEGUPf22+P+hT6FYd1xN6DgTxbcUJ9bqEO8+A=;
+        s=korg; t=1684782808;
+        bh=jI3uk4PPjDCwaMqslo425e4OgafCaL7S6yLQ3gZtULQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dtNseJSSGSyWJMSgxDS7MBxO1a3q0WZL68OpnOh04PjzABBIFW10L5axx17vBStxB
-         HDTctQ/ffd4BaLlXrcEsRnlRXX3grEFPwmdFrUAJn6HQLg86tdkrTj5uHuBtdoUCFR
-         BSTzmkE4J++RO5BMacmFFU8hgIygKIG/1ySCS00c=
+        b=nKwm2YFFWepxUJ4/aAeOrPTr/B8KVr4UdTd0pn+KoWoSOI7xh8r9u74dJ0kPRKSZC
+         cuqrbS0+6NqWfwpUp2wGbw3SPAgMctOGppGYjFZcKAcEL0zrANVoc5nP930PuGOJ+H
+         i9FLECIwG2TPMu2zG8XB2tn0Gl2MFqxNcJHfw2zg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>,
-        Lad Prabhakar <prabhakar.csengg@gmail.com>
-Subject: [PATCH 6.1 071/292] media: Prefer designated initializers over memset for subdev pad ops
-Date:   Mon, 22 May 2023 20:07:08 +0100
-Message-Id: <20230522190407.735576125@linuxfoundation.org>
+        patches@lists.linux.dev, Victor Hassan <victor@allwinnertech.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 005/203] tick/broadcast: Make broadcast device replacement work correctly
+Date:   Mon, 22 May 2023 20:07:09 +0100
+Message-Id: <20230522190355.086309530@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,363 +55,272 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit e3a69496a1cde364c74a600d7a370179b58aed29 ]
+[ Upstream commit f9d36cf445ffff0b913ba187a3eff78028f9b1fb ]
 
-Structures passed to subdev pad operations are all zero-initialized, but
-not always with the same kind of code constructs. While most drivers
-used designated initializers, which zero all the fields that are not
-specified, when declaring variables, some use memset(). Those two
-methods lead to the same end result, and, depending on compiler
-optimizations, may even be completely equivalent, but they're not
-consistent.
+When a tick broadcast clockevent device is initialized for one shot mode
+then tick_broadcast_setup_oneshot() OR's the periodic broadcast mode
+cpumask into the oneshot broadcast cpumask.
 
-Improve coding style consistency by using designated initializers
-instead of calling memset(). Where applicable, also move the variables
-to inner scopes of for loops to ensure correct initialization in all
-iterations.
+This is required when switching from periodic broadcast mode to oneshot
+broadcast mode to ensure that CPUs which are waiting for periodic
+broadcast are woken up on the next tick.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Lad Prabhakar <prabhakar.csengg@gmail.com> # For am437x
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+But it is subtly broken, when an active broadcast device is replaced and
+the system is already in oneshot (NOHZ/HIGHRES) mode. Victor observed
+this and debugged the issue.
+
+Then the OR of the periodic broadcast CPU mask is wrong as the periodic
+cpumask bits are sticky after tick_broadcast_enable() set it for a CPU
+unless explicitly cleared via tick_broadcast_disable().
+
+That means that this sets all other CPUs which have tick broadcasting
+enabled at that point unconditionally in the oneshot broadcast mask.
+
+If the affected CPUs were already idle and had their bits set in the
+oneshot broadcast mask then this does no harm. But for non idle CPUs
+which were not set this corrupts their state.
+
+On their next invocation of tick_broadcast_enable() they observe the bit
+set, which indicates that the broadcast for the CPU is already set up.
+As a consequence they fail to update the broadcast event even if their
+earliest expiring timer is before the actually programmed broadcast
+event.
+
+If the programmed broadcast event is far in the future, then this can
+cause stalls or trigger the hung task detector.
+
+Avoid this by telling tick_broadcast_setup_oneshot() explicitly whether
+this is the initial switch over from periodic to oneshot broadcast which
+must take the periodic broadcast mask into account. In the case of
+initialization of a replacement device this prevents that the broadcast
+oneshot mask is modified.
+
+There is a second problem with broadcast device replacement in this
+function. The broadcast device is only armed when the previous state of
+the device was periodic.
+
+That is correct for the switch from periodic broadcast mode to oneshot
+broadcast mode as the underlying broadcast device could operate in
+oneshot state already due to lack of periodic state in hardware. In that
+case it is already armed to expire at the next tick.
+
+For the replacement case this is wrong as the device is in shutdown
+state. That means that any already pending broadcast event will not be
+armed.
+
+This went unnoticed because any CPU which goes idle will observe that
+the broadcast device has an expiry time of KTIME_MAX and therefore any
+CPUs next timer event will be earlier and cause a reprogramming of the
+broadcast device. But that does not guarantee that the events of the
+CPUs which were already in idle are delivered on time.
+
+Fix this by arming the newly installed device for an immediate event
+which will reevaluate the per CPU expiry times and reprogram the
+broadcast device accordingly. This is simpler than caching the last
+expiry time in yet another place or saving it before the device exchange
+and handing it down to the setup function. Replacement of broadcast
+devices is not a frequent operation and usually happens once somewhere
+late in the boot process.
+
+Fixes: 9c336c9935cf ("tick/broadcast: Allow late registered device to enter oneshot mode")
+Reported-by: Victor Hassan <victor@allwinnertech.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/87pm7d2z1i.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/vsp1/vsp1_drm.c | 18 +++++++++---------
- .../media/platform/renesas/vsp1/vsp1_entity.c  | 11 +++++------
- .../platform/samsung/exynos4-is/fimc-capture.c |  7 ++++---
- drivers/media/platform/ti/am437x/am437x-vpfe.c | 15 ++++++++-------
- drivers/media/platform/ti/cal/cal-video.c      |  8 ++++----
- drivers/media/usb/dvb-usb/cxusb-analog.c       | 14 +++++++-------
- drivers/staging/media/imx/imx-media-capture.c  | 12 ++++++------
- drivers/staging/media/imx/imx-media-utils.c    |  8 ++++----
- drivers/staging/media/omap4iss/iss_video.c     |  6 +++---
- 9 files changed, 50 insertions(+), 49 deletions(-)
+ kernel/time/tick-broadcast.c | 120 +++++++++++++++++++++++++----------
+ 1 file changed, 88 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_drm.c b/drivers/media/platform/renesas/vsp1/vsp1_drm.c
-index c6f25200982c8..7fe375b6322cd 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_drm.c
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_drm.c
-@@ -66,7 +66,9 @@ static int vsp1_du_insert_uif(struct vsp1_device *vsp1,
- 			      struct vsp1_entity *prev, unsigned int prev_pad,
- 			      struct vsp1_entity *next, unsigned int next_pad)
- {
--	struct v4l2_subdev_format format;
-+	struct v4l2_subdev_format format = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	int ret;
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index f7fe6fe361731..0916cc9adb828 100644
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -35,14 +35,15 @@ static __cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(tick_broadcast_lock);
+ #ifdef CONFIG_TICK_ONESHOT
+ static DEFINE_PER_CPU(struct clock_event_device *, tick_oneshot_wakeup_device);
  
- 	if (!uif) {
-@@ -82,8 +84,6 @@ static int vsp1_du_insert_uif(struct vsp1_device *vsp1,
- 	prev->sink = uif;
- 	prev->sink_pad = UIF_PAD_SINK;
- 
--	memset(&format, 0, sizeof(format));
--	format.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	format.pad = prev_pad;
- 
- 	ret = v4l2_subdev_call(&prev->subdev, pad, get_fmt, NULL, &format);
-@@ -118,8 +118,12 @@ static int vsp1_du_pipeline_setup_rpf(struct vsp1_device *vsp1,
- 				      struct vsp1_entity *uif,
- 				      unsigned int brx_input)
- {
--	struct v4l2_subdev_selection sel;
--	struct v4l2_subdev_format format;
-+	struct v4l2_subdev_selection sel = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
-+	struct v4l2_subdev_format format = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	const struct v4l2_rect *crop;
- 	int ret;
- 
-@@ -129,8 +133,6 @@ static int vsp1_du_pipeline_setup_rpf(struct vsp1_device *vsp1,
- 	 */
- 	crop = &vsp1->drm->inputs[rpf->entity.index].crop;
- 
--	memset(&format, 0, sizeof(format));
--	format.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	format.pad = RWPF_PAD_SINK;
- 	format.format.width = crop->width + crop->left;
- 	format.format.height = crop->height + crop->top;
-@@ -147,8 +149,6 @@ static int vsp1_du_pipeline_setup_rpf(struct vsp1_device *vsp1,
- 		__func__, format.format.width, format.format.height,
- 		format.format.code, rpf->entity.index);
- 
--	memset(&sel, 0, sizeof(sel));
--	sel.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	sel.pad = RWPF_PAD_SINK;
- 	sel.target = V4L2_SEL_TGT_CROP;
- 	sel.r = *crop;
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_entity.c b/drivers/media/platform/renesas/vsp1/vsp1_entity.c
-index 4c3bd2b1ca287..c31f05a80bb56 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_entity.c
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_entity.c
-@@ -184,15 +184,14 @@ vsp1_entity_get_pad_selection(struct vsp1_entity *entity,
- int vsp1_entity_init_cfg(struct v4l2_subdev *subdev,
- 			 struct v4l2_subdev_state *sd_state)
- {
--	struct v4l2_subdev_format format;
- 	unsigned int pad;
- 
- 	for (pad = 0; pad < subdev->entity.num_pads - 1; ++pad) {
--		memset(&format, 0, sizeof(format));
--
--		format.pad = pad;
--		format.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
--			     : V4L2_SUBDEV_FORMAT_ACTIVE;
-+		struct v4l2_subdev_format format = {
-+			.pad = pad,
-+			.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
-+			       : V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
- 
- 		v4l2_subdev_call(subdev, pad, set_fmt, sd_state, &format);
+-static void tick_broadcast_setup_oneshot(struct clock_event_device *bc);
++static void tick_broadcast_setup_oneshot(struct clock_event_device *bc, bool from_periodic);
+ static void tick_broadcast_clear_oneshot(int cpu);
+ static void tick_resume_broadcast_oneshot(struct clock_event_device *bc);
+ # ifdef CONFIG_HOTPLUG_CPU
+ static void tick_broadcast_oneshot_offline(unsigned int cpu);
+ # endif
+ #else
+-static inline void tick_broadcast_setup_oneshot(struct clock_event_device *bc) { BUG(); }
++static inline void
++tick_broadcast_setup_oneshot(struct clock_event_device *bc, bool from_periodic) { BUG(); }
+ static inline void tick_broadcast_clear_oneshot(int cpu) { }
+ static inline void tick_resume_broadcast_oneshot(struct clock_event_device *bc) { }
+ # ifdef CONFIG_HOTPLUG_CPU
+@@ -264,7 +265,7 @@ int tick_device_uses_broadcast(struct clock_event_device *dev, int cpu)
+ 		if (tick_broadcast_device.mode == TICKDEV_MODE_PERIODIC)
+ 			tick_broadcast_start_periodic(bc);
+ 		else
+-			tick_broadcast_setup_oneshot(bc);
++			tick_broadcast_setup_oneshot(bc, false);
+ 		ret = 1;
+ 	} else {
+ 		/*
+@@ -500,7 +501,7 @@ void tick_broadcast_control(enum tick_broadcast_mode mode)
+ 			if (tick_broadcast_device.mode == TICKDEV_MODE_PERIODIC)
+ 				tick_broadcast_start_periodic(bc);
+ 			else
+-				tick_broadcast_setup_oneshot(bc);
++				tick_broadcast_setup_oneshot(bc, false);
+ 		}
  	}
-diff --git a/drivers/media/platform/samsung/exynos4-is/fimc-capture.c b/drivers/media/platform/samsung/exynos4-is/fimc-capture.c
-index e3b95a2b7e040..beaee54ee73bf 100644
---- a/drivers/media/platform/samsung/exynos4-is/fimc-capture.c
-+++ b/drivers/media/platform/samsung/exynos4-is/fimc-capture.c
-@@ -763,7 +763,10 @@ static int fimc_pipeline_try_format(struct fimc_ctx *ctx,
- 	struct fimc_dev *fimc = ctx->fimc_dev;
- 	struct fimc_pipeline *p = to_fimc_pipeline(fimc->vid_cap.ve.pipe);
- 	struct v4l2_subdev *sd = p->subdevs[IDX_SENSOR];
--	struct v4l2_subdev_format sfmt;
-+	struct v4l2_subdev_format sfmt = {
-+		.which = set ? V4L2_SUBDEV_FORMAT_ACTIVE
-+		       : V4L2_SUBDEV_FORMAT_TRY,
-+	};
- 	struct v4l2_mbus_framefmt *mf = &sfmt.format;
- 	struct media_entity *me;
- 	struct fimc_fmt *ffmt;
-@@ -774,9 +777,7 @@ static int fimc_pipeline_try_format(struct fimc_ctx *ctx,
- 	if (WARN_ON(!sd || !tfmt))
- 		return -EINVAL;
- 
--	memset(&sfmt, 0, sizeof(sfmt));
- 	sfmt.format = *tfmt;
--	sfmt.which = set ? V4L2_SUBDEV_FORMAT_ACTIVE : V4L2_SUBDEV_FORMAT_TRY;
- 
- 	me = fimc_pipeline_get_head(&sd->entity);
- 
-diff --git a/drivers/media/platform/ti/am437x/am437x-vpfe.c b/drivers/media/platform/ti/am437x/am437x-vpfe.c
-index 2dfae9bc0bba8..dffac89cbd210 100644
---- a/drivers/media/platform/ti/am437x/am437x-vpfe.c
-+++ b/drivers/media/platform/ti/am437x/am437x-vpfe.c
-@@ -1499,7 +1499,9 @@ static int vpfe_enum_size(struct file *file, void  *priv,
- 			  struct v4l2_frmsizeenum *fsize)
+ out:
+@@ -1016,48 +1017,101 @@ static inline ktime_t tick_get_next_period(void)
+ /**
+  * tick_broadcast_setup_oneshot - setup the broadcast device
+  */
+-static void tick_broadcast_setup_oneshot(struct clock_event_device *bc)
++static void tick_broadcast_setup_oneshot(struct clock_event_device *bc,
++					 bool from_periodic)
  {
- 	struct vpfe_device *vpfe = video_drvdata(file);
--	struct v4l2_subdev_frame_size_enum fse;
-+	struct v4l2_subdev_frame_size_enum fse = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	struct v4l2_subdev *sd = vpfe->current_subdev->sd;
- 	struct vpfe_fmt *fmt;
- 	int ret;
-@@ -1514,11 +1516,9 @@ static int vpfe_enum_size(struct file *file, void  *priv,
+ 	int cpu = smp_processor_id();
++	ktime_t nexttick = 0;
  
- 	memset(fsize->reserved, 0x0, sizeof(fsize->reserved));
+ 	if (!bc)
+ 		return;
  
--	memset(&fse, 0x0, sizeof(fse));
- 	fse.index = fsize->index;
- 	fse.pad = 0;
- 	fse.code = fmt->code;
--	fse.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	ret = v4l2_subdev_call(sd, pad, enum_frame_size, NULL, &fse);
- 	if (ret)
- 		return ret;
-@@ -2146,7 +2146,6 @@ vpfe_async_bound(struct v4l2_async_notifier *notifier,
- {
- 	struct vpfe_device *vpfe = container_of(notifier->v4l2_dev,
- 					       struct vpfe_device, v4l2_dev);
--	struct v4l2_subdev_mbus_code_enum mbus_code;
- 	struct vpfe_subdev_info *sdinfo;
- 	struct vpfe_fmt *fmt;
- 	int ret = 0;
-@@ -2173,9 +2172,11 @@ vpfe_async_bound(struct v4l2_async_notifier *notifier,
- 
- 	vpfe->num_active_fmt = 0;
- 	for (j = 0, i = 0; (ret != -EINVAL); ++j) {
--		memset(&mbus_code, 0, sizeof(mbus_code));
--		mbus_code.index = j;
--		mbus_code.which = V4L2_SUBDEV_FORMAT_ACTIVE;
-+		struct v4l2_subdev_mbus_code_enum mbus_code = {
-+			.index = j,
-+			.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
+-	/* Set it up only once ! */
+-	if (bc->event_handler != tick_handle_oneshot_broadcast) {
+-		int was_periodic = clockevent_state_periodic(bc);
+-
+-		bc->event_handler = tick_handle_oneshot_broadcast;
+-
++	/*
++	 * When the broadcast device was switched to oneshot by the first
++	 * CPU handling the NOHZ change, the other CPUs will reach this
++	 * code via hrtimer_run_queues() -> tick_check_oneshot_change()
++	 * too. Set up the broadcast device only once!
++	 */
++	if (bc->event_handler == tick_handle_oneshot_broadcast) {
+ 		/*
+-		 * We must be careful here. There might be other CPUs
+-		 * waiting for periodic broadcast. We need to set the
+-		 * oneshot_mask bits for those and program the
+-		 * broadcast device to fire.
++		 * The CPU which switched from periodic to oneshot mode
++		 * set the broadcast oneshot bit for all other CPUs which
++		 * are in the general (periodic) broadcast mask to ensure
++		 * that CPUs which wait for the periodic broadcast are
++		 * woken up.
++		 *
++		 * Clear the bit for the local CPU as the set bit would
++		 * prevent the first tick_broadcast_enter() after this CPU
++		 * switched to oneshot state to program the broadcast
++		 * device.
++		 *
++		 * This code can also be reached via tick_broadcast_control(),
++		 * but this cannot avoid the tick_broadcast_clear_oneshot()
++		 * as that would break the periodic to oneshot transition of
++		 * secondary CPUs. But that's harmless as the below only
++		 * clears already cleared bits.
+ 		 */
++		tick_broadcast_clear_oneshot(cpu);
++		return;
++	}
 +
- 		ret = v4l2_subdev_call(subdev, pad, enum_mbus_code,
- 				       NULL, &mbus_code);
- 		if (ret)
-diff --git a/drivers/media/platform/ti/cal/cal-video.c b/drivers/media/platform/ti/cal/cal-video.c
-index 4eade409d5d36..bbfd2719725aa 100644
---- a/drivers/media/platform/ti/cal/cal-video.c
-+++ b/drivers/media/platform/ti/cal/cal-video.c
-@@ -811,7 +811,6 @@ static const struct v4l2_file_operations cal_fops = {
++
++	bc->event_handler = tick_handle_oneshot_broadcast;
++	bc->next_event = KTIME_MAX;
++
++	/*
++	 * When the tick mode is switched from periodic to oneshot it must
++	 * be ensured that CPUs which are waiting for periodic broadcast
++	 * get their wake-up at the next tick.  This is achieved by ORing
++	 * tick_broadcast_mask into tick_broadcast_oneshot_mask.
++	 *
++	 * For other callers, e.g. broadcast device replacement,
++	 * tick_broadcast_oneshot_mask must not be touched as this would
++	 * set bits for CPUs which are already NOHZ, but not idle. Their
++	 * next tick_broadcast_enter() would observe the bit set and fail
++	 * to update the expiry time and the broadcast event device.
++	 */
++	if (from_periodic) {
+ 		cpumask_copy(tmpmask, tick_broadcast_mask);
++		/* Remove the local CPU as it is obviously not idle */
+ 		cpumask_clear_cpu(cpu, tmpmask);
+-		cpumask_or(tick_broadcast_oneshot_mask,
+-			   tick_broadcast_oneshot_mask, tmpmask);
++		cpumask_or(tick_broadcast_oneshot_mask, tick_broadcast_oneshot_mask, tmpmask);
  
- static int cal_ctx_v4l2_init_formats(struct cal_ctx *ctx)
+-		if (was_periodic && !cpumask_empty(tmpmask)) {
+-			ktime_t nextevt = tick_get_next_period();
++		/*
++		 * Ensure that the oneshot broadcast handler will wake the
++		 * CPUs which are still waiting for periodic broadcast.
++		 */
++		nexttick = tick_get_next_period();
++		tick_broadcast_init_next_event(tmpmask, nexttick);
+ 
+-			clockevents_switch_state(bc, CLOCK_EVT_STATE_ONESHOT);
+-			tick_broadcast_init_next_event(tmpmask, nextevt);
+-			tick_broadcast_set_event(bc, cpu, nextevt);
+-		} else
+-			bc->next_event = KTIME_MAX;
+-	} else {
+ 		/*
+-		 * The first cpu which switches to oneshot mode sets
+-		 * the bit for all other cpus which are in the general
+-		 * (periodic) broadcast mask. So the bit is set and
+-		 * would prevent the first broadcast enter after this
+-		 * to program the bc device.
++		 * If the underlying broadcast clock event device is
++		 * already in oneshot state, then there is nothing to do.
++		 * The device was already armed for the next tick
++		 * in tick_handle_broadcast_periodic()
+ 		 */
+-		tick_broadcast_clear_oneshot(cpu);
++		if (clockevent_state_oneshot(bc))
++			return;
+ 	}
++
++	/*
++	 * When switching from periodic to oneshot mode arm the broadcast
++	 * device for the next tick.
++	 *
++	 * If the broadcast device has been replaced in oneshot mode and
++	 * the oneshot broadcast mask is not empty, then arm it to expire
++	 * immediately in order to reevaluate the next expiring timer.
++	 * @nexttick is 0 and therefore in the past which will cause the
++	 * clockevent code to force an event.
++	 *
++	 * For both cases the programming can be avoided when the oneshot
++	 * broadcast mask is empty.
++	 *
++	 * tick_broadcast_set_event() implicitly switches the broadcast
++	 * device to oneshot state.
++	 */
++	if (!cpumask_empty(tick_broadcast_oneshot_mask))
++		tick_broadcast_set_event(bc, cpu, nexttick);
+ }
+ 
+ /*
+@@ -1066,14 +1120,16 @@ static void tick_broadcast_setup_oneshot(struct clock_event_device *bc)
+ void tick_broadcast_switch_to_oneshot(void)
  {
--	struct v4l2_subdev_mbus_code_enum mbus_code;
- 	struct v4l2_mbus_framefmt mbus_fmt;
- 	const struct cal_format_info *fmtinfo;
- 	unsigned int i, j, k;
-@@ -826,10 +825,11 @@ static int cal_ctx_v4l2_init_formats(struct cal_ctx *ctx)
- 	ctx->num_active_fmt = 0;
+ 	struct clock_event_device *bc;
++	enum tick_device_mode oldmode;
+ 	unsigned long flags;
  
- 	for (j = 0, i = 0; ; ++j) {
-+		struct v4l2_subdev_mbus_code_enum mbus_code = {
-+			.index = j,
-+			.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
+ 	raw_spin_lock_irqsave(&tick_broadcast_lock, flags);
  
--		memset(&mbus_code, 0, sizeof(mbus_code));
--		mbus_code.index = j;
--		mbus_code.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 		ret = v4l2_subdev_call(ctx->phy->source, pad, enum_mbus_code,
- 				       NULL, &mbus_code);
- 		if (ret == -EINVAL)
-diff --git a/drivers/media/usb/dvb-usb/cxusb-analog.c b/drivers/media/usb/dvb-usb/cxusb-analog.c
-index e93183ddd7975..deba5224cb8df 100644
---- a/drivers/media/usb/dvb-usb/cxusb-analog.c
-+++ b/drivers/media/usb/dvb-usb/cxusb-analog.c
-@@ -1014,7 +1014,10 @@ static int cxusb_medion_try_s_fmt_vid_cap(struct file *file,
- {
- 	struct dvb_usb_device *dvbdev = video_drvdata(file);
- 	struct cxusb_medion_dev *cxdev = dvbdev->priv;
--	struct v4l2_subdev_format subfmt;
-+	struct v4l2_subdev_format subfmt = {
-+		.which = isset ? V4L2_SUBDEV_FORMAT_ACTIVE :
-+			 V4L2_SUBDEV_FORMAT_TRY,
-+	};
- 	u32 field;
- 	int ret;
++	oldmode = tick_broadcast_device.mode;
+ 	tick_broadcast_device.mode = TICKDEV_MODE_ONESHOT;
+ 	bc = tick_broadcast_device.evtdev;
+ 	if (bc)
+-		tick_broadcast_setup_oneshot(bc);
++		tick_broadcast_setup_oneshot(bc, oldmode == TICKDEV_MODE_PERIODIC);
  
-@@ -1024,9 +1027,6 @@ static int cxusb_medion_try_s_fmt_vid_cap(struct file *file,
- 	field = vb2_start_streaming_called(&cxdev->videoqueue) ?
- 		cxdev->field_order : cxusb_medion_field_order(cxdev);
- 
--	memset(&subfmt, 0, sizeof(subfmt));
--	subfmt.which = isset ? V4L2_SUBDEV_FORMAT_ACTIVE :
--		V4L2_SUBDEV_FORMAT_TRY;
- 	subfmt.format.width = f->fmt.pix.width & ~1;
- 	subfmt.format.height = f->fmt.pix.height & ~1;
- 	subfmt.format.code = MEDIA_BUS_FMT_FIXED;
-@@ -1464,7 +1464,9 @@ int cxusb_medion_analog_init(struct dvb_usb_device *dvbdev)
- 					    .buf = tuner_analog_msg_data,
- 					    .len =
- 					    sizeof(tuner_analog_msg_data) };
--	struct v4l2_subdev_format subfmt;
-+	struct v4l2_subdev_format subfmt = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	int ret;
- 
- 	/* switch tuner to analog mode so IF demod will become accessible */
-@@ -1507,8 +1509,6 @@ int cxusb_medion_analog_init(struct dvb_usb_device *dvbdev)
- 	v4l2_subdev_call(cxdev->tuner, video, s_std, cxdev->norm);
- 	v4l2_subdev_call(cxdev->cx25840, video, s_std, cxdev->norm);
- 
--	memset(&subfmt, 0, sizeof(subfmt));
--	subfmt.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	subfmt.format.width = cxdev->width;
- 	subfmt.format.height = cxdev->height;
- 	subfmt.format.code = MEDIA_BUS_FMT_FIXED;
-diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
-index 93ba092360105..5cc67786b9169 100644
---- a/drivers/staging/media/imx/imx-media-capture.c
-+++ b/drivers/staging/media/imx/imx-media-capture.c
-@@ -501,14 +501,14 @@ static int capture_legacy_g_parm(struct file *file, void *fh,
- 				 struct v4l2_streamparm *a)
- {
- 	struct capture_priv *priv = video_drvdata(file);
--	struct v4l2_subdev_frame_interval fi;
-+	struct v4l2_subdev_frame_interval fi = {
-+		.pad = priv->src_sd_pad,
-+	};
- 	int ret;
- 
- 	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
- 		return -EINVAL;
- 
--	memset(&fi, 0, sizeof(fi));
--	fi.pad = priv->src_sd_pad;
- 	ret = v4l2_subdev_call(priv->src_sd, video, g_frame_interval, &fi);
- 	if (ret < 0)
- 		return ret;
-@@ -523,14 +523,14 @@ static int capture_legacy_s_parm(struct file *file, void *fh,
- 				 struct v4l2_streamparm *a)
- {
- 	struct capture_priv *priv = video_drvdata(file);
--	struct v4l2_subdev_frame_interval fi;
-+	struct v4l2_subdev_frame_interval fi = {
-+		.pad = priv->src_sd_pad,
-+	};
- 	int ret;
- 
- 	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
- 		return -EINVAL;
- 
--	memset(&fi, 0, sizeof(fi));
--	fi.pad = priv->src_sd_pad;
- 	fi.interval = a->parm.capture.timeperframe;
- 	ret = v4l2_subdev_call(priv->src_sd, video, s_frame_interval, &fi);
- 	if (ret < 0)
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
-index 3e7462112649d..4985f21b4023f 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -432,15 +432,15 @@ int imx_media_init_cfg(struct v4l2_subdev *sd,
- 		       struct v4l2_subdev_state *sd_state)
- {
- 	struct v4l2_mbus_framefmt *mf_try;
--	struct v4l2_subdev_format format;
- 	unsigned int pad;
- 	int ret;
- 
- 	for (pad = 0; pad < sd->entity.num_pads; pad++) {
--		memset(&format, 0, sizeof(format));
-+		struct v4l2_subdev_format format = {
-+			.pad = pad,
-+			.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
- 
--		format.pad = pad;
--		format.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 		ret = v4l2_subdev_call(sd, pad, get_fmt, NULL, &format);
- 		if (ret)
- 			continue;
-diff --git a/drivers/staging/media/omap4iss/iss_video.c b/drivers/staging/media/omap4iss/iss_video.c
-index 60f3d84be8285..8cc8b3ebab11f 100644
---- a/drivers/staging/media/omap4iss/iss_video.c
-+++ b/drivers/staging/media/omap4iss/iss_video.c
-@@ -244,7 +244,9 @@ static int
- __iss_video_get_format(struct iss_video *video,
- 		       struct v4l2_mbus_framefmt *format)
- {
--	struct v4l2_subdev_format fmt;
-+	struct v4l2_subdev_format fmt = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	struct v4l2_subdev *subdev;
- 	u32 pad;
- 	int ret;
-@@ -253,9 +255,7 @@ __iss_video_get_format(struct iss_video *video,
- 	if (!subdev)
- 		return -EINVAL;
- 
--	memset(&fmt, 0, sizeof(fmt));
- 	fmt.pad = pad;
--	fmt.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 
- 	mutex_lock(&video->mutex);
- 	ret = v4l2_subdev_call(subdev, pad, get_fmt, NULL, &fmt);
+ 	raw_spin_unlock_irqrestore(&tick_broadcast_lock, flags);
+ }
 -- 
 2.39.2
 
