@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF51870CA16
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F6770C83F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235656AbjEVTzO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:55:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49074 "EHLO
+        id S234988AbjEVThB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:37:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235524AbjEVTyr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:54:47 -0400
+        with ESMTP id S234979AbjEVTgu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06F55B7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:54:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3BC5188
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8511B61EDE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:54:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EE2C433D2;
-        Mon, 22 May 2023 19:54:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4001620EB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDC7C4339B;
+        Mon, 22 May 2023 19:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785284;
-        bh=DaCZ2HVeQLtrgWMCB9lcS1+0OuyNAwP5R7TvfKVzG4M=;
+        s=korg; t=1684784186;
+        bh=/od0+ycQAvyz2b3XIiAqfglAprJVzfDoaLz1VT4cpyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aXAoTWXaSe0BBoB9USypbah6SeKSPjqu4DGSfAKQNEqsrdNbvCTJAGtdANmkVCVc/
-         PoP7dYI5OoeFZ12yt5WVF0EcoOy6UjYBn15Rk043nbdfegcaynobbPZcUUy6juucY2
-         sx2vGAQ6h3Zspuxj3BQeeLSALyaf72KAZo77shhc=
+        b=N+3Wx230eZ7AOmHMb9jRBcnrY7yPp3+1Y5I+1e523OrQuL1yTaevEmKuT53CJT47+
+         wPeT7C5YkNMeG+EGk3tgSWYj/yfJ/6raDlKHNN/ZDGPQcw4G3RIbDT+bZV5ovSEVUc
+         UDZSJrdyXstHZp9geDghsiKEE0xvdgMX+awU0au8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lepton Wu <lepton@chromium.org>,
-        Rob Clark <robdclark@chromium.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.3 343/364] iommu/arm-smmu-qcom: Fix missing adreno_smmus
+        patches@lists.linux.dev, Jack Xiao <Jack.Xiao@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 291/292] drm/amd/amdgpu: introduce gc_*_mes_2.bin v2
 Date:   Mon, 22 May 2023 20:10:48 +0100
-Message-Id: <20230522190421.369625012@linuxfoundation.org>
+Message-Id: <20230522190413.222777995@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-commit e36ca2fad6bb4ef0603bdb5556578e9082fe0056 upstream.
+commit 97998b893c3000b27a780a4982e16cfc8f4ea555 upstream.
 
-When the special handling of qcom,adreno-smmu was moved into
-qcom_smmu_create(), it was overlooked that we didn't have all the
-required entries in qcom_smmu_impl_of_match.  So we stopped getting
-adreno_smmu_priv on sc7180, breaking per-process pgtables.
+To avoid new mes fw running with old driver, rename
+mes schq fw to gc_*_mes_2.bin.
 
-Fixes: 30b912a03d91 ("iommu/arm-smmu-qcom: Move the qcom,adreno-smmu check into qcom_smmu_create")
-Cc: <stable@vger.kernel.org>
-Suggested-by: Lepton Wu <lepton@chromium.org>
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/537357/
-Link: https://lore.kernel.org/r/20230516222039.907690-1-robdclark@gmail.com
+v2: add MODULE_FIRMWARE declaration
+v3: squash in fixup patch
+
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |   26 ++++++++++++++++++++++----
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |   10 +++++-----
+ 2 files changed, 27 insertions(+), 9 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -517,6 +517,7 @@ static const struct of_device_id __maybe
- 	{ .compatible = "qcom,qcm2290-smmu-500", .data = &qcom_smmu_500_impl0_data },
- 	{ .compatible = "qcom,qdu1000-smmu-500", .data = &qcom_smmu_500_impl0_data  },
- 	{ .compatible = "qcom,sc7180-smmu-500", .data = &qcom_smmu_500_impl0_data },
-+	{ .compatible = "qcom,sc7180-smmu-v2", .data = &qcom_smmu_v2_data },
- 	{ .compatible = "qcom,sc7280-smmu-500", .data = &qcom_smmu_500_impl0_data },
- 	{ .compatible = "qcom,sc8180x-smmu-500", .data = &qcom_smmu_500_impl0_data },
- 	{ .compatible = "qcom,sc8280xp-smmu-500", .data = &qcom_smmu_500_impl0_data },
-@@ -561,5 +562,14 @@ struct arm_smmu_device *qcom_smmu_impl_i
- 	if (match)
- 		return qcom_smmu_create(smmu, match->data);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -1432,13 +1432,31 @@ int amdgpu_mes_init_microcode(struct amd
+ 	struct amdgpu_firmware_info *info;
+ 	char ucode_prefix[30];
+ 	char fw_name[40];
++	bool need_retry = false;
+ 	int r;
  
-+	/*
-+	 * If you hit this WARN_ON() you are missing an entry in the
-+	 * qcom_smmu_impl_of_match[] table, and GPU per-process page-
-+	 * tables will be broken.
-+	 */
-+	WARN(of_device_is_compatible(np, "qcom,adreno-smmu"),
-+	     "Missing qcom_smmu_impl_of_match entry for: %s",
-+	     dev_name(smmu->dev));
+-	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
+-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes%s.bin",
+-		ucode_prefix,
+-		pipe == AMDGPU_MES_SCHED_PIPE ? "" : "1");
++	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix,
++				       sizeof(ucode_prefix));
++	if (adev->ip_versions[GC_HWIP][0] >= IP_VERSION(11, 0, 0)) {
++		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes%s.bin",
++			 ucode_prefix,
++			 pipe == AMDGPU_MES_SCHED_PIPE ? "_2" : "1");
++		need_retry = true;
++	} else {
++		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes%s.bin",
++			 ucode_prefix,
++			 pipe == AMDGPU_MES_SCHED_PIPE ? "" : "1");
++	}
 +
- 	return smmu;
- }
+ 	r = amdgpu_ucode_request(adev, &adev->mes.fw[pipe], fw_name);
++	if (r && need_retry && pipe == AMDGPU_MES_SCHED_PIPE) {
++		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes.bin",
++			 ucode_prefix);
++		DRM_INFO("try to fall back to %s\n", fw_name);
++		r = amdgpu_ucode_request(adev, &adev->mes.fw[pipe],
++					 fw_name);
++	}
++
+ 	if (r)
+ 		goto out;
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -32,15 +32,15 @@
+ #include "v11_structs.h"
+ #include "mes_v11_api_def.h"
+ 
+-MODULE_FIRMWARE("amdgpu/gc_11_0_0_mes.bin");
++MODULE_FIRMWARE("amdgpu/gc_11_0_0_mes_2.bin");
+ MODULE_FIRMWARE("amdgpu/gc_11_0_0_mes1.bin");
+-MODULE_FIRMWARE("amdgpu/gc_11_0_1_mes.bin");
++MODULE_FIRMWARE("amdgpu/gc_11_0_1_mes_2.bin");
+ MODULE_FIRMWARE("amdgpu/gc_11_0_1_mes1.bin");
+-MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes.bin");
++MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes_2.bin");
+ MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes1.bin");
+-MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes.bin");
++MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes_2.bin");
+ MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes1.bin");
+-MODULE_FIRMWARE("amdgpu/gc_11_0_4_mes.bin");
++MODULE_FIRMWARE("amdgpu/gc_11_0_4_mes_2.bin");
+ MODULE_FIRMWARE("amdgpu/gc_11_0_4_mes1.bin");
+ 
+ static int mes_v11_0_hw_fini(void *handle);
 
 
