@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B36CE70C799
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3225A70C66D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234752AbjEVTbg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:31:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53040 "EHLO
+        id S234247AbjEVTSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:18:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbjEVTbf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEE8B9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:34 -0700 (PDT)
+        with ESMTP id S234244AbjEVTSB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5E412B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F80662905
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8BCC433EF;
-        Mon, 22 May 2023 19:31:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B10A627CA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78555C433D2;
+        Mon, 22 May 2023 19:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783893;
-        bh=wG/6SjmOgmneUV0v+iRnt5yxlg4v0WTu8Yq69YIg+gA=;
+        s=korg; t=1684783067;
+        bh=Yux8nf1Du0qzBZe3abSH0wU1WPcxOHXYz3L4KpTe2T8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jh5087npMnQ8oyXxyEvcXAiVUFMVEgLjLA5YUSgz7eYN+FKjHi/mcaXJjymb3AioS
-         WScW6dvfA1FLlWS8ZfyZWvfqLF30dFjWNfS6cLZEF72LiMrL3++FDFDIZ3Lf8X/X+3
-         s5spKLRqz1YdBrSFvM2XIYNPO10bQuusPTwLA6KM=
+        b=NqHnVRgPrzK3YITmMmcZyoU1HK8eoYupjovOmrKLQkBKDQFAdX0VaYoN/IU8lb575
+         8dL3t+wghgPrDgZUUudG4zShPqZmHOUQoqpLN46zN6mYxDcC4r3zgWV7gNL7XsuhM1
+         3RiwrCVvmClxdKKzYGoxGGV4Skl+5RcArU38ClDk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuang Li <shuali@redhat.com>,
-        Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Hao Lan <lanhao@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/292] tipc: do not update mtu if msg_max is too small in mtu negotiation
+Subject: [PATCH 5.15 129/203] net: hns3: fix output information incomplete for dumping tx queue info with debugfs
 Date:   Mon, 22 May 2023 20:09:13 +0100
-Message-Id: <20230522190410.858279520@linuxfoundation.org>
+Message-Id: <20230522190358.543918239@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,90 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 56077b56cd3fb78e1c8619e29581ba25a5c55e86 ]
+[ Upstream commit 89f6bfb071182f05d7188c255b0e7251c3806f16 ]
 
-When doing link mtu negotiation, a malicious peer may send Activate msg
-with a very small mtu, e.g. 4 in Shuang's testing, without checking for
-the minimum mtu, l->mtu will be set to 4 in tipc_link_proto_rcv(), then
-n->links[bearer_id].mtu is set to 4294967228, which is a overflow of
-'4 - INT_H_SIZE - EMSG_OVERHEAD' in tipc_link_mss().
+In function hns3_dump_tx_queue_info, The print buffer is not enough when
+the tx BD number is configured to 32760. As a result several BD
+information wouldn't be displayed.
 
-With tipc_link.mtu = 4, tipc_link_xmit() kept printing the warning:
+So fix it by increasing the tx queue print buffer length.
 
- tipc: Too large msg, purging xmit list 1 5 0 40 4!
- tipc: Too large msg, purging xmit list 1 15 0 60 4!
-
-And with tipc_link_entry.mtu 4294967228, a huge skb was allocated in
-named_distribute(), and when purging it in tipc_link_xmit(), a crash
-was even caused:
-
-  general protection fault, probably for non-canonical address 0x2100001011000dd: 0000 [#1] PREEMPT SMP PTI
-  CPU: 0 PID: 0 Comm: swapper/0 Kdump: loaded Not tainted 6.3.0.neta #19
-  RIP: 0010:kfree_skb_list_reason+0x7e/0x1f0
-  Call Trace:
-   <IRQ>
-   skb_release_data+0xf9/0x1d0
-   kfree_skb_reason+0x40/0x100
-   tipc_link_xmit+0x57a/0x740 [tipc]
-   tipc_node_xmit+0x16c/0x5c0 [tipc]
-   tipc_named_node_up+0x27f/0x2c0 [tipc]
-   tipc_node_write_unlock+0x149/0x170 [tipc]
-   tipc_rcv+0x608/0x740 [tipc]
-   tipc_udp_recv+0xdc/0x1f0 [tipc]
-   udp_queue_rcv_one_skb+0x33e/0x620
-   udp_unicast_rcv_skb.isra.72+0x75/0x90
-   __udp4_lib_rcv+0x56d/0xc20
-   ip_protocol_deliver_rcu+0x100/0x2d0
-
-This patch fixes it by checking the new mtu against tipc_bearer_min_mtu(),
-and not updating mtu if it is too small.
-
-Fixes: ed193ece2649 ("tipc: simplify link mtu negotiation")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Jon Maloy <jmaloy@redhat.com>
+Fixes: 630a6738da82 ("net: hns3: adjust string spaces of some parameters of tx bd info in debugfs")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/link.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 2 +-
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index b3ce24823f503..2eff1c7949cbc 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -2200,7 +2200,7 @@ static int tipc_link_proto_rcv(struct tipc_link *l, struct sk_buff *skb,
- 	struct tipc_msg *hdr = buf_msg(skb);
- 	struct tipc_gap_ack_blks *ga = NULL;
- 	bool reply = msg_probe(hdr), retransmitted = false;
--	u32 dlen = msg_data_sz(hdr), glen = 0;
-+	u32 dlen = msg_data_sz(hdr), glen = 0, msg_max;
- 	u16 peers_snd_nxt =  msg_next_sent(hdr);
- 	u16 peers_tol = msg_link_tolerance(hdr);
- 	u16 peers_prio = msg_linkprio(hdr);
-@@ -2239,6 +2239,9 @@ static int tipc_link_proto_rcv(struct tipc_link *l, struct sk_buff *skb,
- 	switch (mtyp) {
- 	case RESET_MSG:
- 	case ACTIVATE_MSG:
-+		msg_max = msg_max_pkt(hdr);
-+		if (msg_max < tipc_bearer_min_mtu(l->net, l->bearer_id))
-+			break;
- 		/* Complete own link name with peer's interface name */
- 		if_name =  strrchr(l->name, ':') + 1;
- 		if (sizeof(l->name) - (if_name - l->name) <= TIPC_MAX_IF_NAME)
-@@ -2283,8 +2286,8 @@ static int tipc_link_proto_rcv(struct tipc_link *l, struct sk_buff *skb,
- 		l->peer_session = msg_session(hdr);
- 		l->in_session = true;
- 		l->peer_bearer_id = msg_bearer_id(hdr);
--		if (l->mtu > msg_max_pkt(hdr))
--			l->mtu = msg_max_pkt(hdr);
-+		if (l->mtu > msg_max)
-+			l->mtu = msg_max;
- 		break;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 15ce1a33649ee..3158c08a3aa9c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -123,7 +123,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.name = "tx_bd_queue",
+ 		.cmd = HNAE3_DBG_CMD_TX_BD,
+ 		.dentry = HNS3_DBG_DENTRY_TX_BD,
+-		.buf_len = HNS3_DBG_READ_LEN_4MB,
++		.buf_len = HNS3_DBG_READ_LEN_5MB,
+ 		.init = hns3_dbg_bd_file_init,
+ 	},
+ 	{
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
+index 814f7491ca08d..fb0c907cec852 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
+@@ -8,6 +8,7 @@
+ #define HNS3_DBG_READ_LEN_128KB	0x20000
+ #define HNS3_DBG_READ_LEN_1MB	0x100000
+ #define HNS3_DBG_READ_LEN_4MB	0x400000
++#define HNS3_DBG_READ_LEN_5MB	0x500000
+ #define HNS3_DBG_WRITE_LEN	1024
  
- 	case STATE_MSG:
+ #define HNS3_DBG_DATA_STR_LEN	32
 -- 
 2.39.2
 
