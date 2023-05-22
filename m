@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CE370C798
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B1070C66C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234745AbjEVTbd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:31:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
+        id S232736AbjEVTSC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbjEVTbd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E3879C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:32 -0700 (PDT)
+        with ESMTP id S234209AbjEVTRx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:17:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E292693
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76BC062916
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952E9C433D2;
-        Mon, 22 May 2023 19:31:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 760FD627CD
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C26EC433D2;
+        Mon, 22 May 2023 19:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783890;
-        bh=2l8D/Rmcj8ydoQYHbT0HeJQJ3+uuugoqZYAZ2icz44k=;
+        s=korg; t=1684783064;
+        bh=0kR2X7R7X2+FhuBa7KITDNbnWCUhGlNxT+h3KLbxdy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=12oJXRFGWUmWVaC4dFl5YkxrH5vCvsTXEZmEW83e79dTzzDoCZmQ7tjj3ve3uOUFV
-         OIo9xXdzONc1G4wXM0YzyaJ/2YuEFS3iCnmvtTTrLWALghUnHO870nOch8q0x0n3qz
-         wCML6+ph0ndgYj1MF3Ck7POdstN1H3ThpSsF+nj0=
+        b=wYt3U4v7bKuFzLQs7kPlj9QoSePncDwuOjGNMzpFs8PJ6CkKuad9KM57hjxdFPnE3
+         dlTC0gGrpr6Vm/FejWKXOyM5/a0rMrDGs94lrT9HfLKFh299r9FT3DaZZz/9yN4udT
+         4Xi2OrLdCvzLQVCEcAb2L87wBqvQO7qBCuFxeuDI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
-        Jon Maloy <jmaloy@redhat.com>,
+        patches@lists.linux.dev, Kevin Traynor <ktraynor@redhat.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        William Tu <u9012063@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/292] tipc: add tipc_bearer_min_mtu to calculate min mtu
+Subject: [PATCH 5.15 128/203] erspan: get the proto with the md version for collect_md
 Date:   Mon, 22 May 2023 20:09:12 +0100
-Message-Id: <20230522190410.833718268@linuxfoundation.org>
+Message-Id: <20230522190358.515404564@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,101 +59,77 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 3ae6d66b605be604644d4bb5708a7ffd9cf1abe8 ]
+[ Upstream commit d80fc101d2eb9b3188c228d61223890aeea480a4 ]
 
-As different media may requires different min mtu, and even the
-same media with different net family requires different min mtu,
-add tipc_bearer_min_mtu() to calculate min mtu accordingly.
+In commit 20704bd1633d ("erspan: build the header with the right proto
+according to erspan_ver"), it gets the proto with t->parms.erspan_ver,
+but t->parms.erspan_ver is not used by collect_md branch, and instead
+it should get the proto with md->version for collect_md.
 
-This API will be used to check the new mtu when doing the link
-mtu negotiation in the next patch.
+Thanks to Kevin for pointing this out.
 
+Fixes: 20704bd1633d ("erspan: build the header with the right proto according to erspan_ver")
+Fixes: 94d7d8f29287 ("ip6_gre: add erspan v2 support")
+Reported-by: Kevin Traynor <ktraynor@redhat.com>
 Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Jon Maloy <jmaloy@redhat.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: William Tu <u9012063@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 56077b56cd3f ("tipc: do not update mtu if msg_max is too small in mtu negotiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/bearer.c    | 13 +++++++++++++
- net/tipc/bearer.h    |  3 +++
- net/tipc/udp_media.c |  5 +++--
- 3 files changed, 19 insertions(+), 2 deletions(-)
+ net/ipv6/ip6_gre.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-index 35cac7733fd3a..0e9a29e1536b7 100644
---- a/net/tipc/bearer.c
-+++ b/net/tipc/bearer.c
-@@ -541,6 +541,19 @@ int tipc_bearer_mtu(struct net *net, u32 bearer_id)
- 	return mtu;
- }
- 
-+int tipc_bearer_min_mtu(struct net *net, u32 bearer_id)
-+{
-+	int mtu = TIPC_MIN_BEARER_MTU;
-+	struct tipc_bearer *b;
-+
-+	rcu_read_lock();
-+	b = bearer_get(net, bearer_id);
-+	if (b)
-+		mtu += b->encap_hlen;
-+	rcu_read_unlock();
-+	return mtu;
-+}
-+
- /* tipc_bearer_xmit_skb - sends buffer to destination over bearer
-  */
- void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
-diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-index 490ad6e5f7a3c..bd0cc5c287ef8 100644
---- a/net/tipc/bearer.h
-+++ b/net/tipc/bearer.h
-@@ -146,6 +146,7 @@ struct tipc_media {
-  * @identity: array index of this bearer within TIPC bearer array
-  * @disc: ptr to link setup request
-  * @net_plane: network plane ('A' through 'H') currently associated with bearer
-+ * @encap_hlen: encap headers length
-  * @up: bearer up flag (bit 0)
-  * @refcnt: tipc_bearer reference counter
-  *
-@@ -170,6 +171,7 @@ struct tipc_bearer {
- 	u32 identity;
- 	struct tipc_discoverer *disc;
- 	char net_plane;
-+	u16 encap_hlen;
- 	unsigned long up;
- 	refcount_t refcnt;
- };
-@@ -232,6 +234,7 @@ int tipc_bearer_setup(void);
- void tipc_bearer_cleanup(void);
- void tipc_bearer_stop(struct net *net);
- int tipc_bearer_mtu(struct net *net, u32 bearer_id);
-+int tipc_bearer_min_mtu(struct net *net, u32 bearer_id);
- bool tipc_bearer_bcast_support(struct net *net, u32 bearer_id);
- void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
- 			  struct sk_buff *skb,
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index c2bb818704c8f..0a85244fd6188 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -738,8 +738,8 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
- 			udp_conf.local_ip.s_addr = local.ipv4.s_addr;
- 		udp_conf.use_udp_checksums = false;
- 		ub->ifindex = dev->ifindex;
--		if (tipc_mtu_bad(dev, sizeof(struct iphdr) +
--				      sizeof(struct udphdr))) {
-+		b->encap_hlen = sizeof(struct iphdr) + sizeof(struct udphdr);
-+		if (tipc_mtu_bad(dev, b->encap_hlen)) {
- 			err = -EINVAL;
- 			goto err;
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index a91f93ec7d2b4..0b041ab79ad90 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1015,12 +1015,14 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 					    ntohl(tun_id),
+ 					    ntohl(md->u.index), truncate,
+ 					    false);
++			proto = htons(ETH_P_ERSPAN);
+ 		} else if (md->version == 2) {
+ 			erspan_build_header_v2(skb,
+ 					       ntohl(tun_id),
+ 					       md->u.md2.dir,
+ 					       get_hwid(&md->u.md2),
+ 					       truncate, false);
++			proto = htons(ETH_P_ERSPAN2);
+ 		} else {
+ 			goto tx_err;
  		}
-@@ -760,6 +760,7 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
- 		else
- 			udp_conf.local_ip6 = local.ipv6;
- 		ub->ifindex = dev->ifindex;
-+		b->encap_hlen = sizeof(struct ipv6hdr) + sizeof(struct udphdr);
- 		b->mtu = 1280;
- #endif
- 	} else {
+@@ -1043,24 +1045,25 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 			break;
+ 		}
+ 
+-		if (t->parms.erspan_ver == 1)
++		if (t->parms.erspan_ver == 1) {
+ 			erspan_build_header(skb, ntohl(t->parms.o_key),
+ 					    t->parms.index,
+ 					    truncate, false);
+-		else if (t->parms.erspan_ver == 2)
++			proto = htons(ETH_P_ERSPAN);
++		} else if (t->parms.erspan_ver == 2) {
+ 			erspan_build_header_v2(skb, ntohl(t->parms.o_key),
+ 					       t->parms.dir,
+ 					       t->parms.hwid,
+ 					       truncate, false);
+-		else
++			proto = htons(ETH_P_ERSPAN2);
++		} else {
+ 			goto tx_err;
++		}
+ 
+ 		fl6.daddr = t->parms.raddr;
+ 	}
+ 
+ 	/* Push GRE header. */
+-	proto = (t->parms.erspan_ver == 1) ? htons(ETH_P_ERSPAN)
+-					   : htons(ETH_P_ERSPAN2);
+ 	gre_build_header(skb, 8, TUNNEL_SEQ, proto, 0, htonl(atomic_fetch_inc(&t->o_seqno)));
+ 
+ 	/* TooBig packet may have updated dst->dev's mtu */
 -- 
 2.39.2
 
