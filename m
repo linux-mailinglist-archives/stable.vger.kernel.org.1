@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A736C70C60D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A18170C91C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233793AbjEVTOd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37502 "EHLO
+        id S235235AbjEVTpU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231241AbjEVTOb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7D5132
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:25 -0700 (PDT)
+        with ESMTP id S235339AbjEVTpB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB37119
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E88FC61E03
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1DFC433EF;
-        Mon, 22 May 2023 19:14:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B7EA62A3C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DBFC433EF;
+        Mon, 22 May 2023 19:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782864;
-        bh=8ZNai726AUuvlBFgVah4ZMjI08GB475HySzYeOqUfVs=;
+        s=korg; t=1684784695;
+        bh=A5cVwsx73lMpP6hlI3ekkuyMJI7zZZWgRvnobB8yFis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D8ThcFvuL6Owo+/4xH5IpH0qKe3jtT5dOgdo+TMZnNOYk0Jgyea6QZHAniMKb8EtK
-         yH7BvufaWV9I6R5jcQ7S5Q7oifS4ttF8+ZTxtRAEWUjBZSjKCCUrTMogyfLfEgO4bD
-         n6F8EMfqbrdxMH4E3PmDogVlA1RYfc/opqylEyFY=
+        b=Hcq+CJGNdZe+zHDmrtn4t1IcrzR/Kn+wqa2J/gtCRjKWuKLgqh1X0t/ojf0k6WTPu
+         rYb0mEM70NOenxwGkxZZ2gwJu209KJc9zh7N7pe2qFRLiQ/OZFhl3XLahpHoZ2EnzT
+         9Btje6p6iiOTqu+pqqs1mpEX5OekVmEI9jsKmGyg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/203] wifi: brcmfmac: cfg80211: Pass the PMK in binary instead of hex
-Date:   Mon, 22 May 2023 20:07:55 +0100
-Message-Id: <20230522190356.411970129@linuxfoundation.org>
+        patches@lists.linux.dev, Hao Zeng <zenghao@kylinos.cn>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 171/364] recordmcount: Fix memory leaks in the uwrite function
+Date:   Mon, 22 May 2023 20:07:56 +0100
+Message-Id: <20230522190417.001480567@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,55 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hector Martin <marcan@marcan.st>
+From: Hao Zeng <zenghao@kylinos.cn>
 
-[ Upstream commit 89b89e52153fda2733562776c7c9d9d3ebf8dd6d ]
+[ Upstream commit fa359d068574d29e7d2f0fdd0ebe4c6a12b5cfb9 ]
 
-Apparently the hex passphrase mechanism does not work on newer
-chips/firmware (e.g. BCM4387). It seems there was a simple way of
-passing it in binary all along, so use that and avoid the hexification.
+Common realloc mistake: 'file_append' nulled but not freed upon failure
 
-OpenBSD has been doing it like this from the beginning, so this should
-work on all chips.
+Link: https://lkml.kernel.org/r/20230426010527.703093-1-zenghao@kylinos.cn
 
-Also clear the structure before setting the PMK. This was leaking
-uninitialized stack contents to the device.
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230214092423.15175-6-marcan@marcan.st
+Signed-off-by: Hao Zeng <zenghao@kylinos.cn>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ scripts/recordmcount.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 5a1b01db02e6e..b14c54da56ed9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1350,13 +1350,14 @@ static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
+diff --git a/scripts/recordmcount.c b/scripts/recordmcount.c
+index e30216525325b..40ae6b2c7a6da 100644
+--- a/scripts/recordmcount.c
++++ b/scripts/recordmcount.c
+@@ -110,6 +110,7 @@ static ssize_t uwrite(void const *const buf, size_t const count)
  {
- 	struct brcmf_pub *drvr = ifp->drvr;
- 	struct brcmf_wsec_pmk_le pmk;
--	int i, err;
-+	int err;
-+
-+	memset(&pmk, 0, sizeof(pmk));
+ 	size_t cnt = count;
+ 	off_t idx = 0;
++	void *p = NULL;
  
--	/* convert to firmware key format */
--	pmk.key_len = cpu_to_le16(pmk_len << 1);
--	pmk.flags = cpu_to_le16(BRCMF_WSEC_PASSPHRASE);
--	for (i = 0; i < pmk_len; i++)
--		snprintf(&pmk.key[2 * i], 3, "%02x", pmk_data[i]);
-+	/* pass pmk directly */
-+	pmk.key_len = cpu_to_le16(pmk_len);
-+	pmk.flags = cpu_to_le16(0);
-+	memcpy(pmk.key, pmk_data, pmk_len);
+ 	file_updated = 1;
  
- 	/* store psk in firmware */
- 	err = brcmf_fil_cmd_data_set(ifp, BRCMF_C_SET_WSEC_PMK,
+@@ -117,7 +118,10 @@ static ssize_t uwrite(void const *const buf, size_t const count)
+ 		off_t aoffset = (file_ptr + count) - file_end;
+ 
+ 		if (aoffset > file_append_size) {
+-			file_append = realloc(file_append, aoffset);
++			p = realloc(file_append, aoffset);
++			if (!p)
++				free(file_append);
++			file_append = p;
+ 			file_append_size = aoffset;
+ 		}
+ 		if (!file_append) {
 -- 
 2.39.2
 
