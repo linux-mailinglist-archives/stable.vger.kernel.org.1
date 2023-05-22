@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB7F70C70F
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 724E570C8D3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234612AbjEVTZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47082 "EHLO
+        id S235056AbjEVTmo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbjEVTZX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26BAB10C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:22 -0700 (PDT)
+        with ESMTP id S235105AbjEVTmo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B8911F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7126862887
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDC5C4339B;
-        Mon, 22 May 2023 19:25:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2C3162A2B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F699C433EF;
+        Mon, 22 May 2023 19:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783520;
-        bh=Vu0+qWqefyWhMzSESBgfYJzPeVchKVsuZgJb+f4X4Z8=;
+        s=korg; t=1684784512;
+        bh=jKJQM7Amchlo/TIBhIhoRm4akaWOf6RtKsRisaHbqM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fiN7BR7R2oNxFw3Bp5ckKQsf1EhW5T7d5nLyinvgqjU/xOM3W6EUOTFzLcUZXDc7t
-         8eXFxAEkUKyfBrJyORvkFiWc67qs8jFaAarO7xmYOLtdXuGE+PiVkUB/TownAJmHkQ
-         2x4EqKf5vjBWGhFXFUQEFhVH2372E7jqq77qoQWg=
+        b=XK0SE681/+vXAYl3QufYSVtza8l93c7Znm6cjajPh0kGHCepy3JtHQMmQx8jSa2OP
+         119nheHJakvrBEYZ3ShyMrlcDUbQY+3n27beW0UiarLWXarqT2pbU/+muHxrx2ETcE
+         AK2yHHbq4UCNVD5yk9fVKHt0fU0ezHtfmwB569fI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Toby Chen <tobyc@nvidia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/292] drm/rockchip: dw_hdmi: cleanup drm encoder during unbind
+Subject: [PATCH 6.3 106/364] scsi: message: mptlan: Fix use after free bug in mptlan_remove() due to race condition
 Date:   Mon, 22 May 2023 20:06:51 +0100
-Message-Id: <20230522190407.288619778@linuxfoundation.org>
+Message-Id: <20230522190415.414343857@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,38 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Toby Chen <tobyc@nvidia.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit b5af48eedcb53491c02ded55d5991e03d6da6dbf ]
+[ Upstream commit f486893288f3e9b171b836f43853a6426515d800 ]
 
-This fixes a use-after-free crash during rmmod.
+mptlan_probe() calls mpt_register_lan_device() which initializes the
+&priv->post_buckets_task workqueue. A call to
+mpt_lan_wake_post_buckets_task() will subsequently start the work.
 
-The DRM encoder is embedded inside the larger rockchip_hdmi,
-which is allocated with the component. The component memory
-gets freed before the main drm device is destroyed. Fix it
-by running encoder cleanup before tearing down its container.
+During driver unload in mptlan_remove() the following race may occur:
 
-Signed-off-by: Toby Chen <tobyc@nvidia.com>
-[moved encoder cleanup above clk_disable, similar to bind-error-path]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230317005126.496-1-tobyc@nvidia.com
+CPU0                  CPU1
+
+                    |mpt_lan_post_receive_buckets_work()
+mptlan_remove()     |
+  free_netdev()     |
+    kfree(dev);     |
+                    |
+                    | dev->mtu
+                    |   //use
+
+Fix this by finishing the work prior to cleaning up in mptlan_remove().
+
+[mkp: we really should remove mptlan instead of attempting to fix it]
+
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Link: https://lore.kernel.org/r/20230318081635.796479-1-zyytlz.wz@163.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/message/fusion/mptlan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index 2f4b8f64cbad3..ae857bf8bd624 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -640,6 +640,7 @@ static void dw_hdmi_rockchip_unbind(struct device *dev, struct device *master,
- 	struct rockchip_hdmi *hdmi = dev_get_drvdata(dev);
+diff --git a/drivers/message/fusion/mptlan.c b/drivers/message/fusion/mptlan.c
+index 142eb5d5d9df6..de2e7bcf47847 100644
+--- a/drivers/message/fusion/mptlan.c
++++ b/drivers/message/fusion/mptlan.c
+@@ -1433,7 +1433,9 @@ mptlan_remove(struct pci_dev *pdev)
+ {
+ 	MPT_ADAPTER 		*ioc = pci_get_drvdata(pdev);
+ 	struct net_device	*dev = ioc->netdev;
++	struct mpt_lan_priv *priv = netdev_priv(dev);
  
- 	dw_hdmi_unbind(hdmi->hdmi);
-+	drm_encoder_cleanup(&hdmi->encoder.encoder);
- 	clk_disable_unprepare(hdmi->ref_clk);
- 
- 	regulator_disable(hdmi->avdd_1v8);
++	cancel_delayed_work_sync(&priv->post_buckets_task);
+ 	if(dev != NULL) {
+ 		unregister_netdev(dev);
+ 		free_netdev(dev);
 -- 
 2.39.2
 
