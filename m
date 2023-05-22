@@ -2,56 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 198D470C606
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65AD770C760
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbjEVTOY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37252 "EHLO
+        id S234640AbjEVT2v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233773AbjEVTOW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC82C18D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:17 -0700 (PDT)
+        with ESMTP id S234689AbjEVT2u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E618EDC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64740626FE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC1DC433D2;
-        Mon, 22 May 2023 19:14:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8304C62605
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2ABC433EF;
+        Mon, 22 May 2023 19:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782856;
-        bh=NEZZgyMkgqzV6hstE1vG2k12ik+0biq/ChTLVT7fTdA=;
+        s=korg; t=1684783727;
+        bh=aOAJdRZ7SnZENcvARAFYwb74mKw2i7tpKS6bCcV0SSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p89kKNZhCOfvwpOoFPQN3oIYj4AzctCoBJEoVZcp6bgwvskr02gKH5vBuTvVa70oF
-         KEWSvyK57rVdMy9liCVaSOVROSklWF6xkXTpRmshd5LJP6RKZSCU2tQd68VUj2PyHc
-         BDdjlxTMoG+DC3JYFY58BHKaoS0AGUoeQjoLbNjQ=
+        b=c7DTRPTI1T5VOvF2MFZ8GOTUIMCOrn5koCxkCRYWoAxbiR3x3SoRlgLkMupULtWxT
+         yARwtcSCBIJuRshDZiCA8rNdDjlWVCU1196htAqSl4iBVmbND8y5e6j7fWi9M6td/J
+         l0FF2SfGGwAjzcF22z/BnP5znbd6n9EaSSp/GOa8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>,
-        Lad Prabhakar <prabhakar.csengg@gmail.com>
-Subject: [PATCH 5.15 048/203] media: Prefer designated initializers over memset for subdev pad ops
+        Chethan T N <chethan.tumkur.narayan@intel.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/292] Bluetooth: btintel: Add LE States quirk support
 Date:   Mon, 22 May 2023 20:07:52 +0100
-Message-Id: <20230522190356.322191094@linuxfoundation.org>
+Message-Id: <20230522190408.839275669@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,363 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Chethan T N <chethan.tumkur.narayan@intel.com>
 
-[ Upstream commit e3a69496a1cde364c74a600d7a370179b58aed29 ]
+[ Upstream commit 77f542b10c535c9a93bf8afdd2665524935807c2 ]
 
-Structures passed to subdev pad operations are all zero-initialized, but
-not always with the same kind of code constructs. While most drivers
-used designated initializers, which zero all the fields that are not
-specified, when declaring variables, some use memset(). Those two
-methods lead to the same end result, and, depending on compiler
-optimizations, may even be completely equivalent, but they're not
-consistent.
+Basically all Intel controllers support both Central/Peripheral
+LE states.
 
-Improve coding style consistency by using designated initializers
-instead of calling memset(). Where applicable, also move the variables
-to inner scopes of for loops to ensure correct initialization in all
-iterations.
+This patch enables the LE States quirk by default on all
+Solar and Magnertor Intel controllers.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Lad Prabhakar <prabhakar.csengg@gmail.com> # For am437x
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Chethan T N <chethan.tumkur.narayan@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/am437x/am437x-vpfe.c    | 15 ++++++++-------
- .../media/platform/exynos4-is/fimc-capture.c   |  7 ++++---
- drivers/media/platform/ti-vpe/cal-video.c      |  8 ++++----
- drivers/media/platform/vsp1/vsp1_drm.c         | 18 +++++++++---------
- drivers/media/platform/vsp1/vsp1_entity.c      | 11 +++++------
- drivers/media/usb/dvb-usb/cxusb-analog.c       | 14 +++++++-------
- drivers/staging/media/imx/imx-media-capture.c  | 12 ++++++------
- drivers/staging/media/imx/imx-media-utils.c    |  8 ++++----
- drivers/staging/media/omap4iss/iss_video.c     |  6 +++---
- 9 files changed, 50 insertions(+), 49 deletions(-)
+ drivers/bluetooth/btintel.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/am437x/am437x-vpfe.c b/drivers/media/platform/am437x/am437x-vpfe.c
-index 1c9cb9e05fdf6..c1ce93efc6559 100644
---- a/drivers/media/platform/am437x/am437x-vpfe.c
-+++ b/drivers/media/platform/am437x/am437x-vpfe.c
-@@ -1499,7 +1499,9 @@ static int vpfe_enum_size(struct file *file, void  *priv,
- 			  struct v4l2_frmsizeenum *fsize)
- {
- 	struct vpfe_device *vpfe = video_drvdata(file);
--	struct v4l2_subdev_frame_size_enum fse;
-+	struct v4l2_subdev_frame_size_enum fse = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	struct v4l2_subdev *sd = vpfe->current_subdev->sd;
- 	struct vpfe_fmt *fmt;
- 	int ret;
-@@ -1514,11 +1516,9 @@ static int vpfe_enum_size(struct file *file, void  *priv,
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index f6b4b7a1be4cc..bbad1207cdfd8 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -2553,9 +2553,8 @@ static int btintel_setup_combined(struct hci_dev *hdev)
+ 		 */
+ 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
  
- 	memset(fsize->reserved, 0x0, sizeof(fsize->reserved));
+-		/* Valid LE States quirk for GfP */
+-		if (INTEL_HW_VARIANT(ver_tlv.cnvi_bt) == 0x18)
+-			set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
++		/* Apply LE States quirk from solar onwards */
++		set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
  
--	memset(&fse, 0x0, sizeof(fse));
- 	fse.index = fsize->index;
- 	fse.pad = 0;
- 	fse.code = fmt->code;
--	fse.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	ret = v4l2_subdev_call(sd, pad, enum_frame_size, NULL, &fse);
- 	if (ret)
- 		return ret;
-@@ -2146,7 +2146,6 @@ vpfe_async_bound(struct v4l2_async_notifier *notifier,
- {
- 	struct vpfe_device *vpfe = container_of(notifier->v4l2_dev,
- 					       struct vpfe_device, v4l2_dev);
--	struct v4l2_subdev_mbus_code_enum mbus_code;
- 	struct vpfe_subdev_info *sdinfo;
- 	struct vpfe_fmt *fmt;
- 	int ret = 0;
-@@ -2173,9 +2172,11 @@ vpfe_async_bound(struct v4l2_async_notifier *notifier,
- 
- 	vpfe->num_active_fmt = 0;
- 	for (j = 0, i = 0; (ret != -EINVAL); ++j) {
--		memset(&mbus_code, 0, sizeof(mbus_code));
--		mbus_code.index = j;
--		mbus_code.which = V4L2_SUBDEV_FORMAT_ACTIVE;
-+		struct v4l2_subdev_mbus_code_enum mbus_code = {
-+			.index = j,
-+			.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
-+
- 		ret = v4l2_subdev_call(subdev, pad, enum_mbus_code,
- 				       NULL, &mbus_code);
- 		if (ret)
-diff --git a/drivers/media/platform/exynos4-is/fimc-capture.c b/drivers/media/platform/exynos4-is/fimc-capture.c
-index 7ff4024003f4a..0b3cf01e9537e 100644
---- a/drivers/media/platform/exynos4-is/fimc-capture.c
-+++ b/drivers/media/platform/exynos4-is/fimc-capture.c
-@@ -763,7 +763,10 @@ static int fimc_pipeline_try_format(struct fimc_ctx *ctx,
- 	struct fimc_dev *fimc = ctx->fimc_dev;
- 	struct fimc_pipeline *p = to_fimc_pipeline(fimc->vid_cap.ve.pipe);
- 	struct v4l2_subdev *sd = p->subdevs[IDX_SENSOR];
--	struct v4l2_subdev_format sfmt;
-+	struct v4l2_subdev_format sfmt = {
-+		.which = set ? V4L2_SUBDEV_FORMAT_ACTIVE
-+		       : V4L2_SUBDEV_FORMAT_TRY,
-+	};
- 	struct v4l2_mbus_framefmt *mf = &sfmt.format;
- 	struct media_entity *me;
- 	struct fimc_fmt *ffmt;
-@@ -774,9 +777,7 @@ static int fimc_pipeline_try_format(struct fimc_ctx *ctx,
- 	if (WARN_ON(!sd || !tfmt))
- 		return -EINVAL;
- 
--	memset(&sfmt, 0, sizeof(sfmt));
- 	sfmt.format = *tfmt;
--	sfmt.which = set ? V4L2_SUBDEV_FORMAT_ACTIVE : V4L2_SUBDEV_FORMAT_TRY;
- 
- 	me = fimc_pipeline_get_head(&sd->entity);
- 
-diff --git a/drivers/media/platform/ti-vpe/cal-video.c b/drivers/media/platform/ti-vpe/cal-video.c
-index 3e936a2ca36c6..d87177d04e921 100644
---- a/drivers/media/platform/ti-vpe/cal-video.c
-+++ b/drivers/media/platform/ti-vpe/cal-video.c
-@@ -814,7 +814,6 @@ static const struct v4l2_file_operations cal_fops = {
- 
- static int cal_ctx_v4l2_init_formats(struct cal_ctx *ctx)
- {
--	struct v4l2_subdev_mbus_code_enum mbus_code;
- 	struct v4l2_mbus_framefmt mbus_fmt;
- 	const struct cal_format_info *fmtinfo;
- 	unsigned int i, j, k;
-@@ -829,10 +828,11 @@ static int cal_ctx_v4l2_init_formats(struct cal_ctx *ctx)
- 	ctx->num_active_fmt = 0;
- 
- 	for (j = 0, i = 0; ; ++j) {
-+		struct v4l2_subdev_mbus_code_enum mbus_code = {
-+			.index = j,
-+			.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
- 
--		memset(&mbus_code, 0, sizeof(mbus_code));
--		mbus_code.index = j;
--		mbus_code.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 		ret = v4l2_subdev_call(ctx->phy->source, pad, enum_mbus_code,
- 				       NULL, &mbus_code);
- 		if (ret == -EINVAL)
-diff --git a/drivers/media/platform/vsp1/vsp1_drm.c b/drivers/media/platform/vsp1/vsp1_drm.c
-index 06f74d410973e..706d48601bf2c 100644
---- a/drivers/media/platform/vsp1/vsp1_drm.c
-+++ b/drivers/media/platform/vsp1/vsp1_drm.c
-@@ -66,7 +66,9 @@ static int vsp1_du_insert_uif(struct vsp1_device *vsp1,
- 			      struct vsp1_entity *prev, unsigned int prev_pad,
- 			      struct vsp1_entity *next, unsigned int next_pad)
- {
--	struct v4l2_subdev_format format;
-+	struct v4l2_subdev_format format = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	int ret;
- 
- 	if (!uif) {
-@@ -82,8 +84,6 @@ static int vsp1_du_insert_uif(struct vsp1_device *vsp1,
- 	prev->sink = uif;
- 	prev->sink_pad = UIF_PAD_SINK;
- 
--	memset(&format, 0, sizeof(format));
--	format.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	format.pad = prev_pad;
- 
- 	ret = v4l2_subdev_call(&prev->subdev, pad, get_fmt, NULL, &format);
-@@ -118,8 +118,12 @@ static int vsp1_du_pipeline_setup_rpf(struct vsp1_device *vsp1,
- 				      struct vsp1_entity *uif,
- 				      unsigned int brx_input)
- {
--	struct v4l2_subdev_selection sel;
--	struct v4l2_subdev_format format;
-+	struct v4l2_subdev_selection sel = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
-+	struct v4l2_subdev_format format = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	const struct v4l2_rect *crop;
- 	int ret;
- 
-@@ -129,8 +133,6 @@ static int vsp1_du_pipeline_setup_rpf(struct vsp1_device *vsp1,
- 	 */
- 	crop = &vsp1->drm->inputs[rpf->entity.index].crop;
- 
--	memset(&format, 0, sizeof(format));
--	format.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	format.pad = RWPF_PAD_SINK;
- 	format.format.width = crop->width + crop->left;
- 	format.format.height = crop->height + crop->top;
-@@ -147,8 +149,6 @@ static int vsp1_du_pipeline_setup_rpf(struct vsp1_device *vsp1,
- 		__func__, format.format.width, format.format.height,
- 		format.format.code, rpf->entity.index);
- 
--	memset(&sel, 0, sizeof(sel));
--	sel.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	sel.pad = RWPF_PAD_SINK;
- 	sel.target = V4L2_SEL_TGT_CROP;
- 	sel.r = *crop;
-diff --git a/drivers/media/platform/vsp1/vsp1_entity.c b/drivers/media/platform/vsp1/vsp1_entity.c
-index 823c15facd1b4..b40926270c149 100644
---- a/drivers/media/platform/vsp1/vsp1_entity.c
-+++ b/drivers/media/platform/vsp1/vsp1_entity.c
-@@ -184,15 +184,14 @@ vsp1_entity_get_pad_selection(struct vsp1_entity *entity,
- int vsp1_entity_init_cfg(struct v4l2_subdev *subdev,
- 			 struct v4l2_subdev_state *sd_state)
- {
--	struct v4l2_subdev_format format;
- 	unsigned int pad;
- 
- 	for (pad = 0; pad < subdev->entity.num_pads - 1; ++pad) {
--		memset(&format, 0, sizeof(format));
--
--		format.pad = pad;
--		format.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
--			     : V4L2_SUBDEV_FORMAT_ACTIVE;
-+		struct v4l2_subdev_format format = {
-+			.pad = pad,
-+			.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
-+			       : V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
- 
- 		v4l2_subdev_call(subdev, pad, set_fmt, sd_state, &format);
- 	}
-diff --git a/drivers/media/usb/dvb-usb/cxusb-analog.c b/drivers/media/usb/dvb-usb/cxusb-analog.c
-index e93183ddd7975..deba5224cb8df 100644
---- a/drivers/media/usb/dvb-usb/cxusb-analog.c
-+++ b/drivers/media/usb/dvb-usb/cxusb-analog.c
-@@ -1014,7 +1014,10 @@ static int cxusb_medion_try_s_fmt_vid_cap(struct file *file,
- {
- 	struct dvb_usb_device *dvbdev = video_drvdata(file);
- 	struct cxusb_medion_dev *cxdev = dvbdev->priv;
--	struct v4l2_subdev_format subfmt;
-+	struct v4l2_subdev_format subfmt = {
-+		.which = isset ? V4L2_SUBDEV_FORMAT_ACTIVE :
-+			 V4L2_SUBDEV_FORMAT_TRY,
-+	};
- 	u32 field;
- 	int ret;
- 
-@@ -1024,9 +1027,6 @@ static int cxusb_medion_try_s_fmt_vid_cap(struct file *file,
- 	field = vb2_start_streaming_called(&cxdev->videoqueue) ?
- 		cxdev->field_order : cxusb_medion_field_order(cxdev);
- 
--	memset(&subfmt, 0, sizeof(subfmt));
--	subfmt.which = isset ? V4L2_SUBDEV_FORMAT_ACTIVE :
--		V4L2_SUBDEV_FORMAT_TRY;
- 	subfmt.format.width = f->fmt.pix.width & ~1;
- 	subfmt.format.height = f->fmt.pix.height & ~1;
- 	subfmt.format.code = MEDIA_BUS_FMT_FIXED;
-@@ -1464,7 +1464,9 @@ int cxusb_medion_analog_init(struct dvb_usb_device *dvbdev)
- 					    .buf = tuner_analog_msg_data,
- 					    .len =
- 					    sizeof(tuner_analog_msg_data) };
--	struct v4l2_subdev_format subfmt;
-+	struct v4l2_subdev_format subfmt = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	int ret;
- 
- 	/* switch tuner to analog mode so IF demod will become accessible */
-@@ -1507,8 +1509,6 @@ int cxusb_medion_analog_init(struct dvb_usb_device *dvbdev)
- 	v4l2_subdev_call(cxdev->tuner, video, s_std, cxdev->norm);
- 	v4l2_subdev_call(cxdev->cx25840, video, s_std, cxdev->norm);
- 
--	memset(&subfmt, 0, sizeof(subfmt));
--	subfmt.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 	subfmt.format.width = cxdev->width;
- 	subfmt.format.height = cxdev->height;
- 	subfmt.format.code = MEDIA_BUS_FMT_FIXED;
-diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
-index 93ba092360105..5cc67786b9169 100644
---- a/drivers/staging/media/imx/imx-media-capture.c
-+++ b/drivers/staging/media/imx/imx-media-capture.c
-@@ -501,14 +501,14 @@ static int capture_legacy_g_parm(struct file *file, void *fh,
- 				 struct v4l2_streamparm *a)
- {
- 	struct capture_priv *priv = video_drvdata(file);
--	struct v4l2_subdev_frame_interval fi;
-+	struct v4l2_subdev_frame_interval fi = {
-+		.pad = priv->src_sd_pad,
-+	};
- 	int ret;
- 
- 	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
- 		return -EINVAL;
- 
--	memset(&fi, 0, sizeof(fi));
--	fi.pad = priv->src_sd_pad;
- 	ret = v4l2_subdev_call(priv->src_sd, video, g_frame_interval, &fi);
- 	if (ret < 0)
- 		return ret;
-@@ -523,14 +523,14 @@ static int capture_legacy_s_parm(struct file *file, void *fh,
- 				 struct v4l2_streamparm *a)
- {
- 	struct capture_priv *priv = video_drvdata(file);
--	struct v4l2_subdev_frame_interval fi;
-+	struct v4l2_subdev_frame_interval fi = {
-+		.pad = priv->src_sd_pad,
-+	};
- 	int ret;
- 
- 	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
- 		return -EINVAL;
- 
--	memset(&fi, 0, sizeof(fi));
--	fi.pad = priv->src_sd_pad;
- 	fi.interval = a->parm.capture.timeperframe;
- 	ret = v4l2_subdev_call(priv->src_sd, video, s_frame_interval, &fi);
- 	if (ret < 0)
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
-index 6f90acf9c725c..49ba521dd9edd 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -432,15 +432,15 @@ int imx_media_init_cfg(struct v4l2_subdev *sd,
- 		       struct v4l2_subdev_state *sd_state)
- {
- 	struct v4l2_mbus_framefmt *mf_try;
--	struct v4l2_subdev_format format;
- 	unsigned int pad;
- 	int ret;
- 
- 	for (pad = 0; pad < sd->entity.num_pads; pad++) {
--		memset(&format, 0, sizeof(format));
-+		struct v4l2_subdev_format format = {
-+			.pad = pad,
-+			.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+		};
- 
--		format.pad = pad;
--		format.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 		ret = v4l2_subdev_call(sd, pad, get_fmt, NULL, &format);
- 		if (ret)
- 			continue;
-diff --git a/drivers/staging/media/omap4iss/iss_video.c b/drivers/staging/media/omap4iss/iss_video.c
-index d0da083deed53..801e145ea976a 100644
---- a/drivers/staging/media/omap4iss/iss_video.c
-+++ b/drivers/staging/media/omap4iss/iss_video.c
-@@ -244,7 +244,9 @@ static int
- __iss_video_get_format(struct iss_video *video,
- 		       struct v4l2_mbus_framefmt *format)
- {
--	struct v4l2_subdev_format fmt;
-+	struct v4l2_subdev_format fmt = {
-+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
-+	};
- 	struct v4l2_subdev *subdev;
- 	u32 pad;
- 	int ret;
-@@ -253,9 +255,7 @@ __iss_video_get_format(struct iss_video *video,
- 	if (!subdev)
- 		return -EINVAL;
- 
--	memset(&fmt, 0, sizeof(fmt));
- 	fmt.pad = pad;
--	fmt.which = V4L2_SUBDEV_FORMAT_ACTIVE;
- 
- 	mutex_lock(&video->mutex);
- 	ret = v4l2_subdev_call(subdev, pad, get_fmt, NULL, &fmt);
+ 		/* Setup MSFT Extension support */
+ 		btintel_set_msft_opcode(hdev,
 -- 
 2.39.2
 
