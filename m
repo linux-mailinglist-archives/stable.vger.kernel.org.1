@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB2870C6F4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0329D70C8D6
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234535AbjEVTYX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46030 "EHLO
+        id S235162AbjEVTmv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234549AbjEVTYW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:22 -0400
+        with ESMTP id S235118AbjEVTms (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00EDADC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C033B1AD
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D559A620FB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EA5C433EF;
-        Mon, 22 May 2023 19:24:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE9AD62A11
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15FEC433EF;
+        Mon, 22 May 2023 19:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783453;
-        bh=mIB3l9BdA6uhO4z5EAAkj6sa6ef/c0CC3vMn4OhXiD8=;
+        s=korg; t=1684784495;
+        bh=bkD6hVU+8F90R1FdgY0SO//u+++2L4MdapcaIwB2BL8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B9fhkXGUM89/aHj9kqAP1jWK2jXUiTHP2qoKg5Cbcv4mXG/3oy4vYgJYAlrP0CD1O
-         kMSZAmLOGaNVvDwHjpmme0hfZbeeiJMA671Sa3hEUe8jOy1v/K0RDEMfjhgHrK1DUe
-         T/79oBetDNtv1zh89RQT7GtQeA5iAxq5UwzKfJBI=
+        b=bBkcqYOjQbVJ5xP++tfxxQwfCrxR13SKr+0x4UKH6cdGR9ld6Arpu1As1Z3HZ41ko
+         ZXBi6hodYcx2f6EtMQcIyedBQkTVHUGWV+E2HtgBn3KtXhPo4mYwlXZ0tfwYcZIEwU
+         g7SBFX6JbQvTiA/TAb9vu6FrIjcMesUnNponZ8Jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Iuliana Prodan <iuliana.prodan@nxp.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        patches@lists.linux.dev, Rajat Soni <quic_rajson@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/292] remoteproc: imx_dsp_rproc: Add custom memory copy implementation for i.MX DSP Cores
-Date:   Mon, 22 May 2023 20:06:45 +0100
-Message-Id: <20230522190407.114098464@linuxfoundation.org>
+Subject: [PATCH 6.3 101/364] wifi: ath12k: fix memory leak in ath12k_qmi_driver_event_work()
+Date:   Mon, 22 May 2023 20:06:46 +0100
+Message-Id: <20230522190415.278511134@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,230 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Iuliana Prodan <iuliana.prodan@nxp.com>
+From: Rajat Soni <quic_rajson@quicinc.com>
 
-[ Upstream commit 408ec1ff0caa340c57eecf4cbd14ef0132036a50 ]
+[ Upstream commit 960412bee0ea75f6b3c2dca4a3535795ee84c47a ]
 
-The IRAM is part of the HiFi DSP.
-According to hardware specification only 32-bits write are allowed
-otherwise we get a Kernel panic.
+Currently the buffer pointed by event is not freed in case
+ATH12K_FLAG_UNREGISTERING bit is set, this causes memory leak.
 
-Therefore add a custom memory copy and memset functions to deal with
-the above restriction.
+Add a goto skip instead of return, to ensure event and all the
+list entries are freed properly.
 
-Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Link: https://lore.kernel.org/r/20230221170356.27923-1-iuliana.prodan@oss.nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230315090632.15065-1-quic_rajson@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_dsp_rproc.c | 187 ++++++++++++++++++++++++++++-
- 1 file changed, 186 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/qmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index 506ec9565716b..e8e23f6b85563 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -721,6 +721,191 @@ static void imx_dsp_rproc_kick(struct rproc *rproc, int vqid)
- 		dev_err(dev, "%s: failed (%d, err:%d)\n", __func__, vqid, err);
- }
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 979a63f2e2ab8..03ba245fbee92 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -2991,7 +2991,7 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
+ 		spin_unlock(&qmi->event_lock);
  
-+/*
-+ * Custom memory copy implementation for i.MX DSP Cores
-+ *
-+ * The IRAM is part of the HiFi DSP.
-+ * According to hw specs only 32-bits writes are allowed.
-+ */
-+static int imx_dsp_rproc_memcpy(void *dest, const void *src, size_t size)
-+{
-+	const u8 *src_byte = src;
-+	const u32 *source = src;
-+	u32 affected_mask;
-+	u32 *dst = dest;
-+	int i, q, r;
-+	u32 tmp;
+ 		if (test_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags))
+-			return;
++			goto skip;
+ 
+ 		switch (event->type) {
+ 		case ATH12K_QMI_EVENT_SERVER_ARRIVE:
+@@ -3032,6 +3032,8 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
+ 			ath12k_warn(ab, "invalid event type: %d", event->type);
+ 			break;
+ 		}
 +
-+	/* destination must be 32bit aligned */
-+	if (!IS_ALIGNED((uintptr_t)dest, 4))
-+		return -EINVAL;
-+
-+	q = size / 4;
-+	r = size % 4;
-+
-+	/* copy data in units of 32 bits at a time */
-+	for (i = 0; i < q; i++)
-+		writel(source[i], &dst[i]);
-+
-+	if (r) {
-+		affected_mask = GENMASK(8 * r, 0);
-+
-+		/*
-+		 * first read the 32bit data of dest, then change affected
-+		 * bytes, and write back to dest.
-+		 * For unaffected bytes, it should not be changed
-+		 */
-+		tmp = readl(dest + q * 4);
-+		tmp &= ~affected_mask;
-+
-+		/* avoid reading after end of source */
-+		for (i = 0; i < r; i++)
-+			tmp |= (src_byte[q * 4 + i] << (8 * i));
-+
-+		writel(tmp, dest + q * 4);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Custom memset implementation for i.MX DSP Cores
-+ *
-+ * The IRAM is part of the HiFi DSP.
-+ * According to hw specs only 32-bits writes are allowed.
-+ */
-+static int imx_dsp_rproc_memset(void *addr, u8 value, size_t size)
-+{
-+	u32 tmp_val = value;
-+	u32 *tmp_dst = addr;
-+	u32 affected_mask;
-+	int q, r;
-+	u32 tmp;
-+
-+	/* destination must be 32bit aligned */
-+	if (!IS_ALIGNED((uintptr_t)addr, 4))
-+		return -EINVAL;
-+
-+	tmp_val |= tmp_val << 8;
-+	tmp_val |= tmp_val << 16;
-+
-+	q = size / 4;
-+	r = size % 4;
-+
-+	while (q--)
-+		writel(tmp_val, tmp_dst++);
-+
-+	if (r) {
-+		affected_mask = GENMASK(8 * r, 0);
-+
-+		/*
-+		 * first read the 32bit data of addr, then change affected
-+		 * bytes, and write back to addr.
-+		 * For unaffected bytes, it should not be changed
-+		 */
-+		tmp = readl(tmp_dst);
-+		tmp &= ~affected_mask;
-+
-+		tmp |= (tmp_val & affected_mask);
-+		writel(tmp, tmp_dst);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * imx_dsp_rproc_elf_load_segments() - load firmware segments to memory
-+ * @rproc: remote processor which will be booted using these fw segments
-+ * @fw: the ELF firmware image
-+ *
-+ * This function loads the firmware segments to memory, where the remote
-+ * processor expects them.
-+ *
-+ * Return: 0 on success and an appropriate error code otherwise
-+ */
-+static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, const struct firmware *fw)
-+{
-+	struct device *dev = &rproc->dev;
-+	const void *ehdr, *phdr;
-+	int i, ret = 0;
-+	u16 phnum;
-+	const u8 *elf_data = fw->data;
-+	u8 class = fw_elf_get_class(fw);
-+	u32 elf_phdr_get_size = elf_size_of_phdr(class);
-+
-+	ehdr = elf_data;
-+	phnum = elf_hdr_get_e_phnum(class, ehdr);
-+	phdr = elf_data + elf_hdr_get_e_phoff(class, ehdr);
-+
-+	/* go through the available ELF segments */
-+	for (i = 0; i < phnum; i++, phdr += elf_phdr_get_size) {
-+		u64 da = elf_phdr_get_p_paddr(class, phdr);
-+		u64 memsz = elf_phdr_get_p_memsz(class, phdr);
-+		u64 filesz = elf_phdr_get_p_filesz(class, phdr);
-+		u64 offset = elf_phdr_get_p_offset(class, phdr);
-+		u32 type = elf_phdr_get_p_type(class, phdr);
-+		void *ptr;
-+
-+		if (type != PT_LOAD || !memsz)
-+			continue;
-+
-+		dev_dbg(dev, "phdr: type %d da 0x%llx memsz 0x%llx filesz 0x%llx\n",
-+			type, da, memsz, filesz);
-+
-+		if (filesz > memsz) {
-+			dev_err(dev, "bad phdr filesz 0x%llx memsz 0x%llx\n",
-+				filesz, memsz);
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		if (offset + filesz > fw->size) {
-+			dev_err(dev, "truncated fw: need 0x%llx avail 0x%zx\n",
-+				offset + filesz, fw->size);
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		if (!rproc_u64_fit_in_size_t(memsz)) {
-+			dev_err(dev, "size (%llx) does not fit in size_t type\n",
-+				memsz);
-+			ret = -EOVERFLOW;
-+			break;
-+		}
-+
-+		/* grab the kernel address for this device address */
-+		ptr = rproc_da_to_va(rproc, da, memsz, NULL);
-+		if (!ptr) {
-+			dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
-+				memsz);
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		/* put the segment where the remote processor expects it */
-+		if (filesz) {
-+			ret = imx_dsp_rproc_memcpy(ptr, elf_data + offset, filesz);
-+			if (ret) {
-+				dev_err(dev, "memory copy failed for da 0x%llx memsz 0x%llx\n",
-+					da, memsz);
-+				break;
-+			}
-+		}
-+
-+		/* zero out remaining memory for this segment */
-+		if (memsz > filesz) {
-+			ret = imx_dsp_rproc_memset(ptr + filesz, 0, memsz - filesz);
-+			if (ret) {
-+				dev_err(dev, "memset failed for da 0x%llx memsz 0x%llx\n",
-+					da, memsz);
-+				break;
-+			}
-+		}
-+	}
-+
-+	return ret;
-+}
-+
- static int imx_dsp_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
- {
- 	if (rproc_elf_load_rsc_table(rproc, fw))
-@@ -735,7 +920,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
- 	.start		= imx_dsp_rproc_start,
- 	.stop		= imx_dsp_rproc_stop,
- 	.kick		= imx_dsp_rproc_kick,
--	.load		= rproc_elf_load_segments,
-+	.load		= imx_dsp_rproc_elf_load_segments,
- 	.parse_fw	= imx_dsp_rproc_parse_fw,
- 	.sanity_check	= rproc_elf_sanity_check,
- 	.get_boot_addr	= rproc_elf_get_boot_addr,
++skip:
+ 		kfree(event);
+ 		spin_lock(&qmi->event_lock);
+ 	}
 -- 
 2.39.2
 
