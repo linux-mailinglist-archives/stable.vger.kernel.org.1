@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2147170C721
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E632170C8F5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234621AbjEVT0K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47798 "EHLO
+        id S235199AbjEVTn7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234618AbjEVT0J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:09 -0400
+        with ESMTP id S235179AbjEVTn5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A12DC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D9F196
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38A4D628A1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA72C433EF;
-        Mon, 22 May 2023 19:26:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB01F6211E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6747C4339B;
+        Mon, 22 May 2023 19:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783567;
-        bh=dYGHK4rRHrE48vb7qYn90C38nDdspUMEYUcrsJE0/3k=;
+        s=korg; t=1684784611;
+        bh=pmmdaHOEc8dXKn9NryyVup3WBX4wUIX+jQ9d/POViws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xKhvskzKmNdkAcWd72S0CxeFC2Pz8ougp0kQX+GgeEcx/A0bUncVsU8kexl/hakQ5
-         OcCeH2JjqEaEQaUiV/GMG86rlCDQkR3cFpSCalW83C3xe5ZV5lyrGecLsnRbklRdZm
-         cmGUCiL4pWRNkHTQWovc5L6hfcXtODTj494XPgfg=
+        b=l+80AgAYH4qlxR1m0J5uyS15f6Ul5UmC3sU1kqtvag4NQ2hhcemEkqIJCC7fCRXQF
+         EG0GL0bIaLLE/+wZvgAMiTwH4YXXvBR8/a+b9e1LGhn5bS0JUYTxOepu0VgosTPuRM
+         taGAyOmbhTi9Spfbn2eSLPL2uzVyh5ovE8oVgH/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        patches@lists.linux.dev, Yonggil Song <yonggil.song@samsung.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/292] remoteproc: stm32_rproc: Add mutex protection for workqueue
-Date:   Mon, 22 May 2023 20:06:57 +0100
-Message-Id: <20230522190407.444888156@linuxfoundation.org>
+Subject: [PATCH 6.3 113/364] f2fs: Fix system crash due to lack of free space in LFS
+Date:   Mon, 22 May 2023 20:06:58 +0100
+Message-Id: <20230522190415.604130166@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,56 +54,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+From: Yonggil Song <yonggil.song@samsung.com>
 
-[ Upstream commit 35bdafda40cc343ad2ba2cce105eba03a70241cc ]
+[ Upstream commit d11cef14f8146f3babd286c2cc8ca09c166295e2 ]
 
-The workqueue may execute late even after remoteproc is stopped or
-stopping, some resources (rpmsg device and endpoint) have been
-released in rproc_stop_subdevices(), then rproc_vq_interrupt()
-accessing these resources will cause kernel dump.
+When f2fs tries to checkpoint during foreground gc in LFS mode, system
+crash occurs due to lack of free space if the amount of dirty node and
+dentry pages generated by data migration exceeds free space.
+The reproduction sequence is as follows.
 
-Call trace:
-virtqueue_add_inbuf
-virtqueue_add_inbuf
-rpmsg_recv_single
-rpmsg_recv_done
-vring_interrupt
-stm32_rproc_mb_vq_work
-process_one_work
-worker_thread
-kthread
+ - 20GiB capacity block device (null_blk)
+ - format and mount with LFS mode
+ - create a file and write 20,000MiB
+ - 4k random write on full range of the file
 
-Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Link: https://lore.kernel.org/r/20230331160634.3113031-1-arnaud.pouliquen@foss.st.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+ RIP: 0010:new_curseg+0x48a/0x510 [f2fs]
+ Code: 55 e7 f5 89 c0 48 0f af c3 48 8b 5d c0 48 c1 e8 20 83 c0 01 89 43 6c 48 83 c4 28 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc <0f> 0b f0 41 80 4f 48 04 45 85 f6 0f 84 ba fd ff ff e9 ef fe ff ff
+ RSP: 0018:ffff977bc397b218 EFLAGS: 00010246
+ RAX: 00000000000027b9 RBX: 0000000000000000 RCX: 00000000000027c0
+ RDX: 0000000000000000 RSI: 00000000000027b9 RDI: ffff8c25ab4e74f8
+ RBP: ffff977bc397b268 R08: 00000000000027b9 R09: ffff8c29e4a34b40
+ R10: 0000000000000001 R11: ffff977bc397b0d8 R12: 0000000000000000
+ R13: ffff8c25b4dd81a0 R14: 0000000000000000 R15: ffff8c2f667f9000
+ FS: 0000000000000000(0000) GS:ffff8c344ec80000(0000) knlGS:0000000000000000
+ CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000c00055d000 CR3: 0000000e30810003 CR4: 00000000003706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+ <TASK>
+ allocate_segment_by_default+0x9c/0x110 [f2fs]
+ f2fs_allocate_data_block+0x243/0xa30 [f2fs]
+ ? __mod_lruvec_page_state+0xa0/0x150
+ do_write_page+0x80/0x160 [f2fs]
+ f2fs_do_write_node_page+0x32/0x50 [f2fs]
+ __write_node_page+0x339/0x730 [f2fs]
+ f2fs_sync_node_pages+0x5a6/0x780 [f2fs]
+ block_operations+0x257/0x340 [f2fs]
+ f2fs_write_checkpoint+0x102/0x1050 [f2fs]
+ f2fs_gc+0x27c/0x630 [f2fs]
+ ? folio_mark_dirty+0x36/0x70
+ f2fs_balance_fs+0x16f/0x180 [f2fs]
+
+This patch adds checking whether free sections are enough before checkpoint
+during gc.
+
+Signed-off-by: Yonggil Song <yonggil.song@samsung.com>
+[Jaegeuk Kim: code clean-up]
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/stm32_rproc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/f2fs/gc.c      | 10 ++++++++--
+ fs/f2fs/gc.h      |  2 ++
+ fs/f2fs/segment.h | 39 ++++++++++++++++++++++++++++++---------
+ 3 files changed, 40 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
-index 23c1690b8d73f..8746cbb1f168d 100644
---- a/drivers/remoteproc/stm32_rproc.c
-+++ b/drivers/remoteproc/stm32_rproc.c
-@@ -291,8 +291,16 @@ static void stm32_rproc_mb_vq_work(struct work_struct *work)
- 	struct stm32_mbox *mb = container_of(work, struct stm32_mbox, vq_work);
- 	struct rproc *rproc = dev_get_drvdata(mb->client.dev);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 2996d38aa89c3..f984d9f05f808 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1810,6 +1810,7 @@ int f2fs_gc(struct f2fs_sb_info *sbi, struct f2fs_gc_control *gc_control)
+ 		.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
+ 	};
+ 	unsigned int skipped_round = 0, round = 0;
++	unsigned int upper_secs;
  
-+	mutex_lock(&rproc->lock);
+ 	trace_f2fs_gc_begin(sbi->sb, gc_type, gc_control->no_bg_gc,
+ 				gc_control->nr_free_secs,
+@@ -1895,8 +1896,13 @@ int f2fs_gc(struct f2fs_sb_info *sbi, struct f2fs_gc_control *gc_control)
+ 		}
+ 	}
+ 
+-	/* Write checkpoint to reclaim prefree segments */
+-	if (free_sections(sbi) < NR_CURSEG_PERSIST_TYPE &&
++	__get_secs_required(sbi, NULL, &upper_secs, NULL);
 +
-+	if (rproc->state != RPROC_RUNNING)
-+		goto unlock_mutex;
++	/*
++	 * Write checkpoint to reclaim prefree segments.
++	 * We need more three extra sections for writer's data/node/dentry.
++	 */
++	if (free_sections(sbi) <= upper_secs + NR_GC_CHECKPOINT_SECS &&
+ 				prefree_segments(sbi)) {
+ 		ret = f2fs_write_checkpoint(sbi, &cpc);
+ 		if (ret)
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index 5ad6ac63e13f3..28a00942802c2 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -30,6 +30,8 @@
+ /* Search max. number of dirty segments to select a victim segment */
+ #define DEF_MAX_VICTIM_SEARCH 4096 /* covers 8GB */
+ 
++#define NR_GC_CHECKPOINT_SECS (3)	/* data/node/dentry sections */
 +
- 	if (rproc_vq_interrupt(rproc, mb->vq_id) == IRQ_NONE)
- 		dev_dbg(&rproc->dev, "no message found in vq%d\n", mb->vq_id);
-+
-+unlock_mutex:
-+	mutex_unlock(&rproc->lock);
+ struct f2fs_gc_kthread {
+ 	struct task_struct *f2fs_gc_task;
+ 	wait_queue_head_t gc_wait_queue_head;
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index babb29a1c0347..9728bdeccb2cc 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -602,8 +602,12 @@ static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
+ 	return true;
  }
  
- static void stm32_rproc_mb_callback(struct mbox_client *cl, void *data)
+-static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
+-					int freed, int needed)
++/*
++ * calculate needed sections for dirty node/dentry
++ * and call has_curseg_enough_space
++ */
++static inline void __get_secs_required(struct f2fs_sb_info *sbi,
++		unsigned int *lower_p, unsigned int *upper_p, bool *curseg_p)
+ {
+ 	unsigned int total_node_blocks = get_pages(sbi, F2FS_DIRTY_NODES) +
+ 					get_pages(sbi, F2FS_DIRTY_DENTS) +
+@@ -613,20 +617,37 @@ static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
+ 	unsigned int dent_secs = total_dent_blocks / CAP_BLKS_PER_SEC(sbi);
+ 	unsigned int node_blocks = total_node_blocks % CAP_BLKS_PER_SEC(sbi);
+ 	unsigned int dent_blocks = total_dent_blocks % CAP_BLKS_PER_SEC(sbi);
+-	unsigned int free, need_lower, need_upper;
++
++	if (lower_p)
++		*lower_p = node_secs + dent_secs;
++	if (upper_p)
++		*upper_p = node_secs + dent_secs +
++			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0);
++	if (curseg_p)
++		*curseg_p = has_curseg_enough_space(sbi,
++				node_blocks, dent_blocks);
++}
++
++static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
++					int freed, int needed)
++{
++	unsigned int free_secs, lower_secs, upper_secs;
++	bool curseg_space;
+ 
+ 	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
+ 		return false;
+ 
+-	free = free_sections(sbi) + freed;
+-	need_lower = node_secs + dent_secs + reserved_sections(sbi) + needed;
+-	need_upper = need_lower + (node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0);
++	__get_secs_required(sbi, &lower_secs, &upper_secs, &curseg_space);
++
++	free_secs = free_sections(sbi) + freed;
++	lower_secs += needed + reserved_sections(sbi);
++	upper_secs += needed + reserved_sections(sbi);
+ 
+-	if (free > need_upper)
++	if (free_secs > upper_secs)
+ 		return false;
+-	else if (free <= need_lower)
++	else if (free_secs <= lower_secs)
+ 		return true;
+-	return !has_curseg_enough_space(sbi, node_blocks, dent_blocks);
++	return !curseg_space;
+ }
+ 
+ static inline bool f2fs_is_checkpoint_ready(struct f2fs_sb_info *sbi)
 -- 
 2.39.2
 
