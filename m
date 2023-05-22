@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CD7370C68B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 919FD70C7EC
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234273AbjEVTTU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42350 "EHLO
+        id S234871AbjEVTdw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbjEVTTT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:19 -0400
+        with ESMTP id S234834AbjEVTdv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:33:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E70A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A425413E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:33:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 374C362801
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418E9C433D2;
-        Mon, 22 May 2023 19:19:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6274E62936
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A970C433EF;
+        Mon, 22 May 2023 19:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783157;
-        bh=9PDjsd8TFOzORBuTm/kxojZ+UV6cnA+Li2WBojSPBUA=;
+        s=korg; t=1684783983;
+        bh=XS8NOe42e6gQdhzW5ZEjWVqzcRzVWw2b7iG97AjDV84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1WpnZKQ9zlzSsa02sz3Jxev85hAFC9Dld2FXKmwAEpAi+149gw/LzhmYHeJOD3NcL
-         KbtCgkARX1kKTNB1NBgLwQjjRm7tWu5JD62Hycl4RYGMjkweOR9LeA8pVeO97iM8oz
-         khh0XSU7iCHIETy9MrT8WYRm8i5FP2FLPSpswYAY=
+        b=1TRV2W3mkQnXAHG7oVqGOi749gX0wOoUJSgJsuN1tFTRe2KwaNuU+FJlXAAsQPE3K
+         yxV2gQ9QBnxXTRHeIOnQpJ1dErWcYCq9v18DQLSPAJmgJTEavOYe8sqjLZOYkXGafD
+         Pd4X2nrrDew97Rjm6yEahAfyoH2Tax+WPASLOkl4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/203] netfilter: nf_tables: fix nft_trans type confusion
+Subject: [PATCH 6.1 225/292] bridge: always declare tunnel functions
 Date:   Mon, 22 May 2023 20:09:42 +0100
-Message-Id: <20230522190359.348369904@linuxfoundation.org>
+Message-Id: <20230522190411.579598997@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,41 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e3c361b8acd636f5fe80c02849ca175201edf10c ]
+[ Upstream commit 89dcd87ce534a3a7f267cfd58505803006f51301 ]
 
-nft_trans_FOO objects all share a common nft_trans base structure, but
-trailing fields depend on the real object size. Access is only safe after
-trans->msg_type check.
+When CONFIG_BRIDGE_VLAN_FILTERING is disabled, two functions are still
+defined but have no prototype or caller. This causes a W=1 warning for
+the missing prototypes:
 
-Check for rule type first.  Found by code inspection.
+net/bridge/br_netlink_tunnel.c:29:6: error: no previous prototype for 'vlan_tunid_inrange' [-Werror=missing-prototypes]
+net/bridge/br_netlink_tunnel.c:199:5: error: no previous prototype for 'br_vlan_tunnel_info' [-Werror=missing-prototypes]
 
-Fixes: 1a94e38d254b ("netfilter: nf_tables: add NFTA_RULE_ID attribute")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+The functions are already contitional on CONFIG_BRIDGE_VLAN_FILTERING,
+and I coulnd't easily figure out the right set of #ifdefs, so just
+move the declarations out of the #ifdef to avoid the warning,
+at a small cost in code size over a more elaborate fix.
+
+Fixes: 188c67dd1906 ("net: bridge: vlan options: add support for tunnel id dumping")
+Fixes: 569da0822808 ("net: bridge: vlan options: add support for tunnel mapping set/del")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230516194625.549249-3-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/bridge/br_private_tunnel.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 091df8a7cb1e7..f20244a91d781 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3595,12 +3595,10 @@ static struct nft_rule *nft_rule_lookup_byid(const struct net *net,
- 	struct nft_trans *trans;
+diff --git a/net/bridge/br_private_tunnel.h b/net/bridge/br_private_tunnel.h
+index 2b053289f0166..efb096025151a 100644
+--- a/net/bridge/br_private_tunnel.h
++++ b/net/bridge/br_private_tunnel.h
+@@ -27,6 +27,10 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
+ int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg);
+ int br_fill_vlan_tunnel_info(struct sk_buff *skb,
+ 			     struct net_bridge_vlan_group *vg);
++bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
++			const struct net_bridge_vlan *v_last);
++int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
++			u16 vid, u32 tun_id, bool *changed);
  
- 	list_for_each_entry(trans, &nft_net->commit_list, list) {
--		struct nft_rule *rule = nft_trans_rule(trans);
--
- 		if (trans->msg_type == NFT_MSG_NEWRULE &&
- 		    trans->ctx.chain == chain &&
- 		    id == nft_trans_rule_id(trans))
--			return rule;
-+			return nft_trans_rule(trans);
- 	}
- 	return ERR_PTR(-ENOENT);
- }
+ #ifdef CONFIG_BRIDGE_VLAN_FILTERING
+ /* br_vlan_tunnel.c */
+@@ -43,10 +47,6 @@ void br_handle_ingress_vlan_tunnel(struct sk_buff *skb,
+ 				   struct net_bridge_vlan_group *vg);
+ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+ 				 struct net_bridge_vlan *vlan);
+-bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
+-			const struct net_bridge_vlan *v_last);
+-int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
+-			u16 vid, u32 tun_id, bool *changed);
+ #else
+ static inline int vlan_tunnel_init(struct net_bridge_vlan_group *vg)
+ {
 -- 
 2.39.2
 
