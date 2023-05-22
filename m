@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF1070C84B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C02A70C6B4
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:21:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235028AbjEVThu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58538 "EHLO
+        id S234394AbjEVTVY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:21:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235029AbjEVThk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7112DE78
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:27 -0700 (PDT)
+        with ESMTP id S234385AbjEVTVX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D398B0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C435D629AB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3985C433EF;
-        Mon, 22 May 2023 19:36:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A083E6282E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE26C433EF;
+        Mon, 22 May 2023 19:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784214;
-        bh=2ht1WBaXAXy/g8qwj8Dgl0icpTTe5K71jIink7PKcs4=;
+        s=korg; t=1684783282;
+        bh=QrCSDrnby/P7VpBpaW/a1mmjlKr+8oDMqe+xJkOiMu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QhoYURUrghJp7uGJYGav1nn/03X+4nUIzsTmkQKG8nYrDy+aZxCCMtaqstXGQtt8d
-         CrHnGSWQ/IDKQG9i8OEbOy0aG63ZYmIG7LDhtEgoXqtuAvLRPXH0/KCELwoGMkq1y0
-         YfJIaPCK8msBI6TvkHhOT00g9ixGf85vL6EvbZ4o=
+        b=r0jPum8trTxYPWGKi7O+/tZCo70giL/DynliGFMpjAwoIyB1arA5vP6eAH2fTTiih
+         RUsp6eNLqZ+zlS987Jo2kjm37reZ4YmmZ65H5OHbXq4I2PK0lGKUoSsAz0/Ga1SxRS
+         GsJmOoD8X1nP/9lqic8//NPAYqLcSW+ooQLDE6js=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vitaliy Tomin <tomin@iszf.irk.ru>,
-        stable <stable@kernel.org>
-Subject: [PATCH 6.1 264/292] serial: Add support for Advantech PCI-1611U card
+        patches@lists.linux.dev, Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 5.15 197/203] tpm/tpm_tis: Disable interrupts for more Lenovo devices
 Date:   Mon, 22 May 2023 20:10:21 +0100
-Message-Id: <20230522190412.540777759@linuxfoundation.org>
+Message-Id: <20230522190400.489406744@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,48 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vitaliy Tomin <tomin@iszf.irk.ru>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-commit d2b00516de0e1d696724247098f6733a6ea53908 upstream.
+commit e7d3e5c4b1dd50a70b31524c3228c62bb41bbab2 upstream.
 
-Add support for Advantech PCI-1611U card
+The P360 Tiny suffers from an irq storm issue like the T490s, so add
+an entry for it to tpm_tis_dmi_table, and force polling. There also
+previously was a report from the previous attempt to enable interrupts
+that involved a ThinkPad L490. So an entry is added for it as well.
 
-Advantech provides opensource drivers for this and many others card
-based on legacy copy of 8250_pci driver called adv950
-
-https://www.advantech.com/emt/support/details/driver?id=1-TDOIMJ
-
-It is hard to maintain to run as out of tree module on newer kernels.
-Just adding PCI ID to kernel 8250_pci works perfect.
-
-Signed-off-by: Vitaliy Tomin <tomin@iszf.irk.ru>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230423034512.2671157-1-tomin@iszf.irk.ru
+Cc: stable@vger.kernel.org
+Reported-by: Peter Zijlstra <peterz@infradead.org> # P360 Tiny
+Closes: https://lore.kernel.org/linux-integrity/20230505130731.GO83892@hirez.programming.kicks-ass.net/
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/char/tpm/tpm_tis.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1940,6 +1940,8 @@ pci_moxa_setup(struct serial_private *pr
- #define PCI_SUBDEVICE_ID_SIIG_DUAL_30	0x2530
- #define PCI_VENDOR_ID_ADVANTECH		0x13fe
- #define PCI_DEVICE_ID_INTEL_CE4100_UART 0x2e66
-+#define PCI_DEVICE_ID_ADVANTECH_PCI1600	0x1600
-+#define PCI_DEVICE_ID_ADVANTECH_PCI1600_1611	0x1611
- #define PCI_DEVICE_ID_ADVANTECH_PCI3620	0x3620
- #define PCI_DEVICE_ID_ADVANTECH_PCI3618	0x3618
- #define PCI_DEVICE_ID_ADVANTECH_PCIf618	0xf618
-@@ -4105,6 +4107,9 @@ static SIMPLE_DEV_PM_OPS(pciserial_pm_op
- 			 pciserial_resume_one);
+--- a/drivers/char/tpm/tpm_tis.c
++++ b/drivers/char/tpm/tpm_tis.c
+@@ -83,6 +83,22 @@ static const struct dmi_system_id tpm_ti
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T490s"),
+ 		},
+ 	},
++	{
++		.callback = tpm_tis_disable_irq,
++		.ident = "ThinkStation P360 Tiny",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkStation P360 Tiny"),
++		},
++	},
++	{
++		.callback = tpm_tis_disable_irq,
++		.ident = "ThinkPad L490",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L490"),
++		},
++	},
+ 	{}
+ };
  
- static const struct pci_device_id serial_pci_tbl[] = {
-+	{	PCI_VENDOR_ID_ADVANTECH, PCI_DEVICE_ID_ADVANTECH_PCI1600,
-+		PCI_DEVICE_ID_ADVANTECH_PCI1600_1611, PCI_ANY_ID, 0, 0,
-+		pbn_b0_4_921600 },
- 	/* Advantech use PCI_DEVICE_ID_ADVANTECH_PCI3620 (0x3620) as 'PCI_SUBVENDOR_ID' */
- 	{	PCI_VENDOR_ID_ADVANTECH, PCI_DEVICE_ID_ADVANTECH_PCI3620,
- 		PCI_DEVICE_ID_ADVANTECH_PCI3620, 0x0001, 0, 0,
 
 
