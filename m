@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E2070C848
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C95E970C9F2
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235032AbjEVThl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58538 "EHLO
+        id S233034AbjEVTxY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:53:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235016AbjEVTh3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:29 -0400
+        with ESMTP id S235467AbjEVTxX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFDDE5F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61039C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C20446299A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C79C433D2;
-        Mon, 22 May 2023 19:36:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8665661EDE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13DCC433EF;
+        Mon, 22 May 2023 19:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784183;
-        bh=H3j/oO4DXt59iPdtJWNsZHHIFrQHp4uQ31Ak/zsxJHs=;
+        s=korg; t=1684785200;
+        bh=6/bRcj6aba7/nElgoIi5a3GBsW3PnTVqoNdwfBf/kYk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jI/q1fQ7yWd8WXSotnGGYMwQz76CyWdxL1fQQoa4HIIoHsIwjKuEygFDQyuLf6NSN
-         pmQhl8UI+WaBihu2F1O1J8odbSLdt7OzlMuekBRAgGcHLJhuzYaS0oAHbIsBbjjS4y
-         MD6FoFAoStWFrd9EPE9KrK9x8Rr5HHw/x9RR5XPQ=
+        b=vnMdBtQY0r1nsB9hl+hBT6zTeuhHhkQe5FYkSppQP7qCUx7kspaqtddIkqBQZwxOs
+         AIang4ZI3l0se1HUFMEq38gq05oQolLQoa9kkepx5x3Sq1ZLmkpBp0j9vB+ZXM1tpz
+         9ZtOCyq6397OXQo2JY40MFrlL2elt3LsMweRz2SM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Ma <li.ma@amd.com>,
-        Yifan Zhang <yifan1.zhang@amd.com>,
+        patches@lists.linux.dev, Hawking Zhang <Hawking.Zhang@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 290/292] drm/amdgpu: declare firmware for new MES 11.0.4
+Subject: [PATCH 6.3 342/364] drm/amdgpu/gfx11: update gpu_clock_counter logic
 Date:   Mon, 22 May 2023 20:10:47 +0100
-Message-Id: <20230522190413.198179818@linuxfoundation.org>
+Message-Id: <20230522190421.317142180@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,30 +53,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Ma <li.ma@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit a462ef872fd1e83ebd075cf82d91f111acaa629e upstream.
+commit d5aa417808cf14c052ca042920b3c6b9f1dc6aa4 upstream.
 
-To support new mes ip block
+This code was written prior to previous updates to this
+logic for other chips.  The RSC registers are part of
+SMUIO which is an always on block so there is no need
+to disable gfxoff.  Additionally add the carryover and
+preemption checks.
 
-Signed-off-by: Li Ma <li.ma@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+v2: rebase
+
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.y: 5591a051b86b: drm/amdgpu: refine get gpu clock counter method
+Cc: stable@vger.kernel.org # 6.2.y: 5591a051b86b: drm/amdgpu: refine get gpu clock counter method
+Cc: stable@vger.kernel.org # 6.3.y: 5591a051b86b: drm/amdgpu: refine get gpu clock counter method
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -40,6 +40,8 @@ MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes.bi
- MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes1.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes1.bin");
-+MODULE_FIRMWARE("amdgpu/gc_11_0_4_mes.bin");
-+MODULE_FIRMWARE("amdgpu/gc_11_0_4_mes1.bin");
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -4665,24 +4665,27 @@ static uint64_t gfx_v11_0_get_gpu_clock_
+ 	uint64_t clock;
+ 	uint64_t clock_counter_lo, clock_counter_hi_pre, clock_counter_hi_after;
  
- static int mes_v11_0_hw_fini(void *handle);
- static int mes_v11_0_kiq_hw_init(struct amdgpu_device *adev);
+-	amdgpu_gfx_off_ctrl(adev, false);
+-	mutex_lock(&adev->gfx.gpu_clock_mutex);
+ 	if (amdgpu_sriov_vf(adev)) {
++		amdgpu_gfx_off_ctrl(adev, false);
++		mutex_lock(&adev->gfx.gpu_clock_mutex);
+ 		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(GC, 0, regCP_MES_MTIME_HI);
+ 		clock_counter_lo = (uint64_t)RREG32_SOC15(GC, 0, regCP_MES_MTIME_LO);
+ 		clock_counter_hi_after = (uint64_t)RREG32_SOC15(GC, 0, regCP_MES_MTIME_HI);
+ 		if (clock_counter_hi_pre != clock_counter_hi_after)
+ 			clock_counter_lo = (uint64_t)RREG32_SOC15(GC, 0, regCP_MES_MTIME_LO);
++		mutex_unlock(&adev->gfx.gpu_clock_mutex);
++		amdgpu_gfx_off_ctrl(adev, true);
+ 	} else {
++		preempt_disable();
+ 		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+ 		clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
+ 		clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+ 		if (clock_counter_hi_pre != clock_counter_hi_after)
+ 			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
++		preempt_enable();
+ 	}
+ 	clock = clock_counter_lo | (clock_counter_hi_after << 32ULL);
+-	mutex_unlock(&adev->gfx.gpu_clock_mutex);
+-	amdgpu_gfx_off_ctrl(adev, true);
++
+ 	return clock;
+ }
+ 
 
 
