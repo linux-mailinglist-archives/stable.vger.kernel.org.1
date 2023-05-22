@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D11370C75B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5C670C622
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234667AbjEVT2h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50236 "EHLO
+        id S232929AbjEVTP3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234674AbjEVT2f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:35 -0400
+        with ESMTP id S231538AbjEVTPU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA982CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF165184
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 335736239F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50816C433EF;
-        Mon, 22 May 2023 19:28:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AFBE6274E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1A8C433D2;
+        Mon, 22 May 2023 19:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783713;
-        bh=ljTxyucIRDttnYxn8OYDAsFD42hJcSoKDHU6eCAObKU=;
+        s=korg; t=1684782911;
+        bh=tHNCniWDgY4VtmfVvTqf1L/rTVX3QQEKktO4dpi2r9E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wDWvPv2LPyW8ff71tVWStC8AqB8B6eRXS3UoJ5ynTjT15zl5+RmFPof9QzTOl7Mq+
-         AYFb4wzlg8kxfAwQDsRK2maLSTPSfgYsrWCNDXLDpgjDRCStEim9ixUwLmTCHcJs1d
-         g7duUE0YsGuLiAXTkjpL/AeAVtfdcV9MYzVVfoK4=
+        b=FaRCVAJ1Gm1VkU7DVX3fV/pEUG5keQKXkWs09zg0aSXd5AmlgU56KZEFpZFTztZZf
+         XMW0esuwsEYV0u6MP8ge4NAiNCgXnGyJSCTJSQJPjjc1cB9ln78jBaDukF2ngkenNp
+         J/s6jSmQr+OsAa2//ZS0oD8PSqCoPv8KPH6gcyn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/292] sched: Fix KCSAN noinstr violation
-Date:   Mon, 22 May 2023 20:08:14 +0100
-Message-Id: <20230522190409.389600071@linuxfoundation.org>
+Subject: [PATCH 5.15 071/203] wifi: iwlwifi: dvm: Fix memcpy: detected field-spanning write backtrace
+Date:   Mon, 22 May 2023 20:08:15 +0100
+Message-Id: <20230522190356.954391482@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,38 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e0b081d17a9f4e5c0cbb0e5fbeb1abe3de0f7e4e ]
+[ Upstream commit ef16799640865f937719f0771c93be5dca18adc6 ]
 
-With KCSAN enabled, end_of_stack() can get out-of-lined.  Force it
-inline.
+A received TKIP key may be up to 32 bytes because it may contain
+MIC rx/tx keys too. These are not used by iwl and copying these
+over overflows the iwl_keyinfo.key field.
 
-Fixes the following warnings:
+Add a check to not copy more data to iwl_keyinfo.key then will fit.
 
-  vmlinux.o: warning: objtool: check_stackleak_irqoff+0x2b: call to end_of_stack() leaves .noinstr.text section
+This fixes backtraces like this one:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/cc1b4d73d3a428a00d206242a68fdf99a934ca7b.1681320026.git.jpoimboe@kernel.org
+ memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
+ WARNING: CPU: 1 PID: 946 at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 iwlagn_send_sta_key+0x375/0x390 [iwldvm]
+ <snip>
+ Hardware name: Dell Inc. Latitude E6430/0H3MT5, BIOS A21 05/08/2017
+ RIP: 0010:iwlagn_send_sta_key+0x375/0x390 [iwldvm]
+ <snip>
+ Call Trace:
+  <TASK>
+  iwl_set_dynamic_key+0x1f0/0x220 [iwldvm]
+  iwlagn_mac_set_key+0x1e4/0x280 [iwldvm]
+  drv_set_key+0xa4/0x1b0 [mac80211]
+  ieee80211_key_enable_hw_accel+0xa8/0x2d0 [mac80211]
+  ieee80211_key_replace+0x22d/0x8e0 [mac80211]
+ <snip>
+
+Link: https://www.alionet.org/index.php?topic=1469.0
+Link: https://lore.kernel.org/linux-wireless/20230218191056.never.374-kees@kernel.org/
+Link: https://lore.kernel.org/linux-wireless/68760035-7f75-1b23-e355-bfb758a87d83@redhat.com/
+Cc: Kees Cook <keescook@chromium.org>
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/task_stack.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/sta.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-index 5e799a47431e8..f158b025c1750 100644
---- a/include/linux/sched/task_stack.h
-+++ b/include/linux/sched/task_stack.h
-@@ -23,7 +23,7 @@ static __always_inline void *task_stack_page(const struct task_struct *task)
- 
- #define setup_thread_stack(new,old)	do { } while(0)
- 
--static inline unsigned long *end_of_stack(const struct task_struct *task)
-+static __always_inline unsigned long *end_of_stack(const struct task_struct *task)
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
+index ddc14059b07d1..7c3168145e58a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
+@@ -1086,6 +1086,7 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
  {
- #ifdef CONFIG_STACK_GROWSUP
- 	return (unsigned long *)((unsigned long)task->stack + THREAD_SIZE) - 1;
+ 	__le16 key_flags;
+ 	struct iwl_addsta_cmd sta_cmd;
++	size_t to_copy;
+ 	int i;
+ 
+ 	spin_lock_bh(&priv->sta_lock);
+@@ -1105,7 +1106,9 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
+ 		sta_cmd.key.tkip_rx_tsc_byte2 = tkip_iv32;
+ 		for (i = 0; i < 5; i++)
+ 			sta_cmd.key.tkip_rx_ttak[i] = cpu_to_le16(tkip_p1k[i]);
+-		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
++		/* keyconf may contain MIC rx/tx keys which iwl does not use */
++		to_copy = min_t(size_t, sizeof(sta_cmd.key.key), keyconf->keylen);
++		memcpy(sta_cmd.key.key, keyconf->key, to_copy);
+ 		break;
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 		key_flags |= STA_KEY_FLG_KEY_SIZE_MSK;
 -- 
 2.39.2
 
