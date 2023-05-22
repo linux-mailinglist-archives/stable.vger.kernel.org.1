@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A6370C802
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0528070C98E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234957AbjEVTfN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
+        id S235353AbjEVTtY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:49:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234932AbjEVTfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:08 -0400
+        with ESMTP id S235343AbjEVTtY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D237E1B1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0929195
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B68B6293B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E82AC433EF;
-        Mon, 22 May 2023 19:33:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A2BD62ADA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2334C433D2;
+        Mon, 22 May 2023 19:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784021;
-        bh=VT4YC7zRdb39ixdVuXW2p4bVbm8q6NglsHoVXOgRoTQ=;
+        s=korg; t=1684784962;
+        bh=qcTLJdlnhfgIBA0C43Sbk31XTRmyFAaa++oUAUaTBn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F97wmtuKq450aiR075m5s3cACOGfXP9c6tz4L4tcEzJRq0ynkbFqJt6laNb8hSRHO
-         D5GEd/tuW9JWDwvL5pIqNe7CnyOaRVgspHuol5YPC3U1WJUdEIhVVhHmMhy0LZkHEl
-         De6bBFD3My7WmQo26wFaA0OUSOiTKD59yuXnKeCM=
+        b=pbeEMJwI3OBOtrTzJBhVLiilM8M3f4cz7QPzEXgCudZqd+N1v7uINYz3iM9TP35X3
+         UtCUymhW+VGtwL5BFQMZ9V4PWZszf3Yi/onHJMvd2L5QEckLtaxjQdKCQCkUfsxnT2
+         hnc1LBqOqQ6ST3tdYJ+NM5g3Nwe08gcgfCJk8N3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alon Giladi <alon.giladi@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/292] wifi: iwlwifi: fix OEMs name in the ppag approved list
+Subject: [PATCH 6.3 262/364] net: bcmgenet: Restore phy_stop() depending upon suspend/close
 Date:   Mon, 22 May 2023 20:09:27 +0100
-Message-Id: <20230522190411.208073259@linuxfoundation.org>
+Message-Id: <20230522190419.258283968@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alon Giladi <alon.giladi@intel.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit eca7296d9a671e9961834d2ace9cc0ce21fc15b3 ]
+[ Upstream commit 225c657945c4a6307741cb3cc89467eadcc26e9b ]
 
-Fix a spelling mistake.
+Removing the phy_stop() from bcmgenet_netif_stop() ended up causing
+warnings from the PHY library that phy_start() is called from the
+RUNNING state since we are no longer stopping the PHY state machine
+during bcmgenet_suspend().
 
-Fixes: e8e10a37c51c ("iwlwifi: acpi: move ppag code from mvm to fw/acpi")
-Signed-off-by: Alon Giladi <alon.giladi@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230514120631.fdd07f36a8bf.I223e5fb16ab5c95d504c3fdaffd0bd70affad1c2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Restore the call to phy_stop() but make it conditional on being called
+from the close or suspend path.
+
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Fixes: 93e0401e0fc0 ("net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Link: https://lore.kernel.org/r/20230515025608.2587012-1-f.fainelli@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index a02e5a67b7066..585e8cd2d332d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -38,7 +38,7 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
- 	},
- 	{ .ident = "ASUS",
- 	  .matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTek COMPUTER INC."),
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 		},
- 	},
- 	{}
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index f28ffc31df220..eca0c92c0c84d 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3450,7 +3450,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 	return ret;
+ }
+ 
+-static void bcmgenet_netif_stop(struct net_device *dev)
++static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 
+@@ -3465,6 +3465,8 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
+ 
++	if (stop_phy)
++		phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
+ 
+@@ -3485,7 +3487,7 @@ static int bcmgenet_close(struct net_device *dev)
+ 
+ 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
+ 
+-	bcmgenet_netif_stop(dev);
++	bcmgenet_netif_stop(dev, false);
+ 
+ 	/* Really kill the PHY state machine and disconnect from it */
+ 	phy_disconnect(dev->phydev);
+@@ -4303,7 +4305,7 @@ static int bcmgenet_suspend(struct device *d)
+ 
+ 	netif_device_detach(dev);
+ 
+-	bcmgenet_netif_stop(dev);
++	bcmgenet_netif_stop(dev, true);
+ 
+ 	if (!device_may_wakeup(d))
+ 		phy_suspend(dev->phydev);
 -- 
 2.39.2
 
