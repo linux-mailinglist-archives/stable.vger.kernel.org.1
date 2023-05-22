@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0248970C4C8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FDA970C4C9
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231448AbjEVSBP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
+        id S231537AbjEVSBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231537AbjEVSBN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:13 -0400
+        with ESMTP id S231405AbjEVSBP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 383A6CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C960C94
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BA6B61F9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8579AC433D2;
-        Mon, 22 May 2023 18:01:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 676F761F9F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BD4C433EF;
+        Mon, 22 May 2023 18:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778471;
-        bh=OLTjiYZsWrSkG8drNpY+R64VUvGVEWRLqgOKSP4HW8M=;
+        s=korg; t=1684778473;
+        bh=1TLU3kNxzArir2KrS3S6EfVGc7qwvCkRCjbSeLS8CR8=;
         h=Subject:To:Cc:From:Date:From;
-        b=pIZQ9eC/XbmSanO160b15+XEkfgbaYPwWqdbtDOg0plrLrp8OcJD7QHHMYXrFxEfA
-         ALZkbOIbJo+z0RGBxRs6H3j+yyqXdudails9d+nbErcWrVRPB6UJjhUbjfZpwB69oM
-         quY174LO2tPZv5keFT9w7bVACGVzU5wOOwvuEV/Q=
-Subject: FAILED: patch "[PATCH] tpm: Prevent hwrng from activating during resume" failed to apply to 4.19-stable tree
+        b=nbyvaACsIJxPioS34vGFUpZvYjFyqAfwc2CA9IiYRBrXhBnov9kcL5LZSmxSAQk6D
+         ZV4eMqLrRN8QKosa6Ya2lzYb2t+LNHs42Anpii0LLsYKcQSQwKp1U//5afG4hJA2MF
+         2WLodaIfDDZPJZnyLJarR4yHNAddpgAU0GRHlcxI=
+Subject: FAILED: patch "[PATCH] tpm: Prevent hwrng from activating during resume" failed to apply to 5.4-stable tree
 To:     jarkko@kernel.org, jsnitsel@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Mon, 22 May 2023 19:01:00 +0100
-Message-ID: <2023052200-unguided-creasing-0e4c@gregkh>
+Message-ID: <2023052200-washout-quickly-291c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 99d46450625590d410f86fe4660a5eff7d3b8343
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052200-unguided-creasing-0e4c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052200-washout-quickly-291c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,12 +76,6 @@ aab73d952402 ("tpm: add sysfs exports for all banks of PCR registers")
 74edff2d74c6 ("tpm: Move tpm_buf code to include/linux/")
 44abdb377b7c ("tpm: use GFP_KERNEL instead of GFP_HIGHMEM for tpm_buf")
 2e2ee5a2db06 ("tpm: Add a flag to indicate TPM power is managed by firmware")
-28eba2fddd5a ("tpm: Remove a deprecated comments about implicit sysfs locking")
-fa4f99c05320 ("tpm: tpm_ibm_vtpm: Fix unallocated banks")
-43c78d88036e ("kbuild: compile-test kernel headers to ensure they are self-contained")
-d6fc9fcbaa65 ("kbuild: compile-test exported headers to ensure they are self-contained")
-e846f0dc57f4 ("kbuild: add support for ensuring headers are self-contained")
-a2d635decbfa ("Merge tag 'drm-next-2019-05-09' of git://anongit.freedesktop.org/drm/drm")
 
 thanks,
 
