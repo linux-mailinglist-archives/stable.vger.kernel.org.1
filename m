@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1566B70C690
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C686370C7F6
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234291AbjEVTTf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42486 "EHLO
+        id S234796AbjEVTe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:34:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbjEVTTe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D5FDA3;
-        Mon, 22 May 2023 12:19:33 -0700 (PDT)
+        with ESMTP id S234935AbjEVTex (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:34:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB6610DC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3625A627F7;
-        Mon, 22 May 2023 19:19:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D7FC433D2;
-        Mon, 22 May 2023 19:19:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A2B96296B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A07C433EF;
+        Mon, 22 May 2023 19:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783172;
-        bh=xZ455jMDhB0RdiKwxwnNu9wuMeZgXRP5pt6WSDU0Xao=;
+        s=korg; t=1684783998;
+        bh=ric3+fDcS5a/ldsz3ivAwbf02xmXwqI4rxZ9RHUAm7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x7d9qjpvhUrT1nJcQt9xNj8oLZ4QIcW9z3jvBxnAugASwEy0ltCpsPsB9q6nKgebn
-         0YGPol2aYo08zkNbJSd+jcx0brW3YqvgIaWywkR8g+yd8+yp/OcoaplWGF/U1e/p1j
-         i+I+MerC/bETxhq6Oa5hFWB4aqV0HgD9QxJaSvkw=
+        b=k520WAp4x8z/y+wRTASPcKrRdoewtlWS1csbryEk0fBWfSa6yEcnCSv3NDoRZB01o
+         q6wFGsQyz1268AWjnm5BB608qEz9raAzk2RfafGV+y9nIXxUiUnJsYj6MHMUTyNbyY
+         aB8sgTwC88lcF9ma9pSVNvMNqgAgoIpxLjqeubnw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxime Bizon <mbizon@freebox.fr>,
-        linux-usb@vger.kernel.org, stable <stable@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 163/203] usb-storage: fix deadlock when a scsi command timeouts more than once
+        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH 6.1 230/292] usb: dwc3: gadget: Improve dwc3_gadget_suspend() and dwc3_gadget_resume()
 Date:   Mon, 22 May 2023 20:09:47 +0100
-Message-Id: <20230522190359.484723804@linuxfoundation.org>
+Message-Id: <20230522190411.703472219@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,108 +53,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxime Bizon <mbizon@freebox.fr>
+From: Roger Quadros <rogerq@kernel.org>
 
-commit a398d5eac6984316e71474e25b975688f282379b upstream.
+commit c8540870af4ce6ddeb27a7bb5498b75fb29b643c upstream.
 
-With faulty usb-storage devices, read/write can timeout, in that case
-the SCSI layer will abort and re-issue the command. USB storage has no
-internal timeout, it relies on SCSI layer aborting commands via
-.eh_abort_handler() for non those responsive devices.
+Prevent -ETIMEDOUT error on .suspend().
+e.g. If gadget driver is loaded and we are connected to a USB host,
+all transfers must be stopped before stopping the controller else
+we will not get a clean stop i.e. dwc3_gadget_run_stop() will take
+several seconds to complete and will return -ETIMEDOUT.
 
-After two consecutive timeouts of the same command, SCSI layer calls
-.eh_device_reset_handler(), without calling .eh_abort_handler() first.
+Handle error cases properly in dwc3_gadget_suspend().
+Simplify dwc3_gadget_resume() by using the introduced helper function.
 
-With usb-storage, this causes a deadlock:
-
-  -> .eh_device_reset_handler
-    -> device_reset
-      -> mutex_lock(&(us->dev_mutex));
-
-mutex already by usb_stor_control_thread(), which is waiting for
-command completion:
-
-  -> usb_stor_control_thread (mutex taken here)
-    -> usb_stor_invoke_transport
-      -> usb_stor_Bulk_transport
-        -> usb_stor_bulk_srb
-	  -> usb_stor_bulk_transfer_sglist
-	    -> usb_sg_wait
-
-Make sure we cancel any pending command in .eh_device_reset_handler()
-to avoid this.
-
-Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
-Cc: linux-usb@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/all/ZEllnjMKT8ulZbJh@sakura/
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230505114759.1189741-1-mbizon@freebox.fr
+Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+Cc: stable@vger.kernel.org
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20230503110048.30617-1-rogerq@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/scsiglue.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ drivers/usb/dwc3/gadget.c |   67 +++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 33 deletions(-)
 
---- a/drivers/usb/storage/scsiglue.c
-+++ b/drivers/usb/storage/scsiglue.c
-@@ -407,22 +407,25 @@ static DEF_SCSI_QCMD(queuecommand)
-  ***********************************************************************/
- 
- /* Command timeout and abort */
--static int command_abort(struct scsi_cmnd *srb)
-+static int command_abort_matching(struct us_data *us, struct scsi_cmnd *srb_match)
- {
--	struct us_data *us = host_to_us(srb->device->host);
--
--	usb_stor_dbg(us, "%s called\n", __func__);
--
- 	/*
- 	 * us->srb together with the TIMED_OUT, RESETTING, and ABORTING
- 	 * bits are protected by the host lock.
- 	 */
- 	scsi_lock(us_to_host(us));
- 
--	/* Is this command still active? */
--	if (us->srb != srb) {
-+	/* is there any active pending command to abort ? */
-+	if (!us->srb) {
- 		scsi_unlock(us_to_host(us));
- 		usb_stor_dbg(us, "-- nothing to abort\n");
-+		return SUCCESS;
-+	}
-+
-+	/* Does the command match the passed srb if any ? */
-+	if (srb_match && us->srb != srb_match) {
-+		scsi_unlock(us_to_host(us));
-+		usb_stor_dbg(us, "-- pending command mismatch\n");
- 		return FAILED;
- 	}
- 
-@@ -445,6 +448,14 @@ static int command_abort(struct scsi_cmn
- 	return SUCCESS;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2587,6 +2587,21 @@ static int dwc3_gadget_soft_disconnect(s
+ 	return ret;
  }
  
-+static int command_abort(struct scsi_cmnd *srb)
++static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
 +{
-+	struct us_data *us = host_to_us(srb->device->host);
++	/*
++	 * In the Synopsys DWC_usb31 1.90a programming guide section
++	 * 4.1.9, it specifies that for a reconnect after a
++	 * device-initiated disconnect requires a core soft reset
++	 * (DCTL.CSftRst) before enabling the run/stop bit.
++	 */
++	dwc3_core_soft_reset(dwc);
 +
-+	usb_stor_dbg(us, "%s called\n", __func__);
-+	return command_abort_matching(us, srb);
++	dwc3_event_buffers_setup(dwc);
++	__dwc3_gadget_start(dwc);
++	return dwc3_gadget_run_stop(dwc, true);
 +}
 +
- /*
-  * This invokes the transport reset mechanism to reset the state of the
-  * device
-@@ -456,6 +467,9 @@ static int device_reset(struct scsi_cmnd
+ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
+ {
+ 	struct dwc3		*dwc = gadget_to_dwc(g);
+@@ -2625,21 +2640,10 @@ static int dwc3_gadget_pullup(struct usb
  
- 	usb_stor_dbg(us, "%s called\n", __func__);
+ 	synchronize_irq(dwc->irq_gadget);
  
-+	/* abort any pending command before reset */
-+	command_abort_matching(us, NULL);
+-	if (!is_on) {
++	if (!is_on)
+ 		ret = dwc3_gadget_soft_disconnect(dwc);
+-	} else {
+-		/*
+-		 * In the Synopsys DWC_usb31 1.90a programming guide section
+-		 * 4.1.9, it specifies that for a reconnect after a
+-		 * device-initiated disconnect requires a core soft reset
+-		 * (DCTL.CSftRst) before enabling the run/stop bit.
+-		 */
+-		dwc3_core_soft_reset(dwc);
+-
+-		dwc3_event_buffers_setup(dwc);
+-		__dwc3_gadget_start(dwc);
+-		ret = dwc3_gadget_run_stop(dwc, true);
+-	}
++	else
++		ret = dwc3_gadget_soft_connect(dwc);
+ 
+ 	pm_runtime_put(dwc->dev);
+ 
+@@ -4555,42 +4559,39 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ {
+ 	unsigned long flags;
++	int ret;
+ 
+ 	if (!dwc->gadget_driver)
+ 		return 0;
+ 
+-	dwc3_gadget_run_stop(dwc, false);
++	ret = dwc3_gadget_soft_disconnect(dwc);
++	if (ret)
++		goto err;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc3_disconnect_gadget(dwc);
+-	__dwc3_gadget_stop(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
+ 	return 0;
 +
- 	/* lock the device pointers and do the reset */
- 	mutex_lock(&(us->dev_mutex));
- 	result = us->transport_reset(us);
++err:
++	/*
++	 * Attempt to reset the controller's state. Likely no
++	 * communication can be established until the host
++	 * performs a port reset.
++	 */
++	if (dwc->softconnect)
++		dwc3_gadget_soft_connect(dwc);
++
++	return ret;
+ }
+ 
+ int dwc3_gadget_resume(struct dwc3 *dwc)
+ {
+-	int			ret;
+-
+ 	if (!dwc->gadget_driver || !dwc->softconnect)
+ 		return 0;
+ 
+-	ret = __dwc3_gadget_start(dwc);
+-	if (ret < 0)
+-		goto err0;
+-
+-	ret = dwc3_gadget_run_stop(dwc, true);
+-	if (ret < 0)
+-		goto err1;
+-
+-	return 0;
+-
+-err1:
+-	__dwc3_gadget_stop(dwc);
+-
+-err0:
+-	return ret;
++	return dwc3_gadget_soft_connect(dwc);
+ }
+ 
+ void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
 
 
