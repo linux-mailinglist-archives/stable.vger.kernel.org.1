@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7111670C8EE
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89CD570C746
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235167AbjEVTnb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
+        id S234678AbjEVT1s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235113AbjEVTn1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:27 -0400
+        with ESMTP id S234673AbjEVT1n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0E91BD
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFFC184
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 137E762A3A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF33C433D2;
-        Mon, 22 May 2023 19:43:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE2EC628C8
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5D9C43444;
+        Mon, 22 May 2023 19:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784592;
-        bh=zNeqN+hMy+J1p0zzphizoeIvRmJhxaCtWdQH88DtmSg=;
+        s=korg; t=1684783661;
+        bh=SkKgldyzN7nXPsurWdET/eh0MumVVxxrIc+0XE14kJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UF7J4aHmQ8EI4uHj5MbEls7GghKlI8y5vfE7xi9jS98sT/CUZXHJBVADDi1k7g+Wl
-         Dmb8ugdL33kMITmf/yClvxrIzA+GMqgKsPva8DpKBy7iyUC9dayT1u9DYFLt3MRCxR
-         zEMEUt9yMe5KD6FkpCvP3YwIVQ2Ro7H9OWr28Olc=
+        b=tEXB/SCkWg3VA1+ZcJGWp/k+0q7aYg4SrcmLqxuVshYoMqQpuK0Q4BVhYIFHvYBut
+         8hRJRIQy4AeiT/Tv5dk9s8+yycuoy/OywixiePoBQ3ZMsunthRLhH1CpI+NbiQ5Enl
+         WZrmY6PqonqMfYzDGAeCvNW7g7GP6rLyq8sUPE88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Horman <horms@kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Piotr Raczynski <piotr.raczynski@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 134/364] ipvs: Update width of source for ip_vs_sync_conn_options
+Subject: [PATCH 6.1 082/292] net: Catch invalid index in XPS mapping
 Date:   Mon, 22 May 2023 20:07:19 +0100
-Message-Id: <20230522190416.138046803@linuxfoundation.org>
+Message-Id: <20230522190408.023579309@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,88 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Horman <horms@kernel.org>
+From: Nick Child <nnac123@linux.ibm.com>
 
-[ Upstream commit e3478c68f6704638d08f437cbc552ca5970c151a ]
+[ Upstream commit 5dd0dfd55baec0742ba8f5625a0dd064aca7db16 ]
 
-In ip_vs_sync_conn_v0() copy is made to struct ip_vs_sync_conn_options.
-That structure looks like this:
+When setting the XPS value of a TX queue, warn the user once if the
+index of the queue is greater than the number of allocated TX queues.
 
-struct ip_vs_sync_conn_options {
-        struct ip_vs_seq        in_seq;
-        struct ip_vs_seq        out_seq;
-};
+Previously, this scenario went uncaught. In the best case, it resulted
+in unnecessary allocations. In the worst case, it resulted in
+out-of-bounds memory references through calls to `netdev_get_tx_queue(
+dev, index)`. Therefore, it is important to inform the user but not
+worth returning an error and risk downing the netdevice.
 
-The source of the copy is the in_seq field of struct ip_vs_conn.  Whose
-type is struct ip_vs_seq. Thus we can see that the source - is not as
-wide as the amount of data copied, which is the width of struct
-ip_vs_sync_conn_option.
-
-The copy is safe because the next field in is another struct ip_vs_seq.
-Make use of struct_group() to annotate this.
-
-Flagged by gcc-13 as:
-
- In file included from ./include/linux/string.h:254,
-                  from ./include/linux/bitmap.h:11,
-                  from ./include/linux/cpumask.h:12,
-                  from ./arch/x86/include/asm/paravirt.h:17,
-                  from ./arch/x86/include/asm/cpuid.h:62,
-                  from ./arch/x86/include/asm/processor.h:19,
-                  from ./arch/x86/include/asm/timex.h:5,
-                  from ./include/linux/timex.h:67,
-                  from ./include/linux/time32.h:13,
-                  from ./include/linux/time.h:60,
-                  from ./include/linux/stat.h:19,
-                  from ./include/linux/module.h:13,
-                  from net/netfilter/ipvs/ip_vs_sync.c:38:
- In function 'fortify_memcpy_chk',
-     inlined from 'ip_vs_sync_conn_v0' at net/netfilter/ipvs/ip_vs_sync.c:606:3:
- ./include/linux/fortify-string.h:529:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-   529 |                         __read_overflow2_field(q_size_field, size);
-       |
-
-Compile tested only.
-
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
+Link: https://lore.kernel.org/r/20230321150725.127229-1-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_vs.h             | 6 ++++--
- net/netfilter/ipvs/ip_vs_sync.c | 2 +-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ net/core/dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-index 6d71a5ff52dfd..e20f1f92066d1 100644
---- a/include/net/ip_vs.h
-+++ b/include/net/ip_vs.h
-@@ -630,8 +630,10 @@ struct ip_vs_conn {
- 	 */
- 	struct ip_vs_app        *app;           /* bound ip_vs_app object */
- 	void                    *app_data;      /* Application private data */
--	struct ip_vs_seq        in_seq;         /* incoming seq. struct */
--	struct ip_vs_seq        out_seq;        /* outgoing seq. struct */
-+	struct_group(sync_conn_opt,
-+		struct ip_vs_seq  in_seq;       /* incoming seq. struct */
-+		struct ip_vs_seq  out_seq;      /* outgoing seq. struct */
-+	);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 1fb7eef38ebe9..93d430693ca0f 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -2549,6 +2549,8 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
+ 	struct xps_map *map, *new_map;
+ 	unsigned int nr_ids;
  
- 	const struct ip_vs_pe	*pe;
- 	char			*pe_data;
-diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-index 4963fec815da3..d4fe7bb4f853a 100644
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -603,7 +603,7 @@ static void ip_vs_sync_conn_v0(struct netns_ipvs *ipvs, struct ip_vs_conn *cp,
- 	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
- 		struct ip_vs_sync_conn_options *opt =
- 			(struct ip_vs_sync_conn_options *)&s[1];
--		memcpy(opt, &cp->in_seq, sizeof(*opt));
-+		memcpy(opt, &cp->sync_conn_opt, sizeof(*opt));
- 	}
- 
- 	m->nr_conns++;
++	WARN_ON_ONCE(index >= dev->num_tx_queues);
++
+ 	if (dev->num_tc) {
+ 		/* Do not allow XPS on subordinate device directly */
+ 		num_tc = dev->num_tc;
 -- 
 2.39.2
 
