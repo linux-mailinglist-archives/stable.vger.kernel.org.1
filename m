@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E3CB70C9D6
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9BF770C698
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235411AbjEVTwj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44984 "EHLO
+        id S234311AbjEVTT4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235474AbjEVTwZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:25 -0400
+        with ESMTP id S234336AbjEVTT4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC7E10D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6F110C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85ECC62B29
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0714C4339B;
-        Mon, 22 May 2023 19:52:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7838C6280B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B71C433EF;
+        Mon, 22 May 2023 19:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785121;
-        bh=XS8NOe42e6gQdhzW5ZEjWVqzcRzVWw2b7iG97AjDV84=;
+        s=korg; t=1684783193;
+        bh=E1BHQ8ALlyK3g2KPj3aT2XpdIgESoQEX7Z1BZvbZmGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zuQEiFX6o0MDy52dpgiR37XNq+yu5TRtNPhJke0iDkBoAooMpozqS8xJ6uDXhXpK3
-         c6AVsB9A1mcuCoyM9Qk+rw9KReX9WyjsJQTQoVcCTC4rWBnEASlfnOP6Zn4/rFM+es
-         L2NWWcwMmOgSCc8vsNnb7+vuDBfPeEKePPHXwm9g=
+        b=GGqmqoDCWm9+VqrrfiHflQ1/JOWkp/bbzWfHtopaxulhrOkIZg17LhUjhmO99Hfcj
+         xZDo8FVBTPVsyJLqt4A23EBEUAhRGCYhiIligWEsvHrvit24ZnV3numFiPGXyxGfug
+         GoxVydrTgdNL82I/9TIQHeN2Xmym+WJZaEfmKWyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 288/364] bridge: always declare tunnel functions
+        patches@lists.linux.dev, Miller Hunter <MillerH@hearthnhome.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 169/203] xhci: Fix incorrect tracking of free space on transfer rings
 Date:   Mon, 22 May 2023 20:09:53 +0100
-Message-Id: <20230522190419.965852584@linuxfoundation.org>
+Message-Id: <20230522190359.659493793@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,61 +53,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 89dcd87ce534a3a7f267cfd58505803006f51301 ]
+commit fe82f16aafdaf8002281d3b9524291d4a4a28460 upstream.
 
-When CONFIG_BRIDGE_VLAN_FILTERING is disabled, two functions are still
-defined but have no prototype or caller. This causes a W=1 warning for
-the missing prototypes:
+This incorrect tracking caused unnecessary ring expansion in some
+usecases which over days of use consume a lot of memory.
 
-net/bridge/br_netlink_tunnel.c:29:6: error: no previous prototype for 'vlan_tunid_inrange' [-Werror=missing-prototypes]
-net/bridge/br_netlink_tunnel.c:199:5: error: no previous prototype for 'br_vlan_tunnel_info' [-Werror=missing-prototypes]
+xhci driver tries to keep track of free transfer blocks (TRBs) on the
+ring buffer, but failed to add back some cancelled transfers that were
+turned into no-op operations instead of just moving past them.
 
-The functions are already contitional on CONFIG_BRIDGE_VLAN_FILTERING,
-and I coulnd't easily figure out the right set of #ifdefs, so just
-move the declarations out of the #ifdef to avoid the warning,
-at a small cost in code size over a more elaborate fix.
+This can happen if there are several queued pending transfers which
+then are cancelled in reverse order.
 
-Fixes: 188c67dd1906 ("net: bridge: vlan options: add support for tunnel id dumping")
-Fixes: 569da0822808 ("net: bridge: vlan options: add support for tunnel mapping set/del")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230516194625.549249-3-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Solve this by counting the numer of steps we move the dequeue pointer
+once we complete a transfer, and add it to the number of free trbs
+instead of just adding the trb number of the current transfer.
+This way we ensure we count the no-op trbs on the way as well.
+
+Fixes: 55f6153d8cc8 ("xhci: remove extra loop in interrupt context")
+Cc: stable@vger.kernel.org
+Reported-by: Miller Hunter <MillerH@hearthnhome.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217242
+Tested-by: Miller Hunter <MillerH@hearthnhome.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230515134059.161110-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_private_tunnel.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-ring.c |   29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_private_tunnel.h b/net/bridge/br_private_tunnel.h
-index 2b053289f0166..efb096025151a 100644
---- a/net/bridge/br_private_tunnel.h
-+++ b/net/bridge/br_private_tunnel.h
-@@ -27,6 +27,10 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
- int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg);
- int br_fill_vlan_tunnel_info(struct sk_buff *skb,
- 			     struct net_bridge_vlan_group *vg);
-+bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
-+			const struct net_bridge_vlan *v_last);
-+int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
-+			u16 vid, u32 tun_id, bool *changed);
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -276,6 +276,26 @@ static void inc_enq(struct xhci_hcd *xhc
+ 	trace_xhci_inc_enq(ring);
+ }
  
- #ifdef CONFIG_BRIDGE_VLAN_FILTERING
- /* br_vlan_tunnel.c */
-@@ -43,10 +47,6 @@ void br_handle_ingress_vlan_tunnel(struct sk_buff *skb,
- 				   struct net_bridge_vlan_group *vg);
- int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 				 struct net_bridge_vlan *vlan);
--bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
--			const struct net_bridge_vlan *v_last);
--int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
--			u16 vid, u32 tun_id, bool *changed);
- #else
- static inline int vlan_tunnel_init(struct net_bridge_vlan_group *vg)
++static int xhci_num_trbs_to(struct xhci_segment *start_seg, union xhci_trb *start,
++			    struct xhci_segment *end_seg, union xhci_trb *end,
++			    unsigned int num_segs)
++{
++	union xhci_trb *last_on_seg;
++	int num = 0;
++	int i = 0;
++
++	do {
++		if (start_seg == end_seg && end >= start)
++			return num + (end - start);
++		last_on_seg = &start_seg->trbs[TRBS_PER_SEGMENT - 1];
++		num += last_on_seg - start;
++		start_seg = start_seg->next;
++		start = start_seg->trbs;
++	} while (i++ <= num_segs);
++
++	return -EINVAL;
++}
++
+ /*
+  * Check to see if there's room to enqueue num_trbs on the ring and make sure
+  * enqueue pointer will not advance into dequeue segment. See rules above.
+@@ -2207,6 +2227,7 @@ static int finish_td(struct xhci_hcd *xh
+ 		     u32 trb_comp_code)
  {
--- 
-2.39.2
-
+ 	struct xhci_ep_ctx *ep_ctx;
++	int trbs_freed;
+ 
+ 	ep_ctx = xhci_get_ep_ctx(xhci, ep->vdev->out_ctx, ep->ep_index);
+ 
+@@ -2278,9 +2299,15 @@ static int finish_td(struct xhci_hcd *xh
+ 	}
+ 
+ 	/* Update ring dequeue pointer */
++	trbs_freed = xhci_num_trbs_to(ep_ring->deq_seg, ep_ring->dequeue,
++				      td->last_trb_seg, td->last_trb,
++				      ep_ring->num_segs);
++	if (trbs_freed < 0)
++		xhci_dbg(xhci, "Failed to count freed trbs at TD finish\n");
++	else
++		ep_ring->num_trbs_free += trbs_freed;
+ 	ep_ring->dequeue = td->last_trb;
+ 	ep_ring->deq_seg = td->last_trb_seg;
+-	ep_ring->num_trbs_free += td->num_trbs - 1;
+ 	inc_deq(xhci, ep_ring);
+ 
+ 	return xhci_td_cleanup(xhci, td, ep_ring, td->status);
 
 
