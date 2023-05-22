@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EAA670C642
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1780C70C77A
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234002AbjEVTQk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38880 "EHLO
+        id S234730AbjEVTaB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:30:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234169AbjEVTQW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B31E42
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:19 -0700 (PDT)
+        with ESMTP id S234723AbjEVT37 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA43A9C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B57E66276C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD598C433D2;
-        Mon, 22 May 2023 19:16:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77CD8628F3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE06C433D2;
+        Mon, 22 May 2023 19:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782978;
-        bh=9P7amgHesvZfXjhJMrNCC3wqHsnw+fBTnWXN96xdpOM=;
+        s=korg; t=1684783796;
+        bh=JIVqOOwSWuOCNO6WNW665Eu9nFgLFzCEUZ1bd9gn0gQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O2/8gkkObqZbMw+sZkEY2FnhpZ+w3D3HSNFSQwfgGdEtPb1MoC7NUWtZD9YIKYPpr
-         dUx1KCkEaCuRYXknuFNTP/MF0aemCNoxFqh0AxPqq+eH4mseQUd9yJlkxvyAkkS+FZ
-         BugfINxYe+huTh+D5DhDFJFDGQw8PtsO4+TmFMMY=
+        b=pMe9+DySyS1aZ14b99J2CFpMsyOETeP4YnAAvCYf8y6dhc+R5nFgeU/B9a6gbmys8
+         hXvEyrEIMlxloMHNcCvUHSc5dHIOaELP6Ko6mh7KeXOa32JMggTbXVkuTV3cSAjtg2
+         gmP4CQOWAZGwtG9BZ/szab7JbaLc+bDBNv2yBU40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/203] iommu/sprd: Release dma buffer to avoid memory leak
+        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 165/292] selftets: seg6: disable rp_filter by default in srv6_end_dt4_l3vpn_test
 Date:   Mon, 22 May 2023 20:08:42 +0100
-Message-Id: <20230522190357.700559514@linuxfoundation.org>
+Message-Id: <20230522190410.090447783@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,69 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit 9afea57384d4ae7b2034593eac7fa76c7122762a ]
+[ Upstream commit f97b8401e0deb46ad1e4245c21f651f64f55aaa6 ]
 
-When attaching to a domain, the driver would alloc a DMA buffer which
-is used to store address mapping table, and it need to be released
-when the IOMMU domain is freed.
+On some distributions, the rp_filter is automatically set (=1) by
+default on a netdev basis (also on VRFs).
+In an SRv6 End.DT4 behavior, decapsulated IPv4 packets are routed using
+the table associated with the VRF bound to that tunnel. During lookup
+operations, the rp_filter can lead to packet loss when activated on the
+VRF.
+Therefore, we chose to make this selftest more robust by explicitly
+disabling the rp_filter during tests (as it is automatically set by some
+Linux distributions).
 
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-Link: https://lore.kernel.org/r/20230331033124.864691-2-zhang.lyra@gmail.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 2195444e09b4 ("selftests: add selftest for the SRv6 End.DT4 behavior")
+Reported-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Tested-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sprd-iommu.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ .../testing/selftests/net/srv6_end_dt4_l3vpn_test.sh  | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-index 27ac818b03544..723940e841612 100644
---- a/drivers/iommu/sprd-iommu.c
-+++ b/drivers/iommu/sprd-iommu.c
-@@ -151,13 +151,6 @@ static struct iommu_domain *sprd_iommu_domain_alloc(unsigned int domain_type)
- 	return &dom->domain;
+diff --git a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
+index 37f08d582d2fe..f962823628119 100755
+--- a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
++++ b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
+@@ -258,6 +258,12 @@ setup_hs()
+ 
+ 	# set the networking for the host
+ 	ip netns add ${hsname}
++
++	# disable the rp_filter otherwise the kernel gets confused about how
++	# to route decap ipv4 packets.
++	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
++	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.default.rp_filter=0
++
+ 	ip -netns ${hsname} link add veth0 type veth peer name ${rtveth}
+ 	ip -netns ${hsname} link set ${rtveth} netns ${rtname}
+ 	ip -netns ${hsname} addr add ${IPv4_HS_NETWORK}.${hs}/24 dev veth0
+@@ -276,11 +282,6 @@ setup_hs()
+ 
+ 	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.proxy_arp=1
+ 
+-	# disable the rp_filter otherwise the kernel gets confused about how
+-	# to route decap ipv4 packets.
+-	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
+-	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.rp_filter=0
+-
+ 	ip netns exec ${rtname} sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
  }
  
--static void sprd_iommu_domain_free(struct iommu_domain *domain)
--{
--	struct sprd_iommu_domain *dom = to_sprd_domain(domain);
--
--	kfree(dom);
--}
--
- static void sprd_iommu_first_vpn(struct sprd_iommu_domain *dom)
- {
- 	struct sprd_iommu_device *sdev = dom->sdev;
-@@ -230,6 +223,28 @@ static void sprd_iommu_hw_en(struct sprd_iommu_device *sdev, bool en)
- 	sprd_iommu_update_bits(sdev, reg_cfg, mask, 0, val);
- }
- 
-+static void sprd_iommu_cleanup(struct sprd_iommu_domain *dom)
-+{
-+	size_t pgt_size;
-+
-+	/* Nothing need to do if the domain hasn't been attached */
-+	if (!dom->sdev)
-+		return;
-+
-+	pgt_size = sprd_iommu_pgt_size(&dom->domain);
-+	dma_free_coherent(dom->sdev->dev, pgt_size, dom->pgt_va, dom->pgt_pa);
-+	dom->sdev = NULL;
-+	sprd_iommu_hw_en(dom->sdev, false);
-+}
-+
-+static void sprd_iommu_domain_free(struct iommu_domain *domain)
-+{
-+	struct sprd_iommu_domain *dom = to_sprd_domain(domain);
-+
-+	sprd_iommu_cleanup(dom);
-+	kfree(dom);
-+}
-+
- static int sprd_iommu_attach_device(struct iommu_domain *domain,
- 				    struct device *dev)
- {
 -- 
 2.39.2
 
