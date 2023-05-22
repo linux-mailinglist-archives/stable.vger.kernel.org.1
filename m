@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E20B070C9FF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A1C70CA00
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:54:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235467AbjEVTx7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48452 "EHLO
+        id S235491AbjEVTyA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:54:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235483AbjEVTx5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE7299
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:56 -0700 (PDT)
+        with ESMTP id S235476AbjEVTyA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:54:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FA899
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24BE862B5D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE40C433D2;
-        Mon, 22 May 2023 19:53:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7BF662B5C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5343C433EF;
+        Mon, 22 May 2023 19:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785235;
-        bh=tHvbrKaDWbQt9QwH8eTMg7E/1JBLU9QnR4lEkXdRb1w=;
+        s=korg; t=1684785238;
+        bh=ZnF+tDHKp6d6f86Dw4rzg8Ww5VXtsdsCDdec6TNlMSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ju2l69rcBioSvtMRnJzeW3nNB65h4NnsHF9lK4m2sMnxjoIGvdRR5f1aPahnNaZBb
-         RI896hXwJGygl9/lqVhOg79PtJdwB+IRRFF86ccBKXXsS7GAAQi/XhtYRyTAdQ4N/t
-         PKhwJOMBm7HSkl87gTvX8o9EDZeWNc/WEUTCZ3bs=
+        b=weTHyN1GrIlBSV3A4jOGFZu+O6YETTm7byytrLTl3e3sQyrzUahQtr/yYNA3EnSaI
+         ZAA+3csxcNy7WBCqAVTxNoSkfXlO1BLOPqUpm5II0y0DdJFsDzxXYSLmEfQRhZgQBw
+         oGPvBqMG2/BArDE8QH/cP3tO437Gx5o7HpO83Sw0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Peter Collingbourne <pcc@google.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
         Will Deacon <will@kernel.org>
-Subject: [PATCH 6.3 355/364] arm64: Also reset KASAN tag if page is not PG_mte_tagged
-Date:   Mon, 22 May 2023 20:11:00 +0100
-Message-Id: <20230522190421.649617293@linuxfoundation.org>
+Subject: [PATCH 6.3 356/364] arm64: mte: Do not set PG_mte_tagged if tags were not initialized
+Date:   Mon, 22 May 2023 20:11:01 +0100
+Message-Id: <20230522190421.674003898@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
 References: <20230522190412.801391872@linuxfoundation.org>
@@ -44,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,53 +57,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Peter Collingbourne <pcc@google.com>
 
-commit 2efbafb91e12ff5a16cbafb0085e4c10c3fca493 upstream.
+commit c4c597f1b367433c52c531dccd6859a39b4580fb upstream.
 
-Consider the following sequence of events:
+The mte_sync_page_tags() function sets PG_mte_tagged if it initializes
+page tags. Then we return to mte_sync_tags(), which sets PG_mte_tagged
+again. At best, this is redundant. However, it is possible for
+mte_sync_page_tags() to return without having initialized tags for the
+page, i.e. in the case where check_swap is true (non-compound page),
+is_swap_pte(old_pte) is false and pte_is_tagged is false. So at worst,
+we set PG_mte_tagged on a page with uninitialized tags. This can happen
+if, for example, page migration causes a PTE for an untagged page to
+be replaced. If the userspace program subsequently uses mprotect() to
+enable PROT_MTE for that page, the uninitialized tags will be exposed
+to userspace.
 
-1) A page in a PROT_READ|PROT_WRITE VMA is faulted.
-2) Page migration allocates a page with the KASAN allocator,
-   causing it to receive a non-match-all tag, and uses it
-   to replace the page faulted in 1.
-3) The program uses mprotect() to enable PROT_MTE on the page faulted in 1.
+Fix it by removing the redundant call to set_page_mte_tagged().
 
-As a result of step 3, we are left with a non-match-all tag for a page
-with tags accessible to userspace, which can lead to the same kind of
-tag check faults that commit e74a68468062 ("arm64: Reset KASAN tag in
-copy_highpage with HW tags only") intended to fix.
-
-The general invariant that we have for pages in a VMA with VM_MTE_ALLOWED
-is that they cannot have a non-match-all tag. As a result of step 2, the
-invariant is broken. This means that the fix in the referenced commit
-was incomplete and we also need to reset the tag for pages without
-PG_mte_tagged.
-
-Fixes: e5b8d9218951 ("arm64: mte: reset the page tag in page->flags")
-Cc: <stable@vger.kernel.org> # 5.15
-Link: https://linux-review.googlesource.com/id/I7409cdd41acbcb215c2a7417c1e50d37b875beff
+Fixes: e059853d14ca ("arm64: mte: Fix/clarify the PG_mte_tagged semantics")
 Signed-off-by: Peter Collingbourne <pcc@google.com>
+Cc: <stable@vger.kernel.org> # 6.1
+Link: https://linux-review.googlesource.com/id/Ib02d004d435b2ed87603b858ef7480f7b1463052
 Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20230420210945.2313627-1-pcc@google.com
+Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
+Link: https://lore.kernel.org/r/20230420214327.2357985-1-pcc@google.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/copypage.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/mte.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -21,9 +21,10 @@ void copy_highpage(struct page *to, stru
+--- a/arch/arm64/kernel/mte.c
++++ b/arch/arm64/kernel/mte.c
+@@ -66,13 +66,10 @@ void mte_sync_tags(pte_t old_pte, pte_t
+ 		return;
  
- 	copy_page(kto, kfrom);
+ 	/* if PG_mte_tagged is set, tags have already been initialised */
+-	for (i = 0; i < nr_pages; i++, page++) {
+-		if (!page_mte_tagged(page)) {
++	for (i = 0; i < nr_pages; i++, page++)
++		if (!page_mte_tagged(page))
+ 			mte_sync_page_tags(page, old_pte, check_swap,
+ 					   pte_is_tagged);
+-			set_page_mte_tagged(page);
+-		}
+-	}
  
-+	if (kasan_hw_tags_enabled())
-+		page_kasan_tag_reset(to);
-+
- 	if (system_supports_mte() && page_mte_tagged(from)) {
--		if (kasan_hw_tags_enabled())
--			page_kasan_tag_reset(to);
- 		/* It's a new page, shouldn't have been tagged yet */
- 		WARN_ON_ONCE(!try_page_mte_tagging(to));
- 		mte_copy_page_tags(kto, kfrom);
+ 	/* ensure the tags are visible before the PTE is set */
+ 	smp_wmb();
 
 
