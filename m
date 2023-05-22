@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 428E070C9AC
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA16E70C678
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235398AbjEVTuh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:50:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44584 "EHLO
+        id S234239AbjEVTSa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:18:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235384AbjEVTuc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60D99C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:30 -0700 (PDT)
+        with ESMTP id S234304AbjEVTSV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E88821A5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69D0762AEF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64993C433EF;
-        Mon, 22 May 2023 19:50:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76C62627D0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C781C433D2;
+        Mon, 22 May 2023 19:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785029;
-        bh=2l8D/Rmcj8ydoQYHbT0HeJQJ3+uuugoqZYAZ2icz44k=;
+        s=korg; t=1684783098;
+        bh=WKbLPeR0oAC4fPCpxnNcWbgz2jPUYr/cFazWozNbhIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bLpM22MLNrNaK0/B+fFSPifQizd7Su4kwc9NLg82cbg+7aTItkjg73ijO8Ljf3AvW
-         J9U+M3kCVsvHGq9CXcOW/EeuGXxEZfOycNsUFdyVcU9Dav7H9PYgxHSoycB77eWRqo
-         wB5gX4HMFDoqm1v098qxb6KyMPWWQTGiS9K5Mr6o=
+        b=NDXEQEi1YBLsuMcSnrW5kD9EP+LKKodBHKOHQcCA4vbkthDNNNoT0wVQAUSVsqsBp
+         BS6UE7LNzNtn7Q2O1EgSzkW1wPTxKq0ioG4tBkNx/ZwJX0YK20qHbHLogWgupXJ7Uj
+         iE97NMzXcux0A69ncNZcAqEG2pB6MdiLZUgP93EA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
-        Jon Maloy <jmaloy@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 256/364] tipc: add tipc_bearer_min_mtu to calculate min mtu
-Date:   Mon, 22 May 2023 20:09:21 +0100
-Message-Id: <20230522190419.102510203@linuxfoundation.org>
+Subject: [PATCH 5.15 138/203] SUNRPC: always free ctxt when freeing deferred request
+Date:   Mon, 22 May 2023 20:09:22 +0100
+Message-Id: <20230522190358.787593097@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,103 +55,265 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Long <lucien.xin@gmail.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 3ae6d66b605be604644d4bb5708a7ffd9cf1abe8 ]
+[ Upstream commit 948f072ada23e0a504c5e4d7d71d4c83bd0785ec ]
 
-As different media may requires different min mtu, and even the
-same media with different net family requires different min mtu,
-add tipc_bearer_min_mtu() to calculate min mtu accordingly.
+Since the ->xprt_ctxt pointer was added to svc_deferred_req, it has not
+been sufficient to use kfree() to free a deferred request.  We may need
+to free the ctxt as well.
 
-This API will be used to check the new mtu when doing the link
-mtu negotiation in the next patch.
+As freeing the ctxt is all that ->xpo_release_rqst() does, we repurpose
+it to explicit do that even when the ctxt is not stored in an rqst.
+So we now have ->xpo_release_ctxt() which is given an xprt and a ctxt,
+which may have been taken either from an rqst or from a dreq.  The
+caller is now responsible for clearing that pointer after the call to
+->xpo_release_ctxt.
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Jon Maloy <jmaloy@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 56077b56cd3f ("tipc: do not update mtu if msg_max is too small in mtu negotiation")
+We also clear dr->xprt_ctxt when the ctxt is moved into a new rqst when
+revisiting a deferred request.  This ensures there is only one pointer
+to the ctxt, so the risk of double freeing in future is reduced.  The
+new code in svc_xprt_release which releases both the ctxt and any
+rq_deferred depends on this.
+
+Fixes: 773f91b2cf3f ("SUNRPC: Fix NFSD's request deferral on RDMA transports")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/bearer.c    | 13 +++++++++++++
- net/tipc/bearer.h    |  3 +++
- net/tipc/udp_media.c |  5 +++--
- 3 files changed, 19 insertions(+), 2 deletions(-)
+ include/linux/sunrpc/svc_rdma.h          |  2 +-
+ include/linux/sunrpc/svc_xprt.h          |  2 +-
+ net/sunrpc/svc_xprt.c                    | 23 +++++++++++++-----
+ net/sunrpc/svcsock.c                     | 30 +++++++++++++-----------
+ net/sunrpc/xprtrdma/svc_rdma_recvfrom.c  | 11 ++++-----
+ net/sunrpc/xprtrdma/svc_rdma_transport.c |  2 +-
+ 6 files changed, 41 insertions(+), 29 deletions(-)
 
-diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-index 35cac7733fd3a..0e9a29e1536b7 100644
---- a/net/tipc/bearer.c
-+++ b/net/tipc/bearer.c
-@@ -541,6 +541,19 @@ int tipc_bearer_mtu(struct net *net, u32 bearer_id)
- 	return mtu;
- }
+diff --git a/include/linux/sunrpc/svc_rdma.h b/include/linux/sunrpc/svc_rdma.h
+index 24aa159d29a7f..fbc4bd423b355 100644
+--- a/include/linux/sunrpc/svc_rdma.h
++++ b/include/linux/sunrpc/svc_rdma.h
+@@ -176,7 +176,7 @@ extern struct svc_rdma_recv_ctxt *
+ extern void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
+ 				   struct svc_rdma_recv_ctxt *ctxt);
+ extern void svc_rdma_flush_recv_queues(struct svcxprt_rdma *rdma);
+-extern void svc_rdma_release_rqst(struct svc_rqst *rqstp);
++extern void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *ctxt);
+ extern int svc_rdma_recvfrom(struct svc_rqst *);
  
-+int tipc_bearer_min_mtu(struct net *net, u32 bearer_id)
+ /* svc_rdma_rw.c */
+diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
+index 571f605bc91ef..154eee6bc6a01 100644
+--- a/include/linux/sunrpc/svc_xprt.h
++++ b/include/linux/sunrpc/svc_xprt.h
+@@ -23,7 +23,7 @@ struct svc_xprt_ops {
+ 	int		(*xpo_sendto)(struct svc_rqst *);
+ 	int		(*xpo_result_payload)(struct svc_rqst *, unsigned int,
+ 					      unsigned int);
+-	void		(*xpo_release_rqst)(struct svc_rqst *);
++	void		(*xpo_release_ctxt)(struct svc_xprt *xprt, void *ctxt);
+ 	void		(*xpo_detach)(struct svc_xprt *);
+ 	void		(*xpo_free)(struct svc_xprt *);
+ 	void		(*xpo_secure_port)(struct svc_rqst *rqstp);
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 5da8e87979f15..5ff8f902f14d2 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -530,13 +530,23 @@ void svc_reserve(struct svc_rqst *rqstp, int space)
+ }
+ EXPORT_SYMBOL_GPL(svc_reserve);
+ 
++static void free_deferred(struct svc_xprt *xprt, struct svc_deferred_req *dr)
 +{
-+	int mtu = TIPC_MIN_BEARER_MTU;
-+	struct tipc_bearer *b;
++	if (!dr)
++		return;
 +
-+	rcu_read_lock();
-+	b = bearer_get(net, bearer_id);
-+	if (b)
-+		mtu += b->encap_hlen;
-+	rcu_read_unlock();
-+	return mtu;
++	xprt->xpt_ops->xpo_release_ctxt(xprt, dr->xprt_ctxt);
++	kfree(dr);
 +}
 +
- /* tipc_bearer_xmit_skb - sends buffer to destination over bearer
-  */
- void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
-diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-index 490ad6e5f7a3c..bd0cc5c287ef8 100644
---- a/net/tipc/bearer.h
-+++ b/net/tipc/bearer.h
-@@ -146,6 +146,7 @@ struct tipc_media {
-  * @identity: array index of this bearer within TIPC bearer array
-  * @disc: ptr to link setup request
-  * @net_plane: network plane ('A' through 'H') currently associated with bearer
-+ * @encap_hlen: encap headers length
-  * @up: bearer up flag (bit 0)
-  * @refcnt: tipc_bearer reference counter
-  *
-@@ -170,6 +171,7 @@ struct tipc_bearer {
- 	u32 identity;
- 	struct tipc_discoverer *disc;
- 	char net_plane;
-+	u16 encap_hlen;
- 	unsigned long up;
- 	refcount_t refcnt;
- };
-@@ -232,6 +234,7 @@ int tipc_bearer_setup(void);
- void tipc_bearer_cleanup(void);
- void tipc_bearer_stop(struct net *net);
- int tipc_bearer_mtu(struct net *net, u32 bearer_id);
-+int tipc_bearer_min_mtu(struct net *net, u32 bearer_id);
- bool tipc_bearer_bcast_support(struct net *net, u32 bearer_id);
- void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
- 			  struct sk_buff *skb,
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index c2bb818704c8f..0a85244fd6188 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -738,8 +738,8 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
- 			udp_conf.local_ip.s_addr = local.ipv4.s_addr;
- 		udp_conf.use_udp_checksums = false;
- 		ub->ifindex = dev->ifindex;
--		if (tipc_mtu_bad(dev, sizeof(struct iphdr) +
--				      sizeof(struct udphdr))) {
-+		b->encap_hlen = sizeof(struct iphdr) + sizeof(struct udphdr);
-+		if (tipc_mtu_bad(dev, b->encap_hlen)) {
- 			err = -EINVAL;
- 			goto err;
- 		}
-@@ -760,6 +760,7 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
- 		else
- 			udp_conf.local_ip6 = local.ipv6;
- 		ub->ifindex = dev->ifindex;
-+		b->encap_hlen = sizeof(struct ipv6hdr) + sizeof(struct udphdr);
- 		b->mtu = 1280;
+ static void svc_xprt_release(struct svc_rqst *rqstp)
+ {
+ 	struct svc_xprt	*xprt = rqstp->rq_xprt;
+ 
+-	xprt->xpt_ops->xpo_release_rqst(rqstp);
++	xprt->xpt_ops->xpo_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 
+-	kfree(rqstp->rq_deferred);
++	free_deferred(xprt, rqstp->rq_deferred);
+ 	rqstp->rq_deferred = NULL;
+ 
+ 	pagevec_release(&rqstp->rq_pvec);
+@@ -1054,7 +1064,7 @@ static void svc_delete_xprt(struct svc_xprt *xprt)
+ 	spin_unlock_bh(&serv->sv_lock);
+ 
+ 	while ((dr = svc_deferred_dequeue(xprt)) != NULL)
+-		kfree(dr);
++		free_deferred(xprt, dr);
+ 
+ 	call_xpt_users(xprt);
+ 	svc_xprt_put(xprt);
+@@ -1166,8 +1176,8 @@ static void svc_revisit(struct cache_deferred_req *dreq, int too_many)
+ 	if (too_many || test_bit(XPT_DEAD, &xprt->xpt_flags)) {
+ 		spin_unlock(&xprt->xpt_lock);
+ 		trace_svc_defer_drop(dr);
++		free_deferred(xprt, dr);
+ 		svc_xprt_put(xprt);
+-		kfree(dr);
+ 		return;
+ 	}
+ 	dr->xprt = NULL;
+@@ -1212,14 +1222,13 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
+ 		dr->addrlen = rqstp->rq_addrlen;
+ 		dr->daddr = rqstp->rq_daddr;
+ 		dr->argslen = rqstp->rq_arg.len >> 2;
+-		dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
+ 
+ 		/* back up head to the start of the buffer and copy */
+ 		skip = rqstp->rq_arg.len - rqstp->rq_arg.head[0].iov_len;
+ 		memcpy(dr->args, rqstp->rq_arg.head[0].iov_base - skip,
+ 		       dr->argslen << 2);
+ 	}
+-	WARN_ON_ONCE(rqstp->rq_xprt_ctxt != dr->xprt_ctxt);
++	dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
+ 	rqstp->rq_xprt_ctxt = NULL;
+ 	trace_svc_defer(rqstp);
+ 	svc_xprt_get(rqstp->rq_xprt);
+@@ -1253,6 +1262,8 @@ static noinline int svc_deferred_recv(struct svc_rqst *rqstp)
+ 	rqstp->rq_daddr       = dr->daddr;
+ 	rqstp->rq_respages    = rqstp->rq_pages;
+ 	rqstp->rq_xprt_ctxt   = dr->xprt_ctxt;
++
++	dr->xprt_ctxt = NULL;
+ 	svc_xprt_received(rqstp->rq_xprt);
+ 	return dr->argslen << 2;
+ }
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 9a0a27d1199f5..6fc7a8c523696 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -111,27 +111,27 @@ static void svc_reclassify_socket(struct socket *sock)
  #endif
- 	} else {
+ 
+ /**
+- * svc_tcp_release_rqst - Release transport-related resources
+- * @rqstp: request structure with resources to be released
++ * svc_tcp_release_ctxt - Release transport-related resources
++ * @xprt: the transport which owned the context
++ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
+  *
+  */
+-static void svc_tcp_release_rqst(struct svc_rqst *rqstp)
++static void svc_tcp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
+ {
+ }
+ 
+ /**
+- * svc_udp_release_rqst - Release transport-related resources
+- * @rqstp: request structure with resources to be released
++ * svc_udp_release_ctxt - Release transport-related resources
++ * @xprt: the transport which owned the context
++ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
+  *
+  */
+-static void svc_udp_release_rqst(struct svc_rqst *rqstp)
++static void svc_udp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
+ {
+-	struct sk_buff *skb = rqstp->rq_xprt_ctxt;
++	struct sk_buff *skb = ctxt;
+ 
+-	if (skb) {
+-		rqstp->rq_xprt_ctxt = NULL;
++	if (skb)
+ 		consume_skb(skb);
+-	}
+ }
+ 
+ union svc_pktinfo_u {
+@@ -559,7 +559,8 @@ static int svc_udp_sendto(struct svc_rqst *rqstp)
+ 	unsigned int sent;
+ 	int err;
+ 
+-	svc_udp_release_rqst(rqstp);
++	svc_udp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 
+ 	svc_set_cmsg_data(rqstp, cmh);
+ 
+@@ -628,7 +629,7 @@ static const struct svc_xprt_ops svc_udp_ops = {
+ 	.xpo_recvfrom = svc_udp_recvfrom,
+ 	.xpo_sendto = svc_udp_sendto,
+ 	.xpo_result_payload = svc_sock_result_payload,
+-	.xpo_release_rqst = svc_udp_release_rqst,
++	.xpo_release_ctxt = svc_udp_release_ctxt,
+ 	.xpo_detach = svc_sock_detach,
+ 	.xpo_free = svc_sock_free,
+ 	.xpo_has_wspace = svc_udp_has_wspace,
+@@ -1156,7 +1157,8 @@ static int svc_tcp_sendto(struct svc_rqst *rqstp)
+ 	unsigned int sent;
+ 	int err;
+ 
+-	svc_tcp_release_rqst(rqstp);
++	svc_tcp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 
+ 	atomic_inc(&svsk->sk_sendqlen);
+ 	mutex_lock(&xprt->xpt_mutex);
+@@ -1201,7 +1203,7 @@ static const struct svc_xprt_ops svc_tcp_ops = {
+ 	.xpo_recvfrom = svc_tcp_recvfrom,
+ 	.xpo_sendto = svc_tcp_sendto,
+ 	.xpo_result_payload = svc_sock_result_payload,
+-	.xpo_release_rqst = svc_tcp_release_rqst,
++	.xpo_release_ctxt = svc_tcp_release_ctxt,
+ 	.xpo_detach = svc_tcp_sock_detach,
+ 	.xpo_free = svc_sock_free,
+ 	.xpo_has_wspace = svc_tcp_has_wspace,
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+index f760342861694..3ad4291148a68 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+@@ -239,21 +239,20 @@ void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
+ }
+ 
+ /**
+- * svc_rdma_release_rqst - Release transport-specific per-rqst resources
+- * @rqstp: svc_rqst being released
++ * svc_rdma_release_ctxt - Release transport-specific per-rqst resources
++ * @xprt: the transport which owned the context
++ * @vctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
+  *
+  * Ensure that the recv_ctxt is released whether or not a Reply
+  * was sent. For example, the client could close the connection,
+  * or svc_process could drop an RPC, before the Reply is sent.
+  */
+-void svc_rdma_release_rqst(struct svc_rqst *rqstp)
++void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *vctxt)
+ {
+-	struct svc_rdma_recv_ctxt *ctxt = rqstp->rq_xprt_ctxt;
+-	struct svc_xprt *xprt = rqstp->rq_xprt;
++	struct svc_rdma_recv_ctxt *ctxt = vctxt;
+ 	struct svcxprt_rdma *rdma =
+ 		container_of(xprt, struct svcxprt_rdma, sc_xprt);
+ 
+-	rqstp->rq_xprt_ctxt = NULL;
+ 	if (ctxt)
+ 		svc_rdma_recv_ctxt_put(rdma, ctxt);
+ }
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+index 94b20fb471356..f776f0cb471f0 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -81,7 +81,7 @@ static const struct svc_xprt_ops svc_rdma_ops = {
+ 	.xpo_recvfrom = svc_rdma_recvfrom,
+ 	.xpo_sendto = svc_rdma_sendto,
+ 	.xpo_result_payload = svc_rdma_result_payload,
+-	.xpo_release_rqst = svc_rdma_release_rqst,
++	.xpo_release_ctxt = svc_rdma_release_ctxt,
+ 	.xpo_detach = svc_rdma_detach,
+ 	.xpo_free = svc_rdma_free,
+ 	.xpo_has_wspace = svc_rdma_has_wspace,
 -- 
 2.39.2
 
