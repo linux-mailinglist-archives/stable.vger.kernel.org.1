@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E49C770C843
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A87C70C9DB
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234973AbjEVThO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:37:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
+        id S235428AbjEVTwp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234983AbjEVThI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:08 -0400
+        with ESMTP id S235427AbjEVTwc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987CCA3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81B0E77
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AAEC629A5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E53DC433D2;
-        Mon, 22 May 2023 19:36:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6470C62B27
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E34C433D2;
+        Mon, 22 May 2023 19:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784204;
-        bh=XRSTPM+lqDdN1OFccVaZWcXelH6tB5Q/EJj3AOVVXBc=;
+        s=korg; t=1684785139;
+        bh=NIYCGcCAQSYe2fKjPWLdxZlGE6b7hraXNxT3yZOQanY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=07/OYrf+tJw21nYLmVbuxPaV9zY+cIq5ROutw4AAE+ELntbwX5TRfhURcUfowvEyu
-         AXhig2+RRaGXKV4jAcUvFIDZE/NwgrdcDuqDAruYeHsiaxc791QdOo2SOKOm/ppus7
-         DQOlJzV2CX5lfd+5+36dCKu/j5z0ZpXfuA6Z+Itk=
+        b=2a51vUD6xOj9ava04Ui02Cvkhq0D+29KMCqMwxJYRP6im5ZFpDQXFdUARxYEdaMhL
+         7pAFeOCXUT9OU9WtC7cbDbtyiK0YHwjaxEtKRiplstCvtjo1j6kqYmcakguDQlslL8
+         m9xW6i0rcAOjx9y7m+N0fY1SRt2eJXJicBhd1YBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil Khatri <sunil.khatri@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 271/292] drm/amdgpu/gmc11: implement get_vbios_fb_size()
+        patches@lists.linux.dev, Chih-Yen Chang <cc85nod@gmail.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.3 323/364] ksmbd: fix wrong UserName check in session_user
 Date:   Mon, 22 May 2023 20:10:28 +0100
-Message-Id: <20230522190412.714226716@linuxfoundation.org>
+Message-Id: <20230522190420.849231499@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,59 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Chih-Yen Chang <cc85nod@gmail.com>
 
-commit 68518294d00da6a2433357af75a63abc6030676e upstream.
+commit f0a96d1aafd8964e1f9955c830a3e5cb3c60a90f upstream.
 
-Implement get_vbios_fb_size() so we can properly reserve
-the vbios splash screen to avoid potential artifacts on the
-screen during the transition from the pre-OS console to the
-OS console.
+The offset of UserName is related to the address of security
+buffer. To ensure the validaty of UserName, we need to compare name_off
++ name_len with secbuf_len instead of auth_msg_len.
 
-Acked-by: Sunil Khatri <sunil.khatri@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
+[   27.096243] ==================================================================
+[   27.096890] BUG: KASAN: slab-out-of-bounds in smb_strndup_from_utf16+0x188/0x350
+[   27.097609] Read of size 2 at addr ffff888005e3b542 by task kworker/0:0/7
+...
+[   27.099950] Call Trace:
+[   27.100194]  <TASK>
+[   27.100397]  dump_stack_lvl+0x33/0x50
+[   27.100752]  print_report+0xcc/0x620
+[   27.102305]  kasan_report+0xae/0xe0
+[   27.103072]  kasan_check_range+0x35/0x1b0
+[   27.103757]  smb_strndup_from_utf16+0x188/0x350
+[   27.105474]  smb2_sess_setup+0xaf8/0x19c0
+[   27.107935]  handle_ksmbd_work+0x274/0x810
+[   27.108315]  process_one_work+0x419/0x760
+[   27.108689]  worker_thread+0x2a2/0x6f0
+[   27.109385]  kthread+0x160/0x190
+[   27.110129]  ret_from_fork+0x1f/0x30
+[   27.110454]  </TASK>
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chih-Yen Chang <cc85nod@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -31,6 +31,8 @@
- #include "umc_v8_10.h"
- #include "athub/athub_3_0_0_sh_mask.h"
- #include "athub/athub_3_0_0_offset.h"
-+#include "dcn/dcn_3_2_0_offset.h"
-+#include "dcn/dcn_3_2_0_sh_mask.h"
- #include "oss/osssys_6_0_0_offset.h"
- #include "ivsrcid/vmc/irqsrcs_vmc_1_0.h"
- #include "navi10_enum.h"
-@@ -523,7 +525,24 @@ static void gmc_v11_0_get_vm_pte(struct
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1384,7 +1384,7 @@ static struct ksmbd_user *session_user(s
+ 	struct authenticate_message *authblob;
+ 	struct ksmbd_user *user;
+ 	char *name;
+-	unsigned int auth_msg_len, name_off, name_len, secbuf_len;
++	unsigned int name_off, name_len, secbuf_len;
  
- static unsigned gmc_v11_0_get_vbios_fb_size(struct amdgpu_device *adev)
- {
--	return 0;
-+	u32 d1vga_control = RREG32_SOC15(DCE, 0, regD1VGA_CONTROL);
-+	unsigned size;
-+
-+	if (REG_GET_FIELD(d1vga_control, D1VGA_CONTROL, D1VGA_MODE_ENABLE)) {
-+		size = AMDGPU_VBIOS_VGA_ALLOCATION;
-+	} else {
-+		u32 viewport;
-+		u32 pitch;
-+
-+		viewport = RREG32_SOC15(DCE, 0, regHUBP0_DCSURF_PRI_VIEWPORT_DIMENSION);
-+		pitch = RREG32_SOC15(DCE, 0, regHUBPREQ0_DCSURF_SURFACE_PITCH);
-+		size = (REG_GET_FIELD(viewport,
-+					HUBP0_DCSURF_PRI_VIEWPORT_DIMENSION, PRI_VIEWPORT_HEIGHT) *
-+				REG_GET_FIELD(pitch, HUBPREQ0_DCSURF_SURFACE_PITCH, PITCH) *
-+				4);
-+	}
-+
-+	return size;
- }
+ 	secbuf_len = le16_to_cpu(req->SecurityBufferLength);
+ 	if (secbuf_len < sizeof(struct authenticate_message)) {
+@@ -1394,9 +1394,8 @@ static struct ksmbd_user *session_user(s
+ 	authblob = user_authblob(conn, req);
+ 	name_off = le32_to_cpu(authblob->UserName.BufferOffset);
+ 	name_len = le16_to_cpu(authblob->UserName.Length);
+-	auth_msg_len = le16_to_cpu(req->SecurityBufferOffset) + secbuf_len;
  
- static const struct amdgpu_gmc_funcs gmc_v11_0_gmc_funcs = {
+-	if (auth_msg_len < (u64)name_off + name_len)
++	if (secbuf_len < (u64)name_off + name_len)
+ 		return NULL;
+ 
+ 	name = smb_strndup_from_utf16((const char *)authblob + name_off,
 
 
