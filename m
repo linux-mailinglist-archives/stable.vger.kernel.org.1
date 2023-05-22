@@ -2,174 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD79F70BF97
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 15:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B714070BFAC
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 15:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbjEVNYb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 09:24:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45094 "EHLO
+        id S231481AbjEVN0Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 09:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229714AbjEVNY0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 09:24:26 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB427A0;
-        Mon, 22 May 2023 06:24:24 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1q15WR-0000n2-9k; Mon, 22 May 2023 15:24:23 +0200
-Message-ID: <dafe0626-b949-0c04-de50-b74c93b66250@leemhuis.info>
-Date:   Mon, 22 May 2023 15:24:22 +0200
+        with ESMTP id S234148AbjEVN0L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 09:26:11 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C2D1AD;
+        Mon, 22 May 2023 06:25:50 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d30ab1f89so2386584b3a.3;
+        Mon, 22 May 2023 06:25:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684761949; x=1687353949;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4b3cl3OODzw5cbGHTkbsgtSEp8oZPxcTDpluClxVbUk=;
+        b=eO3rIpsi40iN+2w6btP49efxsdxTdxFOiCQQBcJFc1qjQAPCHGM1ndbcirI2jrHElM
+         82mIWTyUiKNEbcA1OqxJxV/cy8w860ZuUZa19gI7FohoWQGljuvwuTXWG6ypc1UYjeRJ
+         esqRmGWv3h5sai88fccF5Dgo4w9HWJAtapyegg02sBy8GwiNkMcpONHU+DaRbJgnAaTH
+         zkgUTctpnh2Ne/hUgJAL4SZX8j7XBYl7B+DtXgbLWg+U/FWkH+SqwB9hHy0Y322M9872
+         Ipie/tzXpsQqNs0CAZlNF7H0EYGqA9Hq7uYvp0b+UWxQc99RLw7B7VNSkRXF24233fxJ
+         RntA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684761949; x=1687353949;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4b3cl3OODzw5cbGHTkbsgtSEp8oZPxcTDpluClxVbUk=;
+        b=Xp5AQO4mPzg4hPdVmFxk0lwgitlFqC83pSO4pLFJ5YBI/c+I+5qovYROruKNBr6Jt7
+         pEdBKpcEnVRchef48aHktOpRTkhC/hhv7n+fylp+MAOcrj91SgeslK3EPuo4gsLv5d8b
+         D/0GKwAYqk/YvuXDb/Zkshu9FUHp7ku98Na2l1ub0XQddWDMY5DMFrGTrLZ8WpdOOGy6
+         R0/ElwsorMAQfrQ2Duod8jk0QZEriovIr2wQBR2Y1r1lBJ8GzJxb+Ez1K5K4iduxaDgX
+         WOCvLS1gkivyJWZ6yiuNMEnlG388pjNcmuKYvgzIo8bAZHFOmZQrtw+IjmRDnnGwioyQ
+         fj0g==
+X-Gm-Message-State: AC+VfDwTZpUNtx28Hwn06KsrzHInTEmbWZcfkPaMmnDRWJP103FLg5lW
+        HC/ROXliYOlmjmlhKnaMBoJapywFCfY=
+X-Google-Smtp-Source: ACHHUZ6W3TTQEgMmXQa5zURSi0AtXuxh42yw2+Qd5pWuLLi/EMw6NyJGi1HDsSizjXkveQPFhxVT7w==
+X-Received: by 2002:a17:902:b496:b0:1ae:bf5:7b5 with SMTP id y22-20020a170902b49600b001ae0bf507b5mr9747125plr.34.1684761949072;
+        Mon, 22 May 2023 06:25:49 -0700 (PDT)
+Received: from [192.168.43.80] (subs02-180-214-232-24.three.co.id. [180.214.232.24])
+        by smtp.gmail.com with ESMTPSA id d6-20020a170902c18600b001addf547a6esm4883562pld.17.2023.05.22.06.25.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 May 2023 06:25:48 -0700 (PDT)
+Message-ID: <efa04d56-cd7f-6620-bca7-1df89f49bf4b@gmail.com>
+Date:   Mon, 22 May 2023 20:25:42 +0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: dmaengine: at_hdmac: Regression regarding rs485 via dma in v5.4
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Kristof Havasi <havasiefr@gmail.com>
-Cc:     Linux kernel regressions list <regressions@lists.linux.dev>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        Peter Rosin <peda@axentia.se>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        tudor.ambarus@microchip.com
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
-          Linux regressions mailing list 
-          <regressions@lists.linux.dev>
-References: <CADBnMvj93bSO=+wU4=pLTgONV7w_hhecxQHAc_YS4P4GaqMNrA@mail.gmail.com>
- <1473b364-777a-ede8-3ff6-36d9e1d577ad@leemhuis.info>
- <eda7abb0-89a2-fa51-4e82-1972b1eed591@leemhuis.info>
-In-Reply-To: <eda7abb0-89a2-fa51-4e82-1972b1eed591@leemhuis.info>
+ Thunderbird/102.11.0
+Content-Language: en-US
+To:     Linux btrfs <linux-btrfs@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>
+Cc:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>, a1bert@atlas.cz
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: vmalloc error: btrfs-delalloc btrfs_work_helper [btrfs] in
+ kernel 6.3.x
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1684761864;06ea0305;
-X-HE-SMSGID: 1q15WR-0000n2-9k
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 04.05.23 11:11, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 04.04.23 13:25, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 29.03.23 16:31, Kristof Havasi wrote:
->>>
->>> I was rebasing the Kernel branch of our SAMA5D35 based board from
->>> v5.4.189 to v5.4.238.
->>> I noticed that after the rebase we could _only send, but not receive_
->>> through our RS485 interface.
->>>
->>> I could bisect the problem to 77b97ef4908aa917e7b68667ec6b344cc5dc5034
->>> in the v5.4.225 release. 
->>
->> FWIW, that's 7176a6a8982d ("dmaengine: at_hdmac: Don't start
->> transactions at tx_submit level") in mainline.
->>
->> Kristof Havasi: would be good to know if this is something that happens
->> with recent mainline as well, because if not it might be something the
->> stable team needs to handle.
+Hi,
+
+I notice a regression report on Bugzilla [1]. Quoting from it:
+
+> after updating from 6.2.x to 6.3.x, vmalloc error messages started to appear in the dmesg
 > 
-> Kristof, any news? Doesn't look like it from here, but maybe I'm missing
-> something.
 > 
-> And did you try what I suggested? Without trying that it looks like
-> neither the mainline developers nor the stable team cares enough to look
-> into your report, as both sides might assume it's the other sides duty
-> to do so.
+> 
+> # free 
+>                total        used        free      shared  buff/cache   available
+> Mem:        16183724     1473068      205664       33472    14504992    14335700
+> Swap:       16777212      703596    16073616
+> 
+> 
+> (zswap enabled)
 
-Hmmm, still no update from . This is unfortunate, as without Kristof's
-help the kernel developers are likely unable to get down to this and
-provide a fix. That's why I'm dropping it from the tracking now.
+See bugzilla for the full thread and attached dmesg.
 
-#regzbot inconclusive: reporter apparently lost interest
+On the report, the reporter can't perform the required bisection,
+unfortunately.
 
-Ciao, Thorsten
+Anyway, I'm adding it to regzbot:
 
->>> If I revert this commit, the tx/rx works just
->>> like before.
->>> Maybe this use-case wasn't considered when this patch was created?
->>> I haven't seen a documentation change regarding this in DT bindings,
->>> but if the config should be something else, please let me know.
->>> Otherwise this commit breaks the RS485 function of atmel_serial at
->>> least in the v5.4.y branch.
->>>
->>> Best Regards,
->>> Kristóf Havasi
->>>
->>> The relevant device tree nodes:
->>>
->>> from sama5d3.dtsi:
->>>
->>> usart1: serial@f0020000 {
->>>   compatible = "atmel,at91sam9260-usart";
->>>   reg = <0xf0020000 0x100>;
->>>   interrupts = <13 IRQ_TYPE_LEVEL_HIGH 5>;
->>>   dmas = <&dma0 2 AT91_DMA_CFG_PER_ID(5)>,
->>>   <&dma0 2 (AT91_DMA_CFG_PER_ID(6) | AT91_DMA_CFG_FIFOCFG_ASAP)>;
->>>   dma-names = "tx", "rx";
->>>   pinctrl-names = "default";
->>>   pinctrl-0 = <&pinctrl_usart1>;
->>>   clocks = <&usart1_clk>;
->>>   clock-names = "usart";
->>>   status = "disabled";
->>> };
->>>
->>> pinctrl_usart1: usart1-0 {
->>>   atmel,pins =
->>>   <AT91_PIOB 28 AT91_PERIPH_A AT91_PINCTRL_PULL_UP
->>>    AT91_PIOB 29 AT91_PERIPH_A AT91_PINCTRL_NONE>;
->>> };
->>> pinctrl_usart1_rts_cts: usart1_rts_cts-0 {
->>>   atmel,pins =
->>>   <AT91_PIOB 26 AT91_PERIPH_A AT91_PINCTRL_NONE /* PB26 periph A,
->>> conflicts with GRX7 */
->>>    AT91_PIOB 27 AT91_PERIPH_A AT91_PINCTRL_NONE>; /* PB27 periph A,
->>> conflicts with G125CKO */
->>> };
->>>
->>> from our dts:
->>>
->>> &usart1 {
->>>   pinctrl-0 = <&pinctrl_usart1 &pinctrl_usart1_rts_cts>;
->>>   atmel,use-dma-rx;
->>>   atmel,use-dma-tx;
->>>   rs485-rx-during-tx;
->>>   linux,rs485-enabled-at-boot-time;
->>>   status = "okay";
->>> };
->>>
->>> HW:
->>> The SAMA5D3's PB27 is connected to the |RE+DE of the RS485 transceiver
->>> SP3458EN-L
->>
->>
->> Thanks for the report. To be sure the issue doesn't fall through the
->> cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
->> tracking bot:
->>
->> #regzbot ^introduced 77b97ef4908aa
->> #regzbot title dmaengine: at_hdmac: receiving data through the RS485
->> interface broke
->> #regzbot ignore-activity
->>
->> This isn't a regression? This issue or a fix for it are already
->> discussed somewhere else? It was fixed already? You want to clarify when
->> the regression started to happen? Or point out I got the title or
->> something else totally wrong? Then just reply and tell me -- ideally
->> while also telling regzbot about it, as explained by the page listed in
->> the footer of this mail.
->>
->> Developers: When fixing the issue, remember to add 'Link:' tags pointing
->> to the report (the parent of this mail). See page linked in footer for
->> details.
->>
->> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
->> --
->> Everything you wanna know about Linux kernel regression tracking:
->> https://linux-regtracking.leemhuis.info/about/#tldr
->> That page also explains what to do if mails like this annoy you.
->>
->>
+#regzbot introduced: v6.2..v6.3 https://bugzilla.kernel.org/show_bug.cgi?id=217466
+#regzbot title: btrfs_work_helper dealloc error in v6.3.x
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217466
+
+-- 
+An old man doll... just what I always wanted! - Clara
