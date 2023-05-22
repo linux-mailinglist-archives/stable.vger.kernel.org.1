@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0428B70C8CF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C8B70C6EA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234819AbjEVTmc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:42:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36794 "EHLO
+        id S234542AbjEVTX4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:23:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbjEVTmb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:31 -0400
+        with ESMTP id S234558AbjEVTXx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB24E56
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CFA6130
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D224862A06
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D001BC433EF;
-        Mon, 22 May 2023 19:41:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA313620F6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7284C433EF;
+        Mon, 22 May 2023 19:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784463;
-        bh=aO9wLY9VkyrPWwoLZCy0KVRPNB4O8b8O/bzkxxfOAvs=;
+        s=korg; t=1684783423;
+        bh=rYZrg77V0kPz+JvyHibL5KUx11BdL3H4k3HV6nJG2QU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0fBl3ekkx1A98X7SecNxDEFgIlv88SbsB37Cm8wow5BiJ8ZojeRBW6qMtkfVm4EE8
-         HLRSqT93z6I3gxPNVjJ8X2Ok2NTQ2HRUo+3M4eDnPhWwzwiCqsAc3Avz625ijk/n8A
-         HlqEllNtjsC39jMGfG7iMhkRj4P5aTBAZWYldDUw=
+        b=WFTF4UzWFR4tbUjN/Q7kZP4yR5CYu34my5E9iqzjt0nv0piItfd3DmP6sIEqDx+gV
+         mkev5ysvVV/ROVIeWbmfzWuywylv7uPr5RiMET/8x7YHaNcYDdg6H+K3yqn/11dl1V
+         2z57+shE8QaNbOcQz7r0w8ow+DBn0Xu9dc3Qfxa8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        KP Singh <kpsingh@kernel.org>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Pedro Falcato <pedro.falcato@gmail.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 091/364] bpf: Annotate data races in bpf_local_storage
+Subject: [PATCH 6.1 039/292] open: return EINVAL for O_DIRECTORY | O_CREAT
 Date:   Mon, 22 May 2023 20:06:36 +0100
-Message-Id: <20230522190415.026980734@linuxfoundation.org>
+Message-Id: <20230522190406.876202437@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,81 +56,194 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 0a09a2f933c73dc76ab0b72da6855f44342a8903 ]
+[ Upstream commit 43b450632676fb60e9faeddff285d9fac94a4f58 ]
 
-There are a few cases where hlist_node is checked to be unhashed without
-holding the lock protecting its modification. In this case, one must use
-hlist_unhashed_lockless to avoid load tearing and KCSAN reports. Fix
-this by using lockless variant in places not protected by the lock.
+After a couple of years and multiple LTS releases we received a report
+that the behavior of O_DIRECTORY | O_CREAT changed starting with v5.7.
 
-Since this is not prompted by any actual KCSAN reports but only from
-code review, I have not included a fixes tag.
+On kernels prior to v5.7 combinations of O_DIRECTORY, O_CREAT, O_EXCL
+had the following semantics:
 
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: KP Singh <kpsingh@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20230221200646.2500777-4-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+(1) open("/tmp/d", O_DIRECTORY | O_CREAT)
+    * d doesn't exist:                create regular file
+    * d exists and is a regular file: ENOTDIR
+    * d exists and is a directory:    EISDIR
+
+(2) open("/tmp/d", O_DIRECTORY | O_CREAT | O_EXCL)
+    * d doesn't exist:                create regular file
+    * d exists and is a regular file: EEXIST
+    * d exists and is a directory:    EEXIST
+
+(3) open("/tmp/d", O_DIRECTORY | O_EXCL)
+    * d doesn't exist:                ENOENT
+    * d exists and is a regular file: ENOTDIR
+    * d exists and is a directory:    open directory
+
+On kernels since to v5.7 combinations of O_DIRECTORY, O_CREAT, O_EXCL
+have the following semantics:
+
+(1) open("/tmp/d", O_DIRECTORY | O_CREAT)
+    * d doesn't exist:                ENOTDIR (create regular file)
+    * d exists and is a regular file: ENOTDIR
+    * d exists and is a directory:    EISDIR
+
+(2) open("/tmp/d", O_DIRECTORY | O_CREAT | O_EXCL)
+    * d doesn't exist:                ENOTDIR (create regular file)
+    * d exists and is a regular file: EEXIST
+    * d exists and is a directory:    EEXIST
+
+(3) open("/tmp/d", O_DIRECTORY | O_EXCL)
+    * d doesn't exist:                ENOENT
+    * d exists and is a regular file: ENOTDIR
+    * d exists and is a directory:    open directory
+
+This is a fairly substantial semantic change that userspace didn't
+notice until Pedro took the time to deliberately figure out corner
+cases. Since no one noticed this breakage we can somewhat safely assume
+that O_DIRECTORY | O_CREAT combinations are likely unused.
+
+The v5.7 breakage is especially weird because while ENOTDIR is returned
+indicating failure a regular file is actually created. This doesn't make
+a lot of sense.
+
+Time was spent finding potential users of this combination. Searching on
+codesearch.debian.net showed that codebases often express semantical
+expectations about O_DIRECTORY | O_CREAT which are completely contrary
+to what our code has done and currently does.
+
+The expectation often is that this particular combination would create
+and open a directory. This suggests users who tried to use that
+combination would stumble upon the counterintuitive behavior no matter
+if pre-v5.7 or post v5.7 and quickly realize neither semantics give them
+what they want. For some examples see the code examples in [1] to [3]
+and the discussion in [4].
+
+There are various ways to address this issue. The lazy/simple option
+would be to restore the pre-v5.7 behavior and to just live with that bug
+forever. But since there's a real chance that the O_DIRECTORY | O_CREAT
+quirk isn't relied upon we should try to get away with murder(ing bad
+semantics) first. If we need to Frankenstein pre-v5.7 behavior later so
+be it.
+
+So let's simply return EINVAL categorically for O_DIRECTORY | O_CREAT
+combinations. In addition to cleaning up the old bug this also opens up
+the possiblity to make that flag combination do something more intuitive
+in the future.
+
+Starting with this commit the following semantics apply:
+
+(1) open("/tmp/d", O_DIRECTORY | O_CREAT)
+    * d doesn't exist:                EINVAL
+    * d exists and is a regular file: EINVAL
+    * d exists and is a directory:    EINVAL
+
+(2) open("/tmp/d", O_DIRECTORY | O_CREAT | O_EXCL)
+    * d doesn't exist:                EINVAL
+    * d exists and is a regular file: EINVAL
+    * d exists and is a directory:    EINVAL
+
+(3) open("/tmp/d", O_DIRECTORY | O_EXCL)
+    * d doesn't exist:                ENOENT
+    * d exists and is a regular file: ENOTDIR
+    * d exists and is a directory:    open directory
+
+One additional note, O_TMPFILE is implemented as:
+
+    #define __O_TMPFILE    020000000
+    #define O_TMPFILE      (__O_TMPFILE | O_DIRECTORY)
+    #define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)
+
+For older kernels it was important to return an explicit error when
+O_TMPFILE wasn't supported. So O_TMPFILE requires that O_DIRECTORY is
+raised alongside __O_TMPFILE. It also enforced that O_CREAT wasn't
+specified. Since O_DIRECTORY | O_CREAT could be used to create a regular
+allowing that combination together with __O_TMPFILE would've meant that
+false positives were possible, i.e., that a regular file was created
+instead of a O_TMPFILE. This could've been used to trick userspace into
+thinking it operated on a O_TMPFILE when it wasn't.
+
+Now that we block O_DIRECTORY | O_CREAT completely the check for O_CREAT
+in the __O_TMPFILE branch via if ((flags & O_TMPFILE_MASK) != O_TMPFILE)
+can be dropped. Instead we can simply check verify that O_DIRECTORY is
+raised via if (!(flags & O_DIRECTORY)) and explain this in two comments.
+
+As Aleksa pointed out O_PATH is unaffected by this change since it
+always returned EINVAL if O_CREAT was specified - with or without
+O_DIRECTORY.
+
+Link: https://lore.kernel.org/lkml/20230320071442.172228-1-pedro.falcato@gmail.com
+Link: https://sources.debian.org/src/flatpak/1.14.4-1/subprojects/libglnx/glnx-dirfd.c/?hl=324#L324 [1]
+Link: https://sources.debian.org/src/flatpak-builder/1.2.3-1/subprojects/libglnx/glnx-shutil.c/?hl=251#L251 [2]
+Link: https://sources.debian.org/src/ostree/2022.7-2/libglnx/glnx-dirfd.c/?hl=324#L324 [3]
+Link: https://www.openwall.com/lists/oss-security/2014/11/26/14 [4]
+Reported-by: Pedro Falcato <pedro.falcato@gmail.com>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_local_storage.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/open.c                              | 18 +++++++++++++-----
+ include/uapi/asm-generic/fcntl.h       |  1 -
+ tools/include/uapi/asm-generic/fcntl.h |  1 -
+ 3 files changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 35f4138a54dc1..58da17ae51241 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -51,11 +51,21 @@ owner_storage(struct bpf_local_storage_map *smap, void *owner)
- 	return map->ops->map_owner_storage_ptr(owner);
- }
+diff --git a/fs/open.c b/fs/open.c
+index 20717ec510c07..9541430ec5b30 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1158,13 +1158,21 @@ inline int build_open_flags(const struct open_how *how, struct open_flags *op)
+ 	}
  
-+static bool selem_linked_to_storage_lockless(const struct bpf_local_storage_elem *selem)
-+{
-+	return !hlist_unhashed_lockless(&selem->snode);
-+}
+ 	/*
+-	 * In order to ensure programs get explicit errors when trying to use
+-	 * O_TMPFILE on old kernels, O_TMPFILE is implemented such that it
+-	 * looks like (O_DIRECTORY|O_RDWR & ~O_CREAT) to old kernels. But we
+-	 * have to require userspace to explicitly set it.
++	 * Block bugs where O_DIRECTORY | O_CREAT created regular files.
++	 * Note, that blocking O_DIRECTORY | O_CREAT here also protects
++	 * O_TMPFILE below which requires O_DIRECTORY being raised.
+ 	 */
++	if ((flags & (O_DIRECTORY | O_CREAT)) == (O_DIRECTORY | O_CREAT))
++		return -EINVAL;
 +
- static bool selem_linked_to_storage(const struct bpf_local_storage_elem *selem)
- {
- 	return !hlist_unhashed(&selem->snode);
- }
++	/* Now handle the creative implementation of O_TMPFILE. */
+ 	if (flags & __O_TMPFILE) {
+-		if ((flags & O_TMPFILE_MASK) != O_TMPFILE)
++		/*
++		 * In order to ensure programs get explicit errors when trying
++		 * to use O_TMPFILE on old kernels we enforce that O_DIRECTORY
++		 * is raised alongside __O_TMPFILE.
++		 */
++		if (!(flags & O_DIRECTORY))
+ 			return -EINVAL;
+ 		if (!(acc_mode & MAY_WRITE))
+ 			return -EINVAL;
+diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+index 1ecdb911add8d..80f37a0d40d7d 100644
+--- a/include/uapi/asm-generic/fcntl.h
++++ b/include/uapi/asm-generic/fcntl.h
+@@ -91,7 +91,6 @@
  
-+static bool selem_linked_to_map_lockless(const struct bpf_local_storage_elem *selem)
-+{
-+	return !hlist_unhashed_lockless(&selem->map_node);
-+}
-+
- static bool selem_linked_to_map(const struct bpf_local_storage_elem *selem)
- {
- 	return !hlist_unhashed(&selem->map_node);
-@@ -174,7 +184,7 @@ static void __bpf_selem_unlink_storage(struct bpf_local_storage_elem *selem,
- 	bool free_local_storage = false;
- 	unsigned long flags;
+ /* a horrid kludge trying to make sure that this will fail on old kernels */
+ #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
+-#define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)      
  
--	if (unlikely(!selem_linked_to_storage(selem)))
-+	if (unlikely(!selem_linked_to_storage_lockless(selem)))
- 		/* selem has already been unlinked from sk */
- 		return;
+ #ifndef O_NDELAY
+ #define O_NDELAY	O_NONBLOCK
+diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
+index b02c8e0f40575..1c7a0f6632c09 100644
+--- a/tools/include/uapi/asm-generic/fcntl.h
++++ b/tools/include/uapi/asm-generic/fcntl.h
+@@ -91,7 +91,6 @@
  
-@@ -208,7 +218,7 @@ void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
- 	struct bpf_local_storage_map_bucket *b;
- 	unsigned long flags;
+ /* a horrid kludge trying to make sure that this will fail on old kernels */
+ #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
+-#define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)      
  
--	if (unlikely(!selem_linked_to_map(selem)))
-+	if (unlikely(!selem_linked_to_map_lockless(selem)))
- 		/* selem has already be unlinked from smap */
- 		return;
- 
-@@ -420,7 +430,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		err = check_flags(old_sdata, map_flags);
- 		if (err)
- 			return ERR_PTR(err);
--		if (old_sdata && selem_linked_to_storage(SELEM(old_sdata))) {
-+		if (old_sdata && selem_linked_to_storage_lockless(SELEM(old_sdata))) {
- 			copy_map_value_locked(&smap->map, old_sdata->data,
- 					      value, false);
- 			return old_sdata;
+ #ifndef O_NDELAY
+ #define O_NDELAY	O_NONBLOCK
 -- 
 2.39.2
 
