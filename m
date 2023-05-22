@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12CC770C81F
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C41370C9D8
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234938AbjEVTgG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
+        id S235403AbjEVTwk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234940AbjEVTgE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:04 -0400
+        with ESMTP id S235494AbjEVTw0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48883CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F6C618F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C6D562942
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5885C433EF;
-        Mon, 22 May 2023 19:34:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F5A862B1D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC8AC433D2;
+        Mon, 22 May 2023 19:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784091;
-        bh=d9Xtdw+4Uyp6mLs/RmFjPPjNZC1SiFXlK+zL/JXtjLA=;
+        s=korg; t=1684785131;
+        bh=cit44o7LbUGVeKHTBKRo4BbvPYPzCdezWKtGqSWuUDw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rXYY4fRsVkou6w+LTev5WYrwkPpcJoE5NHhKli7vLIZnHIzAUbyxF0JK+uLOgjx4u
-         s6PXCUeb0+lkzB9aMN7GjRkFnS76Se+gogTUDdY9DTUrQzBwRKQRJFOtzteNMIYgHP
-         3lgQTAQcMtZbJ770AMdDIqm6YcyRTW2duCCW7fh4=
+        b=OyetDWFy2GH4nh7cFDKhk8y0qCJxwu8V6wOEGGoJtD+PPsotS4Zun4F2tVGZvIWAq
+         h4KIdtwPk5XwSQPpzfEXXtkdGOZAT8qawtKOw5FiGmUAxx9zSckol+THlevc08Q8cK
+         bBVZFW9wG/oE9hpGGoB5p4uByHTZp/ZqMEoKNBEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Luczaj <mhal@rbox.co>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 260/292] KVM: Fix vcpu_array[0] races
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.3 312/364] can: kvaser_pciefd: Empty SRB buffer in probe
 Date:   Mon, 22 May 2023 20:10:17 +0100
-Message-Id: <20230522190412.441491083@linuxfoundation.org>
+Message-Id: <20230522190420.575032848@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,105 +53,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit afb2acb2e3a32e4d56f7fbd819769b98ed1b7520 upstream.
+commit c589557dd1426f5adf90c7a919d4fde5a3e4ef64 upstream.
 
-In kvm_vm_ioctl_create_vcpu(), add vcpu to vcpu_array iff it's safe to
-access vcpu via kvm_get_vcpu() and kvm_for_each_vcpu(), i.e. when there's
-no failure path requiring vcpu removal and destruction. Such order is
-important because vcpu_array accessors may end up referencing vcpu at
-vcpu_array[0] even before online_vcpus is set to 1.
+Empty the "Shared receive buffer" (SRB) in probe, to assure we start in a
+known state, and don't process any irrelevant packets.
 
-When online_vcpus=0, any call to kvm_get_vcpu() goes through
-array_index_nospec() and ends with an attempt to xa_load(vcpu_array, 0):
-
-	int num_vcpus = atomic_read(&kvm->online_vcpus);
-	i = array_index_nospec(i, num_vcpus);
-	return xa_load(&kvm->vcpu_array, i);
-
-Similarly, when online_vcpus=0, a kvm_for_each_vcpu() does not iterate over
-an "empty" range, but actually [0, ULONG_MAX]:
-
-	xa_for_each_range(&kvm->vcpu_array, idx, vcpup, 0, \
-			  (atomic_read(&kvm->online_vcpus) - 1))
-
-In both cases, such online_vcpus=0 edge case, even if leading to
-unnecessary calls to XArray API, should not be an issue; requesting
-unpopulated indexes/ranges is handled by xa_load() and xa_for_each_range().
-
-However, this means that when the first vCPU is created and inserted in
-vcpu_array *and* before online_vcpus is incremented, code calling
-kvm_get_vcpu()/kvm_for_each_vcpu() already has access to that first vCPU.
-
-This should not pose a problem assuming that once a vcpu is stored in
-vcpu_array, it will remain there, but that's not the case:
-kvm_vm_ioctl_create_vcpu() first inserts to vcpu_array, then requests a
-file descriptor. If create_vcpu_fd() fails, newly inserted vcpu is removed
-from the vcpu_array, then destroyed:
-
-	vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
-	r = xa_insert(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
-	kvm_get_kvm(kvm);
-	r = create_vcpu_fd(vcpu);
-	if (r < 0) {
-		xa_erase(&kvm->vcpu_array, vcpu->vcpu_idx);
-		kvm_put_kvm_no_destroy(kvm);
-		goto unlock_vcpu_destroy;
-	}
-	atomic_inc(&kvm->online_vcpus);
-
-This results in a possible race condition when a reference to a vcpu is
-acquired (via kvm_get_vcpu() or kvm_for_each_vcpu()) moments before said
-vcpu is destroyed.
-
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Message-Id: <20230510140410.1093987-2-mhal@rbox.co>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
 Cc: stable@vger.kernel.org
-Fixes: c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray", 2021-12-08)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-5-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- virt/kvm/kvm_main.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3947,18 +3947,19 @@ static int kvm_vm_ioctl_create_vcpu(stru
- 	}
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -71,10 +71,12 @@ MODULE_DESCRIPTION("CAN driver for Kvase
+ #define KVASER_PCIEFD_SYSID_BUILD_REG (KVASER_PCIEFD_SYSID_BASE + 0x14)
+ /* Shared receive buffer registers */
+ #define KVASER_PCIEFD_SRB_BASE 0x1f200
++#define KVASER_PCIEFD_SRB_FIFO_LAST_REG (KVASER_PCIEFD_SRB_BASE + 0x1f4)
+ #define KVASER_PCIEFD_SRB_CMD_REG (KVASER_PCIEFD_SRB_BASE + 0x200)
+ #define KVASER_PCIEFD_SRB_IEN_REG (KVASER_PCIEFD_SRB_BASE + 0x204)
+ #define KVASER_PCIEFD_SRB_IRQ_REG (KVASER_PCIEFD_SRB_BASE + 0x20c)
+ #define KVASER_PCIEFD_SRB_STAT_REG (KVASER_PCIEFD_SRB_BASE + 0x210)
++#define KVASER_PCIEFD_SRB_RX_NR_PACKETS_REG (KVASER_PCIEFD_SRB_BASE + 0x214)
+ #define KVASER_PCIEFD_SRB_CTRL_REG (KVASER_PCIEFD_SRB_BASE + 0x218)
+ /* EPCS flash controller registers */
+ #define KVASER_PCIEFD_SPI_BASE 0x1fc00
+@@ -111,6 +113,9 @@ MODULE_DESCRIPTION("CAN driver for Kvase
+ /* DMA support */
+ #define KVASER_PCIEFD_SRB_STAT_DMA BIT(24)
  
- 	vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
--	r = xa_insert(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
--	BUG_ON(r == -EBUSY);
-+	r = xa_reserve(&kvm->vcpu_array, vcpu->vcpu_idx, GFP_KERNEL_ACCOUNT);
- 	if (r)
- 		goto unlock_vcpu_destroy;
- 
- 	/* Now it's all set up, let userspace reach it */
- 	kvm_get_kvm(kvm);
- 	r = create_vcpu_fd(vcpu);
--	if (r < 0) {
--		xa_erase(&kvm->vcpu_array, vcpu->vcpu_idx);
--		kvm_put_kvm_no_destroy(kvm);
--		goto unlock_vcpu_destroy;
-+	if (r < 0)
-+		goto kvm_put_xa_release;
++/* SRB current packet level */
++#define KVASER_PCIEFD_SRB_RX_NR_PACKETS_MASK 0xff
 +
-+	if (KVM_BUG_ON(!!xa_store(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, 0), kvm)) {
-+		r = -EINVAL;
-+		goto kvm_put_xa_release;
- 	}
+ /* DMA Enable */
+ #define KVASER_PCIEFD_SRB_CTRL_DMA_ENABLE BIT(0)
  
- 	/*
-@@ -3973,6 +3974,9 @@ static int kvm_vm_ioctl_create_vcpu(stru
- 	kvm_create_vcpu_debugfs(vcpu);
- 	return r;
+@@ -1059,6 +1064,7 @@ static int kvaser_pciefd_setup_dma(struc
+ {
+ 	int i;
+ 	u32 srb_status;
++	u32 srb_packet_count;
+ 	dma_addr_t dma_addr[KVASER_PCIEFD_DMA_COUNT];
  
-+kvm_put_xa_release:
-+	kvm_put_kvm_no_destroy(kvm);
-+	xa_release(&kvm->vcpu_array, vcpu->vcpu_idx);
- unlock_vcpu_destroy:
- 	mutex_unlock(&kvm->lock);
- 	kvm_dirty_ring_free(&vcpu->dirty_ring);
+ 	/* Disable the DMA */
+@@ -1086,6 +1092,15 @@ static int kvaser_pciefd_setup_dma(struc
+ 		  KVASER_PCIEFD_SRB_CMD_RDB1,
+ 		  pcie->reg_base + KVASER_PCIEFD_SRB_CMD_REG);
+ 
++	/* Empty Rx FIFO */
++	srb_packet_count = ioread32(pcie->reg_base + KVASER_PCIEFD_SRB_RX_NR_PACKETS_REG) &
++			   KVASER_PCIEFD_SRB_RX_NR_PACKETS_MASK;
++	while (srb_packet_count) {
++		/* Drop current packet in FIFO */
++		ioread32(pcie->reg_base + KVASER_PCIEFD_SRB_FIFO_LAST_REG);
++		srb_packet_count--;
++	}
++
+ 	srb_status = ioread32(pcie->reg_base + KVASER_PCIEFD_SRB_STAT_REG);
+ 	if (!(srb_status & KVASER_PCIEFD_SRB_STAT_DI)) {
+ 		dev_err(&pcie->pci->dev, "DMA not idle before enabling\n");
 
 
