@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D86D70C8AB
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD92870C6EC
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235175AbjEVTkb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
+        id S234540AbjEVTYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235179AbjEVTkS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:40:18 -0400
+        with ESMTP id S234541AbjEVTYH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC7FB129
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:40:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B60F1BB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68ACA629F5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B85C4339E;
-        Mon, 22 May 2023 19:40:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4357620FB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA656C433EF;
+        Mon, 22 May 2023 19:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784414;
-        bh=aOTX9hXS7Cb5RyrIRLOoship6KJNU88lKkUQzE89pgI=;
+        s=korg; t=1684783429;
+        bh=TWrwNQHh4CUOK/y2NiqD0LIa9BQ1SElpzqYR1+H1H/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ILLGtN0JC5hKKfkBjK0dTfKGt+4lmWi5ED3kgc9vHe4W4zBTTibA6jUhNVnQdu3JZ
-         isRRQZYM9KVSjzdOgAh7r9UAlTz7hD2XE9gruFAQv7zi2fcx09JqduCPbI0YAWqkYJ
-         /McvnUfKD6+h6Jlrj3xbwOvmeJcSWB8oZixyqMNI=
+        b=uHeBAJSJoapMbkMqbaNyTygRKbR2yN+d6h2yrdzDhr1KDdP8hNAjtljWbrmLHWxyK
+         O0BbHAsoDqC7Fe5CuA3DEk5fJtXWZdhmtyRsJCyRHvfAV5GyjQDteTqkLUqLYNZdJL
+         B0eoTjYkNRqsTomaePSsp5u1gAFiAhhmQ8Nn+3mI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 075/364] arm64: dts: qcom: sdm845-polaris: Drop inexistent properties
+Subject: [PATCH 6.1 023/292] net: datagram: fix data-races in datagram_poll()
 Date:   Mon, 22 May 2023 20:06:20 +0100
-Message-Id: <20230522190414.645184647@linuxfoundation.org>
+Message-Id: <20230522190406.473174144@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,34 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fbc3a1df2866608ca43e7e6d602f66208a5afd88 ]
+[ Upstream commit 5bca1d081f44c9443e61841842ce4e9179d327b6 ]
 
-Drop the qcom,snoc-host-cap-skip-quirk that was never introduced to
-solve schema warnings.
+datagram_poll() runs locklessly, we should add READ_ONCE()
+annotations while reading sk->sk_err, sk->sk_shutdown and sk->sk_state.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230406-topic-ath10k_bindings-v3-2-00895afc7764@linaro.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230509173131.3263780-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts | 2 --
- 1 file changed, 2 deletions(-)
+ net/core/datagram.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-index 1b7fdbae6a2b5..56f2d855df78d 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-@@ -712,7 +712,5 @@
- 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
- 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
- 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
--
--	qcom,snoc-host-cap-skip-quirk;
- 	status = "okay";
- };
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index e4ff2db40c981..8dabb9a74cb17 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -799,18 +799,21 @@ __poll_t datagram_poll(struct file *file, struct socket *sock,
+ {
+ 	struct sock *sk = sock->sk;
+ 	__poll_t mask;
++	u8 shutdown;
+ 
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
+ 
+ 	/* exceptional events? */
+-	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
++	if (READ_ONCE(sk->sk_err) ||
++	    !skb_queue_empty_lockless(&sk->sk_error_queue))
+ 		mask |= EPOLLERR |
+ 			(sock_flag(sk, SOCK_SELECT_ERR_QUEUE) ? EPOLLPRI : 0);
+ 
+-	if (sk->sk_shutdown & RCV_SHUTDOWN)
++	shutdown = READ_ONCE(sk->sk_shutdown);
++	if (shutdown & RCV_SHUTDOWN)
+ 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
+-	if (sk->sk_shutdown == SHUTDOWN_MASK)
++	if (shutdown == SHUTDOWN_MASK)
+ 		mask |= EPOLLHUP;
+ 
+ 	/* readable? */
+@@ -819,10 +822,12 @@ __poll_t datagram_poll(struct file *file, struct socket *sock,
+ 
+ 	/* Connection-based need to check for termination and startup */
+ 	if (connection_based(sk)) {
+-		if (sk->sk_state == TCP_CLOSE)
++		int state = READ_ONCE(sk->sk_state);
++
++		if (state == TCP_CLOSE)
+ 			mask |= EPOLLHUP;
+ 		/* connection hasn't started yet? */
+-		if (sk->sk_state == TCP_SYN_SENT)
++		if (state == TCP_SYN_SENT)
+ 			return mask;
+ 	}
+ 
 -- 
 2.39.2
 
