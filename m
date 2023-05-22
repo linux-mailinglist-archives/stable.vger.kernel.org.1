@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1F370C946
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6421270C783
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235317AbjEVTqY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:46:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40366 "EHLO
+        id S234736AbjEVTaZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235325AbjEVTqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5A5198
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:14 -0700 (PDT)
+        with ESMTP id S234709AbjEVTaY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:30:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF929C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:30:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E205A62A4A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB3BC433EF;
-        Mon, 22 May 2023 19:46:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89D4562902
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DFFC433D2;
+        Mon, 22 May 2023 19:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784773;
-        bh=e6B98Uepb34tvnDnPicTAK5CJB5NCUMelUvyDKtVoxI=;
+        s=korg; t=1684783823;
+        bh=/cVgxAil8PWw7aNezkRshuCnH82jfUgncVom3ws6J2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TvnBiE2DoAPKv3yMuuY7jyaS6T9tfOxvs6GAexfYD5riwhGQal00jez1WX33MbBMs
-         es6Vt2bNJYbVi7L5JqzMhSpfcIQcMjyk0/S9rbaTUC60IW4mV+xO9168drXS3GQ+yF
-         2hitAYdODiePw+JzVro1hdXDOS8FmhtULwVSEQx0=
+        b=irmwbj6l27uPXDOnCMQNUffGyrh1I5jXZDJtbrZLJ/J6z9KSQ64p79SBqT6EGPOfJ
+         bBxxB7UVXX6DCk27349FRjxb8Lp7PnF4zAEgu+Wuq+Y0EMkbepcClsVOoQg5THQYYf
+         ZeA+YY7GK/u0VCnsDltBFZg1tmmR03DvP0om4S9Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 198/364] xfrm: dont check the default policy if the policy allows the packet
+        patches@lists.linux.dev,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/292] mfd: intel-lpss: Add Intel Meteor Lake PCH-S LPSS PCI IDs
 Date:   Mon, 22 May 2023 20:08:23 +0100
-Message-Id: <20230522190417.682816866@linuxfoundation.org>
+Message-Id: <20230522190409.613069601@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,47 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 430cac487400494c19a8b85299e979bb07b4671f ]
+[ Upstream commit 72d4a1683741ee578da0e265886e6a7f3d42266c ]
 
-The current code doesn't let a simple "allow" policy counteract a
-default policy blocking all incoming packets:
+Add Intel Meteor Lake PCH-S also called as Meteor Point-S LPSS PCI IDs.
 
-    ip x p setdefault in block
-    ip x p a src 192.168.2.1/32 dst 192.168.2.2/32 dir in action allow
-
-At this stage, we have an allow policy (with or without transforms)
-for this packet. It doesn't matter what the default policy says, since
-the policy we looked up lets the packet through. The case of a
-blocking policy is already handled separately, so we can remove this
-check.
-
-Fixes: 2d151d39073a ("xfrm: Add possibility to set the default to block if we have no policy")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230330132618.4108665-1-jarkko.nikula@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/mfd/intel-lpss-pci.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 5c61ec04b839b..62be042f2ebcd 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3712,12 +3712,6 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		}
- 		xfrm_nr = ti;
- 
--		if (net->xfrm.policy_default[dir] == XFRM_USERPOLICY_BLOCK &&
--		    !xfrm_nr) {
--			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
--			goto reject;
--		}
--
- 		if (npols > 1) {
- 			xfrm_tmpl_sort(stp, tpp, xfrm_nr, family);
- 			tpp = stp;
+diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
+index dde31c50a6320..699f44ffff0e4 100644
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -447,6 +447,21 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x7e79), (kernel_ulong_t)&bxt_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7e7a), (kernel_ulong_t)&bxt_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7e7b), (kernel_ulong_t)&bxt_i2c_info },
++	/* MTP-S */
++	{ PCI_VDEVICE(INTEL, 0x7f28), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f29), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f2a), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f2b), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4c), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4d), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4e), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4f), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5c), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5d), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5e), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5f), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f7a), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f7b), (kernel_ulong_t)&bxt_i2c_info },
+ 	/* LKF */
+ 	{ PCI_VDEVICE(INTEL, 0x98a8), (kernel_ulong_t)&bxt_uart_info },
+ 	{ PCI_VDEVICE(INTEL, 0x98a9), (kernel_ulong_t)&bxt_uart_info },
 -- 
 2.39.2
 
