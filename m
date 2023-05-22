@@ -2,45 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA16E70C678
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F2F70C7F1
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234239AbjEVTSa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:18:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41586 "EHLO
+        id S234906AbjEVTeO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:34:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234304AbjEVTSV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:21 -0400
+        with ESMTP id S234886AbjEVTeM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:34:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E88821A5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0921DCF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:33:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76C62627D0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C781C433D2;
-        Mon, 22 May 2023 19:18:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A949062938
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:32:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77185C4339B;
+        Mon, 22 May 2023 19:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783098;
-        bh=WKbLPeR0oAC4fPCpxnNcWbgz2jPUYr/cFazWozNbhIA=;
+        s=korg; t=1684783974;
+        bh=nyZetAnxzMLTYdePgGxM9B3a0U0Pl1xC8sF98ZADfWQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NDXEQEi1YBLsuMcSnrW5kD9EP+LKKodBHKOHQcCA4vbkthDNNNoT0wVQAUSVsqsBp
-         BS6UE7LNzNtn7Q2O1EgSzkW1wPTxKq0ioG4tBkNx/ZwJX0YK20qHbHLogWgupXJ7Uj
-         iE97NMzXcux0A69ncNZcAqEG2pB6MdiLZUgP93EA=
+        b=eoyjI/NW8b8faxK241tPcC+hAXpEj9PXQsrKrHt5MNz0cHnHxkexUW90eSfi5nMl0
+         ZWh3TZBj/oJGZh57VPa0ZzW0if+nGJn7Sosx3IzqDeTEuoxhF50wW/gDXMioFin48E
+         sWbxg7Y1kEDVKGJWW8HllkblJc4FG8hlQBqu0gqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexander Wetzel <alexander@wetzel-home.de>,
+        Leon Romanovsky <leonro@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/203] SUNRPC: always free ctxt when freeing deferred request
+Subject: [PATCH 6.1 205/292] wifi: mac80211: fortify the spinlock against deadlock by interrupt
 Date:   Mon, 22 May 2023 20:09:22 +0100
-Message-Id: <20230522190358.787593097@linuxfoundation.org>
+Message-Id: <20230522190411.080476040@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,265 +63,219 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: NeilBrown <neilb@suse.de>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit 948f072ada23e0a504c5e4d7d71d4c83bd0785ec ]
+[ Upstream commit ef6e1997da63ad0ac3fe33153fec9524c9ae56c9 ]
 
-Since the ->xprt_ctxt pointer was added to svc_deferred_req, it has not
-been sufficient to use kfree() to free a deferred request.  We may need
-to free the ctxt as well.
+In the function ieee80211_tx_dequeue() there is a particular locking
+sequence:
 
-As freeing the ctxt is all that ->xpo_release_rqst() does, we repurpose
-it to explicit do that even when the ctxt is not stored in an rqst.
-So we now have ->xpo_release_ctxt() which is given an xprt and a ctxt,
-which may have been taken either from an rqst or from a dreq.  The
-caller is now responsible for clearing that pointer after the call to
-->xpo_release_ctxt.
+begin:
+	spin_lock(&local->queue_stop_reason_lock);
+	q_stopped = local->queue_stop_reasons[q];
+	spin_unlock(&local->queue_stop_reason_lock);
 
-We also clear dr->xprt_ctxt when the ctxt is moved into a new rqst when
-revisiting a deferred request.  This ensures there is only one pointer
-to the ctxt, so the risk of double freeing in future is reduced.  The
-new code in svc_xprt_release which releases both the ctxt and any
-rq_deferred depends on this.
+However small the chance (increased by ftracetest), an asynchronous
+interrupt can occur in between of spin_lock() and spin_unlock(),
+and the interrupt routine will attempt to lock the same
+&local->queue_stop_reason_lock again.
 
-Fixes: 773f91b2cf3f ("SUNRPC: Fix NFSD's request deferral on RDMA transports")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This will cause a costly reset of the CPU and the wifi device or an
+altogether hang in the single CPU and single core scenario.
+
+The only remaining spin_lock(&local->queue_stop_reason_lock) that
+did not disable interrupts was patched, which should prevent any
+deadlocks on the same CPU/core and the same wifi device.
+
+This is the probable trace of the deadlock:
+
+kernel: ================================
+kernel: WARNING: inconsistent lock state
+kernel: 6.3.0-rc6-mt-20230401-00001-gf86822a1170f #4 Tainted: G        W
+kernel: --------------------------------
+kernel: inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+kernel: kworker/5:0/25656 [HC0[0]:SC0[0]:HE1:SE1] takes:
+kernel: ffff9d6190779478 (&local->queue_stop_reason_lock){+.?.}-{2:2}, at: return_to_handler+0x0/0x40
+kernel: {IN-SOFTIRQ-W} state was registered at:
+kernel:   lock_acquire+0xc7/0x2d0
+kernel:   _raw_spin_lock+0x36/0x50
+kernel:   ieee80211_tx_dequeue+0xb4/0x1330 [mac80211]
+kernel:   iwl_mvm_mac_itxq_xmit+0xae/0x210 [iwlmvm]
+kernel:   iwl_mvm_mac_wake_tx_queue+0x2d/0xd0 [iwlmvm]
+kernel:   ieee80211_queue_skb+0x450/0x730 [mac80211]
+kernel:   __ieee80211_xmit_fast.constprop.66+0x834/0xa50 [mac80211]
+kernel:   __ieee80211_subif_start_xmit+0x217/0x530 [mac80211]
+kernel:   ieee80211_subif_start_xmit+0x60/0x580 [mac80211]
+kernel:   dev_hard_start_xmit+0xb5/0x260
+kernel:   __dev_queue_xmit+0xdbe/0x1200
+kernel:   neigh_resolve_output+0x166/0x260
+kernel:   ip_finish_output2+0x216/0xb80
+kernel:   __ip_finish_output+0x2a4/0x4d0
+kernel:   ip_finish_output+0x2d/0xd0
+kernel:   ip_output+0x82/0x2b0
+kernel:   ip_local_out+0xec/0x110
+kernel:   igmpv3_sendpack+0x5c/0x90
+kernel:   igmp_ifc_timer_expire+0x26e/0x4e0
+kernel:   call_timer_fn+0xa5/0x230
+kernel:   run_timer_softirq+0x27f/0x550
+kernel:   __do_softirq+0xb4/0x3a4
+kernel:   irq_exit_rcu+0x9b/0xc0
+kernel:   sysvec_apic_timer_interrupt+0x80/0xa0
+kernel:   asm_sysvec_apic_timer_interrupt+0x1f/0x30
+kernel:   _raw_spin_unlock_irqrestore+0x3f/0x70
+kernel:   free_to_partial_list+0x3d6/0x590
+kernel:   __slab_free+0x1b7/0x310
+kernel:   kmem_cache_free+0x52d/0x550
+kernel:   putname+0x5d/0x70
+kernel:   do_sys_openat2+0x1d7/0x310
+kernel:   do_sys_open+0x51/0x80
+kernel:   __x64_sys_openat+0x24/0x30
+kernel:   do_syscall_64+0x5c/0x90
+kernel:   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+kernel: irq event stamp: 5120729
+kernel: hardirqs last  enabled at (5120729): [<ffffffff9d149936>] trace_graph_return+0xd6/0x120
+kernel: hardirqs last disabled at (5120728): [<ffffffff9d149950>] trace_graph_return+0xf0/0x120
+kernel: softirqs last  enabled at (5069900): [<ffffffff9cf65b60>] return_to_handler+0x0/0x40
+kernel: softirqs last disabled at (5067555): [<ffffffff9cf65b60>] return_to_handler+0x0/0x40
+kernel:
+        other info that might help us debug this:
+kernel:  Possible unsafe locking scenario:
+kernel:        CPU0
+kernel:        ----
+kernel:   lock(&local->queue_stop_reason_lock);
+kernel:   <Interrupt>
+kernel:     lock(&local->queue_stop_reason_lock);
+kernel:
+         *** DEADLOCK ***
+kernel: 8 locks held by kworker/5:0/25656:
+kernel:  #0: ffff9d618009d138 ((wq_completion)events_freezable){+.+.}-{0:0}, at: process_one_work+0x1ca/0x530
+kernel:  #1: ffffb1ef4637fe68 ((work_completion)(&local->restart_work)){+.+.}-{0:0}, at: process_one_work+0x1ce/0x530
+kernel:  #2: ffffffff9f166548 (rtnl_mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #3: ffff9d6190778728 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #4: ffff9d619077b480 (&mvm->mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #5: ffff9d61907bacd8 (&trans_pcie->mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #6: ffffffff9ef9cda0 (rcu_read_lock){....}-{1:2}, at: iwl_mvm_queue_state_change+0x59/0x3a0 [iwlmvm]
+kernel:  #7: ffffffff9ef9cda0 (rcu_read_lock){....}-{1:2}, at: iwl_mvm_mac_itxq_xmit+0x42/0x210 [iwlmvm]
+kernel:
+        stack backtrace:
+kernel: CPU: 5 PID: 25656 Comm: kworker/5:0 Tainted: G        W          6.3.0-rc6-mt-20230401-00001-gf86822a1170f #4
+kernel: Hardware name: LENOVO 82H8/LNVNB161216, BIOS GGCN51WW 11/16/2022
+kernel: Workqueue: events_freezable ieee80211_restart_work [mac80211]
+kernel: Call Trace:
+kernel:  <TASK>
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  dump_stack_lvl+0x5f/0xa0
+kernel:  dump_stack+0x14/0x20
+kernel:  print_usage_bug.part.46+0x208/0x2a0
+kernel:  mark_lock.part.47+0x605/0x630
+kernel:  ? sched_clock+0xd/0x20
+kernel:  ? trace_clock_local+0x14/0x30
+kernel:  ? __rb_reserve_next+0x5f/0x490
+kernel:  ? _raw_spin_lock+0x1b/0x50
+kernel:  __lock_acquire+0x464/0x1990
+kernel:  ? mark_held_locks+0x4e/0x80
+kernel:  lock_acquire+0xc7/0x2d0
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ? ftrace_return_to_handler+0x8b/0x100
+kernel:  ? preempt_count_add+0x4/0x70
+kernel:  _raw_spin_lock+0x36/0x50
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_tx_dequeue+0xb4/0x1330 [mac80211]
+kernel:  ? prepare_ftrace_return+0xc5/0x190
+kernel:  ? ftrace_graph_func+0x16/0x20
+kernel:  ? 0xffffffffc02ab0b1
+kernel:  ? lock_acquire+0xc7/0x2d0
+kernel:  ? iwl_mvm_mac_itxq_xmit+0x42/0x210 [iwlmvm]
+kernel:  ? ieee80211_tx_dequeue+0x9/0x1330 [mac80211]
+kernel:  ? __rcu_read_lock+0x4/0x40
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_mac_itxq_xmit+0xae/0x210 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_queue_state_change+0x311/0x3a0 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_wake_sw_queue+0x17/0x20 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_unmap+0x1c9/0x1f0 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_free+0x55/0x130 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_tx_free+0x63/0x80 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  _iwl_trans_pcie_gen2_stop_device+0x3f3/0x5b0 [iwlwifi]
+kernel:  ? _iwl_trans_pcie_gen2_stop_device+0x9/0x5b0 [iwlwifi]
+kernel:  ? mutex_lock_nested+0x4/0x30
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_trans_pcie_gen2_stop_device+0x5f/0x90 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_stop_device+0x78/0xd0 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  __iwl_mvm_mac_start+0x114/0x210 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_mac_start+0x76/0x150 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  drv_start+0x79/0x180 [mac80211]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_reconfig+0x1523/0x1ce0 [mac80211]
+kernel:  ? synchronize_net+0x4/0x50
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_restart_work+0x108/0x170 [mac80211]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  process_one_work+0x250/0x530
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  worker_thread+0x48/0x3a0
+kernel:  ? __pfx_worker_thread+0x10/0x10
+kernel:  kthread+0x10f/0x140
+kernel:  ? __pfx_kthread+0x10/0x10
+kernel:  ret_from_fork+0x29/0x50
+kernel:  </TASK>
+
+Fixes: 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs for resumption")
+Link: https://lore.kernel.org/all/1f58a0d1-d2b9-d851-73c3-93fcc607501c@alu.unizg.hr/
+Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/all/cdc80531-f25f-6f9d-b15f-25e16130b53a@alu.unizg.hr/
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Alexander Wetzel <alexander@wetzel-home.de>
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: tag, or it goes automatically?
+Link: https://lore.kernel.org/r/20230425164005.25272-1-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/svc_rdma.h          |  2 +-
- include/linux/sunrpc/svc_xprt.h          |  2 +-
- net/sunrpc/svc_xprt.c                    | 23 +++++++++++++-----
- net/sunrpc/svcsock.c                     | 30 +++++++++++++-----------
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c  | 11 ++++-----
- net/sunrpc/xprtrdma/svc_rdma_transport.c |  2 +-
- 6 files changed, 41 insertions(+), 29 deletions(-)
+ net/mac80211/tx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sunrpc/svc_rdma.h b/include/linux/sunrpc/svc_rdma.h
-index 24aa159d29a7f..fbc4bd423b355 100644
---- a/include/linux/sunrpc/svc_rdma.h
-+++ b/include/linux/sunrpc/svc_rdma.h
-@@ -176,7 +176,7 @@ extern struct svc_rdma_recv_ctxt *
- extern void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
- 				   struct svc_rdma_recv_ctxt *ctxt);
- extern void svc_rdma_flush_recv_queues(struct svcxprt_rdma *rdma);
--extern void svc_rdma_release_rqst(struct svc_rqst *rqstp);
-+extern void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *ctxt);
- extern int svc_rdma_recvfrom(struct svc_rqst *);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 6a1708db652f2..763cefd0cc268 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3718,6 +3718,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	ieee80211_tx_result r;
+ 	struct ieee80211_vif *vif = txq->vif;
+ 	int q = vif->hw_queue[txq->ac];
++	unsigned long flags;
+ 	bool q_stopped;
  
- /* svc_rdma_rw.c */
-diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
-index 571f605bc91ef..154eee6bc6a01 100644
---- a/include/linux/sunrpc/svc_xprt.h
-+++ b/include/linux/sunrpc/svc_xprt.h
-@@ -23,7 +23,7 @@ struct svc_xprt_ops {
- 	int		(*xpo_sendto)(struct svc_rqst *);
- 	int		(*xpo_result_payload)(struct svc_rqst *, unsigned int,
- 					      unsigned int);
--	void		(*xpo_release_rqst)(struct svc_rqst *);
-+	void		(*xpo_release_ctxt)(struct svc_xprt *xprt, void *ctxt);
- 	void		(*xpo_detach)(struct svc_xprt *);
- 	void		(*xpo_free)(struct svc_xprt *);
- 	void		(*xpo_secure_port)(struct svc_rqst *rqstp);
-diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
-index 5da8e87979f15..5ff8f902f14d2 100644
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -530,13 +530,23 @@ void svc_reserve(struct svc_rqst *rqstp, int space)
- }
- EXPORT_SYMBOL_GPL(svc_reserve);
+ 	WARN_ON_ONCE(softirq_count() == 0);
+@@ -3726,9 +3727,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 		return NULL;
  
-+static void free_deferred(struct svc_xprt *xprt, struct svc_deferred_req *dr)
-+{
-+	if (!dr)
-+		return;
-+
-+	xprt->xpt_ops->xpo_release_ctxt(xprt, dr->xprt_ctxt);
-+	kfree(dr);
-+}
-+
- static void svc_xprt_release(struct svc_rqst *rqstp)
- {
- 	struct svc_xprt	*xprt = rqstp->rq_xprt;
+ begin:
+-	spin_lock(&local->queue_stop_reason_lock);
++	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
+ 	q_stopped = local->queue_stop_reasons[q];
+-	spin_unlock(&local->queue_stop_reason_lock);
++	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
  
--	xprt->xpt_ops->xpo_release_rqst(rqstp);
-+	xprt->xpt_ops->xpo_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
-+	rqstp->rq_xprt_ctxt = NULL;
- 
--	kfree(rqstp->rq_deferred);
-+	free_deferred(xprt, rqstp->rq_deferred);
- 	rqstp->rq_deferred = NULL;
- 
- 	pagevec_release(&rqstp->rq_pvec);
-@@ -1054,7 +1064,7 @@ static void svc_delete_xprt(struct svc_xprt *xprt)
- 	spin_unlock_bh(&serv->sv_lock);
- 
- 	while ((dr = svc_deferred_dequeue(xprt)) != NULL)
--		kfree(dr);
-+		free_deferred(xprt, dr);
- 
- 	call_xpt_users(xprt);
- 	svc_xprt_put(xprt);
-@@ -1166,8 +1176,8 @@ static void svc_revisit(struct cache_deferred_req *dreq, int too_many)
- 	if (too_many || test_bit(XPT_DEAD, &xprt->xpt_flags)) {
- 		spin_unlock(&xprt->xpt_lock);
- 		trace_svc_defer_drop(dr);
-+		free_deferred(xprt, dr);
- 		svc_xprt_put(xprt);
--		kfree(dr);
- 		return;
- 	}
- 	dr->xprt = NULL;
-@@ -1212,14 +1222,13 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
- 		dr->addrlen = rqstp->rq_addrlen;
- 		dr->daddr = rqstp->rq_daddr;
- 		dr->argslen = rqstp->rq_arg.len >> 2;
--		dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
- 
- 		/* back up head to the start of the buffer and copy */
- 		skip = rqstp->rq_arg.len - rqstp->rq_arg.head[0].iov_len;
- 		memcpy(dr->args, rqstp->rq_arg.head[0].iov_base - skip,
- 		       dr->argslen << 2);
- 	}
--	WARN_ON_ONCE(rqstp->rq_xprt_ctxt != dr->xprt_ctxt);
-+	dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
- 	rqstp->rq_xprt_ctxt = NULL;
- 	trace_svc_defer(rqstp);
- 	svc_xprt_get(rqstp->rq_xprt);
-@@ -1253,6 +1262,8 @@ static noinline int svc_deferred_recv(struct svc_rqst *rqstp)
- 	rqstp->rq_daddr       = dr->daddr;
- 	rqstp->rq_respages    = rqstp->rq_pages;
- 	rqstp->rq_xprt_ctxt   = dr->xprt_ctxt;
-+
-+	dr->xprt_ctxt = NULL;
- 	svc_xprt_received(rqstp->rq_xprt);
- 	return dr->argslen << 2;
- }
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 9a0a27d1199f5..6fc7a8c523696 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -111,27 +111,27 @@ static void svc_reclassify_socket(struct socket *sock)
- #endif
- 
- /**
-- * svc_tcp_release_rqst - Release transport-related resources
-- * @rqstp: request structure with resources to be released
-+ * svc_tcp_release_ctxt - Release transport-related resources
-+ * @xprt: the transport which owned the context
-+ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
-  *
-  */
--static void svc_tcp_release_rqst(struct svc_rqst *rqstp)
-+static void svc_tcp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
- {
- }
- 
- /**
-- * svc_udp_release_rqst - Release transport-related resources
-- * @rqstp: request structure with resources to be released
-+ * svc_udp_release_ctxt - Release transport-related resources
-+ * @xprt: the transport which owned the context
-+ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
-  *
-  */
--static void svc_udp_release_rqst(struct svc_rqst *rqstp)
-+static void svc_udp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
- {
--	struct sk_buff *skb = rqstp->rq_xprt_ctxt;
-+	struct sk_buff *skb = ctxt;
- 
--	if (skb) {
--		rqstp->rq_xprt_ctxt = NULL;
-+	if (skb)
- 		consume_skb(skb);
--	}
- }
- 
- union svc_pktinfo_u {
-@@ -559,7 +559,8 @@ static int svc_udp_sendto(struct svc_rqst *rqstp)
- 	unsigned int sent;
- 	int err;
- 
--	svc_udp_release_rqst(rqstp);
-+	svc_udp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
-+	rqstp->rq_xprt_ctxt = NULL;
- 
- 	svc_set_cmsg_data(rqstp, cmh);
- 
-@@ -628,7 +629,7 @@ static const struct svc_xprt_ops svc_udp_ops = {
- 	.xpo_recvfrom = svc_udp_recvfrom,
- 	.xpo_sendto = svc_udp_sendto,
- 	.xpo_result_payload = svc_sock_result_payload,
--	.xpo_release_rqst = svc_udp_release_rqst,
-+	.xpo_release_ctxt = svc_udp_release_ctxt,
- 	.xpo_detach = svc_sock_detach,
- 	.xpo_free = svc_sock_free,
- 	.xpo_has_wspace = svc_udp_has_wspace,
-@@ -1156,7 +1157,8 @@ static int svc_tcp_sendto(struct svc_rqst *rqstp)
- 	unsigned int sent;
- 	int err;
- 
--	svc_tcp_release_rqst(rqstp);
-+	svc_tcp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
-+	rqstp->rq_xprt_ctxt = NULL;
- 
- 	atomic_inc(&svsk->sk_sendqlen);
- 	mutex_lock(&xprt->xpt_mutex);
-@@ -1201,7 +1203,7 @@ static const struct svc_xprt_ops svc_tcp_ops = {
- 	.xpo_recvfrom = svc_tcp_recvfrom,
- 	.xpo_sendto = svc_tcp_sendto,
- 	.xpo_result_payload = svc_sock_result_payload,
--	.xpo_release_rqst = svc_tcp_release_rqst,
-+	.xpo_release_ctxt = svc_tcp_release_ctxt,
- 	.xpo_detach = svc_tcp_sock_detach,
- 	.xpo_free = svc_sock_free,
- 	.xpo_has_wspace = svc_tcp_has_wspace,
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-index f760342861694..3ad4291148a68 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -239,21 +239,20 @@ void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
- }
- 
- /**
-- * svc_rdma_release_rqst - Release transport-specific per-rqst resources
-- * @rqstp: svc_rqst being released
-+ * svc_rdma_release_ctxt - Release transport-specific per-rqst resources
-+ * @xprt: the transport which owned the context
-+ * @vctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
-  *
-  * Ensure that the recv_ctxt is released whether or not a Reply
-  * was sent. For example, the client could close the connection,
-  * or svc_process could drop an RPC, before the Reply is sent.
-  */
--void svc_rdma_release_rqst(struct svc_rqst *rqstp)
-+void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *vctxt)
- {
--	struct svc_rdma_recv_ctxt *ctxt = rqstp->rq_xprt_ctxt;
--	struct svc_xprt *xprt = rqstp->rq_xprt;
-+	struct svc_rdma_recv_ctxt *ctxt = vctxt;
- 	struct svcxprt_rdma *rdma =
- 		container_of(xprt, struct svcxprt_rdma, sc_xprt);
- 
--	rqstp->rq_xprt_ctxt = NULL;
- 	if (ctxt)
- 		svc_rdma_recv_ctxt_put(rdma, ctxt);
- }
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index 94b20fb471356..f776f0cb471f0 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -81,7 +81,7 @@ static const struct svc_xprt_ops svc_rdma_ops = {
- 	.xpo_recvfrom = svc_rdma_recvfrom,
- 	.xpo_sendto = svc_rdma_sendto,
- 	.xpo_result_payload = svc_rdma_result_payload,
--	.xpo_release_rqst = svc_rdma_release_rqst,
-+	.xpo_release_ctxt = svc_rdma_release_ctxt,
- 	.xpo_detach = svc_rdma_detach,
- 	.xpo_free = svc_rdma_free,
- 	.xpo_has_wspace = svc_rdma_has_wspace,
+ 	if (unlikely(q_stopped)) {
+ 		/* mark for waking later */
 -- 
 2.39.2
 
