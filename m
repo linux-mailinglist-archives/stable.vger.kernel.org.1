@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C90C470C69B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2200770C827
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234320AbjEVTUG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42888 "EHLO
+        id S234937AbjEVTgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234335AbjEVTUF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:20:05 -0400
+        with ESMTP id S234948AbjEVTgL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78EACA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:20:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8147DE4F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 365B462810
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102D0C433EF;
-        Mon, 22 May 2023 19:20:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68A7A62988
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C66C433D2;
+        Mon, 22 May 2023 19:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783203;
-        bh=6Bv22FNXHjaVGW+PHhszlUnFECmc+mAAeFKykw84ijE=;
+        s=korg; t=1684784112;
+        bh=AVdq60N5lVehaFLMYJOGKiP7nTMOG0O/gkK0aXCsGHM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CNnwfK/V/rAZ/fFn1tmALu5wdBjOfplJ/88AgCKQOMxq363MSD57RlwSUc2ul/l78
-         SqA+XjZo+p99Ay1oV0rGMYQ9TdMfI6ckZ2NFZU+bEtm/DTE9LlcpkRoDwhUjM5iGxV
-         KF+1/iFAnAVVrUfuZkVnOOTzQNgElg9pTR4pIkBY=
+        b=wt4o34Ke0JtYSVrwOAYsnEEyKHivddmO28swo7qXdPSYYCBBpMMWl6d4eBMy7hRnL
+         hhdo87VJM85dWj3ZkkxZFOY+02To2VDj1hCpiV5iDfWi580CTjA0u9vN16sHL8msSy
+         sHyChuXddAnIkRoIEnNjyXqCkEtAfDqJxi7mbp44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Soller <jeremy@system76.com>,
-        Tim Crawford <tcrawford@system76.com>,
+        patches@lists.linux.dev, Nikhil Mahale <nmahale@nvidia.com>,
         Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 172/203] ALSA: hda/realtek: Add quirk for Clevo L140AU
+Subject: [PATCH 6.1 239/292] ALSA: hda: Add NVIDIA codec IDs a3 through a7 to patch table
 Date:   Mon, 22 May 2023 20:09:56 +0100
-Message-Id: <20230522190359.749580524@linuxfoundation.org>
+Message-Id: <20230522190411.925193691@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,31 +53,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeremy Soller <jeremy@system76.com>
+From: Nikhil Mahale <nmahale@nvidia.com>
 
-commit 0a6b36c5dc3dda0196f4fb65bdb34c38b8d060c3 upstream.
+commit dc4f2ccaedddb489a83e7b12ebbdc347272aacc9 upstream.
 
-Fixes headset detection on Clevo L140AU.
+These IDs are for AD102, AD103, AD104, AD106, and AD107 gpus with
+audio functions that are largely similar to the existing ones.
 
-Signed-off-by: Jeremy Soller <jeremy@system76.com>
-Signed-off-by: Tim Crawford <tcrawford@system76.com>
+Tested audio using gnome-settings, over HDMI, DP-SST and DP-MST
+connections on AD106 gpu.
+
+Signed-off-by: Nikhil Mahale <nmahale@nvidia.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230505163651.21257-1-tcrawford@system76.com
+Link: https://lore.kernel.org/r/20230517090736.15088-1-nmahale@nvidia.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_hdmi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9214,6 +9214,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1558, 0x7716, "Clevo NS50PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x7717, "Clevo NS70PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x7718, "Clevo L140PU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1558, 0x7724, "Clevo L140AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x8228, "Clevo NR40BU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x8520, "Clevo NH50D[CD]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0x8521, "Clevo NH77D[CD]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4577,6 +4577,11 @@ HDA_CODEC_ENTRY(0x10de009d, "GPU 9d HDMI
+ HDA_CODEC_ENTRY(0x10de009e, "GPU 9e HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009f, "GPU 9f HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a0, "GPU a0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a3, "GPU a3 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a4, "GPU a4 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a5, "GPU a5 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x11069f80, "VX900 HDMI/DP",	patch_via_hdmi),
 
 
