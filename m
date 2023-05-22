@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0ED370C63B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AF970C750
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbjEVTQX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
+        id S234679AbjEVT2Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231538AbjEVTQG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13194E62
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:59 -0700 (PDT)
+        with ESMTP id S234676AbjEVT2R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95115139
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1B086275C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D39C4339B;
-        Mon, 22 May 2023 19:15:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A1FC628CB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9A9C433EF;
+        Mon, 22 May 2023 19:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782958;
-        bh=md2nOAsUB65InNrnStU66YPlEd6VHnLXSPWZRXYJOR0=;
+        s=korg; t=1684783687;
+        bh=GDJqL3ApqS/ZnDifmDg2sYO6N0TYZCUCDJ0ATatYnFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ef5w6KPhgF752tdU+piA/18yMdM8AWYc1rnWDNITv0hI1LcBArpJGbMTY+rZSIBuR
-         EU/bO2qf1fkmfOQtLcdSvAZgxlxMJ2H69zn5TQHeqGQyVPigG/425ptHiaTJCRIGGh
-         SlpNbjc4bd2YSqNJfOUNjED6zEGjKisamKa02efs=
+        b=Op303no6XfEvRmvR435ysqy5VLaBK4GM26F3DX3/xwGnredmlcujhQOMauigeH5J7
+         p3XlsHui3mGjj1zhe5EanJqKN/623nEGqWagsc3bt+LZiIlzy7SKxC4TaJGLbu00Kx
+         ViWU4/A8XdydoHm5zfUnmE1TYaxkVu3Y2AA6t4fM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/203] ext4: set goal start correctly in ext4_mb_normalize_request
+        patches@lists.linux.dev, Cem Kaya <cemkaya.boun@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/292] ASoC: amd: Add Dell G15 5525 to quirks list
 Date:   Mon, 22 May 2023 20:08:06 +0100
-Message-Id: <20230522190356.710658975@linuxfoundation.org>
+Message-Id: <20230522190409.193842021@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,70 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Cem Kaya <cemkaya.boun@gmail.com>
 
-[ Upstream commit b07ffe6927c75d99af534d685282ea188d9f71a6 ]
+[ Upstream commit faf15233e59052f4d61cad2da6e56daf33124d96 ]
 
-We need to set ac_g_ex to notify the goal start used in
-ext4_mb_find_by_goal. Set ac_g_ex instead of ac_f_ex in
-ext4_mb_normalize_request.
-Besides we should assure goal start is in range [first_data_block,
-blocks_count) as ext4_mb_initialize_context does.
+Add Dell G15 5525 Ryzen Edition to quirks list for acp6x so that
+internal mic works.
 
-[ Added a check to make sure size is less than ar->pright; otherwise
-  we could end up passing an underflowed value of ar->pright - size to
-  ext4_get_group_no_and_offset(), which will trigger a BUG_ON later on.
-  - TYT ]
-
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20230303172120.3800725-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217155
+Signed-off-by: Cem Kaya <cemkaya.boun@gmail.com>
+Link: https://lore.kernel.org/r/20230410183814.260518-1-cemkaya.boun@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 4cc635633f789..de51963c701f7 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4045,6 +4045,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
- 				struct ext4_allocation_request *ar)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
-+	struct ext4_super_block *es = sbi->s_es;
- 	int bsbits, max;
- 	ext4_lblk_t end;
- 	loff_t size, start_off;
-@@ -4225,18 +4226,21 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
- 	ac->ac_g_ex.fe_len = EXT4_NUM_B2C(sbi, size);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index a428e17f03259..1d59163a882ca 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -45,6 +45,13 @@ static struct snd_soc_card acp6x_card = {
+ };
  
- 	/* define goal start in order to merge */
--	if (ar->pright && (ar->lright == (start + size))) {
-+	if (ar->pright && (ar->lright == (start + size)) &&
-+	    ar->pright >= size &&
-+	    ar->pright - size >= le32_to_cpu(es->s_first_data_block)) {
- 		/* merge to the right */
- 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pright - size,
--						&ac->ac_f_ex.fe_group,
--						&ac->ac_f_ex.fe_start);
-+						&ac->ac_g_ex.fe_group,
-+						&ac->ac_g_ex.fe_start);
- 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
- 	}
--	if (ar->pleft && (ar->lleft + 1 == start)) {
-+	if (ar->pleft && (ar->lleft + 1 == start) &&
-+	    ar->pleft + 1 < ext4_blocks_count(es)) {
- 		/* merge to the left */
- 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pleft + 1,
--						&ac->ac_f_ex.fe_group,
--						&ac->ac_f_ex.fe_start);
-+						&ac->ac_g_ex.fe_group,
-+						&ac->ac_g_ex.fe_start);
- 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
- 	}
- 
+ static const struct dmi_system_id yc_acp_quirk_table[] = {
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5525"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.2
 
