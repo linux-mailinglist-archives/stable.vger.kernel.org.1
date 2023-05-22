@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8FF370C7AA
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C536370C653
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234787AbjEVTcD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:32:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53366 "EHLO
+        id S234118AbjEVTRH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:17:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234780AbjEVTcC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:32:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D3BD9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:32:01 -0700 (PDT)
+        with ESMTP id S234179AbjEVTRD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:17:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DC4132
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF8D76291B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:32:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE54AC433D2;
-        Mon, 22 May 2023 19:31:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAD9162796
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B05BC433D2;
+        Mon, 22 May 2023 19:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783920;
-        bh=g9ROlWpZ8L8k2Z2kaWaVkgb/UVzValWXEtNtFGUGrcU=;
+        s=korg; t=1684783017;
+        bh=QygNSZDIiF6gaxj080ZZvuKw4gJBZQgsvZe43QD+rZk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tf5IlYpxw3plVRUPkz8Ccx7aPj3aFTILng6E+y225K3foRBAYCRnoW77RyupO/ZpN
-         lmww8QzriBSOh5sY3KWXohE53xnycfsoEx3n7BjDYspbKDl5s8PhmUvHjW/RIcsvMy
-         4lvlWke33c+FXkKgI0OtXOgcMqC9UJkuhJY8ieFo=
+        b=u0LjgwWIuPFvhRw01X6be54VNeWaxvyO57BxbKhTZkwR3CVgsz/KgS3IdS+biMBLA
+         KX4Ray8w7s3IdYI8TzK4LrevDbuJq3UObiHVcO3i6j35dL7eLo9bMEbvEQ5h453Lvz
+         i7M2FWq7R4ryftial1gGrHv7RAD7OnXPGcaOqneQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
-        =?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-        Piotr Raczynski <piotr.raczynski@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/292] net: dsa: rzn1-a5psw: enable management frames for CPU port
+Subject: [PATCH 5.15 111/203] drm/msm/dpu: Move non-MDP_TOP INTF_INTR offsets out of hwio header
 Date:   Mon, 22 May 2023 20:08:55 +0100
-Message-Id: <20230522190410.413668198@linuxfoundation.org>
+Message-Id: <20230522190358.055553724@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,52 +57,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clément Léger <clement.leger@bootlin.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit 9e4b45f20c5aac786c728619e5ee746bffce1798 ]
+[ Upstream commit e9d9ce5462fecdeefec87953de71df4d025cbc72 ]
 
-Currently, management frame were discarded before reaching the CPU port due
-to a misconfiguration of the MGMT_CONFIG register. Enable them by setting
-the correct value in this register in order to correctly receive management
-frame and handle STP.
+These offsets do not fall under the MDP TOP block and do not fit the
+comment right above.  Move them to dpu_hw_interrupts.c next to the
+repsective MDP_INTF_x_OFF interrupt block offsets.
 
-Fixes: 888cdb892b61 ("net: dsa: rzn1-a5psw: add Renesas RZ/N1 advanced 5 port switch driver")
-Signed-off-by: Clément Léger <clement.leger@bootlin.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/534203/
+Link: https://lore.kernel.org/r/20230411-dpu-intf-te-v4-3-27ce1a5ab5c6@somainline.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/rzn1_a5psw.c | 2 +-
- drivers/net/dsa/rzn1_a5psw.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 5 ++++-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h          | 3 ---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
-index ed413d555beca..92a3ac78ab1e5 100644
---- a/drivers/net/dsa/rzn1_a5psw.c
-+++ b/drivers/net/dsa/rzn1_a5psw.c
-@@ -673,7 +673,7 @@ static int a5psw_setup(struct dsa_switch *ds)
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+index 996011e356f7b..ac0c221f8aa19 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+@@ -12,7 +12,7 @@
  
- 	/* Configure management port */
--	reg = A5PSW_CPU_PORT | A5PSW_MGMT_CFG_DISCARD;
-+	reg = A5PSW_CPU_PORT | A5PSW_MGMT_CFG_ENABLE;
- 	a5psw_reg_writel(a5psw, A5PSW_MGMT_CFG, reg);
- 
- 	/* Set pattern 0 to forward all frame to mgmt port */
-diff --git a/drivers/net/dsa/rzn1_a5psw.h b/drivers/net/dsa/rzn1_a5psw.h
-index c67abd49c013d..b4fbf453ff741 100644
---- a/drivers/net/dsa/rzn1_a5psw.h
-+++ b/drivers/net/dsa/rzn1_a5psw.h
-@@ -36,7 +36,7 @@
- #define A5PSW_INPUT_LEARN_BLOCK(p)	BIT(p)
- 
- #define A5PSW_MGMT_CFG			0x20
--#define A5PSW_MGMT_CFG_DISCARD		BIT(7)
-+#define A5PSW_MGMT_CFG_ENABLE		BIT(6)
- 
- #define A5PSW_MODE_CFG			0x24
- #define A5PSW_MODE_STATS_RESET		BIT(31)
+ /**
+  * Register offsets in MDSS register file for the interrupt registers
+- * w.r.t. to the MDP base
++ * w.r.t. the MDP base
+  */
+ #define MDP_SSPP_TOP0_OFF		0x0
+ #define MDP_INTF_0_OFF			0x6A000
+@@ -21,6 +21,9 @@
+ #define MDP_INTF_3_OFF			0x6B800
+ #define MDP_INTF_4_OFF			0x6C000
+ #define MDP_INTF_5_OFF			0x6C800
++#define INTF_INTR_EN			0x1c0
++#define INTF_INTR_STATUS		0x1c4
++#define INTF_INTR_CLEAR			0x1c8
+ #define MDP_AD4_0_OFF			0x7C000
+ #define MDP_AD4_1_OFF			0x7D000
+ #define MDP_AD4_INTR_EN_OFF		0x41c
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h
+index c8156ed4b7fb8..93081e82c6d74 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h
+@@ -20,9 +20,6 @@
+ #define HIST_INTR_EN                    0x01c
+ #define HIST_INTR_STATUS                0x020
+ #define HIST_INTR_CLEAR                 0x024
+-#define INTF_INTR_EN                    0x1C0
+-#define INTF_INTR_STATUS                0x1C4
+-#define INTF_INTR_CLEAR                 0x1C8
+ #define SPLIT_DISPLAY_EN                0x2F4
+ #define SPLIT_DISPLAY_UPPER_PIPE_CTRL   0x2F8
+ #define DSPP_IGC_COLOR0_RAM_LUTN        0x300
 -- 
 2.39.2
 
