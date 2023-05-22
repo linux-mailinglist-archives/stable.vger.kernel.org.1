@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE7D370C62C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8461B70C74C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234040AbjEVTQI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38958 "EHLO
+        id S234662AbjEVT2B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234053AbjEVTPt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C4C1AC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:34 -0700 (PDT)
+        with ESMTP id S234663AbjEVT2A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DAFBA9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BE396274E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B000C433D2;
-        Mon, 22 May 2023 19:15:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13A31628CE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2044CC433EF;
+        Mon, 22 May 2023 19:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782923;
-        bh=m8VNee3bA+lgpiWAyRUMwnimPC/EadPMf/JdyNqFKu0=;
+        s=korg; t=1684783675;
+        bh=5vwZpcceyRrfxiLRVOzRJyx0uAeCvgClQatdYcRS+ms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fud6uKdJEO88EZWmmWJfEiG7SKD8BUveUue57b6UgojszMM6RNd8HRwENxop2WH72
-         49CmBv8mCXtHCMOGQoZekHXM+xjIYbyyqtKuUYer4dRosJGG4aemdlHFLaT7zA2wa4
-         Jx+GxVx5BJ3eZ2o9lmiouQXVXqVvep3Nss1462BE=
+        b=YC9cG5U0hxkz3ulFFhwv+Dy9N9PAyUMnTVjndzRTrOE0DASCFvrDaLZo8/py6RU2s
+         i4H7Whar4cAWB40Oww+a/H5euu4l+OIjMyScLf2O4ynzLQkp3FqdDr+258zvJv6jla
+         qpGN+yquwsawUFY+/IppgguE/sJg4k0M2cvrvo3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Eli Cohen <elic@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
+        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/203] lib: cpu_rmap: Avoid use after free on rmap->obj array entries
+Subject: [PATCH 6.1 125/292] HID: logitech-hidpp: Reconcile USB and Unifying serials
 Date:   Mon, 22 May 2023 20:08:02 +0100
-Message-Id: <20230522190356.601739018@linuxfoundation.org>
+Message-Id: <20230522190409.089759582@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,65 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eli Cohen <elic@nvidia.com>
+From: Bastien Nocera <hadess@hadess.net>
 
-[ Upstream commit 4e0473f1060aa49621d40a113afde24818101d37 ]
+[ Upstream commit 5b3691d15e04b6d5a32c915577b8dbc5cfb56382 ]
 
-When calling irq_set_affinity_notifier() with NULL at the notify
-argument, it will cause freeing of the glue pointer in the
-corresponding array entry but will leave the pointer in the array. A
-subsequent call to free_irq_cpu_rmap() will try to free this entry again
-leading to possible use after free.
+Now that USB HID++ devices can gather a serial number that matches the
+one that would be gathered when connected through a Unifying receiver,
+remove the last difference by dropping the product ID as devices
+usually have different product IDs when connected through USB or
+Unifying.
 
-Fix that by setting NULL to the array entry and checking that we have
-non-zero at the array entry when iterating over the array in
-free_irq_cpu_rmap().
+For example, on the serials on a G903 wired/wireless mouse:
+- Unifying before patch: 4067-e8-ce-cd-45
+- USB before patch: c086-e8-ce-cd-45
+- Unifying and USB after patch: e8-ce-cd-45
 
-The current code does not suffer from this since there are no cases
-where irq_set_affinity_notifier(irq, NULL) (note the NULL passed for the
-notify arg) is called, followed by a call to free_irq_cpu_rmap() so we
-don't hit and issue. Subsequent patches in this series excersize this
-flow, hence the required fix.
-
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Eli Cohen <elic@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Link: https://lore.kernel.org/r/20230302130117.3975-2-hadess@hadess.net
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/cpu_rmap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/hid-logitech-hidpp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/lib/cpu_rmap.c b/lib/cpu_rmap.c
-index f08d9c56f712e..e77f12bb3c774 100644
---- a/lib/cpu_rmap.c
-+++ b/lib/cpu_rmap.c
-@@ -232,7 +232,8 @@ void free_irq_cpu_rmap(struct cpu_rmap *rmap)
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index c39a4c56678de..b2cd7527de195 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -838,8 +838,7 @@ static int hidpp_unifying_init(struct hidpp_device *hidpp)
+ 	if (ret)
+ 		return ret;
  
- 	for (index = 0; index < rmap->used; index++) {
- 		glue = rmap->obj[index];
--		irq_set_affinity_notifier(glue->notify.irq, NULL);
-+		if (glue)
-+			irq_set_affinity_notifier(glue->notify.irq, NULL);
- 	}
+-	snprintf(hdev->uniq, sizeof(hdev->uniq), "%04x-%4phD",
+-		 hdev->product, &serial);
++	snprintf(hdev->uniq, sizeof(hdev->uniq), "%4phD", &serial);
+ 	dbg_hid("HID++ Unifying: Got serial: %s\n", hdev->uniq);
  
- 	cpu_rmap_put(rmap);
-@@ -268,6 +269,7 @@ static void irq_cpu_rmap_release(struct kref *ref)
- 		container_of(ref, struct irq_glue, notify.kref);
+ 	name = hidpp_unifying_get_name(hidpp);
+@@ -974,8 +973,7 @@ static int hidpp_serial_init(struct hidpp_device *hidpp)
+ 	if (ret)
+ 		return ret;
  
- 	cpu_rmap_put(glue->rmap);
-+	glue->rmap->obj[glue->index] = NULL;
- 	kfree(glue);
- }
+-	snprintf(hdev->uniq, sizeof(hdev->uniq), "%04x-%4phD",
+-		 hdev->product, &serial);
++	snprintf(hdev->uniq, sizeof(hdev->uniq), "%4phD", &serial);
+ 	dbg_hid("HID++ DeviceInformation: Got serial: %s\n", hdev->uniq);
  
-@@ -297,6 +299,7 @@ int irq_cpu_rmap_add(struct cpu_rmap *rmap, int irq)
- 	rc = irq_set_affinity_notifier(irq, &glue->notify);
- 	if (rc) {
- 		cpu_rmap_put(glue->rmap);
-+		rmap->obj[glue->index] = NULL;
- 		kfree(glue);
- 	}
- 	return rc;
+ 	return 0;
 -- 
 2.39.2
 
