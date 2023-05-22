@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 262AF70C701
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D95A570C8E5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234593AbjEVTYu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46482 "EHLO
+        id S235156AbjEVTnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234602AbjEVTYs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:48 -0400
+        with ESMTP id S235150AbjEVTnF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D951E9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC07411A
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B6162881
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C216CC433D2;
-        Mon, 22 May 2023 19:24:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33EF262A3A
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D16BC433EF;
+        Mon, 22 May 2023 19:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783486;
-        bh=17532IZj8tXv/AVKvsR66t/txzao8+fN7y44P1P+OBo=;
+        s=korg; t=1684784537;
+        bh=Y/O9162IMq3Ry2QSMjHXQr8tMPfZrXeNgajqVcH+mb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZZHfDOG6BuufllYveK8xFx6R7kABgv4ZmufYqsKUDAo7umqMRx4+PtvC1V5rbbenC
-         e6f2N2cet9170adq+B5+uYwy/iYgfsKsuXCxogUsAzoJXNWODTS8pvggdEpQtRDQMW
-         oH3bR8k2rEHU2msP/X0O+mJR9Lkl1XiyYriI8q1o=
+        b=UWY9WG8cWaWDMu8Br9KYkBvcL9BKowOwxbojwaRCWMtgT8ZP+8jlWYG0OWq7G41IM
+         pc/93uyieMdkhoVtf1i7L1i5WN7B7U0ytqKua973zepz+R5t7NZplZIdSLWK4pKcPN
+         YWViGcfOCpnNb8rLc3puZxG5RrNOtWjnp0Wn+qfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "t.feng" <fengtao40@huawei.com>,
-        Florian Westphal <fw@strlen.de>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/292] ipvlan:Fix out-of-bounds caused by unclear skb->cb
+Subject: [PATCH 6.3 073/364] ACPICA: Avoid undefined behavior: applying zero offset to null pointer
 Date:   Mon, 22 May 2023 20:06:18 +0100
-Message-Id: <20230522190406.423590861@linuxfoundation.org>
+Message-Id: <20230522190414.597627706@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_PORT autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,170 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: t.feng <fengtao40@huawei.com>
+From: Tamir Duberstein <tamird@google.com>
 
-[ Upstream commit 90cbed5247439a966b645b34eb0a2e037836ea8e ]
+[ Upstream commit 05bb0167c80b8f93c6a4e0451b7da9b96db990c2 ]
 
-If skb enqueue the qdisc, fq_skb_cb(skb)->time_to_send is changed which
-is actually skb->cb, and IPCB(skb_in)->opt will be used in
-__ip_options_echo. It is possible that memcpy is out of bounds and lead
-to stack overflow.
-We should clear skb->cb before ip_local_out or ip6_local_out.
+ACPICA commit 770653e3ba67c30a629ca7d12e352d83c2541b1e
 
-v2:
-1. clean the stack info
-2. use IPCB/IP6CB instead of skb->cb
+Before this change we see the following UBSAN stack trace in Fuchsia:
 
-crash on stable-5.10(reproduce in kasan kernel).
-Stack info:
-[ 2203.651571] BUG: KASAN: stack-out-of-bounds in
-__ip_options_echo+0x589/0x800
-[ 2203.653327] Write of size 4 at addr ffff88811a388f27 by task
-swapper/3/0
-[ 2203.655460] CPU: 3 PID: 0 Comm: swapper/3 Kdump: loaded Not tainted
-5.10.0-60.18.0.50.h856.kasan.eulerosv2r11.x86_64 #1
-[ 2203.655466] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.10.2-0-g5f4c7b1-20181220_000000-szxrtosci10000 04/01/2014
-[ 2203.655475] Call Trace:
-[ 2203.655481]  <IRQ>
-[ 2203.655501]  dump_stack+0x9c/0xd3
-[ 2203.655514]  print_address_description.constprop.0+0x19/0x170
-[ 2203.655530]  __kasan_report.cold+0x6c/0x84
-[ 2203.655586]  kasan_report+0x3a/0x50
-[ 2203.655594]  check_memory_region+0xfd/0x1f0
-[ 2203.655601]  memcpy+0x39/0x60
-[ 2203.655608]  __ip_options_echo+0x589/0x800
-[ 2203.655654]  __icmp_send+0x59a/0x960
-[ 2203.655755]  nf_send_unreach+0x129/0x3d0 [nf_reject_ipv4]
-[ 2203.655763]  reject_tg+0x77/0x1bf [ipt_REJECT]
-[ 2203.655772]  ipt_do_table+0x691/0xa40 [ip_tables]
-[ 2203.655821]  nf_hook_slow+0x69/0x100
-[ 2203.655828]  __ip_local_out+0x21e/0x2b0
-[ 2203.655857]  ip_local_out+0x28/0x90
-[ 2203.655868]  ipvlan_process_v4_outbound+0x21e/0x260 [ipvlan]
-[ 2203.655931]  ipvlan_xmit_mode_l3+0x3bd/0x400 [ipvlan]
-[ 2203.655967]  ipvlan_queue_xmit+0xb3/0x190 [ipvlan]
-[ 2203.655977]  ipvlan_start_xmit+0x2e/0xb0 [ipvlan]
-[ 2203.655984]  xmit_one.constprop.0+0xe1/0x280
-[ 2203.655992]  dev_hard_start_xmit+0x62/0x100
-[ 2203.656000]  sch_direct_xmit+0x215/0x640
-[ 2203.656028]  __qdisc_run+0x153/0x1f0
-[ 2203.656069]  __dev_queue_xmit+0x77f/0x1030
-[ 2203.656173]  ip_finish_output2+0x59b/0xc20
-[ 2203.656244]  __ip_finish_output.part.0+0x318/0x3d0
-[ 2203.656312]  ip_finish_output+0x168/0x190
-[ 2203.656320]  ip_output+0x12d/0x220
-[ 2203.656357]  __ip_queue_xmit+0x392/0x880
-[ 2203.656380]  __tcp_transmit_skb+0x1088/0x11c0
-[ 2203.656436]  __tcp_retransmit_skb+0x475/0xa30
-[ 2203.656505]  tcp_retransmit_skb+0x2d/0x190
-[ 2203.656512]  tcp_retransmit_timer+0x3af/0x9a0
-[ 2203.656519]  tcp_write_timer_handler+0x3ba/0x510
-[ 2203.656529]  tcp_write_timer+0x55/0x180
-[ 2203.656542]  call_timer_fn+0x3f/0x1d0
-[ 2203.656555]  expire_timers+0x160/0x200
-[ 2203.656562]  run_timer_softirq+0x1f4/0x480
-[ 2203.656606]  __do_softirq+0xfd/0x402
-[ 2203.656613]  asm_call_irq_on_stack+0x12/0x20
-[ 2203.656617]  </IRQ>
-[ 2203.656623]  do_softirq_own_stack+0x37/0x50
-[ 2203.656631]  irq_exit_rcu+0x134/0x1a0
-[ 2203.656639]  sysvec_apic_timer_interrupt+0x36/0x80
-[ 2203.656646]  asm_sysvec_apic_timer_interrupt+0x12/0x20
-[ 2203.656654] RIP: 0010:default_idle+0x13/0x20
-[ 2203.656663] Code: 89 f0 5d 41 5c 41 5d 41 5e c3 cc cc cc cc cc cc cc
-cc cc cc cc cc cc 0f 1f 44 00 00 0f 1f 44 00 00 0f 00 2d 9f 32 57 00 fb
-f4 <c3> cc cc cc cc 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 41 54 be 08
-[ 2203.656668] RSP: 0018:ffff88810036fe78 EFLAGS: 00000256
-[ 2203.656676] RAX: ffffffffaf2a87f0 RBX: ffff888100360000 RCX:
-ffffffffaf290191
-[ 2203.656681] RDX: 0000000000098b5e RSI: 0000000000000004 RDI:
-ffff88811a3c4f60
-[ 2203.656686] RBP: 0000000000000000 R08: 0000000000000001 R09:
-ffff88811a3c4f63
-[ 2203.656690] R10: ffffed10234789ec R11: 0000000000000001 R12:
-0000000000000003
-[ 2203.656695] R13: ffff888100360000 R14: 0000000000000000 R15:
-0000000000000000
-[ 2203.656729]  default_idle_call+0x5a/0x150
-[ 2203.656735]  cpuidle_idle_call+0x1c6/0x220
-[ 2203.656780]  do_idle+0xab/0x100
-[ 2203.656786]  cpu_startup_entry+0x19/0x20
-[ 2203.656793]  secondary_startup_64_no_verify+0xc2/0xcb
+  #0    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #1.2  0x000020d0f660777f in ubsan_get_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:41 <libclang_rt.asan.so>+0x3d77f
+  #1.1  0x000020d0f660777f in maybe_print_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:51 <libclang_rt.asan.so>+0x3d77f
+  #1    0x000020d0f660777f in ~scoped_report() compiler-rt/lib/ubsan/ubsan_diag.cpp:387 <libclang_rt.asan.so>+0x3d77f
+  #2    0x000020d0f660b96d in handlepointer_overflow_impl() compiler-rt/lib/ubsan/ubsan_handlers.cpp:809 <libclang_rt.asan.so>+0x4196d
+  #3    0x000020d0f660b50d in compiler-rt/lib/ubsan/ubsan_handlers.cpp:815 <libclang_rt.asan.so>+0x4150d
+  #4    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #5    0x000021e4213e2369 in acpi_ds_call_control_method(struct acpi_thread_state*, struct acpi_walk_state*, union acpi_parse_object*) ../../third_party/acpica/source/components/dispatcher/dsmethod.c:605 <platform-bus-x86.so>+0x262369
+  #6    0x000021e421437fac in acpi_ps_parse_aml(struct acpi_walk_state*) ../../third_party/acpica/source/components/parser/psparse.c:550 <platform-bus-x86.so>+0x2b7fac
+  #7    0x000021e4214464d2 in acpi_ps_execute_method(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/parser/psxface.c:244 <platform-bus-x86.so>+0x2c64d2
+  #8    0x000021e4213aa052 in acpi_ns_evaluate(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/namespace/nseval.c:250 <platform-bus-x86.so>+0x22a052
+  #9    0x000021e421413dd8 in acpi_ns_init_one_device(acpi_handle, u32, void*, void**) ../../third_party/acpica/source/components/namespace/nsinit.c:735 <platform-bus-x86.so>+0x293dd8
+  #10   0x000021e421429e98 in acpi_ns_walk_namespace(acpi_object_type, acpi_handle, u32, u32, acpi_walk_callback, acpi_walk_callback, void*, void**) ../../third_party/acpica/source/components/namespace/nswalk.c:298 <platform-bus-x86.so>+0x2a9e98
+  #11   0x000021e4214131ac in acpi_ns_initialize_devices(u32) ../../third_party/acpica/source/components/namespace/nsinit.c:268 <platform-bus-x86.so>+0x2931ac
+  #12   0x000021e42147c40d in acpi_initialize_objects(u32) ../../third_party/acpica/source/components/utilities/utxfinit.c:304 <platform-bus-x86.so>+0x2fc40d
+  #13   0x000021e42126d603 in acpi::acpi_impl::initialize_acpi(acpi::acpi_impl*) ../../src/devices/board/lib/acpi/acpi-impl.cc:224 <platform-bus-x86.so>+0xed603
 
-[ 2203.657409] The buggy address belongs to the page:
-[ 2203.658648] page:0000000027a9842f refcount:1 mapcount:0
-mapping:0000000000000000 index:0x0 pfn:0x11a388
-[ 2203.658665] flags:
-0x17ffffc0001000(reserved|node=0|zone=2|lastcpupid=0x1fffff)
-[ 2203.658675] raw: 0017ffffc0001000 ffffea000468e208 ffffea000468e208
-0000000000000000
-[ 2203.658682] raw: 0000000000000000 0000000000000000 00000001ffffffff
-0000000000000000
-[ 2203.658686] page dumped because: kasan: bad access detected
+Add a simple check that avoids incrementing a pointer by zero, but
+otherwise behaves as before. Note that our findings are against ACPICA
+20221020, but the same code exists on master.
 
-To reproduce(ipvlan with IPVLAN_MODE_L3):
-Env setting:
-=======================================================
-modprobe ipvlan ipvlan_default_mode=1
-sysctl net.ipv4.conf.eth0.forwarding=1
-iptables -t nat -A POSTROUTING -s 20.0.0.0/255.255.255.0 -o eth0 -j
-MASQUERADE
-ip link add gw link eth0 type ipvlan
-ip -4 addr add 20.0.0.254/24 dev gw
-ip netns add net1
-ip link add ipv1 link eth0 type ipvlan
-ip link set ipv1 netns net1
-ip netns exec net1 ip link set ipv1 up
-ip netns exec net1 ip -4 addr add 20.0.0.4/24 dev ipv1
-ip netns exec net1 route add default gw 20.0.0.254
-ip netns exec net1 tc qdisc add dev ipv1 root netem loss 10%
-ifconfig gw up
-iptables -t filter -A OUTPUT -p tcp --dport 8888 -j REJECT --reject-with
-icmp-port-unreachable
-=======================================================
-And then excute the shell(curl any address of eth0 can reach):
-
-for((i=1;i<=100000;i++))
-do
-        ip netns exec net1 curl x.x.x.x:8888
-done
-=======================================================
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Signed-off-by: "t.feng" <fengtao40@huawei.com>
-Suggested-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://github.com/acpica/acpica/commit/770653e3
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/acpica/dswstate.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index bb1c298c1e78b..2de3bd3b0c278 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -436,6 +436,9 @@ static int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 		goto err;
- 	}
- 	skb_dst_set(skb, &rt->dst);
-+
-+	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+
- 	err = ip_local_out(net, skb->sk, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		dev->stats.tx_errors++;
-@@ -474,6 +477,9 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
- 		goto err;
- 	}
- 	skb_dst_set(skb, dst);
-+
-+	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+
- 	err = ip6_local_out(net, skb->sk, skb);
- 	if (unlikely(net_xmit_eval(err)))
- 		dev->stats.tx_errors++;
+diff --git a/drivers/acpi/acpica/dswstate.c b/drivers/acpi/acpica/dswstate.c
+index 0aa735d3b93cc..77076da2029d9 100644
+--- a/drivers/acpi/acpica/dswstate.c
++++ b/drivers/acpi/acpica/dswstate.c
+@@ -576,9 +576,14 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
+ 	ACPI_FUNCTION_TRACE(ds_init_aml_walk);
+ 
+ 	walk_state->parser_state.aml =
+-	    walk_state->parser_state.aml_start = aml_start;
+-	walk_state->parser_state.aml_end =
+-	    walk_state->parser_state.pkg_end = aml_start + aml_length;
++	    walk_state->parser_state.aml_start =
++	    walk_state->parser_state.aml_end =
++	    walk_state->parser_state.pkg_end = aml_start;
++	/* Avoid undefined behavior: applying zero offset to null pointer */
++	if (aml_length != 0) {
++		walk_state->parser_state.aml_end += aml_length;
++		walk_state->parser_state.pkg_end += aml_length;
++	}
+ 
+ 	/* The next_op of the next_walk will be the beginning of the method */
+ 
 -- 
 2.39.2
 
