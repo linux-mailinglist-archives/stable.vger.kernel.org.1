@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D6270C75D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCF970C960
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234674AbjEVT2l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50418 "EHLO
+        id S235311AbjEVTrY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:47:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234673AbjEVT2l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:41 -0400
+        with ESMTP id S235298AbjEVTrW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C47CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CF899
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 011E6623A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC47C433D2;
-        Mon, 22 May 2023 19:28:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5008F62AB0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EB4C433D2;
+        Mon, 22 May 2023 19:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783719;
-        bh=V+SRqTeOIQkCJr1YG3oqjich7N1hefNlgQc35gKG3p0=;
+        s=korg; t=1684784840;
+        bh=2D64oLm2SWw4kW5p6P/UQQvw/Y6FYEg/jfD5h3DAZhA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RqlXdZ8xtzllhzcTeIRbWMm7mT+NxHxu8H9Pcp6jTPpGvKdA/4S5/pdN5utk09Xy4
-         Z7EcBQruoG82VH0HJ+49NT5I/zyoCIaLNX8L0MOLk7k+kbIqtPeKrsyJcBC3NCVGxL
-         Z1hT8fCEJRXG1REp7xNNHg9ij3OuPOJtZHt1WdK0=
+        b=rqMIDw1SckCaZPLGwrFDS2qcSyY/seXBABfuAaSZOW0C3vUL4pWYrZSu+W5XzpOYd
+         A/WWK7bIjBaEoEcWsXyutUxaSBCazR9QwMDHts/Ud7QxS3IH8MRez6cz4cFQ8WVlRP
+         7MvCcaacqHurab18lhe5MnSdxcpgMbDWo4LjncN0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Zeng <zenghao@kylinos.cn>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/292] recordmcount: Fix memory leaks in the uwrite function
+        patches@lists.linux.dev, Alain Volmat <avolmat@me.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 191/364] phy: st: miphy28lp: use _poll_timeout functions for waits
 Date:   Mon, 22 May 2023 20:08:16 +0100
-Message-Id: <20230522190409.439296305@linuxfoundation.org>
+Message-Id: <20230522190417.511834187@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +54,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Zeng <zenghao@kylinos.cn>
+From: Alain Volmat <avolmat@me.com>
 
-[ Upstream commit fa359d068574d29e7d2f0fdd0ebe4c6a12b5cfb9 ]
+[ Upstream commit e3be4dd2c8d8aabfd2c3127d0e2e5754d3ae82d6 ]
 
-Common realloc mistake: 'file_append' nulled but not freed upon failure
+This commit introduces _poll_timeout functions usage instead of
+wait loops waiting for a status bit.
 
-Link: https://lkml.kernel.org/r/20230426010527.703093-1-zenghao@kylinos.cn
-
-Signed-off-by: Hao Zeng <zenghao@kylinos.cn>
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Alain Volmat <avolmat@me.com>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://lore.kernel.org/r/20230210224309.98452-1-avolmat@me.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/recordmcount.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/phy/st/phy-miphy28lp.c | 42 ++++++++--------------------------
+ 1 file changed, 10 insertions(+), 32 deletions(-)
 
-diff --git a/scripts/recordmcount.c b/scripts/recordmcount.c
-index cce12e1971d85..ec692af8ce9eb 100644
---- a/scripts/recordmcount.c
-+++ b/scripts/recordmcount.c
-@@ -102,6 +102,7 @@ static ssize_t uwrite(void const *const buf, size_t const count)
+diff --git a/drivers/phy/st/phy-miphy28lp.c b/drivers/phy/st/phy-miphy28lp.c
+index 068160a34f5cc..e30305b77f0d1 100644
+--- a/drivers/phy/st/phy-miphy28lp.c
++++ b/drivers/phy/st/phy-miphy28lp.c
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -484,19 +485,11 @@ static inline void miphy28lp_pcie_config_gen(struct miphy28lp_phy *miphy_phy)
+ 
+ static inline int miphy28lp_wait_compensation(struct miphy28lp_phy *miphy_phy)
  {
- 	size_t cnt = count;
- 	off_t idx = 0;
-+	void *p = NULL;
+-	unsigned long finish = jiffies + 5 * HZ;
+ 	u8 val;
  
- 	file_updated = 1;
+ 	/* Waiting for Compensation to complete */
+-	do {
+-		val = readb_relaxed(miphy_phy->base + MIPHY_COMP_FSM_6);
+-
+-		if (time_after_eq(jiffies, finish))
+-			return -EBUSY;
+-		cpu_relax();
+-	} while (!(val & COMP_DONE));
+-
+-	return 0;
++	return readb_relaxed_poll_timeout(miphy_phy->base + MIPHY_COMP_FSM_6,
++					  val, val & COMP_DONE, 1, 5 * USEC_PER_SEC);
+ }
  
-@@ -109,7 +110,10 @@ static ssize_t uwrite(void const *const buf, size_t const count)
- 		off_t aoffset = (file_ptr + count) - file_end;
  
- 		if (aoffset > file_append_size) {
--			file_append = realloc(file_append, aoffset);
-+			p = realloc(file_append, aoffset);
-+			if (!p)
-+				free(file_append);
-+			file_append = p;
- 			file_append_size = aoffset;
- 		}
- 		if (!file_append) {
+@@ -805,7 +798,6 @@ static inline void miphy28lp_configure_usb3(struct miphy28lp_phy *miphy_phy)
+ 
+ static inline int miphy_is_ready(struct miphy28lp_phy *miphy_phy)
+ {
+-	unsigned long finish = jiffies + 5 * HZ;
+ 	u8 mask = HFC_PLL | HFC_RDY;
+ 	u8 val;
+ 
+@@ -816,21 +808,14 @@ static inline int miphy_is_ready(struct miphy28lp_phy *miphy_phy)
+ 	if (miphy_phy->type == PHY_TYPE_SATA)
+ 		mask |= PHY_RDY;
+ 
+-	do {
+-		val = readb_relaxed(miphy_phy->base + MIPHY_STATUS_1);
+-		if ((val & mask) != mask)
+-			cpu_relax();
+-		else
+-			return 0;
+-	} while (!time_after_eq(jiffies, finish));
+-
+-	return -EBUSY;
++	return readb_relaxed_poll_timeout(miphy_phy->base + MIPHY_STATUS_1,
++					  val, (val & mask) == mask, 1,
++					  5 * USEC_PER_SEC);
+ }
+ 
+ static int miphy_osc_is_ready(struct miphy28lp_phy *miphy_phy)
+ {
+ 	struct miphy28lp_dev *miphy_dev = miphy_phy->phydev;
+-	unsigned long finish = jiffies + 5 * HZ;
+ 	u32 val;
+ 
+ 	if (!miphy_phy->osc_rdy)
+@@ -839,17 +824,10 @@ static int miphy_osc_is_ready(struct miphy28lp_phy *miphy_phy)
+ 	if (!miphy_phy->syscfg_reg[SYSCFG_STATUS])
+ 		return -EINVAL;
+ 
+-	do {
+-		regmap_read(miphy_dev->regmap,
+-				miphy_phy->syscfg_reg[SYSCFG_STATUS], &val);
+-
+-		if ((val & MIPHY_OSC_RDY) != MIPHY_OSC_RDY)
+-			cpu_relax();
+-		else
+-			return 0;
+-	} while (!time_after_eq(jiffies, finish));
+-
+-	return -EBUSY;
++	return regmap_read_poll_timeout(miphy_dev->regmap,
++					miphy_phy->syscfg_reg[SYSCFG_STATUS],
++					val, val & MIPHY_OSC_RDY, 1,
++					5 * USEC_PER_SEC);
+ }
+ 
+ static int miphy28lp_get_resource_byname(struct device_node *child,
 -- 
 2.39.2
 
