@@ -2,43 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9962C70C9F0
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9BA70C823
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235440AbjEVTxU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45702 "EHLO
+        id S234942AbjEVTgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235431AbjEVTxS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:18 -0400
+        with ESMTP id S234940AbjEVTgH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD989129
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1B1E42
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71AC162B4F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B09DC433D2;
-        Mon, 22 May 2023 19:53:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85F5862982
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7318EC433EF;
+        Mon, 22 May 2023 19:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785194;
-        bh=XTVQ5CguE42v+gE+zJUx+6+L0aQduO7VuBszfmICOh0=;
+        s=korg; t=1684784103;
+        bh=xR16aaqEQvjPH/yD6MhXizGrQnz7xsBotp2Ey4qO0uM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DZjOeZpJSwkiyGvbD7lwmLB9ApLsajHYRcnDzAEfeMQk5NzSvw5KWjpvlMk6a+qAW
-         szBNsnWeeVsMQbvs4TdeIfFK5us0KTD/bk4lvEiWLR8KoXe+dAVoQA+I82GZvGkX4e
-         ze0Y5nEnS99WcLCnYPA9tXrlDle2qO3Ws8wtJ9Ew=
+        b=FxL3Cv6ruX+x4V2COPiNVUMdjU5AcGfQuujfuRMXNiQ8YgK0EdVDElMSgfi615dBT
+         +eykYivGUX+RIj9uN2ajkh9ko3dHZ9XWhQYgK0Hzm3JdqmKALK4Cr0YlryqC26Rpdh
+         K82xoFOyfv3HrHvmDdZB8aX34YV2HjVZ3LfhXQMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.3 314/364] can: kvaser_pciefd: Do not send EFLUSH command on TFD interrupt
-Date:   Mon, 22 May 2023 20:10:19 +0100
-Message-Id: <20230522190420.624912754@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Chris Li (Google)" <chrisl@kernel.org>,
+        Dan Streetman <ddstreet@ieee.org>,
+        Minchan Kim <minchan@kernel.org>,
+        Nitin Gupta <ngupta@vflare.org>,
+        Seth Jennings <sjenning@redhat.com>,
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 263/292] mm: fix zswap writeback race condition
+Date:   Mon, 22 May 2023 20:10:20 +0100
+Message-Id: <20230522190412.515968008@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,93 +61,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
 
-commit 262d7a52ba27525e3c1203230c9f0524e48bbb34 upstream.
+commit 04fc7816089c5a32c29a04ec94b998e219dfb946 upstream.
 
-Under certain circumstances we send two EFLUSH commands, resulting in two
-EFLUSH ack packets, while only expecting a single EFLUSH ack.
-This can cause the driver Tx flush completion to get out of sync.
+The zswap writeback mechanism can cause a race condition resulting in
+memory corruption, where a swapped out page gets swapped in with data that
+was written to a different page.
 
-To avoid this problem, don't enable the "Transmit buffer flush done" (TFD)
-interrupt and remove the code handling it.
-Now we only send EFLUSH command after receiving status packet with
-"Init detected" (IDET) bit set.
+The race unfolds like this:
+1. a page with data A and swap offset X is stored in zswap
+2. page A is removed off the LRU by zpool driver for writeback in
+   zswap-shrink work, data for A is mapped by zpool driver
+3. user space program faults and invalidates page entry A, offset X is
+   considered free
+4. kswapd stores page B at offset X in zswap (zswap could also be
+   full, if so, page B would then be IOed to X, then skip step 5.)
+5. entry A is replaced by B in tree->rbroot, this doesn't affect the
+   local reference held by zswap-shrink work
+6. zswap-shrink work writes back A at X, and frees zswap entry A
+7. swapin of slot X brings A in memory instead of B
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-6-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The fix:
+Once the swap page cache has been allocated (case ZSWAP_SWAPCACHE_NEW),
+zswap-shrink work just checks that the local zswap_entry reference is
+still the same as the one in the tree.  If it's not the same it means that
+it's either been invalidated or replaced, in both cases the writeback is
+aborted because the local entry contains stale data.
+
+Reproducer:
+I originally found this by running `stress` overnight to validate my work
+on the zswap writeback mechanism, it manifested after hours on my test
+machine.  The key to make it happen is having zswap writebacks, so
+whatever setup pumps /sys/kernel/debug/zswap/written_back_pages should do
+the trick.
+
+In order to reproduce this faster on a vm, I setup a system with ~100M of
+available memory and a 500M swap file, then running `stress --vm 1
+--vm-bytes 300000000 --vm-stride 4000` makes it happen in matter of tens
+of minutes.  One can speed things up even more by swinging
+/sys/module/zswap/parameters/max_pool_percent up and down between, say, 20
+and 1; this makes it reproduce in tens of seconds.  It's crucial to set
+`--vm-stride` to something other than 4096 otherwise `stress` won't
+realize that memory has been corrupted because all pages would have the
+same data.
+
+Link: https://lkml.kernel.org/r/20230503151200.19707-1-cerasuolodomenico@gmail.com
+Signed-off-by: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Chris Li (Google) <chrisl@kernel.org>
+Cc: Dan Streetman <ddstreet@ieee.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Nitin Gupta <ngupta@vflare.org>
+Cc: Seth Jennings <sjenning@redhat.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |   21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ mm/zswap.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -531,7 +531,7 @@ static int kvaser_pciefd_set_tx_irq(stru
- 	      KVASER_PCIEFD_KCAN_IRQ_TOF | KVASER_PCIEFD_KCAN_IRQ_ABD |
- 	      KVASER_PCIEFD_KCAN_IRQ_TAE | KVASER_PCIEFD_KCAN_IRQ_TAL |
- 	      KVASER_PCIEFD_KCAN_IRQ_FDIC | KVASER_PCIEFD_KCAN_IRQ_BPP |
--	      KVASER_PCIEFD_KCAN_IRQ_TAR | KVASER_PCIEFD_KCAN_IRQ_TFD;
-+	      KVASER_PCIEFD_KCAN_IRQ_TAR;
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1002,6 +1002,22 @@ static int zswap_writeback_entry(struct
+ 		goto fail;
  
- 	iowrite32(msk, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
-@@ -579,7 +579,7 @@ static void kvaser_pciefd_start_controll
- 
- 	spin_lock_irqsave(&can->lock, irq);
- 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
--	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
-+	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 	status = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_STAT_REG);
-@@ -622,7 +622,7 @@ static int kvaser_pciefd_bus_on(struct k
- 	iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
- 
--	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
-+	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 	mode = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_MODE_REG);
-@@ -1015,8 +1015,7 @@ static int kvaser_pciefd_setup_can_ctrls
- 		SET_NETDEV_DEV(netdev, &pcie->pci->dev);
- 
- 		iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
--		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD |
--			  KVASER_PCIEFD_KCAN_IRQ_TFD,
-+		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 		pcie->can[i] = can;
-@@ -1443,9 +1442,6 @@ static int kvaser_pciefd_handle_status_p
- 		cmd = KVASER_PCIEFD_KCAN_CMD_AT;
- 		cmd |= ++can->cmd_seq << KVASER_PCIEFD_KCAN_CMD_SEQ_SHIFT;
- 		iowrite32(cmd, can->reg_base + KVASER_PCIEFD_KCAN_CMD_REG);
--
--		iowrite32(KVASER_PCIEFD_KCAN_IRQ_TFD,
--			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 	} else if (p->header[0] & KVASER_PCIEFD_SPACK_IDET &&
- 		   p->header[0] & KVASER_PCIEFD_SPACK_IRM &&
- 		   cmdseq == (p->header[1] & KVASER_PCIEFD_PACKET_SEQ_MSK) &&
-@@ -1732,15 +1728,6 @@ static int kvaser_pciefd_transmit_irq(st
- 	if (irq & KVASER_PCIEFD_KCAN_IRQ_TOF)
- 		netdev_err(can->can.dev, "Tx FIFO overflow\n");
- 
--	if (irq & KVASER_PCIEFD_KCAN_IRQ_TFD) {
--		u8 count = ioread32(can->reg_base +
--				    KVASER_PCIEFD_KCAN_TX_NPACKETS_REG) & 0xff;
--
--		if (count == 0)
--			iowrite32(KVASER_PCIEFD_KCAN_CTRL_EFLUSH,
--				  can->reg_base + KVASER_PCIEFD_KCAN_CTRL_REG);
--	}
--
- 	if (irq & KVASER_PCIEFD_KCAN_IRQ_BPP)
- 		netdev_err(can->can.dev,
- 			   "Fail to change bittiming, when not in reset mode\n");
+ 	case ZSWAP_SWAPCACHE_NEW: /* page is locked */
++		/*
++		 * Having a local reference to the zswap entry doesn't exclude
++		 * swapping from invalidating and recycling the swap slot. Once
++		 * the swapcache is secured against concurrent swapping to and
++		 * from the slot, recheck that the entry is still current before
++		 * writing.
++		 */
++		spin_lock(&tree->lock);
++		if (zswap_rb_search(&tree->rbroot, entry->offset) != entry) {
++			spin_unlock(&tree->lock);
++			delete_from_swap_cache(page_folio(page));
++			ret = -ENOMEM;
++			goto fail;
++		}
++		spin_unlock(&tree->lock);
++
+ 		/* decompress */
+ 		acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
+ 		dlen = PAGE_SIZE;
 
 
