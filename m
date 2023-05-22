@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5589570C673
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B03270C9A9
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233857AbjEVTS0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:18:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41508 "EHLO
+        id S235388AbjEVTuf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234263AbjEVTSS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:18 -0400
+        with ESMTP id S235600AbjEVTuX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F208518B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D1795
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1D2B627AB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE010C433EF;
-        Mon, 22 May 2023 19:18:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A43CC62A7A
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A7CC433D2;
+        Mon, 22 May 2023 19:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783083;
-        bh=AtayK4qjk1FQXuXKweT+CK/sOWtmkq+l/B5DzF85RJ0=;
+        s=korg; t=1684785021;
+        bh=LJOQ8Ufeho3fWvulnkSqpY0O/5nhclBqnBoeXTiMXI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ae+4Odh/nC5t7yuVgUaaj1Jp2bk50pjflPf0qzS+aRHm8km5FovpI4YrFng+Gvzzc
-         UMqtpxXe45WLUWSXzck2z8ecKK9uvHXSIc05DzXCYuIza6mXoalhz+0Jf1dwPVyVV+
-         jhsTB8HLv55uEeoGmO/LCe1BdJ/HtCRsx55gBpEc=
+        b=Rdo7vCWHxPu9609GwHskjQtf7+1sU3Y0ALAcIQDnajU2x31FKnq9fBKvax8hziecl
+         MJ69ztICXAMOlFFmFXoSVJBTli78NjwVRV7eRywOz/GFKrwMX7WMADiuyLqyAxUDF5
+         2zrbhvdvXTefwMCy+Bdqbdv3MGA6BJJhkS8t0kvY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev,
+        syzbot+632b5d9964208bfef8c0@syzkaller.appspotmail.com,
+        Eric Dumazet <edumazet@google.com>,
+        Dong Chenchen <dongchenchen2@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/203] tracing: Introduce helpers to safely handle dynamic-sized sockaddrs
+Subject: [PATCH 6.3 253/364] net: nsh: Use correct mac_offset to unwind gso skb in nsh_gso_segment()
 Date:   Mon, 22 May 2023 20:09:18 +0100
-Message-Id: <20230522190358.676920670@linuxfoundation.org>
+Message-Id: <20230522190419.028095253@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,220 +57,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit d07c9ad622474616e94572e59e725c2c4a494fb4 ]
+[ Upstream commit c83b49383b595be50647f0c764a48c78b5f3c4f8 ]
 
-Enable a struct sockaddr to be stored in a trace record as a
-dynamically-sized field. The common cases are AF_INET and AF_INET6
-which are different sizes, and are vastly smaller than a struct
-sockaddr_storage.
+As the call trace shows, skb_panic was caused by wrong skb->mac_header
+in nsh_gso_segment():
 
-These are safer because, when used properly, the size of the
-sockaddr destination field in each trace record is now guaranteed
-to be the same as the source address that is being copied into it.
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 3 PID: 2737 Comm: syz Not tainted 6.3.0-next-20230505 #1
+RIP: 0010:skb_panic+0xda/0xe0
+call Trace:
+ skb_push+0x91/0xa0
+ nsh_gso_segment+0x4f3/0x570
+ skb_mac_gso_segment+0x19e/0x270
+ __skb_gso_segment+0x1e8/0x3c0
+ validate_xmit_skb+0x452/0x890
+ validate_xmit_skb_list+0x99/0xd0
+ sch_direct_xmit+0x294/0x7c0
+ __dev_queue_xmit+0x16f0/0x1d70
+ packet_xmit+0x185/0x210
+ packet_snd+0xc15/0x1170
+ packet_sendmsg+0x7b/0xa0
+ sock_sendmsg+0x14f/0x160
 
-Link: https://lore.kernel.org/all/164182978641.8391.8277203495236105391.stgit@bazille.1015granger.net/
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: 948f072ada23 ("SUNRPC: always free ctxt when freeing deferred request")
+The root cause is:
+nsh_gso_segment() use skb->network_header - nhoff to reset mac_header
+in skb_gso_error_unwind() if inner-layer protocol gso fails.
+However, skb->network_header may be reset by inner-layer protocol
+gso function e.g. mpls_gso_segment. skb->mac_header reset by the
+inaccurate network_header will be larger than skb headroom.
+
+nsh_gso_segment
+    nhoff = skb->network_header - skb->mac_header;
+    __skb_pull(skb,nsh_len)
+    skb_mac_gso_segment
+        mpls_gso_segment
+            skb_reset_network_header(skb);//skb->network_header+=nsh_len
+            return -EINVAL;
+    skb_gso_error_unwind
+        skb_push(skb, nsh_len);
+        skb->mac_header = skb->network_header - nhoff;
+        // skb->mac_header > skb->headroom, cause skb_push panic
+
+Use correct mac_offset to restore mac_header and get rid of nhoff.
+
+Fixes: c411ed854584 ("nsh: add GSO support")
+Reported-by: syzbot+632b5d9964208bfef8c0@syzkaller.appspotmail.com
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/bpf_probe.h    |  6 ++++
- include/trace/perf.h         |  6 ++++
- include/trace/trace_events.h | 55 ++++++++++++++++++++++++++++++++++--
- 3 files changed, 65 insertions(+), 2 deletions(-)
+ net/nsh/nsh.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/include/trace/bpf_probe.h b/include/trace/bpf_probe.h
-index 04939b2d2f192..26ec024c3d58a 100644
---- a/include/trace/bpf_probe.h
-+++ b/include/trace/bpf_probe.h
-@@ -21,6 +21,9 @@
- #undef __get_bitmask
- #define __get_bitmask(field) (char *)__get_dynamic_array(field)
+diff --git a/net/nsh/nsh.c b/net/nsh/nsh.c
+index e9ca007718b7e..0f23e5e8e03eb 100644
+--- a/net/nsh/nsh.c
++++ b/net/nsh/nsh.c
+@@ -77,13 +77,12 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
+ 				       netdev_features_t features)
+ {
+ 	struct sk_buff *segs = ERR_PTR(-EINVAL);
++	u16 mac_offset = skb->mac_header;
+ 	unsigned int nsh_len, mac_len;
+ 	__be16 proto;
+-	int nhoff;
  
-+#undef __get_sockaddr
-+#define __get_sockaddr(field) ((struct sockaddr *)__get_dynamic_array(field))
-+
- #undef __get_rel_dynamic_array
- #define __get_rel_dynamic_array(field)	\
- 		((void *)(&__entry->__rel_loc_##field) +	\
-@@ -37,6 +40,9 @@
- #undef __get_rel_bitmask
- #define __get_rel_bitmask(field) (char *)__get_rel_dynamic_array(field)
+ 	skb_reset_network_header(skb);
  
-+#undef __get_rel_sockaddr
-+#define __get_rel_sockaddr(field) ((struct sockaddr *)__get_rel_dynamic_array(field))
-+
- #undef __perf_count
- #define __perf_count(c)	(c)
+-	nhoff = skb->network_header - skb->mac_header;
+ 	mac_len = skb->mac_len;
  
-diff --git a/include/trace/perf.h b/include/trace/perf.h
-index 5d48c46a30083..5800d13146c3d 100644
---- a/include/trace/perf.h
-+++ b/include/trace/perf.h
-@@ -21,6 +21,9 @@
- #undef __get_bitmask
- #define __get_bitmask(field) (char *)__get_dynamic_array(field)
+ 	if (unlikely(!pskb_may_pull(skb, NSH_BASE_HDR_LEN)))
+@@ -108,15 +107,14 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
+ 	segs = skb_mac_gso_segment(skb, features);
+ 	if (IS_ERR_OR_NULL(segs)) {
+ 		skb_gso_error_unwind(skb, htons(ETH_P_NSH), nsh_len,
+-				     skb->network_header - nhoff,
+-				     mac_len);
++				     mac_offset, mac_len);
+ 		goto out;
+ 	}
  
-+#undef __get_sockaddr
-+#define __get_sockaddr(field) ((struct sockaddr *)__get_dynamic_array(field))
-+
- #undef __get_rel_dynamic_array
- #define __get_rel_dynamic_array(field)	\
- 		((void *)__entry +					\
-@@ -38,6 +41,9 @@
- #undef __get_rel_bitmask
- #define __get_rel_bitmask(field) (char *)__get_rel_dynamic_array(field)
- 
-+#undef __get_rel_sockaddr
-+#define __get_rel_sockaddr(field) ((struct sockaddr *)__get_rel_dynamic_array(field))
-+
- #undef __perf_count
- #define __perf_count(c)	(__count = (c))
- 
-diff --git a/include/trace/trace_events.h b/include/trace/trace_events.h
-index 7f0b91dfb532d..e6b19ab357815 100644
---- a/include/trace/trace_events.h
-+++ b/include/trace/trace_events.h
-@@ -108,6 +108,9 @@ TRACE_MAKE_SYSTEM_STR();
- #undef __bitmask
- #define __bitmask(item, nr_bits) __dynamic_array(char, item, -1)
- 
-+#undef __sockaddr
-+#define __sockaddr(field, len) __dynamic_array(u8, field, len)
-+
- #undef __rel_dynamic_array
- #define __rel_dynamic_array(type, item, len) u32 __rel_loc_##item;
- 
-@@ -120,6 +123,9 @@ TRACE_MAKE_SYSTEM_STR();
- #undef __rel_bitmask
- #define __rel_bitmask(item, nr_bits) __rel_dynamic_array(char, item, -1)
- 
-+#undef __rel_sockaddr
-+#define __rel_sockaddr(field, len) __rel_dynamic_array(u8, field, len)
-+
- #undef TP_STRUCT__entry
- #define TP_STRUCT__entry(args...) args
- 
-@@ -212,11 +218,14 @@ TRACE_MAKE_SYSTEM_STR();
- #undef __string
- #define __string(item, src) __dynamic_array(char, item, -1)
- 
-+#undef __string_len
-+#define __string_len(item, src, len) __dynamic_array(char, item, -1)
-+
- #undef __bitmask
- #define __bitmask(item, nr_bits) __dynamic_array(unsigned long, item, -1)
- 
--#undef __string_len
--#define __string_len(item, src, len) __dynamic_array(char, item, -1)
-+#undef __sockaddr
-+#define __sockaddr(field, len) __dynamic_array(u8, field, len)
- 
- #undef __rel_dynamic_array
- #define __rel_dynamic_array(type, item, len)	u32 item;
-@@ -230,6 +239,9 @@ TRACE_MAKE_SYSTEM_STR();
- #undef __rel_bitmask
- #define __rel_bitmask(item, nr_bits) __rel_dynamic_array(unsigned long, item, -1)
- 
-+#undef __rel_sockaddr
-+#define __rel_sockaddr(field, len) __rel_dynamic_array(u8, field, len)
-+
- #undef DECLARE_EVENT_CLASS
- #define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
- 	struct trace_event_data_offsets_##call {			\
-@@ -349,6 +361,12 @@ TRACE_MAKE_SYSTEM_STR();
- 		trace_print_bitmask_seq(p, __bitmask, __bitmask_size);	\
- 	})
- 
-+#undef __get_sockaddr
-+#define __get_sockaddr(field)	((struct sockaddr *)__get_dynamic_array(field))
-+
-+#undef __get_rel_sockaddr
-+#define __get_rel_sockaddr(field)	((struct sockaddr *)__get_rel_dynamic_array(field))
-+
- #undef __print_flags
- #define __print_flags(flag, delim, flag_array...)			\
- 	({								\
-@@ -520,6 +538,9 @@ static struct trace_event_functions trace_event_type_funcs_##call = {	\
- #undef __bitmask
- #define __bitmask(item, nr_bits) __dynamic_array(unsigned long, item, -1)
- 
-+#undef __sockaddr
-+#define __sockaddr(field, len) __dynamic_array(u8, field, len)
-+
- #undef __rel_dynamic_array
- #define __rel_dynamic_array(_type, _item, _len) {			\
- 	.type = "__rel_loc " #_type "[]", .name = #_item,		\
-@@ -535,6 +556,9 @@ static struct trace_event_functions trace_event_type_funcs_##call = {	\
- #undef __rel_bitmask
- #define __rel_bitmask(item, nr_bits) __rel_dynamic_array(unsigned long, item, -1)
- 
-+#undef __rel_sockaddr
-+#define __rel_sockaddr(field, len) __rel_dynamic_array(u8, field, len)
-+
- #undef DECLARE_EVENT_CLASS
- #define DECLARE_EVENT_CLASS(call, proto, args, tstruct, func, print)	\
- static struct trace_event_fields trace_event_fields_##call[] = {	\
-@@ -626,6 +650,12 @@ static struct trace_event_fields trace_event_fields_##call[] = {	\
- #define __rel_bitmask(item, nr_bits) __rel_dynamic_array(unsigned long, item,	\
- 					 __bitmask_size_in_longs(nr_bits))
- 
-+#undef __sockaddr
-+#define __sockaddr(field, len) __dynamic_array(u8, field, len)
-+
-+#undef __rel_sockaddr
-+#define __rel_sockaddr(field, len) __rel_dynamic_array(u8, field, len)
-+
- #undef DECLARE_EVENT_CLASS
- #define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
- static inline notrace int trace_event_get_offsets_##call(		\
-@@ -790,6 +820,15 @@ static inline notrace int trace_event_get_offsets_##call(		\
- #define __assign_bitmask(dst, src, nr_bits)					\
- 	memcpy(__get_bitmask(dst), (src), __bitmask_size_in_bytes(nr_bits))
- 
-+#undef __sockaddr
-+#define __sockaddr(field, len) __dynamic_array(u8, field, len)
-+
-+#undef __get_sockaddr
-+#define __get_sockaddr(field)	((struct sockaddr *)__get_dynamic_array(field))
-+
-+#define __assign_sockaddr(dest, src, len)					\
-+	memcpy(__get_dynamic_array(dest), src, len)
-+
- #undef __rel_dynamic_array
- #define __rel_dynamic_array(type, item, len)				\
- 	__entry->__rel_loc_##item = __data_offsets.item;
-@@ -821,6 +860,16 @@ static inline notrace int trace_event_get_offsets_##call(		\
- #define __assign_rel_bitmask(dst, src, nr_bits)					\
- 	memcpy(__get_rel_bitmask(dst), (src), __bitmask_size_in_bytes(nr_bits))
- 
-+#undef __rel_sockaddr
-+#define __rel_sockaddr(field, len) __rel_dynamic_array(u8, field, len)
-+
-+#undef __get_rel_sockaddr
-+#define __get_rel_sockaddr(field)	((struct sockaddr *)__get_rel_dynamic_array(field))
-+
-+#define __assign_rel_sockaddr(dest, src, len)					\
-+	memcpy(__get_rel_dynamic_array(dest), src, len)
-+
-+
- #undef TP_fast_assign
- #define TP_fast_assign(args...) args
- 
-@@ -885,10 +934,12 @@ static inline void ftrace_test_probe_##call(void)			\
- #undef __get_dynamic_array_len
- #undef __get_str
- #undef __get_bitmask
-+#undef __get_sockaddr
- #undef __get_rel_dynamic_array
- #undef __get_rel_dynamic_array_len
- #undef __get_rel_str
- #undef __get_rel_bitmask
-+#undef __get_rel_sockaddr
- #undef __print_array
- #undef __print_hex_dump
- 
+ 	for (skb = segs; skb; skb = skb->next) {
+ 		skb->protocol = htons(ETH_P_NSH);
+ 		__skb_push(skb, nsh_len);
+-		skb_set_mac_header(skb, -nhoff);
++		skb->mac_header = mac_offset;
+ 		skb->network_header = skb->mac_header + mac_len;
+ 		skb->mac_len = mac_len;
+ 	}
 -- 
 2.39.2
 
