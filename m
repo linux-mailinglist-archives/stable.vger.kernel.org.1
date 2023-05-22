@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5BB70C962
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79FA370C625
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235312AbjEVTr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42416 "EHLO
+        id S231984AbjEVTPf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235298AbjEVTr2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1204899
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:27 -0700 (PDT)
+        with ESMTP id S231779AbjEVTP0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1091BB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2DC762A2C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F05C4339B;
-        Mon, 22 May 2023 19:47:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C42162758
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7492C433D2;
+        Mon, 22 May 2023 19:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784846;
-        bh=ozW99ARKrOKVH4wAAidgEU18+/tLSFX0mid2aRRYCN8=;
+        s=korg; t=1684782919;
+        bh=0vnWX0MVgGb7iZDFbJNjeohEnUpVDAWB+6di4E0lEvI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HefLlig8d4G9jMKp2kkBNlmLMm7v1o8jJdf41G/B224Mi71omSu+fT6tZQ6KqQyXd
-         i5/19m3FtK/haqCKfVIj6/kgM2Xi18utGc21JM+uS0jCUhSGrDnoabWpu+NZkdJA95
-         wyZXBtQGvyJLwM8rg1ud37y05ddQTaTq7HzFh8mk=
+        b=C6rhQwpXGIcK9LGkyJd3M4zvXYYCQ1Y9yvHDUT6zRgw+rCb28IDKbnPyyFGLeRMFJ
+         tIdl0NOq9uySBA3owEEVoIigFWNkWD6f6UdghkxOrPobcUy9NAVte9j0Wp0VZJzGTC
+         TLOTpe9IQUDAVD1JpBVO87KbOiPE62U2Om9eTMW8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 193/364] soundwire: bus: Fix unbalanced pm_runtime_put() causing usage count underflow
+        patches@lists.linux.dev, Simon Horman <horms@kernel.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/203] ipvs: Update width of source for ip_vs_sync_conn_options
 Date:   Mon, 22 May 2023 20:08:18 +0100
-Message-Id: <20230522190417.561842189@linuxfoundation.org>
+Message-Id: <20230522190357.037167052@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +55,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit e9537962519e88969f5f69cd0571eb4f6984403c ]
+[ Upstream commit e3478c68f6704638d08f437cbc552ca5970c151a ]
 
-This reverts commit
-443a98e649b4 ("soundwire: bus: use pm_runtime_resume_and_get()")
+In ip_vs_sync_conn_v0() copy is made to struct ip_vs_sync_conn_options.
+That structure looks like this:
 
-Change calls to pm_runtime_resume_and_get() back to pm_runtime_get_sync().
-This fixes a usage count underrun caused by doing a pm_runtime_put() even
-though pm_runtime_resume_and_get() returned an error.
+struct ip_vs_sync_conn_options {
+        struct ip_vs_seq        in_seq;
+        struct ip_vs_seq        out_seq;
+};
 
-The three affected functions ignore -EACCES error from trying to get
-pm_runtime, and carry on, including a put at the end of the function.
-But pm_runtime_resume_and_get() does not increment the usage count if it
-returns an error. So in the -EACCES case you must not call
-pm_runtime_put().
+The source of the copy is the in_seq field of struct ip_vs_conn.  Whose
+type is struct ip_vs_seq. Thus we can see that the source - is not as
+wide as the amount of data copied, which is the width of struct
+ip_vs_sync_conn_option.
 
-The documentation for pm_runtime_get_sync() says:
- "Consider using pm_runtime_resume_and_get() ...  as this is likely to
- result in cleaner code."
+The copy is safe because the next field in is another struct ip_vs_seq.
+Make use of struct_group() to annotate this.
 
-In this case I don't think it results in cleaner code because the
-pm_runtime_put() at the end of the function would have to be conditional on
-the return value from pm_runtime_resume_and_get() at the top of the
-function.
+Flagged by gcc-13 as:
 
-pm_runtime_get_sync() doesn't have this problem because it always
-increments the count, so always needs a put. The code can just flow through
-and do the pm_runtime_put() unconditionally.
+ In file included from ./include/linux/string.h:254,
+                  from ./include/linux/bitmap.h:11,
+                  from ./include/linux/cpumask.h:12,
+                  from ./arch/x86/include/asm/paravirt.h:17,
+                  from ./arch/x86/include/asm/cpuid.h:62,
+                  from ./arch/x86/include/asm/processor.h:19,
+                  from ./arch/x86/include/asm/timex.h:5,
+                  from ./include/linux/timex.h:67,
+                  from ./include/linux/time32.h:13,
+                  from ./include/linux/time.h:60,
+                  from ./include/linux/stat.h:19,
+                  from ./include/linux/module.h:13,
+                  from net/netfilter/ipvs/ip_vs_sync.c:38:
+ In function 'fortify_memcpy_chk',
+     inlined from 'ip_vs_sync_conn_v0' at net/netfilter/ipvs/ip_vs_sync.c:606:3:
+ ./include/linux/fortify-string.h:529:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
+   529 |                         __read_overflow2_field(q_size_field, size);
+       |
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230406134640.8582-1-rf@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Compile tested only.
+
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/bus.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ include/net/ip_vs.h             | 6 ++++--
+ net/netfilter/ipvs/ip_vs_sync.c | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index b6aca59c31300..7fd99e581a574 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -546,9 +546,11 @@ int sdw_nread(struct sdw_slave *slave, u32 addr, size_t count, u8 *val)
- {
- 	int ret;
+diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+index 7cb5a1aace40d..59f8412de45ac 100644
+--- a/include/net/ip_vs.h
++++ b/include/net/ip_vs.h
+@@ -549,8 +549,10 @@ struct ip_vs_conn {
+ 	 */
+ 	struct ip_vs_app        *app;           /* bound ip_vs_app object */
+ 	void                    *app_data;      /* Application private data */
+-	struct ip_vs_seq        in_seq;         /* incoming seq. struct */
+-	struct ip_vs_seq        out_seq;        /* outgoing seq. struct */
++	struct_group(sync_conn_opt,
++		struct ip_vs_seq  in_seq;       /* incoming seq. struct */
++		struct ip_vs_seq  out_seq;      /* outgoing seq. struct */
++	);
  
--	ret = pm_runtime_resume_and_get(&slave->dev);
--	if (ret < 0 && ret != -EACCES)
-+	ret = pm_runtime_get_sync(&slave->dev);
-+	if (ret < 0 && ret != -EACCES) {
-+		pm_runtime_put_noidle(&slave->dev);
- 		return ret;
-+	}
- 
- 	ret = sdw_nread_no_pm(slave, addr, count, val);
- 
-@@ -570,9 +572,11 @@ int sdw_nwrite(struct sdw_slave *slave, u32 addr, size_t count, const u8 *val)
- {
- 	int ret;
- 
--	ret = pm_runtime_resume_and_get(&slave->dev);
--	if (ret < 0 && ret != -EACCES)
-+	ret = pm_runtime_get_sync(&slave->dev);
-+	if (ret < 0 && ret != -EACCES) {
-+		pm_runtime_put_noidle(&slave->dev);
- 		return ret;
-+	}
- 
- 	ret = sdw_nwrite_no_pm(slave, addr, count, val);
- 
-@@ -1541,9 +1545,10 @@ static int sdw_handle_slave_alerts(struct sdw_slave *slave)
- 
- 	sdw_modify_slave_status(slave, SDW_SLAVE_ALERT);
- 
--	ret = pm_runtime_resume_and_get(&slave->dev);
-+	ret = pm_runtime_get_sync(&slave->dev);
- 	if (ret < 0 && ret != -EACCES) {
- 		dev_err(&slave->dev, "Failed to resume device: %d\n", ret);
-+		pm_runtime_put_noidle(&slave->dev);
- 		return ret;
+ 	const struct ip_vs_pe	*pe;
+ 	char			*pe_data;
+diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
+index a56fd0b5a430a..0d89e68dc9d18 100644
+--- a/net/netfilter/ipvs/ip_vs_sync.c
++++ b/net/netfilter/ipvs/ip_vs_sync.c
+@@ -603,7 +603,7 @@ static void ip_vs_sync_conn_v0(struct netns_ipvs *ipvs, struct ip_vs_conn *cp,
+ 	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
+ 		struct ip_vs_sync_conn_options *opt =
+ 			(struct ip_vs_sync_conn_options *)&s[1];
+-		memcpy(opt, &cp->in_seq, sizeof(*opt));
++		memcpy(opt, &cp->sync_conn_opt, sizeof(*opt));
  	}
  
+ 	m->nr_conns++;
 -- 
 2.39.2
 
