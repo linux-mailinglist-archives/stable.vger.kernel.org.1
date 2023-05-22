@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3905770C838
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E44E70C839
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234943AbjEVTg2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58052 "EHLO
+        id S234967AbjEVTgc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234949AbjEVTg1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0251B4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:09 -0700 (PDT)
+        with ESMTP id S234965AbjEVTga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B4CE73
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D308962942
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E11C433D2;
-        Mon, 22 May 2023 19:36:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAAF96296C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D427FC433D2;
+        Mon, 22 May 2023 19:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784168;
-        bh=p2GvdELpo5zpk3FhuKwcRZZDNbx594w8qGk9VuZlfbY=;
+        s=korg; t=1684784171;
+        bh=JsB+WBSJEJbYNFzNOj0BBwk0l1WG/zhTTQ+jWG3x6j8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=do/OwA1Dy7iZd3WvFiZKiyxBmg3SKaNYiki7B4f9Yj8ANRos7BIcEHpiKB/ImBDgc
-         d06xkSC75ar6Sl4sCJEgFG6lEoYcsKYkitj4LK7NJtf6YQYi++TkFqHzTqIu2D7+FI
-         ykKbXXcftk6hbMo1ZADF/FhAbRa2VGiE4mu2sJTw=
+        b=f+xTAzgLpV9MyZ61U1qFtsCIkadU0gxW+BGv4sL7bJJbninGvfyyzX3g/3+kabkhH
+         ll1hVzD1AoYdslhawx2a1c3pZX8wBTN0eov+igzwLi8IGyHdA6JDc32rTjBnQQewoz
+         ey21lSnCoQOGR00tLCfgJO5AjTXYyJbsD2oI9Mhc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Collingbourne <pcc@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Alexandru Elisei <alexandru.elisei@arm.com>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 285/292] arm64: mte: Do not set PG_mte_tagged if tags were not initialized
-Date:   Mon, 22 May 2023 20:10:42 +0100
-Message-Id: <20230522190413.068676734@linuxfoundation.org>
+        patches@lists.linux.dev, Ze Gao <zegao@tencent.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.1 286/292] rethook: use preempt_{disable, enable}_notrace in rethook_trampoline_handler
+Date:   Mon, 22 May 2023 20:10:43 +0100
+Message-Id: <20230522190413.094264674@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
 References: <20230522190405.880733338@linuxfoundation.org>
@@ -45,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Collingbourne <pcc@google.com>
+From: Ze Gao <zegao2021@gmail.com>
 
-commit c4c597f1b367433c52c531dccd6859a39b4580fb upstream.
+commit be243bacfb25f5219f2396d787408e8cf1301dd1 upstream.
 
-The mte_sync_page_tags() function sets PG_mte_tagged if it initializes
-page tags. Then we return to mte_sync_tags(), which sets PG_mte_tagged
-again. At best, this is redundant. However, it is possible for
-mte_sync_page_tags() to return without having initialized tags for the
-page, i.e. in the case where check_swap is true (non-compound page),
-is_swap_pte(old_pte) is false and pte_is_tagged is false. So at worst,
-we set PG_mte_tagged on a page with uninitialized tags. This can happen
-if, for example, page migration causes a PTE for an untagged page to
-be replaced. If the userspace program subsequently uses mprotect() to
-enable PROT_MTE for that page, the uninitialized tags will be exposed
-to userspace.
+This patch replaces preempt_{disable, enable} with its corresponding
+notrace version in rethook_trampoline_handler so no worries about stack
+recursion or overflow introduced by preempt_count_{add, sub} under
+fprobe + rethook context.
 
-Fix it by removing the redundant call to set_page_mte_tagged().
+Link: https://lore.kernel.org/all/20230517034510.15639-2-zegao@tencent.com/
 
-Fixes: e059853d14ca ("arm64: mte: Fix/clarify the PG_mte_tagged semantics")
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Cc: <stable@vger.kernel.org> # 6.1
-Link: https://linux-review.googlesource.com/id/Ib02d004d435b2ed87603b858ef7480f7b1463052
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
-Link: https://lore.kernel.org/r/20230420214327.2357985-1-pcc@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
+Signed-off-by: Ze Gao <zegao@tencent.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/mte.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ kernel/trace/rethook.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -72,13 +72,10 @@ void mte_sync_tags(pte_t old_pte, pte_t
- 		return;
+--- a/kernel/trace/rethook.c
++++ b/kernel/trace/rethook.c
+@@ -288,7 +288,7 @@ unsigned long rethook_trampoline_handler
+ 	 * These loops must be protected from rethook_free_rcu() because those
+ 	 * are accessing 'rhn->rethook'.
+ 	 */
+-	preempt_disable();
++	preempt_disable_notrace();
  
- 	/* if PG_mte_tagged is set, tags have already been initialised */
--	for (i = 0; i < nr_pages; i++, page++) {
--		if (!page_mte_tagged(page)) {
-+	for (i = 0; i < nr_pages; i++, page++)
-+		if (!page_mte_tagged(page))
- 			mte_sync_page_tags(page, old_pte, check_swap,
- 					   pte_is_tagged);
--			set_page_mte_tagged(page);
--		}
--	}
+ 	/*
+ 	 * Run the handler on the shadow stack. Do not unlink the list here because
+@@ -321,7 +321,7 @@ unsigned long rethook_trampoline_handler
+ 		first = first->next;
+ 		rethook_recycle(rhn);
+ 	}
+-	preempt_enable();
++	preempt_enable_notrace();
  
- 	/* ensure the tags are visible before the PTE is set */
- 	smp_wmb();
+ 	return correct_ret_addr;
+ }
 
 
