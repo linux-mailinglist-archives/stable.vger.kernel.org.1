@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720EB70C727
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8664E70C5F1
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234624AbjEVT03 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47968 "EHLO
+        id S233790AbjEVTNs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234627AbjEVT00 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF7E69C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:25 -0700 (PDT)
+        with ESMTP id S232823AbjEVTNp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CA7CA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 749DD6289E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C38CC433EF;
-        Mon, 22 May 2023 19:26:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 639C462710
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBCBC4339C;
+        Mon, 22 May 2023 19:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783584;
-        bh=LswCIlDJGMeix3La8PlCgP92RvPh1vwrb4yKqmRt0FA=;
+        s=korg; t=1684782822;
+        bh=Ad2UXggBPUQFgGQJFs6Nq5lTd63NR0y5wkbb0JgwmGU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t55EP3kRDwmDg5ccf5Zq/ElyAcVvYws/JK3lXtJYX0OqzjEVZ35LstqhGJ0sTnNhD
-         EGxbQf0UinUlkS3gnjL+fZ0QrQi9Yasg+YpR113Pm7XT2SHtoAujoifX3Zz9QmXn74
-         5DbVFbe0US3PM+a8icutLiFDTMGhOEz86mybCgyA=
+        b=joN/QKGrjRYDkZbIHHR6dyqQrKvtjKrmVZDb7kt+0aQ266mcHuz7rgV0o3nXsQMHa
+         veYEMK6XKsd754XLysEafosrXsPs90b7fuoaVgVqHJsKkL3v766J+mNMW7EbnNHEXG
+         DkOORTtvL8gxadgp5ca8tao9MzYHhpHxdOUuVuRE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/292] f2fs: fix to check readonly condition correctly
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>,
+        Christian Brauner <brauner@kernel.org>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 027/203] ext4: fix lockdep warning when enabling MMP
 Date:   Mon, 22 May 2023 20:07:31 +0100
-Message-Id: <20230522190408.324343240@linuxfoundation.org>
+Message-Id: <20230522190355.714531949@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,78 +56,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit d78dfefcde9d311284434560d69c0478c55a657e ]
+[ Upstream commit 949f95ff39bf188e594e7ecd8e29b82eb108f5bf ]
 
-With below case, it can mount multi-device image w/ rw option, however
-one of secondary device is set as ro, later update will cause panic, so
-let's introduce f2fs_dev_is_readonly(), and check multi-devices rw status
-in f2fs_remount() w/ it in order to avoid such inconsistent mount status.
+When we enable MMP in ext4_multi_mount_protect() during mount or
+remount, we end up calling sb_start_write() from write_mmp_block(). This
+triggers lockdep warning because freeze protection ranks above s_umount
+semaphore we are holding during mount / remount. The problem is harmless
+because we are guaranteed the filesystem is not frozen during mount /
+remount but still let's fix the warning by not grabbing freeze
+protection from ext4_multi_mount_protect().
 
-mkfs.f2fs -c /dev/zram1 /dev/zram0 -f
-blockdev --setro /dev/zram1
-mount -t f2fs dev/zram0 /mnt/f2fs
-mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
-mount -t f2fs -o remount,rw mnt/f2fs
-dd if=/dev/zero  of=/mnt/f2fs/file bs=1M count=8192
-
-kernel BUG at fs/f2fs/inline.c:258!
-RIP: 0010:f2fs_write_inline_data+0x23e/0x2d0 [f2fs]
-Call Trace:
-  f2fs_write_single_data_page+0x26b/0x9f0 [f2fs]
-  f2fs_write_cache_pages+0x389/0xa60 [f2fs]
-  __f2fs_write_data_pages+0x26b/0x2d0 [f2fs]
-  f2fs_write_data_pages+0x2e/0x40 [f2fs]
-  do_writepages+0xd3/0x1b0
-  __writeback_single_inode+0x5b/0x420
-  writeback_sb_inodes+0x236/0x5a0
-  __writeback_inodes_wb+0x56/0xf0
-  wb_writeback+0x2a3/0x490
-  wb_do_writeback+0x2b2/0x330
-  wb_workfn+0x6a/0x260
-  process_one_work+0x270/0x5e0
-  worker_thread+0x52/0x3e0
-  kthread+0xf4/0x120
-  ret_from_fork+0x29/0x50
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: stable@kernel.org
+Reported-by: syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=ab7e5b6f400b7778d46f01841422e5718fb81843
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20230411121019.21940-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h  | 5 +++++
- fs/f2fs/super.c | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ fs/ext4/mmp.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index a0a232551da97..8d7dc76e6f935 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4435,6 +4435,11 @@ static inline bool f2fs_hw_is_readonly(struct f2fs_sb_info *sbi)
- 	return false;
+diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
+index 28129a8db713c..3e8bce19ad16d 100644
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -39,28 +39,36 @@ static void ext4_mmp_csum_set(struct super_block *sb, struct mmp_struct *mmp)
+  * Write the MMP block using REQ_SYNC to try to get the block on-disk
+  * faster.
+  */
+-static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
++static int write_mmp_block_thawed(struct super_block *sb,
++				  struct buffer_head *bh)
+ {
+ 	struct mmp_struct *mmp = (struct mmp_struct *)(bh->b_data);
+ 
+-	/*
+-	 * We protect against freezing so that we don't create dirty buffers
+-	 * on frozen filesystem.
+-	 */
+-	sb_start_write(sb);
+ 	ext4_mmp_csum_set(sb, mmp);
+ 	lock_buffer(bh);
+ 	bh->b_end_io = end_buffer_write_sync;
+ 	get_bh(bh);
+ 	submit_bh(REQ_OP_WRITE, REQ_SYNC | REQ_META | REQ_PRIO, bh);
+ 	wait_on_buffer(bh);
+-	sb_end_write(sb);
+ 	if (unlikely(!buffer_uptodate(bh)))
+ 		return -EIO;
+-
+ 	return 0;
  }
  
-+static inline bool f2fs_dev_is_readonly(struct f2fs_sb_info *sbi)
++static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
 +{
-+	return f2fs_sb_has_readonly(sbi) || f2fs_hw_is_readonly(sbi);
++	int err;
++
++	/*
++	 * We protect against freezing so that we don't create dirty buffers
++	 * on frozen filesystem.
++	 */
++	sb_start_write(sb);
++	err = write_mmp_block_thawed(sb, bh);
++	sb_end_write(sb);
++	return err;
 +}
 +
- static inline bool f2fs_lfs_mode(struct f2fs_sb_info *sbi)
- {
- 	return F2FS_OPTION(sbi).fs_mode == FS_MODE_LFS;
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index c46533d65372c..b6dad389fa144 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2258,7 +2258,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 	if (f2fs_readonly(sb) && (*flags & SB_RDONLY))
- 		goto skip;
+ /*
+  * Read the MMP block. It _must_ be read from disk and hence we clear the
+  * uptodate flag on the buffer.
+@@ -352,7 +360,11 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	seq = mmp_new_seq();
+ 	mmp->mmp_seq = cpu_to_le32(seq);
  
--	if (f2fs_sb_has_readonly(sbi) && !(*flags & SB_RDONLY)) {
-+	if (f2fs_dev_is_readonly(sbi) && !(*flags & SB_RDONLY)) {
- 		err = -EROFS;
- 		goto restore_opts;
- 	}
+-	retval = write_mmp_block(sb, bh);
++	/*
++	 * On mount / remount we are protected against fs freezing (by s_umount
++	 * semaphore) and grabbing freeze protection upsets lockdep
++	 */
++	retval = write_mmp_block_thawed(sb, bh);
+ 	if (retval)
+ 		goto failed;
+ 
 -- 
 2.39.2
 
