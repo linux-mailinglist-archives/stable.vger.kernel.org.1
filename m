@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC23970C8F0
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C168E70C5DE
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235114AbjEVTne (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37908 "EHLO
+        id S231799AbjEVTNB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:13:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235150AbjEVTna (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:30 -0400
+        with ESMTP id S233126AbjEVTNB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB4BE52
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8522E10C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:12:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44C5461FD0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBD2C433D2;
-        Mon, 22 May 2023 19:43:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8EC0626F4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:12:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3F0C433D2;
+        Mon, 22 May 2023 19:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784595;
-        bh=PMZp1mz8IurQD2OLwhUSBlMTcMyirOhTLvX1DVhphp4=;
+        s=korg; t=1684782778;
+        bh=MwCBvWsRGZ2BGf0FKegkNB6/6n2ehaPUm1ymwejJAWY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kwkb1KbfotiEygR6//ThexrVDRjGk6YLp7+p4DY0G0/bBbhXOP5AlZSlgWxF1ZV0r
-         LULwt91FaPnOxGnoYgltFW4or2ma3NmJ/XoXIh/67yWv+oY46wIef7jlgW65KvxYkK
-         SaNXPaJJAalBNekp4n+KWo2YRIo3aC4YMIE9HlXk=
+        b=2I7i6w7e0SaeLaA1bTpooNfpGvWreplzADUYW7Mx+vhagfdOREtQDDo11MX5CFPtX
+         qblIjBxIBUPm5FXp9pg+SdEShEEJXGMRsdEnvd4xcDu4fp1Np+77A5ModEto6N/40S
+         j/+wyDiWju2mmePxaCEEOAZR2V0mO2j2BfF6q9a8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Meng Tang <tangmeng@uniontech.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Ziwei Xiao <ziweixiao@google.com>,
+        Bailey Forrest <bcf@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 135/364] Bluetooth: btusb: Add new PID/VID 04ca:3801 for MT7663
-Date:   Mon, 22 May 2023 20:07:20 +0100
-Message-Id: <20230522190416.160361309@linuxfoundation.org>
+Subject: [PATCH 5.15 017/203] gve: Remove the code of clearing PBA bit
+Date:   Mon, 22 May 2023 20:07:21 +0100
+Message-Id: <20230522190355.428683225@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,72 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Meng Tang <tangmeng@uniontech.com>
+From: Ziwei Xiao <ziweixiao@google.com>
 
-[ Upstream commit 13209415d0e88396d99d346b184864834d70d68a ]
+[ Upstream commit f4c2e67c1773d2a2632381ee30e9139c1e744c16 ]
 
-This bluetooth device is found in a combo WLAN/BT card
-for a MediaTek 7663.
+Clearing the PBA bit from the driver is race prone and it may lead to
+dropped interrupt events. This could potentially lead to the traffic
+being completely halted.
 
-Tested on Acer Aspire A315-24P Notebook
-
-The device information:
-
-T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=04ca ProdID=3801 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-
-Signed-off-by: Meng Tang <tangmeng@uniontech.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 5e8c5adf95f8 ("gve: DQO: Add core netdev features")
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Signed-off-by: Bailey Forrest <bcf@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/google/gve/gve_main.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 5c536151ef836..683556dcdc436 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -558,6 +558,9 @@ static const struct usb_device_id blacklist_table[] = {
- 	{ USB_DEVICE(0x043e, 0x310c), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH |
- 						     BTUSB_VALID_LE_STATES },
-+	{ USB_DEVICE(0x04ca, 0x3801), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH |
-+						     BTUSB_VALID_LE_STATES },
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 49850cf7cfafd..c0ea1b185e1bd 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -233,19 +233,6 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
+ 	bool reschedule = false;
+ 	int work_done = 0;
  
- 	/* Additional MediaTek MT7668 Bluetooth devices */
- 	{ USB_DEVICE(0x043e, 0x3109), .driver_info = BTUSB_MEDIATEK |
+-	/* Clear PCI MSI-X Pending Bit Array (PBA)
+-	 *
+-	 * This bit is set if an interrupt event occurs while the vector is
+-	 * masked. If this bit is set and we reenable the interrupt, it will
+-	 * fire again. Since we're just about to poll the queue state, we don't
+-	 * need it to fire again.
+-	 *
+-	 * Under high softirq load, it's possible that the interrupt condition
+-	 * is triggered twice before we got the chance to process it.
+-	 */
+-	gve_write_irq_doorbell_dqo(priv, block,
+-				   GVE_ITR_NO_UPDATE_DQO | GVE_ITR_CLEAR_PBA_BIT_DQO);
+-
+ 	if (block->tx)
+ 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
+ 
 -- 
 2.39.2
 
