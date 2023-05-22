@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A00F70C8CA
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D86C70C723
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235104AbjEVTmP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34330 "EHLO
+        id S234623AbjEVT0P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235061AbjEVTmM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:12 -0400
+        with ESMTP id S234620AbjEVT0O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C63F1708
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:41:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293E1A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2757362A20
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D04C433EF;
-        Mon, 22 May 2023 19:41:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8EBA6289E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B8FC433D2;
+        Mon, 22 May 2023 19:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784506;
-        bh=7WQMsDnkLJaAHW6RZwpPou3kFutnRgwSnTU7HM1QZHY=;
+        s=korg; t=1684783573;
+        bh=0FgOAeLWITfHqxmvydovCvhdnSidBbTih1SuweCVZcc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GLHQI98761FAHg0NMkTIiUs4KhB2nFExAQpZorHiNOfZxJesf1H2VRXNhGR5ERdzo
-         DWVXPsp8//2jv0j/qOdxxlUvsM1UjoHp94zMHA2NaiHe4nsgV9JwKXTaJeNGAZw5vE
-         nlKkZoE3gszLmm6UT0iwxVOTR7p4DN7H2BjRRv3Q=
+        b=1LYdWSe463VenNHcySHHshlnXm9N1h76nYlqvFo4K6lB6bFd25JNSfpeC195sE+7d
+         Rgnui9f866jtLIOFthi3wnlca7ayl594p4wqbEfDnkvtbQQO5Ebu3CWIxE5J9/zJaK
+         0YE4NVeiglckzhsa8Dz3q40mVMGAih5s5E8OnHvk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Forza <forza@tnonline.net>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Maurizio Lombardi <mlombard@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 104/364] scsi: target: iscsit: Free cmds before session free
+Subject: [PATCH 6.1 052/292] media: pvrusb2: VIDEO_PVRUSB2 depends on DVB_CORE to use dvb_* symbols
 Date:   Mon, 22 May 2023 20:06:49 +0100
-Message-Id: <20230522190415.360845252@linuxfoundation.org>
+Message-Id: <20230522190407.236190821@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,62 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit d8990b5a4d065f38f35d69bcd627ec5a7f8330ca ]
+[ Upstream commit 1107283b3351bef138cd12dbda1f999891cab7db ]
 
-Commands from recovery entries are freed after session has been closed.
-That leads to use-after-free at command free or NPE with such call trace:
+A rand config causes this link error
+vmlinux.o: In function `pvr2_dvb_create':
+(.text+0x8af1d2): undefined reference to `dvb_register_adapter'
 
-Time2Retain timer expired for SID: 1, cleaning up iSCSI session.
-BUG: kernel NULL pointer dereference, address: 0000000000000140
-RIP: 0010:sbitmap_queue_clear+0x3a/0xa0
-Call Trace:
- target_release_cmd_kref+0xd1/0x1f0 [target_core_mod]
- transport_generic_free_cmd+0xd1/0x180 [target_core_mod]
- iscsit_free_cmd+0x53/0xd0 [iscsi_target_mod]
- iscsit_free_connection_recovery_entries+0x29d/0x320 [iscsi_target_mod]
- iscsit_close_session+0x13a/0x140 [iscsi_target_mod]
- iscsit_check_post_dataout+0x440/0x440 [iscsi_target_mod]
- call_timer_fn+0x24/0x140
+The rand config has
+CONFIG_VIDEO_PVRUSB2=y
+CONFIG_VIDEO_DEV=y
+CONFIG_DVB_CORE=m
 
-Move cleanup of recovery enrties to before session freeing.
+VIDEO_PVRUSB2 should also depend on DVB_CORE.
 
-Reported-by: Forza <forza@tnonline.net>
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-7-michael.christie@oracle.com
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Tom Rix <trix@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/usb/pvrusb2/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 3f7a9f7f5f4e3..07e196b44b91d 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4531,6 +4531,9 @@ int iscsit_close_session(struct iscsit_session *sess, bool can_sleep)
- 	iscsit_stop_time2retain_timer(sess);
- 	spin_unlock_bh(&se_tpg->session_lock);
- 
-+	if (sess->sess_ops->ErrorRecoveryLevel == 2)
-+		iscsit_free_connection_recovery_entries(sess);
-+
- 	/*
- 	 * transport_deregister_session_configfs() will clear the
- 	 * struct se_node_acl->nacl_sess pointer now as a iscsi_np process context
-@@ -4554,9 +4557,6 @@ int iscsit_close_session(struct iscsit_session *sess, bool can_sleep)
- 
- 	transport_deregister_session(sess->se_sess);
- 
--	if (sess->sess_ops->ErrorRecoveryLevel == 2)
--		iscsit_free_connection_recovery_entries(sess);
--
- 	iscsit_free_all_ooo_cmdsns(sess);
- 
- 	spin_lock_bh(&se_tpg->session_lock);
+diff --git a/drivers/media/usb/pvrusb2/Kconfig b/drivers/media/usb/pvrusb2/Kconfig
+index f2b64e49c5a20..9501b10b31aa5 100644
+--- a/drivers/media/usb/pvrusb2/Kconfig
++++ b/drivers/media/usb/pvrusb2/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config VIDEO_PVRUSB2
+ 	tristate "Hauppauge WinTV-PVR USB2 support"
+-	depends on VIDEO_DEV && I2C
++	depends on VIDEO_DEV && I2C && DVB_CORE
+ 	select VIDEO_TUNER
+ 	select VIDEO_TVEEPROM
+ 	select VIDEO_CX2341X
 -- 
 2.39.2
 
