@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6C670C91A
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE5770C60C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235228AbjEVTpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
+        id S233773AbjEVTOc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235298AbjEVToz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F0C196
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:50 -0700 (PDT)
+        with ESMTP id S233793AbjEVTO2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA6210D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A566662A3C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF9EC433EF;
-        Mon, 22 May 2023 19:44:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7141B62729
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764D9C433D2;
+        Mon, 22 May 2023 19:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784690;
-        bh=tU2A4wj5lvfjaL193dHua5J4mUq9RDcdrukuxdAY/Zk=;
+        s=korg; t=1684782861;
+        bh=LKTWxMzpW8ZvdymNslJhm0/sCjCKGqe9iKv6eyFozcU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZfeWJfJiP5hvKh44zGYJNcFspdDc2r1qWjhs63uaHy7vaxrjHn6W8mGNK6MfAX4qj
-         gw6cOz7v5hB+ILTRPUQxrLAOo9DH1QZP7RhXL86kWh4+iKGJFc2T6HGqYsFRMjNr/E
-         yce3h9F0cRRdHQYO0PYInnoxjKbczeDIlBbZH9z0=
+        b=B6k6iOL4fc+7K5t8RA+LUouWGmjeyI6y+7yuhki0jLP/iUx74M3QE4U9eXDY/YpnN
+         zEGPAF7T4EqmV9SVkVEHAn9rI3XEnRRfe/cYaZ+bVGFyRMeJSyJ92hhTgHRl4xoIrC
+         +7EQr+pOj99rchHLsr9/FPQ8r1p+r7yxt8JCMWds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        KP Singh <kpsingh@kernel.org>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 169/364] lkdtm/stackleak: Fix noinstr violation
+Subject: [PATCH 5.15 050/203] bpf: Annotate data races in bpf_local_storage
 Date:   Mon, 22 May 2023 20:07:54 +0100
-Message-Id: <20230522190416.955085293@linuxfoundation.org>
+Message-Id: <20230522190356.383237478@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,64 +56,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit f571da059f86fd9d432aea32c9c7e5aaa53245d8 ]
+[ Upstream commit 0a09a2f933c73dc76ab0b72da6855f44342a8903 ]
 
-Fixes the following warning:
+There are a few cases where hlist_node is checked to be unhashed without
+holding the lock protecting its modification. In this case, one must use
+hlist_unhashed_lockless to avoid load tearing and KCSAN reports. Fix
+this by using lockless variant in places not protected by the lock.
 
-  vmlinux.o: warning: objtool: check_stackleak_irqoff+0x2b6: call to _printk() leaves .noinstr.text section
+Since this is not prompted by any actual KCSAN reports but only from
+code review, I have not included a fixes tag.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/ee5209f53aa0a62aea58be18f2b78b17606779a6.1681320026.git.jpoimboe@kernel.org
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: KP Singh <kpsingh@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230221200646.2500777-4-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/stackleak.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/bpf/bpf_local_storage.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/stackleak.c b/drivers/misc/lkdtm/stackleak.c
-index 025b133297a6b..f1d0221609138 100644
---- a/drivers/misc/lkdtm/stackleak.c
-+++ b/drivers/misc/lkdtm/stackleak.c
-@@ -43,12 +43,14 @@ static void noinstr check_stackleak_irqoff(void)
- 	 * STACK_END_MAGIC, and in either casee something is seriously wrong.
- 	 */
- 	if (current_sp < task_stack_low || current_sp >= task_stack_high) {
-+		instrumentation_begin();
- 		pr_err("FAIL: current_stack_pointer (0x%lx) outside of task stack bounds [0x%lx..0x%lx]\n",
- 		       current_sp, task_stack_low, task_stack_high - 1);
- 		test_failed = true;
- 		goto out;
- 	}
- 	if (lowest_sp < task_stack_low || lowest_sp >= task_stack_high) {
-+		instrumentation_begin();
- 		pr_err("FAIL: current->lowest_stack (0x%lx) outside of task stack bounds [0x%lx..0x%lx]\n",
- 		       lowest_sp, task_stack_low, task_stack_high - 1);
- 		test_failed = true;
-@@ -86,11 +88,14 @@ static void noinstr check_stackleak_irqoff(void)
- 		if (*(unsigned long *)poison_low == STACKLEAK_POISON)
- 			continue;
- 
-+		instrumentation_begin();
- 		pr_err("FAIL: non-poison value %lu bytes below poison boundary: 0x%lx\n",
- 		       poison_high - poison_low, *(unsigned long *)poison_low);
- 		test_failed = true;
-+		goto out;
- 	}
- 
-+	instrumentation_begin();
- 	pr_info("stackleak stack usage:\n"
- 		"  high offset: %lu bytes\n"
- 		"  current:     %lu bytes\n"
-@@ -113,6 +118,7 @@ static void noinstr check_stackleak_irqoff(void)
- 	} else {
- 		pr_info("OK: the rest of the thread stack is properly erased\n");
- 	}
-+	instrumentation_end();
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index 6c2d39a3d5581..5ef8eaf4985ed 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -48,11 +48,21 @@ owner_storage(struct bpf_local_storage_map *smap, void *owner)
+ 	return map->ops->map_owner_storage_ptr(owner);
  }
  
- static void lkdtm_STACKLEAK_ERASING(void)
++static bool selem_linked_to_storage_lockless(const struct bpf_local_storage_elem *selem)
++{
++	return !hlist_unhashed_lockless(&selem->snode);
++}
++
+ static bool selem_linked_to_storage(const struct bpf_local_storage_elem *selem)
+ {
+ 	return !hlist_unhashed(&selem->snode);
+ }
+ 
++static bool selem_linked_to_map_lockless(const struct bpf_local_storage_elem *selem)
++{
++	return !hlist_unhashed_lockless(&selem->map_node);
++}
++
+ static bool selem_linked_to_map(const struct bpf_local_storage_elem *selem)
+ {
+ 	return !hlist_unhashed(&selem->map_node);
+@@ -142,7 +152,7 @@ static void __bpf_selem_unlink_storage(struct bpf_local_storage_elem *selem)
+ 	bool free_local_storage = false;
+ 	unsigned long flags;
+ 
+-	if (unlikely(!selem_linked_to_storage(selem)))
++	if (unlikely(!selem_linked_to_storage_lockless(selem)))
+ 		/* selem has already been unlinked from sk */
+ 		return;
+ 
+@@ -170,7 +180,7 @@ void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
+ 	struct bpf_local_storage_map_bucket *b;
+ 	unsigned long flags;
+ 
+-	if (unlikely(!selem_linked_to_map(selem)))
++	if (unlikely(!selem_linked_to_map_lockless(selem)))
+ 		/* selem has already be unlinked from smap */
+ 		return;
+ 
+@@ -373,7 +383,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
+ 		err = check_flags(old_sdata, map_flags);
+ 		if (err)
+ 			return ERR_PTR(err);
+-		if (old_sdata && selem_linked_to_storage(SELEM(old_sdata))) {
++		if (old_sdata && selem_linked_to_storage_lockless(SELEM(old_sdata))) {
+ 			copy_map_value_locked(&smap->map, old_sdata->data,
+ 					      value, false);
+ 			return old_sdata;
 -- 
 2.39.2
 
