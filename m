@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08BC670C8C9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E32570C6CF
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235092AbjEVTmO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
+        id S234467AbjEVTWj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235118AbjEVTmL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F811703
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:41:46 -0700 (PDT)
+        with ESMTP id S234477AbjEVTWg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:22:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9103E9C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E8C762A28
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CE6C433EF;
-        Mon, 22 May 2023 19:41:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28E806284F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331C8C433EF;
+        Mon, 22 May 2023 19:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784503;
-        bh=SwWVGDkd5WdOk4ndXlKv+kfL309zz5oDEjNlKvGqB2A=;
+        s=korg; t=1684783354;
+        bh=zg4lo4gfNyqOvak7BXVw7SJLJCu65/YR5flRtUm4tJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eX4xaM0eXwAcGhiL4IchJUSagRqzDeJvQIuoplDj1PBe2VAu91c9jV+bRyC5wn7rs
-         Z/ClVwu+pD5MhnN8dFPrCaC8K2kJiBeE6TIzZGQKRyrbteEQWhFPB/Oe0IjmK8Iurz
-         lg/UefP/yKTupDvfrNQbnd+3h/ZeM3zU5WAScZOI=
+        b=CCPl8QLOYiW0BfM7SLhs6AiXLU2ZAmgX5FCnpbmSTLUrU1NNphxjSVyxWu3yKvK1a
+         GlMlibd8QS0wLzF3BRShrY1SrGMUdIQ6zAfbqEwig/7CqMdvZDQ3xWxAesDHFpAYeb
+         AsvhM9JYZdhixn6o1D0IaMPh+Cskq3QTxyBLHNKs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
-        Martin Leung <Martin.Leung@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Ayush Gupta <ayugupta@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 068/364] drm/amd/display: fixed dcn30+ underflow issue
-Date:   Mon, 22 May 2023 20:06:13 +0100
-Message-Id: <20230522190414.483137698@linuxfoundation.org>
+Subject: [PATCH 6.1 017/292] net: deal with most data-races in sk_wait_event()
+Date:   Mon, 22 May 2023 20:06:14 +0100
+Message-Id: <20230522190406.323921979@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,73 +55,222 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ayush Gupta <ayugupta@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 37403ced9f2873fab7f39ab4ac963bbb33fb0bc0 ]
+[ Upstream commit d0ac89f6f9879fae316c155de77b5173b3e2c9c9 ]
 
-[Why]
-Observing underflow on dcn30+ system config at 4k144hz
+__condition is evaluated twice in sk_wait_event() macro.
 
-[How]
-We set the UCLK hardmax on AC/DC switch if softmax is enabled
-and also on boot. While booting up the UCLK Hardmax is set
-to softmax before the init sequence and the init sequence
-resets the hardmax to UCLK max which enables P-state switching.
-Just added a conditional check to avoid setting hardmax on init.
+First invocation is lockless, and reads can race with writes,
+as spotted by syzbot.
 
-Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
-Reviewed-by: Martin Leung <Martin.Leung@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Ayush Gupta <ayugupta@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+BUG: KCSAN: data-race in sk_stream_wait_connect / tcp_disconnect
+
+write to 0xffff88812d83d6a0 of 4 bytes by task 9065 on cpu 1:
+tcp_disconnect+0x2cd/0xdb0
+inet_shutdown+0x19e/0x1f0 net/ipv4/af_inet.c:911
+__sys_shutdown_sock net/socket.c:2343 [inline]
+__sys_shutdown net/socket.c:2355 [inline]
+__do_sys_shutdown net/socket.c:2363 [inline]
+__se_sys_shutdown+0xf8/0x140 net/socket.c:2361
+__x64_sys_shutdown+0x31/0x40 net/socket.c:2361
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffff88812d83d6a0 of 4 bytes by task 9040 on cpu 0:
+sk_stream_wait_connect+0x1de/0x3a0 net/core/stream.c:75
+tcp_sendmsg_locked+0x2e4/0x2120 net/ipv4/tcp.c:1266
+tcp_sendmsg+0x30/0x50 net/ipv4/tcp.c:1484
+inet6_sendmsg+0x63/0x80 net/ipv6/af_inet6.c:651
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+__sys_sendto+0x246/0x300 net/socket.c:2142
+__do_sys_sendto net/socket.c:2154 [inline]
+__se_sys_sendto net/socket.c:2150 [inline]
+__x64_sys_sendto+0x78/0x90 net/socket.c:2150
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00000000 -> 0x00000068
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 3 ++-
- drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ net/core/stream.c   | 12 ++++++------
+ net/ipv4/tcp_bpf.c  |  2 +-
+ net/llc/af_llc.c    |  8 +++++---
+ net/smc/smc_close.c |  4 ++--
+ net/smc/smc_rx.c    |  4 ++--
+ net/smc/smc_tx.c    |  4 ++--
+ net/tipc/socket.c   |  4 ++--
+ net/tls/tls_main.c  |  3 ++-
+ 8 files changed, 22 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index b4df540c0c61e..36fa413f8b42e 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -629,7 +629,8 @@ void dcn30_init_hw(struct dc *dc)
- 	if (dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+diff --git a/net/core/stream.c b/net/core/stream.c
+index cbb268c15251c..5b05b889d31af 100644
+--- a/net/core/stream.c
++++ b/net/core/stream.c
+@@ -73,8 +73,8 @@ int sk_stream_wait_connect(struct sock *sk, long *timeo_p)
+ 		add_wait_queue(sk_sleep(sk), &wait);
+ 		sk->sk_write_pending++;
+ 		done = sk_wait_event(sk, timeo_p,
+-				     !sk->sk_err &&
+-				     !((1 << sk->sk_state) &
++				     !READ_ONCE(sk->sk_err) &&
++				     !((1 << READ_ONCE(sk->sk_state)) &
+ 				       ~(TCPF_ESTABLISHED | TCPF_CLOSE_WAIT)), &wait);
+ 		remove_wait_queue(sk_sleep(sk), &wait);
+ 		sk->sk_write_pending--;
+@@ -87,9 +87,9 @@ EXPORT_SYMBOL(sk_stream_wait_connect);
+  * sk_stream_closing - Return 1 if we still have things to send in our buffers.
+  * @sk: socket to verify
+  */
+-static inline int sk_stream_closing(struct sock *sk)
++static int sk_stream_closing(const struct sock *sk)
+ {
+-	return (1 << sk->sk_state) &
++	return (1 << READ_ONCE(sk->sk_state)) &
+ 	       (TCPF_FIN_WAIT1 | TCPF_CLOSING | TCPF_LAST_ACK);
+ }
  
--	if (dc->clk_mgr->funcs->set_hard_max_memclk)
-+	//if softmax is enabled then hardmax will be set by a different call
-+	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+@@ -142,8 +142,8 @@ int sk_stream_wait_memory(struct sock *sk, long *timeo_p)
  
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c
-index d13e46eeee3c0..6d3f2335b9f1e 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c
-@@ -285,7 +285,7 @@ void dcn31_init_hw(struct dc *dc)
- 	if (dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+ 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+ 		sk->sk_write_pending++;
+-		sk_wait_event(sk, &current_timeo, sk->sk_err ||
+-						  (sk->sk_shutdown & SEND_SHUTDOWN) ||
++		sk_wait_event(sk, &current_timeo, READ_ONCE(sk->sk_err) ||
++						  (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN) ||
+ 						  (sk_stream_memory_free(sk) &&
+ 						  !vm_wait), &wait);
+ 		sk->sk_write_pending--;
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index ebf9175119370..2e9547467edbe 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -168,7 +168,7 @@ static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	ret = sk_wait_event(sk, &timeo,
+ 			    !list_empty(&psock->ingress_msg) ||
+-			    !skb_queue_empty(&sk->sk_receive_queue), &wait);
++			    !skb_queue_empty_lockless(&sk->sk_receive_queue), &wait);
+ 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 	return ret;
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index da7fe94bea2eb..9ffbc667be6cf 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -583,7 +583,8 @@ static int llc_ui_wait_for_disc(struct sock *sk, long timeout)
  
--	if (dc->clk_mgr->funcs->set_hard_max_memclk)
-+	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	while (1) {
+-		if (sk_wait_event(sk, &timeout, sk->sk_state == TCP_CLOSE, &wait))
++		if (sk_wait_event(sk, &timeout,
++				  READ_ONCE(sk->sk_state) == TCP_CLOSE, &wait))
+ 			break;
+ 		rc = -ERESTARTSYS;
+ 		if (signal_pending(current))
+@@ -603,7 +604,8 @@ static bool llc_ui_wait_for_conn(struct sock *sk, long timeout)
  
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index 823f29c292d05..184310fa52b1a 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -895,7 +895,7 @@ void dcn32_init_hw(struct dc *dc)
- 	if (dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	while (1) {
+-		if (sk_wait_event(sk, &timeout, sk->sk_state != TCP_SYN_SENT, &wait))
++		if (sk_wait_event(sk, &timeout,
++				  READ_ONCE(sk->sk_state) != TCP_SYN_SENT, &wait))
+ 			break;
+ 		if (signal_pending(current) || !timeout)
+ 			break;
+@@ -622,7 +624,7 @@ static int llc_ui_wait_for_busy_core(struct sock *sk, long timeout)
+ 	while (1) {
+ 		rc = 0;
+ 		if (sk_wait_event(sk, &timeout,
+-				  (sk->sk_shutdown & RCV_SHUTDOWN) ||
++				  (READ_ONCE(sk->sk_shutdown) & RCV_SHUTDOWN) ||
+ 				  (!llc_data_accept_state(llc->state) &&
+ 				   !llc->remote_busy_flag &&
+ 				   !llc->p_flag), &wait))
+diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+index 31db7438857c9..dbdf03e8aa5b5 100644
+--- a/net/smc/smc_close.c
++++ b/net/smc/smc_close.c
+@@ -67,8 +67,8 @@ static void smc_close_stream_wait(struct smc_sock *smc, long timeout)
  
--	if (dc->clk_mgr->funcs->set_hard_max_memclk)
-+	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+ 		rc = sk_wait_event(sk, &timeout,
+ 				   !smc_tx_prepared_sends(&smc->conn) ||
+-				   sk->sk_err == ECONNABORTED ||
+-				   sk->sk_err == ECONNRESET ||
++				   READ_ONCE(sk->sk_err) == ECONNABORTED ||
++				   READ_ONCE(sk->sk_err) == ECONNRESET ||
+ 				   smc->conn.killed,
+ 				   &wait);
+ 		if (rc)
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index 17c5aee7ee4f2..ffcc9996a3da3 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -263,9 +263,9 @@ int smc_rx_wait(struct smc_sock *smc, long *timeo,
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	rc = sk_wait_event(sk, timeo,
+-			   sk->sk_err ||
++			   READ_ONCE(sk->sk_err) ||
+ 			   cflags->peer_conn_abort ||
+-			   sk->sk_shutdown & RCV_SHUTDOWN ||
++			   READ_ONCE(sk->sk_shutdown) & RCV_SHUTDOWN ||
+ 			   conn->killed ||
+ 			   fcrit(conn),
+ 			   &wait);
+diff --git a/net/smc/smc_tx.c b/net/smc/smc_tx.c
+index f4b6a71ac488a..45128443f1f10 100644
+--- a/net/smc/smc_tx.c
++++ b/net/smc/smc_tx.c
+@@ -113,8 +113,8 @@ static int smc_tx_wait(struct smc_sock *smc, int flags)
+ 			break; /* at least 1 byte of free & no urgent data */
+ 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+ 		sk_wait_event(sk, &timeo,
+-			      sk->sk_err ||
+-			      (sk->sk_shutdown & SEND_SHUTDOWN) ||
++			      READ_ONCE(sk->sk_err) ||
++			      (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN) ||
+ 			      smc_cdc_rxed_any_close(conn) ||
+ 			      (atomic_read(&conn->sndbuf_space) &&
+ 			       !conn->urg_tx_pend),
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index ff5bb9e4731c4..14027a7a7bef8 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -313,9 +313,9 @@ static void tsk_rej_rx_queue(struct sock *sk, int error)
+ 		tipc_sk_respond(sk, skb, error);
+ }
  
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
+-static bool tipc_sk_connected(struct sock *sk)
++static bool tipc_sk_connected(const struct sock *sk)
+ {
+-	return sk->sk_state == TIPC_ESTABLISHED;
++	return READ_ONCE(sk->sk_state) == TIPC_ESTABLISHED;
+ }
+ 
+ /* tipc_sk_type_connectionless - check if the socket is datagram socket
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index b32c112984dd9..f2e7302a4d96b 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -111,7 +111,8 @@ int wait_on_pending_writer(struct sock *sk, long *timeo)
+ 			break;
+ 		}
+ 
+-		if (sk_wait_event(sk, timeo, !sk->sk_write_pending, &wait))
++		if (sk_wait_event(sk, timeo,
++				  !READ_ONCE(sk->sk_write_pending), &wait))
+ 			break;
+ 	}
+ 	remove_wait_queue(sk_sleep(sk), &wait);
 -- 
 2.39.2
 
