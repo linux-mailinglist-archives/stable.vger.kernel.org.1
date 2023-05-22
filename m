@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7D2B70C681
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1D870C78F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234237AbjEVTTH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41984 "EHLO
+        id S234747AbjEVTbI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234245AbjEVTSs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:48 -0400
+        with ESMTP id S234726AbjEVTbI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD094102
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D72A9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 425D5627EE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59827C433D2;
-        Mon, 22 May 2023 19:18:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F6166290F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7348C433D2;
+        Mon, 22 May 2023 19:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783126;
-        bh=+xqjS9Oaex2RNrBNAawCEn3v2DKe5+blgcwkkwigDeQ=;
+        s=korg; t=1684783865;
+        bh=b+6djv0q5AkcWLxwdFXmX5eKE+nJkRY7oEiHVh+dZQI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F+5CFVsv4pKid8w4YZpvX0Dil700vRB14b1PFhObzZmhp4DftCUzQBWu3XFgX8NUk
-         rUFAsggbJFbZ0CnoXky6w9tdZ/nOpr1qPDPZHaqVAmLcDYQquQIUI0DvRw9vUa4ACz
-         D1DHlOX6nYUTMHhUVlnD1mcH6mK56uMyGpeUieXU=
+        b=XGGzPn8VmhlCckWiLuNKuJ9yIxV2V2H+Tqdq4JquQJMFyhHBldnS0XL07iS/mAA1E
+         bYGo9TbTuWcnL0IhDMcPd5DG9S8tn4YHuUd/D1C9i5Tz9sq/rhRXRY8hYL3ly7BHJA
+         Mm2XNjK2daqBsNneH81P1OwS1QZV/+xuvDSMDKFM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/203] net: phy: dp83867: add w/a for packet errors seen with short cables
+Subject: [PATCH 6.1 187/292] SUNRPC: always free ctxt when freeing deferred request
 Date:   Mon, 22 May 2023 20:09:04 +0100
-Message-Id: <20230522190358.296265248@linuxfoundation.org>
+Message-Id: <20230522190410.635875197@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,75 +55,265 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 0b01db274028f5acd207332686ffc92ac77491ac ]
+[ Upstream commit 948f072ada23e0a504c5e4d7d71d4c83bd0785ec ]
 
-Introduce the W/A for packet errors seen with short cables (<1m) between
-two DP83867 PHYs.
+Since the ->xprt_ctxt pointer was added to svc_deferred_req, it has not
+been sufficient to use kfree() to free a deferred request.  We may need
+to free the ctxt as well.
 
-The W/A recommended by DM requires FFE Equalizer Configuration tuning by
-writing value 0x0E81 to DSP_FFE_CFG register (0x012C), surrounded by hard
-and soft resets as follows:
+As freeing the ctxt is all that ->xpo_release_rqst() does, we repurpose
+it to explicit do that even when the ctxt is not stored in an rqst.
+So we now have ->xpo_release_ctxt() which is given an xprt and a ctxt,
+which may have been taken either from an rqst or from a dreq.  The
+caller is now responsible for clearing that pointer after the call to
+->xpo_release_ctxt.
 
-write_reg(0x001F, 0x8000); //hard reset
-write_reg(DSP_FFE_CFG, 0x0E81);
-write_reg(0x001F, 0x4000); //soft reset
+We also clear dr->xprt_ctxt when the ctxt is moved into a new rqst when
+revisiting a deferred request.  This ensures there is only one pointer
+to the ctxt, so the risk of double freeing in future is reduced.  The
+new code in svc_xprt_release which releases both the ctxt and any
+rq_deferred depends on this.
 
-Since  DP83867 PHY DM says "Changing this register to 0x0E81, will not
-affect Long Cable performance.", enable the W/A by default.
-
-Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 773f91b2cf3f ("SUNRPC: Fix NFSD's request deferral on RDMA transports")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83867.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ include/linux/sunrpc/svc_rdma.h          |  2 +-
+ include/linux/sunrpc/svc_xprt.h          |  2 +-
+ net/sunrpc/svc_xprt.c                    | 23 +++++++++++++-----
+ net/sunrpc/svcsock.c                     | 30 +++++++++++++-----------
+ net/sunrpc/xprtrdma/svc_rdma_recvfrom.c  | 11 ++++-----
+ net/sunrpc/xprtrdma/svc_rdma_transport.c |  2 +-
+ 6 files changed, 41 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 783e30451e30d..6230dd5e29902 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -41,6 +41,7 @@
- #define DP83867_STRAP_STS1	0x006E
- #define DP83867_STRAP_STS2	0x006f
- #define DP83867_RGMIIDCTL	0x0086
-+#define DP83867_DSP_FFE_CFG	0x012c
- #define DP83867_RXFCFG		0x0134
- #define DP83867_RXFPMD1	0x0136
- #define DP83867_RXFPMD2	0x0137
-@@ -841,8 +842,27 @@ static int dp83867_phy_reset(struct phy_device *phydev)
+diff --git a/include/linux/sunrpc/svc_rdma.h b/include/linux/sunrpc/svc_rdma.h
+index 24aa159d29a7f..fbc4bd423b355 100644
+--- a/include/linux/sunrpc/svc_rdma.h
++++ b/include/linux/sunrpc/svc_rdma.h
+@@ -176,7 +176,7 @@ extern struct svc_rdma_recv_ctxt *
+ extern void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
+ 				   struct svc_rdma_recv_ctxt *ctxt);
+ extern void svc_rdma_flush_recv_queues(struct svcxprt_rdma *rdma);
+-extern void svc_rdma_release_rqst(struct svc_rqst *rqstp);
++extern void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *ctxt);
+ extern int svc_rdma_recvfrom(struct svc_rqst *);
  
- 	usleep_range(10, 20);
+ /* svc_rdma_rw.c */
+diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
+index d42a75b3be102..e882fe16a5008 100644
+--- a/include/linux/sunrpc/svc_xprt.h
++++ b/include/linux/sunrpc/svc_xprt.h
+@@ -23,7 +23,7 @@ struct svc_xprt_ops {
+ 	int		(*xpo_sendto)(struct svc_rqst *);
+ 	int		(*xpo_result_payload)(struct svc_rqst *, unsigned int,
+ 					      unsigned int);
+-	void		(*xpo_release_rqst)(struct svc_rqst *);
++	void		(*xpo_release_ctxt)(struct svc_xprt *xprt, void *ctxt);
+ 	void		(*xpo_detach)(struct svc_xprt *);
+ 	void		(*xpo_free)(struct svc_xprt *);
+ 	void		(*xpo_secure_port)(struct svc_rqst *rqstp);
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index b4306cf1b458c..8117d0e08d5a2 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -534,13 +534,23 @@ void svc_reserve(struct svc_rqst *rqstp, int space)
+ }
+ EXPORT_SYMBOL_GPL(svc_reserve);
  
--	return phy_modify(phydev, MII_DP83867_PHYCTRL,
-+	err = phy_modify(phydev, MII_DP83867_PHYCTRL,
- 			 DP83867_PHYCR_FORCE_LINK_GOOD, 0);
-+	if (err < 0)
-+		return err;
++static void free_deferred(struct svc_xprt *xprt, struct svc_deferred_req *dr)
++{
++	if (!dr)
++		return;
 +
-+	/* Configure the DSP Feedforward Equalizer Configuration register to
-+	 * improve short cable (< 1 meter) performance. This will not affect
-+	 * long cable performance.
-+	 */
-+	err = phy_write_mmd(phydev, DP83867_DEVADDR, DP83867_DSP_FFE_CFG,
-+			    0x0e81);
-+	if (err < 0)
-+		return err;
++	xprt->xpt_ops->xpo_release_ctxt(xprt, dr->xprt_ctxt);
++	kfree(dr);
++}
 +
-+	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
-+	if (err < 0)
-+		return err;
+ static void svc_xprt_release(struct svc_rqst *rqstp)
+ {
+ 	struct svc_xprt	*xprt = rqstp->rq_xprt;
+ 
+-	xprt->xpt_ops->xpo_release_rqst(rqstp);
++	xprt->xpt_ops->xpo_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 
+-	kfree(rqstp->rq_deferred);
++	free_deferred(xprt, rqstp->rq_deferred);
+ 	rqstp->rq_deferred = NULL;
+ 
+ 	pagevec_release(&rqstp->rq_pvec);
+@@ -1059,7 +1069,7 @@ static void svc_delete_xprt(struct svc_xprt *xprt)
+ 	spin_unlock_bh(&serv->sv_lock);
+ 
+ 	while ((dr = svc_deferred_dequeue(xprt)) != NULL)
+-		kfree(dr);
++		free_deferred(xprt, dr);
+ 
+ 	call_xpt_users(xprt);
+ 	svc_xprt_put(xprt);
+@@ -1181,8 +1191,8 @@ static void svc_revisit(struct cache_deferred_req *dreq, int too_many)
+ 	if (too_many || test_bit(XPT_DEAD, &xprt->xpt_flags)) {
+ 		spin_unlock(&xprt->xpt_lock);
+ 		trace_svc_defer_drop(dr);
++		free_deferred(xprt, dr);
+ 		svc_xprt_put(xprt);
+-		kfree(dr);
+ 		return;
+ 	}
+ 	dr->xprt = NULL;
+@@ -1227,14 +1237,13 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
+ 		dr->addrlen = rqstp->rq_addrlen;
+ 		dr->daddr = rqstp->rq_daddr;
+ 		dr->argslen = rqstp->rq_arg.len >> 2;
+-		dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
+ 
+ 		/* back up head to the start of the buffer and copy */
+ 		skip = rqstp->rq_arg.len - rqstp->rq_arg.head[0].iov_len;
+ 		memcpy(dr->args, rqstp->rq_arg.head[0].iov_base - skip,
+ 		       dr->argslen << 2);
+ 	}
+-	WARN_ON_ONCE(rqstp->rq_xprt_ctxt != dr->xprt_ctxt);
++	dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
+ 	rqstp->rq_xprt_ctxt = NULL;
+ 	trace_svc_defer(rqstp);
+ 	svc_xprt_get(rqstp->rq_xprt);
+@@ -1268,6 +1277,8 @@ static noinline int svc_deferred_recv(struct svc_rqst *rqstp)
+ 	rqstp->rq_daddr       = dr->daddr;
+ 	rqstp->rq_respages    = rqstp->rq_pages;
+ 	rqstp->rq_xprt_ctxt   = dr->xprt_ctxt;
 +
-+	usleep_range(10, 20);
-+
-+	return 0;
++	dr->xprt_ctxt = NULL;
+ 	svc_xprt_received(rqstp->rq_xprt);
+ 	return dr->argslen << 2;
+ }
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 815baf308236a..7107fbcbff343 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -111,27 +111,27 @@ static void svc_reclassify_socket(struct socket *sock)
+ #endif
+ 
+ /**
+- * svc_tcp_release_rqst - Release transport-related resources
+- * @rqstp: request structure with resources to be released
++ * svc_tcp_release_ctxt - Release transport-related resources
++ * @xprt: the transport which owned the context
++ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
+  *
+  */
+-static void svc_tcp_release_rqst(struct svc_rqst *rqstp)
++static void svc_tcp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
+ {
  }
  
- static void dp83867_link_change_notify(struct phy_device *phydev)
+ /**
+- * svc_udp_release_rqst - Release transport-related resources
+- * @rqstp: request structure with resources to be released
++ * svc_udp_release_ctxt - Release transport-related resources
++ * @xprt: the transport which owned the context
++ * @ctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
+  *
+  */
+-static void svc_udp_release_rqst(struct svc_rqst *rqstp)
++static void svc_udp_release_ctxt(struct svc_xprt *xprt, void *ctxt)
+ {
+-	struct sk_buff *skb = rqstp->rq_xprt_ctxt;
++	struct sk_buff *skb = ctxt;
+ 
+-	if (skb) {
+-		rqstp->rq_xprt_ctxt = NULL;
++	if (skb)
+ 		consume_skb(skb);
+-	}
+ }
+ 
+ union svc_pktinfo_u {
+@@ -559,7 +559,8 @@ static int svc_udp_sendto(struct svc_rqst *rqstp)
+ 	unsigned int sent;
+ 	int err;
+ 
+-	svc_udp_release_rqst(rqstp);
++	svc_udp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 
+ 	svc_set_cmsg_data(rqstp, cmh);
+ 
+@@ -631,7 +632,7 @@ static const struct svc_xprt_ops svc_udp_ops = {
+ 	.xpo_recvfrom = svc_udp_recvfrom,
+ 	.xpo_sendto = svc_udp_sendto,
+ 	.xpo_result_payload = svc_sock_result_payload,
+-	.xpo_release_rqst = svc_udp_release_rqst,
++	.xpo_release_ctxt = svc_udp_release_ctxt,
+ 	.xpo_detach = svc_sock_detach,
+ 	.xpo_free = svc_sock_free,
+ 	.xpo_has_wspace = svc_udp_has_wspace,
+@@ -1159,7 +1160,8 @@ static int svc_tcp_sendto(struct svc_rqst *rqstp)
+ 	unsigned int sent;
+ 	int err;
+ 
+-	svc_tcp_release_rqst(rqstp);
++	svc_tcp_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 
+ 	atomic_inc(&svsk->sk_sendqlen);
+ 	mutex_lock(&xprt->xpt_mutex);
+@@ -1204,7 +1206,7 @@ static const struct svc_xprt_ops svc_tcp_ops = {
+ 	.xpo_recvfrom = svc_tcp_recvfrom,
+ 	.xpo_sendto = svc_tcp_sendto,
+ 	.xpo_result_payload = svc_sock_result_payload,
+-	.xpo_release_rqst = svc_tcp_release_rqst,
++	.xpo_release_ctxt = svc_tcp_release_ctxt,
+ 	.xpo_detach = svc_tcp_sock_detach,
+ 	.xpo_free = svc_sock_free,
+ 	.xpo_has_wspace = svc_tcp_has_wspace,
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+index 5242ad121450b..53a7cb2f6c07d 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+@@ -239,21 +239,20 @@ void svc_rdma_recv_ctxt_put(struct svcxprt_rdma *rdma,
+ }
+ 
+ /**
+- * svc_rdma_release_rqst - Release transport-specific per-rqst resources
+- * @rqstp: svc_rqst being released
++ * svc_rdma_release_ctxt - Release transport-specific per-rqst resources
++ * @xprt: the transport which owned the context
++ * @vctxt: the context from rqstp->rq_xprt_ctxt or dr->xprt_ctxt
+  *
+  * Ensure that the recv_ctxt is released whether or not a Reply
+  * was sent. For example, the client could close the connection,
+  * or svc_process could drop an RPC, before the Reply is sent.
+  */
+-void svc_rdma_release_rqst(struct svc_rqst *rqstp)
++void svc_rdma_release_ctxt(struct svc_xprt *xprt, void *vctxt)
+ {
+-	struct svc_rdma_recv_ctxt *ctxt = rqstp->rq_xprt_ctxt;
+-	struct svc_xprt *xprt = rqstp->rq_xprt;
++	struct svc_rdma_recv_ctxt *ctxt = vctxt;
+ 	struct svcxprt_rdma *rdma =
+ 		container_of(xprt, struct svcxprt_rdma, sc_xprt);
+ 
+-	rqstp->rq_xprt_ctxt = NULL;
+ 	if (ctxt)
+ 		svc_rdma_recv_ctxt_put(rdma, ctxt);
+ }
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+index 94b20fb471356..f776f0cb471f0 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -81,7 +81,7 @@ static const struct svc_xprt_ops svc_rdma_ops = {
+ 	.xpo_recvfrom = svc_rdma_recvfrom,
+ 	.xpo_sendto = svc_rdma_sendto,
+ 	.xpo_result_payload = svc_rdma_result_payload,
+-	.xpo_release_rqst = svc_rdma_release_rqst,
++	.xpo_release_ctxt = svc_rdma_release_ctxt,
+ 	.xpo_detach = svc_rdma_detach,
+ 	.xpo_free = svc_rdma_free,
+ 	.xpo_has_wspace = svc_rdma_has_wspace,
 -- 
 2.39.2
 
