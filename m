@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C720370C4EF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B348C70C4F0
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:05:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233243AbjEVSEu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:04:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60938 "EHLO
+        id S231936AbjEVSFv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233232AbjEVSEt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:04:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD1AFD
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:04:48 -0700 (PDT)
+        with ESMTP id S230379AbjEVSFu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:05:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9338DC6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:05:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D73B162600
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3434C433D2;
-        Mon, 22 May 2023 18:04:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E8EB62600
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45ADDC433EF;
+        Mon, 22 May 2023 18:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778687;
-        bh=QCDnAqWl+1XJQSVco1CeChcQaRE8B2NN3TjjiMJYNWU=;
+        s=korg; t=1684778748;
+        bh=U886QXtzxZNhS3Kn0xHmRRxjRr+BVVKh0/yLlWsuGlY=;
         h=Subject:To:Cc:From:Date:From;
-        b=1gGrxwqNJzDYO8lT2yckX3tQhSFwbadVpohKKB2bzvL1qtm6oDqmh/B+fuMXDwjyM
-         1OqxbNJ/nyFL8T/FnWEPcSbtv4egA0ao3fi0IXjw5bCHFgtW/PrcJlOPKSbsU5MnGD
-         OUHir3oQ/S6S0p8BQbhZvuqR+rJjo7WIYXaAaZtM=
-Subject: FAILED: patch "[PATCH] arm64: Also reset KASAN tag if page is not PG_mte_tagged" failed to apply to 5.15-stable tree
-To:     pcc@google.com, catalin.marinas@arm.com, stable@vger.kernel.org,
-        will@kernel.org
+        b=AMGAtyF8fF8BMvXBQcw92p3TnYC6TTFgBjt6c1Hjrs6Mz447o1lx/FLOqZUr/o1Gi
+         rLDQumBkiNgVxPA91kO1aHnKi/ihgowssajYp9DCF76xE68Anv7SmoS03HIApx/lzi
+         Vm8NjMMcmuEIssg7faFp82jL8VRTykm01ShyZ20Q=
+Subject: FAILED: patch "[PATCH] fprobe: make fprobe_kprobe_handler recursion free" failed to apply to 6.3-stable tree
+To:     zegao2021@gmail.com, mhiramat@kernel.org, zegao@tencent.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:04:36 +0100
-Message-ID: <2023052236-helium-kilometer-7761@gregkh>
+Date:   Mon, 22 May 2023 19:05:46 +0100
+Message-ID: <2023052246-hardness-spoiling-5f03@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,42 +48,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2efbafb91e12ff5a16cbafb0085e4c10c3fca493
+git cherry-pick -x 3cc4e2c5fbae84e5033723fb7e350bc6c164e3a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052236-helium-kilometer-7761@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052246-hardness-spoiling-5f03@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-2efbafb91e12 ("arm64: Also reset KASAN tag if page is not PG_mte_tagged")
-e74a68468062 ("arm64: Reset KASAN tag in copy_highpage with HW tags only")
-d77e59a8fccd ("arm64: mte: Lock a page for MTE tag initialisation")
-e059853d14ca ("arm64: mte: Fix/clarify the PG_mte_tagged semantics")
-a8e5e5146ad0 ("arm64: mte: Avoid setting PG_mte_tagged if no tags cleared or restored")
-20794545c146 ("arm64: kasan: Revert "arm64: mte: reset the page tag in page->flags"")
-70c248aca9e7 ("mm: kasan: Skip unpoisoning of user pages")
-da08e9b79323 ("mm/shmem: convert shmem_swapin_page() to shmem_swapin_folio()")
-b1d0ec3a9a25 ("mm/shmem: convert shmem_getpage_gfp to use a folio")
-72827e5c2bcb ("mm/shmem: convert shmem_alloc_and_acct_page to use a folio")
-069d849cde3a ("mm/shmem: turn shmem_should_replace_page into shmem_should_replace_folio")
-b7dd44a12cf2 ("mm/shmem: convert shmem_add_to_page_cache to take a folio")
-dfe98499ef28 ("shmem: convert shmem_alloc_hugepage() to use vma_alloc_folio()")
-e9d0ca922816 ("kasan, page_alloc: rework kasan_unpoison_pages call site")
-7e3cbba65de2 ("kasan, page_alloc: move kernel_init_free_pages in post_alloc_hook")
-89b271163328 ("kasan, page_alloc: move SetPageSkipKASanPoison in post_alloc_hook")
-9294b1281d0a ("kasan, page_alloc: combine tag_clear_highpage calls in post_alloc_hook")
-b42090ae6f3a ("kasan, page_alloc: merge kasan_alloc_pages into post_alloc_hook")
-b8491b9052fe ("kasan, page_alloc: refactor init checks in post_alloc_hook")
-1c0e5b24f117 ("kasan: only apply __GFP_ZEROTAGS when memory is zeroed")
+3cc4e2c5fbae ("fprobe: make fprobe_kprobe_handler recursion free")
+6049674b5720 ("tracing: fprobe: Initialize ret valiable to fix smatch error")
+39d954200bf6 ("fprobe: Skip exit_handler if entry_handler returns !0")
+7e7ef1bfe552 ("lib/test_fprobe: Add a test case for nr_maxactive")
+34cabf8fd18f ("lib/test_fprobe: Add private entry_data testcases")
+76d0de5729c0 ("fprobe: Pass entry_data to handlers")
 
 thanks,
 
@@ -92,53 +77,141 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2efbafb91e12ff5a16cbafb0085e4c10c3fca493 Mon Sep 17 00:00:00 2001
-From: Peter Collingbourne <pcc@google.com>
-Date: Thu, 20 Apr 2023 14:09:45 -0700
-Subject: [PATCH] arm64: Also reset KASAN tag if page is not PG_mte_tagged
+From 3cc4e2c5fbae84e5033723fb7e350bc6c164e3a2 Mon Sep 17 00:00:00 2001
+From: Ze Gao <zegao2021@gmail.com>
+Date: Wed, 17 May 2023 11:45:07 +0800
+Subject: [PATCH] fprobe: make fprobe_kprobe_handler recursion free
 
-Consider the following sequence of events:
+Current implementation calls kprobe related functions before doing
+ftrace recursion check in fprobe_kprobe_handler, which opens door
+to kernel crash due to stack recursion if preempt_count_{add, sub}
+is traceable in kprobe_busy_{begin, end}.
 
-1) A page in a PROT_READ|PROT_WRITE VMA is faulted.
-2) Page migration allocates a page with the KASAN allocator,
-   causing it to receive a non-match-all tag, and uses it
-   to replace the page faulted in 1.
-3) The program uses mprotect() to enable PROT_MTE on the page faulted in 1.
+Things goes like this without this patch quoted from Steven:
+"
+fprobe_kprobe_handler() {
+   kprobe_busy_begin() {
+      preempt_disable() {
+         preempt_count_add() {  <-- trace
+            fprobe_kprobe_handler() {
+		[ wash, rinse, repeat, CRASH!!! ]
+"
 
-As a result of step 3, we are left with a non-match-all tag for a page
-with tags accessible to userspace, which can lead to the same kind of
-tag check faults that commit e74a68468062 ("arm64: Reset KASAN tag in
-copy_highpage with HW tags only") intended to fix.
+By refactoring the common part out of fprobe_kprobe_handler and
+fprobe_handler and call ftrace recursion detection at the very beginning,
+the whole fprobe_kprobe_handler is free from recursion.
 
-The general invariant that we have for pages in a VMA with VM_MTE_ALLOWED
-is that they cannot have a non-match-all tag. As a result of step 2, the
-invariant is broken. This means that the fix in the referenced commit
-was incomplete and we also need to reset the tag for pages without
-PG_mte_tagged.
+[ Fix the indentation of __fprobe_handler() parameters. ]
 
-Fixes: e5b8d9218951 ("arm64: mte: reset the page tag in page->flags")
-Cc: <stable@vger.kernel.org> # 5.15
-Link: https://linux-review.googlesource.com/id/I7409cdd41acbcb215c2a7417c1e50d37b875beff
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20230420210945.2313627-1-pcc@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/all/20230517034510.15639-3-zegao@tencent.com/
 
-diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
-index 4aadcfb01754..a7bb20055ce0 100644
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -21,9 +21,10 @@ void copy_highpage(struct page *to, struct page *from)
+Fixes: ab51e15d535e ("fprobe: Introduce FPROBE_FL_KPROBE_SHARED flag for fprobe")
+Signed-off-by: Ze Gao <zegao@tencent.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index 293184227394..7a692c02f787 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -20,30 +20,22 @@ struct fprobe_rethook_node {
+ 	char data[];
+ };
  
- 	copy_page(kto, kfrom);
+-static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
+-			   struct ftrace_ops *ops, struct ftrace_regs *fregs)
++static inline void __fprobe_handler(unsigned long ip, unsigned long parent_ip,
++			struct ftrace_ops *ops, struct ftrace_regs *fregs)
+ {
+ 	struct fprobe_rethook_node *fpr;
+ 	struct rethook_node *rh = NULL;
+ 	struct fprobe *fp;
+ 	void *entry_data = NULL;
+-	int bit, ret = 0;
++	int ret = 0;
  
-+	if (kasan_hw_tags_enabled())
-+		page_kasan_tag_reset(to);
+ 	fp = container_of(ops, struct fprobe, ops);
+-	if (fprobe_disabled(fp))
+-		return;
+-
+-	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+-	if (bit < 0) {
+-		fp->nmissed++;
+-		return;
+-	}
+ 
+ 	if (fp->exit_handler) {
+ 		rh = rethook_try_get(fp->rethook);
+ 		if (!rh) {
+ 			fp->nmissed++;
+-			goto out;
++			return;
+ 		}
+ 		fpr = container_of(rh, struct fprobe_rethook_node, node);
+ 		fpr->entry_ip = ip;
+@@ -61,23 +53,60 @@ static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
+ 		else
+ 			rethook_hook(rh, ftrace_get_regs(fregs), true);
+ 	}
+-out:
++}
 +
- 	if (system_supports_mte() && page_mte_tagged(from)) {
--		if (kasan_hw_tags_enabled())
--			page_kasan_tag_reset(to);
- 		/* It's a new page, shouldn't have been tagged yet */
- 		WARN_ON_ONCE(!try_page_mte_tagging(to));
- 		mte_copy_page_tags(kto, kfrom);
++static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
++		struct ftrace_ops *ops, struct ftrace_regs *fregs)
++{
++	struct fprobe *fp;
++	int bit;
++
++	fp = container_of(ops, struct fprobe, ops);
++	if (fprobe_disabled(fp))
++		return;
++
++	/* recursion detection has to go before any traceable function and
++	 * all functions before this point should be marked as notrace
++	 */
++	bit = ftrace_test_recursion_trylock(ip, parent_ip);
++	if (bit < 0) {
++		fp->nmissed++;
++		return;
++	}
++	__fprobe_handler(ip, parent_ip, ops, fregs);
+ 	ftrace_test_recursion_unlock(bit);
++
+ }
+ NOKPROBE_SYMBOL(fprobe_handler);
+ 
+ static void fprobe_kprobe_handler(unsigned long ip, unsigned long parent_ip,
+ 				  struct ftrace_ops *ops, struct ftrace_regs *fregs)
+ {
+-	struct fprobe *fp = container_of(ops, struct fprobe, ops);
++	struct fprobe *fp;
++	int bit;
++
++	fp = container_of(ops, struct fprobe, ops);
++	if (fprobe_disabled(fp))
++		return;
++
++	/* recursion detection has to go before any traceable function and
++	 * all functions called before this point should be marked as notrace
++	 */
++	bit = ftrace_test_recursion_trylock(ip, parent_ip);
++	if (bit < 0) {
++		fp->nmissed++;
++		return;
++	}
+ 
+ 	if (unlikely(kprobe_running())) {
+ 		fp->nmissed++;
+ 		return;
+ 	}
++
+ 	kprobe_busy_begin();
+-	fprobe_handler(ip, parent_ip, ops, fregs);
++	__fprobe_handler(ip, parent_ip, ops, fregs);
+ 	kprobe_busy_end();
++	ftrace_test_recursion_unlock(bit);
+ }
+ 
+ static void fprobe_exit_handler(struct rethook_node *rh, void *data,
 
