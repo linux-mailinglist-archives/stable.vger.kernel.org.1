@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37C9970C764
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A736C70C60D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234687AbjEVT3C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50768 "EHLO
+        id S233793AbjEVTOd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234701AbjEVT3B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:01 -0400
+        with ESMTP id S231241AbjEVTOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154E010D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7D5132
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DF5F62605
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53BDC433EF;
-        Mon, 22 May 2023 19:28:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E88FC61E03
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1DFC433EF;
+        Mon, 22 May 2023 19:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783737;
-        bh=bpt8Pleh5MT2glcM/SjsemrlW8FxOcpaTz+l4JWV86E=;
+        s=korg; t=1684782864;
+        bh=8ZNai726AUuvlBFgVah4ZMjI08GB475HySzYeOqUfVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wxnhy6B8/PzzthzwnTxeoseN/3Cae/d4IZtgoIGLWsV3rLjA48lIhUcNDRLnT9MMR
-         iEkoHj0jxE/Ligqg4lsoQRseD1ztQWZKJoJo3froUDja8j4JEZYWw/1C9PGv1Ucjgz
-         cptqPkvF+4EFdRX8RZnkljzKrbBQpzkdF1xnMQQA=
+        b=D8ThcFvuL6Owo+/4xH5IpH0qKe3jtT5dOgdo+TMZnNOYk0Jgyea6QZHAniMKb8EtK
+         yH7BvufaWV9I6R5jcQ7S5Q7oifS4ttF8+ZTxtRAEWUjBZSjKCCUrTMogyfLfEgO4bD
+         n6F8EMfqbrdxMH4E3PmDogVlA1RYfc/opqylEyFY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com,
-        Min Li <lm0963hack@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/292] Bluetooth: L2CAP: fix "bad unlock balance" in l2cap_disconnect_rsp
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 051/203] wifi: brcmfmac: cfg80211: Pass the PMK in binary instead of hex
 Date:   Mon, 22 May 2023 20:07:55 +0100
-Message-Id: <20230522190408.915408009@linuxfoundation.org>
+Message-Id: <20230522190356.411970129@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min Li <lm0963hack@gmail.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 25e97f7b1866e6b8503be349eeea44bb52d661ce ]
+[ Upstream commit 89b89e52153fda2733562776c7c9d9d3ebf8dd6d ]
 
-conn->chan_lock isn't acquired before l2cap_get_chan_by_scid,
-if l2cap_get_chan_by_scid returns NULL, then 'bad unlock balance'
-is triggered.
+Apparently the hex passphrase mechanism does not work on newer
+chips/firmware (e.g. BCM4387). It seems there was a simple way of
+passing it in binary all along, so use that and avoid the hexification.
 
-Reported-by: syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000894f5f05f95e9f4d@google.com/
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+OpenBSD has been doing it like this from the beginning, so this should
+work on all chips.
+
+Also clear the structure before setting the PMK. This was leaking
+uninitialized stack contents to the device.
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230214092423.15175-6-marcan@marcan.st
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index e62dadad81b31..ee8f806534dfb 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4694,7 +4694,6 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 5a1b01db02e6e..b14c54da56ed9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1350,13 +1350,14 @@ static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
+ {
+ 	struct brcmf_pub *drvr = ifp->drvr;
+ 	struct brcmf_wsec_pmk_le pmk;
+-	int i, err;
++	int err;
++
++	memset(&pmk, 0, sizeof(pmk));
  
- 	chan = l2cap_get_chan_by_scid(conn, scid);
- 	if (!chan) {
--		mutex_unlock(&conn->chan_lock);
- 		return 0;
- 	}
+-	/* convert to firmware key format */
+-	pmk.key_len = cpu_to_le16(pmk_len << 1);
+-	pmk.flags = cpu_to_le16(BRCMF_WSEC_PASSPHRASE);
+-	for (i = 0; i < pmk_len; i++)
+-		snprintf(&pmk.key[2 * i], 3, "%02x", pmk_data[i]);
++	/* pass pmk directly */
++	pmk.key_len = cpu_to_le16(pmk_len);
++	pmk.flags = cpu_to_le16(0);
++	memcpy(pmk.key, pmk_data, pmk_len);
  
+ 	/* store psk in firmware */
+ 	err = brcmf_fil_cmd_data_set(ifp, BRCMF_C_SET_WSEC_PMK,
 -- 
 2.39.2
 
