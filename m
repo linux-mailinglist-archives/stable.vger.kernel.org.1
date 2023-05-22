@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF9C70C8DB
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71D2270C6F3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235105AbjEVTm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37244 "EHLO
+        id S234545AbjEVTYX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:24:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235150AbjEVTm5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:57 -0400
+        with ESMTP id S234558AbjEVTYW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1606DE5C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E6B1B5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C97D629FF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F13C433D2;
-        Mon, 22 May 2023 19:41:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFD1562866
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03F2C433D2;
+        Mon, 22 May 2023 19:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784489;
-        bh=ZDpaaRyf/2z6KTrKXSfxuTRt3NtW4e5+JRI1L/NAYzE=;
+        s=korg; t=1684783450;
+        bh=HLRyMgawJujuYVpZlrvvskARUUQdZ/XGpjg2b3W8cVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lWeNn7BBL2sis5BZNkdimYdfV+PZp+BU1fpkiiGKEay4BWH9iACJLziJ3DakeNz0y
-         0d+KruMS7xJm3FFCO8ognoL4gUgd7LeRfRWytIu1yrJXvfjl/yVv00DDiNibQtgTzW
-         8I6JDQdhvZRoiA5PR/zAMoHnM7+OCPvkQwEy5FFA=
+        b=olvU8Dx8f+Lr4akzajrNrUtde9xCS6JiaLfxS0sNqpcXpTc8olzoEiV9lluTTb6qz
+         C4BwYlkUw2mfz+T6/3LDlTZkN+B3/Vy8OLmz+TT9ka6/MEwnClULoC/jp5CmPTFTKV
+         RA910NgyBf7pfaoLmZVDL3LS8mXythX4vM1nsOJU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Maxim Korotkov <korotkov.maxim.s@gmail.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 099/364] bnxt: avoid overflow in bnxt_get_nvram_directory()
+Subject: [PATCH 6.1 047/292] regmap: cache: Return error in cache sync operations for REGCACHE_NONE
 Date:   Mon, 22 May 2023 20:06:44 +0100
-Message-Id: <20230522190415.226811938@linuxfoundation.org>
+Message-Id: <20230522190407.087509139@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 7c6dddc239abe660598c49ec95ea0ed6399a4b2a ]
+[ Upstream commit fd883d79e4dcd2417c2b80756f22a2ff03b0f6e0 ]
 
-The value of an arithmetic expression is subject
-of possible overflow due to a failure to cast operands to a larger data
-type before performing arithmetic. Used macro for multiplication instead
-operator for avoiding overflow.
+There is no sense in doing a cache sync on REGCACHE_NONE regmaps.
+Instead of panicking the kernel due to missing cache_ops, return an error
+to client driver.
 
-Found by Security Code and Linux Verification
-Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20230309174347.3515-1-korotkov.maxim.s@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20230313071812.13577-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/regmap/regcache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 6bd18eb5137f4..2dd8ee4a6f75b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -2864,7 +2864,7 @@ static int bnxt_get_nvram_directory(struct net_device *dev, u32 len, u8 *data)
- 	if (rc)
- 		return rc;
+diff --git a/drivers/base/regmap/regcache.c b/drivers/base/regmap/regcache.c
+index 362e043e26d86..8031007b4887d 100644
+--- a/drivers/base/regmap/regcache.c
++++ b/drivers/base/regmap/regcache.c
+@@ -349,6 +349,9 @@ int regcache_sync(struct regmap *map)
+ 	const char *name;
+ 	bool bypass;
  
--	buflen = dir_entries * entry_length;
-+	buflen = mul_u32_u32(dir_entries, entry_length);
- 	buf = hwrm_req_dma_slice(bp, req, buflen, &dma_handle);
- 	if (!buf) {
- 		hwrm_req_drop(bp, req);
++	if (WARN_ON(map->cache_type == REGCACHE_NONE))
++		return -EINVAL;
++
+ 	BUG_ON(!map->cache_ops);
+ 
+ 	map->lock(map->lock_arg);
+@@ -418,6 +421,9 @@ int regcache_sync_region(struct regmap *map, unsigned int min,
+ 	const char *name;
+ 	bool bypass;
+ 
++	if (WARN_ON(map->cache_type == REGCACHE_NONE))
++		return -EINVAL;
++
+ 	BUG_ON(!map->cache_ops);
+ 
+ 	map->lock(map->lock_arg);
 -- 
 2.39.2
 
