@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D7FC70C6E9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0428B70C8CF
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234531AbjEVTXy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:23:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45478 "EHLO
+        id S234819AbjEVTmc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234598AbjEVTXp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E6C102
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:41 -0700 (PDT)
+        with ESMTP id S232078AbjEVTmb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB24E56
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFCEF6201A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDF6C433EF;
-        Mon, 22 May 2023 19:23:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D224862A06
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D001BC433EF;
+        Mon, 22 May 2023 19:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783420;
-        bh=PNIokpclxdAzimCydZBKPG3yelQqnCeelkzUmquiXA8=;
+        s=korg; t=1684784463;
+        bh=aO9wLY9VkyrPWwoLZCy0KVRPNB4O8b8O/bzkxxfOAvs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fhi8mXVXG6M5VIVjyleitjutGt1LzU53IKtP8qzvUK8lGXdYsYSQXvnHm4w//aASO
-         dMaEJ7WUvha/WCrsNEAbcuVd4elODByHmK/+8dOFYQuTcUYnK3GW/ROazcKGYUOIma
-         W5pti0u08fjjVgSaitS06xEl4SJKcgCu/tQkSohI=
+        b=0fBl3ekkx1A98X7SecNxDEFgIlv88SbsB37Cm8wow5BiJ8ZojeRBW6qMtkfVm4EE8
+         HLRSqT93z6I3gxPNVjJ8X2Ok2NTQ2HRUo+3M4eDnPhWwzwiCqsAc3Avz625ijk/n8A
+         HlqEllNtjsC39jMGfG7iMhkRj4P5aTBAZWYldDUw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Zqiang <qiang1.zhang@intel.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        KP Singh <kpsingh@kernel.org>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/292] rcu: Protect rcu_print_task_exp_stall() ->exp_tasks access
-Date:   Mon, 22 May 2023 20:06:35 +0100
-Message-Id: <20230522190406.849783762@linuxfoundation.org>
+Subject: [PATCH 6.3 091/364] bpf: Annotate data races in bpf_local_storage
+Date:   Mon, 22 May 2023 20:06:36 +0100
+Message-Id: <20230522190415.026980734@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,66 +56,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zqiang <qiang1.zhang@intel.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 3c1566bca3f8349f12b75d0a2d5e4a20ad6262ec ]
+[ Upstream commit 0a09a2f933c73dc76ab0b72da6855f44342a8903 ]
 
-For kernels built with CONFIG_PREEMPT_RCU=y, the following scenario can
-result in a NULL-pointer dereference:
+There are a few cases where hlist_node is checked to be unhashed without
+holding the lock protecting its modification. In this case, one must use
+hlist_unhashed_lockless to avoid load tearing and KCSAN reports. Fix
+this by using lockless variant in places not protected by the lock.
 
-           CPU1                                           CPU2
-rcu_preempt_deferred_qs_irqrestore                rcu_print_task_exp_stall
-  if (special.b.blocked)                            READ_ONCE(rnp->exp_tasks) != NULL
-    raw_spin_lock_rcu_node
-    np = rcu_next_node_entry(t, rnp)
-    if (&t->rcu_node_entry == rnp->exp_tasks)
-      WRITE_ONCE(rnp->exp_tasks, np)
-      ....
-      raw_spin_unlock_irqrestore_rcu_node
-                                                    raw_spin_lock_irqsave_rcu_node
-                                                    t = list_entry(rnp->exp_tasks->prev,
-                                                        struct task_struct, rcu_node_entry)
-                                                    (if rnp->exp_tasks is NULL, this
-                                                       will dereference a NULL pointer)
+Since this is not prompted by any actual KCSAN reports but only from
+code review, I have not included a fixes tag.
 
-The problem is that CPU2 accesses the rcu_node structure's->exp_tasks
-field without holding the rcu_node structure's ->lock and CPU2 did
-not observe CPU1's change to rcu_node structure's ->exp_tasks in time.
-Therefore, if CPU1 sets rcu_node structure's->exp_tasks pointer to NULL,
-then CPU2 might dereference that NULL pointer.
-
-This commit therefore holds the rcu_node structure's ->lock while
-accessing that structure's->exp_tasks field.
-
-[ paulmck: Apply Frederic Weisbecker feedback. ]
-
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Zqiang <qiang1.zhang@intel.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: KP Singh <kpsingh@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230221200646.2500777-4-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_exp.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/bpf/bpf_local_storage.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 60732264a7d0b..e25321dbb068e 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -800,9 +800,11 @@ static int rcu_print_task_exp_stall(struct rcu_node *rnp)
- 	int ndetected = 0;
- 	struct task_struct *t;
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index 35f4138a54dc1..58da17ae51241 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -51,11 +51,21 @@ owner_storage(struct bpf_local_storage_map *smap, void *owner)
+ 	return map->ops->map_owner_storage_ptr(owner);
+ }
  
--	if (!READ_ONCE(rnp->exp_tasks))
--		return 0;
- 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
-+	if (!rnp->exp_tasks) {
-+		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
-+		return 0;
-+	}
- 	t = list_entry(rnp->exp_tasks->prev,
- 		       struct task_struct, rcu_node_entry);
- 	list_for_each_entry_continue(t, &rnp->blkd_tasks, rcu_node_entry) {
++static bool selem_linked_to_storage_lockless(const struct bpf_local_storage_elem *selem)
++{
++	return !hlist_unhashed_lockless(&selem->snode);
++}
++
+ static bool selem_linked_to_storage(const struct bpf_local_storage_elem *selem)
+ {
+ 	return !hlist_unhashed(&selem->snode);
+ }
+ 
++static bool selem_linked_to_map_lockless(const struct bpf_local_storage_elem *selem)
++{
++	return !hlist_unhashed_lockless(&selem->map_node);
++}
++
+ static bool selem_linked_to_map(const struct bpf_local_storage_elem *selem)
+ {
+ 	return !hlist_unhashed(&selem->map_node);
+@@ -174,7 +184,7 @@ static void __bpf_selem_unlink_storage(struct bpf_local_storage_elem *selem,
+ 	bool free_local_storage = false;
+ 	unsigned long flags;
+ 
+-	if (unlikely(!selem_linked_to_storage(selem)))
++	if (unlikely(!selem_linked_to_storage_lockless(selem)))
+ 		/* selem has already been unlinked from sk */
+ 		return;
+ 
+@@ -208,7 +218,7 @@ void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
+ 	struct bpf_local_storage_map_bucket *b;
+ 	unsigned long flags;
+ 
+-	if (unlikely(!selem_linked_to_map(selem)))
++	if (unlikely(!selem_linked_to_map_lockless(selem)))
+ 		/* selem has already be unlinked from smap */
+ 		return;
+ 
+@@ -420,7 +430,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
+ 		err = check_flags(old_sdata, map_flags);
+ 		if (err)
+ 			return ERR_PTR(err);
+-		if (old_sdata && selem_linked_to_storage(SELEM(old_sdata))) {
++		if (old_sdata && selem_linked_to_storage_lockless(SELEM(old_sdata))) {
+ 			copy_map_value_locked(&smap->map, old_sdata->data,
+ 					      value, false);
+ 			return old_sdata;
 -- 
 2.39.2
 
