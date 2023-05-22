@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 598A670C7D1
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428E070C9AC
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234913AbjEVTcp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54010 "EHLO
+        id S235398AbjEVTuh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:50:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234852AbjEVTca (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:32:30 -0400
+        with ESMTP id S235384AbjEVTuc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4AC51B4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:32:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60D99C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26B716292F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BC3C433D2;
-        Mon, 22 May 2023 19:32:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69D0762AEF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64993C433EF;
+        Mon, 22 May 2023 19:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783938;
-        bh=M4/N/P727Xn5RmLCNG5D2Ubwa0CegFwYl9cTDiHhMNM=;
+        s=korg; t=1684785029;
+        bh=2l8D/Rmcj8ydoQYHbT0HeJQJ3+uuugoqZYAZ2icz44k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jt9W8qSsox1cstFpJB/gXj5oFRSz7zeRLOgHieWD1vBi/dhpsVAo+R80mQM07lATM
-         6vMNRjLw4YV1OpCbLtnJvDw5r1NFfI7Kyl2T22iWFGYaoUdi6wd5LltJADPpTpIUwq
-         A6htlrDMXWr8BpOnjqhPPu0ErQxYl0rzPYCuOQUw=
+        b=bLpM22MLNrNaK0/B+fFSPifQizd7Su4kwc9NLg82cbg+7aTItkjg73ijO8Ljf3AvW
+         J9U+M3kCVsvHGq9CXcOW/EeuGXxEZfOycNsUFdyVcU9Dav7H9PYgxHSoycB77eWRqo
+         wB5gX4HMFDoqm1v098qxb6KyMPWWQTGiS9K5Mr6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Jon Maloy <jmaloy@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/292] wifi: cfg80211: Drop entries with invalid BSSIDs in RNR
+Subject: [PATCH 6.3 256/364] tipc: add tipc_bearer_min_mtu to calculate min mtu
 Date:   Mon, 22 May 2023 20:09:21 +0100
-Message-Id: <20230522190411.056975952@linuxfoundation.org>
+Message-Id: <20230522190419.102510203@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +55,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 1b6b4ed01493b7ea2205ab83c49198f7d13ca9d2 ]
+[ Upstream commit 3ae6d66b605be604644d4bb5708a7ffd9cf1abe8 ]
 
-Ignore AP information for entries that include an invalid
-BSSID in the TBTT information field, e.g., all zeros BSSIDs.
+As different media may requires different min mtu, and even the
+same media with different net family requires different min mtu,
+add tipc_bearer_min_mtu() to calculate min mtu accordingly.
 
-Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230424103224.5e65d04d1448.Ic10c8577ae4a85272c407106c9d0a2ecb5372743@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This API will be used to check the new mtu when doing the link
+mtu negotiation in the next patch.
+
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Jon Maloy <jmaloy@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 56077b56cd3f ("tipc: do not update mtu if msg_max is too small in mtu negotiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/tipc/bearer.c    | 13 +++++++++++++
+ net/tipc/bearer.h    |  3 +++
+ net/tipc/udp_media.c |  5 +++--
+ 3 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 3d86482e83f51..6c2b73c0d36e8 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -5,7 +5,7 @@
-  * Copyright 2008 Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2016	Intel Deutschland GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2023 Intel Corporation
-  */
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -543,6 +543,10 @@ static int cfg80211_parse_ap_info(struct cfg80211_colocated_ap *entry,
- 	/* skip the TBTT offset */
- 	pos++;
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 35cac7733fd3a..0e9a29e1536b7 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -541,6 +541,19 @@ int tipc_bearer_mtu(struct net *net, u32 bearer_id)
+ 	return mtu;
+ }
  
-+	/* ignore entries with invalid BSSID */
-+	if (!is_valid_ether_addr(pos))
-+		return -EINVAL;
++int tipc_bearer_min_mtu(struct net *net, u32 bearer_id)
++{
++	int mtu = TIPC_MIN_BEARER_MTU;
++	struct tipc_bearer *b;
 +
- 	memcpy(entry->bssid, pos, ETH_ALEN);
- 	pos += ETH_ALEN;
- 
++	rcu_read_lock();
++	b = bearer_get(net, bearer_id);
++	if (b)
++		mtu += b->encap_hlen;
++	rcu_read_unlock();
++	return mtu;
++}
++
+ /* tipc_bearer_xmit_skb - sends buffer to destination over bearer
+  */
+ void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
+diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
+index 490ad6e5f7a3c..bd0cc5c287ef8 100644
+--- a/net/tipc/bearer.h
++++ b/net/tipc/bearer.h
+@@ -146,6 +146,7 @@ struct tipc_media {
+  * @identity: array index of this bearer within TIPC bearer array
+  * @disc: ptr to link setup request
+  * @net_plane: network plane ('A' through 'H') currently associated with bearer
++ * @encap_hlen: encap headers length
+  * @up: bearer up flag (bit 0)
+  * @refcnt: tipc_bearer reference counter
+  *
+@@ -170,6 +171,7 @@ struct tipc_bearer {
+ 	u32 identity;
+ 	struct tipc_discoverer *disc;
+ 	char net_plane;
++	u16 encap_hlen;
+ 	unsigned long up;
+ 	refcount_t refcnt;
+ };
+@@ -232,6 +234,7 @@ int tipc_bearer_setup(void);
+ void tipc_bearer_cleanup(void);
+ void tipc_bearer_stop(struct net *net);
+ int tipc_bearer_mtu(struct net *net, u32 bearer_id);
++int tipc_bearer_min_mtu(struct net *net, u32 bearer_id);
+ bool tipc_bearer_bcast_support(struct net *net, u32 bearer_id);
+ void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
+ 			  struct sk_buff *skb,
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index c2bb818704c8f..0a85244fd6188 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -738,8 +738,8 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
+ 			udp_conf.local_ip.s_addr = local.ipv4.s_addr;
+ 		udp_conf.use_udp_checksums = false;
+ 		ub->ifindex = dev->ifindex;
+-		if (tipc_mtu_bad(dev, sizeof(struct iphdr) +
+-				      sizeof(struct udphdr))) {
++		b->encap_hlen = sizeof(struct iphdr) + sizeof(struct udphdr);
++		if (tipc_mtu_bad(dev, b->encap_hlen)) {
+ 			err = -EINVAL;
+ 			goto err;
+ 		}
+@@ -760,6 +760,7 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
+ 		else
+ 			udp_conf.local_ip6 = local.ipv6;
+ 		ub->ifindex = dev->ifindex;
++		b->encap_hlen = sizeof(struct ipv6hdr) + sizeof(struct udphdr);
+ 		b->mtu = 1280;
+ #endif
+ 	} else {
 -- 
 2.39.2
 
