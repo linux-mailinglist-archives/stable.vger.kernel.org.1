@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE3370C769
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86EC70C608
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234717AbjEVT30 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51200 "EHLO
+        id S233985AbjEVTOQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234707AbjEVT3Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B312E120
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:09 -0700 (PDT)
+        with ESMTP id S233984AbjEVTOJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E50B0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49CA2628DC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57753C433D2;
-        Mon, 22 May 2023 19:29:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 916F362719
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB70BC433EF;
+        Mon, 22 May 2023 19:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783748;
-        bh=9JU9pw9oTzvj/jkVvJN66Q1cT8/IItWH2OPQk3PlVK0=;
+        s=korg; t=1684782847;
+        bh=T3IVwh1exPrs5tinsS08t/lhNpTlgRhSJcUsU+dfATg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z605FxuUX6A6YYYDRQY7gVrUP7tWm01RUTNm+s6EImgIIWJh3D5/DUiqSFjpNZwOA
-         kOROTwAu5EnnSBz6ERQpxb+nlipAEfWS3YDgvPDPDmMHdP8yegrT9yeCjnbLohLi3Z
-         jn0bjZmryCzVC7xv9ozdnstvrJG9UXcmwiSSf4so=
+        b=rAGt76z9Mli9nxbYbiYVmrdSr6U7MeEOwl7RM1XQngWQSAUfZgMcBLCHEqBLzaCSQ
+         a6WI5u+F2eV/gD2BA9tnKB3ZuDFnGf3MFWja+BHL7bb66a+rvBRRGBxaZEQPDfNAEv
+         ZXeBcgScOaH8f5M4SYIsB4V0Eg/EeGUInM2GsTxM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vasily Khoruzhick <anarsoul@gmail.com>,
-        Bastian Germann <bage@debian.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/292] Bluetooth: btrtl: add support for the RTL8723CS
+Subject: [PATCH 5.15 045/203] ACPICA: Avoid undefined behavior: applying zero offset to null pointer
 Date:   Mon, 22 May 2023 20:07:49 +0100
-Message-Id: <20230522190408.767316055@linuxfoundation.org>
+Message-Id: <20230522190356.237383489@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_PORT autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,292 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Tamir Duberstein <tamird@google.com>
 
-[ Upstream commit c0123cb6c4c7fc2a42ead6cd7d3e82b8e1c25c6f ]
+[ Upstream commit 05bb0167c80b8f93c6a4e0451b7da9b96db990c2 ]
 
-The Realtek RTL8723CS is a SDIO WiFi chip. It also contains a Bluetooth
-module which is connected via UART to the host.
+ACPICA commit 770653e3ba67c30a629ca7d12e352d83c2541b1e
 
-It shares lmp subversion with 8703B, so Realtek's userspace
-initialization tool (rtk_hciattach) differentiates varieties of RTL8723CS
-(CG, VF, XX) with RTL8703B using vendor's command to read chip type.
+Before this change we see the following UBSAN stack trace in Fuchsia:
 
-Also this chip declares support for some features it doesn't support
-so add a quirk to indicate that these features are broken.
+  #0    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #1.2  0x000020d0f660777f in ubsan_get_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:41 <libclang_rt.asan.so>+0x3d77f
+  #1.1  0x000020d0f660777f in maybe_print_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:51 <libclang_rt.asan.so>+0x3d77f
+  #1    0x000020d0f660777f in ~scoped_report() compiler-rt/lib/ubsan/ubsan_diag.cpp:387 <libclang_rt.asan.so>+0x3d77f
+  #2    0x000020d0f660b96d in handlepointer_overflow_impl() compiler-rt/lib/ubsan/ubsan_handlers.cpp:809 <libclang_rt.asan.so>+0x4196d
+  #3    0x000020d0f660b50d in compiler-rt/lib/ubsan/ubsan_handlers.cpp:815 <libclang_rt.asan.so>+0x4150d
+  #4    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #5    0x000021e4213e2369 in acpi_ds_call_control_method(struct acpi_thread_state*, struct acpi_walk_state*, union acpi_parse_object*) ../../third_party/acpica/source/components/dispatcher/dsmethod.c:605 <platform-bus-x86.so>+0x262369
+  #6    0x000021e421437fac in acpi_ps_parse_aml(struct acpi_walk_state*) ../../third_party/acpica/source/components/parser/psparse.c:550 <platform-bus-x86.so>+0x2b7fac
+  #7    0x000021e4214464d2 in acpi_ps_execute_method(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/parser/psxface.c:244 <platform-bus-x86.so>+0x2c64d2
+  #8    0x000021e4213aa052 in acpi_ns_evaluate(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/namespace/nseval.c:250 <platform-bus-x86.so>+0x22a052
+  #9    0x000021e421413dd8 in acpi_ns_init_one_device(acpi_handle, u32, void*, void**) ../../third_party/acpica/source/components/namespace/nsinit.c:735 <platform-bus-x86.so>+0x293dd8
+  #10   0x000021e421429e98 in acpi_ns_walk_namespace(acpi_object_type, acpi_handle, u32, u32, acpi_walk_callback, acpi_walk_callback, void*, void**) ../../third_party/acpica/source/components/namespace/nswalk.c:298 <platform-bus-x86.so>+0x2a9e98
+  #11   0x000021e4214131ac in acpi_ns_initialize_devices(u32) ../../third_party/acpica/source/components/namespace/nsinit.c:268 <platform-bus-x86.so>+0x2931ac
+  #12   0x000021e42147c40d in acpi_initialize_objects(u32) ../../third_party/acpica/source/components/utilities/utxfinit.c:304 <platform-bus-x86.so>+0x2fc40d
+  #13   0x000021e42126d603 in acpi::acpi_impl::initialize_acpi(acpi::acpi_impl*) ../../src/devices/board/lib/acpi/acpi-impl.cc:224 <platform-bus-x86.so>+0xed603
 
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Signed-off-by: Bastian Germann <bage@debian.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Add a simple check that avoids incrementing a pointer by zero, but
+otherwise behaves as before. Note that our findings are against ACPICA
+20221020, but the same code exists on master.
+
+Link: https://github.com/acpica/acpica/commit/770653e3
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c  | 120 +++++++++++++++++++++++++++++++++++--
- drivers/bluetooth/btrtl.h  |   5 ++
- drivers/bluetooth/hci_h5.c |   4 ++
- 3 files changed, 125 insertions(+), 4 deletions(-)
+ drivers/acpi/acpica/dswstate.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index fb52313a1d45a..6b3755345427a 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -17,7 +17,11 @@
+diff --git a/drivers/acpi/acpica/dswstate.c b/drivers/acpi/acpica/dswstate.c
+index fbe2ba05c82a6..1c862940cc5b2 100644
+--- a/drivers/acpi/acpica/dswstate.c
++++ b/drivers/acpi/acpica/dswstate.c
+@@ -576,9 +576,14 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
+ 	ACPI_FUNCTION_TRACE(ds_init_aml_walk);
  
- #define VERSION "0.1"
- 
-+#define RTL_CHIP_8723CS_CG	3
-+#define RTL_CHIP_8723CS_VF	4
-+#define RTL_CHIP_8723CS_XX	5
- #define RTL_EPATCH_SIGNATURE	"Realtech"
-+#define RTL_ROM_LMP_8703B	0x8703
- #define RTL_ROM_LMP_8723A	0x1200
- #define RTL_ROM_LMP_8723B	0x8723
- #define RTL_ROM_LMP_8821A	0x8821
-@@ -30,6 +34,7 @@
- #define IC_MATCH_FL_HCIREV	(1 << 1)
- #define IC_MATCH_FL_HCIVER	(1 << 2)
- #define IC_MATCH_FL_HCIBUS	(1 << 3)
-+#define IC_MATCH_FL_CHIP_TYPE	(1 << 4)
- #define IC_INFO(lmps, hcir, hciv, bus) \
- 	.match_flags = IC_MATCH_FL_LMPSUBV | IC_MATCH_FL_HCIREV | \
- 		       IC_MATCH_FL_HCIVER | IC_MATCH_FL_HCIBUS, \
-@@ -59,6 +64,7 @@ struct id_table {
- 	__u16 hci_rev;
- 	__u8 hci_ver;
- 	__u8 hci_bus;
-+	__u8 chip_type;
- 	bool config_needed;
- 	bool has_rom_version;
- 	bool has_msft_ext;
-@@ -99,6 +105,39 @@ static const struct id_table ic_id_table[] = {
- 	  .fw_name  = "rtl_bt/rtl8723b_fw.bin",
- 	  .cfg_name = "rtl_bt/rtl8723b_config" },
- 
-+	/* 8723CS-CG */
-+	{ .match_flags = IC_MATCH_FL_LMPSUBV | IC_MATCH_FL_CHIP_TYPE |
-+			 IC_MATCH_FL_HCIBUS,
-+	  .lmp_subver = RTL_ROM_LMP_8703B,
-+	  .chip_type = RTL_CHIP_8723CS_CG,
-+	  .hci_bus = HCI_UART,
-+	  .config_needed = true,
-+	  .has_rom_version = true,
-+	  .fw_name  = "rtl_bt/rtl8723cs_cg_fw.bin",
-+	  .cfg_name = "rtl_bt/rtl8723cs_cg_config" },
-+
-+	/* 8723CS-VF */
-+	{ .match_flags = IC_MATCH_FL_LMPSUBV | IC_MATCH_FL_CHIP_TYPE |
-+			 IC_MATCH_FL_HCIBUS,
-+	  .lmp_subver = RTL_ROM_LMP_8703B,
-+	  .chip_type = RTL_CHIP_8723CS_VF,
-+	  .hci_bus = HCI_UART,
-+	  .config_needed = true,
-+	  .has_rom_version = true,
-+	  .fw_name  = "rtl_bt/rtl8723cs_vf_fw.bin",
-+	  .cfg_name = "rtl_bt/rtl8723cs_vf_config" },
-+
-+	/* 8723CS-XX */
-+	{ .match_flags = IC_MATCH_FL_LMPSUBV | IC_MATCH_FL_CHIP_TYPE |
-+			 IC_MATCH_FL_HCIBUS,
-+	  .lmp_subver = RTL_ROM_LMP_8703B,
-+	  .chip_type = RTL_CHIP_8723CS_XX,
-+	  .hci_bus = HCI_UART,
-+	  .config_needed = true,
-+	  .has_rom_version = true,
-+	  .fw_name  = "rtl_bt/rtl8723cs_xx_fw.bin",
-+	  .cfg_name = "rtl_bt/rtl8723cs_xx_config" },
-+
- 	/* 8723D */
- 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_USB),
- 	  .config_needed = true,
-@@ -208,7 +247,8 @@ static const struct id_table ic_id_table[] = {
- 	};
- 
- static const struct id_table *btrtl_match_ic(u16 lmp_subver, u16 hci_rev,
--					     u8 hci_ver, u8 hci_bus)
-+					     u8 hci_ver, u8 hci_bus,
-+					     u8 chip_type)
- {
- 	int i;
- 
-@@ -225,6 +265,9 @@ static const struct id_table *btrtl_match_ic(u16 lmp_subver, u16 hci_rev,
- 		if ((ic_id_table[i].match_flags & IC_MATCH_FL_HCIBUS) &&
- 		    (ic_id_table[i].hci_bus != hci_bus))
- 			continue;
-+		if ((ic_id_table[i].match_flags & IC_MATCH_FL_CHIP_TYPE) &&
-+		    (ic_id_table[i].chip_type != chip_type))
-+			continue;
- 
- 		break;
- 	}
-@@ -307,6 +350,7 @@ static int rtlbt_parse_firmware(struct hci_dev *hdev,
- 		{ RTL_ROM_LMP_8723B, 1 },
- 		{ RTL_ROM_LMP_8821A, 2 },
- 		{ RTL_ROM_LMP_8761A, 3 },
-+		{ RTL_ROM_LMP_8703B, 7 },
- 		{ RTL_ROM_LMP_8822B, 8 },
- 		{ RTL_ROM_LMP_8723B, 9 },	/* 8723D */
- 		{ RTL_ROM_LMP_8821A, 10 },	/* 8821C */
-@@ -587,6 +631,48 @@ static int btrtl_setup_rtl8723b(struct hci_dev *hdev,
- 	return ret;
- }
- 
-+static bool rtl_has_chip_type(u16 lmp_subver)
-+{
-+	switch (lmp_subver) {
-+	case RTL_ROM_LMP_8703B:
-+		return true;
-+	default:
-+		break;
+ 	walk_state->parser_state.aml =
+-	    walk_state->parser_state.aml_start = aml_start;
+-	walk_state->parser_state.aml_end =
+-	    walk_state->parser_state.pkg_end = aml_start + aml_length;
++	    walk_state->parser_state.aml_start =
++	    walk_state->parser_state.aml_end =
++	    walk_state->parser_state.pkg_end = aml_start;
++	/* Avoid undefined behavior: applying zero offset to null pointer */
++	if (aml_length != 0) {
++		walk_state->parser_state.aml_end += aml_length;
++		walk_state->parser_state.pkg_end += aml_length;
 +	}
-+
-+	return  false;
-+}
-+
-+static int rtl_read_chip_type(struct hci_dev *hdev, u8 *type)
-+{
-+	struct rtl_chip_type_evt *chip_type;
-+	struct sk_buff *skb;
-+	const unsigned char cmd_buf[] = {0x00, 0x94, 0xa0, 0x00, 0xb0};
-+
-+	/* Read RTL chip type command */
-+	skb = __hci_cmd_sync(hdev, 0xfc61, 5, cmd_buf, HCI_INIT_TIMEOUT);
-+	if (IS_ERR(skb)) {
-+		rtl_dev_err(hdev, "Read chip type failed (%ld)",
-+			    PTR_ERR(skb));
-+		return PTR_ERR(skb);
-+	}
-+
-+	chip_type = skb_pull_data(skb, sizeof(*chip_type));
-+	if (!chip_type) {
-+		rtl_dev_err(hdev, "RTL chip type event length mismatch");
-+		kfree_skb(skb);
-+		return -EIO;
-+	}
-+
-+	rtl_dev_info(hdev, "chip_type status=%x type=%x",
-+		     chip_type->status, chip_type->type);
-+
-+	*type = chip_type->type & 0x0f;
-+
-+	kfree_skb(skb);
-+	return 0;
-+}
-+
- void btrtl_free(struct btrtl_device_info *btrtl_dev)
- {
- 	kvfree(btrtl_dev->fw_data);
-@@ -603,7 +689,7 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 	struct hci_rp_read_local_version *resp;
- 	char cfg_name[40];
- 	u16 hci_rev, lmp_subver;
--	u8 hci_ver;
-+	u8 hci_ver, chip_type = 0;
- 	int ret;
- 	u16 opcode;
- 	u8 cmd[2];
-@@ -629,8 +715,14 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 	hci_rev = le16_to_cpu(resp->hci_rev);
- 	lmp_subver = le16_to_cpu(resp->lmp_subver);
  
-+	if (rtl_has_chip_type(lmp_subver)) {
-+		ret = rtl_read_chip_type(hdev, &chip_type);
-+		if (ret)
-+			goto err_free;
-+	}
-+
- 	btrtl_dev->ic_info = btrtl_match_ic(lmp_subver, hci_rev, hci_ver,
--					    hdev->bus);
-+					    hdev->bus, chip_type);
+ 	/* The next_op of the next_walk will be the beginning of the method */
  
- 	if (!btrtl_dev->ic_info)
- 		btrtl_dev->drop_fw = true;
-@@ -673,7 +765,7 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 		lmp_subver = le16_to_cpu(resp->lmp_subver);
- 
- 		btrtl_dev->ic_info = btrtl_match_ic(lmp_subver, hci_rev, hci_ver,
--						    hdev->bus);
-+						    hdev->bus, chip_type);
- 	}
- out_free:
- 	kfree_skb(skb);
-@@ -755,6 +847,7 @@ int btrtl_download_firmware(struct hci_dev *hdev,
- 	case RTL_ROM_LMP_8761A:
- 	case RTL_ROM_LMP_8822B:
- 	case RTL_ROM_LMP_8852A:
-+	case RTL_ROM_LMP_8703B:
- 		return btrtl_setup_rtl8723b(hdev, btrtl_dev);
- 	default:
- 		rtl_dev_info(hdev, "assuming no firmware upload needed");
-@@ -788,6 +881,19 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
- 		rtl_dev_dbg(hdev, "WBS supported not enabled.");
- 		break;
- 	}
-+
-+	switch (btrtl_dev->ic_info->lmp_subver) {
-+	case RTL_ROM_LMP_8703B:
-+		/* 8723CS reports two pages for local ext features,
-+		 * but it doesn't support any features from page 2 -
-+		 * it either responds with garbage or with error status
-+		 */
-+		set_bit(HCI_QUIRK_BROKEN_LOCAL_EXT_FEATURES_PAGE_2,
-+			&hdev->quirks);
-+		break;
-+	default:
-+		break;
-+	}
- }
- EXPORT_SYMBOL_GPL(btrtl_set_quirks);
- 
-@@ -946,6 +1052,12 @@ MODULE_FIRMWARE("rtl_bt/rtl8723b_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8723b_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8723bs_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8723bs_config.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8723cs_cg_fw.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8723cs_cg_config.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8723cs_vf_fw.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8723cs_vf_config.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8723cs_xx_fw.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8723cs_xx_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8723ds_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8723ds_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8761a_fw.bin");
-diff --git a/drivers/bluetooth/btrtl.h b/drivers/bluetooth/btrtl.h
-index 2c441bda390a0..1c6282241d2d2 100644
---- a/drivers/bluetooth/btrtl.h
-+++ b/drivers/bluetooth/btrtl.h
-@@ -14,6 +14,11 @@
- 
- struct btrtl_device_info;
- 
-+struct rtl_chip_type_evt {
-+	__u8 status;
-+	__u8 type;
-+} __packed;
-+
- struct rtl_download_cmd {
- 	__u8 index;
- 	__u8 data[RTL_FRAG_LEN];
-diff --git a/drivers/bluetooth/hci_h5.c b/drivers/bluetooth/hci_h5.c
-index 6455bc4fb5bb3..e90670955df2c 100644
---- a/drivers/bluetooth/hci_h5.c
-+++ b/drivers/bluetooth/hci_h5.c
-@@ -936,6 +936,8 @@ static int h5_btrtl_setup(struct h5 *h5)
- 	err = btrtl_download_firmware(h5->hu->hdev, btrtl_dev);
- 	/* Give the device some time before the hci-core sends it a reset */
- 	usleep_range(10000, 20000);
-+	if (err)
-+		goto out_free;
- 
- 	btrtl_set_quirks(h5->hu->hdev, btrtl_dev);
- 
-@@ -1100,6 +1102,8 @@ static const struct of_device_id rtl_bluetooth_of_match[] = {
- 	  .data = (const void *)&h5_data_rtl8822cs },
- 	{ .compatible = "realtek,rtl8723bs-bt",
- 	  .data = (const void *)&h5_data_rtl8723bs },
-+	{ .compatible = "realtek,rtl8723cs-bt",
-+	  .data = (const void *)&h5_data_rtl8723bs },
- 	{ .compatible = "realtek,rtl8723ds-bt",
- 	  .data = (const void *)&h5_data_rtl8723bs },
- #endif
 -- 
 2.39.2
 
