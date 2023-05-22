@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0819F70C834
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 716B370C9E9
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234946AbjEVTgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S235414AbjEVTxC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:53:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234958AbjEVTgV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6DD132
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:06 -0700 (PDT)
+        with ESMTP id S235483AbjEVTw6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10392B6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2640F62940
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D68C433EF;
-        Mon, 22 May 2023 19:35:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A25AA62B2E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EB7C433D2;
+        Mon, 22 May 2023 19:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784156;
-        bh=gmjbaPMyPLsDV3oBXKV011djaAeV9paJ+ye1im/PCSM=;
+        s=korg; t=1684785176;
+        bh=zWycd4NOleDucaTDIy3mDGBMZOAdcEm+iiY194zdWkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LmCYdsWZEznIBFbdc9edU7ZaNQQ1BHucDPHdonOJgDeUkhs+GgI2IDg+bb4nufEda
-         Wujyi15rL8b+6hshyDnQgFuH7jYv3fOh7WGi+FlCNwoMv/J+FaKDbpGAoQZq23/Nua
-         yTvaxlzbXKU7QljXLCTEOSHqklclcGUWBLk7lBEw=
+        b=Mccyp1QS2yFI3RwNVCu+5KbXnU19v7m1Dy0WykkbusjoRGd9T2r6VW2KbbhVHrqGj
+         gkEGU/KWfAo/YwugZxx1nActaQ4Icy2BKW2pkF3iR2DOuHgrprfU4yPNq71ikqRrxY
+         eVKft34Synkav1EoLWgxkudHIxreui73BEGJzlMo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>, stable@kernel.org
-Subject: [PATCH 6.1 282/292] s390/dasd: fix command reject error on ESE devices
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.3 334/364] thunderbolt: Clear registers properly when auto clear isnt in use
 Date:   Mon, 22 May 2023 20:10:39 +0100
-Message-Id: <20230522190412.991983943@linuxfoundation.org>
+Message-Id: <20230522190421.126165398@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,106 +54,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c99bff34290f1b994073557b754aff86e4c7b22e upstream.
+commit c4af8e3fecd03b0aedcd38145955605cfebe7e3a upstream.
 
-Formatting a thin-provisioned (ESE) device that is part of a PPRC copy
-relation might fail with the following error:
+When `QUIRK_AUTO_CLEAR_INT` isn't set, interrupt masking should be
+cleared by writing to Interrupt Mask Clear (IMR) and interrupt
+status should be cleared properly at shutdown/init.
 
-dasd-eckd 0.0.f500: An error occurred in the DASD device driver, reason=09
-[...]
-24 Byte: 0 MSG 4, no MSGb to SYSOP
+This fixes an error where interrupts are left enabled during resume
+from hibernation with `CONFIG_USB4=y`.
 
-During format of an ESE disk the Release Allocated Space command is used.
-A bit in the payload of the command is set that is not allowed to be set
-for devices in a copy relation. This bit is set to allow the partial
-release of an extent.
-
-Check for the existence of a copy relation before setting the respective
-bit.
-
-Fixes: 91dc4a197569 ("s390/dasd: Add new ioctl to release space")
-Cc: stable@kernel.org # 5.3+
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230519102340.3854819-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 468c49f44759 ("thunderbolt: Disable interrupt auto clear for rings")
+Cc: stable@vger.kernel.org # v6.3
+Reported-by: Takashi Iwai <tiwai@suse.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217343
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_eckd.c |   33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/nhi.c      |   29 ++++++++++++++++++++++++-----
+ drivers/thunderbolt/nhi_regs.h |    2 ++
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
---- a/drivers/s390/block/dasd_eckd.c
-+++ b/drivers/s390/block/dasd_eckd.c
-@@ -127,6 +127,8 @@ static int prepare_itcw(struct itcw *, u
- 			struct dasd_device *, struct dasd_device *,
- 			unsigned int, int, unsigned int, unsigned int,
- 			unsigned int, unsigned int);
-+static int dasd_eckd_query_pprc_status(struct dasd_device *,
-+				       struct dasd_pprc_data_sc4 *);
- 
- /* initial attempt at a probe function. this can be simplified once
-  * the other detection code is gone */
-@@ -3732,6 +3734,26 @@ static int count_exts(unsigned int from,
- 	return count;
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -54,6 +54,21 @@ static int ring_interrupt_index(const st
+ 	return bit;
  }
  
-+static int dasd_in_copy_relation(struct dasd_device *device)
++static void nhi_mask_interrupt(struct tb_nhi *nhi, int mask, int ring)
 +{
-+	struct dasd_pprc_data_sc4 *temp;
-+	int rc;
++	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
++		return;
++	iowrite32(mask, nhi->iobase + REG_RING_INTERRUPT_MASK_CLEAR_BASE + ring);
++}
 +
-+	if (!dasd_eckd_pprc_enabled(device))
-+		return 0;
-+
-+	temp = kzalloc(sizeof(*temp), GFP_KERNEL);
-+	if (!temp)
-+		return -ENOMEM;
-+
-+	rc = dasd_eckd_query_pprc_status(device, temp);
-+	if (!rc)
-+		rc = temp->dev_info[0].state;
-+
-+	kfree(temp);
-+	return rc;
++static void nhi_clear_interrupt(struct tb_nhi *nhi, int ring)
++{
++	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
++		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + ring);
++	else
++		iowrite32(~0, nhi->iobase + REG_RING_INT_CLEAR + ring);
 +}
 +
  /*
-  * Release allocated space for a given range or an entire volume.
+  * ring_interrupt_active() - activate/deactivate interrupts for a single ring
+  *
+@@ -61,8 +76,8 @@ static int ring_interrupt_index(const st
   */
-@@ -3748,6 +3770,7 @@ dasd_eckd_dso_ras(struct dasd_device *de
- 	int cur_to_trk, cur_from_trk;
- 	struct dasd_ccw_req *cqr;
- 	u32 beg_cyl, end_cyl;
-+	int copy_relation;
- 	struct ccw1 *ccw;
- 	int trks_per_ext;
- 	size_t ras_size;
-@@ -3759,6 +3782,10 @@ dasd_eckd_dso_ras(struct dasd_device *de
- 	if (dasd_eckd_ras_sanity_checks(device, first_trk, last_trk))
- 		return ERR_PTR(-EINVAL);
- 
-+	copy_relation = dasd_in_copy_relation(device);
-+	if (copy_relation < 0)
-+		return ERR_PTR(copy_relation);
+ static void ring_interrupt_active(struct tb_ring *ring, bool active)
+ {
+-	int reg = REG_RING_INTERRUPT_BASE +
+-		  ring_interrupt_index(ring) / 32 * 4;
++	int index = ring_interrupt_index(ring) / 32 * 4;
++	int reg = REG_RING_INTERRUPT_BASE + index;
+ 	int interrupt_bit = ring_interrupt_index(ring) & 31;
+ 	int mask = 1 << interrupt_bit;
+ 	u32 old, new;
+@@ -123,7 +138,11 @@ static void ring_interrupt_active(struct
+ 					 "interrupt for %s %d is already %s\n",
+ 					 RING_TYPE(ring), ring->hop,
+ 					 active ? "enabled" : "disabled");
+-	iowrite32(new, ring->nhi->iobase + reg);
 +
- 	rq = req ? blk_mq_rq_to_pdu(req) : NULL;
++	if (active)
++		iowrite32(new, ring->nhi->iobase + reg);
++	else
++		nhi_mask_interrupt(ring->nhi, mask, index);
+ }
  
- 	features = &private->features;
-@@ -3787,9 +3814,11 @@ dasd_eckd_dso_ras(struct dasd_device *de
- 	/*
- 	 * This bit guarantees initialisation of tracks within an extent that is
- 	 * not fully specified, but is only supported with a certain feature
--	 * subset.
-+	 * subset and for devices not in a copy relation.
- 	 */
--	ras_data->op_flags.guarantee_init = !!(features->feature[56] & 0x01);
-+	if (features->feature[56] & 0x01 && !copy_relation)
-+		ras_data->op_flags.guarantee_init = 1;
+ /*
+@@ -136,11 +155,11 @@ static void nhi_disable_interrupts(struc
+ 	int i = 0;
+ 	/* disable interrupts */
+ 	for (i = 0; i < RING_INTERRUPT_REG_COUNT(nhi); i++)
+-		iowrite32(0, nhi->iobase + REG_RING_INTERRUPT_BASE + 4 * i);
++		nhi_mask_interrupt(nhi, ~0, 4 * i);
+ 
+ 	/* clear interrupt status bits */
+ 	for (i = 0; i < RING_NOTIFY_REG_COUNT(nhi); i++)
+-		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + 4 * i);
++		nhi_clear_interrupt(nhi, 4 * i);
+ }
+ 
+ /* ring helper methods */
+--- a/drivers/thunderbolt/nhi_regs.h
++++ b/drivers/thunderbolt/nhi_regs.h
+@@ -93,6 +93,8 @@ struct ring_desc {
+ #define REG_RING_INTERRUPT_BASE	0x38200
+ #define RING_INTERRUPT_REG_COUNT(nhi) ((31 + 2 * nhi->hop_count) / 32)
+ 
++#define REG_RING_INTERRUPT_MASK_CLEAR_BASE	0x38208
 +
- 	ras_data->lss = private->conf.ned->ID;
- 	ras_data->dev_addr = private->conf.ned->unit_addr;
- 	ras_data->nr_exts = nr_exts;
+ #define REG_INT_THROTTLING_RATE	0x38c00
+ 
+ /* Interrupt Vector Allocation */
 
 
