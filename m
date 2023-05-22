@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BE970C9E7
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F66970C832
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235489AbjEVTxA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47322 "EHLO
+        id S234950AbjEVTgX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235498AbjEVTww (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:52 -0400
+        with ESMTP id S234943AbjEVTgT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6F6188
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F549130
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D611162B2F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F333EC433D2;
-        Mon, 22 May 2023 19:52:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F27061FEC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A997C433D2;
+        Mon, 22 May 2023 19:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785170;
-        bh=uuO2L/NIq/nMVZPZi7LFumN8mAwh2IvzP50feO5GFoI=;
+        s=korg; t=1684784150;
+        bh=4B8Kln1Me7JXk/BtrvrkqkydSBOmyQSP5HpAgFEclsw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qJqu56nzhOfNGAQrSzVZwLLPH4ytTYw3nETPWCRy2dA163VLuBeL5bOMDLOUFBLoe
-         6pEyvrwzqJztCxdGZFGm60GP9rbDT0W1TcKNdGULiJPbrXGy3qYtDxuj/Xpmv1Exoc
-         bSxS4sox5g1/qsBpyucceXTmOjQEHwLIS6BlROPs=
+        b=EbJDY5RVAysyjZtPruc1Ivrci+pSE/HipsULYdrnsFP0lPtgZhEv5obuRk0TGe9UR
+         MAHYCkJdrbYb7iqnQlNGbvtDl9YCVrQ22XURqjbpsF7ZPBM6mD2JZzqHGtgRZwogtF
+         3rmQ5qxfWZfmDo8Pef9AP7q3CXCma+KB3exjoNn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Davis <afd@ti.com>,
-        stable <stable@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.3 332/364] serial: 8250_exar: Add support for USR298x PCI Modems
+        patches@lists.linux.dev,
+        =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 280/292] powerpc/64s/radix: Fix soft dirty tracking
 Date:   Mon, 22 May 2023 20:10:37 +0100
-Message-Id: <20230522190421.078443971@linuxfoundation.org>
+Message-Id: <20230522190412.941322506@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Davis <afd@ti.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 95d698869b404772cc8b72560df71548491c10bc upstream.
+commit 66b2ca086210732954a7790d63d35542936fc664 upstream.
 
-Possibly the last PCI controller-based (i.e. not a soft/winmodem)
-dial-up modem one can still buy.
+It was reported that soft dirty tracking doesn't work when using the
+Radix MMU.
 
-Looks to have a stock XR17C154 PCI UART chip for communication, but for
-some reason when provisioning the PCI IDs they swapped the vendor and
-subvendor IDs. Otherwise this card would have worked out of the box.
+The tracking is supposed to work by clearing the soft dirty bit for a
+mapping and then write protecting the PTE. If/when the page is written
+to, a page fault occurs and the soft dirty bit is added back via
+pte_mkdirty(). For example in wp_page_reuse():
 
-Searching online, some folks seem to not have this issue and others do,
-so it is possible only some batches of cards have this error.
+	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
+		update_mmu_cache(vma, vmf->address, vmf->pte);
 
-Create a new macro to handle the switched IDs and add support here.
+Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
+radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
+meaning the soft dirty bit is not set even though the page has been
+written to.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230420160209.28221-1-afd@ti.com
+Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
+changed in radix__ptep_set_access_flags().
+
+Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
+Cc: stable@vger.kernel.org # v4.7+
+Reported-by: Dan Horák <dan@danny.cz>
+Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230511114224.977423-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_exar.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/powerpc/mm/book3s64/radix_pgtable.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -40,9 +40,13 @@
- #define PCI_DEVICE_ID_COMMTECH_4224PCIE		0x0020
- #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
- #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
-+
- #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
- #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct
+ 				  pte_t entry, unsigned long address, int psize)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
+-					      _PAGE_RW | _PAGE_EXEC);
++	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
++					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
  
-+#define PCI_SUBDEVICE_ID_USR_2980		0x0128
-+#define PCI_SUBDEVICE_ID_USR_2981		0x0129
-+
- #define PCI_DEVICE_ID_SEALEVEL_710xC		0x1001
- #define PCI_DEVICE_ID_SEALEVEL_720xC		0x1002
- #define PCI_DEVICE_ID_SEALEVEL_740xC		0x1004
-@@ -829,6 +833,15 @@ static const struct exar8250_board pbn_e
- 		(kernel_ulong_t)&bd			\
- 	}
- 
-+#define USR_DEVICE(devid, sdevid, bd) {			\
-+	PCI_DEVICE_SUB(					\
-+		PCI_VENDOR_ID_USR,			\
-+		PCI_DEVICE_ID_EXAR_##devid,		\
-+		PCI_VENDOR_ID_EXAR,			\
-+		PCI_SUBDEVICE_ID_USR_##sdevid), 0, 0,	\
-+		(kernel_ulong_t)&bd			\
-+	}
-+
- static const struct pci_device_id exar_pci_tbl[] = {
- 	EXAR_DEVICE(ACCESSIO, COM_2S, pbn_exar_XR17C15x),
- 	EXAR_DEVICE(ACCESSIO, COM_4S, pbn_exar_XR17C15x),
-@@ -853,6 +866,10 @@ static const struct pci_device_id exar_p
- 
- 	IBM_DEVICE(XR17C152, SATURN_SERIAL_ONE_PORT, pbn_exar_ibm_saturn),
- 
-+	/* USRobotics USR298x-OEM PCI Modems */
-+	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
-+	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
-+
- 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
- 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
- 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
+ 	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
+ 	/*
 
 
