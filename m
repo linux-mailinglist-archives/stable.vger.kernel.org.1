@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F6670C777
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121BA70C644
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234733AbjEVT35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
+        id S234097AbjEVTQf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234730AbjEVT3z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE99F119
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:51 -0700 (PDT)
+        with ESMTP id S234220AbjEVTQP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9BC115
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF8CC628EB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4CCC433EF;
-        Mon, 22 May 2023 19:29:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E45746276C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFFFC433EF;
+        Mon, 22 May 2023 19:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783791;
-        bh=9fRzOBzKY291XYpQRoelvNJbIx6XAFqYv/8NKID3o24=;
+        s=korg; t=1684782973;
+        bh=FPZW9RYcum9eLwAVB5+4M2/FwCzOdmOvrgItKVfLNws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=octwoQhO3lyLvcAyDE57aiH7YR7aXVUBCnJVNCe7MDAwzqc6Kw6lb7LekK+XZQtdc
-         cqdYv8SH22C0fkwhaDGlK3fZ3rqd0kgO6AKbvUxU1ftDIebHtZPbVWPD0QMGb/+GYy
-         ST8WegUFf0ZXNJ/ezKfPv10FN24dv1lqa6vpk2yo=
+        b=Sst9yyL29nuQ8J3wdEPW+iNcj39QUNcSjLKLAbGCmDC2mtvWNqtbEKnc1QExK4Msq
+         NFeq16XBo/Zoabu3MP38o0mTQ9eLzMF5EjaqVJ+a0Z5czpf3sduieM+IWnUnI3XsGv
+         gcAUkLBiokm6Xn3JqCGz+CVL1TksjnN4wBuwXUmk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, pinkperfect2021@gmail.com,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/292] drm/msm: Fix submit error-path leaks
+Subject: [PATCH 5.15 096/203] clk: tegra20: fix gcc-7 constant overflow warning
 Date:   Mon, 22 May 2023 20:08:40 +0100
-Message-Id: <20230522190410.040283447@linuxfoundation.org>
+Message-Id: <20230522190357.645290143@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,85 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 68dc6c2d5eec45515855cce99256162f45651a0b ]
+[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
 
-For errors after msm_submitqueue_get(), we need to drop the submitqueue
-reference.  Additionally after get_unused_fd() we need to drop the fd.
-The ordering for dropping the queue lock and put_unused_fd() is not
-important, so just move this all into out_post_unlock.
+Older gcc versions get confused by comparing a u32 value to a negative
+constant in a switch()/case block:
 
-v2: Only drop queue ref if submit doesn't take it
-v3: Fix unitialized submit ref in error path
-v4: IS_ERR_OR_NULL()
+drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
+drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_12MHZ:
+  ^~~~
+drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_26MHZ:
 
-Reported-by: pinkperfect2021@gmail.com
-Fixes: f0de40a131d9 drm/msm: ("Reorder lock vs submit alloc")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/536073/
-Link: https://lore.kernel.org/r/20230509203041.440619-1-robdclark@gmail.com
+Make the constants unsigned instead.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_submit.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index d8c9d184190bb..d6162561141c5 100644
---- a/drivers/gpu/drm/msm/msm_gem_submit.c
-+++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -709,7 +709,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct drm_msm_gem_submit *args = data;
- 	struct msm_file_private *ctx = file->driver_priv;
--	struct msm_gem_submit *submit;
-+	struct msm_gem_submit *submit = NULL;
- 	struct msm_gpu *gpu = priv->gpu;
- 	struct msm_gpu_submitqueue *queue;
- 	struct msm_ringbuffer *ring;
-@@ -756,13 +756,15 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 		out_fence_fd = get_unused_fd_flags(O_CLOEXEC);
- 		if (out_fence_fd < 0) {
- 			ret = out_fence_fd;
--			return ret;
-+			goto out_post_unlock;
- 		}
- 	}
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index d246a39a6b4f0..cc57ababc882d 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -18,24 +18,24 @@
+ #define MISC_CLK_ENB 0x48
  
- 	submit = submit_create(dev, gpu, queue, args->nr_bos, args->nr_cmds);
--	if (IS_ERR(submit))
--		return PTR_ERR(submit);
-+	if (IS_ERR(submit)) {
-+		ret = PTR_ERR(submit);
-+		goto out_post_unlock;
-+	}
- 
- 	trace_msm_gpu_submit(pid_nr(submit->pid), ring->id, submit->ident,
- 		args->nr_bos, args->nr_cmds);
-@@ -945,11 +947,20 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 	if (has_ww_ticket)
- 		ww_acquire_fini(&submit->ticket);
- out_unlock:
--	if (ret && (out_fence_fd >= 0))
--		put_unused_fd(out_fence_fd);
- 	mutex_unlock(&queue->lock);
- out_post_unlock:
--	msm_gem_submit_put(submit);
-+	if (ret && (out_fence_fd >= 0))
-+		put_unused_fd(out_fence_fd);
+ #define OSC_CTRL 0x50
+-#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
+-#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
+-#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
+-#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
+-#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
+-#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
+-
+-#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
+-#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
+-#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
+-#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
++#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
++#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
++#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
++#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
++#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
++#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
 +
-+	if (!IS_ERR_OR_NULL(submit)) {
-+		msm_gem_submit_put(submit);
-+	} else {
-+		/*
-+		 * If the submit hasn't yet taken ownership of the queue
-+		 * then we need to drop the reference ourself:
-+		 */
-+		msm_submitqueue_put(queue);
-+	}
- 	if (!IS_ERR_OR_NULL(post_deps)) {
- 		for (i = 0; i < args->nr_out_syncobjs; ++i) {
- 			kfree(post_deps[i].chain);
++#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
++#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
++#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
++#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
+ 
+ #define OSC_FREQ_DET 0x58
+-#define OSC_FREQ_DET_TRIG (1<<31)
++#define OSC_FREQ_DET_TRIG (1u<<31)
+ 
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
+ 
+ #define TEGRA20_CLK_PERIPH_BANKS	3
+ 
 -- 
 2.39.2
 
