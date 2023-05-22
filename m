@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE2170C729
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD8F570C8FF
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234628AbjEVT0d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48036 "EHLO
+        id S235181AbjEVToI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234629AbjEVT0c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:32 -0400
+        with ESMTP id S235222AbjEVToF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60BC89C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2EFFC1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8DD4628A1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0E7C4339B;
-        Mon, 22 May 2023 19:26:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55DD062241
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC6FC433EF;
+        Mon, 22 May 2023 19:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783590;
-        bh=FcoDaRs+22ssaWbK8wsQBN6JntUPxV7Ei7HgIQKDX90=;
+        s=korg; t=1684784641;
+        bh=FVIp0F2gnFLeA4VU9rwR397kVxDgw3cesSKY8g34k2w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ANIbFlvO854DWl4UMJKYYBnF7ZS7qSWKDPLcbNWPWKg+MVYdWTolVewokihpl3vts
-         Ff5JgSpGnFcRLAJwMSEpkBDQ44bkPGzoX2UPGIAWzrFRctBtP94/GCXXsXGVbwhBJz
-         6Ln4KVpDSQc5IfYA3ks/Hf0a5Ihh4HuKltUbQ7Bo=
+        b=ULHhzeepOc81cIXGuZv+1Z0DtbNYf3AhO+gWw1jp+EGa+TiS/UP3YM2FjztdVLgUY
+         kt+mpKUMtexP8YeySIQTDOiBLwyb6rQ7crot7snlINrSaQYukyM45A30EMTf0W5NTh
+         FliAI5AIHCT45VRfM/KGkwaOpPdfoeIC3nxqxwPI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
-        Yafang <laoar.shao@gmail.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Jiri Olsa <olsajiri@gmail.com>, Hao Luo <haoluo@google.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/292] bpf: Add preempt_count_{sub,add} into btf id deny list
-Date:   Mon, 22 May 2023 20:07:33 +0100
-Message-Id: <20230522190408.372265145@linuxfoundation.org>
+Subject: [PATCH 6.3 149/364] xhci: mem: Carefully calculate size for memory allocations
+Date:   Mon, 22 May 2023 20:07:34 +0100
+Message-Id: <20230522190416.481550519@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,71 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yafang <laoar.shao@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit c11bd046485d7bf1ca200db0e7d0bdc4bafdd395 ]
+[ Upstream commit 347284984f415e52590373253c6943bbdc806ebf ]
 
-The recursion check in __bpf_prog_enter* and __bpf_prog_exit*
-leave preempt_count_{sub,add} unprotected. When attaching trampoline to
-them we get panic as follows,
+Carefully calculate size for memory allocations, i.e. with help
+of size_mul() macro from overflow.h.
 
-[  867.843050] BUG: TASK stack guard page was hit at 0000000009d325cf (stack is 0000000046a46a15..00000000537e7b28)
-[  867.843064] stack guard page: 0000 [#1] PREEMPT SMP NOPTI
-[  867.843067] CPU: 8 PID: 11009 Comm: trace Kdump: loaded Not tainted 6.2.0+ #4
-[  867.843100] Call Trace:
-[  867.843101]  <TASK>
-[  867.843104]  asm_exc_int3+0x3a/0x40
-[  867.843108] RIP: 0010:preempt_count_sub+0x1/0xa0
-[  867.843135]  __bpf_prog_enter_recur+0x17/0x90
-[  867.843148]  bpf_trampoline_6442468108_0+0x2e/0x1000
-[  867.843154]  ? preempt_count_sub+0x1/0xa0
-[  867.843157]  preempt_count_sub+0x5/0xa0
-[  867.843159]  ? migrate_enable+0xac/0xf0
-[  867.843164]  __bpf_prog_exit_recur+0x2d/0x40
-[  867.843168]  bpf_trampoline_6442468108_0+0x55/0x1000
-...
-[  867.843788]  preempt_count_sub+0x5/0xa0
-[  867.843793]  ? migrate_enable+0xac/0xf0
-[  867.843829]  __bpf_prog_exit_recur+0x2d/0x40
-[  867.843837] BUG: IRQ stack guard page was hit at 0000000099bd8228 (stack is 00000000b23e2bc4..000000006d95af35)
-[  867.843841] BUG: IRQ stack guard page was hit at 000000005ae07924 (stack is 00000000ffd69623..0000000014eb594c)
-[  867.843843] BUG: IRQ stack guard page was hit at 00000000028320f0 (stack is 00000000034b6438..0000000078d1bcec)
-[  867.843842]  bpf_trampoline_6442468108_0+0x55/0x1000
-...
-
-That is because in __bpf_prog_exit_recur, the preempt_count_{sub,add} are
-called after prog->active is decreased.
-
-Fixing this by adding these two functions into btf ids deny list.
-
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Yafang <laoar.shao@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Jiri Olsa <olsajiri@gmail.com>
-Acked-by: Hao Luo <haoluo@google.com>
-Link: https://lore.kernel.org/r/20230413025248.79764-1-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230317154715.535523-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/xhci-mem.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 8726161076134..322a2ae8f88b0 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15133,6 +15133,10 @@ BTF_ID(func, migrate_enable)
- #if !defined CONFIG_PREEMPT_RCU && !defined CONFIG_TINY_RCU
- BTF_ID(func, rcu_read_unlock_strict)
- #endif
-+#if defined(CONFIG_DEBUG_PREEMPT) || defined(CONFIG_TRACE_PREEMPT_TOGGLE)
-+BTF_ID(func, preempt_count_add)
-+BTF_ID(func, preempt_count_sub)
-+#endif
- BTF_SET_END(btf_id_deny)
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index d0a9467aa5fc4..c385513ad00b6 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -9,6 +9,7 @@
+  */
  
- static int check_attach_btf_id(struct bpf_verifier_env *env)
+ #include <linux/usb.h>
++#include <linux/overflow.h>
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/dmapool.h>
+@@ -568,7 +569,7 @@ static struct xhci_stream_ctx *xhci_alloc_stream_ctx(struct xhci_hcd *xhci,
+ 		gfp_t mem_flags)
+ {
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+-	size_t size = sizeof(struct xhci_stream_ctx) * num_stream_ctxs;
++	size_t size = size_mul(sizeof(struct xhci_stream_ctx), num_stream_ctxs);
+ 
+ 	if (size > MEDIUM_STREAM_ARRAY_SIZE)
+ 		return dma_alloc_coherent(dev, size,
+@@ -1660,7 +1661,7 @@ static int scratchpad_alloc(struct xhci_hcd *xhci, gfp_t flags)
+ 		goto fail_sp;
+ 
+ 	xhci->scratchpad->sp_array = dma_alloc_coherent(dev,
+-				     num_sp * sizeof(u64),
++				     size_mul(sizeof(u64), num_sp),
+ 				     &xhci->scratchpad->sp_dma, flags);
+ 	if (!xhci->scratchpad->sp_array)
+ 		goto fail_sp2;
+@@ -1799,7 +1800,7 @@ int xhci_alloc_erst(struct xhci_hcd *xhci,
+ 	struct xhci_segment *seg;
+ 	struct xhci_erst_entry *entry;
+ 
+-	size = sizeof(struct xhci_erst_entry) * evt_ring->num_segs;
++	size = size_mul(sizeof(struct xhci_erst_entry), evt_ring->num_segs);
+ 	erst->entries = dma_alloc_coherent(xhci_to_hcd(xhci)->self.sysdev,
+ 					   size, &erst->erst_dma_addr, flags);
+ 	if (!erst->entries)
+@@ -1830,7 +1831,7 @@ xhci_free_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
+ 	if (!ir)
+ 		return;
+ 
+-	erst_size = sizeof(struct xhci_erst_entry) * (ir->erst.num_entries);
++	erst_size = sizeof(struct xhci_erst_entry) * ir->erst.num_entries;
+ 	if (ir->erst.entries)
+ 		dma_free_coherent(dev, erst_size,
+ 				  ir->erst.entries,
 -- 
 2.39.2
 
