@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C8B570C5F8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4CE70C735
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbjEVTOG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37108 "EHLO
+        id S234641AbjEVT1K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233974AbjEVTOD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:03 -0400
+        with ESMTP id S234646AbjEVT1H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC67A129
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8472B102
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7882A62710
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FC0C4339C;
-        Mon, 22 May 2023 19:13:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B793628AB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279C6C4339B;
+        Mon, 22 May 2023 19:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782834;
-        bh=iEzBVslR+GdOPpLupYyb/cyRJ62W5YLx4QNnWYH8jdY=;
+        s=korg; t=1684783625;
+        bh=ANj1/Mdt11UKjqOjZLYLvGkukMF6iBUj/697rQNawaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Imfx/8d4Wlbm5/L22Hnidvwa3Gl+s8fRbCeOthdWuiJmSsBHQFXJHlxV31UDINqPL
-         nyVXR1cJ9GT4xRD0nekuRE6jnpBKFOvNt97p4NXXiA4SCH7SExxH3BWMswx91W6lEO
-         Ynyw2hJt4ratgCU6eCVwfDuGAmxz6slfPDdBorFQ=
+        b=YJ5HyjQNxtNAk1n4HguFZzrpoaRtTIVL78+YiUwQCXsrKfZWBA94uNMoNJLKKY1eY
+         nCUPzLDpkYyFFK5LP1i3WECGhutFcahihWAZ1v2MHtFMnTnaLHiYdhkADXDE/00LqH
+         VMKQw2b73MZWnAmgxQicQTMfyrXXaBo3d8KkAdF0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/203] firmware: arm_sdei: Fix sleep from invalid context BUG
+        patches@lists.linux.dev, Nagarajan Maran <quic_nmaran@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 107/292] wifi: ath11k: Fix SKB corruption in REO destination ring
 Date:   Mon, 22 May 2023 20:07:44 +0100
-Message-Id: <20230522190356.090505055@linuxfoundation.org>
+Message-Id: <20230522190408.644379988@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,234 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Nagarajan Maran <quic_nmaran@quicinc.com>
 
-[ Upstream commit d2c48b2387eb89e0bf2a2e06e30987cf410acad4 ]
+[ Upstream commit f9fff67d2d7ca6fa8066132003a3deef654c55b1 ]
 
-Running a preempt-rt (v6.2-rc3-rt1) based kernel on an Ampere Altra
-triggers:
+While running traffics for a long time, randomly an RX descriptor
+filled with value "0" from REO destination ring is received.
+This descriptor which is invalid causes the wrong SKB (SKB stored in
+the IDR lookup with buffer id "0") to be fetched which in turn
+causes SKB memory corruption issue and the same leads to crash
+after some time.
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
-  in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 24, name: cpuhp/0
-  preempt_count: 0, expected: 0
-  RCU nest depth: 0, expected: 0
-  3 locks held by cpuhp/0/24:
-    #0: ffffda30217c70d0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
-    #1: ffffda30217c7120 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
-    #2: ffffda3021c711f0 (sdei_list_lock){....}-{3:3}, at: sdei_cpuhp_up+0x3c/0x130
-  irq event stamp: 36
-  hardirqs last  enabled at (35): [<ffffda301e85b7bc>] finish_task_switch+0xb4/0x2b0
-  hardirqs last disabled at (36): [<ffffda301e812fec>] cpuhp_thread_fun+0x21c/0x248
-  softirqs last  enabled at (0): [<ffffda301e80b184>] copy_process+0x63c/0x1ac0
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 0 PID: 24 Comm: cpuhp/0 Not tainted 5.19.0-rc3-rt5-[...]
-  Hardware name: WIWYNN Mt.Jade Server [...]
-  Call trace:
-    dump_backtrace+0x114/0x120
-    show_stack+0x20/0x70
-    dump_stack_lvl+0x9c/0xd8
-    dump_stack+0x18/0x34
-    __might_resched+0x188/0x228
-    rt_spin_lock+0x70/0x120
-    sdei_cpuhp_up+0x3c/0x130
-    cpuhp_invoke_callback+0x250/0xf08
-    cpuhp_thread_fun+0x120/0x248
-    smpboot_thread_fn+0x280/0x320
-    kthread+0x130/0x140
-    ret_from_fork+0x10/0x20
+Changed the start id for idr allocation to "1" and the buffer id "0"
+is reserved for error validation. Introduced Sanity check to validate
+the descriptor, before processing the SKB.
 
-sdei_cpuhp_up() is called in the STARTING hotplug section,
-which runs with interrupts disabled. Use a CPUHP_AP_ONLINE_DYN entry
-instead to execute the cpuhp cb later, with preemption enabled.
+Crash Signature :
 
-SDEI originally got its own cpuhp slot to allow interacting
-with perf. It got superseded by pNMI and this early slot is not
-relevant anymore. [1]
+Unable to handle kernel paging request at virtual address 3f004900
+PC points to "b15_dma_inv_range+0x30/0x50"
+LR points to "dma_cache_maint_page+0x8c/0x128".
+The Backtrace obtained is as follows:
+[<8031716c>] (b15_dma_inv_range) from [<80313a4c>] (dma_cache_maint_page+0x8c/0x128)
+[<80313a4c>] (dma_cache_maint_page) from [<80313b90>] (__dma_page_dev_to_cpu+0x28/0xcc)
+[<80313b90>] (__dma_page_dev_to_cpu) from [<7fb5dd68>] (ath11k_dp_process_rx+0x1e8/0x4a4 [ath11k])
+[<7fb5dd68>] (ath11k_dp_process_rx [ath11k]) from [<7fb53c20>] (ath11k_dp_service_srng+0xb0/0x2ac [ath11k])
+[<7fb53c20>] (ath11k_dp_service_srng [ath11k]) from [<7f67bba4>] (ath11k_pci_ext_grp_napi_poll+0x1c/0x78 [ath11k_pci])
+[<7f67bba4>] (ath11k_pci_ext_grp_napi_poll [ath11k_pci]) from [<807d5cf4>] (__napi_poll+0x28/0xb8)
+[<807d5cf4>] (__napi_poll) from [<807d5f28>] (net_rx_action+0xf0/0x280)
+[<807d5f28>] (net_rx_action) from [<80302148>] (__do_softirq+0xd0/0x280)
+[<80302148>] (__do_softirq) from [<80320408>] (irq_exit+0x74/0xd4)
+[<80320408>] (irq_exit) from [<803638a4>] (__handle_domain_irq+0x90/0xb4)
+[<803638a4>] (__handle_domain_irq) from [<805bedec>] (gic_handle_irq+0x58/0x90)
+[<805bedec>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
 
-Some SDEI calls (e.g. SDEI_1_0_FN_SDEI_PE_MASK) take actions on the
-calling CPU. It is checked that preemption is disabled for them.
-_ONLINE cpuhp cb are executed in the 'per CPU hotplug thread'.
-Preemption is enabled in those threads, but their cpumask is limited
-to 1 CPU.
-Move 'WARN_ON_ONCE(preemptible())' statements so that SDEI cpuhp cb
-don't trigger them.
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
 
-Also add a check for the SDEI_1_0_FN_SDEI_PRIVATE_RESET SDEI call
-which acts on the calling CPU.
-
-[1]:
-https://lore.kernel.org/all/5813b8c5-ae3e-87fd-fccc-94c9cd08816d@arm.com/
-
-Suggested-by: James Morse <james.morse@arm.com>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20230216084920.144064-1-pierre.gondois@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230403191533.28114-1-quic_nmaran@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_sdei.c | 37 ++++++++++++++++++++-----------------
- include/linux/cpuhotplug.h  |  1 -
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index 1e1a51510e83b..f9040bd610812 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -43,6 +43,8 @@ static asmlinkage void (*sdei_firmware_call)(unsigned long function_id,
- /* entry point from firmware to arch asm code */
- static unsigned long sdei_entry_point;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 1786d83f8f2ed..38be646bc0214 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -389,10 +389,10 @@ int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
+ 			goto fail_free_skb;
  
-+static int sdei_hp_state;
+ 		spin_lock_bh(&rx_ring->idr_lock);
+-		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
+-				   rx_ring->bufs_max * 3, GFP_ATOMIC);
++		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 1,
++				   (rx_ring->bufs_max * 3) + 1, GFP_ATOMIC);
+ 		spin_unlock_bh(&rx_ring->idr_lock);
+-		if (buf_id < 0)
++		if (buf_id <= 0)
+ 			goto fail_dma_unmap;
+ 
+ 		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
+@@ -2665,6 +2665,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 				   cookie);
+ 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
+ 
++		if (unlikely(buf_id == 0))
++			continue;
 +
- struct sdei_event {
- 	/* These three are protected by the sdei_list_lock */
- 	struct list_head	list;
-@@ -301,8 +303,6 @@ int sdei_mask_local_cpu(void)
- {
- 	int err;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_MASK, 0, 0, 0, 0, 0, NULL);
- 	if (err && err != -EIO) {
- 		pr_warn_once("failed to mask CPU[%u]: %d\n",
-@@ -315,6 +315,7 @@ int sdei_mask_local_cpu(void)
- 
- static void _ipi_mask_cpu(void *ignored)
- {
-+	WARN_ON_ONCE(preemptible());
- 	sdei_mask_local_cpu();
- }
- 
-@@ -322,8 +323,6 @@ int sdei_unmask_local_cpu(void)
- {
- 	int err;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_UNMASK, 0, 0, 0, 0, 0, NULL);
- 	if (err && err != -EIO) {
- 		pr_warn_once("failed to unmask CPU[%u]: %d\n",
-@@ -336,6 +335,7 @@ int sdei_unmask_local_cpu(void)
- 
- static void _ipi_unmask_cpu(void *ignored)
- {
-+	WARN_ON_ONCE(preemptible());
- 	sdei_unmask_local_cpu();
- }
- 
-@@ -343,6 +343,8 @@ static void _ipi_private_reset(void *ignored)
- {
- 	int err;
- 
-+	WARN_ON_ONCE(preemptible());
-+
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PRIVATE_RESET, 0, 0, 0, 0, 0,
- 			     NULL);
- 	if (err && err != -EIO)
-@@ -389,8 +391,6 @@ static void _local_event_enable(void *data)
- 	int err;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = sdei_api_event_enable(arg->event->event_num);
- 
- 	sdei_cross_call_return(arg, err);
-@@ -479,8 +479,6 @@ static void _local_event_unregister(void *data)
- 	int err;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = sdei_api_event_unregister(arg->event->event_num);
- 
- 	sdei_cross_call_return(arg, err);
-@@ -561,8 +559,6 @@ static void _local_event_register(void *data)
- 	struct sdei_registered_event *reg;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON(preemptible());
--
- 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
- 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
- 				      reg, 0, 0);
-@@ -717,6 +713,8 @@ static int sdei_pm_notifier(struct notifier_block *nb, unsigned long action,
- {
- 	int rv;
- 
-+	WARN_ON_ONCE(preemptible());
-+
- 	switch (action) {
- 	case CPU_PM_ENTER:
- 		rv = sdei_mask_local_cpu();
-@@ -765,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
- 	int err;
- 
- 	/* unregister private events */
--	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
-+	cpuhp_remove_state(sdei_entry_point);
- 
- 	err = sdei_unregister_shared();
- 	if (err)
-@@ -786,12 +784,15 @@ static int sdei_device_thaw(struct device *dev)
- 		return err;
- 	}
- 
--	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
-+	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
- 				&sdei_cpuhp_up, &sdei_cpuhp_down);
--	if (err)
-+	if (err < 0) {
- 		pr_warn("Failed to re-register CPU hotplug notifier...\n");
-+		return err;
-+	}
- 
--	return err;
-+	sdei_hp_state = err;
-+	return 0;
- }
- 
- static int sdei_device_restore(struct device *dev)
-@@ -823,7 +824,7 @@ static int sdei_reboot_notifier(struct notifier_block *nb, unsigned long action,
- 	 * We are going to reset the interface, after this there is no point
- 	 * doing work when we take CPUs offline.
- 	 */
--	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
-+	cpuhp_remove_state(sdei_hp_state);
- 
- 	sdei_platform_reset();
- 
-@@ -1003,13 +1004,15 @@ static int sdei_probe(struct platform_device *pdev)
- 		goto remove_cpupm;
- 	}
- 
--	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
-+	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
- 				&sdei_cpuhp_up, &sdei_cpuhp_down);
--	if (err) {
-+	if (err < 0) {
- 		pr_warn("Failed to register CPU hotplug notifier...\n");
- 		goto remove_reboot;
- 	}
- 
-+	sdei_hp_state = err;
-+
- 	return 0;
- 
- remove_reboot:
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index c88ccc48877d6..dbca858ffa6da 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -159,7 +159,6 @@ enum cpuhp_state {
- 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
- 	CPUHP_AP_PERF_XTENSA_STARTING,
- 	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
--	CPUHP_AP_ARM_SDEI_STARTING,
- 	CPUHP_AP_ARM_VFP_STARTING,
- 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
- 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
+ 		ar = ab->pdevs[mac_id].ar;
+ 		rx_ring = &ar->dp.rx_refill_buf_ring;
+ 		spin_lock_bh(&rx_ring->idr_lock);
 -- 
 2.39.2
 
