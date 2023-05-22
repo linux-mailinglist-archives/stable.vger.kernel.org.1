@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF7B770C446
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0350970C449
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230497AbjEVRbg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 13:31:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
+        id S231718AbjEVRbo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 13:31:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbjEVRbe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:31:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8591CE9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:31:33 -0700 (PDT)
+        with ESMTP id S231396AbjEVRbn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:31:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298EDE9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:31:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A3E861F10
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:31:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E477C433D2;
-        Mon, 22 May 2023 17:31:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A09C761F10
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:31:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6B5C433A4;
+        Mon, 22 May 2023 17:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684776692;
-        bh=P3cDRXxzKAsfLtMrmjDYTkLYtPP8bkXUJwi0f0TfSYo=;
+        s=korg; t=1684776701;
+        bh=yB7EaiLvMbEz7lj1c5fifyQZBX6mS6QjFy5tG1wJ3t4=;
         h=Subject:To:Cc:From:Date:From;
-        b=u8vRrp5vc8TCnj0PtX3lsOrus8QfPYeBURH0IbLyDl+I9TNB5kMKkWHGJqAFzJ1jF
-         HfYUAyrOnPG2DfkyTJWQK1S2P+xYuQlhKUfz1A73lOksCe+mBSquqgOgog4+0yO7P0
-         S0dYZvFWm9DqnL1Xy9gi2Qj6v1XKIjTJot/62w90=
-Subject: FAILED: patch "[PATCH] wifi: rtw89: 8852b: adjust quota to avoid SER L1 caused by" failed to apply to 6.3-stable tree
+        b=D1V+ofsaqLiA5e9+TPvCxhBuhbYxdHu6kALgEG2oElUynWINlw3uH0CdcBbleHSFj
+         4jaKWSpg7Tzcyl07ufRIYH5iaJNWx7Wvfp70JXcIG2BbYmZ4VM6OllAAT8npv1E45o
+         UIMsklMnIziMUp9fm98eJnyv0+HaIRp2aGwhHuSM=
+Subject: FAILED: patch "[PATCH] wifi: rtw89: 8852b: adjust quota to avoid SER L1 caused by" failed to apply to 6.1-stable tree
 To:     pkshih@realtek.com, Larry.Finger@lwfinger.net, kvalo@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Mon, 22 May 2023 18:31:30 +0100
-Message-ID: <2023052229-profanity-sterling-2644@gregkh>
+Message-ID: <2023052230-relation-proving-7668@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,24 +48,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x c0426c446d92023d344131d01d929bc25db7a24e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052229-profanity-sterling-2644@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052230-relation-proving-7668@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 c0426c446d92 ("wifi: rtw89: 8852b: adjust quota to avoid SER L1 caused by access null page")
 6863ad915d32 ("wifi: rtw89: support WoWLAN mode for 8852be")
+280c444745aa ("wifi: rtw89: config EDCCA threshold during scan to prevent TX failed")
+bb9040b3ff97 ("wifi: rtw89: adjust channel encoding to common function")
+75ee07b03fc6 ("wifi: rtw89: link rtw89_vif and chanctx stuffs")
+29136c95fdc5 ("wifi: rtw89: switch BANDEDGE and TX_SHAPE based on OFDMA trigger frame")
+19e28c7fcc74 ("wifi: rtw89: add WoWLAN function support")
+41d567699283 ("wifi: rtw89: add drop tx packet function")
+7a68ec3da79e ("wifi: rtw89: add function to adjust and restore PLE quota")
+b8fe87b81685 ("wifi: rtw89: 8852b: add basic attributes of chip_info")
+8915a256538d ("wifi: rtw89: 8852b: add chip_ops to configure TX/RX path")
+98bf0ddf20fc ("wifi: rtw89: 8852b: add chip_ops related to BT coexistence")
+8f88474ce3ec ("wifi: rtw89: 8852b: add chip_ops to get thermal")
+a804479839e1 ("wifi: rtw89: 8852b: add basic baseband chip_ops")
+b23b36efbdac ("wifi: rtw89: 8852b: add power on/off functions")
+d0a95ef3ed86 ("wifi: rtw89: 8852b: add chip_ops::set_channel_help")
+6b0698984eb0 ("wifi: rtw89: 8852b: add chip_ops::set_channel")
+3e870b481733 ("wifi: rtw89: 8852b: add HFC quota arrays")
+d187691ab63f ("wifi: rtw89: 8852c: set pin MUX to enable BT firmware log")
+9695dc2e4be9 ("wifi: rtw89: 8852be: add 8852BE PCI entry")
 
 thanks,
 
