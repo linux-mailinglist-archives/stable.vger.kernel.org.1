@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8977F70C756
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2561670C61D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234684AbjEVT2d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50288 "EHLO
+        id S234008AbjEVTPO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:15:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234713AbjEVT22 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:28 -0400
+        with ESMTP id S234002AbjEVTPK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39005A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD0E13E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1900762397
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215D3C433D2;
-        Mon, 22 May 2023 19:28:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6F062747
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBBBC4339B;
+        Mon, 22 May 2023 19:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783705;
-        bh=IVzfOwZ7QIXc91Rakl7Vd2n7qhxihifkzDH5KNvh3kc=;
+        s=korg; t=1684782901;
+        bh=t/W+WRdk2aQKuOJ8oxSAI+iueZ4j32cuUZcN+8r0TDU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d7rleaHZP99EQRE9LeRJeeEbG5gUYFAYvI8kNO/p+JMv20VeCUpCM92G5HEsRKXXR
-         RABQSFyswjsAlgjhcoXhZ8jJjtwpzCEz7oPMG/Gxg6NK0xCI3dBy7UompqveXQqipE
-         TK09qLAEUZI3ag4ZaDNEWcFGwMCuQFwwLVO5KOCA=
+        b=rT0FMyyjyTOHxsBeVuEC8WM/8JByNJEZ/X7H7knuyX7MqX5yVjp4MZTpwjh3l48y2
+         LQ4xgsypzPKJ2loHUMiqwrskSDiFKrU57/VmFepur3IkWe0C+bvW2b9WvRYBO7rAtI
+         6tRPBwY2puKp3qxUOkXP3FLFV2b5NxBkIbto8CC8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Frank Wang <frank.wang@rock-chips.com>,
+        patches@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
+        Yafang <laoar.shao@gmail.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Jiri Olsa <olsajiri@gmail.com>, Hao Luo <haoluo@google.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/292] usb: typec: tcpm: fix multiple times discover svids error
+Subject: [PATCH 5.15 067/203] bpf: Add preempt_count_{sub,add} into btf id deny list
 Date:   Mon, 22 May 2023 20:08:11 +0100
-Message-Id: <20230522190409.316930534@linuxfoundation.org>
+Message-Id: <20230522190356.845414356@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +57,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Wang <frank.wang@rock-chips.com>
+From: Yafang <laoar.shao@gmail.com>
 
-[ Upstream commit dac3b192107b978198e89ec0f77375738352e0c8 ]
+[ Upstream commit c11bd046485d7bf1ca200db0e7d0bdc4bafdd395 ]
 
-PD3.0 Spec 6.4.4.3.2 say that only Responder supports 12 or more SVIDs,
-the Discover SVIDs Command Shall be executed multiple times until a
-Discover SVIDs VDO is returned ending either with a SVID value of
-0x0000 in the last part of the last VDO or with a VDO containing two
-SVIDs with values of 0x0000.
+The recursion check in __bpf_prog_enter* and __bpf_prog_exit*
+leave preempt_count_{sub,add} unprotected. When attaching trampoline to
+them we get panic as follows,
 
-In the current implementation, if the last VDO does not find that the
-Discover SVIDs Command would be executed multiple times even if the
-Responder SVIDs are less than 12, and we found some odd dockers just
-meet this case. So fix it.
+[  867.843050] BUG: TASK stack guard page was hit at 0000000009d325cf (stack is 0000000046a46a15..00000000537e7b28)
+[  867.843064] stack guard page: 0000 [#1] PREEMPT SMP NOPTI
+[  867.843067] CPU: 8 PID: 11009 Comm: trace Kdump: loaded Not tainted 6.2.0+ #4
+[  867.843100] Call Trace:
+[  867.843101]  <TASK>
+[  867.843104]  asm_exc_int3+0x3a/0x40
+[  867.843108] RIP: 0010:preempt_count_sub+0x1/0xa0
+[  867.843135]  __bpf_prog_enter_recur+0x17/0x90
+[  867.843148]  bpf_trampoline_6442468108_0+0x2e/0x1000
+[  867.843154]  ? preempt_count_sub+0x1/0xa0
+[  867.843157]  preempt_count_sub+0x5/0xa0
+[  867.843159]  ? migrate_enable+0xac/0xf0
+[  867.843164]  __bpf_prog_exit_recur+0x2d/0x40
+[  867.843168]  bpf_trampoline_6442468108_0+0x55/0x1000
+...
+[  867.843788]  preempt_count_sub+0x5/0xa0
+[  867.843793]  ? migrate_enable+0xac/0xf0
+[  867.843829]  __bpf_prog_exit_recur+0x2d/0x40
+[  867.843837] BUG: IRQ stack guard page was hit at 0000000099bd8228 (stack is 00000000b23e2bc4..000000006d95af35)
+[  867.843841] BUG: IRQ stack guard page was hit at 000000005ae07924 (stack is 00000000ffd69623..0000000014eb594c)
+[  867.843843] BUG: IRQ stack guard page was hit at 00000000028320f0 (stack is 00000000034b6438..0000000078d1bcec)
+[  867.843842]  bpf_trampoline_6442468108_0+0x55/0x1000
+...
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
-Link: https://lore.kernel.org/r/20230316081149.24519-1-frank.wang@rock-chips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That is because in __bpf_prog_exit_recur, the preempt_count_{sub,add} are
+called after prog->active is decreased.
+
+Fixing this by adding these two functions into btf ids deny list.
+
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Yafang <laoar.shao@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Jiri Olsa <olsajiri@gmail.com>
+Acked-by: Hao Luo <haoluo@google.com>
+Link: https://lore.kernel.org/r/20230413025248.79764-1-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 032d21a967799..524099634a1d4 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1514,7 +1514,21 @@ static bool svdm_consume_svids(struct tcpm_port *port, const u32 *p, int cnt)
- 		pmdata->svids[pmdata->nsvids++] = svid;
- 		tcpm_log(port, "SVID %d: 0x%x", pmdata->nsvids, svid);
- 	}
--	return true;
-+
-+	/*
-+	 * PD3.0 Spec 6.4.4.3.2: The SVIDs are returned 2 per VDO (see Table
-+	 * 6-43), and can be returned maximum 6 VDOs per response (see Figure
-+	 * 6-19). If the Respondersupports 12 or more SVID then the Discover
-+	 * SVIDs Command Shall be executed multiple times until a Discover
-+	 * SVIDs VDO is returned ending either with a SVID value of 0x0000 in
-+	 * the last part of the last VDO or with a VDO containing two SVIDs
-+	 * with values of 0x0000.
-+	 *
-+	 * However, some odd dockers support SVIDs less than 12 but without
-+	 * 0x0000 in the last VDO, so we need to break the Discover SVIDs
-+	 * request and return false here.
-+	 */
-+	return cnt == 7;
- abort:
- 	tcpm_log(port, "SVID_DISCOVERY_MAX(%d) too low!", SVID_DISCOVERY_MAX);
- 	return false;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 261c2ed3adb17..d0db1c7e2645d 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -13645,6 +13645,10 @@ BTF_ID(func, migrate_enable)
+ #if !defined CONFIG_PREEMPT_RCU && !defined CONFIG_TINY_RCU
+ BTF_ID(func, rcu_read_unlock_strict)
+ #endif
++#if defined(CONFIG_DEBUG_PREEMPT) || defined(CONFIG_TRACE_PREEMPT_TOGGLE)
++BTF_ID(func, preempt_count_add)
++BTF_ID(func, preempt_count_sub)
++#endif
+ BTF_SET_END(btf_id_deny)
+ 
+ static int check_attach_btf_id(struct bpf_verifier_env *env)
 -- 
 2.39.2
 
