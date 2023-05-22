@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C3970C820
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B28D870C9E5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234907AbjEVTgH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
+        id S235402AbjEVTw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:52:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234928AbjEVTgG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075D81B4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:47 -0700 (PDT)
+        with ESMTP id S235440AbjEVTwq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BEE9A9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93E936297D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E43DC433D2;
-        Mon, 22 May 2023 19:34:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3252262B38
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC7DC433EF;
+        Mon, 22 May 2023 19:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784094;
-        bh=lDq33r+Xd6bsnUfmK0/am/43ciafYDk9OkG43+eN9qk=;
+        s=korg; t=1684785164;
+        bh=QLWCniFPzTo65y/n7dqj3Cb4Sj5kGNmT0mbAznCMCQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kqMj0sm1HfyB2fQ09NJEl6NZmPbmH758WDyYwRH3Ky9gViY9T5IXDBHBFBQtiYC36
-         V13P07NCYu2/y0MvQeEgDcfkQIQHwfzL5/87CwJevp1vpgssdO2HUpDf2deIGsLEL0
-         XaRe557DkizoBMZDner1DSs7TTI66isLZ86EqtMQ=
+        b=wITZH8hDqXLgDsgkOD3d7eiyamWDEjsdEuobqRel0SmusIGO08MQvSU2DYrBsC6ux
+         i3WCsRchaBp3cKWlJnoCT6zFgEmKRaCsqr6U6vN1roP8jEzZaElq5WMN0JQEhqguw1
+         k2VuX4qKmE6Mrrq20TeSeHLRe7Si0omtsnvUalBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.1 261/292] statfs: enforce statfs[64] structure initialization
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.3 313/364] can: kvaser_pciefd: Clear listen-only bit if not explicitly requested
 Date:   Mon, 22 May 2023 20:10:18 +0100
-Message-Id: <20230522190412.466263183@linuxfoundation.org>
+Message-Id: <20230522190420.599212758@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,62 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit ed40866ec7d328b3dfb70db7e2011640a16202c3 upstream.
+commit bf7ac55e991ca177f1ac16be51152f1ef291a4df upstream.
 
-s390's struct statfs and struct statfs64 contain padding, which
-field-by-field copying does not set. Initialize the respective structs
-with zeros before filling them and copying them to userspace, like it's
-already done for the compat versions of these structs.
+The listen-only bit was never cleared, causing the controller to
+always use listen-only mode, if previously set.
 
-Found by KMSAN.
-
-[agordeev@linux.ibm.com: fixed typo in patch description]
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: stable@vger.kernel.org # v4.14+
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/20230504144021.808932-2-iii@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-3-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/statfs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/statfs.c
-+++ b/fs/statfs.c
-@@ -130,6 +130,7 @@ static int do_statfs_native(struct kstat
- 	if (sizeof(buf) == sizeof(*st))
- 		memcpy(&buf, st, sizeof(*st));
- 	else {
-+		memset(&buf, 0, sizeof(buf));
- 		if (sizeof buf.f_blocks == 4) {
- 			if ((st->f_blocks | st->f_bfree | st->f_bavail |
- 			     st->f_bsize | st->f_frsize) &
-@@ -158,7 +159,6 @@ static int do_statfs_native(struct kstat
- 		buf.f_namelen = st->f_namelen;
- 		buf.f_frsize = st->f_frsize;
- 		buf.f_flags = st->f_flags;
--		memset(buf.f_spare, 0, sizeof(buf.f_spare));
- 	}
- 	if (copy_to_user(p, &buf, sizeof(buf)))
- 		return -EFAULT;
-@@ -171,6 +171,7 @@ static int do_statfs64(struct kstatfs *s
- 	if (sizeof(buf) == sizeof(*st))
- 		memcpy(&buf, st, sizeof(*st));
- 	else {
-+		memset(&buf, 0, sizeof(buf));
- 		buf.f_type = st->f_type;
- 		buf.f_bsize = st->f_bsize;
- 		buf.f_blocks = st->f_blocks;
-@@ -182,7 +183,6 @@ static int do_statfs64(struct kstatfs *s
- 		buf.f_namelen = st->f_namelen;
- 		buf.f_frsize = st->f_frsize;
- 		buf.f_flags = st->f_flags;
--		memset(buf.f_spare, 0, sizeof(buf.f_spare));
- 	}
- 	if (copy_to_user(p, &buf, sizeof(buf)))
- 		return -EFAULT;
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -559,6 +559,8 @@ static void kvaser_pciefd_setup_controll
+ 
+ 	if (can->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
+ 		mode |= KVASER_PCIEFD_KCAN_MODE_LOM;
++	else
++		mode &= ~KVASER_PCIEFD_KCAN_MODE_LOM;
+ 
+ 	mode |= KVASER_PCIEFD_KCAN_MODE_EEN;
+ 	mode |= KVASER_PCIEFD_KCAN_MODE_EPEN;
 
 
