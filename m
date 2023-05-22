@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD2870C9CC
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 303FD70C6AD
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235408AbjEVTwS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:52:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44984 "EHLO
+        id S231728AbjEVTVE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:21:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235427AbjEVTwJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:09 -0400
+        with ESMTP id S234368AbjEVTVD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B73B7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A1F0CF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA6AF62B27
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54B9C4339C;
-        Mon, 22 May 2023 19:51:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F3E5A6282B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073FEC433EF;
+        Mon, 22 May 2023 19:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785107;
-        bh=h7dh3KkyJjGKYQdkWqhkbHfMUiiUp9Fd9wZiShJylW8=;
+        s=korg; t=1684783261;
+        bh=Es6M4EjdNf5d6Kqy5izHkCMBOl/glaygiIkSf5O8cK8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=coBWrrrT2Lqbh0elMakwtGwcgEiCYXACj6QoeuujTYaJZ4jY0K7J0zM9cRHRAuLru
-         +4LuBBPyyOIUQn4WK8M/mGInh0NsQEcEyJNqqiJD28cvormFEMzc2eUqy1RAZD1gkg
-         u2ZeurN9G2GTHp+1LzRpB7AS+iVMGvwwDGpg1PzA=
+        b=xFoUcGlCaUujfS/0bD/few4dZo5ztSJeHA0uQSACZoIEiqXVDil+94vr30qm024NL
+         L3HUz8ySQ4HOOTkflrQ49riZreC3KHSLA/JZ5Y1g9kkh607mBzNIJHSbEWBb3vwtOY
+         gqm4zC0u6Ftfd8SsIV+hGbvMqoDVWjgJjwEWPKwM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.3 310/364] can: kvaser_pciefd: Set CAN_STATE_STOPPED in kvaser_pciefd_stop()
+        patches@lists.linux.dev, Andrew Davis <afd@ti.com>,
+        stable <stable@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 5.15 191/203] serial: 8250_exar: Add support for USR298x PCI Modems
 Date:   Mon, 22 May 2023 20:10:15 +0100
-Message-Id: <20230522190420.525815971@linuxfoundation.org>
+Message-Id: <20230522190400.311842504@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,33 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Andrew Davis <afd@ti.com>
 
-commit aed0e6ca7dbb8fbea9bc69c9ac663d5533c8c5d8 upstream.
+commit 95d698869b404772cc8b72560df71548491c10bc upstream.
 
-Set can.state to CAN_STATE_STOPPED in kvaser_pciefd_stop().
-Without this fix, wrong CAN state was repported after the interface was
-brought down.
+Possibly the last PCI controller-based (i.e. not a soft/winmodem)
+dial-up modem one can still buy.
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-2-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Looks to have a stock XR17C154 PCI UART chip for communication, but for
+some reason when provisioning the PCI IDs they swapped the vendor and
+subvendor IDs. Otherwise this card would have worked out of the box.
+
+Searching online, some folks seem to not have this issue and others do,
+so it is possible only some batches of cards have this error.
+
+Create a new macro to handle the switched IDs and add support here.
+
+Signed-off-by: Andrew Davis <afd@ti.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230420160209.28221-1-afd@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/8250/8250_exar.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -719,6 +719,7 @@ static int kvaser_pciefd_stop(struct net
- 		iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 		del_timer(&can->bec_poll_timer);
- 	}
-+	can->can.state = CAN_STATE_STOPPED;
- 	close_candev(netdev);
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -40,9 +40,13 @@
+ #define PCI_DEVICE_ID_COMMTECH_4224PCIE		0x0020
+ #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
+ #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
++
+ #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
+ #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
  
- 	return ret;
++#define PCI_SUBDEVICE_ID_USR_2980		0x0128
++#define PCI_SUBDEVICE_ID_USR_2981		0x0129
++
+ #define PCI_DEVICE_ID_SEALEVEL_710xC		0x1001
+ #define PCI_DEVICE_ID_SEALEVEL_720xC		0x1002
+ #define PCI_DEVICE_ID_SEALEVEL_740xC		0x1004
+@@ -818,6 +822,15 @@ static const struct exar8250_board pbn_e
+ 		(kernel_ulong_t)&bd			\
+ 	}
+ 
++#define USR_DEVICE(devid, sdevid, bd) {			\
++	PCI_DEVICE_SUB(					\
++		PCI_VENDOR_ID_USR,			\
++		PCI_DEVICE_ID_EXAR_##devid,		\
++		PCI_VENDOR_ID_EXAR,			\
++		PCI_SUBDEVICE_ID_USR_##sdevid), 0, 0,	\
++		(kernel_ulong_t)&bd			\
++	}
++
+ static const struct pci_device_id exar_pci_tbl[] = {
+ 	EXAR_DEVICE(ACCESSIO, COM_2S, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(ACCESSIO, COM_4S, pbn_exar_XR17C15x),
+@@ -842,6 +855,10 @@ static const struct pci_device_id exar_p
+ 
+ 	IBM_DEVICE(XR17C152, SATURN_SERIAL_ONE_PORT, pbn_exar_ibm_saturn),
+ 
++	/* USRobotics USR298x-OEM PCI Modems */
++	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
++	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
++
+ 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
+ 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
 
 
