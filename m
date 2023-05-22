@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3BF70C720
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ED4070C8D5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230055AbjEVT0H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47764 "EHLO
+        id S232078AbjEVTmt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234620AbjEVT0G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C681BA3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:05 -0700 (PDT)
+        with ESMTP id S235079AbjEVTmr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A5A10C0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F2306289E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0AAC433D2;
-        Mon, 22 May 2023 19:26:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEEB862A3C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0393EC433EF;
+        Mon, 22 May 2023 19:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783564;
-        bh=66gkVlHCzJjf6ZUdtVDh1rt65UoK3aIY9vnSanqRPZY=;
+        s=korg; t=1684784544;
+        bh=Ggl0AFjBRmnCsVkiH9wFSOtdIS5ckQP0yHzjiMq0iVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BkZHCj3AlfAEcZHsJ6z8Hx8C9Sz4O+HcggRLWG48O1f0NNyJ6kU9MYfqTheIcJAjs
-         cxvDPMFpzIjGLEFVVPf0ijuZfNtVPGcpP5OPkC6jf/6y8P3fYU9wud0SPPZ62GwQSw
-         0/hKpW4nm0eHNGJBP0pIfTbLw2dvMDx1e7t9/wFw=
+        b=0QA+7Sf/nn1AIOC7k9omIuZM9NN11jM1K8jtLVsKLNxV6XuBRT/eFgbP/1Rj19qZG
+         A2N89y+O0swvu1XFchUYeXwtIGiLti0HEeZi+dS/yzve7QGJX1wlS376EbzCuQoUPm
+         kcGkzlJ25vHC7nMMxKPw1mNq5NXhv71vl0wlXXpM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
-        Martin Leung <Martin.Leung@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Ayush Gupta <ayugupta@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/292] drm/amd/display: fixed dcn30+ underflow issue
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 111/364] ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()
 Date:   Mon, 22 May 2023 20:06:56 +0100
-Message-Id: <20230522190407.417768346@linuxfoundation.org>
+Message-Id: <20230522190415.550817261@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,73 +55,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ayush Gupta <ayugupta@amd.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 37403ced9f2873fab7f39ab4ac963bbb33fb0bc0 ]
+[ Upstream commit 93cdf49f6eca5e23f6546b8f28457b2e6a6961d9 ]
 
-[Why]
-Observing underflow on dcn30+ system config at 4k144hz
+When the length of best extent found is less than the length of goal extent
+we need to make sure that the best extent atleast covers the start of the
+original request. This is done by adjusting the ac_b_ex.fe_logical (logical
+start) of the extent.
 
-[How]
-We set the UCLK hardmax on AC/DC switch if softmax is enabled
-and also on boot. While booting up the UCLK Hardmax is set
-to softmax before the init sequence and the init sequence
-resets the hardmax to UCLK max which enables P-state switching.
-Just added a conditional check to avoid setting hardmax on init.
+While doing so, the current logic sometimes results in the best extent's
+logical range overflowing the goal extent. Since this best extent is later
+added to the inode preallocation list, we have a possibility of introducing
+overlapping preallocations. This is discussed in detail here [1].
 
-Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
-Reviewed-by: Martin Leung <Martin.Leung@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Ayush Gupta <ayugupta@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+As per Jan's suggestion, to fix this, replace the existing logic with the
+below logic for adjusting best extent as it keeps fragmentation in check
+while ensuring logical range of best extent doesn't overflow out of goal
+extent:
+
+1. Check if best extent can be kept at end of goal range and still cover
+   original start.
+2. Else, check if best extent can be kept at start of goal range and still
+   cover original start.
+3. Else, keep the best extent at start of original request.
+
+Also, add a few extra BUG_ONs that might help catch errors faster.
+
+[1] https://lore.kernel.org/r/Y+OGkVvzPN0RMv0O@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/f96aca6d415b36d1f90db86c1a8cd7e2e9d7ab0e.1679731817.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 3 ++-
- drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/mballoc.c | 49 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 31 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index c20e9f76f0213..a1b312483d7f1 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -629,7 +629,8 @@ void dcn30_init_hw(struct dc *dc)
- 	if (dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 90daeca1c8c58..9d495cd63ea27 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4321,6 +4321,7 @@ static void ext4_mb_use_inode_pa(struct ext4_allocation_context *ac,
+ 	BUG_ON(start < pa->pa_pstart);
+ 	BUG_ON(end > pa->pa_pstart + EXT4_C2B(sbi, pa->pa_len));
+ 	BUG_ON(pa->pa_free < len);
++	BUG_ON(ac->ac_b_ex.fe_len <= 0);
+ 	pa->pa_free -= len;
  
--	if (dc->clk_mgr->funcs->set_hard_max_memclk)
-+	//if softmax is enabled then hardmax will be set by a different call
-+	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+ 	mb_debug(ac->ac_sb, "use %llu/%d from inode pa %p\n", start, len, pa);
+@@ -4650,10 +4651,8 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 	pa = ac->ac_pa;
  
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c
-index bdf101547484a..d4ee533deff32 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c
-@@ -284,7 +284,7 @@ void dcn31_init_hw(struct dc *dc)
- 	if (dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+ 	if (ac->ac_b_ex.fe_len < ac->ac_g_ex.fe_len) {
+-		int winl;
+-		int wins;
+-		int win;
+-		int offs;
++		int new_bex_start;
++		int new_bex_end;
  
--	if (dc->clk_mgr->funcs->set_hard_max_memclk)
-+	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+ 		/* we can't allocate as much as normalizer wants.
+ 		 * so, found space must get proper lstart
+@@ -4661,26 +4660,40 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
+ 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
  
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index e9188bce62e0b..2f4afe40f3e68 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -970,7 +970,7 @@ void dcn32_init_hw(struct dc *dc)
- 	if (dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+-		/* we're limited by original request in that
+-		 * logical block must be covered any way
+-		 * winl is window we can move our chunk within */
+-		winl = ac->ac_o_ex.fe_logical - ac->ac_g_ex.fe_logical;
++		/*
++		 * Use the below logic for adjusting best extent as it keeps
++		 * fragmentation in check while ensuring logical range of best
++		 * extent doesn't overflow out of goal extent:
++		 *
++		 * 1. Check if best ex can be kept at end of goal and still
++		 *    cover original start
++		 * 2. Else, check if best ex can be kept at start of goal and
++		 *    still cover original start
++		 * 3. Else, keep the best ex at start of original request.
++		 */
++		new_bex_end = ac->ac_g_ex.fe_logical +
++			EXT4_C2B(sbi, ac->ac_g_ex.fe_len);
++		new_bex_start = new_bex_end - EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical >= new_bex_start)
++			goto adjust_bex;
  
--	if (dc->clk_mgr->funcs->set_hard_max_memclk)
-+	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+-		/* also, we should cover whole original request */
+-		wins = EXT4_C2B(sbi, ac->ac_b_ex.fe_len - ac->ac_o_ex.fe_len);
++		new_bex_start = ac->ac_g_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical < new_bex_end)
++			goto adjust_bex;
  
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
+-		/* the smallest one defines real window */
+-		win = min(winl, wins);
++		new_bex_start = ac->ac_o_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+ 
+-		offs = ac->ac_o_ex.fe_logical %
+-			EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+-		if (offs && offs < win)
+-			win = offs;
++adjust_bex:
++		ac->ac_b_ex.fe_logical = new_bex_start;
+ 
+-		ac->ac_b_ex.fe_logical = ac->ac_o_ex.fe_logical -
+-			EXT4_NUM_B2C(sbi, win);
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+ 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
++		BUG_ON(new_bex_end > (ac->ac_g_ex.fe_logical +
++				      EXT4_C2B(sbi, ac->ac_g_ex.fe_len)));
+ 	}
+ 
+ 	/* preallocation can change ac_b_ex, thus we store actually
 -- 
 2.39.2
 
