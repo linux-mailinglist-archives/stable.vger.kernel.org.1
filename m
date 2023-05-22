@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3835970C66B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD37E70C97D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234190AbjEVTRu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:17:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41118 "EHLO
+        id S235337AbjEVTso (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234196AbjEVTRt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:17:49 -0400
+        with ESMTP id S235339AbjEVTsn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD39F184
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 810DA99
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 493D9627C7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533ADC433EF;
-        Mon, 22 May 2023 19:17:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DF6B62AB2
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C2DC433EF;
+        Mon, 22 May 2023 19:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783061;
-        bh=dy0OJOPxBAGEZk2fQ6igYtpPRnHw6pYw8TFErW4TrqQ=;
+        s=korg; t=1684784921;
+        bh=wvYOVRFexBBDRA9VHdTVEVhGxWLIx++LZGxP1FpRQrs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Clyo6ldK0emgSEeZmXyw6YdyiFfb0r+PokptKahi1p7h9YF7jBCO9JGeeYCg6cTko
-         pvoCrpjRK3cJBZk7nyww6q+8RByVbmE36dfQPtodGJTbDp6uK7uElIQLGc3LImqhfw
-         zYJ1d+Qjd+y5326jyF7T0M3HnT6E3vqTHVK3VQhY=
+        b=uQy8dA7DMY5An+Fdv8n/qYP2xPn7qxOXUkpWi4OcPAV8u1rqI3cA1iMTQ9K6clWm7
+         WWe23CjELs5IvvZNLwRW/KXb3L714UxlOYxXLkoGo3tQR4kCXvgHwcSdzVygUIq5qU
+         7pBle1A3KsEUuTv0geTLrghNpr27WiWfZ8xiLgg0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, XuDong Liu <m202071377@hust.edu.cn>,
-        Doug Berger <opendmb@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 127/203] serial: 8250_bcm7271: fix leak in `brcmuart_probe`
+Subject: [PATCH 6.3 246/364] SUNRPC: double free xprt_ctxt while still in use
 Date:   Mon, 22 May 2023 20:09:11 +0100
-Message-Id: <20230522190358.487882734@linuxfoundation.org>
+Message-Id: <20230522190418.847007571@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Doug Berger <opendmb@gmail.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit f264f2f6f4788dc031cef60a0cf2881902736709 ]
+[ Upstream commit eb8d3a2c809abd73ab0a060fe971d6b9019aa3c1 ]
 
-Smatch reports:
-drivers/tty/serial/8250/8250_bcm7271.c:1120 brcmuart_probe() warn:
-'baud_mux_clk' from clk_prepare_enable() not released on lines: 1032.
+When an RPC request is deferred, the rq_xprt_ctxt pointer is moved out
+of the svc_rqst into the svc_deferred_req.
+When the deferred request is revisited, the pointer is copied into
+the new svc_rqst - and also remains in the svc_deferred_req.
 
-The issue is fixed by using a managed clock.
+In the (rare?) case that the request is deferred a second time, the old
+svc_deferred_req is reused - it still has all the correct content.
+However in that case the rq_xprt_ctxt pointer is NOT cleared so that
+when xpo_release_xprt is called, the ctxt is freed (UDP) or possible
+added to a free list (RDMA).
+When the deferred request is revisited for a second time, it will
+reference this ctxt which may be invalid, and the free the object a
+second time which is likely to oops.
 
-Fixes: 41a469482de2 ("serial: 8250: Add new 8250-core based Broadcom STB driver")
-Reported-by: XuDong Liu <m202071377@hust.edu.cn>
-Link: https://lore.kernel.org/lkml/20230424125100.4783-1-m202071377@hust.edu.cn/
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/20230427181916.2983697-3-opendmb@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So change svc_defer() to *always* clear rq_xprt_ctxt, and assert that
+the value is now stored in the svc_deferred_req.
+
+Fixes: 773f91b2cf3f ("SUNRPC: Fix NFSD's request deferral on RDMA transports")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_bcm7271.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/svc_xprt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_bcm7271.c b/drivers/tty/serial/8250/8250_bcm7271.c
-index 513ed24cba5ce..f95047160b4d2 100644
---- a/drivers/tty/serial/8250/8250_bcm7271.c
-+++ b/drivers/tty/serial/8250/8250_bcm7271.c
-@@ -1016,7 +1016,7 @@ static int brcmuart_probe(struct platform_device *pdev)
- 	of_property_read_u32(np, "clock-frequency", &clk_rate);
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index ba629297da4e2..feab34db870fe 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -1224,13 +1224,14 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
+ 		dr->daddr = rqstp->rq_daddr;
+ 		dr->argslen = rqstp->rq_arg.len >> 2;
+ 		dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
+-		rqstp->rq_xprt_ctxt = NULL;
  
- 	/* See if a Baud clock has been specified */
--	baud_mux_clk = of_clk_get_by_name(np, "sw_baud");
-+	baud_mux_clk = devm_clk_get(dev, "sw_baud");
- 	if (IS_ERR(baud_mux_clk)) {
- 		if (PTR_ERR(baud_mux_clk) == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
+ 		/* back up head to the start of the buffer and copy */
+ 		skip = rqstp->rq_arg.len - rqstp->rq_arg.head[0].iov_len;
+ 		memcpy(dr->args, rqstp->rq_arg.head[0].iov_base - skip,
+ 		       dr->argslen << 2);
+ 	}
++	WARN_ON_ONCE(rqstp->rq_xprt_ctxt != dr->xprt_ctxt);
++	rqstp->rq_xprt_ctxt = NULL;
+ 	trace_svc_defer(rqstp);
+ 	svc_xprt_get(rqstp->rq_xprt);
+ 	dr->xprt = rqstp->rq_xprt;
 -- 
 2.39.2
 
