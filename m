@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2EAD70C77C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEE5070C971
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234708AbjEVTaG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:30:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51976 "EHLO
+        id S235326AbjEVTsR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234720AbjEVTaF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:30:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB93119
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:30:03 -0700 (PDT)
+        with ESMTP id S235331AbjEVTsQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BB3C1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58C6D628F9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD72C433EF;
-        Mon, 22 May 2023 19:30:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DB1762ABE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C35C433EF;
+        Mon, 22 May 2023 19:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783802;
-        bh=m7zSPEB8Nn9SEiXHT57EIv8Xs/xoJzspGFAhmfYy8Yo=;
+        s=korg; t=1684784893;
+        bh=c6+cJj2hVBT5nxDYz1XcF4qjFeYOBY8jbPOX3F+6DQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CPddO6I9RA/eD653BOgMTq7UbC5d8qsfjE6U0EVe41LBvcGZ9qp9EsmMVIoqdC3xs
-         wNAOmvo7tEJYWISG9YZBJ8mAKqRKqFKX2W5PQ4Rg0jPyujIEdDtVvfgPrUJ/0gbDnV
-         SnKgw0saqmXp7vElgCcM1v4fdO7iPvM0i/tkjJZE=
+        b=2WgGvTnm9re6CGe5yvxuKryIbpruedTXVXIdTXpbB4xcr3qvFqUegwnGBi7Ivi2Ez
+         STxfbaabc8HIcVumeb/SfnHoItnR4IhWiTLrCGQVlriM49O2bUigOmg+3QbUOSaDX4
+         aUwgF07ohSn6Yu6zAaAccCMsCPPT4e/7+mjc4sFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Tobias Brunner <tobias@strongswan.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/292] net: phy: dp83867: add w/a for packet errors seen with short cables
+Subject: [PATCH 6.3 219/364] af_key: Reject optional tunnel/BEET mode templates in outbound policies
 Date:   Mon, 22 May 2023 20:08:44 +0100
-Message-Id: <20230522190410.140213772@linuxfoundation.org>
+Message-Id: <20230522190418.184256888@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,75 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
+From: Tobias Brunner <tobias@strongswan.org>
 
-[ Upstream commit 0b01db274028f5acd207332686ffc92ac77491ac ]
+[ Upstream commit cf3128a7aca55b2eefb68281d44749c683bdc96f ]
 
-Introduce the W/A for packet errors seen with short cables (<1m) between
-two DP83867 PHYs.
+xfrm_state_find() uses `encap_family` of the current template with
+the passed local and remote addresses to find a matching state.
+If an optional tunnel or BEET mode template is skipped in a mixed-family
+scenario, there could be a mismatch causing an out-of-bounds read as
+the addresses were not replaced to match the family of the next template.
 
-The W/A recommended by DM requires FFE Equalizer Configuration tuning by
-writing value 0x0E81 to DSP_FFE_CFG register (0x012C), surrounded by hard
-and soft resets as follows:
+While there are theoretical use cases for optional templates in outbound
+policies, the only practical one is to skip IPComp states in inbound
+policies if uncompressed packets are received that are handled by an
+implicitly created IPIP state instead.
 
-write_reg(0x001F, 0x8000); //hard reset
-write_reg(DSP_FFE_CFG, 0x0E81);
-write_reg(0x001F, 0x4000); //soft reset
-
-Since  DP83867 PHY DM says "Changing this register to 0x0E81, will not
-affect Long Cable performance.", enable the W/A by default.
-
-Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Tobias Brunner <tobias@strongswan.org>
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83867.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ net/key/af_key.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 7446d5c6c7146..14990f8462ae3 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -42,6 +42,7 @@
- #define DP83867_STRAP_STS1	0x006E
- #define DP83867_STRAP_STS2	0x006f
- #define DP83867_RGMIIDCTL	0x0086
-+#define DP83867_DSP_FFE_CFG	0x012c
- #define DP83867_RXFCFG		0x0134
- #define DP83867_RXFPMD1	0x0136
- #define DP83867_RXFPMD2	0x0137
-@@ -910,8 +911,27 @@ static int dp83867_phy_reset(struct phy_device *phydev)
- 
- 	usleep_range(10, 20);
- 
--	return phy_modify(phydev, MII_DP83867_PHYCTRL,
-+	err = phy_modify(phydev, MII_DP83867_PHYCTRL,
- 			 DP83867_PHYCR_FORCE_LINK_GOOD, 0);
-+	if (err < 0)
-+		return err;
-+
-+	/* Configure the DSP Feedforward Equalizer Configuration register to
-+	 * improve short cable (< 1 meter) performance. This will not affect
-+	 * long cable performance.
-+	 */
-+	err = phy_write_mmd(phydev, DP83867_DEVADDR, DP83867_DSP_FFE_CFG,
-+			    0x0e81);
-+	if (err < 0)
-+		return err;
-+
-+	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
-+	if (err < 0)
-+		return err;
-+
-+	usleep_range(10, 20);
-+
-+	return 0;
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index a815f5ab4c49a..31ab12fd720ae 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1940,7 +1940,8 @@ static u32 gen_reqid(struct net *net)
  }
  
- static void dp83867_link_change_notify(struct phy_device *phydev)
+ static int
+-parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_ipsecrequest *rq)
++parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_policy *pol,
++		   struct sadb_x_ipsecrequest *rq)
+ {
+ 	struct net *net = xp_net(xp);
+ 	struct xfrm_tmpl *t = xp->xfrm_vec + xp->xfrm_nr;
+@@ -1958,9 +1959,12 @@ parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_ipsecrequest *rq)
+ 	if ((mode = pfkey_mode_to_xfrm(rq->sadb_x_ipsecrequest_mode)) < 0)
+ 		return -EINVAL;
+ 	t->mode = mode;
+-	if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_USE)
++	if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_USE) {
++		if ((mode == XFRM_MODE_TUNNEL || mode == XFRM_MODE_BEET) &&
++		    pol->sadb_x_policy_dir == IPSEC_DIR_OUTBOUND)
++			return -EINVAL;
+ 		t->optional = 1;
+-	else if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_UNIQUE) {
++	} else if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_UNIQUE) {
+ 		t->reqid = rq->sadb_x_ipsecrequest_reqid;
+ 		if (t->reqid > IPSEC_MANUAL_REQID_MAX)
+ 			t->reqid = 0;
+@@ -2002,7 +2006,7 @@ parse_ipsecrequests(struct xfrm_policy *xp, struct sadb_x_policy *pol)
+ 		    rq->sadb_x_ipsecrequest_len < sizeof(*rq))
+ 			return -EINVAL;
+ 
+-		if ((err = parse_ipsecrequest(xp, rq)) < 0)
++		if ((err = parse_ipsecrequest(xp, pol, rq)) < 0)
+ 			return err;
+ 		len -= rq->sadb_x_ipsecrequest_len;
+ 		rq = (void*)((u8*)rq + rq->sadb_x_ipsecrequest_len);
 -- 
 2.39.2
 
