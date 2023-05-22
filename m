@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E5670C967
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5672670C968
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235320AbjEVTrq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42608 "EHLO
+        id S235321AbjEVTrs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:47:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235319AbjEVTro (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:44 -0400
+        with ESMTP id S235318AbjEVTrr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B44D99
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC4A0A9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BC6262AB4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E23C433EF;
-        Mon, 22 May 2023 19:47:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77BFF62AB0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86609C433EF;
+        Mon, 22 May 2023 19:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784863;
-        bh=7sG3qalha1xhNGipSnhZPjI9JikH2aXgQbyJG0AhEd0=;
+        s=korg; t=1684784865;
+        bh=C2Vzp/NVBrQQ5oy+2ry83pGOZXgwfb5NVjN/F4OK8RU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KLfOlbQzswjmAvmqfwAY9zRAgySQyV0NLH+x+C6/nME+2C2yal8QsgYrdn9zZGClB
-         Sc3qxDZe73rqSiln+CBTCk9Hyjjb3ws7hkW7k1vRX7QSOWwZl3n5lBvmxU6p0vVRQB
-         pNoCYYBmbMY/O4GfwlZ1iFGbdWP1jMpSuW3zVSm4=
+        b=aAOhdNO/D+8FgzaEMyuCmxhXZCKdSLh2IYjbn8PyTBUqopgBJYc5nGhrkL6xY8bKg
+         eJY/uyIyDxgAHp3zK2MujN+E5LcOyfSpGDjRss+mP1z67ySt4ZcUCo6STI4/6gKh6P
+         LQ4m4ixcteBNk/JisF1W33CTVa2wG9zw1yTOciug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 227/364] wifi: mt76: connac: fix stats->tx_bytes calculation
-Date:   Mon, 22 May 2023 20:08:52 +0100
-Message-Id: <20230522190418.376429735@linuxfoundation.org>
+        patches@lists.linux.dev, Ryan Underwood <nemesis@icequake.net>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 228/364] ALSA: hda/realtek: Apply HP B&O top speaker profile to Pavilion 15
+Date:   Mon, 22 May 2023 20:08:53 +0100
+Message-Id: <20230522190418.399758980@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
 References: <20230522190412.801391872@linuxfoundation.org>
@@ -53,49 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Ryan C. Underwood <nemesis@icequake.net>
 
-[ Upstream commit c7ab7a29ef5c0779574120d922256ce4651555d3 ]
+[ Upstream commit 92553ee03166ef8fa978e7683f9f4af30c9c4e6b ]
 
-The stats->tx_bytes shall subtract retry byte from tx byte.
+The Pavilion 15 line has B&O top speakers similar to the x360 and
+applying the same profile produces good sound.  Without this, the
+sound would be tinny and underpowered without either applying
+model=alc295-hp-x360 or booting another OS first.
 
-Fixes: 43eaa3689507 ("wifi: mt76: add PPDU based TxS support for WED device")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/b3cd45596943cf5a06b2e08e2fe732ab0b51311b.1682285873.git.ryder.lee@mediatek.com
+Signed-off-by: Ryan Underwood <nemesis@icequake.net>
+Fixes: 563785edfcef ("ALSA: hda/realtek - Add quirk entry for HP Pavilion 15")
+Link: https://lore.kernel.org/r/ZF0mpcMz3ezP9KQw@icequake.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c  | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-index f33171bcd3432..c3b692eac6f65 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-@@ -163,7 +163,7 @@ enum {
- #define MT_TXS5_MPDU_TX_CNT		GENMASK(31, 23)
- 
- #define MT_TXS6_MPDU_FAIL_CNT		GENMASK(31, 23)
--
-+#define MT_TXS7_MPDU_RETRY_BYTE		GENMASK(22, 0)
- #define MT_TXS7_MPDU_RETRY_CNT		GENMASK(31, 23)
- 
- /* RXD DW1 */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 82aac0a04655f..e57eade24ae56 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -576,7 +576,8 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 	/* PPDU based reporting */
- 	if (FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
- 		stats->tx_bytes +=
--			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE);
-+			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
-+			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE);
- 		stats->tx_packets +=
- 			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_CNT);
- 		stats->tx_failed +=
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 172ffc2c332b7..5d78d4ba1c959 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9363,7 +9363,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x802f, "HP Z240", ALC221_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8077, "HP", ALC256_FIXUP_HP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x103c, 0x8158, "HP", ALC256_FIXUP_HP_HEADSET_MIC),
+-	SND_PCI_QUIRK(0x103c, 0x820d, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
++	SND_PCI_QUIRK(0x103c, 0x820d, "HP Pavilion 15", ALC295_FIXUP_HP_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8256, "HP", ALC221_FIXUP_HP_FRONT_MIC),
+ 	SND_PCI_QUIRK(0x103c, 0x827e, "HP x360", ALC295_FIXUP_HP_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x827f, "HP x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
 -- 
 2.39.2
 
