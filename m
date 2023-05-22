@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8261570C98C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 823A070C7FE
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235352AbjEVTtS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:49:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
+        id S234931AbjEVTfI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:35:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235343AbjEVTtS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:18 -0400
+        with ESMTP id S234948AbjEVTfH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A0495
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135D1A9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC96062ACC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C36C433EF;
-        Mon, 22 May 2023 19:49:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE79062972
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC1FC433D2;
+        Mon, 22 May 2023 19:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784956;
-        bh=n14EcyC4I8qfb3PL6ajH9kdy6ns5c+GYmEo3sFs+ebY=;
+        s=korg; t=1684784015;
+        bh=yy6mLwgy2xSwQ2xEIlQ0zqahh8IEhQSv6GMlUwzB3ds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yOC9CEdyJtOFY+aUDkwzysy7CSNo0IYNhjZEOw0ufFwBF9QXott2xd/Vi3JLY388B
-         BvSgYYqry7hAbzMJun4A1z2pBTKOm/Hzs9dCHCPwiFHf+aZlVFjOH2Gv4x738Z0ATg
-         uJ6YfBx6XrK5uWaAzjf16EGz+KuCLEwuL1rpPT4g=
+        b=LWunhpT1xVCHt7GEVK7SeGkvZPqrTUVaLNVvpuBfsk/Ts4w6x3eBrA3a3vrbBDOlk
+         Ve/cxsT1lLcqDkGnlRNDKuENBBJalFNu7j/HYqLdoTSCleycaZTDDGKCDMzQkC6Kh9
+         0aUxn+9/J4g4qT676VHOiOXHnKqQ1e/qdFdZ7oDo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 260/364] can: dev: fix missing CAN XL support in can_put_echo_skb()
+Subject: [PATCH 6.1 208/292] wifi: iwlwifi: mvm: fix cancel_delayed_work_sync() deadlock
 Date:   Mon, 22 May 2023 20:09:25 +0100
-Message-Id: <20230522190419.203349777@linuxfoundation.org>
+Message-Id: <20230522190411.157997527@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6bffdc38f9935bae49f980448f3f6be2dada0564 ]
+[ Upstream commit c2d8b7f257b2398f2d866205365895e038beca12 ]
 
-can_put_echo_skb() checks for the enabled IFF_ECHO flag and the
-correct ETH_P type of the given skbuff. When implementing the CAN XL
-support the new check for ETH_P_CANXL has been forgotten.
+Lockdep points out that we can deadlock here by calling
+cancel_delayed_work_sync() because that might be already
+running and gotten interrupted by the NAPI soft-IRQ.
+Even just calling something that can sleep is wrong in
+this context though.
 
-Fixes: fb08cba12b52 ("can: canxl: update CAN infrastructure for CAN XL frames")
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/all/20230506184515.39241-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Luckily, it doesn't even really matter since the things
+we need to do are idempotent, so just drop the _sync().
+
+Fixes: e5d153ec54f0 ("iwlwifi: mvm: fix CSA AP side")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230514120631.b1813c823b4d.I9d20cc06d24fa40b6774d3dd95ea5e2bf8dd015b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/skb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index 241ec636e91fd..f6d05b3ef59ab 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -54,7 +54,8 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 	/* check flag whether this packet has to be looped back */
- 	if (!(dev->flags & IFF_ECHO) ||
- 	    (skb->protocol != htons(ETH_P_CAN) &&
--	     skb->protocol != htons(ETH_P_CANFD))) {
-+	     skb->protocol != htons(ETH_P_CANFD) &&
-+	     skb->protocol != htons(ETH_P_CANXL))) {
- 		kfree_skb(skb);
- 		return 0;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 091225894037c..02c2a06301076 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1975,7 +1975,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 				RCU_INIT_POINTER(mvm->csa_tx_blocked_vif, NULL);
+ 				/* Unblock BCAST / MCAST station */
+ 				iwl_mvm_modify_all_sta_disable_tx(mvm, mvmvif, false);
+-				cancel_delayed_work_sync(&mvm->cs_tx_unblock_dwork);
++				cancel_delayed_work(&mvm->cs_tx_unblock_dwork);
+ 			}
+ 		}
+ 
 -- 
 2.39.2
 
