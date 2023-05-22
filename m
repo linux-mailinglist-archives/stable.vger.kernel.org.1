@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C3A370C5E8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AAD570C8FB
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232630AbjEVTNX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36684 "EHLO
+        id S235188AbjEVToC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233669AbjEVTNW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF2ACA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:21 -0700 (PDT)
+        with ESMTP id S235194AbjEVTn7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364851A1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 239AF61F63
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD3AC4339B;
-        Mon, 22 May 2023 19:13:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A687621AA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209A2C433EF;
+        Mon, 22 May 2023 19:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782800;
-        bh=hFutcJNoIKd0CZKb9Va8dphdY1kwg9iYQScHP0fRWgk=;
+        s=korg; t=1684784626;
+        bh=I2JutGAzKuWJAJo7y+0gfP6gmsAJsCg9iW5zsOlfjuQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IiNOjnhRYs5AErSEx7wDpu9HF73gsfj2q3rnMPAEzWrngRq6RQkdcD7E4sFoqQGzQ
-         W9PNdZZHgmaA/kHwIPPcznstCnf9A0ThzpYNmORCWbT1v1TfVhm0aTbOvZ/v5hb0Im
-         tB0sUtgcMttWYvt7T8YYLgHj5MDNLlRbCD+esdHk=
+        b=bR64g4oOedMLjvihBye6rX08SIMnlXNqhlMdq5pHahLuZcj9kAkUGaBFuwSEiqO8A
+         A8NVY8GuIRoTTvsHNmzxID/NGdtXumV6rLGyfHnpGKoWgZGHULWXhhV91iXbU85lF6
+         r2+Om5Piz2Wfwwbt+Q1fjdixorcAlKMNb093Pa90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Dilger <adilger.kernel@dilger.ca>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/203] ext4: reflect error codes from ext4_multi_mount_protect() to its callers
+        patches@lists.linux.dev, Max Chou <max.chou@realtek.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 144/364] Bluetooth: btrtl: Add the support for RTL8851B
 Date:   Mon, 22 May 2023 20:07:29 +0100
-Message-Id: <20230522190355.658603706@linuxfoundation.org>
+Message-Id: <20230522190416.367142557@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,125 +54,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Max Chou <max.chou@realtek.com>
 
-[ Upstream commit 3b50d5018ed06a647bb26c44bb5ae74e59c903c7 ]
+[ Upstream commit 7948fe1c92d92313eea5453f83deb7f0141355e8 ]
 
-This will allow more fine-grained errno codes to be returned by the
-mount system call.
+Add the support for RTL8851B BT controller on USB interface.
+The necessary firmware will be submitted to linux-firmware project.
 
-Cc: Andreas Dilger <adilger.kernel@dilger.ca>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting r/w until quota is re-enabled")
+Note that the Bluetooth devices WITH the VID=0x0bda would be set the
+feature quirk in btrtl_setup_realtek(). It's able to ignore the
+feature flag set for the specific VID and PID in blacklist_table[] of
+btusb.c. (check [1])
+
+If Realtek Bluetooth chips WITHOUT the VID=0x0bda, it shall be added
+the feature flag for the specific VID and PID in blacklist_table[] of
+btusb.c. (check [2])
+
+[1] '9ab9235fe5cf ("Bluetooth: btrtl: Enable WBS for the specific
+    Realtek devices")'
+[2] '73280f13c9bb ("Bluetooth: btusb: Add the more support IDs for
+    Realtek RTL8822CE")'
+
+The device info from /sys/kernel/debug/usb/devices as below.
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 33 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=b851 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=802.11ax WLAN Adapter
+S:  SerialNumber=00E04C885A01
+C:* #Ifs= 3 Cfg#= 1 Atr=80 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Max Chou <max.chou@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mmp.c   |  9 ++++++++-
- fs/ext4/super.c | 16 +++++++++-------
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/bluetooth/btrtl.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
-index cebea4270817e..28129a8db713c 100644
---- a/fs/ext4/mmp.c
-+++ b/fs/ext4/mmp.c
-@@ -290,6 +290,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
- 	if (mmp_block < le32_to_cpu(es->s_first_data_block) ||
- 	    mmp_block >= ext4_blocks_count(es)) {
- 		ext4_warning(sb, "Invalid MMP block in superblock");
-+		retval = -EINVAL;
- 		goto failed;
- 	}
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index 7061621faeb0c..4fbb282cac4b5 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -28,6 +28,7 @@
+ #define RTL_ROM_LMP_8761A	0x8761
+ #define RTL_ROM_LMP_8822B	0x8822
+ #define RTL_ROM_LMP_8852A	0x8852
++#define RTL_ROM_LMP_8851B	0x8851
+ #define RTL_CONFIG_MAGIC	0x8723ab55
  
-@@ -315,6 +316,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ #define IC_MATCH_FL_LMPSUBV	(1 << 0)
+@@ -56,6 +57,7 @@ enum btrtl_chip_id {
+ 	CHIP_ID_8852A = 18,
+ 	CHIP_ID_8852B = 20,
+ 	CHIP_ID_8852C = 25,
++	CHIP_ID_8851B = 36,
+ };
  
- 	if (seq == EXT4_MMP_SEQ_FSCK) {
- 		dump_mmp_msg(sb, mmp, "fsck is running on the filesystem");
-+		retval = -EBUSY;
- 		goto failed;
- 	}
+ struct id_table {
+@@ -244,6 +246,14 @@ static const struct id_table ic_id_table[] = {
+ 	  .has_msft_ext = true,
+ 	  .fw_name  = "rtl_bt/rtl8852cu_fw.bin",
+ 	  .cfg_name = "rtl_bt/rtl8852cu_config" },
++
++	/* 8851B */
++	{ IC_INFO(RTL_ROM_LMP_8851B, 0xb, 0xc, HCI_USB),
++	  .config_needed = false,
++	  .has_rom_version = true,
++	  .has_msft_ext = false,
++	  .fw_name  = "rtl_bt/rtl8851bu_fw.bin",
++	  .cfg_name = "rtl_bt/rtl8851bu_config" },
+ 	};
  
-@@ -328,6 +330,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ static const struct id_table *btrtl_match_ic(u16 lmp_subver, u16 hci_rev,
+@@ -359,6 +369,7 @@ static int rtlbt_parse_firmware(struct hci_dev *hdev,
+ 		{ RTL_ROM_LMP_8852A, 18 },	/* 8852A */
+ 		{ RTL_ROM_LMP_8852A, 20 },	/* 8852B */
+ 		{ RTL_ROM_LMP_8852A, 25 },	/* 8852C */
++		{ RTL_ROM_LMP_8851B, 36 },	/* 8851B */
+ 	};
  
- 	if (schedule_timeout_interruptible(HZ * wait_time) != 0) {
- 		ext4_warning(sb, "MMP startup interrupted, failing mount\n");
-+		retval = -ETIMEDOUT;
- 		goto failed;
- 	}
+ 	min_size = sizeof(struct rtl_epatch_header) + sizeof(extension_sig) + 3;
+@@ -848,6 +859,7 @@ int btrtl_download_firmware(struct hci_dev *hdev,
+ 	case RTL_ROM_LMP_8822B:
+ 	case RTL_ROM_LMP_8852A:
+ 	case RTL_ROM_LMP_8703B:
++	case RTL_ROM_LMP_8851B:
+ 		return btrtl_setup_rtl8723b(hdev, btrtl_dev);
+ 	default:
+ 		rtl_dev_info(hdev, "assuming no firmware upload needed");
+@@ -872,6 +884,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
+ 	case CHIP_ID_8852A:
+ 	case CHIP_ID_8852B:
+ 	case CHIP_ID_8852C:
++	case CHIP_ID_8851B:
+ 		set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
  
-@@ -338,6 +341,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
- 	if (seq != le32_to_cpu(mmp->mmp_seq)) {
- 		dump_mmp_msg(sb, mmp,
- 			     "Device is already active on another node.");
-+		retval = -EBUSY;
- 		goto failed;
- 	}
- 
-@@ -357,6 +361,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
- 	 */
- 	if (schedule_timeout_interruptible(HZ * wait_time) != 0) {
- 		ext4_warning(sb, "MMP startup interrupted, failing mount");
-+		retval = -ETIMEDOUT;
- 		goto failed;
- 	}
- 
-@@ -367,6 +372,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
- 	if (seq != le32_to_cpu(mmp->mmp_seq)) {
- 		dump_mmp_msg(sb, mmp,
- 			     "Device is already active on another node.");
-+		retval = -EBUSY;
- 		goto failed;
- 	}
- 
-@@ -383,6 +389,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
- 		EXT4_SB(sb)->s_mmp_tsk = NULL;
- 		ext4_warning(sb, "Unable to create kmmpd thread for %s.",
- 			     sb->s_id);
-+		retval = -ENOMEM;
- 		goto failed;
- 	}
- 
-@@ -390,5 +397,5 @@ int ext4_multi_mount_protect(struct super_block *sb,
- 
- failed:
- 	brelse(bh);
--	return 1;
-+	return retval;
- }
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index ca0997fcd1215..d062bad1384be 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -4646,9 +4646,11 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- 			  ext4_has_feature_orphan_present(sb) ||
- 			  ext4_has_feature_journal_needs_recovery(sb));
- 
--	if (ext4_has_feature_mmp(sb) && !sb_rdonly(sb))
--		if (ext4_multi_mount_protect(sb, le64_to_cpu(es->s_mmp_block)))
-+	if (ext4_has_feature_mmp(sb) && !sb_rdonly(sb)) {
-+		err = ext4_multi_mount_protect(sb, le64_to_cpu(es->s_mmp_block));
-+		if (err)
- 			goto failed_mount3a;
-+	}
- 
- 	/*
- 	 * The first inode we look at is the journal inode.  Don't try
-@@ -5945,12 +5947,12 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 				goto restore_opts;
- 
- 			sb->s_flags &= ~SB_RDONLY;
--			if (ext4_has_feature_mmp(sb))
--				if (ext4_multi_mount_protect(sb,
--						le64_to_cpu(es->s_mmp_block))) {
--					err = -EROFS;
-+			if (ext4_has_feature_mmp(sb)) {
-+				err = ext4_multi_mount_protect(sb,
-+						le64_to_cpu(es->s_mmp_block));
-+				if (err)
- 					goto restore_opts;
--				}
-+			}
- #ifdef CONFIG_QUOTA
- 			enable_quota = 1;
- #endif
+@@ -1082,3 +1095,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
 -- 
 2.39.2
 
