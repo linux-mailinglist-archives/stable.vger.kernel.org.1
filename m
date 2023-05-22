@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6F4870C9BB
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B8A70C69D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235382AbjEVTvW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
+        id S234338AbjEVTUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235454AbjEVTvA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:51:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC2299
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:56 -0700 (PDT)
+        with ESMTP id S234331AbjEVTUL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:20:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD73F93
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:20:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9902C62B03
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE7FC433EF;
-        Mon, 22 May 2023 19:50:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3560A62817
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:20:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33ECFC433D2;
+        Mon, 22 May 2023 19:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785055;
-        bh=WHqO8IVe53DBad+jAYvTtXm1D/tmZ7mRvWOaQu9qGFE=;
+        s=korg; t=1684783209;
+        bh=yRgJpGevStmRT87ufU/JPvwH32xAzPu98ugr9mK0EJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CkNvEXqEBY+8D0Gw5D8z5bZFeWjFDliN4wt6h7bFo9QQCwbrePecGdLiaB30yvpbd
-         9WwcfCWZ9n9tSEd9TeP7/MWDBrD+c/zGO3Q+0LkUOhmmfLiN569pMYYDwrT/DLSAv8
-         1sg2WaLgsAn49CcMAxEjVOGqTScbDBXOm01wfltc=
+        b=hFALioNkjz0HZdAkVpjhSxhF18qrTYFSUBuZMRjY7jBkXX2UrSrfAzTZRVsUIxjfM
+         qKjOso0FvkfXLmHpaAXrKM0swgFFF9UfoI85s1g08qAzAfPlX9+6qRqx/3h+2KrLBD
+         rhMJiIRKOfhZPkqj3uYH+yNzlx6jPJzp9Ppfk6ig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 6.3 293/364] usb: dwc3: gadget: Improve dwc3_gadget_suspend() and dwc3_gadget_resume()
+        patches@lists.linux.dev, "Luke D. Jones" <luke@ljones.dev>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 174/203] ALSA: hda/realtek: Add quirk for 2nd ASUS GU603
 Date:   Mon, 22 May 2023 20:09:58 +0100
-Message-Id: <20230522190420.096442435@linuxfoundation.org>
+Message-Id: <20230522190359.811835872@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,137 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Luke D. Jones <luke@ljones.dev>
 
-commit c8540870af4ce6ddeb27a7bb5498b75fb29b643c upstream.
+commit a4671b7fba59775845ee60cfbdfc4ba64300211b upstream.
 
-Prevent -ETIMEDOUT error on .suspend().
-e.g. If gadget driver is loaded and we are connected to a USB host,
-all transfers must be stopped before stopping the controller else
-we will not get a clean stop i.e. dwc3_gadget_run_stop() will take
-several seconds to complete and will return -ETIMEDOUT.
+Add quirk for GU603 with 0x1c62 variant of codec.
 
-Handle error cases properly in dwc3_gadget_suspend().
-Simplify dwc3_gadget_resume() by using the introduced helper function.
-
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable@vger.kernel.org
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20230503110048.30617-1-rogerq@kernel.org
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230505235824.49607-2-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |   67 +++++++++++++++++++++++-----------------------
- 1 file changed, 34 insertions(+), 33 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2597,6 +2597,21 @@ static int dwc3_gadget_soft_disconnect(s
- 	return ret;
- }
- 
-+static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
-+{
-+	/*
-+	 * In the Synopsys DWC_usb31 1.90a programming guide section
-+	 * 4.1.9, it specifies that for a reconnect after a
-+	 * device-initiated disconnect requires a core soft reset
-+	 * (DCTL.CSftRst) before enabling the run/stop bit.
-+	 */
-+	dwc3_core_soft_reset(dwc);
-+
-+	dwc3_event_buffers_setup(dwc);
-+	__dwc3_gadget_start(dwc);
-+	return dwc3_gadget_run_stop(dwc, true);
-+}
-+
- static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- {
- 	struct dwc3		*dwc = gadget_to_dwc(g);
-@@ -2635,21 +2650,10 @@ static int dwc3_gadget_pullup(struct usb
- 
- 	synchronize_irq(dwc->irq_gadget);
- 
--	if (!is_on) {
-+	if (!is_on)
- 		ret = dwc3_gadget_soft_disconnect(dwc);
--	} else {
--		/*
--		 * In the Synopsys DWC_usb31 1.90a programming guide section
--		 * 4.1.9, it specifies that for a reconnect after a
--		 * device-initiated disconnect requires a core soft reset
--		 * (DCTL.CSftRst) before enabling the run/stop bit.
--		 */
--		dwc3_core_soft_reset(dwc);
--
--		dwc3_event_buffers_setup(dwc);
--		__dwc3_gadget_start(dwc);
--		ret = dwc3_gadget_run_stop(dwc, true);
--	}
-+	else
-+		ret = dwc3_gadget_soft_connect(dwc);
- 
- 	pm_runtime_put(dwc->dev);
- 
-@@ -4565,42 +4569,39 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
- int dwc3_gadget_suspend(struct dwc3 *dwc)
- {
- 	unsigned long flags;
-+	int ret;
- 
- 	if (!dwc->gadget_driver)
- 		return 0;
- 
--	dwc3_gadget_run_stop(dwc, false);
-+	ret = dwc3_gadget_soft_disconnect(dwc);
-+	if (ret)
-+		goto err;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_disconnect_gadget(dwc);
--	__dwc3_gadget_stop(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
-+
-+err:
-+	/*
-+	 * Attempt to reset the controller's state. Likely no
-+	 * communication can be established until the host
-+	 * performs a port reset.
-+	 */
-+	if (dwc->softconnect)
-+		dwc3_gadget_soft_connect(dwc);
-+
-+	return ret;
- }
- 
- int dwc3_gadget_resume(struct dwc3 *dwc)
- {
--	int			ret;
--
- 	if (!dwc->gadget_driver || !dwc->softconnect)
- 		return 0;
- 
--	ret = __dwc3_gadget_start(dwc);
--	if (ret < 0)
--		goto err0;
--
--	ret = dwc3_gadget_run_stop(dwc, true);
--	if (ret < 0)
--		goto err1;
--
--	return 0;
--
--err1:
--	__dwc3_gadget_stop(dwc);
--
--err0:
--	return ret;
-+	return dwc3_gadget_soft_connect(dwc);
- }
- 
- void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9121,6 +9121,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1b13, "Asus U41SV", ALC269_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1bbd, "ASUS Z550MA", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
 
 
