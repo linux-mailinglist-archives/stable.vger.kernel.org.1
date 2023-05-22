@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3123570C99D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E49070C6A1
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:20:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbjEVTu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
+        id S234331AbjEVTUX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235376AbjEVTtt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB2195
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:48 -0700 (PDT)
+        with ESMTP id S231728AbjEVTUX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:20:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 774DEA3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:20:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3183A62AE2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A9FC433D2;
-        Mon, 22 May 2023 19:49:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A8E962817
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15305C433D2;
+        Mon, 22 May 2023 19:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784987;
-        bh=xm6ICD0FF6NHE4iEPhjR4F+YtxIMnf0M8iF1ugMqSuk=;
+        s=korg; t=1684783221;
+        bh=UdrF/T5lPmimr9w4SlOiCkw1Xmsl1K72xgZS5Mabj6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=diW1ROTLsCk5t66+yn04Kc2rA8lMIt2CIBMFTCF3jc3CBcgEKWGXIk2EpSR2lX2QX
-         EX49+2eNw7kdj8z4EyJ4Wch/yQVIYIRvvgUwYCzb3Rqm/zaGGXNa2DAzyfcgPS6SIT
-         vIc70bMzJY+XizmaA3RwsQYw28rAJVgySF2hVvKs=
+        b=ChPjXcOC1nOOdb4EPm0wk6yQKRxj89LWCqcBdr2lyXzfIfqHTlKqBI+tYVWVWcyNk
+         mCpYyXJfjSfyd0GaM/zXMo5mqP1Ks7jcPgloSRGnMW3eZe5GIYeR36S2rUC8NdAhEi
+         CqfR3mMO7UFJd/MgyGmyro95n0NWGUcTuMwhL5Lk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Lee <michael-cy.lee@mediatek.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 270/364] wifi: mac80211: Abort running color change when stopping the AP
+Subject: [PATCH 5.15 151/203] wifi: iwlwifi: mvm: fix cancel_delayed_work_sync() deadlock
 Date:   Mon, 22 May 2023 20:09:35 +0100
-Message-Id: <20230522190419.465249745@linuxfoundation.org>
+Message-Id: <20230522190359.156272476@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,39 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Lee <michael-cy.lee@mediatek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a23d7f5b2fbda114de60c4b53311e052281d7533 ]
+[ Upstream commit c2d8b7f257b2398f2d866205365895e038beca12 ]
 
-When stopping the AP, there might be a color change in progress. It
-should be deactivated here, or the driver might later finalize a color
-change on a stopped AP.
+Lockdep points out that we can deadlock here by calling
+cancel_delayed_work_sync() because that might be already
+running and gotten interrupted by the NAPI soft-IRQ.
+Even just calling something that can sleep is wrong in
+this context though.
 
-Fixes: 5f9404abdf2a (mac80211: add support for BSS color change)
-Signed-off-by: Michael Lee <michael-cy.lee@mediatek.com>
-Link: https://lore.kernel.org/r/20230504080441.22958-1-michael-cy.lee@mediatek.com
+Luckily, it doesn't even really matter since the things
+we need to do are idempotent, so just drop the _sync().
+
+Fixes: e5d153ec54f0 ("iwlwifi: mvm: fix CSA AP side")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230514120631.b1813c823b4d.I9d20cc06d24fa40b6774d3dd95ea5e2bf8dd015b@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index fb8d80ebe8bbb..5ddbe0c8cfaa1 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1512,9 +1512,10 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
- 		sdata_dereference(link->u.ap.unsol_bcast_probe_resp,
- 				  sdata);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index efccdd3f33773..49c28c96fdf28 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1907,7 +1907,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 				RCU_INIT_POINTER(mvm->csa_tx_blocked_vif, NULL);
+ 				/* Unblock BCAST / MCAST station */
+ 				iwl_mvm_modify_all_sta_disable_tx(mvm, mvmvif, false);
+-				cancel_delayed_work_sync(&mvm->cs_tx_unblock_dwork);
++				cancel_delayed_work(&mvm->cs_tx_unblock_dwork);
+ 			}
+ 		}
  
--	/* abort any running channel switch */
-+	/* abort any running channel switch or color change */
- 	mutex_lock(&local->mtx);
- 	link_conf->csa_active = false;
-+	link_conf->color_change_active = false;
- 	if (link->csa_block_tx) {
- 		ieee80211_wake_vif_queues(local, sdata,
- 					  IEEE80211_QUEUE_STOP_REASON_CSA);
 -- 
 2.39.2
 
