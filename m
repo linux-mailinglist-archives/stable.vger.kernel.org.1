@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 200D270C6B0
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C3970C820
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234371AbjEVTVN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:21:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43544 "EHLO
+        id S234907AbjEVTgH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234368AbjEVTVM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D81A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:11 -0700 (PDT)
+        with ESMTP id S234928AbjEVTgG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075D81B4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F16D16282E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0824CC433D2;
-        Mon, 22 May 2023 19:21:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93E936297D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E43DC433D2;
+        Mon, 22 May 2023 19:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783270;
-        bh=x/eAUTV38sOl29aLIHCjb4av/L24c7bF32z0zey5xn4=;
+        s=korg; t=1684784094;
+        bh=lDq33r+Xd6bsnUfmK0/am/43ciafYDk9OkG43+eN9qk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dVI05sT5gf6T8GbOKhLIv8nZxNpweDFv0M7Q6FuRe7Y+QTLbffPQ4ksWS9/04vS1N
-         Krj5yUSm2QHQUgskQOHysUiIhAQwjDObrDtAcbJqY+21H+AFlKDFKcygxai9/O/9bd
-         oNC6qkMRwc1/oR3qy9zEks3IOLXPrytoX4hQWpNA=
+        b=kqMj0sm1HfyB2fQ09NJEl6NZmPbmH758WDyYwRH3Ky9gViY9T5IXDBHBFBQtiYC36
+         V13P07NCYu2/y0MvQeEgDcfkQIQHwfzL5/87CwJevp1vpgssdO2HUpDf2deIGsLEL0
+         XaRe557DkizoBMZDner1DSs7TTI66isLZ86EqtMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        syzkaller <syzkaller@googlegroups.com>,
-        George Kennedy <george.kennedy@oracle.com>,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 5.15 194/203] vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF
+        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.1 261/292] statfs: enforce statfs[64] structure initialization
 Date:   Mon, 22 May 2023 20:10:18 +0100
-Message-Id: <20230522190400.399595726@linuxfoundation.org>
+Message-Id: <20230522190412.466263183@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,110 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit 8fb9ea65c9d1338b0d2bb0a9122dc942cdd32357 upstream.
+commit ed40866ec7d328b3dfb70db7e2011640a16202c3 upstream.
 
-After a call to console_unlock() in vcs_write() the vc_data struct can be
-freed by vc_port_destruct(). Because of that, the struct vc_data pointer
-must be reloaded in the while loop in vcs_write() after console_lock() to
-avoid a UAF when vcs_size() is called.
+s390's struct statfs and struct statfs64 contain padding, which
+field-by-field copying does not set. Initialize the respective structs
+with zeros before filling them and copying them to userspace, like it's
+already done for the compat versions of these structs.
 
-Syzkaller reported a UAF in vcs_size().
+Found by KMSAN.
 
-BUG: KASAN: slab-use-after-free in vcs_size (drivers/tty/vt/vc_screen.c:215)
-Read of size 4 at addr ffff8880beab89a8 by task repro_vcs_size/4119
-
-Call Trace:
- <TASK>
-__asan_report_load4_noabort (mm/kasan/report_generic.c:380)
-vcs_size (drivers/tty/vt/vc_screen.c:215)
-vcs_write (drivers/tty/vt/vc_screen.c:664)
-vfs_write (fs/read_write.c:582 fs/read_write.c:564)
-...
- <TASK>
-
-Allocated by task 1213:
-kmalloc_trace (mm/slab_common.c:1064)
-vc_allocate (./include/linux/slab.h:559 ./include/linux/slab.h:680
-    drivers/tty/vt/vt.c:1078 drivers/tty/vt/vt.c:1058)
-con_install (drivers/tty/vt/vt.c:3334)
-tty_init_dev (drivers/tty/tty_io.c:1303 drivers/tty/tty_io.c:1415
-    drivers/tty/tty_io.c:1392)
-tty_open (drivers/tty/tty_io.c:2082 drivers/tty/tty_io.c:2128)
-chrdev_open (fs/char_dev.c:415)
-do_dentry_open (fs/open.c:921)
-vfs_open (fs/open.c:1052)
-...
-
-Freed by task 4116:
-kfree (mm/slab_common.c:1016)
-vc_port_destruct (drivers/tty/vt/vt.c:1044)
-tty_port_destructor (drivers/tty/tty_port.c:296)
-tty_port_put (drivers/tty/tty_port.c:312)
-vt_disallocate_all (drivers/tty/vt/vt_ioctl.c:662 (discriminator 2))
-vt_ioctl (drivers/tty/vt/vt_ioctl.c:903)
-tty_ioctl (drivers/tty/tty_io.c:2778)
-...
-
-The buggy address belongs to the object at ffff8880beab8800
- which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 424 bytes inside of
- freed 1024-byte region [ffff8880beab8800, ffff8880beab8c00)
-
-The buggy address belongs to the physical page:
-page:00000000afc77580 refcount:1 mapcount:0 mapping:0000000000000000
-    index:0x0 pfn:0xbeab8
-head:00000000afc77580 order:3 entire_mapcount:0 nr_pages_mapped:0
-    pincount:0
-flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
-page_type: 0xffffffff()
-raw: 000fffffc0010200 ffff888100042dc0 ffffea000426de00 dead000000000002
-raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff8880beab8880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880beab8900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff8880beab8980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                  ^
- ffff8880beab8a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880beab8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-Disabling lock debugging due to kernel taint
-
-Fixes: ac751efa6a0d ("console: rename acquire/release_console_sem() to console_lock/unlock()")
-Cc: stable <stable@kernel.org>
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/1683889728-10411-1-git-send-email-george.kennedy@oracle.com
+[agordeev@linux.ibm.com: fixed typo in patch description]
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: stable@vger.kernel.org # v4.14+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20230504144021.808932-2-iii@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vc_screen.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/statfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -656,10 +656,17 @@ vcs_write(struct file *file, const char
- 			}
- 		}
- 
--		/* The vcs_size might have changed while we slept to grab
--		 * the user buffer, so recheck.
-+		/* The vc might have been freed or vcs_size might have changed
-+		 * while we slept to grab the user buffer, so recheck.
- 		 * Return data written up to now on failure.
- 		 */
-+		vc = vcs_vc(inode, &viewed);
-+		if (!vc) {
-+			if (written)
-+				break;
-+			ret = -ENXIO;
-+			goto unlock_out;
-+		}
- 		size = vcs_size(vc, attr, false);
- 		if (size < 0) {
- 			if (written)
+--- a/fs/statfs.c
++++ b/fs/statfs.c
+@@ -130,6 +130,7 @@ static int do_statfs_native(struct kstat
+ 	if (sizeof(buf) == sizeof(*st))
+ 		memcpy(&buf, st, sizeof(*st));
+ 	else {
++		memset(&buf, 0, sizeof(buf));
+ 		if (sizeof buf.f_blocks == 4) {
+ 			if ((st->f_blocks | st->f_bfree | st->f_bavail |
+ 			     st->f_bsize | st->f_frsize) &
+@@ -158,7 +159,6 @@ static int do_statfs_native(struct kstat
+ 		buf.f_namelen = st->f_namelen;
+ 		buf.f_frsize = st->f_frsize;
+ 		buf.f_flags = st->f_flags;
+-		memset(buf.f_spare, 0, sizeof(buf.f_spare));
+ 	}
+ 	if (copy_to_user(p, &buf, sizeof(buf)))
+ 		return -EFAULT;
+@@ -171,6 +171,7 @@ static int do_statfs64(struct kstatfs *s
+ 	if (sizeof(buf) == sizeof(*st))
+ 		memcpy(&buf, st, sizeof(*st));
+ 	else {
++		memset(&buf, 0, sizeof(buf));
+ 		buf.f_type = st->f_type;
+ 		buf.f_bsize = st->f_bsize;
+ 		buf.f_blocks = st->f_blocks;
+@@ -182,7 +183,6 @@ static int do_statfs64(struct kstatfs *s
+ 		buf.f_namelen = st->f_namelen;
+ 		buf.f_frsize = st->f_frsize;
+ 		buf.f_flags = st->f_flags;
+-		memset(buf.f_spare, 0, sizeof(buf.f_spare));
+ 	}
+ 	if (copy_to_user(p, &buf, sizeof(buf)))
+ 		return -EFAULT;
 
 
