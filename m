@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CA6F70C5F3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F1F70C91F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231641AbjEVTNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
+        id S235239AbjEVTpV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233928AbjEVTNu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:50 -0400
+        with ESMTP id S235384AbjEVTpI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB12C115
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5789AF1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F71162710
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A67FC433EF;
-        Mon, 22 May 2023 19:13:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF9FB62A30
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC07C433EF;
+        Mon, 22 May 2023 19:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782827;
-        bh=quJj6Kjp5dtly2Oa933rNKFihtm6kQD5A+m1IyZH4Jc=;
+        s=korg; t=1684784704;
+        bh=x94HLNRbcLTPOqzvs73lGBziHJYvCWq2DfQX91kQl4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FM4AZc1xKVad8pHg6snR6VxOFoQpSSuxETBVmheYzc17HDSw24Y24yfDkMlIhrtsd
-         PcR5IQNTxwS8I+2cRhLt17p19v8/esL4S2W3X949m5447G09u0RVDrEiMGUMBsbWrv
-         rpauJDkMV0IOFDLa5YH40stNxnwl5mGdehiIOnXE=
+        b=Ln9xztDf9Ygf7RI9DGFMHwqpUVDUkCgu5peERtfhHhqwymlbe6n4hzwUZC5XE19Jp
+         WXUrueu55TWAtcPfl1M2IqQ14UqQF4dhyDf5Oi87nIQ02q9llgTRllnZdh7uO+ylNX
+         7NKY4I7TxiN9kqV+9Wmsgh9dxJKyvyUjfzkbKQyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, harperchen <harperchen1110@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Samuel=20=C4=8Cavoj?= <samuel@cavoj.net>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/203] media: cx23885: Fix a null-ptr-deref bug in buffer_prepare() and buffer_finish()
+Subject: [PATCH 6.3 156/364] usb: typec: ucsi: acpi: add quirk for ASUS Zenbook UM325
 Date:   Mon, 22 May 2023 20:07:41 +0100
-Message-Id: <20230522190356.000355666@linuxfoundation.org>
+Message-Id: <20230522190416.643406204@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,107 +55,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: harperchen <harperchen1110@gmail.com>
+From: Samuel Čavoj <samuel@cavoj.net>
 
-[ Upstream commit 47e8b73bc35d7c54642f78e498697692f6358996 ]
+[ Upstream commit 326e1c208f3f24d14b93f910b8ae32c94923d22c ]
 
-When the driver calls cx23885_risc_buffer() to prepare the buffer, the
-function call dma_alloc_coherent may fail, resulting in a empty buffer
-risc->cpu. Later when we free the buffer or access the buffer, null ptr
-deref is triggered.
+On some ACPI platforms (namely the ASUS Zenbook UM325) the _DSM method must
+not be called after a notification is received but instead the mailbox
+should be read immediately from RAM. This is because the ACPI interrupt
+handler destroys the CCI in ERAM after copying to system memory, and when
+_DSM is later called to perform a second copy, it retrieves a garbage
+value.
 
-This bug is similar to the following one:
-https://git.linuxtv.org/media_stage.git/commit/?id=2b064d91440b33fba5b452f2d1b31f13ae911d71.
+Instead, the _DSM(read) method should only be called when necessary, i.e.
+for polling the state after reset and for retrieving the version. Other
+reads should not call _DSM and only peek into the RAM region.
 
-We believe the bug can be also dynamically triggered from user side.
-Similarly, we fix this by checking the return value of cx23885_risc_buffer()
-and the value of risc->cpu before buffer free.
+This adds a separate read operation for the Zenbook that syncs the
+ACPI mailbox only with polled commands.
 
-Signed-off-by: harperchen <harperchen1110@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Link: https://lore.kernel.org/linux-usb/20210823180626.tb6m7h5tp6adhvt2@fastboi.localdomain/
+Signed-off-by: Samuel Čavoj <samuel@cavoj.net>
+[ heikki : handling everything in ucsi_acpi.c with DMI quirk ]
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230405134456.49607-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx23885/cx23885-core.c  |  4 +++-
- drivers/media/pci/cx23885/cx23885-video.c | 13 +++++++------
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c | 44 ++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/cx23885/cx23885-core.c b/drivers/media/pci/cx23885/cx23885-core.c
-index a07b18f2034e9..8019cdf5dbae5 100644
---- a/drivers/media/pci/cx23885/cx23885-core.c
-+++ b/drivers/media/pci/cx23885/cx23885-core.c
-@@ -1325,7 +1325,9 @@ void cx23885_free_buffer(struct cx23885_dev *dev, struct cx23885_buffer *buf)
- {
- 	struct cx23885_riscmem *risc = &buf->risc;
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index 62206a6b8ea75..217355f1f9b94 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -9,6 +9,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/module.h>
+ #include <linux/acpi.h>
++#include <linux/dmi.h>
  
--	dma_free_coherent(&dev->pci->dev, risc->size, risc->cpu, risc->dma);
-+	if (risc->cpu)
-+		dma_free_coherent(&dev->pci->dev, risc->size, risc->cpu, risc->dma);
-+	memset(risc, 0, sizeof(*risc));
+ #include "ucsi.h"
+ 
+@@ -23,6 +24,7 @@ struct ucsi_acpi {
+ 	struct completion complete;
+ 	unsigned long flags;
+ 	guid_t guid;
++	u64 cmd;
+ };
+ 
+ static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
+@@ -62,6 +64,7 @@ static int ucsi_acpi_async_write(struct ucsi *ucsi, unsigned int offset,
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+ 
+ 	memcpy(ua->base + offset, val, val_len);
++	ua->cmd = *(u64 *)val;
+ 
+ 	return ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_WRITE);
  }
+@@ -93,13 +96,46 @@ static const struct ucsi_operations ucsi_acpi_ops = {
+ 	.async_write = ucsi_acpi_async_write
+ };
  
- static void cx23885_tsport_reg_dump(struct cx23885_tsport *port)
-diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
-index a380e0920a21f..b01499f810697 100644
---- a/drivers/media/pci/cx23885/cx23885-video.c
-+++ b/drivers/media/pci/cx23885/cx23885-video.c
-@@ -342,6 +342,7 @@ static int queue_setup(struct vb2_queue *q,
- 
- static int buffer_prepare(struct vb2_buffer *vb)
- {
++static int
++ucsi_zenbook_read(struct ucsi *ucsi, unsigned int offset, void *val, size_t val_len)
++{
++	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
 +	int ret;
- 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
- 	struct cx23885_dev *dev = vb->vb2_queue->drv_priv;
- 	struct cx23885_buffer *buf =
-@@ -358,12 +359,12 @@ static int buffer_prepare(struct vb2_buffer *vb)
++
++	if (offset == UCSI_VERSION || UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
++		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
++		if (ret)
++			return ret;
++	}
++
++	memcpy(val, ua->base + offset, val_len);
++
++	return 0;
++}
++
++static const struct ucsi_operations ucsi_zenbook_ops = {
++	.read = ucsi_zenbook_read,
++	.sync_write = ucsi_acpi_sync_write,
++	.async_write = ucsi_acpi_async_write
++};
++
++static const struct dmi_system_id zenbook_dmi_id[] = {
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
++		},
++	},
++	{ }
++};
++
+ static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
+ {
+ 	struct ucsi_acpi *ua = data;
+ 	u32 cci;
+ 	int ret;
  
- 	switch (dev->field) {
- 	case V4L2_FIELD_TOP:
--		cx23885_risc_buffer(dev->pci, &buf->risc,
-+		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
- 				sgt->sgl, 0, UNSET,
- 				buf->bpl, 0, dev->height);
- 		break;
- 	case V4L2_FIELD_BOTTOM:
--		cx23885_risc_buffer(dev->pci, &buf->risc,
-+		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
- 				sgt->sgl, UNSET, 0,
- 				buf->bpl, 0, dev->height);
- 		break;
-@@ -391,21 +392,21 @@ static int buffer_prepare(struct vb2_buffer *vb)
- 			line0_offset = 0;
- 			line1_offset = buf->bpl;
- 		}
--		cx23885_risc_buffer(dev->pci, &buf->risc,
-+		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
- 				sgt->sgl, line0_offset,
- 				line1_offset,
- 				buf->bpl, buf->bpl,
- 				dev->height >> 1);
- 		break;
- 	case V4L2_FIELD_SEQ_TB:
--		cx23885_risc_buffer(dev->pci, &buf->risc,
-+		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
- 				sgt->sgl,
- 				0, buf->bpl * (dev->height >> 1),
- 				buf->bpl, 0,
- 				dev->height >> 1);
- 		break;
- 	case V4L2_FIELD_SEQ_BT:
--		cx23885_risc_buffer(dev->pci, &buf->risc,
-+		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
- 				sgt->sgl,
- 				buf->bpl * (dev->height >> 1), 0,
- 				buf->bpl, 0,
-@@ -418,7 +419,7 @@ static int buffer_prepare(struct vb2_buffer *vb)
- 		buf, buf->vb.vb2_buf.index,
- 		dev->width, dev->height, dev->fmt->depth, dev->fmt->fourcc,
- 		(unsigned long)buf->risc.dma);
--	return 0;
-+	return ret;
- }
+-	ret = ucsi_acpi_read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
++	ret = ua->ucsi->ops->read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
+ 	if (ret)
+ 		return;
  
- static void buffer_finish(struct vb2_buffer *vb)
+@@ -114,6 +150,7 @@ static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
+ static int ucsi_acpi_probe(struct platform_device *pdev)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
++	const struct ucsi_operations *ops = &ucsi_acpi_ops;
+ 	struct ucsi_acpi *ua;
+ 	struct resource *res;
+ 	acpi_status status;
+@@ -143,7 +180,10 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ 	init_completion(&ua->complete);
+ 	ua->dev = &pdev->dev;
+ 
+-	ua->ucsi = ucsi_create(&pdev->dev, &ucsi_acpi_ops);
++	if (dmi_check_system(zenbook_dmi_id))
++		ops = &ucsi_zenbook_ops;
++
++	ua->ucsi = ucsi_create(&pdev->dev, ops);
+ 	if (IS_ERR(ua->ucsi))
+ 		return PTR_ERR(ua->ucsi);
+ 
 -- 
 2.39.2
 
