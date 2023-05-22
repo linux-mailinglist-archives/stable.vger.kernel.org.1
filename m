@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 272FE70C840
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6693A70C6B7
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234974AbjEVThH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58776 "EHLO
+        id S234410AbjEVTVd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234983AbjEVThD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:03 -0400
+        with ESMTP id S234385AbjEVTVd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57921E47
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35C22A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37FE662942
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9AEC433EF;
-        Mon, 22 May 2023 19:36:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDE696282E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC92CC433EF;
+        Mon, 22 May 2023 19:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784192;
-        bh=zWycd4NOleDucaTDIy3mDGBMZOAdcEm+iiY194zdWkk=;
+        s=korg; t=1684783291;
+        bh=Z2i5aSkmJsMunBpgbl3Pdi0FR/dx/JbOtYWynnp15cQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1tZoLqifEkExHi1X9LBvDTKNx1PX8Q+JwGYeEDVxoqh57kyjIOkDp2m51noXni0Q9
-         FB+MJRMY7waDetpCa3gT7T0+zRCEeSjYMkeBsshRel5vgmFop+3jfhpj0FqjHMNnUp
-         AUhMZ3r51Hadn6Cy68/4j7s+YUF4y7uIHWrx8VTM=
+        b=mnjQ74JUcCmdzgi8wyCuk4O9r3NnLnjPqwyhW0KdG+ffHiLnifFbhYIdGNpogsTBB
+         SVhx5vxcBxep0VqUqfqQ1Q1nOLiV9B+vY8pwFRQQbomjxOtEd9f6881WjW1L7tZAat
+         GC1IQwc3YlKjF/gubhxhndl0kBtG1dJqUjEkNCLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 267/292] thunderbolt: Clear registers properly when auto clear isnt in use
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Steffen Maier <maier@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 5.15 200/203] s390/qdio: fix do_sqbs() inline assembly constraint
 Date:   Mon, 22 May 2023 20:10:24 +0100
-Message-Id: <20230522190412.614051327@linuxfoundation.org>
+Message-Id: <20230522190400.581111691@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,101 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit c4af8e3fecd03b0aedcd38145955605cfebe7e3a upstream.
+commit 2862a2fdfae875888e3c1c3634e3422e01d98147 upstream.
 
-When `QUIRK_AUTO_CLEAR_INT` isn't set, interrupt masking should be
-cleared by writing to Interrupt Mask Clear (IMR) and interrupt
-status should be cleared properly at shutdown/init.
+Use "a" constraint instead of "d" constraint to pass the state parameter to
+the do_sqbs() inline assembly. This prevents that general purpose register
+zero is used for the state parameter.
 
-This fixes an error where interrupts are left enabled during resume
-from hibernation with `CONFIG_USB4=y`.
+If the compiler would select general purpose register zero this would be
+problematic for the used instruction in rsy format: the register used for
+the state parameter is a base register. If the base register is general
+purpose register zero the contents of the register are unexpectedly ignored
+when the instruction is executed.
 
-Fixes: 468c49f44759 ("thunderbolt: Disable interrupt auto clear for rings")
-Cc: stable@vger.kernel.org # v6.3
-Reported-by: Takashi Iwai <tiwai@suse.de>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217343
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+This only applies to z/VM guests using QIOASSIST with dedicated (pass through)
+QDIO-based devices such as FCP [zfcp driver] as well as real OSA or
+HiperSockets [qeth driver].
+
+A possible symptom for this case using zfcp is the following repeating kernel
+message pattern:
+
+zfcp <devbusid>: A QDIO problem occurred
+zfcp <devbusid>: A QDIO problem occurred
+zfcp <devbusid>: qdio: ZFCP on SC <sc> using AI:1 QEBSM:1 PRI:1 TDD:1 SIGA: W
+zfcp <devbusid>: A QDIO problem occurred
+zfcp <devbusid>: A QDIO problem occurred
+
+Each of the qdio problem message can be accompanied by the following entries
+for the affected subchannel <sc> in
+/sys/kernel/debug/s390dbf/qdio_error/hex_ascii for zfcp or qeth:
+
+<sc> ccq: 69....
+<sc> SQBS ERROR.
+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Cc: Steffen Maier <maier@linux.ibm.com>
+Fixes: 8129ee164267 ("[PATCH] s390: qdio V=V pass-through")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c      |   29 ++++++++++++++++++++++++-----
- drivers/thunderbolt/nhi_regs.h |    2 ++
- 2 files changed, 26 insertions(+), 5 deletions(-)
+ drivers/s390/cio/qdio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -54,6 +54,21 @@ static int ring_interrupt_index(const st
- 	return bit;
- }
- 
-+static void nhi_mask_interrupt(struct tb_nhi *nhi, int mask, int ring)
-+{
-+	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
-+		return;
-+	iowrite32(mask, nhi->iobase + REG_RING_INTERRUPT_MASK_CLEAR_BASE + ring);
-+}
-+
-+static void nhi_clear_interrupt(struct tb_nhi *nhi, int ring)
-+{
-+	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
-+		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + ring);
-+	else
-+		iowrite32(~0, nhi->iobase + REG_RING_INT_CLEAR + ring);
-+}
-+
- /*
-  * ring_interrupt_active() - activate/deactivate interrupts for a single ring
-  *
-@@ -61,8 +76,8 @@ static int ring_interrupt_index(const st
-  */
- static void ring_interrupt_active(struct tb_ring *ring, bool active)
- {
--	int reg = REG_RING_INTERRUPT_BASE +
--		  ring_interrupt_index(ring) / 32 * 4;
-+	int index = ring_interrupt_index(ring) / 32 * 4;
-+	int reg = REG_RING_INTERRUPT_BASE + index;
- 	int interrupt_bit = ring_interrupt_index(ring) & 31;
- 	int mask = 1 << interrupt_bit;
- 	u32 old, new;
-@@ -123,7 +138,11 @@ static void ring_interrupt_active(struct
- 					 "interrupt for %s %d is already %s\n",
- 					 RING_TYPE(ring), ring->hop,
- 					 active ? "enabled" : "disabled");
--	iowrite32(new, ring->nhi->iobase + reg);
-+
-+	if (active)
-+		iowrite32(new, ring->nhi->iobase + reg);
-+	else
-+		nhi_mask_interrupt(ring->nhi, mask, index);
- }
- 
- /*
-@@ -136,11 +155,11 @@ static void nhi_disable_interrupts(struc
- 	int i = 0;
- 	/* disable interrupts */
- 	for (i = 0; i < RING_INTERRUPT_REG_COUNT(nhi); i++)
--		iowrite32(0, nhi->iobase + REG_RING_INTERRUPT_BASE + 4 * i);
-+		nhi_mask_interrupt(nhi, ~0, 4 * i);
- 
- 	/* clear interrupt status bits */
- 	for (i = 0; i < RING_NOTIFY_REG_COUNT(nhi); i++)
--		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + 4 * i);
-+		nhi_clear_interrupt(nhi, 4 * i);
- }
- 
- /* ring helper methods */
---- a/drivers/thunderbolt/nhi_regs.h
-+++ b/drivers/thunderbolt/nhi_regs.h
-@@ -93,6 +93,8 @@ struct ring_desc {
- #define REG_RING_INTERRUPT_BASE	0x38200
- #define RING_INTERRUPT_REG_COUNT(nhi) ((31 + 2 * nhi->hop_count) / 32)
- 
-+#define REG_RING_INTERRUPT_MASK_CLEAR_BASE	0x38208
-+
- #define REG_INT_THROTTLING_RATE	0x38c00
- 
- /* Interrupt Vector Allocation */
+diff --git a/drivers/s390/cio/qdio.h b/drivers/s390/cio/qdio.h
+index 5ea6249d8180..641f0dbb65a9 100644
+--- a/drivers/s390/cio/qdio.h
++++ b/drivers/s390/cio/qdio.h
+@@ -95,7 +95,7 @@ static inline int do_sqbs(u64 token, unsigned char state, int queue,
+ 		"	lgr	1,%[token]\n"
+ 		"	.insn	rsy,0xeb000000008a,%[qs],%[ccq],0(%[state])"
+ 		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart)
+-		: [state] "d" ((unsigned long)state), [token] "d" (token)
++		: [state] "a" ((unsigned long)state), [token] "d" (token)
+ 		: "memory", "cc", "1");
+ 	*count = _ccq & 0xff;
+ 	*start = _queuestart & 0xff;
+-- 
+2.40.1
+
 
 
