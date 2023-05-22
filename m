@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F90770C8B8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E54270C6FE
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235200AbjEVTlS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34746 "EHLO
+        id S234572AbjEVTYp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:24:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235164AbjEVTlE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:41:04 -0400
+        with ESMTP id S234583AbjEVTYo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8DF0E7E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:40:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C31569C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15AA062A10
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:40:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21011C433D2;
-        Mon, 22 May 2023 19:40:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EAE16287E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E2BC433EF;
+        Mon, 22 May 2023 19:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784434;
-        bh=uFEzZbX4LfvZqXu7IrmCsuQyBM9CZ/XPyVzc2wUM2GM=;
+        s=korg; t=1684783482;
+        bh=ktFo/b9bmKnW94LuXy3iwj65bbvj5syCofriKODXs5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jcCb9yrHLym/T4ly6cW1gxzHjwMwa5u0/ntEldW4Vc5BDz/MSNkfKxoBGnCp9mIns
-         WSReeENTXl7TcNVTBRphH4+NjUAb6XvyNflSta6Z9IuG6Dw9UJbjx5EbysUqJXsnig
-         zDbJQ90gXsPlPeNddU6vtIMhHBB7cTWpxw0GLBlI=
+        b=F29eTdQovE6I/AZz9MtqFLRFMCDj4n/ZPDFW0DFFHHZavXpr9ew+CO5KoUwuHxoBd
+         cOcWZtgEoAjzaAGnBs9+pJsPoup5fgAruMBjrllURWX2HL19i/PORvK/bio/tgvxZT
+         at7LapdefPp0oXVe1wgNkyuSiIJAV4f3nC2lGjPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, lyndonli <Lyndon.Li@amd.com>,
-        Likun Gao <Likun.Gao@amd.com>, Feifei Xu <Feifei.Xu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Jani Nikula <jani.nikula@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 082/364] drm/amdgpu: Fix sdma v4 sw fini error
+Subject: [PATCH 6.1 030/292] drm/i915: taint kernel when force probing unsupported devices
 Date:   Mon, 22 May 2023 20:06:27 +0100
-Message-Id: <20230522190414.817884653@linuxfoundation.org>
+Message-Id: <20230522190406.645615157@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +60,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: lyndonli <Lyndon.Li@amd.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 5e08e9c742a00384e5abe74bd40cf4dc15cb3a2e ]
+[ Upstream commit 79c901c93562bdf1c84ce6c1b744fbbe4389a6eb ]
 
-Fix sdma v4 sw fini error for sdma 4.2.2 to
-solve the following general protection fault
+For development and testing purposes, the i915.force_probe module
+parameter and DRM_I915_FORCE_PROBE kconfig option allow probing of
+devices that aren't supported by the driver.
 
-[  +0.108196] general protection fault, probably for non-canonical
-address 0xd5e5a4ae79d24a32: 0000 [#1] PREEMPT SMP PTI
-[  +0.000018] RIP: 0010:free_fw_priv+0xd/0x70
-[  +0.000022] Call Trace:
-[  +0.000012]  <TASK>
-[  +0.000011]  release_firmware+0x55/0x80
-[  +0.000021]  amdgpu_ucode_release+0x11/0x20 [amdgpu]
-[  +0.000415]  amdgpu_sdma_destroy_inst_ctx+0x4f/0x90 [amdgpu]
-[  +0.000360]  sdma_v4_0_sw_fini+0xce/0x110 [amdgpu]
+The i915.force_probe module parameter is "unsafe" and setting it taints
+the kernel. However, using the kconfig option does not.
 
-Signed-off-by: lyndonli <Lyndon.Li@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Always taint the kernel when force probing a device that is not
+supported.
+
+v2: Drop "depends on EXPERT" to avoid build breakage (kernel test robot)
+
+Fixes: 7ef5ef5cdead ("drm/i915: add force_probe module parameter to replace alpha_support")
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Airlie <airlied@gmail.com>
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230504103508.1818540-1-jani.nikula@intel.com
+(cherry picked from commit 3312bb4ad09ca6423bd4a5b15a94588a8962fb8e)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/Kconfig    | 12 +++++++-----
+ drivers/gpu/drm/i915/i915_pci.c |  6 ++++++
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-index 8b8ddf0502661..a4d84e3fe9381 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -1870,7 +1870,7 @@ static int sdma_v4_0_sw_fini(void *handle)
- 			amdgpu_ring_fini(&adev->sdma.instance[i].page);
+diff --git a/drivers/gpu/drm/i915/Kconfig b/drivers/gpu/drm/i915/Kconfig
+index e04715fa5bc4c..6b10868ec72ff 100644
+--- a/drivers/gpu/drm/i915/Kconfig
++++ b/drivers/gpu/drm/i915/Kconfig
+@@ -60,10 +60,11 @@ config DRM_I915_FORCE_PROBE
+ 	  This is the default value for the i915.force_probe module
+ 	  parameter. Using the module parameter overrides this option.
+ 
+-	  Force probe the i915 for Intel graphics devices that are
+-	  recognized but not properly supported by this kernel version. It is
+-	  recommended to upgrade to a kernel version with proper support as soon
+-	  as it is available.
++	  Force probe the i915 driver for Intel graphics devices that are
++	  recognized but not properly supported by this kernel version. Force
++	  probing an unsupported device taints the kernel. It is recommended to
++	  upgrade to a kernel version with proper support as soon as it is
++	  available.
+ 
+ 	  It can also be used to block the probe of recognized and fully
+ 	  supported devices.
+@@ -73,7 +74,8 @@ config DRM_I915_FORCE_PROBE
+ 	  Use "<pci-id>[,<pci-id>,...]" to force probe the i915 for listed
+ 	  devices. For example, "4500" or "4500,4571".
+ 
+-	  Use "*" to force probe the driver for all known devices.
++	  Use "*" to force probe the driver for all known devices. Not
++	  recommended.
+ 
+ 	  Use "!" right before the ID to block the probe of the device. For
+ 	  example, "4500,!4571" forces the probe of 4500 and blocks the probe of
+diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i915_pci.c
+index 1fa4a5813683f..efa80475fbfed 100644
+--- a/drivers/gpu/drm/i915/i915_pci.c
++++ b/drivers/gpu/drm/i915/i915_pci.c
+@@ -1343,6 +1343,12 @@ static int i915_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		return -ENODEV;
  	}
  
--	if (adev->ip_versions[SDMA0_HWIP][0] == IP_VERSION(4, 2, 0) ||
-+	if (adev->ip_versions[SDMA0_HWIP][0] == IP_VERSION(4, 2, 2) ||
-             adev->ip_versions[SDMA0_HWIP][0] == IP_VERSION(4, 4, 0))
- 		amdgpu_sdma_destroy_inst_ctx(adev, true);
- 	else
++	if (intel_info->require_force_probe) {
++		dev_info(&pdev->dev, "Force probing unsupported Device ID %04x, tainting kernel\n",
++			 pdev->device);
++		add_taint(TAINT_USER, LOCKDEP_STILL_OK);
++	}
++
+ 	/* Only bind to function 0 of the device. Early generations
+ 	 * used function 1 as a placeholder for multi-head. This causes
+ 	 * us confusion instead, especially on the systems where both
 -- 
 2.39.2
 
