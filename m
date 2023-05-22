@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 990FE70C63C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5935E70C74E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234044AbjEVTQc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39224 "EHLO
+        id S234663AbjEVT2J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233997AbjEVTQG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58336E5E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:54 -0700 (PDT)
+        with ESMTP id S234658AbjEVT2I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F3C198
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14E4162762
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31794C433D2;
-        Mon, 22 May 2023 19:15:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2083628D0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB40C433D2;
+        Mon, 22 May 2023 19:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782953;
-        bh=RIs3bOZOYO+vIpkypdWAjJCJO9m9XDgB9ZN7hJMrgeE=;
+        s=korg; t=1684783681;
+        bh=x94HLNRbcLTPOqzvs73lGBziHJYvCWq2DfQX91kQl4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RSGJvYgApsdpzN6Jf7fYRVzC4zB/vqL1DRgNzRcZKR8Iy6PmExDq45otszIHGSbxz
-         hITXVsAksdC+YULjeEGZlptggd9aMRzIUyM22O1d0I8+hOWyw+f3z5HO2tt3Ykj8sz
-         l58c9FdOK1FlerHLlkGMpre1h2xo6dIGJRgYS874=
+        b=oQe9JswS9779ddBGDI6y+IOeMucRSAXCViTri9TVrmpoOF57PyK9R8oERCyK4xYx8
+         NTXAxt51t9sx8edc0jD60wv8WmvhpmCMFQjsEgbxtd2WN/PlM6G9rCXaM4ZJDL73wY
+         pmZ/sKuT7wTVMiy0L79d2rS9PBd1R0A8LtSFdExQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+45d4691b1ed3c48eba05@syzkaller.appspotmail.com,
-        Andreas Gruenbacher <agruenba@redhat.com>,
+        =?UTF-8?q?Samuel=20=C4=8Cavoj?= <samuel@cavoj.net>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/203] gfs2: Fix inode height consistency check
+Subject: [PATCH 6.1 127/292] usb: typec: ucsi: acpi: add quirk for ASUS Zenbook UM325
 Date:   Mon, 22 May 2023 20:08:04 +0100
-Message-Id: <20230522190356.655605594@linuxfoundation.org>
+Message-Id: <20230522190409.142255780@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,46 +55,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Samuel Čavoj <samuel@cavoj.net>
 
-[ Upstream commit cfcdb5bad34f600aed7613c3c1a5e618111f77b7 ]
+[ Upstream commit 326e1c208f3f24d14b93f910b8ae32c94923d22c ]
 
-The maximum allowed height of an inode's metadata tree depends on the
-filesystem block size; it is lower for bigger-block filesystems.  When
-reading in an inode, make sure that the height doesn't exceed the
-maximum allowed height.
+On some ACPI platforms (namely the ASUS Zenbook UM325) the _DSM method must
+not be called after a notification is received but instead the mailbox
+should be read immediately from RAM. This is because the ACPI interrupt
+handler destroys the CCI in ERAM after copying to system memory, and when
+_DSM is later called to perform a second copy, it retrieves a garbage
+value.
 
-Arrays like sd_heightsize are sized to be big enough for any filesystem
-block size; they will often be slightly bigger than what's needed for a
-specific filesystem.
+Instead, the _DSM(read) method should only be called when necessary, i.e.
+for polling the state after reset and for retrieving the version. Other
+reads should not call _DSM and only peek into the RAM region.
 
-Reported-by: syzbot+45d4691b1ed3c48eba05@syzkaller.appspotmail.com
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+This adds a separate read operation for the Zenbook that syncs the
+ACPI mailbox only with polled commands.
+
+Link: https://lore.kernel.org/linux-usb/20210823180626.tb6m7h5tp6adhvt2@fastboi.localdomain/
+Signed-off-by: Samuel Čavoj <samuel@cavoj.net>
+[ heikki : handling everything in ucsi_acpi.c with DMI quirk ]
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230405134456.49607-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glops.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c | 44 ++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index 450032b4c886e..558932ad89d5d 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -394,6 +394,7 @@ static int inode_go_demote_ok(const struct gfs2_glock *gl)
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index 62206a6b8ea75..217355f1f9b94 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -9,6 +9,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/module.h>
+ #include <linux/acpi.h>
++#include <linux/dmi.h>
  
- static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ #include "ucsi.h"
+ 
+@@ -23,6 +24,7 @@ struct ucsi_acpi {
+ 	struct completion complete;
+ 	unsigned long flags;
+ 	guid_t guid;
++	u64 cmd;
+ };
+ 
+ static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
+@@ -62,6 +64,7 @@ static int ucsi_acpi_async_write(struct ucsi *ucsi, unsigned int offset,
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+ 
+ 	memcpy(ua->base + offset, val, val_len);
++	ua->cmd = *(u64 *)val;
+ 
+ 	return ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_WRITE);
+ }
+@@ -93,13 +96,46 @@ static const struct ucsi_operations ucsi_acpi_ops = {
+ 	.async_write = ucsi_acpi_async_write
+ };
+ 
++static int
++ucsi_zenbook_read(struct ucsi *ucsi, unsigned int offset, void *val, size_t val_len)
++{
++	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	int ret;
++
++	if (offset == UCSI_VERSION || UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
++		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
++		if (ret)
++			return ret;
++	}
++
++	memcpy(val, ua->base + offset, val_len);
++
++	return 0;
++}
++
++static const struct ucsi_operations ucsi_zenbook_ops = {
++	.read = ucsi_zenbook_read,
++	.sync_write = ucsi_acpi_sync_write,
++	.async_write = ucsi_acpi_async_write
++};
++
++static const struct dmi_system_id zenbook_dmi_id[] = {
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
++		},
++	},
++	{ }
++};
++
+ static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
  {
-+	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
- 	const struct gfs2_dinode *str = buf;
- 	struct timespec64 atime;
- 	u16 height, depth;
-@@ -440,7 +441,7 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
- 	/* i_diskflags and i_eattr must be set before gfs2_set_inode_flags() */
- 	gfs2_set_inode_flags(inode);
- 	height = be16_to_cpu(str->di_height);
--	if (unlikely(height > GFS2_MAX_META_HEIGHT))
-+	if (unlikely(height > sdp->sd_max_height))
- 		goto corrupt;
- 	ip->i_height = (u8)height;
+ 	struct ucsi_acpi *ua = data;
+ 	u32 cci;
+ 	int ret;
+ 
+-	ret = ucsi_acpi_read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
++	ret = ua->ucsi->ops->read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
+ 	if (ret)
+ 		return;
+ 
+@@ -114,6 +150,7 @@ static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
+ static int ucsi_acpi_probe(struct platform_device *pdev)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
++	const struct ucsi_operations *ops = &ucsi_acpi_ops;
+ 	struct ucsi_acpi *ua;
+ 	struct resource *res;
+ 	acpi_status status;
+@@ -143,7 +180,10 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ 	init_completion(&ua->complete);
+ 	ua->dev = &pdev->dev;
+ 
+-	ua->ucsi = ucsi_create(&pdev->dev, &ucsi_acpi_ops);
++	if (dmi_check_system(zenbook_dmi_id))
++		ops = &ucsi_zenbook_ops;
++
++	ua->ucsi = ucsi_create(&pdev->dev, ops);
+ 	if (IS_ERR(ua->ucsi))
+ 		return PTR_ERR(ua->ucsi);
  
 -- 
 2.39.2
