@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD25270C6BB
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E1370C811
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234417AbjEVTVq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
+        id S234919AbjEVTfk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:35:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbjEVTVq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:46 -0400
+        with ESMTP id S234969AbjEVTfh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4265893
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC8912B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4B5162837
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30FEC433D2;
-        Mon, 22 May 2023 19:21:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 964CD61FE6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D0BC433EF;
+        Mon, 22 May 2023 19:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783304;
-        bh=QICWxuVBGk0ImBsvXxod1gs9WgMc/laPy4CSbbuwNzY=;
+        s=korg; t=1684784049;
+        bh=h7dh3KkyJjGKYQdkWqhkbHfMUiiUp9Fd9wZiShJylW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QAWgd/RoT0r0QTjz0B3KZPKLUBfljFEBWzTckixU5SOL+Ulu+RBcly9cPbqUEFqHO
-         rIrH9T6ao6oEn0p48dZVM6WrkeWFJHEOsVxgka+raJC+ucYqbtQQFHe68OddosLc4c
-         5GrwNrCmKSbS3DxtJB0nHaezSsbWpDeZKLB6KMUg=
+        b=txPSY4VSqUHFU1NgnFRUlGzox7Y/awZQfdEOWWSy/xpOpmgTNrjt4jDefSNEwz7Ut
+         ooDK57pSAxS6O2VzvD1jiLXOy9uYUZqVejboH2P0RD6naJyz4J/VIo2CBNDrEXbxFJ
+         Ll1UHmxRT6Kb+cG+PhsUwQsDAO+qYttNxWYvWBgU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
         Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 180/203] can: kvaser_pciefd: Clear listen-only bit if not explicitly requested
+Subject: [PATCH 6.1 247/292] can: kvaser_pciefd: Set CAN_STATE_STOPPED in kvaser_pciefd_stop()
 Date:   Mon, 22 May 2023 20:10:04 +0100
-Message-Id: <20230522190359.985043580@linuxfoundation.org>
+Message-Id: <20230522190412.123797830@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,31 +55,31 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Jimmy Assarsson <extja@kvaser.com>
 
-commit bf7ac55e991ca177f1ac16be51152f1ef291a4df upstream.
+commit aed0e6ca7dbb8fbea9bc69c9ac663d5533c8c5d8 upstream.
 
-The listen-only bit was never cleared, causing the controller to
-always use listen-only mode, if previously set.
+Set can.state to CAN_STATE_STOPPED in kvaser_pciefd_stop().
+Without this fix, wrong CAN state was repported after the interface was
+brought down.
 
 Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-3-extja@kvaser.com
+Link: https://lore.kernel.org/r/20230516134318.104279-2-extja@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/kvaser_pciefd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/drivers/net/can/kvaser_pciefd.c
 +++ b/drivers/net/can/kvaser_pciefd.c
-@@ -561,6 +561,8 @@ static void kvaser_pciefd_setup_controll
+@@ -719,6 +719,7 @@ static int kvaser_pciefd_stop(struct net
+ 		iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+ 		del_timer(&can->bec_poll_timer);
+ 	}
++	can->can.state = CAN_STATE_STOPPED;
+ 	close_candev(netdev);
  
- 	if (can->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
- 		mode |= KVASER_PCIEFD_KCAN_MODE_LOM;
-+	else
-+		mode &= ~KVASER_PCIEFD_KCAN_MODE_LOM;
- 
- 	mode |= KVASER_PCIEFD_KCAN_MODE_EEN;
- 	mode |= KVASER_PCIEFD_KCAN_MODE_EPEN;
+ 	return ret;
 
 
