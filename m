@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA0F670C9B4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0379270C6A4
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235409AbjEVTuq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44106 "EHLO
+        id S234350AbjEVTUd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:20:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235411AbjEVTtz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:55 -0400
+        with ESMTP id S231728AbjEVTUc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:20:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F17B5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA2DA3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:20:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75D8462AE6
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA95C433D2;
-        Mon, 22 May 2023 19:49:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBFEC6281C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:20:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED492C433EF;
+        Mon, 22 May 2023 19:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784992;
-        bh=ydEK3aU/RWb8e27zwHNLQSr+DRKSEVXK85FwTJnafns=;
+        s=korg; t=1684783230;
+        bh=LWKYDZPw56ysd+OlgRNoVjRw+jbHYGUeWBgLsS8860g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y3S/CCwWenggcOkqJou1ERWPAD5bphSJLN6aTQ6sK60QfsSYvSbFkWSl8cKGfqNTs
-         q0EBr6/oHsXAlF3xakws3dSUid1O0G1qrxLHCVwWoZ93mvLxOVpIf+K3zNFDkSuYI5
-         /97QR4AOgdlLY3HANsjjDUvJzll3Ujth1uj2fhxc=
+        b=MWoXXVu5/pICLdbreR/JHBH5k+45PBMkbQzq38x8c7LM2jODRd/4prlls/DmBT1qG
+         bE4mbRU23yH5Yt/56sQuQpLPboN7rDBuzeKvwrXz0pdEaHd0EmIIepaEpb0ItPeOz4
+         LjOq22ChC+7AhuB03LQbM8C+Lmiocx/vY/ClqFp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 272/364] wifi: iwlwifi: fw: fix DBGI dump
-Date:   Mon, 22 May 2023 20:09:37 +0100
-Message-Id: <20230522190419.514873889@linuxfoundation.org>
+Subject: [PATCH 5.15 154/203] cassini: Fix a memory leak in the error handling path of cas_init_one()
+Date:   Mon, 22 May 2023 20:09:38 +0100
+Message-Id: <20230522190359.240149248@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,87 +57,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit d3ae69180bbd74bcbc03a2b6d10ed7eccbe98c23 ]
+[ Upstream commit 412cd77a2c24b191c65ea53025222418db09817c ]
 
-The DBGI dump is (unsurprisingly) of type DBGI, not SRAM.
-This leads to bad register accesses because the union is
-built differently, there's no allocation ID, and thus the
-allocation ID ends up being 0x8000.
+cas_saturn_firmware_init() allocates some memory using vmalloc(). This
+memory is freed in the .remove() function but not it the error handling
+path of the probe.
 
-Note that this was already wrong for DRAM vs. SMEM since
-they use different parts of the union, but the allocation
-ID is at the same place, so it worked.
+Add the missing vfree() to avoid a memory leak, should an error occur.
 
-Fix all of this but set the allocation ID in a way that
-the offset calculation ends up without any offset.
-
-Fixes: 34bc27783a31 ("iwlwifi: yoyo: fix DBGI_SRAM ini dump header.")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230514120631.19a302ae4c65.I12272599f7c1930666157b9d5e7f81fe9ec4c421@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: fcaa40669cd7 ("cassini: use request_firmware")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/sun/cassini.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 027360e63b926..3ef0b776b7727 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1664,14 +1664,10 @@ static __le32 iwl_get_mon_reg(struct iwl_fw_runtime *fwrt, u32 alloc_id,
- }
+diff --git a/drivers/net/ethernet/sun/cassini.c b/drivers/net/ethernet/sun/cassini.c
+index 6472425539e15..21e4df8466c91 100644
+--- a/drivers/net/ethernet/sun/cassini.c
++++ b/drivers/net/ethernet/sun/cassini.c
+@@ -5123,6 +5123,8 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		cas_shutdown(cp);
+ 	mutex_unlock(&cp->pm_mutex);
  
- static void *
--iwl_dump_ini_mon_fill_header(struct iwl_fw_runtime *fwrt,
--			     struct iwl_dump_ini_region_data *reg_data,
-+iwl_dump_ini_mon_fill_header(struct iwl_fw_runtime *fwrt, u32 alloc_id,
- 			     struct iwl_fw_ini_monitor_dump *data,
- 			     const struct iwl_fw_mon_regs *addrs)
- {
--	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
--	u32 alloc_id = le32_to_cpu(reg->dram_alloc_id);
--
- 	if (!iwl_trans_grab_nic_access(fwrt->trans)) {
- 		IWL_ERR(fwrt, "Failed to get monitor header\n");
- 		return NULL;
-@@ -1702,8 +1698,10 @@ iwl_dump_ini_mon_dram_fill_header(struct iwl_fw_runtime *fwrt,
- 				  void *data, u32 data_len)
- {
- 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	u32 alloc_id = le32_to_cpu(reg->dram_alloc_id);
++	vfree(cp->fw_data);
++
+ 	pci_iounmap(pdev, cp->regs);
  
--	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
-+	return iwl_dump_ini_mon_fill_header(fwrt, alloc_id, mon_dump,
- 					    &fwrt->trans->cfg->mon_dram_regs);
- }
- 
-@@ -1713,8 +1711,10 @@ iwl_dump_ini_mon_smem_fill_header(struct iwl_fw_runtime *fwrt,
- 				  void *data, u32 data_len)
- {
- 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	u32 alloc_id = le32_to_cpu(reg->internal_buffer.alloc_id);
- 
--	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
-+	return iwl_dump_ini_mon_fill_header(fwrt, alloc_id, mon_dump,
- 					    &fwrt->trans->cfg->mon_smem_regs);
- }
- 
-@@ -1725,7 +1725,10 @@ iwl_dump_ini_mon_dbgi_fill_header(struct iwl_fw_runtime *fwrt,
- {
- 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
- 
--	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
-+	return iwl_dump_ini_mon_fill_header(fwrt,
-+					    /* no offset calculation later */
-+					    IWL_FW_INI_ALLOCATION_ID_DBGC1,
-+					    mon_dump,
- 					    &fwrt->trans->cfg->mon_dbgi_regs);
- }
  
 -- 
 2.39.2
