@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A141D70C920
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213D670C612
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235241AbjEVTpW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39550 "EHLO
+        id S231913AbjEVTO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235402AbjEVTpK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:10 -0400
+        with ESMTP id S234018AbjEVTOr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF0F119
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935B2120
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDAC762A73
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DB5C433EF;
-        Mon, 22 May 2023 19:45:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4BAA6273C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EDDC433EF;
+        Mon, 22 May 2023 19:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784707;
-        bh=RkcAtB480GYQA9hn42rA8rzoGc08MhttzYGEylxcyW8=;
+        s=korg; t=1684782874;
+        bh=xQe8JHhVWU4chUfRjCf0RNQOPxaRYxs0I4eIGguwbYQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sjOLIkYepeRC4vXBHrGy4cfBRYxiiyONXL8RpUxNAkaxlrmkXsTA8XFd2vviH0AZa
-         udixBNIZFMh8ceBjROEcqUpVC9mMaR+eJXcloPQTWyVYne/JQZ7/LyZq3qecomceEV
-         N1tYPnjUpLtqpnDHoG09flZd9sutdNpYUnNfXG1o=
+        b=KOfVlURjscYzilXRSrnyQ23zJ4ymzUIkDso1giW49uzgaEDBqAVPDWD9ZQ1eaar8K
+         uuTeqyxKDVdTBj8UPYunS1CutF9yzcLHx/VYQb4moT1EWXRrw4hqGkclYz0hfxfOEU
+         lbp3lCRaUJ9X2D4/ujMXHHw73WhmNrK/3H308iFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 174/364] iommu/arm-smmu-qcom: Limit the SMR groups to 128
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 055/203] net: pasemi: Fix return type of pasemi_mac_start_tx()
 Date:   Mon, 22 May 2023 20:07:59 +0100
-Message-Id: <20230522190417.071028943@linuxfoundation.org>
+Message-Id: <20230522190356.519291786@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 12261134732689b7e30c59db9978f81230965181 ]
+[ Upstream commit c8384d4a51e7cb0e6587f3143f29099f202c5de1 ]
 
-Some platforms support more than 128 stream matching groups than what is
-defined by the ARM SMMU architecture specification. But due to some unknown
-reasons, those additional groups don't exhibit the same behavior as the
-architecture supported ones.
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
 
-For instance, the additional groups will not detect the quirky behavior of
-some firmware versions intercepting writes to S2CR register, thus skipping
-the quirk implemented in the driver and causing boot crash.
+  drivers/net/ethernet/pasemi/pasemi_mac.c:1665:21: error: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Werror,-Wincompatible-function-pointer-types-strict]
+          .ndo_start_xmit         = pasemi_mac_start_tx,
+                                    ^~~~~~~~~~~~~~~~~~~
+  1 error generated.
 
-So let's limit the groups to 128 for now until the issue with those groups
-are fixed and issue a notice to users in that case.
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of
+pasemi_mac_start_tx() to match the prototype's to resolve the warning.
+While PowerPC does not currently implement support for kCFI, it could in
+the future, which means this warning becomes a fatal CFI failure at run
+time.
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230327080029.11584-1-manivannan.sadhasivam@linaro.org
-[will: Reworded the comment slightly]
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1750
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://lore.kernel.org/r/20230319-pasemi-incompatible-pointer-types-strict-v1-1-1b9459d8aef0@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/pasemi/pasemi_mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index d1b296b95c860..ae09c627bc844 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -268,12 +268,26 @@ static int qcom_smmu_init_context(struct arm_smmu_domain *smmu_domain,
+diff --git a/drivers/net/ethernet/pasemi/pasemi_mac.c b/drivers/net/ethernet/pasemi/pasemi_mac.c
+index 7e096b2888b92..b223488318ad7 100644
+--- a/drivers/net/ethernet/pasemi/pasemi_mac.c
++++ b/drivers/net/ethernet/pasemi/pasemi_mac.c
+@@ -1423,7 +1423,7 @@ static void pasemi_mac_queue_csdesc(const struct sk_buff *skb,
+ 	write_dma_reg(PAS_DMA_TXCHAN_INCR(txring->chan.chno), 2);
+ }
  
- static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+-static int pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
  {
--	unsigned int last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
- 	struct qcom_smmu *qsmmu = to_qcom_smmu(smmu);
-+	unsigned int last_s2cr;
- 	u32 reg;
- 	u32 smr;
- 	int i;
- 
-+	/*
-+	 * Some platforms support more than the Arm SMMU architected maximum of
-+	 * 128 stream matching groups. For unknown reasons, the additional
-+	 * groups don't exhibit the same behavior as the architected registers,
-+	 * so limit the groups to 128 until the behavior is fixed for the other
-+	 * groups.
-+	 */
-+	if (smmu->num_mapping_groups > 128) {
-+		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+		smmu->num_mapping_groups = 128;
-+	}
-+
-+	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
- 	 * ignored, and writing BYPASS will end up written as FAULT in the
+ 	struct pasemi_mac * const mac = netdev_priv(dev);
+ 	struct pasemi_mac_txring * const txring = tx_ring(mac);
 -- 
 2.39.2
 
