@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 544DF70C74D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEC170C639
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234660AbjEVT2G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49812 "EHLO
+        id S233998AbjEVTQW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234666AbjEVT2F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63146186
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:59 -0700 (PDT)
+        with ESMTP id S234183AbjEVTQG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6BCCA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD158628CB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBECAC433D2;
-        Mon, 22 May 2023 19:27:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFE266274F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF20C433D2;
+        Mon, 22 May 2023 19:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783678;
-        bh=8KHX9ppB/ZTjCcnv70QUkyv0EKzNZ3Uq/zZdz0skG3I=;
+        s=korg; t=1684782951;
+        bh=sxrXFG9zskyTrjrIVOYCIzQ7hBRzHxYT6ADBMRecYQM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PdglT/jPzs85rGjgGAB311xcB95osQ0F6MzTprGX76nn3OEfJadEFkpBRkX/B9/e0
-         A4GM1AIFEHawK813aSwQ94oDVRJV2f+ilH6wJaI7qqiVTJi27pHHV+srCMLZh0hUmW
-         +3PAvTORk8n9fr/bIsSi1MrZdh+JKIjjhRBuVy8M=
+        b=0G8KTrcnc4waSIcT23j1ocJBT0HXBmBaCUBEwFPy+pEkEZ54bvZTWdHklDGCQdZ6F
+         7yqUkC15WsXldiJqyeUApMnlyHZ5XZWqfYnoU/8U0AhH8DqWM8ruvs6kXsmExcX4m8
+         VoFz7BO9nJPwZSACnQ0JDLwaI2WLTtHzTsGh08uw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kevin Groeneveld <kgroeneveld@lenbrook.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/292] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
+Subject: [PATCH 5.15 059/203] scsi: message: mptlan: Fix use after free bug in mptlan_remove() due to race condition
 Date:   Mon, 22 May 2023 20:08:03 +0100
-Message-Id: <20230522190409.114384073@linuxfoundation.org>
+Message-Id: <20230522190356.628289619@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,75 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 87c614175bbf28d3fd076dc2d166bac759e41427 ]
+[ Upstream commit f486893288f3e9b171b836f43853a6426515d800 ]
 
-When using gpio based chip select the cs value can go outside the range
-0 – 3. The various MX51_ECSPI_* macros did not take this into consideration
-resulting in possible corruption of the configuration.
+mptlan_probe() calls mpt_register_lan_device() which initializes the
+&priv->post_buckets_task workqueue. A call to
+mpt_lan_wake_post_buckets_task() will subsequently start the work.
 
-For example for any cs value over 3 the SCLKPHA bits would not be set and
-other values in the register possibly corrupted.
+During driver unload in mptlan_remove() the following race may occur:
 
-One way to fix this is to just mask the cs bits to 2 bits. This still
-allows all 4 native chip selects to work as well as gpio chip selects
-(which can use any of the 4 chip select configurations).
+CPU0                  CPU1
 
-Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
-Link: https://lore.kernel.org/r/20230318222132.3373-1-kgroeneveld@lenbrook.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+                    |mpt_lan_post_receive_buckets_work()
+mptlan_remove()     |
+  free_netdev()     |
+    kfree(dev);     |
+                    |
+                    | dev->mtu
+                    |   //use
+
+Fix this by finishing the work prior to cleaning up in mptlan_remove().
+
+[mkp: we really should remove mptlan instead of attempting to fix it]
+
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Link: https://lore.kernel.org/r/20230318081635.796479-1-zyytlz.wz@163.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/message/fusion/mptlan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index fbd7b354dd36b..2c660a95c17e7 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -253,6 +253,18 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
- 	return true;
- }
+diff --git a/drivers/message/fusion/mptlan.c b/drivers/message/fusion/mptlan.c
+index 3261cac762def..ec3ee356078db 100644
+--- a/drivers/message/fusion/mptlan.c
++++ b/drivers/message/fusion/mptlan.c
+@@ -1427,7 +1427,9 @@ mptlan_remove(struct pci_dev *pdev)
+ {
+ 	MPT_ADAPTER 		*ioc = pci_get_drvdata(pdev);
+ 	struct net_device	*dev = ioc->netdev;
++	struct mpt_lan_priv *priv = netdev_priv(dev);
  
-+/*
-+ * Note the number of natively supported chip selects for MX51 is 4. Some
-+ * devices may have less actual SS pins but the register map supports 4. When
-+ * using gpio chip selects the cs values passed into the macros below can go
-+ * outside the range 0 - 3. We therefore need to limit the cs value to avoid
-+ * corrupting bits outside the allocated locations.
-+ *
-+ * The simplest way to do this is to just mask the cs bits to 2 bits. This
-+ * still allows all 4 native chip selects to work as well as gpio chip selects
-+ * (which can use any of the 4 chip select configurations).
-+ */
-+
- #define MX51_ECSPI_CTRL		0x08
- #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
- #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
-@@ -261,16 +273,16 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
- #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
- #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
- #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
--#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
-+#define MX51_ECSPI_CTRL_CS(cs)		((cs & 3) << 18)
- #define MX51_ECSPI_CTRL_BL_OFFSET	20
- #define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
- 
- #define MX51_ECSPI_CONFIG	0x0c
--#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
--#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
--#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
--#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
--#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
-+#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs & 3) +  0))
-+#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
-+#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
-+#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
-+#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
- 
- #define MX51_ECSPI_INT		0x10
- #define MX51_ECSPI_INT_TEEN		(1 <<  0)
++	cancel_delayed_work_sync(&priv->post_buckets_task);
+ 	if(dev != NULL) {
+ 		unregister_netdev(dev);
+ 		free_netdev(dev);
 -- 
 2.39.2
 
