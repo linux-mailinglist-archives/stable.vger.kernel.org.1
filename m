@@ -2,433 +2,263 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59B0570B60D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 09:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 101AB70B70F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 09:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232308AbjEVHNX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 03:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42608 "EHLO
+        id S232427AbjEVHvu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 03:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232303AbjEVHNA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 03:13:00 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2051.outbound.protection.outlook.com [40.107.94.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CCE10CB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 00:12:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b0n9ZqNTW/HtRy5qMVQirhO9+Pxa2YpHe/vLOS+bh3szyf3XhK/V5+fP1I8tPTEWwLylg/giTqywxzprr/ENWfbtZrSDPwAu3+tGlKYS/Kwnr3ANJr0HJLs0xQcnNxdj5js/7sq42kPSSmndD2n844qzPUwFXOqdGJbG8bGo+d5PNVtUB+VS2diYSf6K1+n84JFey5XP1mM5DRCA+Bii+/wchME7Yd5g7Xw0nDvXVYq8skH8efDLf8PFBX0wMyxy4EAwxB8MqFQrQFHjBjbvqUsv42paaftMpv32MWbnCTWodGKqd3QWY3YupsobvuttP111Yk3cSir7t3X27wh68Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JuRcMbXGLvSWQShZdM+YsFT7Hpo6RfZ/Q31WQSiCvAc=;
- b=Y0qlvriHMqNOosrjMRdn0RMYBO1VqIcCkpeWtR6fAD45WIenZcoielzx5gaX2F4SCJLI0Oi8nnJfWutcumwSXMMTyJYZGaqpHjFOcU++75g46qN0w5ttKy3E4GZcX40rB6ifFVodmfRpyKFxWn4pItJZbro/Vn0KPNQcNCiweuJJR9fPS8Ji83IIoQLxHs3LsOZNv7qrPXpb1pCGTTYjB+ygkGaCN7Q7VhO6gJKajZejnjV53cBP/ZtyeZzjoCfsU852c563pAFGYMlgbE3XunZOXSs2wYrlq5WZ/Dic+mn5+F9WXmMt5fCUxtLmxKj2q0njI1kBM2LjwLPlVpxKqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JuRcMbXGLvSWQShZdM+YsFT7Hpo6RfZ/Q31WQSiCvAc=;
- b=IvguX4FmgpH+s7U7ncMA9xDMtUakfPGlhBIolGgf2eLxpZZRYcDe+kp8ZMG0cNyO3e9TFs6hN3vVbi9tYfwlYeobMW8T90EPhGCJQvVF8YiFksVRK469AkNi8fJxsZBkNVfCZe2RFU0XVZOUbSzZC6gx4itWTySbAtWD6goUR9c=
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
- by SN7PR12MB7788.namprd12.prod.outlook.com (2603:10b6:806:345::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.25; Mon, 22 May
- 2023 07:11:45 +0000
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::4758:8922:780a:4d4b]) by CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::4758:8922:780a:4d4b%6]) with mapi id 15.20.6411.028; Mon, 22 May 2023
- 07:11:45 +0000
-From:   "Lin, Wayne" <Wayne.Lin@amd.com>
-To:     Jani Nikula <jani.nikula@intel.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
-CC:     "lyude@redhat.com" <lyude@redhat.com>,
-        "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
-        "imre.deak@intel.com" <imre.deak@intel.com>,
-        "Wentland, Harry" <Harry.Wentland@amd.com>,
-        "Zuo, Jerry" <Jerry.Zuo@amd.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v2] drm/dp_mst: Clear MSG_RDY flag before sending new
- message
-Thread-Topic: [PATCH v2] drm/dp_mst: Clear MSG_RDY flag before sending new
- message
-Thread-Index: AQHZeNn8+E0QEEuY3UCLaVyy+/niaq9c0kAAgAkv4uA=
-Date:   Mon, 22 May 2023 07:11:44 +0000
-Message-ID: <CO6PR12MB54898B16634A0F4E9BECE643FC439@CO6PR12MB5489.namprd12.prod.outlook.com>
-References: <20230427072850.100887-1-Wayne.Lin@amd.com>
- <87zg64h8ep.fsf@intel.com>
-In-Reply-To: <87zg64h8ep.fsf@intel.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=1d086bf5-ed63-4455-9ab9-a78d6b29b1d8;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP
- 2.0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2023-05-22T06:52:31Z;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|SN7PR12MB7788:EE_
-x-ms-office365-filtering-correlation-id: 616f13e6-f236-43e6-89af-08db5a93ccda
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zKVrkCZoqZaNF+zfN5elstPbmUevAa8AW6sFvBqy1OPcexyDaRtdARMmcP3nFrdAPTp/jMmKU8SEJkOznRU8LJa5qm4eqmOM2u3ANJaQoBFrc0ouSrkRo5W4YKn9sOFs+ldyS2QJsIj6gbOTZa9PRtJoKsGT8Pkj6y0GjFsegnNBndQqCL7gk191bg1RFGFVk37z6QL0OBniiG4+gdAZo2cmjvwRb18HVz6TA4W51Rs+6ALZOlEk8NhE0YtoFpIWt1ROKqvxYq69GPPbK2V4hEIGhibXJAOTdFQZ4GbD8xfZ4+Db5clP7rq5ztnCc31uGo5ROtrmK84TbHJEIvBFNCOnp4ymld/wfCR6kio+bkFbbNTvGIQ5cNLpkv2ypEDbU5ajW0F7fxXAecqc+Ya9SWqNXDJjOjqwr82PS3MNQoM/jFqWwxna3rPU4VuIiOG9nY6HlPzIA85CxbsZKRD9Tfbei23PhN8H2S/vlap1TJJO4Bzf3WmyESEpIbSJ7qPwARXVO827hZcxz5JVOGKRd/jpR7leaATSkogQj66g756fR/3YCYOwOyi077JKtMEzyZgiRfm2sXluM5h4utpJv2QihtazJmW2izeXtYwkEColuut03AKk37MG3YfB9tYr
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(366004)(39860400002)(376002)(346002)(451199021)(38070700005)(86362001)(33656002)(55016003)(2906002)(30864003)(186003)(55236004)(53546011)(15650500001)(83380400001)(76116006)(71200400001)(316002)(66946007)(66446008)(66556008)(64756008)(66476007)(110136005)(4326008)(54906003)(5660300002)(7696005)(478600001)(52536014)(6506007)(41300700001)(26005)(8676002)(8936002)(9686003)(38100700002)(122000001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?m6D+N4QiHh97X7r6eIkfPssMoNPPwySUylwk2XvsUDd0kTrBSQyNFh2K99UJ?=
- =?us-ascii?Q?iBfKlpKTawzYpdS/Rut6RU1J3jFIoiurDjJfZjGsIMOBwckGmGdt47nvkJcU?=
- =?us-ascii?Q?s1bVFWZRhVfphC4lzyrcsM+QZ8wtvLIRP0nCzFuszbIJbjwkK/i1lMKhysJF?=
- =?us-ascii?Q?ahgr+yMMdRERZWqenNjjiL1/zg6waQvEGnL/inxiHu59+hnoaiENbJ3stGD3?=
- =?us-ascii?Q?f6NTXjDixQhrCu5N8ksk+IYVWGL4E6bn8BAfRFRZt1f53q9RHcPrqiVsr4kQ?=
- =?us-ascii?Q?wkoumtsv5Z3/0L21RPcZJdm5hdx80TKOF9NtswCTVVhRjjYplZzk/3SdHu/j?=
- =?us-ascii?Q?ggy7RY1lqMP6Ck4BFdZ1WHhNBCIQLZ+no0GyxIpDZvrsdFLoEJvVrWJbaZeo?=
- =?us-ascii?Q?3JPDEsQl6trjSiJUc7JPlJfWaH9s79NzFQ1sppK/GifyMkvovOp+dgUYMuOB?=
- =?us-ascii?Q?RU/Kouap9dAtneiOTY/h8spxyM+//CjqI1lG91s1/aF8V/s4LAtSl7bOWXNU?=
- =?us-ascii?Q?hYThmwxSLO+Jgxi9mKHSOIHLziH6Lvf+/LCd/xEcRepRkavfy7mD8zBBK120?=
- =?us-ascii?Q?EeHtuIT5io6TMaEh0HbDujFShHlKt1YrEhARTpa/GDc9Q83iflyA7zWFLQbE?=
- =?us-ascii?Q?RGiw6kqSDtW2Ql/S8Ko1uMib8Gbmk3DpzT6/I1UNe+6cCxWrFApXf4MByDHE?=
- =?us-ascii?Q?la05GMcb3wM8Wyhz1Vx+J3snlm+nKGXPh94UKDzbezpYQdRi5L4oumDkuEQH?=
- =?us-ascii?Q?K5xSOjF2A0HuLCI3Iwmw8Sc8B9PF27RjMalErMVXNlx9m1mv00Sv3GyKX5GA?=
- =?us-ascii?Q?tkzy6QPuA5Dhq/Skm7y5Lj2gXC+Hy/y0NfchQ4jlMy9PoFvnMIP91dQ46KUd?=
- =?us-ascii?Q?FrNPuNsL4XpnR5WtQEHZvgq4KFymmPX8WjRdWWFiIaP3wPM11E8nWiUjB/3/?=
- =?us-ascii?Q?1ZShSg234PKRoBZou7waac5tr6RELv/jMA3jqHIUZNbYXS/rL2s9N1RelAdX?=
- =?us-ascii?Q?MfPuukwOz9iNltVc8b07NJIlIW+yKCe0IThebCfynToOxhrKeLjQKfyUIQDn?=
- =?us-ascii?Q?p4urvlpgyHqMKojkdGOr7qdIlu0GcGOd2vjDRQRvSsD8iD7JC5yKdAXb78d/?=
- =?us-ascii?Q?wuEJbYz09cp+bymCeocRgF556Dcjt5fltAeZ67yDj2n+OSKXxEmO3V6DbMLW?=
- =?us-ascii?Q?0u2tON/h9J/KeZ6sjV9ILQoiUWKfqPQe90hJTAWA62GBS8sz/8rciMlvw3Vm?=
- =?us-ascii?Q?Dxxgfjsj37qEtkqfuoqdHzbWaCg2/ZG7MQ60KTxA5FPysg3KpN1yzrXieLpP?=
- =?us-ascii?Q?Ycg6keENfN9mPsb0SCtj+Q/5mlVDESkoL4TAMgpdjAe6Qy2CAyusTQ4JaeZU?=
- =?us-ascii?Q?2TQmKcD+3N7rK2GAJmNyRyPrhzaofcc3RHtRZiH8nsP4ULv3GsxaYIyFKrNn?=
- =?us-ascii?Q?s3TKcMdm6porGdAWeiO4OLGwS1+9NEKLzI1/jUVO/td5yCL1I2mqf5HThFRu?=
- =?us-ascii?Q?M+cYQDMROXbwy5o0g7fP6ac8/kq5cLQKnkWLVv3kXwi1+UCllezod4rkVXH9?=
- =?us-ascii?Q?D3Jj+SyW4fzqkM30VP0=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S232601AbjEVHvZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 03:51:25 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45171722
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 00:49:52 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-25355609a04so4261495a91.0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 00:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684741757; x=1687333757;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TXqacZ7P4o4faz/vNysvlhG0FAAAOG2qV6n1Xw8uN8U=;
+        b=62rsH0qRQVhPkF00D/PVaZAfMh0xc3yvej0xDP506s/7NzkN3KHUghfPkTPaNbE8yB
+         V7wSu0BUowgTLMyeW5N2gk7NWCCxV8fOKuBhyk2Yo05sl8kpJU3LkBy5eeaakiq/gF1M
+         +SNhrU0MP/OdoANJ6OfPI2lfcsQ6IjH60lpsOLz0ghiS25BCHCIaaWaxhYJioRvpy1m6
+         1pWw/bKRY7crrO57dAmMa9BaUD8l0XruC5aBMmy4JkkvedNzrOdKh9pdPg18nQDU9v/J
+         Mocaxv3JgarDvJkQx/8/lNjoelrJEWtHmgra/uqNVuR4oeo6pz2jMb50AjXPkQR2u669
+         +0jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684741757; x=1687333757;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TXqacZ7P4o4faz/vNysvlhG0FAAAOG2qV6n1Xw8uN8U=;
+        b=Y8NVOGrMMOSyFi61BdZ6m2I7/YtE98vdHaU6CNgnj3qUvNihi0SLhFg/KXE3Qvd9Se
+         VgfJFUVQXSihIf8qXE8ha55EB+8voPvIhISzFjhRvMvy27pxY9RBI836tEehdmFw6Y9q
+         JSffW5zrZPlHP4JBrySsva1h7R7yx3JalxaL4dkZu2wDGN7DGehSVlM5SJZ7HHAy+fjE
+         lycN/vilZ0n01GnYrdML/Ks1PkJNNSmd83lgLOyDrGLK9aMJK9YaKYxNGdfVYCPMOnKl
+         TyKFiFmPEMmnagnIrJzVnP7zLNT9StTwkv2ze6CO2L62BZbaUCzpZ7cY2LKAD3PVHe3B
+         FSHw==
+X-Gm-Message-State: AC+VfDzaGFptcraDFI4wwwznfMo0XXyp/xMsaxYp0CCCh24NSL5c2BLO
+        aT8s/lwJGYuortyzqCWIT3JvYP6lsTFGirwiqGPiqA==
+X-Google-Smtp-Source: ACHHUZ6NS5u4I6xPkuvLTuCpIIAYU2qi4UK6iL3oKxLD9mYasKrRrM9Z9Y0s5FulOiYF0y1dlG3waM6ScIJvx/fIgqs=
+X-Received: by 2002:a17:90b:4397:b0:255:5b1a:be04 with SMTP id
+ in23-20020a17090b439700b002555b1abe04mr3326900pjb.4.1684741756884; Mon, 22
+ May 2023 00:49:16 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 616f13e6-f236-43e6-89af-08db5a93ccda
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2023 07:11:44.6013
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: nD989BroE6GHu60FUrUsSQPu+fgFmPl/5fO+UuDh1qJyGRfPWkXSr45S4N0qhJWnEe8G9RwQEE+am6Gr4PFBcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7788
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230519043041.1593578-1-badhri@google.com> <c181c8ef-f342-4a31-9b8c-e1fa14ad214e@rowland.harvard.edu>
+ <a1d064e7-9847-4e2e-b74a-4ae4f39d3f04@rowland.harvard.edu>
+ <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com> <a2305ca6-d343-473d-b220-556a2c2e7833@rowland.harvard.edu>
+In-Reply-To: <a2305ca6-d343-473d-b220-556a2c2e7833@rowland.harvard.edu>
+From:   Badhri Jagan Sridharan <badhri@google.com>
+Date:   Mon, 22 May 2023 00:48:39 -0700
+Message-ID: <CAPTae5Lke+DE3WzGuBxkMMZ=qbbux=avdDTgrxEc1A5SrCFevg@mail.gmail.com>
+Subject: Re: [PATCH v2] usb: gadget: udc: core: Offload usb_udc_vbus_handler processing
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
+        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[Public]
+Hi Alan,
 
-Hi Jani,
-Thanks for your time!
-Comments inline.
+Thanks for taking the time out to share more details !
++1 on your comment: " A big problem with the USB gadget
+framework is that it does not clearly state which routines have to run
+in process context and which have to run in interrupt/atomic context."
 
-> -----Original Message-----
-> From: Jani Nikula <jani.nikula@intel.com>
-> Sent: Tuesday, May 16, 2023 6:34 PM
-> To: Lin, Wayne <Wayne.Lin@amd.com>; dri-devel@lists.freedesktop.org;
-> amd-gfx@lists.freedesktop.org
-> Cc: lyude@redhat.com; ville.syrjala@linux.intel.com; imre.deak@intel.com;
-> Wentland, Harry <Harry.Wentland@amd.com>; Zuo, Jerry
-> <Jerry.Zuo@amd.com>; Lin, Wayne <Wayne.Lin@amd.com>;
-> stable@vger.kernel.org
-> Subject: Re: [PATCH v2] drm/dp_mst: Clear MSG_RDY flag before sending new
-> message
+
+I started to work on allow_connect and other suggestions that you had made.
+In one of the previous comments you had mentioned that the
+connect_lock should be a spinlock and not a mutex.
+Right now there are four conditions that seem to be deciding whether
+pullup needs to be enabled or disabled through gadget->ops->pullup().
+1. Gadget not deactivated through usb_gadget_deactivate()
+2. Gadget has to be started through usb_gadget_udc_start().
+soft_connect_store() can start/stop gadget.
+3. usb_gadget has been connected through usb_gadget_connect(). This is
+assuming we are getting rid of usb_udc_vbus_handler.
+4. allow_connect is true
+
+I have so far identified two constraints here:
+a. gadget->ops->pullup() can sleep in some implementations.
+For instance:
+BUG: scheduling while atomic: init/1/0x00000002
+..
+[   26.990631][    T1] Call trace:
+[   26.993759][    T1]  dump_backtrace+0x104/0x128
+[   26.998281][    T1]  show_stack+0x20/0x30
+[   27.002279][    T1]  dump_stack_lvl+0x6c/0x9c
+[   27.006627][    T1]  __schedule_bug+0x84/0xb4
+[   27.010973][    T1]  __schedule+0x6f0/0xaec
+[   27.015147][    T1]  schedule+0xc8/0x134
+[   27.019059][    T1]  schedule_timeout+0x98/0x134
+[   27.023666][    T1]  msleep+0x34/0x4c
+[   27.027317][    T1]  dwc3_core_soft_reset+0xf0/0x354
+[   27.032273][    T1]  dwc3_gadget_pullup+0xec/0x1d8
+[   27.037055][    T1]  usb_gadget_pullup_update_locked+0xa0/0x1e0
+[   27.042967][    T1]  udc_bind_to_driver+0x1e4/0x30c
+[   27.047835][    T1]  usb_gadget_probe_driver+0xd0/0x178
+[   27.053051][    T1]  gadget_dev_desc_UDC_store+0xf0/0x13c
+[   27.058442][    T1]  configfs_write_iter+0x100/0x178
+[   27.063399][    T1]  vfs_write+0x278/0x3c4
+[   27.067483][    T1]  ksys_write+0x80/0xf4
+
+b. gadget->ops->udc_start can also sleep in some implementations.
+For example:
+[   28.024255][    T1] BUG: scheduling while atomic: init/1/0x00000002
+....
+[   28.324996][    T1] Call trace:
+[   28.328126][    T1]  dump_backtrace+0x104/0x128
+[   28.332647][    T1]  show_stack+0x20/0x30
+[   28.336645][    T1]  dump_stack_lvl+0x6c/0x9c
+[   28.340993][    T1]  __schedule_bug+0x84/0xb4
+[   28.345340][    T1]  __schedule+0x6f0/0xaec
+[   28.349513][    T1]  schedule+0xc8/0x134
+[   28.353425][    T1]  schedule_timeout+0x4c/0x134
+[   28.358033][    T1]  wait_for_common+0xac/0x13c
+[   28.362554][    T1]  wait_for_completion_killable+0x20/0x3c
+[   28.368118][    T1]  __kthread_create_on_node+0xe4/0x1ec
+[   28.373422][    T1]  kthread_create_on_node+0x54/0x80
+[   28.378464][    T1]  setup_irq_thread+0x50/0x108
+[   28.383072][    T1]  __setup_irq+0x90/0x87c
+[   28.387245][    T1]  request_threaded_irq+0x144/0x180
+[   28.392287][    T1]  dwc3_gadget_start+0x50/0xac
+[   28.396866][    T1]  udc_bind_to_driver+0x14c/0x31c
+[   28.401763][    T1]  usb_gadget_probe_driver+0xd0/0x178
+[   28.406980][    T1]  gadget_dev_desc_UDC_store+0xf0/0x13c
+[   28.412370][    T1]  configfs_write_iter+0x100/0x178
+[   28.417325][    T1]  vfs_write+0x278/0x3c4
+[   28.421411][    T1]  ksys_write+0x80/0xf4
+
+static int dwc3_gadget_start(struct usb_gadget *g,
+                struct usb_gadget_driver *driver)
+{
+        struct dwc3             *dwc =3D gadget_to_dwc(g);
+...
+        irq =3D dwc->irq_gadget;
+        ret =3D request_threaded_irq(irq, dwc3_interrupt, dwc3_thread_inter=
+rupt,
+                        IRQF_SHARED, "dwc3", dwc->ev_buf);
+
+Given that "1016fc0c096c USB: gadget: Fix obscure lockdep violation
+for udc_mutex" has been there for a while and no one has reported
+issues so far, perhaps ->disconnect() callback is no longer being
+invoked in atomic context and the documentation is what that needs to
+be updated ?
+
+Thanks,
+Badhri
+
+On Fri, May 19, 2023 at 10:27=E2=80=AFAM Alan Stern <stern@rowland.harvard.=
+edu> wrote:
 >
-> On Thu, 27 Apr 2023, Wayne Lin <Wayne.Lin@amd.com> wrote:
-> > [Why]
-> > The sequence for collecting down_reply from source perspective should
-> > be:
-> >
-> > Request_n->repeat (get partial reply of Request_n->clear message ready
-> > flag to ack DPRX that the message is received) till all partial
-> > replies for Request_n are received->new Request_n+1.
-> >
-> > Now there is chance that drm_dp_mst_hpd_irq() will fire new down
-> > request in the tx queue when the down reply is incomplete. Source is
-> > restricted to generate interveleaved message transactions so we should
-> > avoid it.
-> >
-> > Also, while assembling partial reply packets, reading out DPCD
-> > DOWN_REP Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag
-> should
-> > be wrapped up as a complete operation for reading out a reply packet.
-> > Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
-> > be risky. e.g. If the reply of the new request has overwritten the
-> > DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
-> > DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
-> > for the new request. Should handle the up request in the same way.
-> >
-> > [How]
-> > Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
-> > event, driver calls drm_dp_mst_hpd_irq_step2() and might trigger
-> > drm_dp_mst_kick_tx() only when there is no on going message transaction=
-.
-> >
-> > Changes since v1:
-> > * Reworked on review comments received
-> > -> Adjust the fix to let driver explicitly kick off new down request
-> > when mst irq event is handled and acked
-> > -> Adjust the commit message
-> >
-> > Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  8 ++---
-> > drivers/gpu/drm/display/drm_dp_mst_topology.c | 35
-> ++++++++++++++++---
-> >  drivers/gpu/drm/i915/display/intel_dp.c       |  5 ++-
-> >  drivers/gpu/drm/nouveau/dispnv50/disp.c       |  5 ++-
-> >  include/drm/display/drm_dp_mst_helper.h       |  4 +--
-> >  5 files changed, 45 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > index 1ad67c2a697e..48bdcb2ee9b1 100644
-> > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > @@ -3259,10 +3259,9 @@ static void
-> dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
-> >             DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0],
-> esi[1], esi[2]);
-> >             /* handle HPD short pulse irq */
-> >             if (aconnector->mst_mgr.mst_state)
-> > -                   drm_dp_mst_hpd_irq(
-> > -                           &aconnector->mst_mgr,
-> > -                           esi,
-> > -                           &new_irq_handled);
-> > +                   drm_dp_mst_hpd_irq_step1(&aconnector->mst_mgr,
-> > +                                            esi,
-> > +                                            &new_irq_handled);
-> >
-> >             if (new_irq_handled) {
-> >                     /* ACK at DPCD to notify down stream */ @@ -
-> 3281,6 +3280,7 @@
-> > static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector
-> *aconnector)
-> >                                     break;
-> >                     }
-> >
-> > +                   drm_dp_mst_hpd_irq_step2(&aconnector-
-> >mst_mgr);
-> >                     /* check if there is new irq to be handled */
-> >                     dret =3D drm_dp_dpcd_read(
-> >                             &aconnector->dm_dp_aux.aux,
-> > diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > index 70df29fe92db..2e0a38a6509c 100644
-> > --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > @@ -4045,7 +4045,7 @@ static int drm_dp_mst_handle_up_req(struct
-> > drm_dp_mst_topology_mgr *mgr)  }
-> >
-> >  /**
-> > - * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
-> > + * drm_dp_mst_hpd_irq_step1() - MST hotplug IRQ notify
-> >   * @mgr: manager to notify irq for.
-> >   * @esi: 4 bytes from SINK_COUNT_ESI
-> >   * @handled: whether the hpd interrupt was consumed or not @@ -4055,7
-> > +4055,7 @@ static int drm_dp_mst_handle_up_req(struct
-> drm_dp_mst_topology_mgr *mgr)
-> >   * topology manager will process the sideband messages received as a r=
-esult
-> >   * of this.
-> >   */
-> > -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi,
-> > bool *handled)
-> > +int drm_dp_mst_hpd_irq_step1(struct drm_dp_mst_topology_mgr *mgr,
-> u8
-> > +*esi, bool *handled)
->
-> If you're changing the signature of the function, I'd make esi "const u8 =
-*esi",
-> and add a separate "u8 *ack" that you have to provide, where this functio=
-n
-> would |=3D the flags to ack. It would be useful at least in i915.
-
-Will adjust. Thanks.
-
->
-> As to naming, _step1 and _step2 are pretty vague.
-
-Was trying to align the naming method we used for payload allocation/de-all=
-ocation.
-Anyway, I'll adjust the naming here.
-
->
-> >  {
-> >     int ret =3D 0;
-> >     int sc;
-> > @@ -4077,11 +4077,38 @@ int drm_dp_mst_hpd_irq(struct
-> drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handl
-> >             *handled =3D true;
-> >     }
-> >
-> > -   drm_dp_mst_kick_tx(mgr);
-> >     return ret;
-> >  }
-> > -EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
-> > +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_step1);
-> > +
-> > +/**
-> > + * drm_dp_mst_hpd_irq_step2() - MST hotplug IRQ 2nd part handling
-> > + * @mgr: manager to notify irq for.
-> > + *
-> > + * This should be called from the driver when mst irq event is
-> > +handled
-> > + * and acked. Note that new down request should only be sent when
-> > + * previous message transaction is done. Source is not supposed to
-> > +generate
-> > + * interleaved message transactions.
-> > + */
-> > +void drm_dp_mst_hpd_irq_step2(struct drm_dp_mst_topology_mgr
-> *mgr)
->
-> _done, _finish, _complete?
-
-Will use "complete". Thanks.
-
->
-> > +{
-> > +   struct drm_dp_sideband_msg_tx *txmsg;
-> > +   bool skip =3D false;
-> >
-> > +   mutex_lock(&mgr->qlock);
-> > +   txmsg =3D list_first_entry_or_null(&mgr->tx_msg_downq,
-> > +                                    struct drm_dp_sideband_msg_tx,
-> next);
-> > +   /* If last transaction is not completed yet*/
-> > +   if (!txmsg ||
-> > +       txmsg->state =3D=3D DRM_DP_SIDEBAND_TX_START_SEND ||
-> > +       txmsg->state =3D=3D DRM_DP_SIDEBAND_TX_SENT)
-> > +           skip =3D true;
-> > +   mutex_unlock(&mgr->qlock);
-> > +
-> > +   if (!skip)
->
-> Please avoid negatives like this. You could have bool kick =3D true inste=
-ad.
-
-Thanks. Will modify it.
-
->
-> > +           drm_dp_mst_kick_tx(mgr);
-> > +}
-> > +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_step2);
-> >  /**
-> >   * drm_dp_mst_detect_port() - get connection status for an MST port
-> >   * @connector: DRM connector for this port diff --git
-> > a/drivers/gpu/drm/i915/display/intel_dp.c
-> > b/drivers/gpu/drm/i915/display/intel_dp.c
-> > index 75070eb07d4b..9a9a5aec9534 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> > @@ -3803,7 +3803,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp,
-> > u8 *esi, u8 *ack)  {
-> >     bool handled =3D false;
-> >
-> > -   drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
-> > +   drm_dp_mst_hpd_irq_step1(&intel_dp->mst_mgr, esi, &handled);
-> >     if (handled)
-> >             ack[1] |=3D esi[1] & (DP_DOWN_REP_MSG_RDY |
-> DP_UP_REQ_MSG_RDY);
-> >
-> > @@ -3880,6 +3880,9 @@ intel_dp_check_mst_status(struct intel_dp
-> > *intel_dp)
-> >
-> >             if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
-> >                     drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
-> > +
-> > +           if (ack[1] & (DP_DOWN_REP_MSG_RDY |
-> DP_UP_REQ_MSG_RDY))
-> > +                   drm_dp_mst_hpd_irq_step2(&intel_dp->mst_mgr);
->
-> I'm getting confused about the division of responsibilities between the t=
+> On Fri, May 19, 2023 at 08:44:57AM -0700, Badhri Jagan Sridharan wrote:
+> > On Fri, May 19, 2023 at 8:07=E2=80=AFAM Alan Stern <stern@rowland.harva=
+rd.edu> wrote:
+> > >
+> > > On Fri, May 19, 2023 at 10:49:49AM -0400, Alan Stern wrote:
+> > > > On Fri, May 19, 2023 at 04:30:41AM +0000, Badhri Jagan Sridharan wr=
+ote:
+> > > > > chipidea udc calls usb_udc_vbus_handler from udc_start gadget
+> > > > > ops causing a deadlock. Avoid this by offloading usb_udc_vbus_han=
+dler
+> > > > > processing.
+> > > >
+> > > > Look, this is way overkill.
+> > > >
+> > > > usb_udc_vbus_handler() has only two jobs to do: set udc->vbus and c=
+all
+> > > > usb_udc_connect_control().  Furthermore, it gets called from only t=
 wo
-> functions to be called, and the caller. Why does i915 do things different=
-ly from
-> nouveau and amd wrt this?
-
-The main idea is trying to ack the irq before sending a new request. We use=
-d to
-send a new request before acking the irq event which will cause message int=
-erleaving
-and that's not recommended by DP spec.
-
-amd and nouveau only handle mst up/down message irq events while calling
-drm_dp_mst_hpd_irq() but i915 also tries to handle content protection irq w=
-hile
-handling mst events. That's why it's a bit different between amd/nouveau an=
-d i915.
-
+> > > > drivers: chipidea and max3420.
+> > > >
+> > > > Why not have the callers set udc->vbus themselves and then call
+> > > > usb_gadget_{dis}connect() directly?  Then we could eliminate
+> > > > usb_udc_vbus_handler() entirely.  And the unnecessary calls -- the =
+ones
+> > > > causing deadlocks -- from within udc_start() and udc_stop() handler=
+s can
+> > > > be removed with no further consequence.
+> > > >
+> > > > This approach simplifies and removes code.  Whereas your approach
+> > > > complicates and adds code for no good reason.
+> > >
+> > > I changed my mind.
+> > >
+> > > After looking more closely, I found the comment in gadget.h about
+> > > ->disconnect() callbacks happening in interrupt context.  This means =
+we
+> > > cannot use a mutex to protect the associated state, and therefore the
+> > > connect_lock _must_ be a spinlock, not a mutex.
+> >
+> > Quick observation so that I don't misunderstand.
+> > I already see gadget->udc->driver->disconnect(gadget) being called with
+> > udc_lock being held.
+> >
+> >                mutex_lock(&udc_lock);
+> >                if (gadget->udc->driver)
+> >                        gadget->udc->driver->disconnect(gadget);
+> >                mutex_unlock(&udc_lock);
+> >
+> > The below patch seems to have introduced it:
+> > 1016fc0c096c USB: gadget: Fix obscure lockdep violation for udc_mutex
 >
-> >     }
-> >
-> >     return link_ok;
-> > diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> > b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> > index ed9d374147b8..00c36fcc8afd 100644
-> > --- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> > +++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> > @@ -1332,12 +1332,15 @@ nv50_mstm_service(struct nouveau_drm
-> *drm,
-> >                     break;
-> >             }
-> >
-> > -           drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
-> > +           drm_dp_mst_hpd_irq_step1(&mstm->mgr, esi, &handled);
-> >             if (!handled)
-> >                     break;
-> >
-> >             rc =3D drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1,
-> &esi[1],
-> >                                    3);
-> > +
-> > +           drm_dp_mst_hpd_irq_step2(&mstm->mgr);
-> > +
+> Hmmm...  You're right about this.  A big problem with the USB gadget
+> framework is that it does not clearly state which routines have to run
+> in process context and which have to run in interrupt/atomic context.
+> People therefore don't think about it and frequently get it wrong.
 >
-> Don't you think the return value should be checked first?
-
-Sorry I missed it. Will adjust. Thanks!
-
+> So now the problem is that the UDC or transceiver driver may detect
+> (typically in an interrupt handler) that VBUS power has appeared or
+> disappeared, and it wants to tell the core to adjust the D+/D- pullup
+> signals appropriately.  The core notifies the UDC driver about this, and
+> then in the case of a disconnection, it has to notify the gadget driver.
+> But notifying the gadget driver requires process context for the
+> udc_lock mutex, the ultimate reason being that disconnect notifications
+> can race with gadget driver binding and unbinding.
 >
-> >             if (rc !=3D 3) {
-> >                     ret =3D false;
-> >                     break;
-> > diff --git a/include/drm/display/drm_dp_mst_helper.h
-> > b/include/drm/display/drm_dp_mst_helper.h
-> > index 32c764fb9cb5..6c08ba765d5a 100644
-> > --- a/include/drm/display/drm_dp_mst_helper.h
-> > +++ b/include/drm/display/drm_dp_mst_helper.h
-> > @@ -815,8 +815,8 @@ void drm_dp_mst_topology_mgr_destroy(struct
-> > drm_dp_mst_topology_mgr *mgr);  bool drm_dp_read_mst_cap(struct
-> > drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);  int
-> > drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr
-> *mgr,
-> > bool mst_state);
-> >
-> > -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi,
-> > bool *handled);
-> > -
-> > +int drm_dp_mst_hpd_irq_step1(struct drm_dp_mst_topology_mgr *mgr,
-> u8
-> > +*esi, bool *handled); void drm_dp_mst_hpd_irq_step2(struct
-> > +drm_dp_mst_topology_mgr *mgr);
-> >
-> >  int
-> >  drm_dp_mst_detect_port(struct drm_connector *connector,
+> If we could prevent those races in some other way then we wouldn't need
+> to hold udc_lock in usb_gadget_disconnect().  This seems like a sensible
+> thing to do in any case; the UDC core should never allow a connection to
+> occur before a gadget driver is bound or after it is unbound.
 >
-> --
-> Jani Nikula, Intel Open Source Graphics Center
-
---
-Regards,
-Wayne Lin
+> The first approach that occurs to me is to add a boolean allow_connect
+> flag to struct usb_udc, together with a global spinlock to synchronize
+> access to it.  Then usb_gadget_disconnect() could check the flag before
+> calling driver->disconnect(), gadget_bind_driver() could set the flag
+> before calling usb_udc_connect_control(), and gadget_unbind_driver()
+> could clear the flag before calling usb_gadget_disconnect().
+>
+> (Another possible approach would be to change gadget->deactivated into a
+> counter.  It would still need to be synchronized by a spinlock,
+> however.)
+>
+> This will simplify matters considerably.  udc_lock can remain a mutex
+> and the deadlock problem should go away.
+>
+> Do you want to try adding allow_connect as described here or would you
+> prefer that I do it?
+>
+> (And in any case, we should prevent the udc_start and udc_stop callbacks
+> in the chipidea and max3420 drivers from trying to update the connection
+> status.)
+>
+> Alan Stern
