@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41BB370C808
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FE370C9D7
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234932AbjEVTf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56780 "EHLO
+        id S235474AbjEVTwj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234953AbjEVTf1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:27 -0400
+        with ESMTP id S235403AbjEVTwY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9D69C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04D518B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 665CA61FDE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA8DC433EF;
-        Mon, 22 May 2023 19:33:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0AFA62B09
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D40C433EF;
+        Mon, 22 May 2023 19:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783995;
-        bh=Lrk0sCmNEkxtu2/MlJ+jrJS74kP+1R0OConkS7V2rIo=;
+        s=korg; t=1684785129;
+        bh=iR/Jjdsm+0D/8OROaQdiilzZGmiKm0Hq/lEbO28422c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B2PkaSA02Ze9RVln3Xlu1poky1aOHoFLYt0jQxyExLeAnOop4UgMMSQS6WfhZnnoZ
-         d+Ox6+WYLLcsWpM6yoV49pUCg5lR4Hy4sdorKrfpyWk3EpUVYBWwqIVhXF6fabeFwm
-         /BaGAxO4tQuTYQ+ckzMpw6nfW2EulcwtHjVbjLIM=
+        b=1yeyF5tzhCn5PjVfEh/AKC5F4Khlusj/Zjjj/1JDhlZ8vHG0ZQHIQBfPifIB3RFwB
+         E9eCuEVlxj82p99XnG5NFINTi4+rjYwfUOiIaHQxgThVU9AXDfzyKR+C5XdhXOWbG1
+         gPCLQt4JFywNWV0pdr0NuA8pxQVcilcwtQzfEBb8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Subject: [PATCH 6.1 229/292] USB: UHCI: adjust zhaoxin UHCI controllers OverCurrent bit value
+        patches@lists.linux.dev,
+        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.3 281/364] igb: fix bit_shift to be in [1..8] range
 Date:   Mon, 22 May 2023 20:09:46 +0100
-Message-Id: <20230522190411.677893575@linuxfoundation.org>
+Message-Id: <20230522190419.751852446@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,44 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-commit dddb342b5b9e482bb213aecc08cbdb201ea4f8da upstream.
+[ Upstream commit 60d758659f1fb49e0d5b6ac2691ede8c0958795b ]
 
-OverCurrent condition is not standardized in the UHCI spec.
-Zhaoxin UHCI controllers report OverCurrent bit active off.
-In order to handle OverCurrent condition correctly, the uhci-hcd
-driver needs to be told to expect the active-off behavior.
+In igb_hash_mc_addr() the expression:
+        "mc_addr[4] >> 8 - bit_shift", right shifting "mc_addr[4]"
+shift by more than 7 bits always yields zero, so hash becomes not so different.
+Add initialization with bit_shift = 1 and add a loop condition to ensure
+bit_shift will be always in [1..8] range.
 
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230423105952.4526-1-WeitaoWang-oc@zhaoxin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/uhci-pci.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/igb/e1000_mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/uhci-pci.c
-+++ b/drivers/usb/host/uhci-pci.c
-@@ -119,11 +119,13 @@ static int uhci_pci_init(struct usb_hcd
+diff --git a/drivers/net/ethernet/intel/igb/e1000_mac.c b/drivers/net/ethernet/intel/igb/e1000_mac.c
+index 205d577bdbbaa..caf91c6f52b4d 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_mac.c
++++ b/drivers/net/ethernet/intel/igb/e1000_mac.c
+@@ -426,7 +426,7 @@ void igb_mta_set(struct e1000_hw *hw, u32 hash_value)
+ static u32 igb_hash_mc_addr(struct e1000_hw *hw, u8 *mc_addr)
+ {
+ 	u32 hash_value, hash_mask;
+-	u8 bit_shift = 0;
++	u8 bit_shift = 1;
  
- 	uhci->rh_numports = uhci_count_ports(hcd);
- 
--	/* Intel controllers report the OverCurrent bit active on.
--	 * VIA controllers report it active off, so we'll adjust the
--	 * bit value.  (It's not standardized in the UHCI spec.)
-+	/*
-+	 * Intel controllers report the OverCurrent bit active on.  VIA
-+	 * and ZHAOXIN controllers report it active off, so we'll adjust
-+	 * the bit value.  (It's not standardized in the UHCI spec.)
+ 	/* Register count multiplied by bits per register */
+ 	hash_mask = (hw->mac.mta_reg_count * 32) - 1;
+@@ -434,7 +434,7 @@ static u32 igb_hash_mc_addr(struct e1000_hw *hw, u8 *mc_addr)
+ 	/* For a mc_filter_type of 0, bit_shift is the number of left-shifts
+ 	 * where 0xFF would still fall within the hash mask.
  	 */
--	if (to_pci_dev(uhci_dev(uhci))->vendor == PCI_VENDOR_ID_VIA)
-+	if (to_pci_dev(uhci_dev(uhci))->vendor == PCI_VENDOR_ID_VIA ||
-+			to_pci_dev(uhci_dev(uhci))->vendor == PCI_VENDOR_ID_ZHAOXIN)
- 		uhci->oc_low = 1;
+-	while (hash_mask >> bit_shift != 0xFF)
++	while (hash_mask >> bit_shift != 0xFF && bit_shift < 4)
+ 		bit_shift++;
  
- 	/* HP's server management chip requires a longer port reset delay. */
+ 	/* The portion of the address that is used for the hash table
+-- 
+2.39.2
+
 
 
