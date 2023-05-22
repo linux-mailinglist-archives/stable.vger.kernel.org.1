@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D30EC70C428
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCD670C42C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjEVRXH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 13:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
+        id S229689AbjEVRXk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 13:23:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjEVRXF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:23:05 -0400
+        with ESMTP id S229617AbjEVRXj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:23:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0377E9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:23:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE36E9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:23:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DE2D60BA1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:23:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEE5C433D2;
-        Mon, 22 May 2023 17:23:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A73361425
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FD1C433D2;
+        Mon, 22 May 2023 17:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684776183;
-        bh=v2WHmPwvlYv66Z3AsZakjWU1jHLUIickf6fbawOz8hk=;
+        s=korg; t=1684776216;
+        bh=vVuxPVOoYBZ8tlIbzeJcyzqgvJGAfE66ks80w0gCTWE=;
         h=Subject:To:Cc:From:Date:From;
-        b=sWlX+cB7Kb9r6+ey3ST9KJB9VNkdWhjnWMA0PExxFQgHma9/mKkyDiqLXkr7Fjl8H
-         0dFOuYTBUJlfqudfChmThLifecwWOa0bi3KYvKIfH6oXhTocmijyUn9x/pAVrYh8TV
-         HtMTO9jrvaAWdSeeov2aWmqaQB5+zsNL5yHCusQ8=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Improve dwc3_gadget_suspend() and" failed to apply to 4.14-stable tree
-To:     rogerq@kernel.org, Thinh.Nguyen@synopsys.com,
-        gregkh@linuxfoundation.org
+        b=oMN6jkRCCwYb3yFnKYeGdwnyj4ZPc69QoYbsqTEpCtyDO6W9d1f05RSLOrnkgws4K
+         iWoT4VKvOBMr3S03ZGzJTM9c7fYLp+KfjZinz1ssU3oYB+3I8FB46WLCdx5VFggePT
+         a4jiiFt4JZRHIlx6TuVU+4EpjFfLu6VyK/WozMDk=
+Subject: FAILED: patch "[PATCH] usb: dwc3: debugfs: Resume dwc3 before accessing registers" failed to apply to 4.19-stable tree
+To:     quic_ugoswami@quicinc.com, Thinh.Nguyen@synopsys.com,
+        gregkh@linuxfoundation.org, johan+linaro@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 18:22:53 +0100
-Message-ID: <2023052253-bloomers-footwear-7df3@gregkh>
+Date:   Mon, 22 May 2023 18:23:34 +0100
+Message-ID: <2023052234-snugness-saxophone-313c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,34 +49,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x c8540870af4ce6ddeb27a7bb5498b75fb29b643c
+git cherry-pick -x 614ce6a2ea50068b45339257891e51e639ac9001
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052253-bloomers-footwear-7df3@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052234-snugness-saxophone-313c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-c8540870af4c ("usb: dwc3: gadget: Improve dwc3_gadget_suspend() and dwc3_gadget_resume()")
-bdb19d01026a ("USB: dwc3: gadget: drop dead hibernation code")
-af870d93c706 ("usb: dwc3: Fix typos in gadget.c")
-5265397f9442 ("usb: dwc3: Remove DWC3 locking during gadget suspend/resume")
-9711c67de748 ("usb: dwc3: gadget: Synchronize IRQ between soft connect/disconnect")
-8f8034f493b5 ("usb: dwc3: gadget: Don't modify GEVNTCOUNT in pullup()")
-861c010a2ee1 ("usb: dwc3: gadget: Refactor pullup()")
-0066472de157 ("usb: dwc3: Issue core soft reset before enabling run/stop")
-8217f07a5023 ("usb: dwc3: gadget: Avoid starting DWC3 gadget during UDC unbind")
-8212937305f8 ("usb: dwc3: gadget: Disable gadget IRQ during pullup disable")
-f09ddcfcb8c5 ("usb: dwc3: gadget: Prevent EP queuing while stopping transfers")
-a66a7d48f34a ("Merge 5.11-rc3 into usb-next")
+614ce6a2ea50 ("usb: dwc3: debugfs: Resume dwc3 before accessing registers")
+d102444cac15 ("usb: dwc3: debugfs: Print/set link state for peripheral mode")
+0d36dede4578 ("usb: dwc3: debugfs: Properly print/set link state for HS")
+62ba09d6bb63 ("usb: dwc3: debugfs: Dump internal LSP and ep registers")
+2c85a1817e4b ("usb: dwc3: debugfs: Properly name Tx/RxFIFO")
 
 thanks,
 
@@ -84,137 +77,378 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c8540870af4ce6ddeb27a7bb5498b75fb29b643c Mon Sep 17 00:00:00 2001
-From: Roger Quadros <rogerq@kernel.org>
-Date: Wed, 3 May 2023 14:00:48 +0300
-Subject: [PATCH] usb: dwc3: gadget: Improve dwc3_gadget_suspend() and
- dwc3_gadget_resume()
+From 614ce6a2ea50068b45339257891e51e639ac9001 Mon Sep 17 00:00:00 2001
+From: Udipto Goswami <quic_ugoswami@quicinc.com>
+Date: Tue, 9 May 2023 20:18:36 +0530
+Subject: [PATCH] usb: dwc3: debugfs: Resume dwc3 before accessing registers
 
-Prevent -ETIMEDOUT error on .suspend().
-e.g. If gadget driver is loaded and we are connected to a USB host,
-all transfers must be stopped before stopping the controller else
-we will not get a clean stop i.e. dwc3_gadget_run_stop() will take
-several seconds to complete and will return -ETIMEDOUT.
+When the dwc3 device is runtime suspended, various required clocks are in
+disabled state and it is not guaranteed that access to any registers would
+work. Depending on the SoC glue, a register read could be as benign as
+returning 0 or be fatal enough to hang the system.
 
-Handle error cases properly in dwc3_gadget_suspend().
-Simplify dwc3_gadget_resume() by using the introduced helper function.
+In order to prevent such scenarios of fatal errors, make sure to resume
+dwc3 then allow the function to proceed.
 
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable@vger.kernel.org
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable@vger.kernel.org #3.2: 30332eeefec8: debugfs: regset32: Add Runtime PM support
+Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
 Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20230503110048.30617-1-rogerq@kernel.org
+Link: https://lore.kernel.org/r/20230509144836.6803-1-quic_ugoswami@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index c0ca4d12f95d..2996bcb4d53d 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2699,6 +2699,21 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 	return ret;
- }
- 
-+static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
-+{
-+	/*
-+	 * In the Synopsys DWC_usb31 1.90a programming guide section
-+	 * 4.1.9, it specifies that for a reconnect after a
-+	 * device-initiated disconnect requires a core soft reset
-+	 * (DCTL.CSftRst) before enabling the run/stop bit.
-+	 */
-+	dwc3_core_soft_reset(dwc);
+diff --git a/drivers/usb/dwc3/debugfs.c b/drivers/usb/dwc3/debugfs.c
+index e4a2560b9dc0..ebf03468fac4 100644
+--- a/drivers/usb/dwc3/debugfs.c
++++ b/drivers/usb/dwc3/debugfs.c
+@@ -332,6 +332,11 @@ static int dwc3_lsp_show(struct seq_file *s, void *unused)
+ 	unsigned int		current_mode;
+ 	unsigned long		flags;
+ 	u32			reg;
++	int			ret;
 +
-+	dwc3_event_buffers_setup(dwc);
-+	__dwc3_gadget_start(dwc);
-+	return dwc3_gadget_run_stop(dwc, true);
-+}
-+
- static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- {
- 	struct dwc3		*dwc = gadget_to_dwc(g);
-@@ -2737,21 +2752,10 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- 
- 	synchronize_irq(dwc->irq_gadget);
- 
--	if (!is_on) {
-+	if (!is_on)
- 		ret = dwc3_gadget_soft_disconnect(dwc);
--	} else {
--		/*
--		 * In the Synopsys DWC_usb31 1.90a programming guide section
--		 * 4.1.9, it specifies that for a reconnect after a
--		 * device-initiated disconnect requires a core soft reset
--		 * (DCTL.CSftRst) before enabling the run/stop bit.
--		 */
--		dwc3_core_soft_reset(dwc);
--
--		dwc3_event_buffers_setup(dwc);
--		__dwc3_gadget_start(dwc);
--		ret = dwc3_gadget_run_stop(dwc, true);
--	}
-+	else
-+		ret = dwc3_gadget_soft_connect(dwc);
- 
- 	pm_runtime_put(dwc->dev);
- 
-@@ -4655,42 +4659,39 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
- int dwc3_gadget_suspend(struct dwc3 *dwc)
- {
- 	unsigned long flags;
-+	int ret;
- 
- 	if (!dwc->gadget_driver)
- 		return 0;
- 
--	dwc3_gadget_run_stop(dwc, false);
-+	ret = dwc3_gadget_soft_disconnect(dwc);
-+	if (ret)
-+		goto err;
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
  
  	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_disconnect_gadget(dwc);
--	__dwc3_gadget_stop(dwc);
+ 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
+@@ -350,6 +355,8 @@ static int dwc3_lsp_show(struct seq_file *s, void *unused)
+ 	}
  	spin_unlock_irqrestore(&dwc->lock, flags);
  
++	pm_runtime_put_sync(dwc->dev);
++
  	return 0;
-+
-+err:
-+	/*
-+	 * Attempt to reset the controller's state. Likely no
-+	 * communication can be established until the host
-+	 * performs a port reset.
-+	 */
-+	if (dwc->softconnect)
-+		dwc3_gadget_soft_connect(dwc);
-+
-+	return ret;
  }
  
- int dwc3_gadget_resume(struct dwc3 *dwc)
- {
--	int			ret;
--
- 	if (!dwc->gadget_driver || !dwc->softconnect)
+@@ -395,6 +402,11 @@ static int dwc3_mode_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = s->private;
+ 	unsigned long		flags;
+ 	u32			reg;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
+@@ -414,6 +426,8 @@ static int dwc3_mode_show(struct seq_file *s, void *unused)
+ 		seq_printf(s, "UNKNOWN %08x\n", DWC3_GCTL_PRTCAP(reg));
+ 	}
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -463,6 +477,11 @@ static int dwc3_testmode_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = s->private;
+ 	unsigned long		flags;
+ 	u32			reg;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+@@ -493,6 +512,8 @@ static int dwc3_testmode_show(struct seq_file *s, void *unused)
+ 		seq_printf(s, "UNKNOWN %d\n", reg);
+ 	}
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -509,6 +530,7 @@ static ssize_t dwc3_testmode_write(struct file *file,
+ 	unsigned long		flags;
+ 	u32			testmode = 0;
+ 	char			buf[32];
++	int			ret;
+ 
+ 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
+ 		return -EFAULT;
+@@ -526,10 +548,16 @@ static ssize_t dwc3_testmode_write(struct file *file,
+ 	else
+ 		testmode = 0;
+ 
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
++
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc3_gadget_set_test_mode(dwc, testmode);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return count;
+ }
+ 
+@@ -548,12 +576,18 @@ static int dwc3_link_state_show(struct seq_file *s, void *unused)
+ 	enum dwc3_link_state	state;
+ 	u32			reg;
+ 	u8			speed;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
+ 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
+ 		seq_puts(s, "Not available\n");
+ 		spin_unlock_irqrestore(&dwc->lock, flags);
++		pm_runtime_put_sync(dwc->dev);
  		return 0;
+ 	}
  
--	ret = __dwc3_gadget_start(dwc);
--	if (ret < 0)
--		goto err0;
--
--	ret = dwc3_gadget_run_stop(dwc, true);
--	if (ret < 0)
--		goto err1;
--
--	return 0;
--
--err1:
--	__dwc3_gadget_stop(dwc);
--
--err0:
--	return ret;
-+	return dwc3_gadget_soft_connect(dwc);
+@@ -566,6 +600,8 @@ static int dwc3_link_state_show(struct seq_file *s, void *unused)
+ 		   dwc3_gadget_hs_link_string(state));
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
  }
  
- void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+@@ -584,6 +620,7 @@ static ssize_t dwc3_link_state_write(struct file *file,
+ 	char			buf[32];
+ 	u32			reg;
+ 	u8			speed;
++	int			ret;
+ 
+ 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
+ 		return -EFAULT;
+@@ -603,10 +640,15 @@ static ssize_t dwc3_link_state_write(struct file *file,
+ 	else
+ 		return -EINVAL;
+ 
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
++
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
+ 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
+ 		spin_unlock_irqrestore(&dwc->lock, flags);
++		pm_runtime_put_sync(dwc->dev);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -616,12 +658,15 @@ static ssize_t dwc3_link_state_write(struct file *file,
+ 	if (speed < DWC3_DSTS_SUPERSPEED &&
+ 	    state != DWC3_LINK_STATE_RECOV) {
+ 		spin_unlock_irqrestore(&dwc->lock, flags);
++		pm_runtime_put_sync(dwc->dev);
+ 		return -EINVAL;
+ 	}
+ 
+ 	dwc3_gadget_set_link_state(dwc, state);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return count;
+ }
+ 
+@@ -645,6 +690,11 @@ static int dwc3_tx_fifo_size_show(struct seq_file *s, void *unused)
+ 	unsigned long		flags;
+ 	u32			mdwidth;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_TXFIFO);
+@@ -657,6 +707,8 @@ static int dwc3_tx_fifo_size_show(struct seq_file *s, void *unused)
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -667,6 +719,11 @@ static int dwc3_rx_fifo_size_show(struct seq_file *s, void *unused)
+ 	unsigned long		flags;
+ 	u32			mdwidth;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_RXFIFO);
+@@ -679,6 +736,8 @@ static int dwc3_rx_fifo_size_show(struct seq_file *s, void *unused)
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -688,12 +747,19 @@ static int dwc3_tx_request_queue_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = dep->dwc;
+ 	unsigned long		flags;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_TXREQQ);
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -703,12 +769,19 @@ static int dwc3_rx_request_queue_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = dep->dwc;
+ 	unsigned long		flags;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_RXREQQ);
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -718,12 +791,19 @@ static int dwc3_rx_info_queue_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = dep->dwc;
+ 	unsigned long		flags;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_RXINFOQ);
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -733,12 +813,19 @@ static int dwc3_descriptor_fetch_queue_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = dep->dwc;
+ 	unsigned long		flags;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_DESCFETCHQ);
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -748,12 +835,19 @@ static int dwc3_event_queue_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = dep->dwc;
+ 	unsigned long		flags;
+ 	u32			val;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	val = dwc3_core_fifo_space(dep, DWC3_EVENTQ);
+ 	seq_printf(s, "%u\n", val);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -798,6 +892,11 @@ static int dwc3_trb_ring_show(struct seq_file *s, void *unused)
+ 	struct dwc3		*dwc = dep->dwc;
+ 	unsigned long		flags;
+ 	int			i;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	if (dep->number <= 1) {
+@@ -827,6 +926,8 @@ static int dwc3_trb_ring_show(struct seq_file *s, void *unused)
+ out:
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -839,6 +940,11 @@ static int dwc3_ep_info_register_show(struct seq_file *s, void *unused)
+ 	u32			lower_32_bits;
+ 	u32			upper_32_bits;
+ 	u32			reg;
++	int			ret;
++
++	ret = pm_runtime_resume_and_get(dwc->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	reg = DWC3_GDBGLSPMUX_EPSELECT(dep->number);
+@@ -851,6 +957,8 @@ static int dwc3_ep_info_register_show(struct seq_file *s, void *unused)
+ 	seq_printf(s, "0x%016llx\n", ep_info);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	pm_runtime_put_sync(dwc->dev);
++
+ 	return 0;
+ }
+ 
+@@ -910,6 +1018,7 @@ void dwc3_debugfs_init(struct dwc3 *dwc)
+ 	dwc->regset->regs = dwc3_regs;
+ 	dwc->regset->nregs = ARRAY_SIZE(dwc3_regs);
+ 	dwc->regset->base = dwc->regs - DWC3_GLOBALS_REGS_START;
++	dwc->regset->dev = dwc->dev;
+ 
+ 	root = debugfs_create_dir(dev_name(dwc->dev), usb_debug_root);
+ 	dwc->debug_root = root;
 
