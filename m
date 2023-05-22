@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E19970C6D4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E7E70C881
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234520AbjEVTXI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:23:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
+        id S235015AbjEVTja (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:39:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234499AbjEVTXC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 850891A1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:51 -0700 (PDT)
+        with ESMTP id S235043AbjEVTjY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:39:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB071AD
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:39:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2240462852
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC4BC433D2;
-        Mon, 22 May 2023 19:22:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3256A629DE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA3EC433EF;
+        Mon, 22 May 2023 19:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783370;
-        bh=Vy5+BQO3VbhljkkvwLP/PGF/MlHEjNVSyO2vB46eA/s=;
+        s=korg; t=1684784358;
+        bh=CG6iidfJYvBtjEQvRVQLTsIrpzO11PNYCTvVzvScUro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LCCeEhLskzqW+kOSkWWAiXjIVbWg7FMCOYOnyiDDmDEPkPlBHCQTpuhNN6TAl/+lV
-         y7QLhnJ+bbrAFjg+POtO013n4udwQfgX0sLk9LfAUTwO+8KENnPrT43Ui9YINhFh0u
-         Kutp3+4oySehM5h9oh+c2PJlFilHhYkKQ35umzp0=
+        b=P+2NYzZ/7D2pEc4NY3GQdiCWV3wOzbLaZdV22TAVFletH9Fh275DSpj9sFGYZqwFC
+         JDZkx5kUAPYfmyn8HKngW+7RTvHMw3lxusLu9xOHIWkiVfD63DInY87xhR5xtQrmF3
+         Yrwx/JcdBFAf8NMqlUXE0kor0iKV5sfRslRd36fA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kristoffer Ericson <Kristoffer.ericson@gmail.com>,
-        patches@armlinux.org.uk,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Tomer Tayar <ttayar@habana.ai>,
+        Oded Gabbay <ogabbay@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/292] ARM: 9296/1: HP Jornada 7XX: fix kernel-doc warnings
+Subject: [PATCH 6.3 055/364] accel/habanalabs: postpone mem_mgr IDR destruction to hpriv_release()
 Date:   Mon, 22 May 2023 20:06:00 +0100
-Message-Id: <20230522190405.971336566@linuxfoundation.org>
+Message-Id: <20230522190414.178037186@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,67 +54,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Tomer Tayar <ttayar@habana.ai>
 
-[ Upstream commit 46dd6078dbc7e363a8bb01209da67015a1538929 ]
+[ Upstream commit 2e8e9a895c4589f124a37fc84d123b5114406e94 ]
 
-Fix kernel-doc warnings from the kernel test robot:
+The memory manager IDR is currently destroyed when user releases the
+file descriptor.
+However, at this point the user context might be still held, and memory
+buffers might be still in use.
+Later on, calls to release those buffers will fail due to not finding
+their handles in the IDR, leading to a memory leak.
+To avoid this leak, split the IDR destruction from the memory manager
+fini, and postpone it to hpriv_release() when there is no user context
+and no buffers are used.
 
-jornada720_ssp.c:24: warning: Function parameter or member 'jornada_ssp_lock' not described in 'DEFINE_SPINLOCK'
-jornada720_ssp.c:24: warning: expecting prototype for arch/arm/mac(). Prototype was for DEFINE_SPINLOCK() instead
-jornada720_ssp.c:34: warning: Function parameter or member 'byte' not described in 'jornada_ssp_reverse'
-jornada720_ssp.c:57: warning: Function parameter or member 'byte' not described in 'jornada_ssp_byte'
-jornada720_ssp.c:85: warning: Function parameter or member 'byte' not described in 'jornada_ssp_inout'
-
-Link: lore.kernel.org/r/202304210535.tWby3jWF-lkp@intel.com
-
-Fixes: 69ebb22277a5 ("[ARM] 4506/1: HP Jornada 7XX: Addition of SSP Platform Driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Kristoffer Ericson <Kristoffer.ericson@gmail.com>
-Cc: patches@armlinux.org.uk
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Tomer Tayar <ttayar@habana.ai>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-sa1100/jornada720_ssp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/accel/habanalabs/common/device.c         |  9 +++++++++
+ drivers/accel/habanalabs/common/habanalabs.h     |  1 +
+ drivers/accel/habanalabs/common/habanalabs_drv.c |  1 +
+ drivers/accel/habanalabs/common/memory_mgr.c     | 13 ++++++++++++-
+ 4 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-sa1100/jornada720_ssp.c b/arch/arm/mach-sa1100/jornada720_ssp.c
-index 1dbe98948ce30..9627c4cf3e41d 100644
---- a/arch/arm/mach-sa1100/jornada720_ssp.c
-+++ b/arch/arm/mach-sa1100/jornada720_ssp.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
--/**
-+/*
-  *  arch/arm/mac-sa1100/jornada720_ssp.c
-  *
-  *  Copyright (C) 2006/2007 Kristoffer Ericson <Kristoffer.Ericson@gmail.com>
-@@ -26,6 +26,7 @@ static unsigned long jornada_ssp_flags;
+diff --git a/drivers/accel/habanalabs/common/device.c b/drivers/accel/habanalabs/common/device.c
+index 9933e5858a363..c91436609f080 100644
+--- a/drivers/accel/habanalabs/common/device.c
++++ b/drivers/accel/habanalabs/common/device.c
+@@ -423,6 +423,9 @@ static void hpriv_release(struct kref *ref)
+ 	mutex_destroy(&hpriv->ctx_lock);
+ 	mutex_destroy(&hpriv->restore_phase_mutex);
  
- /**
-  * jornada_ssp_reverse - reverses input byte
-+ * @byte: input byte to reverse
-  *
-  * we need to reverse all data we receive from the mcu due to its physical location
-  * returns : 01110111 -> 11101110
-@@ -46,6 +47,7 @@ EXPORT_SYMBOL(jornada_ssp_reverse);
++	/* There should be no memory buffers at this point and handles IDR can be destroyed */
++	hl_mem_mgr_idr_destroy(&hpriv->mem_mgr);
++
+ 	/* Device should be reset if reset-upon-device-release is enabled, or if there is a pending
+ 	 * reset that waits for device release.
+ 	 */
+@@ -514,6 +517,10 @@ static int hl_device_release(struct inode *inode, struct file *filp)
+ 	}
  
- /**
-  * jornada_ssp_byte - waits for ready ssp bus and sends byte
-+ * @byte: input byte to transmit
-  *
-  * waits for fifo buffer to clear and then transmits, if it doesn't then we will
-  * timeout after <timeout> rounds. Needs mcu running before its called.
-@@ -77,6 +79,7 @@ EXPORT_SYMBOL(jornada_ssp_byte);
+ 	hl_ctx_mgr_fini(hdev, &hpriv->ctx_mgr);
++
++	/* Memory buffers might be still in use at this point and thus the handles IDR destruction
++	 * is postponed to hpriv_release().
++	 */
+ 	hl_mem_mgr_fini(&hpriv->mem_mgr);
  
- /**
-  * jornada_ssp_inout - decide if input is command or trading byte
-+ * @byte: input byte to send (may be %TXDUMMY)
-  *
-  * returns : (jornada_ssp_byte(byte)) on success
-  *         : %-ETIMEDOUT on timeout failure
+ 	hdev->compute_ctx_in_release = 1;
+@@ -887,6 +894,7 @@ static int device_early_init(struct hl_device *hdev)
+ 
+ free_cb_mgr:
+ 	hl_mem_mgr_fini(&hdev->kernel_mem_mgr);
++	hl_mem_mgr_idr_destroy(&hdev->kernel_mem_mgr);
+ free_chip_info:
+ 	kfree(hdev->hl_chip_info);
+ free_prefetch_wq:
+@@ -930,6 +938,7 @@ static void device_early_fini(struct hl_device *hdev)
+ 	mutex_destroy(&hdev->clk_throttling.lock);
+ 
+ 	hl_mem_mgr_fini(&hdev->kernel_mem_mgr);
++	hl_mem_mgr_idr_destroy(&hdev->kernel_mem_mgr);
+ 
+ 	kfree(hdev->hl_chip_info);
+ 
+diff --git a/drivers/accel/habanalabs/common/habanalabs.h b/drivers/accel/habanalabs/common/habanalabs.h
+index fa05e76d3d21a..829b30ab1961a 100644
+--- a/drivers/accel/habanalabs/common/habanalabs.h
++++ b/drivers/accel/habanalabs/common/habanalabs.h
+@@ -3861,6 +3861,7 @@ const char *hl_sync_engine_to_string(enum hl_sync_engine_type engine_type);
+ 
+ void hl_mem_mgr_init(struct device *dev, struct hl_mem_mgr *mmg);
+ void hl_mem_mgr_fini(struct hl_mem_mgr *mmg);
++void hl_mem_mgr_idr_destroy(struct hl_mem_mgr *mmg);
+ int hl_mem_mgr_mmap(struct hl_mem_mgr *mmg, struct vm_area_struct *vma,
+ 		    void *args);
+ struct hl_mmap_mem_buf *hl_mmap_mem_buf_get(struct hl_mem_mgr *mmg,
+diff --git a/drivers/accel/habanalabs/common/habanalabs_drv.c b/drivers/accel/habanalabs/common/habanalabs_drv.c
+index 03dae57dc8386..e3781cfe8a7fe 100644
+--- a/drivers/accel/habanalabs/common/habanalabs_drv.c
++++ b/drivers/accel/habanalabs/common/habanalabs_drv.c
+@@ -237,6 +237,7 @@ int hl_device_open(struct inode *inode, struct file *filp)
+ out_err:
+ 	mutex_unlock(&hdev->fpriv_list_lock);
+ 	hl_mem_mgr_fini(&hpriv->mem_mgr);
++	hl_mem_mgr_idr_destroy(&hpriv->mem_mgr);
+ 	hl_ctx_mgr_fini(hpriv->hdev, &hpriv->ctx_mgr);
+ 	filp->private_data = NULL;
+ 	mutex_destroy(&hpriv->ctx_lock);
+diff --git a/drivers/accel/habanalabs/common/memory_mgr.c b/drivers/accel/habanalabs/common/memory_mgr.c
+index 0f2759e265477..f8e8261cc83d8 100644
+--- a/drivers/accel/habanalabs/common/memory_mgr.c
++++ b/drivers/accel/habanalabs/common/memory_mgr.c
+@@ -341,8 +341,19 @@ void hl_mem_mgr_fini(struct hl_mem_mgr *mmg)
+ 				"%s: Buff handle %u for CTX is still alive\n",
+ 				topic, id);
+ 	}
++}
+ 
+-	/* TODO: can it happen that some buffer is still in use at this point? */
++/**
++ * hl_mem_mgr_idr_destroy() - destroy memory manager IDR.
++ * @mmg: parent unified memory manager
++ *
++ * Destroy the memory manager IDR.
++ * Shall be called when IDR is empty and no memory buffers are in use.
++ */
++void hl_mem_mgr_idr_destroy(struct hl_mem_mgr *mmg)
++{
++	if (!idr_is_empty(&mmg->handles))
++		dev_crit(mmg->dev, "memory manager IDR is destroyed while it is not empty!\n");
+ 
+ 	idr_destroy(&mmg->handles);
+ }
 -- 
 2.39.2
 
