@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5A1770C9F9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7780270C84C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235503AbjEVTxs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48222 "EHLO
+        id S235002AbjEVThw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:37:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235483AbjEVTxo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1388B5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:42 -0700 (PDT)
+        with ESMTP id S235038AbjEVThl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9B2E41
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5663F61F1D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFDDC433D2;
-        Mon, 22 May 2023 19:53:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4419C61B51
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8DFC433EF;
+        Mon, 22 May 2023 19:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785221;
-        bh=rkpcN8xnTzapscIWZXJo0yyS7buhUyYESJCcosCGDHk=;
+        s=korg; t=1684784195;
+        bh=x/eAUTV38sOl29aLIHCjb4av/L24c7bF32z0zey5xn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EFgQIUzMzkCGpjwV2EJZzczMUPYnajYLORs+hh476HVDvYd7vonV+MkFyJ8PTDSVV
-         iJGsiGtKR6cCwmpilwtZq8u9d/1S049jjiC3Rcsc66Cmt2nrtCR6tJcD6QiHhjvNTK
-         o+lhcsou5KrgFPe4l5ytcZEVCQzrhVhdjXRx9uz0=
+        b=gSuYWF4DiEmgX8U4MBGIuEemPQ3Zy5OQzvErYUc0rj/E4/X6iCNrbx+5IzCUW2GIX
+         TxDVe++v3RPXzwivq5mGDDnjF3sfQWox4hk8FEhYq7sY4y+oX61d9uTIiuWPmJzdgZ
+         IhYWgS2GyvvkEkd6OyCWZ+2nl6siIJsPAw/CbS78=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.3 320/364] SMB3: drop reference to cfile before sending oplock break
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        syzkaller <syzkaller@googlegroups.com>,
+        George Kennedy <george.kennedy@oracle.com>,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH 6.1 268/292] vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF
 Date:   Mon, 22 May 2023 20:10:25 +0100
-Message-Id: <20230522190420.776352360@linuxfoundation.org>
+Message-Id: <20230522190412.639741853@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,128 +55,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: George Kennedy <george.kennedy@oracle.com>
 
-commit 59a556aebc43dded08535fe97d94ca3f657915e4 upstream.
+commit 8fb9ea65c9d1338b0d2bb0a9122dc942cdd32357 upstream.
 
-In cifs_oplock_break function we drop reference to a cfile at
-the end of function, due to which close command goes on wire
-after lease break acknowledgment even if file is already closed
-by application but we had deferred the handle close.
-If other client with limited file shareaccess waiting on lease
-break ack proceeds operation on that file as soon as first client
-sends ack, then we may encounter status sharing violation error
-because of open handle.
-Solution is to put reference to cfile(send close on wire if last ref)
-and then send oplock acknowledgment to server.
+After a call to console_unlock() in vcs_write() the vc_data struct can be
+freed by vc_port_destruct(). Because of that, the struct vc_data pointer
+must be reloaded in the while loop in vcs_write() after console_lock() to
+avoid a UAF when vcs_size() is called.
 
-Fixes: 9e31678fb403 ("SMB3: fix lease break timeout when multiple deferred close handles for the same file.")
-Cc: stable@kernel.org
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Syzkaller reported a UAF in vcs_size().
+
+BUG: KASAN: slab-use-after-free in vcs_size (drivers/tty/vt/vc_screen.c:215)
+Read of size 4 at addr ffff8880beab89a8 by task repro_vcs_size/4119
+
+Call Trace:
+ <TASK>
+__asan_report_load4_noabort (mm/kasan/report_generic.c:380)
+vcs_size (drivers/tty/vt/vc_screen.c:215)
+vcs_write (drivers/tty/vt/vc_screen.c:664)
+vfs_write (fs/read_write.c:582 fs/read_write.c:564)
+...
+ <TASK>
+
+Allocated by task 1213:
+kmalloc_trace (mm/slab_common.c:1064)
+vc_allocate (./include/linux/slab.h:559 ./include/linux/slab.h:680
+    drivers/tty/vt/vt.c:1078 drivers/tty/vt/vt.c:1058)
+con_install (drivers/tty/vt/vt.c:3334)
+tty_init_dev (drivers/tty/tty_io.c:1303 drivers/tty/tty_io.c:1415
+    drivers/tty/tty_io.c:1392)
+tty_open (drivers/tty/tty_io.c:2082 drivers/tty/tty_io.c:2128)
+chrdev_open (fs/char_dev.c:415)
+do_dentry_open (fs/open.c:921)
+vfs_open (fs/open.c:1052)
+...
+
+Freed by task 4116:
+kfree (mm/slab_common.c:1016)
+vc_port_destruct (drivers/tty/vt/vt.c:1044)
+tty_port_destructor (drivers/tty/tty_port.c:296)
+tty_port_put (drivers/tty/tty_port.c:312)
+vt_disallocate_all (drivers/tty/vt/vt_ioctl.c:662 (discriminator 2))
+vt_ioctl (drivers/tty/vt/vt_ioctl.c:903)
+tty_ioctl (drivers/tty/tty_io.c:2778)
+...
+
+The buggy address belongs to the object at ffff8880beab8800
+ which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 424 bytes inside of
+ freed 1024-byte region [ffff8880beab8800, ffff8880beab8c00)
+
+The buggy address belongs to the physical page:
+page:00000000afc77580 refcount:1 mapcount:0 mapping:0000000000000000
+    index:0x0 pfn:0xbeab8
+head:00000000afc77580 order:3 entire_mapcount:0 nr_pages_mapped:0
+    pincount:0
+flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: 0xffffffff()
+raw: 000fffffc0010200 ffff888100042dc0 ffffea000426de00 dead000000000002
+raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff8880beab8880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880beab8900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff8880beab8980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                  ^
+ ffff8880beab8a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880beab8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+Disabling lock debugging due to kernel taint
+
+Fixes: ac751efa6a0d ("console: rename acquire/release_console_sem() to console_lock/unlock()")
+Cc: stable <stable@kernel.org>
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/1683889728-10411-1-git-send-email-george.kennedy@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifsglob.h |    4 ++--
- fs/cifs/file.c     |   17 ++++++++++++-----
- fs/cifs/smb1ops.c  |    9 ++++-----
- fs/cifs/smb2ops.c  |    7 +++----
- 4 files changed, 21 insertions(+), 16 deletions(-)
+ drivers/tty/vt/vc_screen.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -424,8 +424,8 @@ struct smb_version_operations {
- 	/* check for STATUS_NETWORK_SESSION_EXPIRED */
- 	bool (*is_session_expired)(char *);
- 	/* send oplock break response */
--	int (*oplock_response)(struct cifs_tcon *, struct cifs_fid *,
--			       struct cifsInodeInfo *);
-+	int (*oplock_response)(struct cifs_tcon *tcon, __u64 persistent_fid, __u64 volatile_fid,
-+			__u16 net_fid, struct cifsInodeInfo *cifs_inode);
- 	/* query remote filesystem */
- 	int (*queryfs)(const unsigned int, struct cifs_tcon *,
- 		       struct cifs_sb_info *, struct kstatfs *);
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -4881,7 +4881,9 @@ void cifs_oplock_break(struct work_struc
- 	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	int rc = 0;
--	bool purge_cache = false;
-+	bool purge_cache = false, oplock_break_cancelled;
-+	__u64 persistent_fid, volatile_fid;
-+	__u16 net_fid;
+--- a/drivers/tty/vt/vc_screen.c
++++ b/drivers/tty/vt/vc_screen.c
+@@ -656,10 +656,17 @@ vcs_write(struct file *file, const char
+ 			}
+ 		}
  
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
-@@ -4926,19 +4928,24 @@ oplock_break_ack:
- 	if (!CIFS_CACHE_HANDLE(cinode) && !list_empty(&cinode->deferred_closes))
- 		cifs_close_deferred_file(cinode);
- 
-+	persistent_fid = cfile->fid.persistent_fid;
-+	volatile_fid = cfile->fid.volatile_fid;
-+	net_fid = cfile->fid.netfid;
-+	oplock_break_cancelled = cfile->oplock_break_cancelled;
-+
-+	_cifsFileInfo_put(cfile, false /* do not wait for ourself */, false);
- 	/*
- 	 * releasing stale oplock after recent reconnect of smb session using
- 	 * a now incorrect file handle is not a data integrity issue but do
- 	 * not bother sending an oplock release if session to server still is
- 	 * disconnected since oplock already released by the server
- 	 */
--	if (!cfile->oplock_break_cancelled) {
--		rc = tcon->ses->server->ops->oplock_response(tcon, &cfile->fid,
--							     cinode);
-+	if (!oplock_break_cancelled) {
-+		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
-+				volatile_fid, net_fid, cinode);
- 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
- 	}
- 
--	_cifsFileInfo_put(cfile, false /* do not wait for ourself */, false);
- 	cifs_done_oplock_break(cinode);
- }
- 
---- a/fs/cifs/smb1ops.c
-+++ b/fs/cifs/smb1ops.c
-@@ -897,12 +897,11 @@ cifs_close_dir(const unsigned int xid, s
- }
- 
- static int
--cifs_oplock_response(struct cifs_tcon *tcon, struct cifs_fid *fid,
--		     struct cifsInodeInfo *cinode)
-+cifs_oplock_response(struct cifs_tcon *tcon, __u64 persistent_fid,
-+		__u64 volatile_fid, __u16 net_fid, struct cifsInodeInfo *cinode)
- {
--	return CIFSSMBLock(0, tcon, fid->netfid, current->tgid, 0, 0, 0, 0,
--			   LOCKING_ANDX_OPLOCK_RELEASE, false,
--			   CIFS_CACHE_READ(cinode) ? 1 : 0);
-+	return CIFSSMBLock(0, tcon, net_fid, current->tgid, 0, 0, 0, 0,
-+			   LOCKING_ANDX_OPLOCK_RELEASE, false, CIFS_CACHE_READ(cinode) ? 1 : 0);
- }
- 
- static int
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -2383,15 +2383,14 @@ smb2_is_network_name_deleted(char *buf,
- }
- 
- static int
--smb2_oplock_response(struct cifs_tcon *tcon, struct cifs_fid *fid,
--		     struct cifsInodeInfo *cinode)
-+smb2_oplock_response(struct cifs_tcon *tcon, __u64 persistent_fid,
-+		__u64 volatile_fid, __u16 net_fid, struct cifsInodeInfo *cinode)
- {
- 	if (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_LEASING)
- 		return SMB2_lease_break(0, tcon, cinode->lease_key,
- 					smb2_get_lease_state(cinode));
- 
--	return SMB2_oplock_break(0, tcon, fid->persistent_fid,
--				 fid->volatile_fid,
-+	return SMB2_oplock_break(0, tcon, persistent_fid, volatile_fid,
- 				 CIFS_CACHE_READ(cinode) ? 1 : 0);
- }
- 
+-		/* The vcs_size might have changed while we slept to grab
+-		 * the user buffer, so recheck.
++		/* The vc might have been freed or vcs_size might have changed
++		 * while we slept to grab the user buffer, so recheck.
+ 		 * Return data written up to now on failure.
+ 		 */
++		vc = vcs_vc(inode, &viewed);
++		if (!vc) {
++			if (written)
++				break;
++			ret = -ENXIO;
++			goto unlock_out;
++		}
+ 		size = vcs_size(vc, attr, false);
+ 		if (size < 0) {
+ 			if (written)
 
 
