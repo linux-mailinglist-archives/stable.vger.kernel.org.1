@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E137470C8DE
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D51270C6F8
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235137AbjEVTnD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37316 "EHLO
+        id S234564AbjEVTYa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235157AbjEVTm7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7922EC1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:43 -0700 (PDT)
+        with ESMTP id S234552AbjEVTY3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7912E9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9581062A29
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B0EC433D2;
-        Mon, 22 May 2023 19:41:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8AED62875
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B36C4339B;
+        Mon, 22 May 2023 19:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784501;
-        bh=vKK2eCpyB6uJ5aOf6LN5RwkQuxnFUtTZC2kmn+oUDEw=;
+        s=korg; t=1684783465;
+        bh=sOFCupPmco37yPY4TQcRSbwtpvyDHpYMv3Rmg9UkMo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r+U5qcQScxwd8DNQQMwDZ1aQGiS5rfmEoBjm2W73cUh2CRVKFfRNBVNRSUVC91eML
-         6ieKqaT+UEPzp9xSp1nIe5GoBllvnhRIIQKDaQ199pAQW0VGD9nZDdlj8SaDPFCd8p
-         9j/2doqDG+ay95YeH2Fik6YNYER/t35BiV9irU5Y=
+        b=T1gjst4cJFFYmPgn/dW8JvgckCz+ZefChb9AEDcRQStohIhEenxUtaQfRbJEOq9Q8
+         mrVZnNMa4am/VBah4ImF53yTk/WOf8gLF4DNmpwsH/aA16Af0JBIEY0HcPkmwpKcts
+         byxT8m/cXQsXIod+uu64KGV0kc/sewD9GgwUQhFo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, harperchen <harperchen1110@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 103/364] netdev: Enforce index cap in netdev_get_tx_queue
+Subject: [PATCH 6.1 051/292] media: pci: tw68: Fix null-ptr-deref bug in buf prepare and finish
 Date:   Mon, 22 May 2023 20:06:48 +0100
-Message-Id: <20230522190415.335122365@linuxfoundation.org>
+Message-Id: <20230522190407.210880601@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,38 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: harperchen <harperchen1110@gmail.com>
 
-[ Upstream commit 1cc6571f562774f1d928dc8b3cff50829b86e970 ]
+[ Upstream commit 1634b7adcc5bef645b3666fdd564e5952a9e24e0 ]
 
-When requesting a TX queue at a given index, warn on out-of-bounds
-referencing if the index is greater than the allocated number of
-queues.
+When the driver calls tw68_risc_buffer() to prepare the buffer, the
+function call dma_alloc_coherent may fail, resulting in a empty buffer
+buf->cpu. Later when we free the buffer or access the buffer, null ptr
+deref is triggered.
 
-Specifically, since this function is used heavily in the networking
-stack use DEBUG_NET_WARN_ON_ONCE to avoid executing a new branch on
-every packet.
+This bug is similar to the following one:
+https://git.linuxtv.org/media_stage.git/commit/?id=2b064d91440b33fba5b452f2d1b31f13ae911d71.
 
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230321150725.127229-2-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+We believe the bug can be also dynamically triggered from user side.
+Similarly, we fix this by checking the return value of tw68_risc_buffer()
+and the value of buf->cpu before buffer free.
+
+Signed-off-by: harperchen <harperchen1110@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/pci/tw68/tw68-video.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index c35f04f636f15..7db9f960221d3 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2463,6 +2463,7 @@ static inline
- struct netdev_queue *netdev_get_tx_queue(const struct net_device *dev,
- 					 unsigned int index)
+diff --git a/drivers/media/pci/tw68/tw68-video.c b/drivers/media/pci/tw68/tw68-video.c
+index 0cbc5b038073b..773a18702d369 100644
+--- a/drivers/media/pci/tw68/tw68-video.c
++++ b/drivers/media/pci/tw68/tw68-video.c
+@@ -437,6 +437,7 @@ static void tw68_buf_queue(struct vb2_buffer *vb)
+  */
+ static int tw68_buf_prepare(struct vb2_buffer *vb)
  {
-+	DEBUG_NET_WARN_ON_ONCE(index >= dev->num_tx_queues);
- 	return &dev->_tx[index];
++	int ret;
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
+ 	struct vb2_queue *vq = vb->vb2_queue;
+ 	struct tw68_dev *dev = vb2_get_drv_priv(vq);
+@@ -452,30 +453,30 @@ static int tw68_buf_prepare(struct vb2_buffer *vb)
+ 	bpl = (dev->width * dev->fmt->depth) >> 3;
+ 	switch (dev->field) {
+ 	case V4L2_FIELD_TOP:
+-		tw68_risc_buffer(dev->pci, buf, dma->sgl,
++		ret = tw68_risc_buffer(dev->pci, buf, dma->sgl,
+ 				 0, UNSET, bpl, 0, dev->height);
+ 		break;
+ 	case V4L2_FIELD_BOTTOM:
+-		tw68_risc_buffer(dev->pci, buf, dma->sgl,
++		ret = tw68_risc_buffer(dev->pci, buf, dma->sgl,
+ 				 UNSET, 0, bpl, 0, dev->height);
+ 		break;
+ 	case V4L2_FIELD_SEQ_TB:
+-		tw68_risc_buffer(dev->pci, buf, dma->sgl,
++		ret = tw68_risc_buffer(dev->pci, buf, dma->sgl,
+ 				 0, bpl * (dev->height >> 1),
+ 				 bpl, 0, dev->height >> 1);
+ 		break;
+ 	case V4L2_FIELD_SEQ_BT:
+-		tw68_risc_buffer(dev->pci, buf, dma->sgl,
++		ret = tw68_risc_buffer(dev->pci, buf, dma->sgl,
+ 				 bpl * (dev->height >> 1), 0,
+ 				 bpl, 0, dev->height >> 1);
+ 		break;
+ 	case V4L2_FIELD_INTERLACED:
+ 	default:
+-		tw68_risc_buffer(dev->pci, buf, dma->sgl,
++		ret = tw68_risc_buffer(dev->pci, buf, dma->sgl,
+ 				 0, bpl, bpl, bpl, dev->height >> 1);
+ 		break;
+ 	}
+-	return 0;
++	return ret;
  }
  
+ static void tw68_buf_finish(struct vb2_buffer *vb)
+@@ -485,7 +486,8 @@ static void tw68_buf_finish(struct vb2_buffer *vb)
+ 	struct tw68_dev *dev = vb2_get_drv_priv(vq);
+ 	struct tw68_buf *buf = container_of(vbuf, struct tw68_buf, vb);
+ 
+-	dma_free_coherent(&dev->pci->dev, buf->size, buf->cpu, buf->dma);
++	if (buf->cpu)
++		dma_free_coherent(&dev->pci->dev, buf->size, buf->cpu, buf->dma);
+ }
+ 
+ static int tw68_start_streaming(struct vb2_queue *q, unsigned int count)
 -- 
 2.39.2
 
