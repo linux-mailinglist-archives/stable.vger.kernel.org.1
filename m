@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B82170C5E6
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B5D70C8F9
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbjEVTNT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36604 "EHLO
+        id S233565AbjEVToB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233644AbjEVTNS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:18 -0400
+        with ESMTP id S235186AbjEVTn6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D366C103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544CB10C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A46261EB2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7828AC433D2;
-        Mon, 22 May 2023 19:13:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 273886214B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301C1C433D2;
+        Mon, 22 May 2023 19:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782795;
-        bh=R26zJtzdtddNubaKQC8tq6jK3Q8VjDVlXSJ6hBQOJuc=;
+        s=korg; t=1684784620;
+        bh=SHIJtT+/f6e2zoHBjSbl6lAvp2ZShP6iuhKQ6fD0XjU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OZsoGb5nNbwWX7LevoTkSbKMH7Diow5+iuFK16m++PCGYGaHz3osfTHP//X8weynN
-         O/rMMXeLLifu/f6nUai8+gzH6xCBTEFNcit1KJyJ4Hn39eNbyZkroEbup43LmC5+ed
-         L/xS1mRXPKC8BEE2kJrb9EMptIoJRCwxwxT1wGgE=
+        b=s0xZcvehp/vzll9A4R0jNW+MgcP97eBx+qd/KHiKlK1ttaEk3Arf4t3cwHcMHY5gE
+         Zj0oQPYqf8gMcvnhonXlBzdEfR4+/HMQAkb8egq0WisaanjLFLRHkMtB12rfuSCnwo
+         TE48Ys7LpWp8wZkDaxJdJ6XhJqpGwq4YUnzkQ8TE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zongjie Li <u202112089@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, imoc <wzj9912@gmail.com>,
+        Raul Cheleguini <raul.cheleguini@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/203] fbdev: arcfb: Fix error handling in arcfb_probe()
+Subject: [PATCH 6.3 142/364] Bluetooth: Add new quirk for broken set random RPA timeout for ATS2851
 Date:   Mon, 22 May 2023 20:07:27 +0100
-Message-Id: <20230522190355.600813535@linuxfoundation.org>
+Message-Id: <20230522190416.321104959@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,79 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zongjie Li <u202112089@hust.edu.cn>
+From: Raul Cheleguini <raul.cheleguini@gmail.com>
 
-[ Upstream commit 5a6bef734247c7a8c19511664ff77634ab86f45b ]
+[ Upstream commit 91b6d02ddcd113352bdd895990b252065c596de7 ]
 
-Smatch complains that:
-arcfb_probe() warn: 'irq' from request_irq() not released on lines: 587.
+The ATS2851 based controller advertises support for command "LE Set Random
+Private Address Timeout" but does not actually implement it, impeding the
+controller initialization.
 
-Fix error handling in the arcfb_probe() function. If IO addresses are
-not provided or framebuffer registration fails, the code will jump to
-the err_addr or err_register_fb label to release resources.
-If IRQ request fails, previously allocated resources will be freed.
+Add the quirk HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT to unblock the controller
+initialization.
 
-Fixes: 1154ea7dcd8e ("[PATCH] Framebuffer driver for Arc LCD board")
-Signed-off-by: Zongjie Li <u202112089@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+< HCI Command: LE Set Resolvable Private... (0x08|0x002e) plen 2
+        Timeout: 900 seconds
+> HCI Event: Command Status (0x0f) plen 4
+      LE Set Resolvable Private Address Timeout (0x08|0x002e) ncmd 1
+        Status: Unknown HCI Command (0x01)
+
+Co-developed-by: imoc <wzj9912@gmail.com>
+Signed-off-by: imoc <wzj9912@gmail.com>
+Signed-off-by: Raul Cheleguini <raul.cheleguini@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/arcfb.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/bluetooth/btusb.c   | 1 +
+ include/net/bluetooth/hci.h | 8 ++++++++
+ net/bluetooth/hci_sync.c    | 6 +++++-
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
-index 45e64016db328..024d0ee4f04f9 100644
---- a/drivers/video/fbdev/arcfb.c
-+++ b/drivers/video/fbdev/arcfb.c
-@@ -523,7 +523,7 @@ static int arcfb_probe(struct platform_device *dev)
- 
- 	info = framebuffer_alloc(sizeof(struct arcfb_par), &dev->dev);
- 	if (!info)
--		goto err;
-+		goto err_fb_alloc;
- 
- 	info->screen_base = (char __iomem *)videomemory;
- 	info->fbops = &arcfb_ops;
-@@ -535,7 +535,7 @@ static int arcfb_probe(struct platform_device *dev)
- 
- 	if (!dio_addr || !cio_addr || !c2io_addr) {
- 		printk(KERN_WARNING "no IO addresses supplied\n");
--		goto err1;
-+		goto err_addr;
- 	}
- 	par->dio_addr = dio_addr;
- 	par->cio_addr = cio_addr;
-@@ -551,12 +551,12 @@ static int arcfb_probe(struct platform_device *dev)
- 			printk(KERN_INFO
- 				"arcfb: Failed req IRQ %d\n", par->irq);
- 			retval = -EBUSY;
--			goto err1;
-+			goto err_addr;
- 		}
- 	}
- 	retval = register_framebuffer(info);
- 	if (retval < 0)
--		goto err1;
-+		goto err_register_fb;
- 	platform_set_drvdata(dev, info);
- 	fb_info(info, "Arc frame buffer device, using %dK of video memory\n",
- 		videomemorysize >> 10);
-@@ -580,9 +580,12 @@ static int arcfb_probe(struct platform_device *dev)
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 1ab5663b009d8..0923582299f3a 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4106,6 +4106,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 		/* Support is advertised, but not implemented */
+ 		set_bit(HCI_QUIRK_BROKEN_ERR_DATA_REPORTING, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
++		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
  	}
  
- 	return 0;
--err1:
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 997107bfc0b12..07df96c47ef4f 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -301,6 +301,14 @@ enum {
+ 	 * don't actually support features declared there.
+ 	 */
+ 	HCI_QUIRK_BROKEN_LOCAL_EXT_FEATURES_PAGE_2,
 +
-+err_register_fb:
-+	free_irq(par->irq, info);
-+err_addr:
- 	framebuffer_release(info);
--err:
-+err_fb_alloc:
- 	vfree(videomemory);
- 	return retval;
- }
++	/*
++	 * When this quirk is set, the HCI_OP_LE_SET_RPA_TIMEOUT command is
++	 * skipped during initialization. This is required for the Actions
++	 * Semiconductor ATS2851 based controllers, which erroneously claims
++	 * to support it.
++	 */
++	HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT,
+ };
+ 
+ /* HCI device flags */
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 632be12672887..b65ee3a32e5d7 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -4093,7 +4093,8 @@ static int hci_le_set_rpa_timeout_sync(struct hci_dev *hdev)
+ {
+ 	__le16 timeout = cpu_to_le16(hdev->rpa_timeout);
+ 
+-	if (!(hdev->commands[35] & 0x04))
++	if (!(hdev->commands[35] & 0x04) ||
++	    test_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks))
+ 		return 0;
+ 
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_RPA_TIMEOUT,
+@@ -4533,6 +4534,9 @@ static const struct {
+ 			 "HCI Set Event Filter command not supported."),
+ 	HCI_QUIRK_BROKEN(ENHANCED_SETUP_SYNC_CONN,
+ 			 "HCI Enhanced Setup Synchronous Connection command is "
++			 "advertised, but not supported."),
++	HCI_QUIRK_BROKEN(SET_RPA_TIMEOUT,
++			 "HCI LE Set Random Private Address Timeout command is "
+ 			 "advertised, but not supported.")
+ };
+ 
 -- 
 2.39.2
 
