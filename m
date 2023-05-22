@@ -2,56 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF6970C8BC
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B157470C6E7
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235155AbjEVTll (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35506 "EHLO
+        id S234548AbjEVTXw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:23:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235176AbjEVTl3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:41:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540EC19A4;
-        Mon, 22 May 2023 12:40:55 -0700 (PDT)
+        with ESMTP id S234591AbjEVTXo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E86E4B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 268AE629FF;
-        Mon, 22 May 2023 19:40:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77FAC433D2;
-        Mon, 22 May 2023 19:40:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E145A620D7
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0287EC433EF;
+        Mon, 22 May 2023 19:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784454;
-        bh=Wn4gTbf57LwpDRCHeR+QJZofpS9uoSncq21OSvW/Kd4=;
+        s=korg; t=1684783414;
+        bh=5yg6SZwGlhWY+uuSU8BxXg38GuZTA4fq8Vy0TqzBFTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tHEH9taE3lJmhj9U0bSKgsT5arEEFbtaSyZ1W8xhjlo1iMHWbEyTUVvctp6sd1afY
-         YnR8Dpnvt/3qviHjDVRLsAUk41tPUPJB6jdM98PuWHn9DbmgaAMUEw0MlryWQWqgdB
-         MPsBRbpJwhq9q/wCtXdrS6hj1LPbE344MeceZdcY=
+        b=dY01mQ1+TsPs4FLPCdtRpufTJbZOAxYCBdDvDr8lrEl4W7t9SGlCqMAJz9nPJhI+T
+         Dhugl2qkfJj1pIyxSE6FtLNOSX8EdaUAxXKW2VpIIDwWZT2hWjHfiuB9hCnSLm4cTE
+         Ybsfx4W6An34pOHart9d4fAoBwRMZ4ekORnW2Fmg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 088/364] wifi: ath: Silence memcpy run-time false positive warning
+Subject: [PATCH 6.1 036/292] refscale: Move shutdown from wait_event() to wait_event_idle()
 Date:   Mon, 22 May 2023 20:06:33 +0100
-Message-Id: <20230522190414.956248682@linuxfoundation.org>
+Message-Id: <20230522190406.797090322@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,71 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit bfcc8ba45eb87bfaaff900bbad2b87b204899d41 ]
+[ Upstream commit 6bc6e6b27524304aadb9c04611ddb1c84dd7617a ]
 
-The memcpy() in ath_key_config() was attempting to write across
-neighboring struct members in struct ath_keyval. Introduce a wrapping
-struct_group, kv_values, to be the addressable target of the memcpy
-without overflowing an individual member. Silences the false positive
-run-time warning:
+The ref_scale_shutdown() kthread/function uses wait_event() to wait for
+the refscale test to complete.  However, although the read-side tests
+are normally extremely fast, there is no law against specifying a very
+large value for the refscale.loops module parameter or against having
+a slow read-side primitive.  Either way, this might well trigger the
+hung-task timeout.
 
-  memcpy: detected field-spanning write (size 32) of single field "hk.kv_val" at drivers/net/wireless/ath/key.c:506 (size 16)
+This commit therefore replaces those wait_event() calls with calls to
+wait_event_idle(), which do not trigger the hung-task timeout.
 
-Link: https://bbs.archlinux.org/viewtopic.php?id=282254
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230210054310.never.554-kees@kernel.org
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath.h | 12 +++++++-----
- drivers/net/wireless/ath/key.c |  2 +-
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ kernel/rcu/refscale.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
-index f083fb9038c36..f02a308a9ffc5 100644
---- a/drivers/net/wireless/ath/ath.h
-+++ b/drivers/net/wireless/ath/ath.h
-@@ -96,11 +96,13 @@ struct ath_keyval {
- 	u8 kv_type;
- 	u8 kv_pad;
- 	u16 kv_len;
--	u8 kv_val[16]; /* TK */
--	u8 kv_mic[8]; /* Michael MIC key */
--	u8 kv_txmic[8]; /* Michael MIC TX key (used only if the hardware
--			 * supports both MIC keys in the same key cache entry;
--			 * in that case, kv_mic is the RX key) */
-+	struct_group(kv_values,
-+		u8 kv_val[16]; /* TK */
-+		u8 kv_mic[8]; /* Michael MIC key */
-+		u8 kv_txmic[8]; /* Michael MIC TX key (used only if the hardware
-+				 * supports both MIC keys in the same key cache entry;
-+				 * in that case, kv_mic is the RX key) */
-+	);
- };
+diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
+index 435c884c02b5c..d49a9d66e0000 100644
+--- a/kernel/rcu/refscale.c
++++ b/kernel/rcu/refscale.c
+@@ -795,7 +795,7 @@ ref_scale_cleanup(void)
+ static int
+ ref_scale_shutdown(void *arg)
+ {
+-	wait_event(shutdown_wq, shutdown_start);
++	wait_event_idle(shutdown_wq, shutdown_start);
  
- enum ath_cipher {
-diff --git a/drivers/net/wireless/ath/key.c b/drivers/net/wireless/ath/key.c
-index 61b59a804e308..b7b61d4f02bae 100644
---- a/drivers/net/wireless/ath/key.c
-+++ b/drivers/net/wireless/ath/key.c
-@@ -503,7 +503,7 @@ int ath_key_config(struct ath_common *common,
- 
- 	hk.kv_len = key->keylen;
- 	if (key->keylen)
--		memcpy(hk.kv_val, key->key, key->keylen);
-+		memcpy(&hk.kv_values, key->key, key->keylen);
- 
- 	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE)) {
- 		switch (vif->type) {
+ 	smp_mb(); // Wake before output.
+ 	ref_scale_cleanup();
 -- 
 2.39.2
 
