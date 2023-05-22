@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1252370C96C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A652370C7C2
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235329AbjEVTsB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42838 "EHLO
+        id S234781AbjEVTcT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235325AbjEVTsA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F4CDA9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:59 -0700 (PDT)
+        with ESMTP id S234799AbjEVTcJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:32:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45A2E9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:32:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E618262A96
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B9CC433D2;
-        Mon, 22 May 2023 19:47:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44D8C6292E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:32:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500AAC4339C;
+        Mon, 22 May 2023 19:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784878;
-        bh=MUZ+vTtqbwHDiI659bCJs3cVxAFoCDZgavRLSnqdh2g=;
+        s=korg; t=1684783926;
+        bh=rVVfaMKLdYaaPy1Q0Rh8ia9IfV2MoIz0Gf6cGgcL31w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IFWX0R4ShCMktQWS3smWo9hvBS5LVF30MThYEwq6HEKh3dJqB2mfzyXEPjmv3rAel
-         6q0IhxPMc+2Pws7Qu/9XqeXI2/jvi7sjZc1UyLp27D+SvBx43SuxNLLTIcj0cO8jkR
-         tJl7uLeTtaxnCzssipo1VYaUNqo1FuC3ZbUo2UbI=
+        b=Z5mX1HrNBXwESGdy2RK90QwLzSxZynIACjCt/r0KsgKtJoDwzKtxL5TLZ6Wexsv8I
+         KY0J3yJiwFIljdZAgwcTLLTkQtVlFUprh9pLH2oFASP+4t5Xpk3E+3l8+AaVMSZkpz
+         ghSkjwy8FkQ8JH8qaIGXeHUKo+4WgYXbPDvn+3f0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Antoine Tenart <atenart@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+        =?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+        Piotr Raczynski <piotr.raczynski@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 232/364] tcp: fix possible sk_priority leak in tcp_v4_send_reset()
+Subject: [PATCH 6.1 180/292] net: dsa: rzn1-a5psw: disable learning for standalone ports
 Date:   Mon, 22 May 2023 20:08:57 +0100
-Message-Id: <20230522190418.500921976@linuxfoundation.org>
+Message-Id: <20230522190410.464003170@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,60 +57,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Clément Léger <clement.leger@bootlin.com>
 
-[ Upstream commit 1e306ec49a1f206fd2cc89a42fac6e6f592a8cc1 ]
+[ Upstream commit ec52b69c046a6219011af780aca155a96719637b ]
 
-When tcp_v4_send_reset() is called with @sk == NULL,
-we do not change ctl_sk->sk_priority, which could have been
-set from a prior invocation.
+When ports are in standalone mode, they should have learning disabled to
+avoid adding new entries in the MAC lookup table which might be used by
+other bridge ports to forward packets. While adding that, also make sure
+learning is enabled for CPU port.
 
-Change tcp_v4_send_reset() to set sk_priority and sk_mark
-fields before calling ip_send_unicast_reply().
-
-This means tcp_v4_send_reset() and tcp_v4_send_ack()
-no longer have to clear ctl_sk->sk_mark after
-their call to ip_send_unicast_reply().
-
-Fixes: f6c0f5d209fa ("tcp: honor SO_PRIORITY in TIME_WAIT state")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Antoine Tenart <atenart@kernel.org>
+Fixes: 888cdb892b61 ("net: dsa: rzn1-a5psw: add Renesas RZ/N1 advanced 5 port switch driver")
+Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/rzn1_a5psw.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index b9d55277cb858..c87958f979f0a 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -829,6 +829,9 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
- 		transmit_time = tcp_transmit_time(sk);
- 		xfrm_sk_clone_policy(ctl_sk, sk);
-+	} else {
-+		ctl_sk->sk_mark = 0;
-+		ctl_sk->sk_priority = 0;
+diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
+index 2b0463263767c..790e177e2aef6 100644
+--- a/drivers/net/dsa/rzn1_a5psw.c
++++ b/drivers/net/dsa/rzn1_a5psw.c
+@@ -340,6 +340,14 @@ static void a5psw_flooding_set_resolution(struct a5psw *a5psw, int port,
+ 		a5psw_reg_writel(a5psw, offsets[i], a5psw->bridged_ports);
+ }
+ 
++static void a5psw_port_set_standalone(struct a5psw *a5psw, int port,
++				      bool standalone)
++{
++	a5psw_port_learning_set(a5psw, port, !standalone);
++	a5psw_flooding_set_resolution(a5psw, port, !standalone);
++	a5psw_port_mgmtfwd_set(a5psw, port, standalone);
++}
++
+ static int a5psw_port_bridge_join(struct dsa_switch *ds, int port,
+ 				  struct dsa_bridge bridge,
+ 				  bool *tx_fwd_offload,
+@@ -355,8 +363,7 @@ static int a5psw_port_bridge_join(struct dsa_switch *ds, int port,
  	}
- 	ip_send_unicast_reply(ctl_sk,
- 			      skb, &TCP_SKB_CB(skb)->header.h4.opt,
-@@ -836,7 +839,6 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 			      &arg, arg.iov[0].iov_len,
- 			      transmit_time);
  
--	ctl_sk->sk_mark = 0;
- 	xfrm_sk_free_policy(ctl_sk);
- 	sock_net_set(ctl_sk, &init_net);
- 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
-@@ -935,7 +937,6 @@ static void tcp_v4_send_ack(const struct sock *sk,
- 			      &arg, arg.iov[0].iov_len,
- 			      transmit_time);
+ 	a5psw->br_dev = bridge.dev;
+-	a5psw_flooding_set_resolution(a5psw, port, true);
+-	a5psw_port_mgmtfwd_set(a5psw, port, false);
++	a5psw_port_set_standalone(a5psw, port, false);
  
--	ctl_sk->sk_mark = 0;
- 	sock_net_set(ctl_sk, &init_net);
- 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
- 	local_bh_enable();
+ 	return 0;
+ }
+@@ -366,8 +373,7 @@ static void a5psw_port_bridge_leave(struct dsa_switch *ds, int port,
+ {
+ 	struct a5psw *a5psw = ds->priv;
+ 
+-	a5psw_flooding_set_resolution(a5psw, port, false);
+-	a5psw_port_mgmtfwd_set(a5psw, port, true);
++	a5psw_port_set_standalone(a5psw, port, true);
+ 
+ 	/* No more ports bridged */
+ 	if (a5psw->bridged_ports == BIT(A5PSW_CPU_PORT))
+@@ -761,13 +767,15 @@ static int a5psw_setup(struct dsa_switch *ds)
+ 		if (dsa_port_is_unused(dp))
+ 			continue;
+ 
+-		/* Enable egress flooding for CPU port */
+-		if (dsa_port_is_cpu(dp))
++		/* Enable egress flooding and learning for CPU port */
++		if (dsa_port_is_cpu(dp)) {
+ 			a5psw_flooding_set_resolution(a5psw, port, true);
++			a5psw_port_learning_set(a5psw, port, true);
++		}
+ 
+-		/* Enable management forward only for user ports */
++		/* Enable standalone mode for user ports */
+ 		if (dsa_port_is_user(dp))
+-			a5psw_port_mgmtfwd_set(a5psw, port, true);
++			a5psw_port_set_standalone(a5psw, port, true);
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.2
 
