@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B05070C9A0
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B334770C7F3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235376AbjEVTu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44324 "EHLO
+        id S231782AbjEVTeh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:34:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235486AbjEVTuF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:05 -0400
+        with ESMTP id S234911AbjEVTec (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:34:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE5E9C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59672186
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B4BF62A7A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9BBC4339B;
-        Mon, 22 May 2023 19:50:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7C862954
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A45C433A1;
+        Mon, 22 May 2023 19:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785003;
-        bh=7sWHbjLpTk9hTUbwz1b/qNIcH8+0wYvTN+Z5BoxoFVk=;
+        s=korg; t=1684783980;
+        bh=dnDgplo1uMeqHjMk2ufEQfH9n0t5o/a1L47gNe7tN24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v/ZeVzhgF/oPmQdvJ0VQS5rpqVR+w4UZ7ebgkHDPOZJehHhTPy+7UMWocg5IDzovo
-         8AVK/TvZMm3q/OMAcdz3XopXGh04YrdKN3ZyJhmMBZp+kN1YhFZ9B0jwYnyzdWy14q
-         MkHINZfPjfEabUZ8q4StB9gwLui6YcMN5hYlHOg8=
+        b=mrg5Zsdg9x/GUVVl0O4whsbtVxS3bz8ytSibuglp60VQSFB4z5XacI/LZ+SwS9LJm
+         0RW3MV/eoMAT0/3ndHrnA6OcDia10/8BzG401/zic+1Xqu5mUFOEGQ2YvURqf/Dizq
+         XclVRgDtzVlLvJ+npNp5W46gUZ2w7jntCsz1VZms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Starks <jostarks@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 276/364] scsi: storvsc: Dont pass unused PFNs to Hyper-V host
+Subject: [PATCH 6.1 224/292] netfilter: nft_set_rbtree: fix null deref on element insertion
 Date:   Mon, 22 May 2023 20:09:41 +0100
-Message-Id: <20230522190419.621484695@linuxfoundation.org>
+Message-Id: <20230522190411.553737446@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 4e81a6cba517cb33584308a331f14f5e3fec369b ]
+[ Upstream commit 61ae320a29b0540c16931816299eb86bf2b66c08 ]
 
-In a SCSI request, storvsc pre-allocates space for up to
-MAX_PAGE_BUFFER_COUNT physical frame numbers to be passed to Hyper-V.  If
-the size of the I/O request requires more PFNs, a separate memory area of
-exactly the correct size is dynamically allocated.
+There is no guarantee that rb_prev() will not return NULL in nft_rbtree_gc_elem():
 
-But when the pre-allocated area is used, current code always passes
-MAX_PAGE_BUFFER_COUNT PFNs to Hyper-V, even if fewer are needed.  While
-this doesn't break anything because the additional PFNs are always zero,
-more bytes than necessary are copied into the VMBus channel ring buffer.
-This takes CPU cycles and wastes space in the ring buffer. For a typical 4
-Kbyte I/O that requires only a single PFN, 248 unnecessary bytes are
-copied.
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+ nft_add_set_elem+0x14b0/0x2990
+  nf_tables_newsetelem+0x528/0xb30
 
-Fix this by setting the payload_sz based on the actual number of PFNs
-required, not the size of the pre-allocated space.
+Furthermore, there is a possible use-after-free while iterating,
+'node' can be free'd so we need to cache the next value to use.
 
-Reported-by: John Starks <jostarks@microsoft.com>
-Fixes: 8f43710543ef ("scsi: storvsc: Support PAGE_SIZE larger than 4K")
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1684171241-16209-1-git-send-email-mikelley@microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index d9ce379c4d2e8..e6bc622954cfa 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1780,7 +1780,7 @@ static int storvsc_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *scmnd)
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 19ea4d3c35535..2f114aa10f1a7 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -221,7 +221,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev;
++	struct nft_rbtree_elem *rbe_prev = NULL;
+ 	struct nft_set_gc_batch *gcb;
  
- 	length = scsi_bufflen(scmnd);
- 	payload = (struct vmbus_packet_mpb_array *)&cmd_request->mpb;
--	payload_sz = sizeof(cmd_request->mpb);
-+	payload_sz = 0;
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+@@ -229,17 +229,21 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		return -ENOMEM;
  
- 	if (scsi_sg_count(scmnd)) {
- 		unsigned long offset_in_hvpg = offset_in_hvpage(sgl->offset);
-@@ -1789,10 +1789,10 @@ static int storvsc_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *scmnd)
- 		unsigned long hvpfn, hvpfns_to_add;
- 		int j, i = 0, sg_count;
+ 	/* search for expired end interval coming before this element. */
+-	do {
++	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+ 		if (nft_rbtree_interval_end(rbe_prev))
+ 			break;
  
--		if (hvpg_count > MAX_PAGE_BUFFER_COUNT) {
-+		payload_sz = (hvpg_count * sizeof(u64) +
-+			      sizeof(struct vmbus_packet_mpb_array));
+ 		prev = rb_prev(prev);
+-	} while (prev != NULL);
++	}
++
++	if (rbe_prev) {
++		rb_erase(&rbe_prev->node, &priv->root);
++		atomic_dec(&set->nelems);
++	}
  
--			payload_sz = (hvpg_count * sizeof(u64) +
--				      sizeof(struct vmbus_packet_mpb_array));
-+		if (hvpg_count > MAX_PAGE_BUFFER_COUNT) {
- 			payload = kzalloc(payload_sz, GFP_ATOMIC);
- 			if (!payload)
- 				return SCSI_MLQUEUE_DEVICE_BUSY;
+-	rb_erase(&rbe_prev->node, &priv->root);
+ 	rb_erase(&rbe->node, &priv->root);
+-	atomic_sub(2, &set->nelems);
++	atomic_dec(&set->nelems);
+ 
+ 	nft_set_gc_batch_add(gcb, rbe);
+ 	nft_set_gc_batch_complete(gcb);
+@@ -268,7 +272,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 			       struct nft_set_ext **ext)
+ {
+ 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
+-	struct rb_node *node, *parent, **p, *first = NULL;
++	struct rb_node *node, *next, *parent, **p, *first = NULL;
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 genmask = nft_genmask_next(net);
+ 	int d, err;
+@@ -307,7 +311,9 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	 * Values stored in the tree are in reversed order, starting from
+ 	 * highest to lowest value.
+ 	 */
+-	for (node = first; node != NULL; node = rb_next(node)) {
++	for (node = first; node != NULL; node = next) {
++		next = rb_next(node);
++
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+ 
+ 		if (!nft_set_elem_active(&rbe->ext, genmask))
 -- 
 2.39.2
 
