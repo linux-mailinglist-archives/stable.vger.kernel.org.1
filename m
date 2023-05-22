@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F23DA70C9A2
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD7370C68B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235378AbjEVTua (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:50:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44368 "EHLO
+        id S234273AbjEVTTU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235507AbjEVTuI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:08 -0400
+        with ESMTP id S234283AbjEVTTT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEEA3B5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E70A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CDB862AE7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F508C433EF;
-        Mon, 22 May 2023 19:50:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 374C362801
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418E9C433D2;
+        Mon, 22 May 2023 19:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785006;
-        bh=+xY9tYciHcJYoC84cna2hrybmQOq6ZlbigeiAIDbtpo=;
+        s=korg; t=1684783157;
+        bh=9PDjsd8TFOzORBuTm/kxojZ+UV6cnA+Li2WBojSPBUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PGEGMxqbFyj7vFYAAI4378gSMcNv6Ewzj67dr+6svfNHrYIUvY4X9iqKf7P6hZg+a
-         SyDlOxTJ2KGGF/hVF6/ABJfXV2Y4WkF8C6FkIdwhsr8oPX/UYecJtz27NuTJ5qMJ50
-         15kh3RLKrFHzqoZokoScjMeZbNaMwfiKm1+kSKjI=
+        b=1WpnZKQ9zlzSsa02sz3Jxev85hAFC9Dld2FXKmwAEpAi+149gw/LzhmYHeJOD3NcL
+         KbtCgkARX1kKTNB1NBgLwQjjRm7tWu5JD62Hycl4RYGMjkweOR9LeA8pVeO97iM8oz
+         khh0XSU7iCHIETy9MrT8WYRm8i5FP2FLPSpswYAY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Ido Schimmel <idosch@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 277/364] devlink: Fix crash with CONFIG_NET_NS=n
+Subject: [PATCH 5.15 158/203] netfilter: nf_tables: fix nft_trans type confusion
 Date:   Mon, 22 May 2023 20:09:42 +0100
-Message-Id: <20230522190419.648065993@linuxfoundation.org>
+Message-Id: <20230522190359.348369904@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,66 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit d6352dae0903fe8beae4c007dc320e9e9f1fed45 ]
+[ Upstream commit e3c361b8acd636f5fe80c02849ca175201edf10c ]
 
-'__net_initdata' becomes a no-op with CONFIG_NET_NS=y, but when this
-option is disabled it becomes '__initdata', which means the data can be
-freed after the initialization phase. This annotation is obviously
-incorrect for the devlink net device notifier block which is still
-registered after the initialization phase [1].
+nft_trans_FOO objects all share a common nft_trans base structure, but
+trailing fields depend on the real object size. Access is only safe after
+trans->msg_type check.
 
-Fix this crash by removing the '__net_initdata' annotation.
+Check for rule type first.  Found by code inspection.
 
-[1]
-general protection fault, probably for non-canonical address 0xcccccccccccccccc: 0000 [#1] PREEMPT SMP
-CPU: 3 PID: 117 Comm: (udev-worker) Not tainted 6.4.0-rc1-custom-gdf0acdc59b09 #64
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
-RIP: 0010:notifier_call_chain+0x58/0xc0
-[...]
-Call Trace:
- <TASK>
- dev_set_mac_address+0x85/0x120
- dev_set_mac_address_user+0x30/0x50
- do_setlink+0x219/0x1270
- rtnl_setlink+0xf7/0x1a0
- rtnetlink_rcv_msg+0x142/0x390
- netlink_rcv_skb+0x58/0x100
- netlink_unicast+0x188/0x270
- netlink_sendmsg+0x214/0x470
- __sys_sendto+0x12f/0x1a0
- __x64_sys_sendto+0x24/0x30
- do_syscall_64+0x38/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fixes: e93c9378e33f ("devlink: change per-devlink netdev notifier to static one")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/netdev/600ddf9e-589a-2aa0-7b69-a438f833ca10@samsung.com/
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230515162925.1144416-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1a94e38d254b ("netfilter: nf_tables: add NFTA_RULE_ID attribute")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/devlink/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/devlink/core.c b/net/devlink/core.c
-index 0e58eee44bdb2..c23ebabadc526 100644
---- a/net/devlink/core.c
-+++ b/net/devlink/core.c
-@@ -294,7 +294,7 @@ static struct pernet_operations devlink_pernet_ops __net_initdata = {
- 	.pre_exit = devlink_pernet_pre_exit,
- };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 091df8a7cb1e7..f20244a91d781 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3595,12 +3595,10 @@ static struct nft_rule *nft_rule_lookup_byid(const struct net *net,
+ 	struct nft_trans *trans;
  
--static struct notifier_block devlink_port_netdevice_nb __net_initdata = {
-+static struct notifier_block devlink_port_netdevice_nb = {
- 	.notifier_call = devlink_port_netdevice_event,
- };
- 
+ 	list_for_each_entry(trans, &nft_net->commit_list, list) {
+-		struct nft_rule *rule = nft_trans_rule(trans);
+-
+ 		if (trans->msg_type == NFT_MSG_NEWRULE &&
+ 		    trans->ctx.chain == chain &&
+ 		    id == nft_trans_rule_id(trans))
+-			return rule;
++			return nft_trans_rule(trans);
+ 	}
+ 	return ERR_PTR(-ENOENT);
+ }
 -- 
 2.39.2
 
