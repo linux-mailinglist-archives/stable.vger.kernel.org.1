@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C348D70C81C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4E1570C6AE
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:21:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234936AbjEVTf4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S234369AbjEVTVH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:21:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234914AbjEVTfz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:55 -0400
+        with ESMTP id S234368AbjEVTVG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155A010CA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E9F4A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB0E662967
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53DEC433EF;
-        Mon, 22 May 2023 19:34:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D25826282C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97BFC433D2;
+        Mon, 22 May 2023 19:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784085;
-        bh=muPfp96Y8jPOu5ifnD9zPB/uMweMgjCkJ+tUqh41FQo=;
+        s=korg; t=1684783264;
+        bh=XTwa66rXeun3FJNVUNs/JjnqChH4soW15p20BVIFlA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z/RXf3t7iGLoEtFXhhKdu+2yvG6BfAOoBL+Eg87qnetB0IG0QAWvcA9/6aXHFdkA8
-         LcFyyLfej4+zAUpDFvF0bOGheWD4/o/9/OqlSLHTtGElSDqRP1QdyegjvczyfWGsMt
-         xulpCxcUx3MQhCpJnFF6qlxOa8hzJn+7GhrUn5Ls=
+        b=zsCwpK5p4lGg26POJRga5CplwSOhJa58KcZtkq/VOJGDEfkfxzU8DFRGCi/HrAy6F
+         s1Vo1dFe8aeEqSYmZqxFkg4w9qYyH82ZyUhsd3cn0SRKX8mHdbCjnPvIBZ/S+mzPa/
+         LF8Mb+/1tDhvViwqrQxyVcujp03oER8oWQe5TOqI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chih-Yen Chang <cc85nod@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 258/292] ksmbd: fix wrong UserName check in session_user
-Date:   Mon, 22 May 2023 20:10:15 +0100
-Message-Id: <20230522190412.392181636@linuxfoundation.org>
+        patches@lists.linux.dev, Stephen Boyd <swboyd@chromium.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.15 192/203] serial: qcom-geni: fix enabling deactivated interrupt
+Date:   Mon, 22 May 2023 20:10:16 +0100
+Message-Id: <20230522190400.340710275@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +53,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chih-Yen Chang <cc85nod@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit f0a96d1aafd8964e1f9955c830a3e5cb3c60a90f upstream.
+commit 5f949f140f73696f64acb89a1f16ff9153d017e0 upstream.
 
-The offset of UserName is related to the address of security
-buffer. To ensure the validaty of UserName, we need to compare name_off
-+ name_len with secbuf_len instead of auth_msg_len.
+The driver have a race, experienced only with PREEMPT_RT patchset:
 
-[   27.096243] ==================================================================
-[   27.096890] BUG: KASAN: slab-out-of-bounds in smb_strndup_from_utf16+0x188/0x350
-[   27.097609] Read of size 2 at addr ffff888005e3b542 by task kworker/0:0/7
-...
-[   27.099950] Call Trace:
-[   27.100194]  <TASK>
-[   27.100397]  dump_stack_lvl+0x33/0x50
-[   27.100752]  print_report+0xcc/0x620
-[   27.102305]  kasan_report+0xae/0xe0
-[   27.103072]  kasan_check_range+0x35/0x1b0
-[   27.103757]  smb_strndup_from_utf16+0x188/0x350
-[   27.105474]  smb2_sess_setup+0xaf8/0x19c0
-[   27.107935]  handle_ksmbd_work+0x274/0x810
-[   27.108315]  process_one_work+0x419/0x760
-[   27.108689]  worker_thread+0x2a2/0x6f0
-[   27.109385]  kthread+0x160/0x190
-[   27.110129]  ret_from_fork+0x1f/0x30
-[   27.110454]  </TASK>
+CPU0                         | CPU1
+==================================================================
+qcom_geni_serial_probe       |
+  uart_add_one_port          |
+                             | serdev_drv_probe
+                             |   qca_serdev_probe
+                             |     serdev_device_open
+                             |       uart_open
+                             |         uart_startup
+                             |           qcom_geni_serial_startup
+                             |             enable_irq
+                             |               __irq_startup
+                             |                 WARN_ON()
+                             |                 IRQ not activated
+  request_threaded_irq       |
+    irq_domain_activate_irq  |
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Chih-Yen Chang <cc85nod@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The warning:
+
+  894000.serial: ttyHS1 at MMIO 0x894000 (irq = 144, base_baud = 0) is a MSM
+  serial serial0: tty port ttyHS1 registered
+  WARNING: CPU: 7 PID: 107 at kernel/irq/chip.c:241 __irq_startup+0x78/0xd8
+  ...
+  qcom_geni_serial 894000.serial: serial engine reports 0 RX bytes in!
+
+Adding UART port triggers probe of child serial devices - serdev and
+eventually Qualcomm Bluetooth hci_qca driver.  This opens UART port
+which enables the interrupt before it got activated in
+request_threaded_irq().  The issue originates in commit f3974413cf02
+("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup") and discussion on
+mailing list [1].  However the above commit does not explain why the
+uart_add_one_port() is moved above requesting interrupt.
+
+[1] https://lore.kernel.org/all/5d9f3dfa.1c69fb81.84c4b.30bf@mx.google.com/
+
+Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
+Cc: <stable@vger.kernel.org>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230505152301.2181270-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1373,7 +1373,7 @@ static struct ksmbd_user *session_user(s
- 	struct authenticate_message *authblob;
- 	struct ksmbd_user *user;
- 	char *name;
--	unsigned int auth_msg_len, name_off, name_len, secbuf_len;
-+	unsigned int name_off, name_len, secbuf_len;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1443,19 +1443,18 @@ static int qcom_geni_serial_probe(struct
+ 	platform_set_drvdata(pdev, port);
+ 	port->handle_rx = console ? handle_rx_console : handle_rx_uart;
  
- 	secbuf_len = le16_to_cpu(req->SecurityBufferLength);
- 	if (secbuf_len < sizeof(struct authenticate_message)) {
-@@ -1383,9 +1383,8 @@ static struct ksmbd_user *session_user(s
- 	authblob = user_authblob(conn, req);
- 	name_off = le32_to_cpu(authblob->UserName.BufferOffset);
- 	name_len = le16_to_cpu(authblob->UserName.Length);
--	auth_msg_len = le16_to_cpu(req->SecurityBufferOffset) + secbuf_len;
+-	ret = uart_add_one_port(drv, uport);
+-	if (ret)
+-		return ret;
+-
+ 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
+ 			IRQF_TRIGGER_HIGH, port->name, uport);
+ 	if (ret) {
+ 		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
+-		uart_remove_one_port(drv, uport);
+ 		return ret;
+ 	}
  
--	if (auth_msg_len < (u64)name_off + name_len)
-+	if (secbuf_len < (u64)name_off + name_len)
- 		return NULL;
- 
- 	name = smb_strndup_from_utf16((const char *)authblob + name_off,
++	ret = uart_add_one_port(drv, uport);
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
+ 	 * enabled/disabled from dev_pm_arm_wake_irq during system
 
 
