@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D1D70C950
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC94B70C75A
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235283AbjEVTqw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:46:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41732 "EHLO
+        id S234658AbjEVT2f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235262AbjEVTqu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44CC138
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:34 -0700 (PDT)
+        with ESMTP id S234686AbjEVT2a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7FC9E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19CE162A9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2594FC433D2;
-        Mon, 22 May 2023 19:46:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBE7062397
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD81FC433D2;
+        Mon, 22 May 2023 19:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784793;
-        bh=dZcncFoOgw/eH7UVCrXpSIV9X+sT3A0DOP87tB3c8zE=;
+        s=korg; t=1684783708;
+        bh=7AVo2wkZIdyPxYpaYZ6pjetQmEMZVYzzUknTyNTa4yU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aF6aVmCZG+zm3DAEe7yOdd87Pz3UMe+77bqR2pZF4wLOlffX0Mkb/VQdenNPKeggU
-         p1ywVZRl9+qrJBqMx4f2s60SBx22Gm0kXor/RWwVOj7gpNDQltZMqQ08jSmI5EPBlp
-         Ap7K13cs9rOJdaa1T5XrvS5pjilJKtqv7/AHYjxA=
+        b=w6erlrXpRjz25ZIv7Vls2DFcbH53XLFHvNwM8zVLV81I5Wgu7u0H10bbdtayIyUmM
+         Z/b9nk2m3IVm6C0xPJhzKHyFrIuTgQui5Dwc9x/LXS5iUZR89srqszXurl+bng7lQD
+         x+qu78bMgTblbYFImfumAZbandkA6RWUcrmRED94=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vincent Legoll <vincent.legoll@gmail.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 187/364] clk: rockchip: rk3588: make gate linked clocks critical
+Subject: [PATCH 6.1 135/292] serial: 8250: Reinit port->pm on port specific driver unbind
 Date:   Mon, 22 May 2023 20:08:12 +0100
-Message-Id: <20230522190417.408348679@linuxfoundation.org>
+Message-Id: <20230522190409.341457588@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,156 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 64042c28c3bb6729df8e2fda89bc7ebbe3790907 ]
+[ Upstream commit 04e82793f068d2f0ffe62fcea03d007a8cdc16a7 ]
 
-RK3588 has a couple of hardware blocks called Native Interface Unit
-(NIU) that gate the clocks to devices behind them. Effectively this
-means that some clocks require two parent clocks being enabled.
-Downstream implemented this by using a separate clock driver
-("clk-link") for them, which enables the second clock using PM
-framework.
+When we unbind a serial port hardware specific 8250 driver, the generic
+serial8250 driver takes over the port. After that we see an oops about 10
+seconds later. This can produce the following at least on some TI SoCs:
 
-In the upstream kernel we are currently missing support for the second
-parent. The information about it is in the GATE_LINK() macro as
-linkname, but that is not used. Thus the second parent clock is not
-properly enabled. So far this did not really matter, since these clocks
-are mostly required for the more advanced IP blocks, that are not yet
-supported upstream. As this is about to change we need a fix. There
-are three options available:
+Unhandled fault: imprecise external abort (0x1406)
+Internal error: : 1406 [#1] SMP ARM
 
-1. Properly implement support for having two parent clocks in the
-   clock framework.
-2. Mark the affected clocks CLK_IGNORE_UNUSED, so that they are not
-   disabled. This wastes some power, but keeps the hack contained
-   within the clock driver. Going from this to the first solution
-   is easy once that has been implemented.
-3. Enabling the extra clock in the consumer driver. This leaks some
-   implementation details into DT.
+Turns out that we may still have the serial port hardware specific driver
+port->pm in use, and serial8250_pm() tries to call it after the port
+specific driver is gone:
 
-This patch implements the second option as an intermediate solution
-until the first one is available. I used an alias for CLK_IS_CRITICAL,
-so that it's easy to see which clocks are not really critical once
-the clock framework supports a better way to implement this.
+serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
+uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
+uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
+__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
+disassociate_ctty from do_exit+0x744/0xaac
+do_exit from do_group_exit+0x40/0x8c
+do_group_exit from __wake_up_parent+0x0/0x1c
 
-Tested-by: Vincent Legoll <vincent.legoll@gmail.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230403193250.108693-2-sebastian.reichel@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Let's fix the issue by calling serial8250_set_defaults() in
+serial8250_unregister_port(). This will set the port back to using
+the serial8250 default functions, and sets the port->pm to point to
+serial8250_pm.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230418101407.12403-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3588.c | 42 +++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+ drivers/tty/serial/8250/8250_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3588.c b/drivers/clk/rockchip/clk-rk3588.c
-index b7ce3fbd6fa6a..6994165e03957 100644
---- a/drivers/clk/rockchip/clk-rk3588.c
-+++ b/drivers/clk/rockchip/clk-rk3588.c
-@@ -13,15 +13,25 @@
- #include "clk.h"
- 
- /*
-- * GATE with additional linked clock. Downstream enables the linked clock
-- * (via runtime PM) whenever the gate is enabled. The downstream implementation
-- * does this via separate clock nodes for each of the linked gate clocks,
-- * which leaks parts of the clock tree into DT. It is unclear why this is
-- * actually needed and things work without it for simple use cases. Thus
-- * the linked clock is ignored for now.
-+ * Recent Rockchip SoCs have a new hardware block called Native Interface
-+ * Unit (NIU), which gates clocks to devices behind them. These effectively
-+ * need two parent clocks.
-+ *
-+ * Downstream enables the linked clock via runtime PM whenever the gate is
-+ * enabled. This implementation uses separate clock nodes for each of the
-+ * linked gate clocks, which leaks parts of the clock tree into DT.
-+ *
-+ * The GATE_LINK macro instead takes the second parent via 'linkname', but
-+ * ignores the information. Once the clock framework is ready to handle it, the
-+ * information should be passed on here. But since these clocks are required to
-+ * access multiple relevant IP blocks, such as PCIe or USB, we mark all linked
-+ * clocks critical until a better solution is available. This will waste some
-+ * power, but avoids leaking implementation details into DT or hanging the
-+ * system.
-  */
- #define GATE_LINK(_id, cname, pname, linkname, f, o, b, gf) \
- 	GATE(_id, cname, pname, f, o, b, gf)
-+#define RK3588_LINKED_CLK		CLK_IS_CRITICAL
- 
- 
- #define RK3588_GRF_SOC_STATUS0		0x600
-@@ -1446,7 +1456,7 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	COMPOSITE_NODIV(HCLK_NVM_ROOT,  "hclk_nvm_root", mux_200m_100m_50m_24m_p, 0,
- 			RK3588_CLKSEL_CON(77), 0, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(31), 0, GFLAGS),
--	COMPOSITE(ACLK_NVM_ROOT, "aclk_nvm_root", gpll_cpll_p, 0,
-+	COMPOSITE(ACLK_NVM_ROOT, "aclk_nvm_root", gpll_cpll_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(77), 7, 1, MFLAGS, 2, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(31), 1, GFLAGS),
- 	GATE(ACLK_EMMC, "aclk_emmc", "aclk_nvm_root", 0,
-@@ -1675,13 +1685,13 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 			RK3588_CLKGATE_CON(42), 9, GFLAGS),
- 
- 	/* vdpu */
--	COMPOSITE(ACLK_VDPU_ROOT, "aclk_vdpu_root", gpll_cpll_aupll_p, 0,
-+	COMPOSITE(ACLK_VDPU_ROOT, "aclk_vdpu_root", gpll_cpll_aupll_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(98), 5, 2, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(44), 0, GFLAGS),
- 	COMPOSITE_NODIV(ACLK_VDPU_LOW_ROOT, "aclk_vdpu_low_root", mux_400m_200m_100m_24m_p, 0,
- 			RK3588_CLKSEL_CON(98), 7, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(44), 1, GFLAGS),
--	COMPOSITE_NODIV(HCLK_VDPU_ROOT, "hclk_vdpu_root", mux_200m_100m_50m_24m_p, 0,
-+	COMPOSITE_NODIV(HCLK_VDPU_ROOT, "hclk_vdpu_root", mux_200m_100m_50m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(98), 9, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(44), 2, GFLAGS),
- 	COMPOSITE(ACLK_JPEG_DECODER_ROOT, "aclk_jpeg_decoder_root", gpll_cpll_aupll_spll_p, 0,
-@@ -1732,9 +1742,9 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	COMPOSITE(ACLK_RKVENC0_ROOT, "aclk_rkvenc0_root", gpll_cpll_npll_p, 0,
- 			RK3588_CLKSEL_CON(102), 7, 2, MFLAGS, 2, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(47), 1, GFLAGS),
--	GATE(HCLK_RKVENC0, "hclk_rkvenc0", "hclk_rkvenc0_root", 0,
-+	GATE(HCLK_RKVENC0, "hclk_rkvenc0", "hclk_rkvenc0_root", RK3588_LINKED_CLK,
- 			RK3588_CLKGATE_CON(47), 4, GFLAGS),
--	GATE(ACLK_RKVENC0, "aclk_rkvenc0", "aclk_rkvenc0_root", 0,
-+	GATE(ACLK_RKVENC0, "aclk_rkvenc0", "aclk_rkvenc0_root", RK3588_LINKED_CLK,
- 			RK3588_CLKGATE_CON(47), 5, GFLAGS),
- 	COMPOSITE(CLK_RKVENC0_CORE, "clk_rkvenc0_core", gpll_cpll_aupll_npll_p, 0,
- 			RK3588_CLKSEL_CON(102), 14, 2, MFLAGS, 9, 5, DFLAGS,
-@@ -1744,10 +1754,10 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 			RK3588_CLKGATE_CON(48), 6, GFLAGS),
- 
- 	/* vi */
--	COMPOSITE(ACLK_VI_ROOT, "aclk_vi_root", gpll_cpll_npll_aupll_spll_p, 0,
-+	COMPOSITE(ACLK_VI_ROOT, "aclk_vi_root", gpll_cpll_npll_aupll_spll_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(106), 5, 3, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(49), 0, GFLAGS),
--	COMPOSITE_NODIV(HCLK_VI_ROOT, "hclk_vi_root", mux_200m_100m_50m_24m_p, 0,
-+	COMPOSITE_NODIV(HCLK_VI_ROOT, "hclk_vi_root", mux_200m_100m_50m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(106), 8, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(49), 1, GFLAGS),
- 	COMPOSITE_NODIV(PCLK_VI_ROOT, "pclk_vi_root", mux_100m_50m_24m_p, 0,
-@@ -1919,10 +1929,10 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 	COMPOSITE(ACLK_VOP_ROOT, "aclk_vop_root", gpll_cpll_dmyaupll_npll_spll_p, 0,
- 			RK3588_CLKSEL_CON(110), 5, 3, MFLAGS, 0, 5, DFLAGS,
- 			RK3588_CLKGATE_CON(52), 0, GFLAGS),
--	COMPOSITE_NODIV(ACLK_VOP_LOW_ROOT, "aclk_vop_low_root", mux_400m_200m_100m_24m_p, 0,
-+	COMPOSITE_NODIV(ACLK_VOP_LOW_ROOT, "aclk_vop_low_root", mux_400m_200m_100m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(110), 8, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(52), 1, GFLAGS),
--	COMPOSITE_NODIV(HCLK_VOP_ROOT, "hclk_vop_root", mux_200m_100m_50m_24m_p, 0,
-+	COMPOSITE_NODIV(HCLK_VOP_ROOT, "hclk_vop_root", mux_200m_100m_50m_24m_p, RK3588_LINKED_CLK,
- 			RK3588_CLKSEL_CON(110), 10, 2, MFLAGS,
- 			RK3588_CLKGATE_CON(52), 2, GFLAGS),
- 	COMPOSITE_NODIV(PCLK_VOP_ROOT, "pclk_vop_root", mux_100m_50m_24m_p, 0,
-@@ -2425,7 +2435,7 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
- 
- 	GATE_LINK(ACLK_ISP1_PRE, "aclk_isp1_pre", "aclk_isp1_root", "aclk_vi_root", 0, RK3588_CLKGATE_CON(26), 6, GFLAGS),
- 	GATE_LINK(HCLK_ISP1_PRE, "hclk_isp1_pre", "hclk_isp1_root", "hclk_vi_root", 0, RK3588_CLKGATE_CON(26), 8, GFLAGS),
--	GATE_LINK(HCLK_NVM, "hclk_nvm", "hclk_nvm_root", "aclk_nvm_root", 0, RK3588_CLKGATE_CON(31), 2, GFLAGS),
-+	GATE_LINK(HCLK_NVM, "hclk_nvm", "hclk_nvm_root", "aclk_nvm_root", RK3588_LINKED_CLK, RK3588_CLKGATE_CON(31), 2, GFLAGS),
- 	GATE_LINK(ACLK_USB, "aclk_usb", "aclk_usb_root", "aclk_vo1usb_top_root", 0, RK3588_CLKGATE_CON(42), 2, GFLAGS),
- 	GATE_LINK(HCLK_USB, "hclk_usb", "hclk_usb_root", "hclk_vo1usb_top_root", 0, RK3588_CLKGATE_CON(42), 3, GFLAGS),
- 	GATE_LINK(ACLK_JPEG_DECODER_PRE, "aclk_jpeg_decoder_pre", "aclk_jpeg_decoder_root", "aclk_vdpu_root", 0, RK3588_CLKGATE_CON(44), 7, GFLAGS),
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+index 94fbf0add2ce2..81a5dab1a8286 100644
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -1157,6 +1157,7 @@ void serial8250_unregister_port(int line)
+ 		uart->port.type = PORT_UNKNOWN;
+ 		uart->port.dev = &serial8250_isa_devs->dev;
+ 		uart->capabilities = 0;
++		serial8250_init_port(uart);
+ 		serial8250_apply_quirks(uart);
+ 		uart_add_one_port(&serial8250_reg, &uart->port);
+ 	} else {
 -- 
 2.39.2
 
