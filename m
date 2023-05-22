@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E44E70C839
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C71970C9ED
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234967AbjEVTgc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58126 "EHLO
+        id S235462AbjEVTxP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234965AbjEVTga (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:30 -0400
+        with ESMTP id S232034AbjEVTxJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B4CE73
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC99E184
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAAF96296C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D427FC433D2;
-        Mon, 22 May 2023 19:36:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8633A62B48
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803AEC4339B;
+        Mon, 22 May 2023 19:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784171;
-        bh=JsB+WBSJEJbYNFzNOj0BBwk0l1WG/zhTTQ+jWG3x6j8=;
+        s=korg; t=1684785186;
+        bh=QlfIdNZ+otplmfHtuOTG8NO4faYRsePp6yzb1jtIVbI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f+xTAzgLpV9MyZ61U1qFtsCIkadU0gxW+BGv4sL7bJJbninGvfyyzX3g/3+kabkhH
-         ll1hVzD1AoYdslhawx2a1c3pZX8wBTN0eov+igzwLi8IGyHdA6JDc32rTjBnQQewoz
-         ey21lSnCoQOGR00tLCfgJO5AjTXYyJbsD2oI9Mhc=
+        b=W4WuZU35IakDx/zhxc2dALuFMyj/vovG97pnmA+tdQgtTKXrmzXHB6tAcFMsiup2w
+         I0VeQq05SCjgyfRUNWAYcVrYoWH+luB1NLRKi4OiC5b+0mcHPyZYSaL3A5yJzD+Pfe
+         U8S+PqsZL3LZuZe55RivSXTsg5BSfuD0GVQEbCcI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ze Gao <zegao@tencent.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.1 286/292] rethook: use preempt_{disable, enable}_notrace in rethook_trampoline_handler
+        patches@lists.linux.dev, Sunil Khatri <sunil.khatri@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 338/364] drm/amdgpu/gmc11: implement get_vbios_fb_size()
 Date:   Mon, 22 May 2023 20:10:43 +0100
-Message-Id: <20230522190413.094264674@linuxfoundation.org>
+Message-Id: <20230522190421.223889736@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +53,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ze Gao <zegao2021@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit be243bacfb25f5219f2396d787408e8cf1301dd1 upstream.
+commit 68518294d00da6a2433357af75a63abc6030676e upstream.
 
-This patch replaces preempt_{disable, enable} with its corresponding
-notrace version in rethook_trampoline_handler so no worries about stack
-recursion or overflow introduced by preempt_count_{add, sub} under
-fprobe + rethook context.
+Implement get_vbios_fb_size() so we can properly reserve
+the vbios splash screen to avoid potential artifacts on the
+screen during the transition from the pre-OS console to the
+OS console.
 
-Link: https://lore.kernel.org/all/20230517034510.15639-2-zegao@tencent.com/
-
-Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
-Signed-off-by: Ze Gao <zegao@tencent.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Sunil Khatri <sunil.khatri@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/rethook.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/rethook.c
-+++ b/kernel/trace/rethook.c
-@@ -288,7 +288,7 @@ unsigned long rethook_trampoline_handler
- 	 * These loops must be protected from rethook_free_rcu() because those
- 	 * are accessing 'rhn->rethook'.
- 	 */
--	preempt_disable();
-+	preempt_disable_notrace();
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+@@ -31,6 +31,8 @@
+ #include "umc_v8_10.h"
+ #include "athub/athub_3_0_0_sh_mask.h"
+ #include "athub/athub_3_0_0_offset.h"
++#include "dcn/dcn_3_2_0_offset.h"
++#include "dcn/dcn_3_2_0_sh_mask.h"
+ #include "oss/osssys_6_0_0_offset.h"
+ #include "ivsrcid/vmc/irqsrcs_vmc_1_0.h"
+ #include "navi10_enum.h"
+@@ -542,7 +544,24 @@ static void gmc_v11_0_get_vm_pte(struct
  
- 	/*
- 	 * Run the handler on the shadow stack. Do not unlink the list here because
-@@ -321,7 +321,7 @@ unsigned long rethook_trampoline_handler
- 		first = first->next;
- 		rethook_recycle(rhn);
- 	}
--	preempt_enable();
-+	preempt_enable_notrace();
- 
- 	return correct_ret_addr;
+ static unsigned gmc_v11_0_get_vbios_fb_size(struct amdgpu_device *adev)
+ {
+-	return 0;
++	u32 d1vga_control = RREG32_SOC15(DCE, 0, regD1VGA_CONTROL);
++	unsigned size;
++
++	if (REG_GET_FIELD(d1vga_control, D1VGA_CONTROL, D1VGA_MODE_ENABLE)) {
++		size = AMDGPU_VBIOS_VGA_ALLOCATION;
++	} else {
++		u32 viewport;
++		u32 pitch;
++
++		viewport = RREG32_SOC15(DCE, 0, regHUBP0_DCSURF_PRI_VIEWPORT_DIMENSION);
++		pitch = RREG32_SOC15(DCE, 0, regHUBPREQ0_DCSURF_SURFACE_PITCH);
++		size = (REG_GET_FIELD(viewport,
++					HUBP0_DCSURF_PRI_VIEWPORT_DIMENSION, PRI_VIEWPORT_HEIGHT) *
++				REG_GET_FIELD(pitch, HUBPREQ0_DCSURF_SURFACE_PITCH, PITCH) *
++				4);
++	}
++
++	return size;
  }
+ 
+ static const struct amdgpu_gmc_funcs gmc_v11_0_gmc_funcs = {
 
 
