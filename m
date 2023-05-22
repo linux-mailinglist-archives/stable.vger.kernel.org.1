@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 013FA70C4CF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DCB870C4D2
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:02:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbjEVSBa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:01:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
+        id S232888AbjEVSCA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:02:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232008AbjEVSB3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:29 -0400
+        with ESMTP id S231896AbjEVSB5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E512CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A12C6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFCFD61F9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E16C433D2;
-        Mon, 22 May 2023 18:01:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F107F620D4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17552C433D2;
+        Mon, 22 May 2023 18:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778487;
-        bh=L5E8w5gnsWHSAGeD5Io5cnaNkAOb64xZ2JUamcIb6Hk=;
+        s=korg; t=1684778515;
+        bh=qFO/JxueFZUAJZuXqKy+wcixHdRcDSCLrky1W1I23Ds=;
         h=Subject:To:Cc:From:Date:From;
-        b=WMj4/JyIe9x1CMcrxElXmZNlPeoM+Y6kMaVxhfl2nz86TfMlKh3aim0SbQozFz3S8
-         GMaUlbtDvawhpX8jelOfH8PoUzJkwj1mykMdDK3hVQafdCer5mc9Vtma+iFfDZEUv9
-         R0xKk9Fjusmg8AT/Rmy+XAXwrUTUcZiyFtwpLa0w=
-Subject: FAILED: patch "[PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside" failed to apply to 5.4-stable tree
-To:     jarkko@kernel.org, Jason@zx2c4.com, jsnitsel@redhat.com
+        b=u5Mhj+UpiEtnXzkPY47APXnvWHzixYApqQnoKmmN9fWN+KOoxm59xdU6nEzDHumW+
+         GhIM7qXjtvzn95vDtxWVL4atWJc0JTKscVs6/saZXQnr0A1hIxJGaLV0xpMX/W+SVM
+         sY7Z7E83VO4l60LmZ9aZHhzMIivRUf6c6Hl1jrVc=
+Subject: FAILED: patch "[PATCH] powerpc/64s/radix: Fix soft dirty tracking" failed to apply to 4.19-stable tree
+To:     mpe@ellerman.id.au, dan@danny.cz
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:01:11 +0100
-Message-ID: <2023052211-cricket-retold-492f@gregkh>
+Date:   Mon, 22 May 2023 19:01:52 +0100
+Message-ID: <2023052252-favoring-gratuity-348b@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -48,42 +48,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1398aa803f198b7a386fdd8404666043e95f4c16
+git cherry-pick -x 66b2ca086210732954a7790d63d35542936fc664
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052211-cricket-retold-492f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052252-favoring-gratuity-348b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-1398aa803f19 ("tpm_tis: Use tpm_chip_{start,stop} decoration inside tpm_tis_resume")
-955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
-7a2f55d0be29 ("tpm, tpm: Implement usage counter for locality")
-e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
-15d7aa4e46eb ("tpm, tpm_tis: Claim locality before writing interrupt registers")
-ed9be0e6c892 ("tpm, tpm_tis: Do not skip reset of original interrupt vector")
-6d789ad72695 ("tpm, tpm_tis: Disable interrupts if tpm_tis_probe_irq() failed")
-282657a8bd7f ("tpm, tpm_tis: Claim locality before writing TPM_INT_ENABLE register")
-858e8b792d06 ("tpm, tpm_tis: Avoid cache incoherency in test for interrupts")
-7bfda9c73fa9 ("tpm: Add flag to use default cancellation policy")
-bbc23a07b072 ("tpm: Add tpm_tis_i2c backend for tpm_tis_core")
-0ef333f5ba7f ("tpm: add request_locality before write TPM_INT_ENABLE")
-79ca6f74dae0 ("tpm: fix Atmel TPM crash caused by too frequent queries")
-0178f9d0f60b ("tpm: Replace WARN_ONCE() with dev_err_once() in tpm_tis_status()")
-8a2d296aaeba ("tpm, tpm_tis: Reserve locality in tpm_tis_resume()")
-e630af7dfb45 ("tpm, tpm_tis: Extend locality handling to TPM2 in tpm_tis_gen_interrupt()")
-d53a6adfb553 ("tpm, tpm_tis: Decorate tpm_tis_gen_interrupt() with request_locality()")
-a5665ec2affd ("tpm, tpm_tis: Decorate tpm_get_timeouts() with request_locality()")
-3a253caaad11 ("char: tpm: add i2c driver for cr50")
-e42acf104d6e ("tpm_tis: Clean up locality release")
+66b2ca086210 ("powerpc/64s/radix: Fix soft dirty tracking")
 
 thanks,
 
@@ -91,104 +72,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1398aa803f198b7a386fdd8404666043e95f4c16 Mon Sep 17 00:00:00 2001
-From: Jarkko Sakkinen <jarkko@kernel.org>
-Date: Wed, 26 Apr 2023 20:29:27 +0300
-Subject: [PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside
- tpm_tis_resume
+From 66b2ca086210732954a7790d63d35542936fc664 Mon Sep 17 00:00:00 2001
+From: Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu, 11 May 2023 21:42:24 +1000
+Subject: [PATCH] powerpc/64s/radix: Fix soft dirty tracking
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Before sending a TPM command, CLKRUN protocol must be disabled. This is not
-done in the case of tpm1_do_selftest() call site inside tpm_tis_resume().
+It was reported that soft dirty tracking doesn't work when using the
+Radix MMU.
 
-Address this by decorating the calls with tpm_chip_{start,stop}, which
-should be always used to arm and disarm the TPM chip for transmission.
+The tracking is supposed to work by clearing the soft dirty bit for a
+mapping and then write protecting the PTE. If/when the page is written
+to, a page fault occurs and the soft dirty bit is added back via
+pte_mkdirty(). For example in wp_page_reuse():
 
-Finally, move the call to the main TPM driver callback as the last step
-because it should arm the chip by itself, if it needs that type of
-functionality.
+	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
+		update_mmu_cache(vma, vmf->address, vmf->pte);
 
-Cc: stable@vger.kernel.org
-Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Closes: https://lore.kernel.org/linux-integrity/CS68AWILHXS4.3M36M1EKZLUMS@suppilovahvero/
-Fixes: a3fbfae82b4c ("tpm: take TPM chip power gating out of tpm_transmit()")
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
+radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
+meaning the soft dirty bit is not set even though the page has been
+written to.
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 02945d53fcef..558144fa707a 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -1209,25 +1209,20 @@ static void tpm_tis_reenable_interrupts(struct tpm_chip *chip)
- 	u32 intmask;
- 	int rc;
+Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
+changed in radix__ptep_set_access_flags().
+
+Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
+Cc: stable@vger.kernel.org # v4.7+
+Reported-by: Dan Horák <dan@danny.cz>
+Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230511114224.977423-1-mpe@ellerman.id.au
+
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 26245aaf12b8..2297aa764ecd 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1040,8 +1040,8 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
+ 				  pte_t entry, unsigned long address, int psize)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
+-					      _PAGE_RW | _PAGE_EXEC);
++	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
++					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
  
--	if (chip->ops->clk_enable != NULL)
--		chip->ops->clk_enable(chip, true);
--
--	/* reenable interrupts that device may have lost or
--	 * BIOS/firmware may have disabled
-+	/*
-+	 * Re-enable interrupts that device may have lost or BIOS/firmware may
-+	 * have disabled.
- 	 */
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), priv->irq);
--	if (rc < 0)
--		goto out;
-+	if (rc < 0) {
-+		dev_err(&chip->dev, "Setting IRQ failed.\n");
-+		return;
-+	}
- 
- 	intmask = priv->int_mask | TPM_GLOBAL_INT_ENABLE;
--
--	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
--
--out:
--	if (chip->ops->clk_enable != NULL)
--		chip->ops->clk_enable(chip, false);
--
--	return;
-+	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
-+	if (rc < 0)
-+		dev_err(&chip->dev, "Enabling interrupts failed.\n");
- }
- 
- int tpm_tis_resume(struct device *dev)
-@@ -1235,27 +1230,27 @@ int tpm_tis_resume(struct device *dev)
- 	struct tpm_chip *chip = dev_get_drvdata(dev);
- 	int ret;
- 
--	ret = tpm_tis_request_locality(chip, 0);
--	if (ret < 0)
-+	ret = tpm_chip_start(chip);
-+	if (ret)
- 		return ret;
- 
- 	if (chip->flags & TPM_CHIP_FLAG_IRQ)
- 		tpm_tis_reenable_interrupts(chip);
- 
--	ret = tpm_pm_resume(dev);
--	if (ret)
--		goto out;
--
+ 	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
  	/*
- 	 * TPM 1.2 requires self-test on resume. This function actually returns
- 	 * an error code but for unknown reason it isn't handled.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_TPM2))
- 		tpm1_do_selftest(chip);
--out:
--	tpm_tis_relinquish_locality(chip, 0);
- 
--	return ret;
-+	tpm_chip_stop(chip);
-+
-+	ret = tpm_pm_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(tpm_tis_resume);
- #endif
 
