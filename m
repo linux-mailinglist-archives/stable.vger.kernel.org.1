@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B5D70C8F9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF5270C744
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233565AbjEVToB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:44:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
+        id S234669AbjEVT1n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:27:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235186AbjEVTn6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544CB10C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:48 -0700 (PDT)
+        with ESMTP id S234656AbjEVT1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BE49A9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 273886214B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301C1C433D2;
-        Mon, 22 May 2023 19:43:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 904E5628BF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A027CC433D2;
+        Mon, 22 May 2023 19:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784620;
-        bh=SHIJtT+/f6e2zoHBjSbl6lAvp2ZShP6iuhKQ6fD0XjU=;
+        s=korg; t=1684783655;
+        bh=E07pA8KKJnqqxrmgH5WZJuyo/K+xJNWQXY1afkOewto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s0xZcvehp/vzll9A4R0jNW+MgcP97eBx+qd/KHiKlK1ttaEk3Arf4t3cwHcMHY5gE
-         Zj0oQPYqf8gMcvnhonXlBzdEfR4+/HMQAkb8egq0WisaanjLFLRHkMtB12rfuSCnwo
-         TE48Ys7LpWp8wZkDaxJdJ6XhJqpGwq4YUnzkQ8TE=
+        b=r2E3QvXnmaUc97iZ37F8W62SBoUlhb0Zp6lD0oPNwQx0zz5PuYhESpVMoFmPCEDiO
+         ZxMYRlAMzDe9VUOD+7gEj6pWl/CIsqd7qYMDCbWoHf3OEAd/f88Wz27Ew4YklpT+ZU
+         IWMiMiuIQNPUH/arVXCXF/gq/jji/q42nB3wGq2w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, imoc <wzj9912@gmail.com>,
-        Raul Cheleguini <raul.cheleguini@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 142/364] Bluetooth: Add new quirk for broken set random RPA timeout for ATS2851
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/292] ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()
 Date:   Mon, 22 May 2023 20:07:27 +0100
-Message-Id: <20230522190416.321104959@linuxfoundation.org>
+Message-Id: <20230522190408.224181819@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +55,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Raul Cheleguini <raul.cheleguini@gmail.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 91b6d02ddcd113352bdd895990b252065c596de7 ]
+[ Upstream commit 93cdf49f6eca5e23f6546b8f28457b2e6a6961d9 ]
 
-The ATS2851 based controller advertises support for command "LE Set Random
-Private Address Timeout" but does not actually implement it, impeding the
-controller initialization.
+When the length of best extent found is less than the length of goal extent
+we need to make sure that the best extent atleast covers the start of the
+original request. This is done by adjusting the ac_b_ex.fe_logical (logical
+start) of the extent.
 
-Add the quirk HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT to unblock the controller
-initialization.
+While doing so, the current logic sometimes results in the best extent's
+logical range overflowing the goal extent. Since this best extent is later
+added to the inode preallocation list, we have a possibility of introducing
+overlapping preallocations. This is discussed in detail here [1].
 
-< HCI Command: LE Set Resolvable Private... (0x08|0x002e) plen 2
-        Timeout: 900 seconds
-> HCI Event: Command Status (0x0f) plen 4
-      LE Set Resolvable Private Address Timeout (0x08|0x002e) ncmd 1
-        Status: Unknown HCI Command (0x01)
+As per Jan's suggestion, to fix this, replace the existing logic with the
+below logic for adjusting best extent as it keeps fragmentation in check
+while ensuring logical range of best extent doesn't overflow out of goal
+extent:
 
-Co-developed-by: imoc <wzj9912@gmail.com>
-Signed-off-by: imoc <wzj9912@gmail.com>
-Signed-off-by: Raul Cheleguini <raul.cheleguini@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+1. Check if best extent can be kept at end of goal range and still cover
+   original start.
+2. Else, check if best extent can be kept at start of goal range and still
+   cover original start.
+3. Else, keep the best extent at start of original request.
+
+Also, add a few extra BUG_ONs that might help catch errors faster.
+
+[1] https://lore.kernel.org/r/Y+OGkVvzPN0RMv0O@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/f96aca6d415b36d1f90db86c1a8cd7e2e9d7ab0e.1679731817.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c   | 1 +
- include/net/bluetooth/hci.h | 8 ++++++++
- net/bluetooth/hci_sync.c    | 6 +++++-
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 49 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 31 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 1ab5663b009d8..0923582299f3a 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4106,6 +4106,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		/* Support is advertised, but not implemented */
- 		set_bit(HCI_QUIRK_BROKEN_ERR_DATA_REPORTING, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
-+		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 21f09bcffbbaa..32d88757a780e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4321,6 +4321,7 @@ static void ext4_mb_use_inode_pa(struct ext4_allocation_context *ac,
+ 	BUG_ON(start < pa->pa_pstart);
+ 	BUG_ON(end > pa->pa_pstart + EXT4_C2B(sbi, pa->pa_len));
+ 	BUG_ON(pa->pa_free < len);
++	BUG_ON(ac->ac_b_ex.fe_len <= 0);
+ 	pa->pa_free -= len;
+ 
+ 	mb_debug(ac->ac_sb, "use %llu/%d from inode pa %p\n", start, len, pa);
+@@ -4650,10 +4651,8 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 	pa = ac->ac_pa;
+ 
+ 	if (ac->ac_b_ex.fe_len < ac->ac_g_ex.fe_len) {
+-		int winl;
+-		int wins;
+-		int win;
+-		int offs;
++		int new_bex_start;
++		int new_bex_end;
+ 
+ 		/* we can't allocate as much as normalizer wants.
+ 		 * so, found space must get proper lstart
+@@ -4661,26 +4660,40 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
+ 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
+ 
+-		/* we're limited by original request in that
+-		 * logical block must be covered any way
+-		 * winl is window we can move our chunk within */
+-		winl = ac->ac_o_ex.fe_logical - ac->ac_g_ex.fe_logical;
++		/*
++		 * Use the below logic for adjusting best extent as it keeps
++		 * fragmentation in check while ensuring logical range of best
++		 * extent doesn't overflow out of goal extent:
++		 *
++		 * 1. Check if best ex can be kept at end of goal and still
++		 *    cover original start
++		 * 2. Else, check if best ex can be kept at start of goal and
++		 *    still cover original start
++		 * 3. Else, keep the best ex at start of original request.
++		 */
++		new_bex_end = ac->ac_g_ex.fe_logical +
++			EXT4_C2B(sbi, ac->ac_g_ex.fe_len);
++		new_bex_start = new_bex_end - EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical >= new_bex_start)
++			goto adjust_bex;
+ 
+-		/* also, we should cover whole original request */
+-		wins = EXT4_C2B(sbi, ac->ac_b_ex.fe_len - ac->ac_o_ex.fe_len);
++		new_bex_start = ac->ac_g_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical < new_bex_end)
++			goto adjust_bex;
+ 
+-		/* the smallest one defines real window */
+-		win = min(winl, wins);
++		new_bex_start = ac->ac_o_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+ 
+-		offs = ac->ac_o_ex.fe_logical %
+-			EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+-		if (offs && offs < win)
+-			win = offs;
++adjust_bex:
++		ac->ac_b_ex.fe_logical = new_bex_start;
+ 
+-		ac->ac_b_ex.fe_logical = ac->ac_o_ex.fe_logical -
+-			EXT4_NUM_B2C(sbi, win);
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+ 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
++		BUG_ON(new_bex_end > (ac->ac_g_ex.fe_logical +
++				      EXT4_C2B(sbi, ac->ac_g_ex.fe_len)));
  	}
  
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 997107bfc0b12..07df96c47ef4f 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -301,6 +301,14 @@ enum {
- 	 * don't actually support features declared there.
- 	 */
- 	HCI_QUIRK_BROKEN_LOCAL_EXT_FEATURES_PAGE_2,
-+
-+	/*
-+	 * When this quirk is set, the HCI_OP_LE_SET_RPA_TIMEOUT command is
-+	 * skipped during initialization. This is required for the Actions
-+	 * Semiconductor ATS2851 based controllers, which erroneously claims
-+	 * to support it.
-+	 */
-+	HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT,
- };
- 
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 632be12672887..b65ee3a32e5d7 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4093,7 +4093,8 @@ static int hci_le_set_rpa_timeout_sync(struct hci_dev *hdev)
- {
- 	__le16 timeout = cpu_to_le16(hdev->rpa_timeout);
- 
--	if (!(hdev->commands[35] & 0x04))
-+	if (!(hdev->commands[35] & 0x04) ||
-+	    test_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks))
- 		return 0;
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_RPA_TIMEOUT,
-@@ -4533,6 +4534,9 @@ static const struct {
- 			 "HCI Set Event Filter command not supported."),
- 	HCI_QUIRK_BROKEN(ENHANCED_SETUP_SYNC_CONN,
- 			 "HCI Enhanced Setup Synchronous Connection command is "
-+			 "advertised, but not supported."),
-+	HCI_QUIRK_BROKEN(SET_RPA_TIMEOUT,
-+			 "HCI LE Set Random Private Address Timeout command is "
- 			 "advertised, but not supported.")
- };
- 
+ 	/* preallocation can change ac_b_ex, thus we store actually
 -- 
 2.39.2
 
