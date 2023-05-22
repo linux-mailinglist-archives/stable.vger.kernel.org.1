@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DC470C6F1
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9582F70C8C5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234553AbjEVTYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
+        id S235172AbjEVTmG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234549AbjEVTYQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:16 -0400
+        with ESMTP id S235223AbjEVTly (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:41:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 452C9189
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B2710C7
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:41:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D67BE6285C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC7BC433D2;
-        Mon, 22 May 2023 19:24:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4538E62A01
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D50C433EF;
+        Mon, 22 May 2023 19:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783444;
-        bh=kuoQL1HY2LD3bKJMWHWCejjBFOetvE7NvzGWv+hoJtU=;
+        s=korg; t=1684784483;
+        bh=wQk/YkCUnRngItRy12a9dWbfE5UMHHrO+ZgvmewzHis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sGdOPhZEW4UGc5WHysky0F/9DBqVvsib6Fmo8uxZcN73ci29mu/z/JDCc0eLoPdIF
-         mmCvdG7I4hBDf1DxeouNmBsitVuMNjxXPDDzCleQkTk4ndFfbdvmvYRWVZrZ/PfI/h
-         5bcOkwBPxvcYPjwnz3fOPf3Y23tJ0k6LxidCqqZ8=
+        b=Ue2RggGSRmSJQ8B8IWYOREc2DEtfW3V7CNvGME8FY0gvENcNs5BUklG884uF3CXsT
+         aqRWdTZcusBaNgrAtwPLm7DJAOhrtin+S1xGcXkOn2xC/m76rRiOi3NuKMoQKMEawi
+         5FzO4g+XVscPPTLR72ptObu/1UYZQrjIgxDawx3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Gabe Teeger <gabe.teeger@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/292] drm/amd/display: Enable HostVM based on rIOMMU active
+Subject: [PATCH 6.3 097/364] scsi: lpfc: Correct used_rpi count when devloss tmo fires with no recovery
 Date:   Mon, 22 May 2023 20:06:42 +0100
-Message-Id: <20230522190407.033925852@linuxfoundation.org>
+Message-Id: <20230522190415.172287322@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,45 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gabe Teeger <gabe.teeger@amd.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 97fa4dfa66fdd52ad3d0c9fadeaaa1e87605bac7 ]
+[ Upstream commit db651ec22524eb8f9c854fbb4d9acd5d7e5be9e4 ]
 
-[Why]
-There is underflow and flickering occuring. The
-underflow stops when hostvm is forced to active.
-According to policy, hostvm should be enabled if riommu
-is active, but this is not taken into account when
-deciding whether to enable hostvm.
+A fabric controller can sometimes send an RDP request right before a link
+down event.  Because of this outstanding RDP request, the driver does not
+remove the last reference count on its ndlp causing a potential leak of RPI
+resources when devloss tmo fires.
 
-[What]
-For DCN314, set hostvm to true if riommu is active.
+In lpfc_cmpl_els_rsp(), modify the NPIV clause to always allow the
+lpfc_drop_node() routine to execute when not registered with SCSI
+transport.
 
-Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This relaxes the contraint that an NPIV ndlp must be in a specific state in
+order to call lpfc_drop node.  Logic is revised such that the
+lpfc_drop_node() routine is always called to ensure the last ndlp decrement
+occurs.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20230301231626.9621-7-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/lpfc/lpfc_els.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 4f91e64754239..bf77e56c3f3ef 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -310,6 +310,10 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
- 				pipe->plane_state->src_rect.width < pipe->plane_state->dst_rect.width))
- 			upscaled = true;
- 
-+		/* Apply HostVM policy - either based on hypervisor globally enabled, or rIOMMU active */
-+		if (dc->debug.dml_hostvm_override == DML_HOSTVM_NO_OVERRIDE)
-+			pipes[i].pipe.src.hostvm = dc->vm_pa_config.is_hvm_enabled || dc->res_pool->hubbub->riommu_active;
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 35b252f1ef731..62d2ca688cd14 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -5455,18 +5455,20 @@ lpfc_cmpl_els_rsp(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 	 * these conditions and release the RPI.
+ 	 */
+ 	if (phba->sli_rev == LPFC_SLI_REV4 &&
+-	    (vport && vport->port_type == LPFC_NPIV_PORT) &&
+-	    !(ndlp->fc4_xpt_flags & SCSI_XPT_REGD) &&
+-	    ndlp->nlp_flag & NLP_RELEASE_RPI) {
+-		if (ndlp->nlp_state !=  NLP_STE_PLOGI_ISSUE &&
+-		    ndlp->nlp_state != NLP_STE_REG_LOGIN_ISSUE) {
+-			lpfc_sli4_free_rpi(phba, ndlp->nlp_rpi);
+-			spin_lock_irq(&ndlp->lock);
+-			ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
+-			ndlp->nlp_flag &= ~NLP_RELEASE_RPI;
+-			spin_unlock_irq(&ndlp->lock);
+-			lpfc_drop_node(vport, ndlp);
++	    vport && vport->port_type == LPFC_NPIV_PORT &&
++	    !(ndlp->fc4_xpt_flags & SCSI_XPT_REGD)) {
++		if (ndlp->nlp_flag & NLP_RELEASE_RPI) {
++			if (ndlp->nlp_state != NLP_STE_PLOGI_ISSUE &&
++			    ndlp->nlp_state != NLP_STE_REG_LOGIN_ISSUE) {
++				lpfc_sli4_free_rpi(phba, ndlp->nlp_rpi);
++				spin_lock_irq(&ndlp->lock);
++				ndlp->nlp_rpi = LPFC_RPI_ALLOC_ERROR;
++				ndlp->nlp_flag &= ~NLP_RELEASE_RPI;
++				spin_unlock_irq(&ndlp->lock);
++			}
+ 		}
 +
- 		/*
- 		 * Immediate flip can be set dynamically after enabling the plane.
- 		 * We need to require support for immediate flip or underflow can be
++		lpfc_drop_node(vport, ndlp);
+ 	}
+ 
+ 	/* Release the originating I/O reference. */
 -- 
 2.39.2
 
