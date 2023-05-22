@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3126B70C696
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54BB170C995
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234203AbjEVTTw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42646 "EHLO
+        id S235360AbjEVTtl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234347AbjEVTTr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF3E10C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:46 -0700 (PDT)
+        with ESMTP id S235357AbjEVTtl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B9CB95
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A453562808
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B190FC433D2;
-        Mon, 22 May 2023 19:19:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 305A862AD4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCDCC433D2;
+        Mon, 22 May 2023 19:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783185;
-        bh=oxIQdb45YaHBKc8ZszgHUls+KoUTjRerowhu8rQLo7Y=;
+        s=korg; t=1684784979;
+        bh=Lu2vEbmgehuO1flA7GGJ+e4RsNsF0qo4lbRnXUQ5d90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kS1wdrpLcxk3j/SJT7jz+07o8toV2/e6bAAT3irMabVaQzZS2CwEsyqTs5eRp/WKX
-         n4aLQer84k6FoPx331BVnzM3bwEwHv1J2JM15iaYr/f/BsqidkoYI1v+bBG951a2jf
-         RWOyi5UHwZG0xjgK7anG5pnZvr+UDCJuBGfWvctg=
+        b=oh4C3NR3f4doPUbw69sU3cArs0cUNyCd5+TOsMHAa3DBjLB+iHWAXD6wahrzsLPqh
+         QS8QoORnaEV1mEB9vaEEgSgE1MdMXW2RtHDNwbD2JRrU4uB4HJlTXRMZrvVBSQzkm1
+         /XPTbhIp/huJu9oqqAcmCFurPSH/as/31h1G/QBA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/203] net: bcmgenet: Restore phy_stop() depending upon suspend/close
+Subject: [PATCH 6.3 268/364] wifi: mac80211: Fix puncturing bitmap handling in __ieee80211_csa_finalize()
 Date:   Mon, 22 May 2023 20:09:33 +0100
-Message-Id: <20230522190359.094735739@linuxfoundation.org>
+Message-Id: <20230522190419.415590983@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,69 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 225c657945c4a6307741cb3cc89467eadcc26e9b ]
+[ Upstream commit 13ad2b1eeacd48ec0f31f55964e6dc7dfc2c0299 ]
 
-Removing the phy_stop() from bcmgenet_netif_stop() ended up causing
-warnings from the PHY library that phy_start() is called from the
-RUNNING state since we are no longer stopping the PHY state machine
-during bcmgenet_suspend().
+'changed' can be OR'ed with BSS_CHANGED_EHT_PUNCTURING which is larger than
+an u32.
+So, turn 'changed' into an u64 and update ieee80211_set_after_csa_beacon()
+accordingly.
 
-Restore the call to phy_stop() but make it conditional on being called
-from the close or suspend path.
+In the commit in Fixes, only ieee80211_start_ap() was updated.
 
-Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
-Fixes: 93e0401e0fc0 ("net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20230515025608.2587012-1-f.fainelli@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2cc25e4b2a04 ("wifi: mac80211: configure puncturing bitmap")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/e84a3f80fe536787f7a2c7180507efc36cd14f95.1682358088.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/mac80211/cfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 35bf840716d57..9d4f406408c9d 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3401,7 +3401,7 @@ static int bcmgenet_open(struct net_device *dev)
- 	return ret;
- }
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index d3d861911ed65..fb8d80ebe8bbb 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3502,7 +3502,7 @@ void ieee80211_channel_switch_disconnect(struct ieee80211_vif *vif, bool block_t
+ EXPORT_SYMBOL(ieee80211_channel_switch_disconnect);
  
--static void bcmgenet_netif_stop(struct net_device *dev)
-+static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ static int ieee80211_set_after_csa_beacon(struct ieee80211_sub_if_data *sdata,
+-					  u32 *changed)
++					  u64 *changed)
  {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	int err;
  
-@@ -3416,6 +3416,8 @@ static void bcmgenet_netif_stop(struct net_device *dev)
- 	/* Disable MAC transmit. TX DMA disabled must be done before this */
- 	umac_enable_set(priv, CMD_TX_EN, false);
+@@ -3545,7 +3545,7 @@ static int ieee80211_set_after_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+-	u32 changed = 0;
++	u64 changed = 0;
+ 	int err;
  
-+	if (stop_phy)
-+		phy_stop(dev->phydev);
- 	bcmgenet_disable_rx_napi(priv);
- 	bcmgenet_intr_disable(priv);
- 
-@@ -3441,7 +3443,7 @@ static int bcmgenet_close(struct net_device *dev)
- 
- 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
- 
--	bcmgenet_netif_stop(dev);
-+	bcmgenet_netif_stop(dev, false);
- 
- 	/* Really kill the PHY state machine and disconnect from it */
- 	phy_disconnect(dev->phydev);
-@@ -4241,7 +4243,7 @@ static int bcmgenet_suspend(struct device *d)
- 
- 	netif_device_detach(dev);
- 
--	bcmgenet_netif_stop(dev);
-+	bcmgenet_netif_stop(dev, true);
- 
- 	if (!device_may_wakeup(d))
- 		phy_suspend(dev->phydev);
+ 	sdata_assert_lock(sdata);
 -- 
 2.39.2
 
