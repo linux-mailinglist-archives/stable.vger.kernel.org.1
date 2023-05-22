@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E90870C63E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9046970C97F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234213AbjEVTQo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
+        id S235346AbjEVTs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234288AbjEVTQ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:29 -0400
+        with ESMTP id S235343AbjEVTsq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0854A103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43323B5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B34D62785
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BE5C433D2;
-        Mon, 22 May 2023 19:16:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D53A4623A7
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4BFC4339B;
+        Mon, 22 May 2023 19:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782982;
-        bh=2D64oLm2SWw4kW5p6P/UQQvw/Y6FYEg/jfD5h3DAZhA=;
+        s=korg; t=1684784924;
+        bh=Rj41/VQ+ui3LKRW+aOgx1qgoHAIEjwGLYVmkZLOSOUM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2pcEGz/yWi1LMmn79fO/JsQSK8QLtXZdztvFgU4BD7E0KtJ642xw+tWXlrY+WNzWe
-         jU3lo0QMk+Y58tx18VqrNRf761mue5ya8U6Lnd4bq3HGsmN/BYQ1tFYlWebhkMhS2s
-         /1HMSWCOJaWFv9GwY00KhvGBSYSLyJruXbP/TyMY=
+        b=sZi4BYDsRHJtwl7Bw86f5+DOgxEt+/4cJRIJep+lniJRsb0fsKqHqgUt5yAgrOx4e
+         hHRV/F8kHuq8wiKPCKP9X/5oeWUDbZAP+DZx1/g2yuhNrhwB42WbHfP4nOmQRbt9gR
+         DKAh5fT7I5xFDez7ZuH+E0IBYidHK1t0KVo3v9aw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alain Volmat <avolmat@me.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/203] phy: st: miphy28lp: use _poll_timeout functions for waits
-Date:   Mon, 22 May 2023 20:08:44 +0100
-Message-Id: <20230522190357.754304865@linuxfoundation.org>
+        patches@lists.linux.dev, pinkperfect2021@gmail.com,
+        Rob Clark <robdclark@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 220/364] drm/msm: Fix submit error-path leaks
+Date:   Mon, 22 May 2023 20:08:45 +0100
+Message-Id: <20230522190418.207898693@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,111 +54,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alain Volmat <avolmat@me.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit e3be4dd2c8d8aabfd2c3127d0e2e5754d3ae82d6 ]
+[ Upstream commit 68dc6c2d5eec45515855cce99256162f45651a0b ]
 
-This commit introduces _poll_timeout functions usage instead of
-wait loops waiting for a status bit.
+For errors after msm_submitqueue_get(), we need to drop the submitqueue
+reference.  Additionally after get_unused_fd() we need to drop the fd.
+The ordering for dropping the queue lock and put_unused_fd() is not
+important, so just move this all into out_post_unlock.
 
-Signed-off-by: Alain Volmat <avolmat@me.com>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://lore.kernel.org/r/20230210224309.98452-1-avolmat@me.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+v2: Only drop queue ref if submit doesn't take it
+v3: Fix unitialized submit ref in error path
+v4: IS_ERR_OR_NULL()
+
+Reported-by: pinkperfect2021@gmail.com
+Fixes: f0de40a131d9 drm/msm: ("Reorder lock vs submit alloc")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/536073/
+Link: https://lore.kernel.org/r/20230509203041.440619-1-robdclark@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/st/phy-miphy28lp.c | 42 ++++++++--------------------------
- 1 file changed, 10 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/phy/st/phy-miphy28lp.c b/drivers/phy/st/phy-miphy28lp.c
-index 068160a34f5cc..e30305b77f0d1 100644
---- a/drivers/phy/st/phy-miphy28lp.c
-+++ b/drivers/phy/st/phy-miphy28lp.c
-@@ -9,6 +9,7 @@
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index ac8ed731f76d9..842dbf96af291 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -719,7 +719,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 	struct msm_drm_private *priv = dev->dev_private;
+ 	struct drm_msm_gem_submit *args = data;
+ 	struct msm_file_private *ctx = file->driver_priv;
+-	struct msm_gem_submit *submit;
++	struct msm_gem_submit *submit = NULL;
+ 	struct msm_gpu *gpu = priv->gpu;
+ 	struct msm_gpu_submitqueue *queue;
+ 	struct msm_ringbuffer *ring;
+@@ -766,13 +766,15 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 		out_fence_fd = get_unused_fd_flags(O_CLOEXEC);
+ 		if (out_fence_fd < 0) {
+ 			ret = out_fence_fd;
+-			return ret;
++			goto out_post_unlock;
+ 		}
+ 	}
  
- #include <linux/platform_device.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
-@@ -484,19 +485,11 @@ static inline void miphy28lp_pcie_config_gen(struct miphy28lp_phy *miphy_phy)
+ 	submit = submit_create(dev, gpu, queue, args->nr_bos, args->nr_cmds);
+-	if (IS_ERR(submit))
+-		return PTR_ERR(submit);
++	if (IS_ERR(submit)) {
++		ret = PTR_ERR(submit);
++		goto out_post_unlock;
++	}
  
- static inline int miphy28lp_wait_compensation(struct miphy28lp_phy *miphy_phy)
- {
--	unsigned long finish = jiffies + 5 * HZ;
- 	u8 val;
- 
- 	/* Waiting for Compensation to complete */
--	do {
--		val = readb_relaxed(miphy_phy->base + MIPHY_COMP_FSM_6);
--
--		if (time_after_eq(jiffies, finish))
--			return -EBUSY;
--		cpu_relax();
--	} while (!(val & COMP_DONE));
--
--	return 0;
-+	return readb_relaxed_poll_timeout(miphy_phy->base + MIPHY_COMP_FSM_6,
-+					  val, val & COMP_DONE, 1, 5 * USEC_PER_SEC);
- }
- 
- 
-@@ -805,7 +798,6 @@ static inline void miphy28lp_configure_usb3(struct miphy28lp_phy *miphy_phy)
- 
- static inline int miphy_is_ready(struct miphy28lp_phy *miphy_phy)
- {
--	unsigned long finish = jiffies + 5 * HZ;
- 	u8 mask = HFC_PLL | HFC_RDY;
- 	u8 val;
- 
-@@ -816,21 +808,14 @@ static inline int miphy_is_ready(struct miphy28lp_phy *miphy_phy)
- 	if (miphy_phy->type == PHY_TYPE_SATA)
- 		mask |= PHY_RDY;
- 
--	do {
--		val = readb_relaxed(miphy_phy->base + MIPHY_STATUS_1);
--		if ((val & mask) != mask)
--			cpu_relax();
--		else
--			return 0;
--	} while (!time_after_eq(jiffies, finish));
--
--	return -EBUSY;
-+	return readb_relaxed_poll_timeout(miphy_phy->base + MIPHY_STATUS_1,
-+					  val, (val & mask) == mask, 1,
-+					  5 * USEC_PER_SEC);
- }
- 
- static int miphy_osc_is_ready(struct miphy28lp_phy *miphy_phy)
- {
- 	struct miphy28lp_dev *miphy_dev = miphy_phy->phydev;
--	unsigned long finish = jiffies + 5 * HZ;
- 	u32 val;
- 
- 	if (!miphy_phy->osc_rdy)
-@@ -839,17 +824,10 @@ static int miphy_osc_is_ready(struct miphy28lp_phy *miphy_phy)
- 	if (!miphy_phy->syscfg_reg[SYSCFG_STATUS])
- 		return -EINVAL;
- 
--	do {
--		regmap_read(miphy_dev->regmap,
--				miphy_phy->syscfg_reg[SYSCFG_STATUS], &val);
--
--		if ((val & MIPHY_OSC_RDY) != MIPHY_OSC_RDY)
--			cpu_relax();
--		else
--			return 0;
--	} while (!time_after_eq(jiffies, finish));
--
--	return -EBUSY;
-+	return regmap_read_poll_timeout(miphy_dev->regmap,
-+					miphy_phy->syscfg_reg[SYSCFG_STATUS],
-+					val, val & MIPHY_OSC_RDY, 1,
-+					5 * USEC_PER_SEC);
- }
- 
- static int miphy28lp_get_resource_byname(struct device_node *child,
+ 	trace_msm_gpu_submit(pid_nr(submit->pid), ring->id, submit->ident,
+ 		args->nr_bos, args->nr_cmds);
+@@ -955,11 +957,20 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 	if (has_ww_ticket)
+ 		ww_acquire_fini(&submit->ticket);
+ out_unlock:
+-	if (ret && (out_fence_fd >= 0))
+-		put_unused_fd(out_fence_fd);
+ 	mutex_unlock(&queue->lock);
+ out_post_unlock:
+-	msm_gem_submit_put(submit);
++	if (ret && (out_fence_fd >= 0))
++		put_unused_fd(out_fence_fd);
++
++	if (!IS_ERR_OR_NULL(submit)) {
++		msm_gem_submit_put(submit);
++	} else {
++		/*
++		 * If the submit hasn't yet taken ownership of the queue
++		 * then we need to drop the reference ourself:
++		 */
++		msm_submitqueue_put(queue);
++	}
+ 	if (!IS_ERR_OR_NULL(post_deps)) {
+ 		for (i = 0; i < args->nr_out_syncobjs; ++i) {
+ 			kfree(post_deps[i].chain);
 -- 
 2.39.2
 
