@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 574BD70C94C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F5AB70C635
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235281AbjEVTqk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41448 "EHLO
+        id S230232AbjEVTQT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjEVTqi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1EC119D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:25 -0700 (PDT)
+        with ESMTP id S233949AbjEVTP7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E538E45
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E94D62A82
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0A4C433EF;
-        Mon, 22 May 2023 19:46:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49B1562722
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664F6C433D2;
+        Mon, 22 May 2023 19:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784784;
-        bh=UQmITDHI6OxZN56ea6MlrFlpuovOQfioniSZ9PgydvY=;
+        s=korg; t=1684782943;
+        bh=5CSFNrJ+7fmRauoE6zdCwIjGWwnDDcSsIiTX+nKJ2PE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XAd66zQlt5kG08ENyfjBGf3ERuZqAMM3njsaID4AEHqjgWfVOBQ2H7Uad2OTaLKhn
-         AW+XbsdICWpOWqDWK7OpeJvkJf/fqVi56aDJgLTYEj6jHVbsbeMmLlwnczqAC9hYzC
-         UqFapIt7i6HGeykrNnwM43ULtK//iVyJUUBj2Ma0=
+        b=wcMKiDhcvQ95hzQGvHmkeeGzm7lXdoykSo3XioTCmwe6byPd+T4rz97GWOmE1r2im
+         7lnZhOuJxyparc2rOCba9Kb5dQ11ba6iT7MI372uD0hy0S8P8vqE1dUFALmYruZmjM
+         e9hiVez998elH8R2HGbLr4x5jPaJYPoWfkZDlE74=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Frank Wang <frank.wang@rock-chips.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 202/364] drm/msm/dp: unregister audio driver during unbind
+Subject: [PATCH 5.15 083/203] usb: typec: tcpm: fix multiple times discover svids error
 Date:   Mon, 22 May 2023 20:08:27 +0100
-Message-Id: <20230522190417.778119330@linuxfoundation.org>
+Message-Id: <20230522190357.288417006@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,79 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Frank Wang <frank.wang@rock-chips.com>
 
-[ Upstream commit 85c636284cb63b7740b4ae98881ace92158068d3 ]
+[ Upstream commit dac3b192107b978198e89ec0f77375738352e0c8 ]
 
-while binding the code always registers a audio driver, however there
-is no corresponding unregistration done in unbind. This leads to multiple
-redundant audio platform devices if dp_display_bind and dp_display_unbind
-happens multiple times during startup. On X13s platform this resulted in
-6 to 9 audio codec device instead of just 3 codec devices for 3 dp ports.
+PD3.0 Spec 6.4.4.3.2 say that only Responder supports 12 or more SVIDs,
+the Discover SVIDs Command Shall be executed multiple times until a
+Discover SVIDs VDO is returned ending either with a SVID value of
+0x0000 in the last part of the last VDO or with a VDO containing two
+SVIDs with values of 0x0000.
 
-Fix this by unregistering codecs on unbind.
+In the current implementation, if the last VDO does not find that the
+Discover SVIDs Command would be executed multiple times even if the
+Responder SVIDs are less than 12, and we found some odd dockers just
+meet this case. So fix it.
 
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Fixes: d13e36d7d222 ("drm/msm/dp: add audio support for Display Port on MSM")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/533324/
-Link: https://lore.kernel.org/r/20230421145657.12186-1-srinivas.kandagatla@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
+Link: https://lore.kernel.org/r/20230316081149.24519-1-frank.wang@rock-chips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_audio.c   | 12 ++++++++++++
- drivers/gpu/drm/msm/dp/dp_audio.h   |  2 ++
- drivers/gpu/drm/msm/dp/dp_display.c |  1 +
- 3 files changed, 15 insertions(+)
+ drivers/usb/typec/tcpm/tcpm.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
-index 6666783e1468e..1245c7aa49df8 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.c
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.c
-@@ -593,6 +593,18 @@ static struct hdmi_codec_pdata codec_data = {
- 	.i2s = 1,
- };
- 
-+void dp_unregister_audio_driver(struct device *dev, struct dp_audio *dp_audio)
-+{
-+	struct dp_audio_private *audio_priv;
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 81329605757fa..c6e5991b38689 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1506,7 +1506,21 @@ static bool svdm_consume_svids(struct tcpm_port *port, const u32 *p, int cnt)
+ 		pmdata->svids[pmdata->nsvids++] = svid;
+ 		tcpm_log(port, "SVID %d: 0x%x", pmdata->nsvids, svid);
+ 	}
+-	return true;
 +
-+	audio_priv = container_of(dp_audio, struct dp_audio_private, dp_audio);
-+
-+	if (audio_priv->audio_pdev) {
-+		platform_device_unregister(audio_priv->audio_pdev);
-+		audio_priv->audio_pdev = NULL;
-+	}
-+}
-+
- int dp_register_audio_driver(struct device *dev,
- 		struct dp_audio *dp_audio)
- {
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.h b/drivers/gpu/drm/msm/dp/dp_audio.h
-index 84e5f4a5d26ba..4ab78880af829 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.h
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.h
-@@ -53,6 +53,8 @@ struct dp_audio *dp_audio_get(struct platform_device *pdev,
- int dp_register_audio_driver(struct device *dev,
- 		struct dp_audio *dp_audio);
- 
-+void dp_unregister_audio_driver(struct device *dev, struct dp_audio *dp_audio);
-+
- /**
-  * dp_audio_put()
-  *
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index bde1a7ce442ff..3f9a18410c0bb 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -326,6 +326,7 @@ static void dp_display_unbind(struct device *dev, struct device *master,
- 	kthread_stop(dp->ev_tsk);
- 
- 	dp_power_client_deinit(dp->power);
-+	dp_unregister_audio_driver(dev, dp->audio);
- 	dp_aux_unregister(dp->aux);
- 	dp->drm_dev = NULL;
- 	dp->aux->drm_dev = NULL;
++	/*
++	 * PD3.0 Spec 6.4.4.3.2: The SVIDs are returned 2 per VDO (see Table
++	 * 6-43), and can be returned maximum 6 VDOs per response (see Figure
++	 * 6-19). If the Respondersupports 12 or more SVID then the Discover
++	 * SVIDs Command Shall be executed multiple times until a Discover
++	 * SVIDs VDO is returned ending either with a SVID value of 0x0000 in
++	 * the last part of the last VDO or with a VDO containing two SVIDs
++	 * with values of 0x0000.
++	 *
++	 * However, some odd dockers support SVIDs less than 12 but without
++	 * 0x0000 in the last VDO, so we need to break the Discover SVIDs
++	 * request and return false here.
++	 */
++	return cnt == 7;
+ abort:
+ 	tcpm_log(port, "SVID_DISCOVERY_MAX(%d) too low!", SVID_DISCOVERY_MAX);
+ 	return false;
 -- 
 2.39.2
 
