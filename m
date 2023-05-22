@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10DC270C431
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B05CB70C433
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231557AbjEVRYG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 13:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38430 "EHLO
+        id S231537AbjEVRYH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 13:24:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231538AbjEVRYF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:24:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A560E118
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:24:02 -0700 (PDT)
+        with ESMTP id S231538AbjEVRYG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:24:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9054FF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:24:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E10661D76
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:24:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1E6C4339B;
-        Mon, 22 May 2023 17:24:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E89260BA1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E61BC433D2;
+        Mon, 22 May 2023 17:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684776241;
-        bh=XEJg1jFFUgnNQZtti5FxvZ8rHigHvBjzyvhZxUTrVIQ=;
+        s=korg; t=1684776243;
+        bh=PsCcV4JRAbSoCbz53FNmoq28ZnZ0m24wU2MCQmC60k8=;
         h=Subject:To:Cc:From:Date:From;
-        b=DCV0Z0cbzgI1gERERNulpAsg9DWgPAJv4wl/+6ErpwOii+CKcDLsqszQg84lx64hq
-         jy/Q/UmoKJl/CnFGsBY5NzcDUGXBE5iSyB+HpOUiWET8ZCaJLXr2gk2yjbqlXQnz6H
-         wydBaNB5VkThNC87ZDtKd0pgGRFmpC5xwM0jazYE=
-Subject: FAILED: patch "[PATCH] usb: dwc3: fix gadget mode suspend interrupt handler issue" failed to apply to 5.15-stable tree
+        b=H/s1+1gHNZ3QwFLDqcdOhmQ8vfL+OOmaVBsrzs3VfYsqdbx/PNJroahKX2GPXSjYg
+         rp/sOBQWOHEmdwJhp0cJhltNJnuq37wS+cni/u06dOBv454wcTJj2curYGuJxueo4B
+         GDAqjms4gLC1rPt2Y9eodNdMrK5rBAwdfFYymqjw=
+Subject: FAILED: patch "[PATCH] usb: dwc3: fix gadget mode suspend interrupt handler issue" failed to apply to 5.10-stable tree
 To:     quic_linyyuan@quicinc.com, Thinh.Nguyen@synopsys.com,
         gregkh@linuxfoundation.org, stable@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 18:23:55 +0100
-Message-ID: <2023052255-basics-sixfold-353c@gregkh>
+Date:   Mon, 22 May 2023 18:23:56 +0100
+Message-ID: <2023052256-hence-answering-7047@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4e8ef34e36f2839ef8c8da521ab7035956436818
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052255-basics-sixfold-353c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052256-hence-answering-7047@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,6 +69,11 @@ Possible dependencies:
 92c08a84b53e ("usb: dwc3: Add function suspend and function wakeup support")
 047161686b81 ("usb: dwc3: Add remote wakeup handling")
 63c4c320ccf7 ("usb: dwc3: gadget: Check for L1/L2/U3 for Start Transfer")
+40edb52298df ("usb: dwc3: avoid NULL access of usb_gadget_driver")
+c560e76319a9 ("usb: dwc3: gadget: Fix START_TRANSFER link state check")
+475e8be53d04 ("usb: dwc3: gadget: Check for disabled LPM quirk")
+f09ddcfcb8c5 ("usb: dwc3: gadget: Prevent EP queuing while stopping transfers")
+a66a7d48f34a ("Merge 5.11-rc3 into usb-next")
 
 thanks,
 
