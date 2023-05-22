@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C2070C9D3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B09F070C699
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:20:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235435AbjEVTwd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:52:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46232 "EHLO
+        id S234324AbjEVTT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235438AbjEVTwU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:20 -0400
+        with ESMTP id S234320AbjEVTT6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46519102
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FE32A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26F2F62A82
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E96EC433D2;
-        Mon, 22 May 2023 19:52:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0A9162810
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA701C433EF;
+        Mon, 22 May 2023 19:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785123;
-        bh=Lj6y5/ZDCi8049j3TmWq+PNufsrkcBoUS5JNDHkPoCY=;
+        s=korg; t=1684783197;
+        bh=BtcZZjwoFE+Kpx3IvX0oQB/oHDEWqpJ3AWTZySHw8Jg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fnGl5E55mcrcx8+8OZh/iqLs3KLcARN+2IIQqvl+zF2TDs9tU8pUNFe++F0mcHCzU
-         9OQJ6BogovVJijfznxgAknXoLyxMef0UV8j0oVolwyF47JjB419hqOH0Ig8cpG/LpO
-         czGdbOVHHRqP+1Bhs3dRV3he83Xb/X8ZOWdPFcjI=
+        b=ZN8SK05UTuH5qmG9GGO38w4PtDFkJXAM8Jg0CDahsZE660oRsnQIvQCjC4c2In1JT
+         jPd9XVUC51wHLETbQSv39Iu1fUU6SliGU9W9I8VsjGHly8pF/4ACtw5YULi8ZAbwEz
+         hMaVOE4sse8VbOV5+Bs4HgxhDI6uVx99PquWukQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Humlick <john@humlick.org>,
+        patches@lists.linux.dev, Olliver Schinagl <oliver@schinagl.nl>,
         Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.3 289/364] ALSA: usb-audio: Add a sample rate workaround for Line6 Pod Go
+Subject: [PATCH 5.15 170/203] ALSA: hda: Fix Oops by 9.1 surround channel names
 Date:   Mon, 22 May 2023 20:09:54 +0100
-Message-Id: <20230522190419.991590421@linuxfoundation.org>
+Message-Id: <20230522190359.687222743@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,30 +55,55 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Takashi Iwai <tiwai@suse.de>
 
-commit 359b4315471181f108723c61612d96e383e56179 upstream.
+commit 3b44ec8c5c44790a82f07e90db45643c762878c6 upstream.
 
-Line6 Pod Go (0e41:424b) requires the similar workaround for the fixed
-48k sample rate like other Line6 models.  This patch adds the
-corresponding entry to line6_parse_audio_format_rate_quirk().
+get_line_out_pfx() may trigger an Oops by overflowing the static array
+with more than 8 channels.  This was reported for MacBookPro 12,1 with
+Cirrus codec.
 
-Reported-by: John Humlick <john@humlick.org>
+As a workaround, extend for the 9.1 channels and also fix the
+potential Oops by unifying the code paths accessing the same array
+with the proper size check.
+
+Reported-by: Olliver Schinagl <oliver@schinagl.nl>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230512075858.22813-1-tiwai@suse.de
+Link: https://lore.kernel.org/r/64d95eb0-dbdb-cff8-a8b1-988dc22b24cd@schinagl.nl
+Link: https://lore.kernel.org/r/20230516184412.24078-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/format.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/hda_generic.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -423,6 +423,7 @@ static int line6_parse_audio_format_rate
- 	case USB_ID(0x0e41, 0x4248): /* Line6 Helix >= fw 2.82 */
- 	case USB_ID(0x0e41, 0x4249): /* Line6 Helix Rack >= fw 2.82 */
- 	case USB_ID(0x0e41, 0x424a): /* Line6 Helix LT >= fw 2.82 */
-+	case USB_ID(0x0e41, 0x424b): /* Line6 Pod Go */
- 	case USB_ID(0x19f7, 0x0011): /* Rode Rodecaster Pro */
- 		return set_fixed_rate(fp, 48000, SNDRV_PCM_RATE_48000);
- 	}
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -1155,8 +1155,8 @@ static bool path_has_mixer(struct hda_co
+ 	return path && path->ctls[ctl_type];
+ }
+ 
+-static const char * const channel_name[4] = {
+-	"Front", "Surround", "CLFE", "Side"
++static const char * const channel_name[] = {
++	"Front", "Surround", "CLFE", "Side", "Back",
+ };
+ 
+ /* give some appropriate ctl name prefix for the given line out channel */
+@@ -1182,7 +1182,7 @@ static const char *get_line_out_pfx(stru
+ 
+ 	/* multi-io channels */
+ 	if (ch >= cfg->line_outs)
+-		return channel_name[ch];
++		goto fixed_name;
+ 
+ 	switch (cfg->line_out_type) {
+ 	case AUTO_PIN_SPEAKER_OUT:
+@@ -1234,6 +1234,7 @@ static const char *get_line_out_pfx(stru
+ 	if (cfg->line_outs == 1 && !spec->multi_ios)
+ 		return "Line Out";
+ 
++ fixed_name:
+ 	if (ch >= ARRAY_SIZE(channel_name)) {
+ 		snd_BUG();
+ 		return "PCM";
 
 
