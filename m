@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B34D770C81E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D081C70C9FA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234929AbjEVTf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57394 "EHLO
+        id S235477AbjEVTxu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:53:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234937AbjEVTf5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:57 -0400
+        with ESMTP id S235492AbjEVTxr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B766FE77
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C752BDC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D6A962940
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89A3C433D2;
-        Mon, 22 May 2023 19:34:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 588BB61F1D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B7DC433EF;
+        Mon, 22 May 2023 19:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784088;
-        bh=5fCUaLnu/XZ8++DTFMsqGimnrvlruVeLDrjMVxjqXdw=;
+        s=korg; t=1684785224;
+        bh=8vu415bm7cRMTv6jb4cllI2JnLcimu50U+uPxJ2hhJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r7hRfYQozxXxQ9U77wnHFt75kBsnKFrAytEKVvat+1Q6RUGT6z1D7LH2BYMfBHtcC
-         Wbqr4YvIjMTSfpu7rf4bU14GhoarjTXTdBmmmrP0roxiSIUg2mhoLcRVnj4N4QGghQ
-         n/MLL6UIPug5/dxFlbNMdl8NiFEY2D3zQAgWvrS0=
+        b=OrmzMzdR4jQPHwnF6MiDpQOETncIohPGU0ZovHgo+1Vg6lb9jLYVljmsjrtqc1FEj
+         gBYnHZgDY2BcM46ijElccW87cw1U4sh+3B6GEqm671SIjJ29nAJxKMCfsKgLin97yp
+         YWUy5VaH5qZh03rQc0kZKH2lbi/5JReZE4JyC/DM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chih-Yen Chang <cc85nod@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 259/292] ksmbd: fix global-out-of-bounds in smb2_find_context_vals
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.3 311/364] can: kvaser_pciefd: Call request_irq() before enabling interrupts
 Date:   Mon, 22 May 2023 20:10:16 +0100
-Message-Id: <20230522190412.417144354@linuxfoundation.org>
+Message-Id: <20230522190420.550175843@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,144 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chih-Yen Chang <cc85nod@gmail.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit 02f76c401d17e409ed45bf7887148fcc22c93c85 upstream.
+commit 84762d8da89d29ba842317eb842973e628c27391 upstream.
 
-Add tag_len argument in smb2_find_context_vals() to avoid out-of-bound
-read when create_context's name_len is larger than tag length.
+Make sure the interrupt handler is registered before enabling interrupts.
 
-[    7.995411] ==================================================================
-[    7.995866] BUG: KASAN: global-out-of-bounds in memcmp+0x83/0xa0
-[    7.996248] Read of size 8 at addr ffffffff8258d940 by task kworker/0:0/7
-...
-[    7.998191] Call Trace:
-[    7.998358]  <TASK>
-[    7.998503]  dump_stack_lvl+0x33/0x50
-[    7.998743]  print_report+0xcc/0x620
-[    7.999458]  kasan_report+0xae/0xe0
-[    7.999895]  kasan_check_range+0x35/0x1b0
-[    8.000152]  memcmp+0x83/0xa0
-[    8.000347]  smb2_find_context_vals+0xf7/0x1e0
-[    8.000635]  smb2_open+0x1df2/0x43a0
-[    8.006398]  handle_ksmbd_work+0x274/0x810
-[    8.006666]  process_one_work+0x419/0x760
-[    8.006922]  worker_thread+0x2a2/0x6f0
-[    8.007429]  kthread+0x160/0x190
-[    8.007946]  ret_from_fork+0x1f/0x30
-[    8.008181]  </TASK>
-
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chih-Yen Chang <cc85nod@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-4-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/oplock.c  |    5 +++--
- fs/ksmbd/oplock.h  |    2 +-
- fs/ksmbd/smb2pdu.c |   14 +++++++-------
- 3 files changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -1449,11 +1449,12 @@ struct lease_ctx_info *parse_lease_state
-  * smb2_find_context_vals() - find a particular context info in open request
-  * @open_req:	buffer containing smb2 file open(create) request
-  * @tag:	context name to search for
-+ * @tag_len:	the length of tag
-  *
-  * Return:	pointer to requested context, NULL if @str context not found
-  *		or error pointer if name length is invalid.
-  */
--struct create_context *smb2_find_context_vals(void *open_req, const char *tag)
-+struct create_context *smb2_find_context_vals(void *open_req, const char *tag, int tag_len)
- {
- 	struct create_context *cc;
- 	unsigned int next = 0;
-@@ -1492,7 +1493,7 @@ struct create_context *smb2_find_context
- 			return ERR_PTR(-EINVAL);
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -1825,6 +1825,11 @@ static int kvaser_pciefd_probe(struct pc
+ 	if (err)
+ 		goto err_teardown_can_ctrls;
  
- 		name = (char *)cc + name_off;
--		if (memcmp(name, tag, name_len) == 0)
-+		if (name_len == tag_len && !memcmp(name, tag, name_len))
- 			return cc;
++	err = request_irq(pcie->pci->irq, kvaser_pciefd_irq_handler,
++			  IRQF_SHARED, KVASER_PCIEFD_DRV_NAME, pcie);
++	if (err)
++		goto err_teardown_can_ctrls;
++
+ 	iowrite32(KVASER_PCIEFD_SRB_IRQ_DPD0 | KVASER_PCIEFD_SRB_IRQ_DPD1,
+ 		  pcie->reg_base + KVASER_PCIEFD_SRB_IRQ_REG);
  
- 		remain_len -= next;
---- a/fs/ksmbd/oplock.h
-+++ b/fs/ksmbd/oplock.h
-@@ -118,7 +118,7 @@ void create_durable_v2_rsp_buf(char *cc,
- void create_mxac_rsp_buf(char *cc, int maximal_access);
- void create_disk_id_rsp_buf(char *cc, __u64 file_id, __u64 vol_id);
- void create_posix_rsp_buf(char *cc, struct ksmbd_file *fp);
--struct create_context *smb2_find_context_vals(void *open_req, const char *str);
-+struct create_context *smb2_find_context_vals(void *open_req, const char *tag, int tag_len);
- struct oplock_info *lookup_lease_in_table(struct ksmbd_conn *conn,
- 					  char *lease_key);
- int find_same_lease_key(struct ksmbd_session *sess, struct ksmbd_inode *ci,
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -2478,7 +2478,7 @@ static int smb2_create_sd_buffer(struct
- 		return -ENOENT;
+@@ -1845,11 +1850,6 @@ static int kvaser_pciefd_probe(struct pc
+ 	iowrite32(KVASER_PCIEFD_SRB_CMD_RDB1,
+ 		  pcie->reg_base + KVASER_PCIEFD_SRB_CMD_REG);
  
- 	/* Parse SD BUFFER create contexts */
--	context = smb2_find_context_vals(req, SMB2_CREATE_SD_BUFFER);
-+	context = smb2_find_context_vals(req, SMB2_CREATE_SD_BUFFER, 4);
- 	if (!context)
- 		return -ENOENT;
- 	else if (IS_ERR(context))
-@@ -2680,7 +2680,7 @@ int smb2_open(struct ksmbd_work *work)
- 
- 	if (req->CreateContextsOffset) {
- 		/* Parse non-durable handle create contexts */
--		context = smb2_find_context_vals(req, SMB2_CREATE_EA_BUFFER);
-+		context = smb2_find_context_vals(req, SMB2_CREATE_EA_BUFFER, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
- 			goto err_out1;
-@@ -2700,7 +2700,7 @@ int smb2_open(struct ksmbd_work *work)
- 		}
- 
- 		context = smb2_find_context_vals(req,
--						 SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST);
-+						 SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
- 			goto err_out1;
-@@ -2711,7 +2711,7 @@ int smb2_open(struct ksmbd_work *work)
- 		}
- 
- 		context = smb2_find_context_vals(req,
--						 SMB2_CREATE_TIMEWARP_REQUEST);
-+						 SMB2_CREATE_TIMEWARP_REQUEST, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
- 			goto err_out1;
-@@ -2723,7 +2723,7 @@ int smb2_open(struct ksmbd_work *work)
- 
- 		if (tcon->posix_extensions) {
- 			context = smb2_find_context_vals(req,
--							 SMB2_CREATE_TAG_POSIX);
-+							 SMB2_CREATE_TAG_POSIX, 16);
- 			if (IS_ERR(context)) {
- 				rc = PTR_ERR(context);
- 				goto err_out1;
-@@ -3122,7 +3122,7 @@ int smb2_open(struct ksmbd_work *work)
- 		struct create_alloc_size_req *az_req;
- 
- 		az_req = (struct create_alloc_size_req *)smb2_find_context_vals(req,
--					SMB2_CREATE_ALLOCATION_SIZE);
-+					SMB2_CREATE_ALLOCATION_SIZE, 4);
- 		if (IS_ERR(az_req)) {
- 			rc = PTR_ERR(az_req);
- 			goto err_out;
-@@ -3149,7 +3149,7 @@ int smb2_open(struct ksmbd_work *work)
- 					    err);
- 		}
- 
--		context = smb2_find_context_vals(req, SMB2_CREATE_QUERY_ON_DISK_ID);
-+		context = smb2_find_context_vals(req, SMB2_CREATE_QUERY_ON_DISK_ID, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
- 			goto err_out;
+-	err = request_irq(pcie->pci->irq, kvaser_pciefd_irq_handler,
+-			  IRQF_SHARED, KVASER_PCIEFD_DRV_NAME, pcie);
+-	if (err)
+-		goto err_teardown_can_ctrls;
+-
+ 	err = kvaser_pciefd_reg_candev(pcie);
+ 	if (err)
+ 		goto err_free_irq;
 
 
