@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D1C70C8E0
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1BC170C71E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235120AbjEVTnF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37188 "EHLO
+        id S234619AbjEVT0B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:26:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235136AbjEVTnC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FFCF120
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:45 -0700 (PDT)
+        with ESMTP id S234613AbjEVT0A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B2DA9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4B5562A00
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A17C433D2;
-        Mon, 22 May 2023 19:42:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3244B6289C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAD7C433EF;
+        Mon, 22 May 2023 19:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784521;
-        bh=0sQofBhxOtdElYTOyK+epRIGylwu/W0M8MgbSX0w7hQ=;
+        s=korg; t=1684783558;
+        bh=dvlqCcs+To+Z3xJUB/9Gq1sIgdw7s6qp5lZVme/ty88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c9p3kE1IuCKT1YIeko32YezpS7vF5rgysAIEGYfl9nDJOGGOL7SAddxVb20LOuZhy
-         Ld/5TMPh6zIBqYDJZd/SpZg3gGsORsmUjz7dNormKIhEyYKRqDY4HN2qlxofFfCfIe
-         JFw4vAqymxW6NdQUsBEIqNZbDFBOFvYtK2xe9bWs=
+        b=TUUkCN4KgbOg73rBIL56qVLj3AP1SI3xzjQORkKy0uL7OMH0l7onFYvhxRGVNe+mA
+         oLam+btYF4dTAWHkn7jKuTNb2MO9aK7ROOIAwDoz6YFwlShiHe4a0ICJ4H1nE9EBt+
+         qiIXMrt4I2PVYmWsM3Kmlkt+FxYnw9rqw1HQnxk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Xiang Chen <chenxiang66@hisilicon.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 109/364] scsi: hisi_sas: Grab sas_dev lock when traversing the members of sas_dev.list
+        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/292] firmware: arm_sdei: Fix sleep from invalid context BUG
 Date:   Mon, 22 May 2023 20:06:54 +0100
-Message-Id: <20230522190415.497705986@linuxfoundation.org>
+Message-Id: <20230522190407.365931458@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,245 +54,234 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit 71fb36b5ff113a7674710b9d6063241eada84ff7 ]
+[ Upstream commit d2c48b2387eb89e0bf2a2e06e30987cf410acad4 ]
 
-When freeing slots in function slot_complete_v3_hw(), it is possible that
-sas_dev.list is being traversed elsewhere, and it may trigger a NULL
-pointer exception, such as follows:
+Running a preempt-rt (v6.2-rc3-rt1) based kernel on an Ampere Altra
+triggers:
 
-==>cq thread                    ==>scsi_eh_6
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+  in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 24, name: cpuhp/0
+  preempt_count: 0, expected: 0
+  RCU nest depth: 0, expected: 0
+  3 locks held by cpuhp/0/24:
+    #0: ffffda30217c70d0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
+    #1: ffffda30217c7120 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
+    #2: ffffda3021c711f0 (sdei_list_lock){....}-{3:3}, at: sdei_cpuhp_up+0x3c/0x130
+  irq event stamp: 36
+  hardirqs last  enabled at (35): [<ffffda301e85b7bc>] finish_task_switch+0xb4/0x2b0
+  hardirqs last disabled at (36): [<ffffda301e812fec>] cpuhp_thread_fun+0x21c/0x248
+  softirqs last  enabled at (0): [<ffffda301e80b184>] copy_process+0x63c/0x1ac0
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 0 PID: 24 Comm: cpuhp/0 Not tainted 5.19.0-rc3-rt5-[...]
+  Hardware name: WIWYNN Mt.Jade Server [...]
+  Call trace:
+    dump_backtrace+0x114/0x120
+    show_stack+0x20/0x70
+    dump_stack_lvl+0x9c/0xd8
+    dump_stack+0x18/0x34
+    __might_resched+0x188/0x228
+    rt_spin_lock+0x70/0x120
+    sdei_cpuhp_up+0x3c/0x130
+    cpuhp_invoke_callback+0x250/0xf08
+    cpuhp_thread_fun+0x120/0x248
+    smpboot_thread_fn+0x280/0x320
+    kthread+0x130/0x140
+    ret_from_fork+0x10/0x20
 
-                                ==>scsi_error_handler()
-				  ==>sas_eh_handle_sas_errors()
-				    ==>sas_scsi_find_task()
-				      ==>lldd_abort_task()
-==>slot_complete_v3_hw()              ==>hisi_sas_abort_task()
-  ==>hisi_sas_slot_task_free()	        ==>dereg_device_v3_hw()
-    ==>list_del_init()        		  ==>list_for_each_entry_safe()
+sdei_cpuhp_up() is called in the STARTING hotplug section,
+which runs with interrupts disabled. Use a CPUHP_AP_ONLINE_DYN entry
+instead to execute the cpuhp cb later, with preemption enabled.
 
-[ 7165.434918] sas: Enter sas_scsi_recover_host busy: 32 failed: 32
-[ 7165.434926] sas: trying to find task 0x00000000769b5ba5
-[ 7165.434927] sas: sas_scsi_find_task: aborting task 0x00000000769b5ba5
-[ 7165.434940] hisi_sas_v3_hw 0000:b4:02.0: slot complete: task(00000000769b5ba5) aborted
-[ 7165.434964] hisi_sas_v3_hw 0000:b4:02.0: slot complete: task(00000000c9f7aa07) ignored
-[ 7165.434965] hisi_sas_v3_hw 0000:b4:02.0: slot complete: task(00000000e2a1cf01) ignored
-[ 7165.434968] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[ 7165.434972] hisi_sas_v3_hw 0000:b4:02.0: slot complete: task(0000000022d52d93) ignored
-[ 7165.434975] hisi_sas_v3_hw 0000:b4:02.0: slot complete: task(0000000066a7516c) ignored
-[ 7165.434976] Mem abort info:
-[ 7165.434982]   ESR = 0x96000004
-[ 7165.434991]   Exception class = DABT (current EL), IL = 32 bits
-[ 7165.434992]   SET = 0, FnV = 0
-[ 7165.434993]   EA = 0, S1PTW = 0
-[ 7165.434994] Data abort info:
-[ 7165.434994]   ISV = 0, ISS = 0x00000004
-[ 7165.434995]   CM = 0, WnR = 0
-[ 7165.434997] user pgtable: 4k pages, 48-bit VAs, pgdp = 00000000f29543f2
-[ 7165.434998] [0000000000000000] pgd=0000000000000000
-[ 7165.435003] Internal error: Oops: 96000004 [#1] SMP
-[ 7165.439863] Process scsi_eh_6 (pid: 4109, stack limit = 0x00000000c43818d5)
-[ 7165.468862] pstate: 00c00009 (nzcv daif +PAN +UAO)
-[ 7165.473637] pc : dereg_device_v3_hw+0x68/0xa8 [hisi_sas_v3_hw]
-[ 7165.479443] lr : dereg_device_v3_hw+0x2c/0xa8 [hisi_sas_v3_hw]
-[ 7165.485247] sp : ffff00001d623bc0
-[ 7165.488546] x29: ffff00001d623bc0 x28: ffffa027d03b9508
-[ 7165.493835] x27: ffff80278ed50af0 x26: ffffa027dd31e0a8
-[ 7165.499123] x25: ffffa027d9b27f88 x24: ffffa027d9b209f8
-[ 7165.504411] x23: ffffa027c45b0d60 x22: ffff80278ec07c00
-[ 7165.509700] x21: 0000000000000008 x20: ffffa027d9b209f8
-[ 7165.514988] x19: ffffa027d9b27f88 x18: ffffffffffffffff
-[ 7165.520276] x17: 0000000000000000 x16: 0000000000000000
-[ 7165.525564] x15: ffff0000091d9708 x14: ffff0000093b7dc8
-[ 7165.530852] x13: ffff0000093b7a23 x12: 6e7265746e692067
-[ 7165.536140] x11: 0000000000000000 x10: 0000000000000bb0
-[ 7165.541429] x9 : ffff00001d6238f0 x8 : ffffa027d877af00
-[ 7165.546718] x7 : ffffa027d6329600 x6 : ffff7e809f58ca00
-[ 7165.552006] x5 : 0000000000001f8a x4 : 000000000000088e
-[ 7165.557295] x3 : ffffa027d9b27fa8 x2 : 0000000000000000
-[ 7165.562583] x1 : 0000000000000000 x0 : 000000003000188e
-[ 7165.567872] Call trace:
-[ 7165.570309]  dereg_device_v3_hw+0x68/0xa8 [hisi_sas_v3_hw]
-[ 7165.575775]  hisi_sas_abort_task+0x248/0x358 [hisi_sas_main]
-[ 7165.581415]  sas_eh_handle_sas_errors+0x258/0x8e0 [libsas]
-[ 7165.586876]  sas_scsi_recover_host+0x134/0x458 [libsas]
-[ 7165.592082]  scsi_error_handler+0xb4/0x488
-[ 7165.596163]  kthread+0x134/0x138
-[ 7165.599380]  ret_from_fork+0x10/0x18
-[ 7165.602940] Code: d5033e9f b9000040 aa0103e2 eb03003f (f9400021)
-[ 7165.609004] kernel fault(0x1) notification starting on CPU 75
-[ 7165.700728] ---[ end trace fc042cbbea224efc ]---
-[ 7165.705326] Kernel panic - not syncing: Fatal exception
+SDEI originally got its own cpuhp slot to allow interacting
+with perf. It got superseded by pNMI and this early slot is not
+relevant anymore. [1]
 
-To fix the issue, grab sas_dev lock when traversing the members of
-sas_dev.list in dereg_device_v3_hw() and hisi_sas_release_tasks() to avoid
-concurrency of adding and deleting member. When function
-hisi_sas_release_tasks() calls hisi_sas_do_release_task() to free slot, the
-lock cannot be grabbed again in hisi_sas_slot_task_free(), then a bool
-parameter need_lock is added.
+Some SDEI calls (e.g. SDEI_1_0_FN_SDEI_PE_MASK) take actions on the
+calling CPU. It is checked that preemption is disabled for them.
+_ONLINE cpuhp cb are executed in the 'per CPU hotplug thread'.
+Preemption is enabled in those threads, but their cpumask is limited
+to 1 CPU.
+Move 'WARN_ON_ONCE(preemptible())' statements so that SDEI cpuhp cb
+don't trigger them.
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1679283265-115066-2-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Also add a check for the SDEI_1_0_FN_SDEI_PRIVATE_RESET SDEI call
+which acts on the calling CPU.
+
+[1]:
+https://lore.kernel.org/all/5813b8c5-ae3e-87fd-fccc-94c9cd08816d@arm.com/
+
+Suggested-by: James Morse <james.morse@arm.com>
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20230216084920.144064-1-pierre.gondois@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas.h       |  3 ++-
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 25 ++++++++++++++++---------
- drivers/scsi/hisi_sas/hisi_sas_v1_hw.c |  2 +-
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  2 +-
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c |  4 +++-
- 5 files changed, 23 insertions(+), 13 deletions(-)
+ drivers/firmware/arm_sdei.c | 37 ++++++++++++++++++++-----------------
+ include/linux/cpuhotplug.h  |  1 -
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
-index 6f8a52a1b8087..423af1dc36487 100644
---- a/drivers/scsi/hisi_sas/hisi_sas.h
-+++ b/drivers/scsi/hisi_sas/hisi_sas.h
-@@ -653,7 +653,8 @@ extern void hisi_sas_phy_down(struct hisi_hba *hisi_hba, int phy_no, int rdy,
- extern void hisi_sas_phy_bcast(struct hisi_sas_phy *phy);
- extern void hisi_sas_slot_task_free(struct hisi_hba *hisi_hba,
- 				    struct sas_task *task,
--				    struct hisi_sas_slot *slot);
-+				    struct hisi_sas_slot *slot,
-+				    bool need_lock);
- extern void hisi_sas_init_mem(struct hisi_hba *hisi_hba);
- extern void hisi_sas_rst_work_handler(struct work_struct *work);
- extern void hisi_sas_sync_rst_work_handler(struct work_struct *work);
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 8c038ccf1c095..2093c1e828177 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -205,7 +205,7 @@ static int hisi_sas_slot_index_alloc(struct hisi_hba *hisi_hba,
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 1e1a51510e83b..f9040bd610812 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -43,6 +43,8 @@ static asmlinkage void (*sdei_firmware_call)(unsigned long function_id,
+ /* entry point from firmware to arch asm code */
+ static unsigned long sdei_entry_point;
+ 
++static int sdei_hp_state;
++
+ struct sdei_event {
+ 	/* These three are protected by the sdei_list_lock */
+ 	struct list_head	list;
+@@ -301,8 +303,6 @@ int sdei_mask_local_cpu(void)
+ {
+ 	int err;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_MASK, 0, 0, 0, 0, 0, NULL);
+ 	if (err && err != -EIO) {
+ 		pr_warn_once("failed to mask CPU[%u]: %d\n",
+@@ -315,6 +315,7 @@ int sdei_mask_local_cpu(void)
+ 
+ static void _ipi_mask_cpu(void *ignored)
+ {
++	WARN_ON_ONCE(preemptible());
+ 	sdei_mask_local_cpu();
  }
  
- void hisi_sas_slot_task_free(struct hisi_hba *hisi_hba, struct sas_task *task,
--			     struct hisi_sas_slot *slot)
-+			     struct hisi_sas_slot *slot, bool need_lock)
+@@ -322,8 +323,6 @@ int sdei_unmask_local_cpu(void)
  {
- 	int device_id = slot->device_id;
- 	struct hisi_sas_device *sas_dev = &hisi_hba->devices[device_id];
-@@ -239,9 +239,13 @@ void hisi_sas_slot_task_free(struct hisi_hba *hisi_hba, struct sas_task *task,
- 		}
+ 	int err;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_UNMASK, 0, 0, 0, 0, 0, NULL);
+ 	if (err && err != -EIO) {
+ 		pr_warn_once("failed to unmask CPU[%u]: %d\n",
+@@ -336,6 +335,7 @@ int sdei_unmask_local_cpu(void)
+ 
+ static void _ipi_unmask_cpu(void *ignored)
+ {
++	WARN_ON_ONCE(preemptible());
+ 	sdei_unmask_local_cpu();
+ }
+ 
+@@ -343,6 +343,8 @@ static void _ipi_private_reset(void *ignored)
+ {
+ 	int err;
+ 
++	WARN_ON_ONCE(preemptible());
++
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PRIVATE_RESET, 0, 0, 0, 0, 0,
+ 			     NULL);
+ 	if (err && err != -EIO)
+@@ -389,8 +391,6 @@ static void _local_event_enable(void *data)
+ 	int err;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = sdei_api_event_enable(arg->event->event_num);
+ 
+ 	sdei_cross_call_return(arg, err);
+@@ -479,8 +479,6 @@ static void _local_event_unregister(void *data)
+ 	int err;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = sdei_api_event_unregister(arg->event->event_num);
+ 
+ 	sdei_cross_call_return(arg, err);
+@@ -561,8 +559,6 @@ static void _local_event_register(void *data)
+ 	struct sdei_registered_event *reg;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON(preemptible());
+-
+ 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
+ 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
+ 				      reg, 0, 0);
+@@ -717,6 +713,8 @@ static int sdei_pm_notifier(struct notifier_block *nb, unsigned long action,
+ {
+ 	int rv;
+ 
++	WARN_ON_ONCE(preemptible());
++
+ 	switch (action) {
+ 	case CPU_PM_ENTER:
+ 		rv = sdei_mask_local_cpu();
+@@ -765,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
+ 	int err;
+ 
+ 	/* unregister private events */
+-	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
++	cpuhp_remove_state(sdei_entry_point);
+ 
+ 	err = sdei_unregister_shared();
+ 	if (err)
+@@ -786,12 +784,15 @@ static int sdei_device_thaw(struct device *dev)
+ 		return err;
  	}
  
--	spin_lock(&sas_dev->lock);
--	list_del_init(&slot->entry);
--	spin_unlock(&sas_dev->lock);
-+	if (need_lock) {
-+		spin_lock(&sas_dev->lock);
-+		list_del_init(&slot->entry);
-+		spin_unlock(&sas_dev->lock);
-+	} else {
-+		list_del_init(&slot->entry);
+-	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
++	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
+ 				&sdei_cpuhp_up, &sdei_cpuhp_down);
+-	if (err)
++	if (err < 0) {
+ 		pr_warn("Failed to re-register CPU hotplug notifier...\n");
++		return err;
 +	}
  
- 	memset(slot, 0, offsetof(struct hisi_sas_slot, buf));
- 
-@@ -1021,7 +1025,7 @@ static void hisi_sas_port_notify_formed(struct asd_sas_phy *sas_phy)
+-	return err;
++	sdei_hp_state = err;
++	return 0;
  }
  
- static void hisi_sas_do_release_task(struct hisi_hba *hisi_hba, struct sas_task *task,
--				     struct hisi_sas_slot *slot)
-+				     struct hisi_sas_slot *slot, bool need_lock)
- {
- 	if (task) {
- 		unsigned long flags;
-@@ -1038,7 +1042,7 @@ static void hisi_sas_do_release_task(struct hisi_hba *hisi_hba, struct sas_task
- 		spin_unlock_irqrestore(&task->task_state_lock, flags);
+ static int sdei_device_restore(struct device *dev)
+@@ -823,7 +824,7 @@ static int sdei_reboot_notifier(struct notifier_block *nb, unsigned long action,
+ 	 * We are going to reset the interface, after this there is no point
+ 	 * doing work when we take CPUs offline.
+ 	 */
+-	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
++	cpuhp_remove_state(sdei_hp_state);
+ 
+ 	sdei_platform_reset();
+ 
+@@ -1003,13 +1004,15 @@ static int sdei_probe(struct platform_device *pdev)
+ 		goto remove_cpupm;
  	}
  
--	hisi_sas_slot_task_free(hisi_hba, task, slot);
-+	hisi_sas_slot_task_free(hisi_hba, task, slot, need_lock);
- }
+-	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
++	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
+ 				&sdei_cpuhp_up, &sdei_cpuhp_down);
+-	if (err) {
++	if (err < 0) {
+ 		pr_warn("Failed to register CPU hotplug notifier...\n");
+ 		goto remove_reboot;
+ 	}
  
- static void hisi_sas_release_task(struct hisi_hba *hisi_hba,
-@@ -1047,8 +1051,11 @@ static void hisi_sas_release_task(struct hisi_hba *hisi_hba,
- 	struct hisi_sas_slot *slot, *slot2;
- 	struct hisi_sas_device *sas_dev = device->lldd_dev;
- 
-+	spin_lock(&sas_dev->lock);
- 	list_for_each_entry_safe(slot, slot2, &sas_dev->list, entry)
--		hisi_sas_do_release_task(hisi_hba, slot->task, slot);
-+		hisi_sas_do_release_task(hisi_hba, slot->task, slot, false);
++	sdei_hp_state = err;
 +
-+	spin_unlock(&sas_dev->lock);
- }
+ 	return 0;
  
- void hisi_sas_release_tasks(struct hisi_hba *hisi_hba)
-@@ -1574,7 +1581,7 @@ static int hisi_sas_abort_task(struct sas_task *task)
- 		 */
- 		if (rc == TMF_RESP_FUNC_COMPLETE && rc2 != TMF_RESP_FUNC_SUCC) {
- 			if (task->lldd_task)
--				hisi_sas_do_release_task(hisi_hba, task, slot);
-+				hisi_sas_do_release_task(hisi_hba, task, slot, true);
- 		}
- 	} else if (task->task_proto & SAS_PROTOCOL_SATA ||
- 		task->task_proto & SAS_PROTOCOL_STP) {
-@@ -1594,7 +1601,7 @@ static int hisi_sas_abort_task(struct sas_task *task)
- 			 */
- 			if ((sas_dev->dev_status == HISI_SAS_DEV_NCQ_ERR) &&
- 			    qc && qc->scsicmd) {
--				hisi_sas_do_release_task(hisi_hba, task, slot);
-+				hisi_sas_do_release_task(hisi_hba, task, slot, true);
- 				rc = TMF_RESP_FUNC_COMPLETE;
- 			} else {
- 				rc = hisi_sas_softreset_ata_disk(device);
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-index 70c24377c6a19..76176b1fc035d 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-@@ -1310,7 +1310,7 @@ static void slot_complete_v1_hw(struct hisi_hba *hisi_hba,
- 	}
- 
- out:
--	hisi_sas_slot_task_free(hisi_hba, task, slot);
-+	hisi_sas_slot_task_free(hisi_hba, task, slot, true);
- 
- 	if (task->task_done)
- 		task->task_done(task);
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index 02575d81afca2..746e4d77de04a 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -2466,7 +2466,7 @@ static void slot_complete_v2_hw(struct hisi_hba *hisi_hba,
- 	}
- 	task->task_state_flags |= SAS_TASK_STATE_DONE;
- 	spin_unlock_irqrestore(&task->task_state_lock, flags);
--	hisi_sas_slot_task_free(hisi_hba, task, slot);
-+	hisi_sas_slot_task_free(hisi_hba, task, slot, true);
- 
- 	if (!is_internal && (task->task_proto != SAS_PROTOCOL_SMP)) {
- 		spin_lock_irqsave(&device->done_lock, flags);
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 9afc23e3a80fc..71820a1170b4f 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -883,6 +883,7 @@ static void dereg_device_v3_hw(struct hisi_hba *hisi_hba,
- 
- 	cfg_abt_set_query_iptt = hisi_sas_read32(hisi_hba,
- 		CFG_ABT_SET_QUERY_IPTT);
-+	spin_lock(&sas_dev->lock);
- 	list_for_each_entry_safe(slot, slot2, &sas_dev->list, entry) {
- 		cfg_abt_set_query_iptt &= ~CFG_SET_ABORTED_IPTT_MSK;
- 		cfg_abt_set_query_iptt |= (1 << CFG_SET_ABORTED_EN_OFF) |
-@@ -890,6 +891,7 @@ static void dereg_device_v3_hw(struct hisi_hba *hisi_hba,
- 		hisi_sas_write32(hisi_hba, CFG_ABT_SET_QUERY_IPTT,
- 			cfg_abt_set_query_iptt);
- 	}
-+	spin_unlock(&sas_dev->lock);
- 	cfg_abt_set_query_iptt &= ~(1 << CFG_SET_ABORTED_EN_OFF);
- 	hisi_sas_write32(hisi_hba, CFG_ABT_SET_QUERY_IPTT,
- 		cfg_abt_set_query_iptt);
-@@ -2378,7 +2380,7 @@ static void slot_complete_v3_hw(struct hisi_hba *hisi_hba,
- 	}
- 	task->task_state_flags |= SAS_TASK_STATE_DONE;
- 	spin_unlock_irqrestore(&task->task_state_lock, flags);
--	hisi_sas_slot_task_free(hisi_hba, task, slot);
-+	hisi_sas_slot_task_free(hisi_hba, task, slot, true);
- 
- 	if (!is_internal && (task->task_proto != SAS_PROTOCOL_SMP)) {
- 		spin_lock_irqsave(&device->done_lock, flags);
+ remove_reboot:
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index f61447913db97..2be2091c2b447 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -161,7 +161,6 @@ enum cpuhp_state {
+ 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
+ 	CPUHP_AP_PERF_XTENSA_STARTING,
+ 	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
+-	CPUHP_AP_ARM_SDEI_STARTING,
+ 	CPUHP_AP_ARM_VFP_STARTING,
+ 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
+ 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
 -- 
 2.39.2
 
