@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF0270C90D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B245E70C8DC
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235226AbjEVTob (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39216 "EHLO
+        id S235164AbjEVTnA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235221AbjEVToa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:30 -0400
+        with ESMTP id S235079AbjEVTm6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5109C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C66F6E64
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 32742621A1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A83C433EF;
-        Mon, 22 May 2023 19:44:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E361462A19
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF016C433D2;
+        Mon, 22 May 2023 19:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784668;
-        bh=FJKz7GuFKFBOzfkNFgYGuEfZN2BQnBKG66ivIzIIz98=;
+        s=korg; t=1684784547;
+        bh=AyD/uYFeOp9c7TzuEVxzz2YlVCTHymMSaJcFysb4Z6E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OkMDW7n5OFUO/VNwQkwuQHBOVBKA6n56LF3uiU0OPiLLmIuIxQYZzxzfuicoZZss9
-         RUeIGqYbAU2XRPj19e4mZ7Mkv6lv4He46tTLMX9ucNPMBDPK4TAY5E0nIj7XOxNvD2
-         fLHfT7B6zIX+6a9IlJS0HAwb3wkk1/qQqAW91rz0=
+        b=yfuZShMs0h0x/d1iAwpLhueQCpZh4Fllgp2QXi5XgklMdoF//6mAsPdB8ZLKLteOV
+         lzGco08wassO9jn3SQpgFK/TgskZiyjZmrjVGOKAm4LVjg1ZMhpJy48DBHymlyoMc4
+         7y6raWAAardMd/IDpPXs97od2G1XtLB42K67DHBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Daniel Gabay <daniel.gabay@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 119/364] net/sched: pass netlink extack to mqprio and taprio offload
-Date:   Mon, 22 May 2023 20:07:04 +0100
-Message-Id: <20230522190415.764146810@linuxfoundation.org>
+Subject: [PATCH 6.3 120/364] wifi: iwlwifi: pcie: fix possible NULL pointer dereference
+Date:   Mon, 22 May 2023 20:07:05 +0100
+Message-Id: <20230522190415.793399687@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
 References: <20230522190412.801391872@linuxfoundation.org>
@@ -56,121 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit c54876cd5961ce0f8e74807f79a6739cd6b35ddf ]
+[ Upstream commit b655b9a9f8467684cfa8906713d33b71ea8c8f54 ]
 
-With the multiplexed ndo_setup_tc() model which lacks a first-class
-struct netlink_ext_ack * argument, the only way to pass the netlink
-extended ACK message down to the device driver is to embed it within the
-offload structure.
+It is possible that iwl_pci_probe() will fail and free the trans,
+then afterwards iwl_pci_remove() will be called and crash by trying
+to access trans which is already freed, fix it.
 
-Do this for struct tc_mqprio_qopt_offload and struct tc_taprio_qopt_offload.
+iwlwifi 0000:01:00.0: Detected crf-id 0xa5a5a5a2, cnv-id 0xa5a5a5a2
+		      wfpm id 0xa5a5a5a2
+iwlwifi 0000:01:00.0: Can't find a correct rfid for crf id 0x5a2
+...
+BUG: kernel NULL pointer dereference, address: 0000000000000028
+...
+RIP: 0010:iwl_pci_remove+0x12/0x30 [iwlwifi]
+pci_device_remove+0x3e/0xb0
+device_release_driver_internal+0x103/0x1f0
+driver_detach+0x4c/0x90
+bus_remove_driver+0x5c/0xd0
+driver_unregister+0x31/0x50
+pci_unregister_driver+0x40/0x90
+iwl_pci_unregister_driver+0x15/0x20 [iwlwifi]
+__exit_compat+0x9/0x98 [iwlwifi]
+__x64_sys_delete_module+0x147/0x260
 
-Since struct tc_taprio_qopt_offload also contains a tc_mqprio_qopt_offload
-structure, and since device drivers might effectively reuse their mqprio
-implementation for the mqprio portion of taprio, we make taprio set the
-extack in both offload structures to point at the same netlink extack
-message.
-
-In fact, the taprio handling is a bit more tricky, for 2 reasons.
-
-First is because the offload structure has a longer lifetime than the
-extack structure. The driver is supposed to populate the extack
-synchronously from ndo_setup_tc() and leave it alone afterwards.
-To not have any use-after-free surprises, we zero out the extack pointer
-when we leave taprio_enable_offload().
-
-The second reason is because taprio does overwrite the extack message on
-ndo_setup_tc() error. We need to switch to the weak form of setting an
-extack message, which preserves a potential message set by the driver.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230413213309.082f6e21341b.I0db21d7fa9a828d571ca886713bd0b5d0b6e1e5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/pkt_sched.h |  2 ++
- net/sched/sch_mqprio.c  |  5 ++++-
- net/sched/sch_taprio.c  | 12 ++++++++++--
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 2016839991a42..fc688c7e95951 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -167,6 +167,7 @@ struct tc_mqprio_caps {
- struct tc_mqprio_qopt_offload {
- 	/* struct tc_mqprio_qopt must always be the first element */
- 	struct tc_mqprio_qopt qopt;
-+	struct netlink_ext_ack *extack;
- 	u16 mode;
- 	u16 shaper;
- 	u32 flags;
-@@ -194,6 +195,7 @@ struct tc_taprio_sched_entry {
- 
- struct tc_taprio_qopt_offload {
- 	struct tc_mqprio_qopt_offload mqprio;
-+	struct netlink_ext_ack *extack;
- 	u8 enable;
- 	ktime_t base_time;
- 	u64 cycle_time;
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index 48ed87b91086e..fc6225f15fcdb 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -33,9 +33,12 @@ static int mqprio_enable_offload(struct Qdisc *sch,
- 				 const struct tc_mqprio_qopt *qopt,
- 				 struct netlink_ext_ack *extack)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index a0bf19b18635c..f83ae0d301d0e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1698,6 +1698,9 @@ static void iwl_pci_remove(struct pci_dev *pdev)
  {
--	struct tc_mqprio_qopt_offload mqprio = {.qopt = *qopt};
- 	struct mqprio_sched *priv = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
-+	struct tc_mqprio_qopt_offload mqprio = {
-+		.qopt = *qopt,
-+		.extack = extack,
-+	};
- 	int err, i;
+ 	struct iwl_trans *trans = pci_get_drvdata(pdev);
  
- 	switch (priv->mode) {
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 1f469861eae32..cbad430191721 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1520,7 +1520,9 @@ static int taprio_enable_offload(struct net_device *dev,
- 		return -ENOMEM;
- 	}
- 	offload->enable = 1;
-+	offload->extack = extack;
- 	mqprio_qopt_reconstruct(dev, &offload->mqprio.qopt);
-+	offload->mqprio.extack = extack;
- 	taprio_sched_to_offload(dev, sched, offload, &caps);
++	if (!trans)
++		return;
++
+ 	iwl_drv_stop(trans->drv);
  
- 	for (tc = 0; tc < TC_MAX_QUEUE; tc++)
-@@ -1528,14 +1530,20 @@ static int taprio_enable_offload(struct net_device *dev,
- 
- 	err = ops->ndo_setup_tc(dev, TC_SETUP_QDISC_TAPRIO, offload);
- 	if (err < 0) {
--		NL_SET_ERR_MSG(extack,
--			       "Device failed to setup taprio offload");
-+		NL_SET_ERR_MSG_WEAK(extack,
-+				    "Device failed to setup taprio offload");
- 		goto done;
- 	}
- 
- 	q->offloaded = true;
- 
- done:
-+	/* The offload structure may linger around via a reference taken by the
-+	 * device driver, so clear up the netlink extack pointer so that the
-+	 * driver isn't tempted to dereference data which stopped being valid
-+	 */
-+	offload->extack = NULL;
-+	offload->mqprio.extack = NULL;
- 	taprio_offload_free(offload);
- 
- 	return err;
+ 	iwl_trans_pcie_free(trans);
 -- 
 2.39.2
 
