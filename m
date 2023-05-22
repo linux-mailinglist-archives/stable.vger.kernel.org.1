@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CF870C918
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2BF70C762
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235232AbjEVTpS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39592 "EHLO
+        id S234673AbjEVT2y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235273AbjEVToy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:54 -0400
+        with ESMTP id S234691AbjEVT2x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE2819B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DABDA3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B587262A6F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0035C433D2;
-        Mon, 22 May 2023 19:44:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A43D628D5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DC2C4339B;
+        Mon, 22 May 2023 19:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784684;
-        bh=EU+89lF6beMctRec6bim/8TjBP/TWUjhkRKihbeImeo=;
+        s=korg; t=1684783730;
+        bh=0GXFjYVqZ0PZmO9tVgTtfCagheAJigcdVsSQDV6JnJE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wb+SsZ5o7gviIlu1REF8LfbrWMWd61AuArvutrkBrbaop/AdHLD618MMgQAUACeMU
-         IsySXzOI/9CNQAWLwo5K2ZXLC2OgFUOhhpvkyQtpCGQuLrhqw8ApQic8nNMaQx/yQ5
-         dKtzwzfrKX3lRnKcFpYYPxRNGNZMEVDhF8lhUdOo=
+        b=eRDuo0teR5DuJpM2M+F7cF2mQoM1kMrc7wVakuR5VcsCw+GjXuLrT1XjpWM/hjQ9i
+         RnPtXw7dfBp9ttIQ9ISLGE9DP38/1WLaWKfuEwSy/No4W+VHsehCquOFXtQhdlyjJA
+         uKzzjcGEC/8iTWhwyOhzRvp5agSRjoqecMcX+Azo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 167/364] powerpc: Use of_property_present() for testing DT property presence
-Date:   Mon, 22 May 2023 20:07:52 +0100
-Message-Id: <20230522190416.906922133@linuxfoundation.org>
+Subject: [PATCH 6.1 116/292] Bluetooth: hci_bcm: Fall back to getting bdaddr from EFI if not set
+Date:   Mon, 22 May 2023 20:07:53 +0100
+Message-Id: <20230522190408.864182172@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,175 +54,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Herring <robh@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 857d423c74228cfa064f79ff3a16b163fdb8d542 ]
+[ Upstream commit 0d218c3642b9ccf71f44987cd03c19320f3bd918 ]
 
-It is preferred to use typed property access functions (i.e.
-of_property_read_<type> functions) rather than low-level
-of_get_property/of_find_property functions for reading properties. As
-part of this, convert of_get_property/of_find_property calls to the
-recently added of_property_present() helper when we just want to test
-for presence of a property and nothing more.
+On some devices the BCM Bluetooth adapter does not have a valid bdaddr set.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-[mpe: Drop change in ppc4xx_probe_pci_bridge(), formatting]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230310144657.1541039-1-robh@kernel.org
+btbcm.c currently sets HCI_QUIRK_INVALID_BDADDR to indicate when this is
+the case. But this requires users to manual setup a btaddr, by doing e.g.:
+
+btmgmt -i hci0 public-addr 'B0:F1:EC:82:1D:B3'
+
+Which means that Bluetooth will not work out of the box on such devices.
+To avoid this (where possible) hci_bcm sets: HCI_QUIRK_USE_BDADDR_PROPERTY
+which tries to get the bdaddr from devicetree.
+
+But this only works on devicetree platforms. On UEFI based platforms
+there is a special Broadcom UEFI variable which when present contains
+the devices bdaddr, just like how there is another UEFI variable which
+contains wifi nvram contents including the wifi MAC address.
+
+Add support for getting the bdaddr from this Broadcom UEFI variable,
+so that Bluetooth will work OOTB for users on devices where this
+UEFI variable is present.
+
+This fixes Bluetooth not working on for example Asus T100HA 2-in-1s.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/legacy_serial.c          | 8 ++++----
- arch/powerpc/platforms/44x/iss4xx.c          | 2 +-
- arch/powerpc/platforms/44x/ppc476.c          | 2 +-
- arch/powerpc/platforms/cell/spu_manage.c     | 2 +-
- arch/powerpc/platforms/powermac/pic.c        | 3 +--
- arch/powerpc/platforms/powernv/opal-lpc.c    | 2 +-
- arch/powerpc/platforms/pseries/hotplug-cpu.c | 2 +-
- arch/powerpc/platforms/pseries/vio.c         | 2 +-
- arch/powerpc/sysdev/mpic_msgr.c              | 2 +-
- 9 files changed, 12 insertions(+), 13 deletions(-)
+ drivers/bluetooth/btbcm.c | 47 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 44 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legacy_serial.c
-index f048c424c525b..1a3b7f3513b40 100644
---- a/arch/powerpc/kernel/legacy_serial.c
-+++ b/arch/powerpc/kernel/legacy_serial.c
-@@ -171,11 +171,11 @@ static int __init add_legacy_soc_port(struct device_node *np,
- 	/* We only support ports that have a clock frequency properly
- 	 * encoded in the device-tree.
- 	 */
--	if (of_get_property(np, "clock-frequency", NULL) == NULL)
-+	if (!of_property_present(np, "clock-frequency"))
- 		return -1;
+diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
+index 43e98a598bd9a..de2ea589aa49b 100644
+--- a/drivers/bluetooth/btbcm.c
++++ b/drivers/bluetooth/btbcm.c
+@@ -6,6 +6,7 @@
+  *  Copyright (C) 2015  Intel Corporation
+  */
  
- 	/* if reg-offset don't try to use it */
--	if ((of_get_property(np, "reg-offset", NULL) != NULL))
-+	if (of_property_present(np, "reg-offset"))
- 		return -1;
++#include <linux/efi.h>
+ #include <linux/module.h>
+ #include <linux/firmware.h>
+ #include <linux/dmi.h>
+@@ -34,6 +35,43 @@
+ /* For kmalloc-ing the fw-name array instead of putting it on the stack */
+ typedef char bcm_fw_name[BCM_FW_NAME_LEN];
  
- 	/* if rtas uses this device, don't try to use it as well */
-@@ -237,7 +237,7 @@ static int __init add_legacy_isa_port(struct device_node *np,
- 	 * Note: Don't even try on P8 lpc, we know it's not directly mapped
- 	 */
- 	if (!of_device_is_compatible(isa_brg, "ibm,power8-lpc") ||
--	    of_get_property(isa_brg, "ranges", NULL)) {
-+	    of_property_present(isa_brg, "ranges")) {
- 		taddr = of_translate_address(np, reg);
- 		if (taddr == OF_BAD_ADDR)
- 			taddr = 0;
-@@ -268,7 +268,7 @@ static int __init add_legacy_pci_port(struct device_node *np,
- 	 * compatible UARTs on PCI need all sort of quirks (port offsets
- 	 * etc...) that this code doesn't know about
- 	 */
--	if (of_get_property(np, "clock-frequency", NULL) == NULL)
-+	if (!of_property_present(np, "clock-frequency"))
- 		return -1;
- 
- 	/* Get the PCI address. Assume BAR 0 */
-diff --git a/arch/powerpc/platforms/44x/iss4xx.c b/arch/powerpc/platforms/44x/iss4xx.c
-index c5f82591408c1..812765cf06324 100644
---- a/arch/powerpc/platforms/44x/iss4xx.c
-+++ b/arch/powerpc/platforms/44x/iss4xx.c
-@@ -52,7 +52,7 @@ static void __init iss4xx_init_irq(void)
- 
- 	/* Find top level interrupt controller */
- 	for_each_node_with_property(np, "interrupt-controller") {
--		if (of_get_property(np, "interrupts", NULL) == NULL)
-+		if (!of_property_present(np, "interrupts"))
- 			break;
++#ifdef CONFIG_EFI
++static int btbcm_set_bdaddr_from_efi(struct hci_dev *hdev)
++{
++	efi_guid_t guid = EFI_GUID(0x74b00bd9, 0x805a, 0x4d61, 0xb5, 0x1f,
++				   0x43, 0x26, 0x81, 0x23, 0xd1, 0x13);
++	bdaddr_t efi_bdaddr, bdaddr;
++	efi_status_t status;
++	unsigned long len;
++	int ret;
++
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
++		return -EOPNOTSUPP;
++
++	len = sizeof(efi_bdaddr);
++	status = efi.get_variable(L"BDADDR", &guid, NULL, &len, &efi_bdaddr);
++	if (status != EFI_SUCCESS)
++		return -ENXIO;
++
++	if (len != sizeof(efi_bdaddr))
++		return -EIO;
++
++	baswap(&bdaddr, &efi_bdaddr);
++
++	ret = btbcm_set_bdaddr(hdev, &bdaddr);
++	if (ret)
++		return ret;
++
++	bt_dev_info(hdev, "BCM: Using EFI device address (%pMR)", &bdaddr);
++	return 0;
++}
++#else
++static int btbcm_set_bdaddr_from_efi(struct hci_dev *hdev)
++{
++	return -EOPNOTSUPP;
++}
++#endif
++
+ int btbcm_check_bdaddr(struct hci_dev *hdev)
+ {
+ 	struct hci_rp_read_bd_addr *bda;
+@@ -87,9 +125,12 @@ int btbcm_check_bdaddr(struct hci_dev *hdev)
+ 	    !bacmp(&bda->bdaddr, BDADDR_BCM4345C5) ||
+ 	    !bacmp(&bda->bdaddr, BDADDR_BCM43430A0) ||
+ 	    !bacmp(&bda->bdaddr, BDADDR_BCM43341B)) {
+-		bt_dev_info(hdev, "BCM: Using default device address (%pMR)",
+-			    &bda->bdaddr);
+-		set_bit(HCI_QUIRK_INVALID_BDADDR, &hdev->quirks);
++		/* Try falling back to BDADDR EFI variable */
++		if (btbcm_set_bdaddr_from_efi(hdev) != 0) {
++			bt_dev_info(hdev, "BCM: Using default device address (%pMR)",
++				    &bda->bdaddr);
++			set_bit(HCI_QUIRK_INVALID_BDADDR, &hdev->quirks);
++		}
  	}
- 	if (np == NULL)
-diff --git a/arch/powerpc/platforms/44x/ppc476.c b/arch/powerpc/platforms/44x/ppc476.c
-index 7c91ac5a5241b..70556fd10f6b4 100644
---- a/arch/powerpc/platforms/44x/ppc476.c
-+++ b/arch/powerpc/platforms/44x/ppc476.c
-@@ -122,7 +122,7 @@ static void __init ppc47x_init_irq(void)
  
- 	/* Find top level interrupt controller */
- 	for_each_node_with_property(np, "interrupt-controller") {
--		if (of_get_property(np, "interrupts", NULL) == NULL)
-+		if (!of_property_present(np, "interrupts"))
- 			break;
- 	}
- 	if (np == NULL)
-diff --git a/arch/powerpc/platforms/cell/spu_manage.c b/arch/powerpc/platforms/cell/spu_manage.c
-index f1ac4c7420690..74567b32c48c2 100644
---- a/arch/powerpc/platforms/cell/spu_manage.c
-+++ b/arch/powerpc/platforms/cell/spu_manage.c
-@@ -402,7 +402,7 @@ static int __init of_has_vicinity(void)
- 	struct device_node *dn;
- 
- 	for_each_node_by_type(dn, "spe") {
--		if (of_find_property(dn, "vicinity", NULL))  {
-+		if (of_property_present(dn, "vicinity"))  {
- 			of_node_put(dn);
- 			return 1;
- 		}
-diff --git a/arch/powerpc/platforms/powermac/pic.c b/arch/powerpc/platforms/powermac/pic.c
-index 8c8d8e0a7d137..7425f94e271e5 100644
---- a/arch/powerpc/platforms/powermac/pic.c
-+++ b/arch/powerpc/platforms/powermac/pic.c
-@@ -475,8 +475,7 @@ static int __init pmac_pic_probe_mpic(void)
- 
- 	/* We can have up to 2 MPICs cascaded */
- 	for_each_node_by_type(np, "open-pic") {
--		if (master == NULL &&
--		    of_get_property(np, "interrupts", NULL) == NULL)
-+		if (master == NULL && !of_property_present(np, "interrupts"))
- 			master = of_node_get(np);
- 		else if (slave == NULL)
- 			slave = of_node_get(np);
-diff --git a/arch/powerpc/platforms/powernv/opal-lpc.c b/arch/powerpc/platforms/powernv/opal-lpc.c
-index d129d6d45a500..a16f07cdab267 100644
---- a/arch/powerpc/platforms/powernv/opal-lpc.c
-+++ b/arch/powerpc/platforms/powernv/opal-lpc.c
-@@ -403,7 +403,7 @@ void __init opal_lpc_init(void)
- 		return;
- 
- 	/* Does it support direct mapping ? */
--	if (of_get_property(np, "ranges", NULL)) {
-+	if (of_property_present(np, "ranges")) {
- 		pr_info("OPAL: Found memory mapped LPC bus on chip %d\n",
- 			opal_lpc_chip_id);
- 		isa_bridge_init_non_pci(np);
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index 982e5e4b5e065..1a3cb313976a4 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -493,7 +493,7 @@ static bool valid_cpu_drc_index(struct device_node *parent, u32 drc_index)
- 	bool found = false;
- 	int rc, index;
- 
--	if (of_find_property(parent, "ibm,drc-info", NULL))
-+	if (of_property_present(parent, "ibm,drc-info"))
- 		return drc_info_valid_index(parent, drc_index);
- 
- 	/* Note that the format of the ibm,drc-indexes array is
-diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
-index 770df9351aaa9..d54306a936d55 100644
---- a/arch/powerpc/platforms/pseries/vio.c
-+++ b/arch/powerpc/platforms/pseries/vio.c
-@@ -1440,7 +1440,7 @@ struct vio_dev *vio_register_device_node(struct device_node *of_node)
- 	viodev->dev.bus = &vio_bus_type;
- 	viodev->dev.release = vio_dev_release;
- 
--	if (of_get_property(viodev->dev.of_node, "ibm,my-dma-window", NULL)) {
-+	if (of_property_present(viodev->dev.of_node, "ibm,my-dma-window")) {
- 		if (firmware_has_feature(FW_FEATURE_CMO))
- 			vio_cmo_set_dma_ops(viodev);
- 		else
-diff --git a/arch/powerpc/sysdev/mpic_msgr.c b/arch/powerpc/sysdev/mpic_msgr.c
-index d75064fb7d12f..1a3ac0b5dd89c 100644
---- a/arch/powerpc/sysdev/mpic_msgr.c
-+++ b/arch/powerpc/sysdev/mpic_msgr.c
-@@ -116,7 +116,7 @@ static unsigned int mpic_msgr_number_of_blocks(void)
- 
- 		for (;;) {
- 			snprintf(buf, sizeof(buf), "mpic-msgr-block%d", count);
--			if (!of_find_property(aliases, buf, NULL))
-+			if (!of_property_present(aliases, buf))
- 				break;
- 
- 			count += 1;
+ 	kfree_skb(skb);
 -- 
 2.39.2
 
