@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DCD670C42C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B14CD70C42E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:23:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjEVRXk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 13:23:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38244 "EHLO
+        id S231467AbjEVRXu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 13:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229617AbjEVRXj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:23:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE36E9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:23:37 -0700 (PDT)
+        with ESMTP id S230293AbjEVRXs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:23:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB474E9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:23:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A73361425
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:23:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FD1C433D2;
-        Mon, 22 May 2023 17:23:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40C8961D48
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:23:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C822C433D2;
+        Mon, 22 May 2023 17:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684776216;
-        bh=vVuxPVOoYBZ8tlIbzeJcyzqgvJGAfE66ks80w0gCTWE=;
+        s=korg; t=1684776225;
+        bh=GOiUjyjp2dvHCBOG+wmmNyw789lHV1VuAe3dVAilVUA=;
         h=Subject:To:Cc:From:Date:From;
-        b=oMN6jkRCCwYb3yFnKYeGdwnyj4ZPc69QoYbsqTEpCtyDO6W9d1f05RSLOrnkgws4K
-         iWoT4VKvOBMr3S03ZGzJTM9c7fYLp+KfjZinz1ssU3oYB+3I8FB46WLCdx5VFggePT
-         a4jiiFt4JZRHIlx6TuVU+4EpjFfLu6VyK/WozMDk=
-Subject: FAILED: patch "[PATCH] usb: dwc3: debugfs: Resume dwc3 before accessing registers" failed to apply to 4.19-stable tree
+        b=URCs6WeABHEKr77mez3LQYDXwL54M+pIDgOTI9Y4UUErJcf3VQxcopRy/JmaNzstj
+         sdmK4PrheytzrONgyxar4lk9SGBV1TEC0mdQqF+NZtRYl3w/tRa/ouAXoEHdL7zeE6
+         gZrxcrW/TMdxU0vslzqc1kWsU4ZPPB8gh5E63rQQ=
+Subject: FAILED: patch "[PATCH] usb: dwc3: debugfs: Resume dwc3 before accessing registers" failed to apply to 4.14-stable tree
 To:     quic_ugoswami@quicinc.com, Thinh.Nguyen@synopsys.com,
         gregkh@linuxfoundation.org, johan+linaro@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 18:23:34 +0100
-Message-ID: <2023052234-snugness-saxophone-313c@gregkh>
+Date:   Mon, 22 May 2023 18:23:35 +0100
+Message-ID: <2023052235-overcome-frostlike-a068@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 614ce6a2ea50068b45339257891e51e639ac9001
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052234-snugness-saxophone-313c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052235-overcome-frostlike-a068@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,11 @@ d102444cac15 ("usb: dwc3: debugfs: Print/set link state for peripheral mode")
 0d36dede4578 ("usb: dwc3: debugfs: Properly print/set link state for HS")
 62ba09d6bb63 ("usb: dwc3: debugfs: Dump internal LSP and ep registers")
 2c85a1817e4b ("usb: dwc3: debugfs: Properly name Tx/RxFIFO")
+d635db5508b0 ("usb: dwc3: add global soc bus configuration reg0")
+80b776340c78 ("usb: dwc3: Dump LSP and BMU debug info")
+4cff75c7fe3d ("usb: dwc3: core.h: add some register definitions")
+6d5b53c1fd5c ("usb: dwc3: debugfs: Re-use DEFINE_SHOW_ATTRIBUTE() macro")
+b16ea8b9492e ("usb: dwc3: Fix GDBGFIFOSPACE_TYPE values")
 
 thanks,
 
