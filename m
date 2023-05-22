@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE8A70C9E8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB14170C833
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235400AbjEVTxB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45234 "EHLO
+        id S234944AbjEVTgY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235473AbjEVTwz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4AEE0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:54 -0700 (PDT)
+        with ESMTP id S234981AbjEVTgU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A781A5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9898362B2E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC46C433EF;
-        Mon, 22 May 2023 19:52:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30ECF61FE3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24259C433D2;
+        Mon, 22 May 2023 19:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785173;
-        bh=K2wgt1pG60Qr7mIgVaviwaIIgCgQR1ZCUpXPldOiMbc=;
+        s=korg; t=1684784153;
+        bh=la59xoWC6QSWnaNVuqh2zFhi0gli+BszRWQZvSq6b88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EuFkK37g/iYeIFYA0SM7AllHZC7lRg/sWgaqINVFa5OWUoHm9Z9wfNazJpJK0mgxa
-         u5XI8j9RgVwpbKR3gH6nJQ1JWydKC1bt+GZWglzYYkGEmydL7NTj9o9Ie4jpRNAdT6
-         4wf7o7Et30hJA+kxMJGFv0iJH7paDNKuxARBBvow=
+        b=aUR1pejTQEY5MXRH8rqVEPbT8A/ND8/XA9YMpGXS/YYGv8tbmVSnuoKT6RZzkozfI
+         8RwQmzC1O53rKrQx+UJtZuZ2w2CiCfoDjuvPwquimGvslRhvsvNgYTbWkUB1kJq3g/
+         rceAzqZYmX3YPkn941KjRuJDxwWO0yj0n48dXmSU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <swboyd@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.3 333/364] serial: qcom-geni: fix enabling deactivated interrupt
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+78d4495558999f55d1da@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 281/292] nilfs2: fix use-after-free bug of nilfs_root in nilfs_evict_inode()
 Date:   Mon, 22 May 2023 20:10:38 +0100
-Message-Id: <20230522190421.101400885@linuxfoundation.org>
+Message-Id: <20230522190412.967046491@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,84 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 5f949f140f73696f64acb89a1f16ff9153d017e0 upstream.
+commit 9b5a04ac3ad9898c4745cba46ea26de74ba56a8e upstream.
 
-The driver have a race, experienced only with PREEMPT_RT patchset:
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  However, since
+nilfs_evict_inode() uses nilfs_root for some cleanup operations, it may
+cause use-after-free read if inodes are left in "garbage_list" and
+released by nilfs_dispose_list() at the end of nilfs_detach_log_writer().
 
-CPU0                         | CPU1
-==================================================================
-qcom_geni_serial_probe       |
-  uart_add_one_port          |
-                             | serdev_drv_probe
-                             |   qca_serdev_probe
-                             |     serdev_device_open
-                             |       uart_open
-                             |         uart_startup
-                             |           qcom_geni_serial_startup
-                             |             enable_irq
-                             |               __irq_startup
-                             |                 WARN_ON()
-                             |                 IRQ not activated
-  request_threaded_irq       |
-    irq_domain_activate_irq  |
+Fix this issue by modifying nilfs_evict_inode() to only clear inode
+without additional metadata changes that use nilfs_root if the file system
+is degraded to read-only or the writer is detached.
 
-The warning:
-
-  894000.serial: ttyHS1 at MMIO 0x894000 (irq = 144, base_baud = 0) is a MSM
-  serial serial0: tty port ttyHS1 registered
-  WARNING: CPU: 7 PID: 107 at kernel/irq/chip.c:241 __irq_startup+0x78/0xd8
-  ...
-  qcom_geni_serial 894000.serial: serial engine reports 0 RX bytes in!
-
-Adding UART port triggers probe of child serial devices - serdev and
-eventually Qualcomm Bluetooth hci_qca driver.  This opens UART port
-which enables the interrupt before it got activated in
-request_threaded_irq().  The issue originates in commit f3974413cf02
-("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup") and discussion on
-mailing list [1].  However the above commit does not explain why the
-uart_add_one_port() is moved above requesting interrupt.
-
-[1] https://lore.kernel.org/all/5d9f3dfa.1c69fb81.84c4b.30bf@mx.google.com/
-
-Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
+Link: https://lkml.kernel.org/r/20230509152956.8313-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+78d4495558999f55d1da@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000099e5ac05fb1c3b85@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
-Cc: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230505152301.2181270-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/nilfs2/inode.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1665,19 +1665,18 @@ static int qcom_geni_serial_probe(struct
- 	uport->private_data = &port->private_data;
- 	platform_set_drvdata(pdev, port);
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -917,6 +917,7 @@ void nilfs_evict_inode(struct inode *ino
+ 	struct nilfs_transaction_info ti;
+ 	struct super_block *sb = inode->i_sb;
+ 	struct nilfs_inode_info *ii = NILFS_I(inode);
++	struct the_nilfs *nilfs;
+ 	int ret;
  
--	ret = uart_add_one_port(drv, uport);
--	if (ret)
--		return ret;
--
- 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
- 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
- 			IRQF_TRIGGER_HIGH, port->name, uport);
- 	if (ret) {
- 		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
--		uart_remove_one_port(drv, uport);
- 		return ret;
- 	}
+ 	if (inode->i_nlink || !ii->i_root || unlikely(is_bad_inode(inode))) {
+@@ -929,6 +930,23 @@ void nilfs_evict_inode(struct inode *ino
  
-+	ret = uart_add_one_port(drv, uport);
-+	if (ret)
-+		return ret;
+ 	truncate_inode_pages_final(&inode->i_data);
+ 
++	nilfs = sb->s_fs_info;
++	if (unlikely(sb_rdonly(sb) || !nilfs->ns_writer)) {
++		/*
++		 * If this inode is about to be disposed after the file system
++		 * has been degraded to read-only due to file system corruption
++		 * or after the writer has been detached, do not make any
++		 * changes that cause writes, just clear it.
++		 * Do this check after read-locking ns_segctor_sem by
++		 * nilfs_transaction_begin() in order to avoid a race with
++		 * the writer detach operation.
++		 */
++		clear_inode(inode);
++		nilfs_clear_inode(inode);
++		nilfs_transaction_abort(sb);
++		return;
++	}
 +
- 	/*
- 	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
- 	 * enabled/disabled from dev_pm_arm_wake_irq during system
+ 	/* TODO: some of the following operations may fail.  */
+ 	nilfs_truncate_bmap(ii, 0);
+ 	nilfs_mark_inode_dirty(inode);
 
 
