@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70B8270C5E9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25C270C8DA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbjEVTNZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36706 "EHLO
+        id S235118AbjEVTm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233505AbjEVTNZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:25 -0400
+        with ESMTP id S235114AbjEVTm4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0001ECF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14348184
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9155F621D1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48B5C4339C;
-        Mon, 22 May 2023 19:13:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2023629F0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B41C433D2;
+        Mon, 22 May 2023 19:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782803;
-        bh=AwGyhurLPuHvkuuSE7yVuKJr6FREJY7VBBnMEb17XHs=;
+        s=korg; t=1684784556;
+        bh=TN4+vHxi4wdDBy50Gs9Fs11R4OUlCj4qemfXAkOZeLs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0SZ0/PpcwEHLGOEJO53wIAG8Vh4ap1qw8gkzWRXLz6Z48VpsRm70hJn98sYsmZpp+
-         ojw8vYxU4L+07WD5iau+dAvxn0GqvrE26okTGOypmLW4A8FJMqK8g+w1AniSAOQ/4v
-         oZyPuE80/SwuA0Z0Qul/zy3gHWgC7M+KQlBBqwG4=
+        b=HJmmFLRQLKiE+WxdLUN6w36ne1e/2H5/iU7PqTJGJHTmbp/odDnjyF2g7MN2+EN1i
+         Jjh/BKa8TQyRONmihNfsU0T8LdPGRQ8tSSX9tD2yfBItHsYkBGFb3pyRB7fe5RgLd2
+         UbPS6crTwETPhWb8lTQ7OHC8Gp9BTFmOOytX4ov8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Simon Horman <simon.horman@corigine.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 003/203] net: mdio: mvusb: Fix an error handling path in mvusb_mdio_probe()
-Date:   Mon, 22 May 2023 20:07:07 +0100
-Message-Id: <20230522190355.030979228@linuxfoundation.org>
+Subject: [PATCH 6.3 123/364] wifi: iwlwifi: mvm: fix ptk_pn memory leak
+Date:   Mon, 22 May 2023 20:07:08 +0100
+Message-Id: <20230522190415.870406585@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 27c1eaa07283b0c94becf8241f95368267cf558b ]
+[ Upstream commit d066a530af8e1833c7ea2cef7784004700c85f79 ]
 
-Should of_mdiobus_register() fail, a previous usb_get_dev() call should be
-undone as in the .disconnect function.
+If adding a key to firmware fails we leak the allocated ptk_pn.
+This shouldn't happen in practice, but we should still fix it.
 
-Fixes: 04e37d92fbed ("net: phy: add marvell usb to mdio controller")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.99446ffd02bc.I82a2ad6ec1395f188e0a1677cc619e3fcb1feac9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-mvusb.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/mdio/mdio-mvusb.c b/drivers/net/mdio/mdio-mvusb.c
-index d5eabddfdf51b..11e048136ac23 100644
---- a/drivers/net/mdio/mdio-mvusb.c
-+++ b/drivers/net/mdio/mdio-mvusb.c
-@@ -73,6 +73,7 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
- 	struct device *dev = &interface->dev;
- 	struct mvusb_mdio *mvusb;
- 	struct mii_bus *mdio;
-+	int ret;
- 
- 	mdio = devm_mdiobus_alloc_size(dev, sizeof(*mvusb));
- 	if (!mdio)
-@@ -93,7 +94,15 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
- 	mdio->write = mvusb_mdio_write;
- 
- 	usb_set_intfdata(interface, mvusb);
--	return of_mdiobus_register(mdio, dev->of_node);
-+	ret = of_mdiobus_register(mdio, dev->of_node);
-+	if (ret)
-+		goto put_dev;
-+
-+	return 0;
-+
-+put_dev:
-+	usb_put_dev(mvusb->udev);
-+	return ret;
- }
- 
- static void mvusb_mdio_disconnect(struct usb_interface *interface)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 9fc2d5d8b7d75..a25fd90816f5b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3587,7 +3587,7 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mvm_sta *mvmsta = NULL;
+-	struct iwl_mvm_key_pn *ptk_pn;
++	struct iwl_mvm_key_pn *ptk_pn = NULL;
+ 	int keyidx = key->keyidx;
+ 	u32 sec_key_id = WIDE_ID(DATA_PATH_GROUP, SEC_KEY_CMD);
+ 	u8 sec_key_ver = iwl_fw_lookup_cmd_ver(mvm->fw, sec_key_id, 0);
+@@ -3739,6 +3739,10 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 		if (ret) {
+ 			IWL_WARN(mvm, "set key failed\n");
+ 			key->hw_key_idx = STA_KEY_IDX_INVALID;
++			if (ptk_pn) {
++				RCU_INIT_POINTER(mvmsta->ptk_pn[keyidx], NULL);
++				kfree(ptk_pn);
++			}
+ 			/*
+ 			 * can't add key for RX, but we don't need it
+ 			 * in the device for TX so still return 0,
 -- 
 2.39.2
 
