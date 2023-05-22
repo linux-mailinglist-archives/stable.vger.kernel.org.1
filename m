@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4ED70C92C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0ED370C63B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235247AbjEVTpg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
+        id S234018AbjEVTQX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235273AbjEVTp3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:29 -0400
+        with ESMTP id S231538AbjEVTQG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E896DE0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13194E62
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84F2F62A3C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B89C433D2;
-        Mon, 22 May 2023 19:45:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1B086275C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D39C4339B;
+        Mon, 22 May 2023 19:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784727;
-        bh=vPKYro4QLlskCwG8Mem35oe25rxm3WPf7BbJoyHZhbg=;
+        s=korg; t=1684782958;
+        bh=md2nOAsUB65InNrnStU66YPlEd6VHnLXSPWZRXYJOR0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ODeSONtcfTBDZcSgaW3ksZNHmsUgJmm5ga5ZMQVIxvvHlrJCa2/kygdJjQajdkpys
-         iNbmkycrU41YsUhB6hqYZgI0k54p8BGlNsmcpzCCWATRcFt1rTonBu5uRFjBwPT3Xe
-         0oSfKz1YXvxOu9OmkZ+BO/HDRVXRk53QAzvhJOZ8=
+        b=Ef5w6KPhgF752tdU+piA/18yMdM8AWYc1rnWDNITv0hI1LcBArpJGbMTY+rZSIBuR
+         EU/bO2qf1fkmfOQtLcdSvAZgxlxMJ2H69zn5TQHeqGQyVPigG/425ptHiaTJCRIGGh
+         SlpNbjc4bd2YSqNJfOUNjED6zEGjKisamKa02efs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 181/364] clk: tegra20: fix gcc-7 constant overflow warning
+        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 062/203] ext4: set goal start correctly in ext4_mb_normalize_request
 Date:   Mon, 22 May 2023 20:08:06 +0100
-Message-Id: <20230522190417.254055971@linuxfoundation.org>
+Message-Id: <20230522190356.710658975@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,72 +54,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
+[ Upstream commit b07ffe6927c75d99af534d685282ea188d9f71a6 ]
 
-Older gcc versions get confused by comparing a u32 value to a negative
-constant in a switch()/case block:
+We need to set ac_g_ex to notify the goal start used in
+ext4_mb_find_by_goal. Set ac_g_ex instead of ac_f_ex in
+ext4_mb_normalize_request.
+Besides we should assure goal start is in range [first_data_block,
+blocks_count) as ext4_mb_initialize_context does.
 
-drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
-drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_12MHZ:
-  ^~~~
-drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_26MHZ:
+[ Added a check to make sure size is less than ar->pright; otherwise
+  we could end up passing an underflowed value of ar->pright - size to
+  ext4_get_group_no_and_offset(), which will trigger a BUG_ON later on.
+  - TYT ]
 
-Make the constants unsigned instead.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230303172120.3800725-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ fs/ext4/mballoc.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index 422d782475532..dcacc5064d339 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -21,24 +21,24 @@
- #define MISC_CLK_ENB 0x48
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 4cc635633f789..de51963c701f7 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4045,6 +4045,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
+ 				struct ext4_allocation_request *ar)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
++	struct ext4_super_block *es = sbi->s_es;
+ 	int bsbits, max;
+ 	ext4_lblk_t end;
+ 	loff_t size, start_off;
+@@ -4225,18 +4226,21 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
+ 	ac->ac_g_ex.fe_len = EXT4_NUM_B2C(sbi, size);
  
- #define OSC_CTRL 0x50
--#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
--#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
--#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
--#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
--#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
--#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
--
--#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
--#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
--#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
--#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
-+#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
-+#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
-+#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
-+#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
-+#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
-+#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
-+
-+#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
- 
- #define OSC_FREQ_DET 0x58
--#define OSC_FREQ_DET_TRIG (1<<31)
-+#define OSC_FREQ_DET_TRIG (1u<<31)
- 
- #define OSC_FREQ_DET_STATUS 0x5c
--#define OSC_FREQ_DET_BUSY (1<<31)
--#define OSC_FREQ_DET_CNT_MASK 0xFFFF
-+#define OSC_FREQ_DET_BUSYu (1<<31)
-+#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
- 
- #define TEGRA20_CLK_PERIPH_BANKS	3
+ 	/* define goal start in order to merge */
+-	if (ar->pright && (ar->lright == (start + size))) {
++	if (ar->pright && (ar->lright == (start + size)) &&
++	    ar->pright >= size &&
++	    ar->pright - size >= le32_to_cpu(es->s_first_data_block)) {
+ 		/* merge to the right */
+ 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pright - size,
+-						&ac->ac_f_ex.fe_group,
+-						&ac->ac_f_ex.fe_start);
++						&ac->ac_g_ex.fe_group,
++						&ac->ac_g_ex.fe_start);
+ 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
+ 	}
+-	if (ar->pleft && (ar->lleft + 1 == start)) {
++	if (ar->pleft && (ar->lleft + 1 == start) &&
++	    ar->pleft + 1 < ext4_blocks_count(es)) {
+ 		/* merge to the left */
+ 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pleft + 1,
+-						&ac->ac_f_ex.fe_group,
+-						&ac->ac_f_ex.fe_start);
++						&ac->ac_g_ex.fe_group,
++						&ac->ac_g_ex.fe_start);
+ 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
+ 	}
  
 -- 
 2.39.2
