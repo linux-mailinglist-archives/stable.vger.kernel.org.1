@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 878E870C961
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E7D270C75E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235308AbjEVTr0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42386 "EHLO
+        id S234686AbjEVT2p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235298AbjEVTrZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B4495
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:24 -0700 (PDT)
+        with ESMTP id S234668AbjEVT2o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8109C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 198B462AAF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37206C433D2;
-        Mon, 22 May 2023 19:47:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 01A0E62849
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0961BC433D2;
+        Mon, 22 May 2023 19:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784843;
-        bh=OS3eQJAD87RLlcXyzpbqG+Yjj1uYf4vR8I/ldzIrF/Y=;
+        s=korg; t=1684783722;
+        bh=+CClwmlhhoXRV/flrOSGPQcZOJ5y9G17Co5fZemzFmM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GoiZKkE4opoMrVubSl/43n+Bmlz1wrimg3Uq++bK1dGiymNUgYFFWmOxgVMF2L1WX
-         cDnkV4mkFVGRIkslEEHoAX09vH/x4R3Eyh5YtzIpe5C2cFQOVABD2ehZWSllp5pn/I
-         M6CipW/oG5spn8e8IyMIR2sSfAvNgYhId25BGt3w=
+        b=C3LeBkV62wmvoiqyYFLPaXEKw3RBZKIkuqSs6AjxTJ7ra2SlhfynW1ud5Mkmak32R
+         K0/0RMBTeBvgU+Ry7N++GU2B0yyGCOaoigzMa+Hwws/Ot7LQ8GL5dj+9REeDojs4yq
+         SXlkBqojnsVoyckPOJRQzgNZ2B7pSae2ZJn9VsxI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev, Eugene Huang <eugene.huang99@gmail.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
         Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 192/364] soundwire: qcom: gracefully handle too many ports in DT
+Subject: [PATCH 6.1 140/292] soundwire: dmi-quirks: add remapping for Intel Rooks County NUC M15
 Date:   Mon, 22 May 2023 20:08:17 +0100
-Message-Id: <20230522190417.537329630@linuxfoundation.org>
+Message-Id: <20230522190409.464537481@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,48 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Eugene Huang <eugene.huang99@gmail.com>
 
-[ Upstream commit 2367e0ecb498764e95cfda691ff0828f7d25f9a4 ]
+[ Upstream commit 01b33e284ca28cc977bdcfb23be2c719f2139175 ]
 
-There are two issues related to the number of ports coming from
-Devicetree when exceeding in total QCOM_SDW_MAX_PORTS.  Both lead to
-incorrect memory accesses:
-1. With DTS having too big value of input or output ports, the driver,
-   when copying port parameters from local/stack arrays into 'pconfig'
-   array in 'struct qcom_swrm_ctrl', will iterate over their sizes.
+Same DSDT problem as the HP Omen 16-k0005TX, except rt1316 amp is on
+link2.
 
-2. If DTS also has too many parameters for these ports (e.g.
-   qcom,ports-sinterval-low), the driver will overflow buffers on the
-   stack when reading these properties from DTS.
-
-Add a sanity check so incorrect DTS will not cause kernel memory
-corruption.
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230222144412.237832-2-krzysztof.kozlowski@linaro.org
+Link: https://github.com/thesofproject/linux/issues/4088
+Signed-off-by: Eugene Huang <eugene.huang99@gmail.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20230314090618.498716-1-yung-chuan.liao@linux.intel.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/qcom.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soundwire/dmi-quirks.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-index ba502129150d5..30575ed20947e 100644
---- a/drivers/soundwire/qcom.c
-+++ b/drivers/soundwire/qcom.c
-@@ -1217,6 +1217,9 @@ static int qcom_swrm_get_port_config(struct qcom_swrm_ctrl *ctrl)
- 	ctrl->num_dout_ports = val;
+diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
+index 7969881f126dc..58ea013fa918a 100644
+--- a/drivers/soundwire/dmi-quirks.c
++++ b/drivers/soundwire/dmi-quirks.c
+@@ -73,6 +73,23 @@ static const struct adr_remap hp_omen_16[] = {
+ 	{}
+ };
  
- 	nports = ctrl->num_dout_ports + ctrl->num_din_ports;
-+	if (nports > QCOM_SDW_MAX_PORTS)
-+		return -EINVAL;
++/*
++ * Intel NUC M15 LAPRC510 and LAPRC710
++ */
++static const struct adr_remap intel_rooks_county[] = {
++	/* rt711-sdca on link0 */
++	{
++		0x000020025d071100ull,
++		0x000030025d071101ull
++	},
++	/* rt1316-sdca on link2 */
++	{
++		0x000120025d071100ull,
++		0x000230025d131601ull
++	},
++	{}
++};
 +
- 	/* Valid port numbers are from 1-14, so mask out port 0 explicitly */
- 	set_bit(0, &ctrl->dout_port_mask);
- 	set_bit(0, &ctrl->din_port_mask);
+ static const struct dmi_system_id adr_remap_quirk_table[] = {
+ 	/* TGL devices */
+ 	{
+@@ -98,6 +115,14 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)intel_tgl_bios,
+ 	},
++	{
++		/* quirk used for NUC15 'Rooks County' LAPRC510 and LAPRC710 skews */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel(R) Client Systems"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LAPRC"),
++		},
++		.driver_data = (void *)intel_rooks_county,
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
 -- 
 2.39.2
 
