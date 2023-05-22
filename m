@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC8E770C86A
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA7270C84D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234990AbjEVTik (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58738 "EHLO
+        id S235036AbjEVThx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235034AbjEVTi1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:38:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D891A5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:38:20 -0700 (PDT)
+        with ESMTP id S235043AbjEVThm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D65AE4B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E51360FFD
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1ABC433D2;
-        Mon, 22 May 2023 19:38:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7736629AF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:37:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0181C433D2;
+        Mon, 22 May 2023 19:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784299;
-        bh=txq7t9i5V/qxOySKyrwMBWx65mUaBxAK/qvIdXV7sLA=;
+        s=korg; t=1684784220;
+        bh=YxJ2rS9JsCiGTpAu0q0ucI4aqCc8eB70rnFgIQECHUM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hosil0NaSy8Cy2eAPNAIS61fezjh27fCVkK0QK40kZkrIQv8uXKhsddIIzLBEDW1N
-         +o1PmSox30QtEasyaGxPLCHVRzlVLkjaGrMBdJASJuCkUaEzEXdm5S2Yg3ks5teEG6
-         gbu4WLuOs2XIn2YiNgH2N4e1gPKmh/y3/8m8YDJQ=
+        b=YAdCRJg6bFZc9C5iYjJsx44pD7YYf8ADvfqCiyU6UrkmMLHQfKei3AI/tWxsrDWca
+         wn24f9n+5Qp9f3mD+z4GbndmuwWyOdAVHnhNmBcs6Q5LH3Nkn/yKBpC99EDXTZYuCy
+         RtDaqGatSCcjkYjF5s+Nd3vd2v7AjLZd0F+zOC9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Jihong <yangjihong1@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Keoseong Park <keosung.park@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 009/364] perf/core: Fix perf_sample_data not properly initialized for different swevents in perf_tp_event()
-Date:   Mon, 22 May 2023 20:05:14 +0100
-Message-Id: <20230522190413.047898081@linuxfoundation.org>
+Subject: [PATCH 6.3 010/364] scsi: ufs: core: Fix I/O hang that occurs when BKOPS fails in W-LUN suspend
+Date:   Mon, 22 May 2023 20:05:15 +0100
+Message-Id: <20230522190413.074183076@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
 References: <20230522190412.801391872@linuxfoundation.org>
@@ -44,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,105 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Keoseong Park <keosung.park@samsung.com>
 
-[ Upstream commit 1d1bfe30dad50d4bea83cd38d73c441972ea0173 ]
+[ Upstream commit 1a7edd041f2d252f251523ba3f2eaead076a8f8d ]
 
-data->sample_flags may be modified in perf_prepare_sample(),
-in perf_tp_event(), different swevents use the same on-stack
-perf_sample_data, the previous swevent may change sample_flags in
-perf_prepare_sample(), as a result, some members of perf_sample_data are
-not correctly initialized when next swevent_event preparing sample
-(for example data->id, the value varies according to swevent).
+Even when urgent BKOPS fails, the consumer will get stuck in runtime
+suspend status. Like commit 1a5665fc8d7a ("scsi: ufs: core: WLUN suspend
+SSU/enter hibern8 fail recovery"), trigger the error handler and return
+-EBUSY to break the suspend.
 
-A simple scenario triggers this problem is as follows:
-
-  # perf record -e sched:sched_switch --switch-output-event sched:sched_switch -a sleep 1
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209014396 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209014662 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209014910 ]
-  [ perf record: Woken up 0 times to write data ]
-  [ perf record: Dump perf.data.2023041209015164 ]
-  [ perf record: Captured and wrote 0.069 MB perf.data.<timestamp> ]
-  # ls -l
-  total 860
-  -rw------- 1 root root  95694 Apr 12 09:01 perf.data.2023041209014396
-  -rw------- 1 root root 606430 Apr 12 09:01 perf.data.2023041209014662
-  -rw------- 1 root root  82246 Apr 12 09:01 perf.data.2023041209014910
-  -rw------- 1 root root  82342 Apr 12 09:01 perf.data.2023041209015164
-  # perf script -i perf.data.2023041209014396
-  0x11d58 [0x80]: failed to process type: 9 [Bad address]
-
-Solution: Re-initialize perf_sample_data after each event is processed.
-Note that data->raw->frag.data may be accessed in perf_tp_event_match().
-Therefore, need to init sample_data and then go through swevent hlist to prevent
-reference of NULL pointer, reported by [1].
-
-After fix:
-
-  # perf record -e sched:sched_switch --switch-output-event sched:sched_switch -a sleep 1
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209442259 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209442514 ]
-  [ perf record: dump data: Woken up 0 times ]
-  [ perf record: Dump perf.data.2023041209442760 ]
-  [ perf record: Woken up 0 times to write data ]
-  [ perf record: Dump perf.data.2023041209443003 ]
-  [ perf record: Captured and wrote 0.069 MB perf.data.<timestamp> ]
-  # ls -l
-  total 864
-  -rw------- 1 root root 100166 Apr 12 09:44 perf.data.2023041209442259
-  -rw------- 1 root root 606438 Apr 12 09:44 perf.data.2023041209442514
-  -rw------- 1 root root  82246 Apr 12 09:44 perf.data.2023041209442760
-  -rw------- 1 root root  82342 Apr 12 09:44 perf.data.2023041209443003
-  # perf script -i perf.data.2023041209442259 | head -n 5
-              perf   232 [000]    66.846217: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=D ==> next_comm=perf next_pid=234 next_prio=120
-              perf   234 [000]    66.846449: sched:sched_switch: prev_comm=perf prev_pid=234 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=232 next_prio=120
-              perf   232 [000]    66.846546: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=R ==> next_comm=perf next_pid=234 next_prio=120
-              perf   234 [000]    66.846606: sched:sched_switch: prev_comm=perf prev_pid=234 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=232 next_prio=120
-              perf   232 [000]    66.846646: sched:sched_switch: prev_comm=perf prev_pid=232 prev_prio=120 prev_state=R ==> next_comm=perf next_pid=234 next_prio=120
-
-[1] Link: https://lore.kernel.org/oe-lkp/202304250929.efef2caa-yujie.liu@intel.com
-
-Fixes: bb447c27a467 ("perf/core: Set data->sample_flags in perf_prepare_sample()")
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230425103217.130600-1-yangjihong1@huawei.com
+Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
+Signed-off-by: Keoseong Park <keosung.park@samsung.com>
+Link: https://lore.kernel.org/r/20230425031721epcms2p5d4de65616478c967d466626e20c42a3a@epcms2p5
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 68baa8194d9f8..db016e4189319 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10150,8 +10150,20 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
- 	perf_trace_buf_update(record, event_type);
- 
- 	hlist_for_each_entry_rcu(event, head, hlist_entry) {
--		if (perf_tp_event_match(event, &data, regs))
-+		if (perf_tp_event_match(event, &data, regs)) {
- 			perf_swevent_event(event, count, &data, regs);
-+
-+			/*
-+			 * Here use the same on-stack perf_sample_data,
-+			 * some members in data are event-specific and
-+			 * need to be re-computed for different sweveents.
-+			 * Re-initialize data->sample_flags safely to avoid
-+			 * the problem that next event skips preparing data
-+			 * because data->sample_flags is set.
-+			 */
-+			perf_sample_data_init(&data, 0, 0);
-+			perf_sample_save_raw_data(&data, &raw);
-+		}
- 	}
- 
- 	/*
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 70b112038792a..8ac2945e849f4 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9428,8 +9428,16 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 			 * that performance might be impacted.
+ 			 */
+ 			ret = ufshcd_urgent_bkops(hba);
+-			if (ret)
++			if (ret) {
++				/*
++				 * If return err in suspend flow, IO will hang.
++				 * Trigger error handler and break suspend for
++				 * error recovery.
++				 */
++				ufshcd_force_error_recovery(hba);
++				ret = -EBUSY;
+ 				goto enable_scaling;
++			}
+ 		} else {
+ 			/* make sure that auto bkops is disabled */
+ 			ufshcd_disable_auto_bkops(hba);
 -- 
 2.39.2
 
