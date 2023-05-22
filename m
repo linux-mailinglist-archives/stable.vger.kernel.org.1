@@ -2,44 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFF0B70C4F3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6939B70C518
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbjEVSGH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:06:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33180 "EHLO
+        id S233476AbjEVSYR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:24:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232524AbjEVSGG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:06:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 874A1DC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:06:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1763762607
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C1DC433D2;
-        Mon, 22 May 2023 18:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778764;
-        bh=41Lm9jN+sNF83IBYKWHXBBRQC/b6VQUdr8HPbva1FkY=;
-        h=Subject:To:Cc:From:Date:From;
-        b=oOf/iC87Jke2Z8syMlj7ERbMXXSf7Wr/u3vNNxEsWKwOao5C/Q9IS6UEUExJwuqWd
-         PzOcO04YmyfOX64w/WUB4g2N0elK7T+aCh3/QZ9hPltW7XL+tOLlTrLdUH8Hy+mUCm
-         yLBGMKOA7qljmaOfAh0IOhmOYST3kESKmxZ1cAtY=
-Subject: FAILED: patch "[PATCH] fprobe: add recursion detection in fprobe_exit_handler" failed to apply to 6.1-stable tree
-To:     zegao2021@gmail.com, mhiramat@kernel.org, zegao@tencent.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:05:53 +0100
-Message-ID: <2023052253-squabble-matchbook-63eb@gregkh>
+        with ESMTP id S233088AbjEVSYJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:24:09 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17413188
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:24:02 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-2555076e505so1676072a91.0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:24:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684779841; x=1687371841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=msgMReVyIvBu/bwIUP7X7q2ZMnoRqp8LGJXsMcFUvcs=;
+        b=aHRH/zKGBDEc02+tUp4uzQfBwuRMYKhtH/VSuyaJ+fL4LRwlVratK6g5Ty0wfGlV/7
+         Y/VyfeULzj3JpgHIQBBrC9MtY/lF88HAZ0kM+hRL8Yte8RRWf4oSdlYRF/XqpF2XA2Vg
+         Y/TBhVrCE5UVfu/3DPCR/eGCu5HHdDIPvWJbwZoG6y01qPt/jfHqLq2YSEyrxZgpYPOZ
+         5TeWBF8wX2Hl7c/4w4Wjfe9Y/AHiyPIm2pHjBcmDKl/I63SEPBuRujPlyBZmGp/Eq4q5
+         sv5hd33nwR1BM9jefCd6kQ+ZNnJaSfCWvqDe+M0wEL70LWLYrdvJ409IFNQvdJFQXqdp
+         h0hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684779841; x=1687371841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=msgMReVyIvBu/bwIUP7X7q2ZMnoRqp8LGJXsMcFUvcs=;
+        b=QoUlNToV/WINDU/fUMHXvmxOhRq3yoUlPxLSku+yWgF0gQTn2vd9yoOTryQCXadkgw
+         Z0aXhI3TVlQQHvQa2QJrqYqHlNFt6PZ6WiRylNXEfdeqL/+VDr4wsDqeG4Jc5BrpFOhR
+         LmSysNupcdlh9hIDJKTvqCaNHWLDIie5Sz2OH6GPmZJO/sjW5qWsQ4ralfDnqHTSq98G
+         674RImcV3HDUfN9PK4Ngat1ornKxuZxOuAj32PYZERu8O+lCE057BoW4K9jt1IGmqY1V
+         eOt2bFrw3SV+WtDoepD5ShM0YxlmQ5b1eI/ZdFYIKKh2aQY922Jg5WTky//qLjfPnNTG
+         SErg==
+X-Gm-Message-State: AC+VfDwKFTS2j6sYhCk/wnj9Y8/nDzp42YkcSAqfhUvTtYX8itT4O2nN
+        jwl4HVn91w1V6cWykJXIhy1+njrSlszR6HD1w9L5MAre9MqVx6BpYL+cmtft
+X-Google-Smtp-Source: ACHHUZ6kdZR7qEFCbldz7uvdvDR5AlZ74YO/t4UiDPEmkgkrjjjgqDRSNzOgFw8RL8QhF7CCiVwX7Jzh4v1RebH6w3M=
+X-Received: by 2002:a17:90a:b292:b0:255:4b79:1ef9 with SMTP id
+ c18-20020a17090ab29200b002554b791ef9mr6188889pjr.16.1684779841457; Mon, 22
+ May 2023 11:24:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date:   Mon, 22 May 2023 12:23:50 -0600
+Message-ID: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
+Subject: Stable backport request: skbuff: Proactively round up to kmalloc
+ bucket size
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux- stable <stable@vger.kernel.org>
+Cc:     open list <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        ndesaulniers@google.com, rientjes@google.com, vbabka@suse.cz,
+        Sumit Semwal <sumit.semwal@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,100 +75,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello!
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Would the stable maintainers please consider backporting the following
+commit to the 6.1? We are trying to build gki_defconfig (plus a few
+extras) on Arm64 and test it under Qemu-arm64, but it fails to boot.
+Bisection has pointed here.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+We have verified that cherry-picking this patch on top of v6.1.29
+applies cleanly and allows the kernel to boot.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2752741080f84f9b2fc93fa92735315d10a415bf
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052253-squabble-matchbook-63eb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+commit 12d6c1d3a2ad0c199ec57c201cdc71e8e157a232
+Author: Kees Cook <keescook@chromium.org>
+Date:   Tue Oct 25 15:39:35 2022 -0700
 
-Possible dependencies:
+    skbuff: Proactively round up to kmalloc bucket size
 
-2752741080f8 ("fprobe: add recursion detection in fprobe_exit_handler")
-76d0de5729c0 ("fprobe: Pass entry_data to handlers")
+    Instead of discovering the kmalloc bucket size _after_ allocation, roun=
+d
+    up proactively so the allocation is explicitly made for the full size,
+    allowing the compiler to correctly reason about the resulting size of
+    the buffer through the existing __alloc_size() hint.
 
-thanks,
+    This will allow for kernels built with CONFIG_UBSAN_BOUNDS or the
+    coming dynamic bounds checking under CONFIG_FORTIFY_SOURCE to gain
+    back the __alloc_size() hints that were temporarily reverted in commit
+    93dd04ab0b2b ("slab: remove __alloc_size attribute from
+__kmalloc_track_caller")
 
-greg k-h
+    Cc: "David S. Miller" <davem@davemloft.net>
+    Cc: Eric Dumazet <edumazet@google.com>
+    Cc: Jakub Kicinski <kuba@kernel.org>
+    Cc: Paolo Abeni <pabeni@redhat.com>
+    Cc: netdev@vger.kernel.org
+    Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Cc: Nick Desaulniers <ndesaulniers@google.com>
+    Cc: David Rientjes <rientjes@google.com>
+    Acked-by: Vlastimil Babka <vbabka@suse.cz>
+    Link: https://patchwork.kernel.org/project/netdevbpf/patch/202210212347=
+13.you.031-kees@kernel.org/
+    Signed-off-by: Kees Cook <keescook@chromium.org>
+    Link: https://lore.kernel.org/r/20221025223811.up.360-kees@kernel.org
+    Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
------------------- original commit in Linus's tree ------------------
 
-From 2752741080f84f9b2fc93fa92735315d10a415bf Mon Sep 17 00:00:00 2001
-From: Ze Gao <zegao2021@gmail.com>
-Date: Wed, 17 May 2023 11:45:08 +0800
-Subject: [PATCH] fprobe: add recursion detection in fprobe_exit_handler
+Thanks and greetings!
 
-fprobe_hander and fprobe_kprobe_handler has guarded ftrace recursion
-detection but fprobe_exit_handler has not, which possibly introduce
-recursive calls if the fprobe exit callback calls any traceable
-functions. Checking in fprobe_hander or fprobe_kprobe_handler
-is not enough and misses this case.
-
-So add recursion free guard the same way as fprobe_hander. Since
-ftrace recursion check does not employ ip(s), so here use entry_ip and
-entry_parent_ip the same as fprobe_handler.
-
-Link: https://lore.kernel.org/all/20230517034510.15639-4-zegao@tencent.com/
-
-Fixes: 5b0ab78998e3 ("fprobe: Add exit_handler support")
-Signed-off-by: Ze Gao <zegao@tencent.com>
-Cc: stable@vger.kernel.org
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 7a692c02f787..18d36842faf5 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -17,6 +17,7 @@
- struct fprobe_rethook_node {
- 	struct rethook_node node;
- 	unsigned long entry_ip;
-+	unsigned long entry_parent_ip;
- 	char data[];
- };
- 
-@@ -39,6 +40,7 @@ static inline void __fprobe_handler(unsigned long ip, unsigned long parent_ip,
- 		}
- 		fpr = container_of(rh, struct fprobe_rethook_node, node);
- 		fpr->entry_ip = ip;
-+		fpr->entry_parent_ip = parent_ip;
- 		if (fp->entry_data_size)
- 			entry_data = fpr->data;
- 	}
-@@ -114,14 +116,26 @@ static void fprobe_exit_handler(struct rethook_node *rh, void *data,
- {
- 	struct fprobe *fp = (struct fprobe *)data;
- 	struct fprobe_rethook_node *fpr;
-+	int bit;
- 
- 	if (!fp || fprobe_disabled(fp))
- 		return;
- 
- 	fpr = container_of(rh, struct fprobe_rethook_node, node);
- 
-+	/*
-+	 * we need to assure no calls to traceable functions in-between the
-+	 * end of fprobe_handler and the beginning of fprobe_exit_handler.
-+	 */
-+	bit = ftrace_test_recursion_trylock(fpr->entry_ip, fpr->entry_parent_ip);
-+	if (bit < 0) {
-+		fp->nmissed++;
-+		return;
-+	}
-+
- 	fp->exit_handler(fp, fpr->entry_ip, regs,
- 			 fp->entry_data_size ? (void *)fpr->data : NULL);
-+	ftrace_test_recursion_unlock(bit);
- }
- NOKPROBE_SYMBOL(fprobe_exit_handler);
- 
-
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
