@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0439970C6E4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF86670C8BF
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234573AbjEVTXm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45322 "EHLO
+        id S235168AbjEVTls (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234553AbjEVTXj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:39 -0400
+        with ESMTP id S235173AbjEVTld (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:41:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C7012B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE6510D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:41:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E780D617C7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D48C433EF;
-        Mon, 22 May 2023 19:23:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20F8F629F5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29129C433EF;
+        Mon, 22 May 2023 19:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783405;
-        bh=gap071EMed19P+6YOtoDGyRSVmIA54rjXTKvuFLNEKw=;
+        s=korg; t=1684784445;
+        bh=4WEG8nfAvdunFGh0TR6vBtdz1z/RCOD4phfAcvrKy8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e5KqIC6jdKyyI6ILsjMnrJn/ZHQkIvtND6ZdG99ixeF6s56zOtA15y89mRu9m8MT4
-         eszfIfVbuG92HgH0nVl3ZqfN3IXGt+EkjSKTOCq7j4Zq3olPFLwP1wO2VC42kvVec5
-         Hy+HCd9doGbFI8YUP+OaCvgUFd1gxkVynOSOVUTU=
+        b=yzb76I8BaftATtcCa0WXfqrrYrrKPGSB47SVWtvXbo655bOwtMTN+TVKBwUMXINos
+         9eIn8noH6XITSdxtqEmEwiEy8+uBmfmx8m1DJXvC3EHoIJLlRRJi7dP3kH75N8g7+E
+         eGqjjuAdOpa3refU3YOy+f2bhJ+f1XtTJTfFGzDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/292] ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 085/364] media: mediatek: vcodec: Fix potential array out-of-bounds in decoder queue_setup
 Date:   Mon, 22 May 2023 20:06:30 +0100
-Message-Id: <20230522190406.719343119@linuxfoundation.org>
+Message-Id: <20230522190414.887280098@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,74 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit a44be64bbecb15a452496f60db6eacfee2b59c79 ]
+[ Upstream commit 8fbcf730cb89c3647f3365226fe7014118fa93c7 ]
 
-When a file system currently mounted read/only is remounted
-read/write, if we clear the SB_RDONLY flag too early, before the quota
-is initialized, and there is another process/thread constantly
-attempting to create a directory, it's possible to trigger the
+variable *nplanes is provided by user via system call argument. The
+possible value of q_data->fmt->num_planes is 1-3, while the value
+of *nplanes can be 1-8. The array access by index i can cause array
+out-of-bounds.
 
-	WARN_ON_ONCE(dquot_initialize_needed(inode));
+Fix this bug by checking *nplanes against the array size.
 
-in ext4_xattr_block_set(), with the following stack trace:
-
-   WARNING: CPU: 0 PID: 5338 at fs/ext4/xattr.c:2141 ext4_xattr_block_set+0x2ef2/0x3680
-   RIP: 0010:ext4_xattr_block_set+0x2ef2/0x3680 fs/ext4/xattr.c:2141
-   Call Trace:
-    ext4_xattr_set_handle+0xcd4/0x15c0 fs/ext4/xattr.c:2458
-    ext4_initxattrs+0xa3/0x110 fs/ext4/xattr_security.c:44
-    security_inode_init_security+0x2df/0x3f0 security/security.c:1147
-    __ext4_new_inode+0x347e/0x43d0 fs/ext4/ialloc.c:1324
-    ext4_mkdir+0x425/0xce0 fs/ext4/namei.c:2992
-    vfs_mkdir+0x29d/0x450 fs/namei.c:4038
-    do_mkdirat+0x264/0x520 fs/namei.c:4061
-    __do_sys_mkdirat fs/namei.c:4076 [inline]
-    __se_sys_mkdirat fs/namei.c:4074 [inline]
-    __x64_sys_mkdirat+0x89/0xa0 fs/namei.c:4074
-
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230506142419.984260-1-tytso@mit.edu
-Reported-by: syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=6513f6cb5cd6b5fc9f37e3bb70d273b94be9c34c
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index b919f34bb35d6..c56192a84bf41 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6339,6 +6339,7 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 	struct ext4_mount_options old_opts;
- 	ext4_group_t g;
- 	int err = 0;
-+	int enable_rw = 0;
- #ifdef CONFIG_QUOTA
- 	int enable_quota = 0;
- 	int i, j;
-@@ -6525,7 +6526,7 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 			if (err)
- 				goto restore_opts;
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c
+index c99705681a03e..93fcea821001f 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c
+@@ -735,6 +735,13 @@ int vb2ops_vdec_queue_setup(struct vb2_queue *vq, unsigned int *nbuffers,
+ 	}
  
--			sb->s_flags &= ~SB_RDONLY;
-+			enable_rw = 1;
- 			if (ext4_has_feature_mmp(sb)) {
- 				err = ext4_multi_mount_protect(sb,
- 						le64_to_cpu(es->s_mmp_block));
-@@ -6584,6 +6585,9 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
- 
-+	if (enable_rw)
-+		sb->s_flags &= ~SB_RDONLY;
-+
- 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
- 		ext4_stop_mmpd(sbi);
- 
+ 	if (*nplanes) {
++		if (vq->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
++			if (*nplanes != q_data->fmt->num_planes)
++				return -EINVAL;
++		} else {
++			if (*nplanes != 1)
++				return -EINVAL;
++		}
+ 		for (i = 0; i < *nplanes; i++) {
+ 			if (sizes[i] < q_data->sizeimage[i])
+ 				return -EINVAL;
 -- 
 2.39.2
 
