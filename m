@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC9A070C649
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C275370C921
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234088AbjEVTQd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39046 "EHLO
+        id S235244AbjEVTpX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234090AbjEVTQM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:12 -0400
+        with ESMTP id S235410AbjEVTpL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACFF3186
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA568B3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27AE662758
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C99DC433EF;
-        Mon, 22 May 2023 19:16:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB9D362A5F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7472C433EF;
+        Mon, 22 May 2023 19:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782968;
-        bh=YJGfny+mzaNobrNpu7lqlVlLHaeBVBktmqkrh8f0JBg=;
+        s=korg; t=1684784710;
+        bh=hCB5/2XfDLl8M3KUm2CjhehK/+uJEej8pyRBcRqpERk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hswmQyj4Lts9lbd0T5J8/0y3cQyAtiGaxbScMEfaYonOQf6ourfKvGIoePApbGMBD
-         iqEZD/Oi1EmzEoFLEg6qBWe/AggvLQnVKUUevtnis2ne9IMkZuyhI+R6SfFS+tXlxA
-         8B+8H0T9/KiqCsh2MGbOS1xIzHTf9MP4Vtp8ceM8=
+        b=e3tAlt2dE+eDWJ8xRlWhYguTKoEauDFP8p9uPNjkMHXEzWF+uxaIcMEACmho+aQsC
+         3J6fLpqFI86XykQaVdxVN/81sgZ1hNvOobKAjVKu5eVvMPslUWHoFbsuLXh+cUXgEb
+         CsLB6W7sSg3eq4PVjqO/E2DP+i5dOaxmECKcfQGk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Piotr Raczynski <piotr.raczynski@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+f45957555ed4a808cc7a@syzkaller.appspotmail.com,
+        Ye Bin <yebin10@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/203] net: Catch invalid index in XPS mapping
+Subject: [PATCH 6.3 175/364] fs/ntfs3: Fix NULL pointer dereference in ni_write_inode
 Date:   Mon, 22 May 2023 20:08:00 +0100
-Message-Id: <20230522190356.546364034@linuxfoundation.org>
+Message-Id: <20230522190417.094427776@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +56,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 5dd0dfd55baec0742ba8f5625a0dd064aca7db16 ]
+[ Upstream commit db2a3cc6a3481076da6344cc62a80a4e2525f36f ]
 
-When setting the XPS value of a TX queue, warn the user once if the
-index of the queue is greater than the number of allocated TX queues.
+Syzbot found the following issue:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000016
+Mem abort info:
+  ESR = 0x0000000096000006
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x06: level 2 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000006
+  CM = 0, WnR = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000010af56000
+[0000000000000016] pgd=08000001090da003, p4d=08000001090da003, pud=08000001090ce003, pmd=0000000000000000
+Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 1 PID: 3036 Comm: syz-executor206 Not tainted 6.0.0-rc6-syzkaller-17739-g16c9f284e746 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/26/2022
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : is_rec_inuse fs/ntfs3/ntfs.h:313 [inline]
+pc : ni_write_inode+0xac/0x798 fs/ntfs3/frecord.c:3232
+lr : ni_write_inode+0xa0/0x798 fs/ntfs3/frecord.c:3226
+sp : ffff8000126c3800
+x29: ffff8000126c3860 x28: 0000000000000000 x27: ffff0000c8b02000
+x26: ffff0000c7502320 x25: ffff0000c7502288 x24: 0000000000000000
+x23: ffff80000cbec91c x22: ffff0000c8b03000 x21: ffff0000c8b02000
+x20: 0000000000000001 x19: ffff0000c75024d8 x18: 00000000000000c0
+x17: ffff80000dd1b198 x16: ffff80000db59158 x15: ffff0000c4b6b500
+x14: 00000000000000b8 x13: 0000000000000000 x12: ffff0000c4b6b500
+x11: ff80800008be1b60 x10: 0000000000000000 x9 : ffff0000c4b6b500
+x8 : 0000000000000000 x7 : ffff800008be1b50 x6 : 0000000000000000
+x5 : 0000000000000000 x4 : 0000000000000001 x3 : 0000000000000000
+x2 : 0000000000000008 x1 : 0000000000000001 x0 : 0000000000000000
+Call trace:
+ is_rec_inuse fs/ntfs3/ntfs.h:313 [inline]
+ ni_write_inode+0xac/0x798 fs/ntfs3/frecord.c:3232
+ ntfs_evict_inode+0x54/0x84 fs/ntfs3/inode.c:1744
+ evict+0xec/0x334 fs/inode.c:665
+ iput_final fs/inode.c:1748 [inline]
+ iput+0x2c4/0x324 fs/inode.c:1774
+ ntfs_new_inode+0x7c/0xe0 fs/ntfs3/fsntfs.c:1660
+ ntfs_create_inode+0x20c/0xe78 fs/ntfs3/inode.c:1278
+ ntfs_create+0x54/0x74 fs/ntfs3/namei.c:100
+ lookup_open fs/namei.c:3413 [inline]
+ open_last_lookups fs/namei.c:3481 [inline]
+ path_openat+0x804/0x11c4 fs/namei.c:3688
+ do_filp_open+0xdc/0x1b8 fs/namei.c:3718
+ do_sys_openat2+0xb8/0x22c fs/open.c:1311
+ do_sys_open fs/open.c:1327 [inline]
+ __do_sys_openat fs/open.c:1343 [inline]
+ __se_sys_openat fs/open.c:1338 [inline]
+ __arm64_sys_openat+0xb0/0xe0 fs/open.c:1338
+ __invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
+ invoke_syscall arch/arm64/kernel/syscall.c:52 [inline]
+ el0_svc_common+0x138/0x220 arch/arm64/kernel/syscall.c:142
+ do_el0_svc+0x48/0x164 arch/arm64/kernel/syscall.c:206
+ el0_svc+0x58/0x150 arch/arm64/kernel/entry-common.c:636
+ el0t_64_sync_handler+0x84/0xf0 arch/arm64/kernel/entry-common.c:654
+ el0t_64_sync+0x18c/0x190
+Code: 97dafee4 340001b4 f9401328 2a1f03e0 (79402d14)
+---[ end trace 0000000000000000 ]---
 
-Previously, this scenario went uncaught. In the best case, it resulted
-in unnecessary allocations. In the worst case, it resulted in
-out-of-bounds memory references through calls to `netdev_get_tx_queue(
-dev, index)`. Therefore, it is important to inform the user but not
-worth returning an error and risk downing the netdevice.
+Above issue may happens as follows:
+ntfs_new_inode
+  mi_init
+    mi->mrec = kmalloc(sbi->record_size, GFP_NOFS); -->failed to allocate memory
+      if (!mi->mrec)
+        return -ENOMEM;
+iput
+  iput_final
+    evict
+      ntfs_evict_inode
+        ni_write_inode
+	  is_rec_inuse(ni->mi.mrec)-> As 'ni->mi.mrec' is NULL trigger NULL-ptr-deref
 
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
-Link: https://lore.kernel.org/r/20230321150725.127229-1-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To solve above issue if new inode failed make inode bad before call 'iput()' in
+'ntfs_new_inode()'.
+
+Reported-by: syzbot+f45957555ed4a808cc7a@syzkaller.appspotmail.com
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ntfs3/fsntfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 30289cd1c29f4..56a3bff7249d4 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -2574,6 +2574,8 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
- 	struct xps_map *map, *new_map;
- 	unsigned int nr_ids;
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 24c9aeb5a49e0..2c0ce364808a9 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1683,6 +1683,7 @@ struct ntfs_inode *ntfs_new_inode(struct ntfs_sb_info *sbi, CLST rno, bool dir)
  
-+	WARN_ON_ONCE(index >= dev->num_tx_queues);
-+
- 	if (dev->num_tc) {
- 		/* Do not allow XPS on subordinate device directly */
- 		num_tc = dev->num_tc;
+ out:
+ 	if (err) {
++		make_bad_inode(inode);
+ 		iput(inode);
+ 		ni = ERR_PTR(err);
+ 	}
 -- 
 2.39.2
 
