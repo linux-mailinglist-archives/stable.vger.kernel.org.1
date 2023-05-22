@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED5770C765
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F6C670C91A
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234702AbjEVT3B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
+        id S235228AbjEVTpT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234691AbjEVT24 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BCFA3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:54 -0700 (PDT)
+        with ESMTP id S235298AbjEVToz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F0C196
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8910F628DC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E38C433D2;
-        Mon, 22 May 2023 19:28:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A566662A3C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF9EC433EF;
+        Mon, 22 May 2023 19:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783734;
-        bh=FvrSJUikkWNbNIQ3+qrp1LMbtL1YCbI/C8cobqun7mc=;
+        s=korg; t=1684784690;
+        bh=tU2A4wj5lvfjaL193dHua5J4mUq9RDcdrukuxdAY/Zk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y8IzA1sM+0SDZ38uxPjlOZd2JdI6ekSi4+Ly8B9OAGLJkbiDqnKWwSEsKYUMLYBBX
-         ambGrNCllT1uXLQpVZSR9mKEiaU+e4xGPySxb5HOQCN62Frhp64v28XLk0Rqk6TzYw
-         THURG4qyvDCWOcKqLHhyCbsj5r083oXh70JLmBSE=
+        b=ZfeWJfJiP5hvKh44zGYJNcFspdDc2r1qWjhs63uaHy7vaxrjHn6W8mGNK6MfAX4qj
+         gw6cOz7v5hB+ILTRPUQxrLAOo9DH1QZP7RhXL86kWh4+iKGJFc2T6HGqYsFRMjNr/E
+         yce3h9F0cRRdHQYO0PYInnoxjKbczeDIlBbZH9z0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, imoc <wzj9912@gmail.com>,
-        Raul Cheleguini <raul.cheleguini@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/292] Bluetooth: Add new quirk for broken set random RPA timeout for ATS2851
+Subject: [PATCH 6.3 169/364] lkdtm/stackleak: Fix noinstr violation
 Date:   Mon, 22 May 2023 20:07:54 +0100
-Message-Id: <20230522190408.890399179@linuxfoundation.org>
+Message-Id: <20230522190416.955085293@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Raul Cheleguini <raul.cheleguini@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 91b6d02ddcd113352bdd895990b252065c596de7 ]
+[ Upstream commit f571da059f86fd9d432aea32c9c7e5aaa53245d8 ]
 
-The ATS2851 based controller advertises support for command "LE Set Random
-Private Address Timeout" but does not actually implement it, impeding the
-controller initialization.
+Fixes the following warning:
 
-Add the quirk HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT to unblock the controller
-initialization.
+  vmlinux.o: warning: objtool: check_stackleak_irqoff+0x2b6: call to _printk() leaves .noinstr.text section
 
-< HCI Command: LE Set Resolvable Private... (0x08|0x002e) plen 2
-        Timeout: 900 seconds
-> HCI Event: Command Status (0x0f) plen 4
-      LE Set Resolvable Private Address Timeout (0x08|0x002e) ncmd 1
-        Status: Unknown HCI Command (0x01)
-
-Co-developed-by: imoc <wzj9912@gmail.com>
-Signed-off-by: imoc <wzj9912@gmail.com>
-Signed-off-by: Raul Cheleguini <raul.cheleguini@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/ee5209f53aa0a62aea58be18f2b78b17606779a6.1681320026.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c   | 1 +
- include/net/bluetooth/hci.h | 8 ++++++++
- net/bluetooth/hci_sync.c    | 6 +++++-
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/misc/lkdtm/stackleak.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 3991dcd2ebf79..faad19b396d50 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4020,6 +4020,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		/* Support is advertised, but not implemented */
- 		set_bit(HCI_QUIRK_BROKEN_ERR_DATA_REPORTING, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
-+		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
+diff --git a/drivers/misc/lkdtm/stackleak.c b/drivers/misc/lkdtm/stackleak.c
+index 025b133297a6b..f1d0221609138 100644
+--- a/drivers/misc/lkdtm/stackleak.c
++++ b/drivers/misc/lkdtm/stackleak.c
+@@ -43,12 +43,14 @@ static void noinstr check_stackleak_irqoff(void)
+ 	 * STACK_END_MAGIC, and in either casee something is seriously wrong.
+ 	 */
+ 	if (current_sp < task_stack_low || current_sp >= task_stack_high) {
++		instrumentation_begin();
+ 		pr_err("FAIL: current_stack_pointer (0x%lx) outside of task stack bounds [0x%lx..0x%lx]\n",
+ 		       current_sp, task_stack_low, task_stack_high - 1);
+ 		test_failed = true;
+ 		goto out;
+ 	}
+ 	if (lowest_sp < task_stack_low || lowest_sp >= task_stack_high) {
++		instrumentation_begin();
+ 		pr_err("FAIL: current->lowest_stack (0x%lx) outside of task stack bounds [0x%lx..0x%lx]\n",
+ 		       lowest_sp, task_stack_low, task_stack_high - 1);
+ 		test_failed = true;
+@@ -86,11 +88,14 @@ static void noinstr check_stackleak_irqoff(void)
+ 		if (*(unsigned long *)poison_low == STACKLEAK_POISON)
+ 			continue;
+ 
++		instrumentation_begin();
+ 		pr_err("FAIL: non-poison value %lu bytes below poison boundary: 0x%lx\n",
+ 		       poison_high - poison_low, *(unsigned long *)poison_low);
+ 		test_failed = true;
++		goto out;
  	}
  
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index f80ae7d237342..b350d92136c8d 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -301,6 +301,14 @@ enum {
- 	 * don't actually support features declared there.
- 	 */
- 	HCI_QUIRK_BROKEN_LOCAL_EXT_FEATURES_PAGE_2,
-+
-+	/*
-+	 * When this quirk is set, the HCI_OP_LE_SET_RPA_TIMEOUT command is
-+	 * skipped during initialization. This is required for the Actions
-+	 * Semiconductor ATS2851 based controllers, which erroneously claims
-+	 * to support it.
-+	 */
-+	HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT,
- };
++	instrumentation_begin();
+ 	pr_info("stackleak stack usage:\n"
+ 		"  high offset: %lu bytes\n"
+ 		"  current:     %lu bytes\n"
+@@ -113,6 +118,7 @@ static void noinstr check_stackleak_irqoff(void)
+ 	} else {
+ 		pr_info("OK: the rest of the thread stack is properly erased\n");
+ 	}
++	instrumentation_end();
+ }
  
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 9361fb3685cc7..e8b78104a4071 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4075,7 +4075,8 @@ static int hci_le_set_rpa_timeout_sync(struct hci_dev *hdev)
- {
- 	__le16 timeout = cpu_to_le16(hdev->rpa_timeout);
- 
--	if (!(hdev->commands[35] & 0x04))
-+	if (!(hdev->commands[35] & 0x04) ||
-+	    test_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks))
- 		return 0;
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_RPA_TIMEOUT,
-@@ -4515,6 +4516,9 @@ static const struct {
- 			 "HCI Set Event Filter command not supported."),
- 	HCI_QUIRK_BROKEN(ENHANCED_SETUP_SYNC_CONN,
- 			 "HCI Enhanced Setup Synchronous Connection command is "
-+			 "advertised, but not supported."),
-+	HCI_QUIRK_BROKEN(SET_RPA_TIMEOUT,
-+			 "HCI LE Set Random Private Address Timeout command is "
- 			 "advertised, but not supported.")
- };
- 
+ static void lkdtm_STACKLEAK_ERASING(void)
 -- 
 2.39.2
 
