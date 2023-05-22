@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5476370C4CC
+	by mail.lfdr.de (Postfix) with ESMTP id 9E4D670C4CD
 	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231863AbjEVSB1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S231705AbjEVSB1 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Mon, 22 May 2023 14:01:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58106 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232413AbjEVSBY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781CC115
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:23 -0700 (PDT)
+        with ESMTP id S231405AbjEVSB1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E684ECF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07AF46205D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252A8C433EF;
-        Mon, 22 May 2023 18:01:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BE576205D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982CCC433EF;
+        Mon, 22 May 2023 18:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778482;
-        bh=197z2M7wBiZhS+B41e8hUnT0qRjjxg0iFVbtv1oiOiw=;
+        s=korg; t=1684778484;
+        bh=1gWeKfAMffMV8ojg4nqVI9iKHQWaHkeGawsMCeJwtxs=;
         h=Subject:To:Cc:From:Date:From;
-        b=jJRbcmjDUqNexrmb03Xy+XAqkYKkV8JppJQgH4dkNwNqmFd1mjy03ExUmFYnlM3aA
-         snZ2p8YlQ/OqO9FwgP38MpE7nYdJ7SKPEI7+kFfZGb0RqLZG0WANv5EV1M8x1+KQTC
-         tq83ZM05eNHygFd8vvCObisP2eqof3ch/D2HG4kw=
-Subject: FAILED: patch "[PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside" failed to apply to 5.15-stable tree
+        b=HGgQWD3H445plxmGcqTyye1gQdfkL2qn/YVH5OUYcSfdfzGZjNdfM28fBitj8OWt/
+         6TZAJ794ttI2jxTiuBDKphs6JX3gey52xh2mwfjCbOdNkhFn7PnufVd2J/BTJXc9Tx
+         yoq32MKsSsmxgsLapIY6r3Ty2LZ7Mq1jXW2Q2b7M=
+Subject: FAILED: patch "[PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside" failed to apply to 5.10-stable tree
 To:     jarkko@kernel.org, Jason@zx2c4.com, jsnitsel@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:01:09 +0100
-Message-ID: <2023052209-dart-bamboo-8ae4@gregkh>
+Date:   Mon, 22 May 2023 19:01:10 +0100
+Message-ID: <2023052210-vendetta-deprecate-0f4e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1398aa803f198b7a386fdd8404666043e95f4c16
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052209-dart-bamboo-8ae4@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052210-vendetta-deprecate-0f4e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,13 @@ ed9be0e6c892 ("tpm, tpm_tis: Do not skip reset of original interrupt vector")
 bbc23a07b072 ("tpm: Add tpm_tis_i2c backend for tpm_tis_core")
 0ef333f5ba7f ("tpm: add request_locality before write TPM_INT_ENABLE")
 79ca6f74dae0 ("tpm: fix Atmel TPM crash caused by too frequent queries")
+0178f9d0f60b ("tpm: Replace WARN_ONCE() with dev_err_once() in tpm_tis_status()")
+8a2d296aaeba ("tpm, tpm_tis: Reserve locality in tpm_tis_resume()")
+e630af7dfb45 ("tpm, tpm_tis: Extend locality handling to TPM2 in tpm_tis_gen_interrupt()")
+d53a6adfb553 ("tpm, tpm_tis: Decorate tpm_tis_gen_interrupt() with request_locality()")
+a5665ec2affd ("tpm, tpm_tis: Decorate tpm_get_timeouts() with request_locality()")
+3a253caaad11 ("char: tpm: add i2c driver for cr50")
+e42acf104d6e ("tpm_tis: Clean up locality release")
 
 thanks,
 
