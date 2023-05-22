@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 328B370C8EA
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2EDE70C5D3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235183AbjEVTnU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
+        id S231630AbjEVTMs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235086AbjEVTnS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D76B103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:04 -0700 (PDT)
+        with ESMTP id S229671AbjEVTMr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:12:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748B7B0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:12:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C4D162A4E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DE6C433EF;
-        Mon, 22 May 2023 19:43:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FE5262287
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:12:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4CCC433A0;
+        Mon, 22 May 2023 19:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784583;
-        bh=jY04o1EPXJzQvN2WWPPKNlEl+rWfPtb4YloCDiiBgAg=;
+        s=korg; t=1684782765;
+        bh=NkJSaNZByeZzhl70mXCvmB1VLVPUIXd3+elz7vgL5N8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WArPfBCOUTxbCmXnMR3JNZIB+0jwM0HLxH67j705B1VWervqSO6kz4ivntz5Lr0s9
-         q07SznfxCvA3ZuAjaQmFcqmzzZCGkiuz0i0RbRVCnbeigcsF+iyg34ruc06Xdpe9HN
-         wz+Ll60rBvGFt+h/WG1mvVOhngfU7z3UQEFV0UEs=
+        b=uk+d2lL5I+YXF2Jd0TemyZxF9yBcySRNA+v6SngPFsc0WX/0H7QPZimkWqwlJgUtG
+         P2p3F9T/k3nRo7J6AecsungyIAbjQCNgMy3zx2/lf02Nk85zF9Ja54zBfnsDl9Jbvm
+         8i/eQ+s09qEk0/G3dDQXK2dWqiqZzn7DveHU7928=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nagarajan Maran <quic_nmaran@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 131/364] wifi: ath11k: Fix SKB corruption in REO destination ring
+Subject: [PATCH 5.15 012/203] netlink: annotate accesses to nlk->cb_running
 Date:   Mon, 22 May 2023 20:07:16 +0100
-Message-Id: <20230522190416.067739456@linuxfoundation.org>
+Message-Id: <20230522190355.289615451@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,78 +55,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nagarajan Maran <quic_nmaran@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f9fff67d2d7ca6fa8066132003a3deef654c55b1 ]
+[ Upstream commit a939d14919b799e6fff8a9c80296ca229ba2f8a4 ]
 
-While running traffics for a long time, randomly an RX descriptor
-filled with value "0" from REO destination ring is received.
-This descriptor which is invalid causes the wrong SKB (SKB stored in
-the IDR lookup with buffer id "0") to be fetched which in turn
-causes SKB memory corruption issue and the same leads to crash
-after some time.
+Both netlink_recvmsg() and netlink_native_seq_show() read
+nlk->cb_running locklessly. Use READ_ONCE() there.
 
-Changed the start id for idr allocation to "1" and the buffer id "0"
-is reserved for error validation. Introduced Sanity check to validate
-the descriptor, before processing the SKB.
+Add corresponding WRITE_ONCE() to netlink_dump() and
+__netlink_dump_start()
 
-Crash Signature :
+syzbot reported:
+BUG: KCSAN: data-race in __netlink_dump_start / netlink_recvmsg
 
-Unable to handle kernel paging request at virtual address 3f004900
-PC points to "b15_dma_inv_range+0x30/0x50"
-LR points to "dma_cache_maint_page+0x8c/0x128".
-The Backtrace obtained is as follows:
-[<8031716c>] (b15_dma_inv_range) from [<80313a4c>] (dma_cache_maint_page+0x8c/0x128)
-[<80313a4c>] (dma_cache_maint_page) from [<80313b90>] (__dma_page_dev_to_cpu+0x28/0xcc)
-[<80313b90>] (__dma_page_dev_to_cpu) from [<7fb5dd68>] (ath11k_dp_process_rx+0x1e8/0x4a4 [ath11k])
-[<7fb5dd68>] (ath11k_dp_process_rx [ath11k]) from [<7fb53c20>] (ath11k_dp_service_srng+0xb0/0x2ac [ath11k])
-[<7fb53c20>] (ath11k_dp_service_srng [ath11k]) from [<7f67bba4>] (ath11k_pci_ext_grp_napi_poll+0x1c/0x78 [ath11k_pci])
-[<7f67bba4>] (ath11k_pci_ext_grp_napi_poll [ath11k_pci]) from [<807d5cf4>] (__napi_poll+0x28/0xb8)
-[<807d5cf4>] (__napi_poll) from [<807d5f28>] (net_rx_action+0xf0/0x280)
-[<807d5f28>] (net_rx_action) from [<80302148>] (__do_softirq+0xd0/0x280)
-[<80302148>] (__do_softirq) from [<80320408>] (irq_exit+0x74/0xd4)
-[<80320408>] (irq_exit) from [<803638a4>] (__handle_domain_irq+0x90/0xb4)
-[<803638a4>] (__handle_domain_irq) from [<805bedec>] (gic_handle_irq+0x58/0x90)
-[<805bedec>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
+write to 0xffff88813ea4db59 of 1 bytes by task 28219 on cpu 0:
+__netlink_dump_start+0x3af/0x4d0 net/netlink/af_netlink.c:2399
+netlink_dump_start include/linux/netlink.h:308 [inline]
+rtnetlink_rcv_msg+0x70f/0x8c0 net/core/rtnetlink.c:6130
+netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2577
+rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6192
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1942
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+sock_write_iter+0x1aa/0x230 net/socket.c:1138
+call_write_iter include/linux/fs.h:1851 [inline]
+new_sync_write fs/read_write.c:491 [inline]
+vfs_write+0x463/0x760 fs/read_write.c:584
+ksys_write+0xeb/0x1a0 fs/read_write.c:637
+__do_sys_write fs/read_write.c:649 [inline]
+__se_sys_write fs/read_write.c:646 [inline]
+__x64_sys_write+0x42/0x50 fs/read_write.c:646
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+read to 0xffff88813ea4db59 of 1 bytes by task 28222 on cpu 1:
+netlink_recvmsg+0x3b4/0x730 net/netlink/af_netlink.c:2022
+sock_recvmsg_nosec+0x4c/0x80 net/socket.c:1017
+____sys_recvmsg+0x2db/0x310 net/socket.c:2718
+___sys_recvmsg net/socket.c:2762 [inline]
+do_recvmmsg+0x2e5/0x710 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0xe2/0x160 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230403191533.28114-1-quic_nmaran@quicinc.com
+value changed: 0x00 -> 0x01
+
+Fixes: 16b304f3404f ("netlink: Eliminate kmalloc in netlink dump operation.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/netlink/af_netlink.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 294c6fcfa1aa8..32a4f88861d58 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -389,10 +389,10 @@ int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
- 			goto fail_free_skb;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 84a7a29be49d8..998c736d3ae8b 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2000,7 +2000,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
  
- 		spin_lock_bh(&rx_ring->idr_lock);
--		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
--				   rx_ring->bufs_max * 3, GFP_ATOMIC);
-+		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 1,
-+				   (rx_ring->bufs_max * 3) + 1, GFP_ATOMIC);
- 		spin_unlock_bh(&rx_ring->idr_lock);
--		if (buf_id < 0)
-+		if (buf_id <= 0)
- 			goto fail_dma_unmap;
+ 	skb_free_datagram(sk, skb);
  
- 		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
-@@ -2665,6 +2665,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 				   cookie);
- 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
+-	if (nlk->cb_running &&
++	if (READ_ONCE(nlk->cb_running) &&
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+ 		ret = netlink_dump(sk);
+ 		if (ret) {
+@@ -2312,7 +2312,7 @@ static int netlink_dump(struct sock *sk)
+ 	if (cb->done)
+ 		cb->done(cb);
  
-+		if (unlikely(buf_id == 0))
-+			continue;
-+
- 		ar = ab->pdevs[mac_id].ar;
- 		rx_ring = &ar->dp.rx_refill_buf_ring;
- 		spin_lock_bh(&rx_ring->idr_lock);
+-	nlk->cb_running = false;
++	WRITE_ONCE(nlk->cb_running, false);
+ 	module = cb->module;
+ 	skb = cb->skb;
+ 	mutex_unlock(nlk->cb_mutex);
+@@ -2375,7 +2375,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 			goto error_put;
+ 	}
+ 
+-	nlk->cb_running = true;
++	WRITE_ONCE(nlk->cb_running, true);
+ 	nlk->dump_done_errno = INT_MAX;
+ 
+ 	mutex_unlock(nlk->cb_mutex);
+@@ -2661,7 +2661,7 @@ static int netlink_native_seq_show(struct seq_file *seq, void *v)
+ 			   nlk->groups ? (u32)nlk->groups[0] : 0,
+ 			   sk_rmem_alloc_get(s),
+ 			   sk_wmem_alloc_get(s),
+-			   nlk->cb_running,
++			   READ_ONCE(nlk->cb_running),
+ 			   refcount_read(&s->sk_refcnt),
+ 			   atomic_read(&s->sk_drops),
+ 			   sock_i_ino(s)
 -- 
 2.39.2
 
