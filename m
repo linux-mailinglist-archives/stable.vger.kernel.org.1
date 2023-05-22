@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C98AB70C8D2
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8253D70C702
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235070AbjEVTmn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37082 "EHLO
+        id S234602AbjEVTYw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235079AbjEVTmm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE9B4A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:17 -0700 (PDT)
+        with ESMTP id S234605AbjEVTYu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 194BAA3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7216629F5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:41:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A6AC433D2;
-        Mon, 22 May 2023 19:41:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB02661EEA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA777C433EF;
+        Mon, 22 May 2023 19:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784509;
-        bh=m8VNee3bA+lgpiWAyRUMwnimPC/EadPMf/JdyNqFKu0=;
+        s=korg; t=1684783489;
+        bh=IQgHuOoRnkEGD1Jb5Lkm537dUiI0uLn05CysAyCGk+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CPVVkTblP178B0tztuXwSnU8GI9ClkgtyGtOu5YHRXR9tpv3tqtnxHvnvKkdjdW3t
-         n/KXs4qCrSXtPlqgcv6W72dX2plXMxTQzMi5yOeDxn9q7M6pjPAQRwzXy2Gv/aREoh
-         KffMaOyxVYeJJ+yRfQc0mi6xtypVvpkcBcsRnzrM=
+        b=kDOoOXRyIZc+lzBwMETr+9x+GCsddSnRYNsHOlNnJlmJHemEz3UeEHsnT13Rj2KeK
+         fRWpAQ+QBdtICGKqDiJX7/Mk4Yde9jvQIcj8czZxdtoqZusVLGwjf/UZiEdewuejg3
+         +Z0fNdeOoF6MezHHHR1Z6vWhaE6KB9yWNyxmaUG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Eli Cohen <elic@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
+        patches@lists.linux.dev, Kang Chen <void0red@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 105/364] lib: cpu_rmap: Avoid use after free on rmap->obj array entries
+Subject: [PATCH 6.1 053/292] ACPI: processor: Check for null return of devm_kzalloc() in fch_misc_setup()
 Date:   Mon, 22 May 2023 20:06:50 +0100
-Message-Id: <20230522190415.386190738@linuxfoundation.org>
+Message-Id: <20230522190407.262706314@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,65 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eli Cohen <elic@nvidia.com>
+From: Kang Chen <void0red@gmail.com>
 
-[ Upstream commit 4e0473f1060aa49621d40a113afde24818101d37 ]
+[ Upstream commit 4dea41775d951ff1f7b472a346a8ca3ae7e74455 ]
 
-When calling irq_set_affinity_notifier() with NULL at the notify
-argument, it will cause freeing of the glue pointer in the
-corresponding array entry but will leave the pointer in the array. A
-subsequent call to free_irq_cpu_rmap() will try to free this entry again
-leading to possible use after free.
+devm_kzalloc() may fail, clk_data->name might be NULL and will
+cause a NULL pointer dereference later.
 
-Fix that by setting NULL to the array entry and checking that we have
-non-zero at the array entry when iterating over the array in
-free_irq_cpu_rmap().
-
-The current code does not suffer from this since there are no cases
-where irq_set_affinity_notifier(irq, NULL) (note the NULL passed for the
-notify arg) is called, followed by a call to free_irq_cpu_rmap() so we
-don't hit and issue. Subsequent patches in this series excersize this
-flow, hence the required fix.
-
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Eli Cohen <elic@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Kang Chen <void0red@gmail.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/cpu_rmap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/acpi/acpi_apd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/cpu_rmap.c b/lib/cpu_rmap.c
-index f08d9c56f712e..e77f12bb3c774 100644
---- a/lib/cpu_rmap.c
-+++ b/lib/cpu_rmap.c
-@@ -232,7 +232,8 @@ void free_irq_cpu_rmap(struct cpu_rmap *rmap)
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 3bbe2276cac76..80f945cbec8a7 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -83,6 +83,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 	if (!acpi_dev_get_property(adev, "clk-name", ACPI_TYPE_STRING, &obj)) {
+ 		clk_data->name = devm_kzalloc(&adev->dev, obj->string.length,
+ 					      GFP_KERNEL);
++		if (!clk_data->name)
++			return -ENOMEM;
  
- 	for (index = 0; index < rmap->used; index++) {
- 		glue = rmap->obj[index];
--		irq_set_affinity_notifier(glue->notify.irq, NULL);
-+		if (glue)
-+			irq_set_affinity_notifier(glue->notify.irq, NULL);
- 	}
- 
- 	cpu_rmap_put(rmap);
-@@ -268,6 +269,7 @@ static void irq_cpu_rmap_release(struct kref *ref)
- 		container_of(ref, struct irq_glue, notify.kref);
- 
- 	cpu_rmap_put(glue->rmap);
-+	glue->rmap->obj[glue->index] = NULL;
- 	kfree(glue);
- }
- 
-@@ -297,6 +299,7 @@ int irq_cpu_rmap_add(struct cpu_rmap *rmap, int irq)
- 	rc = irq_set_affinity_notifier(irq, &glue->notify);
- 	if (rc) {
- 		cpu_rmap_put(glue->rmap);
-+		rmap->obj[glue->index] = NULL;
- 		kfree(glue);
- 	}
- 	return rc;
+ 		strcpy(clk_data->name, obj->string.pointer);
+ 	} else {
 -- 
 2.39.2
 
