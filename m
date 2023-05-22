@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC2570C8E3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 262AF70C701
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235093AbjEVTnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37540 "EHLO
+        id S234593AbjEVTYu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:24:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235113AbjEVTnF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:05 -0400
+        with ESMTP id S234602AbjEVTYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 632C5E0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D951E9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D05F62A34
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCF2C433EF;
-        Mon, 22 May 2023 19:42:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B6162881
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C216CC433D2;
+        Mon, 22 May 2023 19:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784534;
-        bh=cG3lu9FMZB1qZzX5GvnYFM79h8hoMu8URMJCS/qlmPk=;
+        s=korg; t=1684783486;
+        bh=17532IZj8tXv/AVKvsR66t/txzao8+fN7y44P1P+OBo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m5WlPPWfQsqeMP0rVFH6ZmWsGYfiG8vtjeqUA9IAOCU7vn+so+KCkh/9j1H9J/dOM
-         +gqh4ky0n10o7LsNYV4kopyOWnwQ6SgQYRievf07wer39wkBzX7kfI7PpTbu+DsOVj
-         8XAwoOTIa4+vXtLY5QICnVB+ltcbTu7jGMAtkgyE=
+        b=ZZHfDOG6BuufllYveK8xFx6R7kABgv4ZmufYqsKUDAo7umqMRx4+PtvC1V5rbbenC
+         e6f2N2cet9170adq+B5+uYwy/iYgfsKsuXCxogUsAzoJXNWODTS8pvggdEpQtRDQMW
+         oH3bR8k2rEHU2msP/X0O+mJR9Lkl1XiyYriI8q1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, "t.feng" <fengtao40@huawei.com>,
+        Florian Westphal <fw@strlen.de>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 072/364] drm/msm/dp: Clean up handling of DP AUX interrupts
-Date:   Mon, 22 May 2023 20:06:17 +0100
-Message-Id: <20230522190414.574476761@linuxfoundation.org>
+Subject: [PATCH 6.1 021/292] ipvlan:Fix out-of-bounds caused by unclear skb->cb
+Date:   Mon, 22 May 2023 20:06:18 +0100
+Message-Id: <20230522190406.423590861@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,208 +56,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: t.feng <fengtao40@huawei.com>
 
-[ Upstream commit b20566cdef05cd40d95f10869d2a7646f48b1bbe ]
+[ Upstream commit 90cbed5247439a966b645b34eb0a2e037836ea8e ]
 
-The DP AUX interrupt handling was a bit of a mess.
-* There were two functions (one for "native" transfers and one for
-  "i2c" transfers) that were quite similar. It was hard to say how
-  many of the differences between the two functions were on purpose
-  and how many of them were just an accident of how they were coded.
-* Each function sometimes used "else if" to test for error bits and
-  sometimes didn't and again it was hard to say if this was on purpose
-  or just an accident.
-* The two functions wouldn't notice whether "unknown" bits were
-  set. For instance, there seems to be a bit "DP_INTR_PLL_UNLOCKED"
-  and if it was set there would be no indication.
-* The two functions wouldn't notice if more than one error was set.
+If skb enqueue the qdisc, fq_skb_cb(skb)->time_to_send is changed which
+is actually skb->cb, and IPCB(skb_in)->opt will be used in
+__ip_options_echo. It is possible that memcpy is out of bounds and lead
+to stack overflow.
+We should clear skb->cb before ip_local_out or ip6_local_out.
 
-Let's fix this by being more consistent / explicit about what we're
-doing.
+v2:
+1. clean the stack info
+2. use IPCB/IP6CB instead of skb->cb
 
-By design this could cause different handling for AUX transfers,
-though I'm not actually aware of any bug fixed as a result of
-this patch (this patch was created because we simply noticed how odd
-the old code was by code inspection). Specific notes here:
-1. In the old native transfer case if we got "done + wrong address"
-   we'd ignore the "wrong address" (because of the "else if"). Now we
-   won't.
-2. In the old native transfer case if we got "done + timeout" we'd
-   ignore the "timeout" (because of the "else if"). Now we won't.
-3. In the old native transfer case we'd see "nack_defer" and translate
-   it to the error number for "nack". This differed from the i2c
-   transfer case where "nack_defer" was given the error number for
-   "nack_defer". This 100% can't matter because the only user of this
-   error number treats "nack defer" the same as "nack", so it's clear
-   that the difference between the "native" and "i2c" was pointless
-   here.
-4. In the old i2c transfer case if we got "done" plus any error
-   besides "nack" or "defer" then we'd ignore the error. Now we don't.
-5. If there is more than one error signaled by the hardware it's
-   possible that we'll report a different one than we used to. I don't
-   know if this matters. If someone is aware of a case this matters we
-   should document it and change the code to make it explicit.
-6. One quirk we keep (I don't know if this is important) is that in
-   the i2c transfer case if we see "done + defer" we report that as a
-   "nack". That seemed too intentional in the old code to just drop.
+crash on stable-5.10(reproduce in kasan kernel).
+Stack info:
+[ 2203.651571] BUG: KASAN: stack-out-of-bounds in
+__ip_options_echo+0x589/0x800
+[ 2203.653327] Write of size 4 at addr ffff88811a388f27 by task
+swapper/3/0
+[ 2203.655460] CPU: 3 PID: 0 Comm: swapper/3 Kdump: loaded Not tainted
+5.10.0-60.18.0.50.h856.kasan.eulerosv2r11.x86_64 #1
+[ 2203.655466] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.10.2-0-g5f4c7b1-20181220_000000-szxrtosci10000 04/01/2014
+[ 2203.655475] Call Trace:
+[ 2203.655481]  <IRQ>
+[ 2203.655501]  dump_stack+0x9c/0xd3
+[ 2203.655514]  print_address_description.constprop.0+0x19/0x170
+[ 2203.655530]  __kasan_report.cold+0x6c/0x84
+[ 2203.655586]  kasan_report+0x3a/0x50
+[ 2203.655594]  check_memory_region+0xfd/0x1f0
+[ 2203.655601]  memcpy+0x39/0x60
+[ 2203.655608]  __ip_options_echo+0x589/0x800
+[ 2203.655654]  __icmp_send+0x59a/0x960
+[ 2203.655755]  nf_send_unreach+0x129/0x3d0 [nf_reject_ipv4]
+[ 2203.655763]  reject_tg+0x77/0x1bf [ipt_REJECT]
+[ 2203.655772]  ipt_do_table+0x691/0xa40 [ip_tables]
+[ 2203.655821]  nf_hook_slow+0x69/0x100
+[ 2203.655828]  __ip_local_out+0x21e/0x2b0
+[ 2203.655857]  ip_local_out+0x28/0x90
+[ 2203.655868]  ipvlan_process_v4_outbound+0x21e/0x260 [ipvlan]
+[ 2203.655931]  ipvlan_xmit_mode_l3+0x3bd/0x400 [ipvlan]
+[ 2203.655967]  ipvlan_queue_xmit+0xb3/0x190 [ipvlan]
+[ 2203.655977]  ipvlan_start_xmit+0x2e/0xb0 [ipvlan]
+[ 2203.655984]  xmit_one.constprop.0+0xe1/0x280
+[ 2203.655992]  dev_hard_start_xmit+0x62/0x100
+[ 2203.656000]  sch_direct_xmit+0x215/0x640
+[ 2203.656028]  __qdisc_run+0x153/0x1f0
+[ 2203.656069]  __dev_queue_xmit+0x77f/0x1030
+[ 2203.656173]  ip_finish_output2+0x59b/0xc20
+[ 2203.656244]  __ip_finish_output.part.0+0x318/0x3d0
+[ 2203.656312]  ip_finish_output+0x168/0x190
+[ 2203.656320]  ip_output+0x12d/0x220
+[ 2203.656357]  __ip_queue_xmit+0x392/0x880
+[ 2203.656380]  __tcp_transmit_skb+0x1088/0x11c0
+[ 2203.656436]  __tcp_retransmit_skb+0x475/0xa30
+[ 2203.656505]  tcp_retransmit_skb+0x2d/0x190
+[ 2203.656512]  tcp_retransmit_timer+0x3af/0x9a0
+[ 2203.656519]  tcp_write_timer_handler+0x3ba/0x510
+[ 2203.656529]  tcp_write_timer+0x55/0x180
+[ 2203.656542]  call_timer_fn+0x3f/0x1d0
+[ 2203.656555]  expire_timers+0x160/0x200
+[ 2203.656562]  run_timer_softirq+0x1f4/0x480
+[ 2203.656606]  __do_softirq+0xfd/0x402
+[ 2203.656613]  asm_call_irq_on_stack+0x12/0x20
+[ 2203.656617]  </IRQ>
+[ 2203.656623]  do_softirq_own_stack+0x37/0x50
+[ 2203.656631]  irq_exit_rcu+0x134/0x1a0
+[ 2203.656639]  sysvec_apic_timer_interrupt+0x36/0x80
+[ 2203.656646]  asm_sysvec_apic_timer_interrupt+0x12/0x20
+[ 2203.656654] RIP: 0010:default_idle+0x13/0x20
+[ 2203.656663] Code: 89 f0 5d 41 5c 41 5d 41 5e c3 cc cc cc cc cc cc cc
+cc cc cc cc cc cc 0f 1f 44 00 00 0f 1f 44 00 00 0f 00 2d 9f 32 57 00 fb
+f4 <c3> cc cc cc cc 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 41 54 be 08
+[ 2203.656668] RSP: 0018:ffff88810036fe78 EFLAGS: 00000256
+[ 2203.656676] RAX: ffffffffaf2a87f0 RBX: ffff888100360000 RCX:
+ffffffffaf290191
+[ 2203.656681] RDX: 0000000000098b5e RSI: 0000000000000004 RDI:
+ffff88811a3c4f60
+[ 2203.656686] RBP: 0000000000000000 R08: 0000000000000001 R09:
+ffff88811a3c4f63
+[ 2203.656690] R10: ffffed10234789ec R11: 0000000000000001 R12:
+0000000000000003
+[ 2203.656695] R13: ffff888100360000 R14: 0000000000000000 R15:
+0000000000000000
+[ 2203.656729]  default_idle_call+0x5a/0x150
+[ 2203.656735]  cpuidle_idle_call+0x1c6/0x220
+[ 2203.656780]  do_idle+0xab/0x100
+[ 2203.656786]  cpu_startup_entry+0x19/0x20
+[ 2203.656793]  secondary_startup_64_no_verify+0xc2/0xcb
 
-After this change we will add extra logging, including:
-* A warning if we see more than one error bit set.
-* A warning if we see an unexpected interrupt.
-* A warning if we get an AUX transfer interrupt when shouldn't.
+[ 2203.657409] The buggy address belongs to the page:
+[ 2203.658648] page:0000000027a9842f refcount:1 mapcount:0
+mapping:0000000000000000 index:0x0 pfn:0x11a388
+[ 2203.658665] flags:
+0x17ffffc0001000(reserved|node=0|zone=2|lastcpupid=0x1fffff)
+[ 2203.658675] raw: 0017ffffc0001000 ffffea000468e208 ffffea000468e208
+0000000000000000
+[ 2203.658682] raw: 0000000000000000 0000000000000000 00000001ffffffff
+0000000000000000
+[ 2203.658686] page dumped because: kasan: bad access detected
 
-It actually turns out that as a result of this change then at boot we
-sometimes see an error:
-  [drm:dp_aux_isr] *ERROR* Unexpected DP AUX IRQ 0x01000000 when not busy
-That means that, during init, we are seeing DP_INTR_PLL_UNLOCKED. For
-now I'm going to say that leaving this error reported in the logs is
-OK-ish and hopefully it will encourage someone to track down what's
-going on at init time.
+To reproduce(ipvlan with IPVLAN_MODE_L3):
+Env setting:
+=======================================================
+modprobe ipvlan ipvlan_default_mode=1
+sysctl net.ipv4.conf.eth0.forwarding=1
+iptables -t nat -A POSTROUTING -s 20.0.0.0/255.255.255.0 -o eth0 -j
+MASQUERADE
+ip link add gw link eth0 type ipvlan
+ip -4 addr add 20.0.0.254/24 dev gw
+ip netns add net1
+ip link add ipv1 link eth0 type ipvlan
+ip link set ipv1 netns net1
+ip netns exec net1 ip link set ipv1 up
+ip netns exec net1 ip -4 addr add 20.0.0.4/24 dev ipv1
+ip netns exec net1 route add default gw 20.0.0.254
+ip netns exec net1 tc qdisc add dev ipv1 root netem loss 10%
+ifconfig gw up
+iptables -t filter -A OUTPUT -p tcp --dport 8888 -j REJECT --reject-with
+icmp-port-unreachable
+=======================================================
+And then excute the shell(curl any address of eth0 can reach):
 
-One last note here is that this change renames one of the interrupt
-bits. The bit named "i2c done" clearly was used for native transfers
-being done too, so I renamed it to indicate this.
+for((i=1;i<=100000;i++))
+do
+        ip netns exec net1 curl x.x.x.x:8888
+done
+=======================================================
 
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/520658/
-Link: https://lore.kernel.org/r/20230126170745.v2.1.I90ffed3ddd21e818ae534f820cb4d6d8638859ab@changeid
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Signed-off-by: "t.feng" <fengtao40@huawei.com>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_aux.c     | 80 ++++++++++++-----------------
- drivers/gpu/drm/msm/dp/dp_catalog.c |  2 +-
- drivers/gpu/drm/msm/dp/dp_catalog.h |  2 +-
- 3 files changed, 36 insertions(+), 48 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
-index cc3efed593aa1..84f9e3e5f9642 100644
---- a/drivers/gpu/drm/msm/dp/dp_aux.c
-+++ b/drivers/gpu/drm/msm/dp/dp_aux.c
-@@ -162,47 +162,6 @@ static ssize_t dp_aux_cmd_fifo_rx(struct dp_aux_private *aux,
- 	return i;
- }
- 
--static void dp_aux_native_handler(struct dp_aux_private *aux, u32 isr)
--{
--	if (isr & DP_INTR_AUX_I2C_DONE)
--		aux->aux_error_num = DP_AUX_ERR_NONE;
--	else if (isr & DP_INTR_WRONG_ADDR)
--		aux->aux_error_num = DP_AUX_ERR_ADDR;
--	else if (isr & DP_INTR_TIMEOUT)
--		aux->aux_error_num = DP_AUX_ERR_TOUT;
--	if (isr & DP_INTR_NACK_DEFER)
--		aux->aux_error_num = DP_AUX_ERR_NACK;
--	if (isr & DP_INTR_AUX_ERROR) {
--		aux->aux_error_num = DP_AUX_ERR_PHY;
--		dp_catalog_aux_clear_hw_interrupts(aux->catalog);
--	}
--}
--
--static void dp_aux_i2c_handler(struct dp_aux_private *aux, u32 isr)
--{
--	if (isr & DP_INTR_AUX_I2C_DONE) {
--		if (isr & (DP_INTR_I2C_NACK | DP_INTR_I2C_DEFER))
--			aux->aux_error_num = DP_AUX_ERR_NACK;
--		else
--			aux->aux_error_num = DP_AUX_ERR_NONE;
--	} else {
--		if (isr & DP_INTR_WRONG_ADDR)
--			aux->aux_error_num = DP_AUX_ERR_ADDR;
--		else if (isr & DP_INTR_TIMEOUT)
--			aux->aux_error_num = DP_AUX_ERR_TOUT;
--		if (isr & DP_INTR_NACK_DEFER)
--			aux->aux_error_num = DP_AUX_ERR_NACK_DEFER;
--		if (isr & DP_INTR_I2C_NACK)
--			aux->aux_error_num = DP_AUX_ERR_NACK;
--		if (isr & DP_INTR_I2C_DEFER)
--			aux->aux_error_num = DP_AUX_ERR_DEFER;
--		if (isr & DP_INTR_AUX_ERROR) {
--			aux->aux_error_num = DP_AUX_ERR_PHY;
--			dp_catalog_aux_clear_hw_interrupts(aux->catalog);
--		}
--	}
--}
--
- static void dp_aux_update_offset_and_segment(struct dp_aux_private *aux,
- 					     struct drm_dp_aux_msg *input_msg)
- {
-@@ -427,13 +386,42 @@ void dp_aux_isr(struct drm_dp_aux *dp_aux)
- 	if (!isr)
- 		return;
- 
--	if (!aux->cmd_busy)
-+	if (!aux->cmd_busy) {
-+		DRM_ERROR("Unexpected DP AUX IRQ %#010x when not busy\n", isr);
- 		return;
-+	}
- 
--	if (aux->native)
--		dp_aux_native_handler(aux, isr);
--	else
--		dp_aux_i2c_handler(aux, isr);
-+	/*
-+	 * The logic below assumes only one error bit is set (other than "done"
-+	 * which can apparently be set at the same time as some of the other
-+	 * bits). Warn if more than one get set so we know we need to improve
-+	 * the logic.
-+	 */
-+	if (hweight32(isr & ~DP_INTR_AUX_XFER_DONE) > 1)
-+		DRM_WARN("Some DP AUX interrupts unhandled: %#010x\n", isr);
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index bb1c298c1e78b..2de3bd3b0c278 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -436,6 +436,9 @@ static int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ 		goto err;
+ 	}
+ 	skb_dst_set(skb, &rt->dst);
 +
-+	if (isr & DP_INTR_AUX_ERROR) {
-+		aux->aux_error_num = DP_AUX_ERR_PHY;
-+		dp_catalog_aux_clear_hw_interrupts(aux->catalog);
-+	} else if (isr & DP_INTR_NACK_DEFER) {
-+		aux->aux_error_num = DP_AUX_ERR_NACK_DEFER;
-+	} else if (isr & DP_INTR_WRONG_ADDR) {
-+		aux->aux_error_num = DP_AUX_ERR_ADDR;
-+	} else if (isr & DP_INTR_TIMEOUT) {
-+		aux->aux_error_num = DP_AUX_ERR_TOUT;
-+	} else if (!aux->native && (isr & DP_INTR_I2C_NACK)) {
-+		aux->aux_error_num = DP_AUX_ERR_NACK;
-+	} else if (!aux->native && (isr & DP_INTR_I2C_DEFER)) {
-+		if (isr & DP_INTR_AUX_XFER_DONE)
-+			aux->aux_error_num = DP_AUX_ERR_NACK;
-+		else
-+			aux->aux_error_num = DP_AUX_ERR_DEFER;
-+	} else if (isr & DP_INTR_AUX_XFER_DONE) {
-+		aux->aux_error_num = DP_AUX_ERR_NONE;
-+	} else {
-+		DRM_WARN("Unexpected interrupt: %#010x\n", isr);
-+		return;
-+	}
- 
- 	complete(&aux->comp);
- }
-diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.c b/drivers/gpu/drm/msm/dp/dp_catalog.c
-index 676279d0ca8d9..421391755427d 100644
---- a/drivers/gpu/drm/msm/dp/dp_catalog.c
-+++ b/drivers/gpu/drm/msm/dp/dp_catalog.c
-@@ -27,7 +27,7 @@
- #define DP_INTF_CONFIG_DATABUS_WIDEN     BIT(4)
- 
- #define DP_INTERRUPT_STATUS1 \
--	(DP_INTR_AUX_I2C_DONE| \
-+	(DP_INTR_AUX_XFER_DONE| \
- 	DP_INTR_WRONG_ADDR | DP_INTR_TIMEOUT | \
- 	DP_INTR_NACK_DEFER | DP_INTR_WRONG_DATA_CNT | \
- 	DP_INTR_I2C_NACK | DP_INTR_I2C_DEFER | \
-diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.h b/drivers/gpu/drm/msm/dp/dp_catalog.h
-index 1f717f45c1158..f36b7b372a065 100644
---- a/drivers/gpu/drm/msm/dp/dp_catalog.h
-+++ b/drivers/gpu/drm/msm/dp/dp_catalog.h
-@@ -13,7 +13,7 @@
- 
- /* interrupts */
- #define DP_INTR_HPD		BIT(0)
--#define DP_INTR_AUX_I2C_DONE	BIT(3)
-+#define DP_INTR_AUX_XFER_DONE	BIT(3)
- #define DP_INTR_WRONG_ADDR	BIT(6)
- #define DP_INTR_TIMEOUT		BIT(9)
- #define DP_INTR_NACK_DEFER	BIT(12)
++	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
++
+ 	err = ip_local_out(net, skb->sk, skb);
+ 	if (unlikely(net_xmit_eval(err)))
+ 		dev->stats.tx_errors++;
+@@ -474,6 +477,9 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
+ 		goto err;
+ 	}
+ 	skb_dst_set(skb, dst);
++
++	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
++
+ 	err = ip6_local_out(net, skb->sk, skb);
+ 	if (unlikely(net_xmit_eval(err)))
+ 		dev->stats.tx_errors++;
 -- 
 2.39.2
 
