@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 020DD70C6F9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2D870C8B4
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234556AbjEVTYc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
+        id S235190AbjEVTlD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234569AbjEVTYb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:31 -0400
+        with ESMTP id S235231AbjEVTk1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:40:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A01ACA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B6418B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:40:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9421B6285C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38A1C433D2;
-        Mon, 22 May 2023 19:24:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F345262A01
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5B9C433EF;
+        Mon, 22 May 2023 19:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783468;
-        bh=EILApsTD5zoyiHGM2TCOuHpmc5KWU3n4Y6td/myyRz0=;
+        s=korg; t=1684784420;
+        bh=IsJ3nuE/KfK82iXodBeTua0EVgDa1IkAkvR1I9xIlec=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cnKwaoIcqdAsxwb//oM9G9DcUkLaRBvyMy7qQ83w0Gv7S+5jg78By+FO9Fdns7OSm
-         +k5UjLjuG+9YFiPSr9tA8X7PHt7CSa6hpeIBUhzj4363E3ihtHLLalERJFFSroU8q+
-         bZHXln2VCK7iyzufH5BrRpqvAgl/tUQ7jNXGiJlk=
+        b=WF4Pcv7c79dgOkCX21LLZBlHlvFcSAT1KjzzYa3bGbKWa74vSpbz5m4qz92UAY3Tb
+         0jE4ndCs+QdK8nZBXmhKrr3TS+sBC17MPI2z8A7eb3DMnqmB0x4+SP5OckUDkwIQKB
+         Plr9L3XSBFd6MDSggH39RdQYi+bK5ph0f8u4TTUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Michal Kubiak <michal.kubiak@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/292] af_unix: Fix data races around sk->sk_shutdown.
+        patches@lists.linux.dev, Vikram Sethi <vsethi@nvidia.com>,
+        Shanker Donthineni <sdonthineni@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.3 077/364] irqchip/gicv3: Workaround for NVIDIA erratum T241-FABRIC-4
 Date:   Mon, 22 May 2023 20:06:22 +0100
-Message-Id: <20230522190406.523927251@linuxfoundation.org>
+Message-Id: <20230522190414.694993297@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,151 +55,457 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-[ Upstream commit e1d09c2c2f5793474556b60f83900e088d0d366d ]
+[ Upstream commit 35727af2b15d98a2dd2811d631d3a3886111312e ]
 
-KCSAN found a data race around sk->sk_shutdown where unix_release_sock()
-and unix_shutdown() update it under unix_state_lock(), OTOH unix_poll()
-and unix_dgram_poll() read it locklessly.
+The T241 platform suffers from the T241-FABRIC-4 erratum which causes
+unexpected behavior in the GIC when multiple transactions are received
+simultaneously from different sources. This hardware issue impacts
+NVIDIA server platforms that use more than two T241 chips
+interconnected. Each chip has support for 320 {E}SPIs.
 
-We need to annotate the writes and reads with WRITE_ONCE() and READ_ONCE().
+This issue occurs when multiple packets from different GICs are
+incorrectly interleaved at the target chip. The erratum text below
+specifies exactly what can cause multiple transfer packets susceptible
+to interleaving and GIC state corruption. GIC state corruption can
+lead to a range of problems, including kernel panics, and unexpected
+behavior.
 
-BUG: KCSAN: data-race in unix_poll / unix_release_sock
+>From the erratum text:
+  "In some cases, inter-socket AXI4 Stream packets with multiple
+  transfers, may be interleaved by the fabric when presented to ARM
+  Generic Interrupt Controller. GIC expects all transfers of a packet
+  to be delivered without any interleaving.
 
-write to 0xffff88800d0f8aec of 1 bytes by task 264 on cpu 0:
- unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
- unix_release+0x59/0x80 net/unix/af_unix.c:1042
- __sock_release+0x7d/0x170 net/socket.c:653
- sock_close+0x19/0x30 net/socket.c:1397
- __fput+0x179/0x5e0 fs/file_table.c:321
- ____fput+0x15/0x20 fs/file_table.c:349
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  The following GICv3 commands may result in multiple transfer packets
+  over inter-socket AXI4 Stream interface:
+   - Register reads from GICD_I* and GICD_N*
+   - Register writes to 64-bit GICD registers other than GICD_IROUTERn*
+   - ITS command MOVALL
 
-read to 0xffff88800d0f8aec of 1 bytes by task 222 on cpu 1:
- unix_poll+0xa3/0x2a0 net/unix/af_unix.c:3170
- sock_poll+0xcf/0x2b0 net/socket.c:1385
- vfs_poll include/linux/poll.h:88 [inline]
- ep_item_poll.isra.0+0x78/0xc0 fs/eventpoll.c:855
- ep_send_events fs/eventpoll.c:1694 [inline]
- ep_poll fs/eventpoll.c:1823 [inline]
- do_epoll_wait+0x6c4/0xea0 fs/eventpoll.c:2258
- __do_sys_epoll_wait fs/eventpoll.c:2270 [inline]
- __se_sys_epoll_wait fs/eventpoll.c:2265 [inline]
- __x64_sys_epoll_wait+0xcc/0x190 fs/eventpoll.c:2265
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  Multiple commands in GICv4+ utilize multiple transfer packets,
+  including VMOVP, VMOVI, VMAPP, and 64-bit register accesses."
 
-value changed: 0x00 -> 0x03
+  This issue impacts system configurations with more than 2 sockets,
+  that require multi-transfer packets to be sent over inter-socket
+  AXI4 Stream interface between GIC instances on different sockets.
+  GICv4 cannot be supported. GICv3 SW model can only be supported
+  with the workaround. Single and Dual socket configurations are not
+  impacted by this issue and support GICv3 and GICv4."
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 222 Comm: dbus-broker Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Link: https://developer.nvidia.com/docs/t241-fabric-4/nvidia-t241-fabric-4-errata.pdf
 
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Writing to the chip alias region of the GICD_In{E} registers except
+GICD_ICENABLERn has an equivalent effect as writing to the global
+distributor. The SPI interrupt deactivate path is not impacted by
+the erratum.
+
+To fix this problem, implement a workaround that ensures read accesses
+to the GICD_In{E} registers are directed to the chip that owns the
+SPI, and disable GICv4.x features. To simplify code changes, the
+gic_configure_irq() function uses the same alias region for both read
+and write operations to GICD_ICFGR.
+
+Co-developed-by: Vikram Sethi <vsethi@nvidia.com>
+Signed-off-by: Vikram Sethi <vsethi@nvidia.com>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com> (for SMCCC/SOC ID bits)
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230319024314.3540573-2-sdonthineni@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ Documentation/arm64/silicon-errata.rst |   2 +
+ drivers/firmware/smccc/smccc.c         |  26 ++++++
+ drivers/firmware/smccc/soc_id.c        |  28 ++----
+ drivers/irqchip/Kconfig                |   1 +
+ drivers/irqchip/irq-gic-v3.c           | 115 ++++++++++++++++++++++---
+ include/linux/arm-smccc.h              |  18 ++++
+ 6 files changed, 156 insertions(+), 34 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 3b292a7a1fa58..70eb3bc67126d 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -602,7 +602,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	/* Clear state */
- 	unix_state_lock(sk);
- 	sock_orphan(sk);
--	sk->sk_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
- 	path	     = u->path;
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
-@@ -627,7 +627,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 		if (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) {
- 			unix_state_lock(skpair);
- 			/* No more writes */
--			skpair->sk_shutdown = SHUTDOWN_MASK;
-+			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
- 			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
- 				skpair->sk_err = ECONNRESET;
- 			unix_state_unlock(skpair);
-@@ -3007,7 +3007,7 @@ static int unix_shutdown(struct socket *sock, int mode)
- 	++mode;
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index ec5f889d76819..e31f6c0687041 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -172,6 +172,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | NVIDIA         | Carmel Core     | N/A             | NVIDIA_CARMEL_CNP_ERRATUM   |
+ +----------------+-----------------+-----------------+-----------------------------+
++| NVIDIA         | T241 GICv3/4.x  | T241-FABRIC-4   | N/A                         |
+++----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Freescale/NXP  | LS2080A/LS1043A | A-008585        | FSL_ERRATUM_A008585         |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
+index 60ccf3e90d7de..db818f9dcb8ee 100644
+--- a/drivers/firmware/smccc/smccc.c
++++ b/drivers/firmware/smccc/smccc.c
+@@ -17,9 +17,13 @@ static enum arm_smccc_conduit smccc_conduit = SMCCC_CONDUIT_NONE;
  
- 	unix_state_lock(sk);
--	sk->sk_shutdown |= mode;
-+	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | mode);
- 	other = unix_peer(sk);
- 	if (other)
- 		sock_hold(other);
-@@ -3027,7 +3027,7 @@ static int unix_shutdown(struct socket *sock, int mode)
- 		if (mode&SEND_SHUTDOWN)
- 			peer_mode |= RCV_SHUTDOWN;
- 		unix_state_lock(other);
--		other->sk_shutdown |= peer_mode;
-+		WRITE_ONCE(other->sk_shutdown, other->sk_shutdown | peer_mode);
- 		unix_state_unlock(other);
- 		other->sk_state_change(other);
- 		if (peer_mode == SHUTDOWN_MASK)
-@@ -3159,16 +3159,18 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
+ bool __ro_after_init smccc_trng_available = false;
+ u64 __ro_after_init smccc_has_sve_hint = false;
++s32 __ro_after_init smccc_soc_id_version = SMCCC_RET_NOT_SUPPORTED;
++s32 __ro_after_init smccc_soc_id_revision = SMCCC_RET_NOT_SUPPORTED;
+ 
+ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
  {
- 	struct sock *sk = sock->sk;
- 	__poll_t mask;
-+	u8 shutdown;
++	struct arm_smccc_res res;
++
+ 	smccc_version = version;
+ 	smccc_conduit = conduit;
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
-+	shutdown = READ_ONCE(sk->sk_shutdown);
+@@ -27,6 +31,18 @@ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
+ 	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
+ 	    smccc_version >= ARM_SMCCC_VERSION_1_3)
+ 		smccc_has_sve_hint = true;
++
++	if ((smccc_version >= ARM_SMCCC_VERSION_1_2) &&
++	    (smccc_conduit != SMCCC_CONDUIT_NONE)) {
++		arm_smccc_1_1_invoke(ARM_SMCCC_ARCH_FEATURES_FUNC_ID,
++				     ARM_SMCCC_ARCH_SOC_ID, &res);
++		if ((s32)res.a0 >= 0) {
++			arm_smccc_1_1_invoke(ARM_SMCCC_ARCH_SOC_ID, 0, &res);
++			smccc_soc_id_version = (s32)res.a0;
++			arm_smccc_1_1_invoke(ARM_SMCCC_ARCH_SOC_ID, 1, &res);
++			smccc_soc_id_revision = (s32)res.a0;
++		}
++	}
+ }
  
- 	/* exceptional events? */
- 	if (sk->sk_err)
- 		mask |= EPOLLERR;
--	if (sk->sk_shutdown == SHUTDOWN_MASK)
-+	if (shutdown == SHUTDOWN_MASK)
- 		mask |= EPOLLHUP;
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
+ enum arm_smccc_conduit arm_smccc_1_1_get_conduit(void)
+@@ -44,6 +60,16 @@ u32 arm_smccc_get_version(void)
+ }
+ EXPORT_SYMBOL_GPL(arm_smccc_get_version);
  
- 	/* readable? */
-@@ -3202,18 +3204,20 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
- 	__poll_t mask;
-+	u8 shutdown;
++s32 arm_smccc_get_soc_id_version(void)
++{
++	return smccc_soc_id_version;
++}
++
++s32 arm_smccc_get_soc_id_revision(void)
++{
++	return smccc_soc_id_revision;
++}
++
+ static int __init smccc_devices_init(void)
+ {
+ 	struct platform_device *pdev;
+diff --git a/drivers/firmware/smccc/soc_id.c b/drivers/firmware/smccc/soc_id.c
+index dd7c3d5e8b0bb..890eb454599a3 100644
+--- a/drivers/firmware/smccc/soc_id.c
++++ b/drivers/firmware/smccc/soc_id.c
+@@ -42,41 +42,23 @@ static int __init smccc_soc_init(void)
+ 	if (arm_smccc_get_version() < ARM_SMCCC_VERSION_1_2)
+ 		return 0;
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
-+	shutdown = READ_ONCE(sk->sk_shutdown);
+-	if (arm_smccc_1_1_get_conduit() == SMCCC_CONDUIT_NONE) {
+-		pr_err("%s: invalid SMCCC conduit\n", __func__);
+-		return -EOPNOTSUPP;
+-	}
+-
+-	arm_smccc_1_1_invoke(ARM_SMCCC_ARCH_FEATURES_FUNC_ID,
+-			     ARM_SMCCC_ARCH_SOC_ID, &res);
+-
+-	if ((int)res.a0 == SMCCC_RET_NOT_SUPPORTED) {
++	soc_id_version = arm_smccc_get_soc_id_version();
++	if (soc_id_version == SMCCC_RET_NOT_SUPPORTED) {
+ 		pr_info("ARCH_SOC_ID not implemented, skipping ....\n");
+ 		return 0;
+ 	}
  
- 	/* exceptional events? */
- 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
- 		mask |= EPOLLERR |
- 			(sock_flag(sk, SOCK_SELECT_ERR_QUEUE) ? EPOLLPRI : 0);
+-	if ((int)res.a0 < 0) {
+-		pr_info("ARCH_FEATURES(ARCH_SOC_ID) returned error: %lx\n",
+-			res.a0);
+-		return -EINVAL;
+-	}
+-
+-	arm_smccc_1_1_invoke(ARM_SMCCC_ARCH_SOC_ID, 0, &res);
+-	if ((int)res.a0 < 0) {
++	if (soc_id_version < 0) {
+ 		pr_err("ARCH_SOC_ID(0) returned error: %lx\n", res.a0);
+ 		return -EINVAL;
+ 	}
  
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
--	if (sk->sk_shutdown == SHUTDOWN_MASK)
-+	if (shutdown == SHUTDOWN_MASK)
- 		mask |= EPOLLHUP;
+-	soc_id_version = res.a0;
+-
+-	arm_smccc_1_1_invoke(ARM_SMCCC_ARCH_SOC_ID, 1, &res);
+-	if ((int)res.a0 < 0) {
++	soc_id_rev = arm_smccc_get_soc_id_revision();
++	if (soc_id_rev < 0) {
+ 		pr_err("ARCH_SOC_ID(1) returned error: %lx\n", res.a0);
+ 		return -EINVAL;
+ 	}
  
- 	/* readable? */
+-	soc_id_rev = res.a0;
+-
+ 	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
+ 	if (!soc_dev_attr)
+ 		return -ENOMEM;
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 7dc990eb2c9ba..9efb383fc688f 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -35,6 +35,7 @@ config ARM_GIC_V3
+ 	select IRQ_DOMAIN_HIERARCHY
+ 	select PARTITION_PERCPU
+ 	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
++	select HAVE_ARM_SMCCC_DISCOVERY
+ 
+ config ARM_GIC_V3_ITS
+ 	bool
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index fd134e1f481a2..6fcee221f2017 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -24,6 +24,9 @@
+ #include <linux/irqchip/arm-gic-common.h>
+ #include <linux/irqchip/arm-gic-v3.h>
+ #include <linux/irqchip/irq-partition-percpu.h>
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/arm-smccc.h>
+ 
+ #include <asm/cputype.h>
+ #include <asm/exception.h>
+@@ -47,6 +50,7 @@ struct redist_region {
+ 
+ struct gic_chip_data {
+ 	struct fwnode_handle	*fwnode;
++	phys_addr_t		dist_phys_base;
+ 	void __iomem		*dist_base;
+ 	struct redist_region	*redist_regions;
+ 	struct rdists		rdists;
+@@ -59,6 +63,10 @@ struct gic_chip_data {
+ 	struct partition_desc	**ppi_descs;
+ };
+ 
++#define T241_CHIPS_MAX		4
++static void __iomem *t241_dist_base_alias[T241_CHIPS_MAX] __read_mostly;
++static DEFINE_STATIC_KEY_FALSE(gic_nvidia_t241_erratum);
++
+ static struct gic_chip_data gic_data __read_mostly;
+ static DEFINE_STATIC_KEY_TRUE(supports_deactivate_key);
+ 
+@@ -179,6 +187,39 @@ static inline bool gic_irq_in_rdist(struct irq_data *d)
+ 	}
+ }
+ 
++static inline void __iomem *gic_dist_base_alias(struct irq_data *d)
++{
++	if (static_branch_unlikely(&gic_nvidia_t241_erratum)) {
++		irq_hw_number_t hwirq = irqd_to_hwirq(d);
++		u32 chip;
++
++		/*
++		 * For the erratum T241-FABRIC-4, read accesses to GICD_In{E}
++		 * registers are directed to the chip that owns the SPI. The
++		 * the alias region can also be used for writes to the
++		 * GICD_In{E} except GICD_ICENABLERn. Each chip has support
++		 * for 320 {E}SPIs. Mappings for all 4 chips:
++		 *    Chip0 = 32-351
++		 *    Chip1 = 352-671
++		 *    Chip2 = 672-991
++		 *    Chip3 = 4096-4415
++		 */
++		switch (__get_intid_range(hwirq)) {
++		case SPI_RANGE:
++			chip = (hwirq - 32) / 320;
++			break;
++		case ESPI_RANGE:
++			chip = 3;
++			break;
++		default:
++			unreachable();
++		}
++		return t241_dist_base_alias[chip];
++	}
++
++	return gic_data.dist_base;
++}
++
+ static inline void __iomem *gic_dist_base(struct irq_data *d)
+ {
+ 	switch (get_intid_range(d)) {
+@@ -337,7 +378,7 @@ static int gic_peek_irq(struct irq_data *d, u32 offset)
+ 	if (gic_irq_in_rdist(d))
+ 		base = gic_data_rdist_sgi_base();
+ 	else
+-		base = gic_data.dist_base;
++		base = gic_dist_base_alias(d);
+ 
+ 	return !!(readl_relaxed(base + offset + (index / 32) * 4) & mask);
+ }
+@@ -588,7 +629,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+ 	if (gic_irq_in_rdist(d))
+ 		base = gic_data_rdist_sgi_base();
+ 	else
+-		base = gic_data.dist_base;
++		base = gic_dist_base_alias(d);
+ 
+ 	offset = convert_offset_index(d, GICD_ICFGR, &index);
+ 
+@@ -1708,6 +1749,43 @@ static bool gic_enable_quirk_hip06_07(void *data)
+ 	return false;
+ }
+ 
++#define T241_CHIPN_MASK		GENMASK_ULL(45, 44)
++#define T241_CHIP_GICDA_OFFSET	0x1580000
++#define SMCCC_SOC_ID_T241	0x036b0241
++
++static bool gic_enable_quirk_nvidia_t241(void *data)
++{
++	s32 soc_id = arm_smccc_get_soc_id_version();
++	unsigned long chip_bmask = 0;
++	phys_addr_t phys;
++	u32 i;
++
++	/* Check JEP106 code for NVIDIA T241 chip (036b:0241) */
++	if ((soc_id < 0) || (soc_id != SMCCC_SOC_ID_T241))
++		return false;
++
++	/* Find the chips based on GICR regions PHYS addr */
++	for (i = 0; i < gic_data.nr_redist_regions; i++) {
++		chip_bmask |= BIT(FIELD_GET(T241_CHIPN_MASK,
++				  (u64)gic_data.redist_regions[i].phys_base));
++	}
++
++	if (hweight32(chip_bmask) < 3)
++		return false;
++
++	/* Setup GICD alias regions */
++	for (i = 0; i < ARRAY_SIZE(t241_dist_base_alias); i++) {
++		if (chip_bmask & BIT(i)) {
++			phys = gic_data.dist_phys_base + T241_CHIP_GICDA_OFFSET;
++			phys |= FIELD_PREP(T241_CHIPN_MASK, i);
++			t241_dist_base_alias[i] = ioremap(phys, SZ_64K);
++			WARN_ON_ONCE(!t241_dist_base_alias[i]);
++		}
++	}
++	static_branch_enable(&gic_nvidia_t241_erratum);
++	return true;
++}
++
+ static const struct gic_quirk gic_quirks[] = {
+ 	{
+ 		.desc	= "GICv3: Qualcomm MSM8996 broken firmware",
+@@ -1739,6 +1817,12 @@ static const struct gic_quirk gic_quirks[] = {
+ 		.mask	= 0xe8f00fff,
+ 		.init	= gic_enable_quirk_cavium_38539,
+ 	},
++	{
++		.desc	= "GICv3: NVIDIA erratum T241-FABRIC-4",
++		.iidr	= 0x0402043b,
++		.mask	= 0xffffffff,
++		.init	= gic_enable_quirk_nvidia_t241,
++	},
+ 	{
+ 	}
+ };
+@@ -1798,7 +1882,8 @@ static void gic_enable_nmi_support(void)
+ 		gic_chip.flags |= IRQCHIP_SUPPORTS_NMI;
+ }
+ 
+-static int __init gic_init_bases(void __iomem *dist_base,
++static int __init gic_init_bases(phys_addr_t dist_phys_base,
++				 void __iomem *dist_base,
+ 				 struct redist_region *rdist_regs,
+ 				 u32 nr_redist_regions,
+ 				 u64 redist_stride,
+@@ -1814,6 +1899,7 @@ static int __init gic_init_bases(void __iomem *dist_base,
+ 		pr_info("GIC: Using split EOI/Deactivate mode\n");
+ 
+ 	gic_data.fwnode = handle;
++	gic_data.dist_phys_base = dist_phys_base;
+ 	gic_data.dist_base = dist_base;
+ 	gic_data.redist_regions = rdist_regs;
+ 	gic_data.nr_redist_regions = nr_redist_regions;
+@@ -1841,10 +1927,13 @@ static int __init gic_init_bases(void __iomem *dist_base,
+ 	gic_data.domain = irq_domain_create_tree(handle, &gic_irq_domain_ops,
+ 						 &gic_data);
+ 	gic_data.rdists.rdist = alloc_percpu(typeof(*gic_data.rdists.rdist));
+-	gic_data.rdists.has_rvpeid = true;
+-	gic_data.rdists.has_vlpis = true;
+-	gic_data.rdists.has_direct_lpi = true;
+-	gic_data.rdists.has_vpend_valid_dirty = true;
++	if (!static_branch_unlikely(&gic_nvidia_t241_erratum)) {
++		/* Disable GICv4.x features for the erratum T241-FABRIC-4 */
++		gic_data.rdists.has_rvpeid = true;
++		gic_data.rdists.has_vlpis = true;
++		gic_data.rdists.has_direct_lpi = true;
++		gic_data.rdists.has_vpend_valid_dirty = true;
++	}
+ 
+ 	if (WARN_ON(!gic_data.domain) || WARN_ON(!gic_data.rdists.rdist)) {
+ 		err = -ENOMEM;
+@@ -2050,6 +2139,7 @@ static void __iomem *gic_of_iomap(struct device_node *node, int idx,
+ 
+ static int __init gic_of_init(struct device_node *node, struct device_node *parent)
+ {
++	phys_addr_t dist_phys_base;
+ 	void __iomem *dist_base;
+ 	struct redist_region *rdist_regs;
+ 	struct resource res;
+@@ -2063,6 +2153,8 @@ static int __init gic_of_init(struct device_node *node, struct device_node *pare
+ 		return PTR_ERR(dist_base);
+ 	}
+ 
++	dist_phys_base = res.start;
++
+ 	err = gic_validate_dist_version(dist_base);
+ 	if (err) {
+ 		pr_err("%pOF: no distributor detected, giving up\n", node);
+@@ -2094,8 +2186,8 @@ static int __init gic_of_init(struct device_node *node, struct device_node *pare
+ 
+ 	gic_enable_of_quirks(node, gic_quirks, &gic_data);
+ 
+-	err = gic_init_bases(dist_base, rdist_regs, nr_redist_regions,
+-			     redist_stride, &node->fwnode);
++	err = gic_init_bases(dist_phys_base, dist_base, rdist_regs,
++			     nr_redist_regions, redist_stride, &node->fwnode);
+ 	if (err)
+ 		goto out_unmap_rdist;
+ 
+@@ -2411,8 +2503,9 @@ gic_acpi_init(union acpi_subtable_headers *header, const unsigned long end)
+ 		goto out_redist_unmap;
+ 	}
+ 
+-	err = gic_init_bases(acpi_data.dist_base, acpi_data.redist_regs,
+-			     acpi_data.nr_redist_regions, 0, gsi_domain_handle);
++	err = gic_init_bases(dist->base_address, acpi_data.dist_base,
++			     acpi_data.redist_regs, acpi_data.nr_redist_regions,
++			     0, gsi_domain_handle);
+ 	if (err)
+ 		goto out_fwhandle_free;
+ 
+diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+index 220c8c60e021a..f196c19f8e55c 100644
+--- a/include/linux/arm-smccc.h
++++ b/include/linux/arm-smccc.h
+@@ -226,6 +226,24 @@ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit);
+ 
+ extern u64 smccc_has_sve_hint;
+ 
++/**
++ * arm_smccc_get_soc_id_version()
++ *
++ * Returns the SOC ID version.
++ *
++ * When ARM_SMCCC_ARCH_SOC_ID is not present, returns SMCCC_RET_NOT_SUPPORTED.
++ */
++s32 arm_smccc_get_soc_id_version(void);
++
++/**
++ * arm_smccc_get_soc_id_revision()
++ *
++ * Returns the SOC ID revision.
++ *
++ * When ARM_SMCCC_ARCH_SOC_ID is not present, returns SMCCC_RET_NOT_SUPPORTED.
++ */
++s32 arm_smccc_get_soc_id_revision(void);
++
+ /**
+  * struct arm_smccc_res - Result from SMC/HVC call
+  * @a0-a3 result values from registers 0 to 3
 -- 
 2.39.2
 
