@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6970670C6BF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E71570C814
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234433AbjEVTV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43944 "EHLO
+        id S234858AbjEVTft (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:35:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbjEVTV6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:21:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 873589C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:21:57 -0700 (PDT)
+        with ESMTP id S232002AbjEVTfs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E90E56
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 257D362838
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:21:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8090C433EF;
-        Mon, 22 May 2023 19:21:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82E2361FE2
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76074C433D2;
+        Mon, 22 May 2023 19:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783316;
-        bh=k6J6iAUpU2deFynylwaVIDw2PsSppJ6IGFYbpWYYLwU=;
+        s=korg; t=1684784060;
+        bh=XTVQ5CguE42v+gE+zJUx+6+L0aQduO7VuBszfmICOh0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TP6/2xo8ocz0UbJTDLp9Aebn20n5r2U6L0hPBLrz+/FkGWK9V4vcskH95EM8OEKoz
-         nvHsKebOFOrq9jayEtYF9A5aVVAeY7YyE3Tf1K31fHBsMvaUAO+VIsKmt4lIN+Ziyv
-         UDvJ6COSJJpK0Qjk78EyAUh+vD5lGIlMyE62X6l4=
+        b=Xy9oXKqJ9oeMvPfcS+dAJkKsxO0rAMEqgphZ2AQzJEhTAjkhhaRiyOJB0wSCRoRam
+         cydClX8u6laGyGa3PjMlnn074gCHeuTxXhbp8HUJffQCksKvQOPWYWAcQf6DceGjhh
+         3mJlxGVU2uR3oMab8aBxptlOp4phkpwgzTxV4fo0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 184/203] SMB3: drop reference to cfile before sending oplock break
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 251/292] can: kvaser_pciefd: Do not send EFLUSH command on TFD interrupt
 Date:   Mon, 22 May 2023 20:10:08 +0100
-Message-Id: <20230522190400.104108344@linuxfoundation.org>
+Message-Id: <20230522190412.222068074@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,128 +53,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit 59a556aebc43dded08535fe97d94ca3f657915e4 upstream.
+commit 262d7a52ba27525e3c1203230c9f0524e48bbb34 upstream.
 
-In cifs_oplock_break function we drop reference to a cfile at
-the end of function, due to which close command goes on wire
-after lease break acknowledgment even if file is already closed
-by application but we had deferred the handle close.
-If other client with limited file shareaccess waiting on lease
-break ack proceeds operation on that file as soon as first client
-sends ack, then we may encounter status sharing violation error
-because of open handle.
-Solution is to put reference to cfile(send close on wire if last ref)
-and then send oplock acknowledgment to server.
+Under certain circumstances we send two EFLUSH commands, resulting in two
+EFLUSH ack packets, while only expecting a single EFLUSH ack.
+This can cause the driver Tx flush completion to get out of sync.
 
-Fixes: 9e31678fb403 ("SMB3: fix lease break timeout when multiple deferred close handles for the same file.")
-Cc: stable@kernel.org
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+To avoid this problem, don't enable the "Transmit buffer flush done" (TFD)
+interrupt and remove the code handling it.
+Now we only send EFLUSH command after receiving status packet with
+"Init detected" (IDET) bit set.
+
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-6-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifsglob.h |    4 ++--
- fs/cifs/file.c     |   17 ++++++++++++-----
- fs/cifs/smb1ops.c  |    9 ++++-----
- fs/cifs/smb2ops.c  |    7 +++----
- 4 files changed, 21 insertions(+), 16 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |   21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -394,8 +394,8 @@ struct smb_version_operations {
- 	/* check for STATUS_NETWORK_SESSION_EXPIRED */
- 	bool (*is_session_expired)(char *);
- 	/* send oplock break response */
--	int (*oplock_response)(struct cifs_tcon *, struct cifs_fid *,
--			       struct cifsInodeInfo *);
-+	int (*oplock_response)(struct cifs_tcon *tcon, __u64 persistent_fid, __u64 volatile_fid,
-+			__u16 net_fid, struct cifsInodeInfo *cifs_inode);
- 	/* query remote filesystem */
- 	int (*queryfs)(const unsigned int, struct cifs_tcon *,
- 		       struct cifs_sb_info *, struct kstatfs *);
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -4869,7 +4869,9 @@ void cifs_oplock_break(struct work_struc
- 	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	int rc = 0;
--	bool purge_cache = false;
-+	bool purge_cache = false, oplock_break_cancelled;
-+	__u64 persistent_fid, volatile_fid;
-+	__u16 net_fid;
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -531,7 +531,7 @@ static int kvaser_pciefd_set_tx_irq(stru
+ 	      KVASER_PCIEFD_KCAN_IRQ_TOF | KVASER_PCIEFD_KCAN_IRQ_ABD |
+ 	      KVASER_PCIEFD_KCAN_IRQ_TAE | KVASER_PCIEFD_KCAN_IRQ_TAL |
+ 	      KVASER_PCIEFD_KCAN_IRQ_FDIC | KVASER_PCIEFD_KCAN_IRQ_BPP |
+-	      KVASER_PCIEFD_KCAN_IRQ_TAR | KVASER_PCIEFD_KCAN_IRQ_TFD;
++	      KVASER_PCIEFD_KCAN_IRQ_TAR;
  
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
-@@ -4914,19 +4916,24 @@ oplock_break_ack:
- 	if (!CIFS_CACHE_HANDLE(cinode) && !list_empty(&cinode->deferred_closes))
- 		cifs_close_deferred_file(cinode);
+ 	iowrite32(msk, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
  
-+	persistent_fid = cfile->fid.persistent_fid;
-+	volatile_fid = cfile->fid.volatile_fid;
-+	net_fid = cfile->fid.netfid;
-+	oplock_break_cancelled = cfile->oplock_break_cancelled;
-+
-+	_cifsFileInfo_put(cfile, false /* do not wait for ourself */, false);
- 	/*
- 	 * releasing stale oplock after recent reconnect of smb session using
- 	 * a now incorrect file handle is not a data integrity issue but do
- 	 * not bother sending an oplock release if session to server still is
- 	 * disconnected since oplock already released by the server
- 	 */
--	if (!cfile->oplock_break_cancelled) {
--		rc = tcon->ses->server->ops->oplock_response(tcon, &cfile->fid,
--							     cinode);
-+	if (!oplock_break_cancelled) {
-+		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
-+				volatile_fid, net_fid, cinode);
- 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
- 	}
+@@ -579,7 +579,7 @@ static void kvaser_pciefd_start_controll
  
--	_cifsFileInfo_put(cfile, false /* do not wait for ourself */, false);
- 	cifs_done_oplock_break(cinode);
- }
+ 	spin_lock_irqsave(&can->lock, irq);
+ 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
+-	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
++	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
+ 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
  
---- a/fs/cifs/smb1ops.c
-+++ b/fs/cifs/smb1ops.c
-@@ -864,12 +864,11 @@ cifs_close_dir(const unsigned int xid, s
- }
+ 	status = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_STAT_REG);
+@@ -622,7 +622,7 @@ static int kvaser_pciefd_bus_on(struct k
+ 	iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+ 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
  
- static int
--cifs_oplock_response(struct cifs_tcon *tcon, struct cifs_fid *fid,
--		     struct cifsInodeInfo *cinode)
-+cifs_oplock_response(struct cifs_tcon *tcon, __u64 persistent_fid,
-+		__u64 volatile_fid, __u16 net_fid, struct cifsInodeInfo *cinode)
- {
--	return CIFSSMBLock(0, tcon, fid->netfid, current->tgid, 0, 0, 0, 0,
--			   LOCKING_ANDX_OPLOCK_RELEASE, false,
--			   CIFS_CACHE_READ(cinode) ? 1 : 0);
-+	return CIFSSMBLock(0, tcon, net_fid, current->tgid, 0, 0, 0, 0,
-+			   LOCKING_ANDX_OPLOCK_RELEASE, false, CIFS_CACHE_READ(cinode) ? 1 : 0);
- }
+-	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
++	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
+ 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
  
- static int
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -2570,15 +2570,14 @@ smb2_is_network_name_deleted(char *buf,
- }
+ 	mode = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_MODE_REG);
+@@ -1015,8 +1015,7 @@ static int kvaser_pciefd_setup_can_ctrls
+ 		SET_NETDEV_DEV(netdev, &pcie->pci->dev);
  
- static int
--smb2_oplock_response(struct cifs_tcon *tcon, struct cifs_fid *fid,
--		     struct cifsInodeInfo *cinode)
-+smb2_oplock_response(struct cifs_tcon *tcon, __u64 persistent_fid,
-+		__u64 volatile_fid, __u16 net_fid, struct cifsInodeInfo *cinode)
- {
- 	if (tcon->ses->server->capabilities & SMB2_GLOBAL_CAP_LEASING)
- 		return SMB2_lease_break(0, tcon, cinode->lease_key,
- 					smb2_get_lease_state(cinode));
+ 		iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
+-		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD |
+-			  KVASER_PCIEFD_KCAN_IRQ_TFD,
++		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
+ 			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
  
--	return SMB2_oplock_break(0, tcon, fid->persistent_fid,
--				 fid->volatile_fid,
-+	return SMB2_oplock_break(0, tcon, persistent_fid, volatile_fid,
- 				 CIFS_CACHE_READ(cinode) ? 1 : 0);
- }
+ 		pcie->can[i] = can;
+@@ -1443,9 +1442,6 @@ static int kvaser_pciefd_handle_status_p
+ 		cmd = KVASER_PCIEFD_KCAN_CMD_AT;
+ 		cmd |= ++can->cmd_seq << KVASER_PCIEFD_KCAN_CMD_SEQ_SHIFT;
+ 		iowrite32(cmd, can->reg_base + KVASER_PCIEFD_KCAN_CMD_REG);
+-
+-		iowrite32(KVASER_PCIEFD_KCAN_IRQ_TFD,
+-			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+ 	} else if (p->header[0] & KVASER_PCIEFD_SPACK_IDET &&
+ 		   p->header[0] & KVASER_PCIEFD_SPACK_IRM &&
+ 		   cmdseq == (p->header[1] & KVASER_PCIEFD_PACKET_SEQ_MSK) &&
+@@ -1732,15 +1728,6 @@ static int kvaser_pciefd_transmit_irq(st
+ 	if (irq & KVASER_PCIEFD_KCAN_IRQ_TOF)
+ 		netdev_err(can->can.dev, "Tx FIFO overflow\n");
  
+-	if (irq & KVASER_PCIEFD_KCAN_IRQ_TFD) {
+-		u8 count = ioread32(can->reg_base +
+-				    KVASER_PCIEFD_KCAN_TX_NPACKETS_REG) & 0xff;
+-
+-		if (count == 0)
+-			iowrite32(KVASER_PCIEFD_KCAN_CTRL_EFLUSH,
+-				  can->reg_base + KVASER_PCIEFD_KCAN_CTRL_REG);
+-	}
+-
+ 	if (irq & KVASER_PCIEFD_KCAN_IRQ_BPP)
+ 		netdev_err(can->can.dev,
+ 			   "Fail to change bittiming, when not in reset mode\n");
 
 
