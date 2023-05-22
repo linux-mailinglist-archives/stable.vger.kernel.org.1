@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C809B70C619
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F8970C726
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233118AbjEVTPE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37904 "EHLO
+        id S234630AbjEVT03 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233688AbjEVTPB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:01 -0400
+        with ESMTP id S234629AbjEVT0Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10433103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E0CCA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2EA862741
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF0AC433EF;
-        Mon, 22 May 2023 19:14:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 877496289C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB34C433D2;
+        Mon, 22 May 2023 19:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782894;
-        bh=FVGeJdPlv4hjJDz3BId893dBH5exQXoy0bO+inVEjGU=;
+        s=korg; t=1684783582;
+        bh=7eoQ4tdLUR1zrxGg0hmUEkv/FbwG00muhezXw/vDbac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t9RPKMccxtx0zWDfWSpvG17iuIxYFgR9aeOBAaZd4em/H2Hu2Gb4MSpLKzsEpECJ1
-         6g+PfbGZ+aolCIXfShyZkI0lBXvgBA/8yLogu2DIUGifo5B5on52bNQDfCD2h5C8Z8
-         0nIfxLF0tgPg6xg6ccElB6CNJYk4oQQD9YkLpMqQ=
+        b=kWJ4avOeKN+WcNXRQzK7smMTTPJHbfd8Vpz4BeCFyLCot3fjTw8t8vghHkEac28Hn
+         UdF60jd7t/7UwRDHEcIYnOQFVG3R3UqpQ1S5J3j2GSzLcelf9zR8GZ7u9zyR8Qt1tk
+         uSDhgafLVHnBwnjmwq49yugdngHPB6wac+87DO2Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/203] ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 093/292] f2fs: fix to drop all dirty pages during umount() if cp_error is set
 Date:   Mon, 22 May 2023 20:07:30 +0100
-Message-Id: <20230522190355.686982119@linuxfoundation.org>
+Message-Id: <20230522190408.299451726@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,74 +54,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a44be64bbecb15a452496f60db6eacfee2b59c79 ]
+[ Upstream commit c9b3649a934d131151111354bcbb638076f03a30 ]
 
-When a file system currently mounted read/only is remounted
-read/write, if we clear the SB_RDONLY flag too early, before the quota
-is initialized, and there is another process/thread constantly
-attempting to create a directory, it's possible to trigger the
+xfstest generic/361 reports a bug as below:
 
-	WARN_ON_ONCE(dquot_initialize_needed(inode));
+f2fs_bug_on(sbi, sbi->fsync_node_num);
 
-in ext4_xattr_block_set(), with the following stack trace:
+kernel BUG at fs/f2fs/super.c:1627!
+RIP: 0010:f2fs_put_super+0x3a8/0x3b0
+Call Trace:
+ generic_shutdown_super+0x8c/0x1b0
+ kill_block_super+0x2b/0x60
+ kill_f2fs_super+0x87/0x110
+ deactivate_locked_super+0x39/0x80
+ deactivate_super+0x46/0x50
+ cleanup_mnt+0x109/0x170
+ __cleanup_mnt+0x16/0x20
+ task_work_run+0x65/0xa0
+ exit_to_user_mode_prepare+0x175/0x190
+ syscall_exit_to_user_mode+0x25/0x50
+ do_syscall_64+0x4c/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-   WARNING: CPU: 0 PID: 5338 at fs/ext4/xattr.c:2141 ext4_xattr_block_set+0x2ef2/0x3680
-   RIP: 0010:ext4_xattr_block_set+0x2ef2/0x3680 fs/ext4/xattr.c:2141
-   Call Trace:
-    ext4_xattr_set_handle+0xcd4/0x15c0 fs/ext4/xattr.c:2458
-    ext4_initxattrs+0xa3/0x110 fs/ext4/xattr_security.c:44
-    security_inode_init_security+0x2df/0x3f0 security/security.c:1147
-    __ext4_new_inode+0x347e/0x43d0 fs/ext4/ialloc.c:1324
-    ext4_mkdir+0x425/0xce0 fs/ext4/namei.c:2992
-    vfs_mkdir+0x29d/0x450 fs/namei.c:4038
-    do_mkdirat+0x264/0x520 fs/namei.c:4061
-    __do_sys_mkdirat fs/namei.c:4076 [inline]
-    __se_sys_mkdirat fs/namei.c:4074 [inline]
-    __x64_sys_mkdirat+0x89/0xa0 fs/namei.c:4074
+During umount(), if cp_error is set, f2fs_wait_on_all_pages() should
+not stop waiting all F2FS_WB_CP_DATA pages to be writebacked, otherwise,
+fsync_node_num can be non-zero after f2fs_wait_on_all_pages() causing
+this bug.
 
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230506142419.984260-1-tytso@mit.edu
-Reported-by: syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=6513f6cb5cd6b5fc9f37e3bb70d273b94be9c34c
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+In this case, to avoid deadloop in f2fs_wait_on_all_pages(), it needs
+to drop all dirty pages rather than redirtying them.
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/f2fs/checkpoint.c | 12 ++++++++++--
+ fs/f2fs/data.c       |  3 ++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index d062bad1384be..c527ec2b041fb 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5746,6 +5746,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 	struct ext4_mount_options old_opts;
- 	ext4_group_t g;
- 	int err = 0;
-+	int enable_rw = 0;
- #ifdef CONFIG_QUOTA
- 	int enable_quota = 0;
- 	int i, j;
-@@ -5946,7 +5947,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 			if (err)
- 				goto restore_opts;
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 0c82dae082aa9..5df04ed010cae 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -322,8 +322,15 @@ static int __f2fs_write_meta_page(struct page *page,
  
--			sb->s_flags &= ~SB_RDONLY;
-+			enable_rw = 1;
- 			if (ext4_has_feature_mmp(sb)) {
- 				err = ext4_multi_mount_protect(sb,
- 						le64_to_cpu(es->s_mmp_block));
-@@ -6005,6 +6006,9 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
+ 	trace_f2fs_writepage(page, META);
  
-+	if (enable_rw)
-+		sb->s_flags &= ~SB_RDONLY;
-+
- 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
- 		ext4_stop_mmpd(sbi);
+-	if (unlikely(f2fs_cp_error(sbi)))
++	if (unlikely(f2fs_cp_error(sbi))) {
++		if (is_sbi_flag_set(sbi, SBI_IS_CLOSE)) {
++			ClearPageUptodate(page);
++			dec_page_count(sbi, F2FS_DIRTY_META);
++			unlock_page(page);
++			return 0;
++		}
+ 		goto redirty_out;
++	}
+ 	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
+ 		goto redirty_out;
+ 	if (wbc->for_reclaim && page->index < GET_SUM_BLOCK(sbi, 0))
+@@ -1301,7 +1308,8 @@ void f2fs_wait_on_all_pages(struct f2fs_sb_info *sbi, int type)
+ 		if (!get_pages(sbi, type))
+ 			break;
  
+-		if (unlikely(f2fs_cp_error(sbi)))
++		if (unlikely(f2fs_cp_error(sbi) &&
++			!is_sbi_flag_set(sbi, SBI_IS_CLOSE)))
+ 			break;
+ 
+ 		if (type == F2FS_DIRTY_META)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index de6b056f090b3..36db9aab47790 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2788,7 +2788,8 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+ 		 * don't drop any dirty dentry pages for keeping lastest
+ 		 * directory structure.
+ 		 */
+-		if (S_ISDIR(inode->i_mode))
++		if (S_ISDIR(inode->i_mode) &&
++				!is_sbi_flag_set(sbi, SBI_IS_CLOSE))
+ 			goto redirty_out;
+ 		goto out;
+ 	}
 -- 
 2.39.2
 
