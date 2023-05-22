@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8E4270C5E2
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C33A170C8D8
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233185AbjEVTNL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36488 "EHLO
+        id S235115AbjEVTmy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:42:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233644AbjEVTNK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:10 -0400
+        with ESMTP id S235152AbjEVTmv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:42:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FD1E9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F591BE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E50F626F8
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A203C4339C;
-        Mon, 22 May 2023 19:13:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 020BC62A3B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9FFC433EF;
+        Mon, 22 May 2023 19:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782785;
-        bh=Vy5+BQO3VbhljkkvwLP/PGF/MlHEjNVSyO2vB46eA/s=;
+        s=korg; t=1684784550;
+        bh=7pw2k/aoWz/sDA7md6M0mJsM5pAkVuOBZaveA7L2DI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p8MS2Zg7A28vV8I50HTBoGrHOBSztq33OVAhq9lxlRQCZOKXYHIrlPWYsSXzvw+G0
-         76ikz+3T3CWhEZZYbkIOc5Czp3rfEiooGg7muoBhfGOy+JBpTHMteQZ3rGHOKg9ux3
-         USX27W3IivsT1bDZRNiHf+EQItjY4kMEDFqknZh8=
+        b=jA1gosTzDR1+CVZpumi19a1f+A493m3LVFxVgbre0BksA5EVumv/YObGgfwS+6NBT
+         Y0hPAYLpfTzj0IXVQRQvm4WEsGsQoxuRVUOYPuDlmr6jgROy+xUJgT3uv9ekUFH0Pk
+         ddGj/SRLaEJen4gAVHhufBGFzvjHMqrj4OhSTJe0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kristoffer Ericson <Kristoffer.ericson@gmail.com>,
-        patches@armlinux.org.uk,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev,
+        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/203] ARM: 9296/1: HP Jornada 7XX: fix kernel-doc warnings
+Subject: [PATCH 6.3 121/364] wifi: iwlwifi: add a new PCI device ID for BZ device
 Date:   Mon, 22 May 2023 20:07:06 +0100
-Message-Id: <20230522190355.003962309@linuxfoundation.org>
+Message-Id: <20230522190415.820035841@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,67 +56,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit 46dd6078dbc7e363a8bb01209da67015a1538929 ]
+[ Upstream commit c30a2a64788b3d617a9c5d96adb76c68b0862e5f ]
 
-Fix kernel-doc warnings from the kernel test robot:
+Add support for a new PCI device ID 0x272b once registering with PCIe.
 
-jornada720_ssp.c:24: warning: Function parameter or member 'jornada_ssp_lock' not described in 'DEFINE_SPINLOCK'
-jornada720_ssp.c:24: warning: expecting prototype for arch/arm/mac(). Prototype was for DEFINE_SPINLOCK() instead
-jornada720_ssp.c:34: warning: Function parameter or member 'byte' not described in 'jornada_ssp_reverse'
-jornada720_ssp.c:57: warning: Function parameter or member 'byte' not described in 'jornada_ssp_byte'
-jornada720_ssp.c:85: warning: Function parameter or member 'byte' not described in 'jornada_ssp_inout'
-
-Link: lore.kernel.org/r/202304210535.tWby3jWF-lkp@intel.com
-
-Fixes: 69ebb22277a5 ("[ARM] 4506/1: HP Jornada 7XX: Addition of SSP Platform Driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Kristoffer Ericson <Kristoffer.ericson@gmail.com>
-Cc: patches@armlinux.org.uk
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.56342664110d.I5aa6f2858fdcf69fdea4f1a873115a48bd43764e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-sa1100/jornada720_ssp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-sa1100/jornada720_ssp.c b/arch/arm/mach-sa1100/jornada720_ssp.c
-index 1dbe98948ce30..9627c4cf3e41d 100644
---- a/arch/arm/mach-sa1100/jornada720_ssp.c
-+++ b/arch/arm/mach-sa1100/jornada720_ssp.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
--/**
-+/*
-  *  arch/arm/mac-sa1100/jornada720_ssp.c
-  *
-  *  Copyright (C) 2006/2007 Kristoffer Ericson <Kristoffer.Ericson@gmail.com>
-@@ -26,6 +26,7 @@ static unsigned long jornada_ssp_flags;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index f83ae0d301d0e..25b2d41de4c1d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -504,6 +504,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
  
- /**
-  * jornada_ssp_reverse - reverses input byte
-+ * @byte: input byte to reverse
-  *
-  * we need to reverse all data we receive from the mcu due to its physical location
-  * returns : 01110111 -> 11101110
-@@ -46,6 +47,7 @@ EXPORT_SYMBOL(jornada_ssp_reverse);
- 
- /**
-  * jornada_ssp_byte - waits for ready ssp bus and sends byte
-+ * @byte: input byte to transmit
-  *
-  * waits for fifo buffer to clear and then transmits, if it doesn't then we will
-  * timeout after <timeout> rounds. Needs mcu running before its called.
-@@ -77,6 +79,7 @@ EXPORT_SYMBOL(jornada_ssp_byte);
- 
- /**
-  * jornada_ssp_inout - decide if input is command or trading byte
-+ * @byte: input byte to send (may be %TXDUMMY)
-  *
-  * returns : (jornada_ssp_byte(byte)) on success
-  *         : %-ETIMEDOUT on timeout failure
+ /* Bz devices */
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ #endif /* CONFIG_IWLMVM */
 -- 
 2.39.2
 
