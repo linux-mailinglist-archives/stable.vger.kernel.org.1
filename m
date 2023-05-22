@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40AE970C601
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD5370C93F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233970AbjEVTOK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37018 "EHLO
+        id S235255AbjEVTqE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233813AbjEVTOH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:07 -0400
+        with ESMTP id S235281AbjEVTp7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9410DCA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7531A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2466261E03
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44075C433D2;
-        Mon, 22 May 2023 19:14:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 983C162A8B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45B4C433D2;
+        Mon, 22 May 2023 19:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782844;
-        bh=oJuoo9B2Qn8mZYl2jaRGvq7HNNEAqRoirg8xoB0TXtQ=;
+        s=korg; t=1684784756;
+        bh=GFvV4H6UtQV+xleEcEJFwS2n6yVdI+F/C7OarMmr8yE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vDyefm+OAZG8xUTrq5MEXV0Jpxaf5jJi9k6fjYK2OCEEcQMll7zWWZHlYX7f8b348
-         sPtJ9yLHEPHqtWM2+uGE5yzmkCh1CCXELT6QQ2a5rIIL2mcnNtNUyjrwgNDun+QCqP
-         HGYd35my8zPIi7RC0WlCK25i1zvEymPZvEPqA0Kk=
+        b=ZnzKop53PG2SvbHmvnXfuZqfFALqozDPn5YlYKVaBNodxiLrxTVo2dHj4Da8w5A/0
+         5QqNkH3wSH8yT0DVtyO+fph646MTUNI24iPu18R+fpBYLA7sErvKDkF7oichL8Buyz
+         51aNZyrVL6k31RdG6wewzPeACcvZypVA9929tksc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/203] drm/msm/dp: Clean up handling of DP AUX interrupts
+        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 163/364] HID: wacom: generic: Set battery quirk only when we see battery data
 Date:   Mon, 22 May 2023 20:07:48 +0100
-Message-Id: <20230522190356.208349496@linuxfoundation.org>
+Message-Id: <20230522190416.811307311@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,208 +54,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Jason Gerecke <killertofu@gmail.com>
 
-[ Upstream commit b20566cdef05cd40d95f10869d2a7646f48b1bbe ]
+[ Upstream commit bea407a427baa019758f29f4d31b26f008bb8cc6 ]
 
-The DP AUX interrupt handling was a bit of a mess.
-* There were two functions (one for "native" transfers and one for
-  "i2c" transfers) that were quite similar. It was hard to say how
-  many of the differences between the two functions were on purpose
-  and how many of them were just an accident of how they were coded.
-* Each function sometimes used "else if" to test for error bits and
-  sometimes didn't and again it was hard to say if this was on purpose
-  or just an accident.
-* The two functions wouldn't notice whether "unknown" bits were
-  set. For instance, there seems to be a bit "DP_INTR_PLL_UNLOCKED"
-  and if it was set there would be no indication.
-* The two functions wouldn't notice if more than one error was set.
+Some devices will include battery status usages in the HID descriptor
+but we won't see that battery data for one reason or another. For example,
+AES sensors won't send battery data unless an AES pen is in proximity.
+If a user does not have an AES pen but instead only interacts with the
+AES touchscreen with their fingers then there is no need for us to create
+a battery object. Similarly, if a family of peripherals shares the same
+HID descriptor between wired-only and wireless-capable SKUs, users of the
+former may never see a battery event and will not want a power_supply
+object created.
 
-Let's fix this by being more consistent / explicit about what we're
-doing.
-
-By design this could cause different handling for AUX transfers,
-though I'm not actually aware of any bug fixed as a result of
-this patch (this patch was created because we simply noticed how odd
-the old code was by code inspection). Specific notes here:
-1. In the old native transfer case if we got "done + wrong address"
-   we'd ignore the "wrong address" (because of the "else if"). Now we
-   won't.
-2. In the old native transfer case if we got "done + timeout" we'd
-   ignore the "timeout" (because of the "else if"). Now we won't.
-3. In the old native transfer case we'd see "nack_defer" and translate
-   it to the error number for "nack". This differed from the i2c
-   transfer case where "nack_defer" was given the error number for
-   "nack_defer". This 100% can't matter because the only user of this
-   error number treats "nack defer" the same as "nack", so it's clear
-   that the difference between the "native" and "i2c" was pointless
-   here.
-4. In the old i2c transfer case if we got "done" plus any error
-   besides "nack" or "defer" then we'd ignore the error. Now we don't.
-5. If there is more than one error signaled by the hardware it's
-   possible that we'll report a different one than we used to. I don't
-   know if this matters. If someone is aware of a case this matters we
-   should document it and change the code to make it explicit.
-6. One quirk we keep (I don't know if this is important) is that in
-   the i2c transfer case if we see "done + defer" we report that as a
-   "nack". That seemed too intentional in the old code to just drop.
-
-After this change we will add extra logging, including:
-* A warning if we see more than one error bit set.
-* A warning if we see an unexpected interrupt.
-* A warning if we get an AUX transfer interrupt when shouldn't.
-
-It actually turns out that as a result of this change then at boot we
-sometimes see an error:
-  [drm:dp_aux_isr] *ERROR* Unexpected DP AUX IRQ 0x01000000 when not busy
-That means that, during init, we are seeing DP_INTR_PLL_UNLOCKED. For
-now I'm going to say that leaving this error reported in the logs is
-OK-ish and hopefully it will encourage someone to track down what's
-going on at init time.
-
-One last note here is that this change renames one of the interrupt
-bits. The bit named "i2c done" clearly was used for native transfers
-being done too, so I renamed it to indicate this.
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/520658/
-Link: https://lore.kernel.org/r/20230126170745.v2.1.I90ffed3ddd21e818ae534f820cb4d6d8638859ab@changeid
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217062
+Link: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2354
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_aux.c     | 80 ++++++++++++-----------------
- drivers/gpu/drm/msm/dp/dp_catalog.c |  2 +-
- drivers/gpu/drm/msm/dp/dp_catalog.h |  2 +-
- 3 files changed, 36 insertions(+), 48 deletions(-)
+ drivers/hid/wacom_wac.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
-index 7b8d4ba868eb7..4742aca2af482 100644
---- a/drivers/gpu/drm/msm/dp/dp_aux.c
-+++ b/drivers/gpu/drm/msm/dp/dp_aux.c
-@@ -161,47 +161,6 @@ static ssize_t dp_aux_cmd_fifo_rx(struct dp_aux_private *aux,
- 	return i;
- }
- 
--static void dp_aux_native_handler(struct dp_aux_private *aux, u32 isr)
--{
--	if (isr & DP_INTR_AUX_I2C_DONE)
--		aux->aux_error_num = DP_AUX_ERR_NONE;
--	else if (isr & DP_INTR_WRONG_ADDR)
--		aux->aux_error_num = DP_AUX_ERR_ADDR;
--	else if (isr & DP_INTR_TIMEOUT)
--		aux->aux_error_num = DP_AUX_ERR_TOUT;
--	if (isr & DP_INTR_NACK_DEFER)
--		aux->aux_error_num = DP_AUX_ERR_NACK;
--	if (isr & DP_INTR_AUX_ERROR) {
--		aux->aux_error_num = DP_AUX_ERR_PHY;
--		dp_catalog_aux_clear_hw_interrupts(aux->catalog);
--	}
--}
--
--static void dp_aux_i2c_handler(struct dp_aux_private *aux, u32 isr)
--{
--	if (isr & DP_INTR_AUX_I2C_DONE) {
--		if (isr & (DP_INTR_I2C_NACK | DP_INTR_I2C_DEFER))
--			aux->aux_error_num = DP_AUX_ERR_NACK;
--		else
--			aux->aux_error_num = DP_AUX_ERR_NONE;
--	} else {
--		if (isr & DP_INTR_WRONG_ADDR)
--			aux->aux_error_num = DP_AUX_ERR_ADDR;
--		else if (isr & DP_INTR_TIMEOUT)
--			aux->aux_error_num = DP_AUX_ERR_TOUT;
--		if (isr & DP_INTR_NACK_DEFER)
--			aux->aux_error_num = DP_AUX_ERR_NACK_DEFER;
--		if (isr & DP_INTR_I2C_NACK)
--			aux->aux_error_num = DP_AUX_ERR_NACK;
--		if (isr & DP_INTR_I2C_DEFER)
--			aux->aux_error_num = DP_AUX_ERR_DEFER;
--		if (isr & DP_INTR_AUX_ERROR) {
--			aux->aux_error_num = DP_AUX_ERR_PHY;
--			dp_catalog_aux_clear_hw_interrupts(aux->catalog);
--		}
--	}
--}
--
- static void dp_aux_update_offset_and_segment(struct dp_aux_private *aux,
- 					     struct drm_dp_aux_msg *input_msg)
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 0c6a82c665c1d..d2f500242ed40 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1963,18 +1963,7 @@ static void wacom_map_usage(struct input_dev *input, struct hid_usage *usage,
+ static void wacom_wac_battery_usage_mapping(struct hid_device *hdev,
+ 		struct hid_field *field, struct hid_usage *usage)
  {
-@@ -410,13 +369,42 @@ void dp_aux_isr(struct drm_dp_aux *dp_aux)
- 	if (!isr)
- 		return;
- 
--	if (!aux->cmd_busy)
-+	if (!aux->cmd_busy) {
-+		DRM_ERROR("Unexpected DP AUX IRQ %#010x when not busy\n", isr);
- 		return;
-+	}
- 
--	if (aux->native)
--		dp_aux_native_handler(aux, isr);
--	else
--		dp_aux_i2c_handler(aux, isr);
-+	/*
-+	 * The logic below assumes only one error bit is set (other than "done"
-+	 * which can apparently be set at the same time as some of the other
-+	 * bits). Warn if more than one get set so we know we need to improve
-+	 * the logic.
-+	 */
-+	if (hweight32(isr & ~DP_INTR_AUX_XFER_DONE) > 1)
-+		DRM_WARN("Some DP AUX interrupts unhandled: %#010x\n", isr);
-+
-+	if (isr & DP_INTR_AUX_ERROR) {
-+		aux->aux_error_num = DP_AUX_ERR_PHY;
-+		dp_catalog_aux_clear_hw_interrupts(aux->catalog);
-+	} else if (isr & DP_INTR_NACK_DEFER) {
-+		aux->aux_error_num = DP_AUX_ERR_NACK_DEFER;
-+	} else if (isr & DP_INTR_WRONG_ADDR) {
-+		aux->aux_error_num = DP_AUX_ERR_ADDR;
-+	} else if (isr & DP_INTR_TIMEOUT) {
-+		aux->aux_error_num = DP_AUX_ERR_TOUT;
-+	} else if (!aux->native && (isr & DP_INTR_I2C_NACK)) {
-+		aux->aux_error_num = DP_AUX_ERR_NACK;
-+	} else if (!aux->native && (isr & DP_INTR_I2C_DEFER)) {
-+		if (isr & DP_INTR_AUX_XFER_DONE)
-+			aux->aux_error_num = DP_AUX_ERR_NACK;
-+		else
-+			aux->aux_error_num = DP_AUX_ERR_DEFER;
-+	} else if (isr & DP_INTR_AUX_XFER_DONE) {
-+		aux->aux_error_num = DP_AUX_ERR_NONE;
-+	} else {
-+		DRM_WARN("Unexpected interrupt: %#010x\n", isr);
-+		return;
-+	}
- 
- 	complete(&aux->comp);
+-	struct wacom *wacom = hid_get_drvdata(hdev);
+-	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
+-	struct wacom_features *features = &wacom_wac->features;
+-	unsigned equivalent_usage = wacom_equivalent_usage(usage->hid);
+-
+-	switch (equivalent_usage) {
+-	case HID_DG_BATTERYSTRENGTH:
+-	case WACOM_HID_WD_BATTERY_LEVEL:
+-	case WACOM_HID_WD_BATTERY_CHARGING:
+-		features->quirks |= WACOM_QUIRK_BATTERY;
+-		break;
+-	}
++	return;
  }
-diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.c b/drivers/gpu/drm/msm/dp/dp_catalog.c
-index 9ef24ced6586d..8df5dfd6ad17f 100644
---- a/drivers/gpu/drm/msm/dp/dp_catalog.c
-+++ b/drivers/gpu/drm/msm/dp/dp_catalog.c
-@@ -34,7 +34,7 @@
- #define MSM_DP_CONTROLLER_P0_SIZE	0x0400
  
- #define DP_INTERRUPT_STATUS1 \
--	(DP_INTR_AUX_I2C_DONE| \
-+	(DP_INTR_AUX_XFER_DONE| \
- 	DP_INTR_WRONG_ADDR | DP_INTR_TIMEOUT | \
- 	DP_INTR_NACK_DEFER | DP_INTR_WRONG_DATA_CNT | \
- 	DP_INTR_I2C_NACK | DP_INTR_I2C_DEFER | \
-diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.h b/drivers/gpu/drm/msm/dp/dp_catalog.h
-index 6965afa81aad2..32d3e14c98f7f 100644
---- a/drivers/gpu/drm/msm/dp/dp_catalog.h
-+++ b/drivers/gpu/drm/msm/dp/dp_catalog.h
-@@ -13,7 +13,7 @@
+ static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *field,
+@@ -1995,18 +1984,21 @@ static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *f
+ 			wacom_wac->hid_data.bat_connected = 1;
+ 			wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
+ 		}
++		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
+ 		break;
+ 	case WACOM_HID_WD_BATTERY_LEVEL:
+ 		value = value * 100 / (field->logical_maximum - field->logical_minimum);
+ 		wacom_wac->hid_data.battery_capacity = value;
+ 		wacom_wac->hid_data.bat_connected = 1;
+ 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
++		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
+ 		break;
+ 	case WACOM_HID_WD_BATTERY_CHARGING:
+ 		wacom_wac->hid_data.bat_charging = value;
+ 		wacom_wac->hid_data.ps_connected = value;
+ 		wacom_wac->hid_data.bat_connected = 1;
+ 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
++		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
+ 		break;
+ 	}
+ }
+@@ -2022,18 +2014,15 @@ static void wacom_wac_battery_report(struct hid_device *hdev,
+ {
+ 	struct wacom *wacom = hid_get_drvdata(hdev);
+ 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
+-	struct wacom_features *features = &wacom_wac->features;
  
- /* interrupts */
- #define DP_INTR_HPD		BIT(0)
--#define DP_INTR_AUX_I2C_DONE	BIT(3)
-+#define DP_INTR_AUX_XFER_DONE	BIT(3)
- #define DP_INTR_WRONG_ADDR	BIT(6)
- #define DP_INTR_TIMEOUT		BIT(9)
- #define DP_INTR_NACK_DEFER	BIT(12)
+-	if (features->quirks & WACOM_QUIRK_BATTERY) {
+-		int status = wacom_wac->hid_data.bat_status;
+-		int capacity = wacom_wac->hid_data.battery_capacity;
+-		bool charging = wacom_wac->hid_data.bat_charging;
+-		bool connected = wacom_wac->hid_data.bat_connected;
+-		bool powered = wacom_wac->hid_data.ps_connected;
++	int status = wacom_wac->hid_data.bat_status;
++	int capacity = wacom_wac->hid_data.battery_capacity;
++	bool charging = wacom_wac->hid_data.bat_charging;
++	bool connected = wacom_wac->hid_data.bat_connected;
++	bool powered = wacom_wac->hid_data.ps_connected;
+ 
+-		wacom_notify_battery(wacom_wac, status, capacity, charging,
+-				     connected, powered);
+-	}
++	wacom_notify_battery(wacom_wac, status, capacity, charging,
++			     connected, powered);
+ }
+ 
+ static void wacom_wac_pad_usage_mapping(struct hid_device *hdev,
 -- 
 2.39.2
 
