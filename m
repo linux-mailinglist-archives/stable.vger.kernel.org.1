@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE5770C60C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAF8470C91B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbjEVTOc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37434 "EHLO
+        id S235236AbjEVTpU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233793AbjEVTO2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:28 -0400
+        with ESMTP id S235323AbjEVTo7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA6210D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590B9C1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7141B62729
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764D9C433D2;
-        Mon, 22 May 2023 19:14:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21E3862A5F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C18EC433EF;
+        Mon, 22 May 2023 19:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782861;
-        bh=LKTWxMzpW8ZvdymNslJhm0/sCjCKGqe9iKv6eyFozcU=;
+        s=korg; t=1684784692;
+        bh=FeEPuL62SD/ceTdy1AZqZeZrGvNE+W6iSSHqrcpuhdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B6k6iOL4fc+7K5t8RA+LUouWGmjeyI6y+7yuhki0jLP/iUx74M3QE4U9eXDY/YpnN
-         zEGPAF7T4EqmV9SVkVEHAn9rI3XEnRRfe/cYaZ+bVGFyRMeJSyJ92hhTgHRl4xoIrC
-         +7EQr+pOj99rchHLsr9/FPQ8r1p+r7yxt8JCMWds=
+        b=VTTl51pQlaEwo7BE9huUkd1wqEtEOhg4+5D4inaa8PBfR/UgSmMz89yPbMg8ug8GX
+         PailfSgTzrjDdn878Ab91wpGNApC+9WCWhlYpbKg0A/P4PV3VbVAZirADHhT9ArXqm
+         JC6FYzph5vE3cS690eVt8aoKUPPf5z5xlF3XF6T8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        KP Singh <kpsingh@kernel.org>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Atish Patra <atishp@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/203] bpf: Annotate data races in bpf_local_storage
-Date:   Mon, 22 May 2023 20:07:54 +0100
-Message-Id: <20230522190356.383237478@linuxfoundation.org>
+Subject: [PATCH 6.3 170/364] riscv: Fix EFI stub usage of KASAN instrumented strcmp function
+Date:   Mon, 22 May 2023 20:07:55 +0100
+Message-Id: <20230522190416.977450852@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,81 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 0a09a2f933c73dc76ab0b72da6855f44342a8903 ]
+[ Upstream commit 617955ca6e275c4dd0dcf5316fca7fc04a8f2fe6 ]
 
-There are a few cases where hlist_node is checked to be unhashed without
-holding the lock protecting its modification. In this case, one must use
-hlist_unhashed_lockless to avoid load tearing and KCSAN reports. Fix
-this by using lockless variant in places not protected by the lock.
+The EFI stub must not use any KASAN instrumented code as the kernel
+proper did not initialize the thread pointer and the mapping for the
+KASAN shadow region.
 
-Since this is not prompted by any actual KCSAN reports but only from
-code review, I have not included a fixes tag.
+Avoid using the generic strcmp function, instead use the one in
+drivers/firmware/efi/libstub/string.c.
 
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: KP Singh <kpsingh@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20230221200646.2500777-4-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20230203075232.274282-5-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_local_storage.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/image-vars.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 6c2d39a3d5581..5ef8eaf4985ed 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -48,11 +48,21 @@ owner_storage(struct bpf_local_storage_map *smap, void *owner)
- 	return map->ops->map_owner_storage_ptr(owner);
- }
- 
-+static bool selem_linked_to_storage_lockless(const struct bpf_local_storage_elem *selem)
-+{
-+	return !hlist_unhashed_lockless(&selem->snode);
-+}
-+
- static bool selem_linked_to_storage(const struct bpf_local_storage_elem *selem)
- {
- 	return !hlist_unhashed(&selem->snode);
- }
- 
-+static bool selem_linked_to_map_lockless(const struct bpf_local_storage_elem *selem)
-+{
-+	return !hlist_unhashed_lockless(&selem->map_node);
-+}
-+
- static bool selem_linked_to_map(const struct bpf_local_storage_elem *selem)
- {
- 	return !hlist_unhashed(&selem->map_node);
-@@ -142,7 +152,7 @@ static void __bpf_selem_unlink_storage(struct bpf_local_storage_elem *selem)
- 	bool free_local_storage = false;
- 	unsigned long flags;
- 
--	if (unlikely(!selem_linked_to_storage(selem)))
-+	if (unlikely(!selem_linked_to_storage_lockless(selem)))
- 		/* selem has already been unlinked from sk */
- 		return;
- 
-@@ -170,7 +180,7 @@ void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
- 	struct bpf_local_storage_map_bucket *b;
- 	unsigned long flags;
- 
--	if (unlikely(!selem_linked_to_map(selem)))
-+	if (unlikely(!selem_linked_to_map_lockless(selem)))
- 		/* selem has already be unlinked from smap */
- 		return;
- 
-@@ -373,7 +383,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		err = check_flags(old_sdata, map_flags);
- 		if (err)
- 			return ERR_PTR(err);
--		if (old_sdata && selem_linked_to_storage(SELEM(old_sdata))) {
-+		if (old_sdata && selem_linked_to_storage_lockless(SELEM(old_sdata))) {
- 			copy_map_value_locked(&smap->map, old_sdata->data,
- 					      value, false);
- 			return old_sdata;
+diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
+index 7e2962ef73f92..15616155008cc 100644
+--- a/arch/riscv/kernel/image-vars.h
++++ b/arch/riscv/kernel/image-vars.h
+@@ -23,8 +23,6 @@
+  * linked at. The routines below are all implemented in assembler in a
+  * position independent manner
+  */
+-__efistub_strcmp		= strcmp;
+-
+ __efistub__start		= _start;
+ __efistub__start_kernel		= _start_kernel;
+ __efistub__end			= _end;
 -- 
 2.39.2
 
