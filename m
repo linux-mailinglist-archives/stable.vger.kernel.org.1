@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E619770C640
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 707CD70C77F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234108AbjEVTQr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39096 "EHLO
+        id S234703AbjEVTaP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234090AbjEVTQf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:35 -0400
+        with ESMTP id S234720AbjEVTaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:30:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C09A1E70
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 474C4A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:30:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 538616277F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725FFC433EF;
-        Mon, 22 May 2023 19:16:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D136B628EF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:30:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0414C433D2;
+        Mon, 22 May 2023 19:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782987;
-        bh=UlKBe9JdPpRlQ6pW4qAlSVvezPtjcalcGgOT7fGe+Jw=;
+        s=korg; t=1684783811;
+        bh=C2Vzp/NVBrQQ5oy+2ry83pGOZXgwfb5NVjN/F4OK8RU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s2mhBS9mIzSYj5GHVvkbkSjo6biJG/xYbSCLlmtCOqyVvUrglHPtyVDBm/kRERn4i
-         QFWakv2EWqwgRpa41c/lRpxSdLPTxA8iQYD3qQiP7SnG67WgnHCczYoXeA+PWfa3el
-         3b/CEBT1BdhCwWEf7byYGOkp1jBHN+FeOQYSaCLc=
+        b=U1Pji0VX4r6lHnkY5AWE2ZsJZhCSCJXZ3RoAzC8u2vMY6yPGFdS7EEQjWNYvrF39V
+         8CDZXMDC5Hf7nfNU3f9ct3NQTqiOd6r7ypMNZ3asz9wtV0+3SYIQaDbgRae1mCJoET
+         2vk6MfZvY4TVnAonPKNAc8F8BynLhV4RQOsGf/Xs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qiang Ning <qning0106@126.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/203] mfd: dln2: Fix memory leak in dln2_probe()
-Date:   Mon, 22 May 2023 20:08:46 +0100
-Message-Id: <20230522190357.808205606@linuxfoundation.org>
+        patches@lists.linux.dev, Ryan Underwood <nemesis@icequake.net>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 170/292] ALSA: hda/realtek: Apply HP B&O top speaker profile to Pavilion 15
+Date:   Mon, 22 May 2023 20:08:47 +0100
+Message-Id: <20230522190410.213552467@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,36 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiang Ning <qning0106@126.com>
+From: Ryan C. Underwood <nemesis@icequake.net>
 
-[ Upstream commit 96da8f148396329ba769246cb8ceaa35f1ddfc48 ]
+[ Upstream commit 92553ee03166ef8fa978e7683f9f4af30c9c4e6b ]
 
-When dln2_setup_rx_urbs() in dln2_probe() fails, error out_free forgets
-to call usb_put_dev() to decrease the refcount of dln2->usb_dev.
+The Pavilion 15 line has B&O top speakers similar to the x360 and
+applying the same profile produces good sound.  Without this, the
+sound would be tinny and underpowered without either applying
+model=alc295-hp-x360 or booting another OS first.
 
-Fix this by adding usb_put_dev() in the error handling code of
-dln2_probe().
-
-Signed-off-by: Qiang Ning <qning0106@126.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230330024353.4503-1-qning0106@126.com
+Signed-off-by: Ryan Underwood <nemesis@icequake.net>
+Fixes: 563785edfcef ("ALSA: hda/realtek - Add quirk entry for HP Pavilion 15")
+Link: https://lore.kernel.org/r/ZF0mpcMz3ezP9KQw@icequake.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/dln2.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_realtek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-index 852129ea07666..fc65f9e25fda8 100644
---- a/drivers/mfd/dln2.c
-+++ b/drivers/mfd/dln2.c
-@@ -836,6 +836,7 @@ static int dln2_probe(struct usb_interface *interface,
- 	dln2_stop_rx_urbs(dln2);
- 
- out_free:
-+	usb_put_dev(dln2->usb_dev);
- 	dln2_free(dln2);
- 
- 	return ret;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 172ffc2c332b7..5d78d4ba1c959 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9363,7 +9363,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x802f, "HP Z240", ALC221_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8077, "HP", ALC256_FIXUP_HP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x103c, 0x8158, "HP", ALC256_FIXUP_HP_HEADSET_MIC),
+-	SND_PCI_QUIRK(0x103c, 0x820d, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
++	SND_PCI_QUIRK(0x103c, 0x820d, "HP Pavilion 15", ALC295_FIXUP_HP_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8256, "HP", ALC221_FIXUP_HP_FRONT_MIC),
+ 	SND_PCI_QUIRK(0x103c, 0x827e, "HP x360", ALC295_FIXUP_HP_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x827f, "HP x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
 -- 
 2.39.2
 
