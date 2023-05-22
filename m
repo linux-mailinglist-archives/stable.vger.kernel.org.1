@@ -2,101 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 200D270BA06
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 12:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A221F70BC0B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 13:42:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232608AbjEVKZU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 06:25:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57050 "EHLO
+        id S233353AbjEVLl7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Mon, 22 May 2023 07:41:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232554AbjEVKZM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 06:25:12 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E547E0;
-        Mon, 22 May 2023 03:25:11 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id E503321A35;
-        Mon, 22 May 2023 10:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1684751109; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=dK4c6jVfMYUnhpgqtCzFKqCJo27Q90EX9O3znFNrfJ8=;
-        b=wEBufNxlikTs6keMhFbzLqyvC+LK1HS76vxpZ2H8ggbtYTxUhfzHxMS0mzrxESky9yqZb2
-        Q5CvaAUuYK7zjXE/J7JpbYT/Gxy7KBiR0LHD+YKr4MIPhHgYlhpoaxa2vPPfEXI2uCPGry
-        fevet/40ohb/eWLtuAcYffVLgr/tLOE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1684751109;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=dK4c6jVfMYUnhpgqtCzFKqCJo27Q90EX9O3znFNrfJ8=;
-        b=+uD1Et6uHQ5IseYpE/pB3y5xzjN5jILiOJghc5Ccw1zTevgYKlW5ZAk9UMChPLLo2HhIH/
-        90Sl0h6U0Z9vHZBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 65BE213776;
-        Mon, 22 May 2023 10:25:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id aLiSFQVDa2TFEgAAMHmgww
-        (envelope-from <lhenriques@suse.de>); Mon, 22 May 2023 10:25:09 +0000
-Received: from localhost (brahms.olymp [local])
-        by brahms.olymp (OpenSMTPD) with ESMTPA id 4c24018e;
-        Mon, 22 May 2023 10:25:08 +0000 (UTC)
-From:   =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>
-To:     Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc:     ocfs2-devel@oss.oracle.com, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
-        stable@vger.kernel.org
-Subject: [PATCH] ocfs2: fix use-after-free when unmounting read-only filesystem
-Date:   Mon, 22 May 2023 11:25:06 +0100
-Message-Id: <20230522102506.9205-1-lhenriques@suse.de>
+        with ESMTP id S233332AbjEVLlz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 07:41:55 -0400
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2736491;
+        Mon, 22 May 2023 04:41:54 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-bab8f66d3a2so4195931276.3;
+        Mon, 22 May 2023 04:41:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684755713; x=1687347713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YQM4CisG43A3UU9kY3EcQQPtrr37Ex7+82L60u0Ozu4=;
+        b=LC08lqspjdG38GAzsFIr1jpeARXABreqOAOeWEnlOHIaQnPdri1Z25OIOvRvGROvS1
+         wgrrhyJcGUupe185qx5hnwhrcMa8cPhVt50sG+OwEWufTsDrNN4irka17gj6ca/dc6IQ
+         awrJeFaJ2M//hkcK2fn/dMiVlXJV78x0g+h88/dgVXfS2lSCPGLevdiHWEyGMiQCocTy
+         p2RyqjJ/8DIaS3lpQIcTBuniwRlb9iPMpK0waUlXUyhubKog6ogpS7WBzYKzd1DU16M1
+         VGHVJoYXqD+7LsSTDj0GZ/aVe1QCVjCB6ILxxC50i2UO9EbWTdCuEVcfZR6b51v7ETlT
+         KPLg==
+X-Gm-Message-State: AC+VfDyYe8G8/CXAmh694rZTvTmgaPmOH1wLOWx0u/w5Gt2Coz8u4bcK
+        j2WzXNurEnlYIJWuxf58OwmWN+lDLgq1pA==
+X-Google-Smtp-Source: ACHHUZ5VKvxtf6Kse2DGMCzYVvWNfgORAv2fVXZsosjW8b/YkDNF8g0HaTXPx3OcbCLCszcHjIyiTw==
+X-Received: by 2002:a25:d2c4:0:b0:ba8:89c0:115d with SMTP id j187-20020a25d2c4000000b00ba889c0115dmr11307628ybg.58.1684755713200;
+        Mon, 22 May 2023 04:41:53 -0700 (PDT)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id o201-20020a2541d2000000b00b9e2ef25f1asm1453993yba.44.2023.05.22.04.41.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 May 2023 04:41:53 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-561a7d96f67so77783297b3.3;
+        Mon, 22 May 2023 04:41:52 -0700 (PDT)
+X-Received: by 2002:a0d:ea43:0:b0:559:d3a0:4270 with SMTP id
+ t64-20020a0dea43000000b00559d3a04270mr11018198ywe.34.1684755712500; Mon, 22
+ May 2023 04:41:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <cover.1683365892.git.fthain@linux-m68k.org> <9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org>
+In-Reply-To: <9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 22 May 2023 13:41:41 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX_0F0hSZKqBBCN3876BmfwbQb1_+N3h-V8xs5ouRXF=A@mail.gmail.com>
+Message-ID: <CAMuHMdX_0F0hSZKqBBCN3876BmfwbQb1_+N3h-V8xs5ouRXF=A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] m68k: Move signal frame following exception on 68020/030
+To:     Finn Thain <fthain@linux-m68k.org>
+Cc:     Michael Schmitz <schmitzmic@gmail.com>,
+        Andreas Schwab <schwab@linux-m68k.org>, stable@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
-fstest generic/452.  After mounting a filesystem as read-only, quotas are
-suspended and ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When
-unmounting the filesystem, an UAF access to the oinfo will eventually cause a
-crash.
+On Sat, May 6, 2023 at 11:36 AM Finn Thain <fthain@linux-m68k.org> wrote:
+> On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
+> a stack page fault during instruction execution (i.e. not at an
+> instruction boundary) and produce a format 0xB exception frame.
+>
+> In this situation, the value of USP will be unreliable. If a signal is to
+> be delivered following the exception, this USP value is used to calculate
+> the location for a signal frame. This can result in a corrupted user
+> stack.
+>
+> The corruption was detected in dash (actually in glibc) where it showed
+> up as an intermittent "stack smashing detected" message and crash
+> following signal delivery for SIGCHLD.
+>
+> It was hard to reproduce that failure because delivery of the signal
+> raced with the page fault and because the kernel places an unpredictable
+> gap of up to 7 bytes between the USP and the signal frame.
+>
+> A format 0xB exception frame can be produced by a bus error or an address
+> error. The 68030 Users Manual says that address errors occur immediately
+> upon detection during instruction prefetch. The instruction pipeline
+> allows prefetch to overlap with other instructions, which means an
+> address error can arise during the execution of a different instruction.
+> So it seems likely that this patch may help in the address error case also.
+>
+> Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+> Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
+> Cc: Michael Schmitz <schmitzmic@gmail.com>
+> Cc: Andreas Schwab <schwab@linux-m68k.org>
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Luís Henriques <lhenriques@suse.de>
----
- fs/ocfs2/super.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+i.e. will queue as a fix in the m68k for-v6.4 branch.
 
-diff --git a/fs/ocfs2/super.c b/fs/ocfs2/super.c
-index 0b0e6a132101..988d1c076861 100644
---- a/fs/ocfs2/super.c
-+++ b/fs/ocfs2/super.c
-@@ -952,8 +952,10 @@ static void ocfs2_disable_quotas(struct ocfs2_super *osb)
- 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
- 		if (!sb_has_quota_loaded(sb, type))
- 			continue;
--		oinfo = sb_dqinfo(sb, type)->dqi_priv;
--		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
-+		if (!sb_has_quota_suspended(sb, type)) {
-+			oinfo = sb_dqinfo(sb, type)->dqi_priv;
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
-+		}
- 		inode = igrab(sb->s_dquot.files[type]);
- 		/* Turn off quotas. This will remove all dquot structures from
- 		 * memory and so they will be automatically synced to global
+I plan to send this upstream later this week, so any additional
+testing would be appreciated.
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
