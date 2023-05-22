@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2756E70C80B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB7D70C9D1
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234959AbjEVTfh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56854 "EHLO
+        id S235393AbjEVTwY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234956AbjEVTfc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:32 -0400
+        with ESMTP id S235407AbjEVTwR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2115A118
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D8E19B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCD8862936
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8839C433D2;
-        Mon, 22 May 2023 19:33:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0850662B0B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123E4C4339B;
+        Mon, 22 May 2023 19:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784034;
-        bh=0s7OeVPXxbWU+cnOOgxV/yP6r4GLDt0CrqSWoWTdM/c=;
+        s=korg; t=1684785118;
+        bh=dnDgplo1uMeqHjMk2ufEQfH9n0t5o/a1L47gNe7tN24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YdYwbtHGo3wabKNC2suMI/0PN7ipf5dlV+rsG9S0315jw7IfiZzL70dNxbHSS49By
-         Fl7xnkCyHMj3EOdojxLlGKdrYk/1u4BNpU9Jh5DyI/o2BWiouGrs9PcY1lFXfZIQ7a
-         VoD9YJAZFZ1GWjH8KCpFSW/4nN6Ld8bsSs0VNEOo=
+        b=YXERn/DLF4BlJznMFJby6o7ZlVBAYKXURBz28LWrLYW5hKoDczMHOXIziaJBi9ePP
+         6g/mrqlw0kDP91xZDgcEnm5nSKPH69DDrhfqHxBmxt8UwIkINH2t8buNXu9pKqd9rs
+         aUpS4FZvkC4Rzzv8A/yL7iucfna5En+vwWLYQtvc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH 6.1 234/292] Revert "usb: gadget: udc: core: Prevent redundant calls to pullup"
-Date:   Mon, 22 May 2023 20:09:51 +0100
-Message-Id: <20230522190411.802028576@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 287/364] netfilter: nft_set_rbtree: fix null deref on element insertion
+Date:   Mon, 22 May 2023 20:09:52 +0100
+Message-Id: <20230522190419.928923190@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,38 +53,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 5e1617210aede9f1b91bb9819c93097b6da481f9 upstream.
+[ Upstream commit 61ae320a29b0540c16931816299eb86bf2b66c08 ]
 
-This reverts commit a3afbf5cc887fc3401f012fe629810998ed61859.
+There is no guarantee that rb_prev() will not return NULL in nft_rbtree_gc_elem():
 
-This depends on commit 0db213ea8eed ("usb: gadget: udc: core: Invoke
-usb_gadget_connect only when started") that introduces a regression,
-revert it till the issue is fixed.
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+ nft_add_set_elem+0x14b0/0x2990
+  nf_tables_newsetelem+0x528/0xb30
 
-Cc: stable@vger.kernel.org
-Reported-by: Stephan Gerhold <stephan@gerhold.net>
-Reported-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/all/ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com/
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20230512131435.205464-2-francesco@dolcini.it
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, there is a possible use-after-free while iterating,
+'node' can be free'd so we need to cache the next value to use.
+
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |    3 ---
- 1 file changed, 3 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -676,9 +676,6 @@ static int usb_gadget_connect_locked(str
- 		goto out;
- 	}
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 19ea4d3c35535..2f114aa10f1a7 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -221,7 +221,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev;
++	struct nft_rbtree_elem *rbe_prev = NULL;
+ 	struct nft_set_gc_batch *gcb;
  
--	if (gadget->connected)
--		goto out;
--
- 	if (gadget->deactivated || !gadget->udc->started) {
- 		/*
- 		 * If gadget is deactivated we only save new state.
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+@@ -229,17 +229,21 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		return -ENOMEM;
+ 
+ 	/* search for expired end interval coming before this element. */
+-	do {
++	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+ 		if (nft_rbtree_interval_end(rbe_prev))
+ 			break;
+ 
+ 		prev = rb_prev(prev);
+-	} while (prev != NULL);
++	}
++
++	if (rbe_prev) {
++		rb_erase(&rbe_prev->node, &priv->root);
++		atomic_dec(&set->nelems);
++	}
+ 
+-	rb_erase(&rbe_prev->node, &priv->root);
+ 	rb_erase(&rbe->node, &priv->root);
+-	atomic_sub(2, &set->nelems);
++	atomic_dec(&set->nelems);
+ 
+ 	nft_set_gc_batch_add(gcb, rbe);
+ 	nft_set_gc_batch_complete(gcb);
+@@ -268,7 +272,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 			       struct nft_set_ext **ext)
+ {
+ 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
+-	struct rb_node *node, *parent, **p, *first = NULL;
++	struct rb_node *node, *next, *parent, **p, *first = NULL;
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 genmask = nft_genmask_next(net);
+ 	int d, err;
+@@ -307,7 +311,9 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	 * Values stored in the tree are in reversed order, starting from
+ 	 * highest to lowest value.
+ 	 */
+-	for (node = first; node != NULL; node = rb_next(node)) {
++	for (node = first; node != NULL; node = next) {
++		next = rb_next(node);
++
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+ 
+ 		if (!nft_set_elem_active(&rbe->ext, genmask))
+-- 
+2.39.2
+
 
 
