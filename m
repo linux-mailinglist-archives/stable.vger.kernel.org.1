@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22CE370C810
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE6EB70C9C2
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:51:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234954AbjEVTfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
+        id S235464AbjEVTvu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234968AbjEVTfh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D29192
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:07 -0700 (PDT)
+        with ESMTP id S235390AbjEVTvi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:51:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5E4171B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A26B26297B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E8EC433EF;
-        Mon, 22 May 2023 19:34:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B7D62B03
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6567C433D2;
+        Mon, 22 May 2023 19:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784046;
-        bh=C9XyiVuMwES1AeMuYBGLESHc8BK6Vl3KrXcf+NBXFyA=;
+        s=korg; t=1684785073;
+        bh=hQHYt1QCokPx2JOn/WKznHZ8p0J2EBcn4TU4LIs/xlk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qYhQe/JboHoOBn5zpF30IP3LXjezEi2OVvxHOabxwV3jVLTvI7Lg9AiuuTW44m+pG
-         /ZSFhlg2GY44WWRS+gdkQiM3Knukk5yTgxpCEh5myO3fd0/WJqR14JOxsjiTBcR/DI
-         5ubmL7sTybdNh0xxlnT7BqQAdbzTBXjYVsrqL4TY=
+        b=o5dF3WvdMMfMNjqnD3dOIwl7m+EV0JFhJllOdJlFBB7+SKFxBpsmY45ihBHCvYnjy
+         GgffCgJf7ur7Csc2nBwuJntaWNXJzYLLWj5JkfqKHZFIlejiKrEAT1Swo2Y1U7/BfS
+         DNn1QZQ+Q/jD/0FnyrDtFxKrmkIEXU9Y6wrGdTX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oleksij Rempel <o.rempel@pengutronix.de>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH 6.1 246/292] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
-Date:   Mon, 22 May 2023 20:10:03 +0100
-Message-Id: <20230522190412.098946631@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        Donghun Yoon <donghun.yoon@lge.com>
+Subject: [PATCH 6.3 299/364] xhci-pci: Only run d3cold avoidance quirk for s2idle
+Date:   Mon, 22 May 2023 20:10:04 +0100
+Message-Id: <20230522190420.247825661@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +55,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit db2773d65b02aed319a93efdfb958087771d4e19 upstream.
+commit 2a821fc3136d5d99dcb9de152be8a052ca27d870 upstream.
 
-The control message provided by isotp support MSG_CMSG_COMPAT but
-blocked recvmsg() syscalls that have set this flag, i.e. on 32bit user
-space on 64 bit kernels.
+Donghun reports that a notebook that has an AMD Ryzen 5700U but supports
+S3 has problems with USB after resuming from suspend. The issue was
+bisected down to commit d1658268e439 ("usb: pci-quirks: disable D3cold on
+xhci suspend for s2idle on AMD Renoir").
 
-Link: https://github.com/hartkopp/can-isotp/issues/59
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Suggested-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Fixes: 42bf50a1795a ("can: isotp: support MSG_TRUNC flag when reading from socket")
-Link: https://lore.kernel.org/20230505110308.81087-2-mkl@pengutronix.de
+As this issue only happens on S3, narrow the broken D3cold quirk to only
+run in s2idle.
+
+Fixes: d1658268e439 ("usb: pci-quirks: disable D3cold on xhci suspend for s2idle on AMD Renoir")
+Reported-and-tested-by: Donghun Yoon <donghun.yoon@lge.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230515134059.161110-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/isotp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |   12 ++++++++++--
+ drivers/usb/host/xhci.h     |    2 +-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1106,7 +1106,7 @@ static int isotp_recvmsg(struct socket *
- 	struct isotp_sock *so = isotp_sk(sk);
- 	int ret = 0;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <linux/acpi.h>
+ #include <linux/reset.h>
++#include <linux/suspend.h>
  
--	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK))
-+	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK | MSG_CMSG_COMPAT))
- 		return -EINVAL;
+ #include "xhci.h"
+ #include "xhci-trace.h"
+@@ -209,7 +210,7 @@ static void xhci_pci_quirks(struct devic
  
- 	if (!so->bound)
+ 	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
+ 		pdev->device == PCI_DEVICE_ID_AMD_RENOIR_XHCI)
+-		xhci->quirks |= XHCI_BROKEN_D3COLD;
++		xhci->quirks |= XHCI_BROKEN_D3COLD_S2I;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_INTEL) {
+ 		xhci->quirks |= XHCI_LPM_SUPPORT;
+@@ -624,9 +625,16 @@ static int xhci_pci_suspend(struct usb_h
+ 	 * Systems with the TI redriver that loses port status change events
+ 	 * need to have the registers polled during D3, so avoid D3cold.
+ 	 */
+-	if (xhci->quirks & (XHCI_COMP_MODE_QUIRK | XHCI_BROKEN_D3COLD))
++	if (xhci->quirks & XHCI_COMP_MODE_QUIRK)
+ 		pci_d3cold_disable(pdev);
+ 
++#ifdef CONFIG_SUSPEND
++	/* d3cold is broken, but only when s2idle is used */
++	if (pm_suspend_target_state == PM_SUSPEND_TO_IDLE &&
++	    xhci->quirks & (XHCI_BROKEN_D3COLD_S2I))
++		pci_d3cold_disable(pdev);
++#endif
++
+ 	if (xhci->quirks & XHCI_PME_STUCK_QUIRK)
+ 		xhci_pme_quirk(hcd);
+ 
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1901,7 +1901,7 @@ struct xhci_hcd {
+ #define XHCI_DISABLE_SPARSE	BIT_ULL(38)
+ #define XHCI_SG_TRB_CACHE_SIZE_QUIRK	BIT_ULL(39)
+ #define XHCI_NO_SOFT_RETRY	BIT_ULL(40)
+-#define XHCI_BROKEN_D3COLD	BIT_ULL(41)
++#define XHCI_BROKEN_D3COLD_S2I	BIT_ULL(41)
+ #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
+ #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
+ #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
 
 
