@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1121970C791
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B9E70C684
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234154AbjEVTbO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52786 "EHLO
+        id S234249AbjEVTTL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234745AbjEVTbM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D38A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:11 -0700 (PDT)
+        with ESMTP id S234297AbjEVTTG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2605918B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 593A162913
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDEDC433D2;
-        Mon, 22 May 2023 19:31:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B75BB627F5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7464C433EF;
+        Mon, 22 May 2023 19:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783870;
-        bh=jTIOnGzw/SlQXZEzUa/0ijpcRNdmZjfajWdtQebMZxc=;
+        s=korg; t=1684783136;
+        bh=M9RLjLDGeDfjFAwgBMSFL6aqMfP9RBJrOcfIZrfgzBs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RGgIZyDN5od05gOMpPfoMmTTLxMOvvl9luvhxl4i/MQrek33Vy6SstTJv2X89iegx
-         xT8rC7+3y2vRGDLsLcJO9LVFkR33bK5c1+rHHcdTvzB1SW45pAhnHVNntJBvgNLIOX
-         iO4Klqc1+pxSk+uIaFrhb54qak4EbbzfruWnAWTE=
+        b=s9aSgQX6W1MbfvFku+vQ/nV8ZN2ju4UzOsnJTo5sgoBmiK+t6bFMHpXCQV1427/DZ
+         P0rmKtahWcPBHQ6sEASQop99G233d+lXHQBcifH+AYeJrXrhhM5uqYN3rHeYwjTi5l
+         wfnIKQDXimTnKlaRSv4ZRFBi04ef/n79P21EzRXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/292] ASoC: mediatek: mt8186: Fix use-after-free in driver remove path
-Date:   Mon, 22 May 2023 20:09:06 +0100
-Message-Id: <20230522190410.684302600@linuxfoundation.org>
+        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 123/203] vsock: avoid to close connected socket after the timeout
+Date:   Mon, 22 May 2023 20:09:07 +0100
+Message-Id: <20230522190358.379540682@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,168 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Zhuang Shengen <zhuangshengen@huawei.com>
 
-[ Upstream commit a93d2afd3f77a7331271a0f25c6a11003db69b3c ]
+[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
 
-When devm runs function in the "remove" path for a device it runs them
-in the reverse order. That means that if you have parts of your driver
-that aren't using devm or are using "roll your own" devm w/
-devm_add_action_or_reset() you need to keep that in mind.
+When client and server establish a connection through vsock,
+the client send a request to the server to initiate the connection,
+then start a timer to wait for the server's response. When the server's
+RESPONSE message arrives, the timer also times out and exits. The
+server's RESPONSE message is processed first, and the connection is
+established. However, the client's timer also times out, the original
+processing logic of the client is to directly set the state of this vsock
+to CLOSE and return ETIMEDOUT. It will not notify the server when the port
+is released, causing the server port remain.
+when client's vsock_connect timeout，it should check sk state is
+ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
+is established, the client should not set the sk state to CLOSE
 
-The mt8186 audio driver didn't quite get this right. Specifically, in
-mt8186_init_clock() it called mt8186_audsys_clk_register() and then
-went on to call a bunch of other devm function. The caller of
-mt8186_init_clock() used devm_add_action_or_reset() to call
-mt8186_deinit_clock() but, because of the intervening devm functions,
-the order was wrong.
+Note: I encountered this issue on kernel-4.18, which can be fixed by
+this patch. Then I checked the latest code in the community
+and found similar issue.
 
-Specifically at probe time, the order was:
-1. mt8186_audsys_clk_register()
-2. afe_priv->clk = devm_kcalloc(...)
-3. afe_priv->clk[i] = devm_clk_get(...)
-
-At remove time, the order (which should have been 3, 2, 1) was:
-1. mt8186_audsys_clk_unregister()
-3. Free all of afe_priv->clk[i]
-2. Free afe_priv->clk
-
-The above seemed to be causing a use-after-free. Luckily, it's easy to
-fix this by simply using devm more correctly. Let's move the
-devm_add_action_or_reset() to the right place. In addition to fixing
-the use-after-free, code inspection shows that this fixes a leak
-(missing call to mt8186_audsys_clk_unregister()) that would have
-happened if any of the syscon_regmap_lookup_by_phandle() calls in
-mt8186_init_clock() had failed.
-
-Fixes: 55b423d5623c ("ASoC: mediatek: mt8186: support audio clock control in platform driver")
-Signed-off-by: Douglas Anderson <dianders@chromium.org
-Link: https://lore.kernel.org/r/20230511092437.1.I31cceffc8c45bb1af16eb613e197b3df92cdc19e@changeid
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8186/mt8186-afe-clk.c    |  6 ---
- sound/soc/mediatek/mt8186/mt8186-afe-clk.h    |  1 -
- sound/soc/mediatek/mt8186/mt8186-afe-pcm.c    |  4 --
- sound/soc/mediatek/mt8186/mt8186-audsys-clk.c | 46 ++++++++++---------
- sound/soc/mediatek/mt8186/mt8186-audsys-clk.h |  1 -
- 5 files changed, 24 insertions(+), 34 deletions(-)
+ net/vmw_vsock/af_vsock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/mediatek/mt8186/mt8186-afe-clk.c b/sound/soc/mediatek/mt8186/mt8186-afe-clk.c
-index a6b4f29049bbc..539e3a023bc4e 100644
---- a/sound/soc/mediatek/mt8186/mt8186-afe-clk.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-afe-clk.c
-@@ -644,9 +644,3 @@ int mt8186_init_clock(struct mtk_base_afe *afe)
- 
- 	return 0;
- }
--
--void mt8186_deinit_clock(void *priv)
--{
--	struct mtk_base_afe *afe = priv;
--	mt8186_audsys_clk_unregister(afe);
--}
-diff --git a/sound/soc/mediatek/mt8186/mt8186-afe-clk.h b/sound/soc/mediatek/mt8186/mt8186-afe-clk.h
-index d5988717d8f2d..a9d59e506d9af 100644
---- a/sound/soc/mediatek/mt8186/mt8186-afe-clk.h
-+++ b/sound/soc/mediatek/mt8186/mt8186-afe-clk.h
-@@ -81,7 +81,6 @@ enum {
- struct mtk_base_afe;
- int mt8186_set_audio_int_bus_parent(struct mtk_base_afe *afe, int clk_id);
- int mt8186_init_clock(struct mtk_base_afe *afe);
--void mt8186_deinit_clock(void *priv);
- int mt8186_afe_enable_cgs(struct mtk_base_afe *afe);
- void mt8186_afe_disable_cgs(struct mtk_base_afe *afe);
- int mt8186_afe_enable_clock(struct mtk_base_afe *afe);
-diff --git a/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c b/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c
-index d7e94e6a19c70..0e3792ccd49f6 100644
---- a/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c
-@@ -2847,10 +2847,6 @@ static int mt8186_afe_pcm_dev_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	ret = devm_add_action_or_reset(dev, mt8186_deinit_clock, (void *)afe);
--	if (ret)
--		return ret;
--
- 	/* init memif */
- 	afe->memif_32bit_supported = 0;
- 	afe->memif_size = MT8186_MEMIF_NUM;
-diff --git a/sound/soc/mediatek/mt8186/mt8186-audsys-clk.c b/sound/soc/mediatek/mt8186/mt8186-audsys-clk.c
-index 578969ca91c8e..5666be6b1bd2e 100644
---- a/sound/soc/mediatek/mt8186/mt8186-audsys-clk.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-audsys-clk.c
-@@ -84,6 +84,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
- 	GATE_AUD2(CLK_AUD_ETDM_OUT1_BCLK, "aud_etdm_out1_bclk", "top_audio", 24),
- };
- 
-+static void mt8186_audsys_clk_unregister(void *data)
-+{
-+	struct mtk_base_afe *afe = data;
-+	struct mt8186_afe_private *afe_priv = afe->platform_priv;
-+	struct clk *clk;
-+	struct clk_lookup *cl;
-+	int i;
-+
-+	if (!afe_priv)
-+		return;
-+
-+	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
-+		cl = afe_priv->lookup[i];
-+		if (!cl)
-+			continue;
-+
-+		clk = cl->clk;
-+		clk_unregister_gate(clk);
-+
-+		clkdev_drop(cl);
-+	}
-+}
-+
- int mt8186_audsys_clk_register(struct mtk_base_afe *afe)
- {
- 	struct mt8186_afe_private *afe_priv = afe->platform_priv;
-@@ -124,27 +147,6 @@ int mt8186_audsys_clk_register(struct mtk_base_afe *afe)
- 		afe_priv->lookup[i] = cl;
- 	}
- 
--	return 0;
-+	return devm_add_action_or_reset(afe->dev, mt8186_audsys_clk_unregister, afe);
- }
- 
--void mt8186_audsys_clk_unregister(struct mtk_base_afe *afe)
--{
--	struct mt8186_afe_private *afe_priv = afe->platform_priv;
--	struct clk *clk;
--	struct clk_lookup *cl;
--	int i;
--
--	if (!afe_priv)
--		return;
--
--	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
--		cl = afe_priv->lookup[i];
--		if (!cl)
--			continue;
--
--		clk = cl->clk;
--		clk_unregister_gate(clk);
--
--		clkdev_drop(cl);
--	}
--}
-diff --git a/sound/soc/mediatek/mt8186/mt8186-audsys-clk.h b/sound/soc/mediatek/mt8186/mt8186-audsys-clk.h
-index b8d6a06e11e8d..897a2914dc191 100644
---- a/sound/soc/mediatek/mt8186/mt8186-audsys-clk.h
-+++ b/sound/soc/mediatek/mt8186/mt8186-audsys-clk.h
-@@ -10,6 +10,5 @@
- #define _MT8186_AUDSYS_CLK_H_
- 
- int mt8186_audsys_clk_register(struct mtk_base_afe *afe);
--void mt8186_audsys_clk_unregister(struct mtk_base_afe *afe);
- 
- #endif
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index dc36a46ce0e75..9a65a2f195853 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1415,7 +1415,7 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 			vsock_transport_cancel_pkt(vsk);
+ 			vsock_remove_connected(vsk);
+ 			goto out_wait;
+-		} else if (timeout == 0) {
++		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+ 			err = -ETIMEDOUT;
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
 -- 
 2.39.2
 
