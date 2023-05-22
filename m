@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C8970C949
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8BC70C633
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235296AbjEVTq2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
+        id S234083AbjEVTQM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235311AbjEVTqW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3EF9A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:19 -0700 (PDT)
+        with ESMTP id S234108AbjEVTPy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 256C6102
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8665362A05
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9546EC433D2;
-        Mon, 22 May 2023 19:46:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 591436274A
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A4DC433EF;
+        Mon, 22 May 2023 19:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784779;
-        bh=ZJGyKJX+SJn7/ogkf8kjQ039MZHB/DIAntQZJF7LQlY=;
+        s=korg; t=1684782938;
+        bh=1voL4SWVbc9cZcOKtGh4cw7J47iRCy0pjcjsw0lDDgE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fpsfs7Bm7VWG0SBpXBGfhIK72yJkTtY9hcGKAOpWOSYGbroxm6ZpqqsaIFcP1THP7
-         HOobmErBAIx2ifn/ffXhGqxQcY3HOgmQP0AK7coNbdAkMLe3pZmvpZq50PcRqa7Cko
-         XVwTZiWUI+tuGoHiWtOt6J+BzvDGZ4n0TKDddlOs=
+        b=QpINHBmsegHQgNst2LJXd679PNBpc/9hfCPWbE+2D+CAg9oERgaqu1C5Ukz8Jjr2n
+         Ga3T+KMxhezRXa/UUdOnWQ4SF47Opvf0ZwrBVHHGHDa3Uv2qGmHB2gqkiEdyh4P7Sh
+         cygok55MlSAM6avz7TbgtL4itL0pc5RScASJjkGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev,
+        Kevin Groeneveld <kgroeneveld@lenbrook.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 200/364] xfrm: Fix leak of dev tracker
+Subject: [PATCH 5.15 081/203] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
 Date:   Mon, 22 May 2023 20:08:25 +0100
-Message-Id: <20230522190417.730362672@linuxfoundation.org>
+Message-Id: <20230522190357.234399826@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,36 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
 
-[ Upstream commit ec8f32ad9a65a8cbb465b69e154aaec9d2fe45c4 ]
+[ Upstream commit 87c614175bbf28d3fd076dc2d166bac759e41427 ]
 
-At the stage of direction checks, the netdev reference tracker is
-already initialized, but released with wrong *_put() call.
+When using gpio based chip select the cs value can go outside the range
+0 – 3. The various MX51_ECSPI_* macros did not take this into consideration
+resulting in possible corruption of the configuration.
 
-Fixes: 919e43fad516 ("xfrm: add an interface to offload policy")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+For example for any cs value over 3 the SCLKPHA bits would not be set and
+other values in the register possibly corrupted.
+
+One way to fix this is to just mask the cs bits to 2 bits. This still
+allows all 4 native chip selects to work as well as gpio chip selects
+(which can use any of the 4 chip select configurations).
+
+Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+Link: https://lore.kernel.org/r/20230318222132.3373-1-kgroeneveld@lenbrook.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 95f1436bf6a2e..e2ca50bfca24f 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -378,7 +378,7 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
- 		break;
- 	default:
- 		xdo->dev = NULL;
--		dev_put(dev);
-+		netdev_put(dev, &xdo->dev_tracker);
- 		NL_SET_ERR_MSG(extack, "Unrecognized offload direction");
- 		return -EINVAL;
- 	}
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 2f06f2840d616..f201653931d89 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -247,6 +247,18 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	return true;
+ }
+ 
++/*
++ * Note the number of natively supported chip selects for MX51 is 4. Some
++ * devices may have less actual SS pins but the register map supports 4. When
++ * using gpio chip selects the cs values passed into the macros below can go
++ * outside the range 0 - 3. We therefore need to limit the cs value to avoid
++ * corrupting bits outside the allocated locations.
++ *
++ * The simplest way to do this is to just mask the cs bits to 2 bits. This
++ * still allows all 4 native chip selects to work as well as gpio chip selects
++ * (which can use any of the 4 chip select configurations).
++ */
++
+ #define MX51_ECSPI_CTRL		0x08
+ #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
+ #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
+@@ -255,16 +267,16 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
+ #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
+ #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+-#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
++#define MX51_ECSPI_CTRL_CS(cs)		((cs & 3) << 18)
+ #define MX51_ECSPI_CTRL_BL_OFFSET	20
+ #define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
+ 
+ #define MX51_ECSPI_CONFIG	0x0c
+-#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+-#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+-#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+-#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
+-#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
++#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs & 3) +  0))
++#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
++#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
++#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
++#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
+ 
+ #define MX51_ECSPI_INT		0x10
+ #define MX51_ECSPI_INT_TEEN		(1 <<  0)
 -- 
 2.39.2
 
