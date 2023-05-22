@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6B270C766
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083BF70C60E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234694AbjEVT3F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50780 "EHLO
+        id S229728AbjEVTOi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234705AbjEVT3C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:02 -0400
+        with ESMTP id S231241AbjEVTOh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E85DCA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3906319B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92DA9628DF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E60EC433D2;
-        Mon, 22 May 2023 19:28:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 959B862710
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE268C433D2;
+        Mon, 22 May 2023 19:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783740;
-        bh=iTtxUE2uhdl3djOg5DInxXSPCL07gYS+bvTLH3jj0Tk=;
+        s=korg; t=1684782867;
+        bh=F3Fg4ykSRNJLZjUFr+7CCg9HoRNT2L/SxItHFFNZQpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n8sSBPTnne7rKTgdkOp9PNBEtQs6vWuG89le/4XlZEHvn62+q15IyYelqtmF9zsyI
-         gFH4cPrFyCwodMiddbNErXdHgCueqF/4S4nM49xmqab/s+PU9teaBF1Fc7bWgA3Ijv
-         /rvq0NLGU8nq6ibeqQ4IuwfklgFLJ/2Tq8u3Ki70=
+        b=ZU7DbGd9jXbO2Sxf5WeVnQC2rC3+dEpjdjRFFYIT3AZMwzeNBW2k9TnnMvzP6SDQX
+         Kk8CoLaDGVJolr7/YoaHgz0Yh1L7Z4BgGFBPU16DFmmlTQjKqrOgaCT2AP5PH/n/+d
+         whJpMD4MqZk9R4wcBRAV6Qa0oYqrMHMumhUG0tO8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Max Chou <max.chou@realtek.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/292] Bluetooth: btrtl: Add the support for RTL8851B
+        patches@lists.linux.dev,
+        syzbot+4fec412f59eba8c01b77@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 052/203] ext2: Check block size validity during mount
 Date:   Mon, 22 May 2023 20:07:56 +0100
-Message-Id: <20230522190408.940379193@linuxfoundation.org>
+Message-Id: <20230522190356.438587730@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,141 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Max Chou <max.chou@realtek.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7948fe1c92d92313eea5453f83deb7f0141355e8 ]
+[ Upstream commit 62aeb94433fcec80241754b70d0d1836d5926b0a ]
 
-Add the support for RTL8851B BT controller on USB interface.
-The necessary firmware will be submitted to linux-firmware project.
+Check that log of block size stored in the superblock has sensible
+value. Otherwise the shift computing the block size can overflow leading
+to undefined behavior.
 
-Note that the Bluetooth devices WITH the VID=0x0bda would be set the
-feature quirk in btrtl_setup_realtek(). It's able to ignore the
-feature flag set for the specific VID and PID in blacklist_table[] of
-btusb.c. (check [1])
-
-If Realtek Bluetooth chips WITHOUT the VID=0x0bda, it shall be added
-the feature flag for the specific VID and PID in blacklist_table[] of
-btusb.c. (check [2])
-
-[1] '9ab9235fe5cf ("Bluetooth: btrtl: Enable WBS for the specific
-    Realtek devices")'
-[2] '73280f13c9bb ("Bluetooth: btusb: Add the more support IDs for
-    Realtek RTL8822CE")'
-
-The device info from /sys/kernel/debug/usb/devices as below.
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 33 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=b851 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=802.11ax WLAN Adapter
-S:  SerialNumber=00E04C885A01
-C:* #Ifs= 3 Cfg#= 1 Atr=80 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Max Chou <max.chou@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+4fec412f59eba8c01b77@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/ext2/ext2.h  | 1 +
+ fs/ext2/super.c | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 88f8c604d70a2..ead632595ce06 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -28,6 +28,7 @@
- #define RTL_ROM_LMP_8761A	0x8761
- #define RTL_ROM_LMP_8822B	0x8822
- #define RTL_ROM_LMP_8852A	0x8852
-+#define RTL_ROM_LMP_8851B	0x8851
- #define RTL_CONFIG_MAGIC	0x8723ab55
+diff --git a/fs/ext2/ext2.h b/fs/ext2/ext2.h
+index 3be9dd6412b78..a610c096f3a9d 100644
+--- a/fs/ext2/ext2.h
++++ b/fs/ext2/ext2.h
+@@ -179,6 +179,7 @@ static inline struct ext2_sb_info *EXT2_SB(struct super_block *sb)
+ #define EXT2_MIN_BLOCK_SIZE		1024
+ #define	EXT2_MAX_BLOCK_SIZE		4096
+ #define EXT2_MIN_BLOCK_LOG_SIZE		  10
++#define EXT2_MAX_BLOCK_LOG_SIZE		  16
+ #define EXT2_BLOCK_SIZE(s)		((s)->s_blocksize)
+ #define	EXT2_ADDR_PER_BLOCK(s)		(EXT2_BLOCK_SIZE(s) / sizeof (__u32))
+ #define EXT2_BLOCK_SIZE_BITS(s)		((s)->s_blocksize_bits)
+diff --git a/fs/ext2/super.c b/fs/ext2/super.c
+index 02d82f8fe85d9..486a43e347950 100644
+--- a/fs/ext2/super.c
++++ b/fs/ext2/super.c
+@@ -947,6 +947,13 @@ static int ext2_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto failed_mount;
+ 	}
  
- #define IC_MATCH_FL_LMPSUBV	(1 << 0)
-@@ -56,6 +57,7 @@ enum btrtl_chip_id {
- 	CHIP_ID_8852A = 18,
- 	CHIP_ID_8852B = 20,
- 	CHIP_ID_8852C = 25,
-+	CHIP_ID_8851B = 36,
- };
++	if (le32_to_cpu(es->s_log_block_size) >
++	    (EXT2_MAX_BLOCK_LOG_SIZE - BLOCK_SIZE_BITS)) {
++		ext2_msg(sb, KERN_ERR,
++			 "Invalid log block size: %u",
++			 le32_to_cpu(es->s_log_block_size));
++		goto failed_mount;
++	}
+ 	blocksize = BLOCK_SIZE << le32_to_cpu(sbi->s_es->s_log_block_size);
  
- struct id_table {
-@@ -244,6 +246,14 @@ static const struct id_table ic_id_table[] = {
- 	  .has_msft_ext = true,
- 	  .fw_name  = "rtl_bt/rtl8852cu_fw.bin",
- 	  .cfg_name = "rtl_bt/rtl8852cu_config" },
-+
-+	/* 8851B */
-+	{ IC_INFO(RTL_ROM_LMP_8851B, 0xb, 0xc, HCI_USB),
-+	  .config_needed = false,
-+	  .has_rom_version = true,
-+	  .has_msft_ext = false,
-+	  .fw_name  = "rtl_bt/rtl8851bu_fw.bin",
-+	  .cfg_name = "rtl_bt/rtl8851bu_config" },
- 	};
- 
- static const struct id_table *btrtl_match_ic(u16 lmp_subver, u16 hci_rev,
-@@ -359,6 +369,7 @@ static int rtlbt_parse_firmware(struct hci_dev *hdev,
- 		{ RTL_ROM_LMP_8852A, 18 },	/* 8852A */
- 		{ RTL_ROM_LMP_8852A, 20 },	/* 8852B */
- 		{ RTL_ROM_LMP_8852A, 25 },	/* 8852C */
-+		{ RTL_ROM_LMP_8851B, 36 },	/* 8851B */
- 	};
- 
- 	min_size = sizeof(struct rtl_epatch_header) + sizeof(extension_sig) + 3;
-@@ -848,6 +859,7 @@ int btrtl_download_firmware(struct hci_dev *hdev,
- 	case RTL_ROM_LMP_8822B:
- 	case RTL_ROM_LMP_8852A:
- 	case RTL_ROM_LMP_8703B:
-+	case RTL_ROM_LMP_8851B:
- 		return btrtl_setup_rtl8723b(hdev, btrtl_dev);
- 	default:
- 		rtl_dev_info(hdev, "assuming no firmware upload needed");
-@@ -872,6 +884,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
- 	case CHIP_ID_8852A:
- 	case CHIP_ID_8852B:
- 	case CHIP_ID_8852C:
-+	case CHIP_ID_8851B:
- 		set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
- 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
- 		hci_set_aosp_capable(hdev);
-@@ -1075,3 +1088,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
+ 	if (test_opt(sb, DAX)) {
 -- 
 2.39.2
 
