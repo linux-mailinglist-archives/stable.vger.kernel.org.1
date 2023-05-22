@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 823A070C7FE
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D355970C98D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234931AbjEVTfI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
+        id S235351AbjEVTtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234948AbjEVTfH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:07 -0400
+        with ESMTP id S235343AbjEVTtV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:49:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135D1A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5835495
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:49:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE79062972
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC1FC433D2;
-        Mon, 22 May 2023 19:33:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2A9462ACC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A899C433EF;
+        Mon, 22 May 2023 19:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784015;
-        bh=yy6mLwgy2xSwQ2xEIlQ0zqahh8IEhQSv6GMlUwzB3ds=;
+        s=korg; t=1684784959;
+        bh=kCOes3dmRG3Cg5Hi901IVYqm4Y+1g1Nb0jKjiobzzSg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LWunhpT1xVCHt7GEVK7SeGkvZPqrTUVaLNVvpuBfsk/Ts4w6x3eBrA3a3vrbBDOlk
-         Ve/cxsT1lLcqDkGnlRNDKuENBBJalFNu7j/HYqLdoTSCleycaZTDDGKCDMzQkC6Kh9
-         0aUxn+9/J4g4qT676VHOiOXHnKqQ1e/qdFdZ7oDo=
+        b=H5roY0n0VMExYePlzwNDRcOvanyH6109POs9epRrwFQX+7n0Aabi4yVC+I8UYodUQ
+         e2lVhzvI0Ka25jtcduRq3EVvL77YN1KVRFeYVSBHoZDgElaFEVZuzFfVv0xtSnbqLx
+         PC58j3QQhAIpQ5EKPSLCTR13TivAMCEm/QaRsWNc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/292] wifi: iwlwifi: mvm: fix cancel_delayed_work_sync() deadlock
-Date:   Mon, 22 May 2023 20:09:25 +0100
-Message-Id: <20230522190411.157997527@linuxfoundation.org>
+Subject: [PATCH 6.3 261/364] net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()
+Date:   Mon, 22 May 2023 20:09:26 +0100
+Message-Id: <20230522190419.230569479@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit c2d8b7f257b2398f2d866205365895e038beca12 ]
+[ Upstream commit 93e0401e0fc0c54b0ac05b687cd135c2ac38187c ]
 
-Lockdep points out that we can deadlock here by calling
-cancel_delayed_work_sync() because that might be already
-running and gotten interrupted by the NAPI soft-IRQ.
-Even just calling something that can sleep is wrong in
-this context though.
+The call to phy_stop() races with the later call to phy_disconnect(),
+resulting in concurrent phy_suspend() calls being run from different
+CPUs. The final call to phy_disconnect() ensures that the PHY is
+stopped and suspended, too.
 
-Luckily, it doesn't even really matter since the things
-we need to do are idempotent, so just drop the _sync().
-
-Fixes: e5d153ec54f0 ("iwlwifi: mvm: fix CSA AP side")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230514120631.b1813c823b4d.I9d20cc06d24fa40b6774d3dd95ea5e2bf8dd015b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 225c657945c4 ("net: bcmgenet: Restore phy_stop() depending upon suspend/close")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 091225894037c..02c2a06301076 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -1975,7 +1975,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 				RCU_INIT_POINTER(mvm->csa_tx_blocked_vif, NULL);
- 				/* Unblock BCAST / MCAST station */
- 				iwl_mvm_modify_all_sta_disable_tx(mvm, mvmvif, false);
--				cancel_delayed_work_sync(&mvm->cs_tx_unblock_dwork);
-+				cancel_delayed_work(&mvm->cs_tx_unblock_dwork);
- 			}
- 		}
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index d937daa8ee883..f28ffc31df220 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3465,7 +3465,6 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
+ 
+-	phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
  
 -- 
 2.39.2
