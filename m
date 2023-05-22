@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF20170C68D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B2570C9A8
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234285AbjEVTT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
+        id S235386AbjEVTue (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbjEVTTZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:25 -0400
+        with ESMTP id S235580AbjEVTuU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9314F93
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB4595
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 289F8627F7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3827EC433EF;
-        Mon, 22 May 2023 19:19:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0E2F62AEC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E979C433EF;
+        Mon, 22 May 2023 19:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783163;
-        bh=XS8NOe42e6gQdhzW5ZEjWVqzcRzVWw2b7iG97AjDV84=;
+        s=korg; t=1684785015;
+        bh=vmW2qbE72gA30HgPxQQl8i7qQTa6JINbF9RjfGJyTF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OI16zzU4v0hyQI7qASrjNYDcKWYtwnEimmGyYO/7Dei4GKqCycqMBdA/M/Z5uVb8h
-         EduHJdQUq3eXpJZ1iFVMA7eQkhGcwsmTqrQg77dWHUSUgFFAoWQPaPX2EQCmurRDS8
-         rqx7USkeM13DNcVHnPk5/enUrONdD5af6FF812U4=
+        b=spAIbTW+QtwHf3KXdew60ejogAAVdTvYAKD4D6RgNiRKvO9wQUpv8EcaDpag6vszy
+         p9eXkBUrP36nFt1zR3++POjXxLIV4YTU2ChXcJu9kX5+VW0fs5M/jO3aUfftS00GKK
+         jOxH2BWPydljICLLUeyBiQlYsARPhUUl3XSsZhFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/203] bridge: always declare tunnel functions
+Subject: [PATCH 6.3 279/364] cassini: Fix a memory leak in the error handling path of cas_init_one()
 Date:   Mon, 22 May 2023 20:09:44 +0100
-Message-Id: <20230522190359.403498673@linuxfoundation.org>
+Message-Id: <20230522190419.699033815@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,59 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 89dcd87ce534a3a7f267cfd58505803006f51301 ]
+[ Upstream commit 412cd77a2c24b191c65ea53025222418db09817c ]
 
-When CONFIG_BRIDGE_VLAN_FILTERING is disabled, two functions are still
-defined but have no prototype or caller. This causes a W=1 warning for
-the missing prototypes:
+cas_saturn_firmware_init() allocates some memory using vmalloc(). This
+memory is freed in the .remove() function but not it the error handling
+path of the probe.
 
-net/bridge/br_netlink_tunnel.c:29:6: error: no previous prototype for 'vlan_tunid_inrange' [-Werror=missing-prototypes]
-net/bridge/br_netlink_tunnel.c:199:5: error: no previous prototype for 'br_vlan_tunnel_info' [-Werror=missing-prototypes]
+Add the missing vfree() to avoid a memory leak, should an error occur.
 
-The functions are already contitional on CONFIG_BRIDGE_VLAN_FILTERING,
-and I coulnd't easily figure out the right set of #ifdefs, so just
-move the declarations out of the #ifdef to avoid the warning,
-at a small cost in code size over a more elaborate fix.
-
-Fixes: 188c67dd1906 ("net: bridge: vlan options: add support for tunnel id dumping")
-Fixes: 569da0822808 ("net: bridge: vlan options: add support for tunnel mapping set/del")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230516194625.549249-3-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fcaa40669cd7 ("cassini: use request_firmware")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_private_tunnel.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/sun/cassini.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bridge/br_private_tunnel.h b/net/bridge/br_private_tunnel.h
-index 2b053289f0166..efb096025151a 100644
---- a/net/bridge/br_private_tunnel.h
-+++ b/net/bridge/br_private_tunnel.h
-@@ -27,6 +27,10 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
- int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg);
- int br_fill_vlan_tunnel_info(struct sk_buff *skb,
- 			     struct net_bridge_vlan_group *vg);
-+bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
-+			const struct net_bridge_vlan *v_last);
-+int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
-+			u16 vid, u32 tun_id, bool *changed);
+diff --git a/drivers/net/ethernet/sun/cassini.c b/drivers/net/ethernet/sun/cassini.c
+index 4ef05bad4613c..d61dfa250feb7 100644
+--- a/drivers/net/ethernet/sun/cassini.c
++++ b/drivers/net/ethernet/sun/cassini.c
+@@ -5077,6 +5077,8 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		cas_shutdown(cp);
+ 	mutex_unlock(&cp->pm_mutex);
  
- #ifdef CONFIG_BRIDGE_VLAN_FILTERING
- /* br_vlan_tunnel.c */
-@@ -43,10 +47,6 @@ void br_handle_ingress_vlan_tunnel(struct sk_buff *skb,
- 				   struct net_bridge_vlan_group *vg);
- int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 				 struct net_bridge_vlan *vlan);
--bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
--			const struct net_bridge_vlan *v_last);
--int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
--			u16 vid, u32 tun_id, bool *changed);
- #else
- static inline int vlan_tunnel_init(struct net_bridge_vlan_group *vg)
- {
++	vfree(cp->fw_data);
++
+ 	pci_iounmap(pdev, cp->regs);
+ 
+ 
 -- 
 2.39.2
 
