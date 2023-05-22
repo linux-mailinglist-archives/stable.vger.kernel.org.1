@@ -2,67 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E0370B56F
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 08:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7AE70B5DA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 09:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232240AbjEVGxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 02:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56552 "EHLO
+        id S232176AbjEVHGV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 03:06:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjEVGw3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 02:52:29 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43641213F
-        for <stable@vger.kernel.org>; Sun, 21 May 2023 23:50:08 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-ba878d5e75fso7776488276.3
-        for <stable@vger.kernel.org>; Sun, 21 May 2023 23:50:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684738164; x=1687330164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=srw7ucIfC/5OeRnIMtL1cXf2KeT7TF+ezb33HBVqndE=;
-        b=jfHJgAclYOCpZnVYwHQClOGj72/gRBDmhMr7hJi487dtvkRI8Q5DsevbASg3dJ5tYQ
-         Avz9oKiKLw0jTdXnZhNRkWHSKF5G+Vu4NpY+EyJ2RWDgDmY4uST4TjFRWAEXPJOsrdgc
-         b1RQGWF29DJmF+bgXTPhxv0z0qnC9aWQlw//sJEtHmraU1729Lyy8lh5lRU4SRcHw+/l
-         B32rpDHxMlkjyddRFlZqAM+YzvXJRXnsM0FnBQOzE+PM+cHgyncUpLtMtT9cK/FaSIiN
-         zk32BlWiwsg+JRT/jHCaa0uSd1oyKvFJWUl35J7PcuFCcWe3Sd+Ot+MaAbuK8dCA1o2B
-         4+OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684738164; x=1687330164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=srw7ucIfC/5OeRnIMtL1cXf2KeT7TF+ezb33HBVqndE=;
-        b=XUKvUoD8VzP0FGnf1FnbLCqM6X0EY4Xm2DDeIxMIZ/1V9p+L60h0aCP3vHfiD2DDw3
-         gRvEW+R9HJGFGc54M8q++l5NiL34KAct4piN1Sc6KgBQ6i80peoGMgnUWMExXvQ210tn
-         ZhcyCnZSNmu8+qGRgJqxGi1b6P3ha1E6TJ+o8SXsIMyeRwWcjgASpp70bKEtaqo/21aC
-         TSMz6diqV5FlySxRJgEx2ZCJqpdxheqKPnzszYKL8/lSS1YySjEBl05YtHTy5wtF+SU7
-         AaHuQgmv4+ock0amTeKvoqbW34ADzcu/1l95vDKvitpeo34UmkAdEL4UEOKVfmUTCDJs
-         +2Hw==
-X-Gm-Message-State: AC+VfDxAtxd8XYfCLKMaURjJW2tjRzW3wNm4A/RvCIe0WdHkzDaYPLZE
-        NQ9DGLMUBNZDGZ8Pbf+oYR73SXzY8OcJARwhC5vviA==
-X-Google-Smtp-Source: ACHHUZ6Q7RsqWGPIcQ3JBMdEBS4SK/jmI1H8DA8MXUBTMYlg5VmyjMYTXyn1bYRjIyiEOi9iT3uzP2Zpp6oYMCrnodE=
-X-Received: by 2002:a81:88c6:0:b0:564:bc99:cde8 with SMTP id
- y189-20020a8188c6000000b00564bc99cde8mr9098144ywf.6.1684738163951; Sun, 21
- May 2023 23:49:23 -0700 (PDT)
+        with ESMTP id S232343AbjEVHF7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 03:05:59 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0312684;
+        Mon, 22 May 2023 00:02:48 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34M5AXIt006779;
+        Mon, 22 May 2023 07:02:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=GCyDNdBxjdpndBeVSnq6vZ/W/caszfgq1a9vcs1LanE=;
+ b=Aq3OY9t46yVl7QmjW2wNyfPBI/2QXrzmX8guazUL6xrtl0JekQhG02u3sfpHXriKWcLq
+ b4nXB5lM9CP96cMg6FWKgNTzLMcMO3mBAjOPcuYK6KW/3uRuDIqBvOfHNl+wbQg0ECh9
+ q7kc/fFmV1d/f3gcLxkH+zDA89pvUSBivf2q7HbxDDyrEEp0fraatHKTbdv2ORVC8cgQ
+ tWABFL8N5Att8cfPogF/R+Bbc2vqKVchkmAsXv0LNeSQYlH9d7A4OsqiqKcxek3ZXK1n
+ xiyD4Qln3MTySvWP4x/AXTaLjeoU+q9C6914GXICErwbAteNoyvYPr/kjdE4lHFqzo82 WA== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qppypat1e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 07:02:05 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34M725jC000399
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 07:02:05 GMT
+Received: from [10.253.35.102] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 22 May
+ 2023 00:02:03 -0700
+Message-ID: <113156cf-5770-c0c7-dea6-4ddca43b4438@quicinc.com>
+Date:   Mon, 22 May 2023 15:01:53 +0800
 MIME-Version: 1.0
-References: <20230518210246.2401737-1-linus.walleij@linaro.org>
-In-Reply-To: <20230518210246.2401737-1-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 22 May 2023 08:49:12 +0200
-Message-ID: <CACRpkdbTgL33+KjoNx4hOsGEmqXM3Rw2HucC38stiBik=5f3eg@mail.gmail.com>
-Subject: Re: [PATCH v3] mmc: mmci: Add busydetect timeout
-To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Stephan Gerhold <stephan@gerhold.net>
-Cc:     Russell King <linux@armlinux.org.uk>, stable@vger.kernel.org,
-        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4] bus: mhi: host: Skip MHI reset if device is in RDDM
+To:     Manivannan Sadhasivam <mani@kernel.org>
+CC:     <quic_jhugo@quicinc.com>, <mhi@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_cang@quicinc.com>, <quic_mrana@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <1684390959-17836-1-git-send-email-quic_qianyu@quicinc.com>
+ <20230519135129.GA4843@thinkpad>
+Content-Language: en-US
+From:   Qiang Yu <quic_qianyu@quicinc.com>
+In-Reply-To: <20230519135129.GA4843@thinkpad>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: QO7Q7Uo9Yho1LYr5ylGld139xtzDmejz
+X-Proofpoint-GUID: QO7Q7Uo9Yho1LYr5ylGld139xtzDmejz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-22_04,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ clxscore=1015 mlxlogscore=999 phishscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220059
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,21 +81,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 18, 2023 at 11:02=E2=80=AFPM Linus Walleij <linus.walleij@linar=
-o.org> wrote:
 
-> ChangeLog v2->v3:
-> - Took out the most urgent fix from the pile of changes
->   and send separately, without the rest of the refactorings
->   that were used for debugging the issue. After this the
->   Skomer and Codina with problematic eMMC boots fine.
+On 5/19/2023 9:51 PM, Manivannan Sadhasivam wrote:
+> On Thu, May 18, 2023 at 02:22:39PM +0800, Qiang Yu wrote:
+>> In RDDM EE, device can not process MHI reset issued by host. In case of MHI
+>> power off, host is issuing MHI reset and polls for it to get cleared until
+>> it times out. Since this timeout can not be avoided in case of RDDM, skip
+>> the MHI reset in this scenarios.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
+>> Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+>> Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+>> ---
+>> v1->v2: use ~75 columns in commit text, add Fixes tag
+>> v2->v3: update Fixes tag
+>> v3->v4: add review tag and CC stable
+>>
+>>   drivers/bus/mhi/host/pm.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
+>> index 0834590..8a4362d 100644
+>> --- a/drivers/bus/mhi/host/pm.c
+>> +++ b/drivers/bus/mhi/host/pm.c
+>> @@ -470,6 +470,10 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl)
+>>   
+>>   	/* Trigger MHI RESET so that the device will not access host memory */
+>>   	if (!MHI_PM_IN_FATAL_STATE(mhi_cntrl->pm_state)) {
+>> +		/* Skip MHI RESET if in RDDM state */
+>> +		if (mhi_cntrl->rddm_image && mhi_get_exec_env(mhi_cntrl) == MHI_EE_RDDM)
+> Do we really need to check for rddm_image? Wouldn't the EE check sufficient
+> enough?
+>
+> In that case, the check can be moved to the prior if condition.
+>
+> - Mani
 
-Scratch this, while this gets the phones to boot it does not make
-the eMMC partitions mountable. When I try to balance the
-scheduled timeout with cancelling of the delayed work things
-screw up as well, so I need to progress with the "big" patch
-series, some of the other issues is coming into play as
-well as it seems..
+If rddm_image is NULL, that means this device does not support RDDM. In this case, it is unnecessary to access MMIO register.
 
-Yours,
-Linus Walleij
+>> +			goto skip_mhi_reset;
+>> +
+>>   		dev_dbg(dev, "Triggering MHI Reset in device\n");
+>>   		mhi_set_mhi_state(mhi_cntrl, MHI_STATE_RESET);
+>>   
+>> @@ -495,6 +499,7 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl)
+>>   		}
+>>   	}
+>>   
+>> +skip_mhi_reset:
+>>   	dev_dbg(dev,
+>>   		 "Waiting for all pending event ring processing to complete\n");
+>>   	mhi_event = mhi_cntrl->mhi_event;
+>> -- 
+>> 2.7.4
+>>
+>>
