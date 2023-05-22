@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D70870C75C
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D2F70C629
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234670AbjEVT2j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50372 "EHLO
+        id S233987AbjEVTQF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234668AbjEVT2i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:38 -0400
+        with ESMTP id S233997AbjEVTPm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DEBA9C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EAC109
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15FA4623A2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302E3C4339B;
-        Mon, 22 May 2023 19:28:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3C2B62722
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1133C433D2;
+        Mon, 22 May 2023 19:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783716;
-        bh=tU2A4wj5lvfjaL193dHua5J4mUq9RDcdrukuxdAY/Zk=;
+        s=korg; t=1684782914;
+        bh=v/QX8/J2LMzBPmGWzpe+0L0cIhMGU8UepbOnexClgAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cep/bgEFe1tscatrVz4P/e0a4tjQM7UM9Jp2/iPqnyTZcTD0TShL8o4LFeDZB0ucT
-         J+rrGTge5htDHOZnVgXtu4a42HfFOcW5ANer3cMkc5Zz9s8Z4PvotPI9vgzwjvou0u
-         UMfemYzomaZS8+KLt9Woc7sb00179HoYTgO1Ll1s=
+        b=pK+4EaAT6uD0h1trMDpb57NmoeLKGLYCvmfyKWFB8SG7oplughmldw9GsBsG6oIZb
+         vgbegYAa7BSbAWAye9AGz6rnSUV334L9xspAwFTo13IzJ0PAFgD//udFR2SNGsk67K
+         +yLekXohdYXsSWtGdH4psTWG3jTNmI1uOYMtsyf0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Nagarajan Maran <quic_nmaran@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/292] lkdtm/stackleak: Fix noinstr violation
-Date:   Mon, 22 May 2023 20:08:15 +0100
-Message-Id: <20230522190409.414157406@linuxfoundation.org>
+Subject: [PATCH 5.15 072/203] wifi: ath11k: Fix SKB corruption in REO destination ring
+Date:   Mon, 22 May 2023 20:08:16 +0100
+Message-Id: <20230522190356.982204246@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,64 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Nagarajan Maran <quic_nmaran@quicinc.com>
 
-[ Upstream commit f571da059f86fd9d432aea32c9c7e5aaa53245d8 ]
+[ Upstream commit f9fff67d2d7ca6fa8066132003a3deef654c55b1 ]
 
-Fixes the following warning:
+While running traffics for a long time, randomly an RX descriptor
+filled with value "0" from REO destination ring is received.
+This descriptor which is invalid causes the wrong SKB (SKB stored in
+the IDR lookup with buffer id "0") to be fetched which in turn
+causes SKB memory corruption issue and the same leads to crash
+after some time.
 
-  vmlinux.o: warning: objtool: check_stackleak_irqoff+0x2b6: call to _printk() leaves .noinstr.text section
+Changed the start id for idr allocation to "1" and the buffer id "0"
+is reserved for error validation. Introduced Sanity check to validate
+the descriptor, before processing the SKB.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/ee5209f53aa0a62aea58be18f2b78b17606779a6.1681320026.git.jpoimboe@kernel.org
+Crash Signature :
+
+Unable to handle kernel paging request at virtual address 3f004900
+PC points to "b15_dma_inv_range+0x30/0x50"
+LR points to "dma_cache_maint_page+0x8c/0x128".
+The Backtrace obtained is as follows:
+[<8031716c>] (b15_dma_inv_range) from [<80313a4c>] (dma_cache_maint_page+0x8c/0x128)
+[<80313a4c>] (dma_cache_maint_page) from [<80313b90>] (__dma_page_dev_to_cpu+0x28/0xcc)
+[<80313b90>] (__dma_page_dev_to_cpu) from [<7fb5dd68>] (ath11k_dp_process_rx+0x1e8/0x4a4 [ath11k])
+[<7fb5dd68>] (ath11k_dp_process_rx [ath11k]) from [<7fb53c20>] (ath11k_dp_service_srng+0xb0/0x2ac [ath11k])
+[<7fb53c20>] (ath11k_dp_service_srng [ath11k]) from [<7f67bba4>] (ath11k_pci_ext_grp_napi_poll+0x1c/0x78 [ath11k_pci])
+[<7f67bba4>] (ath11k_pci_ext_grp_napi_poll [ath11k_pci]) from [<807d5cf4>] (__napi_poll+0x28/0xb8)
+[<807d5cf4>] (__napi_poll) from [<807d5f28>] (net_rx_action+0xf0/0x280)
+[<807d5f28>] (net_rx_action) from [<80302148>] (__do_softirq+0xd0/0x280)
+[<80302148>] (__do_softirq) from [<80320408>] (irq_exit+0x74/0xd4)
+[<80320408>] (irq_exit) from [<803638a4>] (__handle_domain_irq+0x90/0xb4)
+[<803638a4>] (__handle_domain_irq) from [<805bedec>] (gic_handle_irq+0x58/0x90)
+[<805bedec>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230403191533.28114-1-quic_nmaran@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/stackleak.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/stackleak.c b/drivers/misc/lkdtm/stackleak.c
-index 025b133297a6b..f1d0221609138 100644
---- a/drivers/misc/lkdtm/stackleak.c
-+++ b/drivers/misc/lkdtm/stackleak.c
-@@ -43,12 +43,14 @@ static void noinstr check_stackleak_irqoff(void)
- 	 * STACK_END_MAGIC, and in either casee something is seriously wrong.
- 	 */
- 	if (current_sp < task_stack_low || current_sp >= task_stack_high) {
-+		instrumentation_begin();
- 		pr_err("FAIL: current_stack_pointer (0x%lx) outside of task stack bounds [0x%lx..0x%lx]\n",
- 		       current_sp, task_stack_low, task_stack_high - 1);
- 		test_failed = true;
- 		goto out;
- 	}
- 	if (lowest_sp < task_stack_low || lowest_sp >= task_stack_high) {
-+		instrumentation_begin();
- 		pr_err("FAIL: current->lowest_stack (0x%lx) outside of task stack bounds [0x%lx..0x%lx]\n",
- 		       lowest_sp, task_stack_low, task_stack_high - 1);
- 		test_failed = true;
-@@ -86,11 +88,14 @@ static void noinstr check_stackleak_irqoff(void)
- 		if (*(unsigned long *)poison_low == STACKLEAK_POISON)
- 			continue;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 3c64d33d0133b..357abd87d5491 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -354,10 +354,10 @@ int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
+ 			goto fail_free_skb;
  
-+		instrumentation_begin();
- 		pr_err("FAIL: non-poison value %lu bytes below poison boundary: 0x%lx\n",
- 		       poison_high - poison_low, *(unsigned long *)poison_low);
- 		test_failed = true;
-+		goto out;
- 	}
+ 		spin_lock_bh(&rx_ring->idr_lock);
+-		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
+-				   rx_ring->bufs_max * 3, GFP_ATOMIC);
++		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 1,
++				   (rx_ring->bufs_max * 3) + 1, GFP_ATOMIC);
+ 		spin_unlock_bh(&rx_ring->idr_lock);
+-		if (buf_id < 0)
++		if (buf_id <= 0)
+ 			goto fail_dma_unmap;
  
-+	instrumentation_begin();
- 	pr_info("stackleak stack usage:\n"
- 		"  high offset: %lu bytes\n"
- 		"  current:     %lu bytes\n"
-@@ -113,6 +118,7 @@ static void noinstr check_stackleak_irqoff(void)
- 	} else {
- 		pr_info("OK: the rest of the thread stack is properly erased\n");
- 	}
-+	instrumentation_end();
- }
+ 		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
+@@ -2602,6 +2602,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 				   cookie);
+ 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
  
- static void lkdtm_STACKLEAK_ERASING(void)
++		if (unlikely(buf_id == 0))
++			continue;
++
+ 		ar = ab->pdevs[mac_id].ar;
+ 		rx_ring = &ar->dp.rx_refill_buf_ring;
+ 		spin_lock_bh(&rx_ring->idr_lock);
 -- 
 2.39.2
 
