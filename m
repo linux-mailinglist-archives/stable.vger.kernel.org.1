@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D8C70C4CA
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5356070C4CB
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231791AbjEVSBU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58008 "EHLO
+        id S231776AbjEVSBW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:01:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbjEVSBS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99749C6
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:17 -0700 (PDT)
+        with ESMTP id S231405AbjEVSBV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 109F610D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F89561F9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C336C433EF;
-        Mon, 22 May 2023 18:01:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A382361F9E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C328BC433EF;
+        Mon, 22 May 2023 18:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778476;
-        bh=r6/SlNhjxGpmL3rVdLTen7R4cW8+5uND8BblpV8La2o=;
+        s=korg; t=1684778479;
+        bh=K3jzGnStHo7tksmZMVr+7j2IlN18I2UaOX7vB0wdgCo=;
         h=Subject:To:Cc:From:Date:From;
-        b=xxBAvRhVdDOJeaHPzKuXTacE2LVJh2lzFNxC/QRYqIzb/vc3YmWNhZ3GNMKRl6lPF
-         rlz7t1haoCvUivIrpxFFA2rElt5hLUSAEItqzKWMpT1VaR9dXWOC6EtpoI5z+ozMfU
-         ZPzlhS7Z2q6GRyL4rwd80QhHR77uAlUbuKHIYSLA=
-Subject: FAILED: patch "[PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside" failed to apply to 6.3-stable tree
+        b=sB258Ngdt89Cc/xWOHRcaAeQcQn0X0BZiag7wIViETzRDen5OuGTRG+7NMVmGiIGJ
+         3Hpq2ShqFzCyy5lA3KZGgGlGszulpTWkUJrU9g+luwgPAju3wvuCt43SFTJt4wZioQ
+         CrZe/iqBHL0mNiTkQPNT44rrqyxrp2HQIYUipzhQ=
+Subject: FAILED: patch "[PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside" failed to apply to 6.1-stable tree
 To:     jarkko@kernel.org, Jason@zx2c4.com, jsnitsel@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:01:07 +0100
-Message-ID: <2023052207-exciting-duckbill-5711@gregkh>
+Date:   Mon, 22 May 2023 19:01:08 +0100
+Message-ID: <2023052208-chirping-preset-9644@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1398aa803f198b7a386fdd8404666043e95f4c16
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052207-exciting-duckbill-5711@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052208-chirping-preset-9644@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,7 @@ ed9be0e6c892 ("tpm, tpm_tis: Do not skip reset of original interrupt vector")
 6d789ad72695 ("tpm, tpm_tis: Disable interrupts if tpm_tis_probe_irq() failed")
 282657a8bd7f ("tpm, tpm_tis: Claim locality before writing TPM_INT_ENABLE register")
 858e8b792d06 ("tpm, tpm_tis: Avoid cache incoherency in test for interrupts")
+7bfda9c73fa9 ("tpm: Add flag to use default cancellation policy")
 
 thanks,
 
