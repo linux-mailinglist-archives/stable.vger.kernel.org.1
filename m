@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F9C70C66E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4940770C9B3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233151AbjEVTSR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:18:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41286 "EHLO
+        id S235443AbjEVTu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:50:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233857AbjEVTSI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F141A4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:51 -0700 (PDT)
+        with ESMTP id S235375AbjEVTur (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:50:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A97B5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:50:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66AB0627D1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E595C433EF;
-        Mon, 22 May 2023 19:17:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4971762B03
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F4DC433D2;
+        Mon, 22 May 2023 19:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783070;
-        bh=gk5XVWulT6OLFeJs7mLwYS9piSsNq7Sb9dpZSBH0ihg=;
+        s=korg; t=1684785043;
+        bh=ueyEfP2NTjol+XB7hPp+1HvJlvZbTcXgw0f7TazNQiM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hM0K4RolyAD6G+fwDdoS9AwFBhnuSJgfxCVM5xmm0OBEdusZ5doGuigqfKZogB8YX
-         BFtOMgSeafgtr5SlGbocx3X2ABz0S/OPNPQGeoJ9xYZYkRyTOsC2bE9fGDuwSJvlrw
-         bRmxa8ZMqNL2C3tkWhZMar3iLR13EMl9Fid2hZac=
+        b=jAMTbeepOzy0kCo4suY1lL36mh1HFreF1m2UQDuAn6NKE7j+hJsFCSprMpiJMjGlC
+         669EnFTlW8pP98oIzyy/2pANuhcQXc31NKe+ya6kM58L25nj2N+yQoss4rd9s1mvil
+         NByiNiT2UZWO7jSKDZ/wUe4/3uv9SZqA0HAKjmp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Hao Lan <lanhao@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/203] net: hns3: fix sending pfc frames after reset issue
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 249/364] ASoC: SOF: ipc3-topology: Make sure that only one cmd is sent in dai_config
 Date:   Mon, 22 May 2023 20:09:14 +0100
-Message-Id: <20230522190358.570405185@linuxfoundation.org>
+Message-Id: <20230522190418.921103774@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +52,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit f14db07064727dd3bc0906c77a6d2759c1bbb395 ]
+[ Upstream commit 4708449eafe60742334606168926985798c9c9b8 ]
 
-To prevent the system from abnormally sending PFC frames after an
-abnormal reset. The hns3 driver notifies the firmware to disable pfc
-before reset.
+The commands in sof_ipc_dai_config.flags are encoded as bits:
+1 (bit0) - hw_params
+2 (bit1) - hw_free
+4 (bit2) - pause
 
-Fixes: 35d93a30040c ("net: hns3: adjust the process of PF reset")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+These are commands, they cannot be combined as one would assume, for
+example
+3 (bit0 | bit1) is invalid.
+
+This can happen right at the second start of a stream as at the end of the
+first stream we set the hw_free command (bit1) and on the second start we
+would OR on top of it the hw_params (bit0).
+
+Fixes: b66bfc3a9810 ("ASoC: SOF: sof-audio: Fix broken early bclk feature for SSP")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Link: https://lore.kernel.org/r/20230512110317.5180-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c |  4 ++--
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h |  5 +++++
- 3 files changed, 16 insertions(+), 8 deletions(-)
+ sound/soc/sof/ipc3-topology.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index f4d58fcdba272..bfdc021f4a190 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -8134,12 +8134,15 @@ static void hclge_ae_stop(struct hnae3_handle *handle)
- 	/* If it is not PF reset or FLR, the firmware will disable the MAC,
- 	 * so it only need to stop phy here.
+diff --git a/sound/soc/sof/ipc3-topology.c b/sound/soc/sof/ipc3-topology.c
+index b1f425b39db94..ffa4c6dea752a 100644
+--- a/sound/soc/sof/ipc3-topology.c
++++ b/sound/soc/sof/ipc3-topology.c
+@@ -2111,10 +2111,13 @@ static int sof_ipc3_dai_config(struct snd_sof_dev *sdev, struct snd_sof_widget *
+ 	 * For the case of PAUSE/HW_FREE, since there are no quirks, flags can be used as is.
  	 */
--	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) &&
--	    hdev->reset_type != HNAE3_FUNC_RESET &&
--	    hdev->reset_type != HNAE3_FLR_RESET) {
--		hclge_mac_stop_phy(hdev);
--		hclge_update_link_status(hdev);
--		return;
-+	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state)) {
-+		hclge_pfc_pause_en_cfg(hdev, HCLGE_PFC_TX_RX_DISABLE,
-+				       HCLGE_PFC_DISABLE);
-+		if (hdev->reset_type != HNAE3_FUNC_RESET &&
-+		    hdev->reset_type != HNAE3_FLR_RESET) {
-+			hclge_mac_stop_phy(hdev);
-+			hclge_update_link_status(hdev);
-+			return;
-+		}
- 	}
  
- 	hclge_reset_tqp(handle);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index afc47c9b5ec46..97a6864f60ef4 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -171,8 +171,8 @@ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
- 	return hclge_cmd_send(&hdev->hw, &desc, 1);
- }
+-	if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS)
++	if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS) {
++		/* Clear stale command */
++		config->flags &= ~SOF_DAI_CONFIG_FLAGS_CMD_MASK;
+ 		config->flags |= flags;
+-	else
++	} else {
+ 		config->flags = flags;
++	}
  
--static int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
--				  u8 pfc_bitmap)
-+int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
-+			   u8 pfc_bitmap)
- {
- 	struct hclge_desc desc;
- 	struct hclge_pfc_en_cmd *pfc = (struct hclge_pfc_en_cmd *)desc.data;
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-index 5df18cc3ee556..2c5256d7f9962 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-@@ -155,6 +155,9 @@ struct hclge_bp_to_qs_map_cmd {
- 	u32 rsvd1;
- };
- 
-+#define HCLGE_PFC_DISABLE	0
-+#define HCLGE_PFC_TX_RX_DISABLE	0
-+
- struct hclge_pfc_en_cmd {
- 	u8 tx_rx_en_bitmap;
- 	u8 pri_en_bitmap;
-@@ -226,6 +229,8 @@ void hclge_tm_schd_info_update(struct hclge_dev *hdev, u8 num_tc);
- void hclge_tm_pfc_info_update(struct hclge_dev *hdev);
- int hclge_tm_dwrr_cfg(struct hclge_dev *hdev);
- int hclge_tm_init_hw(struct hclge_dev *hdev, bool init);
-+int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
-+			   u8 pfc_bitmap);
- int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
- int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
- void hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
+ 	/* only send the IPC if the widget is set up in the DSP */
+ 	if (swidget->use_count > 0) {
 -- 
 2.39.2
 
