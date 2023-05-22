@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B48470C801
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA81270C67C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234955AbjEVTfM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56460 "EHLO
+        id S234184AbjEVTSf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:18:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234951AbjEVTfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 976E31B0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:32 -0700 (PDT)
+        with ESMTP id S234019AbjEVTSd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CBCB0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 041E562973
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1344BC433D2;
-        Mon, 22 May 2023 19:33:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD898627D8
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB93C433EF;
+        Mon, 22 May 2023 19:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784018;
-        bh=ydEK3aU/RWb8e27zwHNLQSr+DRKSEVXK85FwTJnafns=;
+        s=korg; t=1684783111;
+        bh=GjCxkd5fF7t1j2BmlcofA0husn8aK46X5DsisXX7BSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GETQ5V+pFAvvD3estimL5D+8XsaBGhi0GVW3t7zyfo72FypL7YpJfS2DXEC495ibB
-         LUkT8cj4qUTt4R63br1Gbp1mpDaaX+nW+EZ7GfyxMD2juojJOz/FmLqcqe+iLQh0P2
-         g7cGfXGu3nztOt1E5j+UVFme0VlTnt8w4IiISBac=
+        b=wtAIVNAUAxMzMl437KaQJdFFTiOD3ArTczSm3/GSaQ05QvWAhOEXef+E8LwMkTEUE
+         UA64MuOvNR7E3B44RhpkjsJH8RKH8/oW8Icu2uL78Oqw6ls/vOZYajnxIp2foDdzxA
+         LwMMxUXMs+i7eLX3IMwg+ATF+KHkykB3IwO3n11o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
+        Jiri Pirko <jiri@nvidia.com>, Parav Pandit <parav@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/292] wifi: iwlwifi: fw: fix DBGI dump
+Subject: [PATCH 5.15 142/203] virtio-net: Maintain reverse cleanup order
 Date:   Mon, 22 May 2023 20:09:26 +0100
-Message-Id: <20230522190411.183098504@linuxfoundation.org>
+Message-Id: <20230522190358.897544234@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,88 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit d3ae69180bbd74bcbc03a2b6d10ed7eccbe98c23 ]
+[ Upstream commit 27369c9c2b722617063d6b80c758ab153f1d95d4 ]
 
-The DBGI dump is (unsurprisingly) of type DBGI, not SRAM.
-This leads to bad register accesses because the union is
-built differently, there's no allocation ID, and thus the
-allocation ID ends up being 0x8000.
+To easily audit the code, better to keep the device stop()
+sequence to be mirror of the device open() sequence.
 
-Note that this was already wrong for DRAM vs. SMEM since
-they use different parts of the union, but the allocation
-ID is at the same place, so it worked.
-
-Fix all of this but set the allocation ID in a way that
-the offset calculation ends up without any offset.
-
-Fixes: 34bc27783a31 ("iwlwifi: yoyo: fix DBGI_SRAM ini dump header.")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230514120631.19a302ae4c65.I12272599f7c1930666157b9d5e7f81fe9ec4c421@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5306623a9826 ("virtio_net: Fix error unwinding of XDP initialization")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/net/virtio_net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 027360e63b926..3ef0b776b7727 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1664,14 +1664,10 @@ static __le32 iwl_get_mon_reg(struct iwl_fw_runtime *fwrt, u32 alloc_id,
- }
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 9f2d691908b42..cdd28a11f5191 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1999,9 +1999,9 @@ static int virtnet_close(struct net_device *dev)
+ 	cancel_delayed_work_sync(&vi->refill);
  
- static void *
--iwl_dump_ini_mon_fill_header(struct iwl_fw_runtime *fwrt,
--			     struct iwl_dump_ini_region_data *reg_data,
-+iwl_dump_ini_mon_fill_header(struct iwl_fw_runtime *fwrt, u32 alloc_id,
- 			     struct iwl_fw_ini_monitor_dump *data,
- 			     const struct iwl_fw_mon_regs *addrs)
- {
--	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
--	u32 alloc_id = le32_to_cpu(reg->dram_alloc_id);
--
- 	if (!iwl_trans_grab_nic_access(fwrt->trans)) {
- 		IWL_ERR(fwrt, "Failed to get monitor header\n");
- 		return NULL;
-@@ -1702,8 +1698,10 @@ iwl_dump_ini_mon_dram_fill_header(struct iwl_fw_runtime *fwrt,
- 				  void *data, u32 data_len)
- {
- 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	u32 alloc_id = le32_to_cpu(reg->dram_alloc_id);
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
++		virtnet_napi_tx_disable(&vi->sq[i].napi);
+ 		napi_disable(&vi->rq[i].napi);
+ 		xdp_rxq_info_unreg(&vi->rq[i].xdp_rxq);
+-		virtnet_napi_tx_disable(&vi->sq[i].napi);
+ 	}
  
--	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
-+	return iwl_dump_ini_mon_fill_header(fwrt, alloc_id, mon_dump,
- 					    &fwrt->trans->cfg->mon_dram_regs);
- }
- 
-@@ -1713,8 +1711,10 @@ iwl_dump_ini_mon_smem_fill_header(struct iwl_fw_runtime *fwrt,
- 				  void *data, u32 data_len)
- {
- 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
-+	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
-+	u32 alloc_id = le32_to_cpu(reg->internal_buffer.alloc_id);
- 
--	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
-+	return iwl_dump_ini_mon_fill_header(fwrt, alloc_id, mon_dump,
- 					    &fwrt->trans->cfg->mon_smem_regs);
- }
- 
-@@ -1725,7 +1725,10 @@ iwl_dump_ini_mon_dbgi_fill_header(struct iwl_fw_runtime *fwrt,
- {
- 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
- 
--	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
-+	return iwl_dump_ini_mon_fill_header(fwrt,
-+					    /* no offset calculation later */
-+					    IWL_FW_INI_ALLOCATION_ID_DBGC1,
-+					    mon_dump,
- 					    &fwrt->trans->cfg->mon_dbgi_regs);
- }
- 
+ 	return 0;
 -- 
 2.39.2
 
