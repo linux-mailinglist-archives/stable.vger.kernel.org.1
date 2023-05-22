@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA9670C917
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF9170C609
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235234AbjEVTpS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39592 "EHLO
+        id S230284AbjEVTOX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235243AbjEVToq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B0DCF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:41 -0700 (PDT)
+        with ESMTP id S234019AbjEVTOS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62AC313E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCAAE62A30
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88BFC433D2;
-        Mon, 22 May 2023 19:44:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 003F8626FE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAC8C433D2;
+        Mon, 22 May 2023 19:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784681;
-        bh=U1T2evskaLiklMZRE+CQy1wv86bZejcZV645N5cjG6c=;
+        s=korg; t=1684782854;
+        bh=Zc+iC+SHIjKuKxZqR0EF4TjMLy+et+SB8QxWLeHUGa4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PVqcOEtgGzby3FE/HAQbx1cH+xt7EYqYhY/9d+XsmXjubqDJ0eaMLw6jq4h+CTd5J
-         wjJDeD8wvTcnf4Z6swtXWv5P+Vqwry0aGxL3cxfyIKpCvlYABwo8al+q9p41YxSvkC
-         AWQASQfSsME/fhITwF0le24RpGiryj70iu86TkTc=
+        b=Bl4LQqbx/PTZ/rRRyWOMhuPteu1Cf0x7D5zcz775Wg13yB5cumilDxyU0g1FK25th
+         NZqxWjrojSkCsHa/TwR1fVc6Vtkk84LlxsyQjxGi9bMHoOBQkqs5zFkbpeVI40V1NK
+         hCMcB+oh4qs4gY3GQlhqLfWrBO1APb1AlZOvjr40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
-        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
-        Johannes Thumshirn <jth@kernel.org>,
+        patches@lists.linux.dev, erhard_f@mailbox.org,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 166/364] mcb-pci: Reallocate memory region to avoid memory overlapping
+Subject: [PATCH 5.15 047/203] drm/amd: Fix an out of bounds error in BIOS parser
 Date:   Mon, 22 May 2023 20:07:51 +0100
-Message-Id: <20230522190416.882103095@linuxfoundation.org>
+Message-Id: <20230522190356.293987712@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,73 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9be24faadd085c284890c3afcec7a0184642315a ]
+[ Upstream commit d116db180decec1b21bba31d2ff495ac4d8e1b83 ]
 
-mcb-pci requests a fixed-size memory region to parse the chameleon
-table, however, if the chameleon table is smaller that the allocated
-region, it could overlap with the IP Cores' memory regions.
+The array is hardcoded to 8 in atomfirmware.h, but firmware provides
+a bigger one sometimes. Deferencing the larger array causes an out
+of bounds error.
 
-After parsing the chameleon table, drop/reallocate the memory region
-with the actual chameleon table size.
+commit 4fc1ba4aa589 ("drm/amd/display: fix array index out of bound error
+in bios parser") fixed some of this, but there are two other cases
+not covered by it.  Fix those as well.
 
-Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Link: https://lore.kernel.org/r/20230411083329.4506-3-jth@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: erhard_f@mailbox.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=214853
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2473
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mcb/mcb-pci.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mcb/mcb-pci.c b/drivers/mcb/mcb-pci.c
-index dc88232d9af83..53d9202ff9a7c 100644
---- a/drivers/mcb/mcb-pci.c
-+++ b/drivers/mcb/mcb-pci.c
-@@ -31,7 +31,7 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct resource *res;
- 	struct priv *priv;
--	int ret;
-+	int ret, table_size;
- 	unsigned long flags;
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 1d86fd5610c03..228f098e5d88f 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -406,11 +406,8 @@ static enum bp_result get_gpio_i2c_info(
+ 	info->i2c_slave_address = record->i2c_slave_addr;
  
- 	priv = devm_kzalloc(&pdev->dev, sizeof(struct priv), GFP_KERNEL);
-@@ -90,7 +90,30 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (ret < 0)
- 		goto out_mcb_bus;
+ 	/* TODO: check how to get register offset for en, Y, etc. */
+-	info->gpio_info.clk_a_register_index =
+-			le16_to_cpu(
+-			header->gpio_pin[table_index].data_a_reg_index);
+-	info->gpio_info.clk_a_shift =
+-			header->gpio_pin[table_index].gpio_bitshift;
++	info->gpio_info.clk_a_register_index = le16_to_cpu(pin->data_a_reg_index);
++	info->gpio_info.clk_a_shift = pin->gpio_bitshift;
  
--	dev_dbg(&pdev->dev, "Found %d cells\n", ret);
-+	table_size = ret;
-+
-+	if (table_size < CHAM_HEADER_SIZE) {
-+		/* Release the previous resources */
-+		devm_iounmap(&pdev->dev, priv->base);
-+		devm_release_mem_region(&pdev->dev, priv->mapbase, CHAM_HEADER_SIZE);
-+
-+		/* Then, allocate it again with the actual chameleon table size */
-+		res = devm_request_mem_region(&pdev->dev, priv->mapbase,
-+						table_size,
-+						KBUILD_MODNAME);
-+		if (!res) {
-+			dev_err(&pdev->dev, "Failed to request PCI memory\n");
-+			ret = -EBUSY;
-+			goto out_mcb_bus;
-+		}
-+
-+		priv->base = devm_ioremap(&pdev->dev, priv->mapbase, table_size);
-+		if (!priv->base) {
-+			dev_err(&pdev->dev, "Cannot ioremap\n");
-+			ret = -ENOMEM;
-+			goto out_mcb_bus;
-+		}
-+	}
- 
- 	mcb_bus_add_devices(priv->bus);
- 
+ 	return BP_RESULT_OK;
+ }
 -- 
 2.39.2
 
