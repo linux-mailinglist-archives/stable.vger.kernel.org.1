@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 189B170C76F
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7886470C660
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234710AbjEVT3u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51418 "EHLO
+        id S234127AbjEVTRQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234761AbjEVT3j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC684E56
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:27 -0700 (PDT)
+        with ESMTP id S233890AbjEVTRN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:17:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3A0A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75516628EB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D947C433EF;
-        Mon, 22 May 2023 19:29:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3FA4627AB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03BFC433D2;
+        Mon, 22 May 2023 19:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783766;
-        bh=6GbWtGmzbcMcnB/aZ2+KdHHZjSJyaqwYgo3gkI9WLwA=;
+        s=korg; t=1684783031;
+        bh=bEhwPFSgAYO/aqAW7KRCo0ZzgXMoNX9Suxcuu8HfMqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sE04Ht4KdQmyLnayXoLkCjhT/4fszvW8G7yaVEMQ87eYnHVdBlghOzX1LzAPY6JQP
-         dWbaOM6+5jpfD+jQG9yjIuYFuRbhDyIY59x/aB4uGjmY1+1bxOtLkSP3U9LmDqzYUX
-         Dydp9+yGU9pABaXksECC7fLiU27tAnCo0V7yJ0lc=
+        b=sIkl4h7uJzEMhK7eS/tg66vRhgruSn7MX2mu0efzcHK34kJ2ljYuxrWJpdbhvBWvQ
+         RV6KjjKY4CDEHCIx1CX8GUxBh9eaFlUznuiUWgeFuFEV58VHSf7m/sDAdl01/EIzqX
+         21M3QbkHSahAXJNT151mxEx0Awg/PuGY7UUbGs4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/292] drm/msm/dpu: Remove duplicate register defines from INTF
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 089/203] iommu/arm-smmu-qcom: Limit the SMR groups to 128
 Date:   Mon, 22 May 2023 20:08:33 +0100
-Message-Id: <20230522190409.862202312@linuxfoundation.org>
+Message-Id: <20230522190357.451383912@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,43 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 202c044203ac5860e3025169105368d99f9bc6a2 ]
+[ Upstream commit 12261134732689b7e30c59db9978f81230965181 ]
 
-The INTF_FRAME_LINE_COUNT_EN, INTF_FRAME_COUNT and INTF_LINE_COUNT
-registers are already defined higher up, in the right place when sorted
-numerically.
+Some platforms support more than 128 stream matching groups than what is
+defined by the ARM SMMU architecture specification. But due to some unknown
+reasons, those additional groups don't exhibit the same behavior as the
+architecture supported ones.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/534231/
-Link: https://lore.kernel.org/r/20230411-dpu-intf-te-v4-8-27ce1a5ab5c6@somainline.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+For instance, the additional groups will not detect the quirky behavior of
+some firmware versions intercepting writes to S2CR register, thus skipping
+the quirk implemented in the driver and causing boot crash.
+
+So let's limit the groups to 128 for now until the issue with those groups
+are fixed and issue a notice to users in that case.
+
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20230327080029.11584-1-manivannan.sadhasivam@linaro.org
+[will: Reworded the comment slightly]
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-index 7ce66bf3f4c8d..b2a94b9a3e987 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
-@@ -56,11 +56,6 @@
- #define   INTF_TPG_RGB_MAPPING          0x11C
- #define   INTF_PROG_FETCH_START         0x170
- #define   INTF_PROG_ROT_START           0x174
--
--#define   INTF_FRAME_LINE_COUNT_EN      0x0A8
--#define   INTF_FRAME_COUNT              0x0AC
--#define   INTF_LINE_COUNT               0x0B0
--
- #define   INTF_MUX                      0x25C
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index c998960495b4e..50453d38400c5 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -247,12 +247,26 @@ static int qcom_smmu_init_context(struct arm_smmu_domain *smmu_domain,
  
- #define INTF_CFG_ACTIVE_H_EN	BIT(29)
+ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ {
+-	unsigned int last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
+ 	struct qcom_smmu *qsmmu = to_qcom_smmu(smmu);
++	unsigned int last_s2cr;
+ 	u32 reg;
+ 	u32 smr;
+ 	int i;
+ 
++	/*
++	 * Some platforms support more than the Arm SMMU architected maximum of
++	 * 128 stream matching groups. For unknown reasons, the additional
++	 * groups don't exhibit the same behavior as the architected registers,
++	 * so limit the groups to 128 until the behavior is fixed for the other
++	 * groups.
++	 */
++	if (smmu->num_mapping_groups > 128) {
++		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
++		smmu->num_mapping_groups = 128;
++	}
++
++	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
++
+ 	/*
+ 	 * With some firmware versions writes to S2CR of type FAULT are
+ 	 * ignored, and writing BYPASS will end up written as FAULT in the
 -- 
 2.39.2
 
