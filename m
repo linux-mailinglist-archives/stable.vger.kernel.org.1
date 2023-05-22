@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E490E70C796
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DB0A70C97C
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234753AbjEVTb1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52974 "EHLO
+        id S235269AbjEVTsl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbjEVTb1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:27 -0400
+        with ESMTP id S235341AbjEVTsk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 373D3CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22C4599
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C85A56291B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05BEC433D2;
-        Mon, 22 May 2023 19:31:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B35A462ACB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EC0C433D2;
+        Mon, 22 May 2023 19:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783885;
-        bh=IFEBrqkFNligTSRN5SBcEC4iTPYK4F2E1QmG7PX9BQQ=;
+        s=korg; t=1684784919;
+        bh=fZFK39qpgb1p4RDjuyhrhJCjwjiENebnbjsOgOZr3wc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tX2xY8DPIekQDziiyZSBwvwn9cbgtp8Jr1Gj0V4THxgS8p+9LRMLVXtIzpDXBBt/o
-         FtdtlvUPG83+fdX80x7nhOcVHkc02lUVrK+szFV/oAxV73RA2rnX+4tyz0uDBZmkNr
-         mRbsdinHt8NHaBKwzoHNvnM+adwYNqMFQfC1WyW0=
+        b=kUGidBadAaOmkZdAhvivaNgtche/Z1mmtxOSlWFbsETl7qoWh6sbV23GNV5l1mNiO
+         NPFq9xoehyO15UPdSMDW0Mp0gG8A3RNj6vTj6yL3IhS4M+CxzPu5VC9XjR3yamc7gN
+         s9VMQd/3FQwX+oTBi2HIbaz3LPO8qMag9RG36yrg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
-        Jiri Pirko <jiri@nvidia.com>, Parav Pandit <parav@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/292] virtio-net: Maintain reverse cleanup order
+Subject: [PATCH 6.3 245/364] media: netup_unidvb: fix use-after-free at del_timer()
 Date:   Mon, 22 May 2023 20:09:10 +0100
-Message-Id: <20230522190410.783432356@linuxfoundation.org>
+Message-Id: <20230522190418.822057320@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Parav Pandit <parav@nvidia.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 27369c9c2b722617063d6b80c758ab153f1d95d4 ]
+[ Upstream commit 0f5bb36bf9b39a2a96e730bf4455095b50713f63 ]
 
-To easily audit the code, better to keep the device stop()
-sequence to be mirror of the device open() sequence.
+When Universal DVB card is detaching, netup_unidvb_dma_fini()
+uses del_timer() to stop dma->timeout timer. But when timer
+handler netup_unidvb_dma_timeout() is running, del_timer()
+could not stop it. As a result, the use-after-free bug could
+happen. The process is shown below:
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5306623a9826 ("virtio_net: Fix error unwinding of XDP initialization")
+    (cleanup routine)          |        (timer routine)
+                               | mod_timer(&dev->tx_sim_timer, ..)
+netup_unidvb_finidev()         | (wait a time)
+  netup_unidvb_dma_fini()      | netup_unidvb_dma_timeout()
+    del_timer(&dma->timeout);  |
+                               |   ndev->pci_dev->dev //USE
+
+Fix by changing del_timer() to del_timer_sync().
+
+Link: https://lore.kernel.org/linux-media/20230308125514.4208-1-duoming@zju.edu.cn
+Fixes: 52b1eaf4c59a ("[media] netup_unidvb: NetUP Universal DVB-S/S2/T/T2/C PCI-E card driver")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 2 +-
+ drivers/media/pci/netup_unidvb/netup_unidvb_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 9a612b13b4e46..08a23ba3d68a2 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2158,9 +2158,9 @@ static int virtnet_close(struct net_device *dev)
- 	cancel_delayed_work_sync(&vi->refill);
+diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+index 8287851b5ffdc..aaa1d2dedebdd 100644
+--- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
++++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+@@ -697,7 +697,7 @@ static void netup_unidvb_dma_fini(struct netup_unidvb_dev *ndev, int num)
+ 	netup_unidvb_dma_enable(dma, 0);
+ 	msleep(50);
+ 	cancel_work_sync(&dma->work);
+-	del_timer(&dma->timeout);
++	del_timer_sync(&dma->timeout);
+ }
  
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
-+		virtnet_napi_tx_disable(&vi->sq[i].napi);
- 		napi_disable(&vi->rq[i].napi);
- 		xdp_rxq_info_unreg(&vi->rq[i].xdp_rxq);
--		virtnet_napi_tx_disable(&vi->sq[i].napi);
- 	}
- 
- 	return 0;
+ static int netup_unidvb_dma_setup(struct netup_unidvb_dev *ndev)
 -- 
 2.39.2
 
