@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F8970C726
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA71770C8FA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234630AbjEVT03 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
+        id S235169AbjEVToC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234629AbjEVT0Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:24 -0400
+        with ESMTP id S235188AbjEVTn6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E0CCA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF7B1A5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 877496289C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB34C433D2;
-        Mon, 22 May 2023 19:26:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E0DE62224
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A504C433D2;
+        Mon, 22 May 2023 19:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783582;
-        bh=7eoQ4tdLUR1zrxGg0hmUEkv/FbwG00muhezXw/vDbac=;
+        s=korg; t=1684784629;
+        bh=iqHnxB0a5D8XNdGhishRtWcJrx4X4FcFwoiryho7Jvc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kWJ4avOeKN+WcNXRQzK7smMTTPJHbfd8Vpz4BeCFyLCot3fjTw8t8vghHkEac28Hn
-         UdF60jd7t/7UwRDHEcIYnOQFVG3R3UqpQ1S5J3j2GSzLcelf9zR8GZ7u9zyR8Qt1tk
-         uSDhgafLVHnBwnjmwq49yugdngHPB6wac+87DO2Q=
+        b=kPe4hSZVBhX+cUemjCarG1I+ZbfuGERpr5AOjXik/bAjqfFRF/GMcxmMfm2dggF+z
+         pN4ySMrcjhhE11bXV1alIsPrQdiLJToxgh6Yyf7agAA4xreWRwbZg7KM3s7T8yBtYY
+         AOfgVTJO5EYRIfoL02+aAOa8yg5opuBvYF/LeLls=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/292] f2fs: fix to drop all dirty pages during umount() if cp_error is set
+Subject: [PATCH 6.3 145/364] staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE
 Date:   Mon, 22 May 2023 20:07:30 +0100
-Message-Id: <20230522190408.299451726@linuxfoundation.org>
+Message-Id: <20230522190416.389735437@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,91 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
 
-[ Upstream commit c9b3649a934d131151111354bcbb638076f03a30 ]
+[ Upstream commit fda2093860df4812d69052a8cf4997e53853a340 ]
 
-xfstest generic/361 reports a bug as below:
+Replace macro RTL_PCI_DEVICE with PCI_DEVICE to get rid of rtl819xp_ops
+which is empty.
 
-f2fs_bug_on(sbi, sbi->fsync_node_num);
-
-kernel BUG at fs/f2fs/super.c:1627!
-RIP: 0010:f2fs_put_super+0x3a8/0x3b0
-Call Trace:
- generic_shutdown_super+0x8c/0x1b0
- kill_block_super+0x2b/0x60
- kill_f2fs_super+0x87/0x110
- deactivate_locked_super+0x39/0x80
- deactivate_super+0x46/0x50
- cleanup_mnt+0x109/0x170
- __cleanup_mnt+0x16/0x20
- task_work_run+0x65/0xa0
- exit_to_user_mode_prepare+0x175/0x190
- syscall_exit_to_user_mode+0x25/0x50
- do_syscall_64+0x4c/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-During umount(), if cp_error is set, f2fs_wait_on_all_pages() should
-not stop waiting all F2FS_WB_CP_DATA pages to be writebacked, otherwise,
-fsync_node_num can be non-zero after f2fs_wait_on_all_pages() causing
-this bug.
-
-In this case, to avoid deadloop in f2fs_wait_on_all_pages(), it needs
-to drop all dirty pages rather than redirtying them.
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Link: https://lore.kernel.org/r/8b45ee783fa91196b7c9d6fc840a189496afd2f4.1677133271.git.philipp.g.hortmann@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/checkpoint.c | 12 ++++++++++--
- fs/f2fs/data.c       |  3 ++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 6 +++---
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.h | 5 -----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-index 0c82dae082aa9..5df04ed010cae 100644
---- a/fs/f2fs/checkpoint.c
-+++ b/fs/f2fs/checkpoint.c
-@@ -322,8 +322,15 @@ static int __f2fs_write_meta_page(struct page *page,
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+index 72d76dc7df781..92552ce30cd58 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -48,9 +48,9 @@ static const struct rtl819x_ops rtl819xp_ops = {
+ };
  
- 	trace_f2fs_writepage(page, META);
+ static struct pci_device_id rtl8192_pci_id_tbl[] = {
+-	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
+-	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
+-	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
++	{PCI_DEVICE(0x10ec, 0x8192)},
++	{PCI_DEVICE(0x07aa, 0x0044)},
++	{PCI_DEVICE(0x07aa, 0x0047)},
+ 	{}
+ };
  
--	if (unlikely(f2fs_cp_error(sbi)))
-+	if (unlikely(f2fs_cp_error(sbi))) {
-+		if (is_sbi_flag_set(sbi, SBI_IS_CLOSE)) {
-+			ClearPageUptodate(page);
-+			dec_page_count(sbi, F2FS_DIRTY_META);
-+			unlock_page(page);
-+			return 0;
-+		}
- 		goto redirty_out;
-+	}
- 	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
- 		goto redirty_out;
- 	if (wbc->for_reclaim && page->index < GET_SUM_BLOCK(sbi, 0))
-@@ -1301,7 +1308,8 @@ void f2fs_wait_on_all_pages(struct f2fs_sb_info *sbi, int type)
- 		if (!get_pages(sbi, type))
- 			break;
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+index fd96eef90c7fa..bbc1c4bac3588 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+@@ -55,11 +55,6 @@
+ #define IS_HARDWARE_TYPE_8192SE(_priv)		\
+ 	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 == NIC_8192SE)
  
--		if (unlikely(f2fs_cp_error(sbi)))
-+		if (unlikely(f2fs_cp_error(sbi) &&
-+			!is_sbi_flag_set(sbi, SBI_IS_CLOSE)))
- 			break;
+-#define RTL_PCI_DEVICE(vend, dev, cfg) \
+-	.vendor = (vend), .device = (dev), \
+-	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
+-	.driver_data = (kernel_ulong_t)&(cfg)
+-
+ #define TOTAL_CAM_ENTRY		32
+ #define CAM_CONTENT_COUNT	8
  
- 		if (type == F2FS_DIRTY_META)
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index de6b056f090b3..36db9aab47790 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2788,7 +2788,8 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
- 		 * don't drop any dirty dentry pages for keeping lastest
- 		 * directory structure.
- 		 */
--		if (S_ISDIR(inode->i_mode))
-+		if (S_ISDIR(inode->i_mode) &&
-+				!is_sbi_flag_set(sbi, SBI_IS_CLOSE))
- 			goto redirty_out;
- 		goto out;
- 	}
 -- 
 2.39.2
 
