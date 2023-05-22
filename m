@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 038C370C80E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4719670C9BE
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234951AbjEVTfi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:35:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56962 "EHLO
+        id S235391AbjEVTvf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234953AbjEVTfg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F1510C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:35:05 -0700 (PDT)
+        with ESMTP id S235397AbjEVTvW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:51:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5D510D1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDCEC62977
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:34:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FA0C433EF;
-        Mon, 22 May 2023 19:33:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A99A62B0E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33659C433EF;
+        Mon, 22 May 2023 19:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784040;
-        bh=xH+H4TV5ebWLxDovU1pG8EOJaNbnm8nsJUKC9Du6tw8=;
+        s=korg; t=1684785064;
+        bh=hNbOx4X4K2s8invIKlxCQUA6jPkrYTmFoA2fUfFN4Rc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uUnArnhIWX279STBazLMt3NNCPKbjcb95yoSVciZbDYrveAC8DwtXC1yAEi+5mBq9
-         EsUVlivhHUTXmIDxHwlLoYXoPEuzJuC/AnVWhRkuzLpLR7/I47p87eRXZBvuXE2I/Y
-         wN5FVKItDVaHYTIlsyJpeSLEyIXNtxJ74C0t131E=
+        b=ZDXGbJX6sSrwmgmt7P7zd3t9rqGgFk4oEyiFsa2w8IdXKtQpzDi6F8vCLc6dWjnik
+         EIpZTF1VP0NTdsL4t/djzclQ2II0hcdEkLyH+VNJMP22cgAYzc/T1Vp1LqRPWpWIDZ
+         980MuYdO5oiQXyt+8a558QOS7/2lv9I+OzL9iBeA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 244/292] ALSA: hda/realtek: Fix mute and micmute LEDs for yet another HP laptop
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.3 296/364] usb: typec: altmodes/displayport: fix pin_assignment_show
 Date:   Mon, 22 May 2023 20:10:01 +0100
-Message-Id: <20230522190412.049838475@linuxfoundation.org>
+Message-Id: <20230522190420.171852397@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,31 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit 9dc68a4fe70893b000fb3c92c68b9f72369cf448 upstream.
+commit d8f28269dd4bf9b55c3fb376ae31512730a96fce upstream.
 
-There's yet another laptop that needs the fixup to enable mute and
-micmute LEDs. So do it accordingly.
+This patch fixes negative indexing of buf array in pin_assignment_show
+when get_current_pin_assignments returns 0 i.e. no compatible pin
+assignments are found.
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230512083417.157127-1-kai.heng.feng@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
+...
+Call trace:
+dump_backtrace+0x110/0x204
+dump_stack_lvl+0x84/0xbc
+print_report+0x358/0x974
+kasan_report+0x9c/0xfc
+__do_kernel_fault+0xd4/0x2d4
+do_bad_area+0x48/0x168
+do_tag_check_fault+0x24/0x38
+do_mem_abort+0x6c/0x14c
+el1_abort+0x44/0x68
+el1h_64_sync_handler+0x64/0xa4
+el1h_64_sync+0x78/0x7c
+pin_assignment_show+0x26c/0x33c
+dev_attr_show+0x50/0xc0
+
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230508214443.893436-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/altmodes/displayport.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9485,6 +9485,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8b8f, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b92, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bf0, "HP", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c26, "HP HP EliteBook 800G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -516,6 +516,10 @@ static ssize_t pin_assignment_show(struc
+ 
+ 	mutex_unlock(&dp->lock);
+ 
++	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
++	if (len == 0)
++		len++;
++
+ 	buf[len - 1] = '\n';
+ 	return len;
+ }
 
 
