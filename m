@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1958370C686
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2DF370C97B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234223AbjEVTTM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42232 "EHLO
+        id S235340AbjEVTsj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234347AbjEVTTH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:07 -0400
+        with ESMTP id S235339AbjEVTsi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC9DCF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A217B95
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB68C627F4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DA2C433D2;
-        Mon, 22 May 2023 19:19:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FD6C62288
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0B7C433EF;
+        Mon, 22 May 2023 19:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783142;
-        bh=HVB69YEd5sgvGVKbrdTG6UWgCT0HKVrP5nlFpdCswkM=;
+        s=korg; t=1684784916;
+        bh=OpM/K83vbyk3flTN4EZuq0lkbTySTdaWAbjN8VMccNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L5Lna8nPfSjZ/dcmK7ONvLRc5ktk9c69z0q2Sc41SLG2T2h5dSMIlWRrHKcfUGUE4
-         TSWVE6DM4uURYDVTXVLC1NNgnM3aClrcGBg5HJUMgNE20MN9B54BaJLi0U+n5KJaPe
-         wmwsdZL7TD1XGNKgcfghVRQpcFVkDot44K/qS77w=
+        b=0S3B3hT4KDNBYgvqmuZBA9QdU/H4zfq4bJl99GDCWt/skh+lYuTXshSZ9VQf6qyym
+         2Qu8+dGpi5TNUY7pok+0OWhXjhb95579/eUWN409RALQJVi5aKLXNE1rKVk7M+sxhC
+         3g7neV6OYELy8i6CAd9OwpFOfh9v+PzdyVpmGyU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ke Zhang <m202171830@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
+        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
+        Hao Lan <lanhao@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/203] serial: arc_uart: fix of_iomap leak in `arc_serial_probe`
+Subject: [PATCH 6.3 244/364] net: hns3: fix reset timeout when enable full VF
 Date:   Mon, 22 May 2023 20:09:09 +0100
-Message-Id: <20230522190358.433719101@linuxfoundation.org>
+Message-Id: <20230522190418.797685859@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +55,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ke Zhang <m202171830@hust.edu.cn>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 8ab5fc55d7f65d58a3c3aeadf11bdf60267cd2bd ]
+[ Upstream commit 6b45d5ff8c2c61baddd67d7510075ae121c5e704 ]
 
-Smatch reports:
+The timeout of the cmdq reset command has been increased to
+resolve the reset timeout issue in the full VF scenario.
+The timeout of other cmdq commands remains unchanged.
 
-drivers/tty/serial/arc_uart.c:631 arc_serial_probe() warn:
-'port->membase' from of_iomap() not released on lines: 631.
-
-In arc_serial_probe(), if uart_add_one_port() fails,
-port->membase is not released, which would cause a resource leak.
-
-To fix this, I replace of_iomap with devm_platform_ioremap_resource.
-
-Fixes: 8dbe1d5e09a7 ("serial/arc: inline the probe helper")
-Signed-off-by: Ke Zhang <m202171830@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230428031636.44642-1-m202171830@hust.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d307f8e8cf1 ("net: hns3: create new set of unified hclge_comm_cmd_send APIs")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/arc_uart.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../hns3/hns3_common/hclge_comm_cmd.c         | 25 ++++++++++++++++---
+ .../hns3/hns3_common/hclge_comm_cmd.h         |  8 +++++-
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/tty/serial/arc_uart.c b/drivers/tty/serial/arc_uart.c
-index 596217d10d5c7..4d0e992f78445 100644
---- a/drivers/tty/serial/arc_uart.c
-+++ b/drivers/tty/serial/arc_uart.c
-@@ -607,10 +607,11 @@ static int arc_serial_probe(struct platform_device *pdev)
- 	}
- 	uart->baud = val;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
+index f671a63cecde4..c797d54f98caa 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
+@@ -330,9 +330,25 @@ static int hclge_comm_cmd_csq_done(struct hclge_comm_hw *hw)
+ 	return head == hw->cmq.csq.next_to_use;
+ }
  
--	port->membase = of_iomap(np, 0);
--	if (!port->membase)
-+	port->membase = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(port->membase)) {
- 		/* No point of dev_err since UART itself is hosed here */
--		return -ENXIO;
-+		return PTR_ERR(port->membase);
-+	}
+-static void hclge_comm_wait_for_resp(struct hclge_comm_hw *hw,
++static u32 hclge_get_cmdq_tx_timeout(u16 opcode, u32 tx_timeout)
++{
++	static const struct hclge_cmdq_tx_timeout_map cmdq_tx_timeout_map[] = {
++		{HCLGE_OPC_CFG_RST_TRIGGER, HCLGE_COMM_CMDQ_TX_TIMEOUT_500MS},
++	};
++	u32 i;
++
++	for (i = 0; i < ARRAY_SIZE(cmdq_tx_timeout_map); i++)
++		if (cmdq_tx_timeout_map[i].opcode == opcode)
++			return cmdq_tx_timeout_map[i].tx_timeout;
++
++	return tx_timeout;
++}
++
++static void hclge_comm_wait_for_resp(struct hclge_comm_hw *hw, u16 opcode,
+ 				     bool *is_completed)
+ {
++	u32 cmdq_tx_timeout = hclge_get_cmdq_tx_timeout(opcode,
++							hw->cmq.tx_timeout);
+ 	u32 timeout = 0;
  
- 	port->irq = irq_of_parse_and_map(np, 0);
+ 	do {
+@@ -342,7 +358,7 @@ static void hclge_comm_wait_for_resp(struct hclge_comm_hw *hw,
+ 		}
+ 		udelay(1);
+ 		timeout++;
+-	} while (timeout < hw->cmq.tx_timeout);
++	} while (timeout < cmdq_tx_timeout);
+ }
  
+ static int hclge_comm_cmd_convert_err_code(u16 desc_ret)
+@@ -406,7 +422,8 @@ static int hclge_comm_cmd_check_result(struct hclge_comm_hw *hw,
+ 	 * if multi descriptors to be sent, use the first one to check
+ 	 */
+ 	if (HCLGE_COMM_SEND_SYNC(le16_to_cpu(desc->flag)))
+-		hclge_comm_wait_for_resp(hw, &is_completed);
++		hclge_comm_wait_for_resp(hw, le16_to_cpu(desc->opcode),
++					 &is_completed);
+ 
+ 	if (!is_completed)
+ 		ret = -EBADE;
+@@ -528,7 +545,7 @@ int hclge_comm_cmd_queue_init(struct pci_dev *pdev, struct hclge_comm_hw *hw)
+ 	cmdq->crq.desc_num = HCLGE_COMM_NIC_CMQ_DESC_NUM;
+ 
+ 	/* Setup Tx write back timeout */
+-	cmdq->tx_timeout = HCLGE_COMM_CMDQ_TX_TIMEOUT;
++	cmdq->tx_timeout = HCLGE_COMM_CMDQ_TX_TIMEOUT_DEFAULT;
+ 
+ 	/* Setup queue rings */
+ 	ret = hclge_comm_alloc_cmd_queue(hw, HCLGE_COMM_TYPE_CSQ);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+index b1f9383b418f4..2b2928c6dccfc 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+@@ -54,7 +54,8 @@
+ #define HCLGE_COMM_NIC_SW_RST_RDY		BIT(HCLGE_COMM_NIC_SW_RST_RDY_B)
+ #define HCLGE_COMM_NIC_CMQ_DESC_NUM_S		3
+ #define HCLGE_COMM_NIC_CMQ_DESC_NUM		1024
+-#define HCLGE_COMM_CMDQ_TX_TIMEOUT		30000
++#define HCLGE_COMM_CMDQ_TX_TIMEOUT_DEFAULT	30000
++#define HCLGE_COMM_CMDQ_TX_TIMEOUT_500MS	500000
+ 
+ enum hclge_opcode_type {
+ 	/* Generic commands */
+@@ -357,6 +358,11 @@ struct hclge_comm_caps_bit_map {
+ 	u16 local_bit;
+ };
+ 
++struct hclge_cmdq_tx_timeout_map {
++	u32 opcode;
++	u32 tx_timeout;
++};
++
+ struct hclge_comm_firmware_compat_cmd {
+ 	__le32 compat;
+ 	u8 rsv[20];
 -- 
 2.39.2
 
