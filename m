@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F3F70C936
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66CD570C5FB
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235280AbjEVTp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
+        id S233965AbjEVTOI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235258AbjEVTpz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:55 -0400
+        with ESMTP id S234008AbjEVTOE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB872139
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50F718C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58CF462A8B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688DBC4339B;
-        Mon, 22 May 2023 19:45:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5841C61E03
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7539BC433D2;
+        Mon, 22 May 2023 19:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784749;
-        bh=rHX3+4HNWpaIyjXC4vG2Ai1ck+Uw7+0j3VesE1SKAFk=;
+        s=korg; t=1684782839;
+        bh=vpwoB24Rag/X6Qth2qkX29AvH3ni3+O5l3IF2YxkHis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hVZU0m/yTaiZdI5cR2TIbSbl5XqgvXZrqUMlyG2IUCfFiE/bfItuY/yUsjtjBywQZ
-         XU1MFXUu64mmIXXN6V6qrLQZQutxBJNRY1cKqE8dl935zGh8g4DxN2iOlBgBOlzShg
-         lmOHIezBMss6JQ04kGBM59sjUyCQ+H2tFrsb/58w=
+        b=l5HQd6Ao1KnC2dxn+hwBQYe6kLWi15Spf+F3dJ5tpdQTzspTJHxfwliQZqUXaTzby
+         XQ0Zk9rt71FInwT9a6G0EX7ZPDIuI3E9isugeHN0gxBPxH/teyrUj7CS3VAJZQUfk/
+         tSp4FOuOr9cVR4Xxbb8/NO1kYhVQcsa5AqJzrbag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        patches@lists.linux.dev,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 161/364] HID: apple: Set the tilde quirk flag on the Geyser 3
+Subject: [PATCH 5.15 042/203] remoteproc: stm32_rproc: Add mutex protection for workqueue
 Date:   Mon, 22 May 2023 20:07:46 +0100
-Message-Id: <20230522190416.764238317@linuxfoundation.org>
+Message-Id: <20230522190356.149425038@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 
-[ Upstream commit 29e1ecc197d410ee59c8877098d54cf417075f7d ]
+[ Upstream commit 35bdafda40cc343ad2ba2cce105eba03a70241cc ]
 
-I was finally able to obtain a MacBook1,1 to test and I've now confirmed
-that it has the tilde key quirk as well:
+The workqueue may execute late even after remoteproc is stopped or
+stopping, some resources (rpmsg device and endpoint) have been
+released in rproc_stop_subdevices(), then rproc_vq_interrupt()
+accessing these resources will cause kernel dump.
 
-Product    Model  Year  System      CPU    Shape  Labels     Country  Quirky
-============================================================================
-05ac:0218  A1181  2006  MacBook1,1  T2500  ISO    British    13       Yes
+Call trace:
+virtqueue_add_inbuf
+virtqueue_add_inbuf
+rpmsg_recv_single
+rpmsg_recv_done
+vring_interrupt
+stm32_rproc_mb_vq_work
+process_one_work
+worker_thread
+kthread
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Link: https://lore.kernel.org/r/20230404024829.13982-1-alexhenrie24@gmail.com
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Link: https://lore.kernel.org/r/20230331160634.3113031-1-arnaud.pouliquen@foss.st.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/remoteproc/stm32_rproc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 5c145775482bc..e2c73a78b5972 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -875,7 +875,8 @@ static const struct hid_device_id apple_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER3_ANSI),
- 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER3_ISO),
--		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
-+		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN |
-+			APPLE_ISO_TILDE_QUIRK },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER3_JIS),
- 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN |
- 			APPLE_RDESC_JIS },
+diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
+index a0fabc3f13dc2..aba3df1d1bf52 100644
+--- a/drivers/remoteproc/stm32_rproc.c
++++ b/drivers/remoteproc/stm32_rproc.c
+@@ -291,8 +291,16 @@ static void stm32_rproc_mb_vq_work(struct work_struct *work)
+ 	struct stm32_mbox *mb = container_of(work, struct stm32_mbox, vq_work);
+ 	struct rproc *rproc = dev_get_drvdata(mb->client.dev);
+ 
++	mutex_lock(&rproc->lock);
++
++	if (rproc->state != RPROC_RUNNING)
++		goto unlock_mutex;
++
+ 	if (rproc_vq_interrupt(rproc, mb->vq_id) == IRQ_NONE)
+ 		dev_dbg(&rproc->dev, "no message found in vq%d\n", mb->vq_id);
++
++unlock_mutex:
++	mutex_unlock(&rproc->lock);
+ }
+ 
+ static void stm32_rproc_mb_callback(struct mbox_client *cl, void *data)
 -- 
 2.39.2
 
