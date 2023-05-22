@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5842870C67A
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD3770C800
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234261AbjEVTSd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:18:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41508 "EHLO
+        id S234941AbjEVTfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234225AbjEVTS0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:18:26 -0400
+        with ESMTP id S234930AbjEVTfG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:35:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EEB9FE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68BDF1AC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABBEE627D2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B24C433EF;
-        Mon, 22 May 2023 19:18:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A166562970
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC528C433EF;
+        Mon, 22 May 2023 19:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783105;
-        bh=KTq+I1tuZnWMeNLGjXwYZtuOuz+tONiQr7XI1hTGv30=;
+        s=korg; t=1684784011;
+        bh=BOKvx4PfsewxTkFxmIG8Ji/pjMIi0eC/tBSnhigWNME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=176l8auVx1kjzujv/KE+BVjlLPClLo6qTcMAdAOlZC5Yv3wt6LoKZGI26JhDwtYzR
-         XP5K7rkKqvenW6Qxq6K7K3IRjIIlDIl5PJOpITCPq6ifa9y6wA3hHExFcj/MmoKqQV
-         4HqHxwRCu5W9aR0GI34CrZ5DrbVTNKcatKvYxELA=
+        b=Ji3FkhQVX7gbBKa3arl3gsB82AwvXQ5Els/Nx30p1NQTxbVBdVgDnHFIAtXwyk9x/
+         j/5GgAyxs/BjU44tmrhjV4xYGk6SPeoJ3/+5XyvXn4s7GPE756PSbl6qj1r8ejysLM
+         LuDy74EfvCOxOF59ntpXOKaEEA+zACASKZZtsaqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Inki Dae <inki.dae@samsung.com>,
+        patches@lists.linux.dev, Michael Lee <michael-cy.lee@mediatek.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/203] drm/exynos: fix g2d_open/close helper function definitions
+Subject: [PATCH 6.1 207/292] wifi: mac80211: Abort running color change when stopping the AP
 Date:   Mon, 22 May 2023 20:09:24 +0100
-Message-Id: <20230522190358.843236455@linuxfoundation.org>
+Message-Id: <20230522190411.133745818@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Michael Lee <michael-cy.lee@mediatek.com>
 
-[ Upstream commit 2ef0785b30bd6549ddbc124979f1b6596e065ae2 ]
+[ Upstream commit a23d7f5b2fbda114de60c4b53311e052281d7533 ]
 
-The empty stub functions are defined as global functions, which
-causes a warning because of missing prototypes:
+When stopping the AP, there might be a color change in progress. It
+should be deactivated here, or the driver might later finalize a color
+change on a stopped AP.
 
-drivers/gpu/drm/exynos/exynos_drm_g2d.h:37:5: error: no previous prototype for 'g2d_open'
-drivers/gpu/drm/exynos/exynos_drm_g2d.h:42:5: error: no previous prototype for 'g2d_close'
-
-Mark them as 'static inline' to avoid the warning and to make
-them behave as intended.
-
-Fixes: eb4d9796fa34 ("drm/exynos: g2d: Convert to driver component API")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Fixes: 5f9404abdf2a (mac80211: add support for BSS color change)
+Signed-off-by: Michael Lee <michael-cy.lee@mediatek.com>
+Link: https://lore.kernel.org/r/20230504080441.22958-1-michael-cy.lee@mediatek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_g2d.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.h b/drivers/gpu/drm/exynos/exynos_drm_g2d.h
-index 74ea3c26deadc..1a5ae781b56c6 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_g2d.h
-+++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.h
-@@ -34,11 +34,11 @@ static inline int exynos_g2d_exec_ioctl(struct drm_device *dev, void *data,
- 	return -ENODEV;
- }
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index e8beec0a0ae1c..06b9df2fbcd77 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1477,9 +1477,10 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		sdata_dereference(link->u.ap.unsol_bcast_probe_resp,
+ 				  sdata);
  
--int g2d_open(struct drm_device *drm_dev, struct drm_file *file)
-+static inline int g2d_open(struct drm_device *drm_dev, struct drm_file *file)
- {
- 	return 0;
- }
- 
--void g2d_close(struct drm_device *drm_dev, struct drm_file *file)
-+static inline void g2d_close(struct drm_device *drm_dev, struct drm_file *file)
- { }
- #endif
+-	/* abort any running channel switch */
++	/* abort any running channel switch or color change */
+ 	mutex_lock(&local->mtx);
+ 	link_conf->csa_active = false;
++	link_conf->color_change_active = false;
+ 	if (link->csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
 -- 
 2.39.2
 
