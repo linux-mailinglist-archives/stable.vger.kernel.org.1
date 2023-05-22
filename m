@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5935E70C74E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A16770C928
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234663AbjEVT2J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49886 "EHLO
+        id S235275AbjEVTp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234658AbjEVT2I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:08 -0400
+        with ESMTP id S235246AbjEVTpX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F3C198
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 241B9A9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2083628D0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB40C433D2;
-        Mon, 22 May 2023 19:28:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 045AB62A3C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F45CC433EF;
+        Mon, 22 May 2023 19:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783681;
-        bh=x94HLNRbcLTPOqzvs73lGBziHJYvCWq2DfQX91kQl4k=;
+        s=korg; t=1684784721;
+        bh=8w+8kJiC8da15xs6N5ao3n3WfWfK+9og1DuUQweFTxk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oQe9JswS9779ddBGDI6y+IOeMucRSAXCViTri9TVrmpoOF57PyK9R8oERCyK4xYx8
-         NTXAxt51t9sx8edc0jD60wv8WmvhpmCMFQjsEgbxtd2WN/PlM6G9rCXaM4ZJDL73wY
-         pmZ/sKuT7wTVMiy0L79d2rS9PBd1R0A8LtSFdExQ=
+        b=IpPOd2ZsKouOGs9OIwUTrfcweFhWGeaPUl/dDNu/zh02riH7HRZEAub/bvX8fMco1
+         9SAMV/Aaqh0JHXjGsRuq7RcC47U+/8sZez9U9xRdZXwYd9ENLld26tQaF8XY4fI70D
+         RY9KgtNrRBbnJFBjoG3jpg29HtGhpkim3a1PtjdM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Samuel=20=C4=8Cavoj?= <samuel@cavoj.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        patches@lists.linux.dev, Edward Lo <edward.lo@ambergroup.io>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/292] usb: typec: ucsi: acpi: add quirk for ASUS Zenbook UM325
+Subject: [PATCH 6.3 179/364] fs/ntfs3: Add length check in indx_get_root
 Date:   Mon, 22 May 2023 20:08:04 +0100
-Message-Id: <20230522190409.142255780@linuxfoundation.org>
+Message-Id: <20230522190417.201564960@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,131 +54,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Samuel Čavoj <samuel@cavoj.net>
+From: Edward Lo <edward.lo@ambergroup.io>
 
-[ Upstream commit 326e1c208f3f24d14b93f910b8ae32c94923d22c ]
+[ Upstream commit 08e8cf5f2d9ec383a2e339a2711b62a54ff3fba0 ]
 
-On some ACPI platforms (namely the ASUS Zenbook UM325) the _DSM method must
-not be called after a notification is received but instead the mailbox
-should be read immediately from RAM. This is because the ACPI interrupt
-handler destroys the CCI in ERAM after copying to system memory, and when
-_DSM is later called to perform a second copy, it retrieves a garbage
-value.
+This adds a length check to guarantee the retrieved index root is legit.
 
-Instead, the _DSM(read) method should only be called when necessary, i.e.
-for polling the state after reset and for retrieving the version. Other
-reads should not call _DSM and only peek into the RAM region.
+[  162.459513] BUG: KASAN: use-after-free in hdr_find_e.isra.0+0x10c/0x320
+[  162.460176] Read of size 2 at addr ffff8880037bca99 by task mount/243
+[  162.460851]
+[  162.461252] CPU: 0 PID: 243 Comm: mount Not tainted 6.0.0-rc7 #42
+[  162.461744] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+[  162.462609] Call Trace:
+[  162.462954]  <TASK>
+[  162.463276]  dump_stack_lvl+0x49/0x63
+[  162.463822]  print_report.cold+0xf5/0x689
+[  162.464608]  ? unwind_get_return_address+0x3a/0x60
+[  162.465766]  ? hdr_find_e.isra.0+0x10c/0x320
+[  162.466975]  kasan_report+0xa7/0x130
+[  162.467506]  ? _raw_spin_lock_irq+0xc0/0xf0
+[  162.467998]  ? hdr_find_e.isra.0+0x10c/0x320
+[  162.468536]  __asan_load2+0x68/0x90
+[  162.468923]  hdr_find_e.isra.0+0x10c/0x320
+[  162.469282]  ? cmp_uints+0xe0/0xe0
+[  162.469557]  ? cmp_sdh+0x90/0x90
+[  162.469864]  ? ni_find_attr+0x214/0x300
+[  162.470217]  ? ni_load_mi+0x80/0x80
+[  162.470479]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[  162.470931]  ? ntfs_bread_run+0x190/0x190
+[  162.471307]  ? indx_get_root+0xe4/0x190
+[  162.471556]  ? indx_get_root+0x140/0x190
+[  162.471833]  ? indx_init+0x1e0/0x1e0
+[  162.472069]  ? fnd_clear+0x115/0x140
+[  162.472363]  ? _raw_spin_lock_irqsave+0x100/0x100
+[  162.472731]  indx_find+0x184/0x470
+[  162.473461]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[  162.474429]  ? indx_find_buffer+0x2d0/0x2d0
+[  162.474704]  ? do_syscall_64+0x3b/0x90
+[  162.474962]  dir_search_u+0x196/0x2f0
+[  162.475381]  ? ntfs_nls_to_utf16+0x450/0x450
+[  162.475661]  ? ntfs_security_init+0x3d6/0x440
+[  162.475906]  ? is_sd_valid+0x180/0x180
+[  162.476191]  ntfs_extend_init+0x13f/0x2c0
+[  162.476496]  ? ntfs_fix_post_read+0x130/0x130
+[  162.476861]  ? iput.part.0+0x286/0x320
+[  162.477325]  ntfs_fill_super+0x11e0/0x1b50
+[  162.477709]  ? put_ntfs+0x1d0/0x1d0
+[  162.477970]  ? vsprintf+0x20/0x20
+[  162.478258]  ? set_blocksize+0x95/0x150
+[  162.478538]  get_tree_bdev+0x232/0x370
+[  162.478789]  ? put_ntfs+0x1d0/0x1d0
+[  162.479038]  ntfs_fs_get_tree+0x15/0x20
+[  162.479374]  vfs_get_tree+0x4c/0x130
+[  162.479729]  path_mount+0x654/0xfe0
+[  162.480124]  ? putname+0x80/0xa0
+[  162.480484]  ? finish_automount+0x2e0/0x2e0
+[  162.480894]  ? putname+0x80/0xa0
+[  162.481467]  ? kmem_cache_free+0x1c4/0x440
+[  162.482280]  ? putname+0x80/0xa0
+[  162.482714]  do_mount+0xd6/0xf0
+[  162.483264]  ? path_mount+0xfe0/0xfe0
+[  162.484782]  ? __kasan_check_write+0x14/0x20
+[  162.485593]  __x64_sys_mount+0xca/0x110
+[  162.486024]  do_syscall_64+0x3b/0x90
+[  162.486543]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[  162.487141] RIP: 0033:0x7f9d374e948a
+[  162.488324] Code: 48 8b 0d 11 fa 2a 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 008
+[  162.489728] RSP: 002b:00007ffe30e73d18 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
+[  162.490971] RAX: ffffffffffffffda RBX: 0000561cdb43a060 RCX: 00007f9d374e948a
+[  162.491669] RDX: 0000561cdb43a260 RSI: 0000561cdb43a2e0 RDI: 0000561cdb442af0
+[  162.492050] RBP: 0000000000000000 R08: 0000561cdb43a280 R09: 0000000000000020
+[  162.492459] R10: 00000000c0ed0000 R11: 0000000000000206 R12: 0000561cdb442af0
+[  162.493183] R13: 0000561cdb43a260 R14: 0000000000000000 R15: 00000000ffffffff
+[  162.493644]  </TASK>
+[  162.493908]
+[  162.494214] The buggy address belongs to the physical page:
+[  162.494761] page:000000003e38a3d5 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x37bc
+[  162.496064] flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
+[  162.497278] raw: 000fffffc0000000 ffffea00000df1c8 ffffea00000df008 0000000000000000
+[  162.498928] raw: 0000000000000000 0000000000240000 00000000ffffffff 0000000000000000
+[  162.500542] page dumped because: kasan: bad access detected
+[  162.501057]
+[  162.501242] Memory state around the buggy address:
+[  162.502230]  ffff8880037bc980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.502977]  ffff8880037bca00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.503522] >ffff8880037bca80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.503963]                             ^
+[  162.504370]  ffff8880037bcb00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[  162.504766]  ffff8880037bcb80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 
-This adds a separate read operation for the Zenbook that syncs the
-ACPI mailbox only with polled commands.
-
-Link: https://lore.kernel.org/linux-usb/20210823180626.tb6m7h5tp6adhvt2@fastboi.localdomain/
-Signed-off-by: Samuel Čavoj <samuel@cavoj.net>
-[ heikki : handling everything in ucsi_acpi.c with DMI quirk ]
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230405134456.49607-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Edward Lo <edward.lo@ambergroup.io>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_acpi.c | 44 ++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ fs/ntfs3/index.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
-index 62206a6b8ea75..217355f1f9b94 100644
---- a/drivers/usb/typec/ucsi/ucsi_acpi.c
-+++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
-@@ -9,6 +9,7 @@
- #include <linux/platform_device.h>
- #include <linux/module.h>
- #include <linux/acpi.h>
-+#include <linux/dmi.h>
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 7a1e01a2ed9ae..f716487ec8a05 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -994,6 +994,7 @@ struct INDEX_ROOT *indx_get_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	struct ATTR_LIST_ENTRY *le = NULL;
+ 	struct ATTRIB *a;
+ 	const struct INDEX_NAMES *in = &s_index_names[indx->type];
++	struct INDEX_ROOT *root = NULL;
  
- #include "ucsi.h"
+ 	a = ni_find_attr(ni, NULL, &le, ATTR_ROOT, in->name, in->name_len, NULL,
+ 			 mi);
+@@ -1003,7 +1004,15 @@ struct INDEX_ROOT *indx_get_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	if (attr)
+ 		*attr = a;
  
-@@ -23,6 +24,7 @@ struct ucsi_acpi {
- 	struct completion complete;
- 	unsigned long flags;
- 	guid_t guid;
-+	u64 cmd;
- };
- 
- static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
-@@ -62,6 +64,7 @@ static int ucsi_acpi_async_write(struct ucsi *ucsi, unsigned int offset,
- 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
- 
- 	memcpy(ua->base + offset, val, val_len);
-+	ua->cmd = *(u64 *)val;
- 
- 	return ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_WRITE);
- }
-@@ -93,13 +96,46 @@ static const struct ucsi_operations ucsi_acpi_ops = {
- 	.async_write = ucsi_acpi_async_write
- };
- 
-+static int
-+ucsi_zenbook_read(struct ucsi *ucsi, unsigned int offset, void *val, size_t val_len)
-+{
-+	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
-+	int ret;
+-	return resident_data_ex(a, sizeof(struct INDEX_ROOT));
++	root = resident_data_ex(a, sizeof(struct INDEX_ROOT));
 +
-+	if (offset == UCSI_VERSION || UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
-+		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
-+		if (ret)
-+			return ret;
++	/* length check */
++	if (root && offsetof(struct INDEX_ROOT, ihdr) + le32_to_cpu(root->ihdr.used) >
++			le32_to_cpu(a->res.data_size)) {
++		return NULL;
 +	}
 +
-+	memcpy(val, ua->base + offset, val_len);
-+
-+	return 0;
-+}
-+
-+static const struct ucsi_operations ucsi_zenbook_ops = {
-+	.read = ucsi_zenbook_read,
-+	.sync_write = ucsi_acpi_sync_write,
-+	.async_write = ucsi_acpi_async_write
-+};
-+
-+static const struct dmi_system_id zenbook_dmi_id[] = {
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
-+		},
-+	},
-+	{ }
-+};
-+
- static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
- {
- 	struct ucsi_acpi *ua = data;
- 	u32 cci;
- 	int ret;
++	return root;
+ }
  
--	ret = ucsi_acpi_read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	ret = ua->ucsi->ops->read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
- 	if (ret)
- 		return;
- 
-@@ -114,6 +150,7 @@ static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
- static int ucsi_acpi_probe(struct platform_device *pdev)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
-+	const struct ucsi_operations *ops = &ucsi_acpi_ops;
- 	struct ucsi_acpi *ua;
- 	struct resource *res;
- 	acpi_status status;
-@@ -143,7 +180,10 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
- 	init_completion(&ua->complete);
- 	ua->dev = &pdev->dev;
- 
--	ua->ucsi = ucsi_create(&pdev->dev, &ucsi_acpi_ops);
-+	if (dmi_check_system(zenbook_dmi_id))
-+		ops = &ucsi_zenbook_ops;
-+
-+	ua->ucsi = ucsi_create(&pdev->dev, ops);
- 	if (IS_ERR(ua->ucsi))
- 		return PTR_ERR(ua->ucsi);
- 
+ static int indx_write(struct ntfs_index *indx, struct ntfs_inode *ni,
 -- 
 2.39.2
 
