@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B22E570C7F7
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECE470C9C3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234869AbjEVTe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56334 "EHLO
+        id S235452AbjEVTwD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234953AbjEVTe4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:34:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66596CA
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:24 -0700 (PDT)
+        with ESMTP id S235469AbjEVTvu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:51:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45A3FE45
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53F4262930
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1BFC4339C;
-        Mon, 22 May 2023 19:33:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6998762AF3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85086C433D2;
+        Mon, 22 May 2023 19:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784001;
-        bh=RCCRH6mQYxR8mwPl/kBgiq2iUnY0i6b7DXYcv6g+2Tc=;
+        s=korg; t=1684785078;
+        bh=sTuj3ei2lDhSaY/Jg9fiq38PXsbWMwL54EJ9obXaM94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U9YwkV7OW6i5TT4AY2HTCsSXHZixgWpKrW3OFoaSBrRmzexfMKpac7t8BxL+TPHt+
-         YMn62R1YhA5TDl/Ydg4Jf8VdjV4YQjKuRY1zVvIxrZOLL6Pcc5rOipukncAU8/Z7YY
-         p21wP8uVPZLphVEvARpQ5sIIGMbi8XY4WwtDpzmY=
+        b=uOvXyllkem8yDnUxXw6VC+vwsY1DY5ezbEAaZOBtZGSNgYTwfRrnTDZk3CI1dpIas
+         6k8B8VTg6MZm257tjjSExulBX79/iTiVT8al0maAn011enR1kty+AYUXlD8YBmoMBc
+         5eHTpkAol/p59Sv4prfsUyAVaDqcu3nvcw32LvRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 231/292] usb: dwc3: debugfs: Resume dwc3 before accessing registers
+        patches@lists.linux.dev, Samuel Wein PhD <sam@samwein.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 283/364] net: wwan: iosm: fix NULL pointer dereference when removing device
 Date:   Mon, 22 May 2023 20:09:48 +0100
-Message-Id: <20230522190411.728215767@linuxfoundation.org>
+Message-Id: <20230522190419.804747256@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,379 +56,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
+From: M Chetan Kumar <m.chetan.kumar@linux.intel.com>
 
-commit 614ce6a2ea50068b45339257891e51e639ac9001 upstream.
+[ Upstream commit 60829145f1e2650b31ebe6a0ec70a9725b38fa2c ]
 
-When the dwc3 device is runtime suspended, various required clocks are in
-disabled state and it is not guaranteed that access to any registers would
-work. Depending on the SoC glue, a register read could be as benign as
-returning 0 or be fatal enough to hang the system.
+In suspend and resume cycle, the removal and rescan of device ends
+up in NULL pointer dereference.
 
-In order to prevent such scenarios of fatal errors, make sure to resume
-dwc3 then allow the function to proceed.
+During driver initialization, if the ipc_imem_wwan_channel_init()
+fails to get the valid device capabilities it returns an error and
+further no resource (wwan struct) will be allocated. Now in this
+situation if driver removal procedure is initiated it would result
+in NULL pointer exception since unallocated wwan struct is dereferenced
+inside ipc_wwan_deinit().
 
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable@vger.kernel.org #3.2: 30332eeefec8: debugfs: regset32: Add Runtime PM support
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20230509144836.6803-1-quic_ugoswami@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ipc_imem_run_state_worker() to handle the called functions return value
+and to release the resource in failure case. It also reports the link
+down event in failure cases. The user space application can handle this
+event to do a device reset for restoring the device communication.
+
+Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
+Reported-by: Samuel Wein PhD <sam@samwein.com>
+Closes: https://lore.kernel.org/netdev/20230427140819.1310f4bd@kernel.org/T/
+Signed-off-by: M Chetan Kumar <m.chetan.kumar@linux.intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/debugfs.c |  109 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 109 insertions(+)
+ drivers/net/wwan/iosm/iosm_ipc_imem.c     | 27 ++++++++++++++++++-----
+ drivers/net/wwan/iosm/iosm_ipc_imem_ops.c | 12 ++++++----
+ drivers/net/wwan/iosm/iosm_ipc_imem_ops.h |  6 +++--
+ 3 files changed, 33 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/dwc3/debugfs.c
-+++ b/drivers/usb/dwc3/debugfs.c
-@@ -327,6 +327,11 @@ static int dwc3_lsp_show(struct seq_file
- 	unsigned int		current_mode;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_imem.c b/drivers/net/wwan/iosm/iosm_ipc_imem.c
+index c066b0040a3fe..829515a601b37 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
+@@ -565,24 +565,32 @@ static void ipc_imem_run_state_worker(struct work_struct *instance)
+ 	struct ipc_mux_config mux_cfg;
+ 	struct iosm_imem *ipc_imem;
+ 	u8 ctrl_chl_idx = 0;
++	int ret;
  
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
-@@ -345,6 +350,8 @@ static int dwc3_lsp_show(struct seq_file
- 	}
- 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 	ipc_imem = container_of(instance, struct iosm_imem, run_state_worker);
  
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -390,6 +397,11 @@ static int dwc3_mode_show(struct seq_fil
- 	struct dwc3		*dwc = s->private;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
-@@ -409,6 +421,8 @@ static int dwc3_mode_show(struct seq_fil
- 		seq_printf(s, "UNKNOWN %08x\n", DWC3_GCTL_PRTCAP(reg));
+ 	if (ipc_imem->phase != IPC_P_RUN) {
+ 		dev_err(ipc_imem->dev,
+ 			"Modem link down. Exit run state worker.");
+-		return;
++		goto err_out;
  	}
  
-+	pm_runtime_put_sync(dwc->dev);
+ 	if (test_and_clear_bit(IOSM_DEVLINK_INIT, &ipc_imem->flag))
+ 		ipc_devlink_deinit(ipc_imem->ipc_devlink);
+ 
+-	if (!ipc_imem_setup_cp_mux_cap_init(ipc_imem, &mux_cfg))
+-		ipc_imem->mux = ipc_mux_init(&mux_cfg, ipc_imem);
++	ret = ipc_imem_setup_cp_mux_cap_init(ipc_imem, &mux_cfg);
++	if (ret < 0)
++		goto err_out;
 +
- 	return 0;
++	ipc_imem->mux = ipc_mux_init(&mux_cfg, ipc_imem);
++	if (!ipc_imem->mux)
++		goto err_out;
++
++	ret = ipc_imem_wwan_channel_init(ipc_imem, mux_cfg.protocol);
++	if (ret < 0)
++		goto err_ipc_mux_deinit;
+ 
+-	ipc_imem_wwan_channel_init(ipc_imem, mux_cfg.protocol);
+-	if (ipc_imem->mux)
+-		ipc_imem->mux->wwan = ipc_imem->wwan;
++	ipc_imem->mux->wwan = ipc_imem->wwan;
+ 
+ 	while (ctrl_chl_idx < IPC_MEM_MAX_CHANNELS) {
+ 		if (!ipc_chnl_cfg_get(&chnl_cfg_port, ctrl_chl_idx)) {
+@@ -622,6 +630,13 @@ static void ipc_imem_run_state_worker(struct work_struct *instance)
+ 
+ 	/* Complete all memory stores after setting bit */
+ 	smp_mb__after_atomic();
++
++	return;
++
++err_ipc_mux_deinit:
++	ipc_mux_deinit(ipc_imem->mux);
++err_out:
++	ipc_uevent_send(ipc_imem->dev, UEVENT_CD_READY_LINK_DOWN);
  }
  
-@@ -458,6 +472,11 @@ static int dwc3_testmode_show(struct seq
- 	struct dwc3		*dwc = s->private;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
+ static void ipc_imem_handle_irq(struct iosm_imem *ipc_imem, int irq)
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_imem_ops.c b/drivers/net/wwan/iosm/iosm_ipc_imem_ops.c
+index 66b90cc4c3460..109cf89304888 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_imem_ops.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_imem_ops.c
+@@ -77,8 +77,8 @@ int ipc_imem_sys_wwan_transmit(struct iosm_imem *ipc_imem,
+ }
  
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
-@@ -488,6 +507,8 @@ static int dwc3_testmode_show(struct seq
- 		seq_printf(s, "UNKNOWN %d\n", reg);
+ /* Initialize wwan channel */
+-void ipc_imem_wwan_channel_init(struct iosm_imem *ipc_imem,
+-				enum ipc_mux_protocol mux_type)
++int ipc_imem_wwan_channel_init(struct iosm_imem *ipc_imem,
++			       enum ipc_mux_protocol mux_type)
+ {
+ 	struct ipc_chnl_cfg chnl_cfg = { 0 };
+ 
+@@ -87,7 +87,7 @@ void ipc_imem_wwan_channel_init(struct iosm_imem *ipc_imem,
+ 	/* If modem version is invalid (0xffffffff), do not initialize WWAN. */
+ 	if (ipc_imem->cp_version == -1) {
+ 		dev_err(ipc_imem->dev, "invalid CP version");
+-		return;
++		return -EIO;
  	}
  
-+	pm_runtime_put_sync(dwc->dev);
+ 	ipc_chnl_cfg_get(&chnl_cfg, ipc_imem->nr_of_channels);
+@@ -104,9 +104,13 @@ void ipc_imem_wwan_channel_init(struct iosm_imem *ipc_imem,
+ 
+ 	/* WWAN registration. */
+ 	ipc_imem->wwan = ipc_wwan_init(ipc_imem, ipc_imem->dev);
+-	if (!ipc_imem->wwan)
++	if (!ipc_imem->wwan) {
+ 		dev_err(ipc_imem->dev,
+ 			"failed to register the ipc_wwan interfaces");
++		return -ENOMEM;
++	}
 +
- 	return 0;
++	return 0;
  }
  
-@@ -504,6 +525,7 @@ static ssize_t dwc3_testmode_write(struc
- 	unsigned long		flags;
- 	u32			testmode = 0;
- 	char			buf[32];
-+	int			ret;
+ /* Map SKB to DMA for transfer */
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_imem_ops.h b/drivers/net/wwan/iosm/iosm_ipc_imem_ops.h
+index f8afb217d9e2f..026c5bd0f9992 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_imem_ops.h
++++ b/drivers/net/wwan/iosm/iosm_ipc_imem_ops.h
+@@ -91,9 +91,11 @@ int ipc_imem_sys_wwan_transmit(struct iosm_imem *ipc_imem, int if_id,
+  *				MUX.
+  * @ipc_imem:		Pointer to iosm_imem struct.
+  * @mux_type:		Type of mux protocol.
++ *
++ * Return: 0 on success and failure value on error
+  */
+-void ipc_imem_wwan_channel_init(struct iosm_imem *ipc_imem,
+-				enum ipc_mux_protocol mux_type);
++int ipc_imem_wwan_channel_init(struct iosm_imem *ipc_imem,
++			       enum ipc_mux_protocol mux_type);
  
- 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
- 		return -EFAULT;
-@@ -521,10 +543,16 @@ static ssize_t dwc3_testmode_write(struc
- 	else
- 		testmode = 0;
- 
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_gadget_set_test_mode(dwc, testmode);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return count;
- }
- 
-@@ -543,12 +571,18 @@ static int dwc3_link_state_show(struct s
- 	enum dwc3_link_state	state;
- 	u32			reg;
- 	u8			speed;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
- 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
- 		seq_puts(s, "Not available\n");
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return 0;
- 	}
- 
-@@ -561,6 +595,8 @@ static int dwc3_link_state_show(struct s
- 		   dwc3_gadget_hs_link_string(state));
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -579,6 +615,7 @@ static ssize_t dwc3_link_state_write(str
- 	char			buf[32];
- 	u32			reg;
- 	u8			speed;
-+	int			ret;
- 
- 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
- 		return -EFAULT;
-@@ -598,10 +635,15 @@ static ssize_t dwc3_link_state_write(str
- 	else
- 		return -EINVAL;
- 
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
- 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return -EINVAL;
- 	}
- 
-@@ -611,12 +653,15 @@ static ssize_t dwc3_link_state_write(str
- 	if (speed < DWC3_DSTS_SUPERSPEED &&
- 	    state != DWC3_LINK_STATE_RECOV) {
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return -EINVAL;
- 	}
- 
- 	dwc3_gadget_set_link_state(dwc, state);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return count;
- }
- 
-@@ -640,6 +685,11 @@ static int dwc3_tx_fifo_size_show(struct
- 	unsigned long		flags;
- 	u32			mdwidth;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_TXFIFO);
-@@ -652,6 +702,8 @@ static int dwc3_tx_fifo_size_show(struct
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -662,6 +714,11 @@ static int dwc3_rx_fifo_size_show(struct
- 	unsigned long		flags;
- 	u32			mdwidth;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXFIFO);
-@@ -674,6 +731,8 @@ static int dwc3_rx_fifo_size_show(struct
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -683,12 +742,19 @@ static int dwc3_tx_request_queue_show(st
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_TXREQQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -698,12 +764,19 @@ static int dwc3_rx_request_queue_show(st
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXREQQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -713,12 +786,19 @@ static int dwc3_rx_info_queue_show(struc
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXINFOQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -728,12 +808,19 @@ static int dwc3_descriptor_fetch_queue_s
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_DESCFETCHQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -743,12 +830,19 @@ static int dwc3_event_queue_show(struct
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_EVENTQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -793,6 +887,11 @@ static int dwc3_trb_ring_show(struct seq
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	int			i;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	if (dep->number <= 1) {
-@@ -822,6 +921,8 @@ static int dwc3_trb_ring_show(struct seq
- out:
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -834,6 +935,11 @@ static int dwc3_ep_info_register_show(st
- 	u32			lower_32_bits;
- 	u32			upper_32_bits;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = DWC3_GDBGLSPMUX_EPSELECT(dep->number);
-@@ -846,6 +952,8 @@ static int dwc3_ep_info_register_show(st
- 	seq_printf(s, "0x%016llx\n", ep_info);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -905,6 +1013,7 @@ void dwc3_debugfs_init(struct dwc3 *dwc)
- 	dwc->regset->regs = dwc3_regs;
- 	dwc->regset->nregs = ARRAY_SIZE(dwc3_regs);
- 	dwc->regset->base = dwc->regs - DWC3_GLOBALS_REGS_START;
-+	dwc->regset->dev = dwc->dev;
- 
- 	root = debugfs_create_dir(dev_name(dwc->dev), usb_debug_root);
- 	dwc->debug_root = root;
+ /**
+  * ipc_imem_sys_devlink_open - Open a Flash/CD Channel link to CP
+-- 
+2.39.2
+
 
 
