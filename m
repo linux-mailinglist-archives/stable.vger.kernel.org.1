@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B57F70C779
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18FBF70C641
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234725AbjEVT37 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51204 "EHLO
+        id S234114AbjEVTQf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234739AbjEVT35 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:57 -0400
+        with ESMTP id S234148AbjEVTQR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C249B10C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E35D81A6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3297628DC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE71DC433EF;
-        Mon, 22 May 2023 19:29:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FE6362772
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7938BC433EF;
+        Mon, 22 May 2023 19:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783794;
-        bh=68S8ja6ldITSYmNObUIzuVfF28vRzW2+BWztvWx/q9Y=;
+        s=korg; t=1684782975;
+        bh=xRTjQfqCTQ45bcfNUtsVmgmumXhyrWlLlbjbfwfrJv4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZvCh/79YepNq84PxkQyPOXiOeozK/X0eRMMcSYM9nGxm5OdEYVxbomArolp3BFkXU
-         mFwDCOwpAGz4Jj3xl3dyKqtfnMQanThA8FMfGt/U1Dt+Ie24N4sG3ioxAkYfqXF8vs
-         Dd+99a878eDn/XiOMdXgJgU+ojgtA6BcLkeCdRDE=
+        b=Zi8V0gNMnAUQdGdq1uCxkY9ByxliMXKaoKOWJynvtaVGq2Q5vMdeqi/Z+8roxjJyU
+         WPhmN+gZkX51v0UmspdiWdalgPwjRAoI9p80+p5NbcRRLmQFlFUMw65/WfGnvwVhiZ
+         Hlrgq7lrGtIWrT8YZMTJVoImNOOaC0u1WUUkeVx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrea Mayer <andrea.mayer@uniroma2.it>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/292] selftests: seg6: disable DAD on IPv6 router cfg for srv6_end_dt4_l3vpn_test
+        patches@lists.linux.dev, Tomas Krcka <krckatom@amazon.de>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 097/203] iommu/arm-smmu-v3: Acknowledge pri/event queue overflow if any
 Date:   Mon, 22 May 2023 20:08:41 +0100
-Message-Id: <20230522190410.065449605@linuxfoundation.org>
+Message-Id: <20230522190357.672949848@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +53,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Tomas Krcka <krckatom@amazon.de>
 
-[ Upstream commit 21a933c79a33add3612808f3be4ad65dd4dc026b ]
+[ Upstream commit 67ea0b7ce41844eae7c10bb04dfe66a23318c224 ]
 
-The srv6_end_dt4_l3vpn_test instantiates a virtual network consisting of
-several routers (rt-1, rt-2) and hosts.
-When the IPv6 addresses of rt-{1,2} routers are configured, the Deduplicate
-Address Detection (DAD) kicks in when enabled in the Linux distros running
-the selftests. DAD is used to check whether an IPv6 address is already
-assigned in a network. Such a mechanism consists of sending an ICMPv6 Echo
-Request and waiting for a reply.
-As the DAD process could take too long to complete, it may cause the
-failing of some tests carried out by the srv6_end_dt4_l3vpn_test script.
+When an overflow occurs in the PRI queue, the SMMU toggles the overflow
+flag in the PROD register. To exit the overflow condition, the PRI thread
+is supposed to acknowledge it by toggling this flag in the CONS register.
+Unacknowledged overflow causes the queue to stop adding anything new.
 
-To make the srv6_end_dt4_l3vpn_test more robust, we disable DAD on routers
-since we configure the virtual network manually and do not need any address
-deduplication mechanism at all.
+Currently, the priq thread always writes the CONS register back to the
+SMMU after clearing the queue.
 
-Fixes: 2195444e09b4 ("selftests: add selftest for the SRv6 End.DT4 behavior")
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The writeback is not necessary if the OVFLG in the PROD register has not
+been changed, no overflow has occured.
+
+This commit checks the difference of the overflow flag between CONS and
+PROD register. If it's different, toggles the OVACKFLG flag in the CONS
+register and write it to the SMMU.
+
+The situation is similar for the event queue.
+The acknowledge register is also toggled after clearing the event
+queue but never propagated to the hardware. This would only be done the
+next time when executing evtq thread.
+
+Unacknowledged event queue overflow doesn't affect the event
+queue, because the SMMU still adds elements to that queue when the
+overflow condition is active.
+But it feel nicer to keep SMMU in sync when possible, so use the same
+way here as well.
+
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Link: https://lore.kernel.org/r/20230329123420.34641-1-tomas.krcka@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
-index 1003119773e5d..37f08d582d2fe 100755
---- a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
-@@ -232,10 +232,14 @@ setup_rt_networking()
- 	local nsname=rt-${rt}
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index e7da4a47ce52e..bcdb2cbdda971 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -154,6 +154,18 @@ static void queue_inc_cons(struct arm_smmu_ll_queue *q)
+ 	q->cons = Q_OVF(q->cons) | Q_WRP(q, cons) | Q_IDX(q, cons);
+ }
  
- 	ip netns add ${nsname}
++static void queue_sync_cons_ovf(struct arm_smmu_queue *q)
++{
++	struct arm_smmu_ll_queue *llq = &q->llq;
 +
-+	ip netns exec ${nsname} sysctl -wq net.ipv6.conf.all.accept_dad=0
-+	ip netns exec ${nsname} sysctl -wq net.ipv6.conf.default.accept_dad=0
++	if (likely(Q_OVF(llq->prod) == Q_OVF(llq->cons)))
++		return;
 +
- 	ip link set veth-rt-${rt} netns ${nsname}
- 	ip -netns ${nsname} link set veth-rt-${rt} name veth0
++	llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
++		      Q_IDX(llq, llq->cons);
++	queue_sync_cons_out(q);
++}
++
+ static int queue_sync_prod_in(struct arm_smmu_queue *q)
+ {
+ 	u32 prod;
+@@ -1564,8 +1576,7 @@ static irqreturn_t arm_smmu_evtq_thread(int irq, void *dev)
+ 	} while (!queue_empty(llq));
  
--	ip -netns ${nsname} addr add ${IPv6_RT_NETWORK}::${rt}/64 dev veth0
-+	ip -netns ${nsname} addr add ${IPv6_RT_NETWORK}::${rt}/64 dev veth0 nodad
- 	ip -netns ${nsname} link set veth0 up
- 	ip -netns ${nsname} link set lo up
+ 	/* Sync our overflow flag, as we believe we're up to speed */
+-	llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
+-		    Q_IDX(llq, llq->cons);
++	queue_sync_cons_ovf(q);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1623,9 +1634,7 @@ static irqreturn_t arm_smmu_priq_thread(int irq, void *dev)
+ 	} while (!queue_empty(llq));
+ 
+ 	/* Sync our overflow flag, as we believe we're up to speed */
+-	llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
+-		      Q_IDX(llq, llq->cons);
+-	queue_sync_cons_out(q);
++	queue_sync_cons_ovf(q);
+ 	return IRQ_HANDLED;
+ }
  
 -- 
 2.39.2
