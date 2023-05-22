@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F37A70C835
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB03C70C9EA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234958AbjEVTg0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:36:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
+        id S235515AbjEVTxL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234949AbjEVTgY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CE66186
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:07 -0700 (PDT)
+        with ESMTP id S235491AbjEVTxB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E625FF1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0818E61B51
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C79C433D2;
-        Mon, 22 May 2023 19:35:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D72D62B45
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F73C433EF;
+        Mon, 22 May 2023 19:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784159;
-        bh=sGEfzEU4J9EVVpL60o5S2n9YBq1DDYpJhnVnfCVv1ug=;
+        s=korg; t=1684785178;
+        bh=x/eAUTV38sOl29aLIHCjb4av/L24c7bF32z0zey5xn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NLmaHUZDiPRaTShvR83Bng3Bvx3s4u9suxKzXfVrhY43KJYiYli2iy6eINXSp66yi
-         jvqkSiWPScveXUAmT7JBuuncFxIthmlMqGZXvvBlKbYvGm0ctnbCBQMn86p15drt7v
-         NIDFDwR5aWphl2ChdqGsWDTB+OtdwtDC4ccDFt+g=
+        b=DwMbgy7lA5/2M+Ers57bhsDLk6XurYHyMaifg+mz1gxNDFvj1QJnR37+jGk8U/2LF
+         cF4EmKtWi1r+NneujwA+6hKdlg5hBELEpKI5iOlLvXJFIBwDZNlg00jo+VEi0xm8dB
+         0DM+bS6X6bhJ6YasntirBE5/5TjEn6Ax7XsaLVCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Hartmayer <mhartmay@linux.ibm.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.1 283/292] s390/crypto: use vector instructions only if available for ChaCha20
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        syzkaller <syzkaller@googlegroups.com>,
+        George Kennedy <george.kennedy@oracle.com>,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH 6.3 335/364] vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF
 Date:   Mon, 22 May 2023 20:10:40 +0100
-Message-Id: <20230522190413.018489207@linuxfoundation.org>
+Message-Id: <20230522190421.153035580@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,67 +55,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: George Kennedy <george.kennedy@oracle.com>
 
-commit 8703dd6b238da0ec6c276e53836f8200983d3d9b upstream.
+commit 8fb9ea65c9d1338b0d2bb0a9122dc942cdd32357 upstream.
 
-Commit 349d03ffd5f6 ("crypto: s390 - add crypto library interface for
-ChaCha20") added a library interface to the s390 specific ChaCha20
-implementation. However no check was added to verify if the required
-facilities are installed before branching into the assembler code.
+After a call to console_unlock() in vcs_write() the vc_data struct can be
+freed by vc_port_destruct(). Because of that, the struct vc_data pointer
+must be reloaded in the while loop in vcs_write() after console_lock() to
+avoid a UAF when vcs_size() is called.
 
-If compiled into the kernel, this will lead to the following crash,
-if vector instructions are not available:
+Syzkaller reported a UAF in vcs_size().
 
-data exception: 0007 ilc:3 [#1] SMP
-Modules linked in:
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc7+ #11
-Hardware name: IBM 3931 A01 704 (KVM/Linux)
-Krnl PSW : 0704e00180000000 000000001857277a (chacha20_vx+0x32/0x818)
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
-Krnl GPRS: 0000037f0000000a ffffffffffffff60 000000008184b000 0000000019f5c8e6
-           0000000000000109 0000037fffb13c58 0000037fffb13c78 0000000019bb1780
-           0000037fffb13c58 0000000019f5c8e6 000000008184b000 0000000000000109
-           00000000802d8000 0000000000000109 0000000018571ebc 0000037fffb13718
-Krnl Code: 000000001857276a: c07000b1f80b        larl    %r7,0000000019bb1780
-           0000000018572770: a708000a            lhi     %r0,10
-          #0000000018572774: e78950000c36        vlm     %v24,%v25,0(%r5),0
-          >000000001857277a: e7a060000806        vl      %v26,0(%r6),0
-           0000000018572780: e7bf70004c36        vlm     %v27,%v31,0(%r7),4
-           0000000018572786: e70b00000456        vlr     %v0,%v27
-           000000001857278c: e71800000456        vlr     %v1,%v24
-           0000000018572792: e74b00000456        vlr     %v4,%v27
+BUG: KASAN: slab-use-after-free in vcs_size (drivers/tty/vt/vc_screen.c:215)
+Read of size 4 at addr ffff8880beab89a8 by task repro_vcs_size/4119
+
 Call Trace:
- [<000000001857277a>] chacha20_vx+0x32/0x818
-Last Breaking-Event-Address:
- [<0000000018571eb6>] chacha20_crypt_s390.constprop.0+0x6e/0xd8
----[ end trace 0000000000000000 ]---
-Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+ <TASK>
+__asan_report_load4_noabort (mm/kasan/report_generic.c:380)
+vcs_size (drivers/tty/vt/vc_screen.c:215)
+vcs_write (drivers/tty/vt/vc_screen.c:664)
+vfs_write (fs/read_write.c:582 fs/read_write.c:564)
+...
+ <TASK>
 
-Fix this by adding a missing MACHINE_HAS_VX check.
+Allocated by task 1213:
+kmalloc_trace (mm/slab_common.c:1064)
+vc_allocate (./include/linux/slab.h:559 ./include/linux/slab.h:680
+    drivers/tty/vt/vt.c:1078 drivers/tty/vt/vt.c:1058)
+con_install (drivers/tty/vt/vt.c:3334)
+tty_init_dev (drivers/tty/tty_io.c:1303 drivers/tty/tty_io.c:1415
+    drivers/tty/tty_io.c:1392)
+tty_open (drivers/tty/tty_io.c:2082 drivers/tty/tty_io.c:2128)
+chrdev_open (fs/char_dev.c:415)
+do_dentry_open (fs/open.c:921)
+vfs_open (fs/open.c:1052)
+...
 
-Fixes: 349d03ffd5f6 ("crypto: s390 - add crypto library interface for ChaCha20")
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Cc: <stable@vger.kernel.org> # 5.19+
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-[agordeev@linux.ibm.com: remove duplicates in commit message]
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Freed by task 4116:
+kfree (mm/slab_common.c:1016)
+vc_port_destruct (drivers/tty/vt/vt.c:1044)
+tty_port_destructor (drivers/tty/tty_port.c:296)
+tty_port_put (drivers/tty/tty_port.c:312)
+vt_disallocate_all (drivers/tty/vt/vt_ioctl.c:662 (discriminator 2))
+vt_ioctl (drivers/tty/vt/vt_ioctl.c:903)
+tty_ioctl (drivers/tty/tty_io.c:2778)
+...
+
+The buggy address belongs to the object at ffff8880beab8800
+ which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 424 bytes inside of
+ freed 1024-byte region [ffff8880beab8800, ffff8880beab8c00)
+
+The buggy address belongs to the physical page:
+page:00000000afc77580 refcount:1 mapcount:0 mapping:0000000000000000
+    index:0x0 pfn:0xbeab8
+head:00000000afc77580 order:3 entire_mapcount:0 nr_pages_mapped:0
+    pincount:0
+flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: 0xffffffff()
+raw: 000fffffc0010200 ffff888100042dc0 ffffea000426de00 dead000000000002
+raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff8880beab8880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880beab8900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff8880beab8980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                  ^
+ ffff8880beab8a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880beab8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+Disabling lock debugging due to kernel taint
+
+Fixes: ac751efa6a0d ("console: rename acquire/release_console_sem() to console_lock/unlock()")
+Cc: stable <stable@kernel.org>
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/1683889728-10411-1-git-send-email-george.kennedy@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/crypto/chacha-glue.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/vt/vc_screen.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/s390/crypto/chacha-glue.c
-+++ b/arch/s390/crypto/chacha-glue.c
-@@ -82,7 +82,7 @@ void chacha_crypt_arch(u32 *state, u8 *d
- 	 * it cannot handle a block of data or less, but otherwise
- 	 * it can handle data of arbitrary size
- 	 */
--	if (bytes <= CHACHA_BLOCK_SIZE || nrounds != 20)
-+	if (bytes <= CHACHA_BLOCK_SIZE || nrounds != 20 || !MACHINE_HAS_VX)
- 		chacha_crypt_generic(state, dst, src, bytes, nrounds);
- 	else
- 		chacha20_crypt_s390(state, dst, src, bytes,
+--- a/drivers/tty/vt/vc_screen.c
++++ b/drivers/tty/vt/vc_screen.c
+@@ -656,10 +656,17 @@ vcs_write(struct file *file, const char
+ 			}
+ 		}
+ 
+-		/* The vcs_size might have changed while we slept to grab
+-		 * the user buffer, so recheck.
++		/* The vc might have been freed or vcs_size might have changed
++		 * while we slept to grab the user buffer, so recheck.
+ 		 * Return data written up to now on failure.
+ 		 */
++		vc = vcs_vc(inode, &viewed);
++		if (!vc) {
++			if (written)
++				break;
++			ret = -ENXIO;
++			goto unlock_out;
++		}
+ 		size = vcs_size(vc, attr, false);
+ 		if (size < 0) {
+ 			if (written)
 
 
