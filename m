@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0837270C978
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1AC70C792
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235336AbjEVTse (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43354 "EHLO
+        id S234750AbjEVTbR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235269AbjEVTsd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCAD9C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:32 -0700 (PDT)
+        with ESMTP id S234749AbjEVTbQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:31:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E620EA9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:31:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA5BF622BD
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6490C433D2;
-        Mon, 22 May 2023 19:48:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4093A62913
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:31:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA93C433EF;
+        Mon, 22 May 2023 19:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784911;
-        bh=d0qDdDGbiLrFmJua8/hH1F3y4GKnKStL7u34TP8zoO8=;
+        s=korg; t=1684783873;
+        bh=GvBIaFFNDWukj+63DYyfuqluzJ4KZ8igHhn8Dae5KdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1o4cAoNVo5lb98s30cq2raOTSpOvvGvw8Gj7aJlBpkC9+nQRZ/LsuoeJ0Hk1KB3Q
-         WSxz7Qf/WHQ0Xqo29cr4DJdy3ENeC9ycRgb8C/BgKLIp3OYqQC43LgAV88lBC8V+Sd
-         pCwhK1CggMMDVOIs4ATt9DnX0saaDOErIoepCmY8=
+        b=xWY/ov6Tm/Yz4aiwRVwCvhjGyH5CkDyOFwMmJu6GDvJZXeBgraCehSdXmGo0Y2wle
+         Sa+I+RhsCdU/sbswnDvHc3qGua7trrvlPoVkA/3finwwcm2gkTwbyt7wDuiQpVWHaA
+         Q+aWDgPwXEbUfbOKQ+ZPcBUKOQRnTcItWUvaYi5U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Hao Lan <lanhao@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 242/364] net: hns3: fix sending pfc frames after reset issue
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 190/292] ASoC: SOF: topology: Fix logic for copying tuples
 Date:   Mon, 22 May 2023 20:09:07 +0100
-Message-Id: <20230522190418.750636736@linuxfoundation.org>
+Message-Id: <20230522190410.709230428@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 
-[ Upstream commit f14db07064727dd3bc0906c77a6d2759c1bbb395 ]
+[ Upstream commit 41c5305cc3d827d2ea686533777a285176ae01a0 ]
 
-To prevent the system from abnormally sending PFC frames after an
-abnormal reset. The hns3 driver notifies the firmware to disable pfc
-before reset.
+Topology could have more instances of the tokens being searched for than
+the number of sets that need to be copied. Stop copying token after the
+limit of number of token instances has been reached. This worked before
+only by chance as we had allocated more size for the tuples array than
+the number of actual tokens being parsed.
 
-Fixes: 35d93a30040c ("net: hns3: adjust the process of PF reset")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 7006d20e5e9d ("ASoC: SOF: Introduce IPC3 ops")
+Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+Link: https://lore.kernel.org/r/20230512114630.24439-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c |  4 ++--
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h |  5 +++++
- 3 files changed, 16 insertions(+), 8 deletions(-)
+ sound/soc/sof/topology.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 07ad5f35219e2..50e956d6c3b25 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -8053,12 +8053,15 @@ static void hclge_ae_stop(struct hnae3_handle *handle)
- 	/* If it is not PF reset or FLR, the firmware will disable the MAC,
- 	 * so it only need to stop phy here.
- 	 */
--	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) &&
--	    hdev->reset_type != HNAE3_FUNC_RESET &&
--	    hdev->reset_type != HNAE3_FLR_RESET) {
--		hclge_mac_stop_phy(hdev);
--		hclge_update_link_status(hdev);
--		return;
-+	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state)) {
-+		hclge_pfc_pause_en_cfg(hdev, HCLGE_PFC_TX_RX_DISABLE,
-+				       HCLGE_PFC_DISABLE);
-+		if (hdev->reset_type != HNAE3_FUNC_RESET &&
-+		    hdev->reset_type != HNAE3_FLR_RESET) {
-+			hclge_mac_stop_phy(hdev);
-+			hclge_update_link_status(hdev);
-+			return;
-+		}
- 	}
- 
- 	hclge_reset_tqp(handle);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index 4a33f65190e2b..922c0da3660c7 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -171,8 +171,8 @@ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
- 	return hclge_cmd_send(&hdev->hw, &desc, 1);
- }
- 
--static int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
--				  u8 pfc_bitmap)
-+int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
-+			   u8 pfc_bitmap)
- {
- 	struct hclge_desc desc;
- 	struct hclge_pfc_en_cmd *pfc = (struct hclge_pfc_en_cmd *)desc.data;
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-index 68f28a98e380b..dd6f1fd486cf2 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-@@ -164,6 +164,9 @@ struct hclge_bp_to_qs_map_cmd {
- 	u32 rsvd1;
- };
- 
-+#define HCLGE_PFC_DISABLE	0
-+#define HCLGE_PFC_TX_RX_DISABLE	0
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index 6a0e7f3b50234..872e44408298f 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -545,6 +545,10 @@ static int sof_copy_tuples(struct snd_sof_dev *sdev, struct snd_soc_tplg_vendor_
+ 				if (*num_copied_tuples == tuples_size)
+ 					return 0;
+ 			}
 +
- struct hclge_pfc_en_cmd {
- 	u8 tx_rx_en_bitmap;
- 	u8 pri_en_bitmap;
-@@ -235,6 +238,8 @@ void hclge_tm_schd_info_update(struct hclge_dev *hdev, u8 num_tc);
- void hclge_tm_pfc_info_update(struct hclge_dev *hdev);
- int hclge_tm_dwrr_cfg(struct hclge_dev *hdev);
- int hclge_tm_init_hw(struct hclge_dev *hdev, bool init);
-+int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
-+			   u8 pfc_bitmap);
- int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
- int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
- void hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
++			/* stop when we've found the required token instances */
++			if (found == num_tokens * token_instance_num)
++				return 0;
+ 		}
+ 
+ 		/* next array */
 -- 
 2.39.2
 
