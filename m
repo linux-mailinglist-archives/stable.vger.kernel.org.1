@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77DC370C666
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8BE270C773
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234078AbjEVTR3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:17:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40656 "EHLO
+        id S234712AbjEVT3y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232736AbjEVTR3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:17:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B655993
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:17:27 -0700 (PDT)
+        with ESMTP id S234708AbjEVT3u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE31C18B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F5B1627A7
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:17:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF56C433D2;
-        Mon, 22 May 2023 19:17:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4E22628EE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8811C433EF;
+        Mon, 22 May 2023 19:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783046;
-        bh=zhyhoXerJviVRCPZW9FECH9CoJMwpz//XDo9U0a0/hQ=;
+        s=korg; t=1684783779;
+        bh=cbub/WuzpW8apRWPgbsfqYmzWdPLROE4q4Mnsb75sSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cZvaORjo51/dcuZXuUd2zQr7pdI5JFykHKcUN4IrjnNjNAP0UDsAD59qiYdcjXVVe
-         VMFVUNeB3j3Ukzy791ERv6OlZA7JJy9wcEUi0gkuu6yJhIWgsm/sRhjaFcV/Ix4sB7
-         uQ7BVGVE8Bz/tBKVuSidjz0tS4LXLl7FLeZVo4aM=
+        b=nX/I4KvCiAU2WQHzx3U59kyC88jY1x7yo8vqLb0Z/Ks2Tb1Dv+HCSqtHzw6fCyfZR
+         p7HDfKjtEc4BJ4/UK0w8PTv+dcxStjYSfw0PJFPvK2OewFPqD6J4fYQN8vNQHL7+z0
+         w8J4IBY8dHO9/lqEgUImbhyTIJM5HFlY/BWhnoms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Edward Lo <edward.lo@ambergroup.io>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Thomas Renninger <trenn@suse.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Wyes Karny <wyes.karny@amd.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/203] fs/ntfs3: Validate MFT flags before replaying logs
+Subject: [PATCH 6.1 160/292] cpupower: Make TSC read per CPU for Mperf monitor
 Date:   Mon, 22 May 2023 20:08:37 +0100
-Message-Id: <20230522190357.564056920@linuxfoundation.org>
+Message-Id: <20230522190409.965014704@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,139 +57,157 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edward Lo <edward.lo@ambergroup.io>
+From: Wyes Karny <wyes.karny@amd.com>
 
-[ Upstream commit 98bea253aa28ad8be2ce565a9ca21beb4a9419e5 ]
+[ Upstream commit c2adb1877b76fc81ae041e1db1a6ed2078c6746b ]
 
-Log load and replay is part of the metadata handle flow during mount
-operation. The $MFT record will be loaded and used while replaying logs.
-However, a malformed $MFT record, say, has RECORD_FLAG_DIR flag set and
-contains an ATTR_ROOT attribute will misguide kernel to treat it as a
-directory, and try to free the allocated resources when the
-corresponding inode is freed, which will cause an invalid kfree because
-the memory hasn't actually been allocated.
+System-wide TSC read could cause a drift in C0 percentage calculation.
+Because if first TSC is read and then one by one mperf is read for all
+cpus, this introduces drift between mperf reading of later CPUs and TSC
+reading.  To lower this drift read TSC per CPU and also just after mperf
+read.  This technique improves C0 percentage calculation in Mperf monitor.
 
-[  101.368647] BUG: KASAN: invalid-free in kvfree+0x2c/0x40
-[  101.369457]
-[  101.369986] CPU: 0 PID: 198 Comm: mount Not tainted 6.0.0-rc7+ #5
-[  101.370529] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-[  101.371362] Call Trace:
-[  101.371795]  <TASK>
-[  101.372157]  dump_stack_lvl+0x49/0x63
-[  101.372658]  print_report.cold+0xf5/0x689
-[  101.373022]  ? ni_write_inode+0x754/0xd90
-[  101.373378]  ? kvfree+0x2c/0x40
-[  101.373698]  kasan_report_invalid_free+0x77/0xf0
-[  101.374058]  ? kvfree+0x2c/0x40
-[  101.374352]  ? kvfree+0x2c/0x40
-[  101.374668]  __kasan_slab_free+0x189/0x1b0
-[  101.374992]  ? kvfree+0x2c/0x40
-[  101.375271]  kfree+0x168/0x3b0
-[  101.375717]  kvfree+0x2c/0x40
-[  101.376002]  indx_clear+0x26/0x60
-[  101.376316]  ni_clear+0xc5/0x290
-[  101.376661]  ntfs_evict_inode+0x45/0x70
-[  101.377001]  evict+0x199/0x280
-[  101.377432]  iput.part.0+0x286/0x320
-[  101.377819]  iput+0x32/0x50
-[  101.378166]  ntfs_loadlog_and_replay+0x143/0x320
-[  101.378656]  ? ntfs_bio_fill_1+0x510/0x510
-[  101.378968]  ? iput.part.0+0x286/0x320
-[  101.379367]  ntfs_fill_super+0xecb/0x1ba0
-[  101.379729]  ? put_ntfs+0x1d0/0x1d0
-[  101.380046]  ? vsprintf+0x20/0x20
-[  101.380542]  ? mutex_unlock+0x81/0xd0
-[  101.380914]  ? set_blocksize+0x95/0x150
-[  101.381597]  get_tree_bdev+0x232/0x370
-[  101.382254]  ? put_ntfs+0x1d0/0x1d0
-[  101.382699]  ntfs_fs_get_tree+0x15/0x20
-[  101.383094]  vfs_get_tree+0x4c/0x130
-[  101.383675]  path_mount+0x654/0xfe0
-[  101.384203]  ? putname+0x80/0xa0
-[  101.384540]  ? finish_automount+0x2e0/0x2e0
-[  101.384943]  ? putname+0x80/0xa0
-[  101.385362]  ? kmem_cache_free+0x1c4/0x440
-[  101.385968]  ? putname+0x80/0xa0
-[  101.386666]  do_mount+0xd6/0xf0
-[  101.387228]  ? path_mount+0xfe0/0xfe0
-[  101.387585]  ? __kasan_check_write+0x14/0x20
-[  101.387979]  __x64_sys_mount+0xca/0x110
-[  101.388436]  do_syscall_64+0x3b/0x90
-[  101.388757]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[  101.389289] RIP: 0033:0x7fa0f70e948a
-[  101.390048] Code: 48 8b 0d 11 fa 2a 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 008
-[  101.391297] RSP: 002b:00007ffc24fdecc8 EFLAGS: 00000202 ORIG_RAX: 00000000000000a5
-[  101.391988] RAX: ffffffffffffffda RBX: 000055932c183060 RCX: 00007fa0f70e948a
-[  101.392494] RDX: 000055932c183260 RSI: 000055932c1832e0 RDI: 000055932c18bce0
-[  101.393053] RBP: 0000000000000000 R08: 000055932c183280 R09: 0000000000000020
-[  101.393577] R10: 00000000c0ed0000 R11: 0000000000000202 R12: 000055932c18bce0
-[  101.394044] R13: 000055932c183260 R14: 0000000000000000 R15: 00000000ffffffff
-[  101.394747]  </TASK>
-[  101.395402]
-[  101.396047] Allocated by task 198:
-[  101.396724]  kasan_save_stack+0x26/0x50
-[  101.397400]  __kasan_slab_alloc+0x6d/0x90
-[  101.397974]  kmem_cache_alloc_lru+0x192/0x5a0
-[  101.398524]  ntfs_alloc_inode+0x23/0x70
-[  101.399137]  alloc_inode+0x3b/0xf0
-[  101.399534]  iget5_locked+0x54/0xa0
-[  101.400026]  ntfs_iget5+0xaf/0x1780
-[  101.400414]  ntfs_loadlog_and_replay+0xe5/0x320
-[  101.400883]  ntfs_fill_super+0xecb/0x1ba0
-[  101.401313]  get_tree_bdev+0x232/0x370
-[  101.401774]  ntfs_fs_get_tree+0x15/0x20
-[  101.402224]  vfs_get_tree+0x4c/0x130
-[  101.402673]  path_mount+0x654/0xfe0
-[  101.403160]  do_mount+0xd6/0xf0
-[  101.403537]  __x64_sys_mount+0xca/0x110
-[  101.404058]  do_syscall_64+0x3b/0x90
-[  101.404333]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[  101.404816]
-[  101.405067] The buggy address belongs to the object at ffff888008cc9ea0
-[  101.405067]  which belongs to the cache ntfs_inode_cache of size 992
-[  101.406171] The buggy address is located 232 bytes inside of
-[  101.406171]  992-byte region [ffff888008cc9ea0, ffff888008cca280)
-[  101.406995]
-[  101.408559] The buggy address belongs to the physical page:
-[  101.409320] page:00000000dccf19dd refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x8cc8
-[  101.410654] head:00000000dccf19dd order:2 compound_mapcount:0 compound_pincount:0
-[  101.411533] flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
-[  101.412665] raw: 000fffffc0010200 0000000000000000 dead000000000122 ffff888003695140
-[  101.413209] raw: 0000000000000000 00000000800e000e 00000001ffffffff 0000000000000000
-[  101.413799] page dumped because: kasan: bad access detected
-[  101.414213]
-[  101.414427] Memory state around the buggy address:
-[  101.414991]  ffff888008cc9e80: fc fc fc fc 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.415785]  ffff888008cc9f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.416933] >ffff888008cc9f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.417857]                       ^
-[  101.418566]  ffff888008cca000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.419704]  ffff888008cca080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Before fix: (System 100% busy)
 
-Signed-off-by: Edward Lo <edward.lo@ambergroup.io>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+              | Mperf              || RAPL        || Idle_Stats
+ PKG|CORE| CPU| C0   | Cx   | Freq  || pack | core  || POLL | C1   | C2
+   0|   0|   0| 87.15| 12.85|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   0| 256| 84.62| 15.38|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   1|   1| 87.15| 12.85|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   1| 257| 84.08| 15.92|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   2|   2| 86.61| 13.39|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   2| 258| 83.26| 16.74|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   3|   3| 86.61| 13.39|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   3| 259| 83.60| 16.40|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   4|   4| 86.33| 13.67|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   4| 260| 83.33| 16.67|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   5|   5| 86.06| 13.94|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   5| 261| 83.05| 16.95|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   6|   6| 85.51| 14.49|  2695||168659003|3970468||  0.00|  0.00| 0.00
+
+After fix: (System 100% busy)
+
+             | Mperf              || RAPL        || Idle_Stats
+ PKG|CORE| CPU| C0   | Cx   | Freq  || pack | core  || POLL | C1   | C2
+   0|   0|   0| 98.03|  1.97|  2415||163295480|3811189||  0.00|  0.00| 0.00
+   0|   0| 256| 98.50|  1.50|  2394||163295480|3811189||  0.00|  0.00| 0.00
+   0|   1|   1| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   1| 257| 99.99|  0.01|  2375||163295480|3811189||  0.00|  0.00| 0.00
+   0|   2|   2| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   2| 258|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   3|   3|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   3| 259| 99.99|  0.01|  2435||163295480|3811189||  0.00|  0.00| 0.00
+   0|   4|   4|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   4| 260|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
+   0|   5|   5| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   5| 261|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
+   0|   6|   6|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   6| 262|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
+
+Cc: Thomas Renninger <trenn@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Dominik Brodowski <linux@dominikbrodowski.net>
+
+Fixes: 7fe2f6399a84 ("cpupowerutils - cpufrequtils extended with quite some features")
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../utils/idle_monitor/mperf_monitor.c        | 31 +++++++++----------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 359eff346910e..2034c0ae6549b 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -98,6 +98,12 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 	/* Record should contain $I30 root. */
- 	is_dir = rec->flags & RECORD_FLAG_DIR;
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index e7d48cb563c0e..ae6af354a81db 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -70,8 +70,8 @@ static int max_freq_mode;
+  */
+ static unsigned long max_frequency;
  
-+	/* MFT_REC_MFT is not a dir */
-+	if (is_dir && ino == MFT_REC_MFT) {
-+		err = -EINVAL;
-+		goto out;
+-static unsigned long long tsc_at_measure_start;
+-static unsigned long long tsc_at_measure_end;
++static unsigned long long *tsc_at_measure_start;
++static unsigned long long *tsc_at_measure_end;
+ static unsigned long long *mperf_previous_count;
+ static unsigned long long *aperf_previous_count;
+ static unsigned long long *mperf_current_count;
+@@ -169,7 +169,7 @@ static int mperf_get_count_percent(unsigned int id, double *percent,
+ 	aperf_diff = aperf_current_count[cpu] - aperf_previous_count[cpu];
+ 
+ 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
+-		tsc_diff = tsc_at_measure_end - tsc_at_measure_start;
++		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
+ 		*percent = 100.0 * mperf_diff / tsc_diff;
+ 		dprint("%s: TSC Ref - mperf_diff: %llu, tsc_diff: %llu\n",
+ 		       mperf_cstates[id].name, mperf_diff, tsc_diff);
+@@ -206,7 +206,7 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
+ 
+ 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
+ 		/* Calculate max_freq from TSC count */
+-		tsc_diff = tsc_at_measure_end - tsc_at_measure_start;
++		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
+ 		time_diff = timespec_diff_us(time_start, time_end);
+ 		max_frequency = tsc_diff / time_diff;
+ 	}
+@@ -225,33 +225,27 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
+ static int mperf_start(void)
+ {
+ 	int cpu;
+-	unsigned long long dbg;
+ 
+ 	clock_gettime(CLOCK_REALTIME, &time_start);
+-	mperf_get_tsc(&tsc_at_measure_start);
+ 
+-	for (cpu = 0; cpu < cpu_count; cpu++)
++	for (cpu = 0; cpu < cpu_count; cpu++) {
++		mperf_get_tsc(&tsc_at_measure_start[cpu]);
+ 		mperf_init_stats(cpu);
 +	}
-+
- 	inode->i_generation = le16_to_cpu(rec->seq);
  
- 	/* Enumerate all struct Attributes MFT. */
+-	mperf_get_tsc(&dbg);
+-	dprint("TSC diff: %llu\n", dbg - tsc_at_measure_start);
+ 	return 0;
+ }
+ 
+ static int mperf_stop(void)
+ {
+-	unsigned long long dbg;
+ 	int cpu;
+ 
+-	for (cpu = 0; cpu < cpu_count; cpu++)
++	for (cpu = 0; cpu < cpu_count; cpu++) {
+ 		mperf_measure_stats(cpu);
++		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++	}
+ 
+-	mperf_get_tsc(&tsc_at_measure_end);
+ 	clock_gettime(CLOCK_REALTIME, &time_end);
+-
+-	mperf_get_tsc(&dbg);
+-	dprint("TSC diff: %llu\n", dbg - tsc_at_measure_end);
+-
+ 	return 0;
+ }
+ 
+@@ -353,7 +347,8 @@ struct cpuidle_monitor *mperf_register(void)
+ 	aperf_previous_count = calloc(cpu_count, sizeof(unsigned long long));
+ 	mperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
+ 	aperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
+-
++	tsc_at_measure_start = calloc(cpu_count, sizeof(unsigned long long));
++	tsc_at_measure_end = calloc(cpu_count, sizeof(unsigned long long));
+ 	mperf_monitor.name_len = strlen(mperf_monitor.name);
+ 	return &mperf_monitor;
+ }
+@@ -364,6 +359,8 @@ void mperf_unregister(void)
+ 	free(aperf_previous_count);
+ 	free(mperf_current_count);
+ 	free(aperf_current_count);
++	free(tsc_at_measure_start);
++	free(tsc_at_measure_end);
+ 	free(is_valid);
+ }
+ 
 -- 
 2.39.2
 
