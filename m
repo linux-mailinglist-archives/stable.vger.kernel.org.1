@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7222970C6C5
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB0F70C8EB
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234444AbjEVTWS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
+        id S235086AbjEVTnW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234434AbjEVTWR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:22:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D72E9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:17 -0700 (PDT)
+        with ESMTP id S235169AbjEVTnS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1956186
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF6DB62838
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E4C433EF;
-        Mon, 22 May 2023 19:22:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D918262A30
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30B7C433EF;
+        Mon, 22 May 2023 19:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783336;
-        bh=IdVt9EID+sh18zsIXhi5nhq/d3Y/idBOj8szCQu65bQ=;
+        s=korg; t=1684784541;
+        bh=DWstlYSb6HQkL3J/mt/Oo2KXh8UsNNnwfW+H9bnZiTA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yuX7dm1vmRyLNH5hAh4WadfK5f6RLcBkRV1EEosxpWxldP8r3UXanVNfE1hWGWge5
-         nONDg0v25n2egGnHJlxdPJK1NziWPBGrnjCz4txDmwGDdjm/2ubPXMyiyTRjfdJX4U
-         5TwCoW50PQ3lBbdDjdiYYLKpHUJFTmYgpe/uw51Y=
+        b=NSn4vsISqaSZoZWRiThc8L8HfMXzRfOA+YXrFA/GC78+NDWKFXsB55KA+rr9LXc9w
+         FfDjQYwsrPbsUUzYYsc9C46VvD4qQ+JA4PHMxukgMsLlctbPUDZlWVcoIQMKA3Iz3x
+         wn/fLrO4ivaj1Wqox5bbt8tRivkoNB3XRBSk3V3s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/292] net: phy: bcm7xx: Correct read from expansion register
-Date:   Mon, 22 May 2023 20:06:08 +0100
-Message-Id: <20230522190406.173755454@linuxfoundation.org>
+Subject: [PATCH 6.3 064/364] memstick: r592: Fix UAF bug in r592_remove due to race condition
+Date:   Mon, 22 May 2023 20:06:09 +0100
+Message-Id: <20230522190414.388731794@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 582dbb2cc1a0a7427840f5b1e3c65608e511b061 ]
+[ Upstream commit 63264422785021704c39b38f65a78ab9e4a186d7 ]
 
-Since the driver works in the "legacy" addressing mode, we need to write
-to the expansion register (0x17) with bits 11:8 set to 0xf to properly
-select the expansion register passed as argument.
+In r592_probe, dev->detect_timer was bound with r592_detect_timer.
+In r592_irq function, the timer function will be invoked by mod_timer.
 
-Fixes: f68d08c437f9 ("net: phy: bcm7xxx: Add EPHY entry for 72165")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230508231749.1681169-1-f.fainelli@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If we remove the module which will call hantro_release to make cleanup,
+there may be a unfinished work. The possible sequence is as follows,
+which will cause a typical UAF bug.
+
+Fix it by canceling the work before cleanup in r592_remove.
+
+CPU0                  CPU1
+
+                    |r592_detect_timer
+r592_remove         |
+  memstick_free_host|
+  put_device;       |
+  kfree(host);      |
+                    |
+                    | queue_work
+                    |   &host->media_checker //use
+
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Link: https://lore.kernel.org/r/20230307164338.1246287-1-zyytlz.wz@163.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/bcm-phy-lib.h | 5 +++++
- drivers/net/phy/bcm7xxx.c     | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/memstick/host/r592.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/bcm-phy-lib.h b/drivers/net/phy/bcm-phy-lib.h
-index 9902fb1820997..729db441797a0 100644
---- a/drivers/net/phy/bcm-phy-lib.h
-+++ b/drivers/net/phy/bcm-phy-lib.h
-@@ -40,6 +40,11 @@ static inline int bcm_phy_write_exp_sel(struct phy_device *phydev,
- 	return bcm_phy_write_exp(phydev, reg | MII_BCM54XX_EXP_SEL_ER, val);
- }
+diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
+index 1d35d147552d4..42bfc46842b82 100644
+--- a/drivers/memstick/host/r592.c
++++ b/drivers/memstick/host/r592.c
+@@ -829,7 +829,7 @@ static void r592_remove(struct pci_dev *pdev)
+ 	/* Stop the processing thread.
+ 	That ensures that we won't take any more requests */
+ 	kthread_stop(dev->io_thread);
+-
++	del_timer_sync(&dev->detect_timer);
+ 	r592_enable_device(dev, false);
  
-+static inline int bcm_phy_read_exp_sel(struct phy_device *phydev, u16 reg)
-+{
-+	return bcm_phy_read_exp(phydev, reg | MII_BCM54XX_EXP_SEL_ER);
-+}
-+
- int bcm54xx_auxctl_write(struct phy_device *phydev, u16 regnum, u16 val);
- int bcm54xx_auxctl_read(struct phy_device *phydev, u16 regnum);
- 
-diff --git a/drivers/net/phy/bcm7xxx.c b/drivers/net/phy/bcm7xxx.c
-index 75593e7d1118f..6cebf3aaa621f 100644
---- a/drivers/net/phy/bcm7xxx.c
-+++ b/drivers/net/phy/bcm7xxx.c
-@@ -487,7 +487,7 @@ static int bcm7xxx_16nm_ephy_afe_config(struct phy_device *phydev)
- 	bcm_phy_write_misc(phydev, 0x0038, 0x0002, 0xede0);
- 
- 	/* Read CORE_EXPA9 */
--	tmp = bcm_phy_read_exp(phydev, 0x00a9);
-+	tmp = bcm_phy_read_exp_sel(phydev, 0x00a9);
- 	/* CORE_EXPA9[6:1] is rcalcode[5:0] */
- 	rcalcode = (tmp & 0x7e) / 2;
- 	/* Correct RCAL code + 1 is -1% rprogr, LP: +16 */
+ 	while (!error && dev->req) {
 -- 
 2.39.2
 
