@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B334770C7F3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E8470C68A
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231782AbjEVTeh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:34:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55868 "EHLO
+        id S234245AbjEVTTR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234911AbjEVTec (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:34:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59672186
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:34:12 -0700 (PDT)
+        with ESMTP id S234285AbjEVTTQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6DF93
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7C862954
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A45C433A1;
-        Mon, 22 May 2023 19:33:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 612B9627FD
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67372C4339B;
+        Mon, 22 May 2023 19:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783980;
-        bh=dnDgplo1uMeqHjMk2ufEQfH9n0t5o/a1L47gNe7tN24=;
+        s=korg; t=1684783154;
+        bh=G6RNchY9rQS70IcHCm4EBvURaJ2vSp7iHz6zvVVlbek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mrg5Zsdg9x/GUVVl0O4whsbtVxS3bz8ytSibuglp60VQSFB4z5XacI/LZ+SwS9LJm
-         0RW3MV/eoMAT0/3ndHrnA6OcDia10/8BzG401/zic+1Xqu5mUFOEGQ2YvURqf/Dizq
-         XclVRgDtzVlLvJ+npNp5W46gUZ2w7jntCsz1VZms=
+        b=DOYZRxAgta6L5+PuuKqtXXeJLCfeg0Jivxg04Mu3VVKzbmR1q3jtydI8KR825wRGL
+         eU1lgnWYAAqpkiW5kSQ9tQd+a6RYrQs5MiezMMXeVjo+/8h/J0hb9j2aR/zEFwkUQ3
+         iRDQYilVTkUY2FJXHmJrTHKr7HvCPXnZ81M3tZDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 224/292] netfilter: nft_set_rbtree: fix null deref on element insertion
+Subject: [PATCH 5.15 157/203] vlan: fix a potential uninit-value in vlan_dev_hard_start_xmit()
 Date:   Mon, 22 May 2023 20:09:41 +0100
-Message-Id: <20230522190411.553737446@linuxfoundation.org>
+Message-Id: <20230522190359.321095056@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,86 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 61ae320a29b0540c16931816299eb86bf2b66c08 ]
+[ Upstream commit dacab578c7c6cd06c50c89dfa36b0e0f10decd4e ]
 
-There is no guarantee that rb_prev() will not return NULL in nft_rbtree_gc_elem():
+syzbot triggered the following splat [1], sending an empty message
+through pppoe_sendmsg().
 
-general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
- nft_add_set_elem+0x14b0/0x2990
-  nf_tables_newsetelem+0x528/0xb30
+When VLAN_FLAG_REORDER_HDR flag is set, vlan_dev_hard_header()
+does not push extra bytes for the VLAN header, because vlan is offloaded.
 
-Furthermore, there is a possible use-after-free while iterating,
-'node' can be free'd so we need to cache the next value to use.
+Unfortunately vlan_dev_hard_start_xmit() first reads veth->h_vlan_proto
+before testing (vlan->flags & VLAN_FLAG_REORDER_HDR).
 
-Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+We need to swap the two conditions.
+
+[1]
+BUG: KMSAN: uninit-value in vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
+vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
+__netdev_start_xmit include/linux/netdevice.h:4883 [inline]
+netdev_start_xmit include/linux/netdevice.h:4897 [inline]
+xmit_one net/core/dev.c:3580 [inline]
+dev_hard_start_xmit+0x253/0xa20 net/core/dev.c:3596
+__dev_queue_xmit+0x3c7f/0x5ac0 net/core/dev.c:4246
+dev_queue_xmit include/linux/netdevice.h:3053 [inline]
+pppoe_sendmsg+0xa93/0xb80 drivers/net/ppp/pppoe.c:900
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
+__do_sys_sendmmsg net/socket.c:2670 [inline]
+__se_sys_sendmmsg net/socket.c:2667 [inline]
+__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:774
+slab_alloc_node mm/slub.c:3452 [inline]
+kmem_cache_alloc_node+0x543/0xab0 mm/slub.c:3497
+kmalloc_reserve+0x148/0x470 net/core/skbuff.c:520
+__alloc_skb+0x3a7/0x850 net/core/skbuff.c:606
+alloc_skb include/linux/skbuff.h:1277 [inline]
+sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2583
+pppoe_sendmsg+0x3af/0xb80 drivers/net/ppp/pppoe.c:867
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
+__do_sys_sendmmsg net/socket.c:2670 [inline]
+__se_sys_sendmmsg net/socket.c:2667 [inline]
+__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+CPU: 0 PID: 29770 Comm: syz-executor.0 Not tainted 6.3.0-rc6-syzkaller-gc478e5b17829 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/8021q/vlan_dev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 19ea4d3c35535..2f114aa10f1a7 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -221,7 +221,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- {
- 	struct nft_set *set = (struct nft_set *)__set;
- 	struct rb_node *prev = rb_prev(&rbe->node);
--	struct nft_rbtree_elem *rbe_prev;
-+	struct nft_rbtree_elem *rbe_prev = NULL;
- 	struct nft_set_gc_batch *gcb;
- 
- 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
-@@ -229,17 +229,21 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 		return -ENOMEM;
- 
- 	/* search for expired end interval coming before this element. */
--	do {
-+	while (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
- 		if (nft_rbtree_interval_end(rbe_prev))
- 			break;
- 
- 		prev = rb_prev(prev);
--	} while (prev != NULL);
-+	}
-+
-+	if (rbe_prev) {
-+		rb_erase(&rbe_prev->node, &priv->root);
-+		atomic_dec(&set->nelems);
-+	}
- 
--	rb_erase(&rbe_prev->node, &priv->root);
- 	rb_erase(&rbe->node, &priv->root);
--	atomic_sub(2, &set->nelems);
-+	atomic_dec(&set->nelems);
- 
- 	nft_set_gc_batch_add(gcb, rbe);
- 	nft_set_gc_batch_complete(gcb);
-@@ -268,7 +272,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 			       struct nft_set_ext **ext)
- {
- 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
--	struct rb_node *node, *parent, **p, *first = NULL;
-+	struct rb_node *node, *next, *parent, **p, *first = NULL;
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 genmask = nft_genmask_next(net);
- 	int d, err;
-@@ -307,7 +311,9 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	 * Values stored in the tree are in reversed order, starting from
- 	 * highest to lowest value.
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index b6d456c7952ed..3d0f0d0a323b5 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -108,8 +108,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
+ 	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+ 	 * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
  	 */
--	for (node = first; node != NULL; node = rb_next(node)) {
-+	for (node = first; node != NULL; node = next) {
-+		next = rb_next(node);
-+
- 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
- 
- 		if (!nft_set_elem_active(&rbe->ext, genmask))
+-	if (veth->h_vlan_proto != vlan->vlan_proto ||
+-	    vlan->flags & VLAN_FLAG_REORDER_HDR) {
++	if (vlan->flags & VLAN_FLAG_REORDER_HDR ||
++	    veth->h_vlan_proto != vlan->vlan_proto) {
+ 		u16 vlan_tci;
+ 		vlan_tci = vlan->vlan_id;
+ 		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
 -- 
 2.39.2
 
