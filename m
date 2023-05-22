@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 092B270C62A
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1F370C946
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233688AbjEVTQI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38910 "EHLO
+        id S235317AbjEVTqY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234025AbjEVTPp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:45 -0400
+        with ESMTP id S235325AbjEVTqP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013EE198
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5A5198
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1182E62761
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE0DC433EF;
-        Mon, 22 May 2023 19:15:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E205A62A4A
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB3BC433EF;
+        Mon, 22 May 2023 19:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782931;
-        bh=HO9kH9iTf7BZ+r/NUpBV3prKlUi2RxnAl4HpPpGWrdA=;
+        s=korg; t=1684784773;
+        bh=e6B98Uepb34tvnDnPicTAK5CJB5NCUMelUvyDKtVoxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O60fnfK1yujxDxBAlYMUQvs172oNQ0pngya1OcBHAmvdsH0PYOgVk8xcUKFbdXQG2
-         1nfoa5dCNnp5fCWoX6K9DMeJEmgcTzt/imWzHqIepuoMPn7MebLDwzJK7Enc7sVRCv
-         JkLwp45saGWK7YJ8BIs7M0Gsi5wYAmHwDdiqp1Js=
+        b=TvnBiE2DoAPKv3yMuuY7jyaS6T9tfOxvs6GAexfYD5riwhGQal00jez1WX33MbBMs
+         es6Vt2bNJYbVi7L5JqzMhSpfcIQcMjyk0/S9rbaTUC60IW4mV+xO9168drXS3GQ+yF
+         2hitAYdODiePw+JzVro1hdXDOS8FmhtULwVSEQx0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/203] staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE
-Date:   Mon, 22 May 2023 20:08:22 +0100
-Message-Id: <20230522190357.150478651@linuxfoundation.org>
+Subject: [PATCH 6.3 198/364] xfrm: dont check the default policy if the policy allows the packet
+Date:   Mon, 22 May 2023 20:08:23 +0100
+Message-Id: <20230522190417.682816866@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit fda2093860df4812d69052a8cf4997e53853a340 ]
+[ Upstream commit 430cac487400494c19a8b85299e979bb07b4671f ]
 
-Replace macro RTL_PCI_DEVICE with PCI_DEVICE to get rid of rtl819xp_ops
-which is empty.
+The current code doesn't let a simple "allow" policy counteract a
+default policy blocking all incoming packets:
 
-Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Link: https://lore.kernel.org/r/8b45ee783fa91196b7c9d6fc840a189496afd2f4.1677133271.git.philipp.g.hortmann@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    ip x p setdefault in block
+    ip x p a src 192.168.2.1/32 dst 192.168.2.2/32 dir in action allow
+
+At this stage, we have an allow policy (with or without transforms)
+for this packet. It doesn't matter what the default policy says, since
+the policy we looked up lets the packet through. The case of a
+blocking policy is already handled separately, so we can remove this
+check.
+
+Fixes: 2d151d39073a ("xfrm: Add possibility to set the default to block if we have no policy")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 6 +++---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.h | 5 -----
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ net/xfrm/xfrm_policy.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-index 48c696df8d015..52d7dc5b29054 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-@@ -49,9 +49,9 @@ static const struct rtl819x_ops rtl819xp_ops = {
- };
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 5c61ec04b839b..62be042f2ebcd 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3712,12 +3712,6 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		}
+ 		xfrm_nr = ti;
  
- static struct pci_device_id rtl8192_pci_id_tbl[] = {
--	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
--	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
--	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
-+	{PCI_DEVICE(0x10ec, 0x8192)},
-+	{PCI_DEVICE(0x07aa, 0x0044)},
-+	{PCI_DEVICE(0x07aa, 0x0047)},
- 	{}
- };
- 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
-index 698552a921009..197f1e3d7aca7 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
-@@ -55,11 +55,6 @@
- #define IS_HARDWARE_TYPE_8192SE(_priv)		\
- 	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 == NIC_8192SE)
- 
--#define RTL_PCI_DEVICE(vend, dev, cfg) \
--	.vendor = (vend), .device = (dev), \
--	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
--	.driver_data = (kernel_ulong_t)&(cfg)
+-		if (net->xfrm.policy_default[dir] == XFRM_USERPOLICY_BLOCK &&
+-		    !xfrm_nr) {
+-			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+-			goto reject;
+-		}
 -
- #define TOTAL_CAM_ENTRY		32
- #define CAM_CONTENT_COUNT	8
- 
+ 		if (npols > 1) {
+ 			xfrm_tmpl_sort(stp, tpp, xfrm_nr, family);
+ 			tpp = stp;
 -- 
 2.39.2
 
