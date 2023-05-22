@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66AF570C73E
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE8670C5E5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234649AbjEVT1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49104 "EHLO
+        id S232442AbjEVTNR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234638AbjEVT1e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:34 -0400
+        with ESMTP id S233660AbjEVTNP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D187CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 763B3F4
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8352628C2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C93C433D2;
-        Mon, 22 May 2023 19:27:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E54CD62361
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A967C4339B;
+        Mon, 22 May 2023 19:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783652;
-        bh=KUyy0skmmfGj1I/uMR/3FPlqUsK/ODaqOCMjz3G+bxA=;
+        s=korg; t=1684782793;
+        bh=ShXMDo/Cm+yn9OtbinjrTZQeJkB1C7gNGJkp2umDGvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XazrZs6OWoORd4iKrkaBLO0CWZp0ueN76qXod6+CyKlhPT+rSaT9fW0/OWNywU01I
-         i/6boPLDiQ1Zz7gjLPd9iAffw/8YKlKqSr8lfnLrpKnqmshosNcIA1BadPTpBPY3zx
-         ZuN0nLyM0VHhny/SpvsuGyaxUTuEh2rqK1t5KkBc=
+        b=q45whb0N01sQfCyWdVY2L2zm9WbOhKzEEnrKoS6TcPCOcbQxDIypDbcLWZV9nHmju
+         OHlol5iFjX2o8Y2Wfwg3aoTwp+mKtTP4tJHZwBH+vHSCNbAmUaCWijFuuDihuI1OEu
+         gZXqdlIWMZyHUgnysQ5kzxyw5ndAKWcL1GSy+a8g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/292] ext4: set goal start correctly in ext4_mb_normalize_request
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 022/203] drm/i915/dp: prevent potential div-by-zero
 Date:   Mon, 22 May 2023 20:07:26 +0100
-Message-Id: <20230522190408.199103681@linuxfoundation.org>
+Message-Id: <20230522190355.573887245@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,70 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit b07ffe6927c75d99af534d685282ea188d9f71a6 ]
+[ Upstream commit 0ff80028e2702c7c3d78b69705dc47c1ccba8c39 ]
 
-We need to set ac_g_ex to notify the goal start used in
-ext4_mb_find_by_goal. Set ac_g_ex instead of ac_f_ex in
-ext4_mb_normalize_request.
-Besides we should assure goal start is in range [first_data_block,
-blocks_count) as ext4_mb_initialize_context does.
+drm_dp_dsc_sink_max_slice_count() may return 0 if something goes
+wrong on the part of the DSC sink and its DPCD register. This null
+value may be later used as a divisor in intel_dsc_compute_params(),
+which will lead to an error.
+In the unlikely event that this issue occurs, fix it by testing the
+return value of drm_dp_dsc_sink_max_slice_count() against zero.
 
-[ Added a check to make sure size is less than ar->pright; otherwise
-  we could end up passing an underflowed value of ar->pright - size to
-  ext4_get_group_no_and_offset(), which will trigger a BUG_ON later on.
-  - TYT ]
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20230303172120.3800725-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: a4a157777c80 ("drm/i915/dp: Compute DSC pipe config in atomic check")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230418140430.69902-1-n.zhandarovich@fintech.ru
+(cherry picked from commit 51f7008239de011370c5067bbba07f0207f06b72)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 09bb1dae40cf0..21f09bcffbbaa 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4018,6 +4018,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
- 				struct ext4_allocation_request *ar)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
-+	struct ext4_super_block *es = sbi->s_es;
- 	int bsbits, max;
- 	ext4_lblk_t end;
- 	loff_t size, start_off;
-@@ -4213,18 +4214,21 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
- 	ac->ac_g_ex.fe_len = EXT4_NUM_B2C(sbi, size);
- 
- 	/* define goal start in order to merge */
--	if (ar->pright && (ar->lright == (start + size))) {
-+	if (ar->pright && (ar->lright == (start + size)) &&
-+	    ar->pright >= size &&
-+	    ar->pright - size >= le32_to_cpu(es->s_first_data_block)) {
- 		/* merge to the right */
- 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pright - size,
--						&ac->ac_f_ex.fe_group,
--						&ac->ac_f_ex.fe_start);
-+						&ac->ac_g_ex.fe_group,
-+						&ac->ac_g_ex.fe_start);
- 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
- 	}
--	if (ar->pleft && (ar->lleft + 1 == start)) {
-+	if (ar->pleft && (ar->lleft + 1 == start) &&
-+	    ar->pleft + 1 < ext4_blocks_count(es)) {
- 		/* merge to the left */
- 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pleft + 1,
--						&ac->ac_f_ex.fe_group,
--						&ac->ac_f_ex.fe_start);
-+						&ac->ac_g_ex.fe_group,
-+						&ac->ac_g_ex.fe_start);
- 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
- 	}
- 
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 64a15b636e8d4..6cc1258578088 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -1231,6 +1231,11 @@ static int intel_dp_dsc_compute_config(struct intel_dp *intel_dp,
+ 		pipe_config->dsc.slice_count =
+ 			drm_dp_dsc_sink_max_slice_count(intel_dp->dsc_dpcd,
+ 							true);
++		if (!pipe_config->dsc.slice_count) {
++			drm_dbg_kms(&dev_priv->drm, "Unsupported Slice Count %d\n",
++				    pipe_config->dsc.slice_count);
++			return -EINVAL;
++		}
+ 	} else {
+ 		u16 dsc_max_output_bpp;
+ 		u8 dsc_dp_slice_count;
 -- 
 2.39.2
 
