@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4481270C71B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEF970C8ED
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234626AbjEVTZy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47492 "EHLO
+        id S235198AbjEVTn2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234613AbjEVTZv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:51 -0400
+        with ESMTP id S235186AbjEVTnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E0F103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC2E1AC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66E6E62866
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A8DC433D2;
-        Mon, 22 May 2023 19:25:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0085062A2D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10214C4339B;
+        Mon, 22 May 2023 19:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783549;
-        bh=AOFh1WhfR4xsMJ/bfPiml5mDJj6P2fKPo6om/hQdRh0=;
+        s=korg; t=1684784589;
+        bh=8PAcPdtGigjTmyNmB4KjebzR1n76DZ7lYtf9FipWSvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I8fSngBhFgXiUYdX6BZr7lzMm0vhndBCbe1FysKQvLpbBEB1eu8gTEfs1EuRxaQHX
-         o9b3mxwcjBczqfKaTMCp8FNSTsxKPAGv5vw3DdQu8hV0wKSylnyDjYjnzafjgHjjcM
-         8wjWftbuluL0GK9iJ25UR62tMZGZeAP+jnNfy/cs=
+        b=RxY6GDxRZXVQWBEmcHVg29XVkCr0JFketleSuVM0yyyPDBk0PSE52c6mSang/nacR
+         ZGthFdoJrCTDCoF25Bl8RXDBX4WPlIKB7f9NZYXheQPZc1QKZVao0qVnZQ1Q9uhEO0
+         n/3dcDLDlcGYvsn1CO8CVCFiBEMup/RjjkpDzWd4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/292] net: pasemi: Fix return type of pasemi_mac_start_tx()
+        patches@lists.linux.dev, Zhong Jinghua <zhongjinghua@huawei.com>,
+        Yu Kuai <yukuai3@huawei.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 133/364] nbd: fix incomplete validation of ioctl arg
 Date:   Mon, 22 May 2023 20:07:18 +0100
-Message-Id: <20230522190407.998440976@linuxfoundation.org>
+Message-Id: <20230522190416.114279906@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Zhong Jinghua <zhongjinghua@huawei.com>
 
-[ Upstream commit c8384d4a51e7cb0e6587f3143f29099f202c5de1 ]
+[ Upstream commit 55793ea54d77719a071b1ccc05a05056e3b5e009 ]
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-warning in clang aims to catch these at compile time, which reveals:
+We tested and found an alarm caused by nbd_ioctl arg without verification.
+The UBSAN warning calltrace like below:
 
-  drivers/net/ethernet/pasemi/pasemi_mac.c:1665:21: error: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          .ndo_start_xmit         = pasemi_mac_start_tx,
-                                    ^~~~~~~~~~~~~~~~~~~
-  1 error generated.
+UBSAN: Undefined behaviour in fs/buffer.c:1709:35
+signed integer overflow:
+-9223372036854775808 - 1 cannot be represented in type 'long long int'
+CPU: 3 PID: 2523 Comm: syz-executor.0 Not tainted 4.19.90 #1
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace+0x0/0x3f0 arch/arm64/kernel/time.c:78
+ show_stack+0x28/0x38 arch/arm64/kernel/traps.c:158
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x170/0x1dc lib/dump_stack.c:118
+ ubsan_epilogue+0x18/0xb4 lib/ubsan.c:161
+ handle_overflow+0x188/0x1dc lib/ubsan.c:192
+ __ubsan_handle_sub_overflow+0x34/0x44 lib/ubsan.c:206
+ __block_write_full_page+0x94c/0xa20 fs/buffer.c:1709
+ block_write_full_page+0x1f0/0x280 fs/buffer.c:2934
+ blkdev_writepage+0x34/0x40 fs/block_dev.c:607
+ __writepage+0x68/0xe8 mm/page-writeback.c:2305
+ write_cache_pages+0x44c/0xc70 mm/page-writeback.c:2240
+ generic_writepages+0xdc/0x148 mm/page-writeback.c:2329
+ blkdev_writepages+0x2c/0x38 fs/block_dev.c:2114
+ do_writepages+0xd4/0x250 mm/page-writeback.c:2344
 
-->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
-'netdev_tx_t', not 'int'. Adjust the return type of
-pasemi_mac_start_tx() to match the prototype's to resolve the warning.
-While PowerPC does not currently implement support for kCFI, it could in
-the future, which means this warning becomes a fatal CFI failure at run
-time.
+The reason for triggering this warning is __block_write_full_page()
+-> i_size_read(inode) - 1 overflow.
+inode->i_size is assigned in __nbd_ioctl() -> nbd_set_size() -> bytesize.
+We think it is necessary to limit the size of arg to prevent errors.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1750
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://lore.kernel.org/r/20230319-pasemi-incompatible-pointer-types-strict-v1-1-1b9459d8aef0@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Moreover, __nbd_ioctl() -> nbd_add_socket(), arg will be cast to int.
+Assuming the value of arg is 0x80000000000000001) (on a 64-bit machine),
+it will become 1 after the coercion, which will return unexpected results.
+
+Fix it by adding checks to prevent passing in too large numbers.
+
+Signed-off-by: Zhong Jinghua <zhongjinghua@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://lore.kernel.org/r/20230206145805.2645671-1-zhongjinghua@huawei.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pasemi/pasemi_mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/nbd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/pasemi/pasemi_mac.c b/drivers/net/ethernet/pasemi/pasemi_mac.c
-index aaab590ef548d..ed7dd0a042355 100644
---- a/drivers/net/ethernet/pasemi/pasemi_mac.c
-+++ b/drivers/net/ethernet/pasemi/pasemi_mac.c
-@@ -1423,7 +1423,7 @@ static void pasemi_mac_queue_csdesc(const struct sk_buff *skb,
- 	write_dma_reg(PAS_DMA_TXCHAN_INCR(txring->chan.chno), 2);
- }
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 592cfa8b765a5..e1c954094b6c0 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -325,6 +325,9 @@ static int nbd_set_size(struct nbd_device *nbd, loff_t bytesize,
+ 	if (blk_validate_block_size(blksize))
+ 		return -EINVAL;
  
--static int pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct pasemi_mac * const mac = netdev_priv(dev);
- 	struct pasemi_mac_txring * const txring = tx_ring(mac);
++	if (bytesize < 0)
++		return -EINVAL;
++
+ 	nbd->config->bytesize = bytesize;
+ 	nbd->config->blksize_bits = __ffs(blksize);
+ 
+@@ -1111,6 +1114,9 @@ static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
+ 	struct nbd_sock *nsock;
+ 	int err;
+ 
++	/* Arg will be cast to int, check it to avoid overflow */
++	if (arg > INT_MAX)
++		return -EINVAL;
+ 	sock = nbd_get_socket(nbd, arg, &err);
+ 	if (!sock)
+ 		return err;
 -- 
 2.39.2
 
