@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36D1B70C96D
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC99570C7BE
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235323AbjEVTsE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42910 "EHLO
+        id S234784AbjEVTcY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:32:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235325AbjEVTsD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:03 -0400
+        with ESMTP id S234812AbjEVTcM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:32:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61A72A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE929E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:32:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC09362ABE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EBAC433EF;
-        Mon, 22 May 2023 19:48:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F52E6292F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:32:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9076FC4339C;
+        Mon, 22 May 2023 19:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784881;
-        bh=480gBQqDgjGiJwXu8XZAfLNAGDrkNRLQuLgTyrE6pKU=;
+        s=korg; t=1684783929;
+        bh=kBIMZF4dfVJoq85E9/5DVhfsutNvOQw3JwFfqGU7ZMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uIbMkO+9xmJ5Wy3jSRO4k+s88+/vm7JnzKuwqMRDTrcdOzc474JdB2jCcdv063c7m
-         lki4yn1N3AyHy1au3QLN+nsF766938lAAdWsymbSufDtEY3up7W4Tv0G8I3v5eZUJl
-         UdMe6Yg+YZdlM/0YnIdD2ptdAxhKcJ4w/Uourwxc=
+        b=0kpkASpJrdHm9rzAksDVahk5lTRB9eNc+HF16Z0Bu5rsul1Z2qgnvmF6mXZOqOHmv
+         qGxx4eGGtoy6a/x+95VFAyaT4utHHc0LLCYOwjJch8YGUw11dI61gbgcBNlDbX528M
+         5V8NuiYR9uYn1nhviUhOOLL4108kwbSUoZSdE/PU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Hao Lan <lanhao@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 233/364] media: pvrusb2: fix DVB_CORE dependency
+Subject: [PATCH 6.1 181/292] net: hns3: fix output information incomplete for dumping tx queue info with debugfs
 Date:   Mon, 22 May 2023 20:08:58 +0100
-Message-Id: <20230522190418.525921476@linuxfoundation.org>
+Message-Id: <20230522190410.488366651@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 53558de2b5c4f4ee6bfcfbe34e27071c2d0073d5 ]
+[ Upstream commit 89f6bfb071182f05d7188c255b0e7251c3806f16 ]
 
-Now that DVB_CORE can be a loadable module, pvrusb2 can run into
-a link error:
+In function hns3_dump_tx_queue_info, The print buffer is not enough when
+the tx BD number is configured to 32760. As a result several BD
+information wouldn't be displayed.
 
-ld.lld: error: undefined symbol: dvb_module_probe
->>> referenced by pvrusb2-devattr.c
->>>               drivers/media/usb/pvrusb2/pvrusb2-devattr.o:(pvr2_lgdt3306a_attach) in archive vmlinux.a
-ld.lld: error: undefined symbol: dvb_module_release
->>> referenced by pvrusb2-devattr.c
->>>               drivers/media/usb/pvrusb2/pvrusb2-devattr.o:(pvr2_dual_fe_attach) in archive vmlinux.a
+So fix it by increasing the tx queue print buffer length.
 
-Refine the Kconfig dependencies to avoid this case.
-
-Link: https://lore.kernel.org/linux-media/20230117171055.2714621-1-arnd@kernel.org
-Fixes: 7655c342dbc4 ("media: Kconfig: Make DVB_CORE=m possible when MEDIA_SUPPORT=y")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 630a6738da82 ("net: hns3: adjust string spaces of some parameters of tx bd info in debugfs")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/pvrusb2/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 2 +-
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/pvrusb2/Kconfig b/drivers/media/usb/pvrusb2/Kconfig
-index 9501b10b31aa5..0df10270dbdfc 100644
---- a/drivers/media/usb/pvrusb2/Kconfig
-+++ b/drivers/media/usb/pvrusb2/Kconfig
-@@ -37,6 +37,7 @@ config VIDEO_PVRUSB2_DVB
- 	bool "pvrusb2 ATSC/DVB support"
- 	default y
- 	depends on VIDEO_PVRUSB2 && DVB_CORE
-+	depends on VIDEO_PVRUSB2=m || DVB_CORE=y
- 	select DVB_LGDT330X if MEDIA_SUBDRV_AUTOSELECT
- 	select DVB_S5H1409 if MEDIA_SUBDRV_AUTOSELECT
- 	select DVB_S5H1411 if MEDIA_SUBDRV_AUTOSELECT
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 66feb23f7b7b6..bcccd82a2620f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -130,7 +130,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.name = "tx_bd_queue",
+ 		.cmd = HNAE3_DBG_CMD_TX_BD,
+ 		.dentry = HNS3_DBG_DENTRY_TX_BD,
+-		.buf_len = HNS3_DBG_READ_LEN_4MB,
++		.buf_len = HNS3_DBG_READ_LEN_5MB,
+ 		.init = hns3_dbg_bd_file_init,
+ 	},
+ 	{
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
+index 97578eabb7d8b..4a5ef8a90a104 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
+@@ -10,6 +10,7 @@
+ #define HNS3_DBG_READ_LEN_128KB	0x20000
+ #define HNS3_DBG_READ_LEN_1MB	0x100000
+ #define HNS3_DBG_READ_LEN_4MB	0x400000
++#define HNS3_DBG_READ_LEN_5MB	0x500000
+ #define HNS3_DBG_WRITE_LEN	1024
+ 
+ #define HNS3_DBG_DATA_STR_LEN	32
 -- 
 2.39.2
 
