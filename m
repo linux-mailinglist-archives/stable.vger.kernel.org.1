@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B545C70C9F4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF1070C84B
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235390AbjEVTx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47992 "EHLO
+        id S235028AbjEVThu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235471AbjEVTx2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:28 -0400
+        with ESMTP id S235029AbjEVThk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BFBC95
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7112DE78
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:37:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEBC762136
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1E8C433EF;
-        Mon, 22 May 2023 19:53:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C435D629AB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3985C433EF;
+        Mon, 22 May 2023 19:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785206;
-        bh=QrT6yHN1YKQQilyQkgDo4uxXBuryL+F+8q2gUGqTnqk=;
+        s=korg; t=1684784214;
+        bh=2ht1WBaXAXy/g8qwj8Dgl0icpTTe5K71jIink7PKcs4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A70cGGoRZcvyu8x8rVQTclg4fiwdAbwJmzsn7HoUBDqKB98AidGvbuD2nrUK5IQfD
-         Ip6K/RtxfGtr3ZeQWjsxjn6j9dOOp0t9KsOYjNV2dieDhxTu4rkww/LkGD2brJWzOF
-         JRc9z/myqLHWQMDFX9Vnw0yArwUHB0LK0aLMXQTU=
+        b=QhoYURUrghJp7uGJYGav1nn/03X+4nUIzsTmkQKG8nYrDy+aZxCCMtaqstXGQtt8d
+         CrHnGSWQ/IDKQG9i8OEbOy0aG63ZYmIG7LDhtEgoXqtuAvLRPXH0/KCELwoGMkq1y0
+         YfJIaPCK8msBI6TvkHhOT00g9ixGf85vL6EvbZ4o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Felix <nimrod4garoa@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.3 316/364] wifi: brcmfmac: Check for probe() id argument being NULL
+        patches@lists.linux.dev, Vitaliy Tomin <tomin@iszf.irk.ru>,
+        stable <stable@kernel.org>
+Subject: [PATCH 6.1 264/292] serial: Add support for Advantech PCI-1611U card
 Date:   Mon, 22 May 2023 20:10:21 +0100
-Message-Id: <20230522190420.675315841@linuxfoundation.org>
+Message-Id: <20230522190412.540777759@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,128 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vitaliy Tomin <tomin@iszf.irk.ru>
 
-commit 60fc756fc8e6954a5618eecac73b255d651602e4 upstream.
+commit d2b00516de0e1d696724247098f6733a6ea53908 upstream.
 
-The probe() id argument may be NULL in 2 scenarios:
+Add support for Advantech PCI-1611U card
 
-1. brcmf_pcie_pm_leave_D3() calling brcmf_pcie_probe() to reprobe
-   the device.
+Advantech provides opensource drivers for this and many others card
+based on legacy copy of 8250_pci driver called adv950
 
-2. If a user tries to manually bind the driver from sysfs then the sdio /
-   pcie / usb probe() function gets called with NULL as id argument.
+https://www.advantech.com/emt/support/details/driver?id=1-TDOIMJ
 
-1. Is being hit by users causing the following oops on resume and causing
-wifi to stop working:
+It is hard to maintain to run as out of tree module on newer kernels.
+Just adding PCI ID to kernel 8250_pci works perfect.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000018
-<snip>
-Hardware name: Dell Inc. XPS 13 9350/0PWNCR, BIDS 1.13.0 02/10/2020
-Workgueue: events_unbound async_run_entry_fn
-RIP: 0010:brcmf_pcie_probe+Ox16b/0x7a0 [brcmfmac]
-<snip>
-Call Trace:
- <TASK>
- brcmf_pcie_pm_leave_D3+0xc5/8x1a0 [brcmfmac be3b4cefca451e190fa35be8f00db1bbec293887]
- ? pci_pm_resume+0x5b/0xf0
- ? pci_legacy_resume+0x80/0x80
- dpm_run_callback+0x47/0x150
- device_resume+0xa2/0x1f0
- async_resume+0x1d/0x30
-<snip>
-
-Fix this by checking for id being NULL.
-
-In the PCI and USB cases try a manual lookup of the id so that manually
-binding the driver through sysfs and more importantly brcmf_pcie_probe()
-on resume will work.
-
-For the SDIO case there is no helper to do a manual sdio_device_id lookup,
-so just directly error out on a NULL id there.
-
-Fixes: da6d9c8ecd00 ("wifi: brcmfmac: add firmware vendor info in driver info")
-Reported-by: Felix <nimrod4garoa@gmail.com>
-Link: https://lore.kernel.org/regressions/4ef3f252ff530cbfa336f5a0d80710020fc5cb1e.camel@gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230510141856.46532-1-hdegoede@redhat.com
+Signed-off-by: Vitaliy Tomin <tomin@iszf.irk.ru>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230423034512.2671157-1-tomin@iszf.irk.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c |    5 +++++
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   |   11 +++++++++++
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c    |   11 +++++++++++
- 3 files changed, 27 insertions(+)
+ drivers/tty/serial/8250/8250_pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -1039,6 +1039,11 @@ static int brcmf_ops_sdio_probe(struct s
- 	struct brcmf_sdio_dev *sdiodev;
- 	struct brcmf_bus *bus_if;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -1940,6 +1940,8 @@ pci_moxa_setup(struct serial_private *pr
+ #define PCI_SUBDEVICE_ID_SIIG_DUAL_30	0x2530
+ #define PCI_VENDOR_ID_ADVANTECH		0x13fe
+ #define PCI_DEVICE_ID_INTEL_CE4100_UART 0x2e66
++#define PCI_DEVICE_ID_ADVANTECH_PCI1600	0x1600
++#define PCI_DEVICE_ID_ADVANTECH_PCI1600_1611	0x1611
+ #define PCI_DEVICE_ID_ADVANTECH_PCI3620	0x3620
+ #define PCI_DEVICE_ID_ADVANTECH_PCI3618	0x3618
+ #define PCI_DEVICE_ID_ADVANTECH_PCIf618	0xf618
+@@ -4105,6 +4107,9 @@ static SIMPLE_DEV_PM_OPS(pciserial_pm_op
+ 			 pciserial_resume_one);
  
-+	if (!id) {
-+		dev_err(&func->dev, "Error no sdio_device_id passed for %x:%x\n", func->vendor, func->device);
-+		return -ENODEV;
-+	}
-+
- 	brcmf_dbg(SDIO, "Enter\n");
- 	brcmf_dbg(SDIO, "Class=%x\n", func->class);
- 	brcmf_dbg(SDIO, "sdio vendor ID: 0x%04x\n", func->vendor);
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -2378,6 +2378,9 @@ static void brcmf_pcie_debugfs_create(st
- }
- #endif
- 
-+/* Forward declaration for pci_match_id() call */
-+static const struct pci_device_id brcmf_pcie_devid_table[];
-+
- static int
- brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
-@@ -2388,6 +2391,14 @@ brcmf_pcie_probe(struct pci_dev *pdev, c
- 	struct brcmf_core *core;
- 	struct brcmf_bus *bus;
- 
-+	if (!id) {
-+		id = pci_match_id(brcmf_pcie_devid_table, pdev);
-+		if (!id) {
-+			pci_err(pdev, "Error could not find pci_device_id for %x:%x\n", pdev->vendor, pdev->device);
-+			return -ENODEV;
-+		}
-+	}
-+
- 	brcmf_dbg(PCIE, "Enter %x:%x\n", pdev->vendor, pdev->device);
- 
- 	ret = -ENOMEM;
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -1331,6 +1331,9 @@ brcmf_usb_disconnect_cb(struct brcmf_usb
- 	brcmf_usb_detach(devinfo);
- }
- 
-+/* Forward declaration for usb_match_id() call */
-+static const struct usb_device_id brcmf_usb_devid_table[];
-+
- static int
- brcmf_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- {
-@@ -1342,6 +1345,14 @@ brcmf_usb_probe(struct usb_interface *in
- 	u32 num_of_eps;
- 	u8 endpoint_num, ep;
- 
-+	if (!id) {
-+		id = usb_match_id(intf, brcmf_usb_devid_table);
-+		if (!id) {
-+			dev_err(&intf->dev, "Error could not find matching usb_device_id\n");
-+			return -ENODEV;
-+		}
-+	}
-+
- 	brcmf_dbg(USB, "Enter 0x%04x:0x%04x\n", id->idVendor, id->idProduct);
- 
- 	devinfo = kzalloc(sizeof(*devinfo), GFP_ATOMIC);
+ static const struct pci_device_id serial_pci_tbl[] = {
++	{	PCI_VENDOR_ID_ADVANTECH, PCI_DEVICE_ID_ADVANTECH_PCI1600,
++		PCI_DEVICE_ID_ADVANTECH_PCI1600_1611, PCI_ANY_ID, 0, 0,
++		pbn_b0_4_921600 },
+ 	/* Advantech use PCI_DEVICE_ID_ADVANTECH_PCI3620 (0x3620) as 'PCI_SUBVENDOR_ID' */
+ 	{	PCI_VENDOR_ID_ADVANTECH, PCI_DEVICE_ID_ADVANTECH_PCI3620,
+ 		PCI_DEVICE_ID_ADVANTECH_PCI3620, 0x0001, 0, 0,
 
 
