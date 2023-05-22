@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA7870C739
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AE970C601
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234646AbjEVT1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
+        id S233970AbjEVTOK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234638AbjEVT1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:19 -0400
+        with ESMTP id S233813AbjEVTOH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 917E6118
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9410DCA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CD8E628AB
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C942C433D2;
-        Mon, 22 May 2023 19:27:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2466261E03
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44075C433D2;
+        Mon, 22 May 2023 19:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783637;
-        bh=ply/ASMcfvhNiPQyAkDXZfwagZWKkhkqMGewzH5yhxw=;
+        s=korg; t=1684782844;
+        bh=oJuoo9B2Qn8mZYl2jaRGvq7HNNEAqRoirg8xoB0TXtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vd7SxEmMqElKi3PCBXP6dXp6HCRGiEboVf9Weo7emRJE53BOnW65vPmnacL9O0wxz
-         tyNQANBurt6LcqthMMmme+mP/RW/uzHoYysB9ezgSAfq92EPbEBu7nWS/LAz8TJIxK
-         dU3BBs6ZQjB9lTqOoRUVpbMsLCj3pl9KPd3xGTjk=
+        b=vDyefm+OAZG8xUTrq5MEXV0Jpxaf5jJi9k6fjYK2OCEEcQMll7zWWZHlYX7f8b348
+         sPtJ9yLHEPHqtWM2+uGE5yzmkCh1CCXELT6QQ2a5rIIL2mcnNtNUyjrwgNDun+QCqP
+         HGYd35my8zPIi7RC0WlCK25i1zvEymPZvEPqA0Kk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vasily Khoruzhick <anarsoul@gmail.com>,
-        Bastian Germann <bage@debian.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/292] Bluetooth: Add new quirk for broken local ext features page 2
+Subject: [PATCH 5.15 044/203] drm/msm/dp: Clean up handling of DP AUX interrupts
 Date:   Mon, 22 May 2023 20:07:48 +0100
-Message-Id: <20230522190408.742582160@linuxfoundation.org>
+Message-Id: <20230522190356.208349496@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +55,208 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 8194f1ef5a815aea815a91daf2c721eab2674f1f ]
+[ Upstream commit b20566cdef05cd40d95f10869d2a7646f48b1bbe ]
 
-Some adapters (e.g. RTL8723CS) advertise that they have more than
-2 pages for local ext features, but they don't support any features
-declared in these pages. RTL8723CS reports max_page = 2 and declares
-support for sync train and secure connection, but it responds with
-either garbage or with error in status on corresponding commands.
+The DP AUX interrupt handling was a bit of a mess.
+* There were two functions (one for "native" transfers and one for
+  "i2c" transfers) that were quite similar. It was hard to say how
+  many of the differences between the two functions were on purpose
+  and how many of them were just an accident of how they were coded.
+* Each function sometimes used "else if" to test for error bits and
+  sometimes didn't and again it was hard to say if this was on purpose
+  or just an accident.
+* The two functions wouldn't notice whether "unknown" bits were
+  set. For instance, there seems to be a bit "DP_INTR_PLL_UNLOCKED"
+  and if it was set there would be no indication.
+* The two functions wouldn't notice if more than one error was set.
 
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Signed-off-by: Bastian Germann <bage@debian.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Let's fix this by being more consistent / explicit about what we're
+doing.
+
+By design this could cause different handling for AUX transfers,
+though I'm not actually aware of any bug fixed as a result of
+this patch (this patch was created because we simply noticed how odd
+the old code was by code inspection). Specific notes here:
+1. In the old native transfer case if we got "done + wrong address"
+   we'd ignore the "wrong address" (because of the "else if"). Now we
+   won't.
+2. In the old native transfer case if we got "done + timeout" we'd
+   ignore the "timeout" (because of the "else if"). Now we won't.
+3. In the old native transfer case we'd see "nack_defer" and translate
+   it to the error number for "nack". This differed from the i2c
+   transfer case where "nack_defer" was given the error number for
+   "nack_defer". This 100% can't matter because the only user of this
+   error number treats "nack defer" the same as "nack", so it's clear
+   that the difference between the "native" and "i2c" was pointless
+   here.
+4. In the old i2c transfer case if we got "done" plus any error
+   besides "nack" or "defer" then we'd ignore the error. Now we don't.
+5. If there is more than one error signaled by the hardware it's
+   possible that we'll report a different one than we used to. I don't
+   know if this matters. If someone is aware of a case this matters we
+   should document it and change the code to make it explicit.
+6. One quirk we keep (I don't know if this is important) is that in
+   the i2c transfer case if we see "done + defer" we report that as a
+   "nack". That seemed too intentional in the old code to just drop.
+
+After this change we will add extra logging, including:
+* A warning if we see more than one error bit set.
+* A warning if we see an unexpected interrupt.
+* A warning if we get an AUX transfer interrupt when shouldn't.
+
+It actually turns out that as a result of this change then at boot we
+sometimes see an error:
+  [drm:dp_aux_isr] *ERROR* Unexpected DP AUX IRQ 0x01000000 when not busy
+That means that, during init, we are seeing DP_INTR_PLL_UNLOCKED. For
+now I'm going to say that leaving this error reported in the logs is
+OK-ish and hopefully it will encourage someone to track down what's
+going on at init time.
+
+One last note here is that this change renames one of the interrupt
+bits. The bit named "i2c done" clearly was used for native transfers
+being done too, so I renamed it to indicate this.
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/520658/
+Link: https://lore.kernel.org/r/20230126170745.v2.1.I90ffed3ddd21e818ae534f820cb4d6d8638859ab@changeid
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h | 7 +++++++
- net/bluetooth/hci_event.c   | 9 +++++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_aux.c     | 80 ++++++++++++-----------------
+ drivers/gpu/drm/msm/dp/dp_catalog.c |  2 +-
+ drivers/gpu/drm/msm/dp/dp_catalog.h |  2 +-
+ 3 files changed, 36 insertions(+), 48 deletions(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 7a381fcef939d..f80ae7d237342 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -294,6 +294,13 @@ enum {
- 	 * during the hdev->setup vendor callback.
- 	 */
- 	HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG,
-+
-+	/* When this quirk is set, max_page for local extended features
-+	 * is set to 1, even if controller reports higher number. Some
-+	 * controllers (e.g. RTL8723CS) report more pages, but they
-+	 * don't actually support features declared there.
-+	 */
-+	HCI_QUIRK_BROKEN_LOCAL_EXT_FEATURES_PAGE_2,
- };
+diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
+index 7b8d4ba868eb7..4742aca2af482 100644
+--- a/drivers/gpu/drm/msm/dp/dp_aux.c
++++ b/drivers/gpu/drm/msm/dp/dp_aux.c
+@@ -161,47 +161,6 @@ static ssize_t dp_aux_cmd_fifo_rx(struct dp_aux_private *aux,
+ 	return i;
+ }
  
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 42a3a19b111e3..21416ccc30ab2 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -881,8 +881,13 @@ static u8 hci_cc_read_local_ext_features(struct hci_dev *hdev, void *data,
- 	if (rp->status)
- 		return rp->status;
+-static void dp_aux_native_handler(struct dp_aux_private *aux, u32 isr)
+-{
+-	if (isr & DP_INTR_AUX_I2C_DONE)
+-		aux->aux_error_num = DP_AUX_ERR_NONE;
+-	else if (isr & DP_INTR_WRONG_ADDR)
+-		aux->aux_error_num = DP_AUX_ERR_ADDR;
+-	else if (isr & DP_INTR_TIMEOUT)
+-		aux->aux_error_num = DP_AUX_ERR_TOUT;
+-	if (isr & DP_INTR_NACK_DEFER)
+-		aux->aux_error_num = DP_AUX_ERR_NACK;
+-	if (isr & DP_INTR_AUX_ERROR) {
+-		aux->aux_error_num = DP_AUX_ERR_PHY;
+-		dp_catalog_aux_clear_hw_interrupts(aux->catalog);
+-	}
+-}
+-
+-static void dp_aux_i2c_handler(struct dp_aux_private *aux, u32 isr)
+-{
+-	if (isr & DP_INTR_AUX_I2C_DONE) {
+-		if (isr & (DP_INTR_I2C_NACK | DP_INTR_I2C_DEFER))
+-			aux->aux_error_num = DP_AUX_ERR_NACK;
+-		else
+-			aux->aux_error_num = DP_AUX_ERR_NONE;
+-	} else {
+-		if (isr & DP_INTR_WRONG_ADDR)
+-			aux->aux_error_num = DP_AUX_ERR_ADDR;
+-		else if (isr & DP_INTR_TIMEOUT)
+-			aux->aux_error_num = DP_AUX_ERR_TOUT;
+-		if (isr & DP_INTR_NACK_DEFER)
+-			aux->aux_error_num = DP_AUX_ERR_NACK_DEFER;
+-		if (isr & DP_INTR_I2C_NACK)
+-			aux->aux_error_num = DP_AUX_ERR_NACK;
+-		if (isr & DP_INTR_I2C_DEFER)
+-			aux->aux_error_num = DP_AUX_ERR_DEFER;
+-		if (isr & DP_INTR_AUX_ERROR) {
+-			aux->aux_error_num = DP_AUX_ERR_PHY;
+-			dp_catalog_aux_clear_hw_interrupts(aux->catalog);
+-		}
+-	}
+-}
+-
+ static void dp_aux_update_offset_and_segment(struct dp_aux_private *aux,
+ 					     struct drm_dp_aux_msg *input_msg)
+ {
+@@ -410,13 +369,42 @@ void dp_aux_isr(struct drm_dp_aux *dp_aux)
+ 	if (!isr)
+ 		return;
  
--	if (hdev->max_page < rp->max_page)
--		hdev->max_page = rp->max_page;
-+	if (hdev->max_page < rp->max_page) {
-+		if (test_bit(HCI_QUIRK_BROKEN_LOCAL_EXT_FEATURES_PAGE_2,
-+			     &hdev->quirks))
-+			bt_dev_warn(hdev, "broken local ext features page 2");
-+		else
-+			hdev->max_page = rp->max_page;
+-	if (!aux->cmd_busy)
++	if (!aux->cmd_busy) {
++		DRM_ERROR("Unexpected DP AUX IRQ %#010x when not busy\n", isr);
+ 		return;
 +	}
  
- 	if (rp->page < HCI_MAX_PAGES)
- 		memcpy(hdev->features[rp->page], rp->features, 8);
+-	if (aux->native)
+-		dp_aux_native_handler(aux, isr);
+-	else
+-		dp_aux_i2c_handler(aux, isr);
++	/*
++	 * The logic below assumes only one error bit is set (other than "done"
++	 * which can apparently be set at the same time as some of the other
++	 * bits). Warn if more than one get set so we know we need to improve
++	 * the logic.
++	 */
++	if (hweight32(isr & ~DP_INTR_AUX_XFER_DONE) > 1)
++		DRM_WARN("Some DP AUX interrupts unhandled: %#010x\n", isr);
++
++	if (isr & DP_INTR_AUX_ERROR) {
++		aux->aux_error_num = DP_AUX_ERR_PHY;
++		dp_catalog_aux_clear_hw_interrupts(aux->catalog);
++	} else if (isr & DP_INTR_NACK_DEFER) {
++		aux->aux_error_num = DP_AUX_ERR_NACK_DEFER;
++	} else if (isr & DP_INTR_WRONG_ADDR) {
++		aux->aux_error_num = DP_AUX_ERR_ADDR;
++	} else if (isr & DP_INTR_TIMEOUT) {
++		aux->aux_error_num = DP_AUX_ERR_TOUT;
++	} else if (!aux->native && (isr & DP_INTR_I2C_NACK)) {
++		aux->aux_error_num = DP_AUX_ERR_NACK;
++	} else if (!aux->native && (isr & DP_INTR_I2C_DEFER)) {
++		if (isr & DP_INTR_AUX_XFER_DONE)
++			aux->aux_error_num = DP_AUX_ERR_NACK;
++		else
++			aux->aux_error_num = DP_AUX_ERR_DEFER;
++	} else if (isr & DP_INTR_AUX_XFER_DONE) {
++		aux->aux_error_num = DP_AUX_ERR_NONE;
++	} else {
++		DRM_WARN("Unexpected interrupt: %#010x\n", isr);
++		return;
++	}
+ 
+ 	complete(&aux->comp);
+ }
+diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.c b/drivers/gpu/drm/msm/dp/dp_catalog.c
+index 9ef24ced6586d..8df5dfd6ad17f 100644
+--- a/drivers/gpu/drm/msm/dp/dp_catalog.c
++++ b/drivers/gpu/drm/msm/dp/dp_catalog.c
+@@ -34,7 +34,7 @@
+ #define MSM_DP_CONTROLLER_P0_SIZE	0x0400
+ 
+ #define DP_INTERRUPT_STATUS1 \
+-	(DP_INTR_AUX_I2C_DONE| \
++	(DP_INTR_AUX_XFER_DONE| \
+ 	DP_INTR_WRONG_ADDR | DP_INTR_TIMEOUT | \
+ 	DP_INTR_NACK_DEFER | DP_INTR_WRONG_DATA_CNT | \
+ 	DP_INTR_I2C_NACK | DP_INTR_I2C_DEFER | \
+diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.h b/drivers/gpu/drm/msm/dp/dp_catalog.h
+index 6965afa81aad2..32d3e14c98f7f 100644
+--- a/drivers/gpu/drm/msm/dp/dp_catalog.h
++++ b/drivers/gpu/drm/msm/dp/dp_catalog.h
+@@ -13,7 +13,7 @@
+ 
+ /* interrupts */
+ #define DP_INTR_HPD		BIT(0)
+-#define DP_INTR_AUX_I2C_DONE	BIT(3)
++#define DP_INTR_AUX_XFER_DONE	BIT(3)
+ #define DP_INTR_WRONG_ADDR	BIT(6)
+ #define DP_INTR_TIMEOUT		BIT(9)
+ #define DP_INTR_NACK_DEFER	BIT(12)
 -- 
 2.39.2
 
