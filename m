@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5CDD70C6D8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59CA870C885
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234480AbjEVTXM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:23:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44816 "EHLO
+        id S234987AbjEVTjf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234549AbjEVTXE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:04 -0400
+        with ESMTP id S235003AbjEVTjc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:39:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C43E133
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5536CDC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:39:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21DB262852
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F033C433EF;
-        Mon, 22 May 2023 19:22:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA9F5629E6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:39:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC00C433D2;
+        Mon, 22 May 2023 19:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783379;
-        bh=f+snpmWRFMmYI0i4V50z1wNXXujeVgGBth6pDGmE4Kw=;
+        s=korg; t=1684784367;
+        bh=F3Wiov1pCS4WKo5KfIAZ+ApsN7GR7v4FG6BtkmgA1Zk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mjP9kydPWXEdXpuRJ67o/a6gkX2swixLGO/gFk56dgKQapVWg0OOo6eVXYT2Oz89d
-         gvY9gNTNwG6zMXduew59DWCiTdI2o5mUdtUuIdsrZfLmvMZGCXISxDmnUtc7MiqsH9
-         m6yzQ4DICmYmefzxffh/zrguInYKfgj/NqtWu7Ro=
+        b=rMGFEu3OuEh48edguVyX4tZ6xPQgZsNQH9fjKBAsb+7Dt7fNEC6FbasOyASqfefXF
+         LkKSFREVBwRbEg0fyiLZ2ltXfGpgUrfmHbFwSJ0PwEMjiMX1KK2k6pRtLnZFglY8j1
+         6CljvJVL/4IAE9XyLEw1+MU+FFMUR9gK4fzRqTQo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Keoseong Park <keosung.park@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, harperchen <harperchen1110@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/292] scsi: ufs: core: Fix I/O hang that occurs when BKOPS fails in W-LUN suspend
+Subject: [PATCH 6.3 058/364] media: cx23885: Fix a null-ptr-deref bug in buffer_prepare() and buffer_finish()
 Date:   Mon, 22 May 2023 20:06:03 +0100
-Message-Id: <20230522190406.047273598@linuxfoundation.org>
+Message-Id: <20230522190414.245263122@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +55,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Keoseong Park <keosung.park@samsung.com>
+From: harperchen <harperchen1110@gmail.com>
 
-[ Upstream commit 1a7edd041f2d252f251523ba3f2eaead076a8f8d ]
+[ Upstream commit 47e8b73bc35d7c54642f78e498697692f6358996 ]
 
-Even when urgent BKOPS fails, the consumer will get stuck in runtime
-suspend status. Like commit 1a5665fc8d7a ("scsi: ufs: core: WLUN suspend
-SSU/enter hibern8 fail recovery"), trigger the error handler and return
--EBUSY to break the suspend.
+When the driver calls cx23885_risc_buffer() to prepare the buffer, the
+function call dma_alloc_coherent may fail, resulting in a empty buffer
+risc->cpu. Later when we free the buffer or access the buffer, null ptr
+deref is triggered.
 
-Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
-Signed-off-by: Keoseong Park <keosung.park@samsung.com>
-Link: https://lore.kernel.org/r/20230425031721epcms2p5d4de65616478c967d466626e20c42a3a@epcms2p5
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This bug is similar to the following one:
+https://git.linuxtv.org/media_stage.git/commit/?id=2b064d91440b33fba5b452f2d1b31f13ae911d71.
+
+We believe the bug can be also dynamically triggered from user side.
+Similarly, we fix this by checking the return value of cx23885_risc_buffer()
+and the value of risc->cpu before buffer free.
+
+Signed-off-by: harperchen <harperchen1110@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/media/pci/cx23885/cx23885-core.c  |  4 +++-
+ drivers/media/pci/cx23885/cx23885-video.c | 13 +++++++------
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index d89ce7fb6b363..977bd4b9dd0b4 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -9058,8 +9058,16 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
- 			 * that performance might be impacted.
- 			 */
- 			ret = ufshcd_urgent_bkops(hba);
--			if (ret)
-+			if (ret) {
-+				/*
-+				 * If return err in suspend flow, IO will hang.
-+				 * Trigger error handler and break suspend for
-+				 * error recovery.
-+				 */
-+				ufshcd_force_error_recovery(hba);
-+				ret = -EBUSY;
- 				goto enable_scaling;
-+			}
- 		} else {
- 			/* make sure that auto bkops is disabled */
- 			ufshcd_disable_auto_bkops(hba);
+diff --git a/drivers/media/pci/cx23885/cx23885-core.c b/drivers/media/pci/cx23885/cx23885-core.c
+index 9232a966bcabb..2ce2914576cf2 100644
+--- a/drivers/media/pci/cx23885/cx23885-core.c
++++ b/drivers/media/pci/cx23885/cx23885-core.c
+@@ -1325,7 +1325,9 @@ void cx23885_free_buffer(struct cx23885_dev *dev, struct cx23885_buffer *buf)
+ {
+ 	struct cx23885_riscmem *risc = &buf->risc;
+ 
+-	dma_free_coherent(&dev->pci->dev, risc->size, risc->cpu, risc->dma);
++	if (risc->cpu)
++		dma_free_coherent(&dev->pci->dev, risc->size, risc->cpu, risc->dma);
++	memset(risc, 0, sizeof(*risc));
+ }
+ 
+ static void cx23885_tsport_reg_dump(struct cx23885_tsport *port)
+diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
+index 3d03f5e95786a..671fc0588e431 100644
+--- a/drivers/media/pci/cx23885/cx23885-video.c
++++ b/drivers/media/pci/cx23885/cx23885-video.c
+@@ -342,6 +342,7 @@ static int queue_setup(struct vb2_queue *q,
+ 
+ static int buffer_prepare(struct vb2_buffer *vb)
+ {
++	int ret;
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
+ 	struct cx23885_dev *dev = vb->vb2_queue->drv_priv;
+ 	struct cx23885_buffer *buf =
+@@ -358,12 +359,12 @@ static int buffer_prepare(struct vb2_buffer *vb)
+ 
+ 	switch (dev->field) {
+ 	case V4L2_FIELD_TOP:
+-		cx23885_risc_buffer(dev->pci, &buf->risc,
++		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
+ 				sgt->sgl, 0, UNSET,
+ 				buf->bpl, 0, dev->height);
+ 		break;
+ 	case V4L2_FIELD_BOTTOM:
+-		cx23885_risc_buffer(dev->pci, &buf->risc,
++		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
+ 				sgt->sgl, UNSET, 0,
+ 				buf->bpl, 0, dev->height);
+ 		break;
+@@ -391,21 +392,21 @@ static int buffer_prepare(struct vb2_buffer *vb)
+ 			line0_offset = 0;
+ 			line1_offset = buf->bpl;
+ 		}
+-		cx23885_risc_buffer(dev->pci, &buf->risc,
++		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
+ 				sgt->sgl, line0_offset,
+ 				line1_offset,
+ 				buf->bpl, buf->bpl,
+ 				dev->height >> 1);
+ 		break;
+ 	case V4L2_FIELD_SEQ_TB:
+-		cx23885_risc_buffer(dev->pci, &buf->risc,
++		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
+ 				sgt->sgl,
+ 				0, buf->bpl * (dev->height >> 1),
+ 				buf->bpl, 0,
+ 				dev->height >> 1);
+ 		break;
+ 	case V4L2_FIELD_SEQ_BT:
+-		cx23885_risc_buffer(dev->pci, &buf->risc,
++		ret = cx23885_risc_buffer(dev->pci, &buf->risc,
+ 				sgt->sgl,
+ 				buf->bpl * (dev->height >> 1), 0,
+ 				buf->bpl, 0,
+@@ -418,7 +419,7 @@ static int buffer_prepare(struct vb2_buffer *vb)
+ 		buf, buf->vb.vb2_buf.index,
+ 		dev->width, dev->height, dev->fmt->depth, dev->fmt->fourcc,
+ 		(unsigned long)buf->risc.dma);
+-	return 0;
++	return ret;
+ }
+ 
+ static void buffer_finish(struct vb2_buffer *vb)
 -- 
 2.39.2
 
