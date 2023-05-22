@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F1F70C91F
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C938370C732
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235239AbjEVTpV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39806 "EHLO
+        id S234645AbjEVT1B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:27:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235384AbjEVTpI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5789AF1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:05 -0700 (PDT)
+        with ESMTP id S234636AbjEVT06 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20209C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF9FB62A30
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC07C433EF;
-        Mon, 22 May 2023 19:45:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 487C9628B2
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E0CC433EF;
+        Mon, 22 May 2023 19:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784704;
-        bh=x94HLNRbcLTPOqzvs73lGBziHJYvCWq2DfQX91kQl4k=;
+        s=korg; t=1684783616;
+        bh=JAPuOxWhBsan5hPSxnWhnAjp48qyhtSOWi8YeO40rHU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ln9xztDf9Ygf7RI9DGFMHwqpUVDUkCgu5peERtfhHhqwymlbe6n4hzwUZC5XE19Jp
-         WXUrueu55TWAtcPfl1M2IqQ14UqQF4dhyDf5Oi87nIQ02q9llgTRllnZdh7uO+ylNX
-         7NKY4I7TxiN9kqV+9Wmsgh9dxJKyvyUjfzkbKQyU=
+        b=c3nokqfgOiWTRMyIldPNP+ErzAQp9kPuGqnK9gkVHtIaRmcoFXEUyszoeG7hwD+Io
+         QGcLcleUSjk3AHmH63G+pIIJkIuqCLOw50RPDozQnpNSwN0NoRc2aystHI2asynpJN
+         n0v2+VeRu633idiDmqVrFhrCmajdItmI+i6WDndo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Samuel=20=C4=8Cavoj?= <samuel@cavoj.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 156/364] usb: typec: ucsi: acpi: add quirk for ASUS Zenbook UM325
+Subject: [PATCH 6.1 104/292] wifi: iwlwifi: fix iwl_mvm_max_amsdu_size() for MLO
 Date:   Mon, 22 May 2023 20:07:41 +0100
-Message-Id: <20230522190416.643406204@linuxfoundation.org>
+Message-Id: <20230522190408.570283108@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,130 +54,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Samuel Čavoj <samuel@cavoj.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 326e1c208f3f24d14b93f910b8ae32c94923d22c ]
+[ Upstream commit b2bc600cced23762d4e97db8989b18772145604f ]
 
-On some ACPI platforms (namely the ASUS Zenbook UM325) the _DSM method must
-not be called after a notification is received but instead the mailbox
-should be read immediately from RAM. This is because the ACPI interrupt
-handler destroys the CCI in ERAM after copying to system memory, and when
-_DSM is later called to perform a second copy, it retrieves a garbage
-value.
+For MLO, we cannot use vif->bss_conf.chandef.chan->band, since
+that will lead to a NULL-ptr dereference as bss_conf isn't used.
+However, in case of real MLO, we also need to take both LMACs
+into account if they exist, since the station might be active
+on both LMACs at the same time.
 
-Instead, the _DSM(read) method should only be called when necessary, i.e.
-for polling the state after reset and for retrieving the version. Other
-reads should not call _DSM and only peek into the RAM region.
-
-This adds a separate read operation for the Zenbook that syncs the
-ACPI mailbox only with polled commands.
-
-Link: https://lore.kernel.org/linux-usb/20210823180626.tb6m7h5tp6adhvt2@fastboi.localdomain/
-Signed-off-by: Samuel Čavoj <samuel@cavoj.net>
-[ heikki : handling everything in ucsi_acpi.c with DMI quirk ]
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230405134456.49607-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230417113648.3588afc85d79.I11592893bbc191b9548518b8bd782de568a9f848@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_acpi.c | 44 ++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 37 +++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
-index 62206a6b8ea75..217355f1f9b94 100644
---- a/drivers/usb/typec/ucsi/ucsi_acpi.c
-+++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
-@@ -9,6 +9,7 @@
- #include <linux/platform_device.h>
- #include <linux/module.h>
- #include <linux/acpi.h>
-+#include <linux/dmi.h>
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index ba944175546d4..542cfcad6e0e6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -788,10 +788,11 @@ unsigned int iwl_mvm_max_amsdu_size(struct iwl_mvm *mvm,
+ 				    struct ieee80211_sta *sta, unsigned int tid)
+ {
+ 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+-	enum nl80211_band band = mvmsta->vif->bss_conf.chandef.chan->band;
+ 	u8 ac = tid_to_mac80211_ac[tid];
++	enum nl80211_band band;
+ 	unsigned int txf;
+-	int lmac = iwl_mvm_get_lmac_id(mvm->fw, band);
++	unsigned int val;
++	int lmac;
  
- #include "ucsi.h"
- 
-@@ -23,6 +24,7 @@ struct ucsi_acpi {
- 	struct completion complete;
- 	unsigned long flags;
- 	guid_t guid;
-+	u64 cmd;
- };
- 
- static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
-@@ -62,6 +64,7 @@ static int ucsi_acpi_async_write(struct ucsi *ucsi, unsigned int offset,
- 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
- 
- 	memcpy(ua->base + offset, val, val_len);
-+	ua->cmd = *(u64 *)val;
- 
- 	return ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_WRITE);
- }
-@@ -93,13 +96,46 @@ static const struct ucsi_operations ucsi_acpi_ops = {
- 	.async_write = ucsi_acpi_async_write
- };
- 
-+static int
-+ucsi_zenbook_read(struct ucsi *ucsi, unsigned int offset, void *val, size_t val_len)
-+{
-+	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
-+	int ret;
+ 	/* For HE redirect to trigger based fifos */
+ 	if (sta->deflink.he_cap.has_he && !WARN_ON(!iwl_mvm_has_new_tx_api(mvm)))
+@@ -805,7 +806,37 @@ unsigned int iwl_mvm_max_amsdu_size(struct iwl_mvm *mvm,
+ 	 * We also want to have the start of the next packet inside the
+ 	 * fifo to be able to send bursts.
+ 	 */
+-	return min_t(unsigned int, mvmsta->max_amsdu_len,
++	val = mvmsta->max_amsdu_len;
 +
-+	if (offset == UCSI_VERSION || UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
-+		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
-+		if (ret)
-+			return ret;
++	if (hweight16(sta->valid_links) <= 1) {
++		if (sta->valid_links) {
++			struct ieee80211_bss_conf *link_conf;
++			unsigned int link = ffs(sta->valid_links) - 1;
++
++			rcu_read_lock();
++			link_conf = rcu_dereference(mvmsta->vif->link_conf[link]);
++			if (WARN_ON(!link_conf))
++				band = NL80211_BAND_2GHZ;
++			else
++				band = link_conf->chandef.chan->band;
++			rcu_read_unlock();
++		} else {
++			band = mvmsta->vif->bss_conf.chandef.chan->band;
++		}
++
++		lmac = iwl_mvm_get_lmac_id(mvm->fw, band);
++	} else if (fw_has_capa(&mvm->fw->ucode_capa,
++			       IWL_UCODE_TLV_CAPA_CDB_SUPPORT)) {
++		/* for real MLO restrict to both LMACs if they exist */
++		lmac = IWL_LMAC_5G_INDEX;
++		val = min_t(unsigned int, val,
++			    mvm->fwrt.smem_cfg.lmac[lmac].txfifo_size[txf] - 256);
++		lmac = IWL_LMAC_24G_INDEX;
++	} else {
++		lmac = IWL_LMAC_24G_INDEX;
 +	}
 +
-+	memcpy(val, ua->base + offset, val_len);
-+
-+	return 0;
-+}
-+
-+static const struct ucsi_operations ucsi_zenbook_ops = {
-+	.read = ucsi_zenbook_read,
-+	.sync_write = ucsi_acpi_sync_write,
-+	.async_write = ucsi_acpi_async_write
-+};
-+
-+static const struct dmi_system_id zenbook_dmi_id[] = {
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
-+		},
-+	},
-+	{ }
-+};
-+
- static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
- {
- 	struct ucsi_acpi *ua = data;
- 	u32 cci;
- 	int ret;
- 
--	ret = ucsi_acpi_read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	ret = ua->ucsi->ops->read(ua->ucsi, UCSI_CCI, &cci, sizeof(cci));
- 	if (ret)
- 		return;
- 
-@@ -114,6 +150,7 @@ static void ucsi_acpi_notify(acpi_handle handle, u32 event, void *data)
- static int ucsi_acpi_probe(struct platform_device *pdev)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
-+	const struct ucsi_operations *ops = &ucsi_acpi_ops;
- 	struct ucsi_acpi *ua;
- 	struct resource *res;
- 	acpi_status status;
-@@ -143,7 +180,10 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
- 	init_completion(&ua->complete);
- 	ua->dev = &pdev->dev;
- 
--	ua->ucsi = ucsi_create(&pdev->dev, &ucsi_acpi_ops);
-+	if (dmi_check_system(zenbook_dmi_id))
-+		ops = &ucsi_zenbook_ops;
-+
-+	ua->ucsi = ucsi_create(&pdev->dev, ops);
- 	if (IS_ERR(ua->ucsi))
- 		return PTR_ERR(ua->ucsi);
++	return min_t(unsigned int, val,
+ 		     mvm->fwrt.smem_cfg.lmac[lmac].txfifo_size[txf] - 256);
+ }
  
 -- 
 2.39.2
