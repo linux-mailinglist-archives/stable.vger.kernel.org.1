@@ -2,47 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E54270C6FE
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A849B70C6E1
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234572AbjEVTYp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:24:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
+        id S234515AbjEVTXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234583AbjEVTYo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:24:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C31569C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:43 -0700 (PDT)
+        with ESMTP id S234545AbjEVTXV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC85CA
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:23:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EAE16287E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E2BC433EF;
-        Mon, 22 May 2023 19:24:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9B6561B3C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:23:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0607C4339C;
+        Mon, 22 May 2023 19:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783482;
-        bh=ktFo/b9bmKnW94LuXy3iwj65bbvj5syCofriKODXs5Y=;
+        s=korg; t=1684783399;
+        bh=R26zJtzdtddNubaKQC8tq6jK3Q8VjDVlXSJ6hBQOJuc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F29eTdQovE6I/AZz9MtqFLRFMCDj4n/ZPDFW0DFFHHZavXpr9ew+CO5KoUwuHxoBd
-         cOcWZtgEoAjzaAGnBs9+pJsPoup5fgAruMBjrllURWX2HL19i/PORvK/bio/tgvxZT
-         at7LapdefPp0oXVe1wgNkyuSiIJAV4f3nC2lGjPk=
+        b=GDMbqeeFsJLKPPrH+PFCTcC07Fn2k4YCjw9Aq+PvebPALMPNIfnHwl7qQO3oZPMK2
+         Bx3dxlmdPTs3QNyc9uaY0PouHpltcGUz40cmIcjFbAQdibvN/rsn1X/bKIwU03D7k2
+         Hch6wNXMaJG8tl9pg5N5yygZHTe2AQJFd2lZSPeU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Jani Nikula <jani.nikula@intel.com>,
+        patches@lists.linux.dev, Zongjie Li <u202112089@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/292] drm/i915: taint kernel when force probing unsupported devices
-Date:   Mon, 22 May 2023 20:06:27 +0100
-Message-Id: <20230522190406.645615157@linuxfoundation.org>
+Subject: [PATCH 6.1 031/292] fbdev: arcfb: Fix error handling in arcfb_probe()
+Date:   Mon, 22 May 2023 20:06:28 +0100
+Message-Id: <20230522190406.670917528@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
 References: <20230522190405.880733338@linuxfoundation.org>
@@ -50,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,87 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Zongjie Li <u202112089@hust.edu.cn>
 
-[ Upstream commit 79c901c93562bdf1c84ce6c1b744fbbe4389a6eb ]
+[ Upstream commit 5a6bef734247c7a8c19511664ff77634ab86f45b ]
 
-For development and testing purposes, the i915.force_probe module
-parameter and DRM_I915_FORCE_PROBE kconfig option allow probing of
-devices that aren't supported by the driver.
+Smatch complains that:
+arcfb_probe() warn: 'irq' from request_irq() not released on lines: 587.
 
-The i915.force_probe module parameter is "unsafe" and setting it taints
-the kernel. However, using the kconfig option does not.
+Fix error handling in the arcfb_probe() function. If IO addresses are
+not provided or framebuffer registration fails, the code will jump to
+the err_addr or err_register_fb label to release resources.
+If IRQ request fails, previously allocated resources will be freed.
 
-Always taint the kernel when force probing a device that is not
-supported.
-
-v2: Drop "depends on EXPERT" to avoid build breakage (kernel test robot)
-
-Fixes: 7ef5ef5cdead ("drm/i915: add force_probe module parameter to replace alpha_support")
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Dave Airlie <airlied@gmail.com>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230504103508.1818540-1-jani.nikula@intel.com
-(cherry picked from commit 3312bb4ad09ca6423bd4a5b15a94588a8962fb8e)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 1154ea7dcd8e ("[PATCH] Framebuffer driver for Arc LCD board")
+Signed-off-by: Zongjie Li <u202112089@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/Kconfig    | 12 +++++++-----
- drivers/gpu/drm/i915/i915_pci.c |  6 ++++++
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/arcfb.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/Kconfig b/drivers/gpu/drm/i915/Kconfig
-index e04715fa5bc4c..6b10868ec72ff 100644
---- a/drivers/gpu/drm/i915/Kconfig
-+++ b/drivers/gpu/drm/i915/Kconfig
-@@ -60,10 +60,11 @@ config DRM_I915_FORCE_PROBE
- 	  This is the default value for the i915.force_probe module
- 	  parameter. Using the module parameter overrides this option.
+diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
+index 45e64016db328..024d0ee4f04f9 100644
+--- a/drivers/video/fbdev/arcfb.c
++++ b/drivers/video/fbdev/arcfb.c
+@@ -523,7 +523,7 @@ static int arcfb_probe(struct platform_device *dev)
  
--	  Force probe the i915 for Intel graphics devices that are
--	  recognized but not properly supported by this kernel version. It is
--	  recommended to upgrade to a kernel version with proper support as soon
--	  as it is available.
-+	  Force probe the i915 driver for Intel graphics devices that are
-+	  recognized but not properly supported by this kernel version. Force
-+	  probing an unsupported device taints the kernel. It is recommended to
-+	  upgrade to a kernel version with proper support as soon as it is
-+	  available.
+ 	info = framebuffer_alloc(sizeof(struct arcfb_par), &dev->dev);
+ 	if (!info)
+-		goto err;
++		goto err_fb_alloc;
  
- 	  It can also be used to block the probe of recognized and fully
- 	  supported devices.
-@@ -73,7 +74,8 @@ config DRM_I915_FORCE_PROBE
- 	  Use "<pci-id>[,<pci-id>,...]" to force probe the i915 for listed
- 	  devices. For example, "4500" or "4500,4571".
+ 	info->screen_base = (char __iomem *)videomemory;
+ 	info->fbops = &arcfb_ops;
+@@ -535,7 +535,7 @@ static int arcfb_probe(struct platform_device *dev)
  
--	  Use "*" to force probe the driver for all known devices.
-+	  Use "*" to force probe the driver for all known devices. Not
-+	  recommended.
- 
- 	  Use "!" right before the ID to block the probe of the device. For
- 	  example, "4500,!4571" forces the probe of 4500 and blocks the probe of
-diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i915_pci.c
-index 1fa4a5813683f..efa80475fbfed 100644
---- a/drivers/gpu/drm/i915/i915_pci.c
-+++ b/drivers/gpu/drm/i915/i915_pci.c
-@@ -1343,6 +1343,12 @@ static int i915_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		return -ENODEV;
+ 	if (!dio_addr || !cio_addr || !c2io_addr) {
+ 		printk(KERN_WARNING "no IO addresses supplied\n");
+-		goto err1;
++		goto err_addr;
+ 	}
+ 	par->dio_addr = dio_addr;
+ 	par->cio_addr = cio_addr;
+@@ -551,12 +551,12 @@ static int arcfb_probe(struct platform_device *dev)
+ 			printk(KERN_INFO
+ 				"arcfb: Failed req IRQ %d\n", par->irq);
+ 			retval = -EBUSY;
+-			goto err1;
++			goto err_addr;
+ 		}
+ 	}
+ 	retval = register_framebuffer(info);
+ 	if (retval < 0)
+-		goto err1;
++		goto err_register_fb;
+ 	platform_set_drvdata(dev, info);
+ 	fb_info(info, "Arc frame buffer device, using %dK of video memory\n",
+ 		videomemorysize >> 10);
+@@ -580,9 +580,12 @@ static int arcfb_probe(struct platform_device *dev)
  	}
  
-+	if (intel_info->require_force_probe) {
-+		dev_info(&pdev->dev, "Force probing unsupported Device ID %04x, tainting kernel\n",
-+			 pdev->device);
-+		add_taint(TAINT_USER, LOCKDEP_STILL_OK);
-+	}
+ 	return 0;
+-err1:
 +
- 	/* Only bind to function 0 of the device. Early generations
- 	 * used function 1 as a placeholder for multi-head. This causes
- 	 * us confusion instead, especially on the systems where both
++err_register_fb:
++	free_irq(par->irq, info);
++err_addr:
+ 	framebuffer_release(info);
+-err:
++err_fb_alloc:
+ 	vfree(videomemory);
+ 	return retval;
+ }
 -- 
 2.39.2
 
