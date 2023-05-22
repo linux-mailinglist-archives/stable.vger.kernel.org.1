@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C31270C5E3
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB5070C8F7
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233203AbjEVTNN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
+        id S235166AbjEVToA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233505AbjEVTNM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBD7CF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:11 -0700 (PDT)
+        with ESMTP id S235178AbjEVTn5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2445012B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 708786235D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A786C433EF;
-        Mon, 22 May 2023 19:13:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 301F962111
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5E8C433EF;
+        Mon, 22 May 2023 19:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782790;
-        bh=IW1Ueglii6p/La+XNZHzA3LPzvYmQkWvFnsKwFSNp4o=;
+        s=korg; t=1684784614;
+        bh=EV+MBgoDQwKredYzLzARpMVhSWTqnVwgZVtGo8w2VVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ux5y89Se9JIEhXdWk/4GEY8+ZcVxfjLyMVCj8qT+kdDsYzr+9D2RIsj51ZJYM7gPa
-         7GxQkpg3l9e6TFNcfOt6w4XGXnG0eS/Il9jbklfHgnLRJ/aJCrRgzDRAxy5xXPZS28
-         N2TDXiHGenSZb+NaFcdDwuRL2MuVXtVfzpe1E3W4=
+        b=hcCVLb0eRYPcP630pBoapsceWZRjyZ+B4P7u76udyXfVASpiVt+isfAZavsXDF8Ji
+         aZGNE5HR9QZIMV2vc13A1dpZOVfFX85NMDBKDDq2TspU6jaTeaGp3yzRs3JVNouHfG
+         V4G01a6g8Lp/lrml6r2joEQHxD6DNW2xuAmUPKXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Michal Kubiak <michal.kubiak@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Chethan T N <chethan.tumkur.narayan@intel.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/203] af_unix: Fix data races around sk->sk_shutdown.
+Subject: [PATCH 6.3 140/364] Bluetooth: btintel: Add LE States quirk support
 Date:   Mon, 22 May 2023 20:07:25 +0100
-Message-Id: <20230522190355.539596866@linuxfoundation.org>
+Message-Id: <20230522190416.276195552@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,151 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Chethan T N <chethan.tumkur.narayan@intel.com>
 
-[ Upstream commit e1d09c2c2f5793474556b60f83900e088d0d366d ]
+[ Upstream commit 77f542b10c535c9a93bf8afdd2665524935807c2 ]
 
-KCSAN found a data race around sk->sk_shutdown where unix_release_sock()
-and unix_shutdown() update it under unix_state_lock(), OTOH unix_poll()
-and unix_dgram_poll() read it locklessly.
+Basically all Intel controllers support both Central/Peripheral
+LE states.
 
-We need to annotate the writes and reads with WRITE_ONCE() and READ_ONCE().
+This patch enables the LE States quirk by default on all
+Solar and Magnertor Intel controllers.
 
-BUG: KCSAN: data-race in unix_poll / unix_release_sock
-
-write to 0xffff88800d0f8aec of 1 bytes by task 264 on cpu 0:
- unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
- unix_release+0x59/0x80 net/unix/af_unix.c:1042
- __sock_release+0x7d/0x170 net/socket.c:653
- sock_close+0x19/0x30 net/socket.c:1397
- __fput+0x179/0x5e0 fs/file_table.c:321
- ____fput+0x15/0x20 fs/file_table.c:349
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffff88800d0f8aec of 1 bytes by task 222 on cpu 1:
- unix_poll+0xa3/0x2a0 net/unix/af_unix.c:3170
- sock_poll+0xcf/0x2b0 net/socket.c:1385
- vfs_poll include/linux/poll.h:88 [inline]
- ep_item_poll.isra.0+0x78/0xc0 fs/eventpoll.c:855
- ep_send_events fs/eventpoll.c:1694 [inline]
- ep_poll fs/eventpoll.c:1823 [inline]
- do_epoll_wait+0x6c4/0xea0 fs/eventpoll.c:2258
- __do_sys_epoll_wait fs/eventpoll.c:2270 [inline]
- __se_sys_epoll_wait fs/eventpoll.c:2265 [inline]
- __x64_sys_epoll_wait+0xcc/0x190 fs/eventpoll.c:2265
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0x00 -> 0x03
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 222 Comm: dbus-broker Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chethan T N <chethan.tumkur.narayan@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/bluetooth/btintel.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 230e20cd986e2..d326540e4938c 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -538,7 +538,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	/* Clear state */
- 	unix_state_lock(sk);
- 	sock_orphan(sk);
--	sk->sk_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
- 	path	     = u->path;
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
-@@ -563,7 +563,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 		if (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) {
- 			unix_state_lock(skpair);
- 			/* No more writes */
--			skpair->sk_shutdown = SHUTDOWN_MASK;
-+			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
- 			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
- 				skpair->sk_err = ECONNRESET;
- 			unix_state_unlock(skpair);
-@@ -2894,7 +2894,7 @@ static int unix_shutdown(struct socket *sock, int mode)
- 	++mode;
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index af774688f1c0d..7a6dc05553f13 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -2684,9 +2684,8 @@ static int btintel_setup_combined(struct hci_dev *hdev)
+ 		 */
+ 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
  
- 	unix_state_lock(sk);
--	sk->sk_shutdown |= mode;
-+	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | mode);
- 	other = unix_peer(sk);
- 	if (other)
- 		sock_hold(other);
-@@ -2914,7 +2914,7 @@ static int unix_shutdown(struct socket *sock, int mode)
- 		if (mode&SEND_SHUTDOWN)
- 			peer_mode |= RCV_SHUTDOWN;
- 		unix_state_lock(other);
--		other->sk_shutdown |= peer_mode;
-+		WRITE_ONCE(other->sk_shutdown, other->sk_shutdown | peer_mode);
- 		unix_state_unlock(other);
- 		other->sk_state_change(other);
- 		if (peer_mode == SHUTDOWN_MASK)
-@@ -3046,16 +3046,18 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
- {
- 	struct sock *sk = sock->sk;
- 	__poll_t mask;
-+	u8 shutdown;
+-		/* Valid LE States quirk for GfP */
+-		if (INTEL_HW_VARIANT(ver_tlv.cnvi_bt) == 0x18)
+-			set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
++		/* Apply LE States quirk from solar onwards */
++		set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
-+	shutdown = READ_ONCE(sk->sk_shutdown);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err)
- 		mask |= EPOLLERR;
--	if (sk->sk_shutdown == SHUTDOWN_MASK)
-+	if (shutdown == SHUTDOWN_MASK)
- 		mask |= EPOLLHUP;
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
- 
- 	/* readable? */
-@@ -3089,18 +3091,20 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
- 	__poll_t mask;
-+	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
-+	shutdown = READ_ONCE(sk->sk_shutdown);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
- 		mask |= EPOLLERR |
- 			(sock_flag(sk, SOCK_SELECT_ERR_QUEUE) ? EPOLLPRI : 0);
- 
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
--	if (sk->sk_shutdown == SHUTDOWN_MASK)
-+	if (shutdown == SHUTDOWN_MASK)
- 		mask |= EPOLLHUP;
- 
- 	/* readable? */
+ 		/* Setup MSFT Extension support */
+ 		btintel_set_msft_opcode(hdev,
 -- 
 2.39.2
 
