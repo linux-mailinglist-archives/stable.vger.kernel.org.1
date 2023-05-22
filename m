@@ -2,171 +2,288 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1D170B83A
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 11:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6E3A70B876
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 11:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjEVI7r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 04:59:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
+        id S232813AbjEVJGh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 05:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232484AbjEVI7V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 04:59:21 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B94E3E74;
-        Mon, 22 May 2023 01:58:36 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.176])
-        by gateway (Coremail) with SMTP id _____8AxdfC7LmtkU98KAA--.18617S3;
-        Mon, 22 May 2023 16:58:35 +0800 (CST)
-Received: from [10.20.42.176] (unknown [10.20.42.176])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxLb+6LmtkddxuAA--.56365S3;
-        Mon, 22 May 2023 16:58:35 +0800 (CST)
-Subject: Re: [PATCH V1 3/4] irqchip/loongson-liointc: Fix IRQ trigger polarity
-To:     loongson-kernel@lists.loongnix.cn,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhuacai@loongson.cn>, stable@vger.kernel.org
-References: <20230520063818.27208-1-lvjianmin@loongson.cn>
- <20230520063818.27208-4-lvjianmin@loongson.cn>
- <4a08b133-4ead-083e-4ddb-519e12a0dad6@xen0n.name>
-From:   Jianmin Lv <lvjianmin@loongson.cn>
-Message-ID: <43e89edb-edea-d094-9b80-f9ce253df77f@loongson.cn>
-Date:   Mon, 22 May 2023 16:58:34 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        with ESMTP id S232574AbjEVJGG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 05:06:06 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7A21AC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 02:06:02 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae52ce3250so54088485ad.2
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 02:06:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684746362; x=1687338362;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rlEd6aZMxCpFn4lWzoL9URTNtJSWl/PRKXF7l2+sai0=;
+        b=6Dx/V8Bn6piyF8b1rZjFOF2OsecwOt8m9aqf3IthfHtNn+8iuBUWve06ehGkaaUvT/
+         aft/jIQreQ3vzEZ72nOEKcKVfh363eWTJGYJ+UxmnboN3uAmWeC55izbhvY3qMKPV9Xz
+         oL1ycH3YrZTb6bFXCxV0foQEpEbxi13LO9OUOgc43CxgD+H6aaYQDoyy3Soaiek/gc7X
+         oEp+N53T9Q9DhPh1NX2Vn8xMmkQk5wTcGn5HEjGrluPiuGGi8+Ce6m9gahNepapv6fa1
+         EyxB8F2MPGcm1SnWTFhILOtTCoXza7OQfp6jwVeUhD+9T5DVWic07VOEPc30gwhrw+pC
+         +Czw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684746362; x=1687338362;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rlEd6aZMxCpFn4lWzoL9URTNtJSWl/PRKXF7l2+sai0=;
+        b=AF4re+Ixcaukq9a3N7cXhgGKmVqiMi7OlwWh96UMCp8AvGItgtRmfRGxUCOzK8pTQX
+         DrtfrbFBwA3wz4bR3nUVFBPw8EjFiZ1LGbcOhFbo3tT0qY4A8cnjGG+5dIOzGm4wpqaG
+         rrMKd4maC/arug0eifc5XdX3Rz1rE05JFCipUkXotCCJat2JgVQ1DzF/kNX6Eq2+RhSc
+         JNyUcHSEzw/6/9iD1GXou4TBPftRsstXn1gqEPYbcXGB2BwhSn0TNA3f6Nx+7are4N5R
+         coMHQVIIt9xMCuO2HY23pd1Y4pGJUYuLSPnDsh7elY1LjUwBmtWWPsZIOWTVEfXpwhoO
+         KOVA==
+X-Gm-Message-State: AC+VfDwMRfrOmrmdvy/OFMPiD3Nub0cYYXfmCrXTvDA054+Bi1CDbR6Y
+        febAM4G75FoTAItrpK5vgjMPV1sZEP2R/wwPESERCg==
+X-Google-Smtp-Source: ACHHUZ6uVi8E/s76XpM2CRvHHNtsw5Qx9YPPbqaC6O3UAfjlysoq28A6Z9AFlC90Oeh7HoRbNbjMpzhUyqYJG9OMnb8=
+X-Received: by 2002:a17:902:b404:b0:1ae:6997:a094 with SMTP id
+ x4-20020a170902b40400b001ae6997a094mr9219887plr.30.1684746361877; Mon, 22 May
+ 2023 02:06:01 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <4a08b133-4ead-083e-4ddb-519e12a0dad6@xen0n.name>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxLb+6LmtkddxuAA--.56365S3
-X-CM-SenderInfo: 5oymxthqpl0qxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBjvJXoWxZF1UGr18CFW3ZF4kXF48Xrb_yoWrCr4Dpw
-        4fAa4DtryYqr18Wr1UGr18JFy5Jw15Xan8JF1xWFyUuFZ8AwsYvryUWF4qgr1xJr48Gr1U
-        Ary5Gay5ua17ArDanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bq8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
-        1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-        wVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
-        x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdM2kK
-        e7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI
-        0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280
-        aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2
-        xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC
-        6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
-        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF
-        0xvE2Ix0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv
-        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4Xo7DUUUU
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+References: <20230519043041.1593578-1-badhri@google.com> <c181c8ef-f342-4a31-9b8c-e1fa14ad214e@rowland.harvard.edu>
+ <a1d064e7-9847-4e2e-b74a-4ae4f39d3f04@rowland.harvard.edu>
+ <CAPTae5JKUW6g8cvUbJ3owMGm+npJSBgjr-O_xEiRm_tzXVBV1Q@mail.gmail.com>
+ <a2305ca6-d343-473d-b220-556a2c2e7833@rowland.harvard.edu> <CAPTae5Lke+DE3WzGuBxkMMZ=qbbux=avdDTgrxEc1A5SrCFevg@mail.gmail.com>
+In-Reply-To: <CAPTae5Lke+DE3WzGuBxkMMZ=qbbux=avdDTgrxEc1A5SrCFevg@mail.gmail.com>
+From:   Badhri Jagan Sridharan <badhri@google.com>
+Date:   Mon, 22 May 2023 02:05:25 -0700
+Message-ID: <CAPTae5+vRLVDH4eAetufdRxnEj7mzdP15b-7d1XDWVYrYBSuCQ@mail.gmail.com>
+Subject: Re: [PATCH v2] usb: gadget: udc: core: Offload usb_udc_vbus_handler processing
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
+        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, May 22, 2023 at 12:48=E2=80=AFAM Badhri Jagan Sridharan
+<badhri@google.com> wrote:
+>
+> Hi Alan,
+>
+> Thanks for taking the time out to share more details !
+> +1 on your comment: " A big problem with the USB gadget
+> framework is that it does not clearly state which routines have to run
+> in process context and which have to run in interrupt/atomic context."
+>
+>
+> I started to work on allow_connect and other suggestions that you had mad=
+e.
+> In one of the previous comments you had mentioned that the
+> connect_lock should be a spinlock and not a mutex.
+> Right now there are four conditions that seem to be deciding whether
+> pullup needs to be enabled or disabled through gadget->ops->pullup().
+> 1. Gadget not deactivated through usb_gadget_deactivate()
+> 2. Gadget has to be started through usb_gadget_udc_start().
+> soft_connect_store() can start/stop gadget.
+> 3. usb_gadget has been connected through usb_gadget_connect(). This is
+> assuming we are getting rid of usb_udc_vbus_handler.
+> 4. allow_connect is true
+>
+> I have so far identified two constraints here:
+> a. gadget->ops->pullup() can sleep in some implementations.
+> For instance:
+> BUG: scheduling while atomic: init/1/0x00000002
+> ..
+> [   26.990631][    T1] Call trace:
+> [   26.993759][    T1]  dump_backtrace+0x104/0x128
+> [   26.998281][    T1]  show_stack+0x20/0x30
+> [   27.002279][    T1]  dump_stack_lvl+0x6c/0x9c
+> [   27.006627][    T1]  __schedule_bug+0x84/0xb4
+> [   27.010973][    T1]  __schedule+0x6f0/0xaec
+> [   27.015147][    T1]  schedule+0xc8/0x134
+> [   27.019059][    T1]  schedule_timeout+0x98/0x134
+> [   27.023666][    T1]  msleep+0x34/0x4c
 
+Adding more context to make sure that I am more articulate.
+I am aware that alternatives such as mdelay can be used to work around
+in this specific instance. However, my concern is more around whether
+gadget->ops->pullup() of other implementations were designed as
+atomic. I only have dwc3 based hardware so can't test other udc
+implementations. Hence the concern.
 
-On 2023/5/21 下午6:46, WANG Xuerui wrote:
-> On 2023/5/20 14:38, Jianmin Lv wrote:
->> For IRQ controller INT_POLARITY regitser of Loongson-2K CPU
-> 
-> "For the INT_POLARITY register of Loongson-2K series IRQ controller"?
-> 
->> series, '0' indicates high level or rising edge triggered IRQ,
->> '1' indicates low level or falling edge triggered IRQ.
-> 
-> Remove the two "IRQ"s; the topic is "polarity", not "IRQs".
-> 
-> Also please mention the source of this information; I've checked the 
-> Loongson 2K1000LA User Manual v1.0 and it seems a similar description is 
-> found in Table 9-2, Section 9.3 (中断寄存器描述 / Description of the 
-> Interrupt Registers). It mentioned "Intpol_0" and "Intpol_1" but the 
-> description is consistent with the wording here.
-> 
->>
->> For Loongson-3A CPU series, setting INT_POLARITY register is not
->> supported and writting it has no effect.
-> 
-> Only 3A and not the whole Loongson-3 series?
-> 
-> Also typo: "writing".
-> 
+Thanks,
+Badhri
 
-Ok, I'll adjust the commit as your suggestion above, thanks.
-
->>
->> So trigger polarity setting shouled be fixed for Loongson-2K CPU
->> series.
-> 
-> The changes seem to be just inversion of the polarity flags. It should 
-> be correct given your description, and not affect Loongson-3 series 
-> because it's supposed to behave as noops; it may be better to move the 
-> explanation regarding Loongson-3 behavior to code comment (e.g. 
-> somewhere near the definition of LIOINTC_REG_INTC_POL) so it's 
-> immediately visible to drive-by readers not familiar with LoongArch 
-> internals, without them having to dig through commit history to see this.
-> 
-Good suggestion, I'll add the information near the definition of 
-LIOINTC_REG_INTC_POL.
-
->>
->> Fixes: 17343d0b4039 ("irqchip/loongson-liointc: Support to set IRQ 
->> type for ACPI path")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
->> Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-> 
-> Again, who's the proper author for this patch? Given the tags it seems 
-> the author should be Chong Qiao, but I didn't see an Author: line at the 
-> beginning.
-> 
-
-Again, I'll adjust them as following:
-Co-developed-by: Chong Qiao <qiaochong@loongson.cn>
-Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-
-Thanks.
-
->> ---
->>   drivers/irqchip/irq-loongson-liointc.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/irqchip/irq-loongson-liointc.c 
->> b/drivers/irqchip/irq-loongson-liointc.c
->> index 8d00a9ad5b00..9a9c2bf048a3 100644
->> --- a/drivers/irqchip/irq-loongson-liointc.c
->> +++ b/drivers/irqchip/irq-loongson-liointc.c
->> @@ -116,19 +116,19 @@ static int liointc_set_type(struct irq_data 
->> *data, unsigned int type)
->>       switch (type) {
->>       case IRQ_TYPE_LEVEL_HIGH:
->>           liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, false);
->> -        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
->> +        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
->>           break;
->>       case IRQ_TYPE_LEVEL_LOW:
->>           liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, false);
->> -        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
->> +        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
->>           break;
->>       case IRQ_TYPE_EDGE_RISING:
->>           liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, true);
->> -        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
->> +        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
->>           break;
->>       case IRQ_TYPE_EDGE_FALLING:
->>           liointc_set_bit(gc, LIOINTC_REG_INTC_EDGE, mask, true);
->> -        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, false);
->> +        liointc_set_bit(gc, LIOINTC_REG_INTC_POL, mask, true);
->>           break;
->>       default:
->>           irq_gc_unlock_irqrestore(gc, flags);
-> 
-
+> [   27.027317][    T1]  dwc3_core_soft_reset+0xf0/0x354
+> [   27.032273][    T1]  dwc3_gadget_pullup+0xec/0x1d8
+> [   27.037055][    T1]  usb_gadget_pullup_update_locked+0xa0/0x1e0
+> [   27.042967][    T1]  udc_bind_to_driver+0x1e4/0x30c
+> [   27.047835][    T1]  usb_gadget_probe_driver+0xd0/0x178
+> [   27.053051][    T1]  gadget_dev_desc_UDC_store+0xf0/0x13c
+> [   27.058442][    T1]  configfs_write_iter+0x100/0x178
+> [   27.063399][    T1]  vfs_write+0x278/0x3c4
+> [   27.067483][    T1]  ksys_write+0x80/0xf4
+>
+> b. gadget->ops->udc_start can also sleep in some implementations.
+> For example:
+> [   28.024255][    T1] BUG: scheduling while atomic: init/1/0x00000002
+> ....
+> [   28.324996][    T1] Call trace:
+> [   28.328126][    T1]  dump_backtrace+0x104/0x128
+> [   28.332647][    T1]  show_stack+0x20/0x30
+> [   28.336645][    T1]  dump_stack_lvl+0x6c/0x9c
+> [   28.340993][    T1]  __schedule_bug+0x84/0xb4
+> [   28.345340][    T1]  __schedule+0x6f0/0xaec
+> [   28.349513][    T1]  schedule+0xc8/0x134
+> [   28.353425][    T1]  schedule_timeout+0x4c/0x134
+> [   28.358033][    T1]  wait_for_common+0xac/0x13c
+> [   28.362554][    T1]  wait_for_completion_killable+0x20/0x3c
+> [   28.368118][    T1]  __kthread_create_on_node+0xe4/0x1ec
+> [   28.373422][    T1]  kthread_create_on_node+0x54/0x80
+> [   28.378464][    T1]  setup_irq_thread+0x50/0x108
+> [   28.383072][    T1]  __setup_irq+0x90/0x87c
+> [   28.387245][    T1]  request_threaded_irq+0x144/0x180
+> [   28.392287][    T1]  dwc3_gadget_start+0x50/0xac
+> [   28.396866][    T1]  udc_bind_to_driver+0x14c/0x31c
+> [   28.401763][    T1]  usb_gadget_probe_driver+0xd0/0x178
+> [   28.406980][    T1]  gadget_dev_desc_UDC_store+0xf0/0x13c
+> [   28.412370][    T1]  configfs_write_iter+0x100/0x178
+> [   28.417325][    T1]  vfs_write+0x278/0x3c4
+> [   28.421411][    T1]  ksys_write+0x80/0xf4
+>
+> static int dwc3_gadget_start(struct usb_gadget *g,
+>                 struct usb_gadget_driver *driver)
+> {
+>         struct dwc3             *dwc =3D gadget_to_dwc(g);
+> ...
+>         irq =3D dwc->irq_gadget;
+>         ret =3D request_threaded_irq(irq, dwc3_interrupt, dwc3_thread_int=
+errupt,
+>                         IRQF_SHARED, "dwc3", dwc->ev_buf);
+>
+> Given that "1016fc0c096c USB: gadget: Fix obscure lockdep violation
+> for udc_mutex" has been there for a while and no one has reported
+> issues so far, perhaps ->disconnect() callback is no longer being
+> invoked in atomic context and the documentation is what that needs to
+> be updated ?
+>
+> Thanks,
+> Badhri
+>
+> On Fri, May 19, 2023 at 10:27=E2=80=AFAM Alan Stern <stern@rowland.harvar=
+d.edu> wrote:
+> >
+> > On Fri, May 19, 2023 at 08:44:57AM -0700, Badhri Jagan Sridharan wrote:
+> > > On Fri, May 19, 2023 at 8:07=E2=80=AFAM Alan Stern <stern@rowland.har=
+vard.edu> wrote:
+> > > >
+> > > > On Fri, May 19, 2023 at 10:49:49AM -0400, Alan Stern wrote:
+> > > > > On Fri, May 19, 2023 at 04:30:41AM +0000, Badhri Jagan Sridharan =
+wrote:
+> > > > > > chipidea udc calls usb_udc_vbus_handler from udc_start gadget
+> > > > > > ops causing a deadlock. Avoid this by offloading usb_udc_vbus_h=
+andler
+> > > > > > processing.
+> > > > >
+> > > > > Look, this is way overkill.
+> > > > >
+> > > > > usb_udc_vbus_handler() has only two jobs to do: set udc->vbus and=
+ call
+> > > > > usb_udc_connect_control().  Furthermore, it gets called from only=
+ two
+> > > > > drivers: chipidea and max3420.
+> > > > >
+> > > > > Why not have the callers set udc->vbus themselves and then call
+> > > > > usb_gadget_{dis}connect() directly?  Then we could eliminate
+> > > > > usb_udc_vbus_handler() entirely.  And the unnecessary calls -- th=
+e ones
+> > > > > causing deadlocks -- from within udc_start() and udc_stop() handl=
+ers can
+> > > > > be removed with no further consequence.
+> > > > >
+> > > > > This approach simplifies and removes code.  Whereas your approach
+> > > > > complicates and adds code for no good reason.
+> > > >
+> > > > I changed my mind.
+> > > >
+> > > > After looking more closely, I found the comment in gadget.h about
+> > > > ->disconnect() callbacks happening in interrupt context.  This mean=
+s we
+> > > > cannot use a mutex to protect the associated state, and therefore t=
+he
+> > > > connect_lock _must_ be a spinlock, not a mutex.
+> > >
+> > > Quick observation so that I don't misunderstand.
+> > > I already see gadget->udc->driver->disconnect(gadget) being called wi=
+th
+> > > udc_lock being held.
+> > >
+> > >                mutex_lock(&udc_lock);
+> > >                if (gadget->udc->driver)
+> > >                        gadget->udc->driver->disconnect(gadget);
+> > >                mutex_unlock(&udc_lock);
+> > >
+> > > The below patch seems to have introduced it:
+> > > 1016fc0c096c USB: gadget: Fix obscure lockdep violation for udc_mutex
+> >
+> > Hmmm...  You're right about this.  A big problem with the USB gadget
+> > framework is that it does not clearly state which routines have to run
+> > in process context and which have to run in interrupt/atomic context.
+> > People therefore don't think about it and frequently get it wrong.
+> >
+> > So now the problem is that the UDC or transceiver driver may detect
+> > (typically in an interrupt handler) that VBUS power has appeared or
+> > disappeared, and it wants to tell the core to adjust the D+/D- pullup
+> > signals appropriately.  The core notifies the UDC driver about this, an=
+d
+> > then in the case of a disconnection, it has to notify the gadget driver=
+.
+> > But notifying the gadget driver requires process context for the
+> > udc_lock mutex, the ultimate reason being that disconnect notifications
+> > can race with gadget driver binding and unbinding.
+> >
+> > If we could prevent those races in some other way then we wouldn't need
+> > to hold udc_lock in usb_gadget_disconnect().  This seems like a sensibl=
+e
+> > thing to do in any case; the UDC core should never allow a connection t=
+o
+> > occur before a gadget driver is bound or after it is unbound.
+> >
+> > The first approach that occurs to me is to add a boolean allow_connect
+> > flag to struct usb_udc, together with a global spinlock to synchronize
+> > access to it.  Then usb_gadget_disconnect() could check the flag before
+> > calling driver->disconnect(), gadget_bind_driver() could set the flag
+> > before calling usb_udc_connect_control(), and gadget_unbind_driver()
+> > could clear the flag before calling usb_gadget_disconnect().
+> >
+> > (Another possible approach would be to change gadget->deactivated into =
+a
+> > counter.  It would still need to be synchronized by a spinlock,
+> > however.)
+> >
+> > This will simplify matters considerably.  udc_lock can remain a mutex
+> > and the deadlock problem should go away.
+> >
+> > Do you want to try adding allow_connect as described here or would you
+> > prefer that I do it?
+> >
+> > (And in any case, we should prevent the udc_start and udc_stop callback=
+s
+> > in the chipidea and max3420 drivers from trying to update the connectio=
+n
+> > status.)
+> >
+> > Alan Stern
