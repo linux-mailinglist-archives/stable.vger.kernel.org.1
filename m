@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E787D70C9F8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 272FE70C840
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235473AbjEVTxh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48118 "EHLO
+        id S234974AbjEVThH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232034AbjEVTxg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:53:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112C395
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:53:35 -0700 (PDT)
+        with ESMTP id S234983AbjEVThD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:37:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57921E47
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2FF061EDE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A724BC433EF;
-        Mon, 22 May 2023 19:53:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37FE662942
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9AEC433EF;
+        Mon, 22 May 2023 19:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785214;
-        bh=T8Hdl8v6p0VVf0hlytspaifbqKPgigPQ7MHBSRIF2gc=;
+        s=korg; t=1684784192;
+        bh=zWycd4NOleDucaTDIy3mDGBMZOAdcEm+iiY194zdWkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u2DKHElrC1SkzGJk/TcbqpVWgcy7X2HZ5YRwnX9sqAvFkjxSKktUa9Mu8qc7Xxr3b
-         lTxxAhvKj+zPdIoQhQPq2QrDq3thc2qZxISddF2PgNhoIazS5NsOgSgYN+xuyRWnZq
-         5BKqj+d7ewF3H0EVOeI/wqYb9JWP1tzp0P0e4BTo=
+        b=1tZoLqifEkExHi1X9LBvDTKNx1PX8Q+JwGYeEDVxoqh57kyjIOkDp2m51noXni0Q9
+         FB+MJRMY7waDetpCa3gT7T0+zRCEeSjYMkeBsshRel5vgmFop+3jfhpj0FqjHMNnUp
+         AUhMZ3r51Hadn6Cy68/4j7s+YUF4y7uIHWrx8VTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Bharath SM <bharathsm@microsoft.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.3 319/364] SMB3: Close all deferred handles of inode in case of handle lease break
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 267/292] thunderbolt: Clear registers properly when auto clear isnt in use
 Date:   Mon, 22 May 2023 20:10:24 +0100
-Message-Id: <20230522190420.751705519@linuxfoundation.org>
+Message-Id: <20230522190412.614051327@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,63 +54,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 47592fa8eb03742048b096b4696ec133384c45eb upstream.
+commit c4af8e3fecd03b0aedcd38145955605cfebe7e3a upstream.
 
-Oplock break may occur for different file handle than the deferred
-handle. Check for inode deferred closes list, if it's not empty then
-close all the deferred handles of inode because we should not cache
-handles if we dont have handle lease.
+When `QUIRK_AUTO_CLEAR_INT` isn't set, interrupt masking should be
+cleared by writing to Interrupt Mask Clear (IMR) and interrupt
+status should be cleared properly at shutdown/init.
 
-Eg: If openfilelist has one deferred file handle and another open file
-handle from app for a same file, then on a lease break we choose the
-first handle in openfile list. The first handle in list can be deferred
-handle or actual open file handle from app. In case if it is actual open
-handle then today, we don't close deferred handles if we lose handle lease
-on a file. Problem with this is, later if app decides to close the existing
-open handle then we still be caching deferred handles until deferred close
-timeout. Leaving open handle may result in sharing violation when windows
-client tries to open a file with limited file share access.
+This fixes an error where interrupts are left enabled during resume
+from hibernation with `CONFIG_USB4=y`.
 
-So we should check for deferred list of inode and walk through the list of
-deferred files in inode and close all deferred files.
-
-Fixes: 9e31678fb403 ("SMB3: fix lease break timeout when multiple deferred close handles for the same file.")
-Cc: stable@kernel.org
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 468c49f44759 ("thunderbolt: Disable interrupt auto clear for rings")
+Cc: stable@vger.kernel.org # v6.3
+Reported-by: Takashi Iwai <tiwai@suse.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217343
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/file.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/thunderbolt/nhi.c      |   29 ++++++++++++++++++++++++-----
+ drivers/thunderbolt/nhi_regs.h |    2 ++
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -4882,8 +4882,6 @@ void cifs_oplock_break(struct work_struc
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	int rc = 0;
- 	bool purge_cache = false;
--	struct cifs_deferred_close *dclose;
--	bool is_deferred = false;
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -54,6 +54,21 @@ static int ring_interrupt_index(const st
+ 	return bit;
+ }
  
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
-@@ -4924,14 +4922,9 @@ oplock_break_ack:
- 	 * file handles but cached, then schedule deferred close immediately.
- 	 * So, new open will not use cached handle.
- 	 */
--	spin_lock(&CIFS_I(inode)->deferred_lock);
--	is_deferred = cifs_is_deferred_close(cfile, &dclose);
--	spin_unlock(&CIFS_I(inode)->deferred_lock);
++static void nhi_mask_interrupt(struct tb_nhi *nhi, int mask, int ring)
++{
++	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
++		return;
++	iowrite32(mask, nhi->iobase + REG_RING_INTERRUPT_MASK_CLEAR_BASE + ring);
++}
++
++static void nhi_clear_interrupt(struct tb_nhi *nhi, int ring)
++{
++	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
++		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + ring);
++	else
++		iowrite32(~0, nhi->iobase + REG_RING_INT_CLEAR + ring);
++}
++
+ /*
+  * ring_interrupt_active() - activate/deactivate interrupts for a single ring
+  *
+@@ -61,8 +76,8 @@ static int ring_interrupt_index(const st
+  */
+ static void ring_interrupt_active(struct tb_ring *ring, bool active)
+ {
+-	int reg = REG_RING_INTERRUPT_BASE +
+-		  ring_interrupt_index(ring) / 32 * 4;
++	int index = ring_interrupt_index(ring) / 32 * 4;
++	int reg = REG_RING_INTERRUPT_BASE + index;
+ 	int interrupt_bit = ring_interrupt_index(ring) & 31;
+ 	int mask = 1 << interrupt_bit;
+ 	u32 old, new;
+@@ -123,7 +138,11 @@ static void ring_interrupt_active(struct
+ 					 "interrupt for %s %d is already %s\n",
+ 					 RING_TYPE(ring), ring->hop,
+ 					 active ? "enabled" : "disabled");
+-	iowrite32(new, ring->nhi->iobase + reg);
++
++	if (active)
++		iowrite32(new, ring->nhi->iobase + reg);
++	else
++		nhi_mask_interrupt(ring->nhi, mask, index);
+ }
  
--	if (!CIFS_CACHE_HANDLE(cinode) && is_deferred &&
--			cfile->deferred_close_scheduled && delayed_work_pending(&cfile->deferred)) {
-+	if (!CIFS_CACHE_HANDLE(cinode) && !list_empty(&cinode->deferred_closes))
- 		cifs_close_deferred_file(cinode);
--	}
+ /*
+@@ -136,11 +155,11 @@ static void nhi_disable_interrupts(struc
+ 	int i = 0;
+ 	/* disable interrupts */
+ 	for (i = 0; i < RING_INTERRUPT_REG_COUNT(nhi); i++)
+-		iowrite32(0, nhi->iobase + REG_RING_INTERRUPT_BASE + 4 * i);
++		nhi_mask_interrupt(nhi, ~0, 4 * i);
  
- 	/*
- 	 * releasing stale oplock after recent reconnect of smb session using
+ 	/* clear interrupt status bits */
+ 	for (i = 0; i < RING_NOTIFY_REG_COUNT(nhi); i++)
+-		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + 4 * i);
++		nhi_clear_interrupt(nhi, 4 * i);
+ }
+ 
+ /* ring helper methods */
+--- a/drivers/thunderbolt/nhi_regs.h
++++ b/drivers/thunderbolt/nhi_regs.h
+@@ -93,6 +93,8 @@ struct ring_desc {
+ #define REG_RING_INTERRUPT_BASE	0x38200
+ #define RING_INTERRUPT_REG_COUNT(nhi) ((31 + 2 * nhi->hop_count) / 32)
+ 
++#define REG_RING_INTERRUPT_MASK_CLEAR_BASE	0x38208
++
+ #define REG_INT_THROTTLING_RATE	0x38c00
+ 
+ /* Interrupt Vector Allocation */
 
 
