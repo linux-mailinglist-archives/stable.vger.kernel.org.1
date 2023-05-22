@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1D170C963
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4372B70C789
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235298AbjEVTrb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:47:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42446 "EHLO
+        id S234716AbjEVTau (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235307AbjEVTra (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:30 -0400
+        with ESMTP id S234722AbjEVTas (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:30:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0E899
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A24103
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:30:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B7D462AB0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545A0C4339B;
-        Mon, 22 May 2023 19:47:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17F5D62906
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:30:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC23C433EF;
+        Mon, 22 May 2023 19:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784848;
-        bh=k65eIBNbWGgq8kPNcDAf+4jUBJl/3bdgi6/uQvDQIZU=;
+        s=korg; t=1684783846;
+        bh=7Y43Vag3lNVVZIwn/Ci/4owRyoVl5RAgiQOFCMhrOHw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KmeXVr6mnZ+IP8QN/wXSZdzZY2iCp5Df+q3X48Axg5Jk+jmIVTzTsLkRg46rkz1A+
-         RDtk4zHzOvm0HvcFkUkQ3WxMwlUMtqze+oLwMfXaix4vSP7yCoQZ7iGN+BcbQRPGZ7
-         TkZrtXMUW30HHaBJNTQsdiJfYBu+IyiDtQ9AStxM=
+        b=zwr/jS0kIBTy2mbqnLHXrXIkZPzK/tdI7ge/TjDwDnUjvQUfrULlLsKnYFWmOY4KC
+         0lwOr3q08WuggILmmPhL9elbfKypKtnKJ1iClN07OXVCH/idFqKMFhCmCfVSFX2Wjl
+         EmjZvPELOxIaS4lIbqGfyJuXCFwiEb+ocWtkjQBM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 194/364] mfd: intel_soc_pmic_chtwc: Add Lenovo Yoga Book X90F to intel_cht_wc_models
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 142/292] soundwire: qcom: gracefully handle too many ports in DT
 Date:   Mon, 22 May 2023 20:08:19 +0100
-Message-Id: <20230522190417.585395853@linuxfoundation.org>
+Message-Id: <20230522190409.513350854@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit ded99b89d25fd73a1d7bd910378e0339fd9d4c4a ]
+[ Upstream commit 2367e0ecb498764e95cfda691ff0828f7d25f9a4 ]
 
-The Android Lenovo Yoga Book X90F / X90L uses the same charger / fuelgauge
-setup as the already supported Windows Lenovo Yoga Book X91F/L, add
-a DMI match for this to intel_cht_wc_models with driver_data
-set to INTEL_CHT_WC_LENOVO_YOGABOOK1.
+There are two issues related to the number of ports coming from
+Devicetree when exceeding in total QCOM_SDW_MAX_PORTS.  Both lead to
+incorrect memory accesses:
+1. With DTS having too big value of input or output ports, the driver,
+   when copying port parameters from local/stack arrays into 'pconfig'
+   array in 'struct qcom_swrm_ctrl', will iterate over their sizes.
 
-When the quirk for the X91F/L was initially added it was written to
-also apply to the X90F/L but this does not work because the Android
-version of the Yoga Book uses completely different DMI strings.
-Also adjust the X91F/L quirk to reflect that it only applies to
-the X91F/L models.
+2. If DTS also has too many parameters for these ports (e.g.
+   qcom,ports-sinterval-low), the driver will overflow buffers on the
+   stack when reading these properties from DTS.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230301095402.28582-1-hdegoede@redhat.com
+Add a sanity check so incorrect DTS will not cause kernel memory
+corruption.
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230222144412.237832-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_chtwc.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/soundwire/qcom.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
-index d53dae2554906..871776d511e31 100644
---- a/drivers/mfd/intel_soc_pmic_chtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_chtwc.c
-@@ -159,11 +159,19 @@ static const struct dmi_system_id cht_wc_model_dmi_ids[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 		},
- 	}, {
--		/* Lenovo Yoga Book X90F / X91F / X91L */
-+		/* Lenovo Yoga Book X90F / X90L */
- 		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YOGABOOK1,
- 		.matches = {
--			/* Non exact match to match all versions */
--			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+		},
-+	}, {
-+		/* Lenovo Yoga Book X91F / X91L */
-+		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YOGABOOK1,
-+		.matches = {
-+			/* Non exact match to match F + L versions */
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X91"),
- 		},
- 	}, {
- 		/* Lenovo Yoga Tab 3 Pro YT3-X90F */
+diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
+index 866026185c669..21c50972047f5 100644
+--- a/drivers/soundwire/qcom.c
++++ b/drivers/soundwire/qcom.c
+@@ -1209,6 +1209,9 @@ static int qcom_swrm_get_port_config(struct qcom_swrm_ctrl *ctrl)
+ 	ctrl->num_dout_ports = val;
+ 
+ 	nports = ctrl->num_dout_ports + ctrl->num_din_ports;
++	if (nports > QCOM_SDW_MAX_PORTS)
++		return -EINVAL;
++
+ 	/* Valid port numbers are from 1-14, so mask out port 0 explicitly */
+ 	set_bit(0, &ctrl->dout_port_mask);
+ 	set_bit(0, &ctrl->din_port_mask);
 -- 
 2.39.2
 
