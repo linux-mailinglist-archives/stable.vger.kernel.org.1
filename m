@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E2870C607
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF6F70C912
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233757AbjEVTOW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
+        id S235231AbjEVTom (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234015AbjEVTOS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:18 -0400
+        with ESMTP id S235228AbjEVTol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E3312B
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C673CF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B0B7626FE
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EACC433D2;
-        Mon, 22 May 2023 19:14:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEE8562A6C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CB6C433EF;
+        Mon, 22 May 2023 19:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782852;
-        bh=hRj1ydpVYptJsvNmiO59+UYPMUE4NUJHzAScAHy8VdI=;
+        s=korg; t=1684784678;
+        bh=3p+9e8vGBlUdQVKw0AGlqTnNog2VVF6wtKKeITwhn4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fjTSUDhMFGxgFWUtjlux3W2P9bDaYXKdcwqarnFyuy5tUWNJX3uUVfML8WVmT5iHY
-         YaxuDmCtjMJVbJZKAwEGkhsSeOt6HCA3N7uqvbb4Z8RZbYoOcXizj/QaPITQo6G9q0
-         K7cE5es2t6CoTqctSECbO0qH5Xlz0L3HPJnu8nJ4=
+        b=T3irt8TYjbxUAnNbgS0YIRU1mCBDr13W2EF00Txz6QQHM9NkrMJ24okPg0nPwbgTZ
+         ouyqFC7jZUw+bvOZag6FqWCklpMP+2HbcAz6MgtqfvdpG6g5DQIRKWqlM4hIvmp4Sq
+         Ae0dDbtLGs6Ht1LVlsi1b3wzqBHRS8vM8cCJO5LA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/203] ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
+Subject: [PATCH 6.3 165/364] serial: 8250: Reinit port->pm on port specific driver unbind
 Date:   Mon, 22 May 2023 20:07:50 +0100
-Message-Id: <20230522190356.265574737@linuxfoundation.org>
+Message-Id: <20230522190416.858730253@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: void0red <30990023+void0red@users.noreply.github.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit ae5a0eccc85fc960834dd66e3befc2728284b86c ]
+[ Upstream commit 04e82793f068d2f0ffe62fcea03d007a8cdc16a7 ]
 
-ACPICA commit 0d5f467d6a0ba852ea3aad68663cbcbd43300fd4
+When we unbind a serial port hardware specific 8250 driver, the generic
+serial8250 driver takes over the port. After that we see an oops about 10
+seconds later. This can produce the following at least on some TI SoCs:
 
-ACPI_ALLOCATE_ZEROED may fails, object_info might be null and will cause
-null pointer dereference later.
+Unhandled fault: imprecise external abort (0x1406)
+Internal error: : 1406 [#1] SMP ARM
 
-Link: https://github.com/acpica/acpica/commit/0d5f467d
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Turns out that we may still have the serial port hardware specific driver
+port->pm in use, and serial8250_pm() tries to call it after the port
+specific driver is gone:
+
+serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
+uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
+uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
+__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
+disassociate_ctty from do_exit+0x744/0xaac
+do_exit from do_group_exit+0x40/0x8c
+do_group_exit from __wake_up_parent+0x0/0x1c
+
+Let's fix the issue by calling serial8250_set_defaults() in
+serial8250_unregister_port(). This will set the port back to using
+the serial8250 default functions, and sets the port->pm to point to
+serial8250_pm.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230418101407.12403-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dbnames.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/8250/8250_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index 3615e1a6efd8a..b91155ea9c343 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -652,6 +652,9 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
- 		object_info =
- 		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_object_info));
- 
-+		if (!object_info)
-+			return (AE_NO_MEMORY);
-+
- 		/* Walk the namespace from the root */
- 
- 		(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+index ab63c308be0a2..13bf535eedcd5 100644
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -1158,6 +1158,7 @@ void serial8250_unregister_port(int line)
+ 		uart->port.type = PORT_UNKNOWN;
+ 		uart->port.dev = &serial8250_isa_devs->dev;
+ 		uart->capabilities = 0;
++		serial8250_init_port(uart);
+ 		serial8250_apply_quirks(uart);
+ 		uart_add_one_port(&serial8250_reg, &uart->port);
+ 	} else {
 -- 
 2.39.2
 
