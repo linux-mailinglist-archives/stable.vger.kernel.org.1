@@ -2,109 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B714070BFAC
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 15:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DABC370BFD3
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 15:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231481AbjEVN0Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 09:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46778 "EHLO
+        id S230399AbjEVNbv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 09:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234148AbjEVN0L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 09:26:11 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C2D1AD;
-        Mon, 22 May 2023 06:25:50 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d30ab1f89so2386584b3a.3;
-        Mon, 22 May 2023 06:25:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684761949; x=1687353949;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4b3cl3OODzw5cbGHTkbsgtSEp8oZPxcTDpluClxVbUk=;
-        b=eO3rIpsi40iN+2w6btP49efxsdxTdxFOiCQQBcJFc1qjQAPCHGM1ndbcirI2jrHElM
-         82mIWTyUiKNEbcA1OqxJxV/cy8w860ZuUZa19gI7FohoWQGljuvwuTXWG6ypc1UYjeRJ
-         esqRmGWv3h5sai88fccF5Dgo4w9HWJAtapyegg02sBy8GwiNkMcpONHU+DaRbJgnAaTH
-         zkgUTctpnh2Ne/hUgJAL4SZX8j7XBYl7B+DtXgbLWg+U/FWkH+SqwB9hHy0Y322M9872
-         Ipie/tzXpsQqNs0CAZlNF7H0EYGqA9Hq7uYvp0b+UWxQc99RLw7B7VNSkRXF24233fxJ
-         RntA==
+        with ESMTP id S230379AbjEVNbt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 09:31:49 -0400
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A89B7;
+        Mon, 22 May 2023 06:31:47 -0700 (PDT)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-64d5b4c3ffeso1101869b3a.2;
+        Mon, 22 May 2023 06:31:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684761949; x=1687353949;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4b3cl3OODzw5cbGHTkbsgtSEp8oZPxcTDpluClxVbUk=;
-        b=Xp5AQO4mPzg4hPdVmFxk0lwgitlFqC83pSO4pLFJ5YBI/c+I+5qovYROruKNBr6Jt7
-         pEdBKpcEnVRchef48aHktOpRTkhC/hhv7n+fylp+MAOcrj91SgeslK3EPuo4gsLv5d8b
-         D/0GKwAYqk/YvuXDb/Zkshu9FUHp7ku98Na2l1ub0XQddWDMY5DMFrGTrLZ8WpdOOGy6
-         R0/ElwsorMAQfrQ2Duod8jk0QZEriovIr2wQBR2Y1r1lBJ8GzJxb+Ez1K5K4iduxaDgX
-         WOCvLS1gkivyJWZ6yiuNMEnlG388pjNcmuKYvgzIo8bAZHFOmZQrtw+IjmRDnnGwioyQ
-         fj0g==
-X-Gm-Message-State: AC+VfDwTZpUNtx28Hwn06KsrzHInTEmbWZcfkPaMmnDRWJP103FLg5lW
-        HC/ROXliYOlmjmlhKnaMBoJapywFCfY=
-X-Google-Smtp-Source: ACHHUZ6W3TTQEgMmXQa5zURSi0AtXuxh42yw2+Qd5pWuLLi/EMw6NyJGi1HDsSizjXkveQPFhxVT7w==
-X-Received: by 2002:a17:902:b496:b0:1ae:bf5:7b5 with SMTP id y22-20020a170902b49600b001ae0bf507b5mr9747125plr.34.1684761949072;
-        Mon, 22 May 2023 06:25:49 -0700 (PDT)
-Received: from [192.168.43.80] (subs02-180-214-232-24.three.co.id. [180.214.232.24])
-        by smtp.gmail.com with ESMTPSA id d6-20020a170902c18600b001addf547a6esm4883562pld.17.2023.05.22.06.25.46
+        d=1e100.net; s=20221208; t=1684762306; x=1687354306;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UHYEd02GTyq7nAlTVtvxKLhdJyZw7c4OhrepDRgpNdU=;
+        b=PTnxmtfU9loHX8OPnf6tJpjGd2AHu9G25NEJFkG6da61B3PiJejPqBNnasNg9KvJVu
+         I9lVxUWpiU5/KwIZLgP9BUt6ul/Ji2H7/dyOuXj5xaAxYab209s/mc+M+t+ABTXJY0Sy
+         ZxgRCIQ89YjLDP0eZ+CS+dkSZRouAADV/3LzkEtHmKDFzHOFsnGCnbi3XRrUfLPi9sH9
+         FLb/Wumxk1E4QYqxiZbDYh9PEZ/erE0uhM8rJs3jDc7PVNIq6RaI4yjJr6b/vyf+9mH2
+         WIdc1lOu65JaGvkCtHboBB3FJCLOkKGLNYVxUb1WNDjrkPYH00kMSfGQprdGui38u05P
+         knpg==
+X-Gm-Message-State: AC+VfDx4Qx4Y8BgT217b0dlrtnQF75sRK+oMZTh9MpryOiSEpnN8dhdz
+        u+hGssfUBXQ5rG+R/M27JcB0gtTKsAQ=
+X-Google-Smtp-Source: ACHHUZ64ycLv6MYTMBnDHVm5SH0u65hNtk5tgJL558kYtj9S/PGdn1U65sA69VOELpHjq4hUQpiTfQ==
+X-Received: by 2002:aa7:88c4:0:b0:64c:c65f:7322 with SMTP id k4-20020aa788c4000000b0064cc65f7322mr13598959pff.30.1684762306295;
+        Mon, 22 May 2023 06:31:46 -0700 (PDT)
+Received: from [192.168.3.219] ([98.51.102.78])
+        by smtp.gmail.com with ESMTPSA id b8-20020aa78708000000b0064d27a28451sm4137878pfo.100.2023.05.22.06.31.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 May 2023 06:25:48 -0700 (PDT)
-Message-ID: <efa04d56-cd7f-6620-bca7-1df89f49bf4b@gmail.com>
-Date:   Mon, 22 May 2023 20:25:42 +0700
+        Mon, 22 May 2023 06:31:45 -0700 (PDT)
+Message-ID: <191c7661-c47f-5aba-97b9-ff698bda4bc7@acm.org>
+Date:   Mon, 22 May 2023 06:31:44 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
+Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
 Content-Language: en-US
-To:     Linux btrfs <linux-btrfs@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>
-Cc:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, a1bert@atlas.cz
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: vmalloc error: btrfs-delalloc btrfs_work_helper [btrfs] in
- kernel 6.3.x
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+To:     John Garry <john.g.garry@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>, stable@vger.kernel.org
+References: <20230511123432.5793-1-jgross@suse.com>
+ <yq1ttwbsoii.fsf@ca-mkp.ca.oracle.com>
+ <6614f626-d174-03d0-0993-79e6f6169b71@suse.com>
+ <9d356278-c826-dacf-cbe0-79f512b7970e@oracle.com>
+ <60aeffe4-b31d-4ea3-d4ea-f50ae25e0316@suse.com>
+ <74879c87-689f-6a8e-a177-8bde4c9c4e51@oracle.com>
+ <fb0efbd1-a54f-09d6-bd27-6f665b461e58@acm.org>
+ <554bfa20-2228-8655-09e2-492cbfa183fa@oracle.com>
+ <c9f0bc23-d5c1-23ba-2752-d89be9fef04a@acm.org>
+ <611e1210-d89b-9046-ac3f-68a89af6159e@oracle.com>
+ <ff04d098-17cc-42c5-cf72-2128fb43114e@acm.org>
+ <73e3da3d-ed90-6c38-3c8c-13653bd89944@oracle.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <73e3da3d-ed90-6c38-3c8c-13653bd89944@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-
-I notice a regression report on Bugzilla [1]. Quoting from it:
-
-> after updating from 6.2.x to 6.3.x, vmalloc error messages started to appear in the dmesg
+On 5/22/23 02:55, John Garry wrote:
+> On 19/05/2023 18:39, Bart Van Assche wrote:
+>>        *args->resid = scmd->resid_len;
+>> -    if (args->sense)
+>> -        memcpy(args->sense, scmd->sense_buffer, SCSI_SENSE_BUFFERSIZE);
+>> +    if (args->sense) {
+>> +        *args->sense = scmd->sense_buffer;
+>> +        scmd->sense_buffer = NULL;
 > 
-> 
-> 
-> # free 
->                total        used        free      shared  buff/cache   available
-> Mem:        16183724     1473068      205664       33472    14504992    14335700
-> Swap:       16777212      703596    16073616
-> 
-> 
-> (zswap enabled)
+> I think that you will agree that this is not a good pattern to follow. 
+> We cannot have SCSI core allocating the sense buffer but a driver 
+> freeing it.
 
-See bugzilla for the full thread and attached dmesg.
+Why not? Something similar can happen anywhere in the kernel anywhere 
+reference counting is used.
 
-On the report, the reporter can't perform the required bisection,
-unfortunately.
+Bart.
 
-Anyway, I'm adding it to regzbot:
-
-#regzbot introduced: v6.2..v6.3 https://bugzilla.kernel.org/show_bug.cgi?id=217466
-#regzbot title: btrfs_work_helper dealloc error in v6.3.x
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217466
-
--- 
-An old man doll... just what I always wanted! - Clara
