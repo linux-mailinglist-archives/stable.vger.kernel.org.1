@@ -2,120 +2,140 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A221F70BC0B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 13:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B75F770BC18
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 13:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233353AbjEVLl7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 22 May 2023 07:41:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
+        id S232937AbjEVLog (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 07:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233332AbjEVLlz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 07:41:55 -0400
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2736491;
-        Mon, 22 May 2023 04:41:54 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-bab8f66d3a2so4195931276.3;
-        Mon, 22 May 2023 04:41:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684755713; x=1687347713;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YQM4CisG43A3UU9kY3EcQQPtrr37Ex7+82L60u0Ozu4=;
-        b=LC08lqspjdG38GAzsFIr1jpeARXABreqOAOeWEnlOHIaQnPdri1Z25OIOvRvGROvS1
-         wgrrhyJcGUupe185qx5hnwhrcMa8cPhVt50sG+OwEWufTsDrNN4irka17gj6ca/dc6IQ
-         awrJeFaJ2M//hkcK2fn/dMiVlXJV78x0g+h88/dgVXfS2lSCPGLevdiHWEyGMiQCocTy
-         p2RyqjJ/8DIaS3lpQIcTBuniwRlb9iPMpK0waUlXUyhubKog6ogpS7WBzYKzd1DU16M1
-         VGHVJoYXqD+7LsSTDj0GZ/aVe1QCVjCB6ILxxC50i2UO9EbWTdCuEVcfZR6b51v7ETlT
-         KPLg==
-X-Gm-Message-State: AC+VfDyYe8G8/CXAmh694rZTvTmgaPmOH1wLOWx0u/w5Gt2Coz8u4bcK
-        j2WzXNurEnlYIJWuxf58OwmWN+lDLgq1pA==
-X-Google-Smtp-Source: ACHHUZ5VKvxtf6Kse2DGMCzYVvWNfgORAv2fVXZsosjW8b/YkDNF8g0HaTXPx3OcbCLCszcHjIyiTw==
-X-Received: by 2002:a25:d2c4:0:b0:ba8:89c0:115d with SMTP id j187-20020a25d2c4000000b00ba889c0115dmr11307628ybg.58.1684755713200;
-        Mon, 22 May 2023 04:41:53 -0700 (PDT)
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
-        by smtp.gmail.com with ESMTPSA id o201-20020a2541d2000000b00b9e2ef25f1asm1453993yba.44.2023.05.22.04.41.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 May 2023 04:41:53 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-561a7d96f67so77783297b3.3;
-        Mon, 22 May 2023 04:41:52 -0700 (PDT)
-X-Received: by 2002:a0d:ea43:0:b0:559:d3a0:4270 with SMTP id
- t64-20020a0dea43000000b00559d3a04270mr11018198ywe.34.1684755712500; Mon, 22
- May 2023 04:41:52 -0700 (PDT)
+        with ESMTP id S232427AbjEVLog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 07:44:36 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0A299;
+        Mon, 22 May 2023 04:44:33 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 2645C1FE83;
+        Mon, 22 May 2023 11:44:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1684755872; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RXgpxboI1bw9eXRQKxoN/Zr/TelBo2erFp+oCAN6jQ4=;
+        b=xshnHi/ZPGtf5PnerhW07I/ZJ3gtuXaQXOMW1lqWJPHulL6JCwemBTdT6hrFHwIIHSed4v
+        ea2F1eVZy8EXq+1FsNxVQTtwHaY1yz1Ptq/ScwtUkJim3RYiBlETvetX0UbmO4Ety9M0ni
+        hwzOSYQrMj/LOTJYuPl9EjduENWCBiQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1684755872;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RXgpxboI1bw9eXRQKxoN/Zr/TelBo2erFp+oCAN6jQ4=;
+        b=VCaQEPWIJMQFKfvjU2QqgEyFocOltgb1T0Aku6lMo9jnDOFeFltWYrRg398m5sQNJb9NTE
+        E4mo0IqKd9uklYBQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id D0A092C141;
+        Mon, 22 May 2023 11:44:31 +0000 (UTC)
+Date:   Mon, 22 May 2023 13:44:30 +0200
+From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Cyril Brulebois <cyril@debamax.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 2/2] drm/ofdrm: Update expected device name
+Message-ID: <20230522114430.GA15906@kitsune.suse.cz>
+References: <20230412095509.2196162-1-cyril@debamax.com>
+ <20230412095509.2196162-3-cyril@debamax.com>
+ <CAMuHMdW4rZn4p=gQZRWQQSEbQPmzZUd5eN+kP_Yr7bLgTHyvig@mail.gmail.com>
+ <5694a9ab-d474-c101-9398-eea55aab29df@suse.de>
 MIME-Version: 1.0
-References: <cover.1683365892.git.fthain@linux-m68k.org> <9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org>
-In-Reply-To: <9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 22 May 2023 13:41:41 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX_0F0hSZKqBBCN3876BmfwbQb1_+N3h-V8xs5ouRXF=A@mail.gmail.com>
-Message-ID: <CAMuHMdX_0F0hSZKqBBCN3876BmfwbQb1_+N3h-V8xs5ouRXF=A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] m68k: Move signal frame following exception on 68020/030
-To:     Finn Thain <fthain@linux-m68k.org>
-Cc:     Michael Schmitz <schmitzmic@gmail.com>,
-        Andreas Schwab <schwab@linux-m68k.org>, stable@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5694a9ab-d474-c101-9398-eea55aab29df@suse.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, May 6, 2023 at 11:36 AM Finn Thain <fthain@linux-m68k.org> wrote:
-> On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
-> a stack page fault during instruction execution (i.e. not at an
-> instruction boundary) and produce a format 0xB exception frame.
->
-> In this situation, the value of USP will be unreliable. If a signal is to
-> be delivered following the exception, this USP value is used to calculate
-> the location for a signal frame. This can result in a corrupted user
-> stack.
->
-> The corruption was detected in dash (actually in glibc) where it showed
-> up as an intermittent "stack smashing detected" message and crash
-> following signal delivery for SIGCHLD.
->
-> It was hard to reproduce that failure because delivery of the signal
-> raced with the page fault and because the kernel places an unpredictable
-> gap of up to 7 bytes between the USP and the signal frame.
->
-> A format 0xB exception frame can be produced by a bus error or an address
-> error. The 68030 Users Manual says that address errors occur immediately
-> upon detection during instruction prefetch. The instruction pipeline
-> allows prefetch to overlap with other instructions, which means an
-> address error can arise during the execution of a different instruction.
-> So it seems likely that this patch may help in the address error case also.
->
-> Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-> Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
-> Cc: Michael Schmitz <schmitzmic@gmail.com>
-> Cc: Andreas Schwab <schwab@linux-m68k.org>
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
-> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+On Mon, Apr 24, 2023 at 11:07:45AM +0200, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 24.04.23 um 09:33 schrieb Geert Uytterhoeven:
+> > Hi Cyril,
+> > 
+> > CC DT
+> > 
+> > On Wed, Apr 12, 2023 at 12:05 PM Cyril Brulebois <cyril@debamax.com> wrote:
+> > > Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique"),
+> > > as spotted by Frédéric Bonnard, the historical "of-display" device is
+> > > gone: the updated logic creates "of-display.0" instead, then as many
+> > > "of-display.N" as required.
+> > > 
+> > > This means that offb no longer finds the expected device, which prevents
+> > > the Debian Installer from setting up its interface, at least on ppc64el.
+> > > 
+> > > Given the code similarity it is likely to affect ofdrm in the same way.
+> > > 
+> > > It might be better to iterate on all possible nodes, but updating the
+> > > hardcoded device from "of-display" to "of-display.0" is likely to help
+> > > as a first step.
+> > > 
+> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=217328
+> > > Link: https://bugs.debian.org/1033058
+> > > Fixes: 241d2fb56a18 ("of: Make OF framebuffer device names unique")
+> > > Cc: stable@vger.kernel.org # v6.2+
+> > > Signed-off-by: Cyril Brulebois <cyril@debamax.com>
+> > 
+> > Thanks for your patch, which is now commit 3a9d8ea2539ebebd
+> > ("drm/ofdrm: Update expected device name") in fbdev/for-next.
+> > 
+> > > --- a/drivers/gpu/drm/tiny/ofdrm.c
+> > > +++ b/drivers/gpu/drm/tiny/ofdrm.c
+> > > @@ -1390,7 +1390,7 @@ MODULE_DEVICE_TABLE(of, ofdrm_of_match_display);
+> > > 
+> > >   static struct platform_driver ofdrm_platform_driver = {
+> > >          .driver = {
+> > > -               .name = "of-display",
+> > > +               .name = "of-display.0",
+> > >                  .of_match_table = ofdrm_of_match_display,
+> > >          },
+> > >          .probe = ofdrm_probe,
+> > 
+> > Same comment as for "[PATCH 1/2] fbdev/offb: Update expected device
+> > name".
+> > 
+> > https://lore.kernel.org/r/CAMuHMdVGEeAsmb4tAuuqqGJ-4+BBETwEwYJA+M9NyJv0BJ_hNg@mail.gmail.com
+> 
+> Sorry that I missed this patch. I agree that it's probably not correct. At
+> least in ofdrm, we want to be able to use multiple framebuffers at the same
+> time; a feature that has been broken by this change.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-i.e. will queue as a fix in the m68k for-v6.4 branch.
+How did it work before, though?
 
-I plan to send this upstream later this week, so any additional
-testing would be appreciated.
+We did not have this device name clash, then we did, and it was solved
+by renaming the devices to numnered.
 
-Thanks!
+Now matching the first device should restore the previously available
+functionality, mathing any of the numbered devices would potentially
+allow to use multiple devices.
 
-Gr{oetje,eeting}s,
+Or am I missing something?
 
-                        Geert
+Thanks
 
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Michal
