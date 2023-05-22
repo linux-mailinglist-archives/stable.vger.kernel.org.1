@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5755270C925
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544DF70C74D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235257AbjEVTp0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
+        id S234660AbjEVT2G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:28:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235238AbjEVTpV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:45:21 -0400
+        with ESMTP id S234666AbjEVT2F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD709C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:45:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63146186
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61E2162A3C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:45:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAD0C433D2;
-        Mon, 22 May 2023 19:45:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD158628CB
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBECAC433D2;
+        Mon, 22 May 2023 19:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784718;
-        bh=0d2oJSpgi3b6qRNoa3kjP0Wh0Jj4G8hy3gSPF5xtAmM=;
+        s=korg; t=1684783678;
+        bh=8KHX9ppB/ZTjCcnv70QUkyv0EKzNZ3Uq/zZdz0skG3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=opBbDUqO9quJP0pUUZwlOI935sbgrlCNEuttq9sjO+0Ij6zWFaTEfMvWC4jSOMEuO
-         ssSXi16eg6pLPtKiG4GqFply/rWfReakyQtIIICPCRLFd9uIw194tm8MEyfWTt3Kb8
-         53ew9XI1Jx6KlklrFq/oaPMTeFM/qaCcxQPsudkg=
+        b=PdglT/jPzs85rGjgGAB311xcB95osQ0F6MzTprGX76nn3OEfJadEFkpBRkX/B9/e0
+         A4GM1AIFEHawK813aSwQ94oDVRJV2f+ilH6wJaI7qqiVTJi27pHHV+srCMLZh0hUmW
+         +3PAvTORk8n9fr/bIsSi1MrZdh+JKIjjhRBuVy8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Edward Lo <edward.lo@ambergroup.io>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev,
+        Kevin Groeneveld <kgroeneveld@lenbrook.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 178/364] fs/ntfs3: Validate MFT flags before replaying logs
+Subject: [PATCH 6.1 126/292] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
 Date:   Mon, 22 May 2023 20:08:03 +0100
-Message-Id: <20230522190417.174740462@linuxfoundation.org>
+Message-Id: <20230522190409.114384073@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,139 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edward Lo <edward.lo@ambergroup.io>
+From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
 
-[ Upstream commit 98bea253aa28ad8be2ce565a9ca21beb4a9419e5 ]
+[ Upstream commit 87c614175bbf28d3fd076dc2d166bac759e41427 ]
 
-Log load and replay is part of the metadata handle flow during mount
-operation. The $MFT record will be loaded and used while replaying logs.
-However, a malformed $MFT record, say, has RECORD_FLAG_DIR flag set and
-contains an ATTR_ROOT attribute will misguide kernel to treat it as a
-directory, and try to free the allocated resources when the
-corresponding inode is freed, which will cause an invalid kfree because
-the memory hasn't actually been allocated.
+When using gpio based chip select the cs value can go outside the range
+0 – 3. The various MX51_ECSPI_* macros did not take this into consideration
+resulting in possible corruption of the configuration.
 
-[  101.368647] BUG: KASAN: invalid-free in kvfree+0x2c/0x40
-[  101.369457]
-[  101.369986] CPU: 0 PID: 198 Comm: mount Not tainted 6.0.0-rc7+ #5
-[  101.370529] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-[  101.371362] Call Trace:
-[  101.371795]  <TASK>
-[  101.372157]  dump_stack_lvl+0x49/0x63
-[  101.372658]  print_report.cold+0xf5/0x689
-[  101.373022]  ? ni_write_inode+0x754/0xd90
-[  101.373378]  ? kvfree+0x2c/0x40
-[  101.373698]  kasan_report_invalid_free+0x77/0xf0
-[  101.374058]  ? kvfree+0x2c/0x40
-[  101.374352]  ? kvfree+0x2c/0x40
-[  101.374668]  __kasan_slab_free+0x189/0x1b0
-[  101.374992]  ? kvfree+0x2c/0x40
-[  101.375271]  kfree+0x168/0x3b0
-[  101.375717]  kvfree+0x2c/0x40
-[  101.376002]  indx_clear+0x26/0x60
-[  101.376316]  ni_clear+0xc5/0x290
-[  101.376661]  ntfs_evict_inode+0x45/0x70
-[  101.377001]  evict+0x199/0x280
-[  101.377432]  iput.part.0+0x286/0x320
-[  101.377819]  iput+0x32/0x50
-[  101.378166]  ntfs_loadlog_and_replay+0x143/0x320
-[  101.378656]  ? ntfs_bio_fill_1+0x510/0x510
-[  101.378968]  ? iput.part.0+0x286/0x320
-[  101.379367]  ntfs_fill_super+0xecb/0x1ba0
-[  101.379729]  ? put_ntfs+0x1d0/0x1d0
-[  101.380046]  ? vsprintf+0x20/0x20
-[  101.380542]  ? mutex_unlock+0x81/0xd0
-[  101.380914]  ? set_blocksize+0x95/0x150
-[  101.381597]  get_tree_bdev+0x232/0x370
-[  101.382254]  ? put_ntfs+0x1d0/0x1d0
-[  101.382699]  ntfs_fs_get_tree+0x15/0x20
-[  101.383094]  vfs_get_tree+0x4c/0x130
-[  101.383675]  path_mount+0x654/0xfe0
-[  101.384203]  ? putname+0x80/0xa0
-[  101.384540]  ? finish_automount+0x2e0/0x2e0
-[  101.384943]  ? putname+0x80/0xa0
-[  101.385362]  ? kmem_cache_free+0x1c4/0x440
-[  101.385968]  ? putname+0x80/0xa0
-[  101.386666]  do_mount+0xd6/0xf0
-[  101.387228]  ? path_mount+0xfe0/0xfe0
-[  101.387585]  ? __kasan_check_write+0x14/0x20
-[  101.387979]  __x64_sys_mount+0xca/0x110
-[  101.388436]  do_syscall_64+0x3b/0x90
-[  101.388757]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[  101.389289] RIP: 0033:0x7fa0f70e948a
-[  101.390048] Code: 48 8b 0d 11 fa 2a 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 008
-[  101.391297] RSP: 002b:00007ffc24fdecc8 EFLAGS: 00000202 ORIG_RAX: 00000000000000a5
-[  101.391988] RAX: ffffffffffffffda RBX: 000055932c183060 RCX: 00007fa0f70e948a
-[  101.392494] RDX: 000055932c183260 RSI: 000055932c1832e0 RDI: 000055932c18bce0
-[  101.393053] RBP: 0000000000000000 R08: 000055932c183280 R09: 0000000000000020
-[  101.393577] R10: 00000000c0ed0000 R11: 0000000000000202 R12: 000055932c18bce0
-[  101.394044] R13: 000055932c183260 R14: 0000000000000000 R15: 00000000ffffffff
-[  101.394747]  </TASK>
-[  101.395402]
-[  101.396047] Allocated by task 198:
-[  101.396724]  kasan_save_stack+0x26/0x50
-[  101.397400]  __kasan_slab_alloc+0x6d/0x90
-[  101.397974]  kmem_cache_alloc_lru+0x192/0x5a0
-[  101.398524]  ntfs_alloc_inode+0x23/0x70
-[  101.399137]  alloc_inode+0x3b/0xf0
-[  101.399534]  iget5_locked+0x54/0xa0
-[  101.400026]  ntfs_iget5+0xaf/0x1780
-[  101.400414]  ntfs_loadlog_and_replay+0xe5/0x320
-[  101.400883]  ntfs_fill_super+0xecb/0x1ba0
-[  101.401313]  get_tree_bdev+0x232/0x370
-[  101.401774]  ntfs_fs_get_tree+0x15/0x20
-[  101.402224]  vfs_get_tree+0x4c/0x130
-[  101.402673]  path_mount+0x654/0xfe0
-[  101.403160]  do_mount+0xd6/0xf0
-[  101.403537]  __x64_sys_mount+0xca/0x110
-[  101.404058]  do_syscall_64+0x3b/0x90
-[  101.404333]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[  101.404816]
-[  101.405067] The buggy address belongs to the object at ffff888008cc9ea0
-[  101.405067]  which belongs to the cache ntfs_inode_cache of size 992
-[  101.406171] The buggy address is located 232 bytes inside of
-[  101.406171]  992-byte region [ffff888008cc9ea0, ffff888008cca280)
-[  101.406995]
-[  101.408559] The buggy address belongs to the physical page:
-[  101.409320] page:00000000dccf19dd refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x8cc8
-[  101.410654] head:00000000dccf19dd order:2 compound_mapcount:0 compound_pincount:0
-[  101.411533] flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
-[  101.412665] raw: 000fffffc0010200 0000000000000000 dead000000000122 ffff888003695140
-[  101.413209] raw: 0000000000000000 00000000800e000e 00000001ffffffff 0000000000000000
-[  101.413799] page dumped because: kasan: bad access detected
-[  101.414213]
-[  101.414427] Memory state around the buggy address:
-[  101.414991]  ffff888008cc9e80: fc fc fc fc 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.415785]  ffff888008cc9f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.416933] >ffff888008cc9f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.417857]                       ^
-[  101.418566]  ffff888008cca000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  101.419704]  ffff888008cca080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+For example for any cs value over 3 the SCLKPHA bits would not be set and
+other values in the register possibly corrupted.
 
-Signed-off-by: Edward Lo <edward.lo@ambergroup.io>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+One way to fix this is to just mask the cs bits to 2 bits. This still
+allows all 4 native chip selects to work as well as gpio chip selects
+(which can use any of the 4 chip select configurations).
+
+Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+Link: https://lore.kernel.org/r/20230318222132.3373-1-kgroeneveld@lenbrook.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-imx.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index ce6bb3bd86b6e..059f288784580 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -100,6 +100,12 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 	/* Record should contain $I30 root. */
- 	is_dir = rec->flags & RECORD_FLAG_DIR;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index fbd7b354dd36b..2c660a95c17e7 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -253,6 +253,18 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
+ 	return true;
+ }
  
-+	/* MFT_REC_MFT is not a dir */
-+	if (is_dir && ino == MFT_REC_MFT) {
-+		err = -EINVAL;
-+		goto out;
-+	}
++/*
++ * Note the number of natively supported chip selects for MX51 is 4. Some
++ * devices may have less actual SS pins but the register map supports 4. When
++ * using gpio chip selects the cs values passed into the macros below can go
++ * outside the range 0 - 3. We therefore need to limit the cs value to avoid
++ * corrupting bits outside the allocated locations.
++ *
++ * The simplest way to do this is to just mask the cs bits to 2 bits. This
++ * still allows all 4 native chip selects to work as well as gpio chip selects
++ * (which can use any of the 4 chip select configurations).
++ */
 +
- 	inode->i_generation = le16_to_cpu(rec->seq);
+ #define MX51_ECSPI_CTRL		0x08
+ #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
+ #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
+@@ -261,16 +273,16 @@ static bool spi_imx_can_dma(struct spi_controller *controller, struct spi_device
+ #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
+ #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
+ #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+-#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
++#define MX51_ECSPI_CTRL_CS(cs)		((cs & 3) << 18)
+ #define MX51_ECSPI_CTRL_BL_OFFSET	20
+ #define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
  
- 	/* Enumerate all struct Attributes MFT. */
+ #define MX51_ECSPI_CONFIG	0x0c
+-#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+-#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+-#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+-#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
+-#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
++#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs & 3) +  0))
++#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
++#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
++#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
++#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
+ 
+ #define MX51_ECSPI_INT		0x10
+ #define MX51_ECSPI_INT_TEEN		(1 <<  0)
 -- 
 2.39.2
 
