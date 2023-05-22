@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0800470C488
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1262A70C490
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 19:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230101AbjEVRnm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 13:43:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48526 "EHLO
+        id S230497AbjEVRoY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 13:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230238AbjEVRnj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:43:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A11107
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:43:37 -0700 (PDT)
+        with ESMTP id S231635AbjEVRoX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 13:44:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF98C18B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 10:44:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D15960F21
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:43:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A11C433D2;
-        Mon, 22 May 2023 17:43:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07F166212B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:44:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26045C4339C;
+        Mon, 22 May 2023 17:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684777416;
-        bh=oL91imYZsKgb/yExzRsr5SjSEsHa1k91EBZxivMg7Ds=;
+        s=korg; t=1684777452;
+        bh=eOmp/PnV+sOE6zk9RYX31Oh8yeOAyyym4rh0hoAO7AI=;
         h=Subject:To:Cc:From:Date:From;
-        b=EzAuHlST/63ImUmZF0CE4hZTcIANkLWIgq1TQheTIgQRHfBss9+dYvpKfSeQBBAvF
-         3DOtLql3kltJGGEmqy+/lozyEn6e9Etzv2MuMRDD+RYeqS3HxFKvMyJmjQ9KnBBijN
-         E2jffdLTnJ66/M4NsUkVOg0cDgoVLxbRdPJPSPBw=
-Subject: FAILED: patch "[PATCH] usb: gadget: u_ether: Fix host MAC address case" failed to apply to 4.14-stable tree
+        b=axbBByDO1VDsSuOjn1av4fcZXy2UkY+3BoBWYv+sLZWUxcowOtz3s9ZI5RPbpRwAj
+         wN3zykLGxTJahtWYV8BqB0aYrjkay7Ec2FLEzADuZw46EwLMCL8k1fROFIHiTYqSFW
+         Snr7eElcsLmMkffhKkQ5UJp+UHS/6uO3MtZlZXT4=
+Subject: FAILED: patch "[PATCH] usb: gadget: u_ether: Fix host MAC address case" failed to apply to 4.19-stable tree
 To:     k.graefe@gateware.de, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 18:43:34 +0100
-Message-ID: <2023052234-curfew-scuttle-1090@gregkh>
+Date:   Mon, 22 May 2023 18:44:10 +0100
+Message-ID: <2023052209-jazz-pulse-1c5e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3c0f4f09c063e143822393d99cb2b19a85451c07
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052234-curfew-scuttle-1090@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052209-jazz-pulse-1c5e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
