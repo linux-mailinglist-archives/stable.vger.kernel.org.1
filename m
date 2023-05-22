@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3624B70C758
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D87070C941
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234672AbjEVT2e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:28:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49966 "EHLO
+        id S235324AbjEVTqP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:46:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234715AbjEVT22 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:28:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE9410C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:24 -0700 (PDT)
+        with ESMTP id S235256AbjEVTqD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C81C1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C34962392
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B936CC433D2;
-        Mon, 22 May 2023 19:28:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45F3562A90
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE33C433EF;
+        Mon, 22 May 2023 19:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783702;
-        bh=GFvV4H6UtQV+xleEcEJFwS2n6yVdI+F/C7OarMmr8yE=;
+        s=korg; t=1684784761;
+        bh=nzkn9exyJRt/FbFrP6FZTZwelwkUHu8d/wJ+9bG7uOE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FDDWpUawlstE1X5IJPvk7FDF6TK3E0NRauN10B6zh36S4okn8pqwgRpVwNZePEzrE
-         c4oiWeIYrTp/sul1lLg9/MAjbk666dx06XfCZVz8CEW3ZaCihLu0iG8ZTSvL732raJ
-         Jxm2M47LbWJMcVL+RWVHAtgRSJwvl9EwYRHDJFrw=
+        b=CJF2T94l56bHf3LwShmMeIdJFbNasIhGj/Xa3uHZl0dzvoMyQzyKys7NigGKdI822
+         HKTB7I6+Jy6kEINodt5ZNEai35XwLMLOduQGah8CqxfLo+jEqTZQ8p2sFWkJA9zqL+
+         yfvP5kYUmZrkmpTOrZ0T2UrigXAI8NpN7J375D1w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/292] HID: wacom: generic: Set battery quirk only when we see battery data
-Date:   Mon, 22 May 2023 20:08:10 +0100
-Message-Id: <20230522190409.292139873@linuxfoundation.org>
+        patches@lists.linux.dev, Avihai Horon <avihaih@nvidia.com>,
+        Shay Drory <shayd@nvidia.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 186/364] RDMA/mlx5: Remove pcie_relaxed_ordering_enabled() check for RO write
+Date:   Mon, 22 May 2023 20:08:11 +0100
+Message-Id: <20230522190417.381908347@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,102 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Gerecke <killertofu@gmail.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-[ Upstream commit bea407a427baa019758f29f4d31b26f008bb8cc6 ]
+[ Upstream commit ed4b0661cce119870edb1994fd06c9cbc1dc05c3 ]
 
-Some devices will include battery status usages in the HID descriptor
-but we won't see that battery data for one reason or another. For example,
-AES sensors won't send battery data unless an AES pen is in proximity.
-If a user does not have an AES pen but instead only interacts with the
-AES touchscreen with their fingers then there is no need for us to create
-a battery object. Similarly, if a family of peripherals shares the same
-HID descriptor between wired-only and wireless-capable SKUs, users of the
-former may never see a battery event and will not want a power_supply
-object created.
+pcie_relaxed_ordering_enabled() check was added to avoid a syndrome when
+creating a MKey with relaxed ordering (RO) enabled when the driver's
+relaxed_ordering_{read,write} HCA capabilities are out of sync with FW.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217062
-Link: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2354
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+While this can happen with relaxed_ordering_read, it can't happen with
+relaxed_ordering_write as it's set if the device supports RO write,
+regardless of RO in PCI config space, and thus can't change during
+runtime.
+
+Therefore, drop the pcie_relaxed_ordering_enabled() check for
+relaxed_ordering_write while keeping it for relaxed_ordering_read.
+Doing so will also allow the usage of RO write in VFs and VMs (where RO
+in PCI config space is not reported/emulated properly).
+
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Link: https://lore.kernel.org/r/7e8f55e31572c1702d69cae015a395d3a824a38a.1681131553.git.leon@kernel.org
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c                     | 6 +++---
+ drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 3 +--
+ drivers/net/ethernet/mellanox/mlx5/core/en_common.c | 2 +-
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index 0c6a82c665c1d..d2f500242ed40 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1963,18 +1963,7 @@ static void wacom_map_usage(struct input_dev *input, struct hid_usage *usage,
- static void wacom_wac_battery_usage_mapping(struct hid_device *hdev,
- 		struct hid_field *field, struct hid_usage *usage)
- {
--	struct wacom *wacom = hid_get_drvdata(hdev);
--	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
--	struct wacom_features *features = &wacom_wac->features;
--	unsigned equivalent_usage = wacom_equivalent_usage(usage->hid);
--
--	switch (equivalent_usage) {
--	case HID_DG_BATTERYSTRENGTH:
--	case WACOM_HID_WD_BATTERY_LEVEL:
--	case WACOM_HID_WD_BATTERY_CHARGING:
--		features->quirks |= WACOM_QUIRK_BATTERY;
--		break;
--	}
-+	return;
- }
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index 67356f5152616..bd0a818ba1cd8 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -67,11 +67,11 @@ static void set_mkc_access_pd_addr_fields(void *mkc, int acc, u64 start_addr,
+ 	MLX5_SET(mkc, mkc, lw, !!(acc & IB_ACCESS_LOCAL_WRITE));
+ 	MLX5_SET(mkc, mkc, lr, 1);
  
- static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *field,
-@@ -1995,18 +1984,21 @@ static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *f
- 			wacom_wac->hid_data.bat_connected = 1;
- 			wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
- 		}
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	case WACOM_HID_WD_BATTERY_LEVEL:
- 		value = value * 100 / (field->logical_maximum - field->logical_minimum);
- 		wacom_wac->hid_data.battery_capacity = value;
- 		wacom_wac->hid_data.bat_connected = 1;
- 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	case WACOM_HID_WD_BATTERY_CHARGING:
- 		wacom_wac->hid_data.bat_charging = value;
- 		wacom_wac->hid_data.ps_connected = value;
- 		wacom_wac->hid_data.bat_connected = 1;
- 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
+-	if ((acc & IB_ACCESS_RELAXED_ORDERING) &&
+-	    pcie_relaxed_ordering_enabled(dev->mdev->pdev)) {
++	if (acc & IB_ACCESS_RELAXED_ORDERING) {
+ 		if (MLX5_CAP_GEN(dev->mdev, relaxed_ordering_write))
+ 			MLX5_SET(mkc, mkc, relaxed_ordering_write, 1);
+-		if (MLX5_CAP_GEN(dev->mdev, relaxed_ordering_read))
++		if (MLX5_CAP_GEN(dev->mdev, relaxed_ordering_read) &&
++		    pcie_relaxed_ordering_enabled(dev->mdev->pdev))
+ 			MLX5_SET(mkc, mkc, relaxed_ordering_read, 1);
  	}
- }
-@@ -2022,18 +2014,15 @@ static void wacom_wac_battery_report(struct hid_device *hdev,
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index a21bd1179477b..d840a59aec88a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -867,8 +867,7 @@ static void mlx5e_build_rx_cq_param(struct mlx5_core_dev *mdev,
+ static u8 rq_end_pad_mode(struct mlx5_core_dev *mdev, struct mlx5e_params *params)
  {
- 	struct wacom *wacom = hid_get_drvdata(hdev);
- 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
--	struct wacom_features *features = &wacom_wac->features;
+ 	bool lro_en = params->packet_merge.type == MLX5E_PACKET_MERGE_LRO;
+-	bool ro = pcie_relaxed_ordering_enabled(mdev->pdev) &&
+-		MLX5_CAP_GEN(mdev, relaxed_ordering_write);
++	bool ro = MLX5_CAP_GEN(mdev, relaxed_ordering_write);
  
--	if (features->quirks & WACOM_QUIRK_BATTERY) {
--		int status = wacom_wac->hid_data.bat_status;
--		int capacity = wacom_wac->hid_data.battery_capacity;
--		bool charging = wacom_wac->hid_data.bat_charging;
--		bool connected = wacom_wac->hid_data.bat_connected;
--		bool powered = wacom_wac->hid_data.ps_connected;
-+	int status = wacom_wac->hid_data.bat_status;
-+	int capacity = wacom_wac->hid_data.battery_capacity;
-+	bool charging = wacom_wac->hid_data.bat_charging;
-+	bool connected = wacom_wac->hid_data.bat_connected;
-+	bool powered = wacom_wac->hid_data.ps_connected;
+ 	return ro && lro_en ?
+ 		MLX5_WQ_END_PAD_MODE_NONE : MLX5_WQ_END_PAD_MODE_ALIGN;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_common.c b/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
+index 4c9a3210600c2..993af4c12d909 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
+@@ -44,7 +44,7 @@ void mlx5e_mkey_set_relaxed_ordering(struct mlx5_core_dev *mdev, void *mkc)
+ 	bool ro_read = MLX5_CAP_GEN(mdev, relaxed_ordering_read);
  
--		wacom_notify_battery(wacom_wac, status, capacity, charging,
--				     connected, powered);
--	}
-+	wacom_notify_battery(wacom_wac, status, capacity, charging,
-+			     connected, powered);
+ 	MLX5_SET(mkc, mkc, relaxed_ordering_read, ro_pci_enable && ro_read);
+-	MLX5_SET(mkc, mkc, relaxed_ordering_write, ro_pci_enable && ro_write);
++	MLX5_SET(mkc, mkc, relaxed_ordering_write, ro_write);
  }
  
- static void wacom_wac_pad_usage_mapping(struct hid_device *hdev,
+ int mlx5e_create_mkey(struct mlx5_core_dev *mdev, u32 pdn, u32 *mkey)
 -- 
 2.39.2
 
