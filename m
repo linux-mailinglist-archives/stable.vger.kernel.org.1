@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0454570C706
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD8970C906
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:44:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234600AbjEVTZC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
+        id S235218AbjEVToX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234613AbjEVTZA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:00 -0400
+        with ESMTP id S235202AbjEVToW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EAA5103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:24:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05BD799
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B0E0A6287F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCF9C433D2;
-        Mon, 22 May 2023 19:24:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA6FD621A1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AC3C4339B;
+        Mon, 22 May 2023 19:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783498;
-        bh=hRj1ydpVYptJsvNmiO59+UYPMUE4NUJHzAScAHy8VdI=;
+        s=korg; t=1684784661;
+        bh=1B2peXEYSMNCkoc61RSuBI2zOAqfgLGgcQDhB+PqCbw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y0kx58jF4y35eFVtQshEl1JbFcNBLcRPJhtOVEbk0ovX593A4nofRurFCERRF8x5A
-         oGn+ud958hsOo1d+pRNyhv3BEnrmNx83VsLw1itC9dKa5fKxvNiSTWcFvBnP9YPOBJ
-         71gc4t3r6dDIu3SRiFM6txQxIVD+XpwyVMT7cGEc=
+        b=jKgUYCOGTvmFhrC5HEMN6heHxNXXCZNhfXDggWmVDfIIJbp85EtU1HWK4ILnsXD6q
+         hJLp5HIBNHw5tHAbJouyIs2NeHfVsKljtIazObNOwEH9R7fiB9VuWSH3b6leQ8DjXJ
+         jE/yBuFLBH+wuyAY4HvWm5LAtxTWsU8+j63KI6lc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Hao Zeng <zenghao@kylinos.cn>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/292] ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
+Subject: [PATCH 6.3 116/364] samples/bpf: Fix fout leak in hbms run_bpf_prog
 Date:   Mon, 22 May 2023 20:07:01 +0100
-Message-Id: <20230522190407.552632261@linuxfoundation.org>
+Message-Id: <20230522190415.686287811@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: void0red <30990023+void0red@users.noreply.github.com>
+From: Hao Zeng <zenghao@kylinos.cn>
 
-[ Upstream commit ae5a0eccc85fc960834dd66e3befc2728284b86c ]
+[ Upstream commit 23acb14af1914010dd0aae1bbb7fab28bf518b8e ]
 
-ACPICA commit 0d5f467d6a0ba852ea3aad68663cbcbd43300fd4
+Fix fout being fopen'ed but then not subsequently fclose'd. In the affected
+branch, fout is otherwise going out of scope.
 
-ACPI_ALLOCATE_ZEROED may fails, object_info might be null and will cause
-null pointer dereference later.
-
-Link: https://github.com/acpica/acpica/commit/0d5f467d
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Hao Zeng <zenghao@kylinos.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230411084349.1999628-1-zenghao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dbnames.c | 3 +++
- 1 file changed, 3 insertions(+)
+ samples/bpf/hbm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index 3615e1a6efd8a..b91155ea9c343 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -652,6 +652,9 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
- 		object_info =
- 		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_object_info));
- 
-+		if (!object_info)
-+			return (AE_NO_MEMORY);
-+
- 		/* Walk the namespace from the root */
- 
- 		(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
+diff --git a/samples/bpf/hbm.c b/samples/bpf/hbm.c
+index 516fbac28b716..7f89700a17b69 100644
+--- a/samples/bpf/hbm.c
++++ b/samples/bpf/hbm.c
+@@ -315,6 +315,7 @@ static int run_bpf_prog(char *prog, int cg_id)
+ 		fout = fopen(fname, "w");
+ 		fprintf(fout, "id:%d\n", cg_id);
+ 		fprintf(fout, "ERROR: Could not lookup queue_stats\n");
++		fclose(fout);
+ 	} else if (stats_flag && qstats.lastPacketTime >
+ 		   qstats.firstPacketTime) {
+ 		long long delta_us = (qstats.lastPacketTime -
 -- 
 2.39.2
 
