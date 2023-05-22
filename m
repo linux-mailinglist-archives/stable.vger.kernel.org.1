@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5584170C6C8
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 525CD70C8BA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234451AbjEVTW2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:22:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
+        id S235138AbjEVTl1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:41:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234447AbjEVTW1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:22:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76CB6E9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:26 -0700 (PDT)
+        with ESMTP id S235142AbjEVTlN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:41:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E481703
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:40:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D8196284C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C55C433D2;
-        Mon, 22 May 2023 19:22:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AEA762A23
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:40:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F59C433EF;
+        Mon, 22 May 2023 19:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783345;
-        bh=Emd7KuvLJycLZNeEwv0B47uUkSh2J/lSp+tiOYXKn14=;
+        s=korg; t=1684784440;
+        bh=qVbShyBXUdpxQf66FKa05UWUPoCJJzLR1Uof8kAgPSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lawf3LIwjqC8v14s+iJhT6Klb1czAWVN9KidrUQ9RdKWv7RLCpLjkHHHnHmQMiodu
-         7KZ5z6TgeANzseaoffE9ubNHWZ75as6Aa/EVzPeNyC13AgqGkk2bb4+L78seVWrGmy
-         fKB4RcsfvLLvyUjSgAo5YyANsZQ26ARCTsHWk2f8=
+        b=ptKORCbZetI7V7GD1FyyoRcjUWZoWk29H9EohdPKr83pG0NdZkTDOdJswCpMP6LjE
+         BfHlub+3934k+3mof5elvEEgNJd251+6aSOnl/mbJnPHAUE7xTX0zCwkucrq/odTMR
+         6GhZoYHa7LfpQY96kV3MMJwGGqBU3HNCbU9JMjvA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/292] bonding: fix send_peer_notif overflow
+        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 066/364] firmware: arm_sdei: Fix sleep from invalid context BUG
 Date:   Mon, 22 May 2023 20:06:11 +0100
-Message-Id: <20230522190406.247457473@linuxfoundation.org>
+Message-Id: <20230522190414.436627883@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,97 +54,234 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit 9949e2efb54eb3001cb2f6512ff3166dddbfb75d ]
+[ Upstream commit d2c48b2387eb89e0bf2a2e06e30987cf410acad4 ]
 
-Bonding send_peer_notif was defined as u8. Since commit 07a4ddec3ce9
-("bonding: add an option to specify a delay between peer notifications").
-the bond->send_peer_notif will be num_peer_notif multiplied by
-peer_notif_delay, which is u8 * u32. This would cause the send_peer_notif
-overflow easily. e.g.
+Running a preempt-rt (v6.2-rc3-rt1) based kernel on an Ampere Altra
+triggers:
 
-  ip link add bond0 type bond mode 1 miimon 100 num_grat_arp 30 peer_notify_delay 1000
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+  in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 24, name: cpuhp/0
+  preempt_count: 0, expected: 0
+  RCU nest depth: 0, expected: 0
+  3 locks held by cpuhp/0/24:
+    #0: ffffda30217c70d0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
+    #1: ffffda30217c7120 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
+    #2: ffffda3021c711f0 (sdei_list_lock){....}-{3:3}, at: sdei_cpuhp_up+0x3c/0x130
+  irq event stamp: 36
+  hardirqs last  enabled at (35): [<ffffda301e85b7bc>] finish_task_switch+0xb4/0x2b0
+  hardirqs last disabled at (36): [<ffffda301e812fec>] cpuhp_thread_fun+0x21c/0x248
+  softirqs last  enabled at (0): [<ffffda301e80b184>] copy_process+0x63c/0x1ac0
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 0 PID: 24 Comm: cpuhp/0 Not tainted 5.19.0-rc3-rt5-[...]
+  Hardware name: WIWYNN Mt.Jade Server [...]
+  Call trace:
+    dump_backtrace+0x114/0x120
+    show_stack+0x20/0x70
+    dump_stack_lvl+0x9c/0xd8
+    dump_stack+0x18/0x34
+    __might_resched+0x188/0x228
+    rt_spin_lock+0x70/0x120
+    sdei_cpuhp_up+0x3c/0x130
+    cpuhp_invoke_callback+0x250/0xf08
+    cpuhp_thread_fun+0x120/0x248
+    smpboot_thread_fn+0x280/0x320
+    kthread+0x130/0x140
+    ret_from_fork+0x10/0x20
 
-To fix the overflow, let's set the send_peer_notif to u32 and limit
-peer_notif_delay to 300s.
+sdei_cpuhp_up() is called in the STARTING hotplug section,
+which runs with interrupts disabled. Use a CPUHP_AP_ONLINE_DYN entry
+instead to execute the cpuhp cb later, with preemption enabled.
 
-Reported-by: Liang Li <liali@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2090053
-Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+SDEI originally got its own cpuhp slot to allow interacting
+with perf. It got superseded by pNMI and this early slot is not
+relevant anymore. [1]
+
+Some SDEI calls (e.g. SDEI_1_0_FN_SDEI_PE_MASK) take actions on the
+calling CPU. It is checked that preemption is disabled for them.
+_ONLINE cpuhp cb are executed in the 'per CPU hotplug thread'.
+Preemption is enabled in those threads, but their cpumask is limited
+to 1 CPU.
+Move 'WARN_ON_ONCE(preemptible())' statements so that SDEI cpuhp cb
+don't trigger them.
+
+Also add a check for the SDEI_1_0_FN_SDEI_PRIVATE_RESET SDEI call
+which acts on the calling CPU.
+
+[1]:
+https://lore.kernel.org/all/5813b8c5-ae3e-87fd-fccc-94c9cd08816d@arm.com/
+
+Suggested-by: James Morse <james.morse@arm.com>
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20230216084920.144064-1-pierre.gondois@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_netlink.c | 7 ++++++-
- drivers/net/bonding/bond_options.c | 8 +++++++-
- include/net/bonding.h              | 2 +-
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/firmware/arm_sdei.c | 37 ++++++++++++++++++++-----------------
+ include/linux/cpuhotplug.h  |  1 -
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index c2d080fc4fc4e..27cbe148f0db5 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -84,6 +84,11 @@ static int bond_fill_slave_info(struct sk_buff *skb,
- 	return -EMSGSIZE;
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 1e1a51510e83b..f9040bd610812 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -43,6 +43,8 @@ static asmlinkage void (*sdei_firmware_call)(unsigned long function_id,
+ /* entry point from firmware to arch asm code */
+ static unsigned long sdei_entry_point;
+ 
++static int sdei_hp_state;
++
+ struct sdei_event {
+ 	/* These three are protected by the sdei_list_lock */
+ 	struct list_head	list;
+@@ -301,8 +303,6 @@ int sdei_mask_local_cpu(void)
+ {
+ 	int err;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_MASK, 0, 0, 0, 0, 0, NULL);
+ 	if (err && err != -EIO) {
+ 		pr_warn_once("failed to mask CPU[%u]: %d\n",
+@@ -315,6 +315,7 @@ int sdei_mask_local_cpu(void)
+ 
+ static void _ipi_mask_cpu(void *ignored)
+ {
++	WARN_ON_ONCE(preemptible());
+ 	sdei_mask_local_cpu();
  }
  
-+/* Limit the max delay range to 300s */
-+static struct netlink_range_validation delay_range = {
-+	.max = 300000,
-+};
-+
- static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
- 	[IFLA_BOND_MODE]		= { .type = NLA_U8 },
- 	[IFLA_BOND_ACTIVE_SLAVE]	= { .type = NLA_U32 },
-@@ -114,7 +119,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
- 	[IFLA_BOND_AD_ACTOR_SYSTEM]	= { .type = NLA_BINARY,
- 					    .len  = ETH_ALEN },
- 	[IFLA_BOND_TLB_DYNAMIC_LB]	= { .type = NLA_U8 },
--	[IFLA_BOND_PEER_NOTIF_DELAY]    = { .type = NLA_U32 },
-+	[IFLA_BOND_PEER_NOTIF_DELAY]    = NLA_POLICY_FULL_RANGE(NLA_U32, &delay_range),
- 	[IFLA_BOND_MISSED_MAX]		= { .type = NLA_U8 },
- 	[IFLA_BOND_NS_IP6_TARGET]	= { .type = NLA_NESTED },
- };
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 3498db1c1b3c7..5bb2c098bf4df 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -169,6 +169,12 @@ static const struct bond_opt_value bond_num_peer_notif_tbl[] = {
- 	{ NULL,      -1,  0}
- };
+@@ -322,8 +323,6 @@ int sdei_unmask_local_cpu(void)
+ {
+ 	int err;
  
-+static const struct bond_opt_value bond_peer_notif_delay_tbl[] = {
-+	{ "off",     0,   0},
-+	{ "maxval",  300000, BOND_VALFLAG_MAX},
-+	{ NULL,      -1,  0}
-+};
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_UNMASK, 0, 0, 0, 0, 0, NULL);
+ 	if (err && err != -EIO) {
+ 		pr_warn_once("failed to unmask CPU[%u]: %d\n",
+@@ -336,6 +335,7 @@ int sdei_unmask_local_cpu(void)
+ 
+ static void _ipi_unmask_cpu(void *ignored)
+ {
++	WARN_ON_ONCE(preemptible());
+ 	sdei_unmask_local_cpu();
+ }
+ 
+@@ -343,6 +343,8 @@ static void _ipi_private_reset(void *ignored)
+ {
+ 	int err;
+ 
++	WARN_ON_ONCE(preemptible());
 +
- static const struct bond_opt_value bond_primary_reselect_tbl[] = {
- 	{ "always",  BOND_PRI_RESELECT_ALWAYS,  BOND_VALFLAG_DEFAULT},
- 	{ "better",  BOND_PRI_RESELECT_BETTER,  0},
-@@ -488,7 +494,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
- 		.id = BOND_OPT_PEER_NOTIF_DELAY,
- 		.name = "peer_notif_delay",
- 		.desc = "Delay between each peer notification on failover event, in milliseconds",
--		.values = bond_intmax_tbl,
-+		.values = bond_peer_notif_delay_tbl,
- 		.set = bond_option_peer_notif_delay_set
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PRIVATE_RESET, 0, 0, 0, 0, 0,
+ 			     NULL);
+ 	if (err && err != -EIO)
+@@ -389,8 +391,6 @@ static void _local_event_enable(void *data)
+ 	int err;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = sdei_api_event_enable(arg->event->event_num);
+ 
+ 	sdei_cross_call_return(arg, err);
+@@ -479,8 +479,6 @@ static void _local_event_unregister(void *data)
+ 	int err;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = sdei_api_event_unregister(arg->event->event_num);
+ 
+ 	sdei_cross_call_return(arg, err);
+@@ -561,8 +559,6 @@ static void _local_event_register(void *data)
+ 	struct sdei_registered_event *reg;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON(preemptible());
+-
+ 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
+ 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
+ 				      reg, 0, 0);
+@@ -717,6 +713,8 @@ static int sdei_pm_notifier(struct notifier_block *nb, unsigned long action,
+ {
+ 	int rv;
+ 
++	WARN_ON_ONCE(preemptible());
++
+ 	switch (action) {
+ 	case CPU_PM_ENTER:
+ 		rv = sdei_mask_local_cpu();
+@@ -765,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
+ 	int err;
+ 
+ 	/* unregister private events */
+-	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
++	cpuhp_remove_state(sdei_entry_point);
+ 
+ 	err = sdei_unregister_shared();
+ 	if (err)
+@@ -786,12 +784,15 @@ static int sdei_device_thaw(struct device *dev)
+ 		return err;
  	}
- };
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 768348008d0c9..123729c0e1ee1 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -235,7 +235,7 @@ struct bonding {
+ 
+-	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
++	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
+ 				&sdei_cpuhp_up, &sdei_cpuhp_down);
+-	if (err)
++	if (err < 0) {
+ 		pr_warn("Failed to re-register CPU hotplug notifier...\n");
++		return err;
++	}
+ 
+-	return err;
++	sdei_hp_state = err;
++	return 0;
+ }
+ 
+ static int sdei_device_restore(struct device *dev)
+@@ -823,7 +824,7 @@ static int sdei_reboot_notifier(struct notifier_block *nb, unsigned long action,
+ 	 * We are going to reset the interface, after this there is no point
+ 	 * doing work when we take CPUs offline.
  	 */
- 	spinlock_t mode_lock;
- 	spinlock_t stats_lock;
--	u8	 send_peer_notif;
-+	u32	 send_peer_notif;
- 	u8       igmp_retrans;
- #ifdef CONFIG_PROC_FS
- 	struct   proc_dir_entry *proc_entry;
+-	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
++	cpuhp_remove_state(sdei_hp_state);
+ 
+ 	sdei_platform_reset();
+ 
+@@ -1003,13 +1004,15 @@ static int sdei_probe(struct platform_device *pdev)
+ 		goto remove_cpupm;
+ 	}
+ 
+-	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
++	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
+ 				&sdei_cpuhp_up, &sdei_cpuhp_down);
+-	if (err) {
++	if (err < 0) {
+ 		pr_warn("Failed to register CPU hotplug notifier...\n");
+ 		goto remove_reboot;
+ 	}
+ 
++	sdei_hp_state = err;
++
+ 	return 0;
+ 
+ remove_reboot:
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 5b2f8147d1ae3..0f1001dca0e00 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -163,7 +163,6 @@ enum cpuhp_state {
+ 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
+ 	CPUHP_AP_PERF_XTENSA_STARTING,
+ 	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
+-	CPUHP_AP_ARM_SDEI_STARTING,
+ 	CPUHP_AP_ARM_VFP_STARTING,
+ 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
+ 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
 -- 
 2.39.2
 
