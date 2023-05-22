@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 121BA70C644
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3CD70C95D
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234097AbjEVTQf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:16:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39072 "EHLO
+        id S235300AbjEVTrR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234220AbjEVTQP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:15 -0400
+        with ESMTP id S235319AbjEVTrO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:47:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9BC115
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45E4F1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:47:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E45746276C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFFFC433EF;
-        Mon, 22 May 2023 19:16:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A43FA62AAC
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:47:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B955DC433EF;
+        Mon, 22 May 2023 19:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782973;
-        bh=FPZW9RYcum9eLwAVB5+4M2/FwCzOdmOvrgItKVfLNws=;
+        s=korg; t=1684784832;
+        bh=h6nnG39rthr6QrzADS1+XusC2afAKQuOnMeg2dO/gjs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sst9yyL29nuQ8J3wdEPW+iNcj39QUNcSjLKLAbGCmDC2mtvWNqtbEKnc1QExK4Msq
-         NFeq16XBo/Zoabu3MP38o0mTQ9eLzMF5EjaqVJ+a0Z5czpf3sduieM+IWnUnI3XsGv
-         gcAUkLBiokm6Xn3JqCGz+CVL1TksjnN4wBuwXUmk=
+        b=n0+XIZ7KO9pMx5RFFFj5h9pfgwx6y7EKhDJADTCpCb0LfU56Zh4wJf1aKdE/0SN7m
+         jhWeoa4U6rmhNABYbOFzFsiI9InJhEh+GJKqRiKIaNTwqjZ6TWpUM2LhO1JoLS6GjV
+         uj9jZ8VfWjxM/XQhdHA814pfkQ0iGhvhFRxXZSzY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/203] clk: tegra20: fix gcc-7 constant overflow warning
-Date:   Mon, 22 May 2023 20:08:40 +0100
-Message-Id: <20230522190357.645290143@linuxfoundation.org>
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 216/364] ASoC: fsl_micfil: Fix error handler with pm_runtime_enable
+Date:   Mon, 22 May 2023 20:08:41 +0100
+Message-Id: <20230522190418.114038650@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
+[ Upstream commit 17955aba7877a4494d8093ae5498e19469b01d57 ]
 
-Older gcc versions get confused by comparing a u32 value to a negative
-constant in a switch()/case block:
+There is error message when defer probe happens:
 
-drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
-drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_12MHZ:
-  ^~~~
-drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_26MHZ:
+fsl-micfil-dai 30ca0000.micfil: Unbalanced pm_runtime_enable!
 
-Make the constants unsigned instead.
+Fix the error handler with pm_runtime_enable and add
+fsl_micfil_remove() for pm_runtime_disable.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 47a70e6fc9a8 ("ASoC: Add MICFIL SoC Digital Audio Interface driver.")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com
+Link: https://lore.kernel.org/r/1683540996-6136-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index d246a39a6b4f0..cc57ababc882d 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -18,24 +18,24 @@
- #define MISC_CLK_ENB 0x48
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 94341e4352b3c..3f08082a55bec 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -1159,7 +1159,7 @@ static int fsl_micfil_probe(struct platform_device *pdev)
+ 	ret = devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to pcm register\n");
+-		return ret;
++		goto err_pm_disable;
+ 	}
  
- #define OSC_CTRL 0x50
--#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
--#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
--#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
--#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
--#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
--#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
--
--#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
--#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
--#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
--#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
-+#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
-+#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
-+#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
-+#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
-+#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
-+#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
+ 	fsl_micfil_dai.capture.formats = micfil->soc->formats;
+@@ -1169,9 +1169,20 @@ static int fsl_micfil_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register component %s\n",
+ 			fsl_micfil_component.name);
++		goto err_pm_disable;
+ 	}
+ 
+ 	return ret;
 +
-+#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
++err_pm_disable:
++	pm_runtime_disable(&pdev->dev);
++
++	return ret;
++}
++
++static void fsl_micfil_remove(struct platform_device *pdev)
++{
++	pm_runtime_disable(&pdev->dev);
+ }
  
- #define OSC_FREQ_DET 0x58
--#define OSC_FREQ_DET_TRIG (1<<31)
-+#define OSC_FREQ_DET_TRIG (1u<<31)
+ static int __maybe_unused fsl_micfil_runtime_suspend(struct device *dev)
+@@ -1232,6 +1243,7 @@ static const struct dev_pm_ops fsl_micfil_pm_ops = {
  
- #define OSC_FREQ_DET_STATUS 0x5c
--#define OSC_FREQ_DET_BUSY (1<<31)
--#define OSC_FREQ_DET_CNT_MASK 0xFFFF
-+#define OSC_FREQ_DET_BUSYu (1<<31)
-+#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
- 
- #define TEGRA20_CLK_PERIPH_BANKS	3
- 
+ static struct platform_driver fsl_micfil_driver = {
+ 	.probe = fsl_micfil_probe,
++	.remove_new = fsl_micfil_remove,
+ 	.driver = {
+ 		.name = "fsl-micfil-dai",
+ 		.pm = &fsl_micfil_pm_ops,
 -- 
 2.39.2
 
