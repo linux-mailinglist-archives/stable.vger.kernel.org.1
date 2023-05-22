@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 758B270C718
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 328B370C8EA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234616AbjEVTZo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47442 "EHLO
+        id S235183AbjEVTnU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234613AbjEVTZn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:43 -0400
+        with ESMTP id S235086AbjEVTnS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E3BCF
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D76B103
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D47DD62892
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1323C4339B;
-        Mon, 22 May 2023 19:25:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C4D162A4E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DE6C433EF;
+        Mon, 22 May 2023 19:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783541;
-        bh=f84D5WyFdSwh29Ao5yQKxvAWap/3U4GPVj/72rrimQ4=;
+        s=korg; t=1684784583;
+        bh=jY04o1EPXJzQvN2WWPPKNlEl+rWfPtb4YloCDiiBgAg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gv4SppWxn/ZT9AimRTnD8uGknv2ggyJahRDlePPP6YuqjPW2BonLOMCezRoYguw26
-         CDLOVOwI6DFTZjId0iE0E5hVk8LAzSy1thYeae8KYSfpdqtibBGGh8ugk7pcF5gYzI
-         XNHwGu2q1PTqWvAxAaeBRPCdgujSzGlMed/IaFrw=
+        b=WArPfBCOUTxbCmXnMR3JNZIB+0jwM0HLxH67j705B1VWervqSO6kz4ivntz5Lr0s9
+         q07SznfxCvA3ZuAjaQmFcqmzzZCGkiuz0i0RbRVCnbeigcsF+iyg34ruc06Xdpe9HN
+         wz+Ll60rBvGFt+h/WG1mvVOhngfU7z3UQEFV0UEs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Justin Tee <justin.tee@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Nagarajan Maran <quic_nmaran@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/292] scsi: lpfc: Prevent lpfc_debugfs_lockstat_write() buffer overflow
-Date:   Mon, 22 May 2023 20:07:15 +0100
-Message-Id: <20230522190407.920755489@linuxfoundation.org>
+Subject: [PATCH 6.3 131/364] wifi: ath11k: Fix SKB corruption in REO destination ring
+Date:   Mon, 22 May 2023 20:07:16 +0100
+Message-Id: <20230522190416.067739456@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Nagarajan Maran <quic_nmaran@quicinc.com>
 
-[ Upstream commit c6087b82a9146826564a55c5ca0164cac40348f5 ]
+[ Upstream commit f9fff67d2d7ca6fa8066132003a3deef654c55b1 ]
 
-A static code analysis tool flagged the possibility of buffer overflow when
-using copy_from_user() for a debugfs entry.
+While running traffics for a long time, randomly an RX descriptor
+filled with value "0" from REO destination ring is received.
+This descriptor which is invalid causes the wrong SKB (SKB stored in
+the IDR lookup with buffer id "0") to be fetched which in turn
+causes SKB memory corruption issue and the same leads to crash
+after some time.
 
-Currently, it is possible that copy_from_user() copies more bytes than what
-would fit in the mybuf char array.  Add a min() restriction check between
-sizeof(mybuf) - 1 and nbytes passed from the userspace buffer to protect
-against buffer overflow.
+Changed the start id for idr allocation to "1" and the buffer id "0"
+is reserved for error validation. Introduced Sanity check to validate
+the descriptor, before processing the SKB.
 
-Link: https://lore.kernel.org/r/20230301231626.9621-2-justintee8345@gmail.com
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Crash Signature :
+
+Unable to handle kernel paging request at virtual address 3f004900
+PC points to "b15_dma_inv_range+0x30/0x50"
+LR points to "dma_cache_maint_page+0x8c/0x128".
+The Backtrace obtained is as follows:
+[<8031716c>] (b15_dma_inv_range) from [<80313a4c>] (dma_cache_maint_page+0x8c/0x128)
+[<80313a4c>] (dma_cache_maint_page) from [<80313b90>] (__dma_page_dev_to_cpu+0x28/0xcc)
+[<80313b90>] (__dma_page_dev_to_cpu) from [<7fb5dd68>] (ath11k_dp_process_rx+0x1e8/0x4a4 [ath11k])
+[<7fb5dd68>] (ath11k_dp_process_rx [ath11k]) from [<7fb53c20>] (ath11k_dp_service_srng+0xb0/0x2ac [ath11k])
+[<7fb53c20>] (ath11k_dp_service_srng [ath11k]) from [<7f67bba4>] (ath11k_pci_ext_grp_napi_poll+0x1c/0x78 [ath11k_pci])
+[<7f67bba4>] (ath11k_pci_ext_grp_napi_poll [ath11k_pci]) from [<807d5cf4>] (__napi_poll+0x28/0xb8)
+[<807d5cf4>] (__napi_poll) from [<807d5f28>] (net_rx_action+0xf0/0x280)
+[<807d5f28>] (net_rx_action) from [<80302148>] (__do_softirq+0xd0/0x280)
+[<80302148>] (__do_softirq) from [<80320408>] (irq_exit+0x74/0xd4)
+[<80320408>] (irq_exit) from [<803638a4>] (__handle_domain_irq+0x90/0xb4)
+[<803638a4>] (__handle_domain_irq) from [<805bedec>] (gic_handle_irq+0x58/0x90)
+[<805bedec>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230403191533.28114-1-quic_nmaran@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_debugfs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-index f5252e45a48a2..3e365e5e194a2 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.c
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.c
-@@ -2157,10 +2157,13 @@ lpfc_debugfs_lockstat_write(struct file *file, const char __user *buf,
- 	char mybuf[64];
- 	char *pbuf;
- 	int i;
-+	size_t bsize;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 294c6fcfa1aa8..32a4f88861d58 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -389,10 +389,10 @@ int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
+ 			goto fail_free_skb;
  
- 	memset(mybuf, 0, sizeof(mybuf));
+ 		spin_lock_bh(&rx_ring->idr_lock);
+-		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
+-				   rx_ring->bufs_max * 3, GFP_ATOMIC);
++		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 1,
++				   (rx_ring->bufs_max * 3) + 1, GFP_ATOMIC);
+ 		spin_unlock_bh(&rx_ring->idr_lock);
+-		if (buf_id < 0)
++		if (buf_id <= 0)
+ 			goto fail_dma_unmap;
  
--	if (copy_from_user(mybuf, buf, nbytes))
-+	bsize = min(nbytes, (sizeof(mybuf) - 1));
+ 		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
+@@ -2665,6 +2665,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 				   cookie);
+ 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
+ 
++		if (unlikely(buf_id == 0))
++			continue;
 +
-+	if (copy_from_user(mybuf, buf, bsize))
- 		return -EFAULT;
- 	pbuf = &mybuf[0];
- 
-@@ -2181,7 +2184,7 @@ lpfc_debugfs_lockstat_write(struct file *file, const char __user *buf,
- 			qp->lock_conflict.wq_access = 0;
- 		}
- 	}
--	return nbytes;
-+	return bsize;
- }
- #endif
- 
+ 		ar = ab->pdevs[mac_id].ar;
+ 		rx_ring = &ar->dp.rx_refill_buf_ring;
+ 		spin_lock_bh(&rx_ring->idr_lock);
 -- 
 2.39.2
 
