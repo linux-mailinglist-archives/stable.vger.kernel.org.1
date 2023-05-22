@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF8470C91B
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C9970C764
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235236AbjEVTpU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39776 "EHLO
+        id S234687AbjEVT3C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:29:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235323AbjEVTo7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:44:59 -0400
+        with ESMTP id S234701AbjEVT3B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590B9C1
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:44:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154E010D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:28:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21E3862A5F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:44:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C18EC433EF;
-        Mon, 22 May 2023 19:44:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DF5F62605
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:28:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53BDC433EF;
+        Mon, 22 May 2023 19:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784692;
-        bh=FeEPuL62SD/ceTdy1AZqZeZrGvNE+W6iSSHqrcpuhdM=;
+        s=korg; t=1684783737;
+        bh=bpt8Pleh5MT2glcM/SjsemrlW8FxOcpaTz+l4JWV86E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VTTl51pQlaEwo7BE9huUkd1wqEtEOhg4+5D4inaa8PBfR/UgSmMz89yPbMg8ug8GX
-         PailfSgTzrjDdn878Ab91wpGNApC+9WCWhlYpbKg0A/P4PV3VbVAZirADHhT9ArXqm
-         JC6FYzph5vE3cS690eVt8aoKUPPf5z5xlF3XF6T8=
+        b=Wxnhy6B8/PzzthzwnTxeoseN/3Cae/d4IZtgoIGLWsV3rLjA48lIhUcNDRLnT9MMR
+         iEkoHj0jxE/Ligqg4lsoQRseD1ztQWZKJoJo3froUDja8j4JEZYWw/1C9PGv1Ucjgz
+         cptqPkvF+4EFdRX8RZnkljzKrbBQpzkdF1xnMQQA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev,
+        syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com,
+        Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 170/364] riscv: Fix EFI stub usage of KASAN instrumented strcmp function
+Subject: [PATCH 6.1 118/292] Bluetooth: L2CAP: fix "bad unlock balance" in l2cap_disconnect_rsp
 Date:   Mon, 22 May 2023 20:07:55 +0100
-Message-Id: <20230522190416.977450852@linuxfoundation.org>
+Message-Id: <20230522190408.915408009@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Min Li <lm0963hack@gmail.com>
 
-[ Upstream commit 617955ca6e275c4dd0dcf5316fca7fc04a8f2fe6 ]
+[ Upstream commit 25e97f7b1866e6b8503be349eeea44bb52d661ce ]
 
-The EFI stub must not use any KASAN instrumented code as the kernel
-proper did not initialize the thread pointer and the mapping for the
-KASAN shadow region.
+conn->chan_lock isn't acquired before l2cap_get_chan_by_scid,
+if l2cap_get_chan_by_scid returns NULL, then 'bad unlock balance'
+is triggered.
 
-Avoid using the generic strcmp function, instead use the one in
-drivers/firmware/efi/libstub/string.c.
-
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20230203075232.274282-5-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reported-by: syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000894f5f05f95e9f4d@google.com/
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/image-vars.h | 2 --
- 1 file changed, 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-index 7e2962ef73f92..15616155008cc 100644
---- a/arch/riscv/kernel/image-vars.h
-+++ b/arch/riscv/kernel/image-vars.h
-@@ -23,8 +23,6 @@
-  * linked at. The routines below are all implemented in assembler in a
-  * position independent manner
-  */
--__efistub_strcmp		= strcmp;
--
- __efistub__start		= _start;
- __efistub__start_kernel		= _start_kernel;
- __efistub__end			= _end;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index e62dadad81b31..ee8f806534dfb 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4694,7 +4694,6 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
+ 
+ 	chan = l2cap_get_chan_by_scid(conn, scid);
+ 	if (!chan) {
+-		mutex_unlock(&conn->chan_lock);
+ 		return 0;
+ 	}
+ 
 -- 
 2.39.2
 
