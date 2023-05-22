@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA1670C6C4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 178B970C88E
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234432AbjEVTWS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44062 "EHLO
+        id S231974AbjEVTkH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234444AbjEVTWP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:22:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21A9A9
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:13 -0700 (PDT)
+        with ESMTP id S235041AbjEVTjo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:39:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A48FCF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:39:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84A0362842
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:22:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED57C433EF;
-        Mon, 22 May 2023 19:22:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B57C0629F2
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFCDC4339B;
+        Mon, 22 May 2023 19:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783333;
-        bh=8AjTZa78PBqcCmBPcMReAytf1Kk5ESN+SBF14i7/yC0=;
+        s=korg; t=1684784382;
+        bh=IQgHuOoRnkEGD1Jb5Lkm537dUiI0uLn05CysAyCGk+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItMfAVPJR1COpbE/LDeRVK0sF1JyWbIYcbqgXgU/66sjHMrJauG2HQX3FWyTPFVSU
-         h/04ipUemqExpqG1faP7UsYi88dopwlFqajrIx8STR+waKmOq0BETUSL457fL9JyLc
-         em1/deqHi3fnB7jlD0+LO/aywyxwxNHnFajyF5Ik=
+        b=v2K/w11JEn+osDAZGzzQ9M5KSfqQeUkTmMg+amQpFbotFhV4XLkafmwrOtOjBu35K
+         6Rt9sPVRBu/7eLRMpoL+RnOrqJYhlOYj55q758q9Dw25X80kaslA1tiDzy6ejbJy5y
+         8nVWrELhWjUQMgN70vwJhs4ciK2ITP5Re+FDqbAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Kang Chen <void0red@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/292] net: Fix load-tearing on sk->sk_stamp in sock_recv_cmsgs().
+Subject: [PATCH 6.3 062/364] ACPI: processor: Check for null return of devm_kzalloc() in fch_misc_setup()
 Date:   Mon, 22 May 2023 20:06:07 +0100
-Message-Id: <20230522190406.148867874@linuxfoundation.org>
+Message-Id: <20230522190414.339635552@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,80 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kang Chen <void0red@gmail.com>
 
-[ Upstream commit dfd9248c071a3710c24365897459538551cb7167 ]
+[ Upstream commit 4dea41775d951ff1f7b472a346a8ca3ae7e74455 ]
 
-KCSAN found a data race in sock_recv_cmsgs() where the read access
-to sk->sk_stamp needs READ_ONCE().
+devm_kzalloc() may fail, clk_data->name might be NULL and will
+cause a NULL pointer dereference later.
 
-BUG: KCSAN: data-race in packet_recvmsg / packet_recvmsg
-
-write (marked) to 0xffff88803c81f258 of 8 bytes by task 19171 on cpu 0:
- sock_write_timestamp include/net/sock.h:2670 [inline]
- sock_recv_cmsgs include/net/sock.h:2722 [inline]
- packet_recvmsg+0xb97/0xd00 net/packet/af_packet.c:3489
- sock_recvmsg_nosec net/socket.c:1019 [inline]
- sock_recvmsg+0x11a/0x130 net/socket.c:1040
- sock_read_iter+0x176/0x220 net/socket.c:1118
- call_read_iter include/linux/fs.h:1845 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x5e0/0x630 fs/read_write.c:470
- ksys_read+0x163/0x1a0 fs/read_write.c:613
- __do_sys_read fs/read_write.c:623 [inline]
- __se_sys_read fs/read_write.c:621 [inline]
- __x64_sys_read+0x41/0x50 fs/read_write.c:621
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffff88803c81f258 of 8 bytes by task 19183 on cpu 1:
- sock_recv_cmsgs include/net/sock.h:2721 [inline]
- packet_recvmsg+0xb64/0xd00 net/packet/af_packet.c:3489
- sock_recvmsg_nosec net/socket.c:1019 [inline]
- sock_recvmsg+0x11a/0x130 net/socket.c:1040
- sock_read_iter+0x176/0x220 net/socket.c:1118
- call_read_iter include/linux/fs.h:1845 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x5e0/0x630 fs/read_write.c:470
- ksys_read+0x163/0x1a0 fs/read_write.c:613
- __do_sys_read fs/read_write.c:623 [inline]
- __se_sys_read fs/read_write.c:621 [inline]
- __x64_sys_read+0x41/0x50 fs/read_write.c:621
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0xffffffffc4653600 -> 0x0000000000000000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19183 Comm: syz-executor.5 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 6c7c98bad488 ("sock: avoid dirtying sk_stamp, if possible")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230508175543.55756-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kang Chen <void0red@gmail.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_apd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 832a4a51de4d9..beb1b747fb09d 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2744,7 +2744,7 @@ static inline void sock_recv_cmsgs(struct msghdr *msg, struct sock *sk,
- 		__sock_recv_cmsgs(msg, sk, skb);
- 	else if (unlikely(sock_flag(sk, SOCK_TIMESTAMP)))
- 		sock_write_timestamp(sk, skb->tstamp);
--	else if (unlikely(sk->sk_stamp == SK_DEFAULT_STAMP))
-+	else if (unlikely(sock_read_timestamp(sk) == SK_DEFAULT_STAMP))
- 		sock_write_timestamp(sk, 0);
- }
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 3bbe2276cac76..80f945cbec8a7 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -83,6 +83,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 	if (!acpi_dev_get_property(adev, "clk-name", ACPI_TYPE_STRING, &obj)) {
+ 		clk_data->name = devm_kzalloc(&adev->dev, obj->string.length,
+ 					      GFP_KERNEL);
++		if (!clk_data->name)
++			return -ENOMEM;
  
+ 		strcpy(clk_data->name, obj->string.pointer);
+ 	} else {
 -- 
 2.39.2
 
