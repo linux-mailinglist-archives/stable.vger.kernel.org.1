@@ -2,121 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C741870C6D6
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A5870C774
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234505AbjEVTXL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44674 "EHLO
+        id S234698AbjEVT3z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234503AbjEVTXE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:23:04 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682E81B5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:55 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-ba83fed5097so13219554276.2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:22:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684783374; x=1687375374;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mx5S0ZT/3ZJYq9OBWml8SsAoAgI0k6rO+AEJA5XZveM=;
-        b=VtyvZ2EAC+fSaJSquxRmS/AmmOySXNUaFYmA148Q8GdVOXN5NYEqin68sZSIpRsk88
-         2XOz2/JRMQG1Ecs6kWUctASllMfTjoUl/i/YDb3Bqkk3FP9ad7QbWFTl2nfM3YYYGQNN
-         2LE2dwPesxpxptmjlV1PIX0J1RnyDVDd52ReezFJq8+eqgJeAlsepEOkcfKAbOUo1eI7
-         +U7llslqS+fIU9UOAupZhn1WMo44D/r2gxd8BAVAlRYxyiDSvNYMquGsfQC8+KZ8o0GL
-         NP5NBFqMmo0TjtCrIdZp7pyHyY+FtxqLxTS/D4Nh6MbMfga5fJMeEBKm5z3bKRZ0GMjH
-         t0gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684783374; x=1687375374;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mx5S0ZT/3ZJYq9OBWml8SsAoAgI0k6rO+AEJA5XZveM=;
-        b=i1ax8H4hDoF0/IVyLfJ9NwjFYVnsgJkL0mI+qx2PPQ8mDzJw4THvZaE0civJYMeFuE
-         ZTXGyv9usnJAy0E4qH0A57Vfih2eW9GYi6OSMB7qQ8EhAvntPOhDV/wrSz2h/ZwanIZg
-         nCupLfW1efB/8bxxTnMFGpMNMgXanGXFx/Au6d6/23EY/JylOYNC6rdUT/YLdQEygC/Y
-         +vGwx6x0Qspg0CrPhHb/3Hi3I+vzCigljfX1v8Y1Zl/lk38AD1/zSDWhnxmcgKBT3Hfu
-         0RzsEcGvjHQJkJ99T0I1K/PF3Lnwxw6iJZYpHaHjdfqm12qxxozFkFhpnI/17URdiwbZ
-         iMgw==
-X-Gm-Message-State: AC+VfDzJ3ZqZ/IdZ4rDj9nLFi3YYWcrLoCU27aUP/Mmyhg/FVcgQnRxP
-        PJMp4jWHD9u+gYu8nNU0WNeaSimy/b/J0bo9X89hXg5VVi/ORR8FhU0dlDdm2BeiFxlhUVc4/bR
-        PN7dRFDsMObG5VbbieqNygELFC+DKr/vvbvG4DnSvAoE+iAap0CABOA==
-X-Google-Smtp-Source: ACHHUZ76O+DUj9umoQTSNw+8tgDERCVpM1r/H5+MNraWO/2kAJbN5oPjNlZZqLOHiQNQI0YH19TmRVU=
-X-Received: from pcc-desktop.svl.corp.google.com ([2620:15c:2d3:205:3d33:90fe:6f02:afdd])
- (user=pcc job=sendgmr) by 2002:a05:6902:3c2:b0:ba8:939b:6574 with SMTP id
- g2-20020a05690203c200b00ba8939b6574mr6989604ybs.12.1684783374364; Mon, 22 May
- 2023 12:22:54 -0700 (PDT)
-Date:   Mon, 22 May 2023 12:22:45 -0700
-In-Reply-To: <2023052235-cut-gulp-ad69@gregkh>
-Message-Id: <20230522192245.661455-1-pcc@google.com>
-Mime-Version: 1.0
-References: <2023052235-cut-gulp-ad69@gregkh>
-X-Mailer: git-send-email 2.40.1.698.g37aff9b760-goog
-Subject: [PATCH 6.1.y] arm64: Also reset KASAN tag if page is not PG_mte_tagged
-From:   Peter Collingbourne <pcc@google.com>
+        with ESMTP id S234729AbjEVT3v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:51 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3411F185
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:40 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id A624D5C0189;
+        Mon, 22 May 2023 15:29:37 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Mon, 22 May 2023 15:29:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm3; t=1684783777; x=1684870177; bh=HBoVS9lDn8F3CFO9DSEt13byj
+        HvAYrLb93ANSRivQfI=; b=RwzeBUmQ7ANqsEWmhVZzqAibF9vs7vmx3Q6H/PjWt
+        zRKYtyJa8P8XD39fqA11A9j/dXobqSNyXQiIgaDe0b2dtghiNdVDnC/tRghOhJa+
+        H1jhe3oI6kvMww1Z8juIC3450mJRpSWiqukSYYaulzEpmqlH18hX2ORhuN8kfKgp
+        vlEgNpWt4Bo9Esz2rLY9/0ONxZ/f6ri4i2omJqbc9hNtSSH+DdYoQrkL4kDbyX2S
+        +K/6+29K50aQ97g1KlPZS/iqdCnv7g2KX9mH47nnM5aQrd8hnX1lXMQsKgVGFaj3
+        XcVtsOp8as5V4qYjfnLOxW5LDy9CqZ1bJHwrlD97o78jQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1684783777; x=1684870177; bh=HBoVS9lDn8F3CFO9DSEt13byjHvAYrLb93A
+        NSRivQfI=; b=X7nOAG7oNhep/wdsrCTBkOPiDrOJYs9fNEwwle3RuSNoFfA7o0+
+        QnmGZ+FZPxcawsWA+GsLtRVd7Ub9vxOVypCqMy7/zoVBl209kZh4vmGHJxulE2Bz
+        1m8scICPk15w/B/m+bCQdwktEI3Qul3jPGCu0FtN6VIQwZ1TfMwKcmJ3o0l8/RJQ
+        QasfgvKhevAj0ZyixceVcPBzvMj98u6JmSQ3bI8rbs1YZ9gcwGOf1Pe82NGMpiwK
+        lwS4AvPXPtmpsjfqrsTCYaQ5S/hmrGignaYwZo/NOn5yto16q90NMLhYajeLfDod
+        KTT1p9Oy1iJnPtGDTQjqHnpRAh7sPhnBhbA==
+X-ME-Sender: <xms:ocJrZCk1lwjbxhkK6JMQcG0XJDeX4m2qOqNZ2ztoL0knYfToK8ZvYA>
+    <xme:ocJrZJ2U5lkZT1tmdyE-CibWbmnNIb8T9Vzw41ch4NtOxp619-t_FP1zJBXPHQkMy
+    dInmMLFEYutLXqncg>
+X-ME-Received: <xmr:ocJrZAqtzo6CXqwE053BL7arm-IUwa1pYhJfQNwvhpJXxPnQZ_8s52hsTApSfTNQLLWw19rhjTxeH9G7rBTLcIiOrQe88cGQVA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejuddguddvgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfggtggusehgtderredttddvnecuhfhrohhmpeetlhihshhs
+    rgcutfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeehff
+    egheelvdeugeduiedvkefhleegvdefleegfeevudeiieegvddvhfeitdeuffenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihssh
+    grrdhish
+X-ME-Proxy: <xmx:ocJrZGkVkvPisD--Tdqxf2Uk_uyeo8WExa21b85B4DslDS3XJz0CCg>
+    <xmx:ocJrZA04f_szr7y616yhzqommW72nwa_Y3S4UQz7ZRysp1x6FbQdPw>
+    <xmx:ocJrZNsnadQ0O0kXy2Y-zPfV-cTU27UMzUIYueVl6trnoQmwNDef7g>
+    <xmx:ocJrZKo20H5Xl0pfIXfcRwNo-_xZN7g-i2bxKd1txZPxGHcOIeIsig>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 22 May 2023 15:29:36 -0400 (EDT)
+Received: by x220.qyliss.net (Postfix, from userid 1000)
+        id 63A674F6B; Mon, 22 May 2023 19:29:34 +0000 (UTC)
+Date:   Mon, 22 May 2023 19:29:34 +0000
+From:   Alyssa Ross <hi@alyssa.is>
 To:     stable@vger.kernel.org
-Cc:     Peter Collingbourne <pcc@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     Peng Zhang <zhangpeng.00@bytedance.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        Tad <support@spotco.us>,
+        Michael Keyes <mgkeyes@vigovproductions.net>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Robert Hensing <robert@hercules-ci.com>
+Subject: Backport request: [PATCH] maple_tree: make maple state reusable
+ after mas_empty_area()
+Message-ID: <20230522192934.kz5gp7rp2jeycaqj@x220>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="wjxtelyvnyx74gz3"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Consider the following sequence of events:
 
-1) A page in a PROT_READ|PROT_WRITE VMA is faulted.
-2) Page migration allocates a page with the KASAN allocator,
-   causing it to receive a non-match-all tag, and uses it
-   to replace the page faulted in 1.
-3) The program uses mprotect() to enable PROT_MTE on the page faulted in 1.
+--wjxtelyvnyx74gz3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-As a result of step 3, we are left with a non-match-all tag for a page
-with tags accessible to userspace, which can lead to the same kind of
-tag check faults that commit e74a68468062 ("arm64: Reset KASAN tag in
-copy_highpage with HW tags only") intended to fix.
+Hi, please backport commit 0257d9908d38c0b1669af4bb1bc4dbca1f273fe6 to
+6.1.y onwards.  This patch fixes a regression which broke some programs,
+like GHC (the Haskell compiler).  We've been shipping this patch in
+NixOS unstable for the last couple of weeks, to positive results.
 
-The general invariant that we have for pages in a VMA with VM_MTE_ALLOWED
-is that they cannot have a non-match-all tag. As a result of step 2, the
-invariant is broken. This means that the fix in the referenced commit
-was incomplete and we also need to reset the tag for pages without
-PG_mte_tagged.
+(The patch had "Cc: <stable@vger.kernel.org>" but from what I can tell
+has not been selected for backporting.  Apologies if I've just missed
+it.)
 
-Fixes: e5b8d9218951 ("arm64: mte: reset the page tag in page->flags")
-Cc: <stable@vger.kernel.org> # 5.15
-Link: https://linux-review.googlesource.com/id/I7409cdd41acbcb215c2a7417c1e50d37b875beff
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20230420210945.2313627-1-pcc@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
-(cherry picked from commit 2efbafb91e12ff5a16cbafb0085e4c10c3fca493)
----
- arch/arm64/mm/copypage.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+--wjxtelyvnyx74gz3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
-index 6dbc822332f2..f2fa8a0776e2 100644
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -21,9 +21,10 @@ void copy_highpage(struct page *to, struct page *from)
- 
- 	copy_page(kto, kfrom);
- 
-+	if (kasan_hw_tags_enabled())
-+		page_kasan_tag_reset(to);
-+
- 	if (system_supports_mte() && page_mte_tagged(from)) {
--		if (kasan_hw_tags_enabled())
--			page_kasan_tag_reset(to);
- 		mte_copy_page_tags(kto, kfrom);
- 		set_page_mte_tagged(to);
- 	}
--- 
-2.40.1.698.g37aff9b760-goog
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmRrwpwACgkQ+dvtSFmy
+ccD/7g/7BlQ3VME3ycFxsWrVaAawdGyWw1qrQVMSG7bANrnsbWKYz0adCc8xDghn
+ljl/ugLFiUd1108T8uHCUXg6CB7qBOIrIB5pk3l+etaLZi5bHQnjhP8T8QjPLpdJ
+dq2h/jkGNBbgnHunA3YjRiexbMbXr6g7KR9CZz9aVkVdH3uqRG5D8xlul5YkIIAl
+Gjo3MFpBLbyLIEEE6Lkubea3y0Zu2NzEXnt/oJbEzU40v5vSKLYgl65LOYpGnVxw
+Sa/mPyz46EWkqW6FYdLYj38CNdcJBX47hsqXdWGuxoKKtcUYoUtvotjFNZdB1Dhv
+TqDNdMY0UJUll0I5hlzBnA2PD4QtbLiFzSRQIaEDm+sh2O+6TyE/0zWumPXv9nQn
+2flpKejXbOTmUI6ndZi6gLU2Gu/9UwiA4peMMCsbL3KWeA9MVXZKp7UBgt3ZZUNB
+OyZ3oqOTG9ThZHtBHOMVztgEpTp/RZC47cjzEFjdYY+lEGQ0hYQ+fedK8qg7irdp
+OWJyr/gftXSR8v2ipQVn7YnsbRIk7eRA/kdq2iClHpyKhRqoB7BeFHEvRkE99Bmq
+MrgGH3WMC6hJSOcv6QU6eMomirA2yNkG0vFXOKZYIWjFy1jppF1KDxgVnDK0oFev
+XO0O6NmvTTWBQYwRSdWXm/zDsgpZXuupRo7jccn+HzgmwYebMIw=
+=huCN
+-----END PGP SIGNATURE-----
+
+--wjxtelyvnyx74gz3--
