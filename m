@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9E570C8EF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C74170C5D1
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:12:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235113AbjEVTnb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37888 "EHLO
+        id S230131AbjEVTMo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:12:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235188AbjEVTn2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:28 -0400
+        with ESMTP id S229777AbjEVTMn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:12:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23364E42
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:43:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EBEAE9
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:12:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2579262A4A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F9CC433EF;
-        Mon, 22 May 2023 19:42:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C49676235D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:12:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C17C433EF;
+        Mon, 22 May 2023 19:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784574;
-        bh=rODhLvb/3BHH0R7bwoUoNz3H/GtIGxQi5NfMdYLCNc8=;
+        s=korg; t=1684782760;
+        bh=OQ7XY+QmbQ/wqKS44nz6JlaIQOvpadW0HzxgGX4tBu0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kGW1eM9Q/VEyMDaBoGhBfqjFO6Y4PVRXx8GT/nf8EkwLYoN7VVm3+xOKUBzXGlEld
-         qPFKOhNUGwSzmGuVPH5NAVK3VP9MB2UkmIVZjQ50amoru7J2mOubVIPO6t97HPQkM6
-         pXHWv6JSIjGKdGNUlH4mgIVfNugGp5Md9jefDTUY=
+        b=uLQuatBuEXrsgEoPaVmhj5r2I8xmN2+YP1m+R97277iFlpZ5BW0cciJMdxXMSaj+a
+         6jaBdojyvp7Q9hlNFWj2aV3I8M1X6E7fs+BH0KVJinevTJhudCzP7Xa4wE6mRY6R+Q
+         CPaJXSn5JSWIO7I9GnZt25McbxFpFE5gvDlCMLY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chaitanya Kulkarni <kch@nvidia.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>,
-        Nitesh Shetty <nj.shetty@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 129/364] null_blk: Always check queue mode setting from configfs
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 010/203] netfilter: nf_tables: always release netdev hooks from notifier
 Date:   Mon, 22 May 2023 20:07:14 +0100
-Message-Id: <20230522190416.021479173@linuxfoundation.org>
+Message-Id: <20230522190355.235409695@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,85 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 63f8793ee60513a09f110ea460a6ff2c33811cdb ]
+[ Upstream commit dc1c9fd4a8bbe1e06add9053010b652449bfe411 ]
 
-Make sure to check device queue mode in the null_validate_conf() and
-return error for NULL_Q_RQ as we don't allow legacy I/O path, without
-this patch we get OOPs when queue mode is set to 1 from configfs,
-following are repro steps :-
+This reverts "netfilter: nf_tables: skip netdev events generated on netns removal".
 
-modprobe null_blk nr_devices=0
-mkdir config/nullb/nullb0
-echo 1 > config/nullb/nullb0/memory_backed
-echo 4096 > config/nullb/nullb0/blocksize
-echo 20480 > config/nullb/nullb0/size
-echo 1 > config/nullb/nullb0/queue_mode
-echo 1 > config/nullb/nullb0/power
+The problem is that when a veth device is released, the veth release
+callback will also queue the peer netns device for removal.
 
-Entering kdb (current=0xffff88810acdd080, pid 2372) on processor 42 Oops: (null)
-due to oops @ 0xffffffffc041c329
-CPU: 42 PID: 2372 Comm: sh Tainted: G           O     N 6.3.0-rc5lblk+ #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-RIP: 0010:null_add_dev.part.0+0xd9/0x720 [null_blk]
-Code: 01 00 00 85 d2 0f 85 a1 03 00 00 48 83 bb 08 01 00 00 00 0f 85 f7 03 00 00 80 bb 62 01 00 00 00 48 8b 75 20 0f 85 6d 02 00 00 <48> 89 6e 60 48 8b 75 20 bf 06 00 00 00 e8 f5 37 2c c1 48 8b 75 20
-RSP: 0018:ffffc900052cbde0 EFLAGS: 00010246
-RAX: 0000000000000001 RBX: ffff88811084d800 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888100042e00
-RBP: ffff8881053d8200 R08: ffffc900052cbd68 R09: ffff888105db2000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000002
-R13: ffff888104765200 R14: ffff88810eec1748 R15: ffff88810eec1740
-FS:  00007fd445fd1740(0000) GS:ffff8897dfc80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000060 CR3: 0000000166a00000 CR4: 0000000000350ee0
-DR0: ffffffff8437a488 DR1: ffffffff8437a489 DR2: ffffffff8437a48a
-DR3: ffffffff8437a48b DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Its possible that the peer netns is also slated for removal.  In this
+case, the device memory is already released before the pre_exit hook of
+the peer netns runs:
+
+BUG: KASAN: slab-use-after-free in nf_hook_entry_head+0x1b8/0x1d0
+Read of size 8 at addr ffff88812c0124f0 by task kworker/u8:1/45
+Workqueue: netns cleanup_net
 Call Trace:
- <TASK>
- nullb_device_power_store+0xd1/0x120 [null_blk]
- configfs_write_iter+0xb4/0x120
- vfs_write+0x2ba/0x3c0
- ksys_write+0x5f/0xe0
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7fd4460c57a7
-Code: 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
-RSP: 002b:00007ffd3792a4a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fd4460c57a7
-RDX: 0000000000000002 RSI: 000055b43c02e4c0 RDI: 0000000000000001
-RBP: 000055b43c02e4c0 R08: 000000000000000a R09: 00007fd44615b4e0
-R10: 00007fd44615b3e0 R11: 0000000000000246 R12: 0000000000000002
-R13: 00007fd446198520 R14: 0000000000000002 R15: 00007fd446198700
- </TASK>
+ nf_hook_entry_head+0x1b8/0x1d0
+ __nf_unregister_net_hook+0x76/0x510
+ nft_netdev_unregister_hooks+0xa0/0x220
+ __nft_release_hook+0x184/0x490
+ nf_tables_pre_exit_net+0x12f/0x1b0
+ ..
 
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-Link: https://lore.kernel.org/r/20230416220339.43845-1-kch@nvidia.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Order is:
+1. First netns is released, veth_dellink() queues peer netns device
+   for removal
+2. peer netns is queued for removal
+3. peer netns device is released, unreg event is triggered
+4. unreg event is ignored because netns is going down
+5. pre_exit hook calls nft_netdev_unregister_hooks but device memory
+   might be free'd already.
+
+Fixes: 68a3765c659f ("netfilter: nf_tables: skip netdev events generated on netns removal")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nft_chain_filter.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 9e6b032c8ecc2..14491952047f5 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1964,6 +1964,11 @@ static int null_init_tag_set(struct nullb *nullb, struct blk_mq_tag_set *set)
+diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
+index 3ced0eb6b7c3b..5b02408a920bf 100644
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -342,6 +342,12 @@ static void nft_netdev_event(unsigned long event, struct net_device *dev,
+ 		return;
+ 	}
  
- static int null_validate_conf(struct nullb_device *dev)
- {
-+	if (dev->queue_mode == NULL_Q_RQ) {
-+		pr_err("legacy IO path is no longer available\n");
-+		return -EINVAL;
-+	}
-+
- 	dev->blocksize = round_down(dev->blocksize, 512);
- 	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	/* UNREGISTER events are also happening on netns exit.
++	 *
++	 * Although nf_tables core releases all tables/chains, only this event
++	 * handler provides guarantee that hook->ops.dev is still accessible,
++	 * so we cannot skip exiting net namespaces.
++	 */
+ 	__nft_release_basechain(ctx);
+ }
  
+@@ -360,9 +366,6 @@ static int nf_tables_netdev_event(struct notifier_block *this,
+ 	    event != NETDEV_CHANGENAME)
+ 		return NOTIFY_DONE;
+ 
+-	if (!check_net(ctx.net))
+-		return NOTIFY_DONE;
+-
+ 	nft_net = nft_pernet(ctx.net);
+ 	mutex_lock(&nft_net->commit_mutex);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
 -- 
 2.39.2
 
