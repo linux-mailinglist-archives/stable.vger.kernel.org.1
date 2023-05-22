@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A7970C730
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41FFE70C5F5
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234635AbjEVT0y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:26:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48324 "EHLO
+        id S231998AbjEVTNy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:13:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234633AbjEVT0x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:26:53 -0400
+        with ESMTP id S233761AbjEVTNr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:13:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF931CD
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:26:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4366AFE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E626628B5
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65378C433D2;
-        Mon, 22 May 2023 19:26:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C85F761F18
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FEAC433D2;
+        Mon, 22 May 2023 19:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783610;
-        bh=4y7pOBGCYDjIbIf9y/Y4h8+y9QfTW9ujHRZ0qgN4S/k=;
+        s=korg; t=1684782825;
+        bh=Tv7NzYcIR3DrYURSQs35tGyDpnqsTNjGtFQEouK7jHw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IP/N4sI6Yi1wM4ZkKbEY98eXwrORIkIFmc+mjaj4XtRfYhv9oemxx1FyoyyPLRJmw
-         0/Qr0nJDYYw2/E50n0EJ3n8WpJUKZcDuQzOzWYQBOGHIUUWT4Sr9OpFp6KX57rqQ2J
-         1IyeIHG8Q56MzI8qvQYouNy1c7qMdC3/raKBStvM=
+        b=0IWGcgoLlOZnOzUv7+jmkih6VNXNx4jc8TXQYysxzbhM5HMb6+kpVBJHiV0xRHOWv
+         us3VDuPtrmFT8HLsdtYCgQkj8Omm/RIBZ/9nwGMfWHdV6PhV3kGK2Dskv9iKHSDiuq
+         N+x4Kdh3eYzOvVq8YvZazVPV/OimJ0vCxXIPM86g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/292] block, bfq: Fix division by zero error on zero wsum
-Date:   Mon, 22 May 2023 20:07:39 +0100
-Message-Id: <20230522190408.520700056@linuxfoundation.org>
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 036/203] arm64: dts: qcom: msm8996: Add missing DWC3 quirks
+Date:   Mon, 22 May 2023 20:07:40 +0100
+Message-Id: <20230522190355.971376858@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,80 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit e53413f8deedf738a6782cc14cc00bd5852ccf18 ]
+[ Upstream commit d0af0537e28f6eace02deed63b585396de939213 ]
 
-When the weighted sum is zero the calculation of limit causes
-a division by zero error. Fix this by continuing to the next level.
+Add missing dwc3 quirks from msm-3.18. Unfortunately, none of them
+make `dwc3-qcom 6af8800.usb: HS-PHY not in L2` go away.
 
-This was discovered by running as root:
-
-stress-ng --ioprio 0
-
-Fixes divison by error oops:
-
-[  521.450556] divide error: 0000 [#1] SMP NOPTI
-[  521.450766] CPU: 2 PID: 2684464 Comm: stress-ng-iopri Not tainted 6.2.1-1280.native #1
-[  521.451117] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-[  521.451627] RIP: 0010:bfqq_request_over_limit+0x207/0x400
-[  521.451875] Code: 01 48 8d 0c c8 74 0b 48 8b 82 98 00 00 00 48 8d 0c c8 8b 85 34 ff ff ff 48 89 ca 41 0f af 41 50 48 d1 ea 48 98 48 01 d0 31 d2 <48> f7 f1 41 39 41 48 89 85 34 ff ff ff 0f 8c 7b 01 00 00 49 8b 44
-[  521.452699] RSP: 0018:ffffb1af84eb3948 EFLAGS: 00010046
-[  521.452938] RAX: 000000000000003c RBX: 0000000000000000 RCX: 0000000000000000
-[  521.453262] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffb1af84eb3978
-[  521.453584] RBP: ffffb1af84eb3a30 R08: 0000000000000001 R09: ffff8f88ab8a4ba0
-[  521.453905] R10: 0000000000000000 R11: 0000000000000001 R12: ffff8f88ab8a4b18
-[  521.454224] R13: ffff8f8699093000 R14: 0000000000000001 R15: ffffb1af84eb3970
-[  521.454549] FS:  00005640b6b0b580(0000) GS:ffff8f88b3880000(0000) knlGS:0000000000000000
-[  521.454912] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  521.455170] CR2: 00007ffcbcae4e38 CR3: 00000002e46de001 CR4: 0000000000770ee0
-[  521.455491] PKRU: 55555554
-[  521.455619] Call Trace:
-[  521.455736]  <TASK>
-[  521.455837]  ? bfq_request_merge+0x3a/0xc0
-[  521.456027]  ? elv_merge+0x115/0x140
-[  521.456191]  bfq_limit_depth+0xc8/0x240
-[  521.456366]  __blk_mq_alloc_requests+0x21a/0x2c0
-[  521.456577]  blk_mq_submit_bio+0x23c/0x6c0
-[  521.456766]  __submit_bio+0xb8/0x140
-[  521.457236]  submit_bio_noacct_nocheck+0x212/0x300
-[  521.457748]  submit_bio_noacct+0x1a6/0x580
-[  521.458220]  submit_bio+0x43/0x80
-[  521.458660]  ext4_io_submit+0x23/0x80
-[  521.459116]  ext4_do_writepages+0x40a/0xd00
-[  521.459596]  ext4_writepages+0x65/0x100
-[  521.460050]  do_writepages+0xb7/0x1c0
-[  521.460492]  __filemap_fdatawrite_range+0xa6/0x100
-[  521.460979]  file_write_and_wait_range+0xbf/0x140
-[  521.461452]  ext4_sync_file+0x105/0x340
-[  521.461882]  __x64_sys_fsync+0x67/0x100
-[  521.462305]  ? syscall_exit_to_user_mode+0x2c/0x1c0
-[  521.462768]  do_syscall_64+0x3b/0xc0
-[  521.463165]  entry_SYSCALL_64_after_hwframe+0x5a/0xc4
-[  521.463621] RIP: 0033:0x5640b6c56590
-[  521.464006] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 80 3d 71 70 0e 00 00 74 17 b8 4a 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20230413133009.1605335-1-colin.i.king@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230302011849.1873056-1-konrad.dybcio@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index ff9d238894157..52eb79d60a3f3 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -637,6 +637,8 @@ static bool bfqq_request_over_limit(struct bfq_queue *bfqq, int limit)
- 					sched_data->service_tree[i].wsum;
- 			}
- 		}
-+		if (!wsum)
-+			continue;
- 		limit = DIV_ROUND_CLOSEST(limit * entity->weight, wsum);
- 		if (entity->allocated >= limit) {
- 			bfq_log_bfqq(bfqq->bfqd, bfqq,
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index b22d3c8db3b39..cd66bb16c7392 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -2595,8 +2595,11 @@
+ 				interrupts = <0 131 IRQ_TYPE_LEVEL_HIGH>;
+ 				phys = <&hsusb_phy1>, <&ssusb_phy_0>;
+ 				phy-names = "usb2-phy", "usb3-phy";
++				snps,hird-threshold = /bits/ 8 <0>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
++				snps,is-utmi-l1-suspend;
++				tx-fifo-resize;
+ 			};
+ 		};
+ 
 -- 
 2.39.2
 
