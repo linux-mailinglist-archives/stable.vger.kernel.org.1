@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD43070C977
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4A3F70C683
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235333AbjEVTsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43318 "EHLO
+        id S234163AbjEVTTK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235269AbjEVTsa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:30 -0400
+        with ESMTP id S234291AbjEVTTG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E68C95
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC806186
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:18:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF89A6228D
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EF7C433EF;
-        Mon, 22 May 2023 19:48:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A768627F2
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9528DC4339B;
+        Mon, 22 May 2023 19:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784908;
-        bh=kBIMZF4dfVJoq85E9/5DVhfsutNvOQw3JwFfqGU7ZMA=;
+        s=korg; t=1684783133;
+        bh=BxVVpe9on/m9ivgzYKkk8IGctjKWRugfjwJApp1qm24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PwOj9yrUhhjo3n1uTamtDxWSTpW8TiCbRb7gY5FwbD3u778PipK+mFX8umva/vncc
-         RopRU3CuuENzF8Cc4DG2e62tOwKayneVayS12kv4jJK+SHZmHhrHE/oht0DKXLO/V0
-         EFygcC47OmkFdYE/8AG6xsNNQ+mrvrsAsTYH3wlE=
+        b=CfVQZpEKWZwcTR3AFQx6MhR9dmE7tw/8XFTRTtTePA+4kAOiCMIMXk2KpVTyZsy2b
+         YngYEPfmXYswYzl20+kEbaDsFxzNTeA1d3DnqgxXBb1xfcscfrQ8yFdWTmkfk9X/lv
+         CF7RL+7erQUKunZ9tMQHnOJEiN1heRmXbocbIDew=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
-        Hao Lan <lanhao@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 241/364] net: hns3: fix output information incomplete for dumping tx queue info with debugfs
+        patches@lists.linux.dev, Ryan Underwood <nemesis@icequake.net>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 122/203] ALSA: hda/realtek: Apply HP B&O top speaker profile to Pavilion 15
 Date:   Mon, 22 May 2023 20:09:06 +0100
-Message-Id: <20230522190418.727115238@linuxfoundation.org>
+Message-Id: <20230522190358.351764469@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Ryan C. Underwood <nemesis@icequake.net>
 
-[ Upstream commit 89f6bfb071182f05d7188c255b0e7251c3806f16 ]
+[ Upstream commit 92553ee03166ef8fa978e7683f9f4af30c9c4e6b ]
 
-In function hns3_dump_tx_queue_info, The print buffer is not enough when
-the tx BD number is configured to 32760. As a result several BD
-information wouldn't be displayed.
+The Pavilion 15 line has B&O top speakers similar to the x360 and
+applying the same profile produces good sound.  Without this, the
+sound would be tinny and underpowered without either applying
+model=alc295-hp-x360 or booting another OS first.
 
-So fix it by increasing the tx queue print buffer length.
-
-Fixes: 630a6738da82 ("net: hns3: adjust string spaces of some parameters of tx bd info in debugfs")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ryan Underwood <nemesis@icequake.net>
+Fixes: 563785edfcef ("ALSA: hda/realtek - Add quirk entry for HP Pavilion 15")
+Link: https://lore.kernel.org/r/ZF0mpcMz3ezP9KQw@icequake.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index 66feb23f7b7b6..bcccd82a2620f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -130,7 +130,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
- 		.name = "tx_bd_queue",
- 		.cmd = HNAE3_DBG_CMD_TX_BD,
- 		.dentry = HNS3_DBG_DENTRY_TX_BD,
--		.buf_len = HNS3_DBG_READ_LEN_4MB,
-+		.buf_len = HNS3_DBG_READ_LEN_5MB,
- 		.init = hns3_dbg_bd_file_init,
- 	},
- 	{
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
-index 97578eabb7d8b..4a5ef8a90a104 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.h
-@@ -10,6 +10,7 @@
- #define HNS3_DBG_READ_LEN_128KB	0x20000
- #define HNS3_DBG_READ_LEN_1MB	0x100000
- #define HNS3_DBG_READ_LEN_4MB	0x400000
-+#define HNS3_DBG_READ_LEN_5MB	0x500000
- #define HNS3_DBG_WRITE_LEN	1024
- 
- #define HNS3_DBG_DATA_STR_LEN	32
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 86d07d06bd0cd..5d1ab9170361a 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9008,7 +9008,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x802f, "HP Z240", ALC221_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8077, "HP", ALC256_FIXUP_HP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x103c, 0x8158, "HP", ALC256_FIXUP_HP_HEADSET_MIC),
+-	SND_PCI_QUIRK(0x103c, 0x820d, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
++	SND_PCI_QUIRK(0x103c, 0x820d, "HP Pavilion 15", ALC295_FIXUP_HP_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8256, "HP", ALC221_FIXUP_HP_FRONT_MIC),
+ 	SND_PCI_QUIRK(0x103c, 0x827e, "HP x360", ALC295_FIXUP_HP_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x827f, "HP x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
 -- 
 2.39.2
 
