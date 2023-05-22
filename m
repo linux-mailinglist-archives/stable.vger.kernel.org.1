@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7CE70C734
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C8B570C5F8
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234632AbjEVT1J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
+        id S233657AbjEVTOG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234649AbjEVT1G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C973211A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:03 -0700 (PDT)
+        with ESMTP id S233974AbjEVTOD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC67A129
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:13:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2531E628B8
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4F6C433EF;
-        Mon, 22 May 2023 19:27:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7882A62710
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:13:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FC0C4339C;
+        Mon, 22 May 2023 19:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783622;
-        bh=RsNOV0EPmfZckX+21rdsSrb+cHo2tv2tYFdzs7k/Z+4=;
+        s=korg; t=1684782834;
+        bh=iEzBVslR+GdOPpLupYyb/cyRJ62W5YLx4QNnWYH8jdY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DnmG45f87KpcEuHN8YGWfjIH6kzvjZVlApDGlJcz3VZwCG5FhyF/tMa6V1+BZOMOR
-         puMxs+gNowhwahinEVZ9YRHw4RyGBlK8Ttv1fg7KwF5LYHOx+1mAYoEM/0ETdtK/Tr
-         ABg7JOfTzvTkBb6/+5GR7/BrU4AZ/4nfph6VjCKE=
+        b=Imfx/8d4Wlbm5/L22Hnidvwa3Gl+s8fRbCeOthdWuiJmSsBHQFXJHlxV31UDINqPL
+         nyVXR1cJ9GT4xRD0nekuRE6jnpBKFOvNt97p4NXXiA4SCH7SExxH3BWMswx91W6lEO
+         Ynyw2hJt4ratgCU6eCVwfDuGAmxz6slfPDdBorFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/292] wifi: iwlwifi: dvm: Fix memcpy: detected field-spanning write backtrace
-Date:   Mon, 22 May 2023 20:07:43 +0100
-Message-Id: <20230522190408.619916473@linuxfoundation.org>
+        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 040/203] firmware: arm_sdei: Fix sleep from invalid context BUG
+Date:   Mon, 22 May 2023 20:07:44 +0100
+Message-Id: <20230522190356.090505055@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,69 +54,234 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit ef16799640865f937719f0771c93be5dca18adc6 ]
+[ Upstream commit d2c48b2387eb89e0bf2a2e06e30987cf410acad4 ]
 
-A received TKIP key may be up to 32 bytes because it may contain
-MIC rx/tx keys too. These are not used by iwl and copying these
-over overflows the iwl_keyinfo.key field.
+Running a preempt-rt (v6.2-rc3-rt1) based kernel on an Ampere Altra
+triggers:
 
-Add a check to not copy more data to iwl_keyinfo.key then will fit.
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+  in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 24, name: cpuhp/0
+  preempt_count: 0, expected: 0
+  RCU nest depth: 0, expected: 0
+  3 locks held by cpuhp/0/24:
+    #0: ffffda30217c70d0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
+    #1: ffffda30217c7120 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
+    #2: ffffda3021c711f0 (sdei_list_lock){....}-{3:3}, at: sdei_cpuhp_up+0x3c/0x130
+  irq event stamp: 36
+  hardirqs last  enabled at (35): [<ffffda301e85b7bc>] finish_task_switch+0xb4/0x2b0
+  hardirqs last disabled at (36): [<ffffda301e812fec>] cpuhp_thread_fun+0x21c/0x248
+  softirqs last  enabled at (0): [<ffffda301e80b184>] copy_process+0x63c/0x1ac0
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 0 PID: 24 Comm: cpuhp/0 Not tainted 5.19.0-rc3-rt5-[...]
+  Hardware name: WIWYNN Mt.Jade Server [...]
+  Call trace:
+    dump_backtrace+0x114/0x120
+    show_stack+0x20/0x70
+    dump_stack_lvl+0x9c/0xd8
+    dump_stack+0x18/0x34
+    __might_resched+0x188/0x228
+    rt_spin_lock+0x70/0x120
+    sdei_cpuhp_up+0x3c/0x130
+    cpuhp_invoke_callback+0x250/0xf08
+    cpuhp_thread_fun+0x120/0x248
+    smpboot_thread_fn+0x280/0x320
+    kthread+0x130/0x140
+    ret_from_fork+0x10/0x20
 
-This fixes backtraces like this one:
+sdei_cpuhp_up() is called in the STARTING hotplug section,
+which runs with interrupts disabled. Use a CPUHP_AP_ONLINE_DYN entry
+instead to execute the cpuhp cb later, with preemption enabled.
 
- memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
- WARNING: CPU: 1 PID: 946 at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 iwlagn_send_sta_key+0x375/0x390 [iwldvm]
- <snip>
- Hardware name: Dell Inc. Latitude E6430/0H3MT5, BIOS A21 05/08/2017
- RIP: 0010:iwlagn_send_sta_key+0x375/0x390 [iwldvm]
- <snip>
- Call Trace:
-  <TASK>
-  iwl_set_dynamic_key+0x1f0/0x220 [iwldvm]
-  iwlagn_mac_set_key+0x1e4/0x280 [iwldvm]
-  drv_set_key+0xa4/0x1b0 [mac80211]
-  ieee80211_key_enable_hw_accel+0xa8/0x2d0 [mac80211]
-  ieee80211_key_replace+0x22d/0x8e0 [mac80211]
- <snip>
+SDEI originally got its own cpuhp slot to allow interacting
+with perf. It got superseded by pNMI and this early slot is not
+relevant anymore. [1]
 
-Link: https://www.alionet.org/index.php?topic=1469.0
-Link: https://lore.kernel.org/linux-wireless/20230218191056.never.374-kees@kernel.org/
-Link: https://lore.kernel.org/linux-wireless/68760035-7f75-1b23-e355-bfb758a87d83@redhat.com/
-Cc: Kees Cook <keescook@chromium.org>
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Some SDEI calls (e.g. SDEI_1_0_FN_SDEI_PE_MASK) take actions on the
+calling CPU. It is checked that preemption is disabled for them.
+_ONLINE cpuhp cb are executed in the 'per CPU hotplug thread'.
+Preemption is enabled in those threads, but their cpumask is limited
+to 1 CPU.
+Move 'WARN_ON_ONCE(preemptible())' statements so that SDEI cpuhp cb
+don't trigger them.
+
+Also add a check for the SDEI_1_0_FN_SDEI_PRIVATE_RESET SDEI call
+which acts on the calling CPU.
+
+[1]:
+https://lore.kernel.org/all/5813b8c5-ae3e-87fd-fccc-94c9cd08816d@arm.com/
+
+Suggested-by: James Morse <james.morse@arm.com>
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20230216084920.144064-1-pierre.gondois@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_sdei.c | 37 ++++++++++++++++++++-----------------
+ include/linux/cpuhotplug.h  |  1 -
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-index cef43cf80620a..8b01ab986cb13 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-@@ -1081,6 +1081,7 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
- {
- 	__le16 key_flags;
- 	struct iwl_addsta_cmd sta_cmd;
-+	size_t to_copy;
- 	int i;
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 1e1a51510e83b..f9040bd610812 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -43,6 +43,8 @@ static asmlinkage void (*sdei_firmware_call)(unsigned long function_id,
+ /* entry point from firmware to arch asm code */
+ static unsigned long sdei_entry_point;
  
- 	spin_lock_bh(&priv->sta_lock);
-@@ -1100,7 +1101,9 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
- 		sta_cmd.key.tkip_rx_tsc_byte2 = tkip_iv32;
- 		for (i = 0; i < 5; i++)
- 			sta_cmd.key.tkip_rx_ttak[i] = cpu_to_le16(tkip_p1k[i]);
--		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
-+		/* keyconf may contain MIC rx/tx keys which iwl does not use */
-+		to_copy = min_t(size_t, sizeof(sta_cmd.key.key), keyconf->keylen);
-+		memcpy(sta_cmd.key.key, keyconf->key, to_copy);
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		key_flags |= STA_KEY_FLG_KEY_SIZE_MSK;
++static int sdei_hp_state;
++
+ struct sdei_event {
+ 	/* These three are protected by the sdei_list_lock */
+ 	struct list_head	list;
+@@ -301,8 +303,6 @@ int sdei_mask_local_cpu(void)
+ {
+ 	int err;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_MASK, 0, 0, 0, 0, 0, NULL);
+ 	if (err && err != -EIO) {
+ 		pr_warn_once("failed to mask CPU[%u]: %d\n",
+@@ -315,6 +315,7 @@ int sdei_mask_local_cpu(void)
+ 
+ static void _ipi_mask_cpu(void *ignored)
+ {
++	WARN_ON_ONCE(preemptible());
+ 	sdei_mask_local_cpu();
+ }
+ 
+@@ -322,8 +323,6 @@ int sdei_unmask_local_cpu(void)
+ {
+ 	int err;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_UNMASK, 0, 0, 0, 0, 0, NULL);
+ 	if (err && err != -EIO) {
+ 		pr_warn_once("failed to unmask CPU[%u]: %d\n",
+@@ -336,6 +335,7 @@ int sdei_unmask_local_cpu(void)
+ 
+ static void _ipi_unmask_cpu(void *ignored)
+ {
++	WARN_ON_ONCE(preemptible());
+ 	sdei_unmask_local_cpu();
+ }
+ 
+@@ -343,6 +343,8 @@ static void _ipi_private_reset(void *ignored)
+ {
+ 	int err;
+ 
++	WARN_ON_ONCE(preemptible());
++
+ 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PRIVATE_RESET, 0, 0, 0, 0, 0,
+ 			     NULL);
+ 	if (err && err != -EIO)
+@@ -389,8 +391,6 @@ static void _local_event_enable(void *data)
+ 	int err;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = sdei_api_event_enable(arg->event->event_num);
+ 
+ 	sdei_cross_call_return(arg, err);
+@@ -479,8 +479,6 @@ static void _local_event_unregister(void *data)
+ 	int err;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON_ONCE(preemptible());
+-
+ 	err = sdei_api_event_unregister(arg->event->event_num);
+ 
+ 	sdei_cross_call_return(arg, err);
+@@ -561,8 +559,6 @@ static void _local_event_register(void *data)
+ 	struct sdei_registered_event *reg;
+ 	struct sdei_crosscall_args *arg = data;
+ 
+-	WARN_ON(preemptible());
+-
+ 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
+ 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
+ 				      reg, 0, 0);
+@@ -717,6 +713,8 @@ static int sdei_pm_notifier(struct notifier_block *nb, unsigned long action,
+ {
+ 	int rv;
+ 
++	WARN_ON_ONCE(preemptible());
++
+ 	switch (action) {
+ 	case CPU_PM_ENTER:
+ 		rv = sdei_mask_local_cpu();
+@@ -765,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
+ 	int err;
+ 
+ 	/* unregister private events */
+-	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
++	cpuhp_remove_state(sdei_entry_point);
+ 
+ 	err = sdei_unregister_shared();
+ 	if (err)
+@@ -786,12 +784,15 @@ static int sdei_device_thaw(struct device *dev)
+ 		return err;
+ 	}
+ 
+-	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
++	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
+ 				&sdei_cpuhp_up, &sdei_cpuhp_down);
+-	if (err)
++	if (err < 0) {
+ 		pr_warn("Failed to re-register CPU hotplug notifier...\n");
++		return err;
++	}
+ 
+-	return err;
++	sdei_hp_state = err;
++	return 0;
+ }
+ 
+ static int sdei_device_restore(struct device *dev)
+@@ -823,7 +824,7 @@ static int sdei_reboot_notifier(struct notifier_block *nb, unsigned long action,
+ 	 * We are going to reset the interface, after this there is no point
+ 	 * doing work when we take CPUs offline.
+ 	 */
+-	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
++	cpuhp_remove_state(sdei_hp_state);
+ 
+ 	sdei_platform_reset();
+ 
+@@ -1003,13 +1004,15 @@ static int sdei_probe(struct platform_device *pdev)
+ 		goto remove_cpupm;
+ 	}
+ 
+-	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
++	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
+ 				&sdei_cpuhp_up, &sdei_cpuhp_down);
+-	if (err) {
++	if (err < 0) {
+ 		pr_warn("Failed to register CPU hotplug notifier...\n");
+ 		goto remove_reboot;
+ 	}
+ 
++	sdei_hp_state = err;
++
+ 	return 0;
+ 
+ remove_reboot:
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index c88ccc48877d6..dbca858ffa6da 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -159,7 +159,6 @@ enum cpuhp_state {
+ 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
+ 	CPUHP_AP_PERF_XTENSA_STARTING,
+ 	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
+-	CPUHP_AP_ARM_SDEI_STARTING,
+ 	CPUHP_AP_ARM_VFP_STARTING,
+ 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
+ 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
 -- 
 2.39.2
 
