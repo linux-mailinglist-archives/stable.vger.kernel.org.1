@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 213D670C612
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2F470C749
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231913AbjEVTO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37726 "EHLO
+        id S234656AbjEVT1w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234018AbjEVTOr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935B2120
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:36 -0700 (PDT)
+        with ESMTP id S234665AbjEVT1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D192A3
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4BAA6273C
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EDDC433EF;
-        Mon, 22 May 2023 19:14:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 975D7628C6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40A7C433EF;
+        Mon, 22 May 2023 19:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782874;
-        bh=xQe8JHhVWU4chUfRjCf0RNQOPxaRYxs0I4eIGguwbYQ=;
+        s=korg; t=1684783667;
+        bh=FSScn70I0FrCmoPEWpXBnjE7oYUiMOfDx7KbUz8by2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KOfVlURjscYzilXRSrnyQ23zJ4ymzUIkDso1giW49uzgaEDBqAVPDWD9ZQ1eaar8K
-         uuTeqyxKDVdTBj8UPYunS1CutF9yzcLHx/VYQb4moT1EWXRrw4hqGkclYz0hfxfOEU
-         lbp3lCRaUJ9X2D4/ujMXHHw73WhmNrK/3H308iFg=
+        b=IKl4+KIzngzCbjSVI5kO8FeefmO+p7bhO9Yb01CVJoT47vuzut16vfvUVVvuCzasz
+         0NeLDQWUFDTafMA0i2TYNPIY86uISuw+1hfUouzEe6OtwqrahcvE1BL77KYIcRtlLy
+         sh5zCCEooT52OyUJUyx6LnMbItdPSSZqfKB613Ow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Khadija Kamran <kamrankhadijadj@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/203] net: pasemi: Fix return type of pasemi_mac_start_tx()
+Subject: [PATCH 6.1 122/292] staging: axis-fifo: initialize timeouts in init only
 Date:   Mon, 22 May 2023 20:07:59 +0100
-Message-Id: <20230522190356.519291786@linuxfoundation.org>
+Message-Id: <20230522190409.016414103@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,52 +55,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Khadija Kamran <kamrankhadijadj@gmail.com>
 
-[ Upstream commit c8384d4a51e7cb0e6587f3143f29099f202c5de1 ]
+[ Upstream commit 752cbd8f191678e86aa754f795546b7f06b7f171 ]
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-warning in clang aims to catch these at compile time, which reveals:
+Initialize the module parameters, read_timeout and write_timeout once in
+init().
 
-  drivers/net/ethernet/pasemi/pasemi_mac.c:1665:21: error: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          .ndo_start_xmit         = pasemi_mac_start_tx,
-                                    ^~~~~~~~~~~~~~~~~~~
-  1 error generated.
+Module parameters can only be set once and cannot be modified later, so we
+don't need to evaluate them again when passing the parameters to
+wait_event_interruptible_timeout().
 
-->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
-'netdev_tx_t', not 'int'. Adjust the return type of
-pasemi_mac_start_tx() to match the prototype's to resolve the warning.
-While PowerPC does not currently implement support for kCFI, it could in
-the future, which means this warning becomes a fatal CFI failure at run
-time.
+Convert datatype of {read,write}_timeout from 'int' to 'long int' because
+implicit conversion of 'long int' to 'int' in statement
+'{read,write}_timeout = MAX_SCHEDULE_TIMEOUT' results in an overflow.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1750
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://lore.kernel.org/r/20230319-pasemi-incompatible-pointer-types-strict-v1-1-1b9459d8aef0@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Change format specifier for {read,write}_timeout from %i to %li.
+
+Reviewed-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Khadija Kamran <kamrankhadijadj@gmail.com>
+Link: https://lore.kernel.org/r/ZBN3XAsItCiTk7CV@khadija-virtual-machine
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pasemi/pasemi_mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/axis-fifo/axis-fifo.c | 28 ++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/pasemi/pasemi_mac.c b/drivers/net/ethernet/pasemi/pasemi_mac.c
-index 7e096b2888b92..b223488318ad7 100644
---- a/drivers/net/ethernet/pasemi/pasemi_mac.c
-+++ b/drivers/net/ethernet/pasemi/pasemi_mac.c
-@@ -1423,7 +1423,7 @@ static void pasemi_mac_queue_csdesc(const struct sk_buff *skb,
- 	write_dma_reg(PAS_DMA_TXCHAN_INCR(txring->chan.chno), 2);
- }
+diff --git a/drivers/staging/axis-fifo/axis-fifo.c b/drivers/staging/axis-fifo/axis-fifo.c
+index dfd2b357f484b..0a85ea667a1b5 100644
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -103,17 +103,17 @@
+  *           globals
+  * ----------------------------
+  */
+-static int read_timeout = 1000; /* ms to wait before read() times out */
+-static int write_timeout = 1000; /* ms to wait before write() times out */
++static long read_timeout = 1000; /* ms to wait before read() times out */
++static long write_timeout = 1000; /* ms to wait before write() times out */
  
--static int pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
+ /* ----------------------------
+  * module command-line arguments
+  * ----------------------------
+  */
+ 
+-module_param(read_timeout, int, 0444);
++module_param(read_timeout, long, 0444);
+ MODULE_PARM_DESC(read_timeout, "ms to wait before blocking read() timing out; set to -1 for no timeout");
+-module_param(write_timeout, int, 0444);
++module_param(write_timeout, long, 0444);
+ MODULE_PARM_DESC(write_timeout, "ms to wait before blocking write() timing out; set to -1 for no timeout");
+ 
+ /* ----------------------------
+@@ -384,9 +384,7 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
+ 		mutex_lock(&fifo->read_lock);
+ 		ret = wait_event_interruptible_timeout(fifo->read_queue,
+ 			ioread32(fifo->base_addr + XLLF_RDFO_OFFSET),
+-				 (read_timeout >= 0) ?
+-				  msecs_to_jiffies(read_timeout) :
+-				  MAX_SCHEDULE_TIMEOUT);
++			read_timeout);
+ 
+ 		if (ret <= 0) {
+ 			if (ret == 0) {
+@@ -528,9 +526,7 @@ static ssize_t axis_fifo_write(struct file *f, const char __user *buf,
+ 		ret = wait_event_interruptible_timeout(fifo->write_queue,
+ 			ioread32(fifo->base_addr + XLLF_TDFV_OFFSET)
+ 				 >= words_to_write,
+-				 (write_timeout >= 0) ?
+-				  msecs_to_jiffies(write_timeout) :
+-				  MAX_SCHEDULE_TIMEOUT);
++			write_timeout);
+ 
+ 		if (ret <= 0) {
+ 			if (ret == 0) {
+@@ -948,7 +944,17 @@ static struct platform_driver axis_fifo_driver = {
+ 
+ static int __init axis_fifo_init(void)
  {
- 	struct pasemi_mac * const mac = netdev_priv(dev);
- 	struct pasemi_mac_txring * const txring = tx_ring(mac);
+-	pr_info("axis-fifo driver loaded with parameters read_timeout = %i, write_timeout = %i\n",
++	if (read_timeout >= 0)
++		read_timeout = msecs_to_jiffies(read_timeout);
++	else
++		read_timeout = MAX_SCHEDULE_TIMEOUT;
++
++	if (write_timeout >= 0)
++		write_timeout = msecs_to_jiffies(write_timeout);
++	else
++		write_timeout = MAX_SCHEDULE_TIMEOUT;
++
++	pr_info("axis-fifo driver loaded with parameters read_timeout = %li, write_timeout = %li\n",
+ 		read_timeout, write_timeout);
+ 	return platform_driver_register(&axis_fifo_driver);
+ }
 -- 
 2.39.2
 
