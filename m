@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3662370C715
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A8F70C8E2
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:43:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234611AbjEVTZf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:25:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
+        id S235173AbjEVTnH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234614AbjEVTZe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:25:34 -0400
+        with ESMTP id S235170AbjEVTnD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:43:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C98A3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:25:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7B9133
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:42:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A7A6288A
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:25:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305B5C433EF;
-        Mon, 22 May 2023 19:25:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F66562A11
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:42:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB2CC433EF;
+        Mon, 22 May 2023 19:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783532;
-        bh=3QH53IQtww9nt86bc9hdI+wiVvbXzlxNO28UbUg+ho8=;
+        s=korg; t=1684784568;
+        bh=86BmQZFA4ZpG/2Fx01+TMVZ9hWVCvMPZ5xe0UP1/eiw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bG5nYa6AIA4+8B2Yy1giK0OUiFn8M3617lLWam+LLl7spgpQ29t84CHGR4hV4MNMe
-         p0MKf51mZ7Pi5688UNYkKWf8EeXL3tfSV/nG1nMIaDBJlELYwEJH7ro7il+fpVBnIb
-         WyYNdZSub9FtLIYMeho/2rN5wMig21X/ttTeeXNM=
+        b=lK2u3VUIFWWMvG3ojVRgIHZDUGIyoP5QTqQBroCFF1l9ORcJ5Zuz7/V1IcA1zsU3f
+         EuZNLuFptcDsFL3yi6EsTw5Z4Y1g2O7lf5twQPtoQhvWFtiTYR5G+50a03V3FY1Hbr
+         JhuR6VkjZkrPXR2zReAGDoISxGPsAHwdC6A4YgvE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Hector Martin <marcan@marcan.st>,
-        Julian Calaby <julian.calaby@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/292] wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 127/364] wifi: iwlwifi: fix iwl_mvm_max_amsdu_size() for MLO
 Date:   Mon, 22 May 2023 20:07:12 +0100
-Message-Id: <20230522190407.843308669@linuxfoundation.org>
+Message-Id: <20230522190415.973781010@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,85 +54,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hector Martin <marcan@marcan.st>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 91918ce88d9fef408bb12c46a27c73d79b604c20 ]
+[ Upstream commit b2bc600cced23762d4e97db8989b18772145604f ]
 
-Newer Apple firmwares on chipsets without a hardware RNG require the
-host to provide a buffer of 256 random bytes to the device on
-initialization. This buffer is present immediately before NVRAM,
-suffixed by a footer containing a magic number and the buffer length.
+For MLO, we cannot use vif->bss_conf.chandef.chan->band, since
+that will lead to a NULL-ptr dereference as bss_conf isn't used.
+However, in case of real MLO, we also need to take both LMACs
+into account if they exist, since the station might be active
+on both LMACs at the same time.
 
-This won't affect chips/firmwares that do not use this feature, so do it
-unconditionally for all Apple platforms (those with an Apple OTP).
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Reviewed-by: Julian Calaby <julian.calaby@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230214080034.3828-3-marcan@marcan.st
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230417113648.3588afc85d79.I11592893bbc191b9548518b8bd782de568a9f848@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../broadcom/brcm80211/brcmfmac/pcie.c        | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 37 +++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 067ea019b110a..3b1277a8bd617 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -13,6 +13,7 @@
- #include <linux/bcma/bcma.h>
- #include <linux/sched.h>
- #include <linux/io.h>
-+#include <linux/random.h>
- #include <asm/unaligned.h>
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 9813d7fa18007..1c454392de0be 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -791,10 +791,11 @@ unsigned int iwl_mvm_max_amsdu_size(struct iwl_mvm *mvm,
+ 				    struct ieee80211_sta *sta, unsigned int tid)
+ {
+ 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+-	enum nl80211_band band = mvmsta->vif->bss_conf.chandef.chan->band;
+ 	u8 ac = tid_to_mac80211_ac[tid];
++	enum nl80211_band band;
+ 	unsigned int txf;
+-	int lmac = iwl_mvm_get_lmac_id(mvm->fw, band);
++	unsigned int val;
++	int lmac;
  
- #include <soc.h>
-@@ -1631,6 +1632,13 @@ brcmf_pcie_init_share_ram_info(struct brcmf_pciedev_info *devinfo,
- 	return 0;
+ 	/* For HE redirect to trigger based fifos */
+ 	if (sta->deflink.he_cap.has_he && !WARN_ON(!iwl_mvm_has_new_tx_api(mvm)))
+@@ -808,7 +809,37 @@ unsigned int iwl_mvm_max_amsdu_size(struct iwl_mvm *mvm,
+ 	 * We also want to have the start of the next packet inside the
+ 	 * fifo to be able to send bursts.
+ 	 */
+-	return min_t(unsigned int, mvmsta->max_amsdu_len,
++	val = mvmsta->max_amsdu_len;
++
++	if (hweight16(sta->valid_links) <= 1) {
++		if (sta->valid_links) {
++			struct ieee80211_bss_conf *link_conf;
++			unsigned int link = ffs(sta->valid_links) - 1;
++
++			rcu_read_lock();
++			link_conf = rcu_dereference(mvmsta->vif->link_conf[link]);
++			if (WARN_ON(!link_conf))
++				band = NL80211_BAND_2GHZ;
++			else
++				band = link_conf->chandef.chan->band;
++			rcu_read_unlock();
++		} else {
++			band = mvmsta->vif->bss_conf.chandef.chan->band;
++		}
++
++		lmac = iwl_mvm_get_lmac_id(mvm->fw, band);
++	} else if (fw_has_capa(&mvm->fw->ucode_capa,
++			       IWL_UCODE_TLV_CAPA_CDB_SUPPORT)) {
++		/* for real MLO restrict to both LMACs if they exist */
++		lmac = IWL_LMAC_5G_INDEX;
++		val = min_t(unsigned int, val,
++			    mvm->fwrt.smem_cfg.lmac[lmac].txfifo_size[txf] - 256);
++		lmac = IWL_LMAC_24G_INDEX;
++	} else {
++		lmac = IWL_LMAC_24G_INDEX;
++	}
++
++	return min_t(unsigned int, val,
+ 		     mvm->fwrt.smem_cfg.lmac[lmac].txfifo_size[txf] - 256);
  }
  
-+struct brcmf_random_seed_footer {
-+	__le32 length;
-+	__le32 magic;
-+};
-+
-+#define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
-+#define BRCMF_RANDOM_SEED_LENGTH	0x100
- 
- static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 					const struct firmware *fw, void *nvram,
-@@ -1667,6 +1675,30 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 			  nvram_len;
- 		memcpy_toio(devinfo->tcm + address, nvram, nvram_len);
- 		brcmf_fw_nvram_free(nvram);
-+
-+		if (devinfo->otp.valid) {
-+			size_t rand_len = BRCMF_RANDOM_SEED_LENGTH;
-+			struct brcmf_random_seed_footer footer = {
-+				.length = cpu_to_le32(rand_len),
-+				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
-+			};
-+			void *randbuf;
-+
-+			/* Some Apple chips/firmwares expect a buffer of random
-+			 * data to be present before NVRAM
-+			 */
-+			brcmf_dbg(PCIE, "Download random seed\n");
-+
-+			address -= sizeof(footer);
-+			memcpy_toio(devinfo->tcm + address, &footer,
-+				    sizeof(footer));
-+
-+			address -= rand_len;
-+			randbuf = kzalloc(rand_len, GFP_KERNEL);
-+			get_random_bytes(randbuf, rand_len);
-+			memcpy_toio(devinfo->tcm + address, randbuf, rand_len);
-+			kfree(randbuf);
-+		}
- 	} else {
- 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",
- 			  devinfo->nvram_name);
 -- 
 2.39.2
 
