@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D37270C982
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AB0C70C63F
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235342AbjEVTtF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:49:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43602 "EHLO
+        id S233949AbjEVTQt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235363AbjEVTs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:48:57 -0400
+        with ESMTP id S234220AbjEVTQj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:16:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B0DD185
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:48:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0AFE10C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:16:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D44B762AD0
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88DFC433D2;
-        Mon, 22 May 2023 19:48:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AA4A622B5
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:16:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86638C4339C;
+        Mon, 22 May 2023 19:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784934;
-        bh=JIVqOOwSWuOCNO6WNW665Eu9nFgLFzCEUZ1bd9gn0gQ=;
+        s=korg; t=1684782993;
+        bh=HBAtGPMefx7xKMZ+SBw+YPnjUj/CoM+exI6w9O4NVDI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VTtvHSIfRjoJiZBxa271bOA53gEuwbXY4ODru8J2GRc5KRHYRyQGeHwltuXvgof8d
-         3x31dQPrqq5Ii7tNZzG111Qm/SaPcZyvdDvXTTC9OOyHXJxmnWhVBDiXh8BM1e7V3g
-         Z6cSFNvkRmgQ1Gu55GiItj8L1epRTl7+xC67iVmI=
+        b=YUY24xUWTPcOQKENF4kwvnVxw2TS3CMq4s2YtJZblhoHGqCRzjH0CMU0///Hvcywu
+         YHlddqfaARQxFGYqSlCVreDwYg0IKnjMYOHCJo/7L5c2mRArdyekbROYLX04a0HZO2
+         tAACuLSzInSf4HKhU+SwMJ1NQP1/JA3UzID+Y9s0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Daniel Houldsworth <dhould3@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 222/364] selftets: seg6: disable rp_filter by default in srv6_end_dt4_l3vpn_test
-Date:   Mon, 22 May 2023 20:08:47 +0100
-Message-Id: <20230522190418.259051587@linuxfoundation.org>
+Subject: [PATCH 5.15 104/203] platform/x86: hp-wmi: Support touchpad on/off
+Date:   Mon, 22 May 2023 20:08:48 +0100
+Message-Id: <20230522190357.861860068@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,59 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Daniel Houldsworth <dhould3@gmail.com>
 
-[ Upstream commit f97b8401e0deb46ad1e4245c21f651f64f55aaa6 ]
+[ Upstream commit 401199ffa9b69baf3fd1f9ad082aa65c10910585 ]
 
-On some distributions, the rp_filter is automatically set (=1) by
-default on a netdev basis (also on VRFs).
-In an SRv6 End.DT4 behavior, decapsulated IPv4 packets are routed using
-the table associated with the VRF bound to that tunnel. During lookup
-operations, the rp_filter can lead to packet loss when activated on the
-VRF.
-Therefore, we chose to make this selftest more robust by explicitly
-disabling the rp_filter during tests (as it is automatically set by some
-Linux distributions).
+Add scancodes reported by the touchpad on/off button. The actual disabling
+and enabling is done in hardware, and this just reports that change to
+userspace.
 
-Fixes: 2195444e09b4 ("selftests: add selftest for the SRv6 End.DT4 behavior")
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Tested-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Houldsworth <dhould3@gmail.com>
+Link: https://lore.kernel.org/r/20220922115459.6511-1-dhould3@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: decab2825c3e ("platform/x86: hp-wmi: add micmute to hp_wmi_keymap struct")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/srv6_end_dt4_l3vpn_test.sh  | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/platform/x86/hp-wmi.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
-index 37f08d582d2fe..f962823628119 100755
---- a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
-@@ -258,6 +258,12 @@ setup_hs()
+diff --git a/drivers/platform/x86/hp-wmi.c b/drivers/platform/x86/hp-wmi.c
+index 1e390dcee561b..2f06e94ef37f7 100644
+--- a/drivers/platform/x86/hp-wmi.c
++++ b/drivers/platform/x86/hp-wmi.c
+@@ -154,15 +154,17 @@ struct bios_rfkill2_state {
+ };
  
- 	# set the networking for the host
- 	ip netns add ${hsname}
-+
-+	# disable the rp_filter otherwise the kernel gets confused about how
-+	# to route decap ipv4 packets.
-+	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
-+	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.default.rp_filter=0
-+
- 	ip -netns ${hsname} link add veth0 type veth peer name ${rtveth}
- 	ip -netns ${hsname} link set ${rtveth} netns ${rtname}
- 	ip -netns ${hsname} addr add ${IPv4_HS_NETWORK}.${hs}/24 dev veth0
-@@ -276,11 +282,6 @@ setup_hs()
- 
- 	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.proxy_arp=1
- 
--	# disable the rp_filter otherwise the kernel gets confused about how
--	# to route decap ipv4 packets.
--	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
--	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.rp_filter=0
--
- 	ip netns exec ${rtname} sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
- }
+ static const struct key_entry hp_wmi_keymap[] = {
+-	{ KE_KEY, 0x02,   { KEY_BRIGHTNESSUP } },
+-	{ KE_KEY, 0x03,   { KEY_BRIGHTNESSDOWN } },
+-	{ KE_KEY, 0x20e6, { KEY_PROG1 } },
+-	{ KE_KEY, 0x20e8, { KEY_MEDIA } },
+-	{ KE_KEY, 0x2142, { KEY_MEDIA } },
+-	{ KE_KEY, 0x213b, { KEY_INFO } },
+-	{ KE_KEY, 0x2169, { KEY_ROTATE_DISPLAY } },
+-	{ KE_KEY, 0x216a, { KEY_SETUP } },
+-	{ KE_KEY, 0x231b, { KEY_HELP } },
++	{ KE_KEY, 0x02,    { KEY_BRIGHTNESSUP } },
++	{ KE_KEY, 0x03,    { KEY_BRIGHTNESSDOWN } },
++	{ KE_KEY, 0x20e6,  { KEY_PROG1 } },
++	{ KE_KEY, 0x20e8,  { KEY_MEDIA } },
++	{ KE_KEY, 0x2142,  { KEY_MEDIA } },
++	{ KE_KEY, 0x213b,  { KEY_INFO } },
++	{ KE_KEY, 0x2169,  { KEY_ROTATE_DISPLAY } },
++	{ KE_KEY, 0x216a,  { KEY_SETUP } },
++	{ KE_KEY, 0x21a9,  { KEY_TOUCHPAD_OFF } },
++	{ KE_KEY, 0x121a9, { KEY_TOUCHPAD_ON } },
++	{ KE_KEY, 0x231b,  { KEY_HELP } },
+ 	{ KE_END, 0 }
+ };
  
 -- 
 2.39.2
