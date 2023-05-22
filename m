@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E6770C4EB
+	by mail.lfdr.de (Postfix) with ESMTP id E164A70C4EC
 	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:04:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbjEVSEc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60700 "EHLO
+        id S233022AbjEVSEd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:04:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233318AbjEVSEc (ORCPT
+        with ESMTP id S231851AbjEVSEc (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:04:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA01C6
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:04:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BE910D
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:04:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D3196625F2
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3EEC433EF;
-        Mon, 22 May 2023 18:04:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D636625F1
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D85EC433EF;
+        Mon, 22 May 2023 18:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778645;
-        bh=MsyU8o6g6v0Rg4uSVwczSTzFbum+1+JkFygwOpGApOE=;
+        s=korg; t=1684778647;
+        bh=MMISMSHy+huy5xaf6Rcoi3XTbkYpGaTw5hiGOvL987M=;
         h=Subject:To:Cc:From:Date:From;
-        b=YEDSpqpnZ8u96IinN+7+5u69ZbnCzP3TpNgTf7rZgITQ+mAszMDEpFjL+SPeGuKJ+
-         31+sckoFGJ4SykxCBNpgMRVF+NcoWKG2ZFSpoxjkvQTiBxoIHKKLmbfHJx2DCgI4GC
-         qbQQs34ZsNFHT6nin6nmM1wKR49saO9exCxQiRj8=
-Subject: FAILED: patch "[PATCH] s390/dasd: fix command reject error on ESE devices" failed to apply to 5.10-stable tree
+        b=1cWTkCnXxWuHURGSV/S9VyYTGH8HOMCBh6L68SVs6erIk5D66ZDD6z0TJE8OGqJpN
+         gvGANZNWaj7+Vx1z6bD1/dyJKQdhlO6zCekuLjQcfvQpNBuzpSlYsPjq6d5U/zTlf7
+         LrzPHdQzEA3lkZ7cK8J4DCoBr7zBUdve98VM3MJ0=
+Subject: FAILED: patch "[PATCH] s390/dasd: fix command reject error on ESE devices" failed to apply to 5.4-stable tree
 To:     sth@linux.ibm.com, axboe@kernel.dk, hoeppner@linux.ibm.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:03:54 +0100
-Message-ID: <2023052254-unused-ended-a111@gregkh>
+Date:   Mon, 22 May 2023 19:03:55 +0100
+Message-ID: <2023052255-gizmo-diagnosis-dd08@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x c99bff34290f1b994073557b754aff86e4c7b22e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052254-unused-ended-a111@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052255-gizmo-diagnosis-dd08@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,8 @@ b72949328869 ("s390/dasd: Prepare for additional path event handling")
 9e34c8ba9169 ("s390/dasd: Fix operational path inconsistency")
 460181217a24 ("s390/dasd: Store path configuration data during path handling")
 d2a527580c0a ("s390/dasd: Move duplicate code to separate function")
+5e6bdd37c552 ("s390/dasd: fix data corruption for thin provisioned devices")
+00b39f698a4f ("s390/dasd: fix memleak in path handling error case")
 
 thanks,
 
