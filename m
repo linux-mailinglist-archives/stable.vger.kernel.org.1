@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 158C770C748
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63E2870C607
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234659AbjEVT1u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:27:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49274 "EHLO
+        id S233757AbjEVTOW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:14:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234660AbjEVT1q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:27:46 -0400
+        with ESMTP id S234015AbjEVTOS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:14:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F93F103
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:27:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E3312B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:14:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8C84628C8
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:27:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A3AC433D2;
-        Mon, 22 May 2023 19:27:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B0B7626FE
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:14:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EACC433D2;
+        Mon, 22 May 2023 19:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783664;
-        bh=IehnyUpib8Q5XWZlAiw93YmFAasfVCSZCdIm39tlKfI=;
+        s=korg; t=1684782852;
+        bh=hRj1ydpVYptJsvNmiO59+UYPMUE4NUJHzAScAHy8VdI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMOQRzx2hz3CqV9bp19hmy20EeI+RUQ9UihYlEPjayhSz23eYDvJEdv6thzBL2aKB
-         3qvXAmNemvZpIHRrXuklGv7ylVo47ILIlj0HWIKOx2/rSve6yJw1QmMTEZdE8e5N6s
-         A4i4xe+re2LFd3mXerx6hZvnS5wRmwk6BwSgeDSI=
+        b=fjTSUDhMFGxgFWUtjlux3W2P9bDaYXKdcwqarnFyuy5tUWNJX3uUVfML8WVmT5iHY
+         YaxuDmCtjMJVbJZKAwEGkhsSeOt6HCA3N7uqvbb4Z8RZbYoOcXizj/QaPITQo6G9q0
+         K7cE5es2t6CoTqctSECbO0qH5Xlz0L3HPJnu8nJ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raul Cheleguini <rcheleguini@google.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/292] Bluetooth: Improve support for Actions Semi ATS2851 based devices
+Subject: [PATCH 5.15 046/203] ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_display_objects
 Date:   Mon, 22 May 2023 20:07:50 +0100
-Message-Id: <20230522190408.791358873@linuxfoundation.org>
+Message-Id: <20230522190356.265574737@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Raul Cheleguini <rcheleguini@google.com>
+From: void0red <30990023+void0red@users.noreply.github.com>
 
-[ Upstream commit 7c2b2d2d0cb658aa543e11e90ae95621d3cb5fe6 ]
+[ Upstream commit ae5a0eccc85fc960834dd66e3befc2728284b86c ]
 
-Add two more quirks to resume the device initialization and basic
-operation as the device seems not to support "Read Transmit Power"
-and "Set Extended Scan Parameters".
+ACPICA commit 0d5f467d6a0ba852ea3aad68663cbcbd43300fd4
 
-< HCI Command: LE Read Transmit Power (0x08|0x004b) plen 0
-> HCI Event: Command Status (0x0f) plen 4
-      LE Read Transmit Power (0x08|0x004b) ncmd 1
-        Status: Unknown HCI Command (0x01)
+ACPI_ALLOCATE_ZEROED may fails, object_info might be null and will cause
+null pointer dereference later.
 
-< HCI Command: LE Set Extended Scan Parameters (0x08|0x0041) plen 8
-        Own address type: Random (0x01)
-        Filter policy: Accept all advertisement (0x00)
-        PHYs: 0x01
-        Entry 0: LE 1M
-          Type: Active (0x01)
-          Interval: 11.250 msec (0x0012)
-          Window: 11.250 msec (0x0012)
-> HCI Event: Command Status (0x0f) plen 4
-      LE Set Extended Scan Parameters (0x08|0x0041) ncmd 1
-        Status: Unknown HCI Command (0x01)
-
-Signed-off-by: Raul Cheleguini <rcheleguini@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://github.com/acpica/acpica/commit/0d5f467d
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/acpica/dbnames.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 8ee147ad76b79..3991dcd2ebf79 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4019,6 +4019,8 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (id->driver_info & BTUSB_ACTIONS_SEMI) {
- 		/* Support is advertised, but not implemented */
- 		set_bit(HCI_QUIRK_BROKEN_ERR_DATA_REPORTING, &hdev->quirks);
-+		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
-+		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
- 	}
+diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
+index 3615e1a6efd8a..b91155ea9c343 100644
+--- a/drivers/acpi/acpica/dbnames.c
++++ b/drivers/acpi/acpica/dbnames.c
+@@ -652,6 +652,9 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
+ 		object_info =
+ 		    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_object_info));
  
- 	if (!reset)
++		if (!object_info)
++			return (AE_NO_MEMORY);
++
+ 		/* Walk the namespace from the root */
+ 
+ 		(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
 -- 
 2.39.2
 
