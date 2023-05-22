@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA2A70C776
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88F8270C943
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234729AbjEVT35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51248 "EHLO
+        id S235301AbjEVTqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234725AbjEVT3y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:29:54 -0400
+        with ESMTP id S235299AbjEVTqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:46:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55609DC
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:29:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A38012B
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:46:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8061628E6
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:29:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029DBC433D2;
-        Mon, 22 May 2023 19:29:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F34662A9C
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC44C4339B;
+        Mon, 22 May 2023 19:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783785;
-        bh=BHQh01yXH/sEZyTZkdbBqgBKswF9gB9kcJkbIBvd1F4=;
+        s=korg; t=1684784767;
+        bh=/cVgxAil8PWw7aNezkRshuCnH82jfUgncVom3ws6J2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DcmUBxsQbtxJa9g67znNtJec+4xsGHAEKh0soe4Zr6u6hLU1K9ZViLfsTIZqu96hj
-         7H+C8NwHSOxPRdRnuQZ+TZhWuZQCXemButpitoYWe9BbVSe/tXjB5eTtpwknPJo2ob
-         +lt+f41YOuuOevurC+pw2F018NcZNaozsUdXWufI=
+        b=t+YmNvj1wcx+08j0xg+nrJRfIZZ3WHudfGpyQu/h74xe/0H5RcuLlj57D42+vnRZN
+         WYwJuAgUap4gHo9UZfw0Stuw9mONzMe7AJ8FSjnTNPDBZwxuPGPKAle2eXota8letl
+         2WJXUTdgNIMMYT0MwnKOGuHaqlHlCI8eCHmNomrQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        patches@lists.linux.dev,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/292] mfd: intel_soc_pmic_chtwc: Add Lenovo Yoga Book X90F to intel_cht_wc_models
+Subject: [PATCH 6.3 196/364] mfd: intel-lpss: Add Intel Meteor Lake PCH-S LPSS PCI IDs
 Date:   Mon, 22 May 2023 20:08:21 +0100
-Message-Id: <20230522190409.562632270@linuxfoundation.org>
+Message-Id: <20230522190417.634087532@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit ded99b89d25fd73a1d7bd910378e0339fd9d4c4a ]
+[ Upstream commit 72d4a1683741ee578da0e265886e6a7f3d42266c ]
 
-The Android Lenovo Yoga Book X90F / X90L uses the same charger / fuelgauge
-setup as the already supported Windows Lenovo Yoga Book X91F/L, add
-a DMI match for this to intel_cht_wc_models with driver_data
-set to INTEL_CHT_WC_LENOVO_YOGABOOK1.
+Add Intel Meteor Lake PCH-S also called as Meteor Point-S LPSS PCI IDs.
 
-When the quirk for the X91F/L was initially added it was written to
-also apply to the X90F/L but this does not work because the Android
-version of the Yoga Book uses completely different DMI strings.
-Also adjust the X91F/L quirk to reflect that it only applies to
-the X91F/L models.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230301095402.28582-1-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20230330132618.4108665-1-jarkko.nikula@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_chtwc.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/mfd/intel-lpss-pci.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
-index 9216f0d34206c..a82b7cb661b7b 100644
---- a/drivers/mfd/intel_soc_pmic_chtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_chtwc.c
-@@ -159,11 +159,19 @@ static const struct dmi_system_id cht_wc_model_dmi_ids[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 		},
- 	}, {
--		/* Lenovo Yoga Book X90F / X91F / X91L */
-+		/* Lenovo Yoga Book X90F / X90L */
- 		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YOGABOOK1,
- 		.matches = {
--			/* Non exact match to match all versions */
--			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+		},
-+	}, {
-+		/* Lenovo Yoga Book X91F / X91L */
-+		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YOGABOOK1,
-+		.matches = {
-+			/* Non exact match to match F + L versions */
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X91"),
- 		},
- 	},
- 	{ }
+diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
+index dde31c50a6320..699f44ffff0e4 100644
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -447,6 +447,21 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x7e79), (kernel_ulong_t)&bxt_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7e7a), (kernel_ulong_t)&bxt_i2c_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7e7b), (kernel_ulong_t)&bxt_i2c_info },
++	/* MTP-S */
++	{ PCI_VDEVICE(INTEL, 0x7f28), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f29), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f2a), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f2b), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4c), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4d), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4e), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f4f), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5c), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5d), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5e), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f5f), (kernel_ulong_t)&tgl_info },
++	{ PCI_VDEVICE(INTEL, 0x7f7a), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7f7b), (kernel_ulong_t)&bxt_i2c_info },
+ 	/* LKF */
+ 	{ PCI_VDEVICE(INTEL, 0x98a8), (kernel_ulong_t)&bxt_uart_info },
+ 	{ PCI_VDEVICE(INTEL, 0x98a9), (kernel_ulong_t)&bxt_uart_info },
 -- 
 2.39.2
 
