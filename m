@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DDE770C788
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE5470C631
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:16:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234709AbjEVTaj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52350 "EHLO
+        id S233967AbjEVTQS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:16:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234740AbjEVTaj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:30:39 -0400
+        with ESMTP id S234157AbjEVTP6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:15:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C92C19E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:30:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D777E18F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:15:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E13C62907
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BD0C433D2;
-        Mon, 22 May 2023 19:30:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B628E62761
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF8BC433EF;
+        Mon, 22 May 2023 19:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783836;
-        bh=fbxzqInkITKSMqsBoaiGjzyqNiJiQWutNagn9JJGvmE=;
+        s=korg; t=1684782946;
+        bh=WTmstsh3AYSRZYlKfNlsNr2Ba9uzid7qMfzAnnbAvew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vgNvxVa9zV30xxQuriH+Zw6MpAGY3AQnxZvu1OSlqgZ1Yrc/Og9/2X8GMbibzHvxT
-         li2EUL2rCyjmNohwkzUn88DdTqblqQyvDlrRJDKsyK7kdmrHhxGH913RVklI7DLltK
-         5W0NYgeE+slBe8QgNFP9nP/WuPfNhxRm2msFaJYU=
+        b=oORCzGmKy63GhqX+TS3astM8WjM3+eENBGTadoN3B1QP3JXMAGqLfK3weolQBCOfo
+         Ax9z8NVaYf+r5yIDPGgLK3vZH4PljkahB0gmiDO347TmuqKioAT3wqVRmwdM2kKU1g
+         Rf3aBfMGuBfCK0VI76uG/OoAQ9uEab6sj9/I+l2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/292] xfrm: dont check the default policy if the policy allows the packet
+Subject: [PATCH 5.15 084/203] serial: 8250: Reinit port->pm on port specific driver unbind
 Date:   Mon, 22 May 2023 20:08:28 +0100
-Message-Id: <20230522190409.736532866@linuxfoundation.org>
+Message-Id: <20230522190357.315965827@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 430cac487400494c19a8b85299e979bb07b4671f ]
+[ Upstream commit 04e82793f068d2f0ffe62fcea03d007a8cdc16a7 ]
 
-The current code doesn't let a simple "allow" policy counteract a
-default policy blocking all incoming packets:
+When we unbind a serial port hardware specific 8250 driver, the generic
+serial8250 driver takes over the port. After that we see an oops about 10
+seconds later. This can produce the following at least on some TI SoCs:
 
-    ip x p setdefault in block
-    ip x p a src 192.168.2.1/32 dst 192.168.2.2/32 dir in action allow
+Unhandled fault: imprecise external abort (0x1406)
+Internal error: : 1406 [#1] SMP ARM
 
-At this stage, we have an allow policy (with or without transforms)
-for this packet. It doesn't matter what the default policy says, since
-the policy we looked up lets the packet through. The case of a
-blocking policy is already handled separately, so we can remove this
-check.
+Turns out that we may still have the serial port hardware specific driver
+port->pm in use, and serial8250_pm() tries to call it after the port
+specific driver is gone:
 
-Fixes: 2d151d39073a ("xfrm: Add possibility to set the default to block if we have no policy")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
+uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
+uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
+__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
+disassociate_ctty from do_exit+0x744/0xaac
+do_exit from do_group_exit+0x40/0x8c
+do_group_exit from __wake_up_parent+0x0/0x1c
+
+Let's fix the issue by calling serial8250_set_defaults() in
+serial8250_unregister_port(). This will set the port back to using
+the serial8250 default functions, and sets the port->pm to point to
+serial8250_pm.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230418101407.12403-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/tty/serial/8250/8250_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 7f49dab3b6b59..bea48a73a7313 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3637,12 +3637,6 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		}
- 		xfrm_nr = ti;
- 
--		if (net->xfrm.policy_default[dir] == XFRM_USERPOLICY_BLOCK &&
--		    !xfrm_nr) {
--			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
--			goto reject;
--		}
--
- 		if (npols > 1) {
- 			xfrm_tmpl_sort(stp, tpp, xfrm_nr, family);
- 			tpp = stp;
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+index f3bfaa1a794bd..1890f342f090a 100644
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -1156,6 +1156,7 @@ void serial8250_unregister_port(int line)
+ 		uart->port.type = PORT_UNKNOWN;
+ 		uart->port.dev = &serial8250_isa_devs->dev;
+ 		uart->capabilities = 0;
++		serial8250_init_port(uart);
+ 		serial8250_apply_quirks(uart);
+ 		uart_add_one_port(&serial8250_reg, &uart->port);
+ 	} else {
 -- 
 2.39.2
 
