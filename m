@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27C7170C9CF
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FE470C695
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235475AbjEVTwX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:52:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46328 "EHLO
+        id S234308AbjEVTTv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235474AbjEVTwQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1201A4
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:51:56 -0700 (PDT)
+        with ESMTP id S234373AbjEVTTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:19:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09606B0
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:19:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B5A162AF3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:51:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325C4C433EF;
-        Mon, 22 May 2023 19:51:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C35062808
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:19:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CE6C4339B;
+        Mon, 22 May 2023 19:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785115;
-        bh=Ywx6IFMbBrrFl9cOOrJYcsCm20fDCw8vmKZ2GGHJ51k=;
+        s=korg; t=1684783188;
+        bh=mtaSbZ0e7wu7/qqS53LELtA8OaTSDI17T9NXcIpesC0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vxqBWQjDI+r6DLJ/PWi1LOKpRbE9RS+y12+DXxBYNcyxteTNxhsw8OdfAZNus0Pzd
-         18loNo3hT3UoOE6SPMz2wv+6FKfoLue0vN2xuqV/3iW9W8fGMWZ49hS/43X8RLALVz
-         uIP38sRVO40VXjcOD9Mh6sWxwWpU4ezdkpRVFPN8=
+        b=k3i80Ljfj6mil+mNAtpHw96jSHF6slbL4MZFcb5LT/Sp69+a4p/TqQznWozBSovev
+         Mfrj3tP7x7C3/7L2WZBUtGDMyeDGy28t+HaBI4VFuq99rUebkiiAxe5sBogja8Qrlz
+         ER+LrF8zCdE7t54ke/e39kClxmmG8qYvPeAhkAgM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 286/364] netfilter: nf_tables: fix nft_trans type confusion
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 167/203] usb: typec: altmodes/displayport: fix pin_assignment_show
 Date:   Mon, 22 May 2023 20:09:51 +0100
-Message-Id: <20230522190419.897956918@linuxfoundation.org>
+Message-Id: <20230522190359.603081471@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,43 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit e3c361b8acd636f5fe80c02849ca175201edf10c ]
+commit d8f28269dd4bf9b55c3fb376ae31512730a96fce upstream.
 
-nft_trans_FOO objects all share a common nft_trans base structure, but
-trailing fields depend on the real object size. Access is only safe after
-trans->msg_type check.
+This patch fixes negative indexing of buf array in pin_assignment_show
+when get_current_pin_assignments returns 0 i.e. no compatible pin
+assignments are found.
 
-Check for rule type first.  Found by code inspection.
+BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
+...
+Call trace:
+dump_backtrace+0x110/0x204
+dump_stack_lvl+0x84/0xbc
+print_report+0x358/0x974
+kasan_report+0x9c/0xfc
+__do_kernel_fault+0xd4/0x2d4
+do_bad_area+0x48/0x168
+do_tag_check_fault+0x24/0x38
+do_mem_abort+0x6c/0x14c
+el1_abort+0x44/0x68
+el1h_64_sync_handler+0x64/0xa4
+el1h_64_sync+0x78/0x7c
+pin_assignment_show+0x26c/0x33c
+dev_attr_show+0x50/0xc0
 
-Fixes: 1a94e38d254b ("netfilter: nf_tables: add NFTA_RULE_ID attribute")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230508214443.893436-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 45f701fd86f06..ef80504c3ccd2 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3802,12 +3802,10 @@ static struct nft_rule *nft_rule_lookup_byid(const struct net *net,
- 	struct nft_trans *trans;
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -512,6 +512,10 @@ static ssize_t pin_assignment_show(struc
  
- 	list_for_each_entry(trans, &nft_net->commit_list, list) {
--		struct nft_rule *rule = nft_trans_rule(trans);
--
- 		if (trans->msg_type == NFT_MSG_NEWRULE &&
- 		    trans->ctx.chain == chain &&
- 		    id == nft_trans_rule_id(trans))
--			return rule;
-+			return nft_trans_rule(trans);
- 	}
- 	return ERR_PTR(-ENOENT);
+ 	mutex_unlock(&dp->lock);
+ 
++	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
++	if (len == 0)
++		len++;
++
+ 	buf[len - 1] = '\n';
+ 	return len;
  }
--- 
-2.39.2
-
 
 
