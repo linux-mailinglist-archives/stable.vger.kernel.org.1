@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB54770C4C4
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31FEB70C4C6
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbjEVSBD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57874 "EHLO
+        id S231439AbjEVSBJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbjEVSBC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590E194
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:01 -0700 (PDT)
+        with ESMTP id S229767AbjEVSBI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7DA3CF
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E05DB61F9E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C25C433D2;
-        Mon, 22 May 2023 18:00:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6558061835
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B84C433D2;
+        Mon, 22 May 2023 18:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778460;
-        bh=j9YTYv7FXhz8ptVE89y53trrD3G4EMuWqeo+4YG9zgc=;
+        s=korg; t=1684778465;
+        bh=dMESl5cdccV9aiFjwTg/VjgQOldyeO804+oOJjKNvEA=;
         h=Subject:To:Cc:From:Date:From;
-        b=C+4ALf0yTkLyLnRWU38X6xU7+iAKuoBEhMCzjoaEQDIHOFahNyP2uaFZhGvijoicU
-         zQGLCAM3maFdipDVGX/zRwPujr9NMamfhvm6Jx3qbsxnf891XLwcWyXd9eNWi6cXXb
-         +BaxWgfro0tlbtjwRmUPdLBNt/pO2suwExup+5YI=
-Subject: FAILED: patch "[PATCH] tpm: Prevent hwrng from activating during resume" failed to apply to 6.3-stable tree
+        b=CnnD8BhHqhkERGhwr6YlR7kFHo6xP82JC+9T4dx9JSfADHN7I/iS16Aq991uho1wN
+         Nww4qofnvtIXtl8Ftfb++eb0tGbbv6ggN8XSEFCjjH6mflUnCSk/LD/45jo8jr+zIA
+         aEg1X6r3XMFg2AdYsWCPFPjfKmzqrWo7sc4IpxE8=
+Subject: FAILED: patch "[PATCH] tpm: Prevent hwrng from activating during resume" failed to apply to 6.1-stable tree
 To:     jarkko@kernel.org, jsnitsel@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:00:57 +0100
-Message-ID: <2023052257-oppose-sculpture-982a@gregkh>
+Date:   Mon, 22 May 2023 19:00:58 +0100
+Message-ID: <2023052258-rental-flip-d212@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,25 +48,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 99d46450625590d410f86fe4660a5eff7d3b8343
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052257-oppose-sculpture-982a@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052258-rental-flip-d212@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 99d464506255 ("tpm: Prevent hwrng from activating during resume")
 0c8862de05c1 ("tpm: Re-enable TPM chip boostrapping non-tpm_tis TPM drivers")
 548eb516ec0f ("tpm, tpm_tis: startup chip before testing for interrupts")
+1382999aa054 ("tpm: Allow system suspend to continue when TPM suspend fails")
 
 thanks,
 
