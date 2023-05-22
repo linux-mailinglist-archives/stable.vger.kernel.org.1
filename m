@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 716B370C9E9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F37A70C835
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 21:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235414AbjEVTxC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 15:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47038 "EHLO
+        id S234958AbjEVTg0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 15:36:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235483AbjEVTw6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:52:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10392B6
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:52:57 -0700 (PDT)
+        with ESMTP id S234949AbjEVTgY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 15:36:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CE66186
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 12:36:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A25AA62B2E
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:52:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EB7C433D2;
-        Mon, 22 May 2023 19:52:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0818E61B51
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 19:36:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C79C433D2;
+        Mon, 22 May 2023 19:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684785176;
-        bh=zWycd4NOleDucaTDIy3mDGBMZOAdcEm+iiY194zdWkk=;
+        s=korg; t=1684784159;
+        bh=sGEfzEU4J9EVVpL60o5S2n9YBq1DDYpJhnVnfCVv1ug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mccyp1QS2yFI3RwNVCu+5KbXnU19v7m1Dy0WykkbusjoRGd9T2r6VW2KbbhVHrqGj
-         gkEGU/KWfAo/YwugZxx1nActaQ4Icy2BKW2pkF3iR2DOuHgrprfU4yPNq71ikqRrxY
-         eVKft34Synkav1EoLWgxkudHIxreui73BEGJzlMo=
+        b=NLmaHUZDiPRaTShvR83Bng3Bvx3s4u9suxKzXfVrhY43KJYiYli2iy6eINXSp66yi
+         jvqkSiWPScveXUAmT7JBuuncFxIthmlMqGZXvvBlKbYvGm0ctnbCBQMn86p15drt7v
+         NIDFDwR5aWphl2ChdqGsWDTB+OtdwtDC4ccDFt+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.3 334/364] thunderbolt: Clear registers properly when auto clear isnt in use
-Date:   Mon, 22 May 2023 20:10:39 +0100
-Message-Id: <20230522190421.126165398@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Hartmayer <mhartmay@linux.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.1 283/292] s390/crypto: use vector instructions only if available for ChaCha20
+Date:   Mon, 22 May 2023 20:10:40 +0100
+Message-Id: <20230522190413.018489207@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,101 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit c4af8e3fecd03b0aedcd38145955605cfebe7e3a upstream.
+commit 8703dd6b238da0ec6c276e53836f8200983d3d9b upstream.
 
-When `QUIRK_AUTO_CLEAR_INT` isn't set, interrupt masking should be
-cleared by writing to Interrupt Mask Clear (IMR) and interrupt
-status should be cleared properly at shutdown/init.
+Commit 349d03ffd5f6 ("crypto: s390 - add crypto library interface for
+ChaCha20") added a library interface to the s390 specific ChaCha20
+implementation. However no check was added to verify if the required
+facilities are installed before branching into the assembler code.
 
-This fixes an error where interrupts are left enabled during resume
-from hibernation with `CONFIG_USB4=y`.
+If compiled into the kernel, this will lead to the following crash,
+if vector instructions are not available:
 
-Fixes: 468c49f44759 ("thunderbolt: Disable interrupt auto clear for rings")
-Cc: stable@vger.kernel.org # v6.3
-Reported-by: Takashi Iwai <tiwai@suse.de>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217343
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+data exception: 0007 ilc:3 [#1] SMP
+Modules linked in:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc7+ #11
+Hardware name: IBM 3931 A01 704 (KVM/Linux)
+Krnl PSW : 0704e00180000000 000000001857277a (chacha20_vx+0x32/0x818)
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+Krnl GPRS: 0000037f0000000a ffffffffffffff60 000000008184b000 0000000019f5c8e6
+           0000000000000109 0000037fffb13c58 0000037fffb13c78 0000000019bb1780
+           0000037fffb13c58 0000000019f5c8e6 000000008184b000 0000000000000109
+           00000000802d8000 0000000000000109 0000000018571ebc 0000037fffb13718
+Krnl Code: 000000001857276a: c07000b1f80b        larl    %r7,0000000019bb1780
+           0000000018572770: a708000a            lhi     %r0,10
+          #0000000018572774: e78950000c36        vlm     %v24,%v25,0(%r5),0
+          >000000001857277a: e7a060000806        vl      %v26,0(%r6),0
+           0000000018572780: e7bf70004c36        vlm     %v27,%v31,0(%r7),4
+           0000000018572786: e70b00000456        vlr     %v0,%v27
+           000000001857278c: e71800000456        vlr     %v1,%v24
+           0000000018572792: e74b00000456        vlr     %v4,%v27
+Call Trace:
+ [<000000001857277a>] chacha20_vx+0x32/0x818
+Last Breaking-Event-Address:
+ [<0000000018571eb6>] chacha20_crypt_s390.constprop.0+0x6e/0xd8
+---[ end trace 0000000000000000 ]---
+Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+
+Fix this by adding a missing MACHINE_HAS_VX check.
+
+Fixes: 349d03ffd5f6 ("crypto: s390 - add crypto library interface for ChaCha20")
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Cc: <stable@vger.kernel.org> # 5.19+
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+[agordeev@linux.ibm.com: remove duplicates in commit message]
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c      |   29 ++++++++++++++++++++++++-----
- drivers/thunderbolt/nhi_regs.h |    2 ++
- 2 files changed, 26 insertions(+), 5 deletions(-)
+ arch/s390/crypto/chacha-glue.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -54,6 +54,21 @@ static int ring_interrupt_index(const st
- 	return bit;
- }
- 
-+static void nhi_mask_interrupt(struct tb_nhi *nhi, int mask, int ring)
-+{
-+	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
-+		return;
-+	iowrite32(mask, nhi->iobase + REG_RING_INTERRUPT_MASK_CLEAR_BASE + ring);
-+}
-+
-+static void nhi_clear_interrupt(struct tb_nhi *nhi, int ring)
-+{
-+	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
-+		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + ring);
-+	else
-+		iowrite32(~0, nhi->iobase + REG_RING_INT_CLEAR + ring);
-+}
-+
- /*
-  * ring_interrupt_active() - activate/deactivate interrupts for a single ring
-  *
-@@ -61,8 +76,8 @@ static int ring_interrupt_index(const st
-  */
- static void ring_interrupt_active(struct tb_ring *ring, bool active)
- {
--	int reg = REG_RING_INTERRUPT_BASE +
--		  ring_interrupt_index(ring) / 32 * 4;
-+	int index = ring_interrupt_index(ring) / 32 * 4;
-+	int reg = REG_RING_INTERRUPT_BASE + index;
- 	int interrupt_bit = ring_interrupt_index(ring) & 31;
- 	int mask = 1 << interrupt_bit;
- 	u32 old, new;
-@@ -123,7 +138,11 @@ static void ring_interrupt_active(struct
- 					 "interrupt for %s %d is already %s\n",
- 					 RING_TYPE(ring), ring->hop,
- 					 active ? "enabled" : "disabled");
--	iowrite32(new, ring->nhi->iobase + reg);
-+
-+	if (active)
-+		iowrite32(new, ring->nhi->iobase + reg);
-+	else
-+		nhi_mask_interrupt(ring->nhi, mask, index);
- }
- 
- /*
-@@ -136,11 +155,11 @@ static void nhi_disable_interrupts(struc
- 	int i = 0;
- 	/* disable interrupts */
- 	for (i = 0; i < RING_INTERRUPT_REG_COUNT(nhi); i++)
--		iowrite32(0, nhi->iobase + REG_RING_INTERRUPT_BASE + 4 * i);
-+		nhi_mask_interrupt(nhi, ~0, 4 * i);
- 
- 	/* clear interrupt status bits */
- 	for (i = 0; i < RING_NOTIFY_REG_COUNT(nhi); i++)
--		ioread32(nhi->iobase + REG_RING_NOTIFY_BASE + 4 * i);
-+		nhi_clear_interrupt(nhi, 4 * i);
- }
- 
- /* ring helper methods */
---- a/drivers/thunderbolt/nhi_regs.h
-+++ b/drivers/thunderbolt/nhi_regs.h
-@@ -93,6 +93,8 @@ struct ring_desc {
- #define REG_RING_INTERRUPT_BASE	0x38200
- #define RING_INTERRUPT_REG_COUNT(nhi) ((31 + 2 * nhi->hop_count) / 32)
- 
-+#define REG_RING_INTERRUPT_MASK_CLEAR_BASE	0x38208
-+
- #define REG_INT_THROTTLING_RATE	0x38c00
- 
- /* Interrupt Vector Allocation */
+--- a/arch/s390/crypto/chacha-glue.c
++++ b/arch/s390/crypto/chacha-glue.c
+@@ -82,7 +82,7 @@ void chacha_crypt_arch(u32 *state, u8 *d
+ 	 * it cannot handle a block of data or less, but otherwise
+ 	 * it can handle data of arbitrary size
+ 	 */
+-	if (bytes <= CHACHA_BLOCK_SIZE || nrounds != 20)
++	if (bytes <= CHACHA_BLOCK_SIZE || nrounds != 20 || !MACHINE_HAS_VX)
+ 		chacha_crypt_generic(state, dst, src, bytes, nrounds);
+ 	else
+ 		chacha20_crypt_s390(state, dst, src, bytes,
 
 
