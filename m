@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FDA970C4C9
-	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D8C70C4CA
+	for <lists+stable@lfdr.de>; Mon, 22 May 2023 20:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231537AbjEVSBR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 14:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57972 "EHLO
+        id S231791AbjEVSBU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 14:01:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbjEVSBP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C960C94
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:14 -0700 (PDT)
+        with ESMTP id S231405AbjEVSBS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 14:01:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99749C6
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 11:01:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 676F761F9F
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BD4C433EF;
-        Mon, 22 May 2023 18:01:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F89561F9E
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:01:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C336C433EF;
+        Mon, 22 May 2023 18:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684778473;
-        bh=1TLU3kNxzArir2KrS3S6EfVGc7qwvCkRCjbSeLS8CR8=;
+        s=korg; t=1684778476;
+        bh=r6/SlNhjxGpmL3rVdLTen7R4cW8+5uND8BblpV8La2o=;
         h=Subject:To:Cc:From:Date:From;
-        b=nbyvaACsIJxPioS34vGFUpZvYjFyqAfwc2CA9IiYRBrXhBnov9kcL5LZSmxSAQk6D
-         ZV4eMqLrRN8QKosa6Ya2lzYb2t+LNHs42Anpii0LLsYKcQSQwKp1U//5afG4hJA2MF
-         2WLodaIfDDZPJZnyLJarR4yHNAddpgAU0GRHlcxI=
-Subject: FAILED: patch "[PATCH] tpm: Prevent hwrng from activating during resume" failed to apply to 5.4-stable tree
-To:     jarkko@kernel.org, jsnitsel@redhat.com
+        b=xxBAvRhVdDOJeaHPzKuXTacE2LVJh2lzFNxC/QRYqIzb/vc3YmWNhZ3GNMKRl6lPF
+         rlz7t1haoCvUivIrpxFFA2rElt5hLUSAEItqzKWMpT1VaR9dXWOC6EtpoI5z+ozMfU
+         ZPzlhS7Z2q6GRyL4rwd80QhHR77uAlUbuKHIYSLA=
+Subject: FAILED: patch "[PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside" failed to apply to 6.3-stable tree
+To:     jarkko@kernel.org, Jason@zx2c4.com, jsnitsel@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 22 May 2023 19:01:00 +0100
-Message-ID: <2023052200-washout-quickly-291c@gregkh>
+Date:   Mon, 22 May 2023 19:01:07 +0100
+Message-ID: <2023052207-exciting-duckbill-5711@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,34 +48,31 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 99d46450625590d410f86fe4660a5eff7d3b8343
+git cherry-pick -x 1398aa803f198b7a386fdd8404666043e95f4c16
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052200-washout-quickly-291c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052207-exciting-duckbill-5711@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-99d464506255 ("tpm: Prevent hwrng from activating during resume")
-0c8862de05c1 ("tpm: Re-enable TPM chip boostrapping non-tpm_tis TPM drivers")
-548eb516ec0f ("tpm, tpm_tis: startup chip before testing for interrupts")
-1382999aa054 ("tpm: Allow system suspend to continue when TPM suspend fails")
-0aa698787aa2 ("tpm: Add Upgrade/Reduced mode support for TPM2 modules")
-aab73d952402 ("tpm: add sysfs exports for all banks of PCR registers")
-7084eddf6be9 ("tpm: Add tpm_version_major sysfs file")
-2e19e10131a0 ("KEYS: trusted: Move TPM2 trusted keys code")
-47f9c2796891 ("KEYS: trusted: Create trusted keys subsystem")
-74edff2d74c6 ("tpm: Move tpm_buf code to include/linux/")
-44abdb377b7c ("tpm: use GFP_KERNEL instead of GFP_HIGHMEM for tpm_buf")
-2e2ee5a2db06 ("tpm: Add a flag to indicate TPM power is managed by firmware")
+1398aa803f19 ("tpm_tis: Use tpm_chip_{start,stop} decoration inside tpm_tis_resume")
+955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
+7a2f55d0be29 ("tpm, tpm: Implement usage counter for locality")
+e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
+15d7aa4e46eb ("tpm, tpm_tis: Claim locality before writing interrupt registers")
+ed9be0e6c892 ("tpm, tpm_tis: Do not skip reset of original interrupt vector")
+6d789ad72695 ("tpm, tpm_tis: Disable interrupts if tpm_tis_probe_irq() failed")
+282657a8bd7f ("tpm, tpm_tis: Claim locality before writing TPM_INT_ENABLE register")
+858e8b792d06 ("tpm, tpm_tis: Avoid cache incoherency in test for interrupts")
 
 thanks,
 
@@ -83,73 +80,104 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 99d46450625590d410f86fe4660a5eff7d3b8343 Mon Sep 17 00:00:00 2001
+From 1398aa803f198b7a386fdd8404666043e95f4c16 Mon Sep 17 00:00:00 2001
 From: Jarkko Sakkinen <jarkko@kernel.org>
-Date: Wed, 26 Apr 2023 20:29:28 +0300
-Subject: [PATCH] tpm: Prevent hwrng from activating during resume
+Date: Wed, 26 Apr 2023 20:29:27 +0300
+Subject: [PATCH] tpm_tis: Use tpm_chip_{start,stop} decoration inside
+ tpm_tis_resume
 
-Set TPM_CHIP_FLAG_SUSPENDED in tpm_pm_suspend() and reset in
-tpm_pm_resume(). While the flag is set, tpm_hwrng() gives back zero
-bytes. This prevents hwrng from racing during resume.
+Before sending a TPM command, CLKRUN protocol must be disabled. This is not
+done in the case of tpm1_do_selftest() call site inside tpm_tis_resume().
+
+Address this by decorating the calls with tpm_chip_{start,stop}, which
+should be always used to arm and disarm the TPM chip for transmission.
+
+Finally, move the call to the main TPM driver callback as the last step
+because it should arm the chip by itself, if it needs that type of
+functionality.
 
 Cc: stable@vger.kernel.org
-Fixes: 6e592a065d51 ("tpm: Move Linux RNG connection to hwrng")
+Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Closes: https://lore.kernel.org/linux-integrity/CS68AWILHXS4.3M36M1EKZLUMS@suppilovahvero/
+Fixes: a3fbfae82b4c ("tpm: take TPM chip power gating out of tpm_transmit()")
 Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index c10a4aa97373..cd48033b804a 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -571,6 +571,10 @@ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- {
- 	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 02945d53fcef..558144fa707a 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -1209,25 +1209,20 @@ static void tpm_tis_reenable_interrupts(struct tpm_chip *chip)
+ 	u32 intmask;
+ 	int rc;
  
-+	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
-+	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-+		return 0;
-+
- 	return tpm_get_random(chip, data, max);
- }
- 
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index 4463d0018290..586ca10b0d72 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -412,6 +412,8 @@ int tpm_pm_suspend(struct device *dev)
- 	}
- 
- suspended:
-+	chip->flags |= TPM_CHIP_FLAG_SUSPENDED;
-+
- 	if (rc)
- 		dev_err(dev, "Ignoring error %d while suspending\n", rc);
- 	return 0;
-@@ -429,6 +431,14 @@ int tpm_pm_resume(struct device *dev)
- 	if (chip == NULL)
- 		return -ENODEV;
- 
-+	chip->flags &= ~TPM_CHIP_FLAG_SUSPENDED;
-+
+-	if (chip->ops->clk_enable != NULL)
+-		chip->ops->clk_enable(chip, true);
+-
+-	/* reenable interrupts that device may have lost or
+-	 * BIOS/firmware may have disabled
 +	/*
-+	 * Guarantee that SUSPENDED is written last, so that hwrng does not
-+	 * activate before the chip has been fully resumed.
-+	 */
-+	wmb();
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(tpm_pm_resume);
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 77693389c3f9..6a1e8f157255 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -282,6 +282,7 @@ enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_ALWAYS_POWERED		= BIT(5),
- 	TPM_CHIP_FLAG_FIRMWARE_POWER_MANAGED	= BIT(6),
- 	TPM_CHIP_FLAG_FIRMWARE_UPGRADE		= BIT(7),
-+	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
- };
++	 * Re-enable interrupts that device may have lost or BIOS/firmware may
++	 * have disabled.
+ 	 */
+ 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), priv->irq);
+-	if (rc < 0)
+-		goto out;
++	if (rc < 0) {
++		dev_err(&chip->dev, "Setting IRQ failed.\n");
++		return;
++	}
  
- #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
+ 	intmask = priv->int_mask | TPM_GLOBAL_INT_ENABLE;
+-
+-	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
+-
+-out:
+-	if (chip->ops->clk_enable != NULL)
+-		chip->ops->clk_enable(chip, false);
+-
+-	return;
++	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
++	if (rc < 0)
++		dev_err(&chip->dev, "Enabling interrupts failed.\n");
+ }
+ 
+ int tpm_tis_resume(struct device *dev)
+@@ -1235,27 +1230,27 @@ int tpm_tis_resume(struct device *dev)
+ 	struct tpm_chip *chip = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = tpm_tis_request_locality(chip, 0);
+-	if (ret < 0)
++	ret = tpm_chip_start(chip);
++	if (ret)
+ 		return ret;
+ 
+ 	if (chip->flags & TPM_CHIP_FLAG_IRQ)
+ 		tpm_tis_reenable_interrupts(chip);
+ 
+-	ret = tpm_pm_resume(dev);
+-	if (ret)
+-		goto out;
+-
+ 	/*
+ 	 * TPM 1.2 requires self-test on resume. This function actually returns
+ 	 * an error code but for unknown reason it isn't handled.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_TPM2))
+ 		tpm1_do_selftest(chip);
+-out:
+-	tpm_tis_relinquish_locality(chip, 0);
+ 
+-	return ret;
++	tpm_chip_stop(chip);
++
++	ret = tpm_pm_resume(dev);
++	if (ret)
++		return ret;
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(tpm_tis_resume);
+ #endif
 
