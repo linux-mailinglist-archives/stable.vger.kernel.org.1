@@ -2,120 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48C3F70D87D
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 11:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E71170D9BB
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 11:59:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235716AbjEWJLN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 05:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41724 "EHLO
+        id S236273AbjEWJ7i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 05:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235511AbjEWJLM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 05:11:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE826120;
-        Tue, 23 May 2023 02:11:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5331362BF2;
-        Tue, 23 May 2023 09:11:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48429C4339B;
-        Tue, 23 May 2023 09:11:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684833069;
-        bh=LVlyfbZgn2iRIn7ZSmKBGZ/2rCC3V2amYXZSr84oCz4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MPtP1zCk8CmhETypy8iYRyYRfU79FzLtG2pmJqob2qH5ldUo3dc9adrGMiqIcfy0O
-         8ttGKgazrJToMkzwCcMbLbEvslL7CxkqLsYJ4eh5LyNqKJUVta/hwZjGRIIr/89S85
-         AkXdCMqYz+32wtJnpLXz7v32bDKzeuYmD9KzILgqf2o3nwTw0BqTYADofWvFi5qmi+
-         EQb4jER6gfGFV3LwnTxUAhKQbZwHtB0FsYn5fBp0Xo0FXtB/fgoMgM9Txh1TiIf1iu
-         n37ei6bvN1v1bTk/Vk9LO+x+guUR9xlRI7A8KJbhTu89ETSbZS6zuxmWhDbcUETuAW
-         Xao0wVHFYR54w==
-Date:   Tue, 23 May 2023 10:11:05 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz
-Subject: Re: Linux 5.15.104
-Message-ID: <20230523091105.GE2174496@google.com>
-References: <1679511203203220@kroah.com>
- <20230522102355.GA2009088@google.com>
- <2023052236-passivism-equate-5cb8@gregkh>
- <20230522162812.GQ404509@google.com>
- <2023052236-clear-although-6495@gregkh>
+        with ESMTP id S236122AbjEWJ7h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 05:59:37 -0400
+Received: from qproxy3-pub.mail.unifiedlayer.com (qproxy3-pub.mail.unifiedlayer.com [67.222.38.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD06121
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 02:59:35 -0700 (PDT)
+Received: from gproxy2-pub.mail.unifiedlayer.com (gproxy2-pub.mail.unifiedlayer.com [69.89.18.3])
+        by qproxy3.mail.unifiedlayer.com (Postfix) with ESMTP id B899B80276F0
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 09:59:34 +0000 (UTC)
+Received: from cmgw11.mail.unifiedlayer.com (unknown [10.0.90.126])
+        by progateway4.mail.pro1.eigbox.com (Postfix) with ESMTP id 441731004439D
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 09:59:34 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id 1OnmqW38QxtIe1OnmqYacw; Tue, 23 May 2023 09:59:34 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=e+bD9Yl/ c=1 sm=1 tr=0 ts=646c8e86
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
+ a=P0xRbXHiH_UA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=_TT2BMk-RzcNz2eV-joA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=p6l073W1H14VRvH/3qDVIKzIoUiWlZ6V1q4jFM65G4w=; b=pTugLCBkYeRjXr09yfK5brUA2Y
+        jGpu9b4LcG5wXRL1aDH4nIPWS18Fbi8GOQfpJ+reHobWLBqdHlW2sJ4LhGc//6vI6EEt/1J+sL+9J
+        q4Y3lMnmcI6AMo+aVeneXMWdwWogSrrat7kb9UDBEII77Z85g4oKEH2BSX1FEwwg7r+5ggS4hPCmd
+        KB979ogXI9SXxG2RBLmOZmtF/QeeGaFxXuelzJXDXgTs8b6M8CCzi8R6XAQMCMJaNaxeUtzGOMnUM
+        P/nfY9d6/AIJRyun/8T9tzwGGJxFtbLYWftn8ZQM7FEzvDYdId+DxeJk9cFvnNGMWuoGmKY0FYZvZ
+        A2MmCoyA==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:40970 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <re@w6rz.net>)
+        id 1q1Onl-003vXU-B3;
+        Tue, 23 May 2023 03:59:33 -0600
+Subject: Re: [PATCH 6.3 000/364] 6.3.4-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <44f75b57-d26f-c284-825c-19bcc7e2ac7e@w6rz.net>
+Date:   Tue, 23 May 2023 02:59:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023052236-clear-although-6495@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1q1Onl-003vXU-B3
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:40970
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 22 May 2023, Greg Kroah-Hartman wrote:
+On 5/22/23 12:05 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.4 release.
+> There are 364 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 May 2023 19:03:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> On Mon, May 22, 2023 at 05:28:12PM +0100, Lee Jones wrote:
-> > On Mon, 22 May 2023, Greg Kroah-Hartman wrote:
-> > 
-> > > On Mon, May 22, 2023 at 11:23:55AM +0100, Lee Jones wrote:
-> > > > On Wed, 22 Mar 2023, Greg Kroah-Hartman wrote:
-> > > > 
-> > > > > I'm announcing the release of the 5.15.104 kernel.
-> > > > > 
-> > > > > All users of the 5.15 kernel series must upgrade.
-> > > > > 
-> > > > > The updated 5.15.y git tree can be found at:
-> > > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-5.15.y
-> > > > > and can be browsed at the normal kernel.org git web browser:
-> > > > > 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> > > > > 
-> > > > > thanks,
-> > > > > 
-> > > > > greg k-h
-> > > > > 
-> > > > > ------------
-> > > > 
-> > > > [...]
-> > > > 
-> > > > > Budimir Markovic (1):
-> > > > >       perf: Fix check before add_event_to_groups() in perf_group_detach()
-> > > > 
-> > > > Anyone know why this didn't make it into v5.10 with it's friends?
-> > > > 
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=80102f2ee715ab07be476df443bba388d5458fd1
-> > > 
-> > > That's a merge point, how can that go into stable kernels?
-> >  
-> >  There are only 3 commits in the merge.
-> > 
-> > > What specific commits are you thinking were missed?
-> > 
-> > The one I quoted above:
-> > 
-> >   perf: Fix check before add_event_to_groups() in perf_group_detach()
-> > 
-> > The other two applied successfully to v5.10.y:
-> > 
-> >   perf: fix perf_event_context->time
-> >   perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
-> 
-> Do you have git ids for these?
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-These are the v5.10.y commits (no further action required).
+Tested-by: Ron Economos <re@w6rz.net>
 
-  18dd825b86511 perf: fix perf_event_context->time
-  ddcf832000363 perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
-
-This one needs backporting from Mainline (please):
-
-  fd0815f632c24 perf: Fix check before add_event_to_groups() in perf_group_detach()
-
--- 
-Lee Jones [李琼斯]
