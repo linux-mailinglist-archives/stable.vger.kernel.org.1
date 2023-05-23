@@ -2,115 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C06970D7D3
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 10:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C3F70D87D
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 11:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232887AbjEWIrl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 04:47:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
+        id S235716AbjEWJLN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 05:11:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232769AbjEWIrk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 04:47:40 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D7A95;
-        Tue, 23 May 2023 01:47:38 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-96f7377c86aso807213966b.1;
-        Tue, 23 May 2023 01:47:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684831656; x=1687423656;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ahriv3hQPzNSBqcQ2rj+8i22uvJ5XInYHJKUuq+mYbY=;
-        b=JnF400TtbkaYPHYhbIrzx2dVLpG47PGKsWxw0bkfG2TgKD7uDKjPhVXuHmjsrfMgOW
-         MsS3nMweZyuW0Q5biW8UdmIKi1nYRU5Ic5qwO4d+XShLk4uuuBqtkfPdyNMULkspsqZk
-         4OxCP3J9tSq1IRpxdECQMsTjYXBJ/mXh+sIE20IPk52Bp/omnpnJaza290eZ6GmUUCM7
-         B+XmGm0AojhfWsjvfqXXBCaSm99xL0+JEg24JymtHMHKCR2/1HjBXydfrON+rdvPsJTT
-         id/tNt4pZ5hWppWJbzp1VbBdZkfUX5njvs4mbAR/lrtcb9NaQwAX3uQkOurSi+wFF7kf
-         K0+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684831656; x=1687423656;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ahriv3hQPzNSBqcQ2rj+8i22uvJ5XInYHJKUuq+mYbY=;
-        b=alfG3+32u1WWZnb33P1eyqQWAF5j7UmC9kLXPr3MlsMt1oXrXJ9etFi657pN2vtxkC
-         VePiOQ1/A/0Z7tTWE8fhUiM0mNHFhEQBYhB1DeK+mEu/JrGrhm3Vrm8MwgqUxU9dGZ82
-         aPbR5xu9tcW5bvJ5iRhupsFXb1Lnj3Fb4iPE5YSA3ub2GuEMocZ09gD81ASDZ4n0Y6O2
-         TOep1gDaIq2qMinHrBAYDunAAeW6P750ii/2MgttpS0kGuENNWBCj+R74PuhtssrR2vL
-         /X4NRorcF9VOoBWmoZXlanSfz8y+JItHXiGibHdYMkcH9kQu0dfoyYWsYbYsZzcnwfKc
-         jtnw==
-X-Gm-Message-State: AC+VfDz0HnBhWzKxloZweCAiEUPur1s6+H7MClZ0DDYpoWeTXX8xcG+z
-        bTfyN+JjQl73eYMK3Eg04DVWvwY9NgadrQVp16U=
-X-Google-Smtp-Source: ACHHUZ50NeMWkjSlcZx1u8oDl6ktW+PpUTtcmM2C8u5cx7WkQUT59/lfkbl9YMZq38S3+Ci+P+vfiyTNBrftMORq0aM=
-X-Received: by 2002:a17:906:d550:b0:966:4bb3:df63 with SMTP id
- cr16-20020a170906d55000b009664bb3df63mr14605361ejc.63.1684831655291; Tue, 23
- May 2023 01:47:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230522190412.801391872@linuxfoundation.org> <OSBPR01MB3783F0D4C6006FFF6DF9AA28B7439@OSBPR01MB3783.jpnprd01.prod.outlook.com>
-In-Reply-To: <OSBPR01MB3783F0D4C6006FFF6DF9AA28B7439@OSBPR01MB3783.jpnprd01.prod.outlook.com>
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Tue, 23 May 2023 09:46:59 +0100
-Message-ID: <CADVatmOB3ENUQXojP61fahwfMfRTAJ5WwDEN1fWQq+GzuHyduw@mail.gmail.com>
-Subject: Re: [PATCH 6.3 000/364] 6.3.4-rc1 review
+        with ESMTP id S235511AbjEWJLM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 05:11:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE826120;
+        Tue, 23 May 2023 02:11:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5331362BF2;
+        Tue, 23 May 2023 09:11:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48429C4339B;
+        Tue, 23 May 2023 09:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684833069;
+        bh=LVlyfbZgn2iRIn7ZSmKBGZ/2rCC3V2amYXZSr84oCz4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MPtP1zCk8CmhETypy8iYRyYRfU79FzLtG2pmJqob2qH5ldUo3dc9adrGMiqIcfy0O
+         8ttGKgazrJToMkzwCcMbLbEvslL7CxkqLsYJ4eh5LyNqKJUVta/hwZjGRIIr/89S85
+         AkXdCMqYz+32wtJnpLXz7v32bDKzeuYmD9KzILgqf2o3nwTw0BqTYADofWvFi5qmi+
+         EQb4jER6gfGFV3LwnTxUAhKQbZwHtB0FsYn5fBp0Xo0FXtB/fgoMgM9Txh1TiIf1iu
+         n37ei6bvN1v1bTk/Vk9LO+x+guUR9xlRI7A8KJbhTu89ETSbZS6zuxmWhDbcUETuAW
+         Xao0wVHFYR54w==
+Date:   Tue, 23 May 2023 10:11:05 +0100
+From:   Lee Jones <lee@kernel.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "linux@roeck-us.net" <linux@roeck-us.net>,
-        "shuah@kernel.org" <shuah@kernel.org>,
-        "patches@kernelci.org" <patches@kernelci.org>,
-        "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
-        "pavel@denx.de" <pavel@denx.de>,
-        "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "srw@sladewatkins.net" <srw@sladewatkins.net>,
-        "rwarsow@gmx.de" <rwarsow@gmx.de>,
-        Chris Paterson <chris.paterson2@renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+        jslaby@suse.cz
+Subject: Re: Linux 5.15.104
+Message-ID: <20230523091105.GE2174496@google.com>
+References: <1679511203203220@kroah.com>
+ <20230522102355.GA2009088@google.com>
+ <2023052236-passivism-equate-5cb8@gregkh>
+ <20230522162812.GQ404509@google.com>
+ <2023052236-clear-although-6495@gregkh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2023052236-clear-although-6495@gregkh>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+On Mon, 22 May 2023, Greg Kroah-Hartman wrote:
 
-On Mon, 22 May 2023 at 21:29, Chris Paterson
-<Chris.Paterson2@renesas.com> wrote:
->
-> Hello Greg,
->
-> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Sent: Monday, May 22, 2023 8:05 PM
-> >
-> > This is the start of the stable review cycle for the 6.3.4 release.
-> > There are 364 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Wed, 24 May 2023 19:03:25 +0000.
-> > Anything received after that time might be too late.
->
-> I'm seeing a few build failures with Linux 6.3.4-rc1 (20efcce0526d) due to the drivers/usb/host/xhci.c driver:
->
-> drivers/usb/host/xhci.c:497:19: error: static declaration of 'xhci_try_enable_msi' follows non-static declaration
->   497 | static inline int xhci_try_enable_msi(struct usb_hcd *hcd)
->       |                   ^~~~~~~~~~~~~~~~~~~
-> In file included from drivers/usb/host/xhci.c:22:
-> drivers/usb/host/xhci.h:2146:5: note: previous declaration of 'xhci_try_enable_msi' was here
->  2146 | int xhci_try_enable_msi(struct usb_hcd *hcd);
->       |     ^~~~~~~~~~~~~~~~~~~
+> On Mon, May 22, 2023 at 05:28:12PM +0100, Lee Jones wrote:
+> > On Mon, 22 May 2023, Greg Kroah-Hartman wrote:
+> > 
+> > > On Mon, May 22, 2023 at 11:23:55AM +0100, Lee Jones wrote:
+> > > > On Wed, 22 Mar 2023, Greg Kroah-Hartman wrote:
+> > > > 
+> > > > > I'm announcing the release of the 5.15.104 kernel.
+> > > > > 
+> > > > > All users of the 5.15 kernel series must upgrade.
+> > > > > 
+> > > > > The updated 5.15.y git tree can be found at:
+> > > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-5.15.y
+> > > > > and can be browsed at the normal kernel.org git web browser:
+> > > > > 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+> > > > > 
+> > > > > thanks,
+> > > > > 
+> > > > > greg k-h
+> > > > > 
+> > > > > ------------
+> > > > 
+> > > > [...]
+> > > > 
+> > > > > Budimir Markovic (1):
+> > > > >       perf: Fix check before add_event_to_groups() in perf_group_detach()
+> > > > 
+> > > > Anyone know why this didn't make it into v5.10 with it's friends?
+> > > > 
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=80102f2ee715ab07be476df443bba388d5458fd1
+> > > 
+> > > That's a merge point, how can that go into stable kernels?
+> >  
+> >  There are only 3 commits in the merge.
+> > 
+> > > What specific commits are you thinking were missed?
+> > 
+> > The one I quoted above:
+> > 
+> >   perf: Fix check before add_event_to_groups() in perf_group_detach()
+> > 
+> > The other two applied successfully to v5.10.y:
+> > 
+> >   perf: fix perf_event_context->time
+> >   perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
+> 
+> Do you have git ids for these?
 
-I am also seeing this same failure on arm (exynos_defconfig and
-hisi_defconfig) and mips (cavium_octeon_defconfig)
+These are the v5.10.y commits (no further action required).
 
+  18dd825b86511 perf: fix perf_event_context->time
+  ddcf832000363 perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
+
+This one needs backporting from Mainline (please):
+
+  fd0815f632c24 perf: Fix check before add_event_to_groups() in perf_group_detach()
 
 -- 
-Regards
-Sudip
+Lee Jones [李琼斯]
