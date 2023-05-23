@@ -2,102 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F4470E333
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 19:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36DF770E307
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 19:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237955AbjEWRGT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 13:06:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41792 "EHLO
+        id S237420AbjEWRKS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 13:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237947AbjEWRGR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 13:06:17 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36451BF
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 10:06:15 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-64d293746e0so6479443b3a.2
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 10:06:15 -0700 (PDT)
+        with ESMTP id S229506AbjEWRKR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 13:10:17 -0400
+Received: from smtp-fw-9103.amazon.com (smtp-fw-9103.amazon.com [207.171.188.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C825F90;
+        Tue, 23 May 2023 10:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1684861574; x=1687453574;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5D4jJBdsw8v5z1Hj7e4NkWHnBQGpeGcsx2kEbP6mIWQ=;
-        b=ln4dCoJzG69l0bBJ66KX8uAKPONQc33WsyrsJD2qkfoU+XgCrb4Ky7e2c7ejfR3RfW
-         OF/9Ad54Mh6U0/dlwSmvD15AmN5ad11ggoJYfdYnbUxhiAh6J+yB8V92GYw9uJsD9CJT
-         GZ8P1zrI7yzwZfchnshDFmU/ZUIQplyuqIV/8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684861574; x=1687453574;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5D4jJBdsw8v5z1Hj7e4NkWHnBQGpeGcsx2kEbP6mIWQ=;
-        b=OEQYCtF/Np52kaLOju8gXBlkpiamOy4cVAKqvTIDhtcC0KDVMC6QEuT2Z5Ul2X8a81
-         1HSnyr0bC2XmDkmwcUz2vfIkG+v2Rg4pHm66ejPFsPPAdpaeLmostC2K9dOxA40UWVRj
-         z25qWwOXoi2Uzf0k8owgDo+Q+RUH/28+E0breEBJps3ZJSc0rAjsdX6McAug/JBPAFYj
-         +6Ahg8tG6boTKHh9FJ/4HtLDpaP7owh/6qDC8eS/k5rydV5QlgX4qryPdvmJVhFvBblE
-         idjMIOnNtXY1+uvm4SNVDqBE56IaEgzBlf3ZqNw4V9qrvYLzQL6Pk6Yq09V/fHJJwQ5f
-         hqfg==
-X-Gm-Message-State: AC+VfDxtFQgxju3lndKn21ZcLumg1IPS/K606gdeqIKXLkvy5a5Fy5Cz
-        QO0L9XFrvrnMx+8uP547X0kXBw==
-X-Google-Smtp-Source: ACHHUZ6Iu7uTc8qj06melcElk4wG/mkYt9xsoFCNr5WU4few+n4Wb1U5B20HKwwiuBR+NHUrnMzvlg==
-X-Received: by 2002:a05:6a00:14c4:b0:647:e45f:1a49 with SMTP id w4-20020a056a0014c400b00647e45f1a49mr19188735pfu.4.1684861574564;
-        Tue, 23 May 2023 10:06:14 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id i9-20020aa79089000000b0064559b58eb8sm6035544pfa.154.2023.05.23.10.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 10:06:14 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     raven@themaw.net, arnd@kernel.org
-Cc:     Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
-        autofs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, linux-doc@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] autofs: use flexible array in ioctl structure
-Date:   Tue, 23 May 2023 10:06:10 -0700
-Message-Id: <168486156843.2168554.9330529184813281577.b4-ty@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230523081944.581710-1-arnd@kernel.org>
-References: <20230523081944.581710-1-arnd@kernel.org>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1684861816; x=1716397816;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=r4qQMfaI1qjgbzjXoDIxbJ+UkErC3soNDbr3LWqBikA=;
+  b=OslMN7z9LMJbLLsTKLqd3nnL0JzTLJVTtj66Mn9gUVb99fm2bh/7M913
+   X5zUSYIARXcaTifmMc6FUyEJ8SiprZDB9DxIBDYsOpS5h37SitdnGd+PA
+   m2xFWCOP/M9n20WkcD2HwF68uYWxWLIQ0Yl4tvXavBMBXNU9Upe41JM7l
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.00,186,1681171200"; 
+   d="scan'208";a="1133087791"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-9103.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2023 17:09:56 +0000
+Received: from EX19D011EUA001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+        by email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com (Postfix) with ESMTPS id CB1D240D4D;
+        Tue, 23 May 2023 17:09:55 +0000 (UTC)
+Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
+ EX19D011EUA001.ant.amazon.com (10.252.50.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 23 May 2023 17:09:51 +0000
+Received: from uc3ecf78c6baf56.ant.amazon.com (10.187.170.24) by
+ EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 23 May 2023 17:09:48 +0000
+From:   Andrew Paniakin <apanyaki@amazon.com>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+CC:     Andrew Paniakin <apanyaki@amazon.com>, <stable@vger.kernel.org>,
+        <luizcap@amazon.com>, <benh@amazon.com>,
+        Florian Westphal <fw@strlen.de>,
+        Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+        "David S. Miller" <davem@davemloft.net>,
+        <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 4.14] netfilter: nf_tables: fix register ordering
+Date:   Tue, 23 May 2023 10:09:35 -0700
+Message-ID: <20230523170935.2288354-1-apanyaki@amazon.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <ZGx9JsCjvoDNRTBy@calendula>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.187.170.24]
+X-ClientProxiedBy: EX19D037UWC003.ant.amazon.com (10.13.139.231) To
+ EX19D026EUB004.ant.amazon.com (10.252.61.64)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 23 May 2023 10:19:35 +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Tue, 23 May 2023 10:45:26 +0200 Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+
+> On Mon, May 22, 2023 at 07:59:41PM -0700, Andrew Paniakin wrote:
+> > From: Florian Westphal <fw@strlen.de>
+> >
+> > commit d209df3e7f7002d9099fdb0f6df0f972b4386a63 upstream
+> >
 > 
-> Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") introduced a warning
-> for the autofs_dev_ioctl structure:
+> I have to send pending batch of updates for -stable 4.14.
 > 
-> In function 'check_name',
->     inlined from 'validate_dev_ioctl' at fs/autofs/dev-ioctl.c:131:9,
->     inlined from '_autofs_dev_ioctl' at fs/autofs/dev-ioctl.c:624:8:
-> fs/autofs/dev-ioctl.c:33:14: error: 'strchr' reading 1 or more bytes from a region of size 0 [-Werror=stringop-overread]
->    33 |         if (!strchr(name, '/'))
->       |              ^~~~~~~~~~~~~~~~~
-> In file included from include/linux/auto_dev-ioctl.h:10,
->                  from fs/autofs/autofs_i.h:10,
->                  from fs/autofs/dev-ioctl.c:14:
-> include/uapi/linux/auto_dev-ioctl.h: In function '_autofs_dev_ioctl':
-> include/uapi/linux/auto_dev-ioctl.h:112:14: note: source object 'path' of size 0
->   112 |         char path[0];
->       |              ^~~~
+> I take this patch and I will pass it on -stable maintainers.
 > 
-> [...]
-
-Applied to for-next/hardening, thanks!
-
-[1/1] autofs: use flexible array in ioctl structure
-      https://git.kernel.org/kees/c/e6d6886d469f
-
--- 
-Kees Cook
-
+> Thanks.
+> 
+Sure, thanks for the help!
