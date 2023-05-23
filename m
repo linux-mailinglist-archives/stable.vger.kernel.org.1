@@ -2,136 +2,306 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAB8E70E0E2
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 17:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1A5370E210
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 18:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237629AbjEWPsf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 11:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49388 "EHLO
+        id S233067AbjEWQhF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 12:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237539AbjEWPs3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 11:48:29 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E270130
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 08:48:26 -0700 (PDT)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1q1UEi-0007VH-D5; Tue, 23 May 2023 17:47:44 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 44DEE1CA89A;
-        Tue, 23 May 2023 15:47:42 +0000 (UTC)
-Date:   Tue, 23 May 2023 17:47:41 +0200
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Liu Ying <victor.liu@nxp.com>, Marek Vasut <marex@denx.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, kernel@pengutronix.de
-Subject: Re: [PATCH 6.3 169/694] arm64: dts: imx8mp: Drop simple-bus from
- fsl,imx8mp-media-blk-ctrl
-Message-ID: <20230523-justly-situated-317e792f4c1b-mkl@pengutronix.de>
-References: <20230508094432.603705160@linuxfoundation.org>
- <20230508094437.900924742@linuxfoundation.org>
+        with ESMTP id S231410AbjEWQhE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 12:37:04 -0400
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6265518E
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 09:36:57 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-783f1443b70so2484905241.1
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 09:36:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684859816; x=1687451816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VH/bj/vFsonSvfQ9d0PiamHB4y93f7MSPfGXexLIWoQ=;
+        b=ijegsW2lBlnb8/8bH0QRUTePucDSzy5rVpsOwB1sR0JbeHqIRgUbCzrSYJITxuJZCk
+         HCbzhj1mYT4Ni14xGFgc7yl4oDGXxNZeqW9ohC87YL9dA4L9jg9+4V0x5TGQlo4Y3LSf
+         KUxHitHXewfG+pvHqPyZLZxwR3lp6uOma42S7pJ1bSoQeMQCbpXKbiwMGKRgkrUVRSVG
+         dZPYPFlazrPUGVssIrwWO1X0hUZOA9+1l9h4wvqLXurr3Qb9oCmnz0X1KZO6CaZnPMd8
+         3/Z9glkHsPqX79G5uStvzqKuRr15gTO5G4GPOUkEVTSFtRVWcv5o+44aguapppkM4YU0
+         PyJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684859816; x=1687451816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VH/bj/vFsonSvfQ9d0PiamHB4y93f7MSPfGXexLIWoQ=;
+        b=PI3RYX6DkzdKhL5tRrqi6JOizfRim1kKLl/CuLyVN6GezWwC1s/LxqhhiLvfoa3F/Q
+         Y6YK86ooHyfZqCJSDit8k8eECRqx4H/6mrxvBlD6zT0cdorDrMriT4JXZy/+aitXC5Ug
+         ZLt4TTrJovQ724D71v/R2XcpNHHpeARfZiQ9VDqiCwu2IGrsm6EkzG2v+JuDKwLDb0pg
+         L1Tv2d2IlfpR/bW8aUst7NuRRIYqjpUQmwtx08azt2Qhknp5UbuJ7XMR2D9KDHCk39mN
+         rwidnn4XN4leTNNUVV23d/ZyizGYGEaD7lYPs/5mSjWU+rthJN7cZsc00bjYs/nXt0OX
+         fE7w==
+X-Gm-Message-State: AC+VfDwWYvC4gU279eAU7ruTy7A9mMvBvDdu6pIXRSDoefJfsXiGE2Sw
+        jLu7aVNtsJaon6J0kb/gXhu9HSgvZROQiPWz2X7QNA==
+X-Google-Smtp-Source: ACHHUZ7+MAxHQ4ZYTMOVO0O/FKyNB2Lnf4wPuu1wag0LFSUkSHFhWeM0ffoEI/0+HH4jvHhYNfPREwRKpM+XndV5Krc=
+X-Received: by 2002:a67:f2c9:0:b0:42f:e944:7ea0 with SMTP id
+ a9-20020a67f2c9000000b0042fe9447ea0mr4664595vsn.6.1684859816167; Tue, 23 May
+ 2023 09:36:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rvqcuzyif67d4p2g"
-Content-Disposition: inline
-In-Reply-To: <20230508094437.900924742@linuxfoundation.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 23 May 2023 22:06:44 +0530
+Message-ID: <CA+G9fYuKxKdTSLKM=fsToOGzoY=017i+7iypy84sYRC2HfDcyg@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/364] 6.3.4-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        josue.d.hernandez.gutierrez@intel.com
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        LTP List <ltp@lists.linux.it>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, 23 May 2023 at 01:08, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.3.4 release.
+> There are 364 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 May 2023 19:03:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.3.4-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
---rvqcuzyif67d4p2g
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hello Greg,
+Results from Linaro=E2=80=99s test farm.
+Regressions on arm and mips builds failed.
 
-can you please revert this patch, without the corresponding driver patch
-[1] it breaks probing of the device, as no one populates the sub-nodes.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-[1] 9cb6d1b39a8f ("soc: imx: imx8m-blk-ctrl: Scan subnodes and bind drivers=
- to them")
+ * arm: exynos_defconfig - build failed.
+ * mips: cavium_octeon_defconfig - build failed.
 
-Marc
+Build failed due to this commit,
+  "xhci: Avoid PCI MSI/MSIX interrupt reinitialization at resume"
+     upstream commit 78887e3e5f00fca305670d8f3ba3c0f42b343047
 
-On 08.05.2023 11:40:04, Greg Kroah-Hartman wrote:
-> From: Marek Vasut <marex@denx.de>
->=20
-> [ Upstream commit 5a51e1f2b083423f75145c512ee284862ab33854 ]
->=20
-> This block should not be compatible with simple-bus and misuse it that wa=
-y.
-> Instead, the driver should scan its subnodes and bind drivers to them.
->=20
-> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Reviewed-by: Liu Ying <victor.liu@nxp.com>
-> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Fixes: 94e6197dadc9 ("arm64: dts: imx8mp: Add LCDIF2 & LDB nodes")
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index a237275ee0179..3f9d67341484b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1151,7 +1151,7 @@
-> =20
->  			media_blk_ctrl: blk-ctrl@32ec0000 {
->  				compatible =3D "fsl,imx8mp-media-blk-ctrl",
-> -					     "simple-bus", "syscon";
-> +					     "syscon";
->  				reg =3D <0x32ec0000 0x10000>;
->  				#address-cells =3D <1>;
->  				#size-cells =3D <1>;
-> --=20
-> 2.39.2
->=20
->=20
->=20
+NOTE:
+LTP syscalls msync04 started failing intermittently on 6.3, 6.1 and 5.15 on
+arm64 devices which are using NFS mounted rootfs and external mounted drive=
+.
+Whereas on arm x15 devices it always fails from 6.3.2-rc1, 6.1.28-rc1
+and 5.15.111-rc1.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Test log:
+=3D=3D=3D=3D=3D=3D=3D=3D
 
---rvqcuzyif67d4p2g
-Content-Type: application/pgp-signature; name="signature.asc"
+tst_test.c:1634: TINFO: =3D=3D=3D Testing on vfat =3D=3D=3D
+tst_test.c:1093: TINFO: Formatting /dev/loop0 with vfat opts=3D'' extra opt=
+s=3D''
+msync04.c:72: TPASS: msync() working correctly
+tst_test.c:1634: TINFO: =3D=3D=3D Testing on ntfs =3D=3D=3D
+tst_test.c:1093: TINFO: Formatting /dev/loop0 with ntfs opts=3D'' extra opt=
+s=3D''
+The partition start sector was not specified for /dev/loop0 and it
+could not be obtained automatically.  It has been set to 0.
+The number of sectors per track was not specified for /dev/loop0 and
+it could not be obtained automatically.  It has been set to 0.
+The number of heads was not specified for /dev/loop0 and it could not
+be obtained automatically.  It has been set to 0.
+To boot from a device, Windows needs the 'partition start sector', the
+'sectors per track' and the 'number of heads' to be set.
+Windows will not be able to boot from this device.
+tst_test.c:1107: TINFO: Trying FUSE...
+msync04.c:59: TFAIL: Expected dirty bit to be set after writing to
+mmap()-ed area
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmRs4BsACgkQvlAcSiqK
-BOglTgf+IKAL5Fr49pQGJh+ch4z8J4K+/ARzRZ5mnIC57MnZZC/QNhmzRMG0XQGW
-t4fOVzv1t7ae2lmGe5X2y9mhTBw/XSlUtA0O98HOuzInXJfXWDeqrXoYt+WYe5a0
-smVrwLwYzTqFem1lE0u0wgNe8IDJhLiVk644Wqj36knuuIWNGoLM8ONQfhkFINU9
-s1lvDOvXPhQsJSvTOT1Xb46gXf7uJ7OywQhSrxqWwDEigJiFZyBUyX+zeqhzmjDz
-RFTY8rVRmfqrmknGarTLse1fxYtaF7g8eQjMOTLSTq5aTvTarV/HCqQJM6n0btWH
-dim0ug9AHcI84+GJ3mwHkQXnTKkbAw==
-=WdZo
------END PGP SIGNATURE-----
+log:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.=
+3.3-365-g20efcce0526d/testrun/17163865/suite/ltp-syscalls/test/msync04/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.=
+3.3-365-g20efcce0526d/testrun/17163865/suite/ltp-syscalls/test/msync04/hist=
+ory/
 
---rvqcuzyif67d4p2g--
+Test results compare across 6.3, 6.1 and 5.15.
+ - https://qa-reports.linaro.org/_/comparetest/?project=3D1764&project=3D15=
+97&project=3D1022&suite=3Dltp-syscalls&test=3Dmsync04
+
+## Build
+* kernel: 6.3.4-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.3.y
+* git commit: 20efcce0526de5a73d24520128ccf44e1e2ab833
+* git describe: v6.3.3-365-g20efcce0526d
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3=
+-365-g20efcce0526d
+
+## Test Regressions (compared to v6.3.3)
+* arm, build
+  - clang-16-exynos_defconfig
+  - clang-nightly-exynos_defconfig
+  - gcc-12-exynos_defconfig
+  - gcc-8-exynos_defconfig
+
+* juno-r2-kasan, ltp-syscalls
+  - msync04
+
+* mips, build
+  - gcc-12-cavium_octeon_defconfig
+  - gcc-8-cavium_octeon_defconfig
+
+## Metric Regressions (compared to v6.3.3)
+
+## Test Fixes (compared to v6.3.3)
+
+## Metric Fixes (compared to v6.3.3)
+
+## Test result summary
+total: 181993, pass: 158209, fail: 3545, skip: 19974, xfail: 265
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 140 passed, 5 failed
+* arm64: 54 total, 53 passed, 1 failed
+* i386: 41 total, 40 passed, 1 failed
+* mips: 30 total, 26 passed, 4 failed
+* parisc: 8 total, 8 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 26 total, 25 passed, 1 failed
+* s390: 16 total, 14 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
