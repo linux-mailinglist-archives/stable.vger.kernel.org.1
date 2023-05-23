@@ -2,68 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BEBE70DB48
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 13:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E643670DADE
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 12:51:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233227AbjEWLOK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 07:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47532 "EHLO
+        id S236646AbjEWKvy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 06:51:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjEWLOJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 07:14:09 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA9DC4;
-        Tue, 23 May 2023 04:14:08 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S230520AbjEWKvk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 06:51:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E09C6E43;
+        Tue, 23 May 2023 03:49:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 629022189E;
-        Tue, 23 May 2023 11:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1684840447; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aY4cNcj2buXA+98cdjoFDFDl/OCoE3o4iIFcicP0g64=;
-        b=TQmkosjcuOUYgoKQws17rh7W3oXsCkxxXBnr+m57gLBw5bZwc29zThN5ROEIVx4WkM9b7b
-        AF1HPj1ZbpVHu+j5Uvrk7zLWE48xeuA9v/s40Ku8qUWYN3vuibWwh2e8kKnAROly6MwdW0
-        QgRE67JkR3LG4d4tlFjsLT1JKWJPFAU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1684840447;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aY4cNcj2buXA+98cdjoFDFDl/OCoE3o4iIFcicP0g64=;
-        b=UC7EAxKtgjTXtFULg/jASLhyIZCBIObuakZPQk26tXQp3M4IDK5p8Pl7Kjt/lsvM1ioObb
-        rCBhbOEEPRdAwsAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A213D13A10;
-        Tue, 23 May 2023 11:14:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id pb2AJ/2fbGRvBwAAMHmgww
-        (envelope-from <jack@suse.cz>); Tue, 23 May 2023 11:14:05 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 2E3E9A075D; Tue, 23 May 2023 12:46:44 +0200 (CEST)
-Date:   Tue, 23 May 2023 12:46:44 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     "Darrick J. Wong" <djwong@kernel.org>
-Cc:     Jan Kara <jack@suse.cz>, Ted Tso <tytso@mit.edu>,
-        linux-ext4@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ext4: Fix possible corruption when moving a directory
-Message-ID: <20230523104644.dgvmjq4xzhemlpbm@quack3>
-References: <20230126112221.11866-1-jack@suse.cz>
- <20230517045836.GA11594@frogsfrogsfrogs>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 744ED61C63;
+        Tue, 23 May 2023 10:49:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD2DC433D2;
+        Tue, 23 May 2023 10:49:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684838984;
+        bh=ZG2CLRp9/Vm9JkeKzPKfnQCU9uZlSunAzgrrZSzYQxs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Qr9Jhlurzn9rvXMfUKy34vC9G4ad4qTbUmMQwI4yZaY7jsMPcUbKlPUcZHyMYZD0x
+         //dy1d+B21cIr6UHeE/cIt+9Ucqi+ucJHzQ/j20Ehmv7gewdb/ET1W0WqGMrCAmpEq
+         hWvVVuej26j+f1ttpngy8lycVOcpxlf468YZx46cXYwOWNQZxCwH+b8rP5VOQbNODl
+         seyCYRaoBR1nZQE3cu+kIbAyqlrVWEnp5jTZutEHdyhmQSe7cJtm2g044eed8uP6Ez
+         VmHROZYQl6SB+lCvsqHMSyeljVTToORrPrZ7fGcFYJD/IsCD5qNMXLbThNgXs5ObyL
+         rFrJ8Zp3bdgfg==
+Date:   Tue, 23 May 2023 11:49:38 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Will Deacon <will@kernel.org>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: arm64: fp-stress: BUG: KFENCE: memory corruption in
+ fpsimd_release_task
+Message-ID: <a174b99c-3b60-410d-b6b3-67e8e792354c@sirena.org.uk>
+References: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
+ <20230516134447.GB30894@willie-the-truck>
+ <20230522164117.GA6342@willie-the-truck>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="0WyD5qb6h9pTGLPu"
 Content-Disposition: inline
-In-Reply-To: <20230517045836.GA11594@frogsfrogsfrogs>
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+In-Reply-To: <20230522164117.GA6342@willie-the-truck>
+X-Cookie: Beware of low-flying butterflies.
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,27 +66,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue 16-05-23 21:58:36, Darrick J. Wong wrote:
-> On Thu, Jan 26, 2023 at 12:22:21PM +0100, Jan Kara wrote:
-> > When we are renaming a directory to a different directory, we need to
-> > update '..' entry in the moved directory. However nothing prevents moved
-> > directory from being modified and even converted from the inline format
-> > to the normal format. When such race happens the rename code gets
-> > confused and we crash. Fix the problem by locking the moved directory.
-> 
-> Four months later, I have a question --
-> 
-> Is it necessary for ext4_cross_rename to inode_lock_nested on both
-> old.inode and new.inode?  We're resetting the dotdot entries on both
-> children in that case, which means that we also need to lock out inline
-> data conversions, right?
 
-Ouch, you're right. In that path we need to lock both source & target
-directories since lock_two_nondirectories() call in vfs_rename() will not
-lock them... I'll send a patch. Thanks for spotting this!
+--0WyD5qb6h9pTGLPu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-								Honza
+On Mon, May 22, 2023 at 05:41:17PM +0100, Will Deacon wrote:
+> On Tue, May 16, 2023 at 02:44:49PM +0100, Will Deacon wrote:
+> > On Tue, May 16, 2023 at 11:58:40AM +0530, Naresh Kamboju wrote:
 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> > > Following kernel BUG noticed while running selftests arm64 fp-stress
+> > > running stable rc kernel versions 6.1.29-rc1 and 6.3.3-rc1.
+
+> > Is there a known-good build so that we could attempt a bisection?
+
+> FWIW, I've been trying (and failing) all day to reproduce this in QEMU.
+> I matched the same VL configuration as you have in the fastmodel and
+> tried enabling additional memory debugging options too, but I'm yet to
+> see a kfence splat (or any other splat fwiw).
+
+> How often do you see this?
+
+As I said in another mail I've also been unable to reproduce this.  FWIW
+I *suspect* that it might need to be run in the context of a full
+kselftest run to manifest rather than just running fp-stress in
+isolation, that's mostly a guess but given that the kfence trap appeared
+to be happening on free at a point where the test program shouldn't be
+exiting any tasks and should not be changing vector lengths on tasks
+that have used either of the vector extensions.
+
+--0WyD5qb6h9pTGLPu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRsmkIACgkQJNaLcl1U
+h9BhWAgAgmrfoTxlzsDDX+RDl6E01tBdBvmcEH5N6AgAWSJaMNjla/SYW31Pgos0
+ArDjoqjfyIskP+UZ6T5UXrKxOe1rSaN6fwOovNCiyE+FIZ28Ml6cfp96YM/ElXGH
+DrjHKAelYRTaZndLBq5aNmDGO1A6Fz2w4t0Y/5vUnF6X4dWKo/8udixbbMNPe551
+NWehZoHz9eFNFPop3UDJKQPjZDDA0/LP6yBoAhsSN2ySzt1SuQBrO+NxpHqOA3ZD
+KM5BVVJq51ZQ9FNR8TbylrB7lWkHoR9fDXnM6ukbCNy+giOa1lvDJyDHxMiKxQ6b
+hBi7UdqunNL69HmnoS8jKoS0r0CBEQ==
+=RfVs
+-----END PGP SIGNATURE-----
+
+--0WyD5qb6h9pTGLPu--
