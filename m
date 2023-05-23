@@ -2,140 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EF970D3FF
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 08:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D78270D410
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 08:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234429AbjEWG2n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 02:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34820 "EHLO
+        id S232706AbjEWGhM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 02:37:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235231AbjEWG2U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 02:28:20 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADF5119;
-        Mon, 22 May 2023 23:28:18 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        with ESMTP id S229606AbjEWGhL (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Tue, 23 May 2023 02:37:11 -0400
+X-Greylist: delayed 365 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 22 May 2023 23:37:09 PDT
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F08E7109
+        for <Stable@vger.kernel.org>; Mon, 22 May 2023 23:37:09 -0700 (PDT)
+Received: from 8bytes.org (p200300c2773e310086ad4f9d2505dd0d.dip0.t-ipconnect.de [IPv6:2003:c2:773e:3100:86ad:4f9d:2505:dd0d])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id F1F9C1FF65;
-        Tue, 23 May 2023 06:28:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1684823297; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ovwyqxaxul6Jnout/fYdCqVEyw+eZaKVXfjLn1UYFNc=;
-        b=o35r5KkS78FAKg6uvqfrWx67mDl0FiQYw2dIOG9NHZV5C8wey/zXZMXT5lCjRT+R6eZ9RU
-        Hor8ambAavzb/XZSJYbkRAEfQzCO04JD56eEgVtCWTfzVhXAiwPnlW9KQQHaCfJjhu0wXq
-        X6M3sUChkpE59yaoQL0A+kof+t0j6fw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1684823297;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ovwyqxaxul6Jnout/fYdCqVEyw+eZaKVXfjLn1UYFNc=;
-        b=9UGKksD10AY+0STy023y4uNjxIp8Ea6Gkq3nQnB+Srp4ZNWNWjgNhICxrwLEt+xMQp74rn
-        O+xbSS3Zj4jCpmDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C00F813A10;
-        Tue, 23 May 2023 06:28:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id GRE4LgBdbGTkCAAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Tue, 23 May 2023 06:28:16 +0000
-Message-ID: <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz>
-Date:   Tue, 23 May 2023 08:28:16 +0200
+        by mail.8bytes.org (Postfix) with ESMTPSA id 4F0242480E1;
+        Tue, 23 May 2023 08:31:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+        s=default; t=1684823463;
+        bh=eHzQvI5QUqoz/Lj0lFCmplzcxBOdggkDnxBKLyCSgZs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ht1I1ooxYWysJaxa7r+omLTUJfWAbnxloIVNPRdVoQcXQoR4Qs6RqQsXACfv/Leys
+         IAGnIxD1vYjEXYzVXA/Au2GRfQkA+aOd4aOXo9LXjtH0lZNDstpSWw9aQ6X+eK2sAA
+         9Qu+OXm1VbuD0OtEqgpt0zBuZFk0f3fUivh/8K+M6VIH4S/9Wvz7w6V1oyogAoDPfF
+         dXAnwcbXJCSepegU16GkWsKZsVtI90RO9A1n7R4W/EgEQXTfGB0M+LdURRGWkMetoh
+         yZCoXy9JidJKE6gpwrZ79Pu28Ceieq749gRa5qIw/JuU62tjYCHk1/5JRIwEWLDW8P
+         pMPgccG9T4f9Q==
+Date:   Tue, 23 May 2023 08:31:02 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Vasant Hegde <vasant.hegde@amd.com>
+Cc:     iommu@lists.linux.dev, suravee.suthikulpanit@amd.com,
+        Jerry Snitselaar <jsnitsel@redhat.com>, Stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/amd/pgtbl_v2: Fix domain max address
+Message-ID: <ZGxdpiW47H3vAoL4@8bytes.org>
+References: <20230518054351.9626-1-vasant.hegde@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: Stable backport request: skbuff: Proactively round up to kmalloc
- bucket size
-To:     =?UTF-8?Q?Daniel_D=c3=adaz?= <daniel.diaz@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux- stable <stable@vger.kernel.org>
-Cc:     open list <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        ndesaulniers@google.com, rientjes@google.com,
-        Sumit Semwal <sumit.semwal@linaro.org>
-References: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
-Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230518054351.9626-1-vasant.hegde@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/22/23 20:23, Daniel Díaz wrote:
-> Hello!
+On Thu, May 18, 2023 at 05:43:51AM +0000, Vasant Hegde wrote:
+> IOMMU v2 page table supports 4 level (47 bit) or 5 level (56 bit) virtual
+> address space. Current code assumes it can support 64bit IOVA address
+> space. If IOVA allocator allocates virtual address > 47/56 bit (depending
+> on page table level) then it will do wrong mapping and cause invalid
+> translation.
 > 
-> Would the stable maintainers please consider backporting the following
-> commit to the 6.1? We are trying to build gki_defconfig (plus a few
-> extras) on Arm64 and test it under Qemu-arm64, but it fails to boot.
-> Bisection has pointed here.
+> Hence adjust aperture size to use max address supported by the page table.
+> 
+> Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
+> Cc: <Stable@vger.kernel.org>  # v6.0+
+> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+> ---
+>  drivers/iommu/amd/iommu.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 
-You mean the bisection was done to find the first "good" commit between 6.1
-and e.g. 6.3?
-
-As others said, this commit wasn't expected to be a fix to a known bug.
-Maybe you found one that we didn't know of, or it might be accidentaly
-masking some other bug.
-
-> We have verified that cherry-picking this patch on top of v6.1.29
-> applies cleanly and allows the kernel to boot.
-> 
-> commit 12d6c1d3a2ad0c199ec57c201cdc71e8e157a232
-> Author: Kees Cook <keescook@chromium.org>
-> Date:   Tue Oct 25 15:39:35 2022 -0700
-> 
->     skbuff: Proactively round up to kmalloc bucket size
-> 
->     Instead of discovering the kmalloc bucket size _after_ allocation, round
->     up proactively so the allocation is explicitly made for the full size,
->     allowing the compiler to correctly reason about the resulting size of
->     the buffer through the existing __alloc_size() hint.
-> 
->     This will allow for kernels built with CONFIG_UBSAN_BOUNDS or the
->     coming dynamic bounds checking under CONFIG_FORTIFY_SOURCE to gain
->     back the __alloc_size() hints that were temporarily reverted in commit
->     93dd04ab0b2b ("slab: remove __alloc_size attribute from
-> __kmalloc_track_caller")
-> 
->     Cc: "David S. Miller" <davem@davemloft.net>
->     Cc: Eric Dumazet <edumazet@google.com>
->     Cc: Jakub Kicinski <kuba@kernel.org>
->     Cc: Paolo Abeni <pabeni@redhat.com>
->     Cc: netdev@vger.kernel.org
->     Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Cc: Nick Desaulniers <ndesaulniers@google.com>
->     Cc: David Rientjes <rientjes@google.com>
->     Acked-by: Vlastimil Babka <vbabka@suse.cz>
->     Link: https://patchwork.kernel.org/project/netdevbpf/patch/20221021234713.you.031-kees@kernel.org/
->     Signed-off-by: Kees Cook <keescook@chromium.org>
->     Link: https://lore.kernel.org/r/20221025223811.up.360-kees@kernel.org
->     Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> 
-> 
-> Thanks and greetings!
-> 
-> Daniel Díaz
-> daniel.diaz@linaro.org
-
+Applied for 6.4, thanks Vasant.
