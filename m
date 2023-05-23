@@ -2,54 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B34870DDEB
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 15:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85BB470DD48
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 15:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235087AbjEWNuX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 09:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        id S233037AbjEWNOi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 09:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237003AbjEWNuV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 09:50:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A154126
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 06:50:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S232921AbjEWNOh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 09:14:37 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC05118;
+        Tue, 23 May 2023 06:14:36 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1955E62C11
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 13:50:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 77D66C433EF;
-        Tue, 23 May 2023 13:50:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684849819;
-        bh=sxTiIAaLgwzPwBjNdyaOUpP5ixPNGf4rUtL+qfK4kVM=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=COwpi6JNvRmoSTQfTcPoGrJTxp8KiWZs8YEiF440hFMoO0CbnFEVvde3qCeFSVboX
-         zrsHVqqAwtLerDdjq5M0Nezsv4Ir/JzWBfHMem7tmgtzD2dUbF/oIRsiIIL52d9XQu
-         jlvDr2Cy7uIUrVE+udBrrsMZslN7CpKx4JDt0ZLEYGpzMyZBVA8q2y4jWmiBwbEw2d
-         jbfgTRhvWZi/9fRNQLBzLX8XYVaHLb43iY1bvV/D6jWlE3IT7ysogyzPMMKNCvkPUr
-         SkFuRrK+ur/xmNcnwHYD5Ma7meZcGxOnHQKCGrriNHzYlOAZMvtgH8c4EDMIn8RDQH
-         93cqThO9Ek4PQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5DE1AE22B06;
-        Tue, 23 May 2023 13:50:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 0F5B4205BF;
+        Tue, 23 May 2023 13:14:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1684847675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Ny+bUixye0AimuZoDHDUfbMnbqu5VFeD5uG3RHHRsek=;
+        b=FDOVTqloCfcovwDADwOwUKaaLoaqpL9yF+1U/Yoc3QDKaGCBSOe6y7tzDlkhHMQmcKLWqi
+        oNKSceNrrrPgYVKUnowW5VbIrVYct5r4eCwnSzWhGSp+0GIs0IVpl8+i2aS4avWsMIrxDD
+        KMwB2OxRAogqBkUmytzG5gXD3jEn7DU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1684847675;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Ny+bUixye0AimuZoDHDUfbMnbqu5VFeD5uG3RHHRsek=;
+        b=Kmn/y1lSffuw1rLQBtVPyK/2mtbypjn2dB8/ZP5WyjW9wPeF8LWN/RMAmcqImxemGanbK9
+        9tYuMnk2i6q59ODQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A95C713A10;
+        Tue, 23 May 2023 13:14:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id QeRMKTq8bGQ7QAAAMHmgww
+        (envelope-from <jack@suse.cz>); Tue, 23 May 2023 13:14:34 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id 27665A075D; Tue, 23 May 2023 15:14:30 +0200 (CEST)
+From:   Jan Kara <jack@suse.cz>
+To:     Ted Tso <tytso@mit.edu>
+Cc:     <linux-ext4@vger.kernel.org>,
+        "Darrick J. Wong" <djwong@kernel.org>, Jan Kara <jack@suse.cz>,
+        stable@vger.kernel.org
+Subject: [PATCH] ext4: Fix possible corruption when moving a directory with RENAME_EXCHANGE
+Date:   Tue, 23 May 2023 15:14:08 +0200
+Message-Id: <20230523131408.13470-1-jack@suse.cz>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1996; i=jack@suse.cz; h=from:subject; bh=zWR7wi5AkSZmJ0EPVdDjSqaDjas6W9CeqOL+C2hKgcI=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBkbLwZYNC8LlDITBZQOef/xGv09xQgg3X7igF0Hc+f utnsdAmJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZGy8GQAKCRCcnaoHP2RA2WGkCA CSFMJt7lbr3mWnWqBh1gpR6aLMMnx+XPDmhFsAxVXyJWmoM0IntF+YFQrYMVZqbAps+Y6JxQ8gtI3+ wlgFC7JVkybXgWipGO43GJm74uuxlkkgKrUUEPmziur/CENAEHjb+4KCxwa94NWZn5Ag1PbehslFhq j0FqhtTjtKKeC38lvJskS61n6UsxPVI1VhcNxeKuk4eTJyqBL0gGKm2qYFCPeOJ6g5Fu/xZyQ+k/Ns lMAhixRg1vmkVIK63E6f1nE8DtbCtOq3BI3wSyTXW2xX/8lxKmaejnzvCung3xosz45zaSu+nL5MMG IbYlaIUCLdcqC5PXj7LnYvtdR7QOym
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168484981938.29246.10376121993213737020.git-patchwork-notify@kernel.org>
-Date:   Tue, 23 May 2023 13:50:19 +0000
-References: <20230522120820.1319391-1-nicolas.dichtel@6wind.com>
-In-Reply-To: <20230522120820.1319391-1-nicolas.dichtel@6wind.com>
-To:     Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        edumazet@google.com, dsahern@kernel.org, klassert@kernel.org,
-        netdev@vger.kernel.org, stable@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,29 +69,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Commit 0813299c586b ("ext4: Fix possible corruption when moving a
+directory") forgot that handling of RENAME_EXCHANGE renames needs the
+protection of inode lock when changing directory parents for moved
+directories. Add proper locking for that case as well.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+CC: stable@vger.kernel.org
+Fixes: 0813299c586b ("ext4: Fix possible corruption when moving a directory")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/ext4/namei.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-On Mon, 22 May 2023 14:08:20 +0200 you wrote:
-> With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
-> protocol field of the flow structure, build by raw_sendmsg() /
-> rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
-> lookup when some policies are defined with a protocol in the selector.
-> 
-> For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
-> specify the protocol. Just accept all values for IPPROTO_RAW socket.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
-    https://git.kernel.org/netdev/net/c/3632679d9e4f
-
-You are awesome, thank you!
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 45b579805c95..b91abea1c781 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -4083,10 +4083,25 @@ static int ext4_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	if (retval)
+ 		return retval;
+ 
++	/*
++	 * We need to protect against old.inode and new.inode directory getting
++	 * converted from inline directory format into a normal one. The lock
++	 * ordering does not matter here as old and new are guaranteed to be
++	 * incomparable in the directory hierarchy.
++	 */
++	if (S_ISDIR(old.inode->i_mode))
++		inode_lock(old.inode);
++	if (S_ISDIR(new.inode->i_mode))
++		inode_lock_nested(new.inode, I_MUTEX_NONDIR2);
++
+ 	old.bh = ext4_find_entry(old.dir, &old.dentry->d_name,
+ 				 &old.de, &old.inlined);
+-	if (IS_ERR(old.bh))
+-		return PTR_ERR(old.bh);
++	if (IS_ERR(old.bh)) {
++		retval = PTR_ERR(old.bh);
++		old.bh = NULL;
++		goto end_rename;
++	}
++
+ 	/*
+ 	 *  Check for inode number is _not_ due to possible IO errors.
+ 	 *  We might rmdir the source, keep it as pwd of some process
+@@ -4186,6 +4201,10 @@ static int ext4_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	retval = 0;
+ 
+ end_rename:
++	if (S_ISDIR(old.inode->i_mode))
++		inode_unlock(old.inode);
++	if (S_ISDIR(new.inode->i_mode))
++		inode_unlock(new.inode);
+ 	brelse(old.dir_bh);
+ 	brelse(new.dir_bh);
+ 	brelse(old.bh);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.35.3
 
