@@ -2,84 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B04E70CFEA
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 03:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7239C70CFFD
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 03:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234960AbjEWBA0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 21:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56680 "EHLO
+        id S235022AbjEWBCK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 21:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235382AbjEWA77 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 20:59:59 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1167C97
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:57:41 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-561ceb5b584so127125317b3.3
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 17:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684803415; x=1687395415;
-        h=content-transfer-encoding:cc:to:from:subject:references
-         :mime-version:message-id:in-reply-to:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=msTm3oYdeXIT0hSlyDwQQkvc5wY+Q8yhko13bmJatr8=;
-        b=EEb/mgB4RnLcb7kYYtvFUbvbqTKW1n5ekyK5GTahb2QLNMsv0vbm4M+OLN/8orwPGd
-         KYeEc+lXyPMjL+byzFGtBzfYQCrcM7CGq+sFUM9eAOQmqpjpFmiybg7qnGcOqqm1Tho3
-         rQZb7RFAPgRlw3B9v0H+YQlaZmWTuAOp8wjyPdbstgW/gpW6vsuW2lqttzo6L6DNc3Ic
-         VCCfsQy8RshIp+PpI0yzAnZ//jTDj5u04beGOiFbkh1E3W9EUTT77f2mT7JZYWy7acL1
-         SgfK3TLqfz6pmdk/sNOcjpYNZBvRhqFftfny3nV9sqmvaYtJ36bxXktMqASPolWttd1J
-         cjvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684803415; x=1687395415;
-        h=content-transfer-encoding:cc:to:from:subject:references
-         :mime-version:message-id:in-reply-to:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=msTm3oYdeXIT0hSlyDwQQkvc5wY+Q8yhko13bmJatr8=;
-        b=L24UBEPqkATL2Ucl38inuhzFzlByb9Y84+qZmYy0pZKQluKbqpcHIlVXRtrUd5/xQK
-         9G5aKuPl1Sfo2UCk6ItrRG+8samzFeLfMpuQ7iYgXka7ADNwzTaQO5njzM109BiA9f8y
-         rRnKTfv/ozi6XC5rZvzmCHGA8dDoIPofFDNF+GKn/7nzNp3I6G3ENSeku3q3yOWnbKH1
-         Ok1RJlRvRVbJcd7aXamY2URULHsPp6b0IGL+D48HKnnTq5Eyyl3WsCvdjgb7MomHFXIk
-         TRQ+1Nx9tmS8sHw7/4vY1g6ExqvnnhbazwRQBHkGoX8g+L7weYonHDjAiMs/OZvYjA7D
-         +Dbg==
-X-Gm-Message-State: AC+VfDz3pQPrco+pOudE5qWAl2oiiCbKPrzQGA1Q/sPjx0NSPHsxkJw+
-        kyCcFXIrewOww72B9nMBKhgDgfo=
-X-Google-Smtp-Source: ACHHUZ6kHjMTCHPdYe9Jo2a981mU1PnCLbxJJT05Im440Cs+gDDAq2rqaJTbIgDZ3JZeNb3/fmzcm8U=
-X-Received: from pcc-desktop.svl.corp.google.com ([2620:15c:2d3:205:3d33:90fe:6f02:afdd])
- (user=pcc job=sendgmr) by 2002:a25:10d4:0:b0:ba8:181b:2558 with SMTP id
- 203-20020a2510d4000000b00ba8181b2558mr7332911ybq.4.1684802597761; Mon, 22 May
- 2023 17:43:17 -0700 (PDT)
-Date:   Mon, 22 May 2023 17:43:08 -0700
-In-Reply-To: <20230523004312.1807357-1-pcc@google.com>
-Message-Id: <20230523004312.1807357-2-pcc@google.com>
-Mime-Version: 1.0
-References: <20230523004312.1807357-1-pcc@google.com>
-X-Mailer: git-send-email 2.40.1.698.g37aff9b760-goog
-Subject: [PATCH v4 1/3] mm: Call arch_swap_restore() from do_swap_page()
-From:   Peter Collingbourne <pcc@google.com>
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Peter Collingbourne <pcc@google.com>,
-        "=?UTF-8?q?Qun-wei=20Lin=20=28=E6=9E=97=E7=BE=A4=E5=B4=B4=29?=" 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        "=?UTF-8?q?Chinwen=20Chang=20=28=E5=BC=B5=E9=8C=A6=E6=96=87=29?=" 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        "=?UTF-8?q?Kuan-Ying=20Lee=20=28=E6=9D=8E=E5=86=A0=E7=A9=8E=29?=" 
-        <Kuan-Ying.Lee@mediatek.com>,
-        "=?UTF-8?q?Casper=20Li=20=28=E6=9D=8E=E4=B8=AD=E6=A6=AE=29?=" 
-        <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
-        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+        with ESMTP id S235074AbjEWBBm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 21:01:42 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5FF18F
+        for <stable@vger.kernel.org>; Mon, 22 May 2023 18:00:03 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 34N0wVrm004304
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 20:58:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1684803515; bh=ymmSexEkCD0tfWO58p9Lq+Z1QefxVwW0r/fcykmyXek=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=H6gAtjsQgMcmk5aJVQgnBL1f+4JZW6DpUL1rUsQDkrAdNIVeAfcrzUN58ULgYU9tn
+         h08rXJwLOsL3vIx4+1pew7qVUvsIWPzAaeKbosdSaUcaBKidY1OcamN6bGvIzijurp
+         dKTitmCa4ASwTyoBTimLoPPtafgVLlFDe2+y1Uy3au/xEseaPerlPI/1hPdb1qdJZW
+         O+/M/Upy2msYQ+LHvEPK8rheF8zVbJV1CaMj7G54cpEHVgL7ExzOp8imVsq5L2/YNn
+         xzJU5QsCk2/SbYoMJlyfFhaGozlJSb2N98LHueRHOKs9MfH0tjnM4aQGrIWDIkyHIn
+         INrBvKm62N/eA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id C2BCC15C052B; Mon, 22 May 2023 20:58:31 -0400 (EDT)
+Date:   Mon, 22 May 2023 20:58:31 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.1 000/292] 6.1.30-rc1 review
+Message-ID: <20230523005831.GE230989@mit.edu>
+References: <20230522190405.880733338@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,50 +57,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-the call to swap_free() before the call to set_pte_at(), which meant that
-the MTE tags could end up being freed before set_pte_at() had a chance
-to restore them. Fix it by adding a call to the arch_swap_restore() hook
-before the call to swap_free().
+On Mon, May 22, 2023 at 08:05:57PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.30 release.
+> There are 292 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61=
-020c510678965
-Cc: <stable@vger.kernel.org> # 6.1
-Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-Reported-by: Qun-wei Lin (=E6=9E=97=E7=BE=A4=E5=B4=B4) <Qun-wei.Lin@mediate=
-k.com>
-Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d43=
-4.camel@mediatek.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
----
-v2:
-- Call arch_swap_restore() directly instead of via arch_do_swap_page()
+Tested-by: Theodore Ts'o <tytso@mit.edu>
 
- mm/memory.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+No regressions found for ext4.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index f69fbc251198..fc25764016b3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		}
- 	}
-=20
-+	/*
-+	 * Some architectures may have to restore extra metadata to the page
-+	 * when reading from swap. This metadata may be indexed by swap entry
-+	 * so this must be called before swap_free().
-+	 */
-+	arch_swap_restore(entry, folio);
-+
- 	/*
- 	 * Remove the swap entry and conditionally try to free up the swapcache.
- 	 * We're already holding a reference on the page but haven't mapped it
---=20
-2.40.1.698.g37aff9b760-goog
+				- Ted
 
+TESTRUNID: ltm-20230522173053
+KERNEL:    kernel 6.1.30-rc1-xfstests-00293-ge00a3d96f756 #26 SMP PREEMPT_DYNAMIC Mon May 22 17:25:13 EDT 2023 x86_64
+CMDLINE:   full --kernel gs://gce-xfstests/kernel.deb
+CPUS:      2
+MEM:       7680
+
+ext4/4k: 530 tests, 32 skipped, 4755 seconds
+ext4/1k: 526 tests, 1 failures, 45 skipped, 5810 seconds
+  Flaky: generic/475: 80% (4/5)
+ext4/ext3: 522 tests, 1 failures, 121 skipped, 4805 seconds
+  Failures: generic/347
+ext4/encrypt: 508 tests, 3 failures, 139 skipped, 2729 seconds
+  Failures: generic/681 generic/682 generic/691
+ext4/nojournal: 525 tests, 3 failures, 100 skipped, 4619 seconds
+  Failures: ext4/301 ext4/304 generic/455
+ext4/ext3conv: 527 tests, 3 failures, 33 skipped, 4535 seconds
+  Failures: generic/347
+  Flaky: generic/475: 40% (2/5)   generic/645: 20% (1/5)
+ext4/adv: 527 tests, 4 failures, 40 skipped, 4432 seconds
+  Failures: generic/477
+  Flaky: generic/455: 60% (3/5)   generic/475: 80% (4/5)   
+    generic/482: 40% (2/5)
+ext4/dioread_nolock: 528 tests, 1 failures, 32 skipped, 5437 seconds
+  Flaky: generic/475: 20% (1/5)
+ext4/data_journal: 526 tests, 3 failures, 100 skipped, 4571 seconds
+  Failures: generic/231 generic/347 generic/455
+ext4/bigalloc_4k: 502 tests, 1 failures, 37 skipped, 4430 seconds
+  Flaky: generic/077: 20% (1/5)
+ext4/bigalloc_1k: 502 tests, 1 failures, 55 skipped, 5167 seconds
+  Failures: shared/298
+ext4/dax: 517 tests, 135 skipped, 2763 seconds
+Totals: 6324 tests, 869 skipped, 83 failures, 0 errors, 53773s
+
+FSTESTIMG: gce-xfstests/xfstests-amd64-202303031351
+FSTESTPRJ: gce-xfstests
+FSTESTVER: blktests 676d42c (Thu, 2 Mar 2023 15:25:44 +0900)
+FSTESTVER: fio  fio-3.31 (Tue, 9 Aug 2022 14:41:25 -0600)
+FSTESTVER: fsverity v1.5-6-g5d6f7c4 (Mon, 30 Jan 2023 23:22:45 -0800)
+FSTESTVER: ima-evm-utils v1.3.2 (Wed, 28 Oct 2020 13:18:08 -0400)
+FSTESTVER: nvme-cli v1.16 (Thu, 11 Nov 2021 13:09:06 -0800)
+FSTESTVER: quota  v4.05-53-gd90b7d5 (Tue, 6 Dec 2022 12:59:03 +0100)
+FSTESTVER: util-linux v2.38.1 (Thu, 4 Aug 2022 11:06:21 +0200)
+FSTESTVER: xfsprogs v6.1.1 (Fri, 13 Jan 2023 19:06:37 +0100)
+FSTESTVER: xfstests-bld 2e60cef3 (Thu, 23 Feb 2023 15:02:58 -0500)
+FSTESTVER: xfstests v2023.02.26-8-g821ef4889 (Thu, 2 Mar 2023 10:23:51 -0500)
+FSTESTVER: zz_build-distro bullseye
+FSTESTSET: -g auto
+FSTESTOPT: aex
