@@ -2,112 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3234370D294
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 05:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B89A70D2A4
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 05:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232027AbjEWDzb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 22 May 2023 23:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48376 "EHLO
+        id S234548AbjEWD6k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 22 May 2023 23:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjEWDz2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 23:55:28 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5624890;
-        Mon, 22 May 2023 20:55:27 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-64d3bc502ddso4525039b3a.0;
-        Mon, 22 May 2023 20:55:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684814127; x=1687406127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VYUV13lroZp21dQZ+l6oL2IK7f4ffhF2cxU5Id8N1nc=;
-        b=TWA2auq8EoZHsc0IWEG+GTa1YYtelvjAkAyS75mXLBeO6ThewGIi+SOWxBdqV/g+a+
-         kBeNBPR3ifUwvsqGOFPmxlmIb0uEyx0MiDBxm1uXubJ/ODqi5PqEYv8VmG7psMcG0Xyu
-         WNfyfql0sQ4eajwlM9CF3pUNVj7LWRARg6DvSZsJX5goOwOp4HAykN3gQ4TYHARqViOE
-         SwkTgZDa4r6f7Nfas2a32nbQCLOrLf5nRRVRrK/4RCPzWrG0RyET2bnMDuDyeMbaXTzC
-         vj4qFE+i+mnyQSE9r66CQU0l+S6fozfPl+lvy2I8LotwctT5V14TCLk9VtT3hN6JiZMb
-         VnVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684814127; x=1687406127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VYUV13lroZp21dQZ+l6oL2IK7f4ffhF2cxU5Id8N1nc=;
-        b=JsFMHdAoRRN3JyU5JHXvllUXDyX417IlHi3FIamKVyESg7GDkjpRtn2u1bL9o2PIGj
-         XiGIiN8vdmTON3c+9C2qs3JYcdH9KDu89YXzbgQTBCRW70+wIbjnHjP6XSTVk2i89Wco
-         WrBywsqLcytv7Jz68AOHsYLUgLerDzzO7KCLYV+4iuGR3R52tcElP5QnjuxypQUpiw5l
-         MEFljtUmM0Bvxdq9qEOGXQEyUrtCrTHbxbCOI5B7H3zIg6GmlJo9LKCq1digSoKthgq3
-         X9/t/5aMjj6vnjE4Rg+5SzMoFJgTciJSc6wkMeBBg6AsplJ09qOlygox1F4xVaa7DtTJ
-         1brA==
-X-Gm-Message-State: AC+VfDxVuwxjSqLP6lJiSyw2Xvt18yl1Y9Zhm+cU4tAi6OZC/sa0bS8y
-        ifwCccNS8IhX2gaduI2JtgU=
-X-Google-Smtp-Source: ACHHUZ4yWm+Gds5T21fDkBCEa4+bbSuphFCPX5GkZtzDfhgq19xGuzk5abEXhDaLZTfchNY0HtwD4Q==
-X-Received: by 2002:a05:6a20:9388:b0:109:2f11:8b77 with SMTP id x8-20020a056a20938800b001092f118b77mr14627725pzh.1.1684814126812;
-        Mon, 22 May 2023 20:55:26 -0700 (PDT)
-Received: from debian.me (subs32-116-206-28-32.three.co.id. [116.206.28.32])
-        by smtp.gmail.com with ESMTPSA id f17-20020a170902f39100b001a6b2813c13sm5617664ple.172.2023.05.22.20.55.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 May 2023 20:55:26 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 716681069AF; Tue, 23 May 2023 10:55:23 +0700 (WIB)
-Date:   Tue, 23 May 2023 10:55:23 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 000/364] 6.3.4-rc1 review
-Message-ID: <ZGw5K+jBGakV3drJ@debian.me>
-References: <20230522190412.801391872@linuxfoundation.org>
+        with ESMTP id S230345AbjEWD6b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 22 May 2023 23:58:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59780E9;
+        Mon, 22 May 2023 20:58:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAC14624BC;
+        Tue, 23 May 2023 03:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA9FC433D2;
+        Tue, 23 May 2023 03:58:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684814309;
+        bh=FniiWmm9rXXh4clLmDfg99004+nvesmQImAp7CGl4fs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mS8d4fDz0lmWfjIN8n86vCloGS4zt1Z7Wi+oX4BuPwhUxkw4bckWr8fieU7fPHnDL
+         YheukgIxVrsA02N7vw4DScURHobA/cGDMMEQ9sTIdCAmyvT52kE6zxmnujG6vFMLVI
+         II2qfFR8mU2yYSOzCEY4vaik90jjmpYmv8b+Lt1IHzNqVlLJCKUKjNrtnOIqSZEq1G
+         ZT7J8RK9KIjPE+RpJ72RotUjTJppcBOFuyMbgYGLTagXr+tZeL7ICrCok0VOHiDWp3
+         wJqTX+BsX8oTATY1/fCCcB3E0Mjln4o2LXh9EVTfVQN9rshbfa0mDfW138w0yYrKGx
+         H6wUMZ00IaDWg==
+From:   Chao Yu <chao@kernel.org>
+To:     jaegeuk@kernel.org
+Cc:     linux-f2fs-devel@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, Chao Yu <chao@kernel.org>,
+        stable@vger.kernel.org,
+        syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
+Subject: [PATCH] f2fs: don't reset unchangable mount option in f2fs_remount()
+Date:   Tue, 23 May 2023 11:58:22 +0800
+Message-Id: <20230523035822.578123-1-chao@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gXelIhH+DZCq6xQ9"
-Content-Disposition: inline
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+syzbot reports a bug as below:
 
---gXelIhH+DZCq6xQ9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] PREEMPT SMP KASAN
+RIP: 0010:__lock_acquire+0x69/0x2000 kernel/locking/lockdep.c:4942
+Call Trace:
+ lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5691
+ __raw_write_lock include/linux/rwlock_api_smp.h:209 [inline]
+ _raw_write_lock+0x2e/0x40 kernel/locking/spinlock.c:300
+ __drop_extent_tree+0x3ac/0x660 fs/f2fs/extent_cache.c:1100
+ f2fs_drop_extent_tree+0x17/0x30 fs/f2fs/extent_cache.c:1116
+ f2fs_insert_range+0x2d5/0x3c0 fs/f2fs/file.c:1664
+ f2fs_fallocate+0x4e4/0x6d0 fs/f2fs/file.c:1838
+ vfs_fallocate+0x54b/0x6b0 fs/open.c:324
+ ksys_fallocate fs/open.c:347 [inline]
+ __do_sys_fallocate fs/open.c:355 [inline]
+ __se_sys_fallocate fs/open.c:353 [inline]
+ __x64_sys_fallocate+0xbd/0x100 fs/open.c:353
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-On Mon, May 22, 2023 at 08:05:05PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.4 release.
-> There are 364 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+The root cause is race condition as below:
+- since it tries to remount rw filesystem, so that do_remount won't
+call sb_prepare_remount_readonly to block fallocate, there may be race
+condition in between remount and fallocate.
+- in f2fs_remount(), default_options() will reset mount option to default
+one, and then update it based on result of parse_options(), so there is
+a hole which race condition can happen.
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+Thread A			Thread B
+- f2fs_fill_super
+ - parse_options
+  - clear_opt(READ_EXTENT_CACHE)
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+- f2fs_remount
+ - default_options
+  - set_opt(READ_EXTENT_CACHE)
+				- f2fs_fallocate
+				 - f2fs_insert_range
+				  - f2fs_drop_extent_tree
+				   - __drop_extent_tree
+				    - __may_extent_tree
+				     - test_opt(READ_EXTENT_CACHE) return true
+				    - write_lock(&et->lock) access NULL pointer
+ - parse_options
+  - clear_opt(READ_EXTENT_CACHE)
 
---=20
-An old man doll... just what I always wanted! - Clara
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/20230522124203.3838360-1-chao@kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+---
+ fs/f2fs/super.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
---gXelIhH+DZCq6xQ9
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index aeed413cf5cd..96bf7e727175 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2097,9 +2097,22 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
+ 	return 0;
+ }
+ 
+-static void default_options(struct f2fs_sb_info *sbi)
++static void default_options(struct f2fs_sb_info *sbi, bool remount)
+ {
+ 	/* init some FS parameters */
++	if (!remount) {
++		set_opt(sbi, READ_EXTENT_CACHE);
++		clear_opt(sbi, DISABLE_CHECKPOINT);
++
++		if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
++			set_opt(sbi, DISCARD);
++
++		if (f2fs_sb_has_blkzoned(sbi))
++			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
++		else
++			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
++	}
++
+ 	if (f2fs_sb_has_readonly(sbi))
+ 		F2FS_OPTION(sbi).active_logs = NR_CURSEG_RO_TYPE;
+ 	else
+@@ -2129,23 +2142,16 @@ static void default_options(struct f2fs_sb_info *sbi)
+ 	set_opt(sbi, INLINE_XATTR);
+ 	set_opt(sbi, INLINE_DATA);
+ 	set_opt(sbi, INLINE_DENTRY);
+-	set_opt(sbi, READ_EXTENT_CACHE);
+ 	set_opt(sbi, NOHEAP);
+-	clear_opt(sbi, DISABLE_CHECKPOINT);
+ 	set_opt(sbi, MERGE_CHECKPOINT);
+ 	F2FS_OPTION(sbi).unusable_cap = 0;
+ 	sbi->sb->s_flags |= SB_LAZYTIME;
+ 	if (!f2fs_is_readonly(sbi))
+ 		set_opt(sbi, FLUSH_MERGE);
+-	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
+-		set_opt(sbi, DISCARD);
+-	if (f2fs_sb_has_blkzoned(sbi)) {
++	if (f2fs_sb_has_blkzoned(sbi))
+ 		F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
+-		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
+-	} else {
++	else
+ 		F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
+-		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
+-	}
+ 
+ #ifdef CONFIG_F2FS_FS_XATTR
+ 	set_opt(sbi, XATTR_USER);
+@@ -2317,7 +2323,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+ 			clear_sbi_flag(sbi, SBI_NEED_SB_WRITE);
+ 	}
+ 
+-	default_options(sbi);
++	default_options(sbi, true);
+ 
+ 	/* parse mount options */
+ 	err = parse_options(sb, data, true);
+@@ -4377,7 +4383,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 		sbi->s_chksum_seed = f2fs_chksum(sbi, ~0, raw_super->uuid,
+ 						sizeof(raw_super->uuid));
+ 
+-	default_options(sbi);
++	default_options(sbi, false);
+ 	/* parse mount options */
+ 	options = kstrdup((const char *)data, GFP_KERNEL);
+ 	if (data && !options) {
+-- 
+2.40.1
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZGw5JwAKCRD2uYlJVVFO
-o88JAQDO6fCyEAOEgzx/1/IP3dyUgYGqaGkw6cH/IRxzCDDImAD+NpaBg/sZoXc2
-U5OTNIsoOGL2huE/a7TdC25I8KKisgg=
-=5vo3
------END PGP SIGNATURE-----
-
---gXelIhH+DZCq6xQ9--
