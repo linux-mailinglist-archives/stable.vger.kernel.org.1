@@ -2,112 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E643670DADE
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 12:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7184570DAF5
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 12:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236646AbjEWKvy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 06:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36258 "EHLO
+        id S236159AbjEWKzH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 06:55:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230520AbjEWKvk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 06:51:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E09C6E43;
-        Tue, 23 May 2023 03:49:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S236024AbjEWKzG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 06:55:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4D111F
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 03:54:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684839261;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=BJTjmH1bvSQiv1dY4ZXd2PGQrsClXzAj4WHKRaeS0KE=;
+        b=BdCDhjLj/2EeiklGhu3EPPiE28/XrzqcEx1BBa5a07b2YS+MJon32M63WEgrdB7OqIR2xP
+        qoRtJjT3oi/OTORMO1FCEWpR94nQQct+jpQi+bsz+V3LAkDUHjP8gRpP+ZbfdzBGs826+3
+        DQDcSItABXF67eVGc3MWNPN9cUyGPDc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-671-IsNu_UZEOk67pwoPBqva1w-1; Tue, 23 May 2023 06:54:19 -0400
+X-MC-Unique: IsNu_UZEOk67pwoPBqva1w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 744ED61C63;
-        Tue, 23 May 2023 10:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD2DC433D2;
-        Tue, 23 May 2023 10:49:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684838984;
-        bh=ZG2CLRp9/Vm9JkeKzPKfnQCU9uZlSunAzgrrZSzYQxs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Qr9Jhlurzn9rvXMfUKy34vC9G4ad4qTbUmMQwI4yZaY7jsMPcUbKlPUcZHyMYZD0x
-         //dy1d+B21cIr6UHeE/cIt+9Ucqi+ucJHzQ/j20Ehmv7gewdb/ET1W0WqGMrCAmpEq
-         hWvVVuej26j+f1ttpngy8lycVOcpxlf468YZx46cXYwOWNQZxCwH+b8rP5VOQbNODl
-         seyCYRaoBR1nZQE3cu+kIbAyqlrVWEnp5jTZutEHdyhmQSe7cJtm2g044eed8uP6Ez
-         VmHROZYQl6SB+lCvsqHMSyeljVTToORrPrZ7fGcFYJD/IsCD5qNMXLbThNgXs5ObyL
-         rFrJ8Zp3bdgfg==
-Date:   Tue, 23 May 2023 11:49:38 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: arm64: fp-stress: BUG: KFENCE: memory corruption in
- fpsimd_release_task
-Message-ID: <a174b99c-3b60-410d-b6b3-67e8e792354c@sirena.org.uk>
-References: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
- <20230516134447.GB30894@willie-the-truck>
- <20230522164117.GA6342@willie-the-truck>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2009629AA382;
+        Tue, 23 May 2023 10:54:19 +0000 (UTC)
+Received: from dba62.ml3.eng.bos.redhat.com (dba62.ml3.eng.bos.redhat.com [10.19.176.128])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B802D492B0A;
+        Tue, 23 May 2023 10:54:18 +0000 (UTC)
+From:   David Arcari <darcari@redhat.com>
+To:     platform-driver-x86@vger.kernel.org
+Cc:     David Arcari <darcari@redhat.com>,
+        Jithu Joseph <jithu.joseph@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH] platform/x86/intel/ifs: Annotate work queue on stack so object debug does not complain
+Date:   Tue, 23 May 2023 06:54:00 -0400
+Message-Id: <20230523105400.674152-1-darcari@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0WyD5qb6h9pTGLPu"
-Content-Disposition: inline
-In-Reply-To: <20230522164117.GA6342@willie-the-truck>
-X-Cookie: Beware of low-flying butterflies.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Object Debug results in the following warning while attempting to load
+ifs firmware:
 
---0WyD5qb6h9pTGLPu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[  220.007422] ODEBUG: object 000000003bf952db is on stack 00000000e843994b, but NOT annotated.
+[  220.007459] ------------[ cut here ]------------
+[  220.007461] WARNING: CPU: 0 PID: 11774 at lib/debugobjects.c:548 __debug_object_init.cold+0x22e/0x2d5
+[  220.137476] RIP: 0010:__debug_object_init.cold+0x22e/0x2d5
+[  220.254774] Call Trace:
+[  220.257641]  <TASK>
+[  220.265606]  scan_chunks_sanity_check+0x368/0x5f0 [intel_ifs]
+[  220.288292]  ifs_load_firmware+0x2a3/0x400 [intel_ifs]
+[  220.332793]  current_batch_store+0xea/0x160 [intel_ifs]
+[  220.357947]  kernfs_fop_write_iter+0x355/0x530
+[  220.363048]  new_sync_write+0x28e/0x4a0
+[  220.381226]  vfs_write+0x62a/0x920
+[  220.385160]  ksys_write+0xf9/0x1d0
+[  220.399421]  do_syscall_64+0x59/0x90
+[  220.440635]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[  220.566845] ---[ end trace 3a01b299db142b41 ]---
 
-On Mon, May 22, 2023 at 05:41:17PM +0100, Will Deacon wrote:
-> On Tue, May 16, 2023 at 02:44:49PM +0100, Will Deacon wrote:
-> > On Tue, May 16, 2023 at 11:58:40AM +0530, Naresh Kamboju wrote:
+Correct this by calling INIT_WORK_ONSTACK instead of INIT_WORK.
 
-> > > Following kernel BUG noticed while running selftests arm64 fp-stress
-> > > running stable rc kernel versions 6.1.29-rc1 and 6.3.3-rc1.
+Fixes: 684ec215706d ("platform/x86/intel/ifs: Authenticate and copy to secured memory")
 
-> > Is there a known-good build so that we could attempt a bisection?
+Signed-off-by: David Arcari <darcari@redhat.com>
+Cc: Jithu Joseph <jithu.joseph@intel.com>
+Cc: Ashok Raj <ashok.raj@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Mark Gross <markgross@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+ drivers/platform/x86/intel/ifs/load.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> FWIW, I've been trying (and failing) all day to reproduce this in QEMU.
-> I matched the same VL configuration as you have in the fastmodel and
-> tried enabling additional memory debugging options too, but I'm yet to
-> see a kfence splat (or any other splat fwiw).
+diff --git a/drivers/platform/x86/intel/ifs/load.c b/drivers/platform/x86/intel/ifs/load.c
+index 61dffb4c8a1d..e6ae8265f3a3 100644
+--- a/drivers/platform/x86/intel/ifs/load.c
++++ b/drivers/platform/x86/intel/ifs/load.c
+@@ -208,7 +208,7 @@ static int scan_chunks_sanity_check(struct device *dev)
+ 			continue;
+ 		reinit_completion(&ifs_done);
+ 		local_work.dev = dev;
+-		INIT_WORK(&local_work.w, copy_hashes_authenticate_chunks);
++		INIT_WORK_ONSTACK(&local_work.w, copy_hashes_authenticate_chunks);
+ 		schedule_work_on(cpu, &local_work.w);
+ 		wait_for_completion(&ifs_done);
+ 		if (ifsd->loading_error) {
+-- 
+2.27.0
 
-> How often do you see this?
-
-As I said in another mail I've also been unable to reproduce this.  FWIW
-I *suspect* that it might need to be run in the context of a full
-kselftest run to manifest rather than just running fp-stress in
-isolation, that's mostly a guess but given that the kfence trap appeared
-to be happening on free at a point where the test program shouldn't be
-exiting any tasks and should not be changing vector lengths on tasks
-that have used either of the vector extensions.
-
---0WyD5qb6h9pTGLPu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRsmkIACgkQJNaLcl1U
-h9BhWAgAgmrfoTxlzsDDX+RDl6E01tBdBvmcEH5N6AgAWSJaMNjla/SYW31Pgos0
-ArDjoqjfyIskP+UZ6T5UXrKxOe1rSaN6fwOovNCiyE+FIZ28Ml6cfp96YM/ElXGH
-DrjHKAelYRTaZndLBq5aNmDGO1A6Fz2w4t0Y/5vUnF6X4dWKo/8udixbbMNPe551
-NWehZoHz9eFNFPop3UDJKQPjZDDA0/LP6yBoAhsSN2ySzt1SuQBrO+NxpHqOA3ZD
-KM5BVVJq51ZQ9FNR8TbylrB7lWkHoR9fDXnM6ukbCNy+giOa1lvDJyDHxMiKxQ6b
-hBi7UdqunNL69HmnoS8jKoS0r0CBEQ==
-=RfVs
------END PGP SIGNATURE-----
-
---0WyD5qb6h9pTGLPu--
