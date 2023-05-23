@@ -2,46 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A65DA70D3E9
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 08:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65EF970D3FF
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 08:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235019AbjEWGXm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 02:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33736 "EHLO
+        id S234429AbjEWG2n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 02:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230350AbjEWGXm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 02:23:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CFC109
-        for <stable@vger.kernel.org>; Mon, 22 May 2023 23:23:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S235231AbjEWG2U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 02:28:20 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADF5119;
+        Mon, 22 May 2023 23:28:18 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D914462F6F
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 06:23:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD95C433EF;
-        Tue, 23 May 2023 06:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684823020;
-        bh=qCTlyH5laWe7l417TpY5BxfzIuBln0VIZOfKx7GQa2s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0MLLcDuKi66wqtLJGX3o9wXQLjD+DqDD0+HTxDxpMDjx+GCXPpeWtBZDOb84izPot
-         RirNy0KPp4e/KIclP+McknpESaBCR0rcKTLhYITk/YIgFGuvo5qfY8YVkQ6g/Ws5v/
-         6KI2WxaPMwOH+ymAfd9kCJilzgzGfSKVs4cMaLfE=
-Date:   Tue, 23 May 2023 07:23:37 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Theodore Ts'o <tytso@mit.edu>
-Cc:     stable@vger.kernel.org
-Subject: Re: Was there a call for 5.10.181-rc1 review?
-Message-ID: <2023052348-reformer-hatchback-7299@gregkh>
-References: <20230522190354.935300867@linuxfoundation.org>
- <20230523022333.GG230989@mit.edu>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id F1F9C1FF65;
+        Tue, 23 May 2023 06:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1684823297; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ovwyqxaxul6Jnout/fYdCqVEyw+eZaKVXfjLn1UYFNc=;
+        b=o35r5KkS78FAKg6uvqfrWx67mDl0FiQYw2dIOG9NHZV5C8wey/zXZMXT5lCjRT+R6eZ9RU
+        Hor8ambAavzb/XZSJYbkRAEfQzCO04JD56eEgVtCWTfzVhXAiwPnlW9KQQHaCfJjhu0wXq
+        X6M3sUChkpE59yaoQL0A+kof+t0j6fw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1684823297;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ovwyqxaxul6Jnout/fYdCqVEyw+eZaKVXfjLn1UYFNc=;
+        b=9UGKksD10AY+0STy023y4uNjxIp8Ea6Gkq3nQnB+Srp4ZNWNWjgNhICxrwLEt+xMQp74rn
+        O+xbSS3Zj4jCpmDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C00F813A10;
+        Tue, 23 May 2023 06:28:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id GRE4LgBdbGTkCAAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Tue, 23 May 2023 06:28:16 +0000
+Message-ID: <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz>
+Date:   Tue, 23 May 2023 08:28:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230523022333.GG230989@mit.edu>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Stable backport request: skbuff: Proactively round up to kmalloc
+ bucket size
+To:     =?UTF-8?Q?Daniel_D=c3=adaz?= <daniel.diaz@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux- stable <stable@vger.kernel.org>
+Cc:     open list <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        ndesaulniers@google.com, rientjes@google.com,
+        Sumit Semwal <sumit.semwal@linaro.org>
+References: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
+Content-Language: en-US
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,16 +84,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 22, 2023 at 10:23:33PM -0400, Theodore Ts'o wrote:
-> I can't found a call for reviewing 5.10.181-rc1, either in my inbox or
-> on lore.kernel.org.
+On 5/22/23 20:23, Daniel Díaz wrote:
+> Hello!
 > 
-> There does to be a 5.10.181-rc1 in stable-rc/linux-5.10.y, so did it
-> not get e-mailed out somehow?  Or did I somehow miss it?
+> Would the stable maintainers please consider backporting the following
+> commit to the 6.1? We are trying to build gki_defconfig (plus a few
+> extras) on Arm64 and test it under Qemu-arm64, but it fails to boot.
+> Bisection has pointed here.
 
-I did not release it, sorry, only 5.15.y and newer for this round.
-5.10.181-rc will probably happen later this week or next.
+You mean the bisection was done to find the first "good" commit between 6.1
+and e.g. 6.3?
 
-thanks,
+As others said, this commit wasn't expected to be a fix to a known bug.
+Maybe you found one that we didn't know of, or it might be accidentaly
+masking some other bug.
 
-greg k-h
+> We have verified that cherry-picking this patch on top of v6.1.29
+> applies cleanly and allows the kernel to boot.
+> 
+> commit 12d6c1d3a2ad0c199ec57c201cdc71e8e157a232
+> Author: Kees Cook <keescook@chromium.org>
+> Date:   Tue Oct 25 15:39:35 2022 -0700
+> 
+>     skbuff: Proactively round up to kmalloc bucket size
+> 
+>     Instead of discovering the kmalloc bucket size _after_ allocation, round
+>     up proactively so the allocation is explicitly made for the full size,
+>     allowing the compiler to correctly reason about the resulting size of
+>     the buffer through the existing __alloc_size() hint.
+> 
+>     This will allow for kernels built with CONFIG_UBSAN_BOUNDS or the
+>     coming dynamic bounds checking under CONFIG_FORTIFY_SOURCE to gain
+>     back the __alloc_size() hints that were temporarily reverted in commit
+>     93dd04ab0b2b ("slab: remove __alloc_size attribute from
+> __kmalloc_track_caller")
+> 
+>     Cc: "David S. Miller" <davem@davemloft.net>
+>     Cc: Eric Dumazet <edumazet@google.com>
+>     Cc: Jakub Kicinski <kuba@kernel.org>
+>     Cc: Paolo Abeni <pabeni@redhat.com>
+>     Cc: netdev@vger.kernel.org
+>     Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Cc: Nick Desaulniers <ndesaulniers@google.com>
+>     Cc: David Rientjes <rientjes@google.com>
+>     Acked-by: Vlastimil Babka <vbabka@suse.cz>
+>     Link: https://patchwork.kernel.org/project/netdevbpf/patch/20221021234713.you.031-kees@kernel.org/
+>     Signed-off-by: Kees Cook <keescook@chromium.org>
+>     Link: https://lore.kernel.org/r/20221025223811.up.360-kees@kernel.org
+>     Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> 
+> 
+> Thanks and greetings!
+> 
+> Daniel Díaz
+> daniel.diaz@linaro.org
+
