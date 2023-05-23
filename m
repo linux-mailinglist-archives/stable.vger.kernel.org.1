@@ -2,86 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36DF770E307
-	for <lists+stable@lfdr.de>; Tue, 23 May 2023 19:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032F370E33E
+	for <lists+stable@lfdr.de>; Tue, 23 May 2023 19:46:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237420AbjEWRKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 13:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44950 "EHLO
+        id S238054AbjEWROI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 13:14:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjEWRKR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 13:10:17 -0400
-Received: from smtp-fw-9103.amazon.com (smtp-fw-9103.amazon.com [207.171.188.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C825F90;
-        Tue, 23 May 2023 10:10:16 -0700 (PDT)
+        with ESMTP id S237774AbjEWROD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 13:14:03 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6B9129
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 10:14:00 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-760dff4b701so167339f.0
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 10:14:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1684861816; x=1716397816;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=r4qQMfaI1qjgbzjXoDIxbJ+UkErC3soNDbr3LWqBikA=;
-  b=OslMN7z9LMJbLLsTKLqd3nnL0JzTLJVTtj66Mn9gUVb99fm2bh/7M913
-   X5zUSYIARXcaTifmMc6FUyEJ8SiprZDB9DxIBDYsOpS5h37SitdnGd+PA
-   m2xFWCOP/M9n20WkcD2HwF68uYWxWLIQ0Yl4tvXavBMBXNU9Upe41JM7l
-   Y=;
-X-IronPort-AV: E=Sophos;i="6.00,186,1681171200"; 
-   d="scan'208";a="1133087791"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-9103.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2023 17:09:56 +0000
-Received: from EX19D011EUA001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com (Postfix) with ESMTPS id CB1D240D4D;
-        Tue, 23 May 2023 17:09:55 +0000 (UTC)
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19D011EUA001.ant.amazon.com (10.252.50.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 23 May 2023 17:09:51 +0000
-Received: from uc3ecf78c6baf56.ant.amazon.com (10.187.170.24) by
- EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 23 May 2023 17:09:48 +0000
-From:   Andrew Paniakin <apanyaki@amazon.com>
-To:     Pablo Neira Ayuso <pablo@netfilter.org>
-CC:     Andrew Paniakin <apanyaki@amazon.com>, <stable@vger.kernel.org>,
-        <luizcap@amazon.com>, <benh@amazon.com>,
-        Florian Westphal <fw@strlen.de>,
-        Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
-        "David S. Miller" <davem@davemloft.net>,
-        <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 4.14] netfilter: nf_tables: fix register ordering
-Date:   Tue, 23 May 2023 10:09:35 -0700
-Message-ID: <20230523170935.2288354-1-apanyaki@amazon.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <ZGx9JsCjvoDNRTBy@calendula>
-References: 
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1684862039; x=1687454039;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5k88qCVwcZa1f8fNaWmQwZNtP2UmSyRYMW1h4mnpwcI=;
+        b=rhdAfeRDbJmV0coNwwtLAWZdVXOofT1UdxJjGXcSRViQbRVuZ8FnUMRC76WPG/9T5Q
+         nVoomGNwKzzqo8FayjjsRBuNoPcfRmAuhz9DpozcRaL4sqLVc5TcNW7E6FJCho7w17rM
+         I50v4Q7AMpW+5sf5n0sTtGsA8qhmkUk230SGRSovk7kxhOhSws9/XO15Uy80VvpGNBz8
+         66FB1k+fZaAUTDB0E/ICHc05RIIbAmUh9ASqfD52HFxrtIbK8fROTXdNDEw3O8osrpJm
+         LlI6vzwTjqx6ZIozjW/QP+od+Wd7ybXAhUq+vJy69TttrXxTW2lr9DsK+rwsV5uGvMQl
+         ZO0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684862039; x=1687454039;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5k88qCVwcZa1f8fNaWmQwZNtP2UmSyRYMW1h4mnpwcI=;
+        b=hvW/Rw7cCEGwS2J2MsUWtnEadXtMfD7TTDU888J6+j21wV5VOVEiph7YeCJ0LuV3qY
+         Gisvjrijfhpv9vup0bkk8ply1IPXLlyD3bXo+lQiLgTCXlVXhwqffw5ch2PKFEWusSG0
+         Fknj9gyuSvnkQziCP+vmr32bNCa19vXWxFKTP9Yf+L5R0Rt2OHLQNbEMAcsCmO9crfv5
+         Vo94aDGv3P/JL84m3z1FFLWpKygpWaDa8YQivCc2GT+u0llrzQwiJPKTyDZ9gspEqR3c
+         IHKmL7jK/OWhgNpthqYPfzzpq3NiCd6K2W3naApzanusATtnjuJrSFF0lPEUo88YU7aZ
+         miaw==
+X-Gm-Message-State: AC+VfDwSomqwVxcEm84ZBnj4H+8fVx5DxAWetrKGiAGFEzE6miZNkhZU
+        DWw6Nkpn+g1k6G5fxL/UwPYgVQ==
+X-Google-Smtp-Source: ACHHUZ5lI6ZJzmHP2RmyEmRkLyYJRDQQXAZ4tqrkSxq5mRlghLrc9YkfThO9dMuwV0hk2urNFdCKog==
+X-Received: by 2002:a6b:b20f:0:b0:774:8351:89ac with SMTP id b15-20020a6bb20f000000b00774835189acmr1406141iof.1.1684862039717;
+        Tue, 23 May 2023 10:13:59 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id u7-20020a02aa87000000b00411a1373aa5sm2524580jai.155.2023.05.23.10.13.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 May 2023 10:13:59 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     hch@lst.de, Anuj Gupta <anuj20.g@samsung.com>
+Cc:     linux-block@vger.kernel.org, gost.dev@samsung.com,
+        anuj1072538@gmail.com, joshiiitr@gmail.com, stable@vger.kernel.org,
+        Kanchan Joshi <joshi.k@samsung.com>
+In-Reply-To: <20230523111709.145676-1-anuj20.g@samsung.com>
+References: <CGME20230523112014epcas5p267f30562f3f2e3c6d58fbb76c0084e5b@epcas5p2.samsung.com>
+ <20230523111709.145676-1-anuj20.g@samsung.com>
+Subject: Re: [PATCH] block: fix bio-cache for passthru IO
+Message-Id: <168486203851.398377.17993706922201051962.b4-ty@kernel.dk>
+Date:   Tue, 23 May 2023 11:13:58 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.187.170.24]
-X-ClientProxiedBy: EX19D037UWC003.ant.amazon.com (10.13.139.231) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-00303
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 23 May 2023 10:45:26 +0200 Pablo Neira Ayuso <pablo@netfilter.org> wrote:
 
-> On Mon, May 22, 2023 at 07:59:41PM -0700, Andrew Paniakin wrote:
-> > From: Florian Westphal <fw@strlen.de>
-> >
-> > commit d209df3e7f7002d9099fdb0f6df0f972b4386a63 upstream
-> >
+On Tue, 23 May 2023 16:47:09 +0530, Anuj Gupta wrote:
+> commit <8af870aa5b847> ("block: enable bio caching use for passthru IO")
+> introduced bio-cache for passthru IO. In case when nr_vecs are greater
+> than BIO_INLINE_VECS, bio and bvecs are allocated from mempool (instead
+> of percpu cache) and REQ_ALLOC_CACHE is cleared. This causes the side
+> effect of not freeing bio/bvecs into mempool on completion.
 > 
-> I have to send pending batch of updates for -stable 4.14.
+> This patch lets the passthru IO fallback to allocation using bio_kmalloc
+> when nr_vecs are greater than BIO_INLINE_VECS. The corresponding bio
+> is freed during call to blk_mq_map_bio_put during completion.
 > 
-> I take this patch and I will pass it on -stable maintainers.
-> 
-> Thanks.
-> 
-Sure, thanks for the help!
+> [...]
+
+Applied, thanks!
+
+[1/1] block: fix bio-cache for passthru IO
+      (no commit info)
+
+Best regards,
+-- 
+Jens Axboe
+
+
+
