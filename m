@@ -2,112 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD23470FAC7
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 17:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C0DF70FB0B
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 17:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236995AbjEXPv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 11:51:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
+        id S238285AbjEXP7b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 11:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbjEXPv5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 11:51:57 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6228493;
-        Wed, 24 May 2023 08:51:55 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1afbc02c602so3355915ad.1;
-        Wed, 24 May 2023 08:51:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684943515; x=1687535515;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FoCJgGw6RaF5aBLZX0Urv93vncHZezr0uY9aoDQyptk=;
-        b=r0poMKa+YNTBTvFt0B2CThjvDnIHIu83bN9p0TXYIT5lfBncPZz0SHQ5sKLn60JLbk
-         YRqxSs0jwlV8gbdnxVhiE3Wk5WkF6ArJtVDweX5rSqovqtqla7wJRmiik9RkP0QCx4pP
-         NFVKMNQn44fJMmJu2diSLYuKy70Q39KkofFEzZpG3RxAHPEb8gvWkIkThmFkqjC905A2
-         07pI1R7eKRL4sQtQ5CLI/4loiVE3Q5nJJ/92ScQ9pAF5VdcMwCHUovOqUjvDO1xYMPsx
-         62kweXBBE5MghU/wQWj8lb6+Xk6JIbkqrxbnHl+PviHtSsQWQEIjk9sXNuV3sc3Wz/sf
-         foVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684943515; x=1687535515;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FoCJgGw6RaF5aBLZX0Urv93vncHZezr0uY9aoDQyptk=;
-        b=cntryz+UnEJyfZn1psNIZT6wizdtaabT6eOFz3swxExV1SgM6YbIxVatzckFzMpt/N
-         SgxH/WJ30B6WX2PO8EqoW6ed8QVI2RiRn2Uiqe2eAjlRv3XKCVIcN+HIciA3mnREVUcx
-         ZcNcrfDdZhqAyWFrQgDF9D37nLrVairBsyfWifthEgcl3ki8uI2VG/XhTtkedHcGd4Zv
-         3bMjl0PSqXMzPm7zZQJCX7TWWhOavX1FlMTVuFacCF7gqB9jSggtK9Qm5ylRb7WutKLw
-         6F8FkAIKo/KgaVhUpRyeumZ0XR+NULUP3V6ldk+HLeWvUL06SPlmhTNcB4mS5vMPAwS9
-         /WzA==
-X-Gm-Message-State: AC+VfDx++w+M2K6PvM1p7S5A7ZOEcll69CIp/cUywojN4euRh7qYc/Iy
-        R7vio8D2L6aFzkRALoyvPrA=
-X-Google-Smtp-Source: ACHHUZ7cTcMk2I5ELHxKwj/ybsdZ2jdxvXQFRt9m/rkXb4UCKNmtxALrbyymkJ+pkuesKKukBOaq4Q==
-X-Received: by 2002:a17:902:d4c2:b0:1a9:6604:2b1b with SMTP id o2-20020a170902d4c200b001a966042b1bmr17809754plg.20.1684943514703;
-        Wed, 24 May 2023 08:51:54 -0700 (PDT)
-Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id i3-20020a170902c28300b001ae57277a87sm8922057pld.255.2023.05.24.08.51.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 May 2023 08:51:54 -0700 (PDT)
-Message-ID: <52e30fae-36df-f098-2b1f-e7e9d00c8f0b@gmail.com>
-Date:   Wed, 24 May 2023 08:51:52 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
+        with ESMTP id S238061AbjEXP66 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 11:58:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73A4122;
+        Wed, 24 May 2023 08:58:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A99763ECC;
+        Wed, 24 May 2023 15:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D40C4339B;
+        Wed, 24 May 2023 15:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1684943869;
+        bh=+KqoP3LhTsQa9GQ0Ybe2LD4KSpKGXfBUa30qiNhCBtQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=daZgqaaeCoiz9eE1VnqIy4YX/SGhIyUvD4NNCpCN+gRWiY07Eoq8/Y3e8pV4rrJTX
+         CujWWx06kJxt7a5ZIj5i0uii3zMRERTcO1OJjWtRpmOY2VN/j/GUZm+HNz8X2i5KDI
+         kushL5JyiOxDkaofe2isWayHQK5jAEcSyn3YehBY=
+Date:   Wed, 24 May 2023 16:57:46 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
 Subject: Re: [PATCH 6.3 000/363] 6.3.4-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Message-ID: <2023052423-flint-importer-0609@gregkh>
 References: <20230523164950.435226211@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230523164950.435226211@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <52e30fae-36df-f098-2b1f-e7e9d00c8f0b@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <52e30fae-36df-f098-2b1f-e7e9d00c8f0b@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 5/23/2023 10:01 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.4 release.
-> There are 363 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, May 24, 2023 at 08:51:52AM -0700, Florian Fainelli wrote:
 > 
-> Responses should be made by Thu, 25 May 2023 16:48:37 +0000.
-> Anything received after that time might be too late.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.4-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-> and the diffstat can be found below.
+> On 5/23/2023 10:01 AM, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.3.4 release.
+> > There are 363 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 25 May 2023 16:48:37 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.4-rc2.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> thanks,
+> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
+> BMIPS_GENERIC:
 > 
-> greg k-h
+> Tested-by: Florian Fainelli <f.fainelli@gmail.com>
+> 
+> Greg, could you queue up:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3522340199cc060b70f0094e3039bdb43c3f6ee1
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Please send this as a separate email, with what trees it should go to,
+otherwise it will be lost in this thread.
 
-Tested-by: Florian Fainelli <f.fainelli@gmail.com>
+thanks,
 
-Greg, could you queue up:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3522340199cc060b70f0094e3039bdb43c3f6ee1
-
-thanks!
--- 
-Florian
+greg k-h
