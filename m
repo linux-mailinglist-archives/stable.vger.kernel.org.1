@@ -2,243 +2,211 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B0B70EEA0
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 08:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91B1F70EF54
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 09:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239681AbjEXGyf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 02:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38484 "EHLO
+        id S239504AbjEXH1Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 03:27:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239763AbjEXGyD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 02:54:03 -0400
-Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D7F171B
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 23:53:21 -0700 (PDT)
-Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-4572a528cefso441579e0c.0
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 23:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684911201; x=1687503201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JO87M/SJhovAggTv+SZMv/UEkxC893mdoY4ZmtFqCiM=;
-        b=rfQ7bSP2vE7mJKsJC4cAWkHJ/cLEDIQJVeErbHBkoaK3JPALG9MrILncV9y83nqlEk
-         yuITnM5++sV2wowMHpRnbzrsoR45eaNVVxGuKuHeuSGjCxTzXCBQasOeX4aFDIUGe21C
-         FYyq22JGvDaxRdI/Rr7BZrpOtwsdRqBr+VAxT6eRYCGvSTyLX9Ebb6wE1DEEArTTUEPi
-         yXywhhzjoCUlNtuMT/vz+Qp73x2wc+cZNpVKWNQNU+QwZi402iNNmp+fsZ8KjYroHUzC
-         ZEp1f6xOjghQ9UjEkcnO61uQ/ms5/1e59RVQlKSwqhsqarbsbdHq++1iWYvOq+Mp2sBG
-         TI2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684911201; x=1687503201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JO87M/SJhovAggTv+SZMv/UEkxC893mdoY4ZmtFqCiM=;
-        b=h6CKmgJ2cwDrdDK+Y3/JZhE04e3gGRuSQt/S1uD1ucRTfPjaMgx8mkD6TJjv650MPg
-         yRouFrMvOVPq+5VgMisFH9LG+IrdpWmWGo9bui0G4Eskls/PuUpckJdk9B+JDzU3c8q3
-         NUYOw9to0417E68DZaVcv5Thaff9180Z4eYt1ubVUcHw1qVMQRLzhgJdUTOA52qoPL32
-         GxlTWyI+AEupsqJ3mLJXnSFUshWzsdOi18QwnD9wLfo4AGSOAnrgZs3PO9hHKHcBJaQa
-         HqN3oH+CXrABrEGbQ24rdSjJBeIdFuBbxzW94306zzm6C6MqqevtoFZgSbALT1ZrCUyn
-         9VRw==
-X-Gm-Message-State: AC+VfDyDXkpY4EswmKcDwI7WbCq7FD/ANz4fmqeshSVDMQP4tiX8iy5H
-        py7bLZlzL7oKmX+CWQoa9mJe/PF5ejZWxLMzYlJubA==
-X-Google-Smtp-Source: ACHHUZ50MQjnVQqFvLZLa4pXsE5ODRH7KIMjO/rsm9DDDSnGx3AZ8r/oCWy2VtFRm7AgjClyg4HJ9OCW8zhPFdHDGmM=
-X-Received: by 2002:a1f:3d81:0:b0:44f:e192:d407 with SMTP id
- k123-20020a1f3d81000000b0044fe192d407mr6119073vka.9.1684911200780; Tue, 23
- May 2023 23:53:20 -0700 (PDT)
+        with ESMTP id S238875AbjEXH1P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 03:27:15 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E41F9C;
+        Wed, 24 May 2023 00:27:13 -0700 (PDT)
+Received: from dggpeml500021.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QR2hL2X7NzqSbx;
+        Wed, 24 May 2023 15:22:42 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 24 May
+ 2023 15:27:11 +0800
+From:   Baokun Li <libaokun1@huawei.com>
+To:     <linux-ext4@vger.kernel.org>
+CC:     <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
+        <ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
+        <yi.zhang@huawei.com>, <yangerkun@huawei.com>,
+        <yukuai3@huawei.com>, <libaokun1@huawei.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v4] ext4: fix race between writepages and remount
+Date:   Wed, 24 May 2023 15:25:38 +0800
+Message-ID: <20230524072538.2883391-1-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20230523164950.435226211@linuxfoundation.org>
-In-Reply-To: <20230523164950.435226211@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 24 May 2023 12:23:09 +0530
-Message-ID: <CA+G9fYtu2VeQfsjbLngwEnV9rEP3oBiuyaJjMSOe7z+ys5hdig@mail.gmail.com>
-Subject: Re: [PATCH 6.3 000/363] 6.3.4-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.127.227]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 23 May 2023 at 22:31, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.3.4 release.
-> There are 363 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 25 May 2023 16:48:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.3.4-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.3.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+We got a WARNING in ext4_add_complete_io:
+==================================================================
+ WARNING: at fs/ext4/page-io.c:231 ext4_put_io_end_defer+0x182/0x250
+ CPU: 10 PID: 77 Comm: ksoftirqd/10 Tainted: 6.3.0-rc2 #85
+ RIP: 0010:ext4_put_io_end_defer+0x182/0x250 [ext4]
+ [...]
+ Call Trace:
+  <TASK>
+  ext4_end_bio+0xa8/0x240 [ext4]
+  bio_endio+0x195/0x310
+  blk_update_request+0x184/0x770
+  scsi_end_request+0x2f/0x240
+  scsi_io_completion+0x75/0x450
+  scsi_finish_command+0xef/0x160
+  scsi_complete+0xa3/0x180
+  blk_complete_reqs+0x60/0x80
+  blk_done_softirq+0x25/0x40
+  __do_softirq+0x119/0x4c8
+  run_ksoftirqd+0x42/0x70
+  smpboot_thread_fn+0x136/0x3c0
+  kthread+0x140/0x1a0
+  ret_from_fork+0x2c/0x50
+==================================================================
 
+Above issue may happen as follows:
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+            cpu1                        cpu2
+----------------------------|----------------------------
+mount -o dioread_lock
+ext4_writepages
+ ext4_do_writepages
+  *if (ext4_should_dioread_nolock(inode))*
+    // rsv_blocks is not assigned here
+                                 mount -o remount,dioread_nolock
+  ext4_journal_start_with_reserve
+   __ext4_journal_start
+    __ext4_journal_start_sb
+     jbd2__journal_start
+      *if (rsv_blocks)*
+        // h_rsv_handle is not initialized here
+  mpage_map_and_submit_extent
+    mpage_map_one_extent
+      dioread_nolock = ext4_should_dioread_nolock(inode)
+      if (dioread_nolock && (map->m_flags & EXT4_MAP_UNWRITTEN))
+        mpd->io_submit.io_end->handle = handle->h_rsv_handle
+        ext4_set_io_unwritten_flag
+          io_end->flag |= EXT4_IO_END_UNWRITTEN
+      // now io_end->handle is NULL but has EXT4_IO_END_UNWRITTEN flag
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+scsi_finish_command
+ scsi_io_completion
+  scsi_io_completion_action
+   scsi_end_request
+    blk_update_request
+     req_bio_endio
+      bio_endio
+       bio->bi_end_io  > ext4_end_bio
+        ext4_put_io_end_defer
+	 ext4_add_complete_io
+	  // trigger WARN_ON(!io_end->handle && sbi->s_journal);
 
-## Build
-* kernel: 6.3.4-rc2
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.3.y
-* git commit: a37c304c022dd76ffb05897280b5a45da06cb119
-* git describe: v6.3.3-364-ga37c304c022d
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3=
--364-ga37c304c022d
+The immediate cause of this problem is that ext4_should_dioread_nolock()
+function returns inconsistent values in the ext4_do_writepages() and
+mpage_map_one_extent(). There are four conditions in this function that
+can be changed at mount time to cause this problem. These four conditions
+can be divided into two categories:
 
-## Test Regressions (compared to v6.3.3)
+    (1) journal_data and EXT4_EXTENTS_FL, which can be changed by ioctl
+    (2) DELALLOC and DIOREAD_NOLOCK, which can be changed by remount
 
-## Metric Regressions (compared to v6.3.3)
+The two in the first category have been fixed by commit c8585c6fcaf2
+("ext4: fix races between changing inode journal mode and ext4_writepages")
+and commit cb85f4d23f79 ("ext4: fix race between writepages and enabling
+EXT4_EXTENTS_FL") respectively.
 
-## Test Fixes (compared to v6.3.3)
+Two cases in the other category have not yet been fixed, and the above
+issue is caused by this situation. We refer to the fix for the first
+category, when applying options during remount, we grab s_writepages_rwsem
+to avoid racing with writepages ops to trigger this problem.
 
-## Metric Fixes (compared to v6.3.3)
+Fixes: 6b523df4fb5a ("ext4: use transaction reservation for extent conversion in ext4_end_io")
+Cc: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+V1->V2:
+	Grab s_writepages_rwsem unconditionally during remount.
+	Remove patches 1,2 that are no longer needed.
+V2->V3:
+	Also grab s_writepages_rwsem when restoring options.
+V3->V4:
+	Rebased on top of mainline.
+	Reference 00d873c17e29 ("ext4: avoid deadlock in fs reclaim with
+	page writeback") to use s_writepages_rwsem.
 
-## Test result summary
-total: 182851, pass: 158943, fail: 3522, skip: 20124, xfail: 262
+ fs/ext4/ext4.h  |  3 ++-
+ fs/ext4/super.c | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 144 passed, 1 failed
-* arm64: 54 total, 53 passed, 1 failed
-* i386: 41 total, 40 passed, 1 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 8 total, 8 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 26 total, 25 passed, 1 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 46 passed, 0 failed
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 6948d673bba2..97ef99c7f296 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1613,7 +1613,8 @@ struct ext4_sb_info {
+ 
+ 	/*
+ 	 * Barrier between writepages ops and changing any inode's JOURNAL_DATA
+-	 * or EXTENTS flag.
++	 * or EXTENTS flag or between writepages ops and changing DELALLOC or
++	 * DIOREAD_NOLOCK mount options on remount.
+ 	 */
+ 	struct percpu_rw_semaphore s_writepages_rwsem;
+ 	struct dax_device *s_daxdev;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 9680fe753e59..fff42682e4e0 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6389,6 +6389,7 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+ 	ext4_group_t g;
+ 	int err = 0;
+ 	int enable_rw = 0;
++	int alloc_ctx;
+ #ifdef CONFIG_QUOTA
+ 	int enable_quota = 0;
+ 	int i, j;
+@@ -6429,7 +6430,16 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+ 
+ 	}
+ 
++	/*
++	 * Changing the DIOREAD_NOLOCK or DELALLOC mount options may cause
++	 * two calls to ext4_should_dioread_nolock() to return inconsistent
++	 * values, triggering WARN_ON in ext4_add_complete_io(). we grab
++	 * here s_writepages_rwsem to avoid race between writepages ops and
++	 * remount.
++	 */
++	alloc_ctx = ext4_writepages_down_write(sb);
+ 	ext4_apply_options(fc, sb);
++	ext4_writepages_up_write(sb, alloc_ctx);
+ 
+ 	if ((old_opts.s_mount_opt & EXT4_MOUNT_JOURNAL_CHECKSUM) ^
+ 	    test_opt(sb, JOURNAL_CHECKSUM)) {
+@@ -6650,6 +6660,8 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+ 	if ((sb->s_flags & SB_RDONLY) && !(old_sb_flags & SB_RDONLY) &&
+ 	    sb_any_quota_suspended(sb))
+ 		dquot_resume(sb, -1);
++
++	alloc_ctx = ext4_writepages_down_write(sb);
+ 	sb->s_flags = old_sb_flags;
+ 	sbi->s_mount_opt = old_opts.s_mount_opt;
+ 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
+@@ -6658,6 +6670,8 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+ 	sbi->s_commit_interval = old_opts.s_commit_interval;
+ 	sbi->s_min_batch_time = old_opts.s_min_batch_time;
+ 	sbi->s_max_batch_time = old_opts.s_max_batch_time;
++	ext4_writepages_up_write(sb, alloc_ctx);
++
+ 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
+ 		ext4_release_system_zone(sb);
+ #ifdef CONFIG_QUOTA
+-- 
+2.31.1
 
-## Test suites summary
-* boot
-* fwts
-* igt-gpu-tools
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
