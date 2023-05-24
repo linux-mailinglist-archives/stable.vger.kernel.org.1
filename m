@@ -2,120 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 408F770F690
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 14:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B001270F6FC
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 14:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231720AbjEXMfn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 08:35:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54878 "EHLO
+        id S234708AbjEXMya convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Wed, 24 May 2023 08:54:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjEXMfl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 08:35:41 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D2F71B4;
-        Wed, 24 May 2023 05:35:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684931719; x=1716467719;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cDUi7dMP4jWcg8AZDD0CYW+YYB1jCuGrGLccF6biMqg=;
-  b=NEqU+MDXdhryxuP4Eqep7iTDiDRKbsQsjJ/PGH8arl50IPOG0Qh2wbqk
-   D9mw61hnJ68oZGdy5ze5BtpKa0mh+crDLsnTPpi6bOnV/6wNUxjEQYTyn
-   s44P0uVF989WF5W8eAkzj2vmpNYHyA+m7eu7DJs7kRuks0RmiyYZDeP6g
-   AYDnfDTM6k0pSp+8IKYxFjDFDC0flYxXc/W2EAiX9cJ0pTwW4femCGXmP
-   3Wwwro8n9RHHtNkic/tfBUYXgyqKi4XtPndENou8DHWOaiE0A95aaqxFl
-   BWQPK14OUavveUrrjg5B/EK0z6BRkC4xzN5P+M9urz6Na6yZ1Hza8tDNE
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="353572618"
-X-IronPort-AV: E=Sophos;i="6.00,189,1681196400"; 
-   d="scan'208";a="353572618"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 05:33:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="1034516581"
-X-IronPort-AV: E=Sophos;i="6.00,189,1681196400"; 
-   d="scan'208";a="1034516581"
-Received: from mylly.fi.intel.com (HELO [10.237.72.160]) ([10.237.72.160])
-  by fmsmga005.fm.intel.com with ESMTP; 24 May 2023 05:33:32 -0700
-Message-ID: <bf392104-96b0-a85b-f68e-088bd3884d9a@linux.intel.com>
-Date:   Wed, 24 May 2023 15:33:31 +0300
+        with ESMTP id S234670AbjEXMy3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 08:54:29 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB20211D
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 05:54:24 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-239-Yfj8il36OwiJ2kUaRuBpBw-1; Wed, 24 May 2023 13:54:21 +0100
+X-MC-Unique: Yfj8il36OwiJ2kUaRuBpBw-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 24 May
+ 2023 13:54:20 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Wed, 24 May 2023 13:54:20 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Arnd Bergmann' <arnd@arndb.de>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        linux-mm <linux-mm@kvack.org>, "LTP List" <ltp@lists.linux.it>,
+        "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
+        X86 ML <x86@kernel.org>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: RE: qemu-x86_64 compat: LTP: controllers: RIP: 0010:__alloc_pages
+Thread-Topic: qemu-x86_64 compat: LTP: controllers: RIP: 0010:__alloc_pages
+Thread-Index: AQHZjjGxuHnxTw0F/kqC+Nbr0ednxK9pYAcQ
+Date:   Wed, 24 May 2023 12:54:20 +0000
+Message-ID: <8414a2adfee94b589458766b52f49421@AcuMS.aculab.com>
+References: <CA+G9fYvVZ9WF-2zfrYeo3xnWNra0QGxLzei+b4yANZwEvr5CYw@mail.gmail.com>
+ <3a055da0-fd88-4ec0-b006-9ccd382e9cc6@app.fastmail.com>
+In-Reply-To: <3a055da0-fd88-4ec0-b006-9ccd382e9cc6@app.fastmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.10.0
-Subject: Re: [PATCH v1] i2c: designware: Handle invalid SMBus block data
- response length
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-To:     Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
-Cc:     patches@amperecomputing.com, andriy.shevchenko@linux.intel.com,
-        mika.westerberg@linux.intel.com, jsd@semihalf.com,
-        chuong@os.amperecomputing.com, darren@os.amperecomputing.com,
-        stable@vger.kernel.org
-References: <20230523082118.10935-1-tamnguyenchi@os.amperecomputing.com>
-From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
-In-Reply-To: <20230523082118.10935-1-tamnguyenchi@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi
+From: Arnd Bergmann
+> Sent: 24 May 2023 12:18
+> 
+> On Wed, May 24, 2023, at 11:02, Naresh Kamboju wrote:
+> > While running LTP controllers following kernel crash noticed on qemu-x86_64
+> > compat mode with stable-rc 6.3.4-rc2.
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> >  Linux version 6.3.4-rc2 (tuxmake@tuxmake) (x86_64-linux-gnu-gcc
+> > (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1
+> > SMP PREEMPT_DYNAMIC @1684862676
+> > ..
+> > ./runltp -f controllers
+> > ...
+> > cpuset_inherit 11 TPASS: cpus: Inherited information is right!
+> > cpuset_inherit 13 TPASS: mems: Inherited information is right!
+> > <4>[ 1130.117922] int3: 0000 [#1] PREEMPT SMP PTI
+> > <4>[ 1130.118132] CPU: 0 PID: 32748 Comm: cpuset_inherit_ Not tainted
+> > 6.3.4-rc2 #1
+> > <4>[ 1130.118216] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+> > BIOS 1.14.0-2 04/01/2014
+> > <4>[ 1130.118320] RIP: 0010:__alloc_pages+0xeb/0x340
+> > <4>[ 1130.118605] Code: 48 c1 e0 04 48 8d 84 01 00 13 00 00 48 89 45
+> > a8 8b 05 d9 31 cf 01 85 c0 0f 85 05 02 00 00 89 d8 c1 e8 03 83 e0 03
+> > 89 45 c0 66 <90> 41 89 df 41 be 01 00 00 00 f6 c7 04 75 66 44 89 e6 89
+> > df e8 ec
+> 
+> I haven't figured out what is going on here, but I tracked down
+> the trapping instruction <90> to the middle of the 'xchg   %ax,%ax'
+> two-byte nop in:
+> 
+> ffffffff814218f4:       83 e0 03                and    $0x3,%eax
+> ffffffff814218f7:       89 45 c0                mov    %eax,-0x40(%rbp)
+> ffffffff814218fa:       66 90                   xchg   %ax,%ax
+> ffffffff814218fc:       41 89 df                mov    %ebx,%r15d
+> ffffffff814218ff:       41 be 01 00 00 00       mov    $0x1,%r14d
+> 
+> which in turn is the cpusets_enabled() check in prepare_alloc_pages().
 
-On 5/23/23 11:21, Tam Nguyen wrote:
-> In I2C_FUNC_SMBUS_BLOCK_DATA case, the I2C Designware driver does not
-> handle correctly when it receives the length of SMBus block data
-> response from SMBus slave device, which is outside the range 1-32 bytes.
-> Consequently, the I2C Designware bus is stuck and cannot recover.
-> Because if IC_EMPTYFIFO_HOLD_MASTER_EN is set, which cannot be detected
-> from the registers, the controller can be disabled if the STOP bit is set.
-> But it is only set after receiving block data response length.
-> 
-> Hence, to prevent the bus from stuck condition, after receiving the
-> invalid block data response length, the driver will read another byte
-> with STOP bit set.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
-> ---
->   drivers/i2c/busses/i2c-designware-master.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-> index 55ea91a63382..94dadd785ed0 100644
-> --- a/drivers/i2c/busses/i2c-designware-master.c
-> +++ b/drivers/i2c/busses/i2c-designware-master.c
-> @@ -527,8 +527,19 @@ i2c_dw_read(struct dw_i2c_dev *dev)
->   
->   			regmap_read(dev->map, DW_IC_DATA_CMD, &tmp);
->   			/* Ensure length byte is a valid value */
-> -			if (flags & I2C_M_RECV_LEN &&
-> -			    (tmp & DW_IC_DATA_CMD_DAT) <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
-> +			if (flags & I2C_M_RECV_LEN) {
-> +				/*
-> +				 * if IC_EMPTYFIFO_HOLD_MASTER_EN is set, which cannot be
-> +				 * detected from the registers, the controller can be
-> +				 * disabled if the STOP bit is set. But it is only set
-> +				 * after receiving block data response length in
-> +				 * I2C_FUNC_SMBUS_BLOCK_DATA case. That needs to read
-> +				 * another byte with STOP bit set when the block data
-> +				 * response length is invalid to complete the transaction.
-> +				 */
-> +				if ((tmp & DW_IC_DATA_CMD_DAT) > I2C_SMBUS_BLOCK_MAX || tmp == 0)
-> +					tmp = 1;
-> +
->   				len = i2c_dw_recv_len(dev, tmp);
->   			}
->   			*buf++ = tmp;
+Does that code actually match the call/return stack?
 
-Looks otherwise good to me but I'm wondering the "tmp == 0" test can it 
-have the bit 11 set (on a HW where it's supported) and should it be 
-covered with DW_IC_DATA_CMD_DAT mask too? Please see commit f53f15ba5a85 
-("i2c: designware: Get right data length").
+It is pretty much impossible to get a trap on an 0x90 byte.
+I think you'd need to jump to it and then get a page fault.
+
+So I bet that isn't the code that was actually being executed.
+So either the fault address is garbage or something horrid(tm)
+has happened to the page tables.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
