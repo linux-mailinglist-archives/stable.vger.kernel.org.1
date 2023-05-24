@@ -2,77 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA8DC70EC9B
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 06:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E601770ED25
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 07:34:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjEXElf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 00:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42188 "EHLO
+        id S239025AbjEXFe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 01:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjEXEle (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 00:41:34 -0400
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08545119
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 21:41:32 -0700 (PDT)
-Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 34O4fRtG011592
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 24 May 2023 00:41:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-        t=1684903288; bh=U0ujNxZicY998gnIus/Fq1cB0nHxrNsGemGVRJVlmC8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=BHsZEe64m8fpJF2VN7Cc+h4iXWAIR02c6fjOfx9aoV9LEBm+u/qLdWzA2YC7/rrAy
-         HyB62DjDZdt6/i7hH8z9c5Vs7E0w+v/VxNMPX6Fz5CdszovbHdqTzX80+IeVtplXA3
-         bYnrg290z6n47Tf6tLidPJWKGkt0YQMxdoh2MmrsHHwwh9SL6ZGcBBYHcGI+kqhTKr
-         VN0PZON+MajX5Fzvv3FKJ/x39e45wyT6C5OmDoG0SYfCQHdqGXummWDBEGxCD4udvP
-         qfhpnXVfgP/ArhoWRzSu0y6k5rFcSE1Ziyiu/3CmhSmVfO2Z9mZw0pZJPFt+VwGzmY
-         qmfJqYICWbVWg==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-        id 3E5C615C052B; Wed, 24 May 2023 00:41:27 -0400 (EDT)
-Date:   Wed, 24 May 2023 00:41:27 -0400
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org
-Subject: Re: Was there a call for 5.10.181-rc1 review?
-Message-ID: <20230524044127.GC779799@mit.edu>
-References: <20230522190354.935300867@linuxfoundation.org>
- <20230523022333.GG230989@mit.edu>
- <2023052348-reformer-hatchback-7299@gregkh>
+        with ESMTP id S233438AbjEXFe0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 01:34:26 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F2B7B3;
+        Tue, 23 May 2023 22:34:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=7NBHbi9ILV5K2XOPA/YNxTHAVu54oCQY3AF1O0ytJMY=; b=d+K7gCAJK1eLJgkGXUen+xrbON
+        qO+cHEwFKx29uga6UbywQj9jby9fFfIKE4u0iPTwmRkduhqqZkjF1f5tN2xSUB6tsXIdpfwm15VNx
+        I1NoKopB78eFxNkxxCE4GYWOjKa5zdbXbyYL1bvV6a7HC519N97DvkaduZynnd+wmGO/fn+Pn2Xgd
+        HZnpuhvnEqgl3605xe2OKUr4ptcGIi5MWqx4DxbALYc+7AacE+0+hlxJAtDwlCY8ZY+XWua+l09QJ
+        bs9P18D9zFXcZJh5ums0CGh3pqtv+GvJHTy+BdKlJuJPDe39IpWO79B/cq88BvQOITQO+XfGW3W95
+        RWsNe0iA==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1q1h8h-00CPie-17;
+        Wed, 24 May 2023 05:34:23 +0000
+Date:   Tue, 23 May 2023 22:34:23 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Dan Carpenter <dan.carpenter@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        linux-kernel@vger.kernel.org,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [RESEND PATCH v5 2/3] test_firmware: fix a memory leak with reqs
+ buffer
+Message-ID: <ZG2h34KzhQWONNec@bombadil.infradead.org>
+References: <20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr>
+ <20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr>
+ <256bc822-ba20-c41a-1f3b-5b6aacead32e@alu.unizg.hr>
+ <f9212fd0-0a52-4076-a97a-c5af8de194cf@kili.mountain>
+ <72257758-a0e6-1118-f397-431ac9ec3059@alu.unizg.hr>
+ <828b1d4c-dac8-4a64-9f1d-452762dc07bd@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2023052348-reformer-hatchback-7299@gregkh>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <828b1d4c-dac8-4a64-9f1d-452762dc07bd@kili.mountain>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 23, 2023 at 07:23:37AM +0100, Greg Kroah-Hartman wrote:
-> On Mon, May 22, 2023 at 10:23:33PM -0400, Theodore Ts'o wrote:
-> > I can't found a call for reviewing 5.10.181-rc1, either in my inbox or
-> > on lore.kernel.org.
+On Thu, May 18, 2023 at 06:20:37PM +0300, Dan Carpenter wrote:
+> On Fri, May 12, 2023 at 08:58:58PM +0200, Mirsad Goran Todorovac wrote:
+> > On 12. 05. 2023. 15:09, Dan Carpenter wrote:
+> > > On Fri, May 12, 2023 at 02:34:29PM +0200, Mirsad Todorovac wrote:
+> > > > > @@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
+> > > > >    	mutex_lock(&test_fw_mutex);
+> > > > > +	if (test_fw_config->reqs) {
+> > > > > +		rc = -EBUSY;
+> > > > > +		goto out_bail;
+> > > > > +	}
+> > > > > +
+> > > > >    	test_fw_config->reqs =
+> > > > >    		vzalloc(array3_size(sizeof(struct test_batched_req),
+> > > > >    				    test_fw_config->num_requests, 2));
+> > > > 
+> > > > I was just thinking, since returning -EBUSY for the case of already allocated
+> > > > test_fw_config->reqs was your suggestion and your idea, maybe it would be OK
+> > > > to properly reflect that in Co-developed-by: or Signed-off-by: , but if I
+> > > > understood well, the CoC requires that I am explicitly approved of those?
+> > > > 
+> > > 
+> > > If everyone else is okay, let's just apply this as-is.  You did all the
+> > > hard bits.
+> > > 
+> > > regards,
+> > > dan carpenter
 > > 
-> > There does to be a 5.10.181-rc1 in stable-rc/linux-5.10.y, so did it
-> > not get e-mailed out somehow?  Or did I somehow miss it?
+> > If it is OK with you, then I hope I have your Reviewed-by:
+> >
 > 
-> I did not release it, sorry, only 5.15.y and newer for this round.
-> 5.10.181-rc will probably happen later this week or next.
+> Wow.  Sorry for all the delay on this.
+> 
+> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+> 
 
-Ah, no worries.  I had a bit of extra time and had set up a pull of
-the stable-rc git tree, and was looking at trying to automate some
-ext4 testing, and I ended up testing the -rc1 of 6.1, 5.15, 5.10, 5.4,
-and 4.19.  (At least as was found in the git tree; I assume they
-haven't been finalized yet?)
+Thanks for doing this work! It looks much better now split up!
 
-Anyway, I'll retest the 5.10 and earlier LTS trees once you've
-released them.
+For all 3 patches:
 
-Cheers,
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
 
-					- Ted
+Greg, can you pick these up?
+
+  Luis
