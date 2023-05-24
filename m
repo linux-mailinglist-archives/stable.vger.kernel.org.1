@@ -2,97 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8EF70F055
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 10:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EED5770F1AA
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 11:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239970AbjEXIL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 04:11:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
+        id S240325AbjEXJCg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 05:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236004AbjEXILz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 04:11:55 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2062.outbound.protection.outlook.com [40.92.18.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6978DFA
-        for <stable@vger.kernel.org>; Wed, 24 May 2023 01:11:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NuAUZpef4aVynnxU/mrkM2yX2ntBNNdnYXFDSNJ92s9cS7GLufhbjFeD7TOluhoiloIFYLRIdCxAr1b23ToFZ74tRTlvdGKonfajq/zy+UJrONibO6IA52Yh2cv5/XNxX8nm3rYH6Y+abeZu7gIWL60aXxRLCV1v7qF5oTCCXqgeDeuVuExsCWGvtaU3yE+hRiTcwuqFkibwgtrS8OgKrTtdrIA/BUNqg0OjNbvl3TcT5KHKCSefTcs2/4n8AsIeanvdexQbDsvJt3AOG0SFHOOW4B9cYHPFxSoRInvt+MWPNs/Eo9Nhg1m8doR02tY/H3bPI12yC+7aKTBBZ4RJ6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
- b=VttyuiVrfZVO7cG9FSbelIP7pH0TLiuR5Pl2egHj1IyKZmTJA8VjDDfb4QXP1kZQvqjeIIULUUjQfPBzN63BmGsWQPF0Gb6foI4/aLFaacP7Csbct6k7eQp+Z3JH4VWn1YFtPHEe0ADdLX4qPy5ugSWROJZv0+Ld0NASDZCwm6iH0bLumpR8tLr+AzKJDdXKLEuQqJUEfVeJYBURdVRkRRJZs0pKYoqfKa6g00nxNKOFQpiuuwgkOifSf9/bP+v0lJGRTFcXZSnQw/M4XYkLLq/DvK4oC+M1yZfECt2dIq3ymLimAE8/vJPGZOBk9y/4juh/CFnaHm7CNXF86Z8xBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
- b=uRWVNE8gzKnLCAUzF+zjFzKO/cf8YEvza2CNaMUcwseIVYVaqtHu2+luS6DI+fOvCL+web0B5cJYhNQatar+5k9zgYGH4S7xwJLsFFIT+VUhR9oXPYCA4A2DumBxVYkQkM0Zpo7eDeJsbS+1ibHMXFWJvRlUqdAN3LZpqPujsAGC+piuZ6ZkzagZ4C+OfCoUiKmvfx0prqf82Srol6CDdNm0h9Ch0u4ZGCAtvggi99LdV5JffoVZaIaFltfVJso6l+fh8XeXWaj0k2pluAX3pE7nyKQBHCwu3v/jN96PCnsGzL5XT2TtfuoZb7wTpaoZSUV8TvVkKXikAQEPQxV4jQ==
-Received: from DM4PR11MB7375.namprd11.prod.outlook.com (2603:10b6:8:101::12)
- by CY8PR11MB7922.namprd11.prod.outlook.com (2603:10b6:930:7b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Wed, 24 May
- 2023 08:11:52 +0000
-Received: from DM4PR11MB7375.namprd11.prod.outlook.com
- ([fe80::592a:da21:cfaf:af53]) by DM4PR11MB7375.namprd11.prod.outlook.com
- ([fe80::592a:da21:cfaf:af53%5]) with mapi id 15.20.6411.028; Wed, 24 May 2023
- 08:11:52 +0000
-Content-Type: text/plain
-From:   <fbavtn@hotmail.com>
-To:     Undisclosed recipients:;
-Date:   Wed, 24 May 2023 08:11:51 +0000
-X-TMN:  [v0hut87Vm0OgMZVKK3sNmsm2RZESfKpSYpxT/YQotIU=]
-X-ClientProxiedBy: PS2PR04CA0004.apcprd04.prod.outlook.com
- (2603:1096:300:55::16) To DM4PR11MB7375.namprd11.prod.outlook.com
- (2603:10b6:8:101::12)
-Message-ID: <DM4PR11MB7375C47D0D8D1041AFA69CE9C6419@DM4PR11MB7375.namprd11.prod.outlook.com>
+        with ESMTP id S240515AbjEXJCf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 05:02:35 -0400
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D025B8E
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 02:02:32 -0700 (PDT)
+Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7868d32ace2so543861241.3
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 02:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684918952; x=1687510952;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ua6FkUKy2yQqOMjKldJnUgyegjdZw3FbhuPjicIwteg=;
+        b=fKFDl8ZGGN7XNtarh49Y8oGnN/EsvWER4MjTjYlfHqkuS/8KB7f0rUvIts68PTIU6Z
+         I4z2Lo+xQrwcYCKpMdns6bE9/+rEFqzuiQhyLWKTGbW6+wwVeQPx7+/6OYZNe4UpkXuM
+         dtg2fMvdW/QXlMtQhHaQfvfzuAZhed0YhczXn+UOb9H30TWONqiYQb80g6n9fumbvBf8
+         a0iaH34Zwawv3LhEoiojd8mEjW+BTJf02unRksZSXrD0HHKu5T7Tzp8lmrfqACx+zhhj
+         DoByis3GvrH5tVeMjYqH4YgtWatyGIYbMiqLnssySAxDugcXA9C34EOXGwooZud4/kWI
+         MEFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684918952; x=1687510952;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ua6FkUKy2yQqOMjKldJnUgyegjdZw3FbhuPjicIwteg=;
+        b=L6XbEU9tiQyzf4mU6UlfFDepCMDkExTDvE5eTYAfu/BaJGnmpk0QZ6ABn34guMKPz3
+         AYcdZ61G+Z8Kj5RVtHWxbhiGHJIi3S8Xc2me+UoZVDkwHhoDE5SOZiF1gww50OxyQNqT
+         SWT8S1ZcbWy17NQJZCdxx+lolUI3L+1vfcW2yR+2md/W/k7uCAidzjXrEBol33ulelet
+         9Y113tn1X9AiFJOSWAAE3X0HOXzLRdxwBmxYT17n4hRvVUe2I4Ca0LPdbwAGPm4gG9Qt
+         RkCazmGjzvgj7iXDsr3CSmRtcFn/fCCoSkmfvdiwpQuedv/PdXMYsMvC+CHxs7qj3idO
+         pFsA==
+X-Gm-Message-State: AC+VfDzKe30spT70XDQLhbJgUCeWWLaNWkmFAa69cXcqKeMPoVhN3spE
+        aU6tx+19kpTdWUD+qT2FhKeRuxg3VrlKKQ3sApa4sw==
+X-Google-Smtp-Source: ACHHUZ5+N5FBtl4UeP/lGj5cD/G4H09HIygf4+rwHs0U98XLci7zKstCxKdKZWSbYm/VEQwbUn1WTfmxdJCrhOmqXKc=
+X-Received: by 2002:a67:f483:0:b0:439:3c9f:d040 with SMTP id
+ o3-20020a67f483000000b004393c9fd040mr4503215vsn.34.1684918951760; Wed, 24 May
+ 2023 02:02:31 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB7375:EE_|CY8PR11MB7922:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a3dbd0b-a98d-45c0-5438-08db5c2e8825
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dR7+REW8Nv/fXkZeDyLG74Uk9vVNmvejiH4fGm9AdTaQ/XxpLcP1BfFilsyBk3nGTyYt75HjgguPJX6nWLPDGmYAMAcK+9a/w/Ma9Ml2ZLLEN15DD/0nS5O3ft8KKqntB47viQrYXjziKLF9UfQy9oO7IxZDY3V2AGLMrb6i26XIZiKODjbjKz1e13shC5XvIigwFVHMU099u29a44gYpc3zmoC6XvQ9TaQUgaDZ4BbG1AOu/JRN4r3qNF9jRmRDS0XnU0pmpSNMdwesTNy5Qojjg95SksmY9jEaJPqLBSo=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UFzjyT0LhQfzfko0IBC5Twedp78fb0YaSS1eV/6c9Ge2ylsyj6I95ka0WK8c?=
- =?us-ascii?Q?gf9596aVmcjsp/y/kb2KBim49gOaJKnrJKnxmaQ1CWjIhFq52vJ6dAsSkUYf?=
- =?us-ascii?Q?Iou4aPrpCnzeZXpVdzy6t6RHSRVMcfMMfEV0g6uXDTkZ1Cgkx4NIBeXBB8BU?=
- =?us-ascii?Q?J8aqVofC6Y/YUrSoOtUALjm8PnNjfT9tIttol3TjmurWLhOFr8IJMzEx5Hz3?=
- =?us-ascii?Q?Y1LjwIZpvborP6MeM4kIlTl6oSd1z6IoTeQ2gQveVdLyvZTU6CZRRVqNOvp1?=
- =?us-ascii?Q?gHKt40zdKbvBt3JLnxcq7uBqV5AkI/FkJfDxaYsk9Z2/ZlBNb8HDAxxgafQ5?=
- =?us-ascii?Q?tkaFzQz1sA0jpt06TlYIMIr9oQG1IlxSlo31J5EzLWrM5b+R5z3KnMg/aTzO?=
- =?us-ascii?Q?wp1Tdpuuy06u6hn+YUdah7Ckz5+Rly5pLF4AtuiLwZw11ua3AK5K6i8ya5cL?=
- =?us-ascii?Q?Zu2nIYRf+Lpi/h0gsmxoOryw0sgnt7UWH8extkGzDKUW76SblWl7ifqSINx4?=
- =?us-ascii?Q?37UQIMcbBtmlQ4r11u9TyZs77wVH4er/SMhKLa63pksjWPYQbLY4XdHu5+0e?=
- =?us-ascii?Q?p8KGX0bANalFmDRmftk59FEnGvWB0YKW3q+ufqvg4xJYAW1BdXMYbKlmdZ0Y?=
- =?us-ascii?Q?Lg03/TNxuRoc+6ccCP/w67J6eG5no79N3neBPyFhAfSp0dRPhIWEEJTIyybO?=
- =?us-ascii?Q?P27mH8J3KIB/Zq9TQ+tBxmT9amShQsapAvSiyYedNX0mOCQV02P2fcqPImMi?=
- =?us-ascii?Q?PuJ0sITz75nGn5Kg1xnsyYnmZ71AEfdjHgNkaLIaNC6JqlJ2saxq/VmYPn1z?=
- =?us-ascii?Q?K2ds4l9Y2lm20WWMBdQknSNcipCncaBOu3BNJkFCyAe/nEUe3Hmbd0hSnR+x?=
- =?us-ascii?Q?GLH1PgM+ApH+UGeLvl3T3/HjqhigYTb7e1R7pQYtDuf+vUSJvV3/o1UnZBSg?=
- =?us-ascii?Q?If5C7qOvL2DqbDR0eNhNqON1/pQCPII2Rto3ACAjwsdkfSGvqnblZbELIqDm?=
- =?us-ascii?Q?8vanSt0jWXwm95nxYCeEQOGdi7rjN/BkbYzqoAn4VDpgmnzRxYW4DAP4OOz+?=
- =?us-ascii?Q?4gDE2W9GzreE9q6MEP86ftPev9RddgEriSEN7vFa4W7bzvYBwYpMLg41d2AH?=
- =?us-ascii?Q?a9/BEdigEAULw7P0ocNYgO8cgCYRMAE4dY4wGGEvUHitSpegeE8jdwMh7bpi?=
- =?us-ascii?Q?HDUVxAV94lvGr/wydU6r4ehmypr3N0yfu0B2fw=3D=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-e8f36.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a3dbd0b-a98d-45c0-5438-08db5c2e8825
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB7375.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2023 08:11:52.7618
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7922
-X-Spam-Status: No, score=2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,EMPTY_MESSAGE,FREEMAIL_FROM,
-        MISSING_SUBJECT,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=no
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 24 May 2023 14:32:20 +0530
+Message-ID: <CA+G9fYvVZ9WF-2zfrYeo3xnWNra0QGxLzei+b4yANZwEvr5CYw@mail.gmail.com>
+Subject: qemu-x86_64 compat: LTP: controllers: RIP: 0010:__alloc_pages
+To:     open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        linux-mm <linux-mm@kvack.org>, LTP List <ltp@lists.linux.it>,
+        lkft-triage@lists.linaro.org, X86 ML <x86@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+While running LTP controllers following kernel crash noticed on qemu-x86_64
+compat mode with stable-rc 6.3.4-rc2.
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+ Linux version 6.3.4-rc2 (tuxmake@tuxmake) (x86_64-linux-gnu-gcc
+(Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1
+SMP PREEMPT_DYNAMIC @1684862676
+..
+./runltp -f controllers
+...
+cpuset_inherit 11 TPASS: cpus: Inherited information is right!
+cpuset_inherit 13 TPASS: mems: Inherited information is right!
+<4>[ 1130.117922] int3: 0000 [#1] PREEMPT SMP PTI
+<4>[ 1130.118132] CPU: 0 PID: 32748 Comm: cpuset_inherit_ Not tainted
+6.3.4-rc2 #1
+<4>[ 1130.118216] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+BIOS 1.14.0-2 04/01/2014
+<4>[ 1130.118320] RIP: 0010:__alloc_pages+0xeb/0x340
+<4>[ 1130.118605] Code: 48 c1 e0 04 48 8d 84 01 00 13 00 00 48 89 45
+a8 8b 05 d9 31 cf 01 85 c0 0f 85 05 02 00 00 89 d8 c1 e8 03 83 e0 03
+89 45 c0 66 <90> 41 89 df 41 be 01 00 00 00 f6 c7 04 75 66 44 89 e6 89
+df e8 ec
+<4>[ 1130.118653] RSP: 0018:ffffa3d085d07b08 EFLAGS: 00000246
+<4>[ 1130.118694] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX:
+ffffa2b9ffffa000
+<4>[ 1130.118706] RDX: 0000000000000000 RSI: 0000000000000000 RDI:
+0000000000400dc0
+<4>[ 1130.118717] RBP: ffffa3d085d07b60 R08: 00007fffffffe000 R09:
+00007fffffffefff
+<4>[ 1130.118728] R10: ffffa2b981faaa0c R11: 0000000000000000 R12:
+0000000000000000
+<4>[ 1130.118739] R13: 0000000000000000 R14: 0000000000000000 R15:
+00007fffffffefec
+<4>[ 1130.118783] FS:  0000000000000000(0003)
+GS:ffffa2b9fbc00000(0063) knlGS:00000000f7f05880
+<4>[ 1130.118798] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+<4>[ 1130.118810] CR2: 00000000f7c10bec CR3: 00000001085ba000 CR4:
+00000000000006f0
+<4>[ 1130.118899] Call Trace:
+<4>[ 1130.118974]  <TASK>
+<4>[ 1130.119069]  alloc_pages+0x94/0x140
+<4>[ 1130.119128]  get_zeroed_page+0x1d/0x50
+<4>[ 1130.119142]  __pud_alloc+0x33/0xe0
+<4>[ 1130.119156]  __handle_mm_fault+0x50c/0x1310
+<4>[ 1130.119175]  handle_mm_fault+0xf8/0x320
+<4>[ 1130.119187]  ? check_vma_flags+0x53/0x130
+<4>[ 1130.119199]  __get_user_pages+0x1ed/0x600
+<4>[ 1130.119214]  get_user_pages_remote+0x137/0x3c0
+<4>[ 1130.119229]  get_arg_page+0x65/0x150
+<4>[ 1130.119245]  copy_string_kernel+0xd7/0x1e0
+<4>[ 1130.119258]  do_execveat_common.isra.0+0x11e/0x240
+<4>[ 1130.119272]  __ia32_compat_sys_execve+0x3f/0x50
+<4>[ 1130.119285]  __do_fast_syscall_32+0x6b/0xf0
+<4>[ 1130.119300]  do_fast_syscall_32+0x38/0x80
+<4>[ 1130.119312]  do_SYSENTER_32+0x23/0x30
+<4>[ 1130.119324]  entry_SYSENTER_compat_after_hwframe+0x7f/0x91
+<4>[ 1130.119374] RIP: 0023:0xf7f0a579
+<4>[ 1130.119570] Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10
+08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5
+0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00
+00 00 00
+<4>[ 1130.119578] RSP: 002b:00000000ffcc16e8 EFLAGS: 00000206
+ORIG_RAX: 000000000000000b
+<4>[ 1130.119594] RAX: ffffffffffffffda RBX: 00000000086cc480 RCX:
+00000000086d8810
+<4>[ 1130.119600] RDX: 00000000086dc490 RSI: 00000000086cc480 RDI:
+0000000000000020
+<4>[ 1130.119605] RBP: 00000000086d6270 R08: 0000000000000000 R09:
+0000000000000000
+<4>[ 1130.119610] R10: 0000000000000000 R11: 0000000000000206 R12:
+0000000000000000
+<4>[ 1130.119614] R13: 0000000000000000 R14: 0000000000000000 R15:
+0000000000000000
+<4>[ 1130.119652]  </TASK>
+<4>[ 1130.119698] Modules linked in:
+<4>[ 1130.148538] ---[ end trace 0000000000000000 ]---
+<4>[ 1130.148708] RIP: 0010:__alloc_pages+0xeb/0x340
+<4>[ 1130.148907] Code: 48 c1 e0 04 48 8d 84 01 00 13 00 00 48 89 45
+a8 8b 05 d9 31 cf 01 85 c0 0f 85 05 02 00 00 89 d8 c1 e8 03 83 e0 03
+89 45 c0 66 <90> 41 89 df 41 be 01 00 00 00 f6 c7 04 75 66 44 89 e6 89
+df e8 ec
+<4>[ 1130.148923] RSP: 0018:ffffa3d085d07b08 EFLAGS: 00000246
+<4>[ 1130.148947] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX:
+ffffa2b9ffffa000
+<4>[ 1130.148952] RDX: 0000000000000000 RSI: 0000000000000000 RDI:
+0000000000400dc0
+<4>[ 1130.148958] RBP: ffffa3d085d07b60 R08: 00007fffffffe000 R09:
+00007fffffffefff
+<4>[ 1130.148963] R10: ffffa2b981faaa0c R11: 0000000000000000 R12:
+0000000000000000
+<4>[ 1130.148968] R13: 0000000000000000 R14: 0000000000000000 R15:
+00007fffffffefec
+<4>[ 1130.148974] FS:  0000000000000000(0003)
+GS:ffffa2b9fbc00000(0063) knlGS:00000000f7f05880
+<4>[ 1130.148981] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+<4>[ 1130.148987] CR2: 00000000f7c10bec CR3: 00000001085ba000 CR4:
+00000000000006f0
+<0>[ 1130.149129] Kernel panic - not syncing: Fatal exception in interrupt
+<0>[ 1130.152835] Kernel Offset: 0x8400000 from 0xffffffff81000000
+(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+
+links,
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3-364-ga37c304c022d/testrun/17170153/suite/log-parser-test/tests/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3-364-ga37c304c022d/testrun/17170153/suite/log-parser-test/test/check-kernel-panic/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3-364-ga37c304c022d/testrun/17170153/suite/log-parser-test/test/check-kernel-panic/details/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
