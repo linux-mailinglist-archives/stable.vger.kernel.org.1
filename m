@@ -2,211 +2,281 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B1F70EF54
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 09:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97AA570EFF7
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 09:54:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239504AbjEXH1Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 03:27:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60716 "EHLO
+        id S240110AbjEXHyf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 03:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238875AbjEXH1P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 03:27:15 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E41F9C;
-        Wed, 24 May 2023 00:27:13 -0700 (PDT)
-Received: from dggpeml500021.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QR2hL2X7NzqSbx;
-        Wed, 24 May 2023 15:22:42 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 24 May
- 2023 15:27:11 +0800
-From:   Baokun Li <libaokun1@huawei.com>
-To:     <linux-ext4@vger.kernel.org>
-CC:     <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
-        <ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <yi.zhang@huawei.com>, <yangerkun@huawei.com>,
-        <yukuai3@huawei.com>, <libaokun1@huawei.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v4] ext4: fix race between writepages and remount
-Date:   Wed, 24 May 2023 15:25:38 +0800
-Message-ID: <20230524072538.2883391-1-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
+        with ESMTP id S239670AbjEXHy3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 03:54:29 -0400
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59ACDA1
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 00:54:27 -0700 (PDT)
+Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-43951f7002dso205489137.3
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 00:54:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684914866; x=1687506866;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7yDLtXG+mhBJETNEwxHXiFJwTxzzOPoRqHlYdybJ4KE=;
+        b=OoVemZQH79NVLdb52sToFqaDsrsDL3HxgRc5GffvrRf5SyN6/yD36Dw1R7U+rP3qMU
+         st5NiAXFPY+lvQx4RCfwKyoU5IyWb/yz/pQUiQor7Li5FTiYjXJyF1b2KuBM8AEgjNrL
+         E9WaZrD/t0jiXJpeAb0gPQVLsjCe5ivGuZV2jbMbcBLJHM0ddaq/VXjwyQLnfWRWC6eu
+         54wAxl7pXIW59Nig/I19QCCadX7s+Iml6rJpiOW1OAR7BPY0Jn3OfcgYFH3nndKRpNDD
+         rWYro2kzlLp+8/Knu5JqY8/67+igbwgzt3T0xuWHk2+sJMMdgHaqROaFu88idal0zgwm
+         o7wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684914866; x=1687506866;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7yDLtXG+mhBJETNEwxHXiFJwTxzzOPoRqHlYdybJ4KE=;
+        b=R5CkQQTbSVLT7igXCl5U/c445ngBaFjJ2xkvPuemD/lEQaIl3yFJwJFnplRtAd8YSX
+         xba07Lyn70+Qg6GmUagN2Hbu+qSgXbpTxBA1xoB7ahpxW1ovodMhIit481pvJN4A3khH
+         R3dv8oyAEjtPnjJCjTbmqh6L2OQrUl9XXlN/liz7kmd+p1I0b9XDHkmwldlkeI/ZNVev
+         9spJ33lPDJl6PvPNgeMHNuwByOKqHsoRR7SCfvMT6AEfe07lmKqD9smxfZcQ7igrd319
+         aoGkCLSx05m4O6E9K8MZmYDQCOvq7itsZLVUHdzjntF+yXiReMd5GxhThJXvofW06IAL
+         HFrA==
+X-Gm-Message-State: AC+VfDx7AsZMMoDiOhSKjkyivgZislRgZWBuGIndvrzY0/u6mdoR922c
+        AOpOPF/IZPKckQCd1uuAk4y3UMP3pFlI5yUFJ0pP0V+0yOLw0udnIP1mMw==
+X-Google-Smtp-Source: ACHHUZ4dsjBg4MOyLc4SIdOK3+lx+zNdtYvoOnkCjQqC/h2K7KYFoT5ODP+XirOYhoqPgpEPVsZS4CmSt9l36mCr0sg=
+X-Received: by 2002:a05:6102:34d1:b0:437:da98:e7d2 with SMTP id
+ a17-20020a05610234d100b00437da98e7d2mr3923812vst.18.1684914866261; Wed, 24
+ May 2023 00:54:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.127.227]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500021.china.huawei.com (7.185.36.21)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 24 May 2023 13:24:15 +0530
+Message-ID: <CA+G9fYsbr-kTpw3fEF-XEJWv2PHRZ9kaxOrF_OzVkfpLnk3r1A@mail.gmail.com>
+Subject: selftests: net: udpgso_bench.sh: RIP: 0010:lookup_reuseport
+To:     open list <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Xin Long <lucien.xin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-We got a WARNING in ext4_add_complete_io:
-==================================================================
- WARNING: at fs/ext4/page-io.c:231 ext4_put_io_end_defer+0x182/0x250
- CPU: 10 PID: 77 Comm: ksoftirqd/10 Tainted: 6.3.0-rc2 #85
- RIP: 0010:ext4_put_io_end_defer+0x182/0x250 [ext4]
- [...]
- Call Trace:
-  <TASK>
-  ext4_end_bio+0xa8/0x240 [ext4]
-  bio_endio+0x195/0x310
-  blk_update_request+0x184/0x770
-  scsi_end_request+0x2f/0x240
-  scsi_io_completion+0x75/0x450
-  scsi_finish_command+0xef/0x160
-  scsi_complete+0xa3/0x180
-  blk_complete_reqs+0x60/0x80
-  blk_done_softirq+0x25/0x40
-  __do_softirq+0x119/0x4c8
-  run_ksoftirqd+0x42/0x70
-  smpboot_thread_fn+0x136/0x3c0
-  kthread+0x140/0x1a0
-  ret_from_fork+0x2c/0x50
-==================================================================
+While running selftests: net: udpgso_bench.sh on qemu-x86_64 the following
+kernel crash noticed on stable rc 6.3.4-rc2 kernel.
 
-Above issue may happen as follows:
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-            cpu1                        cpu2
-----------------------------|----------------------------
-mount -o dioread_lock
-ext4_writepages
- ext4_do_writepages
-  *if (ext4_should_dioread_nolock(inode))*
-    // rsv_blocks is not assigned here
-                                 mount -o remount,dioread_nolock
-  ext4_journal_start_with_reserve
-   __ext4_journal_start
-    __ext4_journal_start_sb
-     jbd2__journal_start
-      *if (rsv_blocks)*
-        // h_rsv_handle is not initialized here
-  mpage_map_and_submit_extent
-    mpage_map_one_extent
-      dioread_nolock = ext4_should_dioread_nolock(inode)
-      if (dioread_nolock && (map->m_flags & EXT4_MAP_UNWRITTEN))
-        mpd->io_submit.io_end->handle = handle->h_rsv_handle
-        ext4_set_io_unwritten_flag
-          io_end->flag |= EXT4_IO_END_UNWRITTEN
-      // now io_end->handle is NULL but has EXT4_IO_END_UNWRITTEN flag
+Test run log:
+=========
 
-scsi_finish_command
- scsi_io_completion
-  scsi_io_completion_action
-   scsi_end_request
-    blk_update_request
-     req_bio_endio
-      bio_endio
-       bio->bi_end_io  > ext4_end_bio
-        ext4_put_io_end_defer
-	 ext4_add_complete_io
-	  // trigger WARN_ON(!io_end->handle && sbi->s_journal);
+<12>[   38.049122] kselftest: Running tests in net
+TAP version 13
+1..16
+# selftests: net: udpgso_bench.sh
+# ipv4
+# tcp
+# tcp tx:    230 MB/s     3905 calls/s   3905 msg/s
+# tcp rx:    231 MB/s     3668 calls/s
+# tcp tx:    225 MB/s     3817 calls/s   3817 msg/s
+# tcp rx:    225 MB/s     3525 calls/s
+# tcp tx:    225 MB/s     3820 calls/s   3820 msg/s
+# tcp zerocopy
+# tcp tx:    198 MB/s     3369 calls/s   3369 msg/s
+# tcp rx:    197 MB/s     2855 calls/s
+# tcp tx:    195 MB/s     3318 calls/s   3318 msg/s
+# tcp rx:    197 MB/s     2845 calls/s
+# udp
+# udp rx:      8 MB/s     5811 calls/s
+# udp tx:     11 MB/s     7938 calls/s    189 msg/s
+# udp rx:     10 MB/s     7523 calls/s
+# udp tx:     10 MB/s     7308 calls/s    174 msg/s
+# udp rx:     10 MB/s     7338 calls/s
+# udp gso
+# udp rx:     19 MB/s    14080 calls/s
+# udp tx:    118 MB/s     2012 calls/s   2012 msg/s
+# udp rx:     26 MB/s    18688 calls/s
+# udp tx:    117 MB/s     2000 calls/s   2000 msg/s
+# udp rx:     26 MB/s    18688 calls/s
+# udp tx:    118 MB/s     2008 calls/s   2008 msg/s
+# udp gso zerocopy
+# udp rx:     19 MB/s    13824 calls/s
+# udp tx:    102 MB/s     1736 calls/s   1736 msg/s
+# udp rx:     25 MB/s    18176 calls/s
+# udp tx:    101 MB/s     1714 calls/s   1714 msg/s
+# udp rx:     25 MB/s    18176 calls/s
+# udp tx:     98 MB/s     1679 calls/s   1679 msg/s
+# udp gso timestamp
+# udp rx:     19 MB/s    13824 calls/s
+# udp tx:     94 MB/s     1606 calls/s   1606 msg/s
+# udp rx:     25 MB/s    18432 calls/s
+# udp tx:     92 MB/s     1574 calls/s   1574 msg/s
+# udp rx:     27 MB/s    19309 calls/s
+# udp tx:     88 MB/s     1502 calls/s   1502 msg/s
+# udp gso zerocopy audit
+# udp rx:     19 MB/s    14080 calls/s
+# udp tx:    101 MB/s     1728 calls/s   1728 msg/s
+# udp rx:     25 MB/s    18432 calls/s
+# udp tx:    100 MB/s     1699 calls/s   1699 msg/s
+# udp rx:     26 MB/s    18688 calls/s
+# udp tx:    101 MB/s     1724 calls/s   1724 msg/s
+# Summary over 3.000 seconds...
+# sum udp tx:    103 MB/s       5151 calls (1717/s)       5151 msgs (1717/s)
+# Zerocopy acks:                5151
+# udp gso timestamp audit
+# udp rx:     19 MB/s    13843 calls/s
+# udp tx:     92 MB/s     1571 calls/s   1571 msg/s
+# udp rx:     26 MB/s    18568 calls/s
+# udp tx:     95 MB/s     1614 calls/s   1614 msg/s
+# udp rx:     26 MB/s    19200 calls/s
+# udp tx:     93 MB/s     1589 calls/s   1589 msg/s
+# Summary over 3.000 seconds...
+# sum udp tx:     96 MB/s       4774 calls (1591/s)       4774 msgs (1591/s)
+# Tx Timestamps:                4774 received                 0 errors
+# udp gso zerocopy timestamp audit
+# udp rx:     18 MB/s    13312 calls/s
+# udp tx:     76 MB/s     1297 calls/s   1297 msg/s
+# udp rx:     26 MB/s    18524 calls/s
+# udp tx:     74 MB/s     1269 calls/s   1269 msg/s
+# udp rx:     25 MB/s    18176 calls/s
+# udp tx:     75 MB/s     1289 calls/s   1289 msg/s
+# Summary over 3.000 seconds...
+# sum udp tx:     77 MB/s       3855 calls (1285/s)       3855 msgs (1285/s)
+# Tx Timestamps:                3855 received                 0 errors
+# Zerocopy acks:                3855
+# ipv6
+# tcp
+# tcp tx:    215 MB/s     3657 calls/s   3657 msg/s
+# tcp rx:    216 MB/s     3431 calls/s
+# tcp tx:    211 MB/s     3590 calls/s   3590 msg/s
+# tcp rx:    211 MB/s     3319 calls/s
+# tcp tx:    211 MB/s     3579 calls/s   3579 msg/s
+# tcp zerocopy
+# tcp tx:    191 MB/s     3245 calls/s   3245 msg/s
+# tcp rx:    193 MB/s     2908 calls/s
+# tcp tx:    184 MB/s     3135 calls/s   3135 msg/s
+# tcp rx:    185 MB/s     2830 calls/s
+# tcp tx:    191 MB/s     3254 calls/s   3254 msg/s
+# udp
+<4>[   88.821235] int3: 0000 [#1] PREEMPT SMP PTI
+<4>[   88.821491] CPU: 1 PID: 561 Comm: udpgso_bench_tx Not tainted 6.3.4-rc2 #1
+<4>[   88.821576] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+BIOS 1.14.0-2 04/01/2014
+<4>[   88.821685] RIP: 0010:lookup_reuseport+0x4a/0x200
+<4>[   88.822122] Code: 74 0b 49 89 f6 0f b6 46 12 3c 01 75 07 31 c0
+e9 ed 00 00 00 4d 89 cf 44 89 c5 49 89 cd 49 89 fc 0f 1f 44 00 00 8b
+5c 24 50 0f <1f> 44 00 00 41 8b 45 04 41 33 45 00 8b 0d b0 c5 ed 00 44
+8d 04 08
+<4>[   88.822175] RSP: 0018:ffffa95c800c0b90 EFLAGS: 00000206
+<4>[   88.822215] RAX: 0000000000000007 RBX: 0000000000001f40 RCX:
+ffff966c02b66020
+<4>[   88.822228] RDX: ffff966c01a9aa00 RSI: ffff966c02801500 RDI:
+ffff966c03ae2e80
+<4>[   88.822241] RBP: 00000000000093bf R08: 00000000000093bf R09:
+ffffffffb0b2c8a0
+<4>[   88.822254] R10: 0000000042388386 R11: 00000000000093bf R12:
+ffff966c03ae2e80
+<4>[   88.822266] R13: ffff966c02b66020 R14: ffff966c02801500 R15:
+ffffffffb0b2c8a0
+<4>[   88.822312] FS:  00007f4e6ede4740(0000)
+GS:ffff966c7bd00000(0000) knlGS:0000000000000000
+<4>[   88.822330] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[   88.822343] CR2: 000055a1c0b90bf0 CR3: 0000000103b0e000 CR4:
+00000000000006e0
+<4>[   88.822438] Call Trace:
+<4>[   88.823080]  <IRQ>
+<4>[   88.823274]  udp6_lib_lookup2+0xf8/0x1c0
+<4>[   88.823368]  __udp6_lib_lookup+0x113/0x3c0
+<4>[   88.823382]  ? __wake_up_common_lock+0x79/0x190
+<4>[   88.823403]  __udp6_lib_lookup_skb+0x76/0x90
+<4>[   88.823426]  __udp6_lib_rcv+0x295/0x400
+<4>[   88.823440]  ip6_protocol_deliver_rcu+0x34e/0x5c0
+<4>[   88.823483]  ip6_input+0x60/0x110
+<4>[   88.823496]  ? ip6_rcv_core+0x311/0x450
+<4>[   88.823509]  ipv6_rcv+0x47/0xf0
+<4>[   88.823523]  __netif_receive_skb+0x65/0x170
+<4>[   88.823539]  process_backlog+0xd7/0x180
+<4>[   88.823553]  __napi_poll+0x2c/0x1b0
+<4>[   88.823565]  net_rx_action+0x178/0x2e0
+<4>[   88.823580]  __do_softirq+0xc4/0x274
+<4>[   88.823595]  do_softirq+0x7e/0xb0
+<4>[   88.823751]  </IRQ>
+<4>[   88.823769]  <TASK>
+<4>[   88.823773]  __local_bh_enable_ip+0x6e/0x70
+<4>[   88.823786]  ip6_finish_output2+0x3fc/0x560
+<4>[   88.823803]  ip6_finish_output+0x1ab/0x320
+<4>[   88.823816]  ip6_output+0x6b/0x130
+<4>[   88.823827]  ? __pfx_ip6_finish_output+0x10/0x10
+<4>[   88.823839]  ip6_send_skb+0x1e/0x80
+<4>[   88.823850]  udp_v6_send_skb+0x26e/0x400
+<4>[   88.823865]  udpv6_sendmsg+0xb33/0xc60
+<4>[   88.823879]  ? __pfx_ip_generic_getfrag+0x10/0x10
+<4>[   88.823902]  sock_sendmsg+0x42/0xa0
+<4>[   88.823915]  __sys_sendto+0x281/0x2f0
+<4>[   88.823938]  __x64_sys_sendto+0x21/0x30
+<4>[   88.823949]  do_syscall_64+0x48/0xa0
+<4>[   88.823969]  ? exit_to_user_mode_prepare+0x2a/0x80
+<4>[   88.823981]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+<4>[   88.824104] RIP: 0033:0x7f4e6eef1973
+<4>[   88.824267] Code: 8b 15 91 74 0c 00 f7 d8 64 89 02 48 c7 c0 ff
+ff ff ff eb b8 0f 1f 00 80 3d 71 fc 0c 00 00 41 89 ca 74 14 b8 2c 00
+00 00 0f 05 <48> 3d 00 f0 ff ff 77 75 c3 0f 1f 40 00 55 48 83 ec 30 44
+89 4c 24
+<4>[   88.824276] RSP: 002b:00007ffc3a3d79f8 EFLAGS: 00000202
+ORIG_RAX: 000000000000002c
+<4>[   88.824293] RAX: ffffffffffffffda RBX: 00005596927cf110 RCX:
+00007f4e6eef1973
+<4>[   88.824298] RDX: 00000000000005ac RSI: 00005596927cf110 RDI:
+0000000000000005
+<4>[   88.824304] RBP: 0000000000000000 R08: 0000000000000000 R09:
+0000000000000000
+<4>[   88.824309] R10: 0000000000000000 R11: 0000000000000202 R12:
+0000000000000002
+<4>[   88.824313] R13: 0000000000000005 R14: 000000000000e628 R15:
+00000000000005ac
+<4>[   88.824335]  </TASK>
+<4>[   88.824377] Modules linked in: mptcp_diag tcp_diag inet_diag
+ip_tables x_tables
+<4>[   88.845108] ---[ end trace 0000000000000000 ]---
+<4>[   88.845178] RIP: 0010:lookup_reuseport+0x4a/0x200
+<4>[   88.845216] Code: 74 0b 49 89 f6 0f b6 46 12 3c 01 75 07 31 c0
+e9 ed 00 00 00 4d 89 cf 44 89 c5 49 89 cd 49 89 fc 0f 1f 44 00 00 8b
+5c 24 50 0f <1f> 44 00 00 41 8b 45 04 41 33 45 00 8b 0d b0 c5 ed 00 44
+8d 04 08
+<4>[   88.845232] RSP: 0018:ffffa95c800c0b90 EFLAGS: 00000206
+<4>[   88.845249] RAX: 0000000000000007 RBX: 0000000000001f40 RCX:
+ffff966c02b66020
+<4>[   88.845257] RDX: ffff966c01a9aa00 RSI: ffff966c02801500 RDI:
+ffff966c03ae2e80
+<4>[   88.845266] RBP: 00000000000093bf R08: 00000000000093bf R09:
+ffffffffb0b2c8a0
+<4>[   88.845273] R10: 0000000042388386 R11: 00000000000093bf R12:
+ffff966c03ae2e80
+<4>[   88.845281] R13: ffff966c02b66020 R14: ffff966c02801500 R15:
+ffffffffb0b2c8a0
+<4>[   88.845290] FS:  00007f4e6ede4740(0000)
+GS:ffff966c7bd00000(0000) knlGS:0000000000000000
+<4>[   88.845302] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[   88.845311] CR2: 000055a1c0b90bf0 CR3: 0000000103b0e000 CR4:
+00000000000006e0
+<0>[   88.845862] Kernel panic - not syncing: Fatal exception in interrupt
+<0>[   88.848258] Kernel Offset: 0x2e800000 from 0xffffffff81000000
+(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
 
-The immediate cause of this problem is that ext4_should_dioread_nolock()
-function returns inconsistent values in the ext4_do_writepages() and
-mpage_map_one_extent(). There are four conditions in this function that
-can be changed at mount time to cause this problem. These four conditions
-can be divided into two categories:
 
-    (1) journal_data and EXT4_EXTENTS_FL, which can be changed by ioctl
-    (2) DELALLOC and DIOREAD_NOLOCK, which can be changed by remount
+log:
+====
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2QCexh5uf81VW7HjLpuo5vu2LCe
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2QCeuW0pJ8XVzYeG3rpgza2cZDW/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3-364-ga37c304c022d/testrun/17170111/suite/log-parser-test/tests/
 
-The two in the first category have been fixed by commit c8585c6fcaf2
-("ext4: fix races between changing inode journal mode and ext4_writepages")
-and commit cb85f4d23f79 ("ext4: fix race between writepages and enabling
-EXT4_EXTENTS_FL") respectively.
 
-Two cases in the other category have not yet been fixed, and the above
-issue is caused by this situation. We refer to the fix for the first
-category, when applying options during remount, we grab s_writepages_rwsem
-to avoid racing with writepages ops to trigger this problem.
-
-Fixes: 6b523df4fb5a ("ext4: use transaction reservation for extent conversion in ext4_end_io")
-Cc: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
----
-V1->V2:
-	Grab s_writepages_rwsem unconditionally during remount.
-	Remove patches 1,2 that are no longer needed.
-V2->V3:
-	Also grab s_writepages_rwsem when restoring options.
-V3->V4:
-	Rebased on top of mainline.
-	Reference 00d873c17e29 ("ext4: avoid deadlock in fs reclaim with
-	page writeback") to use s_writepages_rwsem.
-
- fs/ext4/ext4.h  |  3 ++-
- fs/ext4/super.c | 14 ++++++++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 6948d673bba2..97ef99c7f296 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1613,7 +1613,8 @@ struct ext4_sb_info {
- 
- 	/*
- 	 * Barrier between writepages ops and changing any inode's JOURNAL_DATA
--	 * or EXTENTS flag.
-+	 * or EXTENTS flag or between writepages ops and changing DELALLOC or
-+	 * DIOREAD_NOLOCK mount options on remount.
- 	 */
- 	struct percpu_rw_semaphore s_writepages_rwsem;
- 	struct dax_device *s_daxdev;
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 9680fe753e59..fff42682e4e0 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6389,6 +6389,7 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 	ext4_group_t g;
- 	int err = 0;
- 	int enable_rw = 0;
-+	int alloc_ctx;
- #ifdef CONFIG_QUOTA
- 	int enable_quota = 0;
- 	int i, j;
-@@ -6429,7 +6430,16 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 
- 	}
- 
-+	/*
-+	 * Changing the DIOREAD_NOLOCK or DELALLOC mount options may cause
-+	 * two calls to ext4_should_dioread_nolock() to return inconsistent
-+	 * values, triggering WARN_ON in ext4_add_complete_io(). we grab
-+	 * here s_writepages_rwsem to avoid race between writepages ops and
-+	 * remount.
-+	 */
-+	alloc_ctx = ext4_writepages_down_write(sb);
- 	ext4_apply_options(fc, sb);
-+	ext4_writepages_up_write(sb, alloc_ctx);
- 
- 	if ((old_opts.s_mount_opt & EXT4_MOUNT_JOURNAL_CHECKSUM) ^
- 	    test_opt(sb, JOURNAL_CHECKSUM)) {
-@@ -6650,6 +6660,8 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 	if ((sb->s_flags & SB_RDONLY) && !(old_sb_flags & SB_RDONLY) &&
- 	    sb_any_quota_suspended(sb))
- 		dquot_resume(sb, -1);
-+
-+	alloc_ctx = ext4_writepages_down_write(sb);
- 	sb->s_flags = old_sb_flags;
- 	sbi->s_mount_opt = old_opts.s_mount_opt;
- 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
-@@ -6658,6 +6670,8 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 	sbi->s_commit_interval = old_opts.s_commit_interval;
- 	sbi->s_min_batch_time = old_opts.s_min_batch_time;
- 	sbi->s_max_batch_time = old_opts.s_max_batch_time;
-+	ext4_writepages_up_write(sb, alloc_ctx);
-+
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
- #ifdef CONFIG_QUOTA
--- 
-2.31.1
-
+--
+Linaro LKFT
+https://lkft.linaro.org
