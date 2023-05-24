@@ -2,50 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA0770FB7C
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 18:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AD9970FC28
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 19:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230255AbjEXQM5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 12:12:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
+        id S235517AbjEXRE6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 13:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbjEXQM4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 12:12:56 -0400
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEBF11A7
-        for <stable@vger.kernel.org>; Wed, 24 May 2023 09:12:49 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 87BD98214D
-        for <stable@vger.kernel.org>; Wed, 24 May 2023 18:12:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1684944767;
-        bh=EFHgor1e8+p17tbcVO6CEerUq8G9pb5M5p0zuYlH7tg=;
-        h=Date:To:From:Subject:From;
-        b=SanOrZAe8ZdhlAU05hzaOqnCD2DU4xE9jyRKBjVwsTZvuKqKOgcsY0dwlErYMOsea
-         NJ3dCg87/esnB+CjCsuslGUg6asatUoUrQVV8ak5SOzq2bIW13PU+owhEsZPNAXPV4
-         muAgaW0+8cxX9aJf5VYIIW0P1+E+HHp4CPmHGazaJHsR5B8YxtJ15z7bIAljdZQOiI
-         COy+zk807znsVTBfbMporNFRNO8CB2qqygwiCWZ//z9l0naB7NV3kTSKUQCOR9oFZh
-         QyqsT7Dq9iay2RHT735nHk6cIa+d/zst+DMYMqTuebS0Zt0I+DMlA7Iz95pqI/xxRN
-         pnB5q3bKpEN9g==
-Message-ID: <cfc2511b-51d1-771b-8cd0-5533d03c0367@denx.de>
-Date:   Wed, 24 May 2023 18:12:46 +0200
+        with ESMTP id S230494AbjEXRE5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 13:04:57 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DA010B
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 10:04:55 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-510b6a249a8so2584669a12.0
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 10:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isovalent.com; s=google; t=1684947894; x=1687539894;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OX7TwOTtxI9078iXGRe1v6WXZvE2EIyaYMEVVHOjuhQ=;
+        b=QB74L0/jxXd7y6nW3o9xkHAJIGRnmghtu93J4jDvwNvITeAIoQ1Kd1rRdiYr0EsKlO
+         +aIzASoolJ7V5hvYVZHGh+d1/19LfKg+NewxKOmVGDjN3vIpHFdFVLQt1Qluu2Rpm/3+
+         aK0A+P4xTNZfXzKSq4eTMQ/cB3Tjxhif9bPIY00bqC8CLJS6c8BmMFPgpsLjOCk6gm3S
+         YbtFgwOiKDh7RgQ5jbPAbs1P6nZNf4zntXtiORXMtYxAbsEKieiIoAZibgKcmbS2wjv1
+         4zhipa+jS2pTh/jdOn/KCsGN/3lPwStUz3dDOJwPkipAeFah+0fTPiKkrFDGPvm/BHyl
+         7Zsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684947894; x=1687539894;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OX7TwOTtxI9078iXGRe1v6WXZvE2EIyaYMEVVHOjuhQ=;
+        b=AAbW8V6f8n4+jXkz4kVndTzubO8YizuXiDvTvk2Sbn4d6PaoV1yQm4RmqTDaRQGWwS
+         pXGiwFJKNOokck/JsLJJmItzccMAgHSaApa14LhsRGNsE/B0q9MpaKHqSV1vDPD7K1Ym
+         8Dr+8FG/r2f3D+m1Yw4mkxuPt25hPn8Wc29a02O5zm0Kg54VVcFxlFEavnmbIRe4j8Wz
+         f2QpEn4jpvcqSxbZKr6hFotAIz/8pN7poigK+Z81J2a8IKZgMpegwbiXkONBEsb/pcCb
+         KvsnZcKu0eo9gGI85ic+TfkJtMcs6Fg72cf9TFMOeNLm2K5LgrDNTP1hDAodNxkDZ7U3
+         qTrw==
+X-Gm-Message-State: AC+VfDwuCMhus9QiyB9bdhvU5saSCqD0X8rLEfAM3AVwT7g9ZoycRZN5
+        ggmc6R7YFxMK6IyUJ4Taui2XYoIyyGpiuK8dKo1L/A==
+X-Google-Smtp-Source: ACHHUZ4aecbcum+oSXCnZ+4TJGsowymNKbx5UWCjquYoSEqmkz10v6iOSfhb3hZe59JPC3irVPSk8/T05oYKdYrnw0g=
+X-Received: by 2002:a17:907:8a10:b0:96a:d916:cb2f with SMTP id
+ sc16-20020a1709078a1000b0096ad916cb2fmr19835435ejc.36.1684947894084; Wed, 24
+ May 2023 10:04:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-To:     linux-stable <stable@vger.kernel.org>
-From:   Marek Vasut <marex@denx.de>
-Subject: ARM: dts: stm32: fix AV96 board SAI2 pin muxing on stm32mp15
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,TRACKER_ID,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20230320005258.1428043-1-sashal@kernel.org> <20230320005258.1428043-8-sashal@kernel.org>
+ <CAN+4W8g6AcQQWe7rrBVOFYoqeQA-1VbUP_W7DPS3q0k-czOLfg@mail.gmail.com>
+ <ZBiAPngOtzSwDhFz@kroah.com> <CAN+4W8jAyJTdFL=tgp3wCpYAjGOs5ggo6vyOg8PbaW+tJP8TKA@mail.gmail.com>
+ <CAN+4W8j5qe6p3YV90g-E0VhV7AmYyAvt0z50dfDSombbGghkww@mail.gmail.com>
+ <2023041100-oblong-enamel-5893@gregkh> <CAN+4W8hmSgbb-wO4da4A=6B4y0oSjvUTTVia_0PpUXShP4NX4Q@mail.gmail.com>
+ <2023052435-xbox-dislike-0ab2@gregkh>
+In-Reply-To: <2023052435-xbox-dislike-0ab2@gregkh>
+From:   Lorenz Bauer <lmb@isovalent.com>
+Date:   Wed, 24 May 2023 18:04:43 +0100
+Message-ID: <CAN+4W8iMcwwVjmSekZ9txzZNxOZ0x98nBXo4cEoTU9G2zLe8HA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.2 08/30] selftests/bpf: check that modifier
+ resolves after pointer
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Martin KaFai Lau <martin.lau@kernel.org>,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        shuah@kernel.org, yhs@fb.com, eddyz87@gmail.com, sdf@google.com,
+        error27@gmail.com, iii@linux.ibm.com, memxor@gmail.com,
+        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,13 +78,20 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Please backport to stable 5.10.y
+On Wed, May 24, 2023 at 5:04=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> Great, any specific commits that fix this issue would be appreciated to
+> be pointed at so we can apply them.
 
-ee2aacb6f3a9 ("ARM: dts: stm32: fix AV96 board SAI2 pin muxing on 
-stm32mp15")
+The problem was introduced by commit f4b8c0710ab6 ("selftests/bpf: Add
+verifier test for release_reference()") in your tree. Seems like
+fixup_map_ringbuf was introduced in upstream commit 4237e9f4a962
+("selftests/bpf: Add verifier test for PTR_TO_MEM spill") but that
+wasn't backported.
 
-Full commit ID
+To restate my original question: how can we avoid breaking BPF
+selftests? From personal experience this happens somewhat regularly.
 
-ee2aacb6f3a901a95b1dd68964b69c92cdbbf213
-
-Thank you
+Best
+Lorenz
