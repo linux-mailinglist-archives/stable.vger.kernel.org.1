@@ -2,153 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0817170EC27
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 05:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CDF70EC38
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 05:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233438AbjEXDxI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 23:53:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56916 "EHLO
+        id S234895AbjEXD62 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 23:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239376AbjEXDxH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 23:53:07 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258B0FC
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 20:53:05 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2533d3acd5fso443887a91.2
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 20:53:05 -0700 (PDT)
+        with ESMTP id S239427AbjEXD60 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 23:58:26 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD63E6;
+        Tue, 23 May 2023 20:58:25 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-51b33c72686so321073a12.1;
+        Tue, 23 May 2023 20:58:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684900384; x=1687492384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gAn/0YbSvS7UIq/EJgNYJfQt4mdVOO3/aNF3GYkOSB8=;
-        b=Xqy6zWmUISjwt/sHtxPSERu/pWZZKDm7JsuBUWeEyIZgry52jgNlhRdZusod5zdoVi
-         z1KSRqNxFXuO/IG/aJMV8u1J5BmvTpEysieDCG0cWGZgrFo7pGFdfxNBis7ntCtPKoLH
-         3+yTAItVwrF6HsKyIWgVLas5UhN9WKmd8xwPHlPJeF1a0cX4kzlg66x+LTVASejPS9cR
-         yoHIsP3iW2/1J3iJ3trP5ehDx+AuscrbTK3GJDSpqc5+DxcP+eaPXu/a4tr5uVpyrMpy
-         gattTC4YKSVUNK9wk2H3zz5CLroHnEB8hYljbbOM2mxhYSqd0PXeDWN+g6/pURgY2Z3w
-         XfdQ==
+        d=gmail.com; s=20221208; t=1684900704; x=1687492704;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eoFUq15BfcYMvDYkbbe5qe+ZjxrdZ/BZL1FuqpuGwYI=;
+        b=NPPQHhxaY0hpKceunhe5E93G5vLNcXTCZl0myVLNJpzoM5OOYU2rLMn0jk2PhAJJhE
+         YePOJZUxLRhZixUMSjoPqLYNt2uSMkAPGnXWbG0EF8hplN9DGzVObkBxrvHOwduGtT2R
+         /qqYApyVQKHeCTzI1sMmDKFgOGB80MybLgWMTccZVvJUIA5qpO72g/PfY52YEVn+ANnc
+         N+9nWkoPAivd68El2FLGAYA0ZLNKdkcUS5mjtfz2EW6GAQYkMbXa18aZFvJT8N1uobCe
+         oFqgvDX6kLnPNwwW1qRBi/Qmi0mWMWZRzc2o/D0xbFFz2w+LTDPvu2QEjh8ly2b5BD/e
+         rGuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684900384; x=1687492384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gAn/0YbSvS7UIq/EJgNYJfQt4mdVOO3/aNF3GYkOSB8=;
-        b=iHwNeOaklG8HIqU1lUQ1zSzEQY7EILGwUIVxt1T2maY26HH6cYj+HwVbwXwsZWqrF+
-         SWK67NsbLJsZ840xUyZY2PRYZWc6j+AhRDfFNlIHjc1FD4gFQBTJQW4yQ/ZCNaITwj/G
-         aUy/96s+5HH3HPOpT41bVq9ye0l3uyDzTjXdIYJmGH7brXbtd4G+RCXqgKfkH4bYKZSP
-         L1ZgSX1oyRwIhFiBL94brfYxcHmx1UpQ0DOWjoxxLwnnVLlUEhe30FAKi2cgXurHMFmh
-         pgub7RcaD8ZyzAG7f1z71Jy3aJU5k1EG3fbEUBD+p7u3Qmt5/3DTM6sy7j7bBgEl92jR
-         v39g==
-X-Gm-Message-State: AC+VfDyl+yh5gbz91+9X+Uqkwqso+ThDQikA8q+4geiq5pImY+tqGgho
-        Nilfkr6OlJLm0k9BoLsHen8CFKTRsiZziyfFitEPiA==
-X-Google-Smtp-Source: ACHHUZ4Z+Oz8x9s0V6SvZl3S9SrRGJP0brjEO/JkCuw7/oRmvsFSZCZcKpsxlo3zyYDUIojF7wPXXE3Cd0m20SQnTho=
-X-Received: by 2002:a17:90a:6341:b0:252:8698:d03b with SMTP id
- v1-20020a17090a634100b002528698d03bmr14366512pjs.14.1684900384544; Tue, 23
- May 2023 20:53:04 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684900704; x=1687492704;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoFUq15BfcYMvDYkbbe5qe+ZjxrdZ/BZL1FuqpuGwYI=;
+        b=S3LzdIOxQutcr6DzIcJnTL3YOicOOnD/OQiuPnofyCalmr83Gj+bsjC5XipxdPeK0C
+         Rn/Lzes3diA3T7fKSyrzt+MjfeUxjRUDkI5GfeTX70im0fm0hqFJchadG+5JpjXCDS39
+         +ZhsycsgoxkcocBCiQw1tn1H+9E3oL/yVoHoRpjfDPMmDcBaZOX9ohDuAHCJDmQsIQ+r
+         ArEBlxxIR7cJaezZPgrvRF+yimC84l/vab0CI+9TYNLPR0XKcSUzpcvoJas5FwD3O428
+         eAnEF/KjUlVJgYdx4S6QDdk8WnpWdBWM3uk5mMRV8Oj6znsY936vb1r+Wiz5kNL1/GxQ
+         7zwQ==
+X-Gm-Message-State: AC+VfDy9aBoGQG6P9YaB0fxkJ9gsAqocaFrJ1le4t4Tj47nduoJ9xoz4
+        plsq/UGWv5TCw5t8QCfshw+5NVKH234=
+X-Google-Smtp-Source: ACHHUZ74R9rTWqtJ3JwYDu9EiI/76WjbYN939ePLnJ/gNaNyOyE6aZuV+jiidKERNWRW6RKgOQEi+g==
+X-Received: by 2002:a17:902:ea0f:b0:1ad:fa2e:17fc with SMTP id s15-20020a170902ea0f00b001adfa2e17fcmr18549234plg.2.1684900704188;
+        Tue, 23 May 2023 20:58:24 -0700 (PDT)
+Received: from debian.me (subs02-180-214-232-68.three.co.id. [180.214.232.68])
+        by smtp.gmail.com with ESMTPSA id jc1-20020a17090325c100b001a1b66af22fsm7582775plb.62.2023.05.23.20.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 May 2023 20:58:23 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 2981B1069C0; Wed, 24 May 2023 10:58:21 +0700 (WIB)
+Date:   Wed, 24 May 2023 10:58:20 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Haochen Tong <linux@hexchain.org>, stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, linux-input@vger.kernel.org,
+        Basavaraj Natikar <basavaraj.natikar@amd.com>
+Subject: Re: amd_sfh driver causes kernel oops during boot
+Message-ID: <ZG2LXN2+Sa2PWJqz@debian.me>
+References: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
 MIME-Version: 1.0
-References: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
- <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz>
-In-Reply-To: <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz>
-From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Date:   Tue, 23 May 2023 21:52:53 -0600
-Message-ID: <CAEUSe794ifGiY9tsXfnqDsDSJ+UOOB1kJrm1Jb8kZ5fsoBZ5Sg@mail.gmail.com>
-Subject: Re: Stable backport request: skbuff: Proactively round up to kmalloc
- bucket size
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux- stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        ndesaulniers@google.com, rientjes@google.com,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="YBhjpwkXDbp8U+2d"
+Content-Disposition: inline
+In-Reply-To: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
 
-On Tue, 23 May 2023 at 00:28, Vlastimil Babka <vbabka@suse.cz> wrote:
-> On 5/22/23 20:23, Daniel D=C3=ADaz wrote:
-> > Hello!
-> >
-> > Would the stable maintainers please consider backporting the following
-> > commit to the 6.1? We are trying to build gki_defconfig (plus a few
-> > extras) on Arm64 and test it under Qemu-arm64, but it fails to boot.
-> > Bisection has pointed here.
->
-> You mean the bisection was done to find the first "good" commit between 6=
-.1
-> and e.g. 6.3?
->
-> As others said, this commit wasn't expected to be a fix to a known bug.
-> Maybe you found one that we didn't know of, or it might be accidentaly
-> masking some other bug.
+--YBhjpwkXDbp8U+2d
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-How interesting! Yes, we happened to run a bisection between v6.1 and
-v6.3 and we found where it started working with the following
-configuration:
-  https://storage.tuxsuite.com/public/linaro/daniel/builds/2QA2CHQUpqKe27Fy=
-MZrBNILVwXi/config
+On Wed, May 24, 2023 at 01:27:57AM +0800, Haochen Tong wrote:
+> Hi,
+>=20
+> Since kernel 6.3.0 (and also 6.4rc3), on a ThinkPad Z13 system with Arch
+> Linux, I've noticed that the amd_sfh driver spews a lot of stack traces
+> during boot. Sometimes it is an oops:
 
-With that patch on top of v6.1.29 it boots fine under Qemu-arm64; as
-v6.1.y stands, it panics with this:
------8<-----
-  Unexpected kernel BRK exception at EL1
-  Internal error: BRK handler: 00000000f2000001 [#1] PREEMPT SMP
-  Modules linked in:
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.29 #1
-  Hardware name: linux,dummy-virt (DT)
-  pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-  pc : pskb_expand_head+0x448/0x480
-  lr : pskb_expand_head+0x13c/0x480
-  sp : ffff80000802b850
-  x29: ffff80000802b860 x28: 00000000000002c0 x27: 0000000000000ec0
-  x26: ffff0000c02c8ec0 x25: ffff0000c02c8000 x24: 00000000000128c0
-  x23: ffff0000c030e800 x22: ffff0000c030e800 x21: 0000000000000240
-  x20: 0000000000000000 x19: ffff0000c085e900 x18: ffff800008021068
-  x17: 00000000ad6b63b6 x16: 00000000ad6b63b6 x15: 0001001c00070038
-  x14: 0000000c00020008 x13: 00882cc00000ffff x12: 0000000000000000
-  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000001
-  x8 : ffff0000c030eac0 x7 : 0000000000000000 x6 : 0000000000000000
-  x5 : ffff0000c030eaf0 x4 : ffff0000ff7abd10 x3 : 0000000000001740
-  x2 : ffff0000c02c8000 x1 : 0000000000000000 x0 : 0000000000000000
-  Call trace:
-   pskb_expand_head+0x448/0x480
-   netlink_trim+0xa0/0xc8
-   netlink_broadcast+0x54/0x764
-   genl_ctrl_event+0x21c/0x37c
-   genl_register_family+0x628/0x708
-   thermal_netlink_init+0x28/0x3c
-   thermal_init+0x28/0xec
-   do_one_initcall+0xfc/0x358
-   do_initcall_level+0xd8/0x1b4
-   do_initcalls+0x64/0xa8
-   do_basic_setup+0x2c/0x3c
-   kernel_init_freeable+0x118/0x198
-   kernel_init+0x30/0x1c0
-   ret_from_fork+0x10/0x20
-  Code: f9406679 38776b28 3707eba8 17ffff67 (d4200020)
-  ---[ end trace 0000000000000000 ]---
-  Kernel panic - not syncing: BRK handler: Fatal exception
-  SMP: stopping secondary CPUs
------>8-----
+What last kernel version before this regression occurs? Do you mean
+v6.2?
 
-Greetings!
+Thanks.
 
-Daniel D=C3=ADaz
-daniel.diaz@linaro.org
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--YBhjpwkXDbp8U+2d
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZG2LWAAKCRD2uYlJVVFO
+o7V9AQC0xTz1VBHy4yB1nKdpCOLGimzuKpfUKeRBzGsZaiiIAAD+MGxV4LLpO9Wb
+cbsOdM8WB+gLP+Nu/W/lvhtvcoyJDQo=
+=B11Z
+-----END PGP SIGNATURE-----
+
+--YBhjpwkXDbp8U+2d--
