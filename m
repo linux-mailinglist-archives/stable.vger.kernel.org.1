@@ -2,93 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C0DF70FB0B
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 17:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A05A870FB50
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 18:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238285AbjEXP7b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 11:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54956 "EHLO
+        id S229459AbjEXQFS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 12:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238061AbjEXP66 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 11:58:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73A4122;
-        Wed, 24 May 2023 08:58:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S238519AbjEXQEz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 12:04:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF7F1BD
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 09:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684944146;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=XW1novp52ntIBjNj6iBlsvszgbkCVEAxRTPQxoEFBPE=;
+        b=DbEpTDR3MNVjautXAsAoFgQvcOv6xCwXuWH7mkH3GGyCg5facwRWDaV3dsooyG3d56vIno
+        lE2z0hjMimQ7kI3OEAxF2+LIrhiMRXkFlMovUGaH7PrbQKgz9e0cl3yy1a5XDcYsjMvUEA
+        lbBTxfrE6JvQFBI+ZnInvA+CfvfgTvk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-650-U2MCL2wbOw6_k2_4JEeLxA-1; Wed, 24 May 2023 12:02:25 -0400
+X-MC-Unique: U2MCL2wbOw6_k2_4JEeLxA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A99763ECC;
-        Wed, 24 May 2023 15:57:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D40C4339B;
-        Wed, 24 May 2023 15:57:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684943869;
-        bh=+KqoP3LhTsQa9GQ0Ybe2LD4KSpKGXfBUa30qiNhCBtQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=daZgqaaeCoiz9eE1VnqIy4YX/SGhIyUvD4NNCpCN+gRWiY07Eoq8/Y3e8pV4rrJTX
-         CujWWx06kJxt7a5ZIj5i0uii3zMRERTcO1OJjWtRpmOY2VN/j/GUZm+HNz8X2i5KDI
-         kushL5JyiOxDkaofe2isWayHQK5jAEcSyn3YehBY=
-Date:   Wed, 24 May 2023 16:57:46 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 000/363] 6.3.4-rc2 review
-Message-ID: <2023052423-flint-importer-0609@gregkh>
-References: <20230523164950.435226211@linuxfoundation.org>
- <52e30fae-36df-f098-2b1f-e7e9d00c8f0b@gmail.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E493B800888
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 16:02:24 +0000 (UTC)
+Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fs.lab.eng.bos.redhat.com [10.16.224.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B7C3B1121314;
+        Wed, 24 May 2023 16:02:24 +0000 (UTC)
+From:   Alexander Aring <aahringo@redhat.com>
+To:     teigland@redhat.com
+Cc:     cluster-devel@redhat.com, agruenba@redhat.com, aahringo@redhat.com,
+        stable@vger.kernel.org
+Subject: [PATCHv2 dlm/next] fs: dlm: avoid F_SETLKW plock op lookup collisions
+Date:   Wed, 24 May 2023 12:02:04 -0400
+Message-Id: <20230524160204.1042858-1-aahringo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <52e30fae-36df-f098-2b1f-e7e9d00c8f0b@gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 24, 2023 at 08:51:52AM -0700, Florian Fainelli wrote:
-> 
-> 
-> On 5/23/2023 10:01 AM, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.3.4 release.
-> > There are 363 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Thu, 25 May 2023 16:48:37 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.4-rc2.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
-> BMIPS_GENERIC:
-> 
-> Tested-by: Florian Fainelli <f.fainelli@gmail.com>
-> 
-> Greg, could you queue up:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3522340199cc060b70f0094e3039bdb43c3f6ee1
+This patch fixes a possible plock op collisions when using F_SETLKW lock
+requests and fsid, number and owner are not enough to identify a result
+for a pending request. The ltp testcases [0] and [1] are examples when
+this is not enough in case of using classic posix locks with threads and
+open filedescriptor posix locks.
 
-Please send this as a separate email, with what trees it should go to,
-otherwise it will be lost in this thread.
+The idea to fix the issue here is to place all lock request in order. In
+case of non F_SETLKW lock request (indicated if wait is set or not) the
+lock requests are ordered inside the recv_list. If a result comes back
+the right plock op can be found by the first plock_op in recv_list which
+has not info.wait set. This can be done only by non F_SETLKW plock ops as
+dlm_controld always reads a specific plock op (list_move_tail() from
+send_list to recv_mlist) and write the result immediately back.
 
-thanks,
+This behaviour is for F_SETLKW not possible as multiple waiters can be
+get a result back in an random order. To avoid a collisions in cases
+like [0] or [1] this patch adds more fields to compare the plock
+operations as the lock request is the same. This is also being made in
+NFS to find an result for an asynchronous F_SETLKW lock request [2][3]. We
+still can't find the exact lock request for a specific result if the
+lock request is the same, but if this is the case we don't care the
+order how the identical lock requests get their result back to grant the
+lock.
 
-greg k-h
+[0] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testcase/testcases/kernel/syscalls/fcntl/fcntl40.c
+[1] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testcase/testcases/kernel/syscalls/fcntl/fcntl41.c
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/lockd/lockd.h?h=v6.4-rc1#n373
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/lockd/svclock.c?h=v6.4-rc1#n731
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+change since v2:
+ - don't split recv_list into recv_setlkw_list
+
+ fs/dlm/plock.c | 43 ++++++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
+
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 31bc601ee3d8..53d17dbbb716 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -391,7 +391,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+ 		if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+ 			list_del(&op->list);
+ 		else
+-			list_move(&op->list, &recv_list);
++			list_move_tail(&op->list, &recv_list);
+ 		memcpy(&info, &op->info, sizeof(info));
+ 	}
+ 	spin_unlock(&ops_lock);
+@@ -430,19 +430,36 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+ 		return -EINVAL;
+ 
+ 	spin_lock(&ops_lock);
+-	list_for_each_entry(iter, &recv_list, list) {
+-		if (iter->info.fsid == info.fsid &&
+-		    iter->info.number == info.number &&
+-		    iter->info.owner == info.owner) {
+-			list_del_init(&iter->list);
+-			memcpy(&iter->info, &info, sizeof(info));
+-			if (iter->data)
+-				do_callback = 1;
+-			else
+-				iter->done = 1;
+-			op = iter;
+-			break;
++	if (info.wait) {
++		list_for_each_entry(iter, &recv_list, list) {
++			if (iter->info.fsid == info.fsid &&
++			    iter->info.number == info.number &&
++			    iter->info.owner == info.owner &&
++			    iter->info.pid == info.pid &&
++			    iter->info.start == info.start &&
++			    iter->info.end == info.end &&
++			    iter->info.ex == info.ex &&
++			    iter->info.wait) {
++				op = iter;
++				break;
++			}
+ 		}
++	} else {
++		list_for_each_entry(iter, &recv_list, list) {
++			if (!iter->info.wait) {
++				op = iter;
++				break;
++			}
++		}
++	}
++
++	if (op) {
++		list_del_init(&op->list);
++		memcpy(&op->info, &info, sizeof(info));
++		if (op->data)
++			do_callback = 1;
++		else
++			op->done = 1;
+ 	}
+ 	spin_unlock(&ops_lock);
+ 
+-- 
+2.31.1
+
