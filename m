@@ -2,107 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69CDF70EC38
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 05:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA0070EC57
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 06:03:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234895AbjEXD62 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 23:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58660 "EHLO
+        id S231316AbjEXEDt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 00:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239427AbjEXD60 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 23:58:26 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD63E6;
-        Tue, 23 May 2023 20:58:25 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-51b33c72686so321073a12.1;
-        Tue, 23 May 2023 20:58:25 -0700 (PDT)
+        with ESMTP id S233663AbjEXEDs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 00:03:48 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3532E10CA
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 21:03:26 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id 46e09a7af769-6af70ff2761so151895a34.0
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 21:03:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684900704; x=1687492704;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eoFUq15BfcYMvDYkbbe5qe+ZjxrdZ/BZL1FuqpuGwYI=;
-        b=NPPQHhxaY0hpKceunhe5E93G5vLNcXTCZl0myVLNJpzoM5OOYU2rLMn0jk2PhAJJhE
-         YePOJZUxLRhZixUMSjoPqLYNt2uSMkAPGnXWbG0EF8hplN9DGzVObkBxrvHOwduGtT2R
-         /qqYApyVQKHeCTzI1sMmDKFgOGB80MybLgWMTccZVvJUIA5qpO72g/PfY52YEVn+ANnc
-         N+9nWkoPAivd68El2FLGAYA0ZLNKdkcUS5mjtfz2EW6GAQYkMbXa18aZFvJT8N1uobCe
-         oFqgvDX6kLnPNwwW1qRBi/Qmi0mWMWZRzc2o/D0xbFFz2w+LTDPvu2QEjh8ly2b5BD/e
-         rGuQ==
+        d=gmail.com; s=20221208; t=1684901004; x=1687493004;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cLnE1viA2YkFQlIS735wdkGePat6D3JreXDWC7/8f9c=;
+        b=Pxgebf5ox6ifucfvPjzc+o4/4g+bX7gn4xZh3rbTtjjUwrct9kJql2B0ssxMFZMMTv
+         uSDmsbkYx+/urpTR1TQCEh5Yu30f7sQ7z9QZZCGF8vb8scbXelbBCivrj7xHUdA+gc2D
+         AVvUHvUXdtfov/3jhKr0rwEVwycjsWqWssNkNB5+wOwWaX0WQNFl0tp7PItGcoNkNExB
+         IASCTmA2LRlPk8xLlcuxDpLJzAyJN5xIrzhZEDJAbJ7fs+KUyPPtT4OAlg0K2LaCjlnn
+         J3AGxnxTEOVQUzuIPz0WKmyaRAYmSbJcHcPixI3HsivULPLjZIgnxtNqaN6sgBVKhCsq
+         UW6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684900704; x=1687492704;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eoFUq15BfcYMvDYkbbe5qe+ZjxrdZ/BZL1FuqpuGwYI=;
-        b=S3LzdIOxQutcr6DzIcJnTL3YOicOOnD/OQiuPnofyCalmr83Gj+bsjC5XipxdPeK0C
-         Rn/Lzes3diA3T7fKSyrzt+MjfeUxjRUDkI5GfeTX70im0fm0hqFJchadG+5JpjXCDS39
-         +ZhsycsgoxkcocBCiQw1tn1H+9E3oL/yVoHoRpjfDPMmDcBaZOX9ohDuAHCJDmQsIQ+r
-         ArEBlxxIR7cJaezZPgrvRF+yimC84l/vab0CI+9TYNLPR0XKcSUzpcvoJas5FwD3O428
-         eAnEF/KjUlVJgYdx4S6QDdk8WnpWdBWM3uk5mMRV8Oj6znsY936vb1r+Wiz5kNL1/GxQ
-         7zwQ==
-X-Gm-Message-State: AC+VfDy9aBoGQG6P9YaB0fxkJ9gsAqocaFrJ1le4t4Tj47nduoJ9xoz4
-        plsq/UGWv5TCw5t8QCfshw+5NVKH234=
-X-Google-Smtp-Source: ACHHUZ74R9rTWqtJ3JwYDu9EiI/76WjbYN939ePLnJ/gNaNyOyE6aZuV+jiidKERNWRW6RKgOQEi+g==
-X-Received: by 2002:a17:902:ea0f:b0:1ad:fa2e:17fc with SMTP id s15-20020a170902ea0f00b001adfa2e17fcmr18549234plg.2.1684900704188;
-        Tue, 23 May 2023 20:58:24 -0700 (PDT)
-Received: from debian.me (subs02-180-214-232-68.three.co.id. [180.214.232.68])
-        by smtp.gmail.com with ESMTPSA id jc1-20020a17090325c100b001a1b66af22fsm7582775plb.62.2023.05.23.20.58.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 20:58:23 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 2981B1069C0; Wed, 24 May 2023 10:58:21 +0700 (WIB)
-Date:   Wed, 24 May 2023 10:58:20 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Haochen Tong <linux@hexchain.org>, stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, linux-input@vger.kernel.org,
-        Basavaraj Natikar <basavaraj.natikar@amd.com>
-Subject: Re: amd_sfh driver causes kernel oops during boot
-Message-ID: <ZG2LXN2+Sa2PWJqz@debian.me>
-References: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
+        d=1e100.net; s=20221208; t=1684901004; x=1687493004;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cLnE1viA2YkFQlIS735wdkGePat6D3JreXDWC7/8f9c=;
+        b=VM7L92m7RvAboaUhzhkmmtjGI+XcNyWzhPkF/PpEZjkcyAOH7ZHkiXRxGfLepYkqiZ
+         iCnK8p4O+B9w41qvxOBz/zt4oO2X8ltpVArPIc8eRb/ySUWp1boQ4JmM9oJ054PjBCQ8
+         iYQ8gMmmcK7hWivQ/PSKHzDLpHmGRdUXnEi73CLgpuP+mrQYyrdjkt7hxYmq+IcRElC4
+         bTp/6h5j2w9cM0BL7ZhAEgit+EFnMCp1We7+xIHgktSxuclazBdtK97L2YvtIgNfo9vF
+         /v7eHlorK3pWquQFthcbKIwwwdy+rb0x+nQgCkBtPK005BKOZzeXfXJovAnGETQBjfXR
+         lQvw==
+X-Gm-Message-State: AC+VfDzlaIBR+VW15qmBVMOOTpnwV/CvpeHKulCNZVDCwimxNuPXb+sz
+        OyP3oUdHV2rDL19SoIE/j7oDJLYDmuScWvUE8Ow=
+X-Google-Smtp-Source: ACHHUZ7DmLRDPW9B9T7MqHa7JI5Wi1SbJZNDpizCh84Z5QCsVl7ESANJro/dFGs9UX5tHiznc885GVm9ptdPTrhRsdA=
+X-Received: by 2002:a9d:7dd2:0:b0:6af:8743:daac with SMTP id
+ k18-20020a9d7dd2000000b006af8743daacmr2881168otn.36.1684901004101; Tue, 23
+ May 2023 21:03:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="YBhjpwkXDbp8U+2d"
-Content-Disposition: inline
-In-Reply-To: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Sender: arryod72@gmail.com
+Received: by 2002:a05:6358:8423:b0:121:cdc4:fec4 with HTTP; Tue, 23 May 2023
+ 21:03:23 -0700 (PDT)
+From:   "Mrs. Sayouba Athelah" <sayoubaathelah@gmail.com>
+Date:   Tue, 23 May 2023 21:03:23 -0700
+X-Google-Sender-Auth: 1aSfSOFahaZ2M_3nQMoPbT3IkSs
+Message-ID: <CADS+2b5kQktB3Ds=nN0pLxPxv3o6qZBBRUDE+n+ca5E-9TS-Eg@mail.gmail.com>
+Subject: Re
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,
+        MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:342 listed in]
+        [list.dnswl.org]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [arryod72[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [sayoubaathelah[at]gmail.com]
+        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Dear God's Select
 
---YBhjpwkXDbp8U+2d
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I am writing this mail to you with heavy tears In my eyes and great sorrow
+in my heart, My Name is Mrs Athelah Sayouba, I am from Tunisia and I am
+contacting you from a hospital in Burkina Faso. I want to tell you this
+because I don't have any other option than to tell you as I was touched to
+open up to you. I married Mr. Sayouba Brown who worked with the Tunisia
+Ambassador in Burkina Faso for fifteen years before he died in 2016. We
+were married for eleven years without a child.
 
-On Wed, May 24, 2023 at 01:27:57AM +0800, Haochen Tong wrote:
-> Hi,
->=20
-> Since kernel 6.3.0 (and also 6.4rc3), on a ThinkPad Z13 system with Arch
-> Linux, I've noticed that the amd_sfh driver spews a lot of stack traces
-> during boot. Sometimes it is an oops:
+He died after a brief illness that lasted for only three days. Since his
+death I decided not to remarry. When my late husband was alive he deposited
+the sum of US$ 8.500.000 million. (Eight Million Five hundred Thousand
+Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in west
+Africa. Presently this money is still in the bank. He made this money
+available for exportation of Gold from Burkina Faso mining.
 
-What last kernel version before this regression occurs? Do you mean
-v6.2?
+Recently, my doctor told me that I would not last for the period of seven
+months due to blood cancer and hemorrhagic stroke. Having known my
+condition I decided to hand this money over to you to take care of the
+less-privileged people, you will utilize this money the way I am going to
+instruct herein. I want you to take 30 Percent of the total money for your
+personal use. While 70% of the money you will use to build an orphanage
+home in my late husband's name. And help the poor people in the street. I
+grew up as an Orphan and I don't have anybody as my family member, just to
+endeavor that the house of God is maintained. I am doing this In regards to
+my late husband's wish. This illness has affected me so much. I am just
+like a living death.
 
-Thanks.
+As soon as I receive your reply. I will give you the contact of the bank in
+Burkina Faso and I will also instruct the Bank Manager to issue you an
+authority letter that will prove you the present beneficiary of the money
+in the bank, that is if you assure me that you will act accordingly as I
+Stated herein.
 
---=20
-An old man doll... just what I always wanted! - Clara
-
---YBhjpwkXDbp8U+2d
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZG2LWAAKCRD2uYlJVVFO
-o7V9AQC0xTz1VBHy4yB1nKdpCOLGimzuKpfUKeRBzGsZaiiIAAD+MGxV4LLpO9Wb
-cbsOdM8WB+gLP+Nu/W/lvhtvcoyJDQo=
-=B11Z
------END PGP SIGNATURE-----
-
---YBhjpwkXDbp8U+2d--
+From Mrs. Athelah Sayouba.
