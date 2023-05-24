@@ -2,257 +2,313 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B138670F203
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 11:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7395F70F3BC
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 12:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240666AbjEXJUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 05:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
+        id S230225AbjEXKI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 06:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240660AbjEXJUI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 05:20:08 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE2190;
-        Wed, 24 May 2023 02:20:06 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id C3A2522452;
-        Wed, 24 May 2023 09:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1684920004;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XqhDqAWF822dUjbzoUy3YfL5MEAfeA0mXDj6BA7NVe4=;
-        b=u56OFL9DCCQ4HGgpm1H3zcV8NU4UIrXiwE9OYk+jz/eHnP8HRHtdB0tdiUN19sKjqo74nQ
-        3WhqinSSce9/65AQ6qMlzninUJT+KnkW+SRONQvzCUCdWoLUY3GnAlb/OHVq+sPT8GjVlH
-        ZtM9ldkQuBlqbZUi+G0GgQ8WaTRly1o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1684920004;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XqhDqAWF822dUjbzoUy3YfL5MEAfeA0mXDj6BA7NVe4=;
-        b=7PpJ1JFte3cJBYnZqUGAb7tl55Yd9SIbD69eqEO0pIQEoAN+cSUIsfIbH5iWwWyficwCd5
-        UgLVULIvlfWStRDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 79D49133E6;
-        Wed, 24 May 2023 09:20:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id NO0aHcTWbWSZegAAMHmgww
-        (envelope-from <dsterba@suse.cz>); Wed, 24 May 2023 09:20:04 +0000
-Date:   Wed, 24 May 2023 11:13:57 +0200
-From:   David Sterba <dsterba@suse.cz>
-To:     Forza <forza@tnonline.net>
-Cc:     Uladzislau Rezki <urezki@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux btrfs <linux-btrfs@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>,
-        Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, a1bert@atlas.cz
-Subject: Re: Fwd: vmalloc error: btrfs-delalloc btrfs_work_helper [btrfs] in
- kernel 6.3.x
-Message-ID: <20230524091357.GH32559@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <efa04d56-cd7f-6620-bca7-1df89f49bf4b@gmail.com>
- <fcf1d04.faed4a1a.18844d8e78f@tnonline.net>
- <ZGwcVTpQNBoJHBB+@debian.me>
- <ZGyVVQxnw6Tn7Xb8@pc636>
- <c9db92d.faed4a1c.1884c5550fb@tnonline.net>
+        with ESMTP id S229566AbjEXKIZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 06:08:25 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C93EBF;
+        Wed, 24 May 2023 03:08:24 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae4e49727eso701925ad.1;
+        Wed, 24 May 2023 03:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684922904; x=1687514904;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vTAewHea8YLSZbY5CEcCY/XV0QWSTJKfvdXloPN5U3Y=;
+        b=VpvyEYNWoM/QzRL7GJrPCFIlXiCFkBHLLgV52n3fsf/5REkX+f/pn1OSw/6t8cQAec
+         spB9nn6vMPeXpzgATqwDVuMmS8EZJ4+QBen5nHxdD9Gq1ez0YDgo0Xd5aNj7d21q1UFG
+         +06qTeJwFgY83xpm4fGpm6a75oPVJwRz67rcAH1cfM3/e3UQiOE8Oj8P+Daw5pKtXApG
+         L/SUuvDobYtDB8YUzDs7AbOTU/y6Rl7xh4A6MzlCik+NpfSowMhvRsiYkDTo90ekx2W5
+         TDlHRu/7A+jgX1bPYDDOL/a3WZh4C4IHPLZeM9Wcr+Vcm0bn8kwgEnec1m4XkrJmiKQo
+         fD3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684922904; x=1687514904;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vTAewHea8YLSZbY5CEcCY/XV0QWSTJKfvdXloPN5U3Y=;
+        b=Qec8DJCBloY3Rzyhz1Ipsw1grs/dWGX8itpHzpsKTVsFzUM8gce2btQw+4rjOk4pPt
+         CL7U26o829bEAI4jLFxOj6W3nvDnVtIUvjHM+oJxh+Ox1PhEPf/YKk4Ief+lLI4Wd98p
+         pFfXuzaaURfEZUhMyWJDUac0hdYCHDltWybO2U6doPdTnavQ7T8C7pT3xaXRvQEGbD8y
+         aYEBTzh0anCrPuBXXhyCT2CHaicEkLXJvoNezL830krYDfCTuWnJlK9KZ0+X6dEu2ctW
+         +O+4uucr22lIT6WYdd4G4dBcrkPyj+VqEE6qVB8wjPc6scYyFGLTo4wQMb88qD0d6qyb
+         hOgQ==
+X-Gm-Message-State: AC+VfDzJaqjYj2DVilKjE8zYXyJvEucnZMHAZ4r98PaQTboLvs3X7Yd1
+        YH6nQhLwk87LpNsdxBhD0SQ=
+X-Google-Smtp-Source: ACHHUZ40ZSsvLQqPLPbHUyxcFwxzuURtJnAHGAu8S/fFb6Xiyz9kkWfyuXAWna9+Y0Ni4X3vSqLWbQ==
+X-Received: by 2002:a17:903:124a:b0:1ad:e198:c4f2 with SMTP id u10-20020a170903124a00b001ade198c4f2mr20306134plh.18.1684922903808;
+        Wed, 24 May 2023 03:08:23 -0700 (PDT)
+Received: from debian.me (subs02-180-214-232-28.three.co.id. [180.214.232.28])
+        by smtp.gmail.com with ESMTPSA id n7-20020a170902e54700b001aae625e422sm8363548plf.37.2023.05.24.03.08.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 May 2023 03:08:23 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id E7904106AFC; Wed, 24 May 2023 17:08:19 +0700 (WIB)
+Date:   Wed, 24 May 2023 17:08:19 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Haochen Tong <linux@hexchain.org>, stable@vger.kernel.org
+Cc:     Linux Regressions <regressions@lists.linux.dev>,
+        Linux Input Devices <linux-input@vger.kernel.org>,
+        Basavaraj Natikar <basavaraj.natikar@amd.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Subject: Re: amd_sfh driver causes kernel oops during boot
+Message-ID: <ZG3iE4l5X0V4WMdI@debian.me>
+References: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2ItIkkIzs+ONvBcs"
 Content-Disposition: inline
-In-Reply-To: <c9db92d.faed4a1c.1884c5550fb@tnonline.net>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This looks like a different set of problems, though all of them seem to
-start on the compression write path in btrfs.
 
-On Wed, May 24, 2023 at 07:57:19AM +0200, Forza wrote:
-> [   8.641506] 8021q: adding VLAN 0 to HW filter on device enp4s0
-> [   13.841691] wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
-> [   13.841705] wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-> [13917.280527] ------------[ cut here ]------------
-> [13917.280753] default_enter_idle leaked IRQ state
-> [13917.281004] WARNING: CPU: 3 PID: 0 at drivers/cpuidle/cpuidle.c:269 cpuidle_enter_state+0x3bb/0x430
+--2ItIkkIzs+ONvBcs
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Warning in cpuilde
+On Wed, May 24, 2023 at 01:27:57AM +0800, Haochen Tong wrote:
+> Hi,
+>=20
+> Since kernel 6.3.0 (and also 6.4rc3), on a ThinkPad Z13 system with Arch
+> Linux, I've noticed that the amd_sfh driver spews a lot of stack traces
+> during boot. Sometimes it is an oops:
+>=20
+> BUG: unable to handle page fault for address: 000000000001000f
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 8 PID: 457 Comm: (udev-worker) Not tainted 6.3.3-arch1-1 #1
+> fa7b7e0107004b3021a57a74b951e0a25e7e8584
+> Hardware name: LENOVO 21D2CTO1WW/21D2CTO1WW, BIOS N3GET47W (1.27 )
+> 12/08/2022
+> RIP: 0010:amd_sfh_get_report+0x1e/0x110 [amd_sfh]
+> Code: 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f 44 00 00 41 57
+> 41 56 41 55 41 54 55 53 48 8b 87 60 1d 00 00 48 8b 68 08 <8b> 45 10 85 c0=
+ 0f
+> 84 a9 00 00 00 49 89 fc 41 89 f7 41 89 d6 31 db
+> RSP: 0018:ffffb164426f3a20 EFLAGS: 00010246
+> RAX: ffff9b0ae6b7bd00 RBX: ffff9b0ac0f46000 RCX: 0000000000000000
+> RDX: 0000000000000002 RSI: 0000000000000002 RDI: ffff9b0ac0f46000
+> RBP: 000000000000ffff R08: ffffb164426f3ab8 R09: ffffb164426f3ab8
+> R10: 000000000020031b R11: ffff9b0ace40ac00 R12: ffff9b0ace40ac00
+> R13: 0000000000000002 R14: 0000000000000002 R15: ffff9b0acd213010
+> FS:  00007fe9ceb82200(0000) GS:ffff9b1122000000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000000000001000f CR3: 000000010940c000 CR4: 0000000000750ee0
+> PKRU: 55555554
+> Call Trace:
+>   <TASK>
+>   amdtp_hid_request+0x36/0x50 [amd_sfh
+> 2e3095779aada9fdb1764f08ca578ccb14e41fe4]
+>   sensor_hub_get_feature+0xad/0x170 [hid_sensor_hub
+> d6157999c9d260a1bfa6f27d4a0dc2c3e2c5654e]
+>   hid_sensor_parse_common_attributes+0x217/0x310 [hid_sensor_iio_common
+> 07a7935272aa9c7a28193b574580b3e953a64ec4]
+>   hid_gyro_3d_probe+0x7f/0x2e0 [hid_sensor_gyro_3d
+> 9f2eb51294a1f0c0315b365f335617cbaef01eab]
+>   platform_probe+0x44/0xa0
+>   really_probe+0x19e/0x3e0
+>   ? __pfx___driver_attach+0x10/0x10
+>   __driver_probe_device+0x78/0x160
+>   driver_probe_device+0x1f/0x90
+>   __driver_attach+0xd2/0x1c0
+>   bus_for_each_dev+0x88/0xd0
+>   bus_add_driver+0x116/0x220
+>   driver_register+0x59/0x100
+>   ? __pfx_init_module+0x10/0x10 [hid_sensor_gyro_3d
+> 9f2eb51294a1f0c0315b365f335617cbaef01eab]
+>   do_one_initcall+0x5d/0x240
+>   do_init_module+0x4a/0x200
+>   __do_sys_init_module+0x17f/0x1b0
+>   do_syscall_64+0x60/0x90
+>   ? ksys_read+0x6f/0xf0
+>   ? syscall_exit_to_user_mode+0x1b/0x40
+>   ? do_syscall_64+0x6c/0x90
+>   ? exc_page_fault+0x7c/0x180
+>   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+> RIP: 0033:0x7fe9ce721f9e
+> Code: 48 8b 0d bd ed 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00
+> 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d 01 f0 ff=
+ ff
+> 73 01 c3 48 8b 0d 8a ed 0c 00 f7 d8 64 89 01 48
+> RSP: 002b:00007ffd280dd828 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+> RAX: ffffffffffffffda RBX: 000055b72a37f630 RCX: 00007fe9ce721f9e
+> RDX: 00007fe9cec7a343 RSI: 00000000000077f8 RDI: 000055b72a56c7f0
+> RBP: 00007fe9cec7a343 R08: 00000000000077f8 R09: 0000000000000000
+> R10: 000000000001a0a1 R11: 0000000000000246 R12: 0000000000020000
+> R13: 000055b72a363b90 R14: 000055b72a37f630 R15: 000055b72a36a070
+>   </TASK>
+> Modules linked in: hid_sensor_accel_3d(+) hid_sensor_gyro_3d(+) qrtr
+> hid_sensor_trigger snd_sof industrialio_triggered_buffer ath11k_pci(+)
+> kfifo_buf snd_sof_utils hid_sensor_iio_common joydev ath11k industrialio
+> snd_soc_core mousedev qmi_helpers snd_compress hid_sensor_hub
+> snd_hda_scodec_cs35l41_spi ac97_bus snd_hda_codec_realtek(+)
+> snd_pcm_dmaengine intel_rapl_msr snd_hda_codec_hdmi snd_hda_codec_generic
+> intel_rapl_common mac80211 snd_pci_ps btusb snd_rpl_pci_acp6x btrtl
+> snd_hda_intel edac_mce_amd uvcvideo btbcm snd_acp_pci snd_intel_dspcfg
+> snd_pci_acp6x videobuf2_vmalloc snd_intel_sdw_acpi libarc4 uvc btintel
+> snd_usb_audio(+) snd_pci_acp5x videobuf2_memops btmtk snd_hda_codec kvm_a=
+md
+> videobuf2_v4l2 snd_hda_scodec_cs35l41_i2c snd_usbmidi_lib
+> snd_hda_scodec_cs35l41 snd_rn_pci_acp3x ucsi_acpi bluetooth videodev
+> snd_hda_core typec_ucsi snd_acp_config snd_hda_cs_dsp_ctls wacom(+)
+> hid_multitouch cfg80211 snd_rawmidi sp5100_tco kvm snd_seq_device cs_dsp
+> videobuf2_common typec ecdh_generic snd_soc_acpi
+>   think_lmi snd_hwdep snd_pcm irqbypass crc16 snd_soc_cs35l41_lib mhi
+> thunderbolt firmware_attributes_class snd_pci_acp3x amd_sfh(+) k10temp
+> psmouse roles rapl i2c_piix4 mc snd_timer wmi_bmof serial_multi_instantia=
+te
+> i2c_hid_acpi acpi_tad i2c_hid amd_pmf amd_pmc mac_hid sch_fq tcp_bbr
+> dm_multipath i2c_dev crypto_user fuse loop zram ip_tables x_tables xfs
+> libcrc32c crc32c_generic dm_crypt cbc encrypted_keys trusted asn1_encoder
+> tee usbhid dm_mod amdgpu i2c_algo_bit serio_raw thinkpad_acpi drm_ttm_hel=
+per
+> atkbd libps2 crct10dif_pclmul vivaldi_fmap crc32_pclmul ledtrig_audio
+> crc32c_intel polyval_clmulni ttm polyval_generic drm_buddy nvme gf128mul
+> platform_profile gpu_sched ghash_clmulni_intel sha512_ssse3 snd aesni_int=
+el
+> soundcore drm_display_helper crypto_simd rfkill nvme_core xhci_pci cryptd
+> cec ccp xhci_pci_renesas i8042 video nvme_common serio wmi
+> CR2: 000000000001000f
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:amd_sfh_get_report+0x1e/0x110 [amd_sfh]
+> Code: 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f 44 00 00 41 57
+> 41 56 41 55 41 54 55 53 48 8b 87 60 1d 00 00 48 8b 68 08 <8b> 45 10 85 c0=
+ 0f
+> 84 a9 00 00 00 49 89 fc 41 89 f7 41 89 d6 31 db
+> RSP: 0018:ffffb164426f3a20 EFLAGS: 00010246
+> RAX: ffff9b0ae6b7bd00 RBX: ffff9b0ac0f46000 RCX: 0000000000000000
+> RDX: 0000000000000002 RSI: 0000000000000002 RDI: ffff9b0ac0f46000
+> RBP: 000000000000ffff R08: ffffb164426f3ab8 R09: ffffb164426f3ab8
+> R10: 000000000020031b R11: ffff9b0ace40ac00 R12: ffff9b0ace40ac00
+> R13: 0000000000000002 R14: 0000000000000002 R15: ffff9b0acd213010
+> FS:  00007fe9ceb82200(0000) GS:ffff9b1122000000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000000000001000f CR3: 000000010940c000 CR4: 0000000000750ee0
+> PKRU: 55555554
+>=20
+> Sometimes it is a list corruption in the same function with a similar sta=
+ck:
+>=20
+> ------------[ cut here ]------------
+> list_add corruption. next is NULL.
+> WARNING: CPU: 5 PID: 433 at lib/list_debug.c:25 __list_add_valid+0x57/0xa0
+> ...
+> CPU: 5 PID: 433 Comm: (udev-worker) Not tainted 6.4.0-rc3-1-mainline #1
+> b60166e85cb97a6631db26f9dcda0196ed7a0c93
+> Hardware name: LENOVO 21D2CTO1WW/21D2CTO1WW, BIOS N3GET47W (1.27 )
+> 12/08/2022
+> RIP: 0010:__list_add_valid+0x57/0xa0
+> Code: 01 00 00 00 c3 cc cc cc cc 48 c7 c7 58 91 e6 9a e8 1e b9 a8 ff 0f 0b
+> 31 c0 c3 cc cc cc cc 48 c7 c7 80 91 e6 9a e8 09 b9 a8 ff <0f> 0b eb e9 48=
+ 89
+> c1 48 c7 c7 a8 91 e6 9a e8 f6 b8 a8 ff 0f 0b eb
+> RSP: 0018:ffffad9dc0c7bb10 EFLAGS: 00010286
+> RAX: 0000000000000000 RBX: ffff92d5a8099448 RCX: 0000000000000027
+> RDX: ffff92dbe1f61688 RSI: 0000000000000001 RDI: ffff92dbe1f61680
+> RBP: ffff92d59ea93508 R08: 0000000000000000 R09: ffffad9dc0c7b9a0
+> R10: 0000000000000003 R11: ffffffff9b6ca808 R12: 0000000000000000
+> R13: ffff92d5a8099440 R14: ffff92d59ea93760 R15: 0000000000000002
+> FS:  00007fbaf0262200(0000) GS:ffff92dbe1f40000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00005651de666000 CR3: 000000011cfee000 CR4: 0000000000750ee0
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+>  amd_sfh_get_report+0xba/0x110 [amd_sfh
+> 78bf82e66cdb2ccf24cbe871a0835ef4eedddb17]
+>  amdtp_hid_request+0x36/0x50 [amd_sfh
+> 78bf82e66cdb2ccf24cbe871a0835ef4eedddb17]
+>  sensor_hub_get_feature+0xad/0x170 [hid_sensor_hub
+> 30e53e2c49ea1702e2482c0b3860e22265679e39]
+>  hid_sensor_parse_common_attributes+0x217/0x310 [hid_sensor_iio_common
+> ed7fba7a4d4147d48156e6a4b2a034ad3fc94350]
+>  hid_gyro_3d_probe+0x7f/0x2e0 [hid_sensor_gyro_3d
+> 10978a2cdfc8979f2a7366fcd005e0ea826088eb]
+>  platform_probe+0x44/0xa0
+>  really_probe+0x19e/0x3e0
+>  ? __pfx___driver_attach+0x10/0x10
+>  __driver_probe_device+0x78/0x160
+>  driver_probe_device+0x1f/0x90
+>  __driver_attach+0xd2/0x1c0
+>  bus_for_each_dev+0x88/0xd0
+>  bus_add_driver+0x116/0x220
+>  driver_register+0x59/0x100
+>  ? __pfx_hid_gyro_3d_platform_driver_init+0x10/0x10 [hid_sensor_gyro_3d
+> 10978a2cdfc8979f2a7366fcd005e0ea826088eb]
+>  do_one_initcall+0x5d/0x240
+>  do_init_module+0x60/0x240
+>  __do_sys_init_module+0x17f/0x1b0
+>  do_syscall_64+0x60/0x90
+>  ? exc_page_fault+0x7f/0x180
+>  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+> RIP: 0033:0x7fbaf06c0f9e
+> Code: 48 8b 0d bd ed 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00
+> 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d 01 f0 ff=
+ ff
+> 73 01 c3 48 8b 0d 8a ed 0c 00 f7 d8 64 89 01 48
+> RSP: 002b:00007ffc5ce88528 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+> RAX: ffffffffffffffda RBX: 00005651de36dff0 RCX: 00007fbaf06c0f9e
+> RDX: 00007fbaf0ba9343 RSI: 00000000000079f0 RDI: 00005651de646fe0
+> RBP: 00007fbaf0ba9343 R08: 00000000000079f0 R09: 0000000000000000
+> R10: 0000000000019fb1 R11: 0000000000000246 R12: 0000000000020000
+> R13: 00005651de45fb10 R14: 00005651de36dff0 R15: 00005651de44d5f0
+>  </TASK>
+> ---[ end trace 0000000000000000 ]---
+>=20
+> This occurs during almost every boot. When it happens there is usually a
+> (udev-worker) process lingering forever, which is unkillable and even
+> prevents shutdown.
+>=20
+> Looking at past journals it never happened before 6.3 so I believe it is a
+> regression.
+>=20
+> Relevant device:
+> 63:00.7 Signal processing controller [1180]: Advanced Micro Devices, Inc.
+> [AMD] Sensor Fusion Hub [1022:15e4]
+>         Subsystem: Lenovo Sensor Fusion Hub [17aa:22f1]
+>         Kernel driver in use: pcie_mp2_amd
+>         Kernel modules: amd_sfh
+>=20
 
-> [13917.281046] Modules linked in: wireguard curve25519_x86_64 libcurve25519_generic ip6_udp_tunnel udp_tunnel cfg80211 rfkill 8021q garp mrp stp llc binfmt_misc intel_rapl_msr intel_rapl_common kvm_amd iTCO_wdt ccp intel_pmc_bxt iTCO_vendor_support kvm i2c_i801 virtio_gpu irqbypass pcspkr virtio_dma_buf joydev i2c_smbus drm_shmem_helper lpc_ich virtio_balloon drm_kms_helper crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel sha512_ssse3 virtio_console virtio_net net_failover virtio_scsi failover serio_raw virtio_blk qemu_fw_cfg
-> [13917.281140] CPU: 3 PID: 0 Comm: swapper/3 Not tainted 6.3.1-gentoo-mm-patched #4
-> [13917.281150] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
-> [13917.281154] RIP: 0010:cpuidle_enter_state+0x3bb/0x430
-> [13917.281176] RSP: 0018:ffffa153c00b7ea0 EFLAGS: 00010286
-> [13917.281182] RAX: ffff8c15ebfafa28 RBX: ffffc153bfd80900 RCX: 000000000000083f
-> [13917.281186] RDX: 000000000118feed RSI: 00000000000000f6 RDI: 000000000000083f
-> [13917.281189] RBP: 0000000000000001 R08: 0000000000000000 R09: ffffa153c00b7d60
-> [13917.281193] R10: 0000000000000003 R11: ffffffffacb399e8 R12: ffffffffacc2e320
-> [13917.281196] R13: ffffffffacc2e3a0 R14: 0000000000000001 R15: 0000000000000000
-> [13917.281202] FS:  0000000000000000(0000) GS:ffff8c15ebf80000(0000) knlGS:0000000000000000
-> [13917.281206] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [13917.281210] CR2: 00007f71840b39c8 CR3: 0000000102998000 CR4: 00000000003506e0
-> [13917.281217] Call Trace:
-> [13917.281221]  <TASK>
-> [13917.281228]  cpuidle_enter+0x29/0x40
-> [13917.281244]  do_idle+0x19b/0x200
-> [13917.281292]  cpu_startup_entry+0x19/0x20
-> [13917.281297]  start_secondary+0x101/0x120
-> [13917.281324]  secondary_startup_64_no_verify+0xe5/0xeb
-> [13917.281343]  </TASK>
-> [13917.281346] ---[ end trace 0000000000000000 ]---
-> [17206.750165] BTRFS info (device vdb): using xxhash64 (xxhash64-generic) checksum algorithm
-> [17206.750190] BTRFS info (device vdb): using free space tree
-> [17206.904010] BTRFS info (device vdb): auto enabling async discard
-> [17206.933302] BTRFS info (device vdb): checking UUID tree
-> [17344.541839] sched: RT throttling activated
-> [18284.216538] hrtimer: interrupt took 23434934 ns
-> [18737.100477] BUG: unable to handle page fault for address: 0000000079e0afc0
+Thanks for the bug report. I'm adding it to regzbot:
 
-BUG
+#regzbot ^introduced: v6.2..v6.3
+#regzbot title: amd_sfh driver causes kernel oops (udev-worker becomes zomb=
+ie) on ThinkPad Z13
 
-> [18737.100883] #PF: supervisor read access in kernel mode
-> [18737.101155] #PF: error_code(0x0000) - not-present page
-> [18737.101462] PGD 0 P4D 0 
-> [18737.101715] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [18737.101968] CPU: 1 PID: 25287 Comm: kworker/u8:7 Tainted: G        W          6.3.1-gentoo-mm-patched #4
-> [18737.102391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
-> [18737.102860] Workqueue: btrfs-delalloc btrfs_work_helper
-> [18737.103346] RIP: 0010:find_free_extent+0x20a/0x15c0
-> [18737.103900] Code: 4d 8d ba 10 ff ff ff 48 83 c0 0f 49 8d 97 f0 00 00 00 48 c1 e0 04 48 01 d8 48 39 c2 0f 84 c5 03 00 00 41 c6 85 84 00 00 00 00 <45> 8b 9f b0 00 00 00 45 85 db 0f 85 d8 0c 00 00 45 8b 75 28 4c 89
-> [18737.104851] RSP: 0018:ffffa153c0923bd0 EFLAGS: 00010203
-> [18737.105456] RAX: ffff8c14869240f0 RBX: ffff8c1486924000 RCX: 0000000000000001
-> [18737.106044] RDX: 0000000079e0b000 RSI: 0000000000000100 RDI: ffff8c14869bcc00
-> [18737.106519] RBP: ffff8c148b100000 R08: 0000000000000000 R09: 0000000000000000
-> [18737.107036] R10: 0000000079e0b000 R11: 000000000000151b R12: ffffa153c0923dd7
-> [18737.107363] R13: ffffa153c0923c90 R14: 0000000000000001 R15: 0000000079e0af10
-> [18737.107676] FS:  0000000000000000(0000) GS:ffff8c15ebe80000(0000) knlGS:0000000000000000
-> [18737.107971] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [18737.108260] CR2: 0000000079e0afc0 CR3: 00000001055e8000 CR4: 00000000003506e0
-> [18737.108606] Call Trace:
-> [18737.108964]  <TASK>
-> [18737.109273]  btrfs_reserve_extent+0x148/0x260
-> [18737.109601]  submit_compressed_extents+0x14f/0x490
-> [18737.109934]  async_cow_submit+0x37/0x90
-> [18737.110237]  btrfs_work_helper+0x13d/0x360
-> [18737.110542]  process_one_work+0x20f/0x410
-> [18737.110883]  worker_thread+0x4a/0x3b0
-> [18737.111185]  ? __pfx_worker_thread+0x10/0x10
-> [18737.111482]  kthread+0xda/0x100
-> [18737.111800]  ? __pfx_kthread+0x10/0x10
-> [18737.112097]  ret_from_fork+0x2c/0x50
-> [18737.112387]  </TASK>
-> [18737.112676] Modules linked in: wireguard curve25519_x86_64 libcurve25519_generic ip6_udp_tunnel udp_tunnel cfg80211 rfkill 8021q garp mrp stp llc binfmt_misc intel_rapl_msr intel_rapl_common kvm_amd iTCO_wdt ccp intel_pmc_bxt iTCO_vendor_support kvm i2c_i801 virtio_gpu irqbypass pcspkr virtio_dma_buf joydev i2c_smbus drm_shmem_helper lpc_ich virtio_balloon drm_kms_helper crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel sha512_ssse3 virtio_console virtio_net net_failover virtio_scsi failover serio_raw virtio_blk qemu_fw_cfg
-> [18737.114021] CR2: 0000000079e0afc0
-> [18737.114366] ---[ end trace 0000000000000000 ]---
-> [18737.114712] RIP: 0010:find_free_extent+0x20a/0x15c0
-> [18737.115059] Code: 4d 8d ba 10 ff ff ff 48 83 c0 0f 49 8d 97 f0 00 00 00 48 c1 e0 04 48 01 d8 48 39 c2 0f 84 c5 03 00 00 41 c6 85 84 00 00 00 00 <45> 8b 9f b0 00 00 00 45 85 db 0f 85 d8 0c 00 00 45 8b 75 28 4c 89
-> [18737.115864] RSP: 0018:ffffa153c0923bd0 EFLAGS: 00010203
-> [18737.116415] RAX: ffff8c14869240f0 RBX: ffff8c1486924000 RCX: 0000000000000001
-> [18737.117090] RDX: 0000000079e0b000 RSI: 0000000000000100 RDI: ffff8c14869bcc00
-> [18737.117882] RBP: ffff8c148b100000 R08: 0000000000000000 R09: 0000000000000000
-> [18737.118611] R10: 0000000079e0b000 R11: 000000000000151b R12: ffffa153c0923dd7
-> [18737.119416] R13: ffffa153c0923c90 R14: 0000000000000001 R15: 0000000079e0af10
-> [18737.120221] FS:  0000000000000000(0000) GS:ffff8c15ebe80000(0000) knlGS:0000000000000000
-> [18737.120994] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [18737.121868] CR2: 0000000079e0afc0 CR3: 00000001055e8000 CR4: 00000000003506e0
-> [18737.122624] note: kworker/u8:7[25287] exited with irqs disabled
-> [19006.920558] BUG: unable to handle page fault for address: 0000000079e0afc0
+--=20
+An old man doll... just what I always wanted! - Clara
 
-And again, so something is going wrong
+--2ItIkkIzs+ONvBcs
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> [19006.922015] #PF: supervisor read access in kernel mode
-> [19006.923354] #PF: error_code(0x0000) - not-present page
-> [19006.924636] PGD 0 P4D 0 
-> [19006.925868] Oops: 0000 [#2] PREEMPT SMP NOPTI
-> [19006.927066] CPU: 0 PID: 24329 Comm: crawl_writeback Tainted: G      D W          6.3.1-gentoo-mm-patched #4
-> [19006.928510] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
-> [19006.929817] RIP: 0010:find_free_extent+0x20a/0x15c0
-> [19006.931050] Code: 4d 8d ba 10 ff ff ff 48 83 c0 0f 49 8d 97 f0 00 00 00 48 c1 e0 04 48 01 d8 48 39 c2 0f 84 c5 03 00 00 41 c6 85 84 00 00 00 00 <45> 8b 9f b0 00 00 00 45 85 db 0f 85 d8 0c 00 00 45 8b 75 28 4c 89
-> [19006.933653] RSP: 0018:ffffa153c0d0f568 EFLAGS: 00010203
-> [19006.934972] RAX: ffff8c14869240f0 RBX: ffff8c1486924000 RCX: 0000000000000001
-> [19006.936236] RDX: 0000000079e0b000 RSI: 0000000000000100 RDI: ffff8c14869bcc00
-> [19006.937480] RBP: ffff8c148b100000 R08: 0000000000000000 R09: 0000000000000000
-> [19006.938750] R10: 0000000079e0b000 R11: 000000000000151b R12: ffffa153c0d0f757
-> [19006.939986] R13: ffffa153c0d0f628 R14: 0000000000000001 R15: 0000000079e0af10
-> [19006.941255] FS:  00007fb245ffb6c0(0000) GS:ffff8c15ebe00000(0000) knlGS:0000000000000000
-> [19006.942579] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [19006.943830] CR2: 0000000079e0afc0 CR3: 00000001055e8000 CR4: 00000000003506f0
-> [19006.945278] Call Trace:
-> [19006.946730]  <TASK>
-> [19006.947792]  ? release_pages+0x13e/0x490
-> [19006.948741]  btrfs_reserve_extent+0x148/0x260
-> [19006.949637]  cow_file_range+0x199/0x610
-> [19006.950396]  btrfs_run_delalloc_range+0x103/0x520
-> [19006.951135]  ? find_lock_delalloc_range+0x1ea/0x210
-> [19006.951802]  writepage_delalloc+0xb9/0x180
-> [19006.952401]  __extent_writepage+0xeb/0x410
-> [19006.952985]  extent_write_cache_pages+0x152/0x3d0
-> [19006.953552]  extent_writepages+0x4c/0x100
-> [19006.954116]  do_writepages+0xbe/0x1d0
-> [19006.954672]  ? memcmp_extent_buffer+0xa2/0xe0
-> [19006.955199]  filemap_fdatawrite_wbc+0x5f/0x80
-> [19006.955726]  __filemap_fdatawrite_range+0x4a/0x60
-> [19006.956219]  btrfs_rename+0x529/0xb60
-> [19006.956711]  ? psi_group_change+0x168/0x400
-> [19006.957280]  btrfs_rename2+0x2a/0x60
-> [19006.957799]  vfs_rename+0x5d4/0xeb0
-> [19006.958308]  ? lookup_dcache+0x17/0x60
-> [19006.958784]  ? do_renameat2+0x507/0x580
-> [19006.959239]  do_renameat2+0x507/0x580
-> [19006.959702]  __x64_sys_renameat+0x45/0x60
-> [19006.960293]  do_syscall_64+0x5b/0xc0
-> [19006.960848]  ? syscall_exit_to_user_mode+0x17/0x40
-> [19006.961331]  ? do_syscall_64+0x67/0xc0
-> [19006.961812]  ? syscall_exit_to_user_mode+0x17/0x40
-> [19006.962401]  ? do_syscall_64+0x67/0xc0
-> [19006.963371]  ? do_syscall_64+0x67/0xc0
-> [19006.964020]  ? do_syscall_64+0x67/0xc0
-> [19006.965001]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> [19006.965952] RIP: 0033:0x7fb25eba492a
-> [19006.966485] Code: 48 8b 15 d9 44 17 00 f7 d8 64 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 08 01 00 00 0f 05 <48> 3d 00 f0 ff ff 77 06 c3 0f 1f 44 00 00 48 8b 15 a1 44 17 00 f7
-> [19006.967545] RSP: 002b:00007fb245ff8a08 EFLAGS: 00000246 ORIG_RAX: 0000000000000108
-> [19006.968076] RAX: ffffffffffffffda RBX: 0000559a70a039f0 RCX: 00007fb25eba492a
-> [19006.968623] RDX: 0000000000000004 RSI: 00007fb134000fc0 RDI: 0000000000000004
-> [19006.977319] RBP: 00007fb245ff8c60 R08: 0000000000000000 R09: 0000000000000000
-> [19006.977877] R10: 0000559a70a03a00 R11: 0000000000000246 R12: 00007fb245ff8c80
-> [19006.978301] R13: 0000000000000004 R14: 00007fb245ff8c60 R15: 00000000000070b5
-> [19006.978727]  </TASK>
-> [19006.979118] Modules linked in: wireguard curve25519_x86_64 libcurve25519_generic ip6_udp_tunnel udp_tunnel cfg80211 rfkill 8021q garp mrp stp llc binfmt_misc intel_rapl_msr intel_rapl_common kvm_amd iTCO_wdt ccp intel_pmc_bxt iTCO_vendor_support kvm i2c_i801 virtio_gpu irqbypass pcspkr virtio_dma_buf joydev i2c_smbus drm_shmem_helper lpc_ich virtio_balloon drm_kms_helper crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel sha512_ssse3 virtio_console virtio_net net_failover virtio_scsi failover serio_raw virtio_blk qemu_fw_cfg
-> [19006.981463] CR2: 0000000079e0afc0
-> [19006.982193] ---[ end trace 0000000000000000 ]---
-> [19006.982938] RIP: 0010:find_free_extent+0x20a/0x15c0
-> [19006.983565] Code: 4d 8d ba 10 ff ff ff 48 83 c0 0f 49 8d 97 f0 00 00 00 48 c1 e0 04 48 01 d8 48 39 c2 0f 84 c5 03 00 00 41 c6 85 84 00 00 00 00 <45> 8b 9f b0 00 00 00 45 85 db 0f 85 d8 0c 00 00 45 8b 75 28 4c 89
-> [19006.984863] RSP: 0018:ffffa153c0923bd0 EFLAGS: 00010203
-> [19006.985500] RAX: ffff8c14869240f0 RBX: ffff8c1486924000 RCX: 0000000000000001
-> [19006.986195] RDX: 0000000079e0b000 RSI: 0000000000000100 RDI: ffff8c14869bcc00
-> [19006.986877] RBP: ffff8c148b100000 R08: 0000000000000000 R09: 0000000000000000
-> [19006.987581] R10: 0000000079e0b000 R11: 000000000000151b R12: ffffa153c0923dd7
-> [19006.988252] R13: ffffa153c0923c90 R14: 0000000000000001 R15: 0000000079e0af10
-> [19006.988984] FS:  00007fb245ffb6c0(0000) GS:ffff8c15ebe00000(0000) knlGS:0000000000000000
-> [19006.989646] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [19006.990336] CR2: 0000000079e0afc0 CR3: 00000001055e8000 CR4: 00000000003506f0
-> [19006.991037] note: crawl_writeback[24329] exited with irqs disabled
-> 
->  
-> 
-> 
-> 
-> 
-> 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZG3iDgAKCRD2uYlJVVFO
+o7T4AP4tfdRbwAJr1D1pkhxYpLbcrKGB0AE4qJob/yNuNsFHGwD+PrjKScbHE3QZ
+xBCP+Qyhwxgr0iuTAvRBndgTxKdWUg8=
+=+22K
+-----END PGP SIGNATURE-----
+
+--2ItIkkIzs+ONvBcs--
