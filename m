@@ -2,96 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1D9F70F7A0
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 15:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6328170F808
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 15:51:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233239AbjEXNa1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 09:30:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57814 "EHLO
+        id S235459AbjEXNv4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 09:51:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233328AbjEXNaX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 09:30:23 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2483311D;
-        Wed, 24 May 2023 06:30:22 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-51b33c72686so228522a12.1;
-        Wed, 24 May 2023 06:30:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684935021; x=1687527021;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GxdSCsmwEYvEk63TFK+FV5f8HceCpvSs4IoYiBfYQio=;
-        b=l6YcUGKhmdo66vUmRH5M6UodbMyTVGt+YTKbm6A+BJZw5rfQ0U/73/SR2QQgZmpiCk
-         X5vxkyHKsDP0qj4lzVg6jvq4C6B4dUzs0waZYjb5IqtvfJHjNDW+6oVgzxB1tn1n5lKZ
-         tkIqK4mWb1fjSkSVCmTF38xEo0ME76bOD1dGYG3+vHlBfgapSb3ntnoLXiHhC4vrh0TO
-         e4TQk8uTadNpaq0pZKjIHT7LGN+tklG/U2BUyUPpG5qsAHMPr0vuexAC2+KseGsMNfZC
-         73HnQKhXLf+3UrJv1k+LATC795xrR08ZTkZPbZ3EcvwCkvoWS45JARmnuK5/jjcjyrjS
-         IVfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684935021; x=1687527021;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GxdSCsmwEYvEk63TFK+FV5f8HceCpvSs4IoYiBfYQio=;
-        b=DnCK0hawnDBohzw212uRFzHF/bEaWKczI6h3RcqrFxRrqVyGZo52QRhryG/BncGfkl
-         63ASX6sHs/WljszzA1NcELxNeJiYC9UTLXouPuNYUNAiC/QtvrvweHKDZbSaS5rlDjGT
-         XuBdJI7MxE0388ItC7142WekLeutRMmhf0VDDkzybHDn8rukP6QqyqFjdz6CVitvVTsn
-         CkZ7vpmEIz2Hj8sbjGqWhfX/ax+oUAQKg6puv/RDaIlThOkoi/45K3oymo2zKaT6rzFg
-         6dsXubEDw+kqvn9e97C6Bo28/ONqdLaIj4MPu7Yf8/idkq4qYxaq/u9w/YnB2zo2IB1k
-         zDVg==
-X-Gm-Message-State: AC+VfDwGu97Ax5qsFlAVxAgX6HRz0EEaAMUafQzJi+0889WHwiryQjB+
-        pJE4VfgtxuLAsAMBYYyONM0=
-X-Google-Smtp-Source: ACHHUZ4qt+542VeOln/VB23JLFlOHOdjQEeOb42tzBAMXi+JMeapJekYTWSm5hljINawnVfl7liZow==
-X-Received: by 2002:a17:902:d312:b0:1ad:8c8f:afb1 with SMTP id b18-20020a170902d31200b001ad8c8fafb1mr16531018plc.39.1684935020841;
-        Wed, 24 May 2023 06:30:20 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u12-20020a170902bf4c00b001ac7ab3e7ecsm8676734pls.210.2023.05.24.06.30.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 06:30:20 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 24 May 2023 06:30:19 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 000/363] 6.3.4-rc2 review
-Message-ID: <f664e283-a724-487a-83ea-16a1f72d2de0@roeck-us.net>
-References: <20230523164950.435226211@linuxfoundation.org>
+        with ESMTP id S235431AbjEXNvz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 09:51:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0166AA9;
+        Wed, 24 May 2023 06:51:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92D6763385;
+        Wed, 24 May 2023 13:51:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D27C433EF;
+        Wed, 24 May 2023 13:51:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684936313;
+        bh=4GshjE8EW0mcvOVEahGR8w89BqqKhoLGoZQ3w7o8H08=;
+        h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+        b=qb7DMQdqOOKgXs40GCoO7DiAHU3CqIJUwI6k/zcLHnFlxV0vPhuZ+ABymC3UdvBc+
+         jDVceNK4HT6uiJurdC9kJGtaCi53cui792N3JJezYf27fShgJO1/R1tJ27DiEicmWT
+         98Vetx7LGHGulW+FsTonnfiibRJ18SgXV9nmJ6AImrarvRLfbdO1sXrI5w/SUUUXVv
+         f21t9Wz93Fl1AGuXVRxb8JbTECtyCYNV9xUdqtZwAz5cUge9EhdX6C+MwIswLWw30W
+         r9mAc9oxqwQoPxAF0Adx59N5sFnSISZyikjIoXpZYrGFaVKJQlgVjOIwP9SiQd2/Vr
+         JQVfl7gpDNkaw==
+Date:   Wed, 24 May 2023 06:51:52 -0700
+From:   Kees Cook <kees@kernel.org>
+To:     =?ISO-8859-1?Q?Daniel_D=EDaz?= <daniel.diaz@linaro.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux- stable <stable@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        ndesaulniers@google.com, rientjes@google.com,
+        Sumit Semwal <sumit.semwal@linaro.org>
+Subject: =?US-ASCII?Q?Re=3A_Stable_backport_request=3A_skbuff=3A_Pro?= =?US-ASCII?Q?actively_round_up_to_kmalloc_bucket_size?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAEUSe794ifGiY9tsXfnqDsDSJ+UOOB1kJrm1Jb8kZ5fsoBZ5Sg@mail.gmail.com>
+References: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com> <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz> <CAEUSe794ifGiY9tsXfnqDsDSJ+UOOB1kJrm1Jb8kZ5fsoBZ5Sg@mail.gmail.com>
+Message-ID: <5A79C566-3213-456A-8CA3-8F0F1A2D9781@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230523164950.435226211@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 23, 2023 at 06:01:23PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.4 release.
-> There are 363 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 25 May 2023 16:48:37 +0000.
-> Anything received after that time might be too late.
-> 
+On May 23, 2023 8:52:53 PM PDT, "Daniel D=C3=ADaz" <daniel=2Ediaz@linaro=2E=
+org> wrote:
+>Hello!
+>
+>On Tue, 23 May 2023 at 00:28, Vlastimil Babka <vbabka@suse=2Ecz> wrote:
+>> On 5/22/23 20:23, Daniel D=C3=ADaz wrote:
+>> > Hello!
+>> >
+>> > Would the stable maintainers please consider backporting the followin=
+g
+>> > commit to the 6=2E1? We are trying to build gki_defconfig (plus a few
+>> > extras) on Arm64 and test it under Qemu-arm64, but it fails to boot=
+=2E
+>> > Bisection has pointed here=2E
+>>
+>> You mean the bisection was done to find the first "good" commit between=
+ 6=2E1
+>> and e=2Eg=2E 6=2E3?
+>>
+>> As others said, this commit wasn't expected to be a fix to a known bug=
+=2E
+>> Maybe you found one that we didn't know of, or it might be accidentaly
+>> masking some other bug=2E
+>
+>How interesting! Yes, we happened to run a bisection between v6=2E1 and
+>v6=2E3 and we found where it started working with the following
+>configuration:
+>  https://storage=2Etuxsuite=2Ecom/public/linaro/daniel/builds/2QA2CHQUpq=
+Ke27FyMZrBNILVwXi/config
 
-Build results:
-	total: 153 pass: 153 fail: 0
-Qemu test results:
-	total: 520 pass: 520 fail: 0
+Ah yes, from CONFIG_UBSAN_BOUNDS=3Dy and CONFIG_UBSAN_TRAP=3Dy
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+This was a known issue in upstream, oddly only exposed on arm64=2E Somethi=
+ng re-broke with __alloc_size after commit 93dd04ab0b2b had tried to work a=
+round it=2E I didn't think any kernel released with this broken, though, so=
+ perhaps what broke it got added to -stable?
 
-Guenter
+>With that patch on top of v6=2E1=2E29 it boots fine under Qemu-arm64; as
+>v6=2E1=2Ey stands, it panics with this:
+
+It should be fine to backport the patch, IMO=2E
+
+
+--=20
+Kees Cook
