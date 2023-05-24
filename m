@@ -2,60 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BB570EC09
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 05:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0817170EC27
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 05:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239374AbjEXDqh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 23 May 2023 23:46:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53972 "EHLO
+        id S233438AbjEXDxI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 23 May 2023 23:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239414AbjEXDqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 23:46:03 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC23E41
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 20:45:47 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-64d3578c25bso389869b3a.3
-        for <stable@vger.kernel.org>; Tue, 23 May 2023 20:45:47 -0700 (PDT)
+        with ESMTP id S239376AbjEXDxH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 23 May 2023 23:53:07 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258B0FC
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 20:53:05 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2533d3acd5fso443887a91.2
+        for <stable@vger.kernel.org>; Tue, 23 May 2023 20:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684899947; x=1687491947;
+        d=linaro.org; s=google; t=1684900384; x=1687492384;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eERsr2KIMKuXdu39RaY5MYbtRVFOF/NWR6LanLsqRiE=;
-        b=oX1i/2BM+POPpgU0H7rR2FA3xezK1PV62m0gmR8X7cDypxDgrcNm6y1hN2L7xe0Iyt
-         1mqpUUfU5wVY2ct7zwN0337V84n335jWKfp/fLGAae/GVQX9d8VHopDXSbyc+VR1Aw1J
-         9Ln+3f/S210eHii1JUTImMdQcMguXXxjCOJMG/os9DxbKxZoC3hCKTQnLCF93Q1iaQ2d
-         av0h8BHHGKbrBu5ciEaKli2LNHRY7yFVTfPWjAoQjfyG42IfpEaak2hpBJvurKUqdl4x
-         ITXpwstImNpqzIKZSk8wc9OYgBtYSk1nlvLmy+qLuTu2DYOqJGPDLsbxqqKtB6I35i6L
-         mLtg==
+        bh=gAn/0YbSvS7UIq/EJgNYJfQt4mdVOO3/aNF3GYkOSB8=;
+        b=Xqy6zWmUISjwt/sHtxPSERu/pWZZKDm7JsuBUWeEyIZgry52jgNlhRdZusod5zdoVi
+         z1KSRqNxFXuO/IG/aJMV8u1J5BmvTpEysieDCG0cWGZgrFo7pGFdfxNBis7ntCtPKoLH
+         3+yTAItVwrF6HsKyIWgVLas5UhN9WKmd8xwPHlPJeF1a0cX4kzlg66x+LTVASejPS9cR
+         yoHIsP3iW2/1J3iJ3trP5ehDx+AuscrbTK3GJDSpqc5+DxcP+eaPXu/a4tr5uVpyrMpy
+         gattTC4YKSVUNK9wk2H3zz5CLroHnEB8hYljbbOM2mxhYSqd0PXeDWN+g6/pURgY2Z3w
+         XfdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684899947; x=1687491947;
+        d=1e100.net; s=20221208; t=1684900384; x=1687492384;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eERsr2KIMKuXdu39RaY5MYbtRVFOF/NWR6LanLsqRiE=;
-        b=hkHijeOlbgg9AUNAm0lBlMfu9nA5VzGRuBBhcX/tzla/l5nvLG/sti/GEynd/qa7JC
-         W08I8JY0/GfDfU2vTDoJ6lfSdoyd1XjKL09Ana8O5eNp3PmpkWI0ACxuG4bOAOq5nYEW
-         CsNB/WXwDBIq7T/KU88f9rtd7xqYmRNRa3DZV0OBN3cZT8BjVRcQyJwoqbOFVuWbouZI
-         UZqhJoSuXvGPhLeuhVyRufKp0rMQkMx0M3wUTa25kxEJJh2zS/kRD4HsvNZpXfSTkrJQ
-         nR3AD80jYCrBtohuuCLKsFlRNNhSKSLTXiK/gcVi7zUuUx93yV65dZkRcvjQKMvboZB+
-         1QmA==
-X-Gm-Message-State: AC+VfDzxkQQ5fOfzvgz7+Y2ERXa4V5N5KrMfSPDIR5O9eDQY5V+l8hvq
-        N8a2Gvw2/wdNhXk8Jdr1nggruoLUXF1nYnrmioiiaA==
-X-Google-Smtp-Source: ACHHUZ4PLipjlYjH8YoIgKf655AyBFU9nvjtB318MzB07fqsGQ8SGcMEHi2RWTo6VU1u85f4vPEQAt10WMMOk/wTCek=
-X-Received: by 2002:a05:6a21:788f:b0:10b:58f1:7a6f with SMTP id
- bf15-20020a056a21788f00b0010b58f17a6fmr11464439pzc.41.1684899947297; Tue, 23
- May 2023 20:45:47 -0700 (PDT)
+        bh=gAn/0YbSvS7UIq/EJgNYJfQt4mdVOO3/aNF3GYkOSB8=;
+        b=iHwNeOaklG8HIqU1lUQ1zSzEQY7EILGwUIVxt1T2maY26HH6cYj+HwVbwXwsZWqrF+
+         SWK67NsbLJsZ840xUyZY2PRYZWc6j+AhRDfFNlIHjc1FD4gFQBTJQW4yQ/ZCNaITwj/G
+         aUy/96s+5HH3HPOpT41bVq9ye0l3uyDzTjXdIYJmGH7brXbtd4G+RCXqgKfkH4bYKZSP
+         L1ZgSX1oyRwIhFiBL94brfYxcHmx1UpQ0DOWjoxxLwnnVLlUEhe30FAKi2cgXurHMFmh
+         pgub7RcaD8ZyzAG7f1z71Jy3aJU5k1EG3fbEUBD+p7u3Qmt5/3DTM6sy7j7bBgEl92jR
+         v39g==
+X-Gm-Message-State: AC+VfDyl+yh5gbz91+9X+Uqkwqso+ThDQikA8q+4geiq5pImY+tqGgho
+        Nilfkr6OlJLm0k9BoLsHen8CFKTRsiZziyfFitEPiA==
+X-Google-Smtp-Source: ACHHUZ4Z+Oz8x9s0V6SvZl3S9SrRGJP0brjEO/JkCuw7/oRmvsFSZCZcKpsxlo3zyYDUIojF7wPXXE3Cd0m20SQnTho=
+X-Received: by 2002:a17:90a:6341:b0:252:8698:d03b with SMTP id
+ v1-20020a17090a634100b002528698d03bmr14366512pjs.14.1684900384544; Tue, 23
+ May 2023 20:53:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAEUSe78ip=wkHUSz3mBFMcd-LjQAnByuJm1Oids5GSRm-J-dzA@mail.gmail.com>
- <CAKwvOdn3ngS101Y8DiBQgmw4K8kEX+ibGeXYBwTRVLT59q6wsw@mail.gmail.com>
-In-Reply-To: <CAKwvOdn3ngS101Y8DiBQgmw4K8kEX+ibGeXYBwTRVLT59q6wsw@mail.gmail.com>
+ <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz>
+In-Reply-To: <e2f5ed62-eb6b-ea99-0e4d-da02160e99c8@suse.cz>
 From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Date:   Tue, 23 May 2023 21:45:36 -0600
-Message-ID: <CAEUSe7_S_u=4rfJib9p=yaniAWcO6YZCkXtT26_o--+bhW8ODg@mail.gmail.com>
+Date:   Tue, 23 May 2023 21:52:53 -0600
+Message-ID: <CAEUSe794ifGiY9tsXfnqDsDSJ+UOOB1kJrm1Jb8kZ5fsoBZ5Sg@mail.gmail.com>
 Subject: Re: Stable backport request: skbuff: Proactively round up to kmalloc
  bucket size
-To:     Nick Desaulniers <ndesaulniers@google.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>,
         linux- stable <stable@vger.kernel.org>,
@@ -66,14 +66,13 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        rientjes@google.com, vbabka@suse.cz,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        clang-built-linux <llvm@lists.linux.dev>
+        ndesaulniers@google.com, rientjes@google.com,
+        Sumit Semwal <sumit.semwal@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,32 +82,31 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hello!
 
-On Mon, 22 May 2023 at 12:37, Nick Desaulniers <ndesaulniers@google.com> wr=
-ote:
->
-> On Mon, May 22, 2023 at 11:24=E2=80=AFAM Daniel D=C3=ADaz <daniel.diaz@li=
-naro.org> wrote:
-> >
+On Tue, 23 May 2023 at 00:28, Vlastimil Babka <vbabka@suse.cz> wrote:
+> On 5/22/23 20:23, Daniel D=C3=ADaz wrote:
 > > Hello!
 > >
 > > Would the stable maintainers please consider backporting the following
 > > commit to the 6.1? We are trying to build gki_defconfig (plus a few
+> > extras) on Arm64 and test it under Qemu-arm64, but it fails to boot.
+> > Bisection has pointed here.
 >
-> Does android's gki_defconfig fail to boot on the `android14-6.1`
-> branch of https://android.googlesource.com/kernel/common?
+> You mean the bisection was done to find the first "good" commit between 6=
+.1
+> and e.g. 6.3?
 >
-> (i.e. downstream branch from linux stable's linux-6.1.y)?
->
-> We just ran CI successfully on that branch 10 hours ago.
-> https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/5=
-042504560/jobs/9045030265
->
-> Do you have more information on the observed boot failure? (panic splat?)
+> As others said, this commit wasn't expected to be a fix to a known bug.
+> Maybe you found one that we didn't know of, or it might be accidentaly
+> masking some other bug.
 
-Apologies if it sounded like we were trying to boot an Android kernel.
-Let me clarify: We're booting v6.1.29 from linux-stable/linux-6.1.y.
+How interesting! Yes, we happened to run a bisection between v6.1 and
+v6.3 and we found where it started working with the following
+configuration:
+  https://storage.tuxsuite.com/public/linaro/daniel/builds/2QA2CHQUpqKe27Fy=
+MZrBNILVwXi/config
 
-This is what we get under Qemu-arm64 for v6.1.29 with Clang 16:
+With that patch on top of v6.1.29 it boots fine under Qemu-arm64; as
+v6.1.y stands, it panics with this:
 -----8<-----
   Unexpected kernel BRK exception at EL1
   Internal error: BRK handler: 00000000f2000001 [#1] PREEMPT SMP
@@ -150,89 +148,7 @@ This is what we get under Qemu-arm64 for v6.1.29 with Clang 16:
   SMP: stopping secondary CPUs
 ----->8-----
 
-Here's a link to that test, with all artifacts:
-https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/daniel/tests/2QA2CVTT=
-vG6KZETMUyZCNgS8koR
-
-This can be reproduced locally via Tuxrun:
------8<-----
-#pip3 install -U tuxrun
-tuxrun --runtime podman \
-  --device qemu-arm64 \
-  --image docker.io/lavasoftware/lava-dispatcher:2023.01.0020.gc1598238f \
-  --boot-args rw \
-  --kernel https://storage.tuxsuite.com/public/linaro/daniel/builds/2QA2CHQ=
-UpqKe27FyMZrBNILVwXi/Image.gz
-\
-  --modules https://storage.tuxsuite.com/public/linaro/daniel/builds/2QA2CH=
-QUpqKe27FyMZrBNILVwXi/modules.tar.xz
-\
-  --rootfs https://storage.tuxboot.com/debian/bookworm/arm64/rootfs.ext4.xz
------>8-----
-
-This is vanilla v6.1.29 with no extra patches, just this kernel configurati=
-on:
-  https://storage.tuxsuite.com/public/linaro/daniel/builds/2QA2CHQUpqKe27Fy=
-MZrBNILVwXi/config
-
 Greetings!
 
 Daniel D=C3=ADaz
 daniel.diaz@linaro.org
-
-
-
-> > extras) on Arm64 and test it under Qemu-arm64, but it fails to boot.
-> > Bisection has pointed here.
-> >
-> > We have verified that cherry-picking this patch on top of v6.1.29
-> > applies cleanly and allows the kernel to boot.
-> >
-> > commit 12d6c1d3a2ad0c199ec57c201cdc71e8e157a232
-> > Author: Kees Cook <keescook@chromium.org>
-> > Date:   Tue Oct 25 15:39:35 2022 -0700
-> >
-> >     skbuff: Proactively round up to kmalloc bucket size
-> >
-> >     Instead of discovering the kmalloc bucket size _after_ allocation, =
-round
-> >     up proactively so the allocation is explicitly made for the full si=
-ze,
-> >     allowing the compiler to correctly reason about the resulting size =
-of
-> >     the buffer through the existing __alloc_size() hint.
-> >
-> >     This will allow for kernels built with CONFIG_UBSAN_BOUNDS or the
-> >     coming dynamic bounds checking under CONFIG_FORTIFY_SOURCE to gain
-> >     back the __alloc_size() hints that were temporarily reverted in com=
-mit
-> >     93dd04ab0b2b ("slab: remove __alloc_size attribute from
-> > __kmalloc_track_caller")
-> >
-> >     Cc: "David S. Miller" <davem@davemloft.net>
-> >     Cc: Eric Dumazet <edumazet@google.com>
-> >     Cc: Jakub Kicinski <kuba@kernel.org>
-> >     Cc: Paolo Abeni <pabeni@redhat.com>
-> >     Cc: netdev@vger.kernel.org
-> >     Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >     Cc: Nick Desaulniers <ndesaulniers@google.com>
-> >     Cc: David Rientjes <rientjes@google.com>
-> >     Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> >     Link: https://patchwork.kernel.org/project/netdevbpf/patch/20221021=
-234713.you.031-kees@kernel.org/
-> >     Signed-off-by: Kees Cook <keescook@chromium.org>
-> >     Link: https://lore.kernel.org/r/20221025223811.up.360-kees@kernel.o=
-rg
-> >     Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> >
-> >
-> > Thanks and greetings!
-> >
-> > Daniel D=C3=ADaz
-> > daniel.diaz@linaro.org
->
->
->
-> --
-> Thanks,
-> ~Nick Desaulniers
