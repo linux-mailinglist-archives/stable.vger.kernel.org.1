@@ -2,137 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E675470F794
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 15:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D9F70F7A0
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 15:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232969AbjEXN3M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 09:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56630 "EHLO
+        id S233239AbjEXNa1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 09:30:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230214AbjEXN3L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 09:29:11 -0400
-Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com [64.147.123.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29E8AA;
-        Wed, 24 May 2023 06:29:09 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 829EF2B063E5;
-        Wed, 24 May 2023 09:29:07 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 24 May 2023 09:29:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1684934947; x=1684942147; bh=Gi
-        PY4yhJsIKIhF61iNGa8GklXontEhtTLZkU/4WyhdM=; b=AfqXSSE02JYMjhCrPB
-        IhnSrYEDfNwp6ZTKQCC0WNafkyLTSrRneXdUTQoCXb4Dq0tqDV3cY9uX96ygbjJy
-        /X7/7YYLVmYz2hZWLrw1Wy+M3GY7uwPZF5xscl7z2BxfXiTYXdtEGvGh6zzI8JBk
-        epnaKDNI20xppUukZSTlfG1r+r1rfzAfMAmtgZC3S4pBZomPQyi0y0sV1YUxYnwa
-        /rfWBBe0tG193m9QXCYrZA9oBLiCVKCnFMwigkDYXWHQ2iY9JxT0sir4hyo1zaLr
-        kviH19unfm9qo8foDKhunIAafN/eo8NFu+oGDzJnboI0U11yw16I5HU2kVV/larp
-        dAag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1684934947; x=1684942147; bh=GiPY4yhJsIKIh
-        F61iNGa8GklXontEhtTLZkU/4WyhdM=; b=BkwU785lTFysm6mx9P6nPMhnybzBy
-        9lyDJSpU86Ex/R68NDtd2SsGHr/JomzKeXEyqSfVYOUFRowmbmYIg9pOdUdaD+eg
-        Xre9jwdleD5xEGZXMXyuiGnfxwDYQxy2/HBspZx8VFkLszACjjKDBO9MktMqelZv
-        a/rfINW3Nb08xZ8y6YHFdYGBNaowwBPXSR7vNvnDvzN1CBX9xt6wT85X9BG7BLnX
-        PUOBfiiFGn/jfe9HmduyyK3RbjLK+4yL2ENhgtmSBYqcqCB+W34vcUJNMnE+kG5q
-        Tu0SAOo+52BmyWpGa1LjyEFPbgajJEN9STmyh1DsRBUFw56iav2F+FGng==
-X-ME-Sender: <xms:IhFuZBXskF8N8-5mWKU054mddUznMPRzG4myU7IB_2p9eIYBtPqb7w>
-    <xme:IhFuZBl_IQba2T8NBi8rPJOH1MLZP3KBKsQiFs29TFus_yYCL0d20BEhIDkt3pYCk
-    jp_GSDYeporFxG4HPQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejhedgieefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:IhFuZNbr34T7IAWCWG9NmJvAKlqnv4a-4KYDcMPqKMElUV3efnr-hw>
-    <xmx:IhFuZEUaZQNcQy43x-fhRAuUTHIvxyCMA8KibM9aXxkODyXbXntUoQ>
-    <xmx:IhFuZLnxhZEEnQFLWYSfWJ35uMbXVx89E7OjoK1GtgK5zcbNC9fO4g>
-    <xmx:IxFuZNsLaiXKgJ3Yn3H3_u6S7-38UjRvb5bCDuDuV2rW5gD8FjeUYnAkTCU>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id BFF1AB60086; Wed, 24 May 2023 09:29:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
-Mime-Version: 1.0
-Message-Id: <a63a344c-e64e-4f2a-9082-f970ae9f963a@app.fastmail.com>
-In-Reply-To: <3c029fae-cb42-5a75-2858-7b8fc56a8769@meta.com>
-References: <20230523194930.2116181-1-arnd@kernel.org>
- <20230523194930.2116181-2-arnd@kernel.org>
- <3c029fae-cb42-5a75-2858-7b8fc56a8769@meta.com>
-Date:   Wed, 24 May 2023 15:28:46 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Yonghong Song" <yhs@meta.com>, "Arnd Bergmann" <arnd@kernel.org>,
-        "Alexei Starovoitov" <ast@kernel.org>,
-        "Daniel Borkmann" <daniel@iogearbox.net>,
-        "Andrii Nakryiko" <andrii@kernel.org>,
-        "Song Liu" <song@kernel.org>,
-        "Steven Rostedt" <rostedt@goodmis.org>,
-        "Masami Hiramatsu" <mhiramat@kernel.org>
-Cc:     stable@vger.kernel.org, "Martin KaFai Lau" <martin.lau@linux.dev>,
-        "Yonghong Song" <yhs@fb.com>,
-        "John Fastabend" <john.fastabend@gmail.com>,
-        "KP Singh" <kpsingh@kernel.org>,
-        "Stanislav Fomichev" <sdf@google.com>,
-        "Hao Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>,
-        "Kumar Kartikeya Dwivedi" <memxor@gmail.com>,
-        "Dave Marchevsky" <davemarchevsky@fb.com>,
-        "Joanne Koong" <joannelkoong@gmail.com>,
-        "Delyan Kratunov" <delyank@fb.com>,
-        "Peter Zijlstra" <peterz@infradead.org>, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] [v2] bpf: fix bpf_probe_read_kernel prototype mismatch
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S233328AbjEXNaX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 09:30:23 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2483311D;
+        Wed, 24 May 2023 06:30:22 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-51b33c72686so228522a12.1;
+        Wed, 24 May 2023 06:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684935021; x=1687527021;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GxdSCsmwEYvEk63TFK+FV5f8HceCpvSs4IoYiBfYQio=;
+        b=l6YcUGKhmdo66vUmRH5M6UodbMyTVGt+YTKbm6A+BJZw5rfQ0U/73/SR2QQgZmpiCk
+         X5vxkyHKsDP0qj4lzVg6jvq4C6B4dUzs0waZYjb5IqtvfJHjNDW+6oVgzxB1tn1n5lKZ
+         tkIqK4mWb1fjSkSVCmTF38xEo0ME76bOD1dGYG3+vHlBfgapSb3ntnoLXiHhC4vrh0TO
+         e4TQk8uTadNpaq0pZKjIHT7LGN+tklG/U2BUyUPpG5qsAHMPr0vuexAC2+KseGsMNfZC
+         73HnQKhXLf+3UrJv1k+LATC795xrR08ZTkZPbZ3EcvwCkvoWS45JARmnuK5/jjcjyrjS
+         IVfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684935021; x=1687527021;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GxdSCsmwEYvEk63TFK+FV5f8HceCpvSs4IoYiBfYQio=;
+        b=DnCK0hawnDBohzw212uRFzHF/bEaWKczI6h3RcqrFxRrqVyGZo52QRhryG/BncGfkl
+         63ASX6sHs/WljszzA1NcELxNeJiYC9UTLXouPuNYUNAiC/QtvrvweHKDZbSaS5rlDjGT
+         XuBdJI7MxE0388ItC7142WekLeutRMmhf0VDDkzybHDn8rukP6QqyqFjdz6CVitvVTsn
+         CkZ7vpmEIz2Hj8sbjGqWhfX/ax+oUAQKg6puv/RDaIlThOkoi/45K3oymo2zKaT6rzFg
+         6dsXubEDw+kqvn9e97C6Bo28/ONqdLaIj4MPu7Yf8/idkq4qYxaq/u9w/YnB2zo2IB1k
+         zDVg==
+X-Gm-Message-State: AC+VfDwGu97Ax5qsFlAVxAgX6HRz0EEaAMUafQzJi+0889WHwiryQjB+
+        pJE4VfgtxuLAsAMBYYyONM0=
+X-Google-Smtp-Source: ACHHUZ4qt+542VeOln/VB23JLFlOHOdjQEeOb42tzBAMXi+JMeapJekYTWSm5hljINawnVfl7liZow==
+X-Received: by 2002:a17:902:d312:b0:1ad:8c8f:afb1 with SMTP id b18-20020a170902d31200b001ad8c8fafb1mr16531018plc.39.1684935020841;
+        Wed, 24 May 2023 06:30:20 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id u12-20020a170902bf4c00b001ac7ab3e7ecsm8676734pls.210.2023.05.24.06.30.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 May 2023 06:30:20 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 24 May 2023 06:30:19 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.3 000/363] 6.3.4-rc2 review
+Message-ID: <f664e283-a724-487a-83ea-16a1f72d2de0@roeck-us.net>
+References: <20230523164950.435226211@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230523164950.435226211@linuxfoundation.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 24, 2023, at 05:12, Yonghong Song wrote:
-> On 5/23/23 12:43 PM, Arnd Bergmann wrote:
+On Tue, May 23, 2023 at 06:01:23PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.4 release.
+> There are 363 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 25 May 2023 16:48:37 +0000.
+> Anything received after that time might be too late.
+> 
 
->> Aside from the warning, this addresses a bug on 32-bit architectures
->> from incorrect argument passing with the mismatched prototype.
->
-> Could you explain what is this '32-bit architectures ... incorrect 
-> argument passing' thing?
+Build results:
+	total: 153 pass: 153 fail: 0
+Qemu test results:
+	total: 520 pass: 520 fail: 0
 
-I've expanded that paragraph now:
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-| Aside from the warning, this addresses a bug on 32-bit architectures
-| from incorrect argument passing with the mismatched prototype:
-| BPF_CALL_x() functions use 64-bit arguments that are passed in
-| pairs of register or on the stack on 32-bit architectures, while the
-| normal function uses one register per argument.
-
-Let me know if you think I should put more details in there.
-
->> @@ -1635,11 +1636,13 @@ bool bpf_opcode_in_insntable(u8 code)
->>   }
->>   
->>   #ifndef CONFIG_BPF_JIT_ALWAYS_ON
->> -u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
->> +#ifndef CONFIG_BPF_EVENTS
->> +int bpf_probe_read_kernel_common(void * dst, u32 size, const void *unsafe_ptr)
->
-> void * dst => void *dst
->
-
-Fixed now.
-
-Thanks,
-
-     Arnd
+Guenter
