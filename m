@@ -2,126 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE3B970F496
-	for <lists+stable@lfdr.de>; Wed, 24 May 2023 12:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B2E970F4B6
+	for <lists+stable@lfdr.de>; Wed, 24 May 2023 13:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjEXKvw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 06:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33294 "EHLO
+        id S234195AbjEXLEC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 07:04:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbjEXKvv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 06:51:51 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4E4A3;
-        Wed, 24 May 2023 03:51:50 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 71E0E22189;
-        Wed, 24 May 2023 10:51:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1684925509; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=iw9TySelXxG3UNCA0k4qVCUSDYtKU/y5xgxNuohqpQI=;
-        b=1gsfTUyFhZ6FyaAWvaU+Duwu5Dy4snvZ5S1smNUTz8WvTyGZMZZVSF+NdOyv/2lbdqIL/h
-        8yab/x42Bve6tnWzm0m/2u9UmBxqQCXC0yQg1C8c1fmOBSbo8Iio3Emsq05lUAuTL3JU/L
-        2iz1JkFkFdcBILWI7Z3d/hQxpACkvlo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1684925509;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=iw9TySelXxG3UNCA0k4qVCUSDYtKU/y5xgxNuohqpQI=;
-        b=+stSb6idZWgRZZzzph8kBjCng2hffY32yActJ2X99htdkg57j2ykTv8Zdx1DCI/6KUVnF7
-        aMwS3+xmLQCD8GCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 633BF133E6;
-        Wed, 24 May 2023 10:51:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id KIkpGEXsbWQ0MAAAMHmgww
-        (envelope-from <jack@suse.cz>); Wed, 24 May 2023 10:51:49 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id E2A99A075C; Wed, 24 May 2023 12:51:48 +0200 (CEST)
-Date:   Wed, 24 May 2023 12:51:48 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     'Jan Kara' <jack@suse.cz>, Ted Tso <tytso@mit.edu>,
-        "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] ext4: Fix possible corruption when moving a directory
- with RENAME_EXCHANGE
-Message-ID: <20230524105148.wgjj7ayrbeol6cdx@quack3>
-References: <20230523131408.13470-1-jack@suse.cz>
- <48d1f20b2fc1418080c96a1736f6249b@AcuMS.aculab.com>
+        with ESMTP id S234080AbjEXLEB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 07:04:01 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B981EA3
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 04:03:59 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-51403554f1dso1473418a12.1
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 04:03:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isovalent.com; s=google; t=1684926238; x=1687518238;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I8ZhOJCOuX0oHb6wu+kiLfwd2A/qY3eT2+7FskM6ENc=;
+        b=g5x23xsNJHGi+3qQBqDfXNJD4T/JZBtNTbGbreq3L36vlyxtSdqqzF2Mwfn1kQIUFW
+         mE7CfSzmenr8M3undMw4osWM3aex2oF3OtUfjPix7uwAVXZKoDa+m27eTTdZqp5k0NDL
+         tqWFBHdHFnrjv0cd5HimeWlCRpeoDxVjage8ud/MDZ+ByaLoyWOAhNuoH7/ZkuKEP3kw
+         pLn6LQY/0th6kZ8mkqQFYQit3ljZLIV5eSfFYAq74BbtaLESRPc7/auxbHmHlFUnv6N3
+         wKvHam12zXukwJS4axfzZFG9t6svthEL4rmlxRjJpnbx5lwGztyU0gxCi+/yVDHYni5t
+         Hu1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684926238; x=1687518238;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I8ZhOJCOuX0oHb6wu+kiLfwd2A/qY3eT2+7FskM6ENc=;
+        b=PJbLPsOD+nubGo8U+Ow9n5Wb4gi6EUNdeERl9Q395PZFqfNuSRBMbxGVaAEXC84W/8
+         8duEJ1y89ufX+YOh0BDZAh+tvjMp2HOeNhwgyVMg7IcMBcrnEl/i5UfF1BpoOsTm8iVs
+         K5yxZSfAnld0N8el/MgkHx2DIK4oKfrQnT50ReB/aA+4/aoFwZx7ZO5BTQPCob4cefUh
+         plXLhZrFl816Oftk0A9vOLnS9ig9VYLMD/VXEfX8ilV76meRhPmxRoQs38gQeWIFH4SM
+         Cpt5NznSo7toXTVqcx00E2w8E09ok/Uz1DAG4ypDUndy0Y7p+wxNTD80CsAOZS+U5bJl
+         wxlQ==
+X-Gm-Message-State: AC+VfDwf+WYAWcIKvAYFJ8IUH7JuPVHQ0d0t3iNSZnu9e/OINvZxxv8X
+        dl1a7uPu4muJninxsIdfkN1e8za9spPxyMO4eZfwsQ==
+X-Google-Smtp-Source: ACHHUZ4vN/yMybFjWHdgNNUUP82Fl2/+r7Hr/l+By9pTJ+miaajy760HKj6zhMUf70v8MYLFC9JeDYQm9fIlH8ov0M0=
+X-Received: by 2002:a17:907:36c3:b0:966:a691:55ed with SMTP id
+ bj3-20020a17090736c300b00966a69155edmr16606110ejc.70.1684926238208; Wed, 24
+ May 2023 04:03:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48d1f20b2fc1418080c96a1736f6249b@AcuMS.aculab.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230320005258.1428043-1-sashal@kernel.org> <20230320005258.1428043-8-sashal@kernel.org>
+ <CAN+4W8g6AcQQWe7rrBVOFYoqeQA-1VbUP_W7DPS3q0k-czOLfg@mail.gmail.com>
+ <ZBiAPngOtzSwDhFz@kroah.com> <CAN+4W8jAyJTdFL=tgp3wCpYAjGOs5ggo6vyOg8PbaW+tJP8TKA@mail.gmail.com>
+ <CAN+4W8j5qe6p3YV90g-E0VhV7AmYyAvt0z50dfDSombbGghkww@mail.gmail.com> <2023041100-oblong-enamel-5893@gregkh>
+In-Reply-To: <2023041100-oblong-enamel-5893@gregkh>
+From:   Lorenz Bauer <lmb@isovalent.com>
+Date:   Wed, 24 May 2023 12:03:43 +0100
+Message-ID: <CAN+4W8hmSgbb-wO4da4A=6B4y0oSjvUTTVia_0PpUXShP4NX4Q@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.2 08/30] selftests/bpf: check that modifier
+ resolves after pointer
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Martin KaFai Lau <martin.lau@kernel.org>,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        shuah@kernel.org, yhs@fb.com, eddyz87@gmail.com, sdf@google.com,
+        error27@gmail.com, iii@linux.ibm.com, memxor@gmail.com,
+        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue 23-05-23 13:50:01, David Laight wrote:
-> From: Jan Kara
-> > Sent: 23 May 2023 14:14
-> > 
-> > Commit 0813299c586b ("ext4: Fix possible corruption when moving a
-> > directory") forgot that handling of RENAME_EXCHANGE renames needs the
-> > protection of inode lock when changing directory parents for moved
-> > directories. Add proper locking for that case as well.
-> > 
-> > CC: stable@vger.kernel.org
-> > Fixes: 0813299c586b ("ext4: Fix possible corruption when moving a directory")
-> > Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-> > Signed-off-by: Jan Kara <jack@suse.cz>
-> > ---
-> >  fs/ext4/namei.c | 23 +++++++++++++++++++++--
-> >  1 file changed, 21 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-> > index 45b579805c95..b91abea1c781 100644
-> > --- a/fs/ext4/namei.c
-> > +++ b/fs/ext4/namei.c
-> > @@ -4083,10 +4083,25 @@ static int ext4_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
-> >  	if (retval)
-> >  		return retval;
-> > 
-> > +	/*
-> > +	 * We need to protect against old.inode and new.inode directory getting
-> > +	 * converted from inline directory format into a normal one. The lock
-> > +	 * ordering does not matter here as old and new are guaranteed to be
-> > +	 * incomparable in the directory hierarchy.
-> > +	 */
-> > +	if (S_ISDIR(old.inode->i_mode))
-> > +		inode_lock(old.inode);
-> > +	if (S_ISDIR(new.inode->i_mode))
-> > +		inode_lock_nested(new.inode, I_MUTEX_NONDIR2);
-> > +
-> 
-> What happens if there is another concurrent rename from new.inode
-> to old.inode?
-> That will try to acquire the locks in the other order.
+On Tue, Apr 11, 2023 at 4:14=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> I didn't see anything to do here.
+>
+> And selftests should NOT be broken on stable releases, if so, something
+> is wrong as no other subsystem has that happen.
 
-That is not really possible because these two renames cannot happen in
-parallel due to VFS locking - either old & new share parent which is locked
-by VFS (so there cannot be another rename in that directory) or they have
-different parents which are also locked by VFS (so again it is not possible
-to race with another rename in these two dirs).
+Sorry for the long delay in replying, I update the kernels we use for
+CI only infrequently. Here is an example of the build failure I'm
+seeing, from kernel.org 5.10 LTS:
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+In file included from
+/work/build/5.10.180/tools/testing/selftests/bpf/verifier/tests.h:59,
+                 from test_verifier.c:355:
+/work/build/5.10.180/tools/testing/selftests/bpf/verifier/ref_tracking.c:93=
+5:3:
+error: 'struct bpf_test' has no member named 'fixup_map_ringbuf'; did
+you mean 'fixup_map_in_map'?
+  935 |  .fixup_map_ringbuf =3D { 11 },
+      |   ^~~~~~~~~~~~~~~~~
+      |   fixup_map_in_map
+
+This is just doing make -C tools/testing/selftests/bpf after compiling a ke=
+rnel.
+
+Best
+Lorenz
