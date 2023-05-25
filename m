@@ -2,59 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD37071074C
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 10:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 517FF7108A2
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 11:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239689AbjEYI1s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 04:27:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53508 "EHLO
+        id S240631AbjEYJSF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 05:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235794AbjEYI1r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 04:27:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EAC186;
-        Thu, 25 May 2023 01:27:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3805A63C3E;
-        Thu, 25 May 2023 08:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF57C433EF;
-        Thu, 25 May 2023 08:27:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685003264;
-        bh=TXzkAJJtr+rb8+qhlaMHIqTqmmEXt7KMrw8HfElDAJE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=J35245Wq98yYPRUnLLCiT44fAp7tz9SYlr6TWHMK2i4IvPOJAmr2x/gsAVhHmh0BW
-         M5pefjyGo5aDKkPtKyHYK6omGZDyqWCWRhEI/G7GsEJE2IKx6+NuSI+uX3Bm1Calrc
-         tc5MpwpSqLCg4Gp69lLvO+fxKwk2QqI+lQ5OItzhqQYasd4Pm+U0mvMPOsNJAsQs+6
-         ybY/dfxk49hudYozaRGRRWD8OtxgaJme91Q+zWxenywCQNcu9qNo79Q7UHAeD9h5iF
-         4NJejm1VsfleZXpbjxCKYfiusxtEcKiTJj67zeKAp2l5b35mW4qAsxfZjWLuGbWXs/
-         unNc/oob7IUBA==
-Date:   Thu, 25 May 2023 10:27:35 +0200
-From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
-To:     Dexuan Cui <decui@microsoft.com>
-Cc:     bhelgaas@google.com, davem@davemloft.net, edumazet@google.com,
-        haiyangz@microsoft.com, jakeo@microsoft.com, kuba@kernel.org,
-        kw@linux.com, kys@microsoft.com, leon@kernel.org,
-        linux-pci@vger.kernel.org, mikelley@microsoft.com,
-        pabeni@redhat.com, robh@kernel.org, saeedm@nvidia.com,
-        wei.liu@kernel.org, longli@microsoft.com, boqun.feng@gmail.com,
-        ssengar@microsoft.com, helgaas@kernel.org,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-        josete@microsoft.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] PCI: hv: Add a per-bus mutex state_lock
-Message-ID: <ZG8b933WBtpssRz0@lpieralisi>
-References: <20230420024037.5921-1-decui@microsoft.com>
- <20230420024037.5921-6-decui@microsoft.com>
+        with ESMTP id S240634AbjEYJSE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 05:18:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6ED5E52;
+        Thu, 25 May 2023 02:17:53 -0700 (PDT)
+Date:   Thu, 25 May 2023 09:17:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1685006270;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pQDHdMweLp26JWI66gNfSmSOqaEQMETapWdZ/4lFbxc=;
+        b=gjEQjDT6rfSYn9QE45B8dEYTwTcqa6X1cdLbSvS/inpt7kXDMH3TJScdhol0P1L2Z6AHEG
+        jXlNGp9Gsn1jh4Oz0DH5NxX2c6LljjsKe5bvn3BQkfERi8nMKHZoL1klux5uaqllDR56jF
+        QhmRDCLYM/mZuY2jfDY6VdiXAE4azmJPBDp4GoUqU+v0lIhMxy9YtCVHZSvqjE/4DagyH/
+        QBBls5ji/XEdlqKSV8r71+h6rzcRzRH9uBPdB7SE/ubYDTvHLN3tIt0bN9GBO5jrrjm3Bq
+        SFj7KZclhWlK7iNvpSK3gnJnYgWdACal/1CG9zjKmZrTPEIperUcCO0k7/mqzg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1685006270;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pQDHdMweLp26JWI66gNfSmSOqaEQMETapWdZ/4lFbxc=;
+        b=sRSbVuAD9GfgAYesDUMakDbjTz8Sa6kcUwrNmBE+s4eB7VP+1DqwUu9fQZpQoAJxRzFqso
+        MQsL/DjCE1/VE/Aw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/uncore: Correct the number of CHAs on SPR
+Cc:     Stephane Eranian <eranian@google.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230508140206.283708-1-kan.liang@linux.intel.com>
+References: <20230508140206.283708-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230420024037.5921-6-decui@microsoft.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Message-ID: <168500626995.404.15734964484046172688.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,170 +66,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Apr 19, 2023 at 07:40:36PM -0700, Dexuan Cui wrote:
-> In the case of fast device addition/removal, it's possible that
-> hv_eject_device_work() can start to run before create_root_hv_pci_bus()
-> starts to run; as a result, the pci_get_domain_bus_and_slot() in
-> hv_eject_device_work() can return a 'pdev' of NULL, and
-> hv_eject_device_work() can remove the 'hpdev', and immediately send a
-> message PCI_EJECTION_COMPLETE to the host, and the host immediately
-> unassigns the PCI device from the guest; meanwhile,
-> create_root_hv_pci_bus() and the PCI device driver can be probing the
-> dead PCI device and reporting timeout errors.
-> 
-> Fix the issue by adding a per-bus mutex 'state_lock' and grabbing the
-> mutex before powering on the PCI bus in hv_pci_enter_d0(): when
-> hv_eject_device_work() starts to run, it's able to find the 'pdev' and call
-> pci_stop_and_remove_bus_device(pdev): if the PCI device driver has
-> loaded, the PCI device driver's probe() function is already called in
-> create_root_hv_pci_bus() -> pci_bus_add_devices(), and now
-> hv_eject_device_work() -> pci_stop_and_remove_bus_device() is able
-> to call the PCI device driver's remove() function and remove the device
-> reliably; if the PCI device driver hasn't loaded yet, the function call
-> hv_eject_device_work() -> pci_stop_and_remove_bus_device() is able to
-> remove the PCI device reliably and the PCI device driver's probe()
-> function won't be called; if the PCI device driver's probe() is already
-> running (e.g., systemd-udev is loading the PCI device driver), it must
-> be holding the per-device lock, and after the probe() finishes and releases
-> the lock, hv_eject_device_work() -> pci_stop_and_remove_bus_device() is
-> able to proceed to remove the device reliably.
-> 
-> Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
-> Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-> Cc: stable@vger.kernel.org
-> ---
-> 
-> v2:
->   Removed the "debug code".
->   Fixed the "goto out" in hv_pci_resume() [Michael Kelley]
->   Added Cc:stable
-> 
-> v3:
->   Added Michael's Reviewed-by.
-> 
->  drivers/pci/controller/pci-hyperv.c | 29 ++++++++++++++++++++++++++---
->  1 file changed, 26 insertions(+), 3 deletions(-)
+The following commit has been merged into the perf/urgent branch of tip:
 
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Commit-ID:     38776cc45eb7603df4735a0410f42cffff8e71a1
+Gitweb:        https://git.kernel.org/tip/38776cc45eb7603df4735a0410f42cffff8e71a1
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 08 May 2023 07:02:06 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 24 May 2023 22:19:41 +02:00
 
-> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-> index 48feab095a144..3ae2f99dea8c2 100644
-> --- a/drivers/pci/controller/pci-hyperv.c
-> +++ b/drivers/pci/controller/pci-hyperv.c
-> @@ -489,7 +489,10 @@ struct hv_pcibus_device {
->  	struct fwnode_handle *fwnode;
->  	/* Protocol version negotiated with the host */
->  	enum pci_protocol_version_t protocol_version;
-> +
-> +	struct mutex state_lock;
->  	enum hv_pcibus_state state;
-> +
->  	struct hv_device *hdev;
->  	resource_size_t low_mmio_space;
->  	resource_size_t high_mmio_space;
-> @@ -2512,6 +2515,8 @@ static void pci_devices_present_work(struct work_struct *work)
->  	if (!dr)
->  		return;
->  
-> +	mutex_lock(&hbus->state_lock);
-> +
->  	/* First, mark all existing children as reported missing. */
->  	spin_lock_irqsave(&hbus->device_list_lock, flags);
->  	list_for_each_entry(hpdev, &hbus->children, list_entry) {
-> @@ -2593,6 +2598,8 @@ static void pci_devices_present_work(struct work_struct *work)
->  		break;
->  	}
->  
-> +	mutex_unlock(&hbus->state_lock);
-> +
->  	kfree(dr);
->  }
->  
-> @@ -2741,6 +2748,8 @@ static void hv_eject_device_work(struct work_struct *work)
->  	hpdev = container_of(work, struct hv_pci_dev, wrk);
->  	hbus = hpdev->hbus;
->  
-> +	mutex_lock(&hbus->state_lock);
-> +
->  	/*
->  	 * Ejection can come before or after the PCI bus has been set up, so
->  	 * attempt to find it and tear down the bus state, if it exists.  This
-> @@ -2777,6 +2786,8 @@ static void hv_eject_device_work(struct work_struct *work)
->  	put_pcichild(hpdev);
->  	put_pcichild(hpdev);
->  	/* hpdev has been freed. Do not use it any more. */
-> +
-> +	mutex_unlock(&hbus->state_lock);
->  }
->  
->  /**
-> @@ -3562,6 +3573,7 @@ static int hv_pci_probe(struct hv_device *hdev,
->  		return -ENOMEM;
->  
->  	hbus->bridge = bridge;
-> +	mutex_init(&hbus->state_lock);
->  	hbus->state = hv_pcibus_init;
->  	hbus->wslot_res_allocated = -1;
->  
-> @@ -3670,9 +3682,11 @@ static int hv_pci_probe(struct hv_device *hdev,
->  	if (ret)
->  		goto free_irq_domain;
->  
-> +	mutex_lock(&hbus->state_lock);
-> +
->  	ret = hv_pci_enter_d0(hdev);
->  	if (ret)
-> -		goto free_irq_domain;
-> +		goto release_state_lock;
->  
->  	ret = hv_pci_allocate_bridge_windows(hbus);
->  	if (ret)
-> @@ -3690,12 +3704,15 @@ static int hv_pci_probe(struct hv_device *hdev,
->  	if (ret)
->  		goto free_windows;
->  
-> +	mutex_unlock(&hbus->state_lock);
->  	return 0;
->  
->  free_windows:
->  	hv_pci_free_bridge_windows(hbus);
->  exit_d0:
->  	(void) hv_pci_bus_exit(hdev, true);
-> +release_state_lock:
-> +	mutex_unlock(&hbus->state_lock);
->  free_irq_domain:
->  	irq_domain_remove(hbus->irq_domain);
->  free_fwnode:
-> @@ -3945,20 +3962,26 @@ static int hv_pci_resume(struct hv_device *hdev)
->  	if (ret)
->  		goto out;
->  
-> +	mutex_lock(&hbus->state_lock);
-> +
->  	ret = hv_pci_enter_d0(hdev);
->  	if (ret)
-> -		goto out;
-> +		goto release_state_lock;
->  
->  	ret = hv_send_resources_allocated(hdev);
->  	if (ret)
-> -		goto out;
-> +		goto release_state_lock;
->  
->  	prepopulate_bars(hbus);
->  
->  	hv_pci_restore_msi_state(hbus);
->  
->  	hbus->state = hv_pcibus_installed;
-> +	mutex_unlock(&hbus->state_lock);
->  	return 0;
-> +
-> +release_state_lock:
-> +	mutex_unlock(&hbus->state_lock);
->  out:
->  	vmbus_close(hdev->channel);
->  	return ret;
-> -- 
-> 2.25.1
-> 
+perf/x86/uncore: Correct the number of CHAs on SPR
+
+The number of CHAs from the discovery table on some SPR variants is
+incorrect, because of a firmware issue. An accurate number can be read
+from the MSR UNC_CBO_CONFIG.
+
+Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
+Reported-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Stephane Eranian <eranian@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230508140206.283708-1-kan.liang@linux.intel.com
+---
+ arch/x86/events/intel/uncore_snbep.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index fa9b209..d49e90d 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6150,6 +6150,7 @@ static struct intel_uncore_type spr_uncore_mdf = {
+ };
+ 
+ #define UNCORE_SPR_NUM_UNCORE_TYPES		12
++#define UNCORE_SPR_CHA				0
+ #define UNCORE_SPR_IIO				1
+ #define UNCORE_SPR_IMC				6
+ #define UNCORE_SPR_UPI				8
+@@ -6460,12 +6461,22 @@ static int uncore_type_max_boxes(struct intel_uncore_type **types,
+ 	return max + 1;
+ }
+ 
++#define SPR_MSR_UNC_CBO_CONFIG		0x2FFE
++
+ void spr_uncore_cpu_init(void)
+ {
++	struct intel_uncore_type *type;
++	u64 num_cbo;
++
+ 	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR,
+ 						UNCORE_SPR_MSR_EXTRA_UNCORES,
+ 						spr_msr_uncores);
+ 
++	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
++	if (type) {
++		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
++		type->num_boxes = num_cbo;
++	}
+ 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
+ }
+ 
