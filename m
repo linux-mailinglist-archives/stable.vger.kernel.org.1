@@ -2,228 +2,216 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F606710E81
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 16:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E8F710EFE
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 17:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241128AbjEYOqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 10:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
+        id S241154AbjEYPDX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 11:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230502AbjEYOqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 10:46:45 -0400
-Received: from BN6PR00CU002.outbound.protection.outlook.com (mail-eastus2azon11021016.outbound.protection.outlook.com [52.101.57.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D0D101;
-        Thu, 25 May 2023 07:46:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I/1Jjt9871b9/TMJEcK1Lmb3h/vGNkfzpPTEGyaZcdNqYeavUsSyFlpADJmxrepZlwJPWxueKSS6zipK1q8CCbsL21m4+P1diJFFSH+NY48BZoy6c8SwZ1eLoz3KqQxTEsh8V5BdEbN0uB+e1S0UPD0QnEhW+bCZIQGvTqQnF5pBWJCkrSRe77g2lSvl+hf5R0V7qa+b8XqYP0Nr6Ax1UfrscGjFOBi/ITvLQpRoI2/f5olvpforY1Y7+YTZiL3SV2hTEvtXpsE1I0BJkHEjxOnSw1rrIcw5m+9w7Bu3gd8W0TQKdUZLEsILxoO0CeZcF8nJgKTW2H8qOkcRrc+T2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZRUCZpjnFnOnApuDqeJNhSX2Uh6NsYv1b0NApdnnaxs=;
- b=Yo8W2sG74FIFIYZuyGTrMKVnu7CDKGDq/B8+tFp6R847MbUNK2JF0vRo2YkXPxr4gNXG7K+qjAsQkcbnyEsY9QQT4YZdnPN11Dxcadg1Oxyp6kFBis6ZUvkdjH/tUGrN2oA4CsFufjWwQq4GJ9Yqs2IeRONbmNlW1O1Zy9InIG9A1/UlfmzCv8FQyKEv3oSfHmnqxyIuW4gIw3wcQmVulDPUBwYgb42NCNUtG1CHRsVkmT1wwDSe1c86FApxlDX8UuKTkOQEmrWFofiR1xNDh3dVYTZjIxuSFE2OxbCtuqc6U9JIe2WFulnmHwYe6Bxjyww/ldC+MXUGG/PmYQ0vtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZRUCZpjnFnOnApuDqeJNhSX2Uh6NsYv1b0NApdnnaxs=;
- b=eC9/wlDiI1bxQgyoAcG2BU67YLHvP2/n5QlKh+K/JNNgImZCBAV9SHMM/3AqvfS+b6Rxb128Xm2QlR5V5dfPeVjnaQQFqlpxfslm5mhs6f5LyAyYBEh/PrIJu6BDARs8t/fRThkG7XLHKurtnc5EDfqjyR18KWalMTkcVY1WMwE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
- by DM4PR21MB3371.namprd21.prod.outlook.com (2603:10b6:8:6f::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.6; Thu, 25 May 2023 14:46:40 +0000
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::9d99:e955:81ed:40e0]) by BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::9d99:e955:81ed:40e0%3]) with mapi id 15.20.6455.004; Thu, 25 May 2023
- 14:46:40 +0000
-From:   Haiyang Zhang <haiyangz@microsoft.com>
-To:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
-Cc:     haiyangz@microsoft.com, decui@microsoft.com, kys@microsoft.com,
-        paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-        davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-        longli@microsoft.com, ssengar@linux.microsoft.com,
-        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
-        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH V2,net] net: mana: Fix perf regression: remove rx_cqes, tx_cqes counters
-Date:   Thu, 25 May 2023 07:46:30 -0700
-Message-Id: <1685025990-14598-1-git-send-email-haiyangz@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-Content-Type: text/plain
-X-ClientProxiedBy: MW4P220CA0014.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:303:115::19) To BY5PR21MB1443.namprd21.prod.outlook.com
- (2603:10b6:a03:21f::18)
+        with ESMTP id S241408AbjEYPDU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 11:03:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5F498
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 08:02:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685026949;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=KplMHxrwKxFIh3NafdKXeYGBI6uFXbptgidYK5SSf8c=;
+        b=Mp7D1UAv4JoFr+vD+wL9isGxosxthB05u11WvTcqcv9uv0lviA+UBiTApM6PgN1Z9kV3v9
+        7E8o2KaIJvTkjK+/Ia8zWmGeThZPSyfYWTFLaDsm8/SxeH9J0OZ4OzVldz6OrahEFp6PKi
+        Dk8trkXa5h3rbUL3Tn+PDE67ZdC+WQM=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-444-o8UchM8FNpO8g5wQJ9CItw-1; Thu, 25 May 2023 11:02:23 -0400
+X-MC-Unique: o8UchM8FNpO8g5wQJ9CItw-1
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-25376f7737aso1705095a91.3
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 08:02:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685026941; x=1687618941;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KplMHxrwKxFIh3NafdKXeYGBI6uFXbptgidYK5SSf8c=;
+        b=fLvPJ2cE97jK43VTEqA4ninZePU+9tpgkUaPJfV+BOy6Qxm5TzAQyIoEvlXC1VwWQQ
+         N8yLYVcDG0zCiReLyzctjP4SinK8w+h5oDuBF6UVw+4uZ2z48lv31nLIfUOkZixfB9H1
+         xZ31wCun/8+WKAJxL/eiGf/qRXfSo/F32jTlDqtbgj1m58HT0nFX94hMKuNuexUViu3n
+         S4mEHILVEI4Jm1IwAhnh/PGCaKB3MGk10om9o89x8eXxUWOsiSFAy6sJLgchPEv3bvyx
+         Hp1K/PK4sFwepv2OzfB/kPb0oBtPuCXx/AFfMcOi+mc8AETX6VPONdgkqHchCRoCjI6A
+         m7QQ==
+X-Gm-Message-State: AC+VfDw2FMWMlPtn8W0EVUjus6jtzNS+t7G1Wdw9g3swlJv5ngb8fNjx
+        I/IQd9WJ5wXQ09vO7FbAEsPKdZnCpSnHn0UsC8dUpQaH9yJelBZsim7/zH89zlb7CL46tMDF/3J
+        jWHAx5WuAqsq+IscJxlM66Iy6kHWPtmgw
+X-Received: by 2002:a17:902:f545:b0:1a6:81fc:b585 with SMTP id h5-20020a170902f54500b001a681fcb585mr2193428plf.41.1685026941107;
+        Thu, 25 May 2023 08:02:21 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7qUdEFy2FQfQhMgr0Qzs3fyWRJaYGwZmRFOXJGEkR62u5XGN1UvQ8uEFgTRf2LVj5O5OQECsdbuAjlYNRsOhk=
+X-Received: by 2002:a17:902:f545:b0:1a6:81fc:b585 with SMTP id
+ h5-20020a170902f54500b001a681fcb585mr2193384plf.41.1685026940715; Thu, 25 May
+ 2023 08:02:20 -0700 (PDT)
 MIME-Version: 1.0
-Sender: LKML haiyangz <lkmlhyz@microsoft.com>
-X-MS-Exchange-MessageSentRepresentingType: 2
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|DM4PR21MB3371:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6ab3d83-c2f9-4c9f-62de-08db5d2ed911
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iV+jarIYV9zCc81joaAMY6N/DrJTVqJ7YZG+Ce/s1qOL8AnAUfGPRyhWo5uZVI6oZgxRa4oUjxyeKTXy1B63HGUJVz0GhNfFLbK2FLunR0+Nn8nSludb0u97TirlNzPuJe+jHp4MX7fVmksorNf9iDZ2u1eeHpJAq7gbTjbLk/pVP8bLWzpG7ekRdNvOwMIqneD1aKbIiP2hfc8MvAwZuBiNBMO4xu0T6cw7n2U+2WyzKVfLJTPS2nWD9cRdgLiMPv5AsAbwF7+sJGm+qfK0EmS6GoCveBa7Q40tz/z5JO/cuDiLgR7Rj/GpHFnYT68xS/v+UNorjDPTKhpeBJWDOoNYso4a9Xd42jOxJsgYi35mXE4+fnaq9h+Ft8sShTHRoMGBcXd8zqkVyy5DWX70hHpCyw1zflMETHogF1cSOu6rK5zAxOGB/Vbk6Yp6mmNMiZx8rBR1psqaHFUG+Hr/KL9wcyZdKX52L7pWPw6FgSiwc2gCk+ptiXyyzFKr5T+i8sA6OGnxe4XKZcOCNAtp9+mRpd0B+1cQrqKUxW+tYgbuqeSmoUqNiCz+p+4ZQ2JXSIPjBgQKUj75Ln1XJoDKlvlcg6VmwhnDgi5BWq02k09oZYRV17BHomGf+qkb0k95lIPJlRrgHRJNmyOctyZw3x85tWLB0F8BK2aOC3PpBg0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(136003)(346002)(396003)(366004)(451199021)(38350700002)(38100700002)(478600001)(82960400001)(82950400001)(10290500003)(66946007)(66476007)(4326008)(6666004)(66556008)(83380400001)(6486002)(52116002)(786003)(316002)(41300700001)(2616005)(7846003)(5660300002)(8676002)(7416002)(186003)(8936002)(36756003)(6512007)(2906002)(26005)(6506007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zKerivsJdcN+2vCFJ6JwUvomkZ6sPCPAjmlg/Sf0M0M+vCvCBDlfQYT1xgsv?=
- =?us-ascii?Q?5ubp6YqdHj/a0ZbpR6aYlqgJZmeVbb8808msKF2r1dvjHBmgue77C2RVIKRY?=
- =?us-ascii?Q?u13dZWfFCMGtMAbKgjB8VqbXroSMP8vTwbmrT6oSQHFd2ZcBVrmhm0M8Xk85?=
- =?us-ascii?Q?CP7UAzRYpV4/ftNKOtI0BmSHYbZFKzWthI5oX2szJBJT6OUT33Gf4cJAR2bt?=
- =?us-ascii?Q?0ykwYQbYX8fFSTvBEw/mJHJbmVLSZlObd3Plf2JQkY0cBLjXMyDq4G94bwHU?=
- =?us-ascii?Q?pYpdtcJm2lDrzrFtyHNOARD83Y8Lq18W6XXiVt2hBzlbwSv9py0c+hwEjI3k?=
- =?us-ascii?Q?tXqvte/6nOnXjsfbLQKV0uRpmjYhRAOpJqOKMl3yO2SwfrNUEkzjCy+FJbEK?=
- =?us-ascii?Q?om634q8XiU1xdownqSbB2SXEPViU7ULGqOKLYiqEi4Fqvc+dgfP5enQPA2zh?=
- =?us-ascii?Q?2GAae5aufGSaOnT/0pNv2kTxc57BSer5+DxbO+aU+8fiemryLCaao5OTMNoy?=
- =?us-ascii?Q?ORbXLCJKtY6uihnzRSjDc/f90WWwZ+XJFbyNaTzqkyCcyrksD4BPyCV9X6DG?=
- =?us-ascii?Q?yZPzoKlWvcusocubNqLr3se9mxVa4soOlObEQ3csnfj1QXywUphy7ZH8TJLv?=
- =?us-ascii?Q?J5R3idWNMorUCgpoOVCTqUD+0bJt4qWX4U43okpzQrGxwBY9sbj3JEEPUa18?=
- =?us-ascii?Q?sepUhKY6lTYEZJhRz7Nos2z/oQ+2gzTQBvjnK+YPRJoLG2R/WNWcm/CMtN1A?=
- =?us-ascii?Q?BTNUtQ6cDj6cX6x+ll+SJXl4jhDMbDeyKPstPgq+NK6KRFrijlB2jW2rX0qt?=
- =?us-ascii?Q?Z/l9KsZFt8DHNCxxztkety67h/NSzC/J/Ruw6Izr9/yTiMq3cssMdgzJhc1P?=
- =?us-ascii?Q?dNQqyu2mLCUDdcXzaBOA/K+LNQVS47Co+VOZ7m4oEjRKvHBVqKS6wqwt5mXZ?=
- =?us-ascii?Q?eeMZiJ0tIGRVX3gXs8cey3uyI7B/xbBEMJmZAzPzOSnv9vFnFT92/CFwXxH3?=
- =?us-ascii?Q?+qwClBf8WIWVzgVz1BIFcjnF0wryUFYlXTCaA9FfBqOdSpQ7+PE0z0TU/4ZV?=
- =?us-ascii?Q?eOKaix57VQf3QIIjdsGBqYt2lJsMHmIFXSK8ObuvlnI09EHVPC+GkUEXVNCz?=
- =?us-ascii?Q?fN5YKrMLzFbviCcLjqpgW3N1kEQnoREXyejatyGMveIcBUBYbLYItieqnwaA?=
- =?us-ascii?Q?XmVxeLSIHlBysie/0sDIIUISELvm03lnrFi5uMCPWVgLIoP5k98QcZSDb+VC?=
- =?us-ascii?Q?QHM25Ff7lVv9cJDfNaAOd8zgrZ824UNqSYeiSAWekFish2693B6aFDPAQDBH?=
- =?us-ascii?Q?qSCkLX9JWaCZrl/gWxamFVqahgTECKWWRQQjqlszxNHCVDz54y8ATaBqDHCH?=
- =?us-ascii?Q?1jyPFv9iCWR1mGLfSV4xjVCL4MM+htv1bQd4VP/eM4zn1QPXe4OO7CIHBAPi?=
- =?us-ascii?Q?b9vWCf9m1AwadUOWQ2TZEpEpmbptrChM+M2rAN+5Hiwr6A2GBE5VfQQxB22U?=
- =?us-ascii?Q?ue4ZpkNe9TcIv4pIlk2zheYY6HJcKRBmWptPN3FVBpyXIY3si/XntAKWhmlw?=
- =?us-ascii?Q?SjjjYjvE7P5WAeHETWTLPYXrYzBuu5+mifS3IwJ8?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6ab3d83-c2f9-4c9f-62de-08db5d2ed911
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 14:46:39.7988
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1mnzUaq569KaF2z9efan2imAYE+hhbNDW0wy9+9OG8OMsknQwoWyWz+HAWG4RBFzeqtNqlpcHymw9MCLwHJ8Lw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR21MB3371
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230524160204.1042858-1-aahringo@redhat.com>
+In-Reply-To: <20230524160204.1042858-1-aahringo@redhat.com>
+From:   Andreas Gruenbacher <agruenba@redhat.com>
+Date:   Thu, 25 May 2023 17:02:09 +0200
+Message-ID: <CAHc6FU7vaQmbwzL7Memu9YpsqXM9Ay4Mj52pDpkG6UdXw6hKVg@mail.gmail.com>
+Subject: Re: [PATCHv2 dlm/next] fs: dlm: avoid F_SETLKW plock op lookup collisions
+To:     Alexander Aring <aahringo@redhat.com>
+Cc:     teigland@redhat.com, cluster-devel@redhat.com,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The apc->eth_stats.rx_cqes is one per NIC (vport), and it's on the
-frequent and parallel code path of all queues. So, r/w into this
-single shared variable by many threads on different CPUs creates a
-lot caching and memory overhead, hence perf regression. And, it's
-not accurate due to the high volume concurrent r/w.
+On Wed, May 24, 2023 at 6:02=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
+> This patch fixes a possible plock op collisions when using F_SETLKW lock
+> requests and fsid, number and owner are not enough to identify a result
+> for a pending request. The ltp testcases [0] and [1] are examples when
+> this is not enough in case of using classic posix locks with threads and
+> open filedescriptor posix locks.
+>
+> The idea to fix the issue here is to place all lock request in order. In
+> case of non F_SETLKW lock request (indicated if wait is set or not) the
+> lock requests are ordered inside the recv_list. If a result comes back
+> the right plock op can be found by the first plock_op in recv_list which
+> has not info.wait set. This can be done only by non F_SETLKW plock ops as
+> dlm_controld always reads a specific plock op (list_move_tail() from
+> send_list to recv_mlist) and write the result immediately back.
+>
+> This behaviour is for F_SETLKW not possible as multiple waiters can be
+> get a result back in an random order. To avoid a collisions in cases
+> like [0] or [1] this patch adds more fields to compare the plock
+> operations as the lock request is the same. This is also being made in
+> NFS to find an result for an asynchronous F_SETLKW lock request [2][3]. W=
+e
+> still can't find the exact lock request for a specific result if the
+> lock request is the same, but if this is the case we don't care the
+> order how the identical lock requests get their result back to grant the
+> lock.
 
-Since the error path of mana_poll_rx_cq() already has warnings, so
-keeping the counter and convert it to a per-queue variable is not
-necessary. So, just remove this counter from this high frequency
-code path.
+When the recv_list contains multiple indistinguishable requests, this
+can only be because they originated from multiple threads of the same
+process. In that case, I agree that it doesn't matter which of those
+requests we "complete" in dev_write() as long as we only complete one
+request. We do need to compare the additional request fields in
+dev_write() to find a suitable request, so that makes sense as well.
+We need to compare all of the fields that identify a request (optype,
+ex, wait, pid, nodeid, fsid, number, start, end, owner) to find the
+"right" request (or in case there is more than one identical request,
+a "suitable" request).
 
-Also, remove the tx_cqes counter for the same reason. We have
-warnings & other counters for errors on that path, and don't need
-to count every normal cqe processing.
+The above patch description doesn't match the code anymore, and the
+code doesn't fully revert the recv_list splitting of the previous
+version.
 
-Cc: stable@vger.kernel.org
-Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
-V2:
-	Same as V1, except adding more Cc's.
----
- drivers/net/ethernet/microsoft/mana/mana_en.c      | 10 ----------
- drivers/net/ethernet/microsoft/mana/mana_ethtool.c |  2 --
- include/net/mana/mana.h                            |  2 --
- 3 files changed, 14 deletions(-)
+> [0] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testcase/testc=
+ases/kernel/syscalls/fcntl/fcntl40.c
+> [1] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testcase/testc=
+ases/kernel/syscalls/fcntl/fcntl41.c
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/include/linux/lockd/lockd.h?h=3Dv6.4-rc1#n373
+> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/fs/lockd/svclock.c?h=3Dv6.4-rc1#n731
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> ---
+> change since v2:
+>  - don't split recv_list into recv_setlkw_list
+>
+>  fs/dlm/plock.c | 43 ++++++++++++++++++++++++++++++-------------
+>  1 file changed, 30 insertions(+), 13 deletions(-)
+>
+> diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+> index 31bc601ee3d8..53d17dbbb716 100644
+> --- a/fs/dlm/plock.c
+> +++ b/fs/dlm/plock.c
+> @@ -391,7 +391,7 @@ static ssize_t dev_read(struct file *file, char __use=
+r *u, size_t count,
+>                 if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+>                         list_del(&op->list);
+>                 else
+> -                       list_move(&op->list, &recv_list);
+> +                       list_move_tail(&op->list, &recv_list);
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 06d6292e09b3..d907727c7b7a 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1279,8 +1279,6 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
- 	if (comp_read < 1)
- 		return;
- 
--	apc->eth_stats.tx_cqes = comp_read;
--
- 	for (i = 0; i < comp_read; i++) {
- 		struct mana_tx_comp_oob *cqe_oob;
- 
-@@ -1363,8 +1361,6 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
- 		WARN_ON_ONCE(1);
- 
- 	cq->work_done = pkt_transmitted;
--
--	apc->eth_stats.tx_cqes -= pkt_transmitted;
- }
- 
- static void mana_post_pkt_rxq(struct mana_rxq *rxq)
-@@ -1626,15 +1622,11 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
- {
- 	struct gdma_comp *comp = cq->gdma_comp_buf;
- 	struct mana_rxq *rxq = cq->rxq;
--	struct mana_port_context *apc;
- 	int comp_read, i;
- 
--	apc = netdev_priv(rxq->ndev);
--
- 	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
- 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
- 
--	apc->eth_stats.rx_cqes = comp_read;
- 	rxq->xdp_flush = false;
- 
- 	for (i = 0; i < comp_read; i++) {
-@@ -1646,8 +1638,6 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
- 			return;
- 
- 		mana_process_rx_cqe(rxq, cq, &comp[i]);
--
--		apc->eth_stats.rx_cqes--;
- 	}
- 
- 	if (rxq->xdp_flush)
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index a64c81410dc1..0dc78679f620 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -13,11 +13,9 @@ static const struct {
- } mana_eth_stats[] = {
- 	{"stop_queue", offsetof(struct mana_ethtool_stats, stop_queue)},
- 	{"wake_queue", offsetof(struct mana_ethtool_stats, wake_queue)},
--	{"tx_cqes", offsetof(struct mana_ethtool_stats, tx_cqes)},
- 	{"tx_cq_err", offsetof(struct mana_ethtool_stats, tx_cqe_err)},
- 	{"tx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
- 					tx_cqe_unknown_type)},
--	{"rx_cqes", offsetof(struct mana_ethtool_stats, rx_cqes)},
- 	{"rx_coalesced_err", offsetof(struct mana_ethtool_stats,
- 					rx_coalesced_err)},
- 	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index cd386aa7c7cc..9eef19972845 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -347,10 +347,8 @@ struct mana_tx_qp {
- struct mana_ethtool_stats {
- 	u64 stop_queue;
- 	u64 wake_queue;
--	u64 tx_cqes;
- 	u64 tx_cqe_err;
- 	u64 tx_cqe_unknown_type;
--	u64 rx_cqes;
- 	u64 rx_coalesced_err;
- 	u64 rx_cqe_unknown_type;
- };
--- 
-2.25.1
+^ This should be obsolete, but it won't hurt, either.
+
+>                 memcpy(&info, &op->info, sizeof(info));
+>         }
+>         spin_unlock(&ops_lock);
+> @@ -430,19 +430,36 @@ static ssize_t dev_write(struct file *file, const c=
+har __user *u, size_t count,
+>                 return -EINVAL;
+>
+>         spin_lock(&ops_lock);
+> -       list_for_each_entry(iter, &recv_list, list) {
+> -               if (iter->info.fsid =3D=3D info.fsid &&
+> -                   iter->info.number =3D=3D info.number &&
+> -                   iter->info.owner =3D=3D info.owner) {
+> -                       list_del_init(&iter->list);
+> -                       memcpy(&iter->info, &info, sizeof(info));
+> -                       if (iter->data)
+> -                               do_callback =3D 1;
+> -                       else
+> -                               iter->done =3D 1;
+> -                       op =3D iter;
+> -                       break;
+> +       if (info.wait) {
+
+We should be able to use the same list_for_each_entry() loop for
+F_SETLKW requests (which have info.wait set) as for all other requests
+as far as I can see.
+
+> +               list_for_each_entry(iter, &recv_list, list) {
+> +                       if (iter->info.fsid =3D=3D info.fsid &&
+> +                           iter->info.number =3D=3D info.number &&
+> +                           iter->info.owner =3D=3D info.owner &&
+> +                           iter->info.pid =3D=3D info.pid &&
+> +                           iter->info.start =3D=3D info.start &&
+> +                           iter->info.end =3D=3D info.end &&
+> +                           iter->info.ex =3D=3D info.ex &&
+> +                           iter->info.wait) {
+> +                               op =3D iter;
+> +                               break;
+> +                       }
+>                 }
+> +       } else {
+> +               list_for_each_entry(iter, &recv_list, list) {
+> +                       if (!iter->info.wait) {
+> +                               op =3D iter;
+> +                               break;
+> +                       }
+> +               }
+> +       }
+> +
+> +       if (op) {
+> +               list_del_init(&op->list);
+> +               memcpy(&op->info, &info, sizeof(info));
+> +               if (op->data)
+> +                       do_callback =3D 1;
+> +               else
+> +                       op->done =3D 1;
+>         }
+
+Can't this code just remain in the list_for_each_entry() loop?
+
+>         spin_unlock(&ops_lock);
+>
+> --
+> 2.31.1
+>
+
+Andreas
 
