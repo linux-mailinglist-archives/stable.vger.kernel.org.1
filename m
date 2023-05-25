@@ -2,84 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3573710DF8
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 16:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BC9710E06
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 16:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241517AbjEYOGZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 10:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46106 "EHLO
+        id S234036AbjEYOLk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 10:11:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241442AbjEYOGY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 10:06:24 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A78AE6A;
-        Thu, 25 May 2023 07:05:59 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-64d3578c25bso2595210b3a.3;
-        Thu, 25 May 2023 07:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685023558; x=1687615558;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nPgjNadYh8O7MO97+r7j/d1jHMHXaP+jYO/Oxgqowkw=;
-        b=ommVYYHtLu2Vj/VFDhve63ednPa4iUIK0BRPyAFZDujd9Xt3JeLe+O3NF8Q8zlzkb3
-         aAXyFBFxNP7JQq+72gNtmddn2k/TBovdx3V+3Yz9YMyNttqh+BBSrX9Zfb+xSFw/gPcr
-         BySOJjvCUI6vMlc6mRMYWDZ+Bz5xuY2eUtxI3YpE7E65jL0TVHE+nwtzVcrukf3bLDrr
-         aYfWvmJT/hI+RvF9yWEnRe3yTezD0hZVbSYP6jgO+d8W8pYSJmwv8Pa6LscCpMrOyENV
-         GSXMHLuYp0SDMYbwBePjskTW1ktJ+ZlqbpP6qGOjnYHcjksb8MXfpQE2C4NJhDVIE7dj
-         sYqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685023558; x=1687615558;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nPgjNadYh8O7MO97+r7j/d1jHMHXaP+jYO/Oxgqowkw=;
-        b=Cmxz6pJvSUpWszFnKuVqD05YlOemhtt4zKesOjGpSN3Vg+Li9xbNIoK+DFdqVxUeW7
-         dje+mKXaQa8KerJWMx+hsd5oxdc/QxExmE1KLFRR1qzIGoafN4uolGdmUq7O3L/FEG4a
-         KjvpVQgmZkTJCedwBs5Plo5ik3qfXwnm2OUgO/m7WBunkpY3wfD4wx5LaKGGGdw8mHr9
-         H5U5Yj0iwTUVr/vUh/L9kfoVk72fJVrIK4PvMqxB9lwmbvfENcbw7xLtks69M0seOxMe
-         xaBoQ6qBtXPeCqsgP10l04ZCjkMFQdizcySGjPmFoI/a/5uMUf0+rLubrQfpdXBqnRQ8
-         cbnA==
-X-Gm-Message-State: AC+VfDwBr+vX+LS763oS6Lt6WMje1PG8T4jSJNM58012s7SWHoyXGQph
-        lE9TAGJOKwkMlFZCtAIeLGI=
-X-Google-Smtp-Source: ACHHUZ47Dl0L7k8F6DW64BTj9LkTtrQ2DbW8Gx4wNp/sPCbMg+J5frhhwcYCQPMqLQmTxkr+7BdQlQ==
-X-Received: by 2002:a05:6a00:1a0f:b0:64d:42f6:4c7b with SMTP id g15-20020a056a001a0f00b0064d42f64c7bmr8027787pfv.27.1685023557843;
-        Thu, 25 May 2023 07:05:57 -0700 (PDT)
-Received: from debian.me (subs03-180-214-233-28.three.co.id. [180.214.233.28])
-        by smtp.gmail.com with ESMTPSA id s5-20020a62e705000000b0063b7f3250e9sm1242426pfh.7.2023.05.25.07.05.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 May 2023 07:05:57 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id BF66B1068F8; Thu, 25 May 2023 21:05:54 +0700 (WIB)
-Date:   Thu, 25 May 2023 21:05:54 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Framebuffer <linux-fbdev@vger.kernel.org>,
-        DRI Development List <dri-devel@lists.freedesktop.org>,
-        Linux Nouveau/NVIDIA <nouveau@lists.freedesktop.org>,
-        Linux Stable <stable@vger.kernel.org>
-Cc:     Antonino Daplas <adaplas@gmail.com>, Helge Deller <deller@gmx.de>,
-        Felix Miata <mrmazda@earthlink.net>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: [Nouveau] Fwd: absent both plymouth, and video= on linu lines,
- vtty[1-6] framebuffers produce vast raster right and bottom borders on the
- larger resolution of two displays
-Message-ID: <ZG9rQmIs1W8IcEcY@debian.me>
-References: <e8f93560-a2f6-8e9f-031a-88d333482a31@gmail.com>
- <585f36f8-431a-e929-0a04-ffb65f02e9df@gmail.com>
- <d4879ff1-b9ac-0373-ceb2-beaa645fba23@leemhuis.info>
+        with ESMTP id S236270AbjEYOLi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 10:11:38 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB06186;
+        Thu, 25 May 2023 07:11:37 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id E323521CB5;
+        Thu, 25 May 2023 14:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1685023895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=LMsDV6T2jCcjcJj5VyXqb2kAeEnI/lDz50c0BzZL3V4=;
+        b=J2djAVASI/Bf6kURBwuN6TTFCfuPq8Gd7sjwT/n1eoPwgRcHtgZyy3YC5xZ4SbcPMJAGlb
+        y032Au0Jv3m4osldNPB8CBHdobQpSP9NJMPAladVxS/1R7JSVq1k+LOC6krw7Tt+d5L45U
+        xEU21lSuBZVgPxBDWVCodsi4CE0vU/4=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B75C2134B2;
+        Thu, 25 May 2023 14:11:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id bz2gK5dsb2RVZQAAMHmgww
+        (envelope-from <mkoutny@suse.com>); Thu, 25 May 2023 14:11:35 +0000
+Date:   Thu, 25 May 2023 16:11:34 +0200
+From:   Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To:     Ming Lei <ming.lei@redhat.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+        stable@vger.kernel.org, Jay Shin <jaeshin@redhat.com>,
+        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Yosry Ahmed <yosryahmed@google.com>
+Subject: Re: [PATCH V3] blk-cgroup: Flush stats before releasing blkcg_gq
+Message-ID: <sqsb7wcvxjfd3nbohhpbjihbr4armrh5sr6vu5pxci62ga7for@6om7ayuncxnc>
+References: <20230525043518.831721-1-ming.lei@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="grvaiosJJE1u57Uo"
+        protocol="application/pgp-signature"; boundary="hyhnghupqumzotmb"
 Content-Disposition: inline
-In-Reply-To: <d4879ff1-b9ac-0373-ceb2-beaa645fba23@leemhuis.info>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230525043518.831721-1-ming.lei@redhat.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -87,43 +64,65 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---grvaiosJJE1u57Uo
-Content-Type: text/plain; charset=utf-8
+--hyhnghupqumzotmb
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 25, 2023 at 01:24:42PM +0200, Thorsten Leemhuis wrote:
-> Bagas, thx again for your efforts, much appreciated. But I guess for drm
-> drivers that have a line like
->=20
-> B: https://gitlab.freedesktop.org/drm/[...]
->=20
-> in MAINTAINERS (which includes all the popular drm drivers) this just
-> creates a lot of confusion for everyone, as one issue will likely end up
-> being discussed in two or three places in parallel (bugzilla,
-> freedesktop, email). Better tell reporters to move their issue to the
-> freedesktop drm tracker and close the ticket in bugzilla. And don't get
-> regzbot involved, as it for now it sadly is unable to monitor the
-> freedesktop drm tracker (sooner or later I'll fix that, but for now it's
-> a blind spot :-/).
->=20
-> Pretty sure none of the DRM developers will disagree, but if I'm wrong,
-> please holler.
+On Thu, May 25, 2023 at 12:35:18PM +0800, Ming Lei <ming.lei@redhat.com> wr=
+ote:
+> It is less a problem if the cgroup to be destroyed also has other
+> controllers like memory that will call cgroup_rstat_flush() which will
+> clean up the reference count. If block is the only controller that uses
+> rstat, these offline blkcg and blkgs may never be freed leaking more
+> and more memory over time.
 
-OK, thanks!
+On v2, io implies memory too.
+Do you observe the leak on the v2 system too?
 
---=20
-An old man doll... just what I always wanted! - Clara
+(Beware that (not only) dirty pages would pin offlined memcg, so the
+actual mem_cgroup_css_release and cgroup_rstat_flush would be further
+delayed.)
 
---grvaiosJJE1u57Uo
+> To prevent this potential memory leak:
+>=20
+> - flush blkcg per-cpu stats list in __blkg_release(), when no new stat
+> can be added
+>=20
+> - add global blkg_stat_lock for covering concurrent parent blkg stat
+> update
+
+It's bit unfortunate yet another lock is added :-/
+
+IIUC, even Waiman's patch (flush in blkcg_destroy_blkcfs) would need
+synchronization for different CPU replicas flushes in
+blkcg_iostat_update, right?
+
+> - don't grab bio->bi_blkg reference when adding the stats into blkcg's
+> per-cpu stat list since all stats are guaranteed to be consumed before
+> releasing blkg instance, and grabbing blkg reference for stats was the
+> most fragile part of original patch
+
+
+At one moment, the lhead -> blkcg_gq reference seemed alright to me and
+consequently blkcg_gq -> blkcg is the one that looks reversed (forming
+the cycle). But changing its direction would be much more fundamental
+change, it'd need also kind of blkcg_gq reparenting -- similarly to
+memcg.
+
+
+Thanks,
+Michal
+
+--hyhnghupqumzotmb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZG9rQgAKCRD2uYlJVVFO
-o2q1AP0at4ur6rVluyiWwI+vlx6EPDtqu5dzAi4NoyxwtVFJuwEArRNKmZCx78ih
-F/NmfUXKN6TG2PwPATDa1cn4Qwp+9g8=
-=9SOh
+iHUEABYKAB0WIQTrXXag4J0QvXXBmkMkDQmsBEOquQUCZG9shwAKCRAkDQmsBEOq
+ucuTAP0a8JcBs2PoQvq0qKyo0/MnzWO1v2gQ5TcBEw6Ne3L7CgD+OFG+18/XCgsa
+XfLIW1CRCnJ+phqelsySvrMcvUNsNAM=
+=la8T
 -----END PGP SIGNATURE-----
 
---grvaiosJJE1u57Uo--
+--hyhnghupqumzotmb--
