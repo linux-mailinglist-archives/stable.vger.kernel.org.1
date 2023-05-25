@@ -2,89 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C70B9710212
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 02:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB210710220
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 02:56:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbjEYApx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 20:45:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43434 "EHLO
+        id S230127AbjEYA4w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 20:56:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjEYApw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 20:45:52 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CE3E2
-        for <stable@vger.kernel.org>; Wed, 24 May 2023 17:45:45 -0700 (PDT)
+        with ESMTP id S229661AbjEYA4w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 20:56:52 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF19E6
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 17:56:50 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OekN1c5JNBrF9oxKuJeCnXWS1NAtY97wnsTCzAukchYBlslt9vHVBu74amjplP+cb1iR3FOFfOvWtl4eLmrBerWMnJf1qGnUl5PAoHGpoyJymEjNKIgOhiQZKzaFOQVfAoOlg3sfTGwbCa4MmOQzWz1BR8VvOyEtMWt+53qD+VtnJDxuZk2e+e8BTGe1wfmj7BUzHS62wa3g2uO86ar/Y+TtLSlaFQZMIOYCndmmPD1KJaT8jmUQTdCmcmL8LaJgL4DSlVZCE8FM8POf7ud0GSHM08g0ZKiReWEXE5EjgokvjKHF97oeWdW2coTjWdd9otYgJCH+JGc6q7pkZOfLEA==
+ b=D/9/+/Iaakyc4ZW12r2KI4LK9lIq4YQ5DnqoZ3KGQr01/Fn8hu1jKICFp85nLXD2jbrMZuU0wzzmDoxhI7KtVmxItIN2NnBvem0b9t5dJY5ZgEUC9Uo94u027HDciZH2HtiSbKdh7O0aCoNkTi9yXR1TYwJciDyoK3aMKlfh5Ro08UfJj0M9RxPIL9GeVve1HqqLLnYdr5pH6Zzj8bpwx10VWYqXIZ3hH/sv+kdHX/Dc5QEDyDGOycWJ3c1XVn0IuwdE5tWyxvGyMW1TdA5SZzDMvuVAmOQ1oq68NIIfMpRNVzRLUedzN6H6o5c5sXb+XRSxrrCD8p7Zy9rsbc+05Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PrRsZNjsGtb0tuqT5RIAD5XpS+CnaJukx4LDzQblTas=;
- b=oHql80BnANlc7+hvHkYGzgTqhdhOeuz/EbBKkH3SzU3WlsAdbV8AtaBLP6V6l9mpTPTXzDLX82/x+qKDhz0hx7xIRHYfa9onTDxjkR07sN1Tt0Pxv8d/Xxs1AFC2cTtx34GcwpJx2xMHrbLXKST8stfiJ6VNMOAJwX0H2XdaYkJQA0GfGczno49WucUJiRDAVCwdneHbpzVRoyRUN2+Ruk0XsCgdbMOSGkanOY4/g5av0lew2Y9Yv4O3fg+h3dCmHw3Qp1S4xNBMLBE+28cnlyTT9VL+bwjbbg0rc+sy6kC81rbclZ/6TQ+EhDgF9SAQaqECKbNS2q6vwe9GQVrFZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
+ bh=fgbDzzONGAvEuL8695joXvV8tNGoydeSwkNDSHeoBSM=;
+ b=M6UkXTLfrqr+Vk+idFe5UhIvyVsNPjteL7spyMHCyTGvyI6DG2SO0S/Fq4KZHKMnfBa1cS0h+yERr7DJdfAq0PFytSSqWlxpiA5I48wnmmtXTOpVb3ZduCgP/NUUQOH+qaAYeiMlXVQcZTl9pEKsyp6OOa9ARM2TL4pD2ICCx0gU//fcbfMaMhQAMF5k6Bb9U/wL27WUDWlC7KF3VVqUfY39rNKCWo2Wo/A6gyQxmyCr+ZXGUzQD4ObdChrExCxyMbmHXbkKQWY+33r1E8e1ulreI/83cyxE5sVJ7IHlfc7syAA/sgOgRsuqqWbbPbIKAkMeDV0tWA6bPtf5/+huyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PrRsZNjsGtb0tuqT5RIAD5XpS+CnaJukx4LDzQblTas=;
- b=bkddOV0mKkPabLb0WF/7JOy+IBGrGusyKbZqyB7jPn9kMHEixVMSALw3kXZdXMUHMku4Fs26MRc7kP5z13gq4XzOMgT+IyXFY8TBGg47wJuwBhDGgZuhIexjN15W3aMWy11pDxtcBH5jvKFkSYTmNcsEXm5I8WO0mCdtQGn90gc=
-Received: from BN1PR13CA0028.namprd13.prod.outlook.com (2603:10b6:408:e2::33)
- by MN0PR12MB5907.namprd12.prod.outlook.com (2603:10b6:208:37b::17) with
+ bh=fgbDzzONGAvEuL8695joXvV8tNGoydeSwkNDSHeoBSM=;
+ b=DAb69hcugj9/gZ7iv8sQRGbzLf/MoyWHzwAIJBVpmxJm5jzpTZWlh+ztmFQ4yGE7FCDtTsCu68hlGe06hmr5AViEb2V2BB2VCFLMTiCkVMJLNbvypZw+ZjJgykRZwJF1pAvkU53e6ii1vCfLPMzEbljNYSqPkYb6GwWhQ7y/7hE=
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by IA0PR12MB8929.namprd12.prod.outlook.com (2603:10b6:208:484::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Thu, 25 May
- 2023 00:45:42 +0000
-Received: from BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:e2:cafe::8a) by BN1PR13CA0028.outlook.office365.com
- (2603:10b6:408:e2::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15 via Frontend
- Transport; Thu, 25 May 2023 00:45:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT045.mail.protection.outlook.com (10.13.177.47) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6433.16 via Frontend Transport; Thu, 25 May 2023 00:45:42 +0000
-Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 24 May
- 2023 19:45:41 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <stable@vger.kernel.org>
-CC:     Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH] drm/amd/display: hpd rx irq not working with eDP interface
-Date:   Wed, 24 May 2023 19:22:01 -0500
-Message-ID: <20230525002201.23804-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Thu, 25 May
+ 2023 00:56:48 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::3f45:358e:abba:24f5]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::3f45:358e:abba:24f5%3]) with mapi id 15.20.6411.028; Thu, 25 May 2023
+ 00:56:48 +0000
+From:   "Limonciello, Mario" <Mario.Limonciello@amd.com>
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/amd/display: hpd rx irq not working with eDP
+ interface
+Thread-Topic: [PATCH] drm/amd/display: hpd rx irq not working with eDP
+ interface
+Thread-Index: AQHZjqI8SJ3ECAdV0kqwU+6uRwki2q9qKeig
+Date:   Thu, 25 May 2023 00:56:48 +0000
+Message-ID: <MN0PR12MB610177142B98F11B8E022130E2469@MN0PR12MB6101.namprd12.prod.outlook.com>
+References: <20230525002201.23804-1-mario.limonciello@amd.com>
+In-Reply-To: <20230525002201.23804-1-mario.limonciello@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=31d53aae-3893-4e3f-8724-0e1cff20ba66;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-05-25T00:55:24Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR12MB6101:EE_|IA0PR12MB8929:EE_
+x-ms-office365-filtering-correlation-id: eb91199b-6cb1-405c-d68f-08db5cbaeb3a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: aDIWMUTf7KTbgCMmKRYsZXBD8Zcs1AW1/zljxQT0xLS3Nf5PaYxiqQ5jp/JuAPOA/2Eutm2esvDeCHlL8QuIQynMCoOvwUxGaMtQCU5z3gpGNHPqmetRRr2cLAs+B4ALZgdtPQBNYmTRaJ4Oc9i+AJhMfc/OUGSwFwWO6iFzviCs47aN2zqUdFsRer/3iNUdgWOeObW54M/d2y/nl3CMOp094a/uIRxJzA/fl7TJVDOHPSrFcvTtmpq2XkO2ac6U0LBoO3SfEZeExFCO/ZEarkKnqocCd/cnpqXf1zYEBi5EJeBcI89YrXhVZZ4vqydqF46ECPSkCCeI1cgKqgj6w+1B01xnYWYwutDqqQcozo5nRDXryXIchExGE8VAx9cPLJumAdCqFhYIV3Lm7fBskk3YstAJiqiwQKKmCs9o0cyCcoTapNkWy35gpfHyYFwbIq7blMwPGN7iJsXBRFsNN4fHgufZLFAt6k0jmwNDYCKztdRvnf2Ew36RUPqUK0FQIZhYgBlfvAdhdMHKtm9OlsPZboUjv7l5U2Aw7N3KQOWShw9wdgJ64/8dpsTTbzUFmINub2wnREaEx+5YBh7XUlO5rMRnoOF2XDG0CQa06vUHP49oUsK1DOI0GRcyU9nn
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(136003)(396003)(346002)(376002)(451199021)(76116006)(66946007)(66476007)(66446008)(66556008)(6916009)(64756008)(8936002)(52536014)(8676002)(5660300002)(71200400001)(316002)(478600001)(7696005)(41300700001)(38100700002)(55016003)(122000001)(6506007)(2906002)(53546011)(9686003)(186003)(33656002)(83380400001)(38070700005)(26005)(86362001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?AVnr1ilTYA1s4IY+XbSliU6DEJRl+TymFIM5YK0/xoYD1z+43RNYIfs8B3f4?=
+ =?us-ascii?Q?WVgRd8XkUNqWhaCkRmsWGac7P8hqLgFwZTMOXvJdiEcM/CrLU7nPa/dGIpkP?=
+ =?us-ascii?Q?956DJaWOtcUrJ86sLB5fgHB9eUVkEYDbDy86XHLnNUiLnas+e/gOA0MHolqM?=
+ =?us-ascii?Q?3v+N9w1kNg0kejCNSsZ1AN5AOteRy4ontGt+wtnrY2GXSgzU78PTRZMsl8lE?=
+ =?us-ascii?Q?jPYBqvqjQ9qYHwAm3jjdCjJhNNpRjKVSY4ZeVVmwNaNTvmuYJr1/0ZmZ48Up?=
+ =?us-ascii?Q?gwSYNcV0mqm3FrlK2iBhzDfIH47mXbejM4GYhZdibor6m3AfuXij/m2uUnum?=
+ =?us-ascii?Q?7JjEncTk7ouUy080UQwYvsus4TBDGJnpGCKRKNcJP1eHLI7Dk/Cf5lTsp6HT?=
+ =?us-ascii?Q?xJbgARvh1ydlfmokK/7nxhLiOrVxQPctJB76XkJf27O6SbOmjrT5rSZYivE1?=
+ =?us-ascii?Q?7lDd8ximrDyj2/46Ju8TvyrKe2HCbPRzIcmzdXKqIWS1xF/F5N0UESYjCsti?=
+ =?us-ascii?Q?6nAdAz0EB+qchU1CMvf2kHH7zo1T2uc7goy0LmXi+vAmWyaXndfFXBIveNnT?=
+ =?us-ascii?Q?cO2Lq2o332fBtBPOlyUuCUNjSb6sXuymWOnHv14AuC6zhJCjR5jvFFbohkdE?=
+ =?us-ascii?Q?rZTRxKucl84aAuyNylbGmegiJKCKiw6TQWuQ4sCQHZSRrsOsY5tsKcXkfkf5?=
+ =?us-ascii?Q?dA1AMjy6CpKIarcPVVN57+UrxemGQIMMgOg46dEYDVCH61PmLSHYzXbWdthS?=
+ =?us-ascii?Q?pUT8bsU+cG445kRajcStt2henAVzCji1NQUh1MyfncGtCKPgwmW2UdteqWzT?=
+ =?us-ascii?Q?RWhRB6TeIseuCvRhtvS6t+AUENhFtBs1qdPltzEin+UmOdCog6zMYr1FAWuT?=
+ =?us-ascii?Q?dUhkao7ei6Q0zycRhxKoqNvy+CpMt+MTslBlVvWbas2W7KA+rsuDQ6kSDfk1?=
+ =?us-ascii?Q?Ulsr73H5SXLvzN22ksj6Pp3F880xyTlelvN5+/XN8Nz+4yba760M4ALewFQw?=
+ =?us-ascii?Q?LGEUpI37NJ1FSCmqaEWns7av+rMRKQ3qhgMEPGEOOeTPG0wQ8530kkQQh23b?=
+ =?us-ascii?Q?HYCST9QisNRcSCVgj+lb/1/VjE6K+21wdIkHqygSYaf2Ky4RqWi1vF9zIQsf?=
+ =?us-ascii?Q?PG6i6ER+PyVWZNPYepdFwufLlI2EvE6AVgaDbLFzuy1px0FMpqD8pCJVpUr3?=
+ =?us-ascii?Q?mViQbFW8ifRKfRn+MIBAXqFmpY+5jTaEw4RdGbf4a4z9Ieq2i+4C0kxY+RHV?=
+ =?us-ascii?Q?hcj/ZKipkSwNTpxe0xygJiXMU7VQm1TUN/Zgro/GdGQ0OpiCJtuhseBI8U1c?=
+ =?us-ascii?Q?tPJHHfA3YtsSkqSWB2PeooJUjOqzkGdNwNtO6C3aJ1x5PwT2/8ybZSpW/8zL?=
+ =?us-ascii?Q?vQE+Jn6b+PZBerrKISLjVJmaL2WkaO4vBR3HcJjliuiIke611914SmwdJf6p?=
+ =?us-ascii?Q?oN58ZL2rd/DfPtMn800awYcDSAQbjEZewSMTk9jK35sIFPc9+ZwmgO4C3COZ?=
+ =?us-ascii?Q?aGi37EK/UEnsReoD/HcqTNMUIBkMOOxEbpXa96uHcFr85vTG4NrrMJzQIiUg?=
+ =?us-ascii?Q?cAwAiA1yfYkMmueEp+Y=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT045:EE_|MN0PR12MB5907:EE_
-X-MS-Office365-Filtering-Correlation-Id: e93b944f-6026-442d-3e27-08db5cb95e3c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gADmn7GXq6B4g4u6ATz/8h+Bzyke0bnOvTJQDnfGzB1m/2wOO5s9OYLfDtqFfMf/ASKV6DZKiYesXi92w95hGwXIbu3Hfd9ElkrxU2qm+Sk5GMq/+e0VxeybHyy6X4/6IqeLPCOQz5FO1U87ndhI+/39HoHCjNyYkbR26EIO78DXdwId9Y1pAPhIF2aPfPCNuehYhRSFEiSaANmYvMccJZijzE/XSLThLlpJR6SaNOwCPcQAwyv22tARSqdLi/j3Ty406NjFuo5lg00SNgfI/ahj1nytuNl8G1nqjEwjRfyH14Ml919ZmPKjw/ECehFEErQAypeyghWj4yGBESxMzY2cyaS8JZbcpxKPS5kmZneuLcI1LN0KIQnjwf9iusCx7TGukJp/sxvIJgfGjGWxYZ5s734HAgW5RFhWxIkbS4THGkvLhvgfTqCnj+2xPm5qBYoEWGTzfSnxIQn18ujxZAUoV0mon/xMO7f2pnFxI7ZXn8njHYy+m2bF5kH8LnMGx60h2K/k6ZvWbw8hyrAxWqiz5KpuEKSciluW4ezwQMV/MQqfT+LDO7qald9L3buSCthIsCJPihzsbIe38Q8RrcYIBfdM+vJ6bGBs+jK9ANTMFLbzxCEIiw2WMyBnhzXuxS8caBn2z7ymBaB0LD45ZPMBH/Ri4Gb9OcQ5K5XoeLFfqReSs+J5zcpA/D72tmhP9UUttjt4fl8qDGruGQSWKo1Ofbs4htLMcCVP/W0eiZ2k2EKRYtfHPW4n+ZyIINdUQa6+v7Vf8r5iRQnjasuUTQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(136003)(396003)(376002)(451199021)(36840700001)(40470700004)(46966006)(336012)(426003)(82310400005)(2616005)(4326008)(6916009)(82740400003)(5660300002)(356005)(81166007)(8936002)(8676002)(86362001)(40480700001)(2906002)(44832011)(83380400001)(40460700003)(316002)(47076005)(41300700001)(36860700001)(36756003)(7696005)(6666004)(478600001)(16526019)(186003)(70586007)(70206006)(1076003)(26005)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 00:45:42.2299
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb91199b-6cb1-405c-d68f-08db5cbaeb3a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 May 2023 00:56:48.3134
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e93b944f-6026-442d-3e27-08db5cb95e3c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5907
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EQgig1qRZxyJOatlCgG3sovHxFUepfTBNss8iWT1ojNUTE0YY/RdKu8x04CBLcYuNXaFjJECGff6fOR/hp2n/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8929
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -96,82 +116,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Chen <robin.chen@amd.com>
+[AMD Official Use Only - General]
 
-[Why]
-This is the fix for the defect of commit ab144f0b4ad6
-("drm/amd/display: Allow individual control of eDP hotplug support").
+> -----Original Message-----
+> From: Limonciello, Mario <Mario.Limonciello@amd.com>
+> Sent: Wednesday, May 24, 2023 7:22 PM
+> To: stable@vger.kernel.org
+> Cc: Limonciello, Mario <Mario.Limonciello@amd.com>
+> Subject: [PATCH] drm/amd/display: hpd rx irq not working with eDP interfa=
+ce
+>
+> From: Robin Chen <robin.chen@amd.com>
+>
+> [Why]
+> This is the fix for the defect of commit ab144f0b4ad6
+> ("drm/amd/display: Allow individual control of eDP hotplug support").
+>
+> [How]
+> To revise the default eDP hotplug setting and use the enum to git rid
+> of the magic number for different options.
+>
+> Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP
+> hotplug support")
+> Cc: stable@vger.kernel.org
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
+> Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+> Signed-off-by: Robin Chen <robin.chen@amd.com>
+> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> (cherry picked from commit
+> eeefe7c4820b6baa0462a8b723ea0a3b5846ccae)
+> Hand modified for missing file rename changes and symbol moves in 6.1.y.
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> This will help some unhandled interrupts that are related to MST
+> and eDP use.
 
-[How]
-To revise the default eDP hotplug setting and use the enum to git rid
-of the magic number for different options.
+Apologies; forgot to mention in the message this is ONLY for 6.1.y.
+It doesn't apply to 5.15.y, and 6.3.y already picked it up successfully.
 
-Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP hotplug support")
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Robin Chen <robin.chen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eeefe7c4820b6baa0462a8b723ea0a3b5846ccae)
-Hand modified for missing file rename changes and symbol moves in 6.1.y.
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-This will help some unhandled interrupts that are related to MST
-and eDP use.
- drivers/gpu/drm/amd/display/dc/core/dc_link.c | 9 +++++++--
- drivers/gpu/drm/amd/display/dc/dc_types.h     | 6 ++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-index 6299130663a3..5d53e54ebe90 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-@@ -1634,14 +1634,18 @@ static bool dc_link_construct_legacy(struct dc_link *link,
- 				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 
- 			switch (link->dc->config.allow_edp_hotplug_detection) {
--			case 1: // only the 1st eDP handles hotplug
-+			case HPD_EN_FOR_ALL_EDP:
-+				link->irq_source_hpd_rx =
-+						dal_irq_get_rx_source(link->hpd_gpio);
-+				break;
-+			case HPD_EN_FOR_PRIMARY_EDP_ONLY:
- 				if (link->link_index == 0)
- 					link->irq_source_hpd_rx =
- 						dal_irq_get_rx_source(link->hpd_gpio);
- 				else
- 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
--			case 2: // only the 2nd eDP handles hotplug
-+			case HPD_EN_FOR_SECONDARY_EDP_ONLY:
- 				if (link->link_index == 1)
- 					link->irq_source_hpd_rx =
- 						dal_irq_get_rx_source(link->hpd_gpio);
-@@ -1649,6 +1653,7 @@ static bool dc_link_construct_legacy(struct dc_link *link,
- 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
- 			default:
-+				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
- 			}
- 		}
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
-index ad9041472cca..6050a3469a57 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -993,4 +993,10 @@ struct display_endpoint_id {
- 	enum display_endpoint_type ep_type;
- };
- 
-+enum dc_hpd_enable_select {
-+	HPD_EN_FOR_ALL_EDP = 0,
-+	HPD_EN_FOR_PRIMARY_EDP_ONLY,
-+	HPD_EN_FOR_SECONDARY_EDP_ONLY,
-+};
-+
- #endif /* DC_TYPES_H_ */
--- 
-2.34.1
+>  drivers/gpu/drm/amd/display/dc/core/dc_link.c | 9 +++++++--
+>  drivers/gpu/drm/amd/display/dc/dc_types.h     | 6 ++++++
+>  2 files changed, 13 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> index 6299130663a3..5d53e54ebe90 100644
+> --- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> +++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+> @@ -1634,14 +1634,18 @@ static bool dc_link_construct_legacy(struct
+> dc_link *link,
+>                               link->irq_source_hpd =3D
+> DC_IRQ_SOURCE_INVALID;
+>
+>                       switch (link->dc-
+> >config.allow_edp_hotplug_detection) {
+> -                     case 1: // only the 1st eDP handles hotplug
+> +                     case HPD_EN_FOR_ALL_EDP:
+> +                             link->irq_source_hpd_rx =3D
+> +                                             dal_irq_get_rx_source(link-
+> >hpd_gpio);
+> +                             break;
+> +                     case HPD_EN_FOR_PRIMARY_EDP_ONLY:
+>                               if (link->link_index =3D=3D 0)
+>                                       link->irq_source_hpd_rx =3D
+>                                               dal_irq_get_rx_source(link-
+> >hpd_gpio);
+>                               else
+>                                       link->irq_source_hpd =3D
+> DC_IRQ_SOURCE_INVALID;
+>                               break;
+> -                     case 2: // only the 2nd eDP handles hotplug
+> +                     case HPD_EN_FOR_SECONDARY_EDP_ONLY:
+>                               if (link->link_index =3D=3D 1)
+>                                       link->irq_source_hpd_rx =3D
+>                                               dal_irq_get_rx_source(link-
+> >hpd_gpio);
+> @@ -1649,6 +1653,7 @@ static bool dc_link_construct_legacy(struct dc_link
+> *link,
+>                                       link->irq_source_hpd =3D
+> DC_IRQ_SOURCE_INVALID;
+>                               break;
+>                       default:
+> +                             link->irq_source_hpd =3D
+> DC_IRQ_SOURCE_INVALID;
+>                               break;
+>                       }
+>               }
+> diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h
+> b/drivers/gpu/drm/amd/display/dc/dc_types.h
+> index ad9041472cca..6050a3469a57 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dc_types.h
+> +++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+> @@ -993,4 +993,10 @@ struct display_endpoint_id {
+>       enum display_endpoint_type ep_type;
+>  };
+>
+> +enum dc_hpd_enable_select {
+> +     HPD_EN_FOR_ALL_EDP =3D 0,
+> +     HPD_EN_FOR_PRIMARY_EDP_ONLY,
+> +     HPD_EN_FOR_SECONDARY_EDP_ONLY,
+> +};
+> +
+>  #endif /* DC_TYPES_H_ */
+> --
+> 2.34.1
 
