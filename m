@@ -2,187 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B99037101F2
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 02:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C70B9710212
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 02:45:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233601AbjEYAV5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 24 May 2023 20:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38482 "EHLO
+        id S229547AbjEYApx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 24 May 2023 20:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233082AbjEYAV4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 20:21:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCA6199;
-        Wed, 24 May 2023 17:21:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 755CE639A3;
-        Thu, 25 May 2023 00:21:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA5CC433D2;
-        Thu, 25 May 2023 00:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684974113;
-        bh=yXi9V0/F6k9EKbphV/OOXmADbsUSWa4D9vfJH+/4NEE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=b85qzx/Y6QIzJImaX2xXMmXsF7Z+KFvCmv+XBtosojGt7urQ95dBTES9SOK4dIDNK
-         aTYp9WEI03JdixtUndCywEEimskEtuq5LFZODVU+q/DqsZBO3SobLqi5vIQ/v6ZdLA
-         SNUmmuVAxcMSc/+6VvwzOH1iIvVuw4FJbh4OWvw+cd6ReQbTAdSXeBpIc4wHAb5moF
-         2Zl/1TEMtMKuE7hXsf3AvQAvlKS71+KeXt1yjsNhKt8inRFReMpFsXE2pDdPSY0E0z
-         aRiVkJb/DTLhLt+QuzgSx0OfT3cR1eKGN49DbpzNEiD9YVmMJaFD93ohgCnjLNj8No
-         GtJoYQAEf2opw==
-Date:   Thu, 25 May 2023 08:21:48 +0800
-From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To:     Christian Brauner <brauner@kernel.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        LTP List <ltp@lists.linux.it>, lkft-triage@lists.linaro.org,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>
-Subject: Re: LTP: tracing: RIP: 0010:security_inode_permission+0x5/0x70
-Message-Id: <20230525082148.af95df069c337fa570f24331@kernel.org>
-In-Reply-To: <20230524-windhund-karikatur-354025f2ef1c@brauner>
-References: <CA+G9fYuGT0esjqBT9=xCTtWKV1DxYspXTtM5gqprbDKiTrb7qQ@mail.gmail.com>
-        <20230524-windhund-karikatur-354025f2ef1c@brauner>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229454AbjEYApw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 24 May 2023 20:45:52 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CE3E2
+        for <stable@vger.kernel.org>; Wed, 24 May 2023 17:45:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OekN1c5JNBrF9oxKuJeCnXWS1NAtY97wnsTCzAukchYBlslt9vHVBu74amjplP+cb1iR3FOFfOvWtl4eLmrBerWMnJf1qGnUl5PAoHGpoyJymEjNKIgOhiQZKzaFOQVfAoOlg3sfTGwbCa4MmOQzWz1BR8VvOyEtMWt+53qD+VtnJDxuZk2e+e8BTGe1wfmj7BUzHS62wa3g2uO86ar/Y+TtLSlaFQZMIOYCndmmPD1KJaT8jmUQTdCmcmL8LaJgL4DSlVZCE8FM8POf7ud0GSHM08g0ZKiReWEXE5EjgokvjKHF97oeWdW2coTjWdd9otYgJCH+JGc6q7pkZOfLEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PrRsZNjsGtb0tuqT5RIAD5XpS+CnaJukx4LDzQblTas=;
+ b=oHql80BnANlc7+hvHkYGzgTqhdhOeuz/EbBKkH3SzU3WlsAdbV8AtaBLP6V6l9mpTPTXzDLX82/x+qKDhz0hx7xIRHYfa9onTDxjkR07sN1Tt0Pxv8d/Xxs1AFC2cTtx34GcwpJx2xMHrbLXKST8stfiJ6VNMOAJwX0H2XdaYkJQA0GfGczno49WucUJiRDAVCwdneHbpzVRoyRUN2+Ruk0XsCgdbMOSGkanOY4/g5av0lew2Y9Yv4O3fg+h3dCmHw3Qp1S4xNBMLBE+28cnlyTT9VL+bwjbbg0rc+sy6kC81rbclZ/6TQ+EhDgF9SAQaqECKbNS2q6vwe9GQVrFZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PrRsZNjsGtb0tuqT5RIAD5XpS+CnaJukx4LDzQblTas=;
+ b=bkddOV0mKkPabLb0WF/7JOy+IBGrGusyKbZqyB7jPn9kMHEixVMSALw3kXZdXMUHMku4Fs26MRc7kP5z13gq4XzOMgT+IyXFY8TBGg47wJuwBhDGgZuhIexjN15W3aMWy11pDxtcBH5jvKFkSYTmNcsEXm5I8WO0mCdtQGn90gc=
+Received: from BN1PR13CA0028.namprd13.prod.outlook.com (2603:10b6:408:e2::33)
+ by MN0PR12MB5907.namprd12.prod.outlook.com (2603:10b6:208:37b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Thu, 25 May
+ 2023 00:45:42 +0000
+Received: from BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:e2:cafe::8a) by BN1PR13CA0028.outlook.office365.com
+ (2603:10b6:408:e2::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15 via Frontend
+ Transport; Thu, 25 May 2023 00:45:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT045.mail.protection.outlook.com (10.13.177.47) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6433.16 via Frontend Transport; Thu, 25 May 2023 00:45:42 +0000
+Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 24 May
+ 2023 19:45:41 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     <stable@vger.kernel.org>
+CC:     Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH] drm/amd/display: hpd rx irq not working with eDP interface
+Date:   Wed, 24 May 2023 19:22:01 -0500
+Message-ID: <20230525002201.23804-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT045:EE_|MN0PR12MB5907:EE_
+X-MS-Office365-Filtering-Correlation-Id: e93b944f-6026-442d-3e27-08db5cb95e3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gADmn7GXq6B4g4u6ATz/8h+Bzyke0bnOvTJQDnfGzB1m/2wOO5s9OYLfDtqFfMf/ASKV6DZKiYesXi92w95hGwXIbu3Hfd9ElkrxU2qm+Sk5GMq/+e0VxeybHyy6X4/6IqeLPCOQz5FO1U87ndhI+/39HoHCjNyYkbR26EIO78DXdwId9Y1pAPhIF2aPfPCNuehYhRSFEiSaANmYvMccJZijzE/XSLThLlpJR6SaNOwCPcQAwyv22tARSqdLi/j3Ty406NjFuo5lg00SNgfI/ahj1nytuNl8G1nqjEwjRfyH14Ml919ZmPKjw/ECehFEErQAypeyghWj4yGBESxMzY2cyaS8JZbcpxKPS5kmZneuLcI1LN0KIQnjwf9iusCx7TGukJp/sxvIJgfGjGWxYZ5s734HAgW5RFhWxIkbS4THGkvLhvgfTqCnj+2xPm5qBYoEWGTzfSnxIQn18ujxZAUoV0mon/xMO7f2pnFxI7ZXn8njHYy+m2bF5kH8LnMGx60h2K/k6ZvWbw8hyrAxWqiz5KpuEKSciluW4ezwQMV/MQqfT+LDO7qald9L3buSCthIsCJPihzsbIe38Q8RrcYIBfdM+vJ6bGBs+jK9ANTMFLbzxCEIiw2WMyBnhzXuxS8caBn2z7ymBaB0LD45ZPMBH/Ri4Gb9OcQ5K5XoeLFfqReSs+J5zcpA/D72tmhP9UUttjt4fl8qDGruGQSWKo1Ofbs4htLMcCVP/W0eiZ2k2EKRYtfHPW4n+ZyIINdUQa6+v7Vf8r5iRQnjasuUTQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(136003)(396003)(376002)(451199021)(36840700001)(40470700004)(46966006)(336012)(426003)(82310400005)(2616005)(4326008)(6916009)(82740400003)(5660300002)(356005)(81166007)(8936002)(8676002)(86362001)(40480700001)(2906002)(44832011)(83380400001)(40460700003)(316002)(47076005)(41300700001)(36860700001)(36756003)(7696005)(6666004)(478600001)(16526019)(186003)(70586007)(70206006)(1076003)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 00:45:42.2299
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e93b944f-6026-442d-3e27-08db5cb95e3c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5907
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 24 May 2023 12:39:40 +0200
-Christian Brauner <brauner@kernel.org> wrote:
+From: Robin Chen <robin.chen@amd.com>
 
-> On Wed, May 24, 2023 at 02:32:25PM +0530, Naresh Kamboju wrote:
-> > While running LTP tracing tests on qemu-x86_64 following kernel crash noticed
-> > with stable-rc 6.3.4-rc2.
-> > 
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > FAILED COMMAND File:
-> > /lava-1/0/tests/0_ltp-tracing/automated/linux/ltp/output/LTP_tracing.failed
-> > TCONF COMMAND File: /opt/ltp/output/LTP_RUN_ON-LTP_tracing.log.tconf
-> > Running tests.......
-> 
-> No idea and seems very odd. Only thing I see is that there's ftrace
-> regression testing running while the crash happens.
+[Why]
+This is the fix for the defect of commit ab144f0b4ad6
+("drm/amd/display: Allow individual control of eDP hotplug support").
 
-It sounds like there is a timing issue on int3 self-modifying code @ alternative.c
-ftrace@x86 uses it for arming/disarming mcount(fentry) call.
-I would like to know what is the actual command to run it. The above files are
-local file, and no actual commands recorded in the full log.
+[How]
+To revise the default eDP hotplug setting and use the enum to git rid
+of the magic number for different options.
 
-Thank you,
+Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP hotplug support")
+Cc: stable@vger.kernel.org
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Robin Chen <robin.chen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eeefe7c4820b6baa0462a8b723ea0a3b5846ccae)
+Hand modified for missing file rename changes and symbol moves in 6.1.y.
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+This will help some unhandled interrupts that are related to MST
+and eDP use.
+ drivers/gpu/drm/amd/display/dc/core/dc_link.c | 9 +++++++--
+ drivers/gpu/drm/amd/display/dc/dc_types.h     | 6 ++++++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-> 
-> > 
-> > <4>[   57.932577] int3: 0000 [#1] PREEMPT SMP PTI
-> > <4>[   57.933090] CPU: 0 PID: 138 Comm: systemd-udevd Not tainted 6.3.4-rc2 #1
-> > <4>[   57.933243] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-> > BIOS 1.14.0-2 04/01/2014
-> > <4>[   57.933447] RIP: 0010:security_inode_permission+0x5/0x70
-> > <4>[   57.934163] Code: c0 c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00
-> > 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66
-> > 0f 1f 00 e8 <e7> 8d 64 18 f6 47 0d 02 75 50 55 48 89 e5 41 55 41 89 f5
-> > 41 54 49
-> > <4>[   57.934257] RSP: 0018:ffffa300c050bca0 EFLAGS: 00000246
-> > <4>[   57.934363] RAX: 00000000000041ed RBX: ffff9bda012805c0 RCX:
-> > 0000000000000000
-> > <4>[   57.934390] RDX: ffff9bda01f6df00 RSI: 0000000000000081 RDI:
-> > ffff9bda012805c0
-> > <4>[   57.934415] RBP: ffffa300c050bcd0 R08: ffffa300c050bd80 R09:
-> > 00000000ffffff9c
-> > <4>[   57.934440] R10: 0000000000000fe0 R11: ffc9d09b99d09993 R12:
-> > 0000000000000081
-> > <4>[   57.934465] R13: 0000000000000000 R14: ffffffffa958f970 R15:
-> > 2f2f2f2f2f2f2f2f
-> > <4>[   57.934544] FS:  00007fb89665f800(0000)
-> > GS:ffff9bda7bc00000(0000) knlGS:0000000000000000
-> > <4>[   57.934578] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > <4>[   57.934604] CR2: 00007f60c9b0e000 CR3: 0000000104402000 CR4:
-> > 00000000000006f0
-> > <4>[   57.934793] Call Trace:
-> > <4>[   57.934958]  <TASK>
-> > <4>[   57.935082]  ? inode_permission+0x70/0x1a0
-> > <4>[   57.935235]  link_path_walk.part.0.constprop.0+0xdd/0x3b0
-> > <4>[   57.935360]  path_lookupat+0x3e/0x190
-> > <4>[   57.935426]  filename_lookup+0xe8/0x1f0
-> > <4>[   57.935638]  user_path_at_empty+0x42/0x60
-> > <4>[   57.935692]  do_fchmodat+0x5f/0xc0
-> > <4>[   57.935809]  __x64_sys_chmod+0x1f/0x30
-> > <4>[   57.935845]  do_syscall_64+0x3e/0x90
-> > <4>[   57.935886]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> > <4>[   57.935996] RIP: 0033:0x7fb8964fbd6b
-> > <4>[   57.936393] Code: ff ff ff ff eb e6 66 0f 1f 84 00 00 00 00 00
-> > f3 0f 1e fa b8 5f 00 00 00 0f 05 c3 0f 1f 40 00 f3 0f 1e fa b8 5a 00
-> > 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 85 40 0f 00 f7 d8 64
-> > 89 01 48
-> > <4>[   57.936422] RSP: 002b:00007ffcf4c2aa38 EFLAGS: 00000202
-> > ORIG_RAX: 000000000000005a
-> > <4>[   57.936471] RAX: ffffffffffffffda RBX: 0000000000000190 RCX:
-> > 00007fb8964fbd6b
-> > <4>[   57.936490] RDX: 00007ffcf4c2aa4f RSI: 0000000000000190 RDI:
-> > 00007ffcf4c2aa40
-> > <4>[   57.936504] RBP: 0000000000000190 R08: 0000000000000000 R09:
-> > 00007ffcf4c2a8e0
-> > <4>[   57.936528] R10: 0000000000000000 R11: 0000000000000202 R12:
-> > 00007ffcf4c2aa40
-> > <4>[   57.936542] R13: 0000000000000005 R14: 0000000000000000 R15:
-> > 0000000000000001
-> > <4>[   57.936754]  </TASK>
-> > <4>[   57.936853] Modules linked in:
-> > <4>[   57.962890] ---[ end trace 0000000000000000 ]---
-> > <4>[   57.963006] RIP: 0010:security_inode_permission+0x5/0x70
-> > <4>[   57.963080] Code: c0 c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00
-> > 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66
-> > 0f 1f 00 e8 <e7> 8d 64 18 f6 47 0d 02 75 50 55 48 89 e5 41 55 41 89 f5
-> > 41 54 49
-> > <4>[   57.963105] RSP: 0018:ffffa300c050bca0 EFLAGS: 00000246
-> > <4>[   57.963145] RAX: 00000000000041ed RBX: ffff9bda012805c0 RCX:
-> > 0000000000000000
-> > <4>[   57.963163] RDX: ffff9bda01f6df00 RSI: 0000000000000081 RDI:
-> > ffff9bda012805c0
-> > <4>[   57.963180] RBP: ffffa300c050bcd0 R08: ffffa300c050bd80 R09:
-> > 00000000ffffff9c
-> > <4>[   57.963195] R10: 0000000000000fe0 R11: ffc9d09b99d09993 R12:
-> > 0000000000000081
-> > <4>[   57.963209] R13: 0000000000000000 R14: ffffffffa958f970 R15:
-> > 2f2f2f2f2f2f2f2f
-> > <4>[   57.963226] FS:  00007fb89665f800(0000)
-> > GS:ffff9bda7bc00000(0000) knlGS:0000000000000000
-> > <4>[   57.963246] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > <4>[   57.963261] CR2: 00007f60c9b0e000 CR3: 0000000104402000 CR4:
-> > 00000000000006f0
-> > <0>[   57.963444] Kernel panic - not syncing: Fatal exception in interrupt
-> > <0>[   57.964629] Kernel Offset: 0x26600000 from 0xffffffff81000000
-> > (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-> > 
-> > 
-> > links,
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3-364-ga37c304c022d/testrun/17168198/suite/log-parser-test/tests/
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.3-364-ga37c304c022d/testrun/17168198/suite/log-parser-test/test/check-kernel-panic/log
-> >  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2QCeudZ18KF3RXw3A5qfr5lPC2N/
-> >  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2QCeudZ18KF3RXw3A5qfr5lPC2N/config
-> > 
-> > --
-> > Linaro LKFT
-> > https://lkft.linaro.org
-
-
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link.c b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+index 6299130663a3..5d53e54ebe90 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+@@ -1634,14 +1634,18 @@ static bool dc_link_construct_legacy(struct dc_link *link,
+ 				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 
+ 			switch (link->dc->config.allow_edp_hotplug_detection) {
+-			case 1: // only the 1st eDP handles hotplug
++			case HPD_EN_FOR_ALL_EDP:
++				link->irq_source_hpd_rx =
++						dal_irq_get_rx_source(link->hpd_gpio);
++				break;
++			case HPD_EN_FOR_PRIMARY_EDP_ONLY:
+ 				if (link->link_index == 0)
+ 					link->irq_source_hpd_rx =
+ 						dal_irq_get_rx_source(link->hpd_gpio);
+ 				else
+ 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+-			case 2: // only the 2nd eDP handles hotplug
++			case HPD_EN_FOR_SECONDARY_EDP_ONLY:
+ 				if (link->link_index == 1)
+ 					link->irq_source_hpd_rx =
+ 						dal_irq_get_rx_source(link->hpd_gpio);
+@@ -1649,6 +1653,7 @@ static bool dc_link_construct_legacy(struct dc_link *link,
+ 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+ 			default:
++				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+ 			}
+ 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index ad9041472cca..6050a3469a57 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -993,4 +993,10 @@ struct display_endpoint_id {
+ 	enum display_endpoint_type ep_type;
+ };
+ 
++enum dc_hpd_enable_select {
++	HPD_EN_FOR_ALL_EDP = 0,
++	HPD_EN_FOR_PRIMARY_EDP_ONLY,
++	HPD_EN_FOR_SECONDARY_EDP_ONLY,
++};
++
+ #endif /* DC_TYPES_H_ */
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.34.1
+
