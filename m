@@ -2,110 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25BF3710BF1
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 14:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A94710C4B
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 14:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231895AbjEYMWZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 08:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53764 "EHLO
+        id S239813AbjEYMq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 08:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233615AbjEYMWY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 08:22:24 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB05912F
-        for <stable@vger.kernel.org>; Thu, 25 May 2023 05:22:22 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-43931d2b92eso288805137.2
-        for <stable@vger.kernel.org>; Thu, 25 May 2023 05:22:22 -0700 (PDT)
+        with ESMTP id S231796AbjEYMq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 08:46:58 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7A912F;
+        Thu, 25 May 2023 05:46:57 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-64d293746e0so2441726b3a.2;
+        Thu, 25 May 2023 05:46:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685017342; x=1687609342;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TiwQ2LI2rFbV2HsiZtBqVjQ7FkEpztC2S2POKBZ5Nkw=;
-        b=Pairwt/ui9UAklFCQB9R2NjLwqTDpezcblarmRFlxPLxS/GCGHocJjLRyc34vfxCuw
-         ztWx54wI1SsPHFrGvS2yg+2OgDfkk17aSmnNanXzCRV9jfRoX2Hrx1RHB/bILDj95yIY
-         RyZMLKHFnM0GfURqCgFTF5Tu5f260oGaBlxeEsAOpggnV7pIpNUO0z+Ua6IoA6QiEFWo
-         /MgmqkmSrritUbASLXVqR0DfaibX1Ua5psO1KIN9GsRadhyv7ZO0mBMfhRhWU8wqupLx
-         WLHn3G0c3sfF4R+fZ5jnRdFbJiMEVAODXZMzC2nbT6Q1AnwH4Z38xRz+A5MVB0OdpSIh
-         JpPQ==
+        d=gmail.com; s=20221208; t=1685018816; x=1687610816;
+        h=content-transfer-encoding:cc:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rsp+ooFC9A3hWuO7X2DuDaXuAcIvAuRjOpppctZ/9JY=;
+        b=gW6oLronwV/BZTKxBkSlNXGKnDhG+vEHmEEGuQ0FnkkDYMOh5Nt5TzaKflaTKeXaPT
+         2zIKYGCW4kuGOg+VCFRObTwcU4z7X6yeG7zmY3Kd8YZmHDVf1e0pg3mAwN491wwn7/lw
+         51RZ/7hm0jFDaBw7B5lZEm+jjgOVR63wkjtl5raBpLa/i5zfWeNmfjH/mjHSBt7KG7iG
+         IFE0sWX+M8PVFE4KDZgnTIGUxoq2/UVWALPQHsnEd210SqGS8/yAJoEI8w2ex3Vk4tqK
+         v/V3ZkuO22NCCppngswi5QkURJ98qI/1fYHCqeKczrkxxhxzsH2ikmX8P3y+uPoP02yO
+         sjdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685017342; x=1687609342;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TiwQ2LI2rFbV2HsiZtBqVjQ7FkEpztC2S2POKBZ5Nkw=;
-        b=T/dhfJnd+Kd4lFmvilU8xIxNM0sa3jZzkw59Nkhjj99nb1hYIa+h/dgJvRTOm37dY3
-         zYT5N+DngszMWD5cRcFJ84w+zUgZGyzPU+BYkZSty+tbMxQQmAIkiXQCdEZwtfWMoCq/
-         eWAL5nBAMXYV5bS16h42LEVikn9gB0LS7sgZ1s9tlp20tuJobZbKjOzqXVrrta+OlOvB
-         cMj9bZoguWEuuCSS/pRhseWqPXriO97nuwLhKPhaa/hhg/MjdvmCDt2Pva91AI/vFBrJ
-         6AwDSEGQJShLczywGV+PCiYCr86+PDU3l9W8P/sdaSO/L5fbQOjrAruv0JC1ZK+meYhZ
-         8mPQ==
-X-Gm-Message-State: AC+VfDxF1dqnIdOuWEQ0wFQgQqqwnso+fU9EEMKApvwuPUIxLn+80FGh
-        fuoLoEsGkqaeEoRbbfTm6PsGhqqgolfZ4cQwijitqg==
-X-Google-Smtp-Source: ACHHUZ5USy7xBZdaQ9EIY3V990pi9ccxJIXFmf1abk8usVqRBWsZ21K0L8edNCZ/kBX2J+JdfxU2nPBC5SFy1/0xHOE=
-X-Received: by 2002:a05:6102:3177:b0:439:63f5:1a7 with SMTP id
- l23-20020a056102317700b0043963f501a7mr2068412vsm.12.1685017341910; Thu, 25
- May 2023 05:22:21 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685018816; x=1687610816;
+        h=content-transfer-encoding:cc:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Rsp+ooFC9A3hWuO7X2DuDaXuAcIvAuRjOpppctZ/9JY=;
+        b=PC6nQ8imyTBiD38d5ot5U/PFboM8vLXDYrNdzr63zKL6D6PDs+d7fKKsXzoQgrMaVF
+         6HL6L1ErtMMIpml57Jl55JPNB1hvE41rSkBWghLSrHdbuEtwsUGc3FfoNSAy4qZO76wc
+         evwNIoayLKfuEvw/YbeRNRmN/EOUlMW6q4+zX7NkMy2lCcl7cwcszHuUPEtYDw8TVdSN
+         sZRK3nxf0Vr+I4hE+wbVPHfnBHmQdUcmpWOT9SD7Wijt9UihSz3Lty9aJS0upBkGIe/O
+         5H2K7nclHxC3n/R8QWxn5VwZyZGRs/hpFpdIZdtdk0kwabIq8Kz3r1wPw4frq0r/t1PK
+         qWLw==
+X-Gm-Message-State: AC+VfDxSUvg301r4cn1OTwbz8XFR3Brii8mamfYHzKUfyCJxCbxqN0EV
+        IUWXiDqi1W5OlbgGj3p5JnM85fqmP/E=
+X-Google-Smtp-Source: ACHHUZ4I5hWrGXOc2+qeG6NRq0yzOpcbMZDzxaAKpUO8YySNSuUowYF+Lgm7+3CQHwYHz428EcyvfQ==
+X-Received: by 2002:a05:6a20:d90b:b0:104:b21f:26b0 with SMTP id jd11-20020a056a20d90b00b00104b21f26b0mr18468904pzb.47.1685018816311;
+        Thu, 25 May 2023 05:46:56 -0700 (PDT)
+Received: from [192.168.43.80] (subs28-116-206-12-46.three.co.id. [116.206.12.46])
+        by smtp.gmail.com with ESMTPSA id w32-20020a634920000000b0050927cb606asm1102405pga.13.2023.05.25.05.46.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 May 2023 05:46:55 -0700 (PDT)
+Message-ID: <efd6f2d4-547c-1378-1faa-53c044dbd297@gmail.com>
+Date:   Thu, 25 May 2023 19:46:47 +0700
 MIME-Version: 1.0
-References: <CA+G9fYvVZ9WF-2zfrYeo3xnWNra0QGxLzei+b4yANZwEvr5CYw@mail.gmail.com>
- <20230524140744.GK4253@hirez.programming.kicks-ass.net> <CA+G9fYsP1XN31sWMtPsaXzRtiAvHsn+A2cFZS2s6+muE_Qh61Q@mail.gmail.com>
- <20230524175442.GO4253@hirez.programming.kicks-ass.net> <797a1074-4174-402a-a172-78191dfb426c@app.fastmail.com>
-In-Reply-To: <797a1074-4174-402a-a172-78191dfb426c@app.fastmail.com>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 25 May 2023 17:52:10 +0530
-Message-ID: <CA+G9fYsfp6V8jP3MGNAnOTSGseRUMepEWhAPt_KoUiN7GcGsYA@mail.gmail.com>
-Subject: Re: qemu-x86_64 compat: LTP: controllers: RIP: 0010:__alloc_pages
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        linux-mm <linux-mm@kvack.org>, LTP List <ltp@lists.linux.it>,
-        lkft-triage@lists.linaro.org, X86 ML <x86@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux x86 <x86@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux ACPICA <acpica-devel@lists.linuxfoundation.org>,
+        Linux Stable <stable@vger.kernel.org>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: kernel >= v6.2 no longer boots on Apple's
+ Virtualization.framework (x86_64); likely to be related to ACPICA
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jianmin Lv <lvjianmin@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Bob Moore <robert.moore@intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Akihiro Suda <suda.kyoto@gmail.com>,
+        Robert Moore <robert.moore@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 25 May 2023 at 02:03, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Wed, May 24, 2023, at 19:54, Peter Zijlstra wrote:
-> > On Wed, May 24, 2023 at 09:39:50PM +0530, Naresh Kamboju wrote:
-> >> FYI,
-> >> These are running in AWS cloud as qemu-i386 and qemu-x86_64.
-> >
-> > Are these hosted on x86 and using KVM or are they hosted on Graviton and
-> > using TCG x86 ?
-> >
-> > Supposedly TCG x86 is known 'funny' and if that's what you're using it
-> > would be very good to confirm the problem on x86 hardware.
+Hi,
 
-I see the following logs while booting.
+I notice a regression report on Bugzilla [1]. Quoting from it:
 
-<3>[    1.834686] kvm_intel: VMX not supported by CPU 0
-<3>[    1.835860] kvm_amd: SVM not supported by CPU 0, not amd or hygon
+> Linux kernel >= v6.2 no longer boots on Apple's Virtualization.framework (x86_64).
+> 
+> It is reported that the issue is not reproducible on ARM64: https://github.com/lima-vm/lima/issues/1577#issuecomment-1561577694
+> 
+> 
+> ## Reproduction
+> - Checkout the kernel repo, and run `make defconfig bzImage`.
+> 
+> - Create an initrd (see the attached `initrd-example.txt`)
+> 
+> - Transfer the bzImage and initrd to an Intel Mac.
+> 
+> - On Mac, download `RunningLinuxInAVirtualMachine.zip` from https://developer.apple.com/documentation/virtualization/running_linux_in_a_virtual_machine , and build the `LinuxVirtualMachine` binary with Xcode.
+>   Building this binary with Xcode requires logging in to Apple.
+>   If you do not like logging in, a third party equivalent such as https://github.com/Code-Hex/vz/blob/v3.0.6/example/linux/main.go can be used.
+> 
+> - Run `LinuxVirtualMachine /tmp/bzImage /tmp/initrd.img`.
+>   v6.1 successfully boots into the busybox shell.
+>   v6.2 just hangs before printing something in the console.
+> 
+> 
+> ## Tested versions
+> ```
+> v6.1: OK
+> ...
+> v6.1.0-rc2-00002-g60f2096b59bc (included in v6.2-rc1): OK
+> v6.1.0-rc2-00003-g5c62d5aab875 (included in v6.2-rc1): NG <-- This commit caused a regression
+> ...
+> v6.2-rc1: NG
+> ...
+> v6.2: NG
+> ...
+> v6.3.0-rc7-00181-g8e41e0a57566 (included in v6.3): NG     <-- Reverts 5c62d5aab875 but still NG
+> ...
+> v6.3: NG
+> v6.4-rc3: NG
+> ```
+> 
+> Tested on MacBookPro 2020 (Intel(R) Core(TM) i7-1068NG7 CPU @ 2.30GHz) running macOS 13.4.
+> 
+> 
+> The issue seems a regression in [5c62d5aab8752e5ee7bfbe75ed6060db1c787f98](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5c62d5aab8752e5ee7bfbe75ed6060db1c787f98) "ACPICA: Events: Support fixed PCIe wake event".
+> 
+> This commit was introduced in v6.2-rc1, and apparently reverted in v6.3 ([8e41e0a575664d26bb87e012c39435c4c3914ed9](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8e41e0a575664d26bb87e012c39435c4c3914ed9)).
+> However, v6.3 and the latest v6.4-rc3 still don't boot.
 
-And they are running on x86 machines.
+See bugzilla for the full thread.
 
->
-> Even on x86 cloud instances you are likely to run with TCG if
-> the host does not support nested virtualization. So the question
-> really is what specific cloud instance type this was running
-> on, and if KVM was actually used or not.  From what I could
-> find on the web, Amazon EC2 only supports KVM guests inside of
-> bare-metal instances but not any of the normal virtualized ones,
-> while other providers using KVM (Google, Microsoft, ...) do support
-> nested guests.
->
->       Arnd
+Interestingly, this regression still occurs despite the culprit is
+reverted in 8e41e0a575664d ("Revert "ACPICA: Events: Support fixed
+PCIe wake event""), so this (obviously) isn't wake-on-lan regression,
+but rather early boot one.
+
+Also, the reporter can't provide dmesg log (forget to attach serial
+console?).
+
+Anyway, I'm adding it to regzbot:
+
+#regzbot introduced: 5c62d5aab8752e https://bugzilla.kernel.org/show_bug.cgi?id=217485
+#regzbot title: Linux v6.2+ (x86_64) no longer boots on Apple's Virtualization framework (ACPICA issue)
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217485
+
+-- 
+An old man doll... just what I always wanted! - Clara
