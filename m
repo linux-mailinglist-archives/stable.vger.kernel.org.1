@@ -2,127 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8BC9710E06
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 16:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CD1D710E35
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 16:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234036AbjEYOLk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 10:11:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49632 "EHLO
+        id S241619AbjEYOWT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 10:22:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236270AbjEYOLi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 10:11:38 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB06186;
-        Thu, 25 May 2023 07:11:37 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id E323521CB5;
-        Thu, 25 May 2023 14:11:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1685023895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=LMsDV6T2jCcjcJj5VyXqb2kAeEnI/lDz50c0BzZL3V4=;
-        b=J2djAVASI/Bf6kURBwuN6TTFCfuPq8Gd7sjwT/n1eoPwgRcHtgZyy3YC5xZ4SbcPMJAGlb
-        y032Au0Jv3m4osldNPB8CBHdobQpSP9NJMPAladVxS/1R7JSVq1k+LOC6krw7Tt+d5L45U
-        xEU21lSuBZVgPxBDWVCodsi4CE0vU/4=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B75C2134B2;
-        Thu, 25 May 2023 14:11:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id bz2gK5dsb2RVZQAAMHmgww
-        (envelope-from <mkoutny@suse.com>); Thu, 25 May 2023 14:11:35 +0000
-Date:   Thu, 25 May 2023 16:11:34 +0200
-From:   Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To:     Ming Lei <ming.lei@redhat.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        stable@vger.kernel.org, Jay Shin <jaeshin@redhat.com>,
-        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Yosry Ahmed <yosryahmed@google.com>
-Subject: Re: [PATCH V3] blk-cgroup: Flush stats before releasing blkcg_gq
-Message-ID: <sqsb7wcvxjfd3nbohhpbjihbr4armrh5sr6vu5pxci62ga7for@6om7ayuncxnc>
-References: <20230525043518.831721-1-ming.lei@redhat.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hyhnghupqumzotmb"
-Content-Disposition: inline
-In-Reply-To: <20230525043518.831721-1-ming.lei@redhat.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S235299AbjEYOWP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 10:22:15 -0400
+Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C884183
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 07:22:13 -0700 (PDT)
+Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
+        (envelope-from <hverkuil@linuxtv.org>)
+        id 1q2Br1-009dO2-3c; Thu, 25 May 2023 14:22:11 +0000
+From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date:   Thu, 25 May 2023 14:21:22 +0000
+Subject: [git:media_stage/master] media: uapi: Fix [GS]_ROUTING ACTIVE flag value
+To:     linuxtv-commits@linuxtv.org
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        stable@vger.kernel.org,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1q2Br1-009dO2-3c@www.linuxtv.org>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This is an automatic generated email to let you know that the following patch were queued:
 
---hyhnghupqumzotmb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Subject: media: uapi: Fix [GS]_ROUTING ACTIVE flag value
+Author:  Sakari Ailus <sakari.ailus@linux.intel.com>
+Date:    Mon Apr 24 15:22:37 2023 +0300
 
-On Thu, May 25, 2023 at 12:35:18PM +0800, Ming Lei <ming.lei@redhat.com> wr=
-ote:
-> It is less a problem if the cgroup to be destroyed also has other
-> controllers like memory that will call cgroup_rstat_flush() which will
-> clean up the reference count. If block is the only controller that uses
-> rstat, these offline blkcg and blkgs may never be freed leaking more
-> and more memory over time.
+The value of the V4L2_SUBDEV_ROUTE_FL_ACTIVE is 1, not 0. Use hexadecimal
+numbers as is done elsewhere in the documentation.
 
-On v2, io implies memory too.
-Do you observe the leak on the v2 system too?
+Cc: stable@vger.kernel.org # for >= v6.3
+Fixes: ea73eda50813 ("media: Documentation: Add GS_ROUTING documentation")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-(Beware that (not only) dirty pages would pin offlined memcg, so the
-actual mem_cgroup_css_release and cgroup_rstat_flush would be further
-delayed.)
+ Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> To prevent this potential memory leak:
->=20
-> - flush blkcg per-cpu stats list in __blkg_release(), when no new stat
-> can be added
->=20
-> - add global blkg_stat_lock for covering concurrent parent blkg stat
-> update
+---
 
-It's bit unfortunate yet another lock is added :-/
-
-IIUC, even Waiman's patch (flush in blkcg_destroy_blkcfs) would need
-synchronization for different CPU replicas flushes in
-blkcg_iostat_update, right?
-
-> - don't grab bio->bi_blkg reference when adding the stats into blkcg's
-> per-cpu stat list since all stats are guaranteed to be consumed before
-> releasing blkg instance, and grabbing blkg reference for stats was the
-> most fragile part of original patch
-
-
-At one moment, the lhead -> blkcg_gq reference seemed alright to me and
-consequently blkcg_gq -> blkcg is the one that looks reversed (forming
-the cycle). But changing its direction would be much more fundamental
-change, it'd need also kind of blkcg_gq reparenting -- similarly to
-memcg.
-
-
-Thanks,
-Michal
-
---hyhnghupqumzotmb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTrXXag4J0QvXXBmkMkDQmsBEOquQUCZG9shwAKCRAkDQmsBEOq
-ucuTAP0a8JcBs2PoQvq0qKyo0/MnzWO1v2gQ5TcBEw6Ne3L7CgD+OFG+18/XCgsa
-XfLIW1CRCnJ+phqelsySvrMcvUNsNAM=
-=la8T
------END PGP SIGNATURE-----
-
---hyhnghupqumzotmb--
+diff --git a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
+index 68ca343c3b44..2d6e3bbdd040 100644
+--- a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
++++ b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
+@@ -122,7 +122,7 @@ for all the route entries and call ``VIDIOC_SUBDEV_G_ROUTING`` again.
+     :widths:       3 1 4
+ 
+     * - V4L2_SUBDEV_ROUTE_FL_ACTIVE
+-      - 0
++      - 0x0001
+       - The route is enabled. Set by applications.
+ 
+ Return Value
