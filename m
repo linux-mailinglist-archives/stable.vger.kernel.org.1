@@ -2,36 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41460710C6E
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 14:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25BF3710BF1
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 14:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232749AbjEYMxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 08:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37038 "EHLO
+        id S231895AbjEYMWZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 08:22:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231263AbjEYMxT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 08:53:19 -0400
-X-Greylist: delayed 2362 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 25 May 2023 05:53:17 PDT
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC32183
-        for <stable@vger.kernel.org>; Thu, 25 May 2023 05:53:17 -0700 (PDT)
-Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <hverkuil@linuxtv.org>)
-        id 1q29qr-009ZxV-S3; Thu, 25 May 2023 12:13:53 +0000
-From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date:   Thu, 25 May 2023 12:13:05 +0000
-Subject: [git:media_stage/master] media: uapi: Fix [GS]_ROUTING ACTIVE flag value
-To:     linuxtv-commits@linuxtv.org
-Cc:     stable@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1q29qr-009ZxV-S3@www.linuxtv.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        with ESMTP id S233615AbjEYMWY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 08:22:24 -0400
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB05912F
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 05:22:22 -0700 (PDT)
+Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-43931d2b92eso288805137.2
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 05:22:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685017342; x=1687609342;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TiwQ2LI2rFbV2HsiZtBqVjQ7FkEpztC2S2POKBZ5Nkw=;
+        b=Pairwt/ui9UAklFCQB9R2NjLwqTDpezcblarmRFlxPLxS/GCGHocJjLRyc34vfxCuw
+         ztWx54wI1SsPHFrGvS2yg+2OgDfkk17aSmnNanXzCRV9jfRoX2Hrx1RHB/bILDj95yIY
+         RyZMLKHFnM0GfURqCgFTF5Tu5f260oGaBlxeEsAOpggnV7pIpNUO0z+Ua6IoA6QiEFWo
+         /MgmqkmSrritUbASLXVqR0DfaibX1Ua5psO1KIN9GsRadhyv7ZO0mBMfhRhWU8wqupLx
+         WLHn3G0c3sfF4R+fZ5jnRdFbJiMEVAODXZMzC2nbT6Q1AnwH4Z38xRz+A5MVB0OdpSIh
+         JpPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685017342; x=1687609342;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TiwQ2LI2rFbV2HsiZtBqVjQ7FkEpztC2S2POKBZ5Nkw=;
+        b=T/dhfJnd+Kd4lFmvilU8xIxNM0sa3jZzkw59Nkhjj99nb1hYIa+h/dgJvRTOm37dY3
+         zYT5N+DngszMWD5cRcFJ84w+zUgZGyzPU+BYkZSty+tbMxQQmAIkiXQCdEZwtfWMoCq/
+         eWAL5nBAMXYV5bS16h42LEVikn9gB0LS7sgZ1s9tlp20tuJobZbKjOzqXVrrta+OlOvB
+         cMj9bZoguWEuuCSS/pRhseWqPXriO97nuwLhKPhaa/hhg/MjdvmCDt2Pva91AI/vFBrJ
+         6AwDSEGQJShLczywGV+PCiYCr86+PDU3l9W8P/sdaSO/L5fbQOjrAruv0JC1ZK+meYhZ
+         8mPQ==
+X-Gm-Message-State: AC+VfDxF1dqnIdOuWEQ0wFQgQqqwnso+fU9EEMKApvwuPUIxLn+80FGh
+        fuoLoEsGkqaeEoRbbfTm6PsGhqqgolfZ4cQwijitqg==
+X-Google-Smtp-Source: ACHHUZ5USy7xBZdaQ9EIY3V990pi9ccxJIXFmf1abk8usVqRBWsZ21K0L8edNCZ/kBX2J+JdfxU2nPBC5SFy1/0xHOE=
+X-Received: by 2002:a05:6102:3177:b0:439:63f5:1a7 with SMTP id
+ l23-20020a056102317700b0043963f501a7mr2068412vsm.12.1685017341910; Thu, 25
+ May 2023 05:22:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <CA+G9fYvVZ9WF-2zfrYeo3xnWNra0QGxLzei+b4yANZwEvr5CYw@mail.gmail.com>
+ <20230524140744.GK4253@hirez.programming.kicks-ass.net> <CA+G9fYsP1XN31sWMtPsaXzRtiAvHsn+A2cFZS2s6+muE_Qh61Q@mail.gmail.com>
+ <20230524175442.GO4253@hirez.programming.kicks-ass.net> <797a1074-4174-402a-a172-78191dfb426c@app.fastmail.com>
+In-Reply-To: <797a1074-4174-402a-a172-78191dfb426c@app.fastmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 25 May 2023 17:52:10 +0530
+Message-ID: <CA+G9fYsfp6V8jP3MGNAnOTSGseRUMepEWhAPt_KoUiN7GcGsYA@mail.gmail.com>
+Subject: Re: qemu-x86_64 compat: LTP: controllers: RIP: 0010:__alloc_pages
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        linux-mm <linux-mm@kvack.org>, LTP List <ltp@lists.linux.it>,
+        lkft-triage@lists.linaro.org, X86 ML <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -39,36 +78,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
+On Thu, 25 May 2023 at 02:03, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Wed, May 24, 2023, at 19:54, Peter Zijlstra wrote:
+> > On Wed, May 24, 2023 at 09:39:50PM +0530, Naresh Kamboju wrote:
+> >> FYI,
+> >> These are running in AWS cloud as qemu-i386 and qemu-x86_64.
+> >
+> > Are these hosted on x86 and using KVM or are they hosted on Graviton and
+> > using TCG x86 ?
+> >
+> > Supposedly TCG x86 is known 'funny' and if that's what you're using it
+> > would be very good to confirm the problem on x86 hardware.
 
-Subject: media: uapi: Fix [GS]_ROUTING ACTIVE flag value
-Author:  Sakari Ailus <sakari.ailus@linux.intel.com>
-Date:    Mon Apr 24 15:22:37 2023 +0300
+I see the following logs while booting.
 
-The value of the V4L2_SUBDEV_ROUTE_FL_ACTIVE is 1, not 0. Use hexadecimal
-numbers as is done elsewhere in the documentation.
+<3>[    1.834686] kvm_intel: VMX not supported by CPU 0
+<3>[    1.835860] kvm_amd: SVM not supported by CPU 0, not amd or hygon
 
-Cc: stable@vger.kernel.org # for >= v6.3
-Fixes: ea73eda50813 ("media: Documentation: Add GS_ROUTING documentation")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+And they are running on x86 machines.
 
- Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
----
-
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-index 68ca343c3b44..2d6e3bbdd040 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-@@ -122,7 +122,7 @@ for all the route entries and call ``VIDIOC_SUBDEV_G_ROUTING`` again.
-     :widths:       3 1 4
- 
-     * - V4L2_SUBDEV_ROUTE_FL_ACTIVE
--      - 0
-+      - 0x0001
-       - The route is enabled. Set by applications.
- 
- Return Value
+>
+> Even on x86 cloud instances you are likely to run with TCG if
+> the host does not support nested virtualization. So the question
+> really is what specific cloud instance type this was running
+> on, and if KVM was actually used or not.  From what I could
+> find on the web, Amazon EC2 only supports KVM guests inside of
+> bare-metal instances but not any of the normal virtualized ones,
+> while other providers using KVM (Google, Microsoft, ...) do support
+> nested guests.
+>
+>       Arnd
