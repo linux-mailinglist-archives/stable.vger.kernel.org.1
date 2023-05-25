@@ -2,232 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9D71710D9F
-	for <lists+stable@lfdr.de>; Thu, 25 May 2023 15:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2162710DF2
+	for <lists+stable@lfdr.de>; Thu, 25 May 2023 16:05:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240679AbjEYNvk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 09:51:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
+        id S241463AbjEYOFW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 10:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241157AbjEYNvj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 09:51:39 -0400
-Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61C118C
-        for <stable@vger.kernel.org>; Thu, 25 May 2023 06:51:36 -0700 (PDT)
-Received: by mail-ua1-x936.google.com with SMTP id a1e0cc1a2514c-78412128326so719141241.1
-        for <stable@vger.kernel.org>; Thu, 25 May 2023 06:51:36 -0700 (PDT)
+        with ESMTP id S241442AbjEYOFV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 10:05:21 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3073FE69;
+        Thu, 25 May 2023 07:04:53 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1ae3f6e5d70so13816335ad.1;
+        Thu, 25 May 2023 07:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685022696; x=1687614696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n19tabLNtFp1Iz9K9pxIJD1OumeleMtFy/K7WnzgIfg=;
-        b=sdx1I3H43CqY0+7VjcSBTZyBmaYW73mvbcH9NIAIuik6vBNGrDhItHXEkqI+Y3O65w
-         IXmiIBFCzLj249aZ+DwxEGpozd5ptsurxC8lwyRrA4UUvWb8FWcEvDDyKU9WERlAC5KW
-         Fyi/AsQb2yEuUyC1GLSLsMjTZ6IlXOc1gCbfCXPpgmCCaG52xCb901LcHQ6eRnBBA8pL
-         Py1MzKDCP9+Qor6Wq/3uDyE9jreXmHQWET7nBZoGHdMM1iBPwqeKsXNMBeZXhIvgGDu0
-         biNTEtWFtWMhtNBDmGrgsNaYPBZH3Rb8RKHYxv0KGG1A9G6Sr3+NY09m2h+5WeIU7OSY
-         wB4A==
+        d=gmail.com; s=20221208; t=1685023491; x=1687615491;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5OTtpvBZsd1mzIar/P+7WCe42Wjpq9sEz4353rghUnk=;
+        b=og/EY73MWp6vFDXAgLGjJXne44Xe6KFU24j/h8OLEkZLZCSbUOdt8EH80nqlW0xV7j
+         hlYoGllMwTl94Cf3flS2MresG0DFpfkvSNkQPBMEd+JSA9i7kAm6awYrjsR3qh6sD0Py
+         XGMNDdWP3A+NE1nb7PGHts1FyTGheVSIvNdk/RqqTJ8dr84fRlAxEHHGvHS4bpwFIXJI
+         pkVkNaUBPUSh0AyBF8GyBDOSqRvXwg4i7jpX5Y2fcCxLz/1NN9QpOnRhboivUCW9y4T0
+         7H6X/v08qFmcVE0sa4pkd/QOFuMNgP26MOp+clFonTTKjv5y3E5C51w/GbdWtmgDlRwi
+         lkYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685022696; x=1687614696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n19tabLNtFp1Iz9K9pxIJD1OumeleMtFy/K7WnzgIfg=;
-        b=JYrcKqxHhRBDh9NRdF06xyWTBXSSkqELhbmuPeK5QZckZZadaPgbdMc20e/LwjELwL
-         6WkWQ8eJyWqB0gEFzzefkb2GT/M6OCGbuzDWvlj0rt2LN7/HCC52KsL3vNm1bpRdOtTb
-         Y9zcM2RaH3Gfo+qOW89xCgpF7mrD+Ge5idmN13PJFvX/wtY5GppQ1KnIgxSDTGCRi/HS
-         0Mvm3T24ul/eGSXoJ4dOFmnGJmUftck1TzBu3bXJQOD0HvpXcs7zGaaSOoewyGVtl5kG
-         HLNgwM2ORbEpUVjsZkkkltZPgsjc8PyAGS9jwhIwVNlum3xXedAsfK4HR/x8cIUvFsNF
-         tjvw==
-X-Gm-Message-State: AC+VfDy7YOATOW1OALjJwulHxhk8fQIRZm/MZlXWNf/fdLm6OWgO+2R7
-        NLZ3POcKWoSgaDQQZ6NmaODC/8Ohl2beYUWgSlz1yg==
-X-Google-Smtp-Source: ACHHUZ45iqVUZWAxmYQp90u1RQkVeX/4NHZY3Nm3bCxxSaV1E/EC64hFIztI5ZcN0+eOub/1YGI6qrhg3cAjP/LsJPI=
-X-Received: by 2002:a05:6102:2856:b0:42c:78e4:ef23 with SMTP id
- az22-20020a056102285600b0042c78e4ef23mr5714739vsb.31.1685022695691; Thu, 25
- May 2023 06:51:35 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685023491; x=1687615491;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5OTtpvBZsd1mzIar/P+7WCe42Wjpq9sEz4353rghUnk=;
+        b=lGfp3WaT+V1McgQ65LYSRMA10m+FUMfV/eJ0Oo1R0QjL67kqs7hnchVOAy928rhH9f
+         RRK5XgkQTdXfLvVUfh1ccPwzgQpSuj8LO30myXGX0jP/2nu0yKtSSH/Ndiet3OQuemyN
+         f3WkKNhL1G3oWMrrb60t4/OdtQGEK8CHdCHcmnNcABqc8DeRbyTNMPeiaafZV/7NtqWp
+         JToThvDaFmgAJSDRcmnsOP2Okg96nyeZQLFcNC/w/8LN/KTKMfV8iPo44ccJO+o80H1A
+         fvECTUIgXGbzr+Oq9+cN85qqvFKb+EJsYB/YCjz9IkmVj/R8IXKWSJBYofNKHRp5Ifst
+         LN0g==
+X-Gm-Message-State: AC+VfDw5bPZW85CrUXc8LtnwfmOT714qeO1i19PAeYeYTbePdgXj8b2u
+        GFwLLKGx9DYq09mW67yWNm4/05lRydUDOw==
+X-Google-Smtp-Source: ACHHUZ5ph8WUg3toWhCGyBDAVOLPd9jm+Mr4SBQCkwQjrwZcjsUKsQv6aQKJWln09yU5hmCxQ4Q5WQ==
+X-Received: by 2002:a17:902:bc8a:b0:1ad:1c29:80ef with SMTP id bb10-20020a170902bc8a00b001ad1c2980efmr1575077plb.18.1685023491295;
+        Thu, 25 May 2023 07:04:51 -0700 (PDT)
+Received: from debian.me (subs03-180-214-233-28.three.co.id. [180.214.233.28])
+        by smtp.gmail.com with ESMTPSA id u4-20020a170902e80400b001a682a195basm1475018plg.28.2023.05.25.07.04.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 May 2023 07:04:50 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id F066D1068F8; Thu, 25 May 2023 21:04:45 +0700 (WIB)
+Date:   Thu, 25 May 2023 21:04:45 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Framebuffer <linux-fbdev@vger.kernel.org>,
+        DRI Development List <dri-devel@lists.freedesktop.org>,
+        Linux Nouveau/NVIDIA <nouveau@lists.freedesktop.org>,
+        Linux Stable <stable@vger.kernel.org>
+Cc:     Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Felix Miata <mrmazda@earthlink.net>
+Subject: Re: Fwd: absent both plymouth, and video= on linu lines, vtty[1-6]
+ framebuffers produce vast raster right and bottom borders on the larger
+ resolution of two displays
+Message-ID: <ZG9q_bb1rDj79mgv@debian.me>
+References: <e8f93560-a2f6-8e9f-031a-88d333482a31@gmail.com>
+ <585f36f8-431a-e929-0a04-ffb65f02e9df@gmail.com>
+ <b34c7037-7f4b-e4bb-dac8-48bbbade327c@gmail.com>
 MIME-Version: 1.0
-References: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
- <b4bfd69f-2092-4d15-b7ce-b814f5f10ff2@sirena.org.uk>
-In-Reply-To: <b4bfd69f-2092-4d15-b7ce-b814f5f10ff2@sirena.org.uk>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 25 May 2023 19:21:24 +0530
-Message-ID: <CA+G9fYv=uyQaJs0JLMmZWLeLH0G5FF7WGcTa7y0bi0nCDfoi+A@mail.gmail.com>
-Subject: Re: arm64: fp-stress: BUG: KFENCE: memory corruption in fpsimd_release_task
-To:     Mark Brown <broonie@kernel.org>
-Cc:     "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tX6NsCAgxtfTaPFl"
+Content-Disposition: inline
+In-Reply-To: <b34c7037-7f4b-e4bb-dac8-48bbbade327c@gmail.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 23 May 2023 at 03:42, Mark Brown <broonie@kernel.org> wrote:
->
-> On Tue, May 16, 2023 at 11:58:40AM +0530, Naresh Kamboju wrote:
->
-> > # To install tuxrun on your system globally:
-> > # sudo pip3 install -U tuxrun=3D=3D0.42.0
->
-> I'm not thrilled about the idea of installing some Python package
-> outside of my distro package manager, especially not running as root,
-> but I *do* have a checked out copy of tuxrun which normally seems to do
-> something...
->
-> > #
-> > # See https://tuxrun.org/ for complete documentation.
-> >
-> > tuxrun   \
-> >  --runtime podman   \
-> >  --device fvp-aemva   \
-> >  --boot-args rw   \
-> >  --kernel https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq5Nv=
-LiBcWRMuy6lXftDVQMvca/Image.gz
-> >   \
-> >  --modules https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq5N=
-vLiBcWRMuy6lXftDVQMvca/modules.tar.xz
-> >   \
-> >  --rootfs https://storage.tuxboot.com/debian/bookworm/arm64/rootfs.ext4=
-.xz   \
-> >  --parameters SKIPFILE=3Dskipfile-lkft.yaml   \
-> >  --parameters KSELFTEST=3Dhttps://storage.tuxsuite.com/public/linaro/lk=
-ft/builds/2Pq5NvLiBcWRMuy6lXftDVQMvca/kselftest.tar.xz
-> >   \
-> >  --image tuxrun:fvp   \
-> >  --tests kselftest-arm64   \
-> >  --timeouts boot=3D60 kselftest-arm64=3D60
->
-> This command does not work for me, after fixing up the fact that
-> multiple lines have continuation characters that are nonfunctional due
-> to being wrapped onto the next line I get:
->
-> | Error: error getting default registries to try: short-name "tuxrun:fvp"=
- did not resolve to an alias and no unqualified-search registries are defin=
-ed in "/etc/containers/registries.conf"
->
-> Trying tip of tree tuxrun gives the same result.  Grovelling around in
-> the documentation I see there's a need to manually build some containers
-> for the FVP so I was able to get the above command to boot with the
-> --image option removed and switching to docker as the runtime but after
-> faffing for a very large amount of time even by the standards of the
-> model it appeared to just shut down the model without starting
-> kselftest, possibly due to having mounted some of the filesystems read
-> only:
->
-> 2023-05-22T21:03:43 Using a character delay of 50 (ms)
-> 2023-05-22T21:03:43 #=E2=8F=8E
-> 2023-05-22T21:03:43 [?2004l[?2004hroot@runner-pqlayms-project-40964107-co=
-ncurrent-5:~# #
-> 2023-05-22T21:03:43 lava-test-shell: Wait for prompt ['root@(.*):[/~]#'] =
-(timeout 01:00:00)
-> 2023-05-22T21:03:43 #
-> 2023-05-22T21:03:43 Using /lava-1
-> 2023-05-22T21:03:43 Sending with 50 millisecond of delay
-> 2023-05-22T21:03:43 export SHELL=3D/bin/sh=E2=8F=8E
-> 2023-05-22T21:03:45 [?2004l[?2004hroot@runner-pqlayms-project-40964107-co=
-ncurrent-5:~# export SHELL=3D/bin/sh
-> 2023-05-22T21:03:45 export SHELL=3D/bin/sh
-> 2023-05-22T21:03:45 Sending with 50 millisecond of delay
-> 2023-05-22T21:03:45 . /lava-1/environment=E2=8F=8E
-> 2023-05-22T21:03:47 [?2004l[?2004hroot@runner-pqlayms-project-40964107-co=
-ncurrent-5:~# . /lava-1/environment
-> 2023-05-22T21:03:47 . /lava-1/environment
-> 2023-05-22T21:03:47 Will listen to feedbacks from 'terminal_1' for 1 seco=
-nd
-> 2023-05-22T21:03:47 Will listen to feedbacks from 'terminal_2' for 1 seco=
-nd
-> 2023-05-22T21:03:47 Will listen to feedbacks from 'terminal_3' for 1 seco=
-nd
-> 2023-05-22T21:03:47 Sending with 50 millisecond of delay
-> 2023-05-22T21:03:47 /lava-1/bin/lava-test-runner /lava-1/0=E2=8F=8E
-> 2023-05-22T21:03:51 [?2004l[?2004hroot@runner-pqlayms-project-40964107-co=
-ncurrent-5:~# /lava-1/bin/lava-test-runner /lava-1/0
-> 2023-05-22T21:03:51 Test shell timeout: 10s (minimum of the action and co=
-nnection timeout)
-> 2023-05-22T21:03:51 /lava-1/bin/lava-test-runne r /lava-1/0
-> 2023-05-22T21:03:52 [?2004lmkdir: cannot create directory =E2=80=98/lava-=
-1/0/results=E2=80=99: Read-only file system
-> 2023-05-22T21:03:53 mv: cannot move '/lava-1/0/lava-test-runner.conf' to =
-'/lava-1/0/lava-test-runner.conf-1684789015': Read-only file system
-> 2023-05-22T21:03:54 cat: /lava-1/0/lava-test-runner.conf-1684789015: No s=
-uch file or directory
-> 2023-05-22T21:03:55 ok: lava_test_shell seems to have completed
-> 2023-05-22T21:03:55 end: 3.1 lava-test-shell (duration 00:00:12) [common]
-> 2023-05-22T21:03:55 end: 3 lava-test-retry (duration 00:00:12) [common]
-> 2023-05-22T21:03:55 start: 4 finalize (timeout 00:10:00) [common]
-> 2023-05-22T21:03:55 start: 4.1 power-off (timeout 00:01:00) [common]
-> 2023-05-22T21:03:55 end: 4.1 power-off (duration 00:00:00) [common]
-> 2023-05-22T21:03:55 start: 4.2 read-feedback (timeout 00:10:00) [common]
->
-> Attempting to use podman as the runtime as your command said had various
-> problems:
->
-> 2023-05-22T21:07:01 start: 2.1.1 check-fvp-version (timeout 01:00:00) [co=
-mmon]
-> 2023-05-22T21:07:01 sh -c docker run --rm fvp:aemva-11.21.15 /opt/model/F=
-VP_AEMvA/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA --version
-> 2023-05-22T21:07:01 Parsed command exited 1.
-> 2023-05-22T21:07:01 action: check-fvp-version
-> command: ['sh', '-c', 'docker run --rm fvp:aemva-11.21.15 /opt/model/FVP_=
-AEMvA/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA --version']
-> message: Command '['sh', '-c', 'docker run --rm fvp:aemva-11.21.15 /opt/m=
-odel/FVP_AEMvA/models/Linux64_GCC-9.3/FVP_Base_RevC-2xAEMvA --version']' re=
-turned non-zero exit status 1.
-> output: Missing runtime '/usr/bin/podman'
-> return code: 1
->
-> (I do have podman installed though I rarely use it, this looks to be in
-> the LAVA container though)
->
-> > Test log links:
-> > =3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build=
-/v6.1.28-240-gb82733c0ff99/testrun/17007082/suite/log-parser-test/test/chec=
-k-kernel-kfence/log
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build=
-/v6.1.28-240-gb82733c0ff99/testrun/17007082/suite/log-parser-test/tests/
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build=
-/v6.1.28-240-gb82733c0ff99/testrun/17007268/suite/kselftest-arm64/tests/
-> >
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build=
-/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/log-parser-test/test/check=
--kernel-bug/log
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build=
-/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/log-parser-test/tests/
-> >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build=
-/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/kselftest-arm64/tests/
->
-> None of these seem to provide me with information like what kernel
-> config was used but I did manage to find
->
->   https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq5NvLiBcWRMuy6=
-lXftDVQMvca/config
->
-> which might be it?  Or one of them?  However even trying to use that I'm
-> unable to reproduce issues with either the FVP or qemu.
 
-You got the right config file which we are using for testing
-FVP selftests.
+--tX6NsCAgxtfTaPFl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Since it is intermittent it is not easy to reproduce always.
-You are right ! that, you may have to try with full sub set run
+On Thu, May 25, 2023 at 06:37:05PM +0700, Bagas Sanjaya wrote:
+> Oops, again, I messed up the regzbot entry (reporter field still assigned
+> to me). Inconclusiving...
+>=20
+> #regzbot inconclusive: Wrong reporter assigned (from: doesn't take effect)
+>=20
+> Please ignore this thread as I will send a new one with proper regzbot
+> commands.
 
-./run_kselftest.sh -c arm64
+No need to resend this report as Thorsten noted that DRM subsystem already
+have gitlab tracker [1].
 
-- Naresh
+Sorry for inconvenience.
+
+[1]: https://lore.kernel.org/regressions/d4879ff1-b9ac-0373-ceb2-beaa645fba=
+23@leemhuis.info/
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--tX6NsCAgxtfTaPFl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZG9q+QAKCRD2uYlJVVFO
+o2BVAQDxdf+VgNKjUWWNEhoNwmXh+P+87BVSt4rVppMOM1QEUQD/ZeG6yqM0deuL
+YNpG/cKVM4KHln3Qnh18gmVJbXFlIgg=
+=O6hc
+-----END PGP SIGNATURE-----
+
+--tX6NsCAgxtfTaPFl--
