@@ -2,155 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EE59712065
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 08:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6A7712140
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 09:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236743AbjEZGpg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 02:45:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43026 "EHLO
+        id S242367AbjEZHhn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 03:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236735AbjEZGpf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 02:45:35 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64F7DBC;
-        Thu, 25 May 2023 23:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1685083534; x=1716619534;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IJu7yRqmaECoG+aUqI9gqOkbcGWsi1NNfVI1riIMsLk=;
-  b=jnvGkXV2jj7ELXJylaWO2oE/vW6V8LmVSo/Bs39Vj2SR/Dsxfp+E/lED
-   e+8GHyzXw/PrTx7iXpKtYuUA43VzCG3u7op8Pd1ZMoe7xuPXfiNZ1ktMG
-   x0XvZOwlkCkRImqxxTYAe3GC4+8GkrwWvMcQ3HkBl1wZmXUrBYR6DrjVq
-   5thcfyCW3jCkHMb2k7Sm80tKGZUv2++x26E+54HnN6+Co7yBw+2JKzrVJ
-   HW0ytnoCF/fKbuI908kxFwXSjCVFGc22yMdBmbBliDUVHrZYfyfijTwm5
-   p5p8jfLTDGmWdcrLk7J6Y5uKJEJRTG2yGZ+I5a96nqkXyVCq9JrCOzBel
-   A==;
-X-IronPort-AV: E=Sophos;i="6.00,193,1681196400"; 
-   d="scan'208";a="217418416"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 25 May 2023 23:45:33 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 25 May 2023 23:45:32 -0700
-Received: from localhost (10.10.115.15) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
- Transport; Thu, 25 May 2023 23:45:32 -0700
-Date:   Fri, 26 May 2023 08:45:31 +0200
-From:   Horatiu Vultur <horatiu.vultur@microchip.com>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-CC:     "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Paul Rosswurm <paulros@microsoft.com>,
-        "olaf@aepfle.de" <olaf@aepfle.de>,
-        "vkuznets@redhat.com" <vkuznets@redhat.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "leon@kernel.org" <leon@kernel.org>,
-        Long Li <longli@microsoft.com>,
-        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "ast@kernel.org" <ast@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        "hawk@kernel.org" <hawk@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net] net: mana: Fix perf regression: remove rx_cqes,
- tx_cqes counters
-Message-ID: <20230526064531.zohcgjbaraq7c2ui@soft-dev3-1>
-References: <1684963320-25282-1-git-send-email-haiyangz@microsoft.com>
- <20230525064849.ca5p6npej7p2luw2@soft-dev3-1>
- <PH7PR21MB31161F3291FF951877355DA9CA46A@PH7PR21MB3116.namprd21.prod.outlook.com>
+        with ESMTP id S241569AbjEZHhl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 03:37:41 -0400
+Received: from frasgout11.his.huawei.com (unknown [14.137.139.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF6E170E;
+        Fri, 26 May 2023 00:36:59 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4QSGgW1kg8z9xFQf;
+        Fri, 26 May 2023 15:26:15 +0800 (CST)
+Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwAHwUdYYXBkVgbbAg--.2318S2;
+        Fri, 26 May 2023 08:36:05 +0100 (CET)
+Message-ID: <a4cefa07e717bd99fa0ae8e5f18950d69145bd24.camel@huaweicloud.com>
+Subject: Re: [PATCH v5 2/2] KEYS: asymmetric: Copy sig and digest in
+ public_key_verify_signature()
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Biggers <ebiggers@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Fri, 26 May 2023 09:35:47 +0200
+In-Reply-To: <Y+W/fwRbzj5A5v44@kernel.org>
+References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
+         <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
+         <Y64XB0yi24yjeBDw@sol.localdomain>
+         <d2a54ddec403cad12c003132542070bf781d5e26.camel@huaweicloud.com>
+         <857eedc5ad18eddae7686dca63cf8c613a051be4.camel@huaweicloud.com>
+         <Y+VBMQEwPTPGBIpP@gmail.com> <Y+W/fwRbzj5A5v44@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <PH7PR21MB31161F3291FF951877355DA9CA46A@PH7PR21MB3116.namprd21.prod.outlook.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: GxC2BwAHwUdYYXBkVgbbAg--.2318S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAFWfZw48Xr15AF18uryDJrb_yoW5Gr1fpF
+        W3G3W5JF4jqryfCrsIv34F9F1rt3y8Jr15Xw1rZ34UZryv9rn8ur4IgF1fWFyDAr10kFW5
+        JF45Xr9ruw1jyaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+        xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
+        c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UZ18PUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAJBF1jj4m+WgAAsT
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The 05/25/2023 14:34, Haiyang Zhang wrote:
+On Fri, 2023-02-10 at 05:52 +0200, Jarkko Sakkinen wrote:
+> On Thu, Feb 09, 2023 at 06:53:37PM +0000, Eric Biggers wrote:
+> > On Thu, Feb 09, 2023 at 11:49:19AM +0100, Roberto Sassu wrote:
+> > > On Fri, 2023-01-27 at 09:27 +0100, Roberto Sassu wrote:
+> > > > On Thu, 2022-12-29 at 14:39 -0800, Eric Biggers wrote:
+> > > > > On Tue, Dec 27, 2022 at 03:27:40PM +0100, Roberto Sassu wrote:
+> > > > > > From: Roberto Sassu <roberto.sassu@huawei.com>
+> > > > > > 
+> > > > > > Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
+> > > > > > mapping") checks that both the signature and the digest reside in the
+> > > > > > linear mapping area.
+> > > > > > 
+> > > > > > However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
+> > > > > > stack support") made it possible to move the stack in the vmalloc area,
+> > > > > > which is not contiguous, and thus not suitable for sg_set_buf() which needs
+> > > > > > adjacent pages.
+> > > > > > 
+> > > > > > Always make a copy of the signature and digest in the same buffer used to
+> > > > > > store the key and its parameters, and pass them to sg_init_one(). Prefer it
+> > > > > > to conditionally doing the copy if necessary, to keep the code simple. The
+> > > > > > buffer allocated with kmalloc() is in the linear mapping area.
+> > > > > > 
+> > > > > > Cc: stable@vger.kernel.org # 4.9.x
+> > > > > > Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
+> > > > > > Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+> > > > > > Suggested-by: Eric Biggers <ebiggers@kernel.org>
+> > > > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > > > > > ---
+> > > > > >  crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
+> > > > > >  1 file changed, 21 insertions(+), 17 deletions(-)
+> > > > > 
+> > > > > Reviewed-by: Eric Biggers <ebiggers@google.com>
+> > > > 
+> > > > Hi David
+> > > > 
+> > > > could you please take this patch in your repo, if it is ok?
+> > > 
+> > > Kindly ask your support here. Has this patch been queued somewhere?
+> > > Wasn't able to find it, also it is not in linux-next.
+> > > 
+> > 
+> > The maintainer of asymmetric_keys (David Howells) is ignoring this patch, so
+> > you'll need to find someone else to apply it.  Herbert Xu, the maintainer of the
+> > crypto subsystem, might be willing to apply it.  Or maybe Jarkko Sakkinen, who
+> > is a co-maintainer of the keyrings subsystem (but not asymmetric_keys, for some
+> > reason; should that change?).
 > 
-> > -----Original Message-----
-> > From: Horatiu Vultur <horatiu.vultur@microchip.com>
-> > Sent: Thursday, May 25, 2023 2:49 AM
-> > To: Haiyang Zhang <haiyangz@microsoft.com>
-> > Cc: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; Dexuan Cui
-> > <decui@microsoft.com>; KY Srinivasan <kys@microsoft.com>; Paul Rosswurm
-> > <paulros@microsoft.com>; olaf@aepfle.de; vkuznets@redhat.com;
-> > davem@davemloft.net; wei.liu@kernel.org; edumazet@google.com;
-> > kuba@kernel.org; pabeni@redhat.com; leon@kernel.org; Long Li
-> > <longli@microsoft.com>; ssengar@linux.microsoft.com; linux-
-> > rdma@vger.kernel.org; daniel@iogearbox.net; john.fastabend@gmail.com;
-> > bpf@vger.kernel.org; ast@kernel.org; Ajay Sharma
-> > <sharmaajay@microsoft.com>; hawk@kernel.org; linux-
-> > kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH net] net: mana: Fix perf regression: remove rx_cqes,
-> > tx_cqes counters
-> >
-> > [Some people who received this message don't often get email from
-> > horatiu.vultur@microchip.com. Learn why this is important at
-> > https://aka.ms/LearnAboutSenderIdentification ]
-> >
-> > The 05/24/2023 14:22, Haiyang Zhang wrote:
-> >
-> > Hi Haiyang,
-> >
-> > >
-> > > The apc->eth_stats.rx_cqes is one per NIC (vport), and it's on the
-> > > frequent and parallel code path of all queues. So, r/w into this
-> > > single shared variable by many threads on different CPUs creates a
-> > > lot caching and memory overhead, hence perf regression. And, it's
-> > > not accurate due to the high volume concurrent r/w.
-> >
-> > Do you have any numbers to show the improvement of this change?
-> 
-> The numbers are not published. The perf regression of the previous
-> patch is very significant, and this patch eliminates the regression.
-> 
-> >
-> > >
-> > > Since the error path of mana_poll_rx_cq() already has warnings, so
-> > > keeping the counter and convert it to a per-queue variable is not
-> > > necessary. So, just remove this counter from this high frequency
-> > > code path.
-> > >
-> > > Also, remove the tx_cqes counter for the same reason. We have
-> > > warnings & other counters for errors on that path, and don't need
-> > > to count every normal cqe processing.
-> >
-> > Will you not have problems with the counter 'apc->eth_stats.tx_cqe_err'?
-> > It is not in the hot path but you will have concurrent access to it.
-> 
-> Yes, but that error happens rarely, so a shared variable is good enough. So, I
-> don't change it in this patch.
+> I can apply this if no objections?
 
-OK, I understand.
-Maybe this can be fixed in a different patch at a later point. Thanks.
+Hi Jarkko
 
-Reviwed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+I wasn't able to reach David about this patch. Could you please apply
+it?
 
-> 
-> Thanks,
-> - Haiyang
-> 
+Thanks
 
--- 
-/Horatiu
+Roberto
+
