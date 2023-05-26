@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CE8712CFC
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD9FD712CFD
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243734AbjEZTC5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:02:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35606 "EHLO
+        id S237025AbjEZTDM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:03:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231440AbjEZTC4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:02:56 -0400
+        with ESMTP id S231440AbjEZTDM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:03:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D52B194
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:02:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EA9189
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:03:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 904616529F
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:02:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7FDC433D2;
-        Fri, 26 May 2023 19:02:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A577652A9
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:03:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685A8C433D2;
+        Fri, 26 May 2023 19:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127774;
-        bh=ezrYthnjlH8D2zbilUyCy8n3EixmtBQ4F6G9cxLnl88=;
+        s=korg; t=1685127789;
+        bh=/pidRaMNc7sc1zGuVIgeV+2F/QCCVnpfDRso/BDWfz8=;
         h=Subject:To:Cc:From:Date:From;
-        b=D1eQ7Yz3rz1t6/l8d9ZNExf9zqICMgsRyu9DyoBL0lOhD3DZbRL3harcMU/KESVak
-         e5tYeBUQ8NnECww8A3Ip9vKHe00PDrTyf6+agXJ+QZkN8iynzOFGF1fNzsq8CxKVDe
-         Q9R22YWdj8IXkvxPp22JHc8kj3e2yevnNUHW/E7Q=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-esdhc-imx: make "no-mmc-hs400" works" failed to apply to 5.10-stable tree
-To:     haibo.chen@nxp.com, ulf.hansson@linaro.org
+        b=TA4IZiAFJvkRdSYpL+9Wdny+ge0sncI7oX6DwyG+aZjJbspTGYikPYbeeQSAogUYR
+         jlPzIkcj/Ze/FnwQ8B3rU95be/VoGiegpixFxRfClkXEzyShf05JmGav6E1LppnKPy
+         29uDxANYVv5XxdaMsajOhx/J6tSBlkc1TWVG9CIc=
+Subject: FAILED: patch "[PATCH] mmc: block: ensure error propagation for non-blk" failed to apply to 5.15-stable tree
+To:     CLoehle@hyperstone.com, adrian.hunter@intel.com,
+        cloehle@hyperstone.com, ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:02:51 +0100
-Message-ID: <2023052651-reporter-deuce-3950@gregkh>
+Date:   Fri, 26 May 2023 20:03:07 +0100
+Message-ID: <2023052607-catering-creamed-fc70@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,27 +49,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 81dce1490e28439c3cd8a8650b862a712f3061ba
+git cherry-pick -x 003fb0a51162d940f25fc35e70b0996a12c9e08a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052651-reporter-deuce-3950@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052607-catering-creamed-fc70@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-81dce1490e28 ("mmc: sdhci-esdhc-imx: make "no-mmc-hs400" works")
-f002f45a00ee ("mmc: sdhci-esdhc-imx: use the correct host caps for MMC_CAP_8_BIT_DATA")
-1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate ESDHC_FLAG_HS400* only on 8bit bus")
-2991ad76d253 ("mmc: sdhci-esdhc-imx: advertise HS400 mode through MMC caps")
-854a22997ad5 ("mmc: sdhci-esdhc-imx: Convert the driver to DT-only")
+003fb0a51162 ("mmc: block: ensure error propagation for non-blk")
+b84ba30b6c7a ("block: remove the gendisk argument to blk_execute_rq")
+4054cff92c35 ("block: remove blk-exec.c")
+0bf6d96cb829 ("block: remove blk_{get,put}_request")
+4abafdc4360d ("block: remove the initialize_rq_fn blk_mq_ops method")
+68ec3b819a5d ("scsi: add a scsi_alloc_request helper")
+5a72e899ceb4 ("block: add a struct io_comp_batch argument to fops->iopoll()")
+013a7f954381 ("block: provide helpers for rq_list manipulation")
+afd7de03c526 ("block: remove some blk_mq_hw_ctx debugfs entries")
+3e08773c3841 ("block: switch polling to be bio based")
+6ce913fe3eee ("block: rename REQ_HIPRI to REQ_POLLED")
+d729cf9acb93 ("io_uring: don't sleep when polling for I/O")
+ef99b2d37666 ("block: replace the spin argument to blk_iopoll with a flags argument")
+28a1ae6b9dab ("blk-mq: remove blk_qc_t_valid")
+efbabbe121f9 ("blk-mq: remove blk_qc_t_to_tag and blk_qc_t_is_internal")
+c6699d6fe0ff ("blk-mq: factor out a "classic" poll helper")
+f70299f0d58e ("blk-mq: factor out a blk_qc_to_hctx helper")
+71fc3f5e2c00 ("block: don't try to poll multi-bio I/Os in __blkdev_direct_IO")
+349302da8352 ("block: improve batched tag allocation")
+0f38d7664615 ("blk-mq: cleanup blk_mq_submit_bio")
 
 thanks,
 
@@ -76,77 +92,78 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 81dce1490e28439c3cd8a8650b862a712f3061ba Mon Sep 17 00:00:00 2001
-From: Haibo Chen <haibo.chen@nxp.com>
-Date: Thu, 4 May 2023 19:22:22 +0800
-Subject: [PATCH] mmc: sdhci-esdhc-imx: make "no-mmc-hs400" works
+From 003fb0a51162d940f25fc35e70b0996a12c9e08a Mon Sep 17 00:00:00 2001
+From: Christian Loehle <CLoehle@hyperstone.com>
+Date: Wed, 26 Apr 2023 16:59:39 +0000
+Subject: [PATCH] mmc: block: ensure error propagation for non-blk
 
-After commit 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate
-ESDHC_FLAG_HS400* only on 8bit bus"), the property "no-mmc-hs400"
-from device tree file do not work any more.
-This patch reorder the code, which can avoid the warning message
-"drop HS400 support since no 8-bit bus" and also make the property
-"no-mmc-hs400" from dts file works.
+Requests to the mmc layer usually come through a block device IO.
+The exceptions are the ioctl interface, RPMB chardev ioctl
+and debugfs, which issue their own blk_mq requests through
+blk_execute_rq and do not query the BLK_STS error but the
+mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+defaults to an error and has to be overwritten by the operation
+to be considered successful.
 
-Fixes: 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate ESDHC_FLAG_HS400* only on 8bit bus")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+The behavior leads to a bug where the request never propagates
+the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+and thus may assume that their call executed successfully when it did not.
+
+While always checking the blk_execute_rq return value would be
+advised, let's eliminate the error by always setting
+drv_op_result as -EIO to be overwritten on success (or other error)
+
+Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230504112222.3599602-1-haibo.chen@nxp.com
+Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index d7c0c0b9e26c..eebf94604a7f 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1634,6 +1634,10 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
- 	if (ret)
- 		return ret;
- 
-+	/* HS400/HS400ES require 8 bit bus */
-+	if (!(host->mmc->caps & MMC_CAP_8_BIT_DATA))
-+		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
-+
- 	if (mmc_gpio_get_cd(host->mmc) >= 0)
- 		host->quirks &= ~SDHCI_QUIRK_BROKEN_CARD_DETECTION;
- 
-@@ -1724,10 +1728,6 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 		host->mmc_host_ops.init_card = usdhc_init_card;
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 00c33edb9fb9..d920c4178389 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -264,6 +264,7 @@ static ssize_t power_ro_lock_store(struct device *dev,
+ 		goto out_put;
  	}
- 
--	err = sdhci_esdhc_imx_probe_dt(pdev, host, imx_data);
--	if (err)
--		goto disable_ahb_clk;
--
- 	if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING)
- 		sdhci_esdhc_ops.platform_execute_tuning =
- 					esdhc_executing_tuning;
-@@ -1735,15 +1735,13 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 	if (imx_data->socdata->flags & ESDHC_FLAG_ERR004536)
- 		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
- 
--	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
--	    imx_data->socdata->flags & ESDHC_FLAG_HS400)
-+	if (imx_data->socdata->flags & ESDHC_FLAG_HS400)
- 		host->mmc->caps2 |= MMC_CAP2_HS400;
- 
- 	if (imx_data->socdata->flags & ESDHC_FLAG_BROKEN_AUTO_CMD23)
- 		host->quirks2 |= SDHCI_QUIRK2_ACMD23_BROKEN;
- 
--	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
--	    imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
-+	if (imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
- 		host->mmc->caps2 |= MMC_CAP2_HS400_ES;
- 		host->mmc_host_ops.hs400_enhanced_strobe =
- 					esdhc_hs400_enhanced_strobe;
-@@ -1765,6 +1763,10 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 			goto disable_ahb_clk;
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(req, false);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	blk_mq_free_request(req);
+@@ -651,6 +652,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_blk_data *md,
+ 	idatas[0] = idata;
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
+ 	req_to_mmc_queue_req(req)->ioc_count = 1;
+ 	blk_execute_rq(req, false);
+@@ -722,6 +724,7 @@ static int mmc_blk_ioctl_multi_cmd(struct mmc_blk_data *md,
  	}
- 
-+	err = sdhci_esdhc_imx_probe_dt(pdev, host, imx_data);
-+	if (err)
-+		goto disable_ahb_clk;
-+
- 	sdhci_esdhc_imx_hwinit(host);
- 
- 	err = sdhci_add_host(host);
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idata;
+ 	req_to_mmc_queue_req(req)->ioc_count = n;
+ 	blk_execute_rq(req, false);
+@@ -2806,6 +2809,7 @@ static int mmc_dbg_card_status_get(void *data, u64 *val)
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(req, false);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	if (ret >= 0) {
+@@ -2844,6 +2848,7 @@ static int mmc_ext_csd_open(struct inode *inode, struct file *filp)
+ 		goto out_free;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
+ 	blk_execute_rq(req, false);
+ 	err = req_to_mmc_queue_req(req)->drv_op_result;
 
