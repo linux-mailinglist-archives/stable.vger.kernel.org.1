@@ -2,128 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928FA712C72
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 20:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD75712C74
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 20:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233444AbjEZSaT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 14:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42026 "EHLO
+        id S230305AbjEZSbR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 14:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237100AbjEZSaQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 14:30:16 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDCEF3
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 11:30:15 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 33AD83200936;
-        Fri, 26 May 2023 14:30:15 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Fri, 26 May 2023 14:30:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1685125814; x=1685212214; bh=8o
-        2EpJzuS6yovQyTJ0x1bfkjSADeRWgqYKPzlO1CFmQ=; b=pOxk2s3shd/kAIr1Xz
-        9y0s5VF3WkGhBA7g6x6l2HnfSgf3j3b9MoprkR5ed1duyI4c5ISq1I1g1M+8Llq0
-        lSjUuvZKQUklxURGqzhiG8J5XB//B19rhtcuYL6ZFbVpFde8Y6uE5+zp9NT5tWWm
-        1L/8BfTHQYN5kFTrAvaT0i27oFUstYJDFUczSTjgpRDV2V9vBBemuMbaORCGFt2W
-        fRSkrSusff6RaFnBe/HKukGz3KpXHS+aYiHff1CJZOZPrGv+ss7yqJI+EGh2O3bz
-        GgcgKG2mxA8F0df8KTaCETUm3LNjPcnq7q6N0Dz0yFwlX77CsIcd5FMmm1BwIFJ6
-        8wpA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1685125814; x=1685212214; bh=8o2EpJzuS6yov
-        QyTJ0x1bfkjSADeRWgqYKPzlO1CFmQ=; b=E6K+96W8MwtU17gkhdV0P/ywXP9uC
-        De9WOuKaQ54/+Xh9+ZHSogUo5lkaNnU0rd9KN2iQYkiNl0V5Ulw51IX/4WyS2GOo
-        uM2VO5JRsIz9Y367uXmOsSnUVe/QZVZV/SqiaIFTHj2F15qxi9WHgFzmlX2JevsL
-        N9dRCAnLYSxb0LRtAyVbqfahy8arjiJReOZzQ9V06juMPt5Hdu6Eu9h0VCWLpWxY
-        67wjJfu01qdFVVS1REfhucMrPrbdmE45QHgXQXC9JyIg7L1H4o57baRfP+J4qAgD
-        IHrRYO04JVl+3pc7lJgcu9Xq1vwFzGyLp2E6wLKdOBq23WCr1nDPM2nKA==
-X-ME-Sender: <xms:tvpwZKxbWsLIIbaBWRd_sPUYgfltz9hDoD_0BRHq_iMXB_QPyMXAuA>
-    <xme:tvpwZGSsW-EjfzWd0xz_lwoR0INLrIO5Tzs7nBascMAZiIepHTmA9LiytIYVSiJsJ
-    tDDiVcHDCAvUA>
-X-ME-Received: <xmr:tvpwZMWWeuwlMGDyC5eCgprsxOR6n1PtPJJuCfyQz6_x_85L5QQqIiG81Pg6oQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejledguddvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
-    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
-    grhhdrtghomh
-X-ME-Proxy: <xmx:tvpwZAicJuzQcG7bpSYd3rc4dXgQLQEHRdmPp1en92trs4bK3vondg>
-    <xmx:tvpwZMBjQ0BxusCyDLBVmnJP5enM_JIzWbndyPsuVLERn_g3dBallw>
-    <xmx:tvpwZBKVNt6wZ_FigMweVj6ZQpgq0mTrwv_uXghR6bX3e29nvsTP2A>
-    <xmx:tvpwZPMoL4uV15aE4uv6Iu6nSndiBrKjy0FjS_UbCVF_UuY_M1Ic9Q>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 26 May 2023 14:30:14 -0400 (EDT)
-Date:   Fri, 26 May 2023 19:30:12 +0100
-From:   Greg KH <greg@kroah.com>
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/amd/display: hpd rx irq not working with eDP
- interface
-Message-ID: <2023052604-vocation-trimester-4f4b@gregkh>
-References: <20230525002201.23804-1-mario.limonciello@amd.com>
- <MN0PR12MB610177142B98F11B8E022130E2469@MN0PR12MB6101.namprd12.prod.outlook.com>
+        with ESMTP id S236450AbjEZSbP (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Fri, 26 May 2023 14:31:15 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8476AF3
+        for <Stable@vger.kernel.org>; Fri, 26 May 2023 11:31:14 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id a640c23a62f3a-9700219be87so188296866b.1
+        for <Stable@vger.kernel.org>; Fri, 26 May 2023 11:31:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685125873; x=1687717873;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/isQ8S+XwUtFhpB8Qy/P9/2D28oaaCpwFbyNtv2ZZqU=;
+        b=ZZH18WgXMo3bOpQlBO9x4CGNzCTRDkjIzr7qMuIO4i1k3yz532qeHrp88mzL7SVy9S
+         X+IhrkHh3mzOWb56wjQyfNDkwfCHxk8HEACO5CA/P9g+2am8CPv6C/Ga0GGkpnw/UO7k
+         D7kLiydB1IL0yTFkqrOcdw992F07LPtxwokvgHM1jKPJA+zdBgr/5gB2hzNREk2qHfQh
+         hSvaKVcfERxRQov2HJU5/yxgTVRepGBdq1ykUFGLMp7BPFyTc7qZV4zRKWyVhUx5Jzdp
+         zh9OahA9138fILtni0fdH4CYCAmeqdPg0YZZIQuTSJGuhnZD94A7avheC/r8zuZg9HBR
+         R1Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685125873; x=1687717873;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/isQ8S+XwUtFhpB8Qy/P9/2D28oaaCpwFbyNtv2ZZqU=;
+        b=VcUuV2onj+hLQ5o6ffMICmhpADPMyoUUfnY8YfPtgo1L9w4Z5lqqsNMv5A0l4+8YJq
+         /tycnIMxcBNtqjqPLDtdKK1mUKz4qRj22cQvJnNlnBQ3B2zD6gabLzsW3pL08zK6YY+x
+         /nRdsxQZSJmZSAkPhcdpIxDj1oaB1kY1mf7yTajnYAQ3sHaY4qNyoYRqw/CG/cUI1Swm
+         5e5dHQmbbS1nVPGsx/jSIZ3uran0NhUOd5qpyIZQNIBGXW4ZQBcwgm00JxIsFS4gnYYq
+         5qvMn9ujCzwf/rM6H78tl2kKfAPHOT7/LJDNjkhzJEU1c1770kzeyvmLKwG87xyjTTo0
+         wASg==
+X-Gm-Message-State: AC+VfDyZhVFz8iG+MH/SqKClIkHYk537Y9zDPWxg0ckc6wNd+YmcyWTQ
+        oTK93uKDvZ6RBanitskG/2KsjtIaJqeWayj6vww=
+X-Google-Smtp-Source: ACHHUZ6NqWi/A/l3Usf461m2dcdjXKGkpJ1J7y+U73Z962vO0By4gMFot4A3UwYW1hovecwqtcvZEjC91wl+giXUEPE=
+X-Received: by 2002:a17:906:ef0c:b0:96f:e7cf:501b with SMTP id
+ f12-20020a170906ef0c00b0096fe7cf501bmr2574142ejs.33.1685125872913; Fri, 26
+ May 2023 11:31:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN0PR12MB610177142B98F11B8E022130E2469@MN0PR12MB6101.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Sender: johnlarry70@gmail.com
+Received: by 2002:a17:907:3f10:b0:96a:2dd7:2ef8 with HTTP; Fri, 26 May 2023
+ 11:31:12 -0700 (PDT)
+From:   GOOGLE AWARD PROMO <williamsjoestin@gmail.com>
+Date:   Fri, 26 May 2023 19:31:12 +0100
+X-Google-Sender-Auth: Jr6SpDFgqD4PruE8rD47IOi8jhE
+Message-ID: <CAMkVbgiiGYksPxKs1RgouukkQUjjcPK2dyYguZOKqdpfYX=H=A@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FORM_SHORT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE,
+        UNCLAIMED_MONEY,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:641 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [williamsjoestin[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [johnlarry70[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  2.4 UNCLAIMED_MONEY BODY: People just leave money laying around
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 T_FILL_THIS_FORM_SHORT Fill in a short form with personal
+        *      information
+        *  0.0 MONEY_FORM_SHORT Lots of money if you fill out a short form
+        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 25, 2023 at 12:56:48AM +0000, Limonciello, Mario wrote:
-> [AMD Official Use Only - General]
-> 
-> > -----Original Message-----
-> > From: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Sent: Wednesday, May 24, 2023 7:22 PM
-> > To: stable@vger.kernel.org
-> > Cc: Limonciello, Mario <Mario.Limonciello@amd.com>
-> > Subject: [PATCH] drm/amd/display: hpd rx irq not working with eDP interface
-> >
-> > From: Robin Chen <robin.chen@amd.com>
-> >
-> > [Why]
-> > This is the fix for the defect of commit ab144f0b4ad6
-> > ("drm/amd/display: Allow individual control of eDP hotplug support").
-> >
-> > [How]
-> > To revise the default eDP hotplug setting and use the enum to git rid
-> > of the magic number for different options.
-> >
-> > Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP
-> > hotplug support")
-> > Cc: stable@vger.kernel.org
-> > Cc: Mario Limonciello <mario.limonciello@amd.com>
-> > Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
-> > Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-> > Signed-off-by: Robin Chen <robin.chen@amd.com>
-> > Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-> > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > (cherry picked from commit
-> > eeefe7c4820b6baa0462a8b723ea0a3b5846ccae)
-> > Hand modified for missing file rename changes and symbol moves in 6.1.y.
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > ---
-> > This will help some unhandled interrupts that are related to MST
-> > and eDP use.
-> 
-> Apologies; forgot to mention in the message this is ONLY for 6.1.y.
-> It doesn't apply to 5.15.y, and 6.3.y already picked it up successfully.
+Dear User,
 
-Now queued up, thanks.
 
-greg k-h
+Congratulations...
+
+Your email won you a Cash prize of $600,000.00 in the just concluded
+GOOGLE AWARD PROMO Held on 24th of May. 2023. Your Ref No:
+(GOOLGXQW1563), For claim Email us your Name,Address,Occupation,and
+Phone number for more details.
+
+Note: All winnings MUST be claimed in 2 weeks otherwise all winnings
+will be returned as unclaimed funds.
+
+Mr. George Harris
+Promo Co-coordinator
