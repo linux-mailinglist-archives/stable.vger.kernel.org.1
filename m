@@ -2,102 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94904712D26
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5D8A712D28
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjEZTRx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:17:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41074 "EHLO
+        id S229522AbjEZTVp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:21:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjEZTRx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:17:53 -0400
-Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF631AC
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:17:45 -0700 (PDT)
-Date:   Fri, 26 May 2023 19:17:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1685128663; x=1685387863;
-        bh=ouyMl9M9cSUH2UQgqLg6lIvNByY/RpMzp93S8ww1rHE=;
-        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=FxhNaYQpBAjre98qGOJ3mmZtroYCiKv8f3DO2T4iKe3MvTdlnT53Vd+Y6W5G4xvwo
-         6taxXJBdxQsAm8NWopinu+v0IkMZu+Pd+q2ZyqS2FnN3gSaCinfIddWd/tIANJM6Z5
-         Wc7F3LSKvYUb/hP6G45EOgeN/zFjPgz8BHI8hdhD3Rk/QTstyoiUyvnGYm5UBxj9zp
-         qSLR/4Ef5Pmr+QxSpx4JFROApO5O3+5QvjySdpjqlCoDo7XiUDQ/Bwaa0IXWsLNkcQ
-         xjPzmTS/uQwAY+/ll/osMETZgoty/h1f3b8/mqoFLW+YSdec8nGJvZ4sZVhPxyzNxU
-         3HVWofPNcR39g==
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-From:   Sami Korkalainen <sami.korkalainen@proton.me>
-Cc:     "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-Message-ID: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
-Feedback-ID: 45678890:user:proton
+        with ESMTP id S229502AbjEZTVo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:21:44 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A509E13A;
+        Fri, 26 May 2023 12:21:42 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 6D0D860204;
+        Fri, 26 May 2023 21:21:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1685128900; bh=gdnV35r+qZer6ioSJSPnjms1VtPejxd0IlIT7RFCCbg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=IQ/qNCriuge2j3d/O+15dL1nZPwlXbH+pDg9rJjS16liWnpzqTXbR7RVINDaCWIjF
+         jmqP1qNdOImAt6lNiPow4lUeUIP+IPnTsYv0OSUTObsWiXQBdf76Q1BPZKSmxi726f
+         qmKBGTborb3ZPnQzRsDeX5ofYhGkevMRh7+UNE/HyMywPZI0xbNmdNA1I4HhlfwHF1
+         VB6nX75KaEXWShSXkIqZZIWkCVDlCXWBKVt92xyXFlq/GeFzcJ1Ajw1XJTl5tNEEd7
+         0dkZw8XQvEeNbzBC33JLKVPyXoLj4/abakkFtIoX9FwI+qGofhSI6uXOhvKg4ljcPn
+         G8BaBKky+fevw==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EjSdx_xuliag; Fri, 26 May 2023 21:21:38 +0200 (CEST)
+Received: from [192.168.1.6] (unknown [77.237.113.62])
+        by domac.alu.hr (Postfix) with ESMTPSA id EE76A60203;
+        Fri, 26 May 2023 21:21:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1685128898; bh=gdnV35r+qZer6ioSJSPnjms1VtPejxd0IlIT7RFCCbg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=W9FRbhl898RDurbIWAG9elsTFrdcuRfZcsxKAIHKgpgJqhBCwFuf1NlyfZnpB6ojj
+         PY0aBzU9IVi0yfT2ZO78/7KNaqzOvmsTuzoI4SgEDU2ZZQvxsxpFEoi882VNIG6GuP
+         Jc+D6Tv4ca2y0hwq7l/HMaoIATrcAswvWxt0yGSlK6NSw1EF4szHWzZjwVo927hBJi
+         2zSiAxrDTqvNYIOYnx1jVHgr9+gXrLxbqMnLq4efex86sixX8cTZdXX8D1iP04BkZV
+         MKjNbKNyGn/hDL+WgFF9J5KoH9i5G649CVKQ5ru7rlX2JHY6ow/PkacpRId2n/esWO
+         p/wjtDeu1AIOA==
+Message-ID: <8412fb0f-4b7c-b305-0947-ae68701bad20@alu.unizg.hr>
+Date:   Fri, 26 May 2023 21:21:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [RESEND PATCH v5 2/3] test_firmware: fix a memory leak with reqs
+ buffer
+To:     Luis Chamberlain <mcgrof@kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
+References: <20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr>
+ <20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr>
+ <256bc822-ba20-c41a-1f3b-5b6aacead32e@alu.unizg.hr>
+ <f9212fd0-0a52-4076-a97a-c5af8de194cf@kili.mountain>
+ <72257758-a0e6-1118-f397-431ac9ec3059@alu.unizg.hr>
+ <828b1d4c-dac8-4a64-9f1d-452762dc07bd@kili.mountain>
+ <ZG2h34KzhQWONNec@bombadil.infradead.org>
+Content-Language: en-US
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+In-Reply-To: <ZG2h34KzhQWONNec@bombadil.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Linux 6.2 and newer are (mostly) unbootable on my old HP 6730b laptop, the =
-6.1.30 works still fine.
-The weirdest thing is that newer kernels (like 6.3.4 and 6.4-rc3) may boot =
-ok on the first try, but when rebooting, the very same version doesn't boot=
-.
-      =20
-Some times, when trying to boot, I get this message repeated forever:
-ACPI Error: No handler or method for GPE [XX], disabling event (20221020/ev=
-gpe-839)
-On newer kernels, the date is 20230331 instead of 20221020. There is also s=
-ome other error, but I can't read it as it gets overwritten by the other AC=
-PI error, see image linked at the end.
+On 5/24/23 07:34, Luis Chamberlain wrote:
+> On Thu, May 18, 2023 at 06:20:37PM +0300, Dan Carpenter wrote:
+>> On Fri, May 12, 2023 at 08:58:58PM +0200, Mirsad Goran Todorovac wrote:
+>>> On 12. 05. 2023. 15:09, Dan Carpenter wrote:
+>>>> On Fri, May 12, 2023 at 02:34:29PM +0200, Mirsad Todorovac wrote:
+>>>>>> @@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
+>>>>>>     	mutex_lock(&test_fw_mutex);
+>>>>>> +	if (test_fw_config->reqs) {
+>>>>>> +		rc = -EBUSY;
+>>>>>> +		goto out_bail;
+>>>>>> +	}
+>>>>>> +
+>>>>>>     	test_fw_config->reqs =
+>>>>>>     		vzalloc(array3_size(sizeof(struct test_batched_req),
+>>>>>>     				    test_fw_config->num_requests, 2));
+>>>>>
+>>>>> I was just thinking, since returning -EBUSY for the case of already allocated
+>>>>> test_fw_config->reqs was your suggestion and your idea, maybe it would be OK
+>>>>> to properly reflect that in Co-developed-by: or Signed-off-by: , but if I
+>>>>> understood well, the CoC requires that I am explicitly approved of those?
+>>>>>
+>>>>
+>>>> If everyone else is okay, let's just apply this as-is.  You did all the
+>>>> hard bits.
+>>>>
+>>>> regards,
+>>>> dan carpenter
+>>>
+>>> If it is OK with you, then I hope I have your Reviewed-by:
+>>>
+>>
+>> Wow.  Sorry for all the delay on this.
+>>
+>> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+>>
+> 
+> Thanks for doing this work! It looks much better now split up!
 
-And some times, the screen will just stay completely blank.
+No problem. It's a great exercise for the little grey cells :-)
 
-I tried booting with acpi=3Doff, but it does not help.
-      =20
-I bisected and this is the first bad commit 7e68dd7d07a2
-"Merge tag 'net-next-6.2' of git://git.kernel.org/pub/scm/linux/kernel/git/=
-netdev/net-next"
-      =20
-As the later kernels had the seemingly random booting behaviour (mentioned =
-above), I retested the last good one 7c4a6309e27f by booting it several tim=
-es and it boots every time.
+> For all 3 patches:
+> 
+> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
 
-I tried getting some boot logs, but the boot process does not go far enough=
- to make any logs.
+Thanks,
+Mirsad
 
-Kernel .config file: https://0x0.st/Hqt1.txt
-    =20
-Environment (outputs of a working Linux 6.1 build):
-Software (output of the ver_linux script): https://0x0.st/Hqte.txt
-Processor information (from /proc/cpuinfo): https://0x0.st/Hqt2.txt
-Module information (from /proc/modules): https://0x0.st/HqtL.txt
-/proc/ioports: https://0x0.st/Hqt9.txt
-/proc/iomem:   https://0x0.st/Hqtf.txt
-PCI information ('lspci -vvv' as root): https://0x0.st/HqtO.txt
-SCSI information (from /proc/scsi/scsi)
-
-Attached devices:
-Host: scsi0 Channel: 00 Id: 00 Lun: 00
-Vendor: ATA      Model: KINGSTON SVP200S Rev: C4
-Type:   Direct-Access                    ANSI  SCSI revision: 05
-Host: scsi1 Channel: 00 Id: 00 Lun: 00
-Vendor: hp       Model: CDDVDW TS-L633M  Rev: 0301
-Type:   CD-ROM                           ANSI  SCSI revision: 05
-      =20
-Distribution: Arch Linux
-Boot manager: systemd-boot (UEFI)
-
-git bisect log: https://0x0.st/Hqgx.txt
-ACPI Error (sorry for the dusty screen): https://0x0.st/HqEk.jpeg
-
-#regzbot ^introduced 7e68dd7d07a2
-
-Best regards
-Sami Korkalainen 
+> Greg, can you pick these up?
+> 
+>    Luis
