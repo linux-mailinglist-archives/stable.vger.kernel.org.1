@@ -2,110 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A96F7123EC
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 11:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78CA8712502
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 12:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242547AbjEZJpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 05:45:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47726 "EHLO
+        id S242330AbjEZKoL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 06:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230106AbjEZJpY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 05:45:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB115B3;
-        Fri, 26 May 2023 02:45:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50B6F64E93;
-        Fri, 26 May 2023 09:45:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F78CC433EF;
-        Fri, 26 May 2023 09:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685094321;
-        bh=6757u1vv3qshvT3KML6a5/JeJbMP77tgbtC+voZYxM8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Xit6rovGa1EEW81ZgpfaqNZHoUIw5HguySJ17Cp/3hX/NBNlh7jaa1cllWG2iirET
-         8v8OyP2+bIXqFTB3fsUEY1VBIgMGeEu2nqemQIOXTQ8Kx9tdMUs1oXJaYc9dr8T9nL
-         so0FIOgiJK+d3KseP1t373HUh0NxXheGkUqLb68U7mM4JIAby9t9oS6pI8438c/DSa
-         7WLuGXVk5VzdxgQC/ybMoa8F8JOUh8+IjbcF5sA1Rx1sNATtns9Khfau7r0SRc4ahp
-         ZydAbOSB4xf7KBz2DMlBM4Hw1+RI+zWuwQxMj0kAqXo82MAEOA/VoQRJnmuFr7KRET
-         g9JugSYtsWCyg==
-Date:   Fri, 26 May 2023 11:45:15 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Jan Kara <jack@suse.cz>
-Cc:     Al Viro <viro@ZenIV.linux.org.uk>, linux-fsdevel@vger.kernel.org,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
+        with ESMTP id S230121AbjEZKoK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 06:44:10 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11A0F7
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 03:44:07 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f60b3f32b4so4097025e9.1
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 03:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20221208.gappssmtp.com; s=20221208; t=1685097846; x=1687689846;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qsQxO8IPaN8nlkq2Xhl3/vTTB1iuV7FAGBCEMX0YyP4=;
+        b=a/Dxr0an09yn6eTERfXRH+v8faaaU6lJpIpaMVdr8uhHgGPIFcSHLjgyJP0Vs9vG3X
+         CI7CvyUojqeAfJkJ6DzM8lVf+D7nruedj2h/O4/cJ6MP1iQEUxZcP/SUtjVxubwB+PHl
+         OkrRiXzOYbQahNp6wZsjc944QrRWhl9c1yRa+ptE0DNk6jCj+mqRbAh8NRGdWajyTcQv
+         /nMjWZzEDwCU3H/txJSK6o3Zb8IMhF9k44d3DYWlpn7OGbptrtAlsPOKp/PDH+zBorEI
+         FLlQmIKKJOViWnURGXVbGY5pCbOmioounsv+72zQR/DZ5qTYnzkibGOGV2pUPmbH/HzF
+         JnVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685097846; x=1687689846;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qsQxO8IPaN8nlkq2Xhl3/vTTB1iuV7FAGBCEMX0YyP4=;
+        b=QYQkJ5MCg5VbNm23PBsfiu05Y8bNRZDVsH/jWecSIqcIgV/obMuFn7a9Dgbb+oVMy1
+         +TkLzEBln7EwnsvhIEhqWvaM1dUmhOx9UW+1OjMVRPAY+aVLIVjGtZTy0td46yYI/i7Q
+         HwRKMy2WuWM8U7qmUukxxkK0TEWliL9+x9abojIS5s0vjlBVCD4gt0RDPdqJgJK+UDUf
+         RWbz9PZDUmmnQKdkUTVV/wT0LiK874VRtJjZ9iVtlIqHb1JcFkZ7VlKubcpCPARkNTwh
+         Ct7rN2tqGK4ID+EFpgZq9wMPnIVycAHyvDnkb7gGM8lpSHOAmrm9BVFLSvSt7mPWx4dE
+         Mdyg==
+X-Gm-Message-State: AC+VfDz9oEuDSckaCGn8LWaF36rj20plZPJgObZ0BZ/DH2OuNC+bqqCs
+        XGzakAyoMGEXVHVpCVOztezOPg==
+X-Google-Smtp-Source: ACHHUZ7L0BkNcRhWjehagPKWH/0YUPeR2EChh9bPq+mRlKo9vIF2GGsqEqyEcn8B+nVasosRFerNoA==
+X-Received: by 2002:a05:600c:2196:b0:3f6:3da:1603 with SMTP id e22-20020a05600c219600b003f603da1603mr1158694wme.26.1685097846338;
+        Fri, 26 May 2023 03:44:06 -0700 (PDT)
+Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
+        by smtp.gmail.com with ESMTPSA id s26-20020a7bc39a000000b003f42328b5d9sm4792425wmj.39.2023.05.26.03.44.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 May 2023 03:44:05 -0700 (PDT)
+Date:   Fri, 26 May 2023 12:44:04 +0200
+From:   Jiri Pirko <jiri@resnulli.us>
+To:     Haiyang Zhang <haiyangz@microsoft.com>
+Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+        decui@microsoft.com, kys@microsoft.com, paulros@microsoft.com,
+        olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net,
+        wei.liu@kernel.org, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, leon@kernel.org, longli@microsoft.com,
+        ssengar@linux.microsoft.com, linux-rdma@vger.kernel.org,
+        daniel@iogearbox.net, john.fastabend@gmail.com,
+        bpf@vger.kernel.org, ast@kernel.org, sharmaajay@microsoft.com,
+        hawk@kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Subject: Re: [PATCH 4/6] fs: Establish locking order for unrelated directories
-Message-ID: <20230526-polarstern-herrichten-32fc46c63bfc@brauner>
-References: <20230525100654.15069-1-jack@suse.cz>
- <20230525101624.15814-4-jack@suse.cz>
+Subject: Re: [PATCH net] net: mana: Fix perf regression: remove rx_cqes,
+ tx_cqes counters
+Message-ID: <ZHCNdEez3yN0Vccb@nanopsycho>
+References: <1684963320-25282-1-git-send-email-haiyangz@microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230525101624.15814-4-jack@suse.cz>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <1684963320-25282-1-git-send-email-haiyangz@microsoft.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 25, 2023 at 12:16:10PM +0200, Jan Kara wrote:
-> Currently the locking order of inode locks for directories that are not
-> in ancestor relationship is not defined because all operations that
-> needed to lock two directories like this were serialized by
-> sb->s_vfs_rename_mutex. However some filesystems need to lock two
-> subdirectories for RENAME_EXCHANGE operations and for this we need the
-> locking order established even for two tree-unrelated directories.
-> Provide a helper function lock_two_inodes() that establishes lock
-> ordering for any two inodes and use it in lock_two_directories().
-> 
-> CC: stable@vger.kernel.org
-> Signed-off-by: Jan Kara <jack@suse.cz>
-> ---
->  fs/inode.c    | 34 ++++++++++++++++++++++++++++++++++
->  fs/internal.h |  2 ++
->  fs/namei.c    |  4 ++--
->  3 files changed, 38 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/inode.c b/fs/inode.c
-> index 577799b7855f..2015fa50d34a 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -1103,6 +1103,40 @@ void discard_new_inode(struct inode *inode)
->  }
->  EXPORT_SYMBOL(discard_new_inode);
->  
-> +/**
-> + * lock_two_inodes - lock two inodes (may be regular files but also dirs)
-> + *
-> + * Lock any non-NULL argument. The caller must make sure that if he is passing
-> + * in two directories, one is not ancestor of the other.  Zero, one or two
-> + * objects may be locked by this function.
-> + *
-> + * @inode1: first inode to lock
-> + * @inode2: second inode to lock
-> + * @subclass1: inode lock subclass for the first lock obtained
-> + * @subclass2: inode lock subclass for the second lock obtained
-> + */
-> +void lock_two_inodes(struct inode *inode1, struct inode *inode2,
-> +		     unsigned subclass1, unsigned subclass2)
-> +{
-> +	if (!inode1 || !inode2)
-> +		goto lock;
+Wed, May 24, 2023 at 11:22:00PM CEST, haiyangz@microsoft.com wrote:
+>The apc->eth_stats.rx_cqes is one per NIC (vport), and it's on the
+>frequent and parallel code path of all queues. So, r/w into this
+>single shared variable by many threads on different CPUs creates a
+>lot caching and memory overhead, hence perf regression. And, it's
+>not accurate due to the high volume concurrent r/w.
+>
+>Since the error path of mana_poll_rx_cq() already has warnings, so
+>keeping the counter and convert it to a per-queue variable is not
+>necessary. So, just remove this counter from this high frequency
+>code path.
+>
+>Also, remove the tx_cqes counter for the same reason. We have
+>warnings & other counters for errors on that path, and don't need
+>to count every normal cqe processing.
+>
+>Cc: stable@vger.kernel.org
+>Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
+>Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 
-Before this change in
-
-lock_two_nondirectories(struct inode *inode1, struct inode *inode2)
-
-the swap() would cause the non-NULL inode to always be locked with
-I_MUTEX_NONDIR2. Now it can be either I_MUTEX_NORMAL or I_MUTEX_NONDIR2.
-Is that change intentional?
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
