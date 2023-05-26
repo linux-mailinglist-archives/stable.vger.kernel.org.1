@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFB12712D10
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B72712D11
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243813AbjEZTFu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
+        id S243807AbjEZTFx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229732AbjEZTFs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:05:48 -0400
+        with ESMTP id S243804AbjEZTFw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:05:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 742701B7
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B28C318D
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ACC5652BC
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B14C4339C;
-        Fri, 26 May 2023 19:05:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 372D9652C3
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D5CC433D2;
+        Fri, 26 May 2023 19:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127943;
-        bh=E55eYRDSTQB/SNOM1SP1r3JtdX0jj7VythXNoPy3Nw0=;
+        s=korg; t=1685127947;
+        bh=nrp89YR6mNGHgGPOe6LXuAu2Uar5lSrZo4beYqYzI+Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=usZEU7oHAYNb75M7N3M5sDy/fcMIYeaORsHN6T8Tbew9ZxT4DI6qLU2EpIlbno6+O
-         xbHNVCTMSD9mONuHFhfxeDCAjcrQYCVJmCB4iH4osVcwPvlWx3mzSp3qjaYgBkFwl1
-         Ns+lrdKZUAC4u/Yz4NPEci2Z1caEKF1BZcLi1ljA=
-Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 4.19-stable tree
+        b=zEV6jN4qLIvt5p0HJf2xGe8006XL15br5oI2uG+egnJcTMd1ck+ID0sSr0IzOHXEd
+         6eTkvFIyh1awqRM1J6OSY8L1GdZA+lma2atYgRasdjAuBCg+GFtZALgvmE3DA7C9GT
+         K66ArU9flcfByyDapdvxJcFyWeASp64UHX/FW4K0=
+Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 4.14-stable tree
 To:     nicolas.dichtel@6wind.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:05:36 +0100
-Message-ID: <2023052636-scrounger-dirtiness-37d2@gregkh>
+Date:   Fri, 26 May 2023 20:05:37 +0100
+Message-ID: <2023052637-smudge-shucking-ac36@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3632679d9e4f879f49949bb5b050e0de553e4739
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052636-scrounger-dirtiness-37d2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052637-smudge-shucking-ac36@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
