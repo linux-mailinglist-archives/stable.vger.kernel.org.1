@@ -2,133 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5D8A712D28
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4CA712D67
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjEZTVp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41422 "EHLO
+        id S231240AbjEZT1W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:27:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjEZTVo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:21:44 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A509E13A;
-        Fri, 26 May 2023 12:21:42 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 6D0D860204;
-        Fri, 26 May 2023 21:21:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1685128900; bh=gdnV35r+qZer6ioSJSPnjms1VtPejxd0IlIT7RFCCbg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=IQ/qNCriuge2j3d/O+15dL1nZPwlXbH+pDg9rJjS16liWnpzqTXbR7RVINDaCWIjF
-         jmqP1qNdOImAt6lNiPow4lUeUIP+IPnTsYv0OSUTObsWiXQBdf76Q1BPZKSmxi726f
-         qmKBGTborb3ZPnQzRsDeX5ofYhGkevMRh7+UNE/HyMywPZI0xbNmdNA1I4HhlfwHF1
-         VB6nX75KaEXWShSXkIqZZIWkCVDlCXWBKVt92xyXFlq/GeFzcJ1Ajw1XJTl5tNEEd7
-         0dkZw8XQvEeNbzBC33JLKVPyXoLj4/abakkFtIoX9FwI+qGofhSI6uXOhvKg4ljcPn
-         G8BaBKky+fevw==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id EjSdx_xuliag; Fri, 26 May 2023 21:21:38 +0200 (CEST)
-Received: from [192.168.1.6] (unknown [77.237.113.62])
-        by domac.alu.hr (Postfix) with ESMTPSA id EE76A60203;
-        Fri, 26 May 2023 21:21:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1685128898; bh=gdnV35r+qZer6ioSJSPnjms1VtPejxd0IlIT7RFCCbg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=W9FRbhl898RDurbIWAG9elsTFrdcuRfZcsxKAIHKgpgJqhBCwFuf1NlyfZnpB6ojj
-         PY0aBzU9IVi0yfT2ZO78/7KNaqzOvmsTuzoI4SgEDU2ZZQvxsxpFEoi882VNIG6GuP
-         Jc+D6Tv4ca2y0hwq7l/HMaoIATrcAswvWxt0yGSlK6NSw1EF4szHWzZjwVo927hBJi
-         2zSiAxrDTqvNYIOYnx1jVHgr9+gXrLxbqMnLq4efex86sixX8cTZdXX8D1iP04BkZV
-         MKjNbKNyGn/hDL+WgFF9J5KoH9i5G649CVKQ5ru7rlX2JHY6ow/PkacpRId2n/esWO
-         p/wjtDeu1AIOA==
-Message-ID: <8412fb0f-4b7c-b305-0947-ae68701bad20@alu.unizg.hr>
-Date:   Fri, 26 May 2023 21:21:03 +0200
+        with ESMTP id S229495AbjEZT1V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:27:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E609E4A
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:27:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A9FA652E4
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85334C433D2;
+        Fri, 26 May 2023 19:27:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685129234;
+        bh=FIIdBJsBU/30xqqkqG5Cq7rA6l2c+8TwE1DlwPXSh1s=;
+        h=Subject:To:Cc:From:Date:From;
+        b=ZOTAlrDjZAxyv+EgGl3UIblC7v2nBQQbsDHzrTVDoN7016g9w6zQTdHwwWQbS73+t
+         qxhw4d/WXwPtNIMSRLtdgvmakWQTVoB0qfhs9/6JI1DLCqe5Wh6PeCu0ES+Qtz62XC
+         POkDMK/P7pvs3EN0p350WId1vGFg7W/un+GaEcNY=
+Subject: FAILED: patch "[PATCH] x86/mm: Avoid incomplete Global INVLPG flushes" failed to apply to 5.15-stable tree
+To:     dave.hansen@linux.intel.com, tglx@linutronix.de
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 26 May 2023 20:27:12 +0100
+Message-ID: <2023052612-reproach-snowbird-d3a2@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RESEND PATCH v5 2/3] test_firmware: fix a memory leak with reqs
- buffer
-To:     Luis Chamberlain <mcgrof@kernel.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
-References: <20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr>
- <20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr>
- <256bc822-ba20-c41a-1f3b-5b6aacead32e@alu.unizg.hr>
- <f9212fd0-0a52-4076-a97a-c5af8de194cf@kili.mountain>
- <72257758-a0e6-1118-f397-431ac9ec3059@alu.unizg.hr>
- <828b1d4c-dac8-4a64-9f1d-452762dc07bd@kili.mountain>
- <ZG2h34KzhQWONNec@bombadil.infradead.org>
-Content-Language: en-US
-From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <ZG2h34KzhQWONNec@bombadil.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/24/23 07:34, Luis Chamberlain wrote:
-> On Thu, May 18, 2023 at 06:20:37PM +0300, Dan Carpenter wrote:
->> On Fri, May 12, 2023 at 08:58:58PM +0200, Mirsad Goran Todorovac wrote:
->>> On 12. 05. 2023. 15:09, Dan Carpenter wrote:
->>>> On Fri, May 12, 2023 at 02:34:29PM +0200, Mirsad Todorovac wrote:
->>>>>> @@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
->>>>>>     	mutex_lock(&test_fw_mutex);
->>>>>> +	if (test_fw_config->reqs) {
->>>>>> +		rc = -EBUSY;
->>>>>> +		goto out_bail;
->>>>>> +	}
->>>>>> +
->>>>>>     	test_fw_config->reqs =
->>>>>>     		vzalloc(array3_size(sizeof(struct test_batched_req),
->>>>>>     				    test_fw_config->num_requests, 2));
->>>>>
->>>>> I was just thinking, since returning -EBUSY for the case of already allocated
->>>>> test_fw_config->reqs was your suggestion and your idea, maybe it would be OK
->>>>> to properly reflect that in Co-developed-by: or Signed-off-by: , but if I
->>>>> understood well, the CoC requires that I am explicitly approved of those?
->>>>>
->>>>
->>>> If everyone else is okay, let's just apply this as-is.  You did all the
->>>> hard bits.
->>>>
->>>> regards,
->>>> dan carpenter
->>>
->>> If it is OK with you, then I hope I have your Reviewed-by:
->>>
->>
->> Wow.  Sorry for all the delay on this.
->>
->> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
->>
-> 
-> Thanks for doing this work! It looks much better now split up!
 
-No problem. It's a great exercise for the little grey cells :-)
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> For all 3 patches:
-> 
-> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Thanks,
-Mirsad
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x ce0b15d11ad837fbacc5356941712218e38a0a83
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052612-reproach-snowbird-d3a2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-> Greg, can you pick these up?
-> 
->    Luis
+Possible dependencies:
+
+ce0b15d11ad8 ("x86/mm: Avoid incomplete Global INVLPG flushes")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ce0b15d11ad837fbacc5356941712218e38a0a83 Mon Sep 17 00:00:00 2001
+From: Dave Hansen <dave.hansen@linux.intel.com>
+Date: Tue, 16 May 2023 12:24:25 -0700
+Subject: [PATCH] x86/mm: Avoid incomplete Global INVLPG flushes
+
+The INVLPG instruction is used to invalidate TLB entries for a
+specified virtual address.  When PCIDs are enabled, INVLPG is supposed
+to invalidate TLB entries for the specified address for both the
+current PCID *and* Global entries.  (Note: Only kernel mappings set
+Global=1.)
+
+Unfortunately, some INVLPG implementations can leave Global
+translations unflushed when PCIDs are enabled.
+
+As a workaround, never enable PCIDs on affected processors.
+
+I expect there to eventually be microcode mitigations to replace this
+software workaround.  However, the exact version numbers where that
+will happen are not known today.  Once the version numbers are set in
+stone, the processor list can be tweaked to only disable PCIDs on
+affected processors with affected microcode.
+
+Note: if anyone wants a quick fix that doesn't require patching, just
+stick 'nopcid' on your kernel command-line.
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 3cdac0f0055d..8192452d1d2d 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -9,6 +9,7 @@
+ #include <linux/sched/task.h>
+ 
+ #include <asm/set_memory.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/e820/api.h>
+ #include <asm/init.h>
+ #include <asm/page.h>
+@@ -261,6 +262,24 @@ static void __init probe_page_size_mask(void)
+ 	}
+ }
+ 
++#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
++			      .family  = 6,			\
++			      .model = _model,			\
++			    }
++/*
++ * INVLPG may not properly flush Global entries
++ * on these CPUs when PCIDs are enabled.
++ */
++static const struct x86_cpu_id invlpg_miss_ids[] = {
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
++	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
++	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
++	{}
++};
++
+ static void setup_pcid(void)
+ {
+ 	if (!IS_ENABLED(CONFIG_X86_64))
+@@ -269,6 +288,12 @@ static void setup_pcid(void)
+ 	if (!boot_cpu_has(X86_FEATURE_PCID))
+ 		return;
+ 
++	if (x86_match_cpu(invlpg_miss_ids)) {
++		pr_info("Incomplete global flushes, disabling PCID");
++		setup_clear_cpu_cap(X86_FEATURE_PCID);
++		return;
++	}
++
+ 	if (boot_cpu_has(X86_FEATURE_PGE)) {
+ 		/*
+ 		 * This can't be cr4_set_bits_and_update_boot() -- the
+
