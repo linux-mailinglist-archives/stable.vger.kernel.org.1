@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5CC9712D0E
+	by mail.lfdr.de (Postfix) with ESMTP id 4EE3D712D0D
 	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243782AbjEZTFs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S243802AbjEZTFs (ORCPT <rfc822;lists+stable@lfdr.de>);
         Fri, 26 May 2023 15:05:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243813AbjEZTFq (ORCPT
+        with ESMTP id S243814AbjEZTFq (ORCPT
         <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:05:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CF313D
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4629D19D
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 40A18652C3
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DB3C433D2;
-        Fri, 26 May 2023 19:05:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5E71652C4
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AA9C4339B;
+        Fri, 26 May 2023 19:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127938;
-        bh=mfueDL+RCoAcDwQ2gWPn6CemZwDuN2Tt9CTGWreqtZU=;
+        s=korg; t=1685127941;
+        bh=75bjC1/xUqQdI3sclGSrlwl8mlqeHsHTKoUBH/YuN38=;
         h=Subject:To:Cc:From:Date:From;
-        b=tmQ4PAuM3cER2rOcp/5fMkhnl4QyY6SG1T8pzQmh99kgoq+2ZIuiyGFpy1CIdS/xF
-         8vAz9abasRNg6m0dKGRMHsYmK3Pwk0xYy8NpEn75OL94l2VIxj92GPiECm89Ihd0Fh
-         GDRjwVgDAyKNL8hOMgYA4/U/g8eIf1QvYryQnmMk=
-Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 5.10-stable tree
+        b=QlQ2a44lpfeu/1KOySL1UNKDCQ3xnCn7j2RKBQSHjeuFMyutAQ6YJbo7gEfd4WRZM
+         yG9pSsFrdMkUEv+jEpdaorNsJr6NmHzeKxgWvbmOlTO36zh4jt2XcI7FbmVRTX0FPi
+         EowGmuGPe7CVWFmIABtZ1r1qyIOFtdG3MONIh6Uc=
+Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 5.4-stable tree
 To:     nicolas.dichtel@6wind.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:05:34 +0100
-Message-ID: <2023052634-surgical-sulfite-a551@gregkh>
+Date:   Fri, 26 May 2023 20:05:35 +0100
+Message-ID: <2023052635-styling-unbutton-ac91@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3632679d9e4f879f49949bb5b050e0de553e4739
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052634-surgical-sulfite-a551@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052635-styling-unbutton-ac91@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,8 @@ ffa84b5ffb37 ("net: add netns refcount tracker to struct sock")
 c579bd1b4021 ("tcp: add some entropy in __inet_hash_connect()")
 190cc82489f4 ("tcp: change source port randomizarion at connect() time")
 bbc20b70424a ("net: reduce indentation level in sk_clone_lock()")
+62ffc589abb1 ("net: refactor bind_bucket fastreuse into helper")
+47ec5303d73e ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next")
 
 thanks,
 
