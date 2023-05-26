@@ -2,101 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CA8712502
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 12:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8239471251D
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 12:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242330AbjEZKoL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 06:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
+        id S236979AbjEZKzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 06:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbjEZKoK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 06:44:10 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11A0F7
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 03:44:07 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f60b3f32b4so4097025e9.1
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 03:44:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20221208.gappssmtp.com; s=20221208; t=1685097846; x=1687689846;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qsQxO8IPaN8nlkq2Xhl3/vTTB1iuV7FAGBCEMX0YyP4=;
-        b=a/Dxr0an09yn6eTERfXRH+v8faaaU6lJpIpaMVdr8uhHgGPIFcSHLjgyJP0Vs9vG3X
-         CI7CvyUojqeAfJkJ6DzM8lVf+D7nruedj2h/O4/cJ6MP1iQEUxZcP/SUtjVxubwB+PHl
-         OkrRiXzOYbQahNp6wZsjc944QrRWhl9c1yRa+ptE0DNk6jCj+mqRbAh8NRGdWajyTcQv
-         /nMjWZzEDwCU3H/txJSK6o3Zb8IMhF9k44d3DYWlpn7OGbptrtAlsPOKp/PDH+zBorEI
-         FLlQmIKKJOViWnURGXVbGY5pCbOmioounsv+72zQR/DZ5qTYnzkibGOGV2pUPmbH/HzF
-         JnVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685097846; x=1687689846;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qsQxO8IPaN8nlkq2Xhl3/vTTB1iuV7FAGBCEMX0YyP4=;
-        b=QYQkJ5MCg5VbNm23PBsfiu05Y8bNRZDVsH/jWecSIqcIgV/obMuFn7a9Dgbb+oVMy1
-         +TkLzEBln7EwnsvhIEhqWvaM1dUmhOx9UW+1OjMVRPAY+aVLIVjGtZTy0td46yYI/i7Q
-         HwRKMy2WuWM8U7qmUukxxkK0TEWliL9+x9abojIS5s0vjlBVCD4gt0RDPdqJgJK+UDUf
-         RWbz9PZDUmmnQKdkUTVV/wT0LiK874VRtJjZ9iVtlIqHb1JcFkZ7VlKubcpCPARkNTwh
-         Ct7rN2tqGK4ID+EFpgZq9wMPnIVycAHyvDnkb7gGM8lpSHOAmrm9BVFLSvSt7mPWx4dE
-         Mdyg==
-X-Gm-Message-State: AC+VfDz9oEuDSckaCGn8LWaF36rj20plZPJgObZ0BZ/DH2OuNC+bqqCs
-        XGzakAyoMGEXVHVpCVOztezOPg==
-X-Google-Smtp-Source: ACHHUZ7L0BkNcRhWjehagPKWH/0YUPeR2EChh9bPq+mRlKo9vIF2GGsqEqyEcn8B+nVasosRFerNoA==
-X-Received: by 2002:a05:600c:2196:b0:3f6:3da:1603 with SMTP id e22-20020a05600c219600b003f603da1603mr1158694wme.26.1685097846338;
-        Fri, 26 May 2023 03:44:06 -0700 (PDT)
-Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
-        by smtp.gmail.com with ESMTPSA id s26-20020a7bc39a000000b003f42328b5d9sm4792425wmj.39.2023.05.26.03.44.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 03:44:05 -0700 (PDT)
-Date:   Fri, 26 May 2023 12:44:04 +0200
-From:   Jiri Pirko <jiri@resnulli.us>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        decui@microsoft.com, kys@microsoft.com, paulros@microsoft.com,
-        olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net,
-        wei.liu@kernel.org, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, leon@kernel.org, longli@microsoft.com,
-        ssengar@linux.microsoft.com, linux-rdma@vger.kernel.org,
-        daniel@iogearbox.net, john.fastabend@gmail.com,
-        bpf@vger.kernel.org, ast@kernel.org, sharmaajay@microsoft.com,
-        hawk@kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S229978AbjEZKzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 06:55:10 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63EA7F7;
+        Fri, 26 May 2023 03:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685098509; x=1716634509;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gsACS33QqbMepIsxf09vMS4nFee3rE52HroENxd1Rt4=;
+  b=KlQSrhS7Pu5r4Ojt79iRpGYe7Y+93C9EVAINnOiNy+O3qOSipPyurDnD
+   OEVKdfysKjUT2lqtf6Ocu3YW6QOMLcAmE99SA2hCwUPDnfklc4R5A00wf
+   Y9FpzeFm2Erm7yRCk4ecRHzt+kNrU0tA6vbkouAw/IhL4xLHM/twamHS7
+   uey1CpekNfJM5MSiKNfypeNwwar0vNutsr/sYEGyiDWX28yTlcidaqIe/
+   J8EHDNDcGPmPjfFUVVd+5JKM892cghSZ/3v2PXq31+Vk05DQ80FIuFmo0
+   J6K8GkeeaLrDqD9dn82GNLToCsX2pmTgelRuyA9llVX36JfPGv7ASgO1+
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="353018168"
+X-IronPort-AV: E=Sophos;i="6.00,194,1681196400"; 
+   d="scan'208";a="353018168"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2023 03:55:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="655599733"
+X-IronPort-AV: E=Sophos;i="6.00,193,1681196400"; 
+   d="scan'208";a="655599733"
+Received: from eandrei-mobl5.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.53.213])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2023 03:55:05 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     linux-serial@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
+        Robert Baldyga <r.baldyga@samsung.com>,
+        dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Richard Tresidder <rtresidd@electromag.com.au>,
         stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Fix perf regression: remove rx_cqes,
- tx_cqes counters
-Message-ID: <ZHCNdEez3yN0Vccb@nanopsycho>
-References: <1684963320-25282-1-git-send-email-haiyangz@microsoft.com>
+Subject: [PATCH] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
+Date:   Fri, 26 May 2023 13:54:34 +0300
+Message-Id: <20230526105434.14959-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1684963320-25282-1-git-send-email-haiyangz@microsoft.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Wed, May 24, 2023 at 11:22:00PM CEST, haiyangz@microsoft.com wrote:
->The apc->eth_stats.rx_cqes is one per NIC (vport), and it's on the
->frequent and parallel code path of all queues. So, r/w into this
->single shared variable by many threads on different CPUs creates a
->lot caching and memory overhead, hence perf regression. And, it's
->not accurate due to the high volume concurrent r/w.
->
->Since the error path of mana_poll_rx_cq() already has warnings, so
->keeping the counter and convert it to a per-queue variable is not
->necessary. So, just remove this counter from this high frequency
->code path.
->
->Also, remove the tx_cqes counter for the same reason. We have
->warnings & other counters for errors on that path, and don't need
->to count every normal cqe processing.
->
->Cc: stable@vger.kernel.org
->Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
->Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+pl330_pause() does not set anything to indicate paused condition which
+causes pl330_tx_status() to return DMA_IN_PROGRESS. This breaks 8250
+DMA flush after the fix in commit 57e9af7831dc ("serial: 8250_dma: Fix
+DMA Rx rearm race"). The function comment for pl330_pause() claims
+pause is supported but resume is not which is enough for 8250 DMA flush
+to work as long as DMA status reports DMA_PAUSED when appropriate.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Add PAUSED state for descriptor and mark BUSY descriptors with PAUSED
+in pl330_pause(). Return DMA_PAUSED from pl330_tx_status() when the
+descriptor is PAUSED.
+
+Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+Tested-by: Richard Tresidder <rtresidd@electromag.com.au>
+Fixes: 88987d2c7534 ("dmaengine: pl330: add DMA_PAUSE feature")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-serial/f8a86ecd-64b1-573f-c2fa-59f541083f1a@electromag.com.au/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+
+$ diff -u <(git grep -l -e '\.device_pause' -e '->device_pause') <(git grep -l DMA_PAUSED)
+
+...tells there might a few other drivers which do not properly return
+DMA_PAUSED status despite having a pause function.
+
+ drivers/dma/pl330.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 0d9257fbdfb0..daad25f2c498 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -403,6 +403,12 @@ enum desc_status {
+ 	 * of a channel can be BUSY at any time.
+ 	 */
+ 	BUSY,
++	/*
++	 * Pause was called while descriptor was BUSY. Due to hardware
++	 * limitations, only termination is possible for descriptors
++	 * that have been paused.
++	 */
++	PAUSED,
+ 	/*
+ 	 * Sitting on the channel work_list but xfer done
+ 	 * by PL330 core
+@@ -2041,7 +2047,7 @@ static inline void fill_queue(struct dma_pl330_chan *pch)
+ 	list_for_each_entry(desc, &pch->work_list, node) {
+ 
+ 		/* If already submitted */
+-		if (desc->status == BUSY)
++		if (desc->status == BUSY || desc->status == PAUSED)
+ 			continue;
+ 
+ 		ret = pl330_submit_req(pch->thread, desc);
+@@ -2326,6 +2332,7 @@ static int pl330_pause(struct dma_chan *chan)
+ {
+ 	struct dma_pl330_chan *pch = to_pchan(chan);
+ 	struct pl330_dmac *pl330 = pch->dmac;
++	struct dma_pl330_desc *desc;
+ 	unsigned long flags;
+ 
+ 	pm_runtime_get_sync(pl330->ddma.dev);
+@@ -2335,6 +2342,10 @@ static int pl330_pause(struct dma_chan *chan)
+ 	_stop(pch->thread);
+ 	spin_unlock(&pl330->lock);
+ 
++	list_for_each_entry(desc, &pch->work_list, node) {
++		if (desc->status == BUSY)
++			desc->status = PAUSED;
++	}
+ 	spin_unlock_irqrestore(&pch->lock, flags);
+ 	pm_runtime_mark_last_busy(pl330->ddma.dev);
+ 	pm_runtime_put_autosuspend(pl330->ddma.dev);
+@@ -2425,7 +2436,7 @@ pl330_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
+ 		else if (running && desc == running)
+ 			transferred =
+ 				pl330_get_current_xferred_count(pch, desc);
+-		else if (desc->status == BUSY)
++		else if (desc->status == BUSY || desc->status == PAUSED)
+ 			/*
+ 			 * Busy but not running means either just enqueued,
+ 			 * or finished and not yet marked done
+@@ -2442,6 +2453,9 @@ pl330_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
+ 			case DONE:
+ 				ret = DMA_COMPLETE;
+ 				break;
++			case PAUSED:
++				ret = DMA_PAUSED;
++				break;
+ 			case PREP:
+ 			case BUSY:
+ 				ret = DMA_IN_PROGRESS;
+-- 
+2.30.2
+
