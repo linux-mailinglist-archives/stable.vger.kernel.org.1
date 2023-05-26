@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A288D712D00
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03AB4712D01
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236575AbjEZTDT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:03:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
+        id S229935AbjEZTDX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243751AbjEZTDS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:03:18 -0400
+        with ESMTP id S242258AbjEZTDV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:03:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7044713D
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:03:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A674135
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:03:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04089652B8
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B22C433D2;
-        Fri, 26 May 2023 19:03:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB19C65292
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:03:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0480BC433D2;
+        Fri, 26 May 2023 19:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127796;
-        bh=NFNKmZLoqpULpHXvbrI9mkkCdrGbDEjdeuNqemTQ8yc=;
+        s=korg; t=1685127799;
+        bh=bOgE+d1/YoY1m5gQyVOqFIbTsivjax+hJzDbu1YiMLQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=lJcWguAJ+6M2oaeAjMNZNwWKE+9hfYmrhEHhFGWuToeuRL+vZGFnB6LmdSBf9CmrB
-         bWz7Z4sxfoGQTPzRfLcCOb4aEoubiTqYZbC18UUZex7uxC9amHqpe6UDutH8/lr/5z
-         /7MVfyHx34mAXVjg54xsuJelVawENMJ9OlKLcWhs=
-Subject: FAILED: patch "[PATCH] mmc: block: ensure error propagation for non-blk" failed to apply to 5.4-stable tree
+        b=Cd9S5E5M/TOZW+jR6NTQFh+vC3VM9coR8WRSHpNleylwpdNRLqXYwBYVeJW8Eg21t
+         9Jt2Lfzd4+Ux7/VENfUbtReMoQBkSYZ2xcpwby+sYftZ6Hhzx7w3PyJ593RUWreDpQ
+         w6hHYgR/r1Dsn/Md5l+Zl800xrGsJbmfks4JG8xk=
+Subject: FAILED: patch "[PATCH] mmc: block: ensure error propagation for non-blk" failed to apply to 4.19-stable tree
 To:     CLoehle@hyperstone.com, adrian.hunter@intel.com,
         cloehle@hyperstone.com, ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:03:09 +0100
-Message-ID: <2023052609-regulator-registry-2991@gregkh>
+Date:   Fri, 26 May 2023 20:03:10 +0100
+Message-ID: <2023052610-deluxe-amuck-9628@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 003fb0a51162d940f25fc35e70b0996a12c9e08a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052609-regulator-registry-2991@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052610-deluxe-amuck-9628@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
