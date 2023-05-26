@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DE0C712ADB
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 18:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E88C712AE0
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 18:41:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbjEZQkw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 12:40:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43006 "EHLO
+        id S236793AbjEZQlf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 12:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbjEZQkv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 12:40:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BE5DF;
-        Fri, 26 May 2023 09:40:49 -0700 (PDT)
+        with ESMTP id S230032AbjEZQlf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 12:41:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728F2125
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 09:41:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62EC265150;
-        Fri, 26 May 2023 16:40:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F24EC433EF;
-        Fri, 26 May 2023 16:40:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB72865155
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 16:41:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A90C433EF;
+        Fri, 26 May 2023 16:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685119248;
-        bh=t93pbrYm8876e2ZzCcWOn/DaROcwou/wyCtlhCi2DrQ=;
+        s=korg; t=1685119293;
+        bh=mvjNlLZflmQ9eqW8p95dzCluSVFryDHkTIl5aLa5JbI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DgQnPqZmoD+bHCn+EvLKPoPqcepWVbj1947EaciDPadsE6CD+fz6nJl7XQT26SIWp
-         tY0DSs8KnwhZQvp8vW3hDuWUMI5tq2QF1Dac8MJMcVWJGm4wkZda+C5HS/5nln7hpB
-         dJtfUMiIfkdJrHi/Phia4SyLf0AYMVaSWf+XmQlU=
-Date:   Fri, 26 May 2023 17:40:45 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Lee Jones <lee@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz
-Subject: Re: Linux 5.15.104
-Message-ID: <2023052614-routing-jarring-50b6@gregkh>
-References: <1679511203203220@kroah.com>
- <20230522102355.GA2009088@google.com>
- <2023052236-passivism-equate-5cb8@gregkh>
- <20230522162812.GQ404509@google.com>
- <2023052236-clear-although-6495@gregkh>
- <20230523091105.GE2174496@google.com>
+        b=Kny7HpQRbRdhEnU4vp5TKv49ROVtsQxJOHGt+5CfMX1eu9G2M4kUWZHrBfC5ca3kg
+         97LCz57xmsJmmt+r1fzIP/9lunMCtx9Fa0wc17BM+ocvcmpvC2jS4w0zJwlY3C98sT
+         3cqYir+Incl8C3yiLe1LsIrUWfEgMNQN5yxkOyFo=
+Date:   Fri, 26 May 2023 17:41:30 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+        "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>,
+        "# 3.4.x" <stable@vger.kernel.org>,
+        "Lopez, Jorge A (Security)" <jorge.lopez2@hp.com>
+Subject: Re: [linux-stable-rc:queue/5.15 105/106]
+ drivers/platform/x86/hp/hp-wmi.c:342:24: warning: cast to smaller integer
+ type 'enum hp_wmi_radio' from 'void *'
+Message-ID: <2023052620-unrefined-strobe-da13@gregkh>
+References: <202305210504.yw7qgOom-lkp@intel.com>
+ <MW4PR84MB19703614A2DB230AD0BAF63CA8409@MW4PR84MB1970.NAMPRD84.PROD.OUTLOOK.COM>
+ <CAKwvOdnjXD4K6284znWQ7FdshZFYdqNUTN4U79h1pA+xPJ6vCA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230523091105.GE2174496@google.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKwvOdnjXD4K6284znWQ7FdshZFYdqNUTN4U79h1pA+xPJ6vCA@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,70 +59,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 23, 2023 at 10:11:05AM +0100, Lee Jones wrote:
-> On Mon, 22 May 2023, Greg Kroah-Hartman wrote:
+On Tue, May 23, 2023 at 11:55:54AM -0700, Nick Desaulniers wrote:
+> On Tue, May 23, 2023 at 11:31 AM Lopez, Jorge A (Security)
+> <jorge.lopez2@hp.com> wrote:
+> >
+> > I investigate the compile failure and appears the latest patch reverted the code to an older version.
+> > The latest code shows the proper implementation and compiling the code does not report any failures.
+> >
+> >             enum hp_wmi_radio r = (long)data;
+> >
+> > instead of
+> >
+> >                enum hp_wmi_radio r = (enum hp_wmi_radio) data;
 > 
-> > On Mon, May 22, 2023 at 05:28:12PM +0100, Lee Jones wrote:
-> > > On Mon, 22 May 2023, Greg Kroah-Hartman wrote:
-> > > 
-> > > > On Mon, May 22, 2023 at 11:23:55AM +0100, Lee Jones wrote:
-> > > > > On Wed, 22 Mar 2023, Greg Kroah-Hartman wrote:
-> > > > > 
-> > > > > > I'm announcing the release of the 5.15.104 kernel.
-> > > > > > 
-> > > > > > All users of the 5.15 kernel series must upgrade.
-> > > > > > 
-> > > > > > The updated 5.15.y git tree can be found at:
-> > > > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-5.15.y
-> > > > > > and can be browsed at the normal kernel.org git web browser:
-> > > > > > 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> > > > > > 
-> > > > > > thanks,
-> > > > > > 
-> > > > > > greg k-h
-> > > > > > 
-> > > > > > ------------
-> > > > > 
-> > > > > [...]
-> > > > > 
-> > > > > > Budimir Markovic (1):
-> > > > > >       perf: Fix check before add_event_to_groups() in perf_group_detach()
-> > > > > 
-> > > > > Anyone know why this didn't make it into v5.10 with it's friends?
-> > > > > 
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=80102f2ee715ab07be476df443bba388d5458fd1
-> > > > 
-> > > > That's a merge point, how can that go into stable kernels?
-> > >  
-> > >  There are only 3 commits in the merge.
-> > > 
-> > > > What specific commits are you thinking were missed?
-> > > 
-> > > The one I quoted above:
-> > > 
-> > >   perf: Fix check before add_event_to_groups() in perf_group_detach()
-> > > 
-> > > The other two applied successfully to v5.10.y:
-> > > 
-> > >   perf: fix perf_event_context->time
-> > >   perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
-> > 
-> > Do you have git ids for these?
+> Looks like
+> commit ce95010ef62d ("platform/x86: hp-wmi: Fix cast to smaller
+> integer type warning")
 > 
-> These are the v5.10.y commits (no further action required).
+> is the fixup necessary for 5.15.y.
 > 
->   18dd825b86511 perf: fix perf_event_context->time
->   ddcf832000363 perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
-> 
-> This one needs backporting from Mainline (please):
-> 
->   fd0815f632c24 perf: Fix check before add_event_to_groups() in perf_group_detach()
+> Dear stable kernel maintainers, please consider cherry-picking the
+> above commit to linux-5.15.y to avoid the new compiler diagnostic
+> introduced by
+> commit 6e9b8992b122 ("platform/x86: Move existing HP drivers to a new
+> hp subdir")
 
-Are you sure?  The commit it claims to fix is NOT in 5.10.y.
-
-Can you test it and submit the working backport if it really is needed
-in 5.10.y please?
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
