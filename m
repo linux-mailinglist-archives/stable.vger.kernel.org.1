@@ -2,109 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B29712B14
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 18:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B087F712B4E
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 19:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229977AbjEZQwU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 12:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50162 "EHLO
+        id S230272AbjEZRBe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 13:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbjEZQwU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 12:52:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD6DA3;
-        Fri, 26 May 2023 09:52:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECA6165185;
-        Fri, 26 May 2023 16:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B146C433D2;
-        Fri, 26 May 2023 16:52:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1685119938;
-        bh=zGWYEk1x3qBf2AwDvK7N90Iujjg9aatNtD8+Vfbxqjg=;
-        h=Date:To:From:Subject:From;
-        b=jGcMP5CD6y+F8PzTAPIJ6rIOACQU4UNPVx0nJZnLxmPx1Ro9cvxFM4C0Zvnd0ihPx
-         JCYBX0eX3rCD1BBM4SloQjmQc/5IrWBZEWEz+jvkHYQzLnLkRcXRdL6fKWtrqkzfqa
-         bTgoufjFVOV6IUi1HRoCPR/+R1g+HmBT5UNKW324=
-Date:   Fri, 26 May 2023 09:52:17 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        matthias.bgg@gmail.com, jhubbard@nvidia.com,
-        angelogioacchino.delregno@collabora.com, haibo.li@mediatek.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-gup_test-fix-ioctl-fail-for-compat-task.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230526165218.4B146C433D2@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230024AbjEZRBd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 13:01:33 -0400
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6203BC
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 10:01:32 -0700 (PDT)
+Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-53065736d52so634110a12.2
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 10:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1685120492; x=1687712492;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BGSsRadg8/k5YCYiOUDx3xTCmP75V2hSKqivxNmuHB4=;
+        b=aZqsNgc7a1OmO2JI7G8jku+ietUnfouKuJEoAN0tBmNqsAin9JBkSMFYL8S8gDKKHR
+         aNwJp8m7f6BCK7xhN7d5Rg56l3clIm8a4vAXJ21vFWq6ntVMWn4JuMkj+seOzlT3z0re
+         7TLJud0hRERbNC/6lX1JO+EPpwOIj22VokKAcYMFiNdb2rU1GlRTeeI9637dwFH9A2Hg
+         9IPit8NpcZ+qUDmhb3agCo4Ubf9hB8JwiJnK1HorAFoH6JUgTD/M2hGVsJCYo13LCRXV
+         xqq3/V0Cy5kQgGl23hEJ87cOuXXvbN7TdvWSEP62qm2L+f1N00ljfH6b5LZh9UeVraRh
+         Asww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685120492; x=1687712492;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BGSsRadg8/k5YCYiOUDx3xTCmP75V2hSKqivxNmuHB4=;
+        b=K3jRH+Rpk3kSiJUEbWxJZ7nE6GhNXuVLd8AZ+cBy72HxB4S6xNDrwJNvpMHeLPxEpb
+         B/fvDExXyrhQ+XoaR2+Gva5bJdvTIwIZg6LFkUx7uS7493rRnIAizqH3SjxNdSQTXVQh
+         mHYv0YIFLEtExIFSr2qkkh2b8hx+zkPorg735KOmGvr/U74kLuJGCpsqrcmnlHtOAtfK
+         mWmExgvTOT/8PA0uy/l6PSf2ql2nrm2HZNjgN9RY4mjH7WAaBLa8d4bxd/Tp90JyvMxr
+         Alb38jvQkIQ3F5RDAZj5zSj7+3HgNLRbPthsNk9JHrw55fYImMXH3in5j/8oQLR4admf
+         lRGg==
+X-Gm-Message-State: AC+VfDyRNcL2LU2Q/bEqQMZ+0J6npZA2DDb4FzXDs2fjGQ7mIvSPN23d
+        XLILe3yIUFbqREEziD+PV0rhBz/RuDY=
+X-Google-Smtp-Source: ACHHUZ6OQjvHvHGEb6V1v/dWoqRH+hN+hXO0RBWjxtohTutQ74AAidsJ/QXWTOFyJ1SL6/Pncd+hcSIVLGk=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a63:4b48:0:b0:530:638d:cf91 with SMTP id
+ k8-20020a634b48000000b00530638dcf91mr25458pgl.4.1685120492215; Fri, 26 May
+ 2023 10:01:32 -0700 (PDT)
+Date:   Fri, 26 May 2023 10:01:30 -0700
+In-Reply-To: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
+Mime-Version: 1.0
+References: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
+Message-ID: <ZHDl6rXQ0UTWdk2O@google.com>
+Subject: Re: WARNING trace at kvm_nx_huge_page_recovery_worker on 6.3.4
+From:   Sean Christopherson <seanjc@google.com>
+To:     Fabio Coatti <fabio.coatti@gmail.com>
+Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
+        kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, May 26, 2023, Fabio Coatti wrote:
+> Hi all,
+> I'm using vanilla kernels on a gentoo-based laptop and since 6.3.2
 
-The patch titled
-     Subject: mm/gup_test: fix ioctl fail for compat task
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-gup_test-fix-ioctl-fail-for-compat-task.patch
+What was the last kernel you used that didn't trigger this WARN?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup_test-fix-ioctl-fail-for-compat-task.patch
+> I'm getting the kernel log  below when using kvm VM on my box.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Are you doing anything "interesting" when the WARN fires, or are you just running
+the VM and it random fires?  Either way, can you provide your QEMU command line?
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+> I know, kernel is tainted but avoiding to load nvidia driver could make
+> things complicated on my side; if needed for debug I can try to avoid it.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Nah, don't worry about that at this point.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+> Not sure which other infos can be relevant in this context; if you
+> need more details just let me know, happy to provide them.
+> 
+> [Fri May 26 09:16:35 2023] ------------[ cut here ]------------
+> [Fri May 26 09:16:35 2023] WARNING: CPU: 5 PID: 4684 at
+> kvm_nx_huge_page_recovery_worker+0x38c/0x3d0 [kvm]
 
-------------------------------------------------------
-From: Haibo Li <haibo.li@mediatek.com>
-Subject: mm/gup_test: fix ioctl fail for compat task
-Date: Fri, 26 May 2023 10:21:25 +0800
-
-When tools/testing/selftests/mm/gup_test.c is compiled as 32bit, then run
-on arm64 kernel, it reports "ioctl: Inappropriate ioctl for device".
-
-Fix it by filling compat_ioctl in gup_test_fops
-
-Link: https://lkml.kernel.org/r/20230526022125.175728-1-haibo.li@mediatek.com
-Signed-off-by: Haibo Li <haibo.li@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/gup_test.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/gup_test.c~mm-gup_test-fix-ioctl-fail-for-compat-task
-+++ a/mm/gup_test.c
-@@ -381,6 +381,7 @@ static int gup_test_release(struct inode
- static const struct file_operations gup_test_fops = {
- 	.open = nonseekable_open,
- 	.unlocked_ioctl = gup_test_ioctl,
-+	.compat_ioctl = compat_ptr_ioctl,
- 	.release = gup_test_release,
- };
- 
-_
-
-Patches currently in -mm which might be from haibo.li@mediatek.com are
-
-mm-gup_test-fix-ioctl-fail-for-compat-task.patch
-
+Do you have the actual line number for the WARN?  There are a handful of sanity
+checks in kvm_recover_nx_huge_pages(), it would be helpful to pinpoint which one
+is firing.  My builds generate quite different code, and the code stream doesn't
+appear to be useful for reverse engineering the location.
