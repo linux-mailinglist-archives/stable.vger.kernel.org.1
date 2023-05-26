@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 734C0712D02
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91CBE712D03
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243770AbjEZTDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35898 "EHLO
+        id S230121AbjEZTE1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242258AbjEZTDY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:03:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61817135
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:03:23 -0700 (PDT)
+        with ESMTP id S229732AbjEZTE0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:04:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEEB187
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:04:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB4B261150
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:03:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16563C433EF;
-        Fri, 26 May 2023 19:03:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 987A061654
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79F4C433D2;
+        Fri, 26 May 2023 19:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127802;
-        bh=hctCT2J00dw7xidYSiXKEloVaBzgEtO3wI3r1T2fvIw=;
+        s=korg; t=1685127864;
+        bh=C0QtqMW8Rxuq4f3hNX71H7kcWbzDDR8w8+XdyTrUFcY=;
         h=Subject:To:Cc:From:Date:From;
-        b=qN0sdcM16G6TSZUv9EITNXM7mYA/RY9agfnD8oh/YuAlJom0IkQNicgpOqvZ2hfQz
-         M/6C/ScSVlrP8F9vvFoXpm901aHyX49x96e9Qm/q6OU5nM+bmBNLAqGlf+UNtURaX4
-         rIgfBzEVHaC5DyVCCf6aPN8lJk8cQeQkpgr3A+AQ=
-Subject: FAILED: patch "[PATCH] mmc: block: ensure error propagation for non-blk" failed to apply to 4.14-stable tree
-To:     CLoehle@hyperstone.com, adrian.hunter@intel.com,
-        cloehle@hyperstone.com, ulf.hansson@linaro.org
+        b=ls14BBdOI9CxX4H+Pkbhp0ewehXE6XObyIDxprsJbHGisZZvVusnkmo39g3K0qOMX
+         6I9Mb0iaXKN859s/3lQ5pw/hq3IOZXOj4LQB1rGN4I8hzuxQXmszHtFo5DQXt6BeOi
+         DFJSG73u1aff4QixWvUZPcOK2WZaZDOweo8MAVPw=
+Subject: FAILED: patch "[PATCH] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize" failed to apply to 5.4-stable tree
+To:     tudor.ambarus@linaro.org, kuba@kernel.org,
+        simon.horman@corigine.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:03:11 +0100
-Message-ID: <2023052611-wrangle-clock-fb09@gregkh>
+Date:   Fri, 26 May 2023 20:04:21 +0100
+Message-ID: <2023052621-karaoke-try-d2ba@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,42 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 003fb0a51162d940f25fc35e70b0996a12c9e08a
+git cherry-pick -x 7e01c7f7046efc2c7c192c3619db43292b98e997
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052611-wrangle-clock-fb09@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052621-karaoke-try-d2ba@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-003fb0a51162 ("mmc: block: ensure error propagation for non-blk")
-b84ba30b6c7a ("block: remove the gendisk argument to blk_execute_rq")
-4054cff92c35 ("block: remove blk-exec.c")
-0bf6d96cb829 ("block: remove blk_{get,put}_request")
-4abafdc4360d ("block: remove the initialize_rq_fn blk_mq_ops method")
-68ec3b819a5d ("scsi: add a scsi_alloc_request helper")
-5a72e899ceb4 ("block: add a struct io_comp_batch argument to fops->iopoll()")
-013a7f954381 ("block: provide helpers for rq_list manipulation")
-afd7de03c526 ("block: remove some blk_mq_hw_ctx debugfs entries")
-3e08773c3841 ("block: switch polling to be bio based")
-6ce913fe3eee ("block: rename REQ_HIPRI to REQ_POLLED")
-d729cf9acb93 ("io_uring: don't sleep when polling for I/O")
-ef99b2d37666 ("block: replace the spin argument to blk_iopoll with a flags argument")
-28a1ae6b9dab ("blk-mq: remove blk_qc_t_valid")
-efbabbe121f9 ("blk-mq: remove blk_qc_t_to_tag and blk_qc_t_is_internal")
-c6699d6fe0ff ("blk-mq: factor out a "classic" poll helper")
-f70299f0d58e ("blk-mq: factor out a blk_qc_to_hctx helper")
-71fc3f5e2c00 ("block: don't try to poll multi-bio I/Os in __blkdev_direct_IO")
-349302da8352 ("block: improve batched tag allocation")
-0f38d7664615 ("blk-mq: cleanup blk_mq_submit_bio")
+7e01c7f7046e ("net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize")
+2be6d4d16a08 ("net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero")
+0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
 
 thanks,
 
@@ -92,78 +75,125 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 003fb0a51162d940f25fc35e70b0996a12c9e08a Mon Sep 17 00:00:00 2001
-From: Christian Loehle <CLoehle@hyperstone.com>
-Date: Wed, 26 Apr 2023 16:59:39 +0000
-Subject: [PATCH] mmc: block: ensure error propagation for non-blk
+From 7e01c7f7046efc2c7c192c3619db43292b98e997 Mon Sep 17 00:00:00 2001
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+Date: Wed, 17 May 2023 13:38:08 +0000
+Subject: [PATCH] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize
 
-Requests to the mmc layer usually come through a block device IO.
-The exceptions are the ioctl interface, RPMB chardev ioctl
-and debugfs, which issue their own blk_mq requests through
-blk_execute_rq and do not query the BLK_STS error but the
-mmcblk-internal drv_op_result. This patch ensures that drv_op_result
-defaults to an error and has to be overwritten by the operation
-to be considered successful.
+Currently in cdc_ncm_check_tx_max(), if dwNtbOutMaxSize is lower than
+the calculated "min" value, but greater than zero, the logic sets
+tx_max to dwNtbOutMaxSize. This is then used to allocate a new SKB in
+cdc_ncm_fill_tx_frame() where all the data is handled.
 
-The behavior leads to a bug where the request never propagates
-the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
-mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
-can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
-and thus may assume that their call executed successfully when it did not.
+For small values of dwNtbOutMaxSize the memory allocated during
+alloc_skb(dwNtbOutMaxSize, GFP_ATOMIC) will have the same size, due to
+how size is aligned at alloc time:
+	size = SKB_DATA_ALIGN(size);
+        size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+Thus we hit the same bug that we tried to squash with
+commit 2be6d4d16a084 ("net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero")
 
-While always checking the blk_execute_rq return value would be
-advised, let's eliminate the error by always setting
-drv_op_result as -EIO to be overwritten on success (or other error)
+Low values of dwNtbOutMaxSize do not cause an issue presently because at
+alloc_skb() time more memory (512b) is allocated than required for the
+SKB headers alone (320b), leaving some space (512b - 320b = 192b)
+for CDC data (172b).
 
-Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+However, if more elements (for example 3 x u64 = [24b]) were added to
+one of the SKB header structs, say 'struct skb_shared_info',
+increasing its original size (320b [320b aligned]) to something larger
+(344b [384b aligned]), then suddenly the CDC data (172b) no longer
+fits in the spare SKB data area (512b - 384b = 128b).
+
+Consequently the SKB bounds checking semantics fails and panics:
+
+skbuff: skb_over_panic: text:ffffffff831f755b len:184 put:172 head:ffff88811f1c6c00 data:ffff88811f1c6c00 tail:0xb8 end:0x80 dev:<NULL>
+------------[ cut here ]------------
+kernel BUG at net/core/skbuff.c:113!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 57 Comm: kworker/0:2 Not tainted 5.15.106-syzkaller-00249-g19c0ed55a470 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
+Workqueue: mld mld_ifc_work
+RIP: 0010:skb_panic net/core/skbuff.c:113 [inline]
+RIP: 0010:skb_over_panic+0x14c/0x150 net/core/skbuff.c:118
+[snip]
+Call Trace:
+ <TASK>
+ skb_put+0x151/0x210 net/core/skbuff.c:2047
+ skb_put_zero include/linux/skbuff.h:2422 [inline]
+ cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1131 [inline]
+ cdc_ncm_fill_tx_frame+0x11ab/0x3da0 drivers/net/usb/cdc_ncm.c:1308
+ cdc_ncm_tx_fixup+0xa3/0x100
+
+Deal with too low values of dwNtbOutMaxSize, clamp it in the range
+[USB_CDC_NCM_NTB_MIN_OUT_SIZE, CDC_NCM_NTB_MAX_SIZE_TX]. We ensure
+enough data space is allocated to handle CDC data by making sure
+dwNtbOutMaxSize is not smaller than USB_CDC_NCM_NTB_MIN_OUT_SIZE.
+
+Fixes: 289507d3364f ("net: cdc_ncm: use sysfs for rx/tx aggregation tuning")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=b982f1059506db48409d
+Link: https://lore.kernel.org/all/20211202143437.1411410-1-lee.jones@linaro.org/
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230517133808.1873695-2-tudor.ambarus@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 00c33edb9fb9..d920c4178389 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -264,6 +264,7 @@ static ssize_t power_ro_lock_store(struct device *dev,
- 		goto out_put;
- 	}
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	blk_execute_rq(req, false);
- 	ret = req_to_mmc_queue_req(req)->drv_op_result;
- 	blk_mq_free_request(req);
-@@ -651,6 +652,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_blk_data *md,
- 	idatas[0] = idata;
- 	req_to_mmc_queue_req(req)->drv_op =
- 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
- 	req_to_mmc_queue_req(req)->ioc_count = 1;
- 	blk_execute_rq(req, false);
-@@ -722,6 +724,7 @@ static int mmc_blk_ioctl_multi_cmd(struct mmc_blk_data *md,
- 	}
- 	req_to_mmc_queue_req(req)->drv_op =
- 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = idata;
- 	req_to_mmc_queue_req(req)->ioc_count = n;
- 	blk_execute_rq(req, false);
-@@ -2806,6 +2809,7 @@ static int mmc_dbg_card_status_get(void *data, u64 *val)
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	blk_execute_rq(req, false);
- 	ret = req_to_mmc_queue_req(req)->drv_op_result;
- 	if (ret >= 0) {
-@@ -2844,6 +2848,7 @@ static int mmc_ext_csd_open(struct inode *inode, struct file *filp)
- 		goto out_free;
- 	}
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
- 	blk_execute_rq(req, false);
- 	err = req_to_mmc_queue_req(req)->drv_op_result;
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 6ce8f4f0c70e..db05622f1f70 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -181,9 +181,12 @@ static u32 cdc_ncm_check_tx_max(struct usbnet *dev, u32 new_tx)
+ 	else
+ 		min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth32);
+ 
+-	max = min_t(u32, CDC_NCM_NTB_MAX_SIZE_TX, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize));
+-	if (max == 0)
++	if (le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize) == 0)
+ 		max = CDC_NCM_NTB_MAX_SIZE_TX; /* dwNtbOutMaxSize not set */
++	else
++		max = clamp_t(u32, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize),
++			      USB_CDC_NCM_NTB_MIN_OUT_SIZE,
++			      CDC_NCM_NTB_MAX_SIZE_TX);
+ 
+ 	/* some devices set dwNtbOutMaxSize too low for the above default */
+ 	min = min(min, max);
+@@ -1244,6 +1247,9 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 			 * further.
+ 			 */
+ 			if (skb_out == NULL) {
++				/* If even the smallest allocation fails, abort. */
++				if (ctx->tx_curr_size == USB_CDC_NCM_NTB_MIN_OUT_SIZE)
++					goto alloc_failed;
+ 				ctx->tx_low_mem_max_cnt = min(ctx->tx_low_mem_max_cnt + 1,
+ 							      (unsigned)CDC_NCM_LOW_MEM_MAX_CNT);
+ 				ctx->tx_low_mem_val = ctx->tx_low_mem_max_cnt;
+@@ -1262,13 +1268,8 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 			skb_out = alloc_skb(ctx->tx_curr_size, GFP_ATOMIC);
+ 
+ 			/* No allocation possible so we will abort */
+-			if (skb_out == NULL) {
+-				if (skb != NULL) {
+-					dev_kfree_skb_any(skb);
+-					dev->net->stats.tx_dropped++;
+-				}
+-				goto exit_no_skb;
+-			}
++			if (!skb_out)
++				goto alloc_failed;
+ 			ctx->tx_low_mem_val--;
+ 		}
+ 		if (ctx->is_ndp16) {
+@@ -1461,6 +1462,11 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 
+ 	return skb_out;
+ 
++alloc_failed:
++	if (skb) {
++		dev_kfree_skb_any(skb);
++		dev->net->stats.tx_dropped++;
++	}
+ exit_no_skb:
+ 	/* Start timer, if there is a remaining non-empty skb */
+ 	if (ctx->tx_curr_skb != NULL && n > 0)
 
