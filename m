@@ -2,186 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C26711AC0
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 01:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B2A711B4C
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 02:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241299AbjEYXkG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 19:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57606 "EHLO
+        id S234915AbjEZAfI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 25 May 2023 20:35:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241274AbjEYXkF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 19:40:05 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A23C19C;
-        Thu, 25 May 2023 16:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685058002; x=1716594002;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=n8tS25fObeTtNS/qQCrIYQeRMkQmVgP3uApvxw4lLGM=;
-  b=czL9250SQkolpr8ZG+H0Cb/Dl34ikfPnky5g4PxpKzaUA3AGdSZLA1FZ
-   bXWMWSXRxCJDaoSjI6v+UjbFuxqdY4uizQiPWK5vE9tok0nvJpHN8m2eg
-   1LkrVAueHXa7AdDHA7Vh0HtjmUalo5FSRSM0w+c5WAapu6veHv6FbGSdC
-   voiZW/xnp0DxsxCJP8xr09CF2wotTuuUwLj8kj8ISVQRaw0UVfrwQLNzq
-   r9mKH5llxtPNmN87X3MvX8zYlBsNz1BTXOk1wTUV/CfmbZw9TDDjknQ/A
-   ZgLu9qfuijfTJuNRutl++melP6SjGfaehOH8qot3ewAC6P7ct5OOHmSl0
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="352899731"
-X-IronPort-AV: E=Sophos;i="6.00,192,1681196400"; 
-   d="scan'208";a="352899731"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2023 16:40:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="708189446"
-X-IronPort-AV: E=Sophos;i="6.00,192,1681196400"; 
-   d="scan'208";a="708189446"
-Received: from mseamste-mobl1.amr.corp.intel.com (HELO [10.209.120.148]) ([10.209.120.148])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2023 16:40:00 -0700
-Message-ID: <ec1553a9-4412-b624-4f10-93ef332f12d9@linux.intel.com>
-Date:   Thu, 25 May 2023 16:40:00 -0700
+        with ESMTP id S229523AbjEZAfG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 20:35:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51DB195
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 17:34:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685061260;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=3HkhSmcztqk7WRQegC24K1K8Fj702Fn4WVYpg4vLlng=;
+        b=CF3AVpPmm2IFmrlocxx08P3YoXCCVK1WwiW4YJfbZJZPECz0g21oV1sWLNWQvGzmKf2W6i
+        SdBAAzK4tnhdKQrbbQ4JC+VHK39RBCvZMl/2EHs+NB5L56e7PCcINKtN0Taw6OdHCNhX7q
+        9cARyB8q9XYW08benkI+2BpWpvwifgs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-190-Wm6kMQb3MvW3FH1f-sushQ-1; Thu, 25 May 2023 20:34:17 -0400
+X-MC-Unique: Wm6kMQb3MvW3FH1f-sushQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF9E680120A;
+        Fri, 26 May 2023 00:34:16 +0000 (UTC)
+Received: from ovpn-8-21.pek2.redhat.com (ovpn-8-18.pek2.redhat.com [10.72.8.18])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A576400F1F;
+        Fri, 26 May 2023 00:34:09 +0000 (UTC)
+Date:   Fri, 26 May 2023 08:34:04 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Waiman Long <longman@redhat.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Zefan Li <lizefan.x@bytedance.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, cgroups@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+        Yosry Ahmed <yosryahmed@google.com>,
+        Jay Shin <jaeshin@redhat.com>, stable@vger.kernel.org,
+        ming.lei@redhat.com
+Subject: Re: [PATCH] blk-cgroup: Flush stats before releasing blkcg_gq
+Message-ID: <ZG/+fB+f8Lf2PKc7@ovpn-8-21.pek2.redhat.com>
+References: <20230525043518.831721-1-ming.lei@redhat.com>
+ <20230525160105.1968749-1-longman@redhat.com>
+ <64f20e27-0927-334d-5414-9bb81d639cec@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.11.0
-Subject: Re: [PATCH 2/2] x86/tdx: Fix race between set_memory_encrypted() and
- load_unaligned_zeropad()
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        dave.hansen@intel.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de
-Cc:     decui@microsoft.com, rick.p.edgecombe@intel.com, seanjc@google.com,
-        thomas.lendacky@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230525225847.28592-1-kirill.shutemov@linux.intel.com>
- <20230525225847.28592-3-kirill.shutemov@linux.intel.com>
-From:   Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20230525225847.28592-3-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <64f20e27-0927-334d-5414-9bb81d639cec@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, 
-
-On 5/25/23 3:58 PM, Kirill A. Shutemov wrote:
-> Touching privately mapped GPA that is not properly converted to private
-> with MapGPA and accepted leads to unrecoverable exit to VMM.
+On Thu, May 25, 2023 at 12:06:07PM -0400, Waiman Long wrote:
+> On 5/25/23 12:01, Waiman Long wrote:
+> > As noted by Michal, the blkg_iostat_set's in the lockless list hold
+> > reference to blkg's to protect against their removal. Those blkg's
+> > hold reference to blkcg. When a cgroup is being destroyed,
+> > cgroup_rstat_flush() is only called at css_release_work_fn() which
+> > is called when the blkcg reference count reaches 0. This circular
+> > dependency will prevent blkcg and some blkgs from being freed after
+> > they are made offline.
+> > 
+> > It is less a problem if the cgroup to be destroyed also has other
+> > controllers like memory that will call cgroup_rstat_flush() which will
+> > clean up the reference count. If block is the only controller that uses
+> > rstat, these offline blkcg and blkgs may never be freed leaking more
+> > and more memory over time.
+> > 
+> > To prevent this potential memory leak:
+> > 
+> > - flush blkcg per-cpu stats list in __blkg_release(), when no new stat
+> >    can be added to avoid use-after-free of the percpu blkg_iostat_set in
+> >    futue cgroup_rstat_flush*() calls.
+> > 
+> > - add a cgroup_rstat_flush_acquire() helper and call it to acquire
+> >    cgroup_rstat_lock to block concurrent execution of other
+> >    cgroup_rstat_flush*() calls
+> > 
+> > - don't grab bio->bi_blkg reference when adding the stats into blkcg's
+> >    per-cpu stat list since all stats are guaranteed to be consumed before
+> >    releasing blkg instance, and grabbing blkg reference for stats was
+> >    the most fragile part of original patch
+> > 
+> > Based on Waiman's patch:
+> > 
+> > https://lore.kernel.org/linux-block/20221215033132.230023-3-longman@redhat.com/
+> > 
+> > Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Jay Shin <jaeshin@redhat.com>
+> > Cc: Waiman Long <longman@redhat.com>
+> > Cc: Tejun Heo <tj@kernel.org>
+> > Cc: mkoutny@suse.com
+> > Cc: Yosry Ahmed <yosryahmed@google.com>
+> > Co-developed-by: Ming Lei <ming.lei@redhat.com>
+> > Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> > Signed-off-by: Waiman Long <longman@redhat.com>
+> > ---
+> >   block/blk-cgroup.c     | 57 +++++++++++++++++++++++++++++++-----------
+> >   include/linux/cgroup.h |  1 +
+> >   kernel/cgroup/rstat.c  | 15 ++++++++++-
+> >   3 files changed, 57 insertions(+), 16 deletions(-)
 > 
-> load_unaligned_zeropad() can touch memory that is not owned by the
-> caller, but just happened to next after the owned memory.
-> This load_unaligned_zeropad() behaviour makes it important when kernel
-> asks VMM to convert a GPA from shared to private or back. Kernel must
-> never have a page mapped into direct mapping (and aliases) as private
-> when the GPA is already converted to shared or when GPA is not yet
-> converted to private.
-> 
-> guest.enc_status_change_prepare() called before adjusting direct mapping
-> and therefore it is responsible for converting the memory to private.
-> 
-> guest.enc_tlb_flush_required() called after adjusting direct mapping and
-> it converts the memory to shared.
+> This is my counter-proposal to Ming's v3 patch. The major difference is that
+> I used the existing cgroup_rstat_lock instead of adding a new internal lock.
+> This minimizes performance impact to existing cgroup_rstat_flush*() call
 
-Do you mean .enc_status_change_finish() here? Isn't enc_tlb_flush_required()
-called before adjusting the mapping?
+The added internal lock has ~zero perf impact on rstat flush cause
+the lock won't be contended basically.
 
-> 
-> It is okay to have a shared mapping of memory that is not converted
-> properly. handle_mmio() knows how to deal with load_unaligned_zeropad()
-> stepping on it.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Fixes: 7dbde7631629 ("x86/mm/cpa: Add support for TDX shared memory")
-> Cc: stable@vger.kernel.org
-> ---
->  arch/x86/coco/tdx/tdx.c | 56 ++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 53 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index e146b599260f..84525df750d4 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -840,6 +840,30 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
->  	return true;
->  }
->  
-> +static bool tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
-> +					  bool enc)
-> +{
-> +	/*
-> +	 * Only handle shared->private conversion here.
-> +	 * See the comment in tdx_early_init().
-> +	 */
-> +	if (enc)
-> +		return tdx_enc_status_changed(vaddr, numpages, enc);
-> +	return true;
-> +}
-> +
-> +static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
-> +					 bool enc)
-> +{
-> +	/*
-> +	 * Only handle private->shared conversion here.
-> +	 * See the comment in tdx_early_init().
-> +	 */
-> +	if (!enc)
-> +		return tdx_enc_status_changed(vaddr, numpages, enc);
-> +	return true;
-> +}
-> +
->  void __init tdx_early_init(void)
->  {
->  	u64 cc_mask;
-> @@ -867,9 +891,35 @@ void __init tdx_early_init(void)
->  	 */
->  	physical_mask &= cc_mask - 1;
->  
-> -	x86_platform.guest.enc_cache_flush_required = tdx_cache_flush_required;
-> -	x86_platform.guest.enc_tlb_flush_required   = tdx_tlb_flush_required;
-> -	x86_platform.guest.enc_status_change_finish = tdx_enc_status_changed;
-> +	/*
-> +	 * Touching privately mapped GPA that is not properly converted to
-> +	 * private with MapGPA and accepted leads to unrecoverable exit
-> +	 * to VMM.
-> +	 *
-> +	 * load_unaligned_zeropad() can touch memory that is not owned by
-> +	 * the caller, but just happened to next after the owned memory.
-> +	 * This load_unaligned_zeropad() behaviour makes it important when
-> +	 * kernel asks VMM to convert a GPA from shared to private or back.
-> +	 * Kernel must never have a page mapped into direct mapping (and
-> +	 * aliases) as private when the GPA is already converted to shared or
-> +	 * when GPA is not yet converted to private.
-> +	 *
-> +	 * guest.enc_status_change_prepare() called before adjusting direct
-> +	 * mapping and therefore it is responsible for converting the memory
-> +	 * to private.
-> +	 *
-> +	 * guest.enc_tlb_flush_required() called after adjusting direct mapping
-> +	 * and it converts the memory to shared.
+> while achieving the same objective. I am fine with Ming current v3 patch if
+> we decide to go that way.
 
-Same as above. Is it .enc_status_change_finish() here?
+As I mentioned, the main motivation with internal lock is to make the fix as
+simple as possible since cross-subsystem change isn't involved, and I am fine
+with any following cleanup or improvement on current blkg rstat flush.
 
-> +	 *
-> +	 * It is okay to have a shared mapping of memory that is not converted
-> +	 * properly. handle_mmio() knows how to deal with load_unaligned_zeropad()
-> +	 * stepping on it.
-> +	 */
-> +	x86_platform.guest.enc_status_change_prepare = tdx_enc_status_change_prepare;
-> +	x86_platform.guest.enc_status_change_finish  = tdx_enc_status_change_finish;
-> +
-> +	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
-> +	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
->  
->  	pr_info("Guest detected\n");
->  }
+Another benefit with this internal lock is that race in blkcg_reset_stats()
+can be avoided.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+
+Thanks, 
+Ming
+
