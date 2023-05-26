@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CAB4712D05
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E52D9712D0A
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242443AbjEZTEd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36370 "EHLO
+        id S231185AbjEZTFa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229732AbjEZTEc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:04:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C7CF135
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:04:31 -0700 (PDT)
+        with ESMTP id S229732AbjEZTF3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:05:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792AA1BF
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE21F652BA
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:04:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE0AC433A0;
-        Fri, 26 May 2023 19:04:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CD03652BE
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEFFC433D2;
+        Fri, 26 May 2023 19:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127870;
-        bh=KfMT6oghg0d29PM6YSZsloxcOFXvK4zSCNb6qvVxf9k=;
+        s=korg; t=1685127925;
+        bh=obrjZNJnmPigyQ6dDI3/LSL64DqLHlhM+CKLG9MHnKs=;
         h=Subject:To:Cc:From:Date:From;
-        b=Diu6o3Q50E9AlOa8QSoUErX1S3F+A0VgvNQ3frokCOuZOWd5/KMUwOxKrzM2pg0W0
-         +8ApYIwd7K/zsUNr11+7pvFgLFylTZyMo6dd1WfiOpBIkBl00xUISvhtdibB5/jCKN
-         ozuR7b2j4jF3yllhzuzZX3V0aZ1+JaW8mHsHeEfk=
-Subject: FAILED: patch "[PATCH] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize" failed to apply to 4.14-stable tree
-To:     tudor.ambarus@linaro.org, kuba@kernel.org,
-        simon.horman@corigine.com
+        b=gLgxyGomxbUOt+iMrrR7RgyDg8msxEUA8hmae3AGjDv2sfWYzr7oCVPLKNYUtchMw
+         vJ73K/axMtaAqfCF+eqG09xCtBiBt5DbgXHFzu2dLEgFltzPsWNRh763RJGDBvQZBx
+         EPHjPc2lxVwmQXL4GCeI6zCHKUCerk/ZxxGJ/N8o=
+Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 6.1-stable tree
+To:     nicolas.dichtel@6wind.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:04:25 +0100
-Message-ID: <2023052625-mutual-punch-5c0b@gregkh>
+Date:   Fri, 26 May 2023 20:05:22 +0100
+Message-ID: <2023052622-such-rearview-04a6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,27 +48,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7e01c7f7046efc2c7c192c3619db43292b98e997
+git cherry-pick -x 3632679d9e4f879f49949bb5b050e0de553e4739
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052625-mutual-punch-5c0b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052622-such-rearview-04a6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7e01c7f7046e ("net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize")
-2be6d4d16a08 ("net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero")
-0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
-49c2c3f246e2 ("cdc_ncm: avoid padding beyond end of skb")
-6314dab4b8fb ("net: cdc_ncm: GetNtbFormat endian fix")
+3632679d9e4f ("ipv{4,6}/raw: fix output xfrm lookup wrt protocol")
+91d0b78c5177 ("inet: Add IP_LOCAL_PORT_RANGE socket option")
 
 thanks,
 
@@ -77,125 +73,127 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e01c7f7046efc2c7c192c3619db43292b98e997 Mon Sep 17 00:00:00 2001
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-Date: Wed, 17 May 2023 13:38:08 +0000
-Subject: [PATCH] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize
+From 3632679d9e4f879f49949bb5b050e0de553e4739 Mon Sep 17 00:00:00 2001
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Date: Mon, 22 May 2023 14:08:20 +0200
+Subject: [PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
 
-Currently in cdc_ncm_check_tx_max(), if dwNtbOutMaxSize is lower than
-the calculated "min" value, but greater than zero, the logic sets
-tx_max to dwNtbOutMaxSize. This is then used to allocate a new SKB in
-cdc_ncm_fill_tx_frame() where all the data is handled.
+With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
+protocol field of the flow structure, build by raw_sendmsg() /
+rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
+lookup when some policies are defined with a protocol in the selector.
 
-For small values of dwNtbOutMaxSize the memory allocated during
-alloc_skb(dwNtbOutMaxSize, GFP_ATOMIC) will have the same size, due to
-how size is aligned at alloc time:
-	size = SKB_DATA_ALIGN(size);
-        size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-Thus we hit the same bug that we tried to squash with
-commit 2be6d4d16a084 ("net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero")
+For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
+specify the protocol. Just accept all values for IPPROTO_RAW socket.
 
-Low values of dwNtbOutMaxSize do not cause an issue presently because at
-alloc_skb() time more memory (512b) is allocated than required for the
-SKB headers alone (320b), leaving some space (512b - 320b = 192b)
-for CDC data (172b).
+For ipv4, the sin_port field of 'struct sockaddr_in' could not be used
+without breaking backward compatibility (the value of this field was never
+checked). Let's add a new kind of control message, so that the userland
+could specify which protocol is used.
 
-However, if more elements (for example 3 x u64 = [24b]) were added to
-one of the SKB header structs, say 'struct skb_shared_info',
-increasing its original size (320b [320b aligned]) to something larger
-(344b [384b aligned]), then suddenly the CDC data (172b) no longer
-fits in the spare SKB data area (512b - 384b = 128b).
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20230522120820.1319391-1-nicolas.dichtel@6wind.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-Consequently the SKB bounds checking semantics fails and panics:
-
-skbuff: skb_over_panic: text:ffffffff831f755b len:184 put:172 head:ffff88811f1c6c00 data:ffff88811f1c6c00 tail:0xb8 end:0x80 dev:<NULL>
-------------[ cut here ]------------
-kernel BUG at net/core/skbuff.c:113!
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN
-CPU: 0 PID: 57 Comm: kworker/0:2 Not tainted 5.15.106-syzkaller-00249-g19c0ed55a470 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
-Workqueue: mld mld_ifc_work
-RIP: 0010:skb_panic net/core/skbuff.c:113 [inline]
-RIP: 0010:skb_over_panic+0x14c/0x150 net/core/skbuff.c:118
-[snip]
-Call Trace:
- <TASK>
- skb_put+0x151/0x210 net/core/skbuff.c:2047
- skb_put_zero include/linux/skbuff.h:2422 [inline]
- cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1131 [inline]
- cdc_ncm_fill_tx_frame+0x11ab/0x3da0 drivers/net/usb/cdc_ncm.c:1308
- cdc_ncm_tx_fixup+0xa3/0x100
-
-Deal with too low values of dwNtbOutMaxSize, clamp it in the range
-[USB_CDC_NCM_NTB_MIN_OUT_SIZE, CDC_NCM_NTB_MAX_SIZE_TX]. We ensure
-enough data space is allocated to handle CDC data by making sure
-dwNtbOutMaxSize is not smaller than USB_CDC_NCM_NTB_MIN_OUT_SIZE.
-
-Fixes: 289507d3364f ("net: cdc_ncm: use sysfs for rx/tx aggregation tuning")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=b982f1059506db48409d
-Link: https://lore.kernel.org/all/20211202143437.1411410-1-lee.jones@linaro.org/
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230517133808.1873695-2-tudor.ambarus@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 6ce8f4f0c70e..db05622f1f70 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -181,9 +181,12 @@ static u32 cdc_ncm_check_tx_max(struct usbnet *dev, u32 new_tx)
- 	else
- 		min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth32);
+diff --git a/include/net/ip.h b/include/net/ip.h
+index c3fffaa92d6e..acec504c469a 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -76,6 +76,7 @@ struct ipcm_cookie {
+ 	__be32			addr;
+ 	int			oif;
+ 	struct ip_options_rcu	*opt;
++	__u8			protocol;
+ 	__u8			ttl;
+ 	__s16			tos;
+ 	char			priority;
+@@ -96,6 +97,7 @@ static inline void ipcm_init_sk(struct ipcm_cookie *ipcm,
+ 	ipcm->sockc.tsflags = inet->sk.sk_tsflags;
+ 	ipcm->oif = READ_ONCE(inet->sk.sk_bound_dev_if);
+ 	ipcm->addr = inet->inet_saddr;
++	ipcm->protocol = inet->inet_num;
+ }
  
--	max = min_t(u32, CDC_NCM_NTB_MAX_SIZE_TX, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize));
--	if (max == 0)
-+	if (le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize) == 0)
- 		max = CDC_NCM_NTB_MAX_SIZE_TX; /* dwNtbOutMaxSize not set */
-+	else
-+		max = clamp_t(u32, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize),
-+			      USB_CDC_NCM_NTB_MIN_OUT_SIZE,
-+			      CDC_NCM_NTB_MAX_SIZE_TX);
+ #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
+diff --git a/include/uapi/linux/in.h b/include/uapi/linux/in.h
+index 4b7f2df66b99..e682ab628dfa 100644
+--- a/include/uapi/linux/in.h
++++ b/include/uapi/linux/in.h
+@@ -163,6 +163,7 @@ struct in_addr {
+ #define IP_MULTICAST_ALL		49
+ #define IP_UNICAST_IF			50
+ #define IP_LOCAL_PORT_RANGE		51
++#define IP_PROTOCOL			52
  
- 	/* some devices set dwNtbOutMaxSize too low for the above default */
- 	min = min(min, max);
-@@ -1244,6 +1247,9 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
- 			 * further.
- 			 */
- 			if (skb_out == NULL) {
-+				/* If even the smallest allocation fails, abort. */
-+				if (ctx->tx_curr_size == USB_CDC_NCM_NTB_MIN_OUT_SIZE)
-+					goto alloc_failed;
- 				ctx->tx_low_mem_max_cnt = min(ctx->tx_low_mem_max_cnt + 1,
- 							      (unsigned)CDC_NCM_LOW_MEM_MAX_CNT);
- 				ctx->tx_low_mem_val = ctx->tx_low_mem_max_cnt;
-@@ -1262,13 +1268,8 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
- 			skb_out = alloc_skb(ctx->tx_curr_size, GFP_ATOMIC);
- 
- 			/* No allocation possible so we will abort */
--			if (skb_out == NULL) {
--				if (skb != NULL) {
--					dev_kfree_skb_any(skb);
--					dev->net->stats.tx_dropped++;
--				}
--				goto exit_no_skb;
--			}
-+			if (!skb_out)
-+				goto alloc_failed;
- 			ctx->tx_low_mem_val--;
+ #define MCAST_EXCLUDE	0
+ #define MCAST_INCLUDE	1
+diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
+index b511ff0adc0a..8e97d8d4cc9d 100644
+--- a/net/ipv4/ip_sockglue.c
++++ b/net/ipv4/ip_sockglue.c
+@@ -317,7 +317,14 @@ int ip_cmsg_send(struct sock *sk, struct msghdr *msg, struct ipcm_cookie *ipc,
+ 			ipc->tos = val;
+ 			ipc->priority = rt_tos2priority(ipc->tos);
+ 			break;
+-
++		case IP_PROTOCOL:
++			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
++				return -EINVAL;
++			val = *(int *)CMSG_DATA(cmsg);
++			if (val < 1 || val > 255)
++				return -EINVAL;
++			ipc->protocol = val;
++			break;
+ 		default:
+ 			return -EINVAL;
  		}
- 		if (ctx->is_ndp16) {
-@@ -1461,6 +1462,11 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+@@ -1761,6 +1768,9 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
+ 	case IP_LOCAL_PORT_RANGE:
+ 		val = inet->local_port_range.hi << 16 | inet->local_port_range.lo;
+ 		break;
++	case IP_PROTOCOL:
++		val = inet_sk(sk)->inet_num;
++		break;
+ 	default:
+ 		sockopt_release_sock(sk);
+ 		return -ENOPROTOOPT;
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index ff712bf2a98d..eadf1c9ef7e4 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -532,6 +532,9 @@ static int raw_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	}
  
- 	return skb_out;
+ 	ipcm_init_sk(&ipc, inet);
++	/* Keep backward compat */
++	if (hdrincl)
++		ipc.protocol = IPPROTO_RAW;
  
-+alloc_failed:
-+	if (skb) {
-+		dev_kfree_skb_any(skb);
-+		dev->net->stats.tx_dropped++;
-+	}
- exit_no_skb:
- 	/* Start timer, if there is a remaining non-empty skb */
- 	if (ctx->tx_curr_skb != NULL && n > 0)
+ 	if (msg->msg_controllen) {
+ 		err = ip_cmsg_send(sk, msg, &ipc, false);
+@@ -599,7 +602,7 @@ static int raw_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 
+ 	flowi4_init_output(&fl4, ipc.oif, ipc.sockc.mark, tos,
+ 			   RT_SCOPE_UNIVERSE,
+-			   hdrincl ? IPPROTO_RAW : sk->sk_protocol,
++			   hdrincl ? ipc.protocol : sk->sk_protocol,
+ 			   inet_sk_flowi_flags(sk) |
+ 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
+ 			   daddr, saddr, 0, 0, sk->sk_uid);
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 7d0adb612bdd..44ee7a2e72ac 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -793,7 +793,8 @@ static int rawv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 
+ 		if (!proto)
+ 			proto = inet->inet_num;
+-		else if (proto != inet->inet_num)
++		else if (proto != inet->inet_num &&
++			 inet->inet_num != IPPROTO_RAW)
+ 			return -EINVAL;
+ 
+ 		if (proto > 255)
 
