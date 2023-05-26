@@ -2,79 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9EF1712C77
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 20:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 385FD712CBF
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 20:45:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231209AbjEZSdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 14:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
+        id S231209AbjEZSpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 14:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236289AbjEZSdV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 14:33:21 -0400
+        with ESMTP id S230212AbjEZSpw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 14:45:52 -0400
 Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E375C12A;
-        Fri, 26 May 2023 11:33:19 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.west.internal (Postfix) with ESMTP id E582E320034E;
-        Fri, 26 May 2023 14:33:18 -0400 (EDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4657AAD;
+        Fri, 26 May 2023 11:45:51 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 64E25320092E;
+        Fri, 26 May 2023 14:37:02 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 26 May 2023 14:33:19 -0400
+  by compute5.internal (MEProxy); Fri, 26 May 2023 14:37:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1685125998; x=1685212398; bh=Zp
-        LZLV3QsZzobTyFE801nMuW76L2OIyWSnXDegF+FC0=; b=HQQzH7zBos7ePDHTLR
-        2mQtrxw/xexlZ0c1sd7ucEYNiAP2s3zrnzuUK1/4cEVWu1idF8S/67n+hEHWdWEi
-        PupgL5L1+KrC2ygGKLN5w0uocm/65loGHIajNC19uq6syq7/pp4Zdy6wJMtTYiJA
-        sB2s73V11j/JxusIxmitojHVkTXHU2zGAqJmRA8inHZdKGWPaioBwf4evKfj2i15
-        GxJwTBOofaG54AlDBkAWPCqNkqnQVLz+XKvzwBS28QwFWWYXlGf1BBjzHc7ii2QU
-        T/j2f4b3nnS3dmmyJ4D1Gg2Hktr/8awFgxOuewXkV8Vu9ca9HT53vysCJZVy0Apb
-        XWQw==
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+        1685126222; x=1685212622; bh=Ntgtx7rkmatZ1dpyIZa01ZwzxgAcF6BHwET
+        ZbelXN+U=; b=spzMWxuSymBYU+569azl/RmafVrW4o/nNk2YgBh0ORihAQx/f2t
+        K2ZSYPQEXIMvN+dsV7l+EIrI6TTbERIn+BkPH3BDQnHdTGkyMQxrpQW6VG6tzcWY
+        jiVErUu7JIvHrfc1EQf1Faya3cutnZo66mcfo+BT7yklPKIFyCZ1D9f2r8aThTqY
+        rwE1m2a1cbVYwYn6q6cnbGH3xqE5mhQoKHcuoaALn9FZ7me1tP/Pn+nTXTWUovM9
+        uw8kPT7BiVWq0MiRmjYYn+p4/KbKgzymYGP4tUDMNNbFpsveZz7wRxmxqws/hZus
+        pUBjPmr88NGiEblJTz+YDhmsPUA4TUDBMuA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1685125998; x=1685212398; bh=ZpLZLV3QsZzob
-        TyFE801nMuW76L2OIyWSnXDegF+FC0=; b=A0XsmL4WcnXUffSNl4gL4p4JimDrP
-        TTr8x5vePekDrzFBCsJ8iWh1PXo7cPu/bEn5I2fxCyK4CyzmS437L8b7aE52NIA1
-        844T0phlzxmWDyZw/xcBTPhiZ9Kxjcyutd9LoCO/uv/1QvNgnFe1pA6e/ypZT60d
-        0xqkIm9DNXM2PWAeAqJkZbHK5/oEEE8+SDk4Zxeu9M96HLTABcze6M0CntijyTEj
-        y1w5BB9ukaoU+HZqZ+S8DSiWG9TptkKJEIiw4alMY8HBdLJl5RlIAzoJ5mvUk7yh
-        zt3Om0gjMKHHSFknZvdmgpfS2Px410fKUvt0ktkmU6K8+RKYyrqR8QUDQ==
-X-ME-Sender: <xms:bvtwZKkNeX1o9Q-d6xMJhXIwQwtrLRG-6qOKkIJ-u_tkoGXNDN1lDQ>
-    <xme:bvtwZB3Dkpy64vaIOJ37rlshsUal26BRvaH_g_RpiFJAnWGMJZXeWq3r0UWR3H0YX
-    HfOO20ktdnddQ>
-X-ME-Received: <xmr:bvtwZIp55YFhbzwZ1T0CB4xtQq0cn44FFTdaa7nONlPS0XGKworTPnhL6lYlig>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejledguddvgecutefuodetggdotefrod
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1685126222; x=1685212622; bh=Ntgtx7rkmatZ1dpyIZa01ZwzxgAcF6BHwET
+        ZbelXN+U=; b=W8ag+NtprYnczw2QbEo3pU04wNt3+8uuiSgqBjpASoeXhIGcR4P
+        cpEFnkROXSRUEBqYKz3XuA3q5Q1y+z6Au1F9dS16G8O6qwzq97XWz5T/kN6SZOXd
+        P+4pQJNBkflWQxzz4GxF/C3Uf01re3vV4Riy+266Z9HhCUoJzTb7prembCKYkUj1
+        +WSf20nzNONPXn/UdZ6LW3e5B02tJrDzKeaLEDIRsuZ+H9ogBT6OJIsAgrT0dCPi
+        jaGh0BvZKLB458NtCzFPIFvS2Xgk2GDpexrNCp/o2TvflTBiK6CgEhTOrLtYDSIM
+        ZxObwHQkK4np0pRyE5iHr7U49XjYoNw0fbw==
+X-ME-Sender: <xms:TfxwZE4dbgcH6juNOW929Csztw4qeqATu9pu-IxhVj4uSBOSqhthMg>
+    <xme:TfxwZF6qFAhy7U7K38SJkA-LqknyYxlBXbuRKALu_Srdnvcx_CeRiRZlXFlO8-37G
+    luqDDfeXs4Opw>
+X-ME-Received: <xmr:TfxwZDdW5Yt_dx9eJOwOWXC48O_InhIhqw78Ss74TAJFjk71e_ANpjLjQvhAAA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejledguddvhecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
-    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
-    grhhdrtghomh
-X-ME-Proxy: <xmx:bvtwZOknAnajz5nNT2LF0RCS-R0mXYuoXfywQ-kmbm0I4cReOzjSkw>
-    <xmx:bvtwZI0Y1kOSD0iXWfdzdB-zj8LEeDaie190RYeEH1SZl65wV_FZDA>
-    <xmx:bvtwZFu-GaUxfr4W91HNws7FI_jCVadHd5lZvmJ_A63NO55HJQhBUA>
-    <xmx:bvtwZCov2QmCs1eY4JUK4AOstSrr0sWT__aBA9DwE0mkZCfwSgmJBg>
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhr
+    vghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnheple
+    ekheejjeeiheejvdetheejveekudegueeigfefudefgfffhfefteeuieekudefnecuffho
+    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:TfxwZJKLsg2ZViuNj_cXzDVnrK5iB8yg5w0500eJU3Z97avfnPNSJA>
+    <xmx:TfxwZIJdRsFt8Nx_6_Yx1xoRu9LfZ3PuKEVxVYGX1Sfw5-tI4RVG4A>
+    <xmx:TfxwZKw4t_OOmxTsZ063TNAcVgzzUEOLT48mXcb7g8Fzcb_jmir-HA>
+    <xmx:TvxwZH86gjh5TRVphWKcqIF-AwFhoITfB7HwyY9UcGbZUEnm_Aj_Mg>
 Feedback-ID: i787e41f1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 26 May 2023 14:33:17 -0400 (EDT)
-Date:   Fri, 26 May 2023 19:33:16 +0100
+ 26 May 2023 14:37:00 -0400 (EDT)
+Date:   Fri, 26 May 2023 19:36:59 +0100
 From:   Greg KH <greg@kroah.com>
-To:     Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Cc:     stable@vger.kernel.org, pablo@netfilter.org,
-        netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH 4.14 1/1] netfilter: nf_tables: bogus EBUSY in helper
- removal from transaction
-Message-ID: <2023052609-rake-exclusive-27f9@gregkh>
-References: <20230519192859.2272157-1-cascardo@canonical.com>
- <20230519192859.2272157-2-cascardo@canonical.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+        Valentin Vidic <vvidic@valentin-vidic.from.hr>,
+        linux-security-module@vger.kernel.org
+Subject: Re: Stable backport of de3004c874e7 ("ocfs2: Switch to
+ security_inode_init_security()")
+Message-ID: <2023052629-endnote-unison-bb1c@gregkh>
+References: <CAHC9VhRPvkdk6t1zkx+Y-QVP_vJRSxp+wuOO0YjyppNDLTNg7g@mail.gmail.com>
+ <ZGuTVAj1AJOdTtLF@sashalap>
+ <CAHC9VhQ3MmvP9Av9F6mKA03oE-Cima5LMKZbzj6FOZXxtNAYLw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230519192859.2272157-2-cascardo@canonical.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHC9VhQ3MmvP9Av9F6mKA03oE-Cima5LMKZbzj6FOZXxtNAYLw@mail.gmail.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -85,23 +89,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 19, 2023 at 04:28:59PM -0300, Thadeu Lima de Souza Cascardo wrote:
-> From: Pablo Neira Ayuso <pablo@netfilter.org>
+On Mon, May 22, 2023 at 12:34:11PM -0400, Paul Moore wrote:
+> On Mon, May 22, 2023 at 12:07 PM Sasha Levin <sashal@kernel.org> wrote:
+> > On Fri, May 19, 2023 at 05:51:59PM -0400, Paul Moore wrote:
+> > >Hello,
+> > >
+> > >I would like to request the backport of the commit below to address a
+> > >kernel panic in ocfs2 that was identified by Valentin Vidić in this
+> > >thread:
+> > >
+> > >https://lore.kernel.org/linux-security-module/20230401214151.1243189-1-vvidic@valentin-vidic.from.hr
+> > >
+> > >While Valentin provides his own patch in the original message, the
+> > >preferred patch is one that went up to Linus during the last merge
+> > >window; Valentin has tested the patch and confirmed that it resolved
+> > >the reported problem.
+> >
+> > How far should this patch be backported?
 > 
-> commit 8ffcd32f64633926163cdd07a7d295c500a947d1 upstream.
-> 
-> Proper use counter updates when activating and deactivating the object,
-> otherwise, this hits bogus EBUSY error.
-> 
-> Fixes: cd5125d8f518 ("netfilter: nf_tables: split set destruction in deactivate and destroy phase")
-> Reported-by: Laura Garcia <nevola@gmail.com>
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-> ---
->  net/netfilter/nft_objref.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
-> 
+> The problem is only present when the BPF LSM is enabled, which I
+> believe was merged upstream in the v5.7 release, so anything v5.7 or
+> later should be affected and thus a good backport target.
 
-Now queued up, thanks.
+Thanks, now queued up.
 
 greg k-h
