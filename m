@@ -2,94 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B087F712B4E
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 19:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF0B712B74
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 19:11:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230272AbjEZRBe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 13:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55732 "EHLO
+        id S242226AbjEZRLD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 13:11:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbjEZRBd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 13:01:33 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6203BC
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 10:01:32 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-53065736d52so634110a12.2
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 10:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685120492; x=1687712492;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BGSsRadg8/k5YCYiOUDx3xTCmP75V2hSKqivxNmuHB4=;
-        b=aZqsNgc7a1OmO2JI7G8jku+ietUnfouKuJEoAN0tBmNqsAin9JBkSMFYL8S8gDKKHR
-         aNwJp8m7f6BCK7xhN7d5Rg56l3clIm8a4vAXJ21vFWq6ntVMWn4JuMkj+seOzlT3z0re
-         7TLJud0hRERbNC/6lX1JO+EPpwOIj22VokKAcYMFiNdb2rU1GlRTeeI9637dwFH9A2Hg
-         9IPit8NpcZ+qUDmhb3agCo4Ubf9hB8JwiJnK1HorAFoH6JUgTD/M2hGVsJCYo13LCRXV
-         xqq3/V0Cy5kQgGl23hEJ87cOuXXvbN7TdvWSEP62qm2L+f1N00ljfH6b5LZh9UeVraRh
-         Asww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685120492; x=1687712492;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BGSsRadg8/k5YCYiOUDx3xTCmP75V2hSKqivxNmuHB4=;
-        b=K3jRH+Rpk3kSiJUEbWxJZ7nE6GhNXuVLd8AZ+cBy72HxB4S6xNDrwJNvpMHeLPxEpb
-         B/fvDExXyrhQ+XoaR2+Gva5bJdvTIwIZg6LFkUx7uS7493rRnIAizqH3SjxNdSQTXVQh
-         mHYv0YIFLEtExIFSr2qkkh2b8hx+zkPorg735KOmGvr/U74kLuJGCpsqrcmnlHtOAtfK
-         mWmExgvTOT/8PA0uy/l6PSf2ql2nrm2HZNjgN9RY4mjH7WAaBLa8d4bxd/Tp90JyvMxr
-         Alb38jvQkIQ3F5RDAZj5zSj7+3HgNLRbPthsNk9JHrw55fYImMXH3in5j/8oQLR4admf
-         lRGg==
-X-Gm-Message-State: AC+VfDyRNcL2LU2Q/bEqQMZ+0J6npZA2DDb4FzXDs2fjGQ7mIvSPN23d
-        XLILe3yIUFbqREEziD+PV0rhBz/RuDY=
-X-Google-Smtp-Source: ACHHUZ6OQjvHvHGEb6V1v/dWoqRH+hN+hXO0RBWjxtohTutQ74AAidsJ/QXWTOFyJ1SL6/Pncd+hcSIVLGk=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:4b48:0:b0:530:638d:cf91 with SMTP id
- k8-20020a634b48000000b00530638dcf91mr25458pgl.4.1685120492215; Fri, 26 May
- 2023 10:01:32 -0700 (PDT)
-Date:   Fri, 26 May 2023 10:01:30 -0700
-In-Reply-To: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
-Mime-Version: 1.0
-References: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
-Message-ID: <ZHDl6rXQ0UTWdk2O@google.com>
-Subject: Re: WARNING trace at kvm_nx_huge_page_recovery_worker on 6.3.4
-From:   Sean Christopherson <seanjc@google.com>
-To:     Fabio Coatti <fabio.coatti@gmail.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S236835AbjEZRLC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 13:11:02 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01099FB;
+        Fri, 26 May 2023 10:11:00 -0700 (PDT)
+Received: from jupiter.universe (dyndsl-091-248-132-021.ewe-ip-backbone.de [91.248.132.21])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 872486606E94;
+        Fri, 26 May 2023 18:10:59 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1685121059;
+        bh=8tIgZvve58LmRVC3TweXsKlF+FYtaM8+jla/W7NnB5Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=KFL5ezHXSfaf06+obC/aX5tMUYWQlwtH/YLQIw0bI7u1qHRESWBGpuCT6PnvGUR2W
+         TzSn7HldAPBE+GWokVj+FzEXa/d9q8aQvdwl68g1H93vDFNFrmOFoThHwYT/t/hOaV
+         5WMAhlO0T8ran4LWdPR6yDiSxhNApaX2H7FZr2cQctlt8Ft7oWEgm0sJS4VbIzNefm
+         bXnDGlOOlISZv/GosaJzI2mdfFZT/5ihwBBmmVET6jVEdIGTsCh+4DSGLvQ+UQkykW
+         YKOS5w6zTTcPa4z82lbJq+buSdOgtljkJ/tm6jLeyMgGDmAYWHT89bhBKqb+fiZ4H+
+         xxIMgMO16mjfQ==
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id D26934807E2; Fri, 26 May 2023 19:10:57 +0200 (CEST)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Christopher Obbard <chris.obbard@collabora.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        kernel@collabora.com, stable@vger.kernel.org
+Subject: [PATCH v2 1/2] clk: composite: Fix handling of high clock rates
+Date:   Fri, 26 May 2023 19:10:56 +0200
+Message-Id: <20230526171057.66876-2-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230526171057.66876-1-sebastian.reichel@collabora.com>
+References: <20230526171057.66876-1-sebastian.reichel@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 26, 2023, Fabio Coatti wrote:
-> Hi all,
-> I'm using vanilla kernels on a gentoo-based laptop and since 6.3.2
+ULONG_MAX is used by a few drivers to figure out the highest available
+clock rate via clk_round_rate(clk, ULONG_MAX). Since abs() takes a
+signed value as input, the current logic effectively calculates with
+ULONG_MAX = -1, which results in the worst parent clock being chosen
+instead of the best one.
 
-What was the last kernel you used that didn't trigger this WARN?
+For example on Rockchip RK3588 the eMMC driver tries to figure out
+the highest available clock rate. There are three parent clocks
+available resulting in the following rate diffs with the existing
+logic:
 
-> I'm getting the kernel log  below when using kvm VM on my box.
+GPLL:   abs(18446744073709551615 - 1188000000) = 1188000001
+CPLL:   abs(18446744073709551615 - 1500000000) = 1500000001
+XIN24M: abs(18446744073709551615 -   24000000) =   24000001
 
-Are you doing anything "interesting" when the WARN fires, or are you just running
-the VM and it random fires?  Either way, can you provide your QEMU command line?
+As a result the clock framework will promote a maximum supported
+clock rate of 24 MHz, even though 1.5GHz are possible. With the
+updated logic any casting between signed and unsigned is avoided
+and the numbers look like this instead:
 
-> I know, kernel is tainted but avoiding to load nvidia driver could make
-> things complicated on my side; if needed for debug I can try to avoid it.
+GPLL:   18446744073709551615 - 1188000000 = 18446744072521551615
+CPLL:   18446744073709551615 - 1500000000 = 18446744072209551615
+XIN24M: 18446744073709551615 -   24000000 = 18446744073685551615
 
-Nah, don't worry about that at this point.
+As a result the parent with the highest acceptable rate is chosen
+instead of the parent clock with the lowest one.
 
-> Not sure which other infos can be relevant in this context; if you
-> need more details just let me know, happy to provide them.
-> 
-> [Fri May 26 09:16:35 2023] ------------[ cut here ]------------
-> [Fri May 26 09:16:35 2023] WARNING: CPU: 5 PID: 4684 at
-> kvm_nx_huge_page_recovery_worker+0x38c/0x3d0 [kvm]
+Cc: stable@vger.kernel.org
+Fixes: 49502408007b ("mmc: sdhci-of-dwcmshc: properly determine max clock on Rockchip")
+Tested-by: Christopher Obbard <chris.obbard@collabora.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ drivers/clk/clk-composite.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Do you have the actual line number for the WARN?  There are a handful of sanity
-checks in kvm_recover_nx_huge_pages(), it would be helpful to pinpoint which one
-is firing.  My builds generate quite different code, and the code stream doesn't
-appear to be useful for reverse engineering the location.
+diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
+index edfa94641bbf..66759fe28fad 100644
+--- a/drivers/clk/clk-composite.c
++++ b/drivers/clk/clk-composite.c
+@@ -119,7 +119,10 @@ static int clk_composite_determine_rate(struct clk_hw *hw,
+ 			if (ret)
+ 				continue;
+ 
+-			rate_diff = abs(req->rate - tmp_req.rate);
++			if (req->rate >= tmp_req.rate)
++				rate_diff = req->rate - tmp_req.rate;
++			else
++				rate_diff = tmp_req.rate - req->rate;
+ 
+ 			if (!rate_diff || !req->best_parent_hw
+ 				       || best_rate_diff > rate_diff) {
+-- 
+2.39.2
+
