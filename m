@@ -2,105 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A727371238C
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 11:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A96F7123EC
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 11:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242905AbjEZJ1Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 05:27:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37548 "EHLO
+        id S242547AbjEZJpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 05:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243035AbjEZJ1V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 05:27:21 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD58E1B6
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 02:27:16 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f3edc05aa5so499220e87.3
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 02:27:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685093235; x=1687685235;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LWY6DpPavWVM1/OV1R8NKim5vOgtapaTjgty3qjQSRk=;
-        b=sKPpbV3i/F+WXcUkFLlNIXGaLW0Ro8KTEkTLW5HjsV1Aymj3soXrG2/LScpefhNikD
-         9EuJsDyLIcGhsaya5NvrKKYfIurUbGVxYLjni1DqmFumcps31LRNQYRg4PnXiD5OiMA/
-         0m7+7+4tK831HUt68QNgjLQLEWLevnJigZnlBPLttxttRDdd2TeEOpTwh/mgYW5yqstC
-         Jo0cuXc0EEIGXcODbgR4o3s+HL7BCc+hkRPRsrEvJqCYxSD5RHQOYYgS8Az4+bZ2tftR
-         10dCppKsa0a6g6SHd2FnImg3ds/snfIFKGjR7NxlFiUkQzGt9Hn/T+H29bQ7gDFUGB96
-         D6Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685093235; x=1687685235;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LWY6DpPavWVM1/OV1R8NKim5vOgtapaTjgty3qjQSRk=;
-        b=DELnB0Zr5xZfdcnMA8TGBFOKClkaPnk7mUx/c9rQDD+UYjTREZNA6vHZkUALcOvMpQ
-         JWX1M18+4rsF30yjibnMEBQcK0GbN1pMGv7hwDWi4p87SS0wiMEkGXyyJ7Yg+Meia3F/
-         T0Cay12bjG6vsovpv2KEip6ioqo0Cv6t+SMfJyAyS6cUjhLcgUSOljDFGnCHbOZ4I1o/
-         uJHkxl3fGLO4hc3QgeeNa2AxBsk+vSNr2cTb1y5Ok7o8zIYWm9qAi/0fxY0l2kExLIQE
-         80Ekuge8fDASxbLKh4ZzGX2hgEAkBvYntpzNeB4UFgTmWW5rNWWmmS/l10jo9PPanYHa
-         GGZA==
-X-Gm-Message-State: AC+VfDxFj52F+ffCBllDa5eewKvu+b8LmmD6d730YoY9daG3YzRM40Xx
-        9RlzEVSPsqXvAXX45ndU1/J2Og==
-X-Google-Smtp-Source: ACHHUZ6ltL32f+pELojB+JCGwt/0k+SKroDtrl5xjXEHrWHnBK2DNAtZmefxNCZAqo5wLN7qGyUxWg==
-X-Received: by 2002:a19:f816:0:b0:4f3:a812:5ae with SMTP id a22-20020a19f816000000b004f3a81205aemr375578lff.37.1685093234954;
-        Fri, 26 May 2023 02:27:14 -0700 (PDT)
-Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
-        by smtp.gmail.com with ESMTPSA id v26-20020a19741a000000b004f138ecab11sm543964lfe.24.2023.05.26.02.27.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 May 2023 02:27:14 -0700 (PDT)
-Message-ID: <a1d60d67-49cc-4936-4b89-394c8fbdddf3@linaro.org>
-Date:   Fri, 26 May 2023 11:27:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 1/2] mfd: pm8008: fix module autoloading
-Content-Language: en-US
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>, Lee Jones <lee@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S230106AbjEZJpY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 05:45:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB115B3;
+        Fri, 26 May 2023 02:45:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50B6F64E93;
+        Fri, 26 May 2023 09:45:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F78CC433EF;
+        Fri, 26 May 2023 09:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685094321;
+        bh=6757u1vv3qshvT3KML6a5/JeJbMP77tgbtC+voZYxM8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Xit6rovGa1EEW81ZgpfaqNZHoUIw5HguySJ17Cp/3hX/NBNlh7jaa1cllWG2iirET
+         8v8OyP2+bIXqFTB3fsUEY1VBIgMGeEu2nqemQIOXTQ8Kx9tdMUs1oXJaYc9dr8T9nL
+         so0FIOgiJK+d3KseP1t373HUh0NxXheGkUqLb68U7mM4JIAby9t9oS6pI8438c/DSa
+         7WLuGXVk5VzdxgQC/ybMoa8F8JOUh8+IjbcF5sA1Rx1sNATtns9Khfau7r0SRc4ahp
+         ZydAbOSB4xf7KBz2DMlBM4Hw1+RI+zWuwQxMj0kAqXo82MAEOA/VoQRJnmuFr7KRET
+         g9JugSYtsWCyg==
+Date:   Fri, 26 May 2023 11:45:15 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Al Viro <viro@ZenIV.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
         stable@vger.kernel.org
-References: <20230526091646.17318-1-johan+linaro@kernel.org>
- <20230526091646.17318-2-johan+linaro@kernel.org>
- <a5891478-bf4a-8389-e1c9-00244c5b406e@linaro.org>
- <ZHB7Gy7RMGa41KI9@hovoldconsulting.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <ZHB7Gy7RMGa41KI9@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 4/6] fs: Establish locking order for unrelated directories
+Message-ID: <20230526-polarstern-herrichten-32fc46c63bfc@brauner>
+References: <20230525100654.15069-1-jack@suse.cz>
+ <20230525101624.15814-4-jack@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230525101624.15814-4-jack@suse.cz>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 26.05.2023 11:25, Johan Hovold wrote:
-> On Fri, May 26, 2023 at 11:22:27AM +0200, Konrad Dybcio wrote:
->> On 26.05.2023 11:16, Johan Hovold wrote:
->>> Add the missing module device table alias to that the driver can be
->>> autoloaded when built as a module.
->>>
->>> Fixes: 6b149f3310a4 ("mfd: pm8008: Add driver for QCOM PM8008 PMIC")
->>> Cc: stable@vger.kernel.org      # 5.14
+On Thu, May 25, 2023 at 12:16:10PM +0200, Jan Kara wrote:
+> Currently the locking order of inode locks for directories that are not
+> in ancestor relationship is not defined because all operations that
+> needed to lock two directories like this were serialized by
+> sb->s_vfs_rename_mutex. However some filesystems need to lock two
+> subdirectories for RENAME_EXCHANGE operations and for this we need the
+> locking order established even for two tree-unrelated directories.
+> Provide a helper function lock_two_inodes() that establishes lock
+> ordering for any two inodes and use it in lock_two_directories().
 > 
->> Looks like the commit referenced in Fixes is from 5.13-rc1, perhaps
->> 5.13 would be more fitting here?
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  fs/inode.c    | 34 ++++++++++++++++++++++++++++++++++
+>  fs/internal.h |  2 ++
+>  fs/namei.c    |  4 ++--
+>  3 files changed, 38 insertions(+), 2 deletions(-)
 > 
-> No, I just double checked. This driver was not present 5.13.
-Odd, I see the same thing.
+> diff --git a/fs/inode.c b/fs/inode.c
+> index 577799b7855f..2015fa50d34a 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -1103,6 +1103,40 @@ void discard_new_inode(struct inode *inode)
+>  }
+>  EXPORT_SYMBOL(discard_new_inode);
+>  
+> +/**
+> + * lock_two_inodes - lock two inodes (may be regular files but also dirs)
+> + *
+> + * Lock any non-NULL argument. The caller must make sure that if he is passing
+> + * in two directories, one is not ancestor of the other.  Zero, one or two
+> + * objects may be locked by this function.
+> + *
+> + * @inode1: first inode to lock
+> + * @inode2: second inode to lock
+> + * @subclass1: inode lock subclass for the first lock obtained
+> + * @subclass2: inode lock subclass for the second lock obtained
+> + */
+> +void lock_two_inodes(struct inode *inode1, struct inode *inode2,
+> +		     unsigned subclass1, unsigned subclass2)
+> +{
+> +	if (!inode1 || !inode2)
+> +		goto lock;
 
-Anyway
+Before this change in
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+lock_two_nondirectories(struct inode *inode1, struct inode *inode2)
 
-Konrad
-> 
-> Johan
+the swap() would cause the non-NULL inode to always be locked with
+I_MUTEX_NONDIR2. Now it can be either I_MUTEX_NORMAL or I_MUTEX_NONDIR2.
+Is that change intentional?
