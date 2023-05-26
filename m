@@ -2,140 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECEE0712E45
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 22:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC3E712ED5
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 23:17:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjEZUmF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 16:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46842 "EHLO
+        id S230431AbjEZVRB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 17:17:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjEZUmE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 16:42:04 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CF713A;
-        Fri, 26 May 2023 13:41:59 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f6cbdf16d2so8150975e9.2;
-        Fri, 26 May 2023 13:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685133717; x=1687725717;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jaj5bts2ys56VQ+QWVF3ByEpaCAX5z4OlrYGlYiteV0=;
-        b=hZMGftC8dUzxsfwVTC/wIo3MjBnXihNAhVtmlM+kvJ/1sCz7bja+HAhA6VhKwFo8AN
-         5uQAv1/MpYs646lBH1hII1Yb9RAk0F/Jjl0bQFvunBeWqwZXkX6kqe4IskjXC2AYwbJ0
-         d2U4XharC2SK644yyUUXU070GIhwUJA2hpLtYAPrrnAqR9iR6Ext6zkoXRUgtUGodcnd
-         X5atEMi3t1QTszXMm3zEktI3XhE9UstMhc/MglrLdKI1abDkVpkGoL2ZaMEc1IMsDjDI
-         9FdggY3Hr/7FQnZSUXhZ+c/scMAwbV0y03iwab1jQhb2S9nnekpDiL8kXxCTEEQphrZx
-         pkdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685133717; x=1687725717;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jaj5bts2ys56VQ+QWVF3ByEpaCAX5z4OlrYGlYiteV0=;
-        b=dlHLDIa5yEeWgmKXtKTI3F25MKDyoMiz82jZfAdbKDZlLChPdxag048lgQiI0jLzwY
-         Mxbug3Fz35TR7JeCfgu9FnpijIV8p4fv2oaUSpmhZdQKgiGDSVXPnaUPVBJH/jfvSUuG
-         p80E76ojlp/Pr8Pn5UgpsvjArfwiNPoojXGQAmgT4IaR7P4R9furOTaBbBKPOxZl7NnA
-         Y4+DYjP0fT7WjT/hrowF6fqPhElJ9I58L58wTZu+FAxuVU823cYcL6UPx0mVuE0QX5qW
-         KxZawL+hit92PqAONobJ0rCCE7BV9Uc3yuo4iuOKQpEIj4rbOJX+fMZoOktUKijn10Sl
-         EO0g==
-X-Gm-Message-State: AC+VfDyIrX//ydXtEfUBcsjlMZc/AiOxrgT+5cqsblkv0triM06KQsuM
-        12ExDzWWTMJzFUs+Y2oa/zM=
-X-Google-Smtp-Source: ACHHUZ4NsK4PLy2XXEpL2R2verGyqAlkyFRs8KFHaYy+t7kilvX+AkDT61Lr/ig8Zq3Or+cNrvT/Ew==
-X-Received: by 2002:a7b:cbd2:0:b0:3f4:2452:966a with SMTP id n18-20020a7bcbd2000000b003f42452966amr2220459wmi.27.1685133717251;
-        Fri, 26 May 2023 13:41:57 -0700 (PDT)
-Received: from localhost.localdomain (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
-        by smtp.googlemail.com with ESMTPSA id 13-20020a05600c228d00b003f60455de07sm6198427wmf.15.2023.05.26.13.41.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 13:41:56 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, wireguard@lists.zx2c4.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Christian Marangi <ansuelsmth@gmail.com>, stable@vger.kernel.org
-Subject: [net PATCH] wireguard: allowedips: fix compilation warning for stack limit exceeded
-Date:   Fri, 26 May 2023 22:41:34 +0200
-Message-Id: <20230526204134.29058-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S237674AbjEZVQ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 17:16:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A19DF
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 14:16:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1685135807; x=1685740607; i=deller@gmx.de;
+ bh=2RCZDAlQUfqartv8jUGtYfCip2Ra2I/6hxC9IeGjgP0=;
+ h=X-UI-Sender-Class:Date:From:To:Subject;
+ b=UBV7nNT4Px2nAWDX2TQWZPVW8k6jhW3EqbBTPdymB9q+yY+z28PN+ssXshfMk1IXCSPVGO6
+ SQPSVZy0XyiyiSG1Bk7d+wiQQsT7uUppXVn6UyV6hMv2kbuq/WUsfg+AHaBRWW1unagdmr2Ur
+ jGyUNIrjwcR9LO7nOelmeUDRPCsydh8Mur7k9+dxEQsWneZYVpdalf63thAS8OXDgyTXNwxRd
+ snLomCxQknE/QIPdvkouCf2eOdZwKozqmA7aDjWPKCxddFqIr/HkjkQjNFtTchvZBhKbSLoPZ
+ yurIJNe3Ew82EXLNKGp4khuQrlw8PkBLNeDaeTNqO+szLOxwKQfA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.158.115]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmlT2-1qUoXY48yU-00jtHd; Fri, 26
+ May 2023 23:16:47 +0200
+Date:   Fri, 26 May 2023 23:16:45 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Backport request: parisc: Fix flush_dcache_page() for usage from irq
+ context
+Message-ID: <ZHEhvXD7LsPaytEF@p100>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:v4xoakljAlwF4nrBuUgu8T4Cxuvwf4kWNZ0XqXP1o2dgDUY/wyS
+ WxfcavhaIyJQbornHAD2m16UUnSZX5ZmaIQyOXfNtSSjh9ovVkQGaGJfRV1fB8GOfnqzhu+
+ iKq31KksKCFtPtsCdtt3a9es7fQ0vF5hyU4v+cucvsMg6hJ355o6A0ti11Ntn4meGF4izyb
+ eQ1dCvdK7rUiuVDj8lQlw==
+UI-OutboundReport: notjunk:1;M01:P0:+ac+0vY7H68=;CJkep34vhonOTQuqFaAx3hJ9uxq
+ e3Eu5KDetWG0+RM1vuvdMWt/n2dyqSAIf4hwqbuHClkZCDzdUBsuE7o2Q072+ASXKf+ecpNCr
+ /vnLnJ8U8+8R8cYmXlczIKma7unAWW62TeDSIwCZtPno1pdC3O1zWOrzTQvNhTI8nr4v+KboA
+ umwWEXsI6Jl891wxCooD7eKCIFh0bOupPmEvl/YbmkS/VW3Jcr9xYx3VW/8WnyFcjZvBrxT73
+ Upq+UFsAxmb0DoqpLKI8Cg8ekxkBxcbdm2lHbddirqpAUuvHX5rmXy+kNQ6GJgha9BvuX1Y1N
+ GG2x+9uPJhJCMqC/An3TUlk4kZ9ehyFKmJ4RkQdqZ5SXHcM+1GKcnMzC4MXZLaLFjWpdvi4BD
+ ygkDLP/u1Zhov+ZQJG38G/TvBQy20AK3FTXKUzlca8JZr9HxgICA0bNDDQ4aIVUiSE6HJcQGm
+ LXlBB+ZkhtA/pIzzFkGlhomgjKAgS59J02xp5+Acr8ZuzcxxzvpxW+gIVK1/cPuiz5+DT8RV3
+ 4Oesgx0oRPZfYR8HYbNwAYsj7jg3bsXbEcViPQLm8xX3JBRLMaZaKCf/6EsVbPRNWOsBiQl8l
+ GxGzBGxCC2qPAJGX12q0RQa/icCTUOFkLD5FePJy/fe5S7rZnCji0ck1JW9aF8BbCHOKWuuD1
+ VvUr/1W25AKPqKT38lnLRK1GV7vAQdLnVIQi5eiYLFWBkAykh3lomcHcGqZSGFi/0VFzwNcNt
+ Y+xvMX2Cwzg4cdlJPbJ3sHTOtL4qN+C6QNUoPblttEQ2Zk4fZzNQ52OMcf/BYy8ujGPYXk3NU
+ UEAAjnQP41SZ0P5rQmyg2Tp40G8IcI3hYO54dhTJJEvYzAdo3xXzz36hMua9hmiiUu78PqxBJ
+ qV8S4aJYs76J90dvZthIYl8j4lupEZRKU7RC3b0CZgQxGqVLRyZdttDLmWY5ECOGL2DPfa+e6
+ E/tUiu7y0UFMvj3nTX+Enei4apk=
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On some arch (for example IPQ8074) and other with
-KERNEL_STACKPROTECTOR_STRONG enabled, the following compilation error is
-triggered:
-drivers/net/wireguard/allowedips.c: In function 'root_remove_peer_lists':
-drivers/net/wireguard/allowedips.c:80:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-   80 | }
-      | ^
-drivers/net/wireguard/allowedips.c: In function 'root_free_rcu':
-drivers/net/wireguard/allowedips.c:67:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-   67 | }
-      | ^
-cc1: all warnings being treated as errors
+Dear stable kernel team,
 
-Since these are free function and returns void, using function that can
-fail is not ideal since an error would result in data not freed.
-Since the free are under RCU lock, we can allocate the required stack
-array as static outside the function and memset when needed.
-This effectively fix the stack frame warning without changing how the
-function work.
+could you please add the patch below to all stable kernels
+from v4.19 up to 5.15.
 
-Fixes: Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/net/wireguard/allowedips.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+It's a manual backport of upstream commit 61e150fb310729c98227a5edf6e4a361=
+9edc3702,
+which doesn't applies cleanly otherwise.
 
-diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
-index 5bf7822c53f1..c129082f04c6 100644
---- a/drivers/net/wireguard/allowedips.c
-+++ b/drivers/net/wireguard/allowedips.c
-@@ -53,12 +53,16 @@ static void node_free_rcu(struct rcu_head *rcu)
- 	kmem_cache_free(node_cache, container_of(rcu, struct allowedips_node, rcu));
+Thanks!
+Helge
+
+=46rom 97d6d8f6248364ec916e9642a58f1ed14a1eb147 Mon Sep 17 00:00:00 2001
+From: Helge Deller <deller@gmx.de>
+Date: Fri, 26 May 2023 22:51:07 +0200
+Subject: [PATCH] parisc: Fix flush_dcache_page() for usage from irq contex=
+t
+
+flush_dcache_page() may be called with IRQs disabled.
+
+But the current implementation for flush_dcache_page() on parisc
+unintentionally re-enables IRQs, which may lead to deadlocks.
+
+Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
+for the flush_dcache_mmap_*lock() macros instead.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ arch/parisc/include/asm/cacheflush.h | 5 +++++
+ arch/parisc/kernel/cache.c           | 5 +++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/as=
+m/cacheflush.h
+index eef0096db5f8..2f4c45f60ae1 100644
+=2D-- a/arch/parisc/include/asm/cacheflush.h
++++ b/arch/parisc/include/asm/cacheflush.h
+@@ -53,6 +53,11 @@ extern void flush_dcache_page(struct page *page);
+
+ #define flush_dcache_mmap_lock(mapping)		xa_lock_irq(&mapping->i_pages)
+ #define flush_dcache_mmap_unlock(mapping)	xa_unlock_irq(&mapping->i_pages=
+)
++#define flush_dcache_mmap_lock_irqsave(mapping, flags)		\
++		xa_lock_irqsave(&mapping->i_pages, flags)
++#define flush_dcache_mmap_unlock_irqrestore(mapping, flags)	\
++		xa_unlock_irqrestore(&mapping->i_pages, flags)
++
+
+ #define flush_icache_page(vma,page)	do { 		\
+ 	flush_kernel_dcache_page_addr(page_address(page)); \
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 394e6e14e5c4..c473c2f395a0 100644
+=2D-- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -324,6 +324,7 @@ void flush_dcache_page(struct page *page)
+ 	struct vm_area_struct *mpnt;
+ 	unsigned long offset;
+ 	unsigned long addr, old_addr =3D 0;
++	unsigned long flags;
+ 	pgoff_t pgoff;
+
+ 	if (mapping && !mapping_mapped(mapping)) {
+@@ -343,7 +344,7 @@ void flush_dcache_page(struct page *page)
+ 	 * declared as MAP_PRIVATE or MAP_SHARED), so we only need
+ 	 * to flush one address here for them all to become coherent */
+
+-	flush_dcache_mmap_lock(mapping);
++	flush_dcache_mmap_lock_irqsave(mapping, flags);
+ 	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
+ 		offset =3D (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+ 		addr =3D mpnt->vm_start + offset;
+@@ -366,7 +367,7 @@ void flush_dcache_page(struct page *page)
+ 			old_addr =3D addr;
+ 		}
+ 	}
+-	flush_dcache_mmap_unlock(mapping);
++	flush_dcache_mmap_unlock_irqrestore(mapping, flags);
  }
- 
-+static struct allowedips_node *tmpstack[MAX_ALLOWEDIPS_BITS];
-+
- static void root_free_rcu(struct rcu_head *rcu)
- {
--	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = {
--		container_of(rcu, struct allowedips_node, rcu) };
-+	struct allowedips_node *node, **stack = tmpstack;
- 	unsigned int len = 1;
- 
-+	memset(stack, 0, sizeof(*stack) * MAX_ALLOWEDIPS_BITS);
-+	stack[0] = container_of(rcu, struct allowedips_node, rcu);
-+
- 	while (len > 0 && (node = stack[--len])) {
- 		push_rcu(stack, node->bit[0], &len);
- 		push_rcu(stack, node->bit[1], &len);
-@@ -68,9 +72,12 @@ static void root_free_rcu(struct rcu_head *rcu)
- 
- static void root_remove_peer_lists(struct allowedips_node *root)
- {
--	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = { root };
-+	struct allowedips_node *node, **stack = tmpstack;
- 	unsigned int len = 1;
- 
-+	memset(stack, 0, sizeof(*stack) * MAX_ALLOWEDIPS_BITS);
-+	stack[0] = root;
-+
- 	while (len > 0 && (node = stack[--len])) {
- 		push_rcu(stack, node->bit[0], &len);
- 		push_rcu(stack, node->bit[1], &len);
--- 
-2.39.2
+ EXPORT_SYMBOL(flush_dcache_page);
+
+=2D-
+2.38.1
 
