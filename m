@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01189712D0C
+	by mail.lfdr.de (Postfix) with ESMTP id A5CC9712D0E
 	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243796AbjEZTFr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:05:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36994 "EHLO
+        id S243782AbjEZTFs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:05:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243809AbjEZTFp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:05:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17DF1BB
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:36 -0700 (PDT)
+        with ESMTP id S243813AbjEZTFq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:05:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CF313D
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:05:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7538C652BC
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C76C433EF;
-        Fri, 26 May 2023 19:05:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40A18652C3
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:05:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DB3C433D2;
+        Fri, 26 May 2023 19:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685127935;
-        bh=j8FTCa0yHMqMbPjTi5HBNrnwiR9bJBQ0Od+XoeAae40=;
+        s=korg; t=1685127938;
+        bh=mfueDL+RCoAcDwQ2gWPn6CemZwDuN2Tt9CTGWreqtZU=;
         h=Subject:To:Cc:From:Date:From;
-        b=S7Aw1uXOsWYg+iQ73LfQfOSjRE5dSlRBMyEo4ROSYu7ABRVKO+GuRaOXgxFAfmp1D
-         axpUDB+PlT+IcGed21mAwT+7gS3/ktbsqQPSRIwSKwk2qYrDtTNzzasTvytwg0HBCJ
-         mFhfG3jRSiKFIqUll0Ui+GP3CHSKy11KvAofAuYc=
-Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 5.15-stable tree
+        b=tmQ4PAuM3cER2rOcp/5fMkhnl4QyY6SG1T8pzQmh99kgoq+2ZIuiyGFpy1CIdS/xF
+         8vAz9abasRNg6m0dKGRMHsYmK3Pwk0xYy8NpEn75OL94l2VIxj92GPiECm89Ihd0Fh
+         GDRjwVgDAyKNL8hOMgYA4/U/g8eIf1QvYryQnmMk=
+Subject: FAILED: patch "[PATCH] ipv{4,6}/raw: fix output xfrm lookup wrt protocol" failed to apply to 5.10-stable tree
 To:     nicolas.dichtel@6wind.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:05:23 +0100
-Message-ID: <2023052623-available-vagueness-5c1e@gregkh>
+Date:   Fri, 26 May 2023 20:05:34 +0100
+Message-ID: <2023052634-surgical-sulfite-a551@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,23 +48,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3632679d9e4f879f49949bb5b050e0de553e4739
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052623-available-vagueness-5c1e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052634-surgical-sulfite-a551@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-
+3632679d9e4f ("ipv{4,6}/raw: fix output xfrm lookup wrt protocol")
+91d0b78c5177 ("inet: Add IP_LOCAL_PORT_RANGE socket option")
+28044fc1d495 ("net: Add a bhash2 table hashed by port and address")
+d2c135619cb8 ("inet: add READ_ONCE(sk->sk_bound_dev_if) in inet_csk_bind_conflict()")
+ca7af0402550 ("tcp: add small random increments to the source port")
+ffa84b5ffb37 ("net: add netns refcount tracker to struct sock")
+938cca9e4109 ("sock: fix /proc/net/sockstat underflow in sk_clone_lock()")
+990c74e3f41d ("memcg: enable accounting for inet_bin_bucket cache")
+333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport group.")
+5c040eaf5d17 ("tcp: Add num_closed_socks to struct sock_reuseport.")
+c579bd1b4021 ("tcp: add some entropy in __inet_hash_connect()")
+190cc82489f4 ("tcp: change source port randomizarion at connect() time")
+bbc20b70424a ("net: reduce indentation level in sk_clone_lock()")
 
 thanks,
 
