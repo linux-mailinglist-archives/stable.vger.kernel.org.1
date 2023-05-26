@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55925712D6C
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A835712D6D
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 21:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237043AbjEZT1e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 15:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
+        id S237305AbjEZT1h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 15:27:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242775AbjEZT1b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:27:31 -0400
+        with ESMTP id S236947AbjEZT1f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 15:27:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60BE4E49
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:27:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A97AE5E
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 12:27:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A824B652F6
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:27:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7710C4339C;
-        Fri, 26 May 2023 19:27:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B62652E5
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:27:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88701C433EF;
+        Fri, 26 May 2023 19:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685129243;
-        bh=VapoKnENXA7TctVAByZKj1BUr7pz4l1EKDxwxJpORpA=;
+        s=korg; t=1685129247;
+        bh=ILSJCfbDLdlfNfjACY3OBQWC6jEw7yx40IcwgLkMeFU=;
         h=Subject:To:Cc:From:Date:From;
-        b=ckbFd1snixmOtxyL9tp8S4FWpopfDFbujdJrluAZiDKCPPnMtaacuMYFNpQwWJm4L
-         m0koV+E5fie7e3WKYMLhq1wCCmrmKBWuJsPtyf3M++nD+IfJGVF432UDD9MrXfYDt9
-         DMlw21Qzl5dylmhZpIleJHCy2sXqjfcf2ifNMRgA=
-Subject: FAILED: patch "[PATCH] x86/mm: Avoid incomplete Global INVLPG flushes" failed to apply to 4.19-stable tree
+        b=0vHfgTANVLIzfL5x/bzAKWQxOpdmQf59ER+/dx5tCNnYT7PnvLCD18bbEfZXbGSQr
+         FtCrzimzuujVd2l45qxz3dqkYb83lPUkea2TgXHfLGzjd9ge82h7fs4bUCGJKjlB4+
+         6CRC+1Z1Lbl9N6EcP5BU6LJHX5Iod/oJXB4x5vcQ=
+Subject: FAILED: patch "[PATCH] x86/mm: Avoid incomplete Global INVLPG flushes" failed to apply to 4.14-stable tree
 To:     dave.hansen@linux.intel.com, tglx@linutronix.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 26 May 2023 20:27:15 +0100
-Message-ID: <2023052615-manila-armoire-d077@gregkh>
+Date:   Fri, 26 May 2023 20:27:16 +0100
+Message-ID: <2023052616-audibly-grinning-73b4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,23 +48,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x ce0b15d11ad837fbacc5356941712218e38a0a83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052615-manila-armoire-d077@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052616-audibly-grinning-73b4@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
 ce0b15d11ad8 ("x86/mm: Avoid incomplete Global INVLPG flushes")
+6cff64b86aaa ("x86/mm: Use INVPCID for __native_flush_tlb_single()")
+6fd166aae78c ("x86/mm: Use/Fix PCID to optimize user/kernel switches")
+48e111982cda ("x86/mm: Abstract switching CR3")
+2ea907c4fe7b ("x86/mm: Allow flushing for future ASID switches")
+aa8c6248f8c7 ("x86/mm/pti: Add infrastructure for page table isolation")
+8a09317b895f ("x86/mm/pti: Prepare the x86/entry assembly code for entry/exit CR3 switching")
+613e396bc0d4 ("init: Invoke init_espfix_bsp() from mm_init()")
+1a3b0caeb77e ("x86/mm: Create asm/invpcid.h")
+dd95f1a4b5ca ("x86/mm: Put MMU to hardware ASID translation in one place")
+cb0a9144a744 ("x86/mm: Remove hard-coded ASID limit checks")
+50fb83a62cf4 ("x86/mm: Move the CR3 construction functions to tlbflush.h")
+3f67af51e56f ("x86/mm: Add comments to clarify which TLB-flush functions are supposed to flush what")
+23cb7d46f371 ("x86/microcode: Dont abuse the TLB-flush interface")
+c482feefe1ae ("x86/entry/64: Make cpu_entry_area.tss read-only")
+0f9a48100fba ("x86/entry: Clean up the SYSENTER_stack code")
+7fbbd5cbebf1 ("x86/entry/64: Remove the SYSENTER stack canary")
+40e7f949e0d9 ("x86/entry/64: Move the IST stacks into struct cpu_entry_area")
+3386bc8aed82 ("x86/entry/64: Create a per-CPU SYSCALL entry trampoline")
+3e3b9293d392 ("x86/entry/64: Return to userspace from the trampoline stack")
 
 thanks,
 
