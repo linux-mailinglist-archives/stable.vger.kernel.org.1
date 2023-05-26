@@ -2,90 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24845712AEA
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 18:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A787712AFF
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 18:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236842AbjEZQoB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 12:44:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44988 "EHLO
+        id S236899AbjEZQtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 12:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbjEZQoA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 12:44:00 -0400
+        with ESMTP id S236898AbjEZQtT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 12:49:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB783D9;
-        Fri, 26 May 2023 09:43:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F18D3;
+        Fri, 26 May 2023 09:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B32A617A1;
-        Fri, 26 May 2023 16:43:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE30C433EF;
-        Fri, 26 May 2023 16:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685119438;
-        bh=Z/ch5nJkQyaxrmN1rRuD6Zg08kQpZg1acmK+3khx85E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hT82lZ1GYXwKZ3QyfJyhu12TOwN6oQstsGuNbmlXcwBuDDULVbbZ1dh3lPvrex2DD
-         RF9Ig7Bx4mdzowwgjgWTQkXt9Xagfua8Xh9YmwXQTdHqkztG4L66CaHFmOoXcIJcDJ
-         S/JFEo91ouORTBBrIbDHSZe2CZc1ZIlgiOvUrDlE=
-Date:   Fri, 26 May 2023 17:43:55 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Lorenz Bauer <lmb@isovalent.com>
-Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Martin KaFai Lau <martin.lau@kernel.org>,
-        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        shuah@kernel.org, yhs@fb.com, eddyz87@gmail.com, sdf@google.com,
-        error27@gmail.com, iii@linux.ibm.com, memxor@gmail.com,
-        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.2 08/30] selftests/bpf: check that modifier
- resolves after pointer
-Message-ID: <2023052647-tacking-wince-85c5@gregkh>
-References: <20230320005258.1428043-1-sashal@kernel.org>
- <20230320005258.1428043-8-sashal@kernel.org>
- <CAN+4W8g6AcQQWe7rrBVOFYoqeQA-1VbUP_W7DPS3q0k-czOLfg@mail.gmail.com>
- <ZBiAPngOtzSwDhFz@kroah.com>
- <CAN+4W8jAyJTdFL=tgp3wCpYAjGOs5ggo6vyOg8PbaW+tJP8TKA@mail.gmail.com>
- <CAN+4W8j5qe6p3YV90g-E0VhV7AmYyAvt0z50dfDSombbGghkww@mail.gmail.com>
- <2023041100-oblong-enamel-5893@gregkh>
- <CAN+4W8hmSgbb-wO4da4A=6B4y0oSjvUTTVia_0PpUXShP4NX4Q@mail.gmail.com>
- <2023052435-xbox-dislike-0ab2@gregkh>
- <CAN+4W8iMcwwVjmSekZ9txzZNxOZ0x98nBXo4cEoTU9G2zLe8HA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAN+4W8iMcwwVjmSekZ9txzZNxOZ0x98nBXo4cEoTU9G2zLe8HA@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90DA664DAD;
+        Fri, 26 May 2023 16:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EF1C4339B;
+        Fri, 26 May 2023 16:49:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1685119757;
+        bh=xMkkgU7tHEseVeR1b5KRK1QPblVCYXjRfI6afyQyfS0=;
+        h=Date:To:From:Subject:From;
+        b=ywFHHK+jhYM4oaM+gzOmtrHF28h+YyilbDa+z5yK3giUYL78k42cetJAAwvU3COIN
+         zgF/eG5gLEBHEtK/NMBCXi0R/ApIZPBz5SAiFG6/JrbwJDplnND8k66WLE5E0wKwOj
+         xC+m9L+TLprmut/ICZnvBl0YdSZ5Rly76mYNDYlo=
+Date:   Fri, 26 May 2023 09:49:15 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + nilfs2-reject-devices-with-insufficient-block-count.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230526164916.E7EF1C4339B@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 24, 2023 at 06:04:43PM +0100, Lorenz Bauer wrote:
-> On Wed, May 24, 2023 at 5:04 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > Great, any specific commits that fix this issue would be appreciated to
-> > be pointed at so we can apply them.
-> 
-> The problem was introduced by commit f4b8c0710ab6 ("selftests/bpf: Add
-> verifier test for release_reference()") in your tree. Seems like
-> fixup_map_ringbuf was introduced in upstream commit 4237e9f4a962
-> ("selftests/bpf: Add verifier test for PTR_TO_MEM spill") but that
-> wasn't backported.
 
-So what tree(s) does this need to be backported to?  I'm confused, this
-is a 6.2 email thread which is long end-of-life.
+The patch titled
+     Subject: nilfs2: reject devices with insufficient block count
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     nilfs2-reject-devices-with-insufficient-block-count.patch
 
-> To restate my original question: how can we avoid breaking BPF
-> selftests? From personal experience this happens somewhat regularly.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-reject-devices-with-insufficient-block-count.patch
 
-It can be avoided by people testing and letting me know when things
-break :)
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-thanks,
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-greg k-h
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: reject devices with insufficient block count
+Date: Fri, 26 May 2023 11:13:32 +0900
+
+The current sanity check for nilfs2 geometry information lacks checks for
+the number of segments stored in superblocks, so even for device images
+that have been destructively truncated or have an unusually high number of
+segments, the mount operation may succeed.
+
+This causes out-of-bounds block I/O on file system block reads or log
+writes to the segments, the latter in particular causing
+"a_ops->writepages" to repeatedly fail, resulting in sync_inodes_sb() to
+hang.
+
+Fix this issue by checking the number of segments stored in the superblock
+and avoiding mounting devices that can cause out-of-bounds accesses.  To
+eliminate the possibility of overflow when calculating the number of
+blocks required for the device from the number of segments, this also adds
+a helper function to calculate the upper bound on the number of segments
+and inserts a check using it.
+
+Link: https://lkml.kernel.org/r/20230526021332.3431-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com
+  Link: https://syzkaller.appspot.com/bug?extid=7d50f1e54a12ba3aeae2
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/nilfs2/the_nilfs.c |   43 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
+
+--- a/fs/nilfs2/the_nilfs.c~nilfs2-reject-devices-with-insufficient-block-count
++++ a/fs/nilfs2/the_nilfs.c
+@@ -405,6 +405,18 @@ unsigned long nilfs_nrsvsegs(struct the_
+ 				  100));
+ }
+ 
++/**
++ * nilfs_max_segment_count - calculate the maximum number of segments
++ * @nilfs: nilfs object
++ */
++static u64 nilfs_max_segment_count(struct the_nilfs *nilfs)
++{
++	u64 max_count = U64_MAX;
++
++	do_div(max_count, nilfs->ns_blocks_per_segment);
++	return min_t(u64, max_count, ULONG_MAX);
++}
++
+ void nilfs_set_nsegments(struct the_nilfs *nilfs, unsigned long nsegs)
+ {
+ 	nilfs->ns_nsegments = nsegs;
+@@ -414,6 +426,8 @@ void nilfs_set_nsegments(struct the_nilf
+ static int nilfs_store_disk_layout(struct the_nilfs *nilfs,
+ 				   struct nilfs_super_block *sbp)
+ {
++	u64 nsegments, nblocks;
++
+ 	if (le32_to_cpu(sbp->s_rev_level) < NILFS_MIN_SUPP_REV) {
+ 		nilfs_err(nilfs->ns_sb,
+ 			  "unsupported revision (superblock rev.=%d.%d, current rev.=%d.%d). Please check the version of mkfs.nilfs(2).",
+@@ -457,7 +471,34 @@ static int nilfs_store_disk_layout(struc
+ 		return -EINVAL;
+ 	}
+ 
+-	nilfs_set_nsegments(nilfs, le64_to_cpu(sbp->s_nsegments));
++	nsegments = le64_to_cpu(sbp->s_nsegments);
++	if (nsegments > nilfs_max_segment_count(nilfs)) {
++		nilfs_err(nilfs->ns_sb,
++			  "segment count %llu exceeds upper limit (%llu segments)",
++			  (unsigned long long)nsegments,
++			  (unsigned long long)nilfs_max_segment_count(nilfs));
++		return -EINVAL;
++	}
++
++	nblocks = sb_bdev_nr_blocks(nilfs->ns_sb);
++	if (nblocks) {
++		u64 min_block_count = nsegments * nilfs->ns_blocks_per_segment;
++		/*
++		 * To avoid failing to mount early device images without a
++		 * second superblock, exclude that block count from the
++		 * "min_block_count" calculation.
++		 */
++
++		if (nblocks < min_block_count) {
++			nilfs_err(nilfs->ns_sb,
++				  "total number of segment blocks %llu exceeds device size (%llu blocks)",
++				  (unsigned long long)min_block_count,
++				  (unsigned long long)nblocks);
++			return -EINVAL;
++		}
++	}
++
++	nilfs_set_nsegments(nilfs, nsegments);
+ 	nilfs->ns_crc_seed = le32_to_cpu(sbp->s_crc_seed);
+ 	return 0;
+ }
+_
+
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+
+nilfs2-fix-incomplete-buffer-cleanup-in-nilfs_btnode_abort_change_key.patch
+nilfs2-fix-possible-out-of-bounds-segment-allocation-in-resize-ioctl.patch
+nilfs2-reject-devices-with-insufficient-block-count.patch
+
