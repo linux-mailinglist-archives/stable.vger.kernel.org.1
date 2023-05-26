@@ -2,75 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C749711E6A
-	for <lists+stable@lfdr.de>; Fri, 26 May 2023 05:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1215D711F44
+	for <lists+stable@lfdr.de>; Fri, 26 May 2023 07:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232149AbjEZD0C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 25 May 2023 23:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
+        id S229981AbjEZFjy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 01:39:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjEZD0A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 25 May 2023 23:26:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 498EDE6;
-        Thu, 25 May 2023 20:26:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D846B6471F;
-        Fri, 26 May 2023 03:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F170C433EF;
-        Fri, 26 May 2023 03:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685071559;
-        bh=BTIaAcxw6JMw/kBG+7/ytX8/qt2HopHJ9Nqlbp6SrPU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eIztQ0pfSz7V7fBvUzeog84FT45VkAZ2Lae27wsJjMo2fG1neQr92ibbIFgGHsQ2d
-         r4JJTPcmgjMJnT+uzL6zfSlfkfBY8dFo++z67mnF7wrr/9P/KiWD0ShmXwko8V+SIE
-         zoqSY3IREiAbPn2Znwq2kn2tRNNV2Ly7FViIEibdDkP7RxB1FMhHu22yVTGyQYbsN2
-         OX4koaThdA9hIKe7/x64Ho3jdyINstDb+ujciIDpcmybpuL5c2X9JGIqtJNRCxc5Ni
-         jKHY5EnBMTUPsHPsGt8BBA+PoBgarYho9GcKQlrbQUIpEZqkQSQWDIuFJen+j5HryZ
-         CMMU/YZeGrRJQ==
-Date:   Thu, 25 May 2023 20:25:57 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        decui@microsoft.com, kys@microsoft.com, paulros@microsoft.com,
-        olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net,
-        wei.liu@kernel.org, edumazet@google.com, pabeni@redhat.com,
-        leon@kernel.org, longli@microsoft.com, ssengar@linux.microsoft.com,
-        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
-        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V2,net] net: mana: Fix perf regression: remove rx_cqes,
- tx_cqes counters
-Message-ID: <20230525202557.5a5f020b@kernel.org>
-In-Reply-To: <1685025990-14598-1-git-send-email-haiyangz@microsoft.com>
-References: <1685025990-14598-1-git-send-email-haiyangz@microsoft.com>
+        with ESMTP id S229479AbjEZFjx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 01:39:53 -0400
+Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CFFC195
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 22:39:52 -0700 (PDT)
+Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-456e4f4ea83so85779e0c.3
+        for <stable@vger.kernel.org>; Thu, 25 May 2023 22:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685079591; x=1687671591;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8S20EpxC0jYqjEdVLeuZpI5et5CF0gwUWywR2BM1QKQ=;
+        b=HjPkzZFhNcN47pTjWy00/2W8LzsulrTckq+2FiyTCWDCn+W3Avug/sChlVelvbSk4T
+         BHSRMp8f/J9Ys1AaoTG6mP3+SmC6LnpNSSXJbuHC1NXygNq069wlYoBoz2Ge8bgOufUK
+         VeW/0En/8moVGwCxvLgTsuqutGHV6g8UH1UrTNYkN4klcEeGTKekFYnDjz+K+TYgHFeN
+         WAvzgsiI+NvuHqcIdLKCoqc5c9ZoMaUqYhJ/grjDY5K+93HOxXUQL2UWVWqi67aBjmCU
+         yCxDHnzCYjhPWqxST9qQ2X9zj+IIhwaUIeXcW47OYw4Mh872iyb0sV8pfFyc3KOHxhlC
+         SNCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685079591; x=1687671591;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8S20EpxC0jYqjEdVLeuZpI5et5CF0gwUWywR2BM1QKQ=;
+        b=cMLamhAJ+fAzysaZcKKp/ejbw6CFwkJsRt8V0o7TzX9ZcWOVxH/lAmDptDcAH+XB3x
+         zPVrDCw2MwHr7RuE4rQvopfZkLfZm4LVgmWlXBiy0Q2U4Zn0tiG2RB4RkIj57Ytrefm0
+         SBhiYialVxcLNgSvl8GJBL3rbB50HOHpX2N+sIiF99HSo/QzA6cDoWWrj9t3EfM2Wb7j
+         xI+DSF5q767buLSSifT45NQM0RxjXpzmKKrUPBxGIgHm4zS5m6CH7i8q36Y/lDZDtNTU
+         PsIgBRsxfFoZ/WOPw+3SrNNMxQ9SM+2W/nHjTyNKArqcmWJExElldoxfXKwaEpZKGeC8
+         S8ew==
+X-Gm-Message-State: AC+VfDwSSq1gqg1FsglYUBJkW0oU+BZW4lu/7QMbcEfY4kaogV8mM7AN
+        beNwxcv9iqF4wll8WI1P/B08sCLznVQAAkksPABRNg==
+X-Google-Smtp-Source: ACHHUZ6SISstX0iLvYrXJgi52QO9jWx5aTs73MrvJ3WfJIQHyb4MaDC7DJJGXlH18HF/RbDIl8P1FzmNV2RUA/yR7rM=
+X-Received: by 2002:a1f:5e02:0:b0:457:400a:f3fc with SMTP id
+ s2-20020a1f5e02000000b00457400af3fcmr170510vkb.2.1685079591105; Thu, 25 May
+ 2023 22:39:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CA+G9fYtCCTxT78c0T+5JFw+sN01ZnX_kvBBgDLoVLfPARc9ZuA@mail.gmail.com>
+ <CAEXW_YQwBy9xNRV9Xrdti46cC8vNE8nOocoL9pRrhjNMGdEWeg@mail.gmail.com>
+In-Reply-To: <CAEXW_YQwBy9xNRV9Xrdti46cC8vNE8nOocoL9pRrhjNMGdEWeg@mail.gmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Fri, 26 May 2023 11:09:39 +0530
+Message-ID: <CA+G9fYs3LT9OaKVZw9C3v3YxGPBk6ZWCdqur=hL-XoLM5rgtww@mail.gmail.com>
+Subject: Re: Perf: RIP: 0010:__schedule on qemu-x86_64
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org, rcu <rcu@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 25 May 2023 07:46:30 -0700 Haiyang Zhang wrote:
-> lot caching and memory overhead, hence perf regression.
+HI Joel,
 
-Horatiu's ask for more details was perfectly reasonable.
-Provide more details to give the distros and users an
-idea of the order of magnitude of the problem. Example
-workload and relative perf hit, anything.
+On Thu, 25 May 2023 at 20:51, Joel Fernandes <joel@joelfernandes.org> wrote=
+:
+>
+> Hello Naresh,
+>
+> On Wed, May 24, 2023 at 5:02=E2=80=AFAM Naresh Kamboju
+> <naresh.kamboju@linaro.org> wrote:
+> >
+> > Following kernel crash noticed while running perf testing on qemu-x86_6=
+4
+> > with stable-rc 6.3.4-rc2 + kselftest merge configs.
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> > logs:
+> > =3D=3D=3D=3D=3D
+> > INFO: Performing perf record test...
+> >
+> > Parse sched tracepoints fields: Ok
+> >  16: syscalls:sys_enter_openat event fields     :
+> > --- start ---
+> > test child forked, pid 255
+> > <4>[  152.221288] int3: 0000 [#1] PREEMPT SMP PTI
+> > <4>[  152.221564] CPU: 0 PID: 255 Comm: perf Not tainted 6.3.4-rc2 #1
+> > <4>[  152.221607] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+> > BIOS 1.14.0-2 04/01/2014
+> > <4>[  152.221733] RIP: 0010:__schedule+0x29e/0xaa0
 
-Please do not repost within 24 hours:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
--- 
-pw-bot: cr
+<trim>
+
+> I wonder if this is a deadlock related to runqueue lock since another
+> CPU call stack are similarly in schedule.
+>
+> I tried to run gdb on your vmlinux but it does not have symbols, would
+> it be possible for you to provide a copy of vmlinux with symbols?
+
+DEBUG_INFO not enabled on this build.
+
+>
+> Were you able to narrow down the commit/release using git bisect to
+> see when it started happening?
+
+I will bisect this problem and get back to you.
+
+>
+> Thank you,
+>
+>  - Joel
+
+- Naresh
