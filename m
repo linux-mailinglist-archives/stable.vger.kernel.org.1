@@ -2,83 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6A871335D
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 10:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B62B713362
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 10:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjE0IaP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 27 May 2023 04:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52478 "EHLO
+        id S231300AbjE0IbB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 27 May 2023 04:31:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231708AbjE0IaN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 04:30:13 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E91DF;
-        Sat, 27 May 2023 01:30:11 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34R8TqdcE019728, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34R8TqdcE019728
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Sat, 27 May 2023 16:29:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Sat, 27 May 2023 16:30:04 +0800
-Received: from [127.0.1.1] (172.16.16.243) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Sat, 27 May
- 2023 16:30:04 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>, <tony0620emma@gmail.com>
-CC:     <stable@vger.kernel.org>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/3] wifi: rtw89: remove redundant check of entering LPS
-Date:   Sat, 27 May 2023 16:29:39 +0800
-Message-ID: <20230527082939.11206-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230527082939.11206-1-pkshih@realtek.com>
-References: <20230527082939.11206-1-pkshih@realtek.com>
+        with ESMTP id S231171AbjE0IbA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 04:31:00 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD826E1
+        for <stable@vger.kernel.org>; Sat, 27 May 2023 01:30:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685176258; x=1716712258;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=spHlOhP6XJ5XUXeg5lCJxnJUQ1S7p9+r5h6LsC0+EFg=;
+  b=fhHKABOcwARYiqNHeJsDHvS1ljclvckP9uADpg9NoPUiVHqaNM5Ah2Sw
+   ipZD+fUwtQSnfMtSltDIpvTN8gBwr65woCKFUo7/5MB8MAL8qVqWYSaCS
+   H6bwyjAGX+UCtYpsiFnaKM5xTwgzK+nu93D+n9p4dI1lM715RzVDoxVOE
+   wMiN/h9a87SsnfZ7ROT99jBcvuwvUuQUBeBYGNN+KTXVcukNM9jUz0uTM
+   uXQTj9NHvolHu+oGbmBy7edSNGgFRWBazziAC4leHpaLggi6IBW2lvhzu
+   JdsfpELkChp1XHPBPiHEYFcMVSjrUwsqCGQoMiAPOyvAt2XyPljOEBKNB
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10722"; a="417859604"
+X-IronPort-AV: E=Sophos;i="6.00,196,1681196400"; 
+   d="scan'208";a="417859604"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2023 01:30:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10722"; a="708646563"
+X-IronPort-AV: E=Sophos;i="6.00,196,1681196400"; 
+   d="scan'208";a="708646563"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 27 May 2023 01:30:57 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q2pKC-000Jre-1l;
+        Sat, 27 May 2023 08:30:56 +0000
+Date:   Sat, 27 May 2023 16:30:47 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 3/3] wifi: rtw89: remove redundant check of entering LPS
+Message-ID: <ZHG/t/dgpF807Z3u@3bef23cc04e9>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.243]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230527082939.11206-4-pkshih@realtek.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Originally, add this check rule to prevent entering LPS if more than one
-vif (in station mode) connect to AP. Since we have checked this by previous
-commit, remove this redundant check.
+Hi,
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 3 ---
- 1 file changed, 3 deletions(-)
+Thanks for your patch.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 101047686fffb..65581ca506d3f 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2619,9 +2619,6 @@ static void rtw89_vif_enter_lps(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwv
- 	    rtwvif->tdls_peer)
- 		return;
- 
--	if (rtwdev->total_sta_assoc > 1)
--		return;
--
- 	if (rtwvif->offchan)
- 		return;
- 
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH 3/3] wifi: rtw89: remove redundant check of entering LPS
+Link: https://lore.kernel.org/stable/20230527082939.11206-4-pkshih%40realtek.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
