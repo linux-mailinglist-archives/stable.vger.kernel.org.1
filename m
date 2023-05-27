@@ -2,161 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52ED771314B
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 03:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D40713165
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 03:15:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbjE0BHw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 21:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53436 "EHLO
+        id S231440AbjE0BPS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 21:15:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjE0BHv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 21:07:51 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28F8135
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 18:07:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685149670; x=1716685670;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=NX2CCzX9vzXEFzl+oPHWkCpuW4q7xXdvgairCpvv1Ws=;
-  b=F7yiVhHMVkHAfC13mURxJcB77iDc8GARIXEOVc/DusZZmnQzhtohif5U
-   7uBS2bZklzHcoLJHkvHhgJnr0nbWIkGGcd3uA3zxD3JSM3PDD1DnS5dwo
-   vp0MsACPVPAVUgCZfkbQsK5ObV3DItcQEamhXP57rHhhhrx5IWuRi21j6
-   w/HCN+53TO66j0zySXwUT7YTwgYwFBzLw60zkL78gFvSjzNJscMEuwnkd
-   KbcFfeP9zSS1XzhjXlBjwSP6zp0bbXr5YdEIrcCg8Hk7+6ZPFAzFL/PU8
-   sWKPNoY/Tp8Wh9mOayt7v7F69OLxMC6X9T3UIEomr+aiLXDLcnEN0QGFP
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10722"; a="354356614"
-X-IronPort-AV: E=Sophos;i="6.00,195,1681196400"; 
-   d="scan'208";a="354356614"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2023 18:07:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10722"; a="770482831"
-X-IronPort-AV: E=Sophos;i="6.00,195,1681196400"; 
-   d="scan'208";a="770482831"
-Received: from jaleon-mobl.amr.corp.intel.com (HELO dsneddon-desk.sneddon.lan) ([10.212.73.60])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2023 18:07:50 -0700
-From:   Daniel Sneddon <daniel.sneddon@linux.intel.com>
-To:     stable@vger.kernel.org, dave.hansen@linux.intel.com,
-        tglx@linutronix.de
-Subject: [PATCH 4.19.y] x86/mm: Avoid incomplete Global INVLPG flushes
-Date:   Fri, 26 May 2023 18:07:45 -0700
-Message-Id: <20230527010745.1348761-1-daniel.sneddon@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023052615-manila-armoire-d077@gregkh>
-References: <2023052615-manila-armoire-d077@gregkh>
+        with ESMTP id S229762AbjE0BPR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 21:15:17 -0400
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01olkn2047.outbound.protection.outlook.com [40.92.107.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C19A1B4
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 18:15:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KKb9qCPuMIGIGdcZ6p8aKcZgItxzq6JvzgTb3olQ4TJcMyHbX5d2nu2rcVx+n3m5OVGUUmGcZYMuyi87KckeRR7Vo7RB2cvlz2LcguDQTk4+ikglZiZkJM15xsSzoLc79s1g7OWC6lV5UM5cWNu/eCy3Mvpyayf4nZWyBwHXz/NZBYhCe0A69ceWqnsup1ukAGjofnVDxiAG2La4PB3bxNDuOKp6iN9EocxlitRdqHuD9Q2xaftztnOxmWXc0CHh8avhZjlDFhngpewm0cS+TGfOHI0lpHMekvnPDw3SUOsM7oC4q92e+Bvk3jTV9JLOhnofB+jcTQzuzOkzgGUn2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+ b=doXZLMbpddcv5lGmYt8DWuu/Ga2foSGm18HCJgd0wNyx9fn3DUOPaUqJ310h4NoCjrC3ef+QYynAREhWOebpEaHeETxpYjRA8pBrGsRmtCJLoQ2Q+VhlUSBF9iEF2MX21PaqQEr3oTuWh/3GHGh7IKjZd1sd4g6t4AcHjUMhcv5MmgVjn0b6/bqeP1Ct8KttuZEyOPqemrpj25I88rv540tQV+6Ot33at/agTVjy0Im6CO2HFgtZnUYAGm1v0JhbPdJ52MNRnpnhswV1J4BM2M3HKn1aWQ6KF/fRDYlis50svdijA79Uv+vYanGJ//w1HCZzzN4G98luVLcqQwKuUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+ b=SYp6aRCX7fPrWOm56B+iowi8LVHApQEgee7HIgROjpLP8WQ6qBoZDbJeKC2pgDFb4WKIMcTUCkjmtxqDEEIp7NK9QeuV1Tf+BzuxkKidEtbspnlxpiE6WWMYHwVm8Pshh1ohKTVlnI/9oxAqt4lvHuzpn1SN806Sv0OCWeQWVIz1NKnGEoIROkB6a9Xx+06e/8qctJ43MxVjtq5XbEwPFqN+Fs1ZCoTWzpu16piaa6XaGVMsDKvUbxGGNT9NAjvUTyogadHP2DfCtfyrFMWTlCjNnSAhhaX5nZzHKPsUY5tBLd3UJOc2qtQs7uxBXtW0I2L/9hhIwmBc4VL6m7Z1cA==
+Received: from SEZPR06MB5504.apcprd06.prod.outlook.com (2603:1096:101:a4::13)
+ by SI2PR06MB5361.apcprd06.prod.outlook.com (2603:1096:4:1e9::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Sat, 27 May
+ 2023 01:15:12 +0000
+Received: from SEZPR06MB5504.apcprd06.prod.outlook.com
+ ([fe80::ccdb:20e5:541e:5a80]) by SEZPR06MB5504.apcprd06.prod.outlook.com
+ ([fe80::ccdb:20e5:541e:5a80%2]) with mapi id 15.20.6433.018; Sat, 27 May 2023
+ 01:15:12 +0000
+Content-Type: text/plain
+From:   <fvbmhmq@hotmail.com>
+To:     Undisclosed recipients:;
+Date:   Sat, 27 May 2023 01:15:11 +0000
+X-TMN:  [1lRTQJ4Zfu3XkYGGhulwWwieSK5zmssq]
+X-ClientProxiedBy: TY2PR01CA0017.jpnprd01.prod.outlook.com
+ (2603:1096:404:a::29) To SEZPR06MB5504.apcprd06.prod.outlook.com
+ (2603:1096:101:a4::13)
+Message-ID: <SEZPR06MB55046988F49BEE8085D73A6BA4449@SEZPR06MB5504.apcprd06.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5504:EE_|SI2PR06MB5361:EE_
+X-MS-Office365-Filtering-Correlation-Id: c45af231-1231-47db-614c-08db5e4fd1e1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Dcv7SYC/6v91vK5ywgSweHh85SCq2R3FkDyvFS0bgAJE9Yc2EArUBH5lhfMpbiiDkWkHs3ng4JkU3Ii4jAdU1XPyhTlUBAi/SQQCtkD8mMbWW+LhPHKNvgC4eA2a39o5x0sg43zfzY+ObTy+qzCpTepPFan08Jba2bxAn+YDO5sbRRn31mPufpKBesHYtIO/nuTRHhqmQ/BryHbcnCAjN6hei2E8xzG70Tn90MJaMXxIHui58/RX+BRlRvmMJ9+FNjJQnFF58MT0q3kBJH3gxDf+ssba6G2bgaSp1d9zyEg=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?v1XRTkYgTM5bqcDNwir5v9oobt3LDHlltwqFNdO/pjroaZmpt9LFavahDilh?=
+ =?us-ascii?Q?bC+vvM+6G84ITD1z++pHyOoA3Xfo8YQS5zDweWLYOO/Wccaog7kxWI8/LTky?=
+ =?us-ascii?Q?dvFg3lkp/D9yufo7dvQ9LubrK54qqVU5Q3KuhA8zMW8++5+6YM6krK96Vycz?=
+ =?us-ascii?Q?MiBFiPrcTcoA1mKB9lFsKb1oevFj4ntGdA5RbvTNx8scBiP89V87AheAWDJk?=
+ =?us-ascii?Q?6yadC2mbjHqdo6WJR6rt2XBzCDvWQuTlTGXAw8q499yB1L8ebKP83O/T3Rt5?=
+ =?us-ascii?Q?N2+l6CUendx9ewbXIIzMcpUP2PnUJZIG5ENMkLfVhIUYgWDVWCknmE5wLLON?=
+ =?us-ascii?Q?aBK+G09Qh81Jnofp5piJwSOaqRF5LoVCf1E8OXwO/iIlvlgkL7mPZ0cOR2BY?=
+ =?us-ascii?Q?TQTlWWzV/9RS1bCN6hTXK6/1R1X8XE3OLeu7cC6I7zZCLx0+A0xFsVGPiaLH?=
+ =?us-ascii?Q?0YfoFRYuYR6VtCezIFfUWT3ZWyU9wfjY6TmhN/uePlRZ5YBjpEa+S+hUKWB7?=
+ =?us-ascii?Q?YZMty1msCtDwp2oTRiiadnRWC3TaFg8lK4CeGMR24tjNWpGnGkX8stMXsD2v?=
+ =?us-ascii?Q?jZDVe1lHXAqh5H/sWoksxV3qVlifxfet5ND1INxZTPETHuYotYfrI+6i+Fjq?=
+ =?us-ascii?Q?VgRTGzK2nmBeBhMyYpqSBvie1pu9txU/Qn8Lpms9L9bd4lzbKME7ir1uzdQW?=
+ =?us-ascii?Q?e9JEI4SCqKwDIyzJ811iZGp9jUBfZJEVhIw1U2x8m/7cr8YCd9hbi3lE84M9?=
+ =?us-ascii?Q?4dou/2RDY4accJoBM/DeRrLjfdqBlSr3eknuS/e80fCTroDn78t7b0Q5Rb3d?=
+ =?us-ascii?Q?PcR0hrMO9al9z8geG5n/eTrGvQJ4WGc4/4CZe6ZXFVx3uYFwjD24iwlAyjV+?=
+ =?us-ascii?Q?b9NaJh5fp9gw1SAa2d4zh2J1otC/O0/2chLBxfrKKDg79ZB5DoGAXSt+zL0D?=
+ =?us-ascii?Q?UkCMfJFuyJbnQbv0xsKHlYUNKnNww8WDUmpojaUWtCvbcngZtuoNhXaff1i5?=
+ =?us-ascii?Q?YZ9s38134GcLwlxJ2zBQbbfdUKmwDNF8Qn5aCyiGveIpg9OvuaAxTQhqIvfL?=
+ =?us-ascii?Q?OeX3aa+KH1dOR9EGRJIzL0ndvMaMDoVx8Xt4WavaeMM3Hw1SkicrJ7ISFIkw?=
+ =?us-ascii?Q?A26lzXnRS0REtooC9VhrrYde/wZrfymVEC30r6GS7Ygabl4y6e9o0FtCWZ/A?=
+ =?us-ascii?Q?RCck8ihrB8nFidAAoVO27+ZFEX0+H7i/gEtaYQ=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-3208f.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: c45af231-1231-47db-614c-08db5e4fd1e1
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5504.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2023 01:15:12.2882
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR06MB5361
+X-Spam-Status: No, score=2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,EMPTY_MESSAGE,FREEMAIL_FROM,
+        MISSING_SUBJECT,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
-
-From: Dave Hansen <dave.hansen@linux.intel.com>
-
-The INVLPG instruction is used to invalidate TLB entries for a
-specified virtual address.  When PCIDs are enabled, INVLPG is supposed
-to invalidate TLB entries for the specified address for both the
-current PCID *and* Global entries.  (Note: Only kernel mappings set
-Global=1.)
-
-Unfortunately, some INVLPG implementations can leave Global
-translations unflushed when PCIDs are enabled.
-
-As a workaround, never enable PCIDs on affected processors.
-
-I expect there to eventually be microcode mitigations to replace this
-software workaround.  However, the exact version numbers where that
-will happen are not known today.  Once the version numbers are set in
-stone, the processor list can be tweaked to only disable PCIDs on
-affected processors with affected microcode.
-
-Note: if anyone wants a quick fix that doesn't require patching, just
-stick 'nopcid' on your kernel command-line.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-(cherry picked from commit ce0b15d11ad837fbacc5356941712218e38a0a83)
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
----
- arch/x86/include/asm/intel-family.h |  5 +++++
- arch/x86/mm/init.c                  | 25 +++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
-
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 1f2f52a340868..ccf07426a84df 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -74,6 +74,11 @@
- #define	INTEL_FAM6_LAKEFIELD		0x8A
- #define INTEL_FAM6_ALDERLAKE		0x97
- #define INTEL_FAM6_ALDERLAKE_L		0x9A
-+#define INTEL_FAM6_ALDERLAKE_N		0xBE
-+
-+#define INTEL_FAM6_RAPTORLAKE		0xB7
-+#define INTEL_FAM6_RAPTORLAKE_P		0xBA
-+#define INTEL_FAM6_RAPTORLAKE_S		0xBF
- 
- /* "Small Core" Processors (Atom) */
- 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index b1dba0987565e..2c84c5595cf46 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -9,6 +9,7 @@
- #include <linux/kmemleak.h>
- 
- #include <asm/set_memory.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/e820/api.h>
- #include <asm/init.h>
- #include <asm/page.h>
-@@ -207,6 +208,24 @@ static void __init probe_page_size_mask(void)
- 	}
- }
- 
-+#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
-+			      .family  = 6,			\
-+			      .model = _model,			\
-+			    }
-+/*
-+ * INVLPG may not properly flush Global entries
-+ * on these CPUs when PCIDs are enabled.
-+ */
-+static const struct x86_cpu_id invlpg_miss_ids[] = {
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	{}
-+};
-+
- static void setup_pcid(void)
- {
- 	if (!IS_ENABLED(CONFIG_X86_64))
-@@ -215,6 +234,12 @@ static void setup_pcid(void)
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
-+	if (x86_match_cpu(invlpg_miss_ids)) {
-+		pr_info("Incomplete global flushes, disabling PCID");
-+		setup_clear_cpu_cap(X86_FEATURE_PCID);
-+		return;
-+	}
-+
- 	if (boot_cpu_has(X86_FEATURE_PGE)) {
- 		/*
- 		 * This can't be cr4_set_bits_and_update_boot() -- the
--- 
-2.25.1
 
