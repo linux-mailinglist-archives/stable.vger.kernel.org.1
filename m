@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B79A713245
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 05:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEF0713277
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 06:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231271AbjE0D5B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 23:57:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33218 "EHLO
+        id S229641AbjE0EIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 27 May 2023 00:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231300AbjE0D45 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 23:56:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70216134;
-        Fri, 26 May 2023 20:56:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DB4364D1E;
-        Sat, 27 May 2023 03:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3EBC433EF;
-        Sat, 27 May 2023 03:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685159812;
-        bh=ulpBEbFWXS5MRLjQwXCE94VGL9oNIIxXW9RYDB3Clnw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nO65IjCYmGbQ9i3xqd3P7j9EbsQbWJADutzfs/tiLNm3RXPSBP8x6zg+iw++7IMCc
-         uuTMXYVGbFBaqt4jCzWE0j8QGhi1/ND5Lqok+KK39Srxg0G6B30E+/c/+131aoJ6PN
-         SZX3EFeIQxImOAdjRN/puViuKPdT4lMFothLZs49A23otY9q6hd2APRP45CAq9p+Fy
-         T3N9IwiIOjH6aaAt6gNiOMTPSTWWDNzAmXTp/+EIh+dR+uOxIoUeHz89FIXiRRawZB
-         JDxQSfbjtJP74tvdRo/VDcP9iyVpAr7PmCdrg+qd/bT4aYDs6FOFQx7xWy2VBAZZF5
-         EVNU4ovau+hcw==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Christian Marangi <ansuelsmth@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Andy Gross <agross@kernel.org>
-Cc:     Robert Marko <robimarko@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mdt_loader: Fix unconditional call to scm_pas_mem_setup
-Date:   Fri, 26 May 2023 21:00:34 -0700
-Message-Id: <168516003597.405989.12052922115553427270.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230526115511.3328-1-ansuelsmth@gmail.com>
-References: <20230526115511.3328-1-ansuelsmth@gmail.com>
+        with ESMTP id S229783AbjE0EIW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 00:08:22 -0400
+X-Greylist: delayed 32874 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 26 May 2023 21:08:14 PDT
+Received: from mail-40141.protonmail.ch (mail-40141.protonmail.ch [185.70.40.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 414D513D
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 21:08:13 -0700 (PDT)
+Date:   Sat, 27 May 2023 04:07:56 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=jszrlxa4gzh5bnhkd22xh7nmpi.protonmail; t=1685160491; x=1685419691;
+        bh=xmCBZKa3oW/2MDrSFjMmMw1tLSxZ4M52/i7LPIG8qlY=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=eAxamXziwf1i2MmtvkA3Y+EBp9goOjRkfFNG7Io8CN16Ak2ZAr7YY55QliuEU9+nl
+         auc7vbfWAoFKxXrKhWaVts6xa/2UJm9KETSMYDAmd6PNGA8OH8U6G57XdEr4ZHLxNh
+         tDlx6bcQr1qw37hIMQo+t+OC7wXQXRVRi1nxsvAJ/QxvGwWACxTtKROj6DZCjw+U9J
+         g15RWUl7Y0VOEAL3LBbVJMj97Tih4fCyL62uUHuSDCULg2B7th97JilMF8b8pq4b7d
+         WpVgxhxJQwScJwk1nyjnEHtEjiC2/sJf0Ma5R3okXBG1MwlEwTPvpAwyP6RDHwHdh1
+         E36a8gy2dPrQw==
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+From:   Sami Korkalainen <sami.korkalainen@proton.me>
+Cc:     Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
+Message-ID: <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
+In-Reply-To: <ZHFaFosKY24-L7tQ@debian.me>
+References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me> <ZHFaFosKY24-L7tQ@debian.me>
+Feedback-ID: 45678890:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,21 +56,20 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 26 May 2023 13:55:11 +0200, Christian Marangi wrote:
-> Commit ebeb20a9cd3f ("soc: qcom: mdt_loader: Always invoke PAS
-> mem_setup") dropped the relocate check and made pas_mem_setup run
-> unconditionally. The code was later moved with commit f4e526ff7e38
-> ("soc: qcom: mdt_loader: Extract PAS operations") to
-> qcom_mdt_pas_init() effectively losing track of what was actually
-> done.
-> 
-> [...]
+>Where is SCSI info?
 
-Applied, thanks!
+Right there, under the text (It was so short, that I thought to put it in t=
+he message. Maybe I should have put that also in pastebin for consistency a=
+nd clarity):
 
-[1/1] soc: qcom: mdt_loader: Fix unconditional call to scm_pas_mem_setup
-      commit: bcb889891371c3cf767f2b9e8768cfe2fdd3810f
+Attached devices:
+Host: scsi0 Channel: 00 Id: 00 Lun: 00
+Vendor: ATA      Model: KINGSTON SVP200S Rev: C4
+Type:   Direct-Access                    ANSI  SCSI revision: 05
+Host: scsi1 Channel: 00 Id: 00 Lun: 00
+Vendor: hp       Model: CDDVDW TS-L633M  Rev: 0301
+Type:   CD-ROM                           ANSI  SCSI revision: 05
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+>I think networking changes shouldn't cause this ACPI regression, right?
+Yeah, beats me, but that's what I got by bisecting. My expertise ends about=
+ here.
