@@ -2,65 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E6C71336C
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 10:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B96B77133BB
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 11:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231699AbjE0Ih0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 27 May 2023 04:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
+        id S231697AbjE0Jdz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 27 May 2023 05:33:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230483AbjE0IhZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 04:37:25 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 858B3EA
-        for <stable@vger.kernel.org>; Sat, 27 May 2023 01:37:24 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34R8auCT3002567, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34R8auCT3002567
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Sat, 27 May 2023 16:36:56 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Sat, 27 May 2023 16:37:08 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Sat, 27 May 2023 16:37:08 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Sat, 27 May 2023 16:37:08 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "lkp@intel.com" <lkp@intel.com>
-CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>
-Subject: Re: [PATCH 3/3] wifi: rtw89: remove redundant check of entering LPS
-Thread-Topic: [PATCH 3/3] wifi: rtw89: remove redundant check of entering LPS
-Thread-Index: AQHZkHV6NWsTWII30kOxyw8LhjPGDa9tRAqAgAABvQA=
-Date:   Sat, 27 May 2023 08:37:08 +0000
-Message-ID: <159b55a75ea8f88e39943d5997e508ce3a41fd5d.camel@realtek.com>
-References: <ZHG/t/dgpF807Z3u@3bef23cc04e9>
-In-Reply-To: <ZHG/t/dgpF807Z3u@3bef23cc04e9>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.16.243]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <ED18EDCA4FFFB64C96AF5E94A251326E@realtek.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        with ESMTP id S229684AbjE0Jdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 05:33:54 -0400
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD3F2DE;
+        Sat, 27 May 2023 02:33:52 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 624303200952;
+        Sat, 27 May 2023 05:33:49 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Sat, 27 May 2023 05:33:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1685180028; x=1685266428; bh=K5
+        HSzSXgcT98s5lBDkCfWoTpmYhsHpXg6HrwUgDT17w=; b=TT7EEIyxeFeWNuLBVT
+        yW32yXFDncBwoZWU3EymCA/AKmOIkj6LUWqmYTVPTxUMXf1232uP7Pj5iX/i4feg
+        sBTIvlP8tvmGHyVo/LupLQ49LSIFr7HlWHBuVXZQ7tR8ib4ACs5+rNfB243xeN0z
+        FwHF8XnOmvCBEH1osHTEzQGY4Ep5dCvIdkW3Vir3CzUaNcAQN5YDWF0K6eM9WRK1
+        34tArmyNIlH2DCuPp3502I+N+BjxCMU4287xLVME5LtLDWc2uEJ+orKv/w0rm2yC
+        54GoVGOa+Zo8pxKKT15z+LCAHcQJUtupPPz4l5MPj1ygmp5KrjemJDFUkWdlzM+B
+        Saig==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1685180028; x=1685266428; bh=K5HSzSXgcT98s
+        5lBDkCfWoTpmYhsHpXg6HrwUgDT17w=; b=rM1q1rcBDxeTqZMmlqXVSXMgkPcbr
+        ZodW4gGD/nDBS6ste/jBse17h1XICdAud9JmPW8nDWTXO9MN/0iJrfTXKBfDbDIB
+        XlCw40q8nLV9D112QCDsRdRMiBioszqlClt23GM77kVuPnsMAm+72+YBeU85/s7l
+        QeauHWThHvgphCWpeXxX5XoitJ5vrnf9O0oWA1+o7e5Q7t755H0KkD0YhVq3gwuh
+        FpzI77DogSNSnDMtyT9pBEgOJQJ1MCh5eDz9theV20t+oIrQnsZoxiuyXRXXKiXM
+        TKrREGAJkvom4lxH6dmkyIsj8jIiDMII6+X+6sNbH8r9xbj0wctiNfltQ==
+X-ME-Sender: <xms:fM5xZIfrpannk7OuaOWRnfYeHbGziUIZ8rHJ_jc38jXvMJ_cd3YZ3w>
+    <xme:fM5xZKOuqsfbsPbzBodeWicTj9SMK7HOHnAwD8-RrBo9yK7GEMN6TPvBqwXPhkMbC
+    FH-jsyYt5aagorCZNA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekuddgudejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:fM5xZJglN6zEfoim9oo81tFrVKSItNlwhUQC3HPidvkPIR-kHQScPA>
+    <xmx:fM5xZN_9RJwuUa7Fgf5HczKXazCEoGAPNwSBT55iJa6fcYnismDRiQ>
+    <xmx:fM5xZEs2Ti3DHKi-dMZQURU7iWmVfZvdPBRUysSgNsaZmK9TuKYp8w>
+    <xmx:fM5xZFnxqmd_ESz3W7DqJHvfFiudTt-IMXoRbbfV0o1H0yqoLxPu8Q>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 941FBB60089; Sat, 27 May 2023 05:33:48 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
+Mime-Version: 1.0
+Message-Id: <f0194cbe-eb5b-40ee-8723-1927ebddefc1@app.fastmail.com>
+In-Reply-To: <20230527034922.5542-1-kuniyu@amazon.com>
+References: <20230526201607.54655398@kernel.org>
+ <20230527034922.5542-1-kuniyu@amazon.com>
+Date:   Sat, 27 May 2023 11:33:28 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Kuniyuki Iwashima" <kuniyu@amazon.com>,
+        "Naresh Kamboju" <naresh.kamboju@linaro.org>
+Cc:     "Jakub Kicinski" <kuba@kernel.org>,
+        "Anders Roxell" <anders.roxell@linaro.org>,
+        "Dan Carpenter" <dan.carpenter@linaro.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org,
+        "Xin Long" <lucien.xin@gmail.com>,
+        "Martin KaFai Lau" <martin.lau@linux.dev>,
+        Netdev <netdev@vger.kernel.org>, stable@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com
+Subject: Re: selftests: net: udpgso_bench.sh: RIP: 0010:lookup_reuseport
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,17 +92,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gU2F0LCAyMDIzLTA1LTI3IGF0IDE2OjMwICswODAwLCBrZXJuZWwgdGVzdCByb2JvdCB3cm90
-ZToNCj4gDQo+IEhpLA0KPiANCj4gVGhhbmtzIGZvciB5b3VyIHBhdGNoLg0KPiANCj4gRllJOiBr
-ZXJuZWwgdGVzdCByb2JvdCBub3RpY2VzIHRoZSBzdGFibGUga2VybmVsIHJ1bGUgaXMgbm90IHNh
-dGlzZmllZC4NCj4gDQo+IFJ1bGU6ICdDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZycgb3IgJ2Nv
-bW1pdCA8c2hhMT4gdXBzdHJlYW0uJw0KPiBTdWJqZWN0OiBbUEFUQ0ggMy8zXSB3aWZpOiBydHc4
-OTogcmVtb3ZlIHJlZHVuZGFudCBjaGVjayBvZiBlbnRlcmluZyBMUFMNCj4gTGluazogaHR0cHM6
-Ly9sb3JlLmtlcm5lbC5vcmcvc3RhYmxlLzIwMjMwNTI3MDgyOTM5LjExMjA2LTQtcGtzaGloJTQw
-cmVhbHRlay5jb20NCj4gDQo+IFRoZSBjaGVjayBpcyBiYXNlZCBvbiBodHRwczovL3d3dy5rZXJu
-ZWwub3JnL2RvYy9odG1sL2xhdGVzdC9wcm9jZXNzL3N0YWJsZS1rZXJuZWwtcnVsZXMuaHRtbA0K
-PiANCg0KSSBzZW50IHRoaXMgcGF0Y2hzZXQgd2l0aCB0aGUgc2FtZSBUby9DYyBtYWlsIGFkZHJl
-c3NlcywgYnV0IEkgZG9uJ3Qgd2FudA0KdG8gYXBwbHkgdGhpcyBwYXRjaCB0byBzdGFibGUga2Vy
-bmVsLCBzbyBwbGVhc2Ugc3RhYmxlIG1haW50YWluZXJzDQppZ25vcmUgdGhpcyBwYXRjaC4gSSB3
-aWxsIHRha2UgY2FyZSBhYm91dCB0aGlzIGJ5IG5leHQgc3VibWlzc2lvbi4NCg0KUGluZy1LZQ0K
-DQo=
+On Sat, May 27, 2023, at 05:49, Kuniyuki Iwashima wrote:
+> From: Jakub Kicinski <kuba@kernel.org>
+> Date: Fri, 26 May 2023 20:16:07 -0700
+>> On Wed, 24 May 2023 13:24:15 +0530 Naresh Kamboju wrote:
+>> > While running selftests: net: udpgso_bench.sh on qemu-x86_64 the following
+>> > kernel crash noticed on stable rc 6.3.4-rc2 kernel.
+>> 
+>> Can you repro this or it's just a one-off?
+>> 
+>> Adding some experts to CC.
+>
+> FWIW, I couldn't reproduce it on my x86_64 QEMU setup & 6.4.0-rc3
+> at least 5 times, so maybe one-off ?
+
+This looks like one of several spurious reports that lkft has produced
+recently, where an 'int3' trap instruction is executed in a function
+that is live-patched, but at a point where the int3 is not expected.
+
+Anders managed to get a reproducer for one of these on his manchine
+yesterday, and has narrowed it down to failing on qemu-7.2.2 but
+not failing on qemu-8.0.
+
+The current theory right now is that this is a qemu bug when
+dealing with self-modifying x86 code that has been fixed in
+qemu-8.0 already, and my suggestion would be to ignore all bugs
+found by lkft that involve an 'int3' trap, and instead change
+the lkft setup to use either qemu-8.0 or run the test systems
+in kvm (which would also be much faster and save resources).
+
+Someone still needs to get to the bottom of this bug to see
+if it's in qemu or in the kernel livepatching code, but I'm
+sure it has nothing to do with the ipv6 stack.
+
+      Arnd
