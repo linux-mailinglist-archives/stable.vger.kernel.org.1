@@ -2,175 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE88713169
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 03:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8A6C71316E
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 03:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231250AbjE0BRQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 21:17:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
+        id S229762AbjE0BUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 21:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjE0BRP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 21:17:15 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53FF5D9;
-        Fri, 26 May 2023 18:17:14 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-253e0edc278so1056966a91.3;
-        Fri, 26 May 2023 18:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685150234; x=1687742234;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u1MUhZ8AL6v7HF/BFevblX8J8zc/hH+SzAnUSc+lhMQ=;
-        b=nqALSochM+eKhBXjgMGjKh7FPSpAyPYZn8UU0ZPfjG2054Sy0paJLOU27V7UJZIPqQ
-         ZNVjgklIoVJaqr+SUvFiuYhaAWiNvdXJXDZAHX44aOJj5Hbr2abnzGIZaSiAILwvJcd/
-         q/Q1jHY7cQ9zQT74EyvQrmWnROA7mY0/BFg66ubdRgD0J0XrPkA1eA0kjciJRWoncDvj
-         ANHdkrxtFkPVid+VZ+NHCQYMF6t4sR3jjly4dCDGSGKYK1HjP2M6rWnZ4rNa5DwXm/z+
-         ApBXUdRKVk+LTBQU9CbP9w7vP/ODiFHc8t3toJKsKIHWwg+dnQYUeooGrGf2g4PNRPRD
-         BcWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685150234; x=1687742234;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u1MUhZ8AL6v7HF/BFevblX8J8zc/hH+SzAnUSc+lhMQ=;
-        b=au6n71BKP0Y+UD+8Xx0/m87zZmGDCwr7SXeoCQfLzdrGE1qw1PfKAcFNXA5W1Xvgg9
-         8q0BlxoULFz2ifR5SlxBkSVrnmmdFlKvG7P50aEGsrgpZ2O0066AHApsOwu4rTNqv7fr
-         NiAaFq/dAEQst0RrBVx9TFF7JEG9mkL1cqChxVVRJ9wI1FlqymRS7+555k6bKgucmJ4h
-         QrQszWKpR6PijjD3Wp/1d7Vc0BP3QgMvLqLkSl0zZK/noiB6MebbCdzYRMRSSr3R4uKY
-         neiCAbiQmk+Nu/0mTRSgfq046uwwpJQKfnhop1lx4Do7t52baHnDfjMXglwoP2d0fCht
-         Z9ow==
-X-Gm-Message-State: AC+VfDwVsNhOn0fdotxKqtInXbWW8f/8HzkA7T0sY5t2llhUj/2Y287b
-        SffMUcyfthXz2oJalbayECk=
-X-Google-Smtp-Source: ACHHUZ7JiSpzKbE0ei9eGYmMk8rPwz9hzFvivVfknmDhWXhTsnvYRkjRRKla1WAtogfK/hFols8vkg==
-X-Received: by 2002:a17:90a:9105:b0:253:94c7:4609 with SMTP id k5-20020a17090a910500b0025394c74609mr3863757pjo.44.1685150233669;
-        Fri, 26 May 2023 18:17:13 -0700 (PDT)
-Received: from debian.me (subs02-180-214-232-7.three.co.id. [180.214.232.7])
-        by smtp.gmail.com with ESMTPSA id q2-20020a17090ad38200b0025063e893c9sm1710887pju.55.2023.05.26.18.17.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 18:17:13 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 7374C1069DF; Sat, 27 May 2023 08:17:10 +0700 (WIB)
-Date:   Sat, 27 May 2023 08:17:10 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Sami Korkalainen <sami.korkalainen@proton.me>,
-        Linux Stable <stable@vger.kernel.org>
-Cc:     Linux Regressions <regressions@lists.linux.dev>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-Message-ID: <ZHFaFosKY24-L7tQ@debian.me>
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
+        with ESMTP id S229716AbjE0BUL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 21:20:11 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFDCD9
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 18:20:10 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id C3D7E320090B;
+        Fri, 26 May 2023 21:20:06 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 26 May 2023 21:20:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tyhicks.com; h=
+        cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1685150406; x=1685236806; bh=1d
+        7oKPGVdWB5JAEgMj9dkOXHwQuyjIMmlSbKS0bEYuk=; b=QfQ9unCm3iciiXRh6f
+        V7W/J1OfSjCOSBSgAKv0QLLxkU1E+74aqKQCauR71jmTRE+jCCcJWqUKUe2Bq8DU
+        vtKYPtUI9gp3t/bm2txM0tXS2WHI858sp9Ak9p2mQU3Jic1NDoTyRAOGoCv65D6p
+        ZbAr3oqkfhFdj36kOqj3m9kzP6Ojqnpn4ZFRoyy6Rzy21BzzOrK6YUK9eQRh272a
+        5+tdUKrSrgQeUALGJRIRFfTmmSv32ssPKcQQnpxzpfZ3yJXbxWkbmXsBtuC8H0Ca
+        S27fv8BJdf1pbixqlKlhdtMNYKdSYWC28f8UL9EI/0Rfuz1TpzzEHsBpBFzucAwE
+        YtoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1685150406; x=1685236806; bh=1d7oKPGVdWB5J
+        AEgMj9dkOXHwQuyjIMmlSbKS0bEYuk=; b=DtLlItFUFURx8AO3WVuiUA2QdvVRc
+        dGlV2AA1jVoj+jhOMi0VZ8gGN3+e78jtxddQaqooOqF5X51H3U0ibVD0S9u6QtMv
+        yczHHhxKm2+PVpmdLqIGJ4HMoQkElCExTJQcVRa/ZeyoCJM+CKiniRJCPb46JFiV
+        TyEihR8F7Pv7fHZfOIPLGmEnefXNxB4uetBstALK3nAEQCvSiB1g/BxjXmT64ZOD
+        wjBWnBEi0qZbqpsw4lCwEHY2p3FUYvBaEZBhmCtkcpcvUay7+r6c8gIUyuCpOO0/
+        ngs1UjjglKoHdGbj/GZ2hxgZG39duodP1z4aeej6rISHaFA8H/finY0fQ==
+X-ME-Sender: <xms:xlpxZP0dZ3EEfINUAhYmEc8j-ylCsXBF9WIaWMKB3cL8BgZBgohpkg>
+    <xme:xlpxZOEuC0EVuGEgStDYsFpr3aIrq56n-qBeN_R437cXh1PQxGomg_mu1NqpaAFJa
+    oTUDAF7sGzyB9M2-AU>
+X-ME-Received: <xmr:xlpxZP5zrQoMrr_WK-o_iI25SN4qrbxiCXS17MRwFcx1p6_CsQpuw-Nx8ns>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeektddggeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfihlhgv
+    rhcujfhitghkshcuoegtohguvgesthihhhhitghkshdrtghomheqnecuggftrfgrthhtvg
+    hrnhepjeeigfdvheejhefgtdfgfffgfeejveejueejfedvgfefveevudfgtdfgteegueff
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghouggvsehthihh
+    ihgtkhhsrdgtohhm
+X-ME-Proxy: <xmx:xlpxZE0DHNn_SqGnhmxwVdt9OLFJxqop0UhN6z6dkW6YXNiFJCiG0g>
+    <xmx:xlpxZCFaJKk_90Y5wBXu48FxY5ZQvWygVLWxQhbak59dv19SmpKiPQ>
+    <xmx:xlpxZF-ixuIehEj_CUI_76s4EQeqby5k4RjRYTp9RZEHGcyxl0Zw0g>
+    <xmx:xlpxZHQqOqQiyY1ZTAh62Kqp66KPlk2By5GlQGBeg-Tz9TaUQjHdGA>
+Feedback-ID: i78e14604:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 26 May 2023 21:20:05 -0400 (EDT)
+Date:   Fri, 26 May 2023 20:20:03 -0500
+From:   Tyler Hicks <code@tyhicks.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Hardik Garg <hargar@linux.microsoft.com>, stable@vger.kernel.org,
+        oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.1 5.15 5.10 5.4 4.19 4.14] selftests/memfd: Fix unknown
+ type name build failure
+Message-ID: <ZHFaw6k8+2+MM1jv@sequoia>
+References: <20230526232136.255244-1-hargar@linux.microsoft.com>
+ <ZHE/avMpv2Sjqwxf@3bef23cc04e9>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SRbjNOAccUE98jZ9"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <ZHE/avMpv2Sjqwxf@3bef23cc04e9>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 2023-05-27 07:23:22, kernel test robot wrote:
+> Hi,
+> 
+> Thanks for your patch.
+> 
+> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> 
+> Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+> Subject: [PATCH 6.1 5.15 5.10 5.4 4.19 4.14] selftests/memfd: Fix unknown type name build failure
+> Link: https://lore.kernel.org/stable/20230526232136.255244-1-hargar%40linux.microsoft.com
+> 
+> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> 
+> Please ignore this mail if the patch is not relevant for upstream.
 
---SRbjNOAccUE98jZ9
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I think Hardik did the right thing here. This is a build failure bug
+that's present in stable kernels but was fixed in upstream by an
+unrelated commit:
 
-On Fri, May 26, 2023 at 07:17:26PM +0000, Sami Korkalainen wrote:
-> Linux 6.2 and newer are (mostly) unbootable on my old HP 6730b laptop, th=
-e 6.1.30 works still fine.
-> The weirdest thing is that newer kernels (like 6.3.4 and 6.4-rc3) may boo=
-t ok on the first try, but when rebooting, the very same version doesn't bo=
-ot.
->       =20
-> Some times, when trying to boot, I get this message repeated forever:
-> ACPI Error: No handler or method for GPE [XX], disabling event (20221020/=
-evgpe-839)
-> On newer kernels, the date is 20230331 instead of 20221020. There is also=
- some other error, but I can't read it as it gets overwritten by the other =
-ACPI error, see image linked at the end.
->=20
-> And some times, the screen will just stay completely blank.
->=20
-> I tried booting with acpi=3Doff, but it does not help.
->       =20
-> I bisected and this is the first bad commit 7e68dd7d07a2
-> "Merge tag 'net-next-6.2' of git://git.kernel.org/pub/scm/linux/kernel/gi=
-t/netdev/net-next"
+ 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
 
-I think networking changes shouldn't cause this ACPI regression, right?
+It wouldn't be right to backport that patch because MFD_NOEXEC_SEAL and
+MFD_EXEC weren't introduced until v6.3.
 
->       =20
-> As the later kernels had the seemingly random booting behaviour (mentione=
-d above), I retested the last good one 7c4a6309e27f by booting it several t=
-imes and it boots every time.
->=20
-> I tried getting some boot logs, but the boot process does not go far enou=
-gh to make any logs.
->=20
-> Kernel .config file: https://0x0.st/Hqt1.txt
->     =20
-> Environment (outputs of a working Linux 6.1 build):
-> Software (output of the ver_linux script): https://0x0.st/Hqte.txt
-> Processor information (from /proc/cpuinfo): https://0x0.st/Hqt2.txt
-> Module information (from /proc/modules): https://0x0.st/HqtL.txt
-> /proc/ioports: https://0x0.st/Hqt9.txt
-> /proc/iomem:   https://0x0.st/Hqtf.txt
-> PCI information ('lspci -vvv' as root): https://0x0.st/HqtO.txt
-> SCSI information (from /proc/scsi/scsi)
+There was an (unmerged) attempt to fix this specific build failure in upstream:
 
-Where is SCSI info?
+ https://lore.kernel.org/all/20211203024706.10094-1-luke.nowakowskikrijger@canonical.com/
 
->=20
-> Attached devices:
-> Host: scsi0 Channel: 00 Id: 00 Lun: 00
-> Vendor: ATA      Model: KINGSTON SVP200S Rev: C4
-> Type:   Direct-Access                    ANSI  SCSI revision: 05
-> Host: scsi1 Channel: 00 Id: 00 Lun: 00
-> Vendor: hp       Model: CDDVDW TS-L633M  Rev: 0301
-> Type:   CD-ROM                           ANSI  SCSI revision: 05
->       =20
-> Distribution: Arch Linux
-> Boot manager: systemd-boot (UEFI)
->=20
-> git bisect log: https://0x0.st/Hqgx.txt
-> ACPI Error (sorry for the dusty screen): https://0x0.st/HqEk.jpeg
->=20
-> #regzbot ^introduced 7e68dd7d07a2
->=20
-> Best regards
-> Sami Korkalainen
+Hardik opted to follow what was done upstream in a patch specifically
+for the stable tree.
 
-Anyway, I also Cc: netdev and acpi lists and maintainers (maybe they have
-idea on what's going on here) and also fixing up regzbot entry title:
+Tyler
 
-#regzbot title: Boot stall with ACPI error (no handler/method for GPE) caus=
-ed by net-next 6.2 pull
-
-Thanks.
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---SRbjNOAccUE98jZ9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZHFaEgAKCRD2uYlJVVFO
-o6ZFAP0ecQWNJK9MUFvbYpR/JcZDhn/3RVSBKUgZPHz4eMATbgD+KWLUd6gawDB7
-HVS/T0127pVJOVzbN00GRUC9OCir9Q4=
-=qIsL
------END PGP SIGNATURE-----
-
---SRbjNOAccUE98jZ9--
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
+> 
+> 
