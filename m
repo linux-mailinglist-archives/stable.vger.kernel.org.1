@@ -2,130 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E254A713617
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 20:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8BE71361E
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 20:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjE0Sen (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 27 May 2023 14:34:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40616 "EHLO
+        id S229493AbjE0Slm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 27 May 2023 14:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjE0Sem (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 14:34:42 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154BDD2;
-        Sat, 27 May 2023 11:34:41 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-565e6beb7aaso4323707b3.2;
-        Sat, 27 May 2023 11:34:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685212480; x=1687804480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TzEHMKPZ9fj/sSTbrr++Mdb6c3+qROgUK5bksEJMA/A=;
-        b=R7EkvIHbW6jHBVSEZdi6c6B8Oco6L/mnlGh6SNeKvBZY5TdmZ4uOQMe+4AESV6+Fb0
-         qgIEMxWUsz8b5JVcjGc0njrbo1Mz6VQFCyFYgF8jyycqmyajiRiddSEP6kZjV8Em4F9J
-         PGZfidDmbXXdC60HuxaWa72oab7RbVjJeiTr9z28CWMXISaNj9y3OpcqQJiML+kotLUB
-         1J7UwAXdeiFXqoEyJH/mcgJyxJZkkq6cnohLtaFAhrt8G+7+TUYUTisJeBES40VKoNFZ
-         h6dwN8Fgfb2An2qRF5KLceAj/aEuR0FMEwkiSRBx7zIUeotkF+fEwrCcYZuTNJgrShQ0
-         /LLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685212480; x=1687804480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TzEHMKPZ9fj/sSTbrr++Mdb6c3+qROgUK5bksEJMA/A=;
-        b=ZkZ9ZcGa31sU9rr0fUYNSTvM3C6rSam9sIyHJqyMAw78zAN5RlpPPIlZpgJPAA1woL
-         BkZLjCFlgar/QzustWNxay4nWvDjFMhwysKX/aecDkhU1bYOYVevHjvT/kSUXgtT90qL
-         Qk30Bo6IB/COgoMMvJGMZXwNOdwmDFb9CtErPSo7bpNmWghmyH4on+oKEAUfM1cQIiKG
-         TDyo8EAFh4WdHyC18BBUgckWume7kR7p+LmZbBR4hhrnRG7WXqlmF07Wv0Xpr7s6V4DV
-         2b87gxIAQFo0NVRibgGQFYxv/sEYkRhCenwdKRlsV43Gx/qmpBX7hLDcQh+cQ+5G0aCo
-         cuJQ==
-X-Gm-Message-State: AC+VfDw9FqRZowFtUE4MjURTIhYobMkbL6hDPAhPUG0DkDox/CWQQpgS
-        28ZdielEW+cJ5cRKKER9Y2HiAB0x/0L3XZMcIRZ6aTLdmMPlOw==
-X-Google-Smtp-Source: ACHHUZ7C6QJXpq3Vg5Z4EPkDHRGpRztxNaW37dYn6pLtrPqOoi/iMCQYIgjTwz+A3iojBTjlf1sOyckIK1611B5YW5I=
-X-Received: by 2002:a81:6a05:0:b0:565:5478:713a with SMTP id
- f5-20020a816a05000000b005655478713amr6377602ywc.49.1685212480200; Sat, 27 May
- 2023 11:34:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <efd6f2d4-547c-1378-1faa-53c044dbd297@gmail.com>
- <CAG8fp8SaHi0X-tZHnji_93wBADp1_=brjauWCVXuLaG7iP0p=A@mail.gmail.com>
- <CAG8fp8QXoEkndCzyaYZmg6+ZrszKOfh_YSi0o2_weV7y1_xYkQ@mail.gmail.com> <CAMj1kXGjkKK-oHm64Y9P-AbYQWd9jnEdsNucRbY_-7mgJ_4yAA@mail.gmail.com>
-In-Reply-To: <CAMj1kXGjkKK-oHm64Y9P-AbYQWd9jnEdsNucRbY_-7mgJ_4yAA@mail.gmail.com>
-From:   Akihiro Suda <suda.kyoto@gmail.com>
-Date:   Sun, 28 May 2023 03:34:28 +0900
-Message-ID: <CAG8fp8ReYLaNYO9LYE1WeeSDg1pO1hz3f-8_WPZkLVWbzzyCvg@mail.gmail.com>
-Subject: Re: mix of ACPICA regression and EFISTUB regression (Was: kernel >=
- v6.2 no longer boots on Apple's Virtualization.framework (x86_64); likely to
- be related to ACPICA)
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, linux-efi@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux x86 <x86@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux ACPICA <acpica-devel@lists.linuxfoundation.org>,
-        Linux Stable <stable@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Robert Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229483AbjE0Slm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 27 May 2023 14:41:42 -0400
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE1DD2;
+        Sat, 27 May 2023 11:41:39 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 54C3C3200583;
+        Sat, 27 May 2023 14:41:36 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Sat, 27 May 2023 14:41:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1685212895; x=1685299295; bh=j5
+        5NMXH8a642LdPH7N9w+YS4Mx+JTc1eci8TwW82tHg=; b=Sa9QbqZlJDRS9iYg3E
+        a86VcGsiu1C9n4hEk2qXvu0hhAznLOzXOLbuYEjC9cAHdVRTYoRZcui+0iBli+1S
+        SeGr8K+LCivuDInBr1jsVHQVbEPlyMSftBdwoGBqQW4d/gaWMjKCktBv1kkOhrXj
+        Eu8GGj+4yPf40XTsGjhK8HBbRdBnv25Hp4ee4fmZz66mp2ZY+Z09U07tAnX+d870
+        TzaOMbZp2KL46HLNR4L2Rwgve0a1RxgeW8R4UrkoYoQJ+awGJYN04NWDFJc06TI6
+        5fo8w74KChuRFPM1jkKFmEPJWD468548/Dsk2P4+ceuhjo4aUB/42VRqM5NJ2+0E
+        Wq1Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1685212895; x=1685299295; bh=j55NMXH8a642L
+        dPH7N9w+YS4Mx+JTc1eci8TwW82tHg=; b=o3A8iysZFzosnC9DTpUgVpPx+IkfR
+        9wmqUAw/JTN/qaM9CVDbxNNpNlxRipzNKxtYJcRVaK24CNBDID248At+ZIwNoSkc
+        iV4c+9ZubeVsngx9CAZIIHUXh+aVg0iwpum89b2liUY3XbLgD1gABfsCVk7fMw7E
+        kRsBlChs+ZPzbsxdUToIFLowvJk8fraM09xKi3rlWmFymN8isk40U1vi+DVxEaQ4
+        0+2o9yaRowLEwa5+z4BjGzbqilJLQAcrO3oZO7Veh3ueKtGvDHp+lIjDQrIcEM0X
+        vUQ6rKfcmTv4ey4UvtUromsmfvzcytNjXrthEPgOlnUvajgarFuYd/I2Q==
+X-ME-Sender: <xms:305yZDsvgJ0FI-apjfSU6In3isALCQckdOYj9h2acnQCeRWfD09hJw>
+    <xme:305yZEc6XTZD__GtFknsRJf_j1XsiecT0uBcu8A8N6pUMTmbP0pdFgieAKBaOk2Kw
+    sV42nPMuKvRDW6qz4w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekuddguddvjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:305yZGzy4SoxmCu3J2mpl0OB_63_AHvL6bSVtZzD4ANsHZlwupU3jg>
+    <xmx:305yZCOsdKo2sGJQI-qizwVqNDztSJ4Du5meXcTmx4a9J_Gh-fChZA>
+    <xmx:305yZD-B3KwXhME2BSCy27el1SVG3YBRwGVhDFaYromeh-GyOglpuA>
+    <xmx:305yZE3h8V0i-woKXZJO8k2HV9YJrK0MjEWVEPjJ82VRP2iBeLyKrg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 8D668B60086; Sat, 27 May 2023 14:41:35 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
+Mime-Version: 1.0
+Message-Id: <b66b1d4a-50c5-4e0e-98a9-a21a4eb6aab7@app.fastmail.com>
+In-Reply-To: <CA+G9fYtzjP_EOjDFZYwTMjv5f3AK2pA_E6mk_mU5FQcZgo_qXQ@mail.gmail.com>
+References: <20230526201607.54655398@kernel.org>
+ <20230527034922.5542-1-kuniyu@amazon.com>
+ <f0194cbe-eb5b-40ee-8723-1927ebddefc1@app.fastmail.com>
+ <CA+G9fYtzjP_EOjDFZYwTMjv5f3AK2pA_E6mk_mU5FQcZgo_qXQ@mail.gmail.com>
+Date:   Sat, 27 May 2023 20:39:03 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Naresh Kamboju" <naresh.kamboju@linaro.org>
+Cc:     "Kuniyuki Iwashima" <kuniyu@amazon.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Anders Roxell" <anders.roxell@linaro.org>,
+        "Dan Carpenter" <dan.carpenter@linaro.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org,
+        "Xin Long" <lucien.xin@gmail.com>,
+        "Martin KaFai Lau" <martin.lau@linux.dev>,
+        Netdev <netdev@vger.kernel.org>, stable@vger.kernel.org,
+        willemdebruijn.kernel@gmail.com
+Subject: Re: selftests: net: udpgso_bench.sh: RIP: 0010:lookup_reuseport
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> Are you using OVMF? Which versions of qemu and OVMF are you using?
-
-I'm using Apple's Virtualization.framework, not QEMU.
-
-It doesn't use UEFI when it directly loads bzImage.
-( dmesg: https://bugzilla.kernel.org/attachment.cgi?id=3D304323 )
-
-Despite that, it still expects LINUX_EFISTUB_MINOR_VERSION
-(include/linux/pe.h) referred from arch/x86/boot/header.S to be 0x0.
-I confirmed that the kernel can boot by just setting
-LINUX_EFISTUB_MINOR_VERSION to 0x0.
-
-Would it be possible to revert the LINUX_EFISTUB_MINOR_VERSION value
-(not the actual code) to 0x0?
-Or will it break something else?
-
-Anyway, I'll try to make a request to Apple to remove the
-LINUX_EFISTUB_MINOR_VERSION check.
-
-2023=E5=B9=B45=E6=9C=8828=E6=97=A5(=E6=97=A5) 3:04 Ard Biesheuvel <ardb@ker=
-nel.org>:
+On Sat, May 27, 2023, at 20:02, Naresh Kamboju wrote:
+> On Sat, 27 May 2023 at 15:03, Arnd Bergmann <arnd@arndb.de> wrote:
+>> On Sat, May 27, 2023, at 05:49, Kuniyuki Iwashima wrote:
+>> The current theory right now is that this is a qemu bug when
+>> dealing with self-modifying x86 code that has been fixed in
+>> qemu-8.0 already, and my suggestion would be to ignore all bugs
+>> found by lkft that involve an 'int3' trap, and instead change
+>> the lkft setup to use either qemu-8.0 or run the test systems
+>> in kvm (which would also be much faster and save resources).
 >
-> On Sat, 27 May 2023 at 20:00, Akihiro Suda <suda.kyoto@gmail.com> wrote:
-> >
-> > [Resending as a plain text email]
-> >
-> > Turned out that this is a mixture of an ACPICA issue and an EFISTUB iss=
-ue.
-> >
-> > Kernel v6.2 can boot by reverting the *both* of the following two commi=
-ts:
-> > - 5c62d5aab8752e5ee7bfbe75ed6060db1c787f98 "ACPICA: Events: Support
-> > fixed PCIe wake event"
-> > - e346bebbd36b1576a3335331fed61bb48c6d8823 "efi: libstub: Always
-> > enable initrd command line loader and bump version"
-> >
-> > Kernel v6.3 can boot by just reverting e346bebb, as 5c62d5a has been
-> > already reverted in 8e41e0a575664d26bb87e012c39435c4c3914ed9.
-> > The situation is the same for v6.4-rc3 too.
-> >
-> > Note that in my test I let Virtualization.framework directly load
-> > bzImage without GRUB (akin to `qemu-system-x86_64 -kernel bzImage`).
-> > Apparently, reverting e346bebb is not necessary for loading bzImage via=
- GRUB.
-> >
->
-> Are you using OVMF? Which versions of qemu and OVMF are you using?
+>  I will send out an update to ignore the 'int3' trap email reports.
+
+Just to clarify: what I meant was ignoring the old reports with
+qemu-7.2 but not any new ones that come from qemu-8.0.
+
+      Arnd
