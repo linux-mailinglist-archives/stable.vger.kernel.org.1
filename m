@@ -2,69 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18EF57131E9
-	for <lists+stable@lfdr.de>; Sat, 27 May 2023 04:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6846A7131EB
+	for <lists+stable@lfdr.de>; Sat, 27 May 2023 04:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236265AbjE0CWd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 26 May 2023 22:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47996 "EHLO
+        id S237823AbjE0CXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 26 May 2023 22:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234381AbjE0CWc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 22:22:32 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF09125
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:22:30 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d28c9696cso290573b3a.1
-        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:22:30 -0700 (PDT)
+        with ESMTP id S237735AbjE0CXC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 26 May 2023 22:23:02 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A5D8135
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:22:59 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6439bf89cb7so338733b3a.0
+        for <stable@vger.kernel.org>; Fri, 26 May 2023 19:22:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1685154150; x=1687746150;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YibsWnUJQ4Np3t4fAknAJH/bHGwuSnEA6ZYcfvkHPT0=;
-        b=T8mc6H4dfyH81Q8PNi3Ym/xXOdC0iGbHvaCzNjouT46D0JUPGDw4MKx56++PulOYoN
-         smztwQidoSjAvEhciW0FJk3HIc0U5RKLdo+Nayj8b49FctCMIheOfnd9O1cBDRgQLkeO
-         oPUguJRAUOxyCAWpmPPUSdXlSKF4djR8sC2Wf+E2/JEPZE2BwOvWr1/DJfqE3ewuzc7J
-         Q6CE74/kCWj7s96N43kIYx09TxCz61AENybAEzEKZwyHL++kdJC9ZWt7+++QnS4SPpqV
-         Ji7IycooCJDFtwiqoRMxEXt+HlLHOtleCpfcBV1xxoIvcvwEwp0RqXwG7zBB0McXzi4R
-         fI+w==
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1685154179; x=1687746179;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p2feBH12Z8SAMM4VHEI/+F0SHxrti0MmxwQP67KTgb0=;
+        b=noBfmriExgMGn2b8MFvbVyEoZoun6FBd5DwIGBLr4TNPcOoejcTsnnbvQeXl96iGRL
+         dx+QCrbqDeIcU2emn9CsH1DVxlRidKtV7oSLywd67su8Ab5ybn4KC0a/mZ3db4yo0KFs
+         ppTMn+/vAqyzDrk4kwj1RMI7UKraCavSqtqMyBsbDyiTkZaxZbe0u5E75tbRRAv292zR
+         2DTo2VP6b2zcpyu2KAgyLD5d5sjcC7zx7F1Mut9qUoUs6uG9mIA/zZ9Zp5kthFhTc4Zw
+         8X5sZzsGAVzH1fbKoI+gv/03V5t8+q9R/5/QlC3/dJqHO5otrs66YMNRr2G0UGV00+50
+         dJ1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685154150; x=1687746150;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YibsWnUJQ4Np3t4fAknAJH/bHGwuSnEA6ZYcfvkHPT0=;
-        b=F6IELnMUWyFip9MhaBZ6MZAidzZxw7Ql5ojqt+0A1EP16U169/kSMfiSaJcbH2PlfA
-         THq+OiuuE0j+V6dhe+hRwGo9XP/yrRVu+ESbiWS0Dr8qyphQwLOrJiTlUvy+zwf7Onqm
-         v9QWq6McK7TEawFAX9VTnpGJQDyb85nA4tjeT6VarNuPw8lb9SLIyBGxLN1/8j7q7Epc
-         zdBgkNzpzoomMH6GNaLsi5D2vYqC8Zgjine8KLGxvlCVAYyoHSf/vrV40QotRstWwHSs
-         DIsDFxQYpHy/LYfdCd9k9AvEBZ/9F/RPJLx83gyXzHLzWgI5HAXOy6HoxsvNYq/1QGXI
-         HdgQ==
-X-Gm-Message-State: AC+VfDwVSluW2VCLLqWG9CApDcli7tpoRI5kfYJYj471gbcKh7xSbg9+
-        y/QQQptpIT7JCtroN55MVdu5jw==
-X-Google-Smtp-Source: ACHHUZ7V/oCX2SL+BdJZnTgn+fuCeFl5fLYubMO1DaM1twR1mLBM+IKOIe9tFuAVJwldDNxo8xVSZA==
-X-Received: by 2002:a17:902:daca:b0:1ac:6b92:a775 with SMTP id q10-20020a170902daca00b001ac6b92a775mr5090763plx.6.1685154150322;
-        Fri, 26 May 2023 19:22:30 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id y13-20020a17090322cd00b001ac8cd5ecd6sm3847285plg.65.2023.05.26.19.22.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 May 2023 19:22:29 -0700 (PDT)
-Message-ID: <8a7c1780-af95-fbb3-5f48-888fba5462f6@kernel.dk>
-Date:   Fri, 26 May 2023 20:22:28 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] io_uring: undeprecate epoll_ctl support
-Content-Language: en-US
-To:     Sam James <sam@gentoo.org>, info@bnoordhuis.nl
-Cc:     io-uring@vger.kernel.org, stable@vger.kernel.org, kernel@gentoo.org
-References: <87ttvy1r3c.fsf@gentoo.org>
+        d=1e100.net; s=20221208; t=1685154179; x=1687746179;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p2feBH12Z8SAMM4VHEI/+F0SHxrti0MmxwQP67KTgb0=;
+        b=OfNRDgi/XYe6Ahq1XagtrZUN1hJcH07p9qOVimqBCWBBtgXlp4c02ZJeGZWSpS3pcR
+         rqEIDw/1jQhiCwOL21ecEDuW31wAs/slTBFP4fxVABt+cKulsnrnTn+UA9bYaFMZOKEO
+         6dHPY9SIAY1mVTEbu9EMX6mUQcmpWKG5v8L/3Nd/nBtvA+d/wG4hqlpVxOcvrV4NsrDQ
+         d/0BlLH7/ZQvPMPQk19K4rxiIfkeflhLIoMywg7boJtc0oaUPrZlU/npY5WrGaj/GRTZ
+         oWybXEvjaCO8oeb1LS1Xv8u0IAYXQZw9vUy2T9QgtbSDeCFgxfQQOu79b/3rRQVkj3fV
+         vWgw==
+X-Gm-Message-State: AC+VfDybU9jKjI9PE6aBuNQ4RFzoXpSOP8zCPiChcHQsgzW9ZPLMK60k
+        MoQQasctem+R1m8HRdrJLtM5ig==
+X-Google-Smtp-Source: ACHHUZ40W6Mr5T4Xt+0WJqXTQ8R/RI/WTlVcHGY/74/Gz2T1YLhxuJl8LM3gs7fVqSLffHfwz0wO0w==
+X-Received: by 2002:a05:6a21:339a:b0:101:367:97ef with SMTP id yy26-20020a056a21339a00b00101036797efmr4041064pzb.1.1685154179145;
+        Fri, 26 May 2023 19:22:59 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id a21-20020aa78655000000b0064f83595bbcsm3265142pfo.58.2023.05.26.19.22.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 May 2023 19:22:58 -0700 (PDT)
 From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <87ttvy1r3c.fsf@gentoo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+To:     io-uring@vger.kernel.org, Ben Noordhuis <info@bnoordhuis.nl>
+Cc:     stable@vger.kernel.org
+In-Reply-To: <20230506095502.13401-1-info@bnoordhuis.nl>
+References: <64e5fbc2-b49f-5b7e-2a1e-aa1cef08e20c@kernel.dk>
+ <20230506095502.13401-1-info@bnoordhuis.nl>
+Subject: Re: [PATCH] io_uring: undeprecate epoll_ctl support
+Message-Id: <168515417829.871550.12902048630559626887.b4-ty@kernel.dk>
+Date:   Fri, 26 May 2023 20:22:58 -0600
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-00303
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,26 +71,20 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/26/23 7:48 PM, Sam James wrote:
-> Hi,
-> 
-> New libuv is indeed in the wild now and CMake uses it, so I end up
-> getting
-> a tonne of:
-> ```
-> [ 1763.697364] isc-net-0000: epoll_ctl support in io_uring is deprecated
-> and will be removed in a future Linux kernel version.
-> ```
-> 
-> Could you confirm if this patch looks likely to land so we know if it's
-> OK
-> to backport it downstream?
 
-Yeah, I think this is the best plan. I was out of town for a bit
-around when it got reposted and hence missed it, I'll queue it
-up for this release.
+On Sat, 06 May 2023 11:55:02 +0200, Ben Noordhuis wrote:
+> Libuv recently started using it so there is at least one consumer now.
+> 
+> 
 
+Applied, thanks!
+
+[1/1] io_uring: undeprecate epoll_ctl support
+      commit: 4ea0bf4b98d66a7a790abb285539f395596bae92
+
+Best regards,
 -- 
 Jens Axboe
+
 
 
