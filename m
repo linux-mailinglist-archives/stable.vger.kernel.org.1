@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E426713CEA
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1416F713C62
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbjE1TT6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
+        id S229713AbjE1TOx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjE1TT5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3983A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:55 -0700 (PDT)
+        with ESMTP id S229714AbjE1TOw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63F48C7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F45561AAF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D395C433D2;
-        Sun, 28 May 2023 19:19:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA7CE61967
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1629EC433D2;
+        Sun, 28 May 2023 19:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301594;
-        bh=hs0yN7OBybA8SMRvCaZzmnOGpY14uevurk2UC/iSmcI=;
+        s=korg; t=1685301290;
+        bh=VMvMEnceWN9CVjgHwJtJSmNIcVeowMLb6zuTvaG+fUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cPpHigHebrJh+Iigim+L2N/KTv2ruIxThJcB3WL3deuHTE9nmZRtrnzw6YxtUEWKY
-         tc36ZWPgZIujKeYQ7GECiISWSsmHkhvAhrN6InQDGRqVlcVqKsS2ZT8jrK9rUypCdM
-         Gd+SUgPfIMb8b6uUxpva06IINgsDO43qJrAQ9nE0=
+        b=tf6DBv1GfchYayo9cKT7eRzMbUpy5hNF7MfPu1fHYBntVaWs8ZqhF0nUTZd4mx/Ce
+         bnnOHShvZTgpmZnuskTn9sM9uDs7SqjVlcEMAAjbC941ctnZI76NzQ30qQYtu29DTL
+         AbS2HIa+mejtBc8Yc3Kb+FuQAXhC867CJgcj/EmA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hui Wang <hui.wang@canonical.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>,
-        msd <msd.mmq@gmail.com>
-Subject: [PATCH 4.19 092/132] ALSA: hda/realtek: Fix the mic type detection issue for ASUS G551JW
-Date:   Sun, 28 May 2023 20:10:31 +0100
-Message-Id: <20230528190836.432481429@linuxfoundation.org>
+        patches@lists.linux.dev, Michael Schmitz <schmitzmic@gmail.com>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 4.14 58/86] m68k: Move signal frame following exception on 68020/030
+Date:   Sun, 28 May 2023 20:10:32 +0100
+Message-Id: <20230528190830.750201030@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,88 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit a3fd1a986e499a06ac5ef95c3a39aa4611e7444c ]
+commit b845b574f86dcb6a70dfa698aa87a237b0878d2a upstream.
 
-We need to define the codec pin 0x1b to be the mic, but somehow
-the mic doesn't support hot plugging detection, and Windows also has
-this issue, so we set it to phantom headset-mic.
+On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
+a stack page fault during instruction execution (i.e. not at an
+instruction boundary) and produce a format 0xB exception frame.
 
-Also the determine_headset_type() often returns the omtp type by a
-mistake when we plug a ctia headset, this makes the mic can't record
-sound at all. Because most of the headset are ctia type nowadays and
-some machines have the fixed ctia type audio jack, it is possible this
-machine has the fixed ctia jack too. Here we set this mic jack to
-fixed ctia type, this could avoid the mic type detection mistake and
-make the ctia headset work stable.
+In this situation, the value of USP will be unreliable.  If a signal is
+to be delivered following the exception, this USP value is used to
+calculate the location for a signal frame.  This can result in a
+corrupted user stack.
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214537
-Reported-and-tested-by: msd <msd.mmq@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Link: https://lore.kernel.org/r/20211012114748.5238-1-hui.wang@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 90670ef774a8 ("ALSA: hda/realtek: Add a quirk for HP EliteDesk 805")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The corruption was detected in dash (actually in glibc) where it showed
+up as an intermittent "stack smashing detected" message and crash
+following signal delivery for SIGCHLD.
+
+It was hard to reproduce that failure because delivery of the signal
+raced with the page fault and because the kernel places an unpredictable
+gap of up to 7 bytes between the USP and the signal frame.
+
+A format 0xB exception frame can be produced by a bus error or an
+address error.  The 68030 Users Manual says that address errors occur
+immediately upon detection during instruction prefetch.  The instruction
+pipeline allows prefetch to overlap with other instructions, which means
+an address error can arise during the execution of a different
+instruction.  So it seems likely that this patch may help in the address
+error case also.
+
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
+Cc: Michael Schmitz <schmitzmic@gmail.com>
+Cc: Andreas Schwab <schwab@linux-m68k.org>
+Cc: stable@vger.kernel.org
+Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/m68k/kernel/signal.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index faef696b17989..1f535504ee907 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8650,6 +8650,9 @@ enum {
- 	ALC671_FIXUP_HP_HEADSET_MIC2,
- 	ALC662_FIXUP_ACER_X2660G_HEADSET_MODE,
- 	ALC662_FIXUP_ACER_NITRO_HEADSET_MODE,
-+	ALC668_FIXUP_ASUS_NO_HEADSET_MIC,
-+	ALC668_FIXUP_HEADSET_MIC,
-+	ALC668_FIXUP_MIC_DET_COEF,
- };
+--- a/arch/m68k/kernel/signal.c
++++ b/arch/m68k/kernel/signal.c
+@@ -819,11 +819,17 @@ static inline int rt_setup_ucontext(stru
+ }
  
- static const struct hda_fixup alc662_fixups[] = {
-@@ -9026,6 +9029,29 @@ static const struct hda_fixup alc662_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC662_FIXUP_USI_FUNC
- 	},
-+	[ALC668_FIXUP_ASUS_NO_HEADSET_MIC] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1b, 0x04a1112c },
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC668_FIXUP_HEADSET_MIC
-+	},
-+	[ALC668_FIXUP_HEADSET_MIC] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc269_fixup_headset_mic,
-+		.chained = true,
-+		.chain_id = ALC668_FIXUP_MIC_DET_COEF
-+	},
-+	[ALC668_FIXUP_MIC_DET_COEF] = {
-+		.type = HDA_FIXUP_VERBS,
-+		.v.verbs = (const struct hda_verb[]) {
-+			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x15 },
-+			{ 0x20, AC_VERB_SET_PROC_COEF, 0x0d60 },
-+			{}
-+		},
-+	},
- };
+ static inline void __user *
+-get_sigframe(struct ksignal *ksig, size_t frame_size)
++get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
+ {
+ 	unsigned long usp = sigsp(rdusp(), ksig);
++	unsigned long gap = 0;
  
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
-@@ -9060,6 +9086,7 @@ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x15a7, "ASUS UX51VZH", ALC662_FIXUP_BASS_16),
- 	SND_PCI_QUIRK(0x1043, 0x177d, "ASUS N551", ALC668_FIXUP_ASUS_Nx51),
- 	SND_PCI_QUIRK(0x1043, 0x17bd, "ASUS N751", ALC668_FIXUP_ASUS_Nx51),
-+	SND_PCI_QUIRK(0x1043, 0x185d, "ASUS G551JW", ALC668_FIXUP_ASUS_NO_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1963, "ASUS X71SL", ALC662_FIXUP_ASUS_MODE8),
- 	SND_PCI_QUIRK(0x1043, 0x1b73, "ASUS N55SF", ALC662_FIXUP_BASS_16),
- 	SND_PCI_QUIRK(0x1043, 0x1bf3, "ASUS N76VZ", ALC662_FIXUP_BASS_MODE4_CHMAP),
--- 
-2.39.2
-
+-	return (void __user *)((usp - frame_size) & -8UL);
++	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
++		/* USP is unreliable so use worst-case value */
++		gap = 256;
++	}
++
++	return (void __user *)((usp - gap - frame_size) & -8UL);
+ }
+ 
+ static int setup_frame(struct ksignal *ksig, sigset_t *set,
+@@ -841,7 +847,7 @@ static int setup_frame(struct ksignal *k
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
++	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (frame + 1, regs + 1, fsize);
+@@ -912,7 +918,7 @@ static int setup_rt_frame(struct ksignal
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame));
++	frame = get_sigframe(ksig, tregs, sizeof(*frame));
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
 
 
