@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BCD7713A99
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DDFD713AA4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229460AbjE1Qhy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:37:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55654 "EHLO
+        id S229451AbjE1Qnz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjE1Qhx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:37:53 -0400
+        with ESMTP id S229475AbjE1Qny (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:43:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 791B0A7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:37:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7BABB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:43:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07F7861629
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:37:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24981C433D2;
-        Sun, 28 May 2023 16:37:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85EC960DD5
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C95C433D2;
+        Sun, 28 May 2023 16:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685291871;
-        bh=B5xUJD27RQShu8ELVkzTR7VlglJCPfF8+zzlHwHMCAQ=;
+        s=korg; t=1685292231;
+        bh=l7Z/z+iwx82RFOZ5Kqcoptz6c8JU0uUy0aFOzUpsB7U=;
         h=Subject:To:Cc:From:Date:From;
-        b=CKIyLcPnnIV5sHhauhbMXMob5+b7t7+xjp/tWyJQgLRZyTgGGLXlK0fHlWqElLJNx
-         afXRko+6LtOlhALwH/+G95RCs3g5dBEhCGYXB/V8xHOQEDqk+N7HZhuSY4m/u6DJUZ
-         uwsIxeL7P3Wqu2Juq1Q1oY8NtY9ld9zAzDTaTHA4=
-Subject: FAILED: patch "[PATCH] bpf: fix a memory leak in the LRU and LRU_PERCPU hash maps" failed to apply to 5.15-stable tree
-To:     aspsk@isovalent.com, martin.lau@kernel.org
+        b=nvqWV5AutWFYD+2/cB/UAGNBeMBF/c/l4X312eZJz4aN6WQy3PUluSU1BpNEOSjhM
+         vAT3caPiL7rIHdyIFRdqim12mSB7ccXkx0JO7YLMZL00+oGaBKijqt5HTV13eM3cWW
+         smlLRPVzLnH/9aKpfQy/77qEvAO8Ij9BCTaOZ8ug=
+Subject: FAILED: patch "[PATCH] platform/x86: ISST: Remove 8 socket limit" failed to apply to 5.15-stable tree
+To:     steve.wahl@hpe.com, hdegoede@redhat.com,
+        ilpo.jarvinen@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:37:49 +0100
-Message-ID: <2023052848-esquire-crisped-c290@gregkh>
+Date:   Sun, 28 May 2023 17:43:48 +0100
+Message-ID: <2023052848-preset-slapping-3df7@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,14 +58,15 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b34ffb0c6d23583830f9327864b9c1f486003305
+git cherry-pick -x bbb320bfe2c3e9740fe89cfa0a7089b4e8bfc4ff
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052848-esquire-crisped-c290@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052848-preset-slapping-3df7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-b34ffb0c6d23 ("bpf: fix a memory leak in the LRU and LRU_PERCPU hash maps")
+bbb320bfe2c3 ("platform/x86: ISST: Remove 8 socket limit")
+9a1aac8a96dc ("platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering")
 
 thanks,
 
@@ -72,61 +74,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b34ffb0c6d23583830f9327864b9c1f486003305 Mon Sep 17 00:00:00 2001
-From: Anton Protopopov <aspsk@isovalent.com>
-Date: Mon, 22 May 2023 15:45:58 +0000
-Subject: [PATCH] bpf: fix a memory leak in the LRU and LRU_PERCPU hash maps
+From bbb320bfe2c3e9740fe89cfa0a7089b4e8bfc4ff Mon Sep 17 00:00:00 2001
+From: Steve Wahl <steve.wahl@hpe.com>
+Date: Fri, 19 May 2023 11:04:20 -0500
+Subject: [PATCH] platform/x86: ISST: Remove 8 socket limit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The LRU and LRU_PERCPU maps allocate a new element on update before locking the
-target hash table bucket. Right after that the maps try to lock the bucket.
-If this fails, then maps return -EBUSY to the caller without releasing the
-allocated element. This makes the element untracked: it doesn't belong to
-either of free lists, and it doesn't belong to the hash table, so can't be
-re-used; this eventually leads to the permanent -ENOMEM on LRU map updates,
-which is unexpected. Fix this by returning the element to the local free list
-if bucket locking fails.
+Stop restricting the PCI search to a range of PCI domains fed to
+pci_get_domain_bus_and_slot().  Instead, use for_each_pci_dev() and
+look at all PCI domains in one pass.
 
-Fixes: 20b6cc34ea74 ("bpf: Avoid hashtab deadlock with map_locked")
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Link: https://lore.kernel.org/r/20230522154558.2166815-1-aspsk@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+On systems with more than 8 sockets, this avoids error messages like
+"Information: Invalid level, Can't get TDP control information at
+specified levels on cpu 480" from the intel speed select utility.
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 00c253b84bf5..9901efee4339 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -1215,7 +1215,7 @@ static long htab_lru_map_update_elem(struct bpf_map *map, void *key, void *value
+Fixes: aa2ddd242572 ("platform/x86: ISST: Use numa node id for cpu pci dev mapping")
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230519160420.2588475-1-steve.wahl@hpe.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+index e0572a29212e..02fe360a59c7 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -304,14 +304,13 @@ struct isst_if_pkg_info {
+ static struct isst_if_cpu_info *isst_cpu_info;
+ static struct isst_if_pkg_info *isst_pkg_info;
  
- 	ret = htab_lock_bucket(htab, b, hash, &flags);
- 	if (ret)
--		return ret;
-+		goto err_lock_bucket;
+-#define ISST_MAX_PCI_DOMAINS	8
+-
+ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn)
+ {
+ 	struct pci_dev *matched_pci_dev = NULL;
+ 	struct pci_dev *pci_dev = NULL;
++	struct pci_dev *_pci_dev = NULL;
+ 	int no_matches = 0, pkg_id;
+-	int i, bus_number;
++	int bus_number;
  
- 	l_old = lookup_elem_raw(head, hash, key, key_size);
+ 	if (bus_no < 0 || bus_no >= ISST_MAX_BUS_NUMBER || cpu < 0 ||
+ 	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
+@@ -323,12 +322,11 @@ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn
+ 	if (bus_number < 0)
+ 		return NULL;
  
-@@ -1236,6 +1236,7 @@ static long htab_lru_map_update_elem(struct bpf_map *map, void *key, void *value
- err:
- 	htab_unlock_bucket(htab, b, hash, flags);
+-	for (i = 0; i < ISST_MAX_PCI_DOMAINS; ++i) {
+-		struct pci_dev *_pci_dev;
++	for_each_pci_dev(_pci_dev) {
+ 		int node;
  
-+err_lock_bucket:
- 	if (ret)
- 		htab_lru_push_free(htab, l_new);
- 	else if (l_old)
-@@ -1338,7 +1339,7 @@ static long __htab_lru_percpu_map_update_elem(struct bpf_map *map, void *key,
+-		_pci_dev = pci_get_domain_bus_and_slot(i, bus_number, PCI_DEVFN(dev, fn));
+-		if (!_pci_dev)
++		if (_pci_dev->bus->number != bus_number ||
++		    _pci_dev->devfn != PCI_DEVFN(dev, fn))
+ 			continue;
  
- 	ret = htab_lock_bucket(htab, b, hash, &flags);
- 	if (ret)
--		return ret;
-+		goto err_lock_bucket;
- 
- 	l_old = lookup_elem_raw(head, hash, key, key_size);
- 
-@@ -1361,6 +1362,7 @@ static long __htab_lru_percpu_map_update_elem(struct bpf_map *map, void *key,
- 	ret = 0;
- err:
- 	htab_unlock_bucket(htab, b, hash, flags);
-+err_lock_bucket:
- 	if (l_new)
- 		bpf_lru_push_free(&htab->lru, &l_new->lru_node);
- 	return ret;
+ 		++no_matches;
 
