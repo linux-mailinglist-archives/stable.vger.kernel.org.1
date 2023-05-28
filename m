@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28C97713FB6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6387713F9B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231358AbjE1TsU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34266 "EHLO
+        id S231327AbjE1TrL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231360AbjE1TsT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:19 -0400
+        with ESMTP id S231322AbjE1TrK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A5F9B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D37A89E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9905761FE6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E64C433D2;
-        Sun, 28 May 2023 19:48:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E32E61F9F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEB2C433EF;
+        Sun, 28 May 2023 19:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303292;
-        bh=mM1rmZKpoy7KhA05mdac9DMTf1arAJfst4VxifA90cA=;
+        s=korg; t=1685303228;
+        bh=2MoMWExnZSUBjyiAeqQHwxYdgC6498XHvZRNTygb2Yo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zsr1SR9vv/TGE563EyCGW9+VsWNqLF6bHlMPz53xTpjJ/AC+2CmRsOdSPuUtyS+CO
-         76EvtV66KGUJUz16uvPp9Z+NWqk2Zej6UWDMT5URuoe9DXtcEGJaPXUfLj2/SdQEYK
-         kjQPJLnpTkpWVO2fJpQgOUY4WuSx2lJLgDFsDzw8=
+        b=Bl/4FSU/yclfDMeFB8nGwYmqq8UttSjBQnuHU4VEQBRSD9ssoHNdzF2ZIp6f+o1YR
+         zPeDn0nmnM/MDS54apYPNVGsdxGrLq6Zvv/siV7+jF6rCT4Syhs06U6JPSSjC2yDTf
+         NhJ9HrcY0t5A2AOFKOKde3UvyJ01shNWU0dfL1Ks=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        stable@kernel.org
-Subject: [PATCH 5.15 20/69] gpio: mockup: Fix mode of debugfs files
+        patches@lists.linux.dev, Hardik Garg <hargar@linux.microsoft.com>,
+        "Tyler Hicks (Microsoft)" <code@tyhicks.com>
+Subject: [PATCH 5.10 179/211] selftests/memfd: Fix unknown type name build failure
 Date:   Sun, 28 May 2023 20:11:40 +0100
-Message-Id: <20230528190829.101603049@linuxfoundation.org>
+Message-Id: <20230528190847.942061144@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: Hardik Garg <hargar@linux.microsoft.com>
 
-commit 0a1bb16e0fe6650c3841e611de374bfd5578ad70 upstream.
+Partially backport v6.3 commit 11f75a01448f ("selftests/memfd: add tests
+for MFD_NOEXEC_SEAL MFD_EXEC") to fix an unknown type name build error.
+In some systems, the __u64 typedef is not present due to differences in
+system headers, causing compilation errors like this one:
 
-This driver's debugfs files have had a read operation since commit
-2a9e27408e12 ("gpio: mockup: rework debugfs interface"), but were
-still being created with write-only mode bits.  Update them to
-indicate that the files can also be read.
+fuse_test.c:64:8: error: unknown type name '__u64'
+   64 | static __u64 mfd_assert_get_seals(int fd)
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Fixes: 2a9e27408e12 ("gpio: mockup: rework debugfs interface")
-Cc: stable@kernel.org # v5.1+
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This header includes the  __u64 typedef which increases the likelihood
+of successful compilation on a wider variety of systems.
+
+Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+Reviewed-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mockup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/memfd/fuse_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpio/gpio-mockup.c
-+++ b/drivers/gpio/gpio-mockup.c
-@@ -368,7 +368,7 @@ static void gpio_mockup_debugfs_setup(st
- 		priv->offset = i;
- 		priv->desc = gpiochip_get_desc(gc, i);
- 
--		debugfs_create_file(name, 0200, chip->dbg_dir, priv,
-+		debugfs_create_file(name, 0600, chip->dbg_dir, priv,
- 				    &gpio_mockup_debugfs_ops);
- 	}
- }
+--- a/tools/testing/selftests/memfd/fuse_test.c
++++ b/tools/testing/selftests/memfd/fuse_test.c
+@@ -22,6 +22,7 @@
+ #include <linux/falloc.h>
+ #include <linux/fcntl.h>
+ #include <linux/memfd.h>
++#include <linux/types.h>
+ #include <sched.h>
+ #include <stdio.h>
+ #include <stdlib.h>
 
 
