@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A47713CCD
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4323D713DDC
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbjE1TSr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37680 "EHLO
+        id S230190AbjE1T3t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:29:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbjE1TSq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:46 -0400
+        with ESMTP id S230181AbjE1T3s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEE9A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D866CC7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDC646112D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07045C433EF;
-        Sun, 28 May 2023 19:18:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9EE761D02
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79F7C433EF;
+        Sun, 28 May 2023 19:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301524;
-        bh=+GSOrU6Zn3X8C0LD2CdETt8WCWWDVx2QhrZkBxIuq2I=;
+        s=korg; t=1685302171;
+        bh=xlj9Beh6OB0dw16yu4Loybvh6lRsj3LLLBEYSJNB8Ng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QXyBx83gk+tFISKatjgiMkcsJX/hHZd77p6dZy0FP33H99pHKq1p5ArMkrrC/1BfC
-         JLHLPudePp7ArUzi9sQyoViWz2W23pxhUtX3DxXNHOF74e+HI5Fw89BpWBgDMgPEo+
-         9skJQfashDYMaPpUAtO4Mv1fvfQtOzn8seqiYNc0=
+        b=MFKMTbXiev0P84BItFgoL9Dq++sDhLaTFe0ubRwCQaBU+oKxhJ/oRPEKlwudmo/2V
+         TbCB6Yhc7p30WbpZiKGOuCVOJdX7OWN8k8eEK+LY22dlbYUjwFch76e9AHfSHoQAcD
+         mxK+YeNhsaY20h8C92qC77fQeZIBZMxzVewj9Iis=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 064/132] cassini: Fix a memory leak in the error handling path of cas_init_one()
+        patches@lists.linux.dev, Michael Schmitz <schmitzmic@gmail.com>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 6.3 027/127] m68k: Move signal frame following exception on 68020/030
 Date:   Sun, 28 May 2023 20:10:03 +0100
-Message-Id: <20230528190835.507784665@linuxfoundation.org>
+Message-Id: <20230528190837.153221154@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,41 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 412cd77a2c24b191c65ea53025222418db09817c ]
+commit b845b574f86dcb6a70dfa698aa87a237b0878d2a upstream.
 
-cas_saturn_firmware_init() allocates some memory using vmalloc(). This
-memory is freed in the .remove() function but not it the error handling
-path of the probe.
+On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
+a stack page fault during instruction execution (i.e. not at an
+instruction boundary) and produce a format 0xB exception frame.
 
-Add the missing vfree() to avoid a memory leak, should an error occur.
+In this situation, the value of USP will be unreliable.  If a signal is
+to be delivered following the exception, this USP value is used to
+calculate the location for a signal frame.  This can result in a
+corrupted user stack.
 
-Fixes: fcaa40669cd7 ("cassini: use request_firmware")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The corruption was detected in dash (actually in glibc) where it showed
+up as an intermittent "stack smashing detected" message and crash
+following signal delivery for SIGCHLD.
+
+It was hard to reproduce that failure because delivery of the signal
+raced with the page fault and because the kernel places an unpredictable
+gap of up to 7 bytes between the USP and the signal frame.
+
+A format 0xB exception frame can be produced by a bus error or an
+address error.  The 68030 Users Manual says that address errors occur
+immediately upon detection during instruction prefetch.  The instruction
+pipeline allows prefetch to overlap with other instructions, which means
+an address error can arise during the execution of a different
+instruction.  So it seems likely that this patch may help in the address
+error case also.
+
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
+Cc: Michael Schmitz <schmitzmic@gmail.com>
+Cc: Andreas Schwab <schwab@linux-m68k.org>
+Cc: stable@vger.kernel.org
+Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/sun/cassini.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/m68k/kernel/signal.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/sun/cassini.c b/drivers/net/ethernet/sun/cassini.c
-index d323dd9daccb0..a3a5edb8bc666 100644
---- a/drivers/net/ethernet/sun/cassini.c
-+++ b/drivers/net/ethernet/sun/cassini.c
-@@ -5138,6 +5138,8 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		cas_shutdown(cp);
- 	mutex_unlock(&cp->pm_mutex);
+--- a/arch/m68k/kernel/signal.c
++++ b/arch/m68k/kernel/signal.c
+@@ -858,11 +858,17 @@ static inline int rt_setup_ucontext(stru
+ }
  
-+	vfree(cp->fw_data);
+ static inline void __user *
+-get_sigframe(struct ksignal *ksig, size_t frame_size)
++get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
+ {
+ 	unsigned long usp = sigsp(rdusp(), ksig);
++	unsigned long gap = 0;
+ 
+-	return (void __user *)((usp - frame_size) & -8UL);
++	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
++		/* USP is unreliable so use worst-case value */
++		gap = 256;
++	}
 +
- 	pci_iounmap(pdev, cp->regs);
++	return (void __user *)((usp - gap - frame_size) & -8UL);
+ }
  
+ static int setup_frame(struct ksignal *ksig, sigset_t *set,
+@@ -880,7 +886,7 @@ static int setup_frame(struct ksignal *k
+ 		return -EFAULT;
+ 	}
  
--- 
-2.39.2
-
+-	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
++	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (frame + 1, regs + 1, fsize);
+@@ -952,7 +958,7 @@ static int setup_rt_frame(struct ksignal
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame));
++	frame = get_sigframe(ksig, tregs, sizeof(*frame));
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
 
 
