@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F29A713E91
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A982713CF6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230407AbjE1Tgo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:36:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52404 "EHLO
+        id S229906AbjE1TU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:20:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230405AbjE1Tgn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:43 -0400
+        with ESMTP id S229893AbjE1TU1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B322FA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5774EA6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50DBB61E43
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEAFC4339B;
-        Sun, 28 May 2023 19:36:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9A3261A6D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13457C4339B;
+        Sun, 28 May 2023 19:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302601;
-        bh=lmhsUYHYcurU8VICbyaQ8xb9bQ9uleMxwfjXVYCnCpo=;
+        s=korg; t=1685301625;
+        bh=lrOShuD1J7fhyB15rBLpvhFDnnnVo4vovmawdpsJHKs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZzplkH/9qE6oUuZKPBk31GhMZoOOsGxWjcCgWK33hmuWjQFpnA/+T2JSfbr7gS1qt
-         NEs16zWKDGlKp4LHGCdcJBA5yhjjJThqP86oB0TXhP25xaIowva0FLDZwt9U4I4+Yl
-         qVmgQpfOF8lie+IqjBbconk4IY2POGzP9z5i1/dM=
+        b=KwY3yj6eP11QoonjLaT/58wTlbliKY0ijVo9p7aPr9uZUU+cpkVWCsIqIN4doH9/f
+         y2We7kBtwp5phv46nc7Gev4I5JNBjemKBgCVpX3wXkAqD/3Gd0G37KeAfiKQsz+B+A
+         kxorLBplof1XJBJhP4+lr4xJ/ukzgBVVefztnP9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lyude Paul <lyude@redhat.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 042/119] drm/radeon: reintroduce radeon_dp_work_func content
+        patches@lists.linux.dev,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        Mark Brown <broonie@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 4.19 103/132] spi: spi-fsl-spi: automatically adapt bits-per-word in cpu mode
 Date:   Sun, 28 May 2023 20:10:42 +0100
-Message-Id: <20230528190836.787090458@linuxfoundation.org>
+Message-Id: <20230528190836.846410074@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,45 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 
-commit a34fc1bcd2c4d8b09dcfc0b95ac65bca1e579bd7 upstream.
+(cherry picked from upstream af0e6242909c3c4297392ca3e94eff1b4db71a97)
 
-Put back the radeon_dp_work_func logic.  It seems that
-handling DP RX interrupts is necessary to make some
-panels work.  This was removed with the MST support,
-but it regresses some systems so add it back.  While
-we are here, add the proper mutex locking.
+Taking one interrupt for every byte is rather slow. Since the
+controller is perfectly capable of transmitting 32 bits at a time,
+change t->bits_per-word to 32 when the length is divisible by 4 and
+large enough that the reduced number of interrupts easily compensates
+for the one or two extra fsl_spi_setup_transfer() calls this causes.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2567
-Fixes: 01ad1d9c2888 ("drm/radeon: Drop legacy MST support")
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_irq_kms.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-fsl-spi.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/gpu/drm/radeon/radeon_irq_kms.c
-+++ b/drivers/gpu/drm/radeon/radeon_irq_kms.c
-@@ -100,6 +100,16 @@ static void radeon_hotplug_work_func(str
- 
- static void radeon_dp_work_func(struct work_struct *work)
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -357,12 +357,28 @@ static int fsl_spi_bufs(struct spi_devic
+ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 			      struct spi_message *m)
  {
-+	struct radeon_device *rdev = container_of(work, struct radeon_device,
-+						  dp_work);
-+	struct drm_device *dev = rdev->ddev;
-+	struct drm_mode_config *mode_config = &dev->mode_config;
-+	struct drm_connector *connector;
-+
-+	mutex_lock(&mode_config->mutex);
-+	list_for_each_entry(connector, &mode_config->connector_list, head)
-+		radeon_connector_hotplug(connector);
-+	mutex_unlock(&mode_config->mutex);
- }
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
+ 	struct spi_device *spi = m->spi;
+ 	struct spi_transfer *t, *first;
+ 	unsigned int cs_change;
+ 	const int nsecs = 50;
+ 	int status;
  
- /**
++	/*
++	 * In CPU mode, optimize large byte transfers to use larger
++	 * bits_per_word values to reduce number of interrupts taken.
++	 */
++	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
++		list_for_each_entry(t, &m->transfers, transfer_list) {
++			if (t->len < 256 || t->bits_per_word != 8)
++				continue;
++			if ((t->len & 3) == 0)
++				t->bits_per_word = 32;
++			else if ((t->len & 1) == 0)
++				t->bits_per_word = 16;
++		}
++	}
++
+ 	/* Don't allow changes if CS is active */
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+ 			transfer_list);
 
 
