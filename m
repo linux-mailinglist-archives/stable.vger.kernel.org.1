@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BDF713C8D
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CD53713D15
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbjE1TQM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35412 "EHLO
+        id S229940AbjE1TVn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:21:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjE1TQL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48236C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:08 -0700 (PDT)
+        with ESMTP id S229929AbjE1TVm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:21:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27277A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:21:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7DF161997
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A96C433D2;
-        Sun, 28 May 2023 19:16:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADB3761B14
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC88C433D2;
+        Sun, 28 May 2023 19:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301367;
-        bh=CVdrzHA8PPclKroG8YQ8oh3IDB796vr0jTuUFeCmxKU=;
+        s=korg; t=1685301700;
+        bh=jMGjM7zeoL3ydsudJqWj3nhh7pXanbVX4p8lM2yN1c0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YGlPodrcUuXGrv9yx2ql757q1FML6Qve6TRlTXqTxBlFMNXFEkbdvq70zrjUHeOgb
-         Hmli0vD+TpoNeUKIggfKBcZI+WhPCY5YLOfgKnYeU2DcWIS669QcosGCIfoMuW6L4+
-         UZUrU/AntPV322axtqZ4ZdK+knul3xDtUOoA2n1w=
+        b=eoZeMwv2P68Z3vHZXdxpoqNE/vjGzTk9h2XoUJa5t3FFa4fZFzmPbZv1BOgZKo67P
+         z85ySUuMTbfxFESact4cfzTEgt4oNU1RWhVLWJH5EJSn+IDiBSHY1U4rmfpNjP4/at
+         fm+JKJg2zXC4FiLpUvBGC6m3VbCGiMn5GiTgBGaQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 4.14 81/86] power: supply: bq27xxx: Fix poll_interval handling and races on remove
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 4.19 116/132] USB: core: Add routines for endpoint checks in old drivers
 Date:   Sun, 28 May 2023 20:10:55 +0100
-Message-Id: <20230528190831.641652070@linuxfoundation.org>
+Message-Id: <20230528190837.349050129@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,94 +52,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit c00bc80462afc7963f449d7f21d896d2f629cacc upstream.
+commit 13890626501ffda22b18213ddaf7930473da5792 upstream.
 
-Before this patch bq27xxx_battery_teardown() was setting poll_interval = 0
-to avoid bq27xxx_battery_update() requeuing the delayed_work item.
+Many of the older USB drivers in the Linux USB stack were written
+based simply on a vendor's device specification.  They use the
+endpoint information in the spec and assume these endpoints will
+always be present, with the properties listed, in any device matching
+the given vendor and product IDs.
 
-There are 2 problems with this:
+While that may have been true back then, with spoofing and fuzzing it
+is not true any more.  More and more we are finding that those old
+drivers need to perform at least a minimum of checking before they try
+to use any endpoint other than ep0.
 
-1. If the driver is unbound through sysfs, rather then the module being
-   rmmod-ed, this changes poll_interval unexpectedly
+To make this checking as simple as possible, we now add a couple of
+utility routines to the USB core.  usb_check_bulk_endpoints() and
+usb_check_int_endpoints() take an interface pointer together with a
+list of endpoint addresses (numbers and directions).  They check that
+the interface's current alternate setting includes endpoints with
+those addresses and that each of these endpoints has the right type:
+bulk or interrupt, respectively.
 
-2. This is racy, after it being set poll_interval could be changed
-   before bq27xxx_battery_update() checks it through
-   /sys/module/bq27xxx_battery/parameters/poll_interval
+Although we already have usb_find_common_endpoints() and related
+routines meant for a similar purpose, they are not well suited for
+this kind of checking.  Those routines find endpoints of various
+kinds, but only one (either the first or the last) of each kind, and
+they don't verify that the endpoints' addresses agree with what the
+caller expects.
 
-Fix this by added a removed attribute to struct bq27xxx_device_info and
-using that instead of setting poll_interval to 0.
+In theory the new routines could be more general: They could take a
+particular altsetting as their argument instead of always using the
+interface's current altsetting.  In practice I think this won't matter
+too much; multiple altsettings tend to be used for transferring media
+(audio or visual) over isochronous endpoints, not bulk or interrupt.
+Drivers for such devices will generally require more sophisticated
+checking than these simplistic routines provide.
 
-There also is another poll_interval related race on remove(), writing
-/sys/module/bq27xxx_battery/parameters/poll_interval will requeue
-the delayed_work item for all devices on the bq27xxx_battery_devices
-list and the device being removed was only removed from that list
-after cancelling the delayed_work item.
-
-Fix this by moving the removal from the bq27xxx_battery_devices list
-to before cancelling the delayed_work item.
-
-Fixes: 8cfaaa811894 ("bq27x00_battery: Fix OOPS caused by unregistring bq27x00 driver")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/dd2c8e8c-2c87-44ea-ba17-c64b97e201c9@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |   22 +++++++++-------------
- include/linux/power/bq27xxx_battery.h  |    1 +
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ drivers/usb/core/usb.c |   76 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/usb.h    |    5 +++
+ 2 files changed, 81 insertions(+)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1555,7 +1555,7 @@ static void bq27xxx_battery_update_unloc
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -210,6 +210,82 @@ int usb_find_common_endpoints_reverse(st
+ EXPORT_SYMBOL_GPL(usb_find_common_endpoints_reverse);
  
- 	di->last_update = jiffies;
- 
--	if (poll_interval > 0)
-+	if (!di->removed && poll_interval > 0)
- 		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
- }
- 
-@@ -1870,22 +1870,18 @@ EXPORT_SYMBOL_GPL(bq27xxx_battery_setup)
- 
- void bq27xxx_battery_teardown(struct bq27xxx_device_info *di)
- {
--	/*
--	 * power_supply_unregister call bq27xxx_battery_get_property which
--	 * call bq27xxx_battery_poll.
--	 * Make sure that bq27xxx_battery_poll will not call
--	 * schedule_delayed_work again after unregister (which cause OOPS).
--	 */
--	poll_interval = 0;
--
--	cancel_delayed_work_sync(&di->work);
--
--	power_supply_unregister(di->bat);
--
- 	mutex_lock(&bq27xxx_list_lock);
- 	list_del(&di->list);
- 	mutex_unlock(&bq27xxx_list_lock);
- 
-+	/* Set removed to avoid bq27xxx_battery_update() re-queuing the work */
-+	mutex_lock(&di->lock);
-+	di->removed = true;
-+	mutex_unlock(&di->lock);
+ /**
++ * usb_find_endpoint() - Given an endpoint address, search for the endpoint's
++ * usb_host_endpoint structure in an interface's current altsetting.
++ * @intf: the interface whose current altsetting should be searched
++ * @ep_addr: the endpoint address (number and direction) to find
++ *
++ * Search the altsetting's list of endpoints for one with the specified address.
++ *
++ * Return: Pointer to the usb_host_endpoint if found, %NULL otherwise.
++ */
++static const struct usb_host_endpoint *usb_find_endpoint(
++		const struct usb_interface *intf, unsigned int ep_addr)
++{
++	int n;
++	const struct usb_host_endpoint *ep;
 +
-+	cancel_delayed_work_sync(&di->work);
++	n = intf->cur_altsetting->desc.bNumEndpoints;
++	ep = intf->cur_altsetting->endpoint;
++	for (; n > 0; (--n, ++ep)) {
++		if (ep->desc.bEndpointAddress == ep_addr)
++			return ep;
++	}
++	return NULL;
++}
 +
-+	power_supply_unregister(di->bat);
- 	mutex_destroy(&di->lock);
- }
- EXPORT_SYMBOL_GPL(bq27xxx_battery_teardown);
---- a/include/linux/power/bq27xxx_battery.h
-+++ b/include/linux/power/bq27xxx_battery.h
-@@ -61,6 +61,7 @@ struct bq27xxx_device_info {
- 	struct bq27xxx_access_methods bus;
- 	struct bq27xxx_reg_cache cache;
- 	int charge_design_full;
-+	bool removed;
- 	unsigned long last_update;
- 	struct delayed_work work;
- 	struct power_supply *bat;
++/**
++ * usb_check_bulk_endpoints - Check whether an interface's current altsetting
++ * contains a set of bulk endpoints with the given addresses.
++ * @intf: the interface whose current altsetting should be searched
++ * @ep_addrs: 0-terminated array of the endpoint addresses (number and
++ * direction) to look for
++ *
++ * Search for endpoints with the specified addresses and check their types.
++ *
++ * Return: %true if all the endpoints are found and are bulk, %false otherwise.
++ */
++bool usb_check_bulk_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs)
++{
++	const struct usb_host_endpoint *ep;
++
++	for (; *ep_addrs; ++ep_addrs) {
++		ep = usb_find_endpoint(intf, *ep_addrs);
++		if (!ep || !usb_endpoint_xfer_bulk(&ep->desc))
++			return false;
++	}
++	return true;
++}
++EXPORT_SYMBOL_GPL(usb_check_bulk_endpoints);
++
++/**
++ * usb_check_int_endpoints - Check whether an interface's current altsetting
++ * contains a set of interrupt endpoints with the given addresses.
++ * @intf: the interface whose current altsetting should be searched
++ * @ep_addrs: 0-terminated array of the endpoint addresses (number and
++ * direction) to look for
++ *
++ * Search for endpoints with the specified addresses and check their types.
++ *
++ * Return: %true if all the endpoints are found and are interrupt,
++ * %false otherwise.
++ */
++bool usb_check_int_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs)
++{
++	const struct usb_host_endpoint *ep;
++
++	for (; *ep_addrs; ++ep_addrs) {
++		ep = usb_find_endpoint(intf, *ep_addrs);
++		if (!ep || !usb_endpoint_xfer_int(&ep->desc))
++			return false;
++	}
++	return true;
++}
++EXPORT_SYMBOL_GPL(usb_check_int_endpoints);
++
++/**
+  * usb_find_alt_setting() - Given a configuration, find the alternate setting
+  * for the given interface.
+  * @config: the configuration to search (not necessarily the current config).
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -279,6 +279,11 @@ void usb_put_intf(struct usb_interface *
+ #define USB_MAXINTERFACES	32
+ #define USB_MAXIADS		(USB_MAXINTERFACES/2)
+ 
++bool usb_check_bulk_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs);
++bool usb_check_int_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs);
++
+ /*
+  * USB Resume Timer: Every Host controller driver should drive the resume
+  * signalling on the bus for the amount of time defined by this macro.
 
 
