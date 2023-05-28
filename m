@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE1A713F6C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D4DB713E9C
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231266AbjE1TpQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
+        id S230417AbjE1ThK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231267AbjE1TpP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:15 -0400
+        with ESMTP id S230363AbjE1ThK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86AEA9E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F025A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D66C61F39
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B433C433EF;
-        Sun, 28 May 2023 19:45:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 272F661E50
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464D4C433EF;
+        Sun, 28 May 2023 19:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303113;
-        bh=erdNnoZgfd/iNtqADvIk3GyLIYvRZ/U+gVLnY8eI2cQ=;
+        s=korg; t=1685302628;
+        bh=fLSOeWPYfwqTxvZ6Nw1u5as7Ln2Eox3g8CjW7VZm5OA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZAF44KKVOwKyDgWjgJLC/fVKPv5x+EGKAYSnW+23YLWQfrnpc9s3zzdaNIfZQz0f/
-         En+Vq8cAgDCF1p90NvCvewqNdgzZ2pnld6ahw9gkL5UpYbfnvMH/8ASrSfENkPAXSJ
-         sUV7CvcVXlB6LPvbD5oMuhLsaN6kzCcOrhRUK3i4=
+        b=rs07O5U8Sf2zBGwwLNZQzX0SzT5cnIix0Zu30npQLuUvi32feJOlj4vX7jzNk3TnK
+         5GMumxTQnDiYrVoWBil3HPFfhw84XkmErDIe29jbmta+tvonWaRjkdwVMBIa/JuRWS
+         ivUHUJjcG1mqRvyXjXXr6f37zNNyzNEJTxe6g7lw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Marek Vasut <marex@denx.de>
-Subject: [PATCH 5.10 160/211] ARM: dts: stm32: fix AV96 board SAI2 pin muxing on stm32mp15
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 081/119] power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
 Date:   Sun, 28 May 2023 20:11:21 +0100
-Message-Id: <20230528190847.479320747@linuxfoundation.org>
+Message-Id: <20230528190838.222005033@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,33 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit ee2aacb6f3a901a95b1dd68964b69c92cdbbf213 upstream.
+commit 59a99cd462fbdf71f4e845e09f37783035088b4f upstream.
 
-Replace sai2a-2 node name by sai2a-sleep-2, to avoid name
-duplication.
+bq27xxx_external_power_changed() gets called when the charger is plugged
+in or out. Rather then immediately scheduling an update wait 0.5 seconds
+for things to stabilize, so that e.g. the (dis)charge current is stable
+when bq27xxx_battery_update() runs.
 
-Fixes: 1a9a9d226f0f ("ARM: dts: stm32: fix AV96 board SAI2 pin muxing on stm32mp15")
-
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Marek Vasut <marex@denx.de>
+Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/stm32mp15-pinctrl.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm/boot/dts/stm32mp15-pinctrl.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15-pinctrl.dtsi
-@@ -1102,7 +1102,7 @@
- 		};
- 	};
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -2099,8 +2099,8 @@ static void bq27xxx_external_power_chang
+ {
+ 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
  
--	sai2a_sleep_pins_c: sai2a-2 {
-+	sai2a_sleep_pins_c: sai2a-sleep-2 {
- 		pins {
- 			pinmux = <STM32_PINMUX('D', 13, ANALOG)>, /* SAI2_SCK_A */
- 				 <STM32_PINMUX('D', 11, ANALOG)>, /* SAI2_SD_A */
+-	cancel_delayed_work_sync(&di->work);
+-	schedule_delayed_work(&di->work, 0);
++	/* After charger plug in/out wait 0.5s for things to stabilize */
++	mod_delayed_work(system_wq, &di->work, HZ / 2);
+ }
+ 
+ int bq27xxx_battery_setup(struct bq27xxx_device_info *di)
 
 
