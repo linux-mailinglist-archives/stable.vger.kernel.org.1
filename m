@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EBA1713FE3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8D2713FE5
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:50:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjE1TuL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:50:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35544 "EHLO
+        id S231415AbjE1TuP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:50:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjE1TuK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:50:10 -0400
+        with ESMTP id S231411AbjE1TuO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:50:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590699C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:50:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339239C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:50:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5C5062045
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BB9C433EF;
-        Sun, 28 May 2023 19:50:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC7356204A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:50:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31F8C433D2;
+        Sun, 28 May 2023 19:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303408;
-        bh=As6ZsM/UMnU0hPRBpQHC+m+PQlUtWFyDzWOuPJi99Ss=;
+        s=korg; t=1685303413;
+        bh=x/t6kxFrk9c+yKlNWGjQh4NjV3nAae/I54aV7FCNWIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YnQBdmDGxWAFI5Ec9Ok9VgPV/6g2/u5lpspq0lEYcdbjo/zYkPwTm3Rbnoxd5iu9i
-         kXbspb831a86QFGiesfQ0fRThdguGiskn63CmpFfSEiKBVCC9vx5umo8EOJT4fx4Vg
-         KvwBiIxISHJ//ppgWR/f5CXFzrwWkCL9zmi87NH4=
+        b=lOJ1b8wLSsLDyFKzCN0z08AI+57eJBG6a6JPcdl9sjKUl9iGc+gITRYIYeX/2HkM4
+         XefeNSilSmx4DE2dA1Yf0glLEoPXF5PiX/lh1Wq5baTSLpTX2KllPhNYJXll2sYRK8
+         a46f5JApdzwHWxcMVcqLZzPIUd0O0miYvN9KAYUI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roi Dayan <roid@nvidia.com>,
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
         Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 5.15 63/69] net/mlx5: Fix error message when failing to allocate device memory
-Date:   Sun, 28 May 2023 20:12:23 +0100
-Message-Id: <20230528190830.746868188@linuxfoundation.org>
+Subject: [PATCH 5.15 64/69] net/mlx5: Devcom, fix error flow in mlx5_devcom_register_device
+Date:   Sun, 28 May 2023 20:12:24 +0100
+Message-Id: <20230528190830.783111136@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
 References: <20230528190828.358612414@linuxfoundation.org>
@@ -53,30 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roi Dayan <roid@nvidia.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit a65735148e0328f80c0f72f9f8d2f609bfcf4aff upstream.
+commit af87194352cad882d787d06fb7efa714acd95427 upstream.
 
-Fix spacing for the error and also the correct error code pointer.
+In case devcom allocation is failed, mlx5 is always freeing the priv.
+However, this priv might have been allocated by a different thread,
+and freeing it might lead to use-after-free bugs.
+Fix it by freeing the priv only in case it was allocated by the
+running thread.
 
-Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
-Signed-off-by: Roi Dayan <roid@nvidia.com>
+Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
 Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -903,7 +903,7 @@ static int mlx5_init_once(struct mlx5_co
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -110,7 +110,8 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	priv->devs[idx] = dev;
+ 	devcom = mlx5_devcom_alloc(priv, idx);
+ 	if (!devcom) {
+-		kfree(priv);
++		if (new_priv)
++			kfree(priv);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
  
- 	dev->dm = mlx5_dm_create(dev);
- 	if (IS_ERR(dev->dm))
--		mlx5_core_warn(dev, "Failed to init device memory%d\n", err);
-+		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
- 
- 	dev->tracer = mlx5_fw_tracer_create(dev);
- 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
 
 
