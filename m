@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C7F7713EFD
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A983A713D45
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231145AbjE1Tku (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S230001AbjE1TXg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231142AbjE1Tkt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B91E3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:46 -0700 (PDT)
+        with ESMTP id S229993AbjE1TXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C1F5BB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DDBF61EC7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBDCC433D2;
-        Sun, 28 May 2023 19:40:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC96F60F8C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EF1C433EF;
+        Sun, 28 May 2023 19:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302845;
-        bh=JPFLuWv5ECkMX9GAW5RhhjSKJsNeEO+VEL1KV8L62HU=;
+        s=korg; t=1685301814;
+        bh=UIbvYLUBM+8jW37SKurkacFYJ5//7L3H+q1QY7/LnB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TeugXGzXaybSNBNaMq6vZDHAjderaDJhXMz3Uk5KyKnUlpdHiccbhvmp6SgcOPwPG
-         eSKsdezpVLZSYYASW80ZYk6/qS1+QiR0Y1lqZav9MZJ1Pptb/L3EBr0HehMi6p45Hf
-         P0RHgjMeJQbZqFctxCElji7yIP3uoQ2Tu4XDhgSw=
+        b=zVU5H24hZoqVRin3aZ1ooWUMeRptAIhIbB5cF9+jBL9l92LxbzlTGtdFws83g+wxf
+         sgDzVcLKydiZS84DMTO/pd/mAgaUC5FhhYRYmsqK/R9M7wgbkyzr6FtX9u/B7U7peL
+         m+S1ffulypkd839lu3E3bkw0hv0+MycLDCWZOUdY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/211] net: pasemi: Fix return type of pasemi_mac_start_tx()
-Date:   Sun, 28 May 2023 20:09:30 +0100
-Message-Id: <20230528190844.806501550@linuxfoundation.org>
+Subject: [PATCH 5.4 047/161] serial: 8250: Reinit port->pm on port specific driver unbind
+Date:   Sun, 28 May 2023 20:09:31 +0100
+Message-Id: <20230528190838.702517222@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,52 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit c8384d4a51e7cb0e6587f3143f29099f202c5de1 ]
+[ Upstream commit 04e82793f068d2f0ffe62fcea03d007a8cdc16a7 ]
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-warning in clang aims to catch these at compile time, which reveals:
+When we unbind a serial port hardware specific 8250 driver, the generic
+serial8250 driver takes over the port. After that we see an oops about 10
+seconds later. This can produce the following at least on some TI SoCs:
 
-  drivers/net/ethernet/pasemi/pasemi_mac.c:1665:21: error: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          .ndo_start_xmit         = pasemi_mac_start_tx,
-                                    ^~~~~~~~~~~~~~~~~~~
-  1 error generated.
+Unhandled fault: imprecise external abort (0x1406)
+Internal error: : 1406 [#1] SMP ARM
 
-->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
-'netdev_tx_t', not 'int'. Adjust the return type of
-pasemi_mac_start_tx() to match the prototype's to resolve the warning.
-While PowerPC does not currently implement support for kCFI, it could in
-the future, which means this warning becomes a fatal CFI failure at run
-time.
+Turns out that we may still have the serial port hardware specific driver
+port->pm in use, and serial8250_pm() tries to call it after the port
+specific driver is gone:
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1750
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://lore.kernel.org/r/20230319-pasemi-incompatible-pointer-types-strict-v1-1-1b9459d8aef0@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
+uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
+uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
+__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
+disassociate_ctty from do_exit+0x744/0xaac
+do_exit from do_group_exit+0x40/0x8c
+do_group_exit from __wake_up_parent+0x0/0x1c
+
+Let's fix the issue by calling serial8250_set_defaults() in
+serial8250_unregister_port(). This will set the port back to using
+the serial8250 default functions, and sets the port->pm to point to
+serial8250_pm.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230418101407.12403-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pasemi/pasemi_mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/pasemi/pasemi_mac.c b/drivers/net/ethernet/pasemi/pasemi_mac.c
-index 040a15a828b41..c1d7bd168f1d1 100644
---- a/drivers/net/ethernet/pasemi/pasemi_mac.c
-+++ b/drivers/net/ethernet/pasemi/pasemi_mac.c
-@@ -1423,7 +1423,7 @@ static void pasemi_mac_queue_csdesc(const struct sk_buff *skb,
- 	write_dma_reg(PAS_DMA_TXCHAN_INCR(txring->chan.chno), 2);
- }
- 
--static int pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct pasemi_mac * const mac = netdev_priv(dev);
- 	struct pasemi_mac_txring * const txring = tx_ring(mac);
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+index 2675771a03a0d..d7afff1e7685f 100644
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -1138,6 +1138,7 @@ void serial8250_unregister_port(int line)
+ 		uart->port.type = PORT_UNKNOWN;
+ 		uart->port.dev = &serial8250_isa_devs->dev;
+ 		uart->capabilities = 0;
++		serial8250_init_port(uart);
+ 		serial8250_apply_quirks(uart);
+ 		uart_add_one_port(&serial8250_reg, &uart->port);
+ 	} else {
 -- 
 2.39.2
 
