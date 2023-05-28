@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 836D0713DC8
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E15A713CBF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230164AbjE1T3C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45566 "EHLO
+        id S229841AbjE1TSP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230165AbjE1T27 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:59 -0400
+        with ESMTP id S229830AbjE1TSN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D42C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC07A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 740F461D08
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927CDC433D2;
-        Sun, 28 May 2023 19:28:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F2E861A2B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB77C433EF;
+        Sun, 28 May 2023 19:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302131;
-        bh=4770lBRo9TXj0AKT9kb9lvq21IBngGKUXHO0O2oTCOE=;
+        s=korg; t=1685301489;
+        bh=nH/toalEzVo2/o1Taz0tVWXd3gRJySjVLbuWOffDaOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wYgUQF/fSfO7+VgK4PY/SnL1jCmPQ0teX8W61lCV3oHY0xq0LNqOgGfla6ZMlRDEX
-         Y+B7wboIPBJOcbJQ4tAgcdxolqSZFOqKG00kmtkJkO/80AKyaxDFWUEqOsM978XUBV
-         etLrPqvAcnQEl3iPRRrFwDn+BoKj66aJme33uBxY=
+        b=wieCwguaR3pDEs9QV9MuioLkiVvnAKkQr//v/Wl5ths91MNT4C0nzc43KrvYdbAgX
+         30XqCQ4EPOaO5NGDF9RB0ErGT2pbNeERYls6HQt2C6kp+lCOQ2V8k8sFnJadb2gn9Y
+         90h1WDp/f4Yoh7CrpPfjmJyVwg4Wz4EznvTe16CQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.3 012/127] ocfs2: Switch to security_inode_init_security()
+        patches@lists.linux.dev, Thomas Renninger <trenn@suse.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Wyes Karny <wyes.karny@amd.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 049/132] cpupower: Make TSC read per CPU for Mperf monitor
 Date:   Sun, 28 May 2023 20:09:48 +0100
-Message-Id: <20230528190836.615408916@linuxfoundation.org>
+Message-Id: <20230528190835.079140179@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,118 +57,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Wyes Karny <wyes.karny@amd.com>
 
-commit de3004c874e740304cc4f4a83d6200acb511bbda upstream.
+[ Upstream commit c2adb1877b76fc81ae041e1db1a6ed2078c6746b ]
 
-In preparation for removing security_old_inode_init_security(), switch to
-security_inode_init_security().
+System-wide TSC read could cause a drift in C0 percentage calculation.
+Because if first TSC is read and then one by one mperf is read for all
+cpus, this introduces drift between mperf reading of later CPUs and TSC
+reading.  To lower this drift read TSC per CPU and also just after mperf
+read.  This technique improves C0 percentage calculation in Mperf monitor.
 
-Extend the existing ocfs2_initxattrs() to take the
-ocfs2_security_xattr_info structure from fs_info, and populate the
-name/value/len triple with the first xattr provided by LSMs.
+Before fix: (System 100% busy)
 
-As fs_info was not used before, ocfs2_initxattrs() can now handle the case
-of replicating the behavior of security_old_inode_init_security(), i.e.
-just obtaining the xattr, in addition to setting all xattrs provided by
-LSMs.
+              | Mperf              || RAPL        || Idle_Stats
+ PKG|CORE| CPU| C0   | Cx   | Freq  || pack | core  || POLL | C1   | C2
+   0|   0|   0| 87.15| 12.85|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   0| 256| 84.62| 15.38|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   1|   1| 87.15| 12.85|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   1| 257| 84.08| 15.92|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   2|   2| 86.61| 13.39|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   2| 258| 83.26| 16.74|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   3|   3| 86.61| 13.39|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   3| 259| 83.60| 16.40|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   4|   4| 86.33| 13.67|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   4| 260| 83.33| 16.67|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   5|   5| 86.06| 13.94|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   5| 261| 83.05| 16.95|  2695||168659003|3970468||  0.00|  0.00| 0.00
+   0|   6|   6| 85.51| 14.49|  2695||168659003|3970468||  0.00|  0.00| 0.00
 
-Supporting multiple xattrs is not currently supported where
-security_old_inode_init_security() was called (mknod, symlink), as it
-requires non-trivial changes that can be done at a later time. Like for
-reiserfs, even if EVM is invoked, it will not provide an xattr (if it is
-not the first to set it, its xattr will be discarded; if it is the first,
-it does not have xattrs to calculate the HMAC on).
+After fix: (System 100% busy)
 
-Finally, since security_inode_init_security(), unlike
-security_old_inode_init_security(), returns zero instead of -EOPNOTSUPP if
-no xattrs were provided by LSMs or if inodes are private, additionally
-check in ocfs2_init_security_get() if the xattr name is set.
+             | Mperf              || RAPL        || Idle_Stats
+ PKG|CORE| CPU| C0   | Cx   | Freq  || pack | core  || POLL | C1   | C2
+   0|   0|   0| 98.03|  1.97|  2415||163295480|3811189||  0.00|  0.00| 0.00
+   0|   0| 256| 98.50|  1.50|  2394||163295480|3811189||  0.00|  0.00| 0.00
+   0|   1|   1| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   1| 257| 99.99|  0.01|  2375||163295480|3811189||  0.00|  0.00| 0.00
+   0|   2|   2| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   2| 258|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   3|   3|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   3| 259| 99.99|  0.01|  2435||163295480|3811189||  0.00|  0.00| 0.00
+   0|   4|   4|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   4| 260|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
+   0|   5|   5| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   5| 261|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
+   0|   6|   6|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
+   0|   6| 262|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
 
-If not, act as if security_old_inode_init_security() returned -EOPNOTSUPP,
-and set si->enable to zero to notify to the functions following
-ocfs2_init_security_get() that no xattrs are available.
+Cc: Thomas Renninger <trenn@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Dominik Brodowski <linux@dominikbrodowski.net>
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7fe2f6399a84 ("cpupowerutils - cpufrequtils extended with quite some features")
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c |    2 ++
- fs/ocfs2/xattr.c |   30 ++++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 4 deletions(-)
+ .../utils/idle_monitor/mperf_monitor.c        | 31 +++++++++----------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -242,6 +242,7 @@ static int ocfs2_mknod(struct mnt_idmap
- 	int want_meta = 0;
- 	int xattr_credits = 0;
- 	struct ocfs2_security_xattr_info si = {
-+		.name = NULL,
- 		.enable = 1,
- 	};
- 	int did_quota_inode = 0;
-@@ -1805,6 +1806,7 @@ static int ocfs2_symlink(struct mnt_idma
- 	int want_clusters = 0;
- 	int xattr_credits = 0;
- 	struct ocfs2_security_xattr_info si = {
-+		.name = NULL,
- 		.enable = 1,
- 	};
- 	int did_quota = 0, did_quota_inode = 0;
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -7259,9 +7259,21 @@ static int ocfs2_xattr_security_set(cons
- static int ocfs2_initxattrs(struct inode *inode, const struct xattr *xattr_array,
- 		     void *fs_info)
- {
-+	struct ocfs2_security_xattr_info *si = fs_info;
- 	const struct xattr *xattr;
- 	int err = 0;
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index d7c2a6d13dea1..2221e43c63ce0 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -67,8 +67,8 @@ static int max_freq_mode;
+  */
+ static unsigned long max_frequency;
  
-+	if (si) {
-+		si->value = kmemdup(xattr_array->value, xattr_array->value_len,
-+				    GFP_KERNEL);
-+		if (!si->value)
-+			return -ENOMEM;
-+
-+		si->name = xattr_array->name;
-+		si->value_len = xattr_array->value_len;
-+		return 0;
-+	}
-+
- 	for (xattr = xattr_array; xattr->name != NULL; xattr++) {
- 		err = ocfs2_xattr_set(inode, OCFS2_XATTR_INDEX_SECURITY,
- 				      xattr->name, xattr->value,
-@@ -7277,13 +7289,23 @@ int ocfs2_init_security_get(struct inode
- 			    const struct qstr *qstr,
- 			    struct ocfs2_security_xattr_info *si)
+-static unsigned long long tsc_at_measure_start;
+-static unsigned long long tsc_at_measure_end;
++static unsigned long long *tsc_at_measure_start;
++static unsigned long long *tsc_at_measure_end;
+ static unsigned long long *mperf_previous_count;
+ static unsigned long long *aperf_previous_count;
+ static unsigned long long *mperf_current_count;
+@@ -131,7 +131,7 @@ static int mperf_get_count_percent(unsigned int id, double *percent,
+ 	aperf_diff = aperf_current_count[cpu] - aperf_previous_count[cpu];
+ 
+ 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
+-		tsc_diff = tsc_at_measure_end - tsc_at_measure_start;
++		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
+ 		*percent = 100.0 * mperf_diff / tsc_diff;
+ 		dprint("%s: TSC Ref - mperf_diff: %llu, tsc_diff: %llu\n",
+ 		       mperf_cstates[id].name, mperf_diff, tsc_diff);
+@@ -168,7 +168,7 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
+ 
+ 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
+ 		/* Calculate max_freq from TSC count */
+-		tsc_diff = tsc_at_measure_end - tsc_at_measure_start;
++		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
+ 		time_diff = timespec_diff_us(time_start, time_end);
+ 		max_frequency = tsc_diff / time_diff;
+ 	}
+@@ -187,33 +187,27 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
+ static int mperf_start(void)
  {
-+	int ret;
-+
- 	/* check whether ocfs2 support feature xattr */
- 	if (!ocfs2_supports_xattr(OCFS2_SB(dir->i_sb)))
- 		return -EOPNOTSUPP;
--	if (si)
--		return security_old_inode_init_security(inode, dir, qstr,
--							&si->name, &si->value,
--							&si->value_len);
-+	if (si) {
-+		ret = security_inode_init_security(inode, dir, qstr,
-+						   &ocfs2_initxattrs, si);
-+		/*
-+		 * security_inode_init_security() does not return -EOPNOTSUPP,
-+		 * we have to check the xattr ourselves.
-+		 */
-+		if (!ret && !si->name)
-+			si->enable = 0;
-+
-+		return ret;
+ 	int cpu;
+-	unsigned long long dbg;
+ 
+ 	clock_gettime(CLOCK_REALTIME, &time_start);
+-	mperf_get_tsc(&tsc_at_measure_start);
+ 
+-	for (cpu = 0; cpu < cpu_count; cpu++)
++	for (cpu = 0; cpu < cpu_count; cpu++) {
++		mperf_get_tsc(&tsc_at_measure_start[cpu]);
+ 		mperf_init_stats(cpu);
 +	}
  
- 	return security_inode_init_security(inode, dir, qstr,
- 					    &ocfs2_initxattrs, NULL);
+-	mperf_get_tsc(&dbg);
+-	dprint("TSC diff: %llu\n", dbg - tsc_at_measure_start);
+ 	return 0;
+ }
+ 
+ static int mperf_stop(void)
+ {
+-	unsigned long long dbg;
+ 	int cpu;
+ 
+-	for (cpu = 0; cpu < cpu_count; cpu++)
++	for (cpu = 0; cpu < cpu_count; cpu++) {
+ 		mperf_measure_stats(cpu);
++		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++	}
+ 
+-	mperf_get_tsc(&tsc_at_measure_end);
+ 	clock_gettime(CLOCK_REALTIME, &time_end);
+-
+-	mperf_get_tsc(&dbg);
+-	dprint("TSC diff: %llu\n", dbg - tsc_at_measure_end);
+-
+ 	return 0;
+ }
+ 
+@@ -311,7 +305,8 @@ struct cpuidle_monitor *mperf_register(void)
+ 	aperf_previous_count = calloc(cpu_count, sizeof(unsigned long long));
+ 	mperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
+ 	aperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
+-
++	tsc_at_measure_start = calloc(cpu_count, sizeof(unsigned long long));
++	tsc_at_measure_end = calloc(cpu_count, sizeof(unsigned long long));
+ 	mperf_monitor.name_len = strlen(mperf_monitor.name);
+ 	return &mperf_monitor;
+ }
+@@ -322,6 +317,8 @@ void mperf_unregister(void)
+ 	free(aperf_previous_count);
+ 	free(mperf_current_count);
+ 	free(aperf_current_count);
++	free(tsc_at_measure_start);
++	free(tsc_at_measure_end);
+ 	free(is_valid);
+ }
+ 
+-- 
+2.39.2
+
 
 
