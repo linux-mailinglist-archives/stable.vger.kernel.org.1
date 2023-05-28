@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A093C713A1E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 16:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2786713A1F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 16:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjE1Of6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 10:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
+        id S229519AbjE1OgA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 10:36:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjE1Of5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 10:35:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3B9B8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:35:56 -0700 (PDT)
+        with ESMTP id S229445AbjE1OgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 10:36:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC7F3BD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:35:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10136615E8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 14:35:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D66C433D2;
-        Sun, 28 May 2023 14:35:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A407615EB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 14:35:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C6BC4339B;
+        Sun, 28 May 2023 14:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685284555;
-        bh=Kb762Rfmhz2Vlabj6qaSGMPUxQC+zpiPIhoH4pTAZ8w=;
+        s=korg; t=1685284558;
+        bh=2Gya0L+coPR++oU3p5d9B1ZbwjcCoA9DurxNDemcHfc=;
         h=Subject:To:Cc:From:Date:From;
-        b=abLHrjmCyJ9x+GY72Gk5uo7HRz1ucU75oZsFBOulKnxUQies8KkoU+SAisjM7dmc+
-         Y6IQwbM0IeRVrmCEwUMQqd6Ej4eApjtTcqHacOIrand6oS/DZk1IVG489WCbWN6RWN
-         hznckhgdtqaa+MUygLGZcs/l0UQjWo5r+yQpuIyo=
-Subject: FAILED: patch "[PATCH] irqchip/mips-gic: Use raw spinlock for gic_lock" failed to apply to 5.4-stable tree
+        b=IN+O3fYLucWkHG8E0zQMEygE0yG0miieSYpQzUfhtE/BdAwlvZ5SkvNtRAGhzZiS6
+         o2e01XwNK8O9YzQiXA6d/ZX92RMkSg6VqpxMEEZMSYH5LW13eoXTXV8WeTK3KPUQkF
+         pzQDHuH/Njip4Poui9oyLGBQWUcHjJ0U3KDI9z5E=
+Subject: FAILED: patch "[PATCH] irqchip/mips-gic: Use raw spinlock for gic_lock" failed to apply to 4.19-stable tree
 To:     jiaxun.yang@flygoat.com, fancer.lancer@gmail.com, maz@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 15:35:49 +0100
-Message-ID: <2023052849-battalion-strained-cf85@gregkh>
+Date:   Sun, 28 May 2023 15:35:50 +0100
+Message-ID: <2023052850-dreadful-unthawed-efac@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,24 +48,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3d6a0e4197c04599d75d85a608c8bb16a630a38c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052849-battalion-strained-cf85@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052850-dreadful-unthawed-efac@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 3d6a0e4197c0 ("irqchip/mips-gic: Use raw spinlock for gic_lock")
 dd098a0e0319 ("irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
+6d4d367d0e9f ("irqchip/mips-gic: Use the correct local interrupt map registers")
 
 thanks,
 
