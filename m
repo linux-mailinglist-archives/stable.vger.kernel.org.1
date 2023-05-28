@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCEF4713EED
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 390E3713D5F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbjE1TkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
+        id S230027AbjE1TYm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:24:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230522AbjE1TkS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68CDCF9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:12 -0700 (PDT)
+        with ESMTP id S230033AbjE1TYl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A90C7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06C4561EA9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B86C433D2;
-        Sun, 28 May 2023 19:40:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D4B961BBB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695A0C433D2;
+        Sun, 28 May 2023 19:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302811;
-        bh=OtBYrX14mxTpbm1B0QpoHXJUjd80vi3tq+CGMksfjIo=;
+        s=korg; t=1685301879;
+        bh=mKO6zNZWMRow1uNUbkLXvxsUTv2rpHl05T/0mUfWLaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V+s8Hcnvopmhu5pT+IVoE2XNQ+TkdljylcXTxwsZxEGvv5bxYQ5NT4P3QjOYJSgrq
-         gVp70dbIJJU492exNQD7d0LzEkbNoL2BNbF+FtFiBvISFcRvHQ10TO/PrdSqv18hE0
-         3cDjstq+VaKt3ZUgUw5yEXD6QmBwYmzk1rEAw5zM=
+        b=ziEBR4eYKY7ND9ZXvN8fG+jYRITFXOVdP3PoqExs4xvKAdbRJY18HLE0EVRXh1VHw
+         lQasVUQbNONgp122s3w2slW81QGW26GIWPgz+WpTP2KD1M5IKBgh6EDSe4YPLX5lbC
+         YihQ26h/eM4My69NhtArd9pkEtzKi05Rmj4xwahE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/211] memstick: r592: Fix UAF bug in r592_remove due to race condition
-Date:   Sun, 28 May 2023 20:09:17 +0100
-Message-Id: <20230528190844.430073587@linuxfoundation.org>
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 034/161] ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()
+Date:   Sun, 28 May 2023 20:09:18 +0100
+Message-Id: <20230528190838.277256249@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,51 +55,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 63264422785021704c39b38f65a78ab9e4a186d7 ]
+[ Upstream commit 93cdf49f6eca5e23f6546b8f28457b2e6a6961d9 ]
 
-In r592_probe, dev->detect_timer was bound with r592_detect_timer.
-In r592_irq function, the timer function will be invoked by mod_timer.
+When the length of best extent found is less than the length of goal extent
+we need to make sure that the best extent atleast covers the start of the
+original request. This is done by adjusting the ac_b_ex.fe_logical (logical
+start) of the extent.
 
-If we remove the module which will call hantro_release to make cleanup,
-there may be a unfinished work. The possible sequence is as follows,
-which will cause a typical UAF bug.
+While doing so, the current logic sometimes results in the best extent's
+logical range overflowing the goal extent. Since this best extent is later
+added to the inode preallocation list, we have a possibility of introducing
+overlapping preallocations. This is discussed in detail here [1].
 
-Fix it by canceling the work before cleanup in r592_remove.
+As per Jan's suggestion, to fix this, replace the existing logic with the
+below logic for adjusting best extent as it keeps fragmentation in check
+while ensuring logical range of best extent doesn't overflow out of goal
+extent:
 
-CPU0                  CPU1
+1. Check if best extent can be kept at end of goal range and still cover
+   original start.
+2. Else, check if best extent can be kept at start of goal range and still
+   cover original start.
+3. Else, keep the best extent at start of original request.
 
-                    |r592_detect_timer
-r592_remove         |
-  memstick_free_host|
-  put_device;       |
-  kfree(host);      |
-                    |
-                    | queue_work
-                    |   &host->media_checker //use
+Also, add a few extra BUG_ONs that might help catch errors faster.
 
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Link: https://lore.kernel.org/r/20230307164338.1246287-1-zyytlz.wz@163.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[1] https://lore.kernel.org/r/Y+OGkVvzPN0RMv0O@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/f96aca6d415b36d1f90db86c1a8cd7e2e9d7ab0e.1679731817.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/host/r592.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 49 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 31 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
-index eaa2a94d18be4..dd06c18495eb6 100644
---- a/drivers/memstick/host/r592.c
-+++ b/drivers/memstick/host/r592.c
-@@ -828,7 +828,7 @@ static void r592_remove(struct pci_dev *pdev)
- 	/* Stop the processing thread.
- 	That ensures that we won't take any more requests */
- 	kthread_stop(dev->io_thread);
--
-+	del_timer_sync(&dev->detect_timer);
- 	r592_enable_device(dev, false);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index bdab18942e302..92c37fbbabc15 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3378,6 +3378,7 @@ static void ext4_mb_use_inode_pa(struct ext4_allocation_context *ac,
+ 	BUG_ON(start < pa->pa_pstart);
+ 	BUG_ON(end > pa->pa_pstart + EXT4_C2B(sbi, pa->pa_len));
+ 	BUG_ON(pa->pa_free < len);
++	BUG_ON(ac->ac_b_ex.fe_len <= 0);
+ 	pa->pa_free -= len;
  
- 	while (!error && dev->req) {
+ 	mb_debug(1, "use %llu/%u from inode pa %p\n", start, len, pa);
+@@ -3682,10 +3683,8 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		return -ENOMEM;
+ 
+ 	if (ac->ac_b_ex.fe_len < ac->ac_g_ex.fe_len) {
+-		int winl;
+-		int wins;
+-		int win;
+-		int offs;
++		int new_bex_start;
++		int new_bex_end;
+ 
+ 		/* we can't allocate as much as normalizer wants.
+ 		 * so, found space must get proper lstart
+@@ -3693,26 +3692,40 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
+ 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
+ 
+-		/* we're limited by original request in that
+-		 * logical block must be covered any way
+-		 * winl is window we can move our chunk within */
+-		winl = ac->ac_o_ex.fe_logical - ac->ac_g_ex.fe_logical;
++		/*
++		 * Use the below logic for adjusting best extent as it keeps
++		 * fragmentation in check while ensuring logical range of best
++		 * extent doesn't overflow out of goal extent:
++		 *
++		 * 1. Check if best ex can be kept at end of goal and still
++		 *    cover original start
++		 * 2. Else, check if best ex can be kept at start of goal and
++		 *    still cover original start
++		 * 3. Else, keep the best ex at start of original request.
++		 */
++		new_bex_end = ac->ac_g_ex.fe_logical +
++			EXT4_C2B(sbi, ac->ac_g_ex.fe_len);
++		new_bex_start = new_bex_end - EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical >= new_bex_start)
++			goto adjust_bex;
+ 
+-		/* also, we should cover whole original request */
+-		wins = EXT4_C2B(sbi, ac->ac_b_ex.fe_len - ac->ac_o_ex.fe_len);
++		new_bex_start = ac->ac_g_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical < new_bex_end)
++			goto adjust_bex;
+ 
+-		/* the smallest one defines real window */
+-		win = min(winl, wins);
++		new_bex_start = ac->ac_o_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+ 
+-		offs = ac->ac_o_ex.fe_logical %
+-			EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+-		if (offs && offs < win)
+-			win = offs;
++adjust_bex:
++		ac->ac_b_ex.fe_logical = new_bex_start;
+ 
+-		ac->ac_b_ex.fe_logical = ac->ac_o_ex.fe_logical -
+-			EXT4_NUM_B2C(sbi, win);
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+ 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
++		BUG_ON(new_bex_end > (ac->ac_g_ex.fe_logical +
++				      EXT4_C2B(sbi, ac->ac_g_ex.fe_len)));
+ 	}
+ 
+ 	/* preallocation can change ac_b_ex, thus we store actually
 -- 
 2.39.2
 
