@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60892713F3D
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4A2713C49
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231206AbjE1TnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
+        id S229706AbjE1TOF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjE1TnX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8CD39C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:22 -0700 (PDT)
+        with ESMTP id S229632AbjE1TN6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F36FF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D24F611BC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6818AC433D2;
-        Sun, 28 May 2023 19:43:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E3A461926
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E97C433D2;
+        Sun, 28 May 2023 19:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303001;
-        bh=MS3L2TmCNSiyyJnVtemSDX4hHlcug2wwUJAjS1tW+EY=;
+        s=korg; t=1685301230;
+        bh=zQi2eM/DoY4SalsehEeFzNcXkQCabmHiuWhEdz1j8wk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1lvlDgB20NYd8qAkLshRfzZz53xuZlBrT+EGLuFIN6ZHfQU1xaPjZZIldtGOtVDTo
-         XkiTPNhllJvviDC2zJ2CDc+Agh6ktYffcwcxUqwqkaOUwE4Xyi7Rd3VLurEjA8u56K
-         sOyg/pqYq0XM4ntzIDKPBJT1dzQLwelC5I2RzFlw=
+        b=jwVxnbIDHMRpeza7+74VSBZiwvUWdgT+pbjtQj73YO605VzXGq4qJGmyERm2Vq8eg
+         evq0M63emG07RiMSHSBCqLrZu4Zn4uIpAgVeOUV/i81dCeDz7gwtea536RnMhcWf0D
+         T/jCRSE9jlJADozj5Xs2uqzBtrljRBLOssAfFJFE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/211] xfrm: dont check the default policy if the policy allows the packet
+Subject: [PATCH 4.14 34/86] clk: tegra20: fix gcc-7 constant overflow warning
 Date:   Sun, 28 May 2023 20:10:08 +0100
-Message-Id: <20230528190845.779857307@linuxfoundation.org>
+Message-Id: <20230528190829.849207795@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,47 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 430cac487400494c19a8b85299e979bb07b4671f ]
+[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
 
-The current code doesn't let a simple "allow" policy counteract a
-default policy blocking all incoming packets:
+Older gcc versions get confused by comparing a u32 value to a negative
+constant in a switch()/case block:
 
-    ip x p setdefault in block
-    ip x p a src 192.168.2.1/32 dst 192.168.2.2/32 dir in action allow
+drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
+drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_12MHZ:
+  ^~~~
+drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_26MHZ:
 
-At this stage, we have an allow policy (with or without transforms)
-for this packet. It doesn't matter what the default policy says, since
-the policy we looked up lets the packet through. The case of a
-blocking policy is already handled separately, so we can remove this
-check.
+Make the constants unsigned instead.
 
-Fixes: 2d151d39073a ("xfrm: Add possibility to set the default to block if we have no policy")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index d15aa62887de0..8ebe305f6ddd7 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3677,12 +3677,6 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		}
- 		xfrm_nr = ti;
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index 4c9038e738886..a660adaa4920f 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -27,24 +27,24 @@
+ #include "clk-id.h"
  
--		if (net->xfrm.policy_default[dir] == XFRM_USERPOLICY_BLOCK &&
--		    !xfrm_nr) {
--			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
--			goto reject;
--		}
+ #define OSC_CTRL 0x50
+-#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
+-#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
+-#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
+-#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
+-#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
+-#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
 -
- 		if (npols > 1) {
- 			xfrm_tmpl_sort(stp, tpp, xfrm_nr, family);
- 			tpp = stp;
+-#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
+-#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
+-#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
+-#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
++#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
++#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
++#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
++#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
++#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
++#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
++
++#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
++#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
++#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
++#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
+ 
+ #define OSC_FREQ_DET 0x58
+-#define OSC_FREQ_DET_TRIG (1<<31)
++#define OSC_FREQ_DET_TRIG (1u<<31)
+ 
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
+ 
+ #define TEGRA20_CLK_PERIPH_BANKS	3
+ 
 -- 
 2.39.2
 
