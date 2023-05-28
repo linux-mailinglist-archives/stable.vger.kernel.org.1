@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB3CA713FCC
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AC85713F79
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231387AbjE1TtH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:49:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34960 "EHLO
+        id S231290AbjE1Tpu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231382AbjE1TtG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:06 -0400
+        with ESMTP id S231289AbjE1Tps (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274EB9E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF0EDF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF80B62011
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCF3C433EF;
-        Sun, 28 May 2023 19:49:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1D0761F37
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE97FC433D2;
+        Sun, 28 May 2023 19:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303344;
-        bh=Om4OIWz0sjTlPFLD0iQoqyPTdTdH6W8MoyZ5kyP8zM4=;
+        s=korg; t=1685303146;
+        bh=WM4msy015vUXUIGeYbENvpNCj6KO/+nAFewYHu5SIJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Kb4QdaKtwGBdCebJgfe2EGi7NP5UOlbi6VJe3dpa/Utd33W0+iSTVpc7xJFYb4af
-         DAydDaVAUpuIv9ncI5y6I8c2pvf6QxONZRIRbahwneKf+6e9w5xnktQ+dFELQmyLF3
-         gRsZk9t7CfLOFLhTpLqH1/irbYJYGK3cSwTdiae8=
+        b=JZ0cS7ecydyruvwYDzle6IdXNUkbzCRrVbmG3EnBXazywxjlkVndLNCQxFWavfpZ1
+         YfW6/xiXm1f74A5XorFkgVkGLvEW9XJ+MourRRH0sGe+e9mx/LLOzOzbDodTlTDBaM
+         G4xG0Vh5ZKaJzqoWNF7/Hq+RFlSofXtuCg6XmtPE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bin Li <bin.li@canonical.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 13/69] ALSA: hda/realtek: Enable headset onLenovo M70/M90
+        patches@lists.linux.dev, Michael Schmitz <schmitzmic@gmail.com>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 5.10 172/211] m68k: Move signal frame following exception on 68020/030
 Date:   Sun, 28 May 2023 20:11:33 +0100
-Message-Id: <20230528190828.848880188@linuxfoundation.org>
+Message-Id: <20230528190847.766753659@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,33 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bin Li <bin.li@canonical.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit 4ca110cab46561cd74a2acd9b447435acb4bec5f upstream.
+commit b845b574f86dcb6a70dfa698aa87a237b0878d2a upstream.
 
-Lenovo M70/M90 Gen4 are equipped with ALC897, and they need
-ALC897_FIXUP_HEADSET_MIC_PIN quirk to make its headset mic work.
-The previous quirk for M70/M90 is for Gen3.
+On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
+a stack page fault during instruction execution (i.e. not at an
+instruction boundary) and produce a format 0xB exception frame.
 
-Signed-off-by: Bin Li <bin.li@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230524113755.1346928-1-bin.li@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+In this situation, the value of USP will be unreliable.  If a signal is
+to be delivered following the exception, this USP value is used to
+calculate the location for a signal frame.  This can result in a
+corrupted user stack.
+
+The corruption was detected in dash (actually in glibc) where it showed
+up as an intermittent "stack smashing detected" message and crash
+following signal delivery for SIGCHLD.
+
+It was hard to reproduce that failure because delivery of the signal
+raced with the page fault and because the kernel places an unpredictable
+gap of up to 7 bytes between the USP and the signal frame.
+
+A format 0xB exception frame can be produced by a bus error or an
+address error.  The 68030 Users Manual says that address errors occur
+immediately upon detection during instruction prefetch.  The instruction
+pipeline allows prefetch to overlap with other instructions, which means
+an address error can arise during the execution of a different
+instruction.  So it seems likely that this patch may help in the address
+error case also.
+
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
+Cc: Michael Schmitz <schmitzmic@gmail.com>
+Cc: Andreas Schwab <schwab@linux-m68k.org>
+Cc: stable@vger.kernel.org
+Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/m68k/kernel/signal.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11274,6 +11274,8 @@ static const struct snd_pci_quirk alc662
- 	SND_PCI_QUIRK(0x17aa, 0x32cb, "Lenovo ThinkCentre M70", ALC897_FIXUP_HEADSET_MIC_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x32cf, "Lenovo ThinkCentre M950", ALC897_FIXUP_HEADSET_MIC_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x32f7, "Lenovo ThinkCentre M90", ALC897_FIXUP_HEADSET_MIC_PIN),
-+	SND_PCI_QUIRK(0x17aa, 0x3321, "Lenovo ThinkCentre M70 Gen4", ALC897_FIXUP_HEADSET_MIC_PIN),
-+	SND_PCI_QUIRK(0x17aa, 0x331b, "Lenovo ThinkCentre M90 Gen4", ALC897_FIXUP_HEADSET_MIC_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3742, "Lenovo TianYi510Pro-14IOB", ALC897_FIXUP_HEADSET_MIC_PIN2),
- 	SND_PCI_QUIRK(0x17aa, 0x38af, "Lenovo Ideapad Y550P", ALC662_FIXUP_IDEAPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x3a0d, "Lenovo Ideapad Y550", ALC662_FIXUP_IDEAPAD),
+--- a/arch/m68k/kernel/signal.c
++++ b/arch/m68k/kernel/signal.c
+@@ -882,11 +882,17 @@ static inline int rt_setup_ucontext(stru
+ }
+ 
+ static inline void __user *
+-get_sigframe(struct ksignal *ksig, size_t frame_size)
++get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
+ {
+ 	unsigned long usp = sigsp(rdusp(), ksig);
++	unsigned long gap = 0;
+ 
+-	return (void __user *)((usp - frame_size) & -8UL);
++	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
++		/* USP is unreliable so use worst-case value */
++		gap = 256;
++	}
++
++	return (void __user *)((usp - gap - frame_size) & -8UL);
+ }
+ 
+ static int setup_frame(struct ksignal *ksig, sigset_t *set,
+@@ -904,7 +910,7 @@ static int setup_frame(struct ksignal *k
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
++	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (frame + 1, regs + 1, fsize);
+@@ -976,7 +982,7 @@ static int setup_rt_frame(struct ksignal
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame));
++	frame = get_sigframe(ksig, tregs, sizeof(*frame));
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
 
 
