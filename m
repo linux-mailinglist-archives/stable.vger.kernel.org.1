@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 897C0713EA5
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC698713F74
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbjE1Th2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
+        id S231288AbjE1Tpj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230445AbjE1Th2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:28 -0400
+        with ESMTP id S231280AbjE1Tpi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD91DD2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02F89B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E7FB61E61
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF6C433EF;
-        Sun, 28 May 2023 19:37:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DB4B61F50
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C47C433EF;
+        Sun, 28 May 2023 19:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302645;
-        bh=pW5df8G6vXyxyHCsbMscUSE7S/vLQ14G0Co6nZ1UI54=;
+        s=korg; t=1685303133;
+        bh=entThtJkOqqkxmvgaITmi7GCYcGfOS1bZt8QfN9Sjs0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=idqQ1pNV9Q5QfI0x+VABH1vjUrejPB5AaluCyz8lhDRI1rzH8erVMgh1VTYYjB4ju
-         ZvzZU9lrSATrWiGhsK52ZO7g3EmNE/O+u4ZNh1uMw40DWN6Io/Ow10Mkc7R1fiaIg5
-         A6oiLZ3RR1PrhIQxkvSbe7kSmw77fg9BwXPlhYs8=
+        b=Zp3/uQ6qT1DJwTo1q5o3lHSB9wGUOfk/IC7GWwcT4BczeYOZfzzsn0au5tVQo3LgS
+         pQMf06xVoWx9tYWU2mXt0LwwaDnr0FRKZc6kKqwjw8DGNxJyhwQudO9WXVTXtKD/Y6
+         rj0Hyoz0Jb6eMkUEJZtWQGfQUIAEgQmEQrPrrK2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Ge <gehao@kylinos.cn>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 088/119] fs: fix undefined behavior in bit shift for SB_NOUSER
+        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.10 167/211] ocfs2: Switch to security_inode_init_security()
 Date:   Sun, 28 May 2023 20:11:28 +0100
-Message-Id: <20230528190838.477018428@linuxfoundation.org>
+Message-Id: <20230528190847.649465732@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,77 +56,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit f15afbd34d8fadbd375f1212e97837e32bc170cc upstream.
+commit de3004c874e740304cc4f4a83d6200acb511bbda upstream.
 
-Shifting signed 32-bit value by 31 bits is undefined, so changing
-significant bit to unsigned. It was spotted by UBSAN.
+In preparation for removing security_old_inode_init_security(), switch to
+security_inode_init_security().
 
-So let's just fix this by using the BIT() helper for all SB_* flags.
+Extend the existing ocfs2_initxattrs() to take the
+ocfs2_security_xattr_info structure from fs_info, and populate the
+name/value/len triple with the first xattr provided by LSMs.
 
-Fixes: e462ec50cb5f ("VFS: Differentiate mount flags (MS_*) from internal superblock flags")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Message-Id: <20230424051835.374204-1-gehao@kylinos.cn>
-[brauner@kernel.org: use BIT() for all SB_* flags]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+As fs_info was not used before, ocfs2_initxattrs() can now handle the case
+of replicating the behavior of security_old_inode_init_security(), i.e.
+just obtaining the xattr, in addition to setting all xattrs provided by
+LSMs.
+
+Supporting multiple xattrs is not currently supported where
+security_old_inode_init_security() was called (mknod, symlink), as it
+requires non-trivial changes that can be done at a later time. Like for
+reiserfs, even if EVM is invoked, it will not provide an xattr (if it is
+not the first to set it, its xattr will be discarded; if it is the first,
+it does not have xattrs to calculate the HMAC on).
+
+Finally, since security_inode_init_security(), unlike
+security_old_inode_init_security(), returns zero instead of -EOPNOTSUPP if
+no xattrs were provided by LSMs or if inodes are private, additionally
+check in ocfs2_init_security_get() if the xattr name is set.
+
+If not, act as if security_old_inode_init_security() returned -EOPNOTSUPP,
+and set si->enable to zero to notify to the functions following
+ocfs2_init_security_get() that no xattrs are available.
+
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fs.h |   42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ fs/ocfs2/namei.c |    2 ++
+ fs/ocfs2/xattr.c |   30 ++++++++++++++++++++++++++----
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1380,29 +1380,29 @@ extern int send_sigurg(struct fown_struc
-  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
-  * represented in both.
-  */
--#define SB_RDONLY	 1	/* Mount read-only */
--#define SB_NOSUID	 2	/* Ignore suid and sgid bits */
--#define SB_NODEV	 4	/* Disallow access to device special files */
--#define SB_NOEXEC	 8	/* Disallow program execution */
--#define SB_SYNCHRONOUS	16	/* Writes are synced at once */
--#define SB_MANDLOCK	64	/* Allow mandatory locks on an FS */
--#define SB_DIRSYNC	128	/* Directory modifications are synchronous */
--#define SB_NOATIME	1024	/* Do not update access times. */
--#define SB_NODIRATIME	2048	/* Do not update directory access times */
--#define SB_SILENT	32768
--#define SB_POSIXACL	(1<<16)	/* VFS does not apply the umask */
--#define SB_INLINECRYPT	(1<<17)	/* Use blk-crypto for encrypted files */
--#define SB_KERNMOUNT	(1<<22) /* this is a kern_mount call */
--#define SB_I_VERSION	(1<<23) /* Update inode I_version field */
--#define SB_LAZYTIME	(1<<25) /* Update the on-disk [acm]times lazily */
-+#define SB_RDONLY       BIT(0)	/* Mount read-only */
-+#define SB_NOSUID       BIT(1)	/* Ignore suid and sgid bits */
-+#define SB_NODEV        BIT(2)	/* Disallow access to device special files */
-+#define SB_NOEXEC       BIT(3)	/* Disallow program execution */
-+#define SB_SYNCHRONOUS  BIT(4)	/* Writes are synced at once */
-+#define SB_MANDLOCK     BIT(6)	/* Allow mandatory locks on an FS */
-+#define SB_DIRSYNC      BIT(7)	/* Directory modifications are synchronous */
-+#define SB_NOATIME      BIT(10)	/* Do not update access times. */
-+#define SB_NODIRATIME   BIT(11)	/* Do not update directory access times */
-+#define SB_SILENT       BIT(15)
-+#define SB_POSIXACL     BIT(16)	/* VFS does not apply the umask */
-+#define SB_INLINECRYPT  BIT(17)	/* Use blk-crypto for encrypted files */
-+#define SB_KERNMOUNT    BIT(22)	/* this is a kern_mount call */
-+#define SB_I_VERSION    BIT(23)	/* Update inode I_version field */
-+#define SB_LAZYTIME     BIT(25)	/* Update the on-disk [acm]times lazily */
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -242,6 +242,7 @@ static int ocfs2_mknod(struct inode *dir
+ 	int want_meta = 0;
+ 	int xattr_credits = 0;
+ 	struct ocfs2_security_xattr_info si = {
++		.name = NULL,
+ 		.enable = 1,
+ 	};
+ 	int did_quota_inode = 0;
+@@ -1801,6 +1802,7 @@ static int ocfs2_symlink(struct inode *d
+ 	int want_clusters = 0;
+ 	int xattr_credits = 0;
+ 	struct ocfs2_security_xattr_info si = {
++		.name = NULL,
+ 		.enable = 1,
+ 	};
+ 	int did_quota = 0, did_quota_inode = 0;
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -7260,9 +7260,21 @@ static int ocfs2_xattr_security_set(cons
+ static int ocfs2_initxattrs(struct inode *inode, const struct xattr *xattr_array,
+ 		     void *fs_info)
+ {
++	struct ocfs2_security_xattr_info *si = fs_info;
+ 	const struct xattr *xattr;
+ 	int err = 0;
  
- /* These sb flags are internal to the kernel */
--#define SB_SUBMOUNT     (1<<26)
--#define SB_FORCE    	(1<<27)
--#define SB_NOSEC	(1<<28)
--#define SB_BORN		(1<<29)
--#define SB_ACTIVE	(1<<30)
--#define SB_NOUSER	(1<<31)
-+#define SB_SUBMOUNT     BIT(26)
-+#define SB_FORCE        BIT(27)
-+#define SB_NOSEC        BIT(28)
-+#define SB_BORN         BIT(29)
-+#define SB_ACTIVE       BIT(30)
-+#define SB_NOUSER       BIT(31)
++	if (si) {
++		si->value = kmemdup(xattr_array->value, xattr_array->value_len,
++				    GFP_KERNEL);
++		if (!si->value)
++			return -ENOMEM;
++
++		si->name = xattr_array->name;
++		si->value_len = xattr_array->value_len;
++		return 0;
++	}
++
+ 	for (xattr = xattr_array; xattr->name != NULL; xattr++) {
+ 		err = ocfs2_xattr_set(inode, OCFS2_XATTR_INDEX_SECURITY,
+ 				      xattr->name, xattr->value,
+@@ -7278,13 +7290,23 @@ int ocfs2_init_security_get(struct inode
+ 			    const struct qstr *qstr,
+ 			    struct ocfs2_security_xattr_info *si)
+ {
++	int ret;
++
+ 	/* check whether ocfs2 support feature xattr */
+ 	if (!ocfs2_supports_xattr(OCFS2_SB(dir->i_sb)))
+ 		return -EOPNOTSUPP;
+-	if (si)
+-		return security_old_inode_init_security(inode, dir, qstr,
+-							&si->name, &si->value,
+-							&si->value_len);
++	if (si) {
++		ret = security_inode_init_security(inode, dir, qstr,
++						   &ocfs2_initxattrs, si);
++		/*
++		 * security_inode_init_security() does not return -EOPNOTSUPP,
++		 * we have to check the xattr ourselves.
++		 */
++		if (!ret && !si->name)
++			si->enable = 0;
++
++		return ret;
++	}
  
- /* These flags relate to encoding and casefolding */
- #define SB_ENC_STRICT_MODE_FL	(1 << 0)
+ 	return security_inode_init_security(inode, dir, qstr,
+ 					    &ocfs2_initxattrs, NULL);
 
 
