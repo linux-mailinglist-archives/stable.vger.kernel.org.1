@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FCC0713CAE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F608713EFF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbjE1TRi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
+        id S231149AbjE1Tk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjE1TRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:35 -0400
+        with ESMTP id S231147AbjE1Tk6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82526FE
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A9BEA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14A56619DD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C32C433D2;
-        Sun, 28 May 2023 19:17:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0508061EC4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21390C433D2;
+        Sun, 28 May 2023 19:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301446;
-        bh=eeO0lSOmFdS0t5FxdvOmr6yp2SjHparweclfsSyj6Ew=;
+        s=korg; t=1685302850;
+        bh=1x11KkfiU6kqnsqZo8++iks3M+YXh0kn924v3xhVO5M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rKUqmfKGCGaLiqqlIEa4OX9d3JT+xxFnb6fViwtZ+Lg5pt97jEc0hZkAostbzrdEy
-         3Lz/rqFz7Xfs0ymTdnSankeCeiTYel8RYPxJBjoxhP0jcq6LaKqVjJB+6Ta+Yl/w1s
-         QLM+7SgMneyhTltGShWcldxxDVsHV45yC/+IuJno=
+        b=La67GnaYPsOBtta7/ygBDGnRKuYnl/Rn+Ml40VsNqPS3yw3zqm6nSPnPPqxUMBwjP
+         Lap94K+lSkCevpqijGiRxpOonIx20B38Khwe4OqfSbm5IweN8litInsnIx+aFVkYke
+         mIOX+MaZyWmlfrJUj+Eo+FN9kfBHROMq71uFzViE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        patches@lists.linux.dev, Forza <forza@tnonline.net>,
+        Dmitry Bogdanov <d.bogdanov@yadro.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Maurizio Lombardi <mlombard@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 033/132] staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE
+Subject: [PATCH 5.10 051/211] scsi: target: iscsit: Free cmds before session free
 Date:   Sun, 28 May 2023 20:09:32 +0100
-Message-Id: <20230528190834.602039867@linuxfoundation.org>
+Message-Id: <20230528190844.859608168@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-[ Upstream commit fda2093860df4812d69052a8cf4997e53853a340 ]
+[ Upstream commit d8990b5a4d065f38f35d69bcd627ec5a7f8330ca ]
 
-Replace macro RTL_PCI_DEVICE with PCI_DEVICE to get rid of rtl819xp_ops
-which is empty.
+Commands from recovery entries are freed after session has been closed.
+That leads to use-after-free at command free or NPE with such call trace:
 
-Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Link: https://lore.kernel.org/r/8b45ee783fa91196b7c9d6fc840a189496afd2f4.1677133271.git.philipp.g.hortmann@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Time2Retain timer expired for SID: 1, cleaning up iSCSI session.
+BUG: kernel NULL pointer dereference, address: 0000000000000140
+RIP: 0010:sbitmap_queue_clear+0x3a/0xa0
+Call Trace:
+ target_release_cmd_kref+0xd1/0x1f0 [target_core_mod]
+ transport_generic_free_cmd+0xd1/0x180 [target_core_mod]
+ iscsit_free_cmd+0x53/0xd0 [iscsi_target_mod]
+ iscsit_free_connection_recovery_entries+0x29d/0x320 [iscsi_target_mod]
+ iscsit_close_session+0x13a/0x140 [iscsi_target_mod]
+ iscsit_check_post_dataout+0x440/0x440 [iscsi_target_mod]
+ call_timer_fn+0x24/0x140
+
+Move cleanup of recovery enrties to before session freeing.
+
+Reported-by: Forza <forza@tnonline.net>
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-7-michael.christie@oracle.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 6 +++---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.h | 5 -----
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ drivers/target/iscsi/iscsi_target.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-index d5ef1986bde4d..0afe4ed9ca885 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-@@ -61,9 +61,9 @@ static const struct rtl819x_ops rtl819xp_ops = {
- };
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 6bb8403580729..075e2a6fb474f 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4385,6 +4385,9 @@ int iscsit_close_session(struct iscsi_session *sess)
+ 	iscsit_stop_time2retain_timer(sess);
+ 	spin_unlock_bh(&se_tpg->session_lock);
  
- static struct pci_device_id rtl8192_pci_id_tbl[] = {
--	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
--	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
--	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
-+	{PCI_DEVICE(0x10ec, 0x8192)},
-+	{PCI_DEVICE(0x07aa, 0x0044)},
-+	{PCI_DEVICE(0x07aa, 0x0047)},
- 	{}
- };
++	if (sess->sess_ops->ErrorRecoveryLevel == 2)
++		iscsit_free_connection_recovery_entries(sess);
++
+ 	/*
+ 	 * transport_deregister_session_configfs() will clear the
+ 	 * struct se_node_acl->nacl_sess pointer now as a iscsi_np process context
+@@ -4412,9 +4415,6 @@ int iscsit_close_session(struct iscsi_session *sess)
  
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
-index 866fe4d4cb28d..964cc5b8eb91d 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
-@@ -67,11 +67,6 @@
- #define IS_HARDWARE_TYPE_8192SE(_priv)		\
- 	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 == NIC_8192SE)
+ 	transport_deregister_session(sess->se_sess);
  
--#define RTL_PCI_DEVICE(vend, dev, cfg) \
--	.vendor = (vend), .device = (dev), \
--	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
--	.driver_data = (kernel_ulong_t)&(cfg)
+-	if (sess->sess_ops->ErrorRecoveryLevel == 2)
+-		iscsit_free_connection_recovery_entries(sess);
 -
- #define TOTAL_CAM_ENTRY		32
- #define CAM_CONTENT_COUNT	8
+ 	iscsit_free_all_ooo_cmdsns(sess);
  
+ 	spin_lock_bh(&se_tpg->session_lock);
 -- 
 2.39.2
 
