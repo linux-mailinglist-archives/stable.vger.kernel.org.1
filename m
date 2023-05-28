@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 534ED713C7E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4418A713CFC
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjE1TPf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34926 "EHLO
+        id S229912AbjE1TUo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:20:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbjE1TPe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:34 -0400
+        with ESMTP id S229910AbjE1TUm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B431FA2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:15:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDA2A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 526C561991
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52002C433D2;
-        Sun, 28 May 2023 19:15:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F06A061AF3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1853CC433D2;
+        Sun, 28 May 2023 19:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301332;
-        bh=Z9ATsznwcQgsfinwzXyh8sP9UT7ioMXhhSgdOtc0RGI=;
+        s=korg; t=1685301640;
+        bh=YIYuWSkVrx5HTq1PSTXsDmqNNAItd/pyfszMtfdaa6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XPhuYx1zJtxCNZ5GJn+Eb6Ayzfqcq9s1YVsAtr0FtphjCDVVLou5hi2uKP9aXYTel
-         BdcI4K35xnQaBwzTEv74tPME932ctlKbqJrMeHfX/mZ3+HBVhM9z4P0BJCNS6jvas3
-         3jrzZ+hwYz0blCobi/Tb3jBYXEIZN/7sFNZvcGII=
+        b=KznGpwgltFTc2t2vOXrxtAXWlSwwHzYuAPCwpIPwFKlFr5XJvXG5z6iB8nqCxaH8M
+         nSE1r2UMFV8GBv2o1rdAKF3qeJWJDGv5HzvOycfxHBUbBDGTislZp5kBV9TQkTVBb1
+         g0CZnSs7GePEJ3AQ4TA1u33i1+yBd5IJymAV3r3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 74/86] USB: sisusbvga: Add endpoint checks
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.19 109/132] btrfs: use nofs when cleaning up aborted transactions
 Date:   Sun, 28 May 2023 20:10:48 +0100
-Message-Id: <20230528190831.399750122@linuxfoundation.org>
+Message-Id: <20230528190837.087328186@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,79 +53,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
+commit 597441b3436a43011f31ce71dc0a6c0bf5ce958a upstream.
 
-The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
+Our CI system caught a lockdep splat:
 
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
-RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
-RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
-R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
- sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
- sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
- sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
- sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
- sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
-...
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.3.0-rc7+ #1167 Not tainted
+  ------------------------------------------------------
+  kswapd0/46 is trying to acquire lock:
+  ffff8c6543abd650 (sb_internal#2){++++}-{0:0}, at: btrfs_commit_inode_delayed_inode+0x5f/0x120
 
-The problem was caused by the fact that the driver does not check
-whether the endpoints it uses are actually present and have the
-appropriate types.  This can be fixed by adding a simple check of
-the endpoints.
+  but task is already holding lock:
+  ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
 
-Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
-Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  which lock already depends on the new lock.
+
+  the existing dependency chain (in reverse order) is:
+
+  -> #1 (fs_reclaim){+.+.}-{0:0}:
+	 fs_reclaim_acquire+0xa5/0xe0
+	 kmem_cache_alloc+0x31/0x2c0
+	 alloc_extent_state+0x1d/0xd0
+	 __clear_extent_bit+0x2e0/0x4f0
+	 try_release_extent_mapping+0x216/0x280
+	 btrfs_release_folio+0x2e/0x90
+	 invalidate_inode_pages2_range+0x397/0x470
+	 btrfs_cleanup_dirty_bgs+0x9e/0x210
+	 btrfs_cleanup_one_transaction+0x22/0x760
+	 btrfs_commit_transaction+0x3b7/0x13a0
+	 create_subvol+0x59b/0x970
+	 btrfs_mksubvol+0x435/0x4f0
+	 __btrfs_ioctl_snap_create+0x11e/0x1b0
+	 btrfs_ioctl_snap_create_v2+0xbf/0x140
+	 btrfs_ioctl+0xa45/0x28f0
+	 __x64_sys_ioctl+0x88/0xc0
+	 do_syscall_64+0x38/0x90
+	 entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+  -> #0 (sb_internal#2){++++}-{0:0}:
+	 __lock_acquire+0x1435/0x21a0
+	 lock_acquire+0xc2/0x2b0
+	 start_transaction+0x401/0x730
+	 btrfs_commit_inode_delayed_inode+0x5f/0x120
+	 btrfs_evict_inode+0x292/0x3d0
+	 evict+0xcc/0x1d0
+	 inode_lru_isolate+0x14d/0x1e0
+	 __list_lru_walk_one+0xbe/0x1c0
+	 list_lru_walk_one+0x58/0x80
+	 prune_icache_sb+0x39/0x60
+	 super_cache_scan+0x161/0x1f0
+	 do_shrink_slab+0x163/0x340
+	 shrink_slab+0x1d3/0x290
+	 shrink_node+0x300/0x720
+	 balance_pgdat+0x35c/0x7a0
+	 kswapd+0x205/0x410
+	 kthread+0xf0/0x120
+	 ret_from_fork+0x29/0x50
+
+  other info that might help us debug this:
+
+   Possible unsafe locking scenario:
+
+	 CPU0                    CPU1
+	 ----                    ----
+    lock(fs_reclaim);
+				 lock(sb_internal#2);
+				 lock(fs_reclaim);
+    lock(sb_internal#2);
+
+   *** DEADLOCK ***
+
+  3 locks held by kswapd0/46:
+   #0: ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
+   #1: ffffffffabe50270 (shrinker_rwsem){++++}-{3:3}, at: shrink_slab+0x113/0x290
+   #2: ffff8c6543abd0e0 (&type->s_umount_key#44){++++}-{3:3}, at: super_cache_scan+0x38/0x1f0
+
+  stack backtrace:
+  CPU: 0 PID: 46 Comm: kswapd0 Not tainted 6.3.0-rc7+ #1167
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x58/0x90
+   check_noncircular+0xd6/0x100
+   ? save_trace+0x3f/0x310
+   ? add_lock_to_list+0x97/0x120
+   __lock_acquire+0x1435/0x21a0
+   lock_acquire+0xc2/0x2b0
+   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
+   start_transaction+0x401/0x730
+   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
+   btrfs_commit_inode_delayed_inode+0x5f/0x120
+   btrfs_evict_inode+0x292/0x3d0
+   ? lock_release+0x134/0x270
+   ? __pfx_wake_bit_function+0x10/0x10
+   evict+0xcc/0x1d0
+   inode_lru_isolate+0x14d/0x1e0
+   __list_lru_walk_one+0xbe/0x1c0
+   ? __pfx_inode_lru_isolate+0x10/0x10
+   ? __pfx_inode_lru_isolate+0x10/0x10
+   list_lru_walk_one+0x58/0x80
+   prune_icache_sb+0x39/0x60
+   super_cache_scan+0x161/0x1f0
+   do_shrink_slab+0x163/0x340
+   shrink_slab+0x1d3/0x290
+   shrink_node+0x300/0x720
+   balance_pgdat+0x35c/0x7a0
+   kswapd+0x205/0x410
+   ? __pfx_autoremove_wake_function+0x10/0x10
+   ? __pfx_kswapd+0x10/0x10
+   kthread+0xf0/0x120
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x29/0x50
+   </TASK>
+
+This happens because when we abort the transaction in the transaction
+commit path we call invalidate_inode_pages2_range on our block group
+cache inodes (if we have space cache v1) and any delalloc inodes we may
+have.  The plain invalidate_inode_pages2_range() call passes through
+GFP_KERNEL, which makes sense in most cases, but not here.  Wrap these
+two invalidate callees with memalloc_nofs_save/memalloc_nofs_restore to
+make sure we don't end up with the fs reclaim dependency under the
+transaction dependency.
+
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/sisusbvga/sisusb.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/btrfs/disk-io.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/misc/sisusbvga/sisusb.c
-+++ b/drivers/usb/misc/sisusbvga/sisusb.c
-@@ -3015,6 +3015,20 @@ static int sisusb_probe(struct usb_inter
- 	struct usb_device *dev = interface_to_usbdev(intf);
- 	struct sisusb_usb_data *sisusb;
- 	int retval = 0, i;
-+	static const u8 ep_addresses[] = {
-+		SISUSB_EP_GFX_IN | USB_DIR_IN,
-+		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
-+		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
-+		0};
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4348,7 +4348,11 @@ static void btrfs_destroy_delalloc_inode
+ 		 */
+ 		inode = igrab(&btrfs_inode->vfs_inode);
+ 		if (inode) {
++			unsigned int nofs_flag;
 +
-+	/* Are the expected endpoints present? */
-+	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
-+		dev_err(&intf->dev, "Invalid USB2VGA device\n");
-+		return -EINVAL;
-+	}
++			nofs_flag = memalloc_nofs_save();
+ 			invalidate_inode_pages2(inode->i_mapping);
++			memalloc_nofs_restore(nofs_flag);
+ 			iput(inode);
+ 		}
+ 		spin_lock(&root->delalloc_lock);
+@@ -4466,7 +4470,12 @@ static void btrfs_cleanup_bg_io(struct b
  
- 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
- 			dev->devnum);
+ 	inode = cache->io_ctl.inode;
+ 	if (inode) {
++		unsigned int nofs_flag;
++
++		nofs_flag = memalloc_nofs_save();
+ 		invalidate_inode_pages2(inode->i_mapping);
++		memalloc_nofs_restore(nofs_flag);
++
+ 		BTRFS_I(inode)->generation = 0;
+ 		cache->io_ctl.inode = NULL;
+ 		iput(inode);
 
 
