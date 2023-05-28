@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5DED713AD5
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08FE6713AD6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbjE1Qzt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:55:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34636 "EHLO
+        id S229734AbjE1Qzw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:55:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjE1Qzt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:49 -0400
+        with ESMTP id S229726AbjE1Qzv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1B7BD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614C2BE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A08460F4B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65297C433EF;
-        Sun, 28 May 2023 16:55:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7D0761157
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DA8C4339B;
+        Sun, 28 May 2023 16:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292946;
-        bh=tG0LgZH5PqGLjyl/3qUqH9H0INJiYx9I4/NFj/4xxKM=;
+        s=korg; t=1685292949;
+        bh=gDT6MW//FGPnGUouHD+7wxJDsygzkxZ3GZb8bMx86Hs=;
         h=Subject:To:Cc:From:Date:From;
-        b=zLjDPXaHkKvyG6xlFjbdzTEIM9GOIl9Bp9FgIvE02UWFQUHjpW6nY95f9/3Z08wo8
-         WjIFs2VyDOWLoJtxMgjBxo0UAQd3jVKK76J7r6Fc+JgdjhNEPLVKneYDog1zpoieGn
-         MNtDy9uJTT/xHyG5P3P246Rsn2jwHZcsyvL2lkLY=
-Subject: FAILED: patch "[PATCH] page_pool: fix inconsistency for page_pool_ring_[un]lock()" failed to apply to 6.1-stable tree
+        b=pyDzCNIeNSQSqkcUtm6gQSg9S6g1fowZuoV/x9TJ0Jk2pDfpOGbltwZqMVtvt4yFM
+         RRfX+UKpDsUA9D0msFAGPhBbssSW75K3rmXYvYFWuEWkOlM5dyUYCxYwhjzg23CuEQ
+         o8uX97jAIa3Wjno0A7W4rd+O1FKVzv0A7BXVtwZY=
+Subject: FAILED: patch "[PATCH] page_pool: fix inconsistency for page_pool_ring_[un]lock()" failed to apply to 5.15-stable tree
 To:     linyunsheng@huawei.com, brouer@redhat.com,
         ilias.apalodimas@linaro.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:55:21 +0100
-Message-ID: <2023052820-treachery-paper-0d3a@gregkh>
+Date:   Sun, 28 May 2023 17:55:22 +0100
+Message-ID: <2023052821-wired-primate-24c3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,24 +49,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 368d3cb406cdd074d1df2ad9ec06d1bfcb664882
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052820-treachery-paper-0d3a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052821-wired-primate-24c3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 368d3cb406cd ("page_pool: fix inconsistency for page_pool_ring_[un]lock()")
 542bcea4be86 ("net: page_pool: use in_softirq() instead")
+590032a4d213 ("page_pool: Add recycle stats to page_pool_put_page_bulk")
+6b95e3388b1e ("page_pool: Add function to batch and return stats")
+ad6fa1e1ab1b ("page_pool: Add recycle stats")
+8610037e8106 ("page_pool: Add allocation stats")
+64693ec7774e ("page_pool: Store the XDP mem id")
 
 thanks,
 
