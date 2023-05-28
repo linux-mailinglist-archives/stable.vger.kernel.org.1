@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6464F713E7F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CB00713E12
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbjE1TgG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51912 "EHLO
+        id S230254AbjE1Tbz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:31:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230384AbjE1TgF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:05 -0400
+        with ESMTP id S230259AbjE1Tby (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8170B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975BB110
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76D5861E2A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9533FC433D2;
-        Sun, 28 May 2023 19:36:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3365161D93
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCB0C433D2;
+        Sun, 28 May 2023 19:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302562;
-        bh=TPxPC0ZuGaoOv8E1oSCW0PGJGkLqO2rqJ9zkuesxreI=;
+        s=korg; t=1685302297;
+        bh=lkr+iwgdLon1rtXND+4nzrFsY8ucFixsNmeVsbRUf78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wCrBH3lNZiKMYGlG/9wdZp6nmDw47CFJaukAjEWZLFJ6VXfoo7NpI9Ow0sf7fdFrN
-         VNZeAlcEMOy/8D2LG1L9yUEF3NPyPglZnZUSykRs62KXwGt9A/mk+I2Jo6nUFF3KP6
-         FXJtd6SPyfL62DIFw/mauG/ggEGUMLpL5p7mfiOw=
+        b=pIQjgSEjDlTCLpOvVpN6WummVSBTBsaXsVh6IWNE7VQ3k2cijFs7n2Efx7eZMNYoX
+         gQi2DKi0msQjT8kVBh5kNP/XMXUsztoU3M/hUDCVhXrdhm+Kj3UJCk6fJpz1PHinBA
+         gP4eiGCs/uVuQId83b6ByHMJcFfTx6ZmMITKTIT4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 054/119] irqchip/mips-gic: Dont touch vl_map if a local interrupt is not routable
-Date:   Sun, 28 May 2023 20:10:54 +0100
-Message-Id: <20230528190837.223555517@linuxfoundation.org>
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.3 079/127] power: supply: bq27xxx: Fix bq27xxx_battery_update() race condition
+Date:   Sun, 28 May 2023 20:10:55 +0100
+Message-Id: <20230528190838.943366518@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,45 +53,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 2c6c9c049510163090b979ea5f92a68ae8d93c45 upstream.
+commit 5c34c0aef185dcd10881847b9ebf20046aa77cb4 upstream.
 
-When a GIC local interrupt is not routable, it's vl_map will be used
-to control some internal states for core (providing IPTI, IPPCI, IPFDC
-input signal for core). Overriding it will interfere core's intetrupt
-controller.
+bq27xxx_battery_update() assumes / requires that it is only run once,
+not multiple times at the same time. But there are 3 possible callers:
 
-Do not touch vl_map if a local interrupt is not routable, we are not
-going to remap it.
+1. bq27xxx_battery_poll() delayed_work item handler
+2. bq27xxx_battery_irq_handler_thread() I2C IRQ handler
+3. bq27xxx_battery_setup()
 
-Before dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on
-irq_cpu_online()"), if a local interrupt is not routable, then it won't
-be requested from GIC Local domain, and thus gic_all_vpes_irq_cpu_online
-won't be called for that particular interrupt.
+And there is no protection against these racing with each other,
+fix this race condition by making all callers take di->lock:
 
-Fixes: dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230424103156.66753-2-jiaxun.yang@flygoat.com
+- Rename bq27xxx_battery_update() to bq27xxx_battery_update_unlocked()
+
+- Add new bq27xxx_battery_update() which takes di->lock and then calls
+  bq27xxx_battery_update_unlocked()
+
+- Make stale cache check code in bq27xxx_battery_get_property(), which
+  already takes di->lock directly to check the jiffies, call
+  bq27xxx_battery_update_unlocked() instead of messing with
+  the delayed_work item
+
+- Make bq27xxx_battery_update_unlocked() mod the delayed-work item
+  so that the next poll is delayed to poll_interval milliseconds after
+  the last update independent of the source of the update
+
+Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-mips-gic.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -400,6 +400,8 @@ static void gic_all_vpes_irq_cpu_online(
- 		unsigned int intr = local_intrs[i];
- 		struct gic_all_vpes_chip_data *cd;
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1761,7 +1761,7 @@ static int bq27xxx_battery_read_health(s
+ 	return POWER_SUPPLY_HEALTH_GOOD;
+ }
  
-+		if (!gic_local_irq_is_routable(intr))
-+			continue;
- 		cd = &gic_all_vpes_chip_data[intr];
- 		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
- 		if (cd->mask)
+-void bq27xxx_battery_update(struct bq27xxx_device_info *di)
++static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
+ {
+ 	struct bq27xxx_reg_cache cache = {0, };
+ 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+@@ -1800,6 +1800,16 @@ void bq27xxx_battery_update(struct bq27x
+ 		di->cache = cache;
+ 
+ 	di->last_update = jiffies;
++
++	if (poll_interval > 0)
++		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
++}
++
++void bq27xxx_battery_update(struct bq27xxx_device_info *di)
++{
++	mutex_lock(&di->lock);
++	bq27xxx_battery_update_unlocked(di);
++	mutex_unlock(&di->lock);
+ }
+ EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
+ 
+@@ -1810,9 +1820,6 @@ static void bq27xxx_battery_poll(struct
+ 				     work.work);
+ 
+ 	bq27xxx_battery_update(di);
+-
+-	if (poll_interval > 0)
+-		schedule_delayed_work(&di->work, poll_interval * HZ);
+ }
+ 
+ static bool bq27xxx_battery_is_full(struct bq27xxx_device_info *di, int flags)
+@@ -1985,10 +1992,8 @@ static int bq27xxx_battery_get_property(
+ 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
+ 
+ 	mutex_lock(&di->lock);
+-	if (time_is_before_jiffies(di->last_update + 5 * HZ)) {
+-		cancel_delayed_work_sync(&di->work);
+-		bq27xxx_battery_poll(&di->work.work);
+-	}
++	if (time_is_before_jiffies(di->last_update + 5 * HZ))
++		bq27xxx_battery_update_unlocked(di);
+ 	mutex_unlock(&di->lock);
+ 
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
 
 
