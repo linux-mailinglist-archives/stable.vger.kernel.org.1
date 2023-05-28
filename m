@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A8D713DEC
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01468713C57
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230192AbjE1TaO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46856 "EHLO
+        id S229461AbjE1TO2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbjE1TaN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:13 -0400
+        with ESMTP id S229633AbjE1TO1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A4AC9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 032E1EA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30D8461D4C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE13C4339B;
-        Sun, 28 May 2023 19:30:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6E176194D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F78C433EF;
+        Sun, 28 May 2023 19:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302210;
-        bh=Wy7AdRO/K+eBMjRjTP5BswEMqA2Y1niHhYlQEsoiFaQ=;
+        s=korg; t=1685301263;
+        bh=Hg7DBqBtYag5QpKeoq/83vqIAQydv1M5+8cySSzBjfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iAFYe1P/kyaKJbzeE4Bz4PMXudFyOqudEDGJUicW6Mrxt1kOZJPUWLsS2zAdh9AnZ
-         FJOWylqjAWxFm9O6geNY5afchscYrptXuPsSDHqcGKXcOJtGSp5kquMzmyTvJb6e4Y
-         RiHUkIv8Zdqa1l0NZUoRFHpA9+ilS1xoJ1CjCRcY=
+        b=ZhVAUmpPZocYjFOn5/qsAvd7aoBUkM0/V6NFd+aQTBMqRPPNxZ5w5DWy0QO44Qmlc
+         6AZinrh6tBdWk/tKcts/rq5oUdXi3yAY5AuITmvw+pQ2BfnvmuVGk+XLZcqe7afcXv
+         1qEpXnFMiko3NSE+l+VXlEOhZvu07yBQ0mtsT9Dw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wayne Lin <wayne.lin@amd.com>,
-        Tom Chung <chiahsuan.chung@amd.com>,
-        Fangzhi Zuo <jerry.zuo@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 044/127] drm/amd/display: Have Payload Properly Created After Resume
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 46/86] vlan: fix a potential uninit-value in vlan_dev_hard_start_xmit()
 Date:   Sun, 28 May 2023 20:10:20 +0100
-Message-Id: <20230528190837.789297819@linuxfoundation.org>
+Message-Id: <20230528190830.308702396@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,51 +55,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fangzhi Zuo <jerry.zuo@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 482e6ad9adde69d9da08864b4ccf4dfd53edb2f0 upstream.
+[ Upstream commit dacab578c7c6cd06c50c89dfa36b0e0f10decd4e ]
 
-At drm suspend sequence, MST dc_sink is removed. When commit cached
-MST stream back in drm resume sequence, the MST stream payload is not
-properly created and added into the payload table. After resume, topology
-change is reprobed by removing existing streams first. That leads to
-no payload is found in the existing payload table as below error
-"[drm] ERROR No payload for [MST PORT:] found in mst state"
+syzbot triggered the following splat [1], sending an empty message
+through pppoe_sendmsg().
 
-1. In encoder .atomic_check routine, remove check existance of dc_sink
-2. Bypass MST by checking existence of MST root port. dc_link_type cannot
-differentiate MST port before topology is rediscovered.
+When VLAN_FLAG_REORDER_HDR flag is set, vlan_dev_hard_header()
+does not push extra bytes for the VLAN header, because vlan is offloaded.
 
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unfortunately vlan_dev_hard_start_xmit() first reads veth->h_vlan_proto
+before testing (vlan->flags & VLAN_FLAG_REORDER_HDR).
+
+We need to swap the two conditions.
+
+[1]
+BUG: KMSAN: uninit-value in vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
+vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
+__netdev_start_xmit include/linux/netdevice.h:4883 [inline]
+netdev_start_xmit include/linux/netdevice.h:4897 [inline]
+xmit_one net/core/dev.c:3580 [inline]
+dev_hard_start_xmit+0x253/0xa20 net/core/dev.c:3596
+__dev_queue_xmit+0x3c7f/0x5ac0 net/core/dev.c:4246
+dev_queue_xmit include/linux/netdevice.h:3053 [inline]
+pppoe_sendmsg+0xa93/0xb80 drivers/net/ppp/pppoe.c:900
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
+__do_sys_sendmmsg net/socket.c:2670 [inline]
+__se_sys_sendmmsg net/socket.c:2667 [inline]
+__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:774
+slab_alloc_node mm/slub.c:3452 [inline]
+kmem_cache_alloc_node+0x543/0xab0 mm/slub.c:3497
+kmalloc_reserve+0x148/0x470 net/core/skbuff.c:520
+__alloc_skb+0x3a7/0x850 net/core/skbuff.c:606
+alloc_skb include/linux/skbuff.h:1277 [inline]
+sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2583
+pppoe_sendmsg+0x3af/0xb80 drivers/net/ppp/pppoe.c:867
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
+__do_sys_sendmmsg net/socket.c:2670 [inline]
+__se_sys_sendmmsg net/socket.c:2667 [inline]
+__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+CPU: 0 PID: 29770 Comm: syz-executor.0 Not tainted 6.3.0-rc6-syzkaller-gc478e5b17829 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    4 ++--
+ net/8021q/vlan_dev.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2813,7 +2813,7 @@ static int dm_resume(void *handle)
- 		 * this is the case when traversing through already created
- 		 * MST connectors, should be skipped
- 		 */
--		if (aconnector->dc_link->type == dc_connection_mst_branch)
-+		if (aconnector && aconnector->mst_root)
- 			continue;
- 
- 		mutex_lock(&aconnector->hpd_lock);
-@@ -6717,7 +6717,7 @@ static int dm_encoder_helper_atomic_chec
- 	int clock, bpp = 0;
- 	bool is_y420 = false;
- 
--	if (!aconnector->mst_output_port || !aconnector->dc_sink)
-+	if (!aconnector->mst_output_port)
- 		return 0;
- 
- 	mst_port = aconnector->mst_output_port;
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index e871d3b27c479..c436c9973455b 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -115,8 +115,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
+ 	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+ 	 * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
+ 	 */
+-	if (veth->h_vlan_proto != vlan->vlan_proto ||
+-	    vlan->flags & VLAN_FLAG_REORDER_HDR) {
++	if (vlan->flags & VLAN_FLAG_REORDER_HDR ||
++	    veth->h_vlan_proto != vlan->vlan_proto) {
+ 		u16 vlan_tci;
+ 		vlan_tci = vlan->vlan_id;
+ 		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
+-- 
+2.39.2
+
 
 
