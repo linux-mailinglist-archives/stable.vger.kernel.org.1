@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A94C713F2D
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D52B2713E59
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbjE1Tmp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58052 "EHLO
+        id S230359AbjE1Ter (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjE1Tmo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E16B9B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:43 -0700 (PDT)
+        with ESMTP id S230344AbjE1Tej (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE86DA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A160461F05
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEDBC433D2;
-        Sun, 28 May 2023 19:42:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BBCA61DF6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B2CC433D2;
+        Sun, 28 May 2023 19:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302962;
-        bh=uFUgcJ10Fe6kYRudC89cKeNGUIM8LFRXh2Va97Y1yyQ=;
+        s=korg; t=1685302477;
+        bh=3Uf595Jknc3eLB79ThMn9PGVeA3zUR2SdQBQF6VlH5I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZJU5YmSFaZ65KCUqQMxQaeLEdypEhneDqA+K5vccroKhZ6yAANoSRxDDUqmVuellz
-         H4YAdfBF/Gs/cjNO5qGlUJ1TFcIEneTXx/gis34V87K4/HWgWJlqzUsWQY/pQUK5QG
-         7mT9o1UlH81QAi0l6v8fcVfbRRq+tqOuSfLX6ilA=
+        b=iLb7wMzqI3Bp/g+5NaAkOJucMr5EeVKO03TpD8+2nDNOd8xB1UxDsXqq+qCBnIB03
+         I2r8wW2kk7eXWBUOWfj6xPoHDjcVEGUxuWpGEawrDqERf8nkl6JeME8CQ1do41+MGD
+         roFbLCFyNsi/gS8rT1depoOJSqqCr4PaewaL7cio=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/211] ipv4/tcp: do not use per netns ctl sockets
+        patches@lists.linux.dev, Adam Stylinski <kungfujesus06@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 019/119] ALSA: hda/ca0132: add quirk for EVGA X299 DARK
 Date:   Sun, 28 May 2023 20:10:19 +0100
-Message-Id: <20230528190846.030515064@linuxfoundation.org>
+Message-Id: <20230528190835.970778488@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,178 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Adam Stylinski <kungfujesus06@gmail.com>
 
-[ Upstream commit 37ba017dcc3b1123206808979834655ddcf93251 ]
+commit 7843380d07bbeffd3ce6504e73cf61f840ae76ca upstream.
 
-TCP ipv4 uses per-cpu/per-netns ctl sockets in order to send
-RST and some ACK packets (on behalf of TIMEWAIT sockets).
+This quirk is necessary for surround and other DSP effects to work
+with the onboard ca0132 based audio chipset for the EVGA X299 dark
+mainboard.
 
-This adds memory and cpu costs, which do not seem needed.
-Now typical servers have 256 or more cores, this adds considerable
-tax to netns users.
-
-tcp sockets are used from BH context, are not receiving packets,
-and do not store any persistent state but the 'struct net' pointer
-in order to be able to use IPv4 output functions.
-
-Note that I attempted a related change in the past, that had
-to be hot-fixed in commit bdbbb8527b6f ("ipv4: tcp: get rid of ugly unicast_sock")
-
-This patch could very well surface old bugs, on layers not
-taking care of sk->sk_kern_sock properly.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 1e306ec49a1f ("tcp: fix possible sk_priority leak in tcp_v4_send_reset()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Adam Stylinski <kungfujesus06@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=67071
+Link: https://lore.kernel.org/r/ZGopOe19T1QOwizS@eggsbenedict.adamsnet
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netns/ipv4.h |  1 -
- net/ipv4/tcp_ipv4.c      | 61 ++++++++++++++++++----------------------
- 2 files changed, 27 insertions(+), 35 deletions(-)
+ sound/pci/hda/patch_ca0132.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
-index d8b320cf54ba0..4a4a5270ff6f2 100644
---- a/include/net/netns/ipv4.h
-+++ b/include/net/netns/ipv4.h
-@@ -71,7 +71,6 @@ struct netns_ipv4 {
- 	struct sock		*mc_autojoin_sk;
- 
- 	struct inet_peer_base	*peers;
--	struct sock  * __percpu	*tcp_sk;
- 	struct fqdir		*fqdir;
- #ifdef CONFIG_NETFILTER
- 	struct xt_table		*iptable_filter;
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 8bd7b1ec3b6a3..275ae42be99e0 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -91,6 +91,8 @@ static int tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
- struct inet_hashinfo tcp_hashinfo;
- EXPORT_SYMBOL(tcp_hashinfo);
- 
-+static DEFINE_PER_CPU(struct sock *, ipv4_tcp_sk);
-+
- static u32 tcp_v4_init_seq(const struct sk_buff *skb)
- {
- 	return secure_tcp_seq(ip_hdr(skb)->daddr,
-@@ -794,7 +796,8 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 	arg.tos = ip_hdr(skb)->tos;
- 	arg.uid = sock_net_uid(net, sk && sk_fullsock(sk) ? sk : NULL);
- 	local_bh_disable();
--	ctl_sk = this_cpu_read(*net->ipv4.tcp_sk);
-+	ctl_sk = this_cpu_read(ipv4_tcp_sk);
-+	sock_net_set(ctl_sk, net);
- 	if (sk) {
- 		ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
- 				   inet_twsk(sk)->tw_mark : sk->sk_mark;
-@@ -809,6 +812,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 			      transmit_time);
- 
- 	ctl_sk->sk_mark = 0;
-+	sock_net_set(ctl_sk, &init_net);
- 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
- 	__TCP_INC_STATS(net, TCP_MIB_OUTRSTS);
- 	local_bh_enable();
-@@ -892,7 +896,8 @@ static void tcp_v4_send_ack(const struct sock *sk,
- 	arg.tos = tos;
- 	arg.uid = sock_net_uid(net, sk_fullsock(sk) ? sk : NULL);
- 	local_bh_disable();
--	ctl_sk = this_cpu_read(*net->ipv4.tcp_sk);
-+	ctl_sk = this_cpu_read(ipv4_tcp_sk);
-+	sock_net_set(ctl_sk, net);
- 	ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
- 			   inet_twsk(sk)->tw_mark : sk->sk_mark;
- 	ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
-@@ -905,6 +910,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
- 			      transmit_time);
- 
- 	ctl_sk->sk_mark = 0;
-+	sock_net_set(ctl_sk, &init_net);
- 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
- 	local_bh_enable();
- }
-@@ -2828,41 +2834,14 @@ EXPORT_SYMBOL(tcp_prot);
- 
- static void __net_exit tcp_sk_exit(struct net *net)
- {
--	int cpu;
--
- 	if (net->ipv4.tcp_congestion_control)
- 		bpf_module_put(net->ipv4.tcp_congestion_control,
- 			       net->ipv4.tcp_congestion_control->owner);
--
--	for_each_possible_cpu(cpu)
--		inet_ctl_sock_destroy(*per_cpu_ptr(net->ipv4.tcp_sk, cpu));
--	free_percpu(net->ipv4.tcp_sk);
- }
- 
- static int __net_init tcp_sk_init(struct net *net)
- {
--	int res, cpu, cnt;
--
--	net->ipv4.tcp_sk = alloc_percpu(struct sock *);
--	if (!net->ipv4.tcp_sk)
--		return -ENOMEM;
--
--	for_each_possible_cpu(cpu) {
--		struct sock *sk;
--
--		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
--					   IPPROTO_TCP, net);
--		if (res)
--			goto fail;
--		sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
--
--		/* Please enforce IP_DF and IPID==0 for RST and
--		 * ACK sent in SYN-RECV and TIME-WAIT state.
--		 */
--		inet_sk(sk)->pmtudisc = IP_PMTUDISC_DO;
--
--		*per_cpu_ptr(net->ipv4.tcp_sk, cpu) = sk;
--	}
-+	int cnt;
- 
- 	net->ipv4.sysctl_tcp_ecn = 2;
- 	net->ipv4.sysctl_tcp_ecn_fallback = 1;
-@@ -2947,10 +2926,6 @@ static int __net_init tcp_sk_init(struct net *net)
- 		net->ipv4.tcp_congestion_control = &tcp_reno;
- 
- 	return 0;
--fail:
--	tcp_sk_exit(net);
--
--	return res;
- }
- 
- static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
-@@ -3027,6 +3002,24 @@ static void __init bpf_iter_register(void)
- 
- void __init tcp_v4_init(void)
- {
-+	int cpu, res;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct sock *sk;
-+
-+		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
-+					   IPPROTO_TCP, &init_net);
-+		if (res)
-+			panic("Failed to create the TCP control socket.\n");
-+		sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
-+
-+		/* Please enforce IP_DF and IPID==0 for RST and
-+		 * ACK sent in SYN-RECV and TIME-WAIT state.
-+		 */
-+		inet_sk(sk)->pmtudisc = IP_PMTUDISC_DO;
-+
-+		per_cpu(ipv4_tcp_sk, cpu) = sk;
-+	}
- 	if (register_pernet_subsys(&tcp_sk_ops))
- 		panic("Failed to create the TCP control socket.\n");
- 
--- 
-2.39.2
-
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -1306,6 +1306,7 @@ static const struct snd_pci_quirk ca0132
+ 	SND_PCI_QUIRK(0x1458, 0xA026, "Gigabyte G1.Sniper Z97", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x1458, 0xA036, "Gigabyte GA-Z170X-Gaming 7", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x3842, 0x1038, "EVGA X99 Classified", QUIRK_R3DI),
++	SND_PCI_QUIRK(0x3842, 0x104b, "EVGA X299 Dark", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x3842, 0x1055, "EVGA Z390 DARK", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x1102, 0x0013, "Recon3D", QUIRK_R3D),
+ 	SND_PCI_QUIRK(0x1102, 0x0018, "Recon3D", QUIRK_R3D),
 
 
