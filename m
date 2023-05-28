@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EACEE713C1E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 475BE713C1F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbjE1TFD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:05:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60110 "EHLO
+        id S229563AbjE1TFG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:05:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjE1TFC (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C2090
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:01 -0700 (PDT)
+        with ESMTP id S229485AbjE1TFF (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE95790
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6FAC618A9
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2614C433EF;
-        Sun, 28 May 2023 19:04:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 441856160D
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61830C4339B;
+        Sun, 28 May 2023 19:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685300700;
-        bh=ZI+Nt3n2/gucH4/mUdfCHFVmPfOJeIFgzBbBylh2VQQ=;
+        s=korg; t=1685300702;
+        bh=qoc0DHzLQ8RAH/s30zu7SFfMF6rBhwMav0nfmOopKv0=;
         h=Subject:To:From:Date:From;
-        b=PnLsvX1sUehFrNUmknrxkLgxfH7ErQYqxCAnae51lTPX6+MX+Q9T6MU444U5m+yvx
-         DjpKWIAcqhXzZUYDSlcjFwhswoUJ75C/9sMp4Mwb1FUfAKEWPr6edLMpo6CggiB6Xy
-         aK5KimzaMiVrFw7MZDMKEjChCOyi624CZY9GaACc=
-Subject: patch "iio: adc: ad7192: Change "shorted" channels to differential" added to char-misc-linus
-To:     paul@crapouillou.net, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org, alisa.roman@analog.com, nuno.sa@analog.com
+        b=E0nfJL1UmxYgUB1PeoIqTqpOiPqeLUboBeoqbEoACHNoweS4pXKCzlpDYKmWtb1Qs
+         FqM9pAQUQRq9/UVbaQhIsor+07YGICjUEXrRLu8iczGiA8URo7irlAfZ+ID2Coeaz8
+         zJ/tIa02zxe9gB96wVNXJ0CD34cnFPvs12r8t+Hk=
+Subject: patch "iio: adc: stm32-adc: skip adc-channels setup if none is present" added to char-misc-linus
+To:     sean@geanix.com, Jonathan.Cameron@huawei.com,
+        Stable@vger.kernel.org, olivier.moysan@foss.st.com
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 20:04:37 +0100
-Message-ID: <2023052837-facial-unnerve-0a15@gregkh>
+Date:   Sun, 28 May 2023 20:04:38 +0100
+Message-ID: <2023052838-lesser-mortician-ee32@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,7 +50,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7192: Change "shorted" channels to differential
+    iio: adc: stm32-adc: skip adc-channels setup if none is present
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -65,74 +65,100 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From e55245d115bb9054cb72cdd5dda5660f4484873a Mon Sep 17 00:00:00 2001
-From: Paul Cercueil <paul@crapouillou.net>
-Date: Thu, 30 Mar 2023 12:21:00 +0200
-Subject: iio: adc: ad7192: Change "shorted" channels to differential
+From 3e27ef0ced49f8ae7883c25fadf76a2086e99025 Mon Sep 17 00:00:00 2001
+From: Sean Nyekjaer <sean@geanix.com>
+Date: Wed, 3 May 2023 18:20:29 +0200
+Subject: iio: adc: stm32-adc: skip adc-channels setup if none is present
 
-The AD7192 provides a specific channel configuration where both negative
-and positive inputs are connected to AIN2. This was represented in the
-ad7192 driver as a IIO channel with .channel = 2 and .extended_name set
-to "shorted".
+If only adc differential channels are defined driver will fail with
+stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
 
-The problem with this approach, is that the driver provided two IIO
-channels with the identifier .channel = 2; one "shorted" and the other
-not. This goes against the IIO ABI, as a channel identifier should be
-unique.
+Fix this by skipping the initialization if no channels are defined.
 
-Address this issue by changing "shorted" channels to being differential
-instead, with channel 2 vs. itself, as we're actually measuring AIN2 vs.
-itself.
+This applies only to the legacy way of initializing adc channels.
 
-Note that the fix tag is for the commit that moved the driver out of
-staging. The bug existed before that, but backporting would become very
-complex further down and unlikely to happen.
-
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Co-developed-by: Alisa Roman <alisa.roman@analog.com>
-Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230330102100.17590-1-paul@crapouillou.net
+Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://lore.kernel.org/r/20230503162029.3654093-2-sean@geanix.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7192.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/iio/adc/stm32-adc.c | 42 ++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 55a6ab591016..99bb604b78c8 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -897,10 +897,6 @@ static const struct iio_info ad7195_info = {
- 	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
- 		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
- 
--#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
--	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
--		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index c105d82c3e45..bd7e2408bf28 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2036,6 +2036,7 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+ 	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
+ 	struct device *dev = &indio_dev->dev;
+ 	u32 num_diff = adc->num_diff;
++	int num_se = nchans - num_diff;
+ 	int size = num_diff * sizeof(*diff) / sizeof(u32);
+ 	int scan_index = 0, ret, i, c;
+ 	u32 smp = 0, smps[STM32_ADC_CH_MAX], chans[STM32_ADC_CH_MAX];
+@@ -2062,29 +2063,32 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+ 			scan_index++;
+ 		}
+ 	}
 -
- #define AD719x_TEMP_CHANNEL(_si, _address) \
- 	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
+-	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
+-					     nchans);
+-	if (ret)
+-		return ret;
+-
+-	for (c = 0; c < nchans; c++) {
+-		if (chans[c] >= adc_info->max_channels) {
+-			dev_err(&indio_dev->dev, "Invalid channel %d\n",
+-				chans[c]);
+-			return -EINVAL;
++	if (num_se > 0) {
++		ret = device_property_read_u32_array(dev, "st,adc-channels", chans, num_se);
++		if (ret) {
++			dev_err(&indio_dev->dev, "Failed to get st,adc-channels %d\n", ret);
++			return ret;
+ 		}
  
-@@ -908,7 +904,7 @@ static const struct iio_chan_spec ad7192_channels[] = {
- 	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
- 	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
- 	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
--	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
-+	AD719x_DIFF_CHANNEL(3, 2, 2, AD7192_CH_AIN2P_AIN2M),
- 	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
- 	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
- 	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
-@@ -922,7 +918,7 @@ static const struct iio_chan_spec ad7193_channels[] = {
- 	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
- 	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
- 	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
--	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
-+	AD719x_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
- 	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
- 	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
- 	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
+-		/* Channel can't be configured both as single-ended & diff */
+-		for (i = 0; i < num_diff; i++) {
+-			if (chans[c] == diff[i].vinp) {
+-				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
++		for (c = 0; c < num_se; c++) {
++			if (chans[c] >= adc_info->max_channels) {
++				dev_err(&indio_dev->dev, "Invalid channel %d\n",
++					chans[c]);
+ 				return -EINVAL;
+ 			}
++
++			/* Channel can't be configured both as single-ended & diff */
++			for (i = 0; i < num_diff; i++) {
++				if (chans[c] == diff[i].vinp) {
++					dev_err(&indio_dev->dev, "channel %d misconfigured\n",
++						chans[c]);
++					return -EINVAL;
++				}
++			}
++			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
++						chans[c], 0, scan_index, false);
++			scan_index++;
+ 		}
+-		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
+-					chans[c], 0, scan_index, false);
+-		scan_index++;
+ 	}
+ 
+ 	if (adc->nsmps > 0) {
+@@ -2305,7 +2309,7 @@ static int stm32_adc_chan_fw_init(struct iio_dev *indio_dev, bool timestamping)
+ 
+ 	if (legacy)
+ 		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels,
+-						 num_channels);
++						 timestamping ? num_channels - 1 : num_channels);
+ 	else
+ 		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
+ 	if (ret < 0)
 -- 
 2.40.1
 
