@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFECE713D59
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FA7D713EF2
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230021AbjE1TY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41516 "EHLO
+        id S231128AbjE1Tkc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:40:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230022AbjE1TY1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41803B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:26 -0700 (PDT)
+        with ESMTP id S231129AbjE1Tkb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6516BA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A53A061BBB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27E6C433D2;
-        Sun, 28 May 2023 19:24:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFD7261EB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A380C433D2;
+        Sun, 28 May 2023 19:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301865;
-        bh=PNJwAfS0TceNaO0DiRBYsdYPKdnKehJnUc+HO3xpZzk=;
+        s=korg; t=1685302823;
+        bh=kavk+tuTqy3NvZ1+Ukd9Oi8+V3LFkbsFCBw5hwsMVZc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wEkVTeySEfM7vbwLKWVlezL3FLBRzyat3lOrnn/ay9l9jISuE+hF48CNrn2fo2t8b
-         yD4TCguX0bhMlh3cLwL3lv9P6KWC6/K5jImDm3sFDEXvKnN7+Jh4mKFTQj/HPNYg4r
-         QCXvls/dRjfBk6CHrKLvn+QpBK3IeclLTyShZYoc=
+        b=OTqGMSQd3T1CffyAAYPib7+7DE/S7XXCwOwekEdIo8QT+CmCpej52ukpdF8nXHg6p
+         +ur8UkZCnCPlCxA4rcPJ4e3YT102nn86h8TsHfjp/pJTCquiWFD7APs9UFaUfpX46G
+         7pNySKvWn9pl8gqDHcxs+2H7JSJJewXWjEOpWmsA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/161] wifi: iwlwifi: pcie: Fix integer overflow in iwl_write_to_user_buf
+Subject: [PATCH 5.10 041/211] ACPICA: Avoid undefined behavior: applying zero offset to null pointer
 Date:   Sun, 28 May 2023 20:09:22 +0100
-Message-Id: <20230528190838.417592778@linuxfoundation.org>
+Message-Id: <20230528190844.575521664@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_PORT autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,54 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Tamir Duberstein <tamird@google.com>
 
-[ Upstream commit 58d1b717879bfeabe09b35e41ad667c79933eb2e ]
+[ Upstream commit 05bb0167c80b8f93c6a4e0451b7da9b96db990c2 ]
 
-An integer overflow occurs in the iwl_write_to_user_buf() function,
-which is called by the iwl_dbgfs_monitor_data_read() function.
+ACPICA commit 770653e3ba67c30a629ca7d12e352d83c2541b1e
 
-static bool iwl_write_to_user_buf(char __user *user_buf, ssize_t count,
-				  void *buf, ssize_t *size,
-				  ssize_t *bytes_copied)
-{
-	int buf_size_left = count - *bytes_copied;
+Before this change we see the following UBSAN stack trace in Fuchsia:
 
-	buf_size_left = buf_size_left - (buf_size_left % sizeof(u32));
-	if (*size > buf_size_left)
-		*size = buf_size_left;
+  #0    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #1.2  0x000020d0f660777f in ubsan_get_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:41 <libclang_rt.asan.so>+0x3d77f
+  #1.1  0x000020d0f660777f in maybe_print_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:51 <libclang_rt.asan.so>+0x3d77f
+  #1    0x000020d0f660777f in ~scoped_report() compiler-rt/lib/ubsan/ubsan_diag.cpp:387 <libclang_rt.asan.so>+0x3d77f
+  #2    0x000020d0f660b96d in handlepointer_overflow_impl() compiler-rt/lib/ubsan/ubsan_handlers.cpp:809 <libclang_rt.asan.so>+0x4196d
+  #3    0x000020d0f660b50d in compiler-rt/lib/ubsan/ubsan_handlers.cpp:815 <libclang_rt.asan.so>+0x4150d
+  #4    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #5    0x000021e4213e2369 in acpi_ds_call_control_method(struct acpi_thread_state*, struct acpi_walk_state*, union acpi_parse_object*) ../../third_party/acpica/source/components/dispatcher/dsmethod.c:605 <platform-bus-x86.so>+0x262369
+  #6    0x000021e421437fac in acpi_ps_parse_aml(struct acpi_walk_state*) ../../third_party/acpica/source/components/parser/psparse.c:550 <platform-bus-x86.so>+0x2b7fac
+  #7    0x000021e4214464d2 in acpi_ps_execute_method(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/parser/psxface.c:244 <platform-bus-x86.so>+0x2c64d2
+  #8    0x000021e4213aa052 in acpi_ns_evaluate(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/namespace/nseval.c:250 <platform-bus-x86.so>+0x22a052
+  #9    0x000021e421413dd8 in acpi_ns_init_one_device(acpi_handle, u32, void*, void**) ../../third_party/acpica/source/components/namespace/nsinit.c:735 <platform-bus-x86.so>+0x293dd8
+  #10   0x000021e421429e98 in acpi_ns_walk_namespace(acpi_object_type, acpi_handle, u32, u32, acpi_walk_callback, acpi_walk_callback, void*, void**) ../../third_party/acpica/source/components/namespace/nswalk.c:298 <platform-bus-x86.so>+0x2a9e98
+  #11   0x000021e4214131ac in acpi_ns_initialize_devices(u32) ../../third_party/acpica/source/components/namespace/nsinit.c:268 <platform-bus-x86.so>+0x2931ac
+  #12   0x000021e42147c40d in acpi_initialize_objects(u32) ../../third_party/acpica/source/components/utilities/utxfinit.c:304 <platform-bus-x86.so>+0x2fc40d
+  #13   0x000021e42126d603 in acpi::acpi_impl::initialize_acpi(acpi::acpi_impl*) ../../src/devices/board/lib/acpi/acpi-impl.cc:224 <platform-bus-x86.so>+0xed603
 
-If the user passes a SIZE_MAX value to the "ssize_t count" parameter,
-the ssize_t count parameter is assigned to "int buf_size_left".
-Then compare "*size" with "buf_size_left" . Here, "buf_size_left" is a
-negative number, so "*size" is assigned "buf_size_left" and goes into
-the third argument of the copy_to_user function, causing a heap overflow.
+Add a simple check that avoids incrementing a pointer by zero, but
+otherwise behaves as before. Note that our findings are against ACPICA
+20221020, but the same code exists on master.
 
-This is not a security vulnerability because iwl_dbgfs_monitor_data_read()
-is a debugfs operation with 0400 privileges.
-
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230414130637.2d80ace81532.Iecfba549e0e0be21bbb0324675392e42e75bd5ad@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://github.com/acpica/acpica/commit/770653e3
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/dswstate.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 3a93a7b8ba0af..e7b90cf1f28cf 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2832,7 +2832,7 @@ static bool iwl_write_to_user_buf(char __user *user_buf, ssize_t count,
- 				  void *buf, ssize_t *size,
- 				  ssize_t *bytes_copied)
- {
--	int buf_size_left = count - *bytes_copied;
-+	ssize_t buf_size_left = count - *bytes_copied;
+diff --git a/drivers/acpi/acpica/dswstate.c b/drivers/acpi/acpica/dswstate.c
+index 809a0c0536b59..f9ba7695be147 100644
+--- a/drivers/acpi/acpica/dswstate.c
++++ b/drivers/acpi/acpica/dswstate.c
+@@ -576,9 +576,14 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
+ 	ACPI_FUNCTION_TRACE(ds_init_aml_walk);
  
- 	buf_size_left = buf_size_left - (buf_size_left % sizeof(u32));
- 	if (*size > buf_size_left)
+ 	walk_state->parser_state.aml =
+-	    walk_state->parser_state.aml_start = aml_start;
+-	walk_state->parser_state.aml_end =
+-	    walk_state->parser_state.pkg_end = aml_start + aml_length;
++	    walk_state->parser_state.aml_start =
++	    walk_state->parser_state.aml_end =
++	    walk_state->parser_state.pkg_end = aml_start;
++	/* Avoid undefined behavior: applying zero offset to null pointer */
++	if (aml_length != 0) {
++		walk_state->parser_state.aml_end += aml_length;
++		walk_state->parser_state.pkg_end += aml_length;
++	}
+ 
+ 	/* The next_op of the next_walk will be the beginning of the method */
+ 
 -- 
 2.39.2
 
