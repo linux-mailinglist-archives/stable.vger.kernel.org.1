@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061B7713E31
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C09E8713F71
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230288AbjE1Tc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49448 "EHLO
+        id S231278AbjE1Tpa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbjE1Tc4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377FAA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:54 -0700 (PDT)
+        with ESMTP id S231269AbjE1Tpa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E4F9B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3D0461DC0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D124BC4339B;
-        Sun, 28 May 2023 19:32:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3422C61F45
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54385C433D2;
+        Sun, 28 May 2023 19:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302373;
-        bh=l/phRuwbVVCeK/MtIwtUJRM0FRrtssfCrxaTnXGEo0A=;
+        s=korg; t=1685303126;
+        bh=0Eog4KYIqq+BeyHVTlYCbmhXFH8YiY4elw9UahQU/f4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PkPaiX1AcRRlVpJhfo1B+uRtHyZHRDVPWvxJ9g8P0TJu2fg0wBYU9pPL086TNwNfU
-         NUXzU1oT37cYsLcS8lGDufSGQFHLZdZ3IO/Nd6bKeFgQ7ETAlO1bemZwIPJ/kCDoiT
-         sGcxJQjYuDjOxO3CXKPT9xOcJiVrNMq9ip7kFwX4=
+        b=Sig8DTdiGjhV+NCcfLBZ/5IejtW0NKgQA9+apzF4jdBuspvPgRG5wiyslK3LuL4vV
+         dPmnheeDapgbUm/xAtZTkcZhVXqTlMiI3iTLeSzmJbrrxrrdNkKq+W9/avqu6n0jMW
+         sFelH9PuB34KBq3xxrMufXBkT6t3Zz0wKQ1ze8oE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Shay Drory <shayd@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.3 109/127] net/mlx5e: Fix deadlock in tc route query code
+        patches@lists.linux.dev, William Zhao <wizhao@redhat.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Davide Caratti <dcaratti@redhat.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Dragos-Marian Panait <dragos.panait@windriver.com>
+Subject: [PATCH 5.10 164/211] act_mirred: use the backlog for nested calls to mirred ingress
 Date:   Sun, 28 May 2023 20:11:25 +0100
-Message-Id: <20230528190839.815324501@linuxfoundation.org>
+Message-Id: <20230528190847.575832967@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,354 +58,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit 691c041bf20899fc13c793f92ba61ab660fa3a30 upstream.
+[ Upstream commit ca22da2fbd693b54dc8e3b7b54ccc9f7e9ba3640 ]
 
-Cited commit causes ABBA deadlock[0] when peer flows are created while
-holding the devcom rw semaphore. Due to peer flows offload implementation
-the lock is taken much higher up the call chain and there is no obvious way
-to easily fix the deadlock. Instead, since tc route query code needs the
-peer eswitch structure only to perform a lookup in xarray and doesn't
-perform any sleeping operations with it, refactor the code for lockless
-execution in following ways:
+William reports kernel soft-lockups on some OVS topologies when TC mirred
+egress->ingress action is hit by local TCP traffic [1].
+The same can also be reproduced with SCTP (thanks Xin for verifying), when
+client and server reach themselves through mirred egress to ingress, and
+one of the two peers sends a "heartbeat" packet (from within a timer).
 
-- RCUify the devcom 'data' pointer. When resetting the pointer
-synchronously wait for RCU grace period before returning. This is fine
-since devcom is currently only used for synchronization of
-pairing/unpairing of eswitches which is rare and already expensive as-is.
+Enqueueing to backlog proved to fix this soft lockup; however, as Cong
+noticed [2], we should preserve - when possible - the current mirred
+behavior that counts as "overlimits" any eventual packet drop subsequent to
+the mirred forwarding action [3]. A compromise solution might use the
+backlog only when tcf_mirred_act() has a nest level greater than one:
+change tcf_mirred_forward() accordingly.
 
-- Wrap all usages of 'paired' boolean in {READ|WRITE}_ONCE(). The flag has
-already been used in some unlocked contexts without proper
-annotations (e.g. users of mlx5_devcom_is_paired() function), but it wasn't
-an issue since all relevant code paths checked it again after obtaining the
-devcom semaphore. Now it is also used by mlx5_devcom_get_peer_data_rcu() as
-"best effort" check to return NULL when devcom is being unpaired. Note that
-while RCU read lock doesn't prevent the unpaired flag from being changed
-concurrently it still guarantees that reader can continue to use 'data'.
+Also, add a kselftest that can reproduce the lockup and verifies TC mirred
+ability to account for further packet drops after TC mirred egress->ingress
+(when the nest level is 1).
 
-- Refactor mlx5e_tc_query_route_vport() function to use new
-mlx5_devcom_get_peer_data_rcu() API which fixes the deadlock.
+ [1] https://lore.kernel.org/netdev/33dc43f587ec1388ba456b4915c75f02a8aae226.1663945716.git.dcaratti@redhat.com/
+ [2] https://lore.kernel.org/netdev/Y0w%2FWWY60gqrtGLp@pop-os.localdomain/
+ [3] such behavior is not guaranteed: for example, if RPS or skb RX
+     timestamping is enabled on the mirred target device, the kernel
+     can defer receiving the skb and return NET_RX_SUCCESS inside
+     tcf_mirred_forward().
 
-[0]:
-
-[  164.599612] ======================================================
-[  164.600142] WARNING: possible circular locking dependency detected
-[  164.600667] 6.3.0-rc3+ #1 Not tainted
-[  164.601021] ------------------------------------------------------
-[  164.601557] handler1/3456 is trying to acquire lock:
-[  164.601998] ffff88811f1714b0 (&esw->offloads.encap_tbl_lock){+.+.}-{3:3}, at: mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.603078]
-               but task is already holding lock:
-[  164.603617] ffff88810137fc98 (&comp->sem){++++}-{3:3}, at: mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.604459]
-               which lock already depends on the new lock.
-
-[  164.605190]
-               the existing dependency chain (in reverse order) is:
-[  164.605848]
-               -> #1 (&comp->sem){++++}-{3:3}:
-[  164.606380]        down_read+0x39/0x50
-[  164.606772]        mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.607336]        mlx5e_tc_query_route_vport+0x86/0xc0 [mlx5_core]
-[  164.607914]        mlx5e_tc_tun_route_lookup+0x1a4/0x1d0 [mlx5_core]
-[  164.608495]        mlx5e_attach_decap_route+0xc6/0x1e0 [mlx5_core]
-[  164.609063]        mlx5e_tc_add_fdb_flow+0x1ea/0x360 [mlx5_core]
-[  164.609627]        __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.610175]        mlx5e_configure_flower+0x952/0x1a20 [mlx5_core]
-[  164.610741]        tc_setup_cb_add+0xd4/0x200
-[  164.611146]        fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.611661]        fl_change+0xc95/0x18a0 [cls_flower]
-[  164.612116]        tc_new_tfilter+0x3fc/0xd20
-[  164.612516]        rtnetlink_rcv_msg+0x418/0x5b0
-[  164.612936]        netlink_rcv_skb+0x54/0x100
-[  164.613339]        netlink_unicast+0x190/0x250
-[  164.613746]        netlink_sendmsg+0x245/0x4a0
-[  164.614150]        sock_sendmsg+0x38/0x60
-[  164.614522]        ____sys_sendmsg+0x1d0/0x1e0
-[  164.614934]        ___sys_sendmsg+0x80/0xc0
-[  164.615320]        __sys_sendmsg+0x51/0x90
-[  164.615701]        do_syscall_64+0x3d/0x90
-[  164.616083]        entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.616568]
-               -> #0 (&esw->offloads.encap_tbl_lock){+.+.}-{3:3}:
-[  164.617210]        __lock_acquire+0x159e/0x26e0
-[  164.617638]        lock_acquire+0xc2/0x2a0
-[  164.618018]        __mutex_lock+0x92/0xcd0
-[  164.618401]        mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.618943]        post_process_attr+0x153/0x2d0 [mlx5_core]
-[  164.619471]        mlx5e_tc_add_fdb_flow+0x164/0x360 [mlx5_core]
-[  164.620021]        __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.620564]        mlx5e_configure_flower+0xe33/0x1a20 [mlx5_core]
-[  164.621125]        tc_setup_cb_add+0xd4/0x200
-[  164.621531]        fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.622047]        fl_change+0xc95/0x18a0 [cls_flower]
-[  164.622500]        tc_new_tfilter+0x3fc/0xd20
-[  164.622906]        rtnetlink_rcv_msg+0x418/0x5b0
-[  164.623324]        netlink_rcv_skb+0x54/0x100
-[  164.623727]        netlink_unicast+0x190/0x250
-[  164.624138]        netlink_sendmsg+0x245/0x4a0
-[  164.624544]        sock_sendmsg+0x38/0x60
-[  164.624919]        ____sys_sendmsg+0x1d0/0x1e0
-[  164.625340]        ___sys_sendmsg+0x80/0xc0
-[  164.625731]        __sys_sendmsg+0x51/0x90
-[  164.626117]        do_syscall_64+0x3d/0x90
-[  164.626502]        entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.626995]
-               other info that might help us debug this:
-
-[  164.627725]  Possible unsafe locking scenario:
-
-[  164.628268]        CPU0                    CPU1
-[  164.628683]        ----                    ----
-[  164.629098]   lock(&comp->sem);
-[  164.629421]                                lock(&esw->offloads.encap_tbl_lock);
-[  164.630066]                                lock(&comp->sem);
-[  164.630555]   lock(&esw->offloads.encap_tbl_lock);
-[  164.630993]
-                *** DEADLOCK ***
-
-[  164.631575] 3 locks held by handler1/3456:
-[  164.631962]  #0: ffff888124b75130 (&block->cb_lock){++++}-{3:3}, at: tc_setup_cb_add+0x5b/0x200
-[  164.632703]  #1: ffff888116e512b8 (&esw->mode_lock){++++}-{3:3}, at: mlx5_esw_hold+0x39/0x50 [mlx5_core]
-[  164.633552]  #2: ffff88810137fc98 (&comp->sem){++++}-{3:3}, at: mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.634435]
-               stack backtrace:
-[  164.634883] CPU: 17 PID: 3456 Comm: handler1 Not tainted 6.3.0-rc3+ #1
-[  164.635431] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-[  164.636340] Call Trace:
-[  164.636616]  <TASK>
-[  164.636863]  dump_stack_lvl+0x47/0x70
-[  164.637217]  check_noncircular+0xfe/0x110
-[  164.637601]  __lock_acquire+0x159e/0x26e0
-[  164.637977]  ? mlx5_cmd_set_fte+0x5b0/0x830 [mlx5_core]
-[  164.638472]  lock_acquire+0xc2/0x2a0
-[  164.638828]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.639339]  ? lock_is_held_type+0x98/0x110
-[  164.639728]  __mutex_lock+0x92/0xcd0
-[  164.640074]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.640576]  ? __lock_acquire+0x382/0x26e0
-[  164.640958]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.641468]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.641965]  mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.642454]  ? lock_release+0xbf/0x240
-[  164.642819]  post_process_attr+0x153/0x2d0 [mlx5_core]
-[  164.643318]  mlx5e_tc_add_fdb_flow+0x164/0x360 [mlx5_core]
-[  164.643835]  __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.644340]  mlx5e_configure_flower+0xe33/0x1a20 [mlx5_core]
-[  164.644862]  ? lock_acquire+0xc2/0x2a0
-[  164.645219]  tc_setup_cb_add+0xd4/0x200
-[  164.645588]  fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.646067]  fl_change+0xc95/0x18a0 [cls_flower]
-[  164.646488]  tc_new_tfilter+0x3fc/0xd20
-[  164.646861]  ? tc_del_tfilter+0x810/0x810
-[  164.647236]  rtnetlink_rcv_msg+0x418/0x5b0
-[  164.647621]  ? rtnl_setlink+0x160/0x160
-[  164.647982]  netlink_rcv_skb+0x54/0x100
-[  164.648348]  netlink_unicast+0x190/0x250
-[  164.648722]  netlink_sendmsg+0x245/0x4a0
-[  164.649090]  sock_sendmsg+0x38/0x60
-[  164.649434]  ____sys_sendmsg+0x1d0/0x1e0
-[  164.649804]  ? copy_msghdr_from_user+0x6d/0xa0
-[  164.650213]  ___sys_sendmsg+0x80/0xc0
-[  164.650563]  ? lock_acquire+0xc2/0x2a0
-[  164.650926]  ? lock_acquire+0xc2/0x2a0
-[  164.651286]  ? __fget_files+0x5/0x190
-[  164.651644]  ? find_held_lock+0x2b/0x80
-[  164.652006]  ? __fget_files+0xb9/0x190
-[  164.652365]  ? lock_release+0xbf/0x240
-[  164.652723]  ? __fget_files+0xd3/0x190
-[  164.653079]  __sys_sendmsg+0x51/0x90
-[  164.653435]  do_syscall_64+0x3d/0x90
-[  164.653784]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.654229] RIP: 0033:0x7f378054f8bd
-[  164.654577] Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 6a c3 f4 ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 be c3 f4 ff 48
-[  164.656041] RSP: 002b:00007f377fa114b0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-[  164.656701] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f378054f8bd
-[  164.657297] RDX: 0000000000000000 RSI: 00007f377fa11540 RDI: 0000000000000014
-[  164.657885] RBP: 00007f377fa12278 R08: 0000000000000000 R09: 000000000000015c
-[  164.658472] R10: 00007f377fa123d0 R11: 0000000000000293 R12: 0000560962d99bd0
-[  164.665317] R13: 0000000000000000 R14: 0000560962d99bd0 R15: 00007f377fa11540
-
-Fixes: f9d196bd632b ("net/mlx5e: Use correct eswitch for stack devices with lag")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reported-by: William Zhao <wizhao@redhat.com>
+CC: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[DP: adjusted context for linux-5.10.y]
+Signed-off-by: Dragos-Marian Panait <dragos.panait@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c      |   19 +++----
- drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |   48 ++++++++++++++-----
- drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h |    1 
- 3 files changed, 48 insertions(+), 20 deletions(-)
+ net/sched/act_mirred.c                               |    7 ++
+ tools/testing/selftests/net/forwarding/tc_actions.sh |   48 ++++++++++++++++++-
+ 2 files changed, 54 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1692,11 +1692,9 @@ bool mlx5e_tc_is_vf_tunnel(struct net_de
- int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *route_dev, u16 *vport)
- {
- 	struct mlx5e_priv *out_priv, *route_priv;
--	struct mlx5_devcom *devcom = NULL;
- 	struct mlx5_core_dev *route_mdev;
- 	struct mlx5_eswitch *esw;
- 	u16 vhca_id;
--	int err;
- 
- 	out_priv = netdev_priv(out_dev);
- 	esw = out_priv->mdev->priv.eswitch;
-@@ -1705,6 +1703,9 @@ int mlx5e_tc_query_route_vport(struct ne
- 
- 	vhca_id = MLX5_CAP_GEN(route_mdev, vhca_id);
- 	if (mlx5_lag_is_active(out_priv->mdev)) {
-+		struct mlx5_devcom *devcom;
-+		int err;
-+
- 		/* In lag case we may get devices from different eswitch instances.
- 		 * If we failed to get vport num, it means, mostly, that we on the wrong
- 		 * eswitch.
-@@ -1713,16 +1714,16 @@ int mlx5e_tc_query_route_vport(struct ne
- 		if (err != -ENOENT)
- 			return err;
- 
-+		rcu_read_lock();
- 		devcom = out_priv->mdev->priv.devcom;
--		esw = mlx5_devcom_get_peer_data(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
--		if (!esw)
--			return -ENODEV;
-+		esw = mlx5_devcom_get_peer_data_rcu(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
-+		err = esw ? mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport) : -ENODEV;
-+		rcu_read_unlock();
-+
-+		return err;
- 	}
- 
--	err = mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport);
--	if (devcom)
--		mlx5_devcom_release_peer_data(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
--	return err;
-+	return mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport);
- }
- 
- static int
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -13,7 +13,7 @@ static LIST_HEAD(devcom_list);
- 
- struct mlx5_devcom_component {
- 	struct {
--		void *data;
-+		void __rcu *data;
- 	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
- 
- 	mlx5_devcom_event_handler_t handler;
-@@ -162,7 +162,7 @@ void mlx5_devcom_register_component(stru
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
- 	comp->handler = handler;
--	comp->device[devcom->idx].data = data;
-+	rcu_assign_pointer(comp->device[devcom->idx].data, data);
- 	up_write(&comp->sem);
- }
- 
-@@ -176,8 +176,9 @@ void mlx5_devcom_unregister_component(st
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	comp->device[devcom->idx].data = NULL;
-+	RCU_INIT_POINTER(comp->device[devcom->idx].data, NULL);
- 	up_write(&comp->sem);
-+	synchronize_rcu();
- }
- 
- int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
-@@ -193,12 +194,15 @@ int mlx5_devcom_send_event(struct mlx5_d
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
--		if (i != devcom->idx && comp->device[i].data) {
--			err = comp->handler(event, comp->device[i].data,
--					    event_data);
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
-+		void *data = rcu_dereference_protected(comp->device[i].data,
-+						       lockdep_is_held(&comp->sem));
-+
-+		if (i != devcom->idx && data) {
-+			err = comp->handler(event, data, event_data);
- 			break;
- 		}
-+	}
- 
- 	up_write(&comp->sem);
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -206,12 +206,19 @@ release_idr:
  	return err;
-@@ -213,7 +217,7 @@ void mlx5_devcom_set_paired(struct mlx5_
- 	comp = &devcom->priv->components[id];
- 	WARN_ON(!rwsem_is_locked(&comp->sem));
- 
--	comp->paired = paired;
-+	WRITE_ONCE(comp->paired, paired);
  }
  
- bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
-@@ -222,7 +226,7 @@ bool mlx5_devcom_is_paired(struct mlx5_d
- 	if (IS_ERR_OR_NULL(devcom))
- 		return false;
- 
--	return devcom->priv->components[id].paired;
-+	return READ_ONCE(devcom->priv->components[id].paired);
- }
- 
- void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
-@@ -236,7 +240,7 @@ void *mlx5_devcom_get_peer_data(struct m
- 
- 	comp = &devcom->priv->components[id];
- 	down_read(&comp->sem);
--	if (!comp->paired) {
-+	if (!READ_ONCE(comp->paired)) {
- 		up_read(&comp->sem);
- 		return NULL;
- 	}
-@@ -245,7 +249,29 @@ void *mlx5_devcom_get_peer_data(struct m
- 		if (i != devcom->idx)
- 			break;
- 
--	return comp->device[i].data;
-+	return rcu_dereference_protected(comp->device[i].data, lockdep_is_held(&comp->sem));
++static bool is_mirred_nested(void)
++{
++	return unlikely(__this_cpu_read(mirred_nest_level) > 1);
 +}
 +
-+void *mlx5_devcom_get_peer_data_rcu(struct mlx5_devcom *devcom, enum mlx5_devcom_components id)
-+{
-+	struct mlx5_devcom_component *comp;
-+	int i;
-+
-+	if (IS_ERR_OR_NULL(devcom))
-+		return NULL;
-+
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
-+		if (i != devcom->idx)
-+			break;
-+
-+	comp = &devcom->priv->components[id];
-+	/* This can change concurrently, however 'data' pointer will remain
-+	 * valid for the duration of RCU read section.
-+	 */
-+	if (!READ_ONCE(comp->paired))
-+		return NULL;
-+
-+	return rcu_dereference(comp->device[i].data);
+ static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
+ {
+ 	int err;
+ 
+ 	if (!want_ingress)
+ 		err = dev_queue_xmit(skb);
++	else if (is_mirred_nested())
++		err = netif_rx(skb);
+ 	else
+ 		err = netif_receive_skb(skb);
+ 
+--- a/tools/testing/selftests/net/forwarding/tc_actions.sh
++++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
+@@ -3,7 +3,7 @@
+ 
+ ALL_TESTS="gact_drop_and_ok_test mirred_egress_redirect_test \
+ 	mirred_egress_mirror_test matchall_mirred_egress_mirror_test \
+-	gact_trap_test"
++	gact_trap_test mirred_egress_to_ingress_tcp_test"
+ NUM_NETIFS=4
+ source tc_common.sh
+ source lib.sh
+@@ -153,6 +153,52 @@ gact_trap_test()
+ 	log_test "trap ($tcflags)"
  }
  
- void mlx5_devcom_release_peer_data(struct mlx5_devcom *devcom,
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -41,6 +41,7 @@ bool mlx5_devcom_is_paired(struct mlx5_d
- 
- void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 				enum mlx5_devcom_components id);
-+void *mlx5_devcom_get_peer_data_rcu(struct mlx5_devcom *devcom, enum mlx5_devcom_components id);
- void mlx5_devcom_release_peer_data(struct mlx5_devcom *devcom,
- 				   enum mlx5_devcom_components id);
- 
++mirred_egress_to_ingress_tcp_test()
++{
++	local tmpfile=$(mktemp) tmpfile1=$(mktemp)
++
++	RET=0
++	dd conv=sparse status=none if=/dev/zero bs=1M count=2 of=$tmpfile
++	tc filter add dev $h1 protocol ip pref 100 handle 100 egress flower \
++		$tcflags ip_proto tcp src_ip 192.0.2.1 dst_ip 192.0.2.2 \
++			action ct commit nat src addr 192.0.2.2 pipe \
++			action ct clear pipe \
++			action ct commit nat dst addr 192.0.2.1 pipe \
++			action ct clear pipe \
++			action skbedit ptype host pipe \
++			action mirred ingress redirect dev $h1
++	tc filter add dev $h1 protocol ip pref 101 handle 101 egress flower \
++		$tcflags ip_proto icmp \
++			action mirred ingress redirect dev $h1
++	tc filter add dev $h1 protocol ip pref 102 handle 102 ingress flower \
++		ip_proto icmp \
++			action drop
++
++	ip vrf exec v$h1 nc --recv-only -w10 -l -p 12345 -o $tmpfile1  &
++	local rpid=$!
++	ip vrf exec v$h1 nc -w1 --send-only 192.0.2.2 12345 <$tmpfile
++	wait -n $rpid
++	cmp -s $tmpfile $tmpfile1
++	check_err $? "server output check failed"
++
++	$MZ $h1 -c 10 -p 64 -a $h1mac -b $h1mac -A 192.0.2.1 -B 192.0.2.1 \
++		-t icmp "ping,id=42,seq=5" -q
++	tc_check_packets "dev $h1 egress" 101 10
++	check_err $? "didn't mirred redirect ICMP"
++	tc_check_packets "dev $h1 ingress" 102 10
++	check_err $? "didn't drop mirred ICMP"
++	local overlimits=$(tc_rule_stats_get ${h1} 101 egress .overlimits)
++	test ${overlimits} = 10
++	check_err $? "wrong overlimits, expected 10 got ${overlimits}"
++
++	tc filter del dev $h1 egress protocol ip pref 100 handle 100 flower
++	tc filter del dev $h1 egress protocol ip pref 101 handle 101 flower
++	tc filter del dev $h1 ingress protocol ip pref 102 handle 102 flower
++
++	rm -f $tmpfile $tmpfile1
++	log_test "mirred_egress_to_ingress_tcp ($tcflags)"
++}
++
+ setup_prepare()
+ {
+ 	h1=${NETIFS[p1]}
 
 
