@@ -2,56 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4EBC713E57
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2AD8713DEA
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230341AbjE1Tei (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50432 "EHLO
+        id S230206AbjE1TaK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjE1Teh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684BEB1;
-        Sun, 28 May 2023 12:34:36 -0700 (PDT)
+        with ESMTP id S230212AbjE1TaI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DCFD9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0176F61DF2;
-        Sun, 28 May 2023 19:34:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFC4C433EF;
-        Sun, 28 May 2023 19:34:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 502C061D22
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD5CC433D2;
+        Sun, 28 May 2023 19:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302475;
-        bh=4ZPCwhkH1brojeZZcV9gpHcRj54LzG/1n3oPSBY+ijA=;
+        s=korg; t=1685302205;
+        bh=5R2r5N0I214zWKqjZvNgRMyJSjvoqiBpTHc2vRNluGo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q619cOsGVMiv+tDDUcml+Rv3blPxKPPdC03aE5ZokHCcw2puCIWVQA5j3RN5+xlRU
-         5wv5sxvKmBnq5AJTVZvSm1NskksO991XdRzY8ogjlUwnnoHCDdgdZpy/BvZDfBn4r3
-         tGrfOQBX+Yazjpoz/6NXFHkMjcSuNYdfbbNCEBwM=
+        b=p0d87T/TEbeJQx/G9IbiwwEihOjxLuZj17M7kfBZ35DXs87pxS1NG5cgYWMsrtboV
+         NssTk8+hUeTBqw7bIaZQO8jBiOuAfGx2qN7aBQuL4gO8q5MOVTYKC9/+wOdfP8LmHs
+         FQd65wGfs5lkaZEr5DP1EkwnZAq4HILcy1jLuKGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Arcari <darcari@redhat.com>,
-        Jithu Joseph <jithu.joseph@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1 018/119] platform/x86/intel/ifs: Annotate work queue on stack so object debug does not complain
+        patches@lists.linux.dev, Anuj Gupta <anuj20.g@samsung.com>,
+        Kanchan Joshi <joshi.k@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.3 042/127] block: fix bio-cache for passthru IO
 Date:   Sun, 28 May 2023 20:10:18 +0100
-Message-Id: <20230528190835.937793702@linuxfoundation.org>
+Message-Id: <20230528190837.716648413@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,63 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Arcari <darcari@redhat.com>
+From: Anuj Gupta <anuj20.g@samsung.com>
 
-commit 3279decb2c3c8d58cb0b70ed5235c480735a36ee upstream.
+commit 46930b7cc7727271c9c27aac1fdc97a8645e2d00 upstream.
 
-Object Debug results in the following warning while attempting to load
-ifs firmware:
+commit <8af870aa5b847> ("block: enable bio caching use for passthru IO")
+introduced bio-cache for passthru IO. In case when nr_vecs are greater
+than BIO_INLINE_VECS, bio and bvecs are allocated from mempool (instead
+of percpu cache) and REQ_ALLOC_CACHE is cleared. This causes the side
+effect of not freeing bio/bvecs into mempool on completion.
 
-[  220.007422] ODEBUG: object 000000003bf952db is on stack 00000000e843994b, but NOT annotated.
-[  220.007459] ------------[ cut here ]------------
-[  220.007461] WARNING: CPU: 0 PID: 11774 at lib/debugobjects.c:548 __debug_object_init.cold+0x22e/0x2d5
-[  220.137476] RIP: 0010:__debug_object_init.cold+0x22e/0x2d5
-[  220.254774] Call Trace:
-[  220.257641]  <TASK>
-[  220.265606]  scan_chunks_sanity_check+0x368/0x5f0 [intel_ifs]
-[  220.288292]  ifs_load_firmware+0x2a3/0x400 [intel_ifs]
-[  220.332793]  current_batch_store+0xea/0x160 [intel_ifs]
-[  220.357947]  kernfs_fop_write_iter+0x355/0x530
-[  220.363048]  new_sync_write+0x28e/0x4a0
-[  220.381226]  vfs_write+0x62a/0x920
-[  220.385160]  ksys_write+0xf9/0x1d0
-[  220.399421]  do_syscall_64+0x59/0x90
-[  220.440635]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[  220.566845] ---[ end trace 3a01b299db142b41 ]---
+This patch lets the passthru IO fallback to allocation using bio_kmalloc
+when nr_vecs are greater than BIO_INLINE_VECS. The corresponding bio
+is freed during call to blk_mq_map_bio_put during completion.
 
-Correct this by calling INIT_WORK_ONSTACK instead of INIT_WORK.
+Cc: stable@vger.kernel.org # 6.1
+fixes <8af870aa5b847> ("block: enable bio caching use for passthru IO")
 
-Fixes: 684ec215706d ("platform/x86/intel/ifs: Authenticate and copy to secured memory")
-
-Signed-off-by: David Arcari <darcari@redhat.com>
-Cc: Jithu Joseph <jithu.joseph@intel.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Mark Gross <markgross@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230523105400.674152-1-darcari@redhat.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+Signed-off-by: Kanchan Joshi <joshi.k@samsung.com>
+Link: https://lore.kernel.org/r/20230523111709.145676-1-anuj20.g@samsung.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/ifs/load.c |    2 +-
+ block/blk-map.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/intel/ifs/load.c
-+++ b/drivers/platform/x86/intel/ifs/load.c
-@@ -154,7 +154,7 @@ static int scan_chunks_sanity_check(stru
- 			continue;
- 		reinit_completion(&ifs_done);
- 		local_work.dev = dev;
--		INIT_WORK(&local_work.w, copy_hashes_authenticate_chunks);
-+		INIT_WORK_ONSTACK(&local_work.w, copy_hashes_authenticate_chunks);
- 		schedule_work_on(cpu, &local_work.w);
- 		wait_for_completion(&ifs_done);
- 		if (ifsd->loading_error)
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -247,7 +247,7 @@ static struct bio *blk_rq_map_bio_alloc(
+ {
+ 	struct bio *bio;
+ 
+-	if (rq->cmd_flags & REQ_ALLOC_CACHE) {
++	if (rq->cmd_flags & REQ_ALLOC_CACHE && (nr_vecs <= BIO_INLINE_VECS)) {
+ 		bio = bio_alloc_bioset(NULL, nr_vecs, rq->cmd_flags, gfp_mask,
+ 					&fs_bio_set);
+ 		if (!bio)
 
 
