@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 515E6713ABC
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66C9F713AC1
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjE1Qu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
+        id S229640AbjE1Qvc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbjE1Qu4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:50:56 -0400
+        with ESMTP id S229535AbjE1Qvb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:51:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95F9C6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:50:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD8BBB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:51:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77C86617A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A13EC433EF;
-        Sun, 28 May 2023 16:50:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFFE6617A9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08748C433D2;
+        Sun, 28 May 2023 16:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292651;
-        bh=ZN4k+wEJXVNJu+1AXZRO0N66OOZPbbOLcu9yR6FP7LM=;
+        s=korg; t=1685292689;
+        bh=6CAJedDfVr03t3n2a6P1s51YR88IcAuHGjf6yiMsfe4=;
         h=Subject:To:Cc:From:Date:From;
-        b=greou/gFCfndpqPbx8b3nrKio1bIgjMa4h/pDo/J7did5+T8oFIW9buG1+ZJPIGG4
-         ha0IRoUj9sp3JI31DZnnO9YWQ+xf8pJoz4Nn2ZKF6zzNhUGjlVeexcHc4ishlLNruo
-         EZrYNy48yQbgg44Dq3BoUsp7ADTW8U6ddCDCWfp4=
-Subject: FAILED: patch "[PATCH] net/mlx5e: do as little as possible in napi poll when budget" failed to apply to 4.19-stable tree
-To:     kuba@kernel.org, davem@davemloft.net, simon.horman@corigine.com,
-        tariqt@nvidia.com
+        b=Bv3PFLdhG2uVP0lAOaruO44rREBzThTTVnBU3KQVMI+VxcW2UgDWo7LuYtVSKgpfv
+         2i9YusiObNhGB6SSTCxJHwu8BthsBlssFuSNtg8OJ9oSHDyvmhQIbYlmTwessy86DF
+         +UgK9eyhkSvzCNX9z2uw3tDIy7XyhE4tDlu8TDiA=
+Subject: FAILED: patch "[PATCH] net/mlx5: Handle pairing of E-switch via uplink un/load APIs" failed to apply to 5.15-stable tree
+To:     shayd@nvidia.com, roid@nvidia.com, saeedm@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:50:45 +0100
-Message-ID: <2023052845-probably-overpass-092e@gregkh>
+Date:   Sun, 28 May 2023 17:51:27 +0100
+Message-ID: <2023052826-curve-data-272d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,31 +48,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x afbed3f74830163f9559579dee382cac3cff82da
+git cherry-pick -x 2be5bd42a5bba1a05daedc86cf0e248210009669
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052845-probably-overpass-092e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052826-curve-data-272d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-afbed3f74830 ("net/mlx5e: do as little as possible in napi poll when budget is 0")
-214baf22870c ("net/mlx5e: Support HTB offload")
-1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
-145e5637d941 ("net/mlx5e: Add TX PTP port object support")
-1a7f51240dfb ("net/mlx5e: Split SW group counters update function")
-0b676aaecc25 ("net/mlx5e: Change skb fifo push/pop API to be used without SQ")
-579524c6eace ("net/mlx5e: Validate stop_room size upon user input")
-3180472f582b ("net/mlx5: Add functions to set/query MFRL register")
-573a8095f68c ("Merge tag 'mlx5-updates-2020-09-21' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux")
+2be5bd42a5bb ("net/mlx5: Handle pairing of E-switch via uplink un/load APIs")
+c9668f0b1d28 ("net/mlx5e: Fix cleanup null-ptr deref on encap lock")
+d13674b1d14c ("net/mlx5e: TC, map tc action cookie to a hw counter")
+0e414518d6d8 ("net/mlx5e: Add hairpin debugfs files")
+1a8034720f38 ("net/mlx5e: Add hairpin params structure")
+8facc02f22f1 ("net/mlx5e: TC, reuse flow attribute post parser processing")
+f2bb566f5c97 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
@@ -81,77 +78,154 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From afbed3f74830163f9559579dee382cac3cff82da Mon Sep 17 00:00:00 2001
-From: Jakub Kicinski <kuba@kernel.org>
-Date: Tue, 16 May 2023 18:59:35 -0700
-Subject: [PATCH] net/mlx5e: do as little as possible in napi poll when budget
- is 0
+From 2be5bd42a5bba1a05daedc86cf0e248210009669 Mon Sep 17 00:00:00 2001
+From: Shay Drory <shayd@nvidia.com>
+Date: Mon, 20 Mar 2023 13:07:53 +0200
+Subject: [PATCH] net/mlx5: Handle pairing of E-switch via uplink un/load APIs
 
-NAPI gets called with budget of 0 from netpoll, which has interrupts
-disabled. We should try to free some space on Tx rings and nothing
-else.
+In case user switch a device from switchdev mode to legacy mode, mlx5
+first unpair the E-switch and afterwards unload the uplink vport.
+From the other hand, in case user remove or reload a device, mlx5
+first unload the uplink vport and afterwards unpair the E-switch.
 
-Specifically do not try to handle XDP TX or try to refill Rx buffers -
-we can't use the page pool from IRQ context. Don't check if IRQs moved,
-either, that makes no sense in netpoll. Netpoll calls _all_ the rings
-from whatever CPU it happens to be invoked on.
+The latter is causing a bug[1], hence, handle pairing of E-switch as
+part of uplink un/load APIs.
 
-In general do as little as possible, the work quickly adds up when
-there's tens of rings to poll.
+[1]
+In case VF_LAG is used, every tc fdb flow is duplicated to the peer
+esw. However, the original esw keeps a pointer to this duplicated
+flow, not the peer esw.
+e.g.: if user create tc fdb flow over esw0, the flow is duplicated
+over esw1, in FW/HW, but in SW, esw0 keeps a pointer to the duplicated
+flow.
+During module unload while a peer tc fdb flow is still offloaded, in
+case the first device to be removed is the peer device (esw1 in the
+example above), the peer net-dev is destroyed, and so the mlx5e_priv
+is memset to 0.
+Afterwards, the peer device is trying to unpair himself from the
+original device (esw0 in the example above). Unpair API invoke the
+original device to clear peer flow from its eswitch (esw0), but the
+peer flow, which is stored over the original eswitch (esw0), is
+trying to use the peer mlx5e_priv, which is memset to 0 and result in
+bellow kernel-oops.
 
-The immediate stack trace I was seeing is:
+[  157.964081 ] BUG: unable to handle page fault for address: 000000000002ce60
+[  157.964662 ] #PF: supervisor read access in kernel mode
+[  157.965123 ] #PF: error_code(0x0000) - not-present page
+[  157.965582 ] PGD 0 P4D 0
+[  157.965866 ] Oops: 0000 [#1] SMP
+[  157.967670 ] RIP: 0010:mlx5e_tc_del_fdb_flow+0x48/0x460 [mlx5_core]
+[  157.976164 ] Call Trace:
+[  157.976437 ]  <TASK>
+[  157.976690 ]  __mlx5e_tc_del_fdb_peer_flow+0xe6/0x100 [mlx5_core]
+[  157.977230 ]  mlx5e_tc_clean_fdb_peer_flows+0x67/0x90 [mlx5_core]
+[  157.977767 ]  mlx5_esw_offloads_unpair+0x2d/0x1e0 [mlx5_core]
+[  157.984653 ]  mlx5_esw_offloads_devcom_event+0xbf/0x130 [mlx5_core]
+[  157.985212 ]  mlx5_devcom_send_event+0xa3/0xb0 [mlx5_core]
+[  157.985714 ]  esw_offloads_disable+0x5a/0x110 [mlx5_core]
+[  157.986209 ]  mlx5_eswitch_disable_locked+0x152/0x170 [mlx5_core]
+[  157.986757 ]  mlx5_eswitch_disable+0x51/0x80 [mlx5_core]
+[  157.987248 ]  mlx5_unload+0x2a/0xb0 [mlx5_core]
+[  157.987678 ]  mlx5_uninit_one+0x5f/0xd0 [mlx5_core]
+[  157.988127 ]  remove_one+0x64/0xe0 [mlx5_core]
+[  157.988549 ]  pci_device_remove+0x31/0xa0
+[  157.988933 ]  device_release_driver_internal+0x18f/0x1f0
+[  157.989402 ]  driver_detach+0x3f/0x80
+[  157.989754 ]  bus_remove_driver+0x70/0xf0
+[  157.990129 ]  pci_unregister_driver+0x34/0x90
+[  157.990537 ]  mlx5_cleanup+0xc/0x1c [mlx5_core]
+[  157.990972 ]  __x64_sys_delete_module+0x15a/0x250
+[  157.991398 ]  ? exit_to_user_mode_prepare+0xea/0x110
+[  157.991840 ]  do_syscall_64+0x3d/0x90
+[  157.992198 ]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-    __do_softirq+0xd1/0x2c0
-    __local_bh_enable_ip+0xc7/0x120
-    </IRQ>
-    <TASK>
-    page_pool_put_defragged_page+0x267/0x320
-    mlx5e_free_xdpsq_desc+0x99/0xd0
-    mlx5e_poll_xdpsq_cq+0x138/0x3b0
-    mlx5e_napi_poll+0xc3/0x8b0
-    netpoll_poll_dev+0xce/0x150
+Fixes: 04de7dda7394 ("net/mlx5e: Infrastructure for duplicated offloading of TC flows")
+Fixes: 1418ddd96afd ("net/mlx5e: Duplicate offloaded TC eswitch rules under uplink LAG")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Roi Dayan <roid@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 
-AFAIU page pool takes a BH lock, releases it and since BH is now
-enabled tries to run softirqs.
-
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Fixes: 60bbf7eeef10 ("mlx5: use page_pool for xdp_return_frame call")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-index a50bfda18e96..fbb2d963fb7e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -161,20 +161,22 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 728b82ce4031..65fe40f55d84 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -5301,6 +5301,8 @@ int mlx5e_tc_esw_init(struct mlx5_rep_uplink_priv *uplink_priv)
+ 		goto err_action_counter;
  	}
  
-+	/* budget=0 means we may be in IRQ context, do as little as possible */
-+	if (unlikely(!budget))
-+		goto out;
++	mlx5_esw_offloads_devcom_init(esw);
 +
- 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
+ 	return 0;
  
- 	if (c->xdp)
- 		busy |= mlx5e_poll_xdpsq_cq(&c->rq_xdpsq.cq);
+ err_action_counter:
+@@ -5329,7 +5331,7 @@ void mlx5e_tc_esw_cleanup(struct mlx5_rep_uplink_priv *uplink_priv)
+ 	priv = netdev_priv(rpriv->netdev);
+ 	esw = priv->mdev->priv.eswitch;
  
--	if (likely(budget)) { /* budget=0 means: don't poll rx rings */
--		if (xsk_open)
--			work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
-+	if (xsk_open)
-+		work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
+-	mlx5e_tc_clean_fdb_peer_flows(esw);
++	mlx5_esw_offloads_devcom_cleanup(esw);
  
--		if (likely(budget - work_done))
--			work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
-+	if (likely(budget - work_done))
-+		work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
+ 	mlx5e_tc_tun_cleanup(uplink_priv->encap);
  
--		busy |= work_done == budget;
--	}
-+	busy |= work_done == budget;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index 1a042c981713..9f007c5438ee 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -369,6 +369,8 @@ int mlx5_eswitch_enable(struct mlx5_eswitch *esw, int num_vfs);
+ void mlx5_eswitch_disable_sriov(struct mlx5_eswitch *esw, bool clear_vf);
+ void mlx5_eswitch_disable_locked(struct mlx5_eswitch *esw);
+ void mlx5_eswitch_disable(struct mlx5_eswitch *esw);
++void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw);
++void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw);
+ int mlx5_eswitch_set_vport_mac(struct mlx5_eswitch *esw,
+ 			       u16 vport, const u8 *mac);
+ int mlx5_eswitch_set_vport_state(struct mlx5_eswitch *esw,
+@@ -767,6 +769,8 @@ static inline void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw) {}
+ static inline int mlx5_eswitch_enable(struct mlx5_eswitch *esw, int num_vfs) { return 0; }
+ static inline void mlx5_eswitch_disable_sriov(struct mlx5_eswitch *esw, bool clear_vf) {}
+ static inline void mlx5_eswitch_disable(struct mlx5_eswitch *esw) {}
++static inline void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw) {}
++static inline void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw) {}
+ static inline bool mlx5_eswitch_is_funcs_handler(struct mlx5_core_dev *dev) { return false; }
+ static inline
+ int mlx5_eswitch_set_vport_state(struct mlx5_eswitch *esw, u16 vport, int link_state) { return 0; }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 69215ffb9999..7c34c7cf506f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -2779,7 +2779,7 @@ static int mlx5_esw_offloads_devcom_event(int event,
+ 	return err;
+ }
  
- 	mlx5e_poll_ico_cq(&c->icosq.cq);
- 	if (mlx5e_poll_ico_cq(&c->async_icosq.cq))
+-static void esw_offloads_devcom_init(struct mlx5_eswitch *esw)
++void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw)
+ {
+ 	struct mlx5_devcom *devcom = esw->dev->priv.devcom;
+ 
+@@ -2802,7 +2802,7 @@ static void esw_offloads_devcom_init(struct mlx5_eswitch *esw)
+ 			       ESW_OFFLOADS_DEVCOM_PAIR, esw);
+ }
+ 
+-static void esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw)
++void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw)
+ {
+ 	struct mlx5_devcom *devcom = esw->dev->priv.devcom;
+ 
+@@ -3250,8 +3250,6 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
+ 	if (err)
+ 		goto err_vports;
+ 
+-	esw_offloads_devcom_init(esw);
+-
+ 	return 0;
+ 
+ err_vports:
+@@ -3292,7 +3290,6 @@ static int esw_offloads_stop(struct mlx5_eswitch *esw,
+ 
+ void esw_offloads_disable(struct mlx5_eswitch *esw)
+ {
+-	esw_offloads_devcom_cleanup(esw);
+ 	mlx5_eswitch_disable_pf_vf_vports(esw);
+ 	esw_offloads_unload_rep(esw, MLX5_VPORT_UPLINK);
+ 	esw_set_passing_vport_metadata(esw, false);
 
