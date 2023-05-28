@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40338713ECD
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60780713FBF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbjE1TjC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54264 "EHLO
+        id S231360AbjE1Tsf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230486AbjE1TjA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:00 -0400
+        with ESMTP id S231362AbjE1Tse (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99646AB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604D49C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E77461E86
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D374C433EF;
-        Sun, 28 May 2023 19:38:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9D0461053
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B9DC433EF;
+        Sun, 28 May 2023 19:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302738;
-        bh=mZ4KTD5fen5f2gRmA4Ey8cU94SF+hCSv6BZdHdLB/cs=;
+        s=korg; t=1685303312;
+        bh=834YX/0/RE92nZ3+SlAcAzzW44ch7gk7cGLTOVHCudY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IORSKFZvnkLpYhE/MY1cxUWUpvYpkoDIunYSAboNNggCzz50WR9/sTmkp97QgG10c
-         Zju0ihjvWoPQkdcwZd04vlKFijNFM/ciRN7z4sHL2cBAsLPCf5RR+2nNa0E4w4eQ6M
-         m2XUWwcKbcush3v70MTJMSAVqYZtHoAje5jKbcdQ=
+        b=NnSbquiYL9denTREsGdtQbDpTB6ZehSWZg8pmNYKJ90mMx8uHsfAxwrBSEjOdSbb1
+         EeR2Z6vQFc25IcpVU6SFAywntk6UA27ZN6IlHMTYuRR9hAUtLwCLEenWzT1GDoMHrM
+         o2wQFNRcEalIV/lUKipV4dzJSV7jGYU+bk7QmPO0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erez Shitrit <erezsh@nvidia.com>,
-        Alex Vesker <valex@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.1 107/119] net/mlx5: DR, Fix crc32 calculation to work on big-endian (BE) CPUs
+        patches@lists.linux.dev, stable@kernel.org,
+        Len Brown <len.brown@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 27/69] x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid platforms
 Date:   Sun, 28 May 2023 20:11:47 +0100
-Message-Id: <20230528190839.045433646@linuxfoundation.org>
+Message-Id: <20230528190829.383305085@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,38 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Erez Shitrit <erezsh@nvidia.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 1e5daf5565b61a96e570865091589afc9156e3d3 upstream.
+commit edc0a2b5957652f4685ef3516f519f84807087db upstream.
 
-When calculating crc for hash index we use the function crc32 that
-calculates for little-endian (LE) arch.
-Then we convert it to network endianness using htonl(), but it's wrong
-to do the conversion in BE archs since the crc32 value is already LE.
+Traditionally, all CPUs in a system have identical numbers of SMT
+siblings.  That changes with hybrid processors where some logical CPUs
+have a sibling and others have none.
 
-The solution is to switch the bytes from the crc result for all types
-of arc.
+Today, the CPU boot code sets the global variable smp_num_siblings when
+every CPU thread is brought up. The last thread to boot will overwrite
+it with the number of siblings of *that* thread. That last thread to
+boot will "win". If the thread is a Pcore, smp_num_siblings == 2.  If it
+is an Ecore, smp_num_siblings == 1.
 
-Fixes: 40416d8ede65 ("net/mlx5: DR, Replace CRC32 implementation to use kernel lib")
-Signed-off-by: Erez Shitrit <erezsh@nvidia.com>
-Reviewed-by: Alex Vesker <valex@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+smp_num_siblings describes if the *system* supports SMT.  It should
+specify the maximum number of SMT threads among all cores.
+
+Ensure that smp_num_siblings represents the system-wide maximum number
+of siblings by always increasing its value. Never allow it to decrease.
+
+On MeteorLake-P platform, this fixes a problem that the Ecore CPUs are
+not updated in any cpu sibling map because the system is treated as an
+UP system when probing Ecore CPUs.
+
+Below shows part of the CPU topology information before and after the
+fix, for both Pcore and Ecore CPU (cpu0 is Pcore, cpu 12 is Ecore).
+...
+-/sys/devices/system/cpu/cpu0/topology/package_cpus:000fff
+-/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-11
++/sys/devices/system/cpu/cpu0/topology/package_cpus:3fffff
++/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-21
+...
+-/sys/devices/system/cpu/cpu12/topology/package_cpus:001000
+-/sys/devices/system/cpu/cpu12/topology/package_cpus_list:12
++/sys/devices/system/cpu/cpu12/topology/package_cpus:3fffff
++/sys/devices/system/cpu/cpu12/topology/package_cpus_list:0-21
+
+Notice that the "before" 'package_cpus_list' has only one CPU.  This
+means that userspace tools like lscpu will see a little laptop like
+an 11-socket system:
+
+-Core(s) per socket:  1
+-Socket(s):           11
++Core(s) per socket:  16
++Socket(s):           1
+
+This is also expected to make the scheduler do rather wonky things
+too.
+
+[ dhansen: remove CPUID detail from changelog, add end user effects ]
+
+CC: stable@kernel.org
+Fixes: bbb65d2d365e ("x86: use cpuid vector 0xb when available for detecting cpu topology")
+Fixes: 95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
+Suggested-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/20230323015640.27906-1-rui.zhang%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/topology.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
-@@ -15,7 +15,8 @@ static u32 dr_ste_crc32_calc(const void
- {
- 	u32 crc = crc32(0, input_data, length);
- 
--	return (__force u32)htonl(crc);
-+	return (__force u32)((crc >> 24) & 0xff) | ((crc << 8) & 0xff0000) |
-+			    ((crc >> 8) & 0xff00) | ((crc << 24) & 0xff000000);
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -79,7 +79,7 @@ int detect_extended_topology_early(struc
+ 	 * initial apic id, which also represents 32-bit extended x2apic id.
+ 	 */
+ 	c->initial_apicid = edx;
+-	smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
+ #endif
+ 	return 0;
  }
- 
- bool mlx5dr_ste_supp_ttl_cs_recalc(struct mlx5dr_cmd_caps *caps)
+@@ -109,7 +109,8 @@ int detect_extended_topology(struct cpui
+ 	 */
+ 	cpuid_count(leaf, SMT_LEVEL, &eax, &ebx, &ecx, &edx);
+ 	c->initial_apicid = edx;
+-	core_level_siblings = smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	core_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
+ 	core_plus_mask_width = ht_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
+ 	die_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
+ 	pkg_mask_width = die_plus_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
 
 
