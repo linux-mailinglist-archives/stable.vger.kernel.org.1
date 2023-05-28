@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A20A713FD8
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 343D4713FDA
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231400AbjE1Ttm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35242 "EHLO
+        id S231403AbjE1Ttr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231398AbjE1Ttl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:41 -0400
+        with ESMTP id S231398AbjE1Ttq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E68A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 588D6A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 219336202D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB4FC433D2;
-        Sun, 28 May 2023 19:49:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E536462023
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E682C433D2;
+        Sun, 28 May 2023 19:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303379;
-        bh=OiqgmmoKGeIpwUQOxSkPbImyeKfldOXENrafUqEd5oM=;
+        s=korg; t=1685303384;
+        bh=XwbO+uP9z+euriGaEYmaJKRYaDunT7FebxX5uWb1vxM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KbqDYQTxg/wEyEpSJ/yMce7EvK83DMEqtKB1Ci7L1iSllQONyzgF82IyChw2zro49
-         KX+yNmjcwVvQGxsSExX6CCmbFi3sy5BvCkyGtXCYjrm+6SNeNS+mIh1LECbDZsv+JM
-         o0iNvgtkD8f4hUZ4RLKLFe86YGq5bjldEtoYj1CQ=
+        b=aAKU5hZdw8oiCiSU2HGg5CxHGU2oAxOExoNaqq7jAMJIkggOR1TxCgBLQemFbiG4P
+         JUHY26P/jymbtU9E/5HNCx6IgwLVZg+wGdcduk/5OlQMgAy5EijozYZvwoZF+2HhSY
+         VBDfIK9eUf2O9ZA+oS4bdOg821PiSBEA4ayacl80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 5.15 53/69] coresight: Fix signedness bug in tmc_etr_buf_insert_barrier_packet()
-Date:   Sun, 28 May 2023 20:12:13 +0100
-Message-Id: <20230528190830.348276224@linuxfoundation.org>
+        Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.15 54/69] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
+Date:   Sun, 28 May 2023 20:12:14 +0100
+Message-Id: <20230528190830.389369575@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
 References: <20230528190828.358612414@linuxfoundation.org>
@@ -55,38 +55,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit f67bc15e526bb9920683ad6c1891ff9e08981335 upstream.
+commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
 
-This code generates a Smatch warning:
+In the pvcalls_new_active_socket() function, most error paths call
+pvcalls_back_release_active(fedata->dev, fedata, map) which calls
+sock_release() on "sock".  The bug is that the caller also frees sock.
 
-    drivers/hwtracing/coresight/coresight-tmc-etr.c:947 tmc_etr_buf_insert_barrier_packet()
-    error: uninitialized symbol 'bufp'.
+Fix this by making every error path in pvcalls_new_active_socket()
+release the sock, and don't free it in the caller.
 
-The problem is that if tmc_sg_table_get_data() returns -EINVAL, then
-when we test if "len < CORESIGHT_BARRIER_PKT_SIZE", the negative "len"
-value is type promoted to a high unsigned long value which is greater
-than CORESIGHT_BARRIER_PKT_SIZE.  Fix this bug by adding an explicit
-check for error codes.
-
-Fixes: 75f4e3619fe2 ("coresight: tmc-etr: Add transparent buffer management")
+Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/7d33e244-d8b9-4c27-9653-883a13534b01@kili.mountain
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-tmc-etr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/pvcalls-back.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-@@ -926,7 +926,7 @@ tmc_etr_buf_insert_barrier_packet(struct
+--- a/drivers/xen/pvcalls-back.c
++++ b/drivers/xen/pvcalls-back.c
+@@ -321,8 +321,10 @@ static struct sock_mapping *pvcalls_new_
+ 	void *page;
  
- 	len = tmc_etr_buf_get_data(etr_buf, offset,
- 				   CORESIGHT_BARRIER_PKT_SIZE, &bufp);
--	if (WARN_ON(len < CORESIGHT_BARRIER_PKT_SIZE))
-+	if (WARN_ON(len < 0 || len < CORESIGHT_BARRIER_PKT_SIZE))
- 		return -EINVAL;
- 	coresight_insert_barrier_packet(bufp);
- 	return offset + CORESIGHT_BARRIER_PKT_SIZE;
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+-	if (map == NULL)
++	if (map == NULL) {
++		sock_release(sock);
+ 		return NULL;
++	}
+ 
+ 	map->fedata = fedata;
+ 	map->sock = sock;
+@@ -414,10 +416,8 @@ static int pvcalls_back_connect(struct x
+ 					req->u.connect.ref,
+ 					req->u.connect.evtchn,
+ 					sock);
+-	if (!map) {
++	if (!map)
+ 		ret = -EFAULT;
+-		sock_release(sock);
+-	}
+ 
+ out:
+ 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
+@@ -558,7 +558,6 @@ static void __pvcalls_back_accept(struct
+ 					sock);
+ 	if (!map) {
+ 		ret = -EFAULT;
+-		sock_release(sock);
+ 		goto out_error;
+ 	}
+ 
 
 
