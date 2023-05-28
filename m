@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D189713E7E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8302E713DB6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbjE1TgD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:36:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
+        id S230137AbjE1T2M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbjE1TgC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D8BCF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:01 -0700 (PDT)
+        with ESMTP id S230134AbjE1T2L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47569B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E81861E2B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1F5C433EF;
-        Sun, 28 May 2023 19:36:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE36E61CE8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAA5C433D2;
+        Sun, 28 May 2023 19:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302560;
-        bh=834YX/0/RE92nZ3+SlAcAzzW44ch7gk7cGLTOVHCudY=;
+        s=korg; t=1685302089;
+        bh=uCaTRAS2A29vU6MOgP1kpFbtFKG/M/lSezWtur8nIy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1wK5HgJLvSkVcFCV9L7bjebC2fcH+sfQ6XojMrlcFSf4VRWZTILP96xpcwprr5y9C
-         3fsSLUp1AVz1+UluBEig3G0M6DoFsbbos3DSAa3WS/CwbLrrXcQyz8GQifq6HN0iZY
-         ylqxROsIv6dfWF8VBZoF2/0KI2ih3MutWxtdaNc4=
+        b=LkL0T/rvHAXgX/L/UlaBLIvnSW0ts/znLkfwOsxKNJn1HFcTRzIFOR7Ef0vFRMvXE
+         FHOOm18lfx1gddTN1G7qB+ux5gW0wb0a9OJkoW6JxSk7mL85DhNc9SLWgpxSPawfHo
+         LfhQiQofN3xsJUsAccSvMvy4rInFszNfjM9Na42U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Len Brown <len.brown@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 053/119] x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid platforms
+        patches@lists.linux.dev, Michael Schmitz <schmitzmic@gmail.com>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 5.4 129/161] m68k: Move signal frame following exception on 68020/030
 Date:   Sun, 28 May 2023 20:10:53 +0100
-Message-Id: <20230528190837.184184678@linuxfoundation.org>
+Message-Id: <20230528190841.094552271@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,90 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit edc0a2b5957652f4685ef3516f519f84807087db upstream.
+commit b845b574f86dcb6a70dfa698aa87a237b0878d2a upstream.
 
-Traditionally, all CPUs in a system have identical numbers of SMT
-siblings.  That changes with hybrid processors where some logical CPUs
-have a sibling and others have none.
+On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
+a stack page fault during instruction execution (i.e. not at an
+instruction boundary) and produce a format 0xB exception frame.
 
-Today, the CPU boot code sets the global variable smp_num_siblings when
-every CPU thread is brought up. The last thread to boot will overwrite
-it with the number of siblings of *that* thread. That last thread to
-boot will "win". If the thread is a Pcore, smp_num_siblings == 2.  If it
-is an Ecore, smp_num_siblings == 1.
+In this situation, the value of USP will be unreliable.  If a signal is
+to be delivered following the exception, this USP value is used to
+calculate the location for a signal frame.  This can result in a
+corrupted user stack.
 
-smp_num_siblings describes if the *system* supports SMT.  It should
-specify the maximum number of SMT threads among all cores.
+The corruption was detected in dash (actually in glibc) where it showed
+up as an intermittent "stack smashing detected" message and crash
+following signal delivery for SIGCHLD.
 
-Ensure that smp_num_siblings represents the system-wide maximum number
-of siblings by always increasing its value. Never allow it to decrease.
+It was hard to reproduce that failure because delivery of the signal
+raced with the page fault and because the kernel places an unpredictable
+gap of up to 7 bytes between the USP and the signal frame.
 
-On MeteorLake-P platform, this fixes a problem that the Ecore CPUs are
-not updated in any cpu sibling map because the system is treated as an
-UP system when probing Ecore CPUs.
+A format 0xB exception frame can be produced by a bus error or an
+address error.  The 68030 Users Manual says that address errors occur
+immediately upon detection during instruction prefetch.  The instruction
+pipeline allows prefetch to overlap with other instructions, which means
+an address error can arise during the execution of a different
+instruction.  So it seems likely that this patch may help in the address
+error case also.
 
-Below shows part of the CPU topology information before and after the
-fix, for both Pcore and Ecore CPU (cpu0 is Pcore, cpu 12 is Ecore).
-...
--/sys/devices/system/cpu/cpu0/topology/package_cpus:000fff
--/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-11
-+/sys/devices/system/cpu/cpu0/topology/package_cpus:3fffff
-+/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-21
-...
--/sys/devices/system/cpu/cpu12/topology/package_cpus:001000
--/sys/devices/system/cpu/cpu12/topology/package_cpus_list:12
-+/sys/devices/system/cpu/cpu12/topology/package_cpus:3fffff
-+/sys/devices/system/cpu/cpu12/topology/package_cpus_list:0-21
-
-Notice that the "before" 'package_cpus_list' has only one CPU.  This
-means that userspace tools like lscpu will see a little laptop like
-an 11-socket system:
-
--Core(s) per socket:  1
--Socket(s):           11
-+Core(s) per socket:  16
-+Socket(s):           1
-
-This is also expected to make the scheduler do rather wonky things
-too.
-
-[ dhansen: remove CPUID detail from changelog, add end user effects ]
-
-CC: stable@kernel.org
-Fixes: bbb65d2d365e ("x86: use cpuid vector 0xb when available for detecting cpu topology")
-Fixes: 95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
-Suggested-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20230323015640.27906-1-rui.zhang%40intel.com
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
+Cc: Michael Schmitz <schmitzmic@gmail.com>
+Cc: Andreas Schwab <schwab@linux-m68k.org>
+Cc: stable@vger.kernel.org
+Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/topology.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/m68k/kernel/signal.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -79,7 +79,7 @@ int detect_extended_topology_early(struc
- 	 * initial apic id, which also represents 32-bit extended x2apic id.
- 	 */
- 	c->initial_apicid = edx;
--	smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
- #endif
- 	return 0;
+--- a/arch/m68k/kernel/signal.c
++++ b/arch/m68k/kernel/signal.c
+@@ -883,11 +883,17 @@ static inline int rt_setup_ucontext(stru
  }
-@@ -109,7 +109,8 @@ int detect_extended_topology(struct cpui
- 	 */
- 	cpuid_count(leaf, SMT_LEVEL, &eax, &ebx, &ecx, &edx);
- 	c->initial_apicid = edx;
--	core_level_siblings = smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	core_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
- 	core_plus_mask_width = ht_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
- 	die_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
- 	pkg_mask_width = die_plus_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
+ 
+ static inline void __user *
+-get_sigframe(struct ksignal *ksig, size_t frame_size)
++get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
+ {
+ 	unsigned long usp = sigsp(rdusp(), ksig);
++	unsigned long gap = 0;
+ 
+-	return (void __user *)((usp - frame_size) & -8UL);
++	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
++		/* USP is unreliable so use worst-case value */
++		gap = 256;
++	}
++
++	return (void __user *)((usp - gap - frame_size) & -8UL);
+ }
+ 
+ static int setup_frame(struct ksignal *ksig, sigset_t *set,
+@@ -905,7 +911,7 @@ static int setup_frame(struct ksignal *k
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
++	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (frame + 1, regs + 1, fsize);
+@@ -976,7 +982,7 @@ static int setup_rt_frame(struct ksignal
+ 		return -EFAULT;
+ 	}
+ 
+-	frame = get_sigframe(ksig, sizeof(*frame));
++	frame = get_sigframe(ksig, tregs, sizeof(*frame));
+ 
+ 	if (fsize)
+ 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
 
 
