@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 796B8713E53
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C8A9713C47
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230325AbjE1Tea (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50380 "EHLO
+        id S229697AbjE1TNy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:13:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjE1Te3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:29 -0400
+        with ESMTP id S229633AbjE1TNx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09CF9B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB708F3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FF261DDF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60B9C4339B;
-        Sun, 28 May 2023 19:34:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 12EC66191F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E27C4339B;
+        Sun, 28 May 2023 19:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302468;
-        bh=RlRDrxaw2aVbLPnaHvarkqZOVfQ6nQIry3BDRe9jlzE=;
+        s=korg; t=1685301227;
+        bh=ED7IjzAxUGMLvXXehsI2ODsAjynIgQI0BHZDdZbOvHM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JWlg1dPkJAzjKsofGsS4y5B55koHFj0bH9zqEKpJJXr8kfDONj1TspAkS4Asgi08z
-         nR169dAOWlPVMCDMYZ6wr8buEjocVGyjqaLt3+yWsGUs7oqqlu0yVsMV/Oa2jLRB8l
-         lAVLy4TwGBGFekVwRUtk0fEaf043KKDc3Tw42AkE=
+        b=ogmMolkIb7qgiQovtd0bJx0s6eyvmMEDSedZGO0Sbiv3Xj/2IQl/nDQCf72LnvN0u
+         jZSJoEP62TWb9qwXt2Evc6XRjnS4xhR/J+AvU0CrJQ6Mk+LcAuc+hrVrMXUZmdiIMD
+         m36U1tTD5dUGMutwJPZJ0mfoVSONshRgUyBT1JV0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev, Hao Zeng <zenghao@kylinos.cn>,
+        Steven Rostedt <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/119] tpm: Prevent hwrng from activating during resume
+Subject: [PATCH 4.14 33/86] recordmcount: Fix memory leaks in the uwrite function
 Date:   Sun, 28 May 2023 20:10:07 +0100
-Message-Id: <20230528190835.610140251@linuxfoundation.org>
+Message-Id: <20230528190829.812847465@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,80 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Hao Zeng <zenghao@kylinos.cn>
 
-[ Upstream commit 99d46450625590d410f86fe4660a5eff7d3b8343 ]
+[ Upstream commit fa359d068574d29e7d2f0fdd0ebe4c6a12b5cfb9 ]
 
-Set TPM_CHIP_FLAG_SUSPENDED in tpm_pm_suspend() and reset in
-tpm_pm_resume(). While the flag is set, tpm_hwrng() gives back zero
-bytes. This prevents hwrng from racing during resume.
+Common realloc mistake: 'file_append' nulled but not freed upon failure
 
-Cc: stable@vger.kernel.org
-Fixes: 6e592a065d51 ("tpm: Move Linux RNG connection to hwrng")
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/20230426010527.703093-1-zenghao@kylinos.cn
+
+Signed-off-by: Hao Zeng <zenghao@kylinos.cn>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm-chip.c      |  4 ++++
- drivers/char/tpm/tpm-interface.c | 10 ++++++++++
- include/linux/tpm.h              |  1 +
- 3 files changed, 15 insertions(+)
+ scripts/recordmcount.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index 31d8074821524..95d847c9de79a 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -568,6 +568,10 @@ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+diff --git a/scripts/recordmcount.c b/scripts/recordmcount.c
+index 9012e33ae22f8..731600de03893 100644
+--- a/scripts/recordmcount.c
++++ b/scripts/recordmcount.c
+@@ -146,6 +146,7 @@ uwrite(int const fd, void const *const buf, size_t const count)
  {
- 	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
+ 	size_t cnt = count;
+ 	off_t idx = 0;
++	void *p = NULL;
  
-+	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
-+	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-+		return 0;
-+
- 	return tpm_get_random(chip, data, max);
- }
+ 	file_updated = 1;
  
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index 7e513b7718320..0f941cb32eb17 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -412,6 +412,8 @@ int tpm_pm_suspend(struct device *dev)
- 	}
+@@ -153,7 +154,10 @@ uwrite(int const fd, void const *const buf, size_t const count)
+ 		off_t aoffset = (file_ptr + count) - file_end;
  
- suspended:
-+	chip->flags |= TPM_CHIP_FLAG_SUSPENDED;
-+
- 	if (rc)
- 		dev_err(dev, "Ignoring error %d while suspending\n", rc);
- 	return 0;
-@@ -429,6 +431,14 @@ int tpm_pm_resume(struct device *dev)
- 	if (chip == NULL)
- 		return -ENODEV;
- 
-+	chip->flags &= ~TPM_CHIP_FLAG_SUSPENDED;
-+
-+	/*
-+	 * Guarantee that SUSPENDED is written last, so that hwrng does not
-+	 * activate before the chip has been fully resumed.
-+	 */
-+	wmb();
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(tpm_pm_resume);
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index cea64d58ef9f7..4e22e4f4cec85 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -281,6 +281,7 @@ enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_ALWAYS_POWERED		= BIT(5),
- 	TPM_CHIP_FLAG_FIRMWARE_POWER_MANAGED	= BIT(6),
- 	TPM_CHIP_FLAG_FIRMWARE_UPGRADE		= BIT(7),
-+	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
- };
- 
- #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
+ 		if (aoffset > file_append_size) {
+-			file_append = realloc(file_append, aoffset);
++			p = realloc(file_append, aoffset);
++			if (!p)
++				free(file_append);
++			file_append = p;
+ 			file_append_size = aoffset;
+ 		}
+ 		if (!file_append) {
 -- 
 2.39.2
 
