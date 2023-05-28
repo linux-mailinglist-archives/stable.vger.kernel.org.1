@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C676E713EA1
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A279713DC1
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjE1ThS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52968 "EHLO
+        id S230146AbjE1T2j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230426AbjE1ThR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:17 -0400
+        with ESMTP id S230143AbjE1T2i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B73CB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47B9A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8E6E61E56
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CFEC4339B;
-        Sun, 28 May 2023 19:37:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 698DF61D02
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8801DC433D2;
+        Sun, 28 May 2023 19:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302636;
-        bh=0qtbxcdGWP0QtyzSBLTJhlMnLc+/ENc2JkSDgjIQd6I=;
+        s=korg; t=1685302116;
+        bh=x/t6kxFrk9c+yKlNWGjQh4NjV3nAae/I54aV7FCNWIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nhjCyn9OmmktlOLxbmFOA16VAfUAsW3cT772nRvgSjrb/r8503L7pf/FEIJMVXqNg
-         80rTIlRbWPHZ+BqS776e9a3xeVkIV4nDKvm35FjBhO9uMExAiknXsZ9po7+8WTKlWi
-         NLFpd5N5yF2B06wcB5p3qvBHnhIAqNTPS+pZ2c+c=
+        b=igOKqAydOrqvTY9l9h7lx346AHtMW8RpLAABYIWUf/aMYV+5RFOTc9MLMXb7xdfgU
+         nuDxrJx20gTsW48zgdv7qIHMY/mJeRDtgNzJy3b2kUB7MV6vr4fK46TbNJKN0gcC3D
+         AqLcyPrJwWYmx1ldKKqww7H82QZGhNdwgODptCAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daisuke Nojiri <dnojiri@chromium.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.1 084/119] power: supply: sbs-charger: Fix INHIBITED bit for Status reg
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 5.4 160/161] net/mlx5: Devcom, fix error flow in mlx5_devcom_register_device
 Date:   Sun, 28 May 2023 20:11:24 +0100
-Message-Id: <20230528190838.326419345@linuxfoundation.org>
+Message-Id: <20230528190841.896367531@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,31 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daisuke Nojiri <dnojiri@chromium.org>
+From: Shay Drory <shayd@nvidia.com>
 
-commit b2f2a3c9800208b0db2c2e34b05323757117faa2 upstream.
+commit af87194352cad882d787d06fb7efa714acd95427 upstream.
 
-CHARGE_INHIBITED bit position of the ChargerStatus register is actually
-0 not 1. This patch corrects it.
+In case devcom allocation is failed, mlx5 is always freeing the priv.
+However, this priv might have been allocated by a different thread,
+and freeing it might lead to use-after-free bugs.
+Fix it by freeing the priv only in case it was allocated by the
+running thread.
 
-Fixes: feb583e37f8a8 ("power: supply: add sbs-charger driver")
-Signed-off-by: Daisuke Nojiri <dnojiri@chromium.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/sbs-charger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/power/supply/sbs-charger.c
-+++ b/drivers/power/supply/sbs-charger.c
-@@ -24,7 +24,7 @@
- #define SBS_CHARGER_REG_STATUS			0x13
- #define SBS_CHARGER_REG_ALARM_WARNING		0x16
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -110,7 +110,8 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	priv->devs[idx] = dev;
+ 	devcom = mlx5_devcom_alloc(priv, idx);
+ 	if (!devcom) {
+-		kfree(priv);
++		if (new_priv)
++			kfree(priv);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
  
--#define SBS_CHARGER_STATUS_CHARGE_INHIBITED	BIT(1)
-+#define SBS_CHARGER_STATUS_CHARGE_INHIBITED	BIT(0)
- #define SBS_CHARGER_STATUS_RES_COLD		BIT(9)
- #define SBS_CHARGER_STATUS_RES_HOT		BIT(10)
- #define SBS_CHARGER_STATUS_BATTERY_PRESENT	BIT(14)
 
 
