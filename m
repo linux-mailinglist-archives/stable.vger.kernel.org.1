@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E966713DFB
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2760713D82
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbjE1Tar (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47306 "EHLO
+        id S230082AbjE1T0K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjE1Taq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6D3CF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:41 -0700 (PDT)
+        with ESMTP id S230079AbjE1T0H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64CEA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 125ED61D54
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A23C433D2;
-        Sun, 28 May 2023 19:30:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53D7661C2F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72473C433D2;
+        Sun, 28 May 2023 19:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302240;
-        bh=h1i2rT2xKkS8lzEDpg23Mmpp/L53UR+cN7hT6jyGgBw=;
+        s=korg; t=1685301964;
+        bh=R5MmfdXm0/r5gxJrsU5asI/Wwu9jDiyWBKNGG9C7Wtk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WXv4X/hXeUOu0QnCeKLilz14ciWkWEFuQI6ro9bDSnYMEFdgfg0YUX408MbK8qWfq
-         l0hI3L/7T3jpVC0i3IFgwy767Wz87dOhjSTmeG8r4bSKwEYerAXiTgnic5R2Kk/JT/
-         mybV3mgNSzB3CB11bmPJD/IYTITZ994Q0dHvq6RM=
+        b=jv46UV3EjQP0uGD2JZ9UR1Zd9XV5y1Kfx621reIDDJPPzJKSodHXGM6cV9wt6IuZ0
+         /zGPjkOEsKub6Bwo8B0+hoY1jJtVsdPlXJgDBOxozbC99lBZIKakM0fCk+g8axp+HU
+         ZlKbMKG23oR1fanqUw5tVmpVhTQCR2TSbI6/e3Sk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jack Xiao <Jack.Xiao@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.3 055/127] drm/amd/amdgpu: limit one queue per gang
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 107/161] netfilter: nf_tables: validate registers coming from userspace.
 Date:   Sun, 28 May 2023 20:10:31 +0100
-Message-Id: <20230528190838.156045541@linuxfoundation.org>
+Message-Id: <20230528190840.500013024@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 5ee33d905f89c18d4b33da6e5eefdae6060502df upstream.
+[ 6e1acfa387b9ff82cfc7db8cc3b6959221a95851 ]
 
-Limit one queue per gang in mes self test,
-due to mes schq fw change.
+Bail out in case userspace uses unsupported registers.
 
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 49499c3e6e18 ("netfilter: nf_tables: switch registers to 32 bit addressing")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -1328,12 +1328,9 @@ int amdgpu_mes_self_test(struct amdgpu_d
- 	struct amdgpu_mes_ctx_data ctx_data = {0};
- 	struct amdgpu_ring *added_rings[AMDGPU_MES_CTX_MAX_RINGS] = { NULL };
- 	int gang_ids[3] = {0};
--	int queue_types[][2] = { { AMDGPU_RING_TYPE_GFX,
--				   AMDGPU_MES_CTX_MAX_GFX_RINGS},
--				 { AMDGPU_RING_TYPE_COMPUTE,
--				   AMDGPU_MES_CTX_MAX_COMPUTE_RINGS},
--				 { AMDGPU_RING_TYPE_SDMA,
--				   AMDGPU_MES_CTX_MAX_SDMA_RINGS } };
-+	int queue_types[][2] = { { AMDGPU_RING_TYPE_GFX, 1 },
-+				 { AMDGPU_RING_TYPE_COMPUTE, 1 },
-+				 { AMDGPU_RING_TYPE_SDMA, 1} };
- 	int i, r, pasid, k = 0;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 8a0095664e619..a90bf82ea1435 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7384,26 +7384,23 @@ int nft_parse_u32_check(const struct nlattr *attr, int max, u32 *dest)
+ }
+ EXPORT_SYMBOL_GPL(nft_parse_u32_check);
  
- 	pasid = amdgpu_pasid_alloc(16);
+-/**
+- *	nft_parse_register - parse a register value from a netlink attribute
+- *
+- *	@attr: netlink attribute
+- *
+- *	Parse and translate a register value from a netlink attribute.
+- *	Registers used to be 128 bit wide, these register numbers will be
+- *	mapped to the corresponding 32 bit register numbers.
+- */
+-static unsigned int nft_parse_register(const struct nlattr *attr)
++static int nft_parse_register(const struct nlattr *attr, u32 *preg)
+ {
+ 	unsigned int reg;
+ 
+ 	reg = ntohl(nla_get_be32(attr));
+ 	switch (reg) {
+ 	case NFT_REG_VERDICT...NFT_REG_4:
+-		return reg * NFT_REG_SIZE / NFT_REG32_SIZE;
++		*preg = reg * NFT_REG_SIZE / NFT_REG32_SIZE;
++		break;
++	case NFT_REG32_00...NFT_REG32_15:
++		*preg = reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
++		break;
+ 	default:
+-		return reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
++		return -ERANGE;
+ 	}
++
++	return 0;
+ }
+ 
+ /**
+@@ -7454,7 +7451,10 @@ int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len)
+ 	u32 reg;
+ 	int err;
+ 
+-	reg = nft_parse_register(attr);
++	err = nft_parse_register(attr, &reg);
++	if (err < 0)
++		return err;
++
+ 	err = nft_validate_register_load(reg, len);
+ 	if (err < 0)
+ 		return err;
+@@ -7523,7 +7523,10 @@ int nft_parse_register_store(const struct nft_ctx *ctx,
+ 	int err;
+ 	u32 reg;
+ 
+-	reg = nft_parse_register(attr);
++	err = nft_parse_register(attr, &reg);
++	if (err < 0)
++		return err;
++
+ 	err = nft_validate_register_store(ctx, reg, data, type, len);
+ 	if (err < 0)
+ 		return err;
+-- 
+2.39.2
+
 
 
