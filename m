@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8326713E35
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB45713EA7
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjE1TdF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49570 "EHLO
+        id S230437AbjE1Thf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230294AbjE1TdE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:04 -0400
+        with ESMTP id S230446AbjE1The (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF7AA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E6DEEC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85E0C61DBC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F5AC4339B;
-        Sun, 28 May 2023 19:33:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 068AB61E50
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267F8C433D2;
+        Sun, 28 May 2023 19:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302383;
-        bh=mZ4KTD5fen5f2gRmA4Ey8cU94SF+hCSv6BZdHdLB/cs=;
+        s=korg; t=1685302650;
+        bh=bF7lEOqT3yekHkyP14fUjvax/9aHSuMW7UK22MW/Nqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kzyYgzcywNPooa127ygFBerqx9xuh7wi+S7jOzwTr1xpqGHGqR7wyJE9wyKXoEotX
-         oD7c+JwqhREkgbo7qWUtQdKQPfmtzDlvcjM7nuGfiY27GjF4y85DHmKXeJpqy1SOU8
-         3C73fnWFSrz95+mAPO6VIXCivD6eX9LqNpc0zVxA=
+        b=Q4b/t6CeTU6vph2xkFzGFHiDYqm/UNkfaUXLJY9dAnrPfGvxX/XJIauWGRt7CfoCZ
+         ECSzpdkkTzPhnYGW6u7DqhtKMUllSs8Wm1oj+JJYe10qfE5be2wlx5nBBrw34vS1hj
+         XxAPICT2Zkn3rTtCFfc+hHX+uJePLQAVTE12H3pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erez Shitrit <erezsh@nvidia.com>,
-        Alex Vesker <valex@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.3 112/127] net/mlx5: DR, Fix crc32 calculation to work on big-endian (BE) CPUs
-Date:   Sun, 28 May 2023 20:11:28 +0100
-Message-Id: <20230528190839.901714963@linuxfoundation.org>
+        patches@lists.linux.dev
+Subject: [PATCH 6.1 089/119] regulator: pca9450: Fix BUCK2 enable_mask
+Date:   Sun, 28 May 2023 20:11:29 +0100
+Message-Id: <20230528190838.506714676@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,38 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Erez Shitrit <erezsh@nvidia.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 1e5daf5565b61a96e570865091589afc9156e3d3 upstream.
+commit d67dada3e2524514b09496b9ee1df22d4507a280 upstream.
 
-When calculating crc for hash index we use the function crc32 that
-calculates for little-endian (LE) arch.
-Then we convert it to network endianness using htonl(), but it's wrong
-to do the conversion in BE archs since the crc32 value is already LE.
+This fixes a copy & paste error.
+No functional change intended, BUCK1_ENMODE_MASK equals BUCK2_ENMODE_MASK.
 
-The solution is to switch the bytes from the crc result for all types
-of arc.
-
-Fixes: 40416d8ede65 ("net/mlx5: DR, Replace CRC32 implementation to use kernel lib")
-Signed-off-by: Erez Shitrit <erezsh@nvidia.com>
-Reviewed-by: Alex Vesker <valex@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 0935ff5f1f0a ("regulator: pca9450: add pca9450 pmic driver")
+Originally-from: Robin Gong <yibin.gong@nxp.com
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de
+Link: https://lore.kernel.org/r/20230512081935.2396180-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/pca9450-regulator.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
-@@ -15,7 +15,8 @@ static u32 dr_ste_crc32_calc(const void
- {
- 	u32 crc = crc32(0, input_data, length);
- 
--	return (__force u32)htonl(crc);
-+	return (__force u32)((crc >> 24) & 0xff) | ((crc << 8) & 0xff0000) |
-+			    ((crc >> 8) & 0xff00) | ((crc << 24) & 0xff000000);
- }
- 
- bool mlx5dr_ste_supp_ttl_cs_recalc(struct mlx5dr_cmd_caps *caps)
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -264,7 +264,7 @@ static const struct pca9450_regulator_de
+ 			.vsel_reg = PCA9450_REG_BUCK2OUT_DVS0,
+ 			.vsel_mask = BUCK2OUT_DVS0_MASK,
+ 			.enable_reg = PCA9450_REG_BUCK2CTRL,
+-			.enable_mask = BUCK1_ENMODE_MASK,
++			.enable_mask = BUCK2_ENMODE_MASK,
+ 			.ramp_reg = PCA9450_REG_BUCK2CTRL,
+ 			.ramp_mask = BUCK2_RAMP_MASK,
+ 			.ramp_delay_table = pca9450_dvs_buck_ramp_table,
+@@ -502,7 +502,7 @@ static const struct pca9450_regulator_de
+ 			.vsel_reg = PCA9450_REG_BUCK2OUT_DVS0,
+ 			.vsel_mask = BUCK2OUT_DVS0_MASK,
+ 			.enable_reg = PCA9450_REG_BUCK2CTRL,
+-			.enable_mask = BUCK1_ENMODE_MASK,
++			.enable_mask = BUCK2_ENMODE_MASK,
+ 			.ramp_reg = PCA9450_REG_BUCK2CTRL,
+ 			.ramp_mask = BUCK2_RAMP_MASK,
+ 			.ramp_delay_table = pca9450_dvs_buck_ramp_table,
 
 
