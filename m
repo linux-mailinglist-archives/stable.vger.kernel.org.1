@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56347713D2E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4ABD713D39
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbjE1TWn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40292 "EHLO
+        id S229980AbjE1TXH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229973AbjE1TWm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:42 -0400
+        with ESMTP id S229987AbjE1TXG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA15A6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5E70C9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D80461B38
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1E2C4339B;
-        Sun, 28 May 2023 19:22:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 654F761B83
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835AFC433D2;
+        Sun, 28 May 2023 19:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301756;
-        bh=KNq5JtC9wo1nRstONVa73mKF2Mfy53I6/vwzRgCCcQs=;
+        s=korg; t=1685301783;
+        bh=sdbS/NmNnO0l8r6ssxRNYMhFXPsxWxAXu9gD4f2nRBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o46WJ4HAEBT6mt234CcgiYnIEMA7Hb0EpTqzZPiI4F7U7Ui0TBWQ4NEKYK5KRaa0A
-         DzXiX/BAgU91TjqbezvHsBShb0Yd91RCgbzV1crx646QdY+CZwTJr/r2mmhhccg60C
-         wlC/xMGdGwVa/GSIk6Bsp7QkEH+M3MSgMcBHWnPk=
+        b=14iRpLRhE4LZ5VUo9SeDmuGZqyv8ZFRNMkuDsGqKiqApMr8GHmbrSDPg7mfJWlYs1
+         aspjEjzxW9pCQQFlIonNtb79JrZM5l5LEl1/k+GbTyJ0FO5zOzc+8GWj1rfbFrp/mW
+         a3KSreqSjm+Q0sqXn610fyGv7PUrRbhytSUwOWsU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 006/161] netfilter: conntrack: fix possible bug_on with enable_hooks=1
-Date:   Sun, 28 May 2023 20:08:50 +0100
-Message-Id: <20230528190837.288895261@linuxfoundation.org>
+Subject: [PATCH 5.4 007/161] netlink: annotate accesses to nlk->cb_running
+Date:   Sun, 28 May 2023 20:08:51 +0100
+Message-Id: <20230528190837.325922772@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
 References: <20230528190837.051205996@linuxfoundation.org>
@@ -54,75 +55,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e72eeab542dbf4f544e389e64fa13b82a1b6d003 ]
+[ Upstream commit a939d14919b799e6fff8a9c80296ca229ba2f8a4 ]
 
-I received a bug report (no reproducer so far) where we trip over
+Both netlink_recvmsg() and netlink_native_seq_show() read
+nlk->cb_running locklessly. Use READ_ONCE() there.
 
-712         rcu_read_lock();
-713         ct_hook = rcu_dereference(nf_ct_hook);
-714         BUG_ON(ct_hook == NULL);  // here
+Add corresponding WRITE_ONCE() to netlink_dump() and
+__netlink_dump_start()
 
-In nf_conntrack_destroy().
+syzbot reported:
+BUG: KCSAN: data-race in __netlink_dump_start / netlink_recvmsg
 
-First turn this BUG_ON into a WARN.  I think it was triggered
-via enable_hooks=1 flag.
+write to 0xffff88813ea4db59 of 1 bytes by task 28219 on cpu 0:
+__netlink_dump_start+0x3af/0x4d0 net/netlink/af_netlink.c:2399
+netlink_dump_start include/linux/netlink.h:308 [inline]
+rtnetlink_rcv_msg+0x70f/0x8c0 net/core/rtnetlink.c:6130
+netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2577
+rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6192
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1942
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+sock_write_iter+0x1aa/0x230 net/socket.c:1138
+call_write_iter include/linux/fs.h:1851 [inline]
+new_sync_write fs/read_write.c:491 [inline]
+vfs_write+0x463/0x760 fs/read_write.c:584
+ksys_write+0xeb/0x1a0 fs/read_write.c:637
+__do_sys_write fs/read_write.c:649 [inline]
+__se_sys_write fs/read_write.c:646 [inline]
+__x64_sys_write+0x42/0x50 fs/read_write.c:646
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-When this flag is turned on, the conntrack hooks are registered
-before nf_ct_hook pointer gets assigned.
-This opens a short window where packets enter the conntrack machinery,
-can have skb->_nfct set up and a subsequent kfree_skb might occur
-before nf_ct_hook is set.
+read to 0xffff88813ea4db59 of 1 bytes by task 28222 on cpu 1:
+netlink_recvmsg+0x3b4/0x730 net/netlink/af_netlink.c:2022
+sock_recvmsg_nosec+0x4c/0x80 net/socket.c:1017
+____sys_recvmsg+0x2db/0x310 net/socket.c:2718
+___sys_recvmsg net/socket.c:2762 [inline]
+do_recvmmsg+0x2e5/0x710 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0xe2/0x160 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Call nf_conntrack_init_end() to set nf_ct_hook before we register the
-pernet ops.
+value changed: 0x00 -> 0x01
 
-Fixes: ba3fbe663635 ("netfilter: nf_conntrack: provide modparam to always register conntrack hooks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 16b304f3404f ("netlink: Eliminate kmalloc in netlink dump operation.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/core.c                    | 6 ++++--
- net/netfilter/nf_conntrack_standalone.c | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ net/netlink/af_netlink.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/core.c b/net/netfilter/core.c
-index 451b2df998ea7..c35f45afd394d 100644
---- a/net/netfilter/core.c
-+++ b/net/netfilter/core.c
-@@ -577,9 +577,11 @@ void nf_conntrack_destroy(struct nf_conntrack *nfct)
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 00f040fb46b9c..31a3a562854fc 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1991,7 +1991,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
  
- 	rcu_read_lock();
- 	ct_hook = rcu_dereference(nf_ct_hook);
--	BUG_ON(ct_hook == NULL);
--	ct_hook->destroy(nfct);
-+	if (ct_hook)
-+		ct_hook->destroy(nfct);
- 	rcu_read_unlock();
-+
-+	WARN_ON(!ct_hook);
- }
- EXPORT_SYMBOL(nf_conntrack_destroy);
+ 	skb_free_datagram(sk, skb);
  
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index 43c3c3be6defc..1e3dbed9d7840 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -1180,11 +1180,12 @@ static int __init nf_conntrack_standalone_init(void)
- 	nf_conntrack_htable_size_user = nf_conntrack_htable_size;
- #endif
+-	if (nlk->cb_running &&
++	if (READ_ONCE(nlk->cb_running) &&
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+ 		ret = netlink_dump(sk);
+ 		if (ret) {
+@@ -2284,7 +2284,7 @@ static int netlink_dump(struct sock *sk)
+ 	if (cb->done)
+ 		cb->done(cb);
  
-+	nf_conntrack_init_end();
-+
- 	ret = register_pernet_subsys(&nf_conntrack_net_ops);
- 	if (ret < 0)
- 		goto out_pernet;
+-	nlk->cb_running = false;
++	WRITE_ONCE(nlk->cb_running, false);
+ 	module = cb->module;
+ 	skb = cb->skb;
+ 	mutex_unlock(nlk->cb_mutex);
+@@ -2347,7 +2347,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 			goto error_put;
+ 	}
  
--	nf_conntrack_init_end();
- 	return 0;
+-	nlk->cb_running = true;
++	WRITE_ONCE(nlk->cb_running, true);
+ 	nlk->dump_done_errno = INT_MAX;
  
- out_pernet:
+ 	mutex_unlock(nlk->cb_mutex);
+@@ -2636,7 +2636,7 @@ static int netlink_seq_show(struct seq_file *seq, void *v)
+ 			   nlk->groups ? (u32)nlk->groups[0] : 0,
+ 			   sk_rmem_alloc_get(s),
+ 			   sk_wmem_alloc_get(s),
+-			   nlk->cb_running,
++			   READ_ONCE(nlk->cb_running),
+ 			   refcount_read(&s->sk_refcnt),
+ 			   atomic_read(&s->sk_drops),
+ 			   sock_i_ino(s)
 -- 
 2.39.2
 
