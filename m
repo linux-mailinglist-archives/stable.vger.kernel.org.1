@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF63D713EE0
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC24713D1E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbjE1Tjs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54808 "EHLO
+        id S229953AbjE1TWE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:22:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230508AbjE1Tjr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:47 -0400
+        with ESMTP id S229952AbjE1TWE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6BAB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045AEA6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F70A61EA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5F6C433D2;
-        Sun, 28 May 2023 19:39:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E37561B38
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94EEC433EF;
+        Sun, 28 May 2023 19:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302784;
-        bh=V3QgCQRFaZUZCgWhOEnasoZlTbLKFH2JR8tf9wMfth8=;
+        s=korg; t=1685301722;
+        bh=NfHq+RDrTB3DvYgfdMEggXw5Rza5L0+HTQkuOQ2NCB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KhPd5cbt6M4T7MFRRYRytXTpwuk6ekYGLv0Rnuv/P2A8yAyafcZxi0nN/+zVeeHFR
-         LtVVkNruD5OfykQPuE3BxEcxrf2UbPVcaOQlz+5qSmxinGXYTxMERKpvJScmjWibDw
-         nhTKhe7Mcj6tdPjY77HBc2pEzLyx8IG7L5/pN8NU=
+        b=u0Z5j38aDx4ZUHY+z0Rj/3e13FmCUOU5I4pyEGTftEKWZG/w0NgnRfBJkwIJ2mhO5
+         q6cnnpMCmDI847KLcDyPCIyPrN5iV2E69sRD9sUF5nA7J+mb/1MolOZFnxEtJOWgoR
+         MID6frIIGeAZTbIZoRirUtk6kFvLsf7hzSVywb4c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roy Novich <royno@nvidia.com>,
-        Aya Levin <ayal@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Michal Kubiak <michal.kubiak@intel.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Saravana Kannan <saravanak@google.com>,
+        Maxime Ripard <maxime@cerno.tech>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 005/211] linux/dim: Do nothing if no time delta between samples
+Subject: [PATCH 5.4 002/161] drm/mipi-dsi: Set the fwnode for mipi_dsi_device
 Date:   Sun, 28 May 2023 20:08:46 +0100
-Message-Id: <20230528190843.651083064@linuxfoundation.org>
+Message-Id: <20230528190837.148229499@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,106 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roy Novich <royno@nvidia.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit 162bd18eb55adf464a0fa2b4144b8d61c75ff7c2 ]
+[ Upstream commit a26cc2934331b57b5a7164bff344f0a2ec245fc0 ]
 
-Add return value for dim_calc_stats. This is an indication for the
-caller if curr_stats was assigned by the function. Avoid using
-curr_stats uninitialized over {rdma/net}_dim, when no time delta between
-samples. Coverity reported this potential use of an uninitialized
-variable.
+After commit 3fb16866b51d ("driver core: fw_devlink: Make cycle
+detection more robust"), fw_devlink prints an error when consumer
+devices don't have their fwnode set. This used to be ignored silently.
 
-Fixes: 4c4dbb4a7363 ("net/mlx5e: Move dynamic interrupt coalescing code to include/linux")
-Fixes: cb3c7fd4f839 ("net/mlx5e: Support adaptive RX coalescing")
-Signed-off-by: Roy Novich <royno@nvidia.com>
-Reviewed-by: Aya Levin <ayal@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://lore.kernel.org/r/20230507135743.138993-1-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Set the fwnode mipi_dsi_device so fw_devlink can find them and properly
+track their dependencies.
+
+This fixes errors like this:
+[    0.334054] nwl-dsi 30a00000.mipi-dsi: Failed to create device link with regulator-lcd-1v8
+[    0.346964] nwl-dsi 30a00000.mipi-dsi: Failed to create device link with backlight-dsi
+
+Reported-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Link: https://lore.kernel.org/lkml/2a8e407f4f18c9350f8629a2b5fa18673355b2ae.camel@puri.sm/
+Fixes: 068a00233969 ("drm: Add MIPI DSI bus support")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Tested-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Link: https://lore.kernel.org/r/20230310063910.2474472-1-saravanak@google.com
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dim.h | 3 ++-
- lib/dim/dim.c       | 5 +++--
- lib/dim/net_dim.c   | 3 ++-
- lib/dim/rdma_dim.c  | 3 ++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_mipi_dsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/dim.h b/include/linux/dim.h
-index 6c5733981563e..f343bc9aa2ec9 100644
---- a/include/linux/dim.h
-+++ b/include/linux/dim.h
-@@ -236,8 +236,9 @@ void dim_park_tired(struct dim *dim);
-  *
-  * Calculate the delta between two samples (in data rates).
-  * Takes into consideration counter wrap-around.
-+ * Returned boolean indicates whether curr_stats are reliable.
-  */
--void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
-+bool dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
- 		    struct dim_stats *curr_stats);
+diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
+index b942c69e9b489..17a96f1d9234c 100644
+--- a/drivers/gpu/drm/drm_mipi_dsi.c
++++ b/drivers/gpu/drm/drm_mipi_dsi.c
+@@ -221,7 +221,7 @@ mipi_dsi_device_register_full(struct mipi_dsi_host *host,
+ 		return dsi;
+ 	}
  
- /**
-diff --git a/lib/dim/dim.c b/lib/dim/dim.c
-index 38045d6d05381..e89aaf07bde50 100644
---- a/lib/dim/dim.c
-+++ b/lib/dim/dim.c
-@@ -54,7 +54,7 @@ void dim_park_tired(struct dim *dim)
- }
- EXPORT_SYMBOL(dim_park_tired);
+-	dsi->dev.of_node = info->node;
++	device_set_node(&dsi->dev, of_fwnode_handle(info->node));
+ 	dsi->channel = info->channel;
+ 	strlcpy(dsi->name, info->type, sizeof(dsi->name));
  
--void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
-+bool dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
- 		    struct dim_stats *curr_stats)
- {
- 	/* u32 holds up to 71 minutes, should be enough */
-@@ -66,7 +66,7 @@ void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
- 			     start->comp_ctr);
- 
- 	if (!delta_us)
--		return;
-+		return false;
- 
- 	curr_stats->ppms = DIV_ROUND_UP(npkts * USEC_PER_MSEC, delta_us);
- 	curr_stats->bpms = DIV_ROUND_UP(nbytes * USEC_PER_MSEC, delta_us);
-@@ -79,5 +79,6 @@ void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
- 	else
- 		curr_stats->cpe_ratio = 0;
- 
-+	return true;
- }
- EXPORT_SYMBOL(dim_calc_stats);
-diff --git a/lib/dim/net_dim.c b/lib/dim/net_dim.c
-index dae3b51ac3d9b..0e4f3a686f1de 100644
---- a/lib/dim/net_dim.c
-+++ b/lib/dim/net_dim.c
-@@ -227,7 +227,8 @@ void net_dim(struct dim *dim, struct dim_sample end_sample)
- 				  dim->start_sample.event_ctr);
- 		if (nevents < DIM_NEVENTS)
- 			break;
--		dim_calc_stats(&dim->start_sample, &end_sample, &curr_stats);
-+		if (!dim_calc_stats(&dim->start_sample, &end_sample, &curr_stats))
-+			break;
- 		if (net_dim_decision(&curr_stats, dim)) {
- 			dim->state = DIM_APPLY_NEW_PROFILE;
- 			schedule_work(&dim->work);
-diff --git a/lib/dim/rdma_dim.c b/lib/dim/rdma_dim.c
-index f7e26c7b4749f..d32c8b105adc9 100644
---- a/lib/dim/rdma_dim.c
-+++ b/lib/dim/rdma_dim.c
-@@ -88,7 +88,8 @@ void rdma_dim(struct dim *dim, u64 completions)
- 		nevents = curr_sample->event_ctr - dim->start_sample.event_ctr;
- 		if (nevents < DIM_NEVENTS)
- 			break;
--		dim_calc_stats(&dim->start_sample, curr_sample, &curr_stats);
-+		if (!dim_calc_stats(&dim->start_sample, curr_sample, &curr_stats))
-+			break;
- 		if (rdma_dim_decision(&curr_stats, dim)) {
- 			dim->state = DIM_APPLY_NEW_PROFILE;
- 			schedule_work(&dim->work);
 -- 
 2.39.2
 
