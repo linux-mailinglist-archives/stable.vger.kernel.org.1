@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9766713D87
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C6C713C69
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbjE1T0T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:26:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42768 "EHLO
+        id S229719AbjE1TPE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:15:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbjE1T0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:19 -0400
+        with ESMTP id S229484AbjE1TPD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD14E1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31EC2A2;
+        Sun, 28 May 2023 12:15:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65DF461C2F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D2BC433EF;
-        Sun, 28 May 2023 19:26:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7427661977;
+        Sun, 28 May 2023 19:15:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C7BC433EF;
+        Sun, 28 May 2023 19:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301976;
-        bh=G4vI9UCc8ia5rsVYBUOB4i9tikUZWSpYNvl207i+JUc=;
+        s=korg; t=1685301300;
+        bh=wupWEI6oDFRpR1L+AYSUYZEIfhSfz9b0pLTyfJAngQM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qK31wEMDqLn5i7vxKFfsXqJItKoU5jUeXsgtOYv0Gjpm9bxLTg+7emmigVtJqzpLV
-         0dLbC+IBVB1s8phsZTqqYz7AOv6MLioDg/NCGk7eyj3r1IpKIe/QNTUnkdlFFBQEk2
-         jxNQX0OmKTMzT1H1zavxPZOkMFL5/lU5rhisaGrY=
+        b=rcUNHWpJrPcWHFuYNuwqlv4NTkU5YDiW2RzcuJTKoKxQ2v4wd0IB/CvqEBIhXEukR
+         oDZlB0H4r1dwPofx+j5fZfVCBiez3EYDF2uq4cuUg8VfOQbzpN7k/1DOlCA8E6ZEVD
+         iz7hCjmh/hCkZEVxT7CUv1ToThsy3mtvzjwv4UBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/161] netfilter: nf_tables: hold mutex on netns pre_exit path
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.14 62/86] netfilter: nftables: statify nft_parse_register()
 Date:   Sun, 28 May 2023 20:10:36 +0100
-Message-Id: <20230528190840.637411577@linuxfoundation.org>
+Message-Id: <20230528190830.922304407@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,33 +54,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ 3923b1e4406680d57da7e873da77b1683035d83f ]
+[ 08a01c11a5bb3de9b0a9c9b2685867e50eda9910 ]
 
-clean_net() runs in workqueue while walking over the lists, grab mutex.
+This function is not used anymore by any extension, statify it.
 
-Fixes: 767d1216bff8 ("netfilter: nftables: fix possible UAF over chains from packet path in netns")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/netfilter/nf_tables.h |    1 -
+ net/netfilter/nf_tables_api.c     |    3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e4eef4947cc75..909076ef157e8 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7866,7 +7866,9 @@ static int __net_init nf_tables_init_net(struct net *net)
- 
- static void __net_exit nf_tables_pre_exit_net(struct net *net)
- {
-+	mutex_lock(&net->nft.commit_mutex);
- 	__nft_release_hooks(net);
-+	mutex_unlock(&net->nft.commit_mutex);
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -195,7 +195,6 @@ static inline enum nft_registers nft_typ
  }
  
- static void __net_exit nf_tables_exit_net(struct net *net)
--- 
-2.39.2
-
+ int nft_parse_u32_check(const struct nlattr *attr, int max, u32 *dest);
+-unsigned int nft_parse_register(const struct nlattr *attr);
+ int nft_dump_register(struct sk_buff *skb, unsigned int attr, unsigned int reg);
+ 
+ int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len);
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5624,7 +5624,7 @@ EXPORT_SYMBOL_GPL(nft_parse_u32_check);
+  *	Registers used to be 128 bit wide, these register numbers will be
+  *	mapped to the corresponding 32 bit register numbers.
+  */
+-unsigned int nft_parse_register(const struct nlattr *attr)
++static unsigned int nft_parse_register(const struct nlattr *attr)
+ {
+ 	unsigned int reg;
+ 
+@@ -5636,7 +5636,6 @@ unsigned int nft_parse_register(const st
+ 		return reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(nft_parse_register);
+ 
+ /**
+  *	nft_dump_register - dump a register value to a netlink attribute
 
 
