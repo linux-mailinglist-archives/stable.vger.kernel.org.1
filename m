@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1170F713F27
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030CD713C45
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbjE1Tmb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57742 "EHLO
+        id S229510AbjE1TNp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:13:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbjE1Tm3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93383C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:28 -0700 (PDT)
+        with ESMTP id S229694AbjE1TNp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C38C7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3165A61EEF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB96C433D2;
-        Sun, 28 May 2023 19:42:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C558C6191C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0BEC433EF;
+        Sun, 28 May 2023 19:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302947;
-        bh=DgYrxm3x9YTBdF4xZMNWWtnN6XYj8piU96W9ttS+FJg=;
+        s=korg; t=1685301222;
+        bh=BTuyMiPP+Z5fEgCMkZiuq7KWbXYYMtTR0aUw4/clvtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E6gauR5NAJaBWveO2zyp++Gvlsk8zU3iK6gKAz+z041EEvbHHIp0V2Bp6LoQBfn0x
-         lf39sPCn+rQldejevMb7W3FcHUl/hgJUhzVF7xnzfpS4APJnjXil3B1AI/TOQEoZJh
-         HSQzB2NI53ag02kRyIrEWpuCWJguzaO3mhxZtgxQ=
+        b=oNH1s8Q7AtMAJG+ZfmArDWfyEXITbq48ZSR29bou1euXJ77nGtI3l0c4niIKti9H5
+         1M57VdMC0Hi1iO7tf204iLxfIGZy624udWyFXSRzP0L0n8ykMDYbjAs4xZ3IYn9GS+
+         Hy8spq4ZIoB8DRYgKCYIh4EIriJWBp04ebl8Bh10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nikolay Borisov <nborisov@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
+        Johannes Thumshirn <jth@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/211] btrfs: move btrfs_find_highest_objectid/btrfs_find_free_objectid to disk-io.c
+Subject: [PATCH 4.14 31/86] mcb-pci: Reallocate memory region to avoid memory overlapping
 Date:   Sun, 28 May 2023 20:10:05 +0100
-Message-Id: <20230528190845.709762698@linuxfoundation.org>
+Message-Id: <20230528190829.743172679@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,176 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikolay Borisov <nborisov@suse.com>
+From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
 
-[ Upstream commit ec7d6dfd73b2de1c6bc36f832542061b0ca0e0ff ]
+[ Upstream commit 9be24faadd085c284890c3afcec7a0184642315a ]
 
-Those functions are going to be used even after inode cache is removed
-so moved them to a more appropriate place.
+mcb-pci requests a fixed-size memory region to parse the chameleon
+table, however, if the chameleon table is smaller that the allocated
+region, it could overlap with the IP Cores' memory regions.
 
-Signed-off-by: Nikolay Borisov <nborisov@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 0004ff15ea26 ("btrfs: fix space cache inconsistency after error loading it from disk")
+After parsing the chameleon table, drop/reallocate the memory region
+with the actual chameleon table size.
+
+Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/20230411083329.4506-3-jth@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c   | 55 ++++++++++++++++++++++++++++++++++++++++++++
- fs/btrfs/disk-io.h   |  2 ++
- fs/btrfs/inode-map.c | 55 --------------------------------------------
- fs/btrfs/inode-map.h |  3 ---
- 4 files changed, 57 insertions(+), 58 deletions(-)
+ drivers/mcb/mcb-pci.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 2a7778a88f03b..095c9e4f92248 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4780,3 +4780,58 @@ static int btrfs_cleanup_transaction(struct btrfs_fs_info *fs_info)
- 
- 	return 0;
- }
-+
-+int btrfs_find_highest_objectid(struct btrfs_root *root, u64 *objectid)
-+{
-+	struct btrfs_path *path;
-+	int ret;
-+	struct extent_buffer *l;
-+	struct btrfs_key search_key;
-+	struct btrfs_key found_key;
-+	int slot;
-+
-+	path = btrfs_alloc_path();
-+	if (!path)
-+		return -ENOMEM;
-+
-+	search_key.objectid = BTRFS_LAST_FREE_OBJECTID;
-+	search_key.type = -1;
-+	search_key.offset = (u64)-1;
-+	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
-+	if (ret < 0)
-+		goto error;
-+	BUG_ON(ret == 0); /* Corruption */
-+	if (path->slots[0] > 0) {
-+		slot = path->slots[0] - 1;
-+		l = path->nodes[0];
-+		btrfs_item_key_to_cpu(l, &found_key, slot);
-+		*objectid = max_t(u64, found_key.objectid,
-+				  BTRFS_FIRST_FREE_OBJECTID - 1);
-+	} else {
-+		*objectid = BTRFS_FIRST_FREE_OBJECTID - 1;
-+	}
-+	ret = 0;
-+error:
-+	btrfs_free_path(path);
-+	return ret;
-+}
-+
-+int btrfs_find_free_objectid(struct btrfs_root *root, u64 *objectid)
-+{
-+	int ret;
-+	mutex_lock(&root->objectid_mutex);
-+
-+	if (unlikely(root->highest_objectid >= BTRFS_LAST_FREE_OBJECTID)) {
-+		btrfs_warn(root->fs_info,
-+			   "the objectid of root %llu reaches its highest value",
-+			   root->root_key.objectid);
-+		ret = -ENOSPC;
-+		goto out;
-+	}
-+
-+	*objectid = ++root->highest_objectid;
-+	ret = 0;
-+out:
-+	mutex_unlock(&root->objectid_mutex);
-+	return ret;
-+}
-diff --git a/fs/btrfs/disk-io.h b/fs/btrfs/disk-io.h
-index 182540bdcea0f..e3b96944ce10c 100644
---- a/fs/btrfs/disk-io.h
-+++ b/fs/btrfs/disk-io.h
-@@ -131,6 +131,8 @@ struct btrfs_root *btrfs_create_tree(struct btrfs_trans_handle *trans,
- int btree_lock_page_hook(struct page *page, void *data,
- 				void (*flush_fn)(void *));
- int btrfs_get_num_tolerated_disk_barrier_failures(u64 flags);
-+int btrfs_find_free_objectid(struct btrfs_root *root, u64 *objectid);
-+int btrfs_find_highest_objectid(struct btrfs_root *root, u64 *objectid);
- int __init btrfs_end_io_wq_init(void);
- void __cold btrfs_end_io_wq_exit(void);
- 
-diff --git a/fs/btrfs/inode-map.c b/fs/btrfs/inode-map.c
-index 76d2e43817eae..c74340d22624e 100644
---- a/fs/btrfs/inode-map.c
-+++ b/fs/btrfs/inode-map.c
-@@ -525,58 +525,3 @@ int btrfs_save_ino_cache(struct btrfs_root *root,
- 	extent_changeset_free(data_reserved);
- 	return ret;
- }
--
--int btrfs_find_highest_objectid(struct btrfs_root *root, u64 *objectid)
--{
--	struct btrfs_path *path;
+diff --git a/drivers/mcb/mcb-pci.c b/drivers/mcb/mcb-pci.c
+index af4d2f26f1c62..b0ec3bbf1b76d 100644
+--- a/drivers/mcb/mcb-pci.c
++++ b/drivers/mcb/mcb-pci.c
+@@ -34,7 +34,7 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct resource *res;
+ 	struct priv *priv;
 -	int ret;
--	struct extent_buffer *l;
--	struct btrfs_key search_key;
--	struct btrfs_key found_key;
--	int slot;
--
--	path = btrfs_alloc_path();
--	if (!path)
--		return -ENOMEM;
--
--	search_key.objectid = BTRFS_LAST_FREE_OBJECTID;
--	search_key.type = -1;
--	search_key.offset = (u64)-1;
--	ret = btrfs_search_slot(NULL, root, &search_key, path, 0, 0);
--	if (ret < 0)
--		goto error;
--	BUG_ON(ret == 0); /* Corruption */
--	if (path->slots[0] > 0) {
--		slot = path->slots[0] - 1;
--		l = path->nodes[0];
--		btrfs_item_key_to_cpu(l, &found_key, slot);
--		*objectid = max_t(u64, found_key.objectid,
--				  BTRFS_FIRST_FREE_OBJECTID - 1);
--	} else {
--		*objectid = BTRFS_FIRST_FREE_OBJECTID - 1;
--	}
--	ret = 0;
--error:
--	btrfs_free_path(path);
--	return ret;
--}
--
--int btrfs_find_free_objectid(struct btrfs_root *root, u64 *objectid)
--{
--	int ret;
--	mutex_lock(&root->objectid_mutex);
--
--	if (unlikely(root->highest_objectid >= BTRFS_LAST_FREE_OBJECTID)) {
--		btrfs_warn(root->fs_info,
--			   "the objectid of root %llu reaches its highest value",
--			   root->root_key.objectid);
--		ret = -ENOSPC;
--		goto out;
--	}
--
--	*objectid = ++root->highest_objectid;
--	ret = 0;
--out:
--	mutex_unlock(&root->objectid_mutex);
--	return ret;
--}
-diff --git a/fs/btrfs/inode-map.h b/fs/btrfs/inode-map.h
-index 7a962811dffe0..629baf9aefb15 100644
---- a/fs/btrfs/inode-map.h
-+++ b/fs/btrfs/inode-map.h
-@@ -10,7 +10,4 @@ int btrfs_find_free_ino(struct btrfs_root *root, u64 *objectid);
- int btrfs_save_ino_cache(struct btrfs_root *root,
- 			 struct btrfs_trans_handle *trans);
++	int ret, table_size;
+ 	unsigned long flags;
  
--int btrfs_find_free_objectid(struct btrfs_root *root, u64 *objectid);
--int btrfs_find_highest_objectid(struct btrfs_root *root, u64 *objectid);
--
- #endif
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(struct priv), GFP_KERNEL);
+@@ -93,7 +93,30 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (ret < 0)
+ 		goto out_mcb_bus;
+ 
+-	dev_dbg(&pdev->dev, "Found %d cells\n", ret);
++	table_size = ret;
++
++	if (table_size < CHAM_HEADER_SIZE) {
++		/* Release the previous resources */
++		devm_iounmap(&pdev->dev, priv->base);
++		devm_release_mem_region(&pdev->dev, priv->mapbase, CHAM_HEADER_SIZE);
++
++		/* Then, allocate it again with the actual chameleon table size */
++		res = devm_request_mem_region(&pdev->dev, priv->mapbase,
++						table_size,
++						KBUILD_MODNAME);
++		if (!res) {
++			dev_err(&pdev->dev, "Failed to request PCI memory\n");
++			ret = -EBUSY;
++			goto out_mcb_bus;
++		}
++
++		priv->base = devm_ioremap(&pdev->dev, priv->mapbase, table_size);
++		if (!priv->base) {
++			dev_err(&pdev->dev, "Cannot ioremap\n");
++			ret = -ENOMEM;
++			goto out_mcb_bus;
++		}
++	}
+ 
+ 	mcb_bus_add_devices(priv->bus);
+ 
 -- 
 2.39.2
 
