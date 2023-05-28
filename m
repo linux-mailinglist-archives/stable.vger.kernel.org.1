@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9157E713ECE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44EFC713F87
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230488AbjE1TjE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54416 "EHLO
+        id S231302AbjE1Tq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230484AbjE1TjD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 383A7A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:02 -0700 (PDT)
+        with ESMTP id S231305AbjE1Tq0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4756DFE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98F1961E8E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F6BC433EF;
-        Sun, 28 May 2023 19:39:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A405361F74
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29D8C433D2;
+        Sun, 28 May 2023 19:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302741;
-        bh=bJa+UHuade9NO11kwo7A0zB+9PT/Hg5v/yFsvl1j1SY=;
+        s=korg; t=1685303180;
+        bh=/Ha65achCsfAVtvXbbVawppotu0f/46eBuV4vAd7t3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SzLboQBHfTsK78+XW9X9kpDJG7lrgCNX+Et8sL7JaENXpRsRlmCWsAUFeBXvQQAKp
-         SYGaywB0kS5t9ytEU8IZL0gIUZxE3atbQ4HgJ7QvaLWI0gnscMTSsSCOqhmIlz05s4
-         rGeGXrwb52E585um0PALiXEbE25jhZFw8ATDuVe0=
+        b=wKQSip74n++nKhPOfmRfAfs9Dc1Dv9bqbihH2EtzRJkcPQtFqhHs4q7bv5gCzOvmH
+         igC7lvABpsB/5WJlBIBLX3mnI8lCBuJ+YUKi5K39XeeOkAjy9hzKfFFAT2fCkmFGdf
+         siE00W/8f0Z/+HFVBSPqHCfw5mm7U+y97VmAXgoc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.1 108/119] net/mlx5: Handle pairing of E-switch via uplink un/load APIs
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 187/211] USB: sisusbvga: Add endpoint checks
 Date:   Sun, 28 May 2023 20:11:48 +0100
-Message-Id: <20230528190839.073166659@linuxfoundation.org>
+Message-Id: <20230528190848.144884195@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,154 +53,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 2be5bd42a5bba1a05daedc86cf0e248210009669 upstream.
+commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
 
-In case user switch a device from switchdev mode to legacy mode, mlx5
-first unpair the E-switch and afterwards unload the uplink vport.
->From the other hand, in case user remove or reload a device, mlx5
-first unload the uplink vport and afterwards unpair the E-switch.
+The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
 
-The latter is causing a bug[1], hence, handle pairing of E-switch as
-part of uplink un/load APIs.
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
+RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
+R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
+FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
+ sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
+ sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
+ sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
+ sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
+ sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
+...
 
-[1]
-In case VF_LAG is used, every tc fdb flow is duplicated to the peer
-esw. However, the original esw keeps a pointer to this duplicated
-flow, not the peer esw.
-e.g.: if user create tc fdb flow over esw0, the flow is duplicated
-over esw1, in FW/HW, but in SW, esw0 keeps a pointer to the duplicated
-flow.
-During module unload while a peer tc fdb flow is still offloaded, in
-case the first device to be removed is the peer device (esw1 in the
-example above), the peer net-dev is destroyed, and so the mlx5e_priv
-is memset to 0.
-Afterwards, the peer device is trying to unpair himself from the
-original device (esw0 in the example above). Unpair API invoke the
-original device to clear peer flow from its eswitch (esw0), but the
-peer flow, which is stored over the original eswitch (esw0), is
-trying to use the peer mlx5e_priv, which is memset to 0 and result in
-bellow kernel-oops.
+The problem was caused by the fact that the driver does not check
+whether the endpoints it uses are actually present and have the
+appropriate types.  This can be fixed by adding a simple check of
+the endpoints.
 
-[  157.964081 ] BUG: unable to handle page fault for address: 000000000002ce60
-[  157.964662 ] #PF: supervisor read access in kernel mode
-[  157.965123 ] #PF: error_code(0x0000) - not-present page
-[  157.965582 ] PGD 0 P4D 0
-[  157.965866 ] Oops: 0000 [#1] SMP
-[  157.967670 ] RIP: 0010:mlx5e_tc_del_fdb_flow+0x48/0x460 [mlx5_core]
-[  157.976164 ] Call Trace:
-[  157.976437 ]  <TASK>
-[  157.976690 ]  __mlx5e_tc_del_fdb_peer_flow+0xe6/0x100 [mlx5_core]
-[  157.977230 ]  mlx5e_tc_clean_fdb_peer_flows+0x67/0x90 [mlx5_core]
-[  157.977767 ]  mlx5_esw_offloads_unpair+0x2d/0x1e0 [mlx5_core]
-[  157.984653 ]  mlx5_esw_offloads_devcom_event+0xbf/0x130 [mlx5_core]
-[  157.985212 ]  mlx5_devcom_send_event+0xa3/0xb0 [mlx5_core]
-[  157.985714 ]  esw_offloads_disable+0x5a/0x110 [mlx5_core]
-[  157.986209 ]  mlx5_eswitch_disable_locked+0x152/0x170 [mlx5_core]
-[  157.986757 ]  mlx5_eswitch_disable+0x51/0x80 [mlx5_core]
-[  157.987248 ]  mlx5_unload+0x2a/0xb0 [mlx5_core]
-[  157.987678 ]  mlx5_uninit_one+0x5f/0xd0 [mlx5_core]
-[  157.988127 ]  remove_one+0x64/0xe0 [mlx5_core]
-[  157.988549 ]  pci_device_remove+0x31/0xa0
-[  157.988933 ]  device_release_driver_internal+0x18f/0x1f0
-[  157.989402 ]  driver_detach+0x3f/0x80
-[  157.989754 ]  bus_remove_driver+0x70/0xf0
-[  157.990129 ]  pci_unregister_driver+0x34/0x90
-[  157.990537 ]  mlx5_cleanup+0xc/0x1c [mlx5_core]
-[  157.990972 ]  __x64_sys_delete_module+0x15a/0x250
-[  157.991398 ]  ? exit_to_user_mode_prepare+0xea/0x110
-[  157.991840 ]  do_syscall_64+0x3d/0x90
-[  157.992198 ]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-
-Fixes: 04de7dda7394 ("net/mlx5e: Infrastructure for duplicated offloading of TC flows")
-Fixes: 1418ddd96afd ("net/mlx5e: Duplicate offloaded TC eswitch rules under uplink LAG")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
+Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c            |    4 +++-
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.h          |    4 ++++
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c |    7 ++-----
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/usb/misc/sisusbvga/sisusb.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -5143,6 +5143,8 @@ int mlx5e_tc_esw_init(struct mlx5_rep_up
- 		goto err_register_fib_notifier;
- 	}
- 
-+	mlx5_esw_offloads_devcom_init(esw);
+--- a/drivers/usb/misc/sisusbvga/sisusb.c
++++ b/drivers/usb/misc/sisusbvga/sisusb.c
+@@ -3014,6 +3014,20 @@ static int sisusb_probe(struct usb_inter
+ 	struct usb_device *dev = interface_to_usbdev(intf);
+ 	struct sisusb_usb_data *sisusb;
+ 	int retval = 0, i;
++	static const u8 ep_addresses[] = {
++		SISUSB_EP_GFX_IN | USB_DIR_IN,
++		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
++		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
++		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
++		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
++		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
++		0};
 +
- 	return 0;
++	/* Are the expected endpoints present? */
++	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
++		dev_err(&intf->dev, "Invalid USB2VGA device\n");
++		return -EINVAL;
++	}
  
- err_register_fib_notifier:
-@@ -5169,7 +5171,7 @@ void mlx5e_tc_esw_cleanup(struct mlx5_re
- 	priv = netdev_priv(rpriv->netdev);
- 	esw = priv->mdev->priv.eswitch;
- 
--	mlx5e_tc_clean_fdb_peer_flows(esw);
-+	mlx5_esw_offloads_devcom_cleanup(esw);
- 
- 	mlx5e_tc_tun_cleanup(uplink_priv->encap);
- 
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -368,6 +368,8 @@ int mlx5_eswitch_enable(struct mlx5_eswi
- void mlx5_eswitch_disable_sriov(struct mlx5_eswitch *esw, bool clear_vf);
- void mlx5_eswitch_disable_locked(struct mlx5_eswitch *esw);
- void mlx5_eswitch_disable(struct mlx5_eswitch *esw);
-+void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw);
-+void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw);
- int mlx5_eswitch_set_vport_mac(struct mlx5_eswitch *esw,
- 			       u16 vport, const u8 *mac);
- int mlx5_eswitch_set_vport_state(struct mlx5_eswitch *esw,
-@@ -757,6 +759,8 @@ static inline void mlx5_eswitch_cleanup(
- static inline int mlx5_eswitch_enable(struct mlx5_eswitch *esw, int num_vfs) { return 0; }
- static inline void mlx5_eswitch_disable_sriov(struct mlx5_eswitch *esw, bool clear_vf) {}
- static inline void mlx5_eswitch_disable(struct mlx5_eswitch *esw) {}
-+static inline void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw) {}
-+static inline void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw) {}
- static inline bool mlx5_eswitch_is_funcs_handler(struct mlx5_core_dev *dev) { return false; }
- static inline
- int mlx5_eswitch_set_vport_state(struct mlx5_eswitch *esw, u16 vport, int link_state) { return 0; }
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -2864,7 +2864,7 @@ err_out:
- 	return err;
- }
- 
--static void esw_offloads_devcom_init(struct mlx5_eswitch *esw)
-+void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw)
- {
- 	struct mlx5_devcom *devcom = esw->dev->priv.devcom;
- 
-@@ -2887,7 +2887,7 @@ static void esw_offloads_devcom_init(str
- 			       ESW_OFFLOADS_DEVCOM_PAIR, esw);
- }
- 
--static void esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw)
-+void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw)
- {
- 	struct mlx5_devcom *devcom = esw->dev->priv.devcom;
- 
-@@ -3357,8 +3357,6 @@ int esw_offloads_enable(struct mlx5_eswi
- 	if (err)
- 		goto err_vports;
- 
--	esw_offloads_devcom_init(esw);
--
- 	return 0;
- 
- err_vports:
-@@ -3399,7 +3397,6 @@ static int esw_offloads_stop(struct mlx5
- 
- void esw_offloads_disable(struct mlx5_eswitch *esw)
- {
--	esw_offloads_devcom_cleanup(esw);
- 	mlx5_eswitch_disable_pf_vf_vports(esw);
- 	esw_offloads_unload_rep(esw, MLX5_VPORT_UPLINK);
- 	esw_set_passing_vport_metadata(esw, false);
+ 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
+ 			dev->devnum);
 
 
