@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3798713D02
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C46713E60
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjE1TUz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39100 "EHLO
+        id S230344AbjE1TfQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229914AbjE1TUz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:55 -0400
+        with ESMTP id S230357AbjE1TfO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8353CA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6222DC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 161C961AFE
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B00C433EF;
-        Sun, 28 May 2023 19:20:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B5AC61DF0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6847BC4339B;
+        Sun, 28 May 2023 19:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301652;
-        bh=l99n+/hFTNadIblDlaaa9YkgJKmajgwzcYzJmMQlkp0=;
+        s=korg; t=1685302494;
+        bh=MwTGrKYNPdamWbkxpMIn3/Lp1x50/ZzFv/NxFcV55yU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gCSLYfYrLgPsU13dPtpWC/ciRg0Nxl2o8n0apa4w+Hy8fKcLiQ4eZStq7G1vl3Z42
-         yMcgaLOjYFMmb0vgbj22Lo4e2gVPufTuEJQghztX2iIYhmGch64ImHSy52p6Y0kwNv
-         zm/VqmhcqlVVJom1kIOtfrQ+Tsbfu5dqomF3rAic=
+        b=AvwS+Du69iKvyAt/w85iDT47ceQhUgUyagk+CpYsEIi0AZplY+p8krxQSugiEkJWw
+         hA8WtK3iEACqPcd2J9v2mHVHMZy7Ll2oVhy9PHzQ4xeAYRMnlBpKgDlpsB8v2BrxCN
+         QIgwfWwzu3fk6GGZI9t2mXnMx2vwrDZNPTCZjwos=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Bostandzhyan <jin@mediatomb.cc>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 086/132] Add Acer Aspire Ethos 8951G model quirk
-Date:   Sun, 28 May 2023 20:10:25 +0100
-Message-Id: <20230528190836.190608940@linuxfoundation.org>
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 026/119] power: supply: bq25890: Fix external_power_changed race
+Date:   Sun, 28 May 2023 20:10:26 +0100
+Message-Id: <20230528190836.211187629@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,160 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Bostandzhyan <jin@mediatomb.cc>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 00066e9733f629e536f6b7957de2ce11a85fe15a ]
+commit 029a443b9b6424170f00f6dd5b7682e682cce92e upstream.
 
-This notebook has 6 built in speakers for 5.1 surround support, however
-only two got autodetected and have also not been assigned correctly.
+bq25890_charger_external_power_changed() dereferences bq->charger,
+which gets sets in bq25890_power_supply_init() like this:
 
-This patch enables all speakers and also fixes muting when headphones are
-plugged in.
+  bq->charger = devm_power_supply_register(bq->dev, &bq->desc, &psy_cfg);
 
-The speaker layout is as follows:
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where bq25890_charger_external_power_changed() may get called while
+bq->charger has not been set yet leading to a NULL pointer dereference.
 
-pin 0x15 Front Left / Front Right
-pin 0x18 Front Center / Subwoofer
-pin 0x1b Rear Left / Rear Right (Surround)
+This race hits during boot sometimes on a Lenovo Yoga Book 1 yb1-x90f
+when the cht_wcove_pwrsrc (extcon) power_supply is done with detecting
+the connected charger-type which happens to exactly hit the small window:
 
-The quirk will be enabled automatically on this hardware, but can also be
-activated manually via the model=aspire-ethos module parameter.
+  BUG: kernel NULL pointer dereference, address: 0000000000000018
+  <snip>
+  RIP: 0010:__power_supply_is_supplied_by+0xb/0xb0
+  <snip>
+  Call Trace:
+   <TASK>
+   __power_supply_get_supplier_property+0x19/0x50
+   class_for_each_device+0xb1/0xe0
+   power_supply_get_property_from_supplier+0x2e/0x50
+   bq25890_charger_external_power_changed+0x38/0x1b0 [bq25890_charger]
+   __power_supply_changed_work+0x30/0x40
+   class_for_each_device+0xb1/0xe0
+   power_supply_changed_work+0x5f/0xe0
+  <snip>
 
-Caveat: pin 0x1b is shared between headphones jack and surround speakers.
-When headphones are plugged in, the surround speakers get muted
-automatically by the hardware, however all other speakers remain
-unmuted. Currently it's not possible to make use of the generic automute
-function in the driver, because such shared pins are not supported.
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in bq->charger,
+so bq25890_charger_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
 
-If we would change the pin settings to identify the pin as headphones,
-the surround channel and thus the ability to select 5.1 profiles would
-get lost.
-
-This quirk solves the above problem by monitoring jack state of 0x1b and
-by connecting/disconnecting all remaining speaker pins when something
-gets plugged in or unplugged from the headphones jack port.
-
-Signed-off-by: Sergey Bostandzhyan <jin@mediatomb.cc>
-Link: https://lore.kernel.org/r/20190906093343.GA7640@xn--80adja5bqm.su
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 90670ef774a8 ("ALSA: hda/realtek: Add a quirk for HP EliteDesk 805")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eab25b4f93aa ("power: supply: bq25890: On the bq25892 set the IINLIM based on external charger detection")
+Cc: stable@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 71 +++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ drivers/power/supply/bq25890_charger.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 546872e724275..98b6e93084e5e 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8511,6 +8511,45 @@ static void alc662_fixup_usi_headset_mic(struct hda_codec *codec,
- 	}
- }
+--- a/drivers/power/supply/bq25890_charger.c
++++ b/drivers/power/supply/bq25890_charger.c
+@@ -650,7 +650,7 @@ static void bq25890_charger_external_pow
+ 	if (bq->chip_version != BQ25892)
+ 		return;
  
-+static void alc662_aspire_ethos_mute_speakers(struct hda_codec *codec,
-+					struct hda_jack_callback *cb)
-+{
-+	/* surround speakers at 0x1b already get muted automatically when
-+	 * headphones are plugged in, but we have to mute/unmute the remaining
-+	 * channels manually:
-+	 * 0x15 - front left/front right
-+	 * 0x18 - front center/ LFE
-+	 */
-+	if (snd_hda_jack_detect_state(codec, 0x1b) == HDA_JACK_PRESENT) {
-+		snd_hda_set_pin_ctl_cache(codec, 0x15, 0);
-+		snd_hda_set_pin_ctl_cache(codec, 0x18, 0);
-+	} else {
-+		snd_hda_set_pin_ctl_cache(codec, 0x15, PIN_OUT);
-+		snd_hda_set_pin_ctl_cache(codec, 0x18, PIN_OUT);
-+	}
-+}
-+
-+static void alc662_fixup_aspire_ethos_hp(struct hda_codec *codec,
-+					const struct hda_fixup *fix, int action)
-+{
-+    /* Pin 0x1b: shared headphones jack and surround speakers */
-+	if (!is_jack_detectable(codec, 0x1b))
-+		return;
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		snd_hda_jack_detect_enable_callback(codec, 0x1b,
-+				alc662_aspire_ethos_mute_speakers);
-+		break;
-+	case HDA_FIXUP_ACT_INIT:
-+		/* Make sure to start in a correct state, i.e. if
-+		 * headphones have been plugged in before powering up the system
-+		 */
-+		alc662_aspire_ethos_mute_speakers(codec, NULL);
-+		break;
-+	}
-+}
-+
- static struct coef_fw alc668_coefs[] = {
- 	WRITE_COEF(0x01, 0xbebe), WRITE_COEF(0x02, 0xaaaa), WRITE_COEF(0x03,    0x0),
- 	WRITE_COEF(0x04, 0x0180), WRITE_COEF(0x06,    0x0), WRITE_COEF(0x07, 0x0f80),
-@@ -8582,6 +8621,9 @@ enum {
- 	ALC662_FIXUP_USI_FUNC,
- 	ALC662_FIXUP_USI_HEADSET_MODE,
- 	ALC662_FIXUP_LENOVO_MULTI_CODECS,
-+	ALC669_FIXUP_ACER_ASPIRE_ETHOS,
-+	ALC669_FIXUP_ACER_ASPIRE_ETHOS_SUBWOOFER,
-+	ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET,
- };
- 
- static const struct hda_fixup alc662_fixups[] = {
-@@ -8908,6 +8950,33 @@ static const struct hda_fixup alc662_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc233_alc662_fixup_lenovo_dual_codecs,
- 	},
-+	[ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc662_fixup_aspire_ethos_hp,
-+	},
-+	[ALC669_FIXUP_ACER_ASPIRE_ETHOS_SUBWOOFER] = {
-+		.type = HDA_FIXUP_VERBS,
-+		/* subwoofer needs an extra GPIO setting to become audible */
-+		.v.verbs = (const struct hda_verb[]) {
-+			{0x01, AC_VERB_SET_GPIO_MASK, 0x02},
-+			{0x01, AC_VERB_SET_GPIO_DIRECTION, 0x02},
-+			{0x01, AC_VERB_SET_GPIO_DATA, 0x00},
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET
-+	},
-+	[ALC669_FIXUP_ACER_ASPIRE_ETHOS] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x15, 0x92130110 }, /* front speakers */
-+			{ 0x18, 0x99130111 }, /* center/subwoofer */
-+			{ 0x1b, 0x11130012 }, /* surround plus jack for HP */
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC669_FIXUP_ACER_ASPIRE_ETHOS_SUBWOOFER
-+	},
- };
- 
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
-@@ -8953,6 +9022,7 @@ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x19da, 0xa130, "Zotac Z68", ALC662_FIXUP_ZOTAC_Z68),
- 	SND_PCI_QUIRK(0x1b0a, 0x01b8, "ACER Veriton", ALC662_FIXUP_ACER_VERITON),
- 	SND_PCI_QUIRK(0x1b35, 0x2206, "CZC P10T", ALC662_FIXUP_CZC_P10T),
-+	SND_PCI_QUIRK(0x1025, 0x0566, "Acer Aspire Ethos 8951G", ALC669_FIXUP_ACER_ASPIRE_ETHOS),
- 
- #if 0
- 	/* Below is a quirk table taken from the old code.
-@@ -9045,6 +9115,7 @@ static const struct hda_model_fixup alc662_fixup_models[] = {
- 	{.id = ALC892_FIXUP_ASROCK_MOBO, .name = "asrock-mobo"},
- 	{.id = ALC662_FIXUP_USI_HEADSET_MODE, .name = "usi-headset"},
- 	{.id = ALC662_FIXUP_LENOVO_MULTI_CODECS, .name = "dual-codecs"},
-+	{.id = ALC669_FIXUP_ACER_ASPIRE_ETHOS, .name = "aspire-ethos"},
- 	{}
- };
- 
--- 
-2.39.2
-
+-	ret = power_supply_get_property_from_supplier(bq->charger,
++	ret = power_supply_get_property_from_supplier(psy,
+ 						      POWER_SUPPLY_PROP_USB_TYPE,
+ 						      &val);
+ 	if (ret)
 
 
