@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7867713C46
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA98713D68
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjE1TNw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:13:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
+        id S230039AbjE1TZF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjE1TNv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33BF6DC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:46 -0700 (PDT)
+        with ESMTP id S230037AbjE1TZE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82402B1;
+        Sun, 28 May 2023 12:25:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DFE7618E2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63494C433EF;
-        Sun, 28 May 2023 19:13:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0417661BE7;
+        Sun, 28 May 2023 19:25:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB26C433D2;
+        Sun, 28 May 2023 19:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301224;
-        bh=QUCTBzOnd+PYrLHNFSvXd4hfpFxpRpbxuQrbB42Nxsw=;
+        s=korg; t=1685301902;
+        bh=xZ455jMDhB0RdiKwxwnNu9wuMeZgXRP5pt6WSDU0Xao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YupwyY+T1K1AaGfhhnzzc9YJSUDdeLEjBRO1Fxht5iFvY6tMFiUsDaJl5qamJkB8u
-         +xP+aengqF+Umw4eCbhUEdchvz9e0VgTUdV1H2d/BmJ2vOSvrcF4xilYvhxCXhkabn
-         POXcd8cWkiVFC51u6mQJ1fwacRq5uUEKyIbvwmJk=
+        b=C9hNBV5NJ1L+4EqqycyLAZZ1/bpFPGkUVLE3I94rZArG7ZxOnusIXpgI4f5xXlrKu
+         fH3QMYWmTMOqrKeKIDdNu6szo7+6bPALyBSK2iFisB1tTPRg3PlAu0UseKgiQzRcoM
+         v7TTRvSIo10JLVICk52JLun6e3b6NfglApx2Or9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 32/86] sched: Fix KCSAN noinstr violation
+        patches@lists.linux.dev, Maxime Bizon <mbizon@freebox.fr>,
+        linux-usb@vger.kernel.org, stable <stable@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 082/161] usb-storage: fix deadlock when a scsi command timeouts more than once
 Date:   Sun, 28 May 2023 20:10:06 +0100
-Message-Id: <20230528190829.782473903@linuxfoundation.org>
+Message-Id: <20230528190839.745816256@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,40 +54,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Maxime Bizon <mbizon@freebox.fr>
 
-[ Upstream commit e0b081d17a9f4e5c0cbb0e5fbeb1abe3de0f7e4e ]
+commit a398d5eac6984316e71474e25b975688f282379b upstream.
 
-With KCSAN enabled, end_of_stack() can get out-of-lined.  Force it
-inline.
+With faulty usb-storage devices, read/write can timeout, in that case
+the SCSI layer will abort and re-issue the command. USB storage has no
+internal timeout, it relies on SCSI layer aborting commands via
+.eh_abort_handler() for non those responsive devices.
 
-Fixes the following warnings:
+After two consecutive timeouts of the same command, SCSI layer calls
+.eh_device_reset_handler(), without calling .eh_abort_handler() first.
 
-  vmlinux.o: warning: objtool: check_stackleak_irqoff+0x2b: call to end_of_stack() leaves .noinstr.text section
+With usb-storage, this causes a deadlock:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/cc1b4d73d3a428a00d206242a68fdf99a934ca7b.1681320026.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  -> .eh_device_reset_handler
+    -> device_reset
+      -> mutex_lock(&(us->dev_mutex));
+
+mutex already by usb_stor_control_thread(), which is waiting for
+command completion:
+
+  -> usb_stor_control_thread (mutex taken here)
+    -> usb_stor_invoke_transport
+      -> usb_stor_Bulk_transport
+        -> usb_stor_bulk_srb
+	  -> usb_stor_bulk_transfer_sglist
+	    -> usb_sg_wait
+
+Make sure we cancel any pending command in .eh_device_reset_handler()
+to avoid this.
+
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+Cc: linux-usb@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/all/ZEllnjMKT8ulZbJh@sakura/
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230505114759.1189741-1-mbizon@freebox.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/task_stack.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/storage/scsiglue.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-index 3461beb89b040..62d1cd4db27af 100644
---- a/include/linux/sched/task_stack.h
-+++ b/include/linux/sched/task_stack.h
-@@ -23,7 +23,7 @@ static inline void *task_stack_page(const struct task_struct *task)
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -407,22 +407,25 @@ static DEF_SCSI_QCMD(queuecommand)
+  ***********************************************************************/
  
- #define setup_thread_stack(new,old)	do { } while(0)
- 
--static inline unsigned long *end_of_stack(const struct task_struct *task)
-+static __always_inline unsigned long *end_of_stack(const struct task_struct *task)
+ /* Command timeout and abort */
+-static int command_abort(struct scsi_cmnd *srb)
++static int command_abort_matching(struct us_data *us, struct scsi_cmnd *srb_match)
  {
- #ifdef CONFIG_STACK_GROWSUP
- 	return (unsigned long *)((unsigned long)task->stack + THREAD_SIZE) - 1;
--- 
-2.39.2
-
+-	struct us_data *us = host_to_us(srb->device->host);
+-
+-	usb_stor_dbg(us, "%s called\n", __func__);
+-
+ 	/*
+ 	 * us->srb together with the TIMED_OUT, RESETTING, and ABORTING
+ 	 * bits are protected by the host lock.
+ 	 */
+ 	scsi_lock(us_to_host(us));
+ 
+-	/* Is this command still active? */
+-	if (us->srb != srb) {
++	/* is there any active pending command to abort ? */
++	if (!us->srb) {
+ 		scsi_unlock(us_to_host(us));
+ 		usb_stor_dbg(us, "-- nothing to abort\n");
++		return SUCCESS;
++	}
++
++	/* Does the command match the passed srb if any ? */
++	if (srb_match && us->srb != srb_match) {
++		scsi_unlock(us_to_host(us));
++		usb_stor_dbg(us, "-- pending command mismatch\n");
+ 		return FAILED;
+ 	}
+ 
+@@ -445,6 +448,14 @@ static int command_abort(struct scsi_cmn
+ 	return SUCCESS;
+ }
+ 
++static int command_abort(struct scsi_cmnd *srb)
++{
++	struct us_data *us = host_to_us(srb->device->host);
++
++	usb_stor_dbg(us, "%s called\n", __func__);
++	return command_abort_matching(us, srb);
++}
++
+ /*
+  * This invokes the transport reset mechanism to reset the state of the
+  * device
+@@ -456,6 +467,9 @@ static int device_reset(struct scsi_cmnd
+ 
+ 	usb_stor_dbg(us, "%s called\n", __func__);
+ 
++	/* abort any pending command before reset */
++	command_abort_matching(us, NULL);
++
+ 	/* lock the device pointers and do the reset */
+ 	mutex_lock(&(us->dev_mutex));
+ 	result = us->transport_reset(us);
 
 
