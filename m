@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 030CD713C45
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 919CB713D67
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbjE1TNp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33394 "EHLO
+        id S230040AbjE1TZD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjE1TNp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:45 -0400
+        with ESMTP id S230037AbjE1TZC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C38C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF698B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C558C6191C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0BEC433EF;
-        Sun, 28 May 2023 19:13:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8446261B9F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13C4C433D2;
+        Sun, 28 May 2023 19:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301222;
-        bh=BTuyMiPP+Z5fEgCMkZiuq7KWbXYYMtTR0aUw4/clvtw=;
+        s=korg; t=1685301900;
+        bh=g8y3q0XKQCofd11GyvGsu6v1WGKiu/p9oKJM9NreuTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oNH1s8Q7AtMAJG+ZfmArDWfyEXITbq48ZSR29bou1euXJ77nGtI3l0c4niIKti9H5
-         1M57VdMC0Hi1iO7tf204iLxfIGZy624udWyFXSRzP0L0n8ykMDYbjAs4xZ3IYn9GS+
-         Hy8spq4ZIoB8DRYgKCYIh4EIriJWBp04ebl8Bh10=
+        b=XKieG2WXlQC7VX/z0KDb+ZdI1lKNJP8lzij04Pjw1hVivxTfph1QyYepPVrKpm/Do
+         HmKhhWX+8sFxHBHzQH9I+VUNF2WRQkI4AMHQdV4JGCEfYVGu678IG4LIc5CFbbSqwW
+         dh6dSqf0r13KFOFC0UcAWC7SA9IQY3b/JU0gqS1Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
-        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 31/86] mcb-pci: Reallocate memory region to avoid memory overlapping
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 081/161] USB: usbtmc: Fix direction for 0-length ioctl control messages
 Date:   Sun, 28 May 2023 20:10:05 +0100
-Message-Id: <20230528190829.743172679@linuxfoundation.org>
+Message-Id: <20230528190839.717824829@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,75 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 9be24faadd085c284890c3afcec7a0184642315a ]
+commit 94d25e9128988c6a1fc9070f6e98215a95795bd8 upstream.
 
-mcb-pci requests a fixed-size memory region to parse the chameleon
-table, however, if the chameleon table is smaller that the allocated
-region, it could overlap with the IP Cores' memory regions.
+The syzbot fuzzer found a problem in the usbtmc driver: When a user
+submits an ioctl for a 0-length control transfer, the driver does not
+check that the direction is set to OUT:
 
-After parsing the chameleon table, drop/reallocate the memory region
-with the actual chameleon table size.
+------------[ cut here ]------------
+usb 3-1: BOGUS control dir, pipe 80000b80 doesn't match bRequestType fd
+WARNING: CPU: 0 PID: 5100 at drivers/usb/core/urb.c:411 usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
+Modules linked in:
+CPU: 0 PID: 5100 Comm: syz-executor428 Not tainted 6.3.0-syzkaller-12049-g58390c8ce1bd #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
+RIP: 0010:usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
+Code: 7c 24 40 e8 1b 13 5c fb 48 8b 7c 24 40 e8 21 1d f0 fe 45 89 e8 44 89 f1 4c 89 e2 48 89 c6 48 c7 c7 e0 b5 fc 8a e8 19 c8 23 fb <0f> 0b e9 9f ee ff ff e8 ed 12 5c fb 0f b6 1d 12 8a 3c 08 31 ff 41
+RSP: 0018:ffffc90003d2fb00 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff8880789e9058 RCX: 0000000000000000
+RDX: ffff888029593b80 RSI: ffffffff814c1447 RDI: 0000000000000001
+RBP: ffff88801ea742f8 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff88802915e528
+R13: 00000000000000fd R14: 0000000080000b80 R15: ffff8880222b3100
+FS:  0000555556ca63c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9ef4d18150 CR3: 0000000073e5b000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x101/0x4b0 drivers/usb/core/message.c:58
+ usb_internal_control_msg drivers/usb/core/message.c:102 [inline]
+ usb_control_msg+0x320/0x4a0 drivers/usb/core/message.c:153
+ usbtmc_ioctl_request drivers/usb/class/usbtmc.c:1954 [inline]
+ usbtmc_ioctl+0x1b3d/0x2840 drivers/usb/class/usbtmc.c:2097
 
-Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Link: https://lore.kernel.org/r/20230411083329.4506-3-jth@kernel.org
+To fix this, we must override the direction in the bRequestType field
+of the control request structure when the length is 0.
+
+Reported-and-tested-by: syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/000000000000716a3705f9adb8ee@google.com/
+CC: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/ede1ee02-b718-49e7-a44c-51339fec706b@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mcb/mcb-pci.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/usb/class/usbtmc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mcb/mcb-pci.c b/drivers/mcb/mcb-pci.c
-index af4d2f26f1c62..b0ec3bbf1b76d 100644
---- a/drivers/mcb/mcb-pci.c
-+++ b/drivers/mcb/mcb-pci.c
-@@ -34,7 +34,7 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct resource *res;
- 	struct priv *priv;
--	int ret;
-+	int ret, table_size;
- 	unsigned long flags;
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -1898,6 +1898,8 @@ static int usbtmc_ioctl_request(struct u
  
- 	priv = devm_kzalloc(&pdev->dev, sizeof(struct priv), GFP_KERNEL);
-@@ -93,7 +93,30 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (ret < 0)
- 		goto out_mcb_bus;
+ 	if (request.req.wLength > USBTMC_BUFSIZE)
+ 		return -EMSGSIZE;
++	if (request.req.wLength == 0)	/* Length-0 requests are never IN */
++		request.req.bRequestType &= ~USB_DIR_IN;
  
--	dev_dbg(&pdev->dev, "Found %d cells\n", ret);
-+	table_size = ret;
-+
-+	if (table_size < CHAM_HEADER_SIZE) {
-+		/* Release the previous resources */
-+		devm_iounmap(&pdev->dev, priv->base);
-+		devm_release_mem_region(&pdev->dev, priv->mapbase, CHAM_HEADER_SIZE);
-+
-+		/* Then, allocate it again with the actual chameleon table size */
-+		res = devm_request_mem_region(&pdev->dev, priv->mapbase,
-+						table_size,
-+						KBUILD_MODNAME);
-+		if (!res) {
-+			dev_err(&pdev->dev, "Failed to request PCI memory\n");
-+			ret = -EBUSY;
-+			goto out_mcb_bus;
-+		}
-+
-+		priv->base = devm_ioremap(&pdev->dev, priv->mapbase, table_size);
-+		if (!priv->base) {
-+			dev_err(&pdev->dev, "Cannot ioremap\n");
-+			ret = -ENOMEM;
-+			goto out_mcb_bus;
-+		}
-+	}
+ 	is_in = request.req.bRequestType & USB_DIR_IN;
  
- 	mcb_bus_add_devices(priv->bus);
- 
--- 
-2.39.2
-
 
 
