@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1022C713FC5
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48007713EC0
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbjE1Tsu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34754 "EHLO
+        id S230471AbjE1Ti3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231382AbjE1Tst (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:49 -0400
+        with ESMTP id S230466AbjE1Ti2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF5E6DF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0014DA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 81D0C62005
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8BCC433D2;
-        Sun, 28 May 2023 19:48:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8874261228
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B9FC433EF;
+        Sun, 28 May 2023 19:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303327;
-        bh=/Ha65achCsfAVtvXbbVawppotu0f/46eBuV4vAd7t3k=;
+        s=korg; t=1685302707;
+        bh=Ahit4sJLUQDt1oCMke5aDHSrhlY8boMO7BpScjVoYYI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZPZBERFL+vQtzwAcZnMHXNg5i5QYfPXJwQpp5ioeFwbL5HOIllRQyfSZvcFEQIgoZ
-         +aNuMQcQD9QzNHT1lDKj02fB/xL3e5SO0I0LymOVpuzctwdatUnLk9uo//BLITFljl
-         OYzGALrChZ5ZofEgCY5AbsovlRXEWA+I+1qXhMBo=
+        b=pfse78dNEEJF9iu+48jkaj2OeGLs1nDDZypNeSxMPTxEk3OpoGOOJzar/HCQYi/0t
+         7Jj5P+ozNOWdM6iyMZMMLTBSgB5kOse7gzYiFoExlklMFB5QEqg9DNppLXPYn33mC0
+         A1SHclhR8OOLI9tGRAMtXvX2VLj+41XkM1j48Ipg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 33/69] USB: sisusbvga: Add endpoint checks
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Mark Bloch <mbloch@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.1 113/119] net/mlx5: Devcom, serialize devcom registration
 Date:   Sun, 28 May 2023 20:11:53 +0100
-Message-Id: <20230528190829.605946701@linuxfoundation.org>
+Message-Id: <20230528190839.231242741@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,79 +54,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Shay Drory <shayd@nvidia.com>
 
-commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
+commit 1f893f57a3bf9fe1f4bcb25b55aea7f7f9712fe7 upstream.
 
-The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
+>From one hand, mlx5 driver is allowing to probe PFs in parallel.
+>From the other hand, devcom, which is a share resource between PFs, is
+registered without any lock. This might resulted in memory problems.
 
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
-RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
-RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
-R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
- sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
- sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
- sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
- sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
- sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
-...
+Hence, use the global mlx5_dev_list_lock in order to serialize devcom
+registration.
 
-The problem was caused by the fact that the driver does not check
-whether the endpoints it uses are actually present and have the
-appropriate types.  This can be fixed by adding a simple check of
-the endpoints.
-
-Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
-Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/sisusbvga/sisusb.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/misc/sisusbvga/sisusb.c
-+++ b/drivers/usb/misc/sisusbvga/sisusb.c
-@@ -3014,6 +3014,20 @@ static int sisusb_probe(struct usb_inter
- 	struct usb_device *dev = interface_to_usbdev(intf);
- 	struct sisusb_usb_data *sisusb;
- 	int retval = 0, i;
-+	static const u8 ep_addresses[] = {
-+		SISUSB_EP_GFX_IN | USB_DIR_IN,
-+		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
-+		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
-+		0};
-+
-+	/* Are the expected endpoints present? */
-+	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
-+		dev_err(&intf->dev, "Invalid USB2VGA device\n");
-+		return -EINVAL;
-+	}
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -3,6 +3,7 @@
  
- 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
- 			dev->devnum);
+ #include <linux/mlx5/vport.h>
+ #include "lib/devcom.h"
++#include "mlx5_core.h"
+ 
+ static LIST_HEAD(devcom_list);
+ 
+@@ -77,6 +78,7 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
+ 		return NULL;
+ 
++	mlx5_dev_list_lock();
+ 	sguid0 = mlx5_query_nic_system_image_guid(dev);
+ 	list_for_each_entry(iter, &devcom_list, list) {
+ 		struct mlx5_core_dev *tmp_dev = NULL;
+@@ -102,8 +104,10 @@ struct mlx5_devcom *mlx5_devcom_register
+ 
+ 	if (!priv) {
+ 		priv = mlx5_devcom_list_alloc();
+-		if (!priv)
+-			return ERR_PTR(-ENOMEM);
++		if (!priv) {
++			devcom = ERR_PTR(-ENOMEM);
++			goto out;
++		}
+ 
+ 		idx = 0;
+ 		new_priv = true;
+@@ -114,12 +118,14 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	if (!devcom) {
+ 		if (new_priv)
+ 			kfree(priv);
+-		return ERR_PTR(-ENOMEM);
++		devcom = ERR_PTR(-ENOMEM);
++		goto out;
+ 	}
+ 
+ 	if (new_priv)
+ 		list_add(&priv->list, &devcom_list);
+-
++out:
++	mlx5_dev_list_unlock();
+ 	return devcom;
+ }
+ 
+@@ -132,6 +138,7 @@ void mlx5_devcom_unregister_device(struc
+ 	if (IS_ERR_OR_NULL(devcom))
+ 		return;
+ 
++	mlx5_dev_list_lock();
+ 	priv = devcom->priv;
+ 	priv->devs[devcom->idx] = NULL;
+ 
+@@ -142,10 +149,12 @@ void mlx5_devcom_unregister_device(struc
+ 			break;
+ 
+ 	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
+-		return;
++		goto out;
+ 
+ 	list_del(&priv->list);
+ 	kfree(priv);
++out:
++	mlx5_dev_list_unlock();
+ }
+ 
+ void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
 
 
