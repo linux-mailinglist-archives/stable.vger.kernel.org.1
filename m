@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62CEC713861
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36C7713862
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbjE1HeN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 03:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
+        id S229475AbjE1HeQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 03:34:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjE1HeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:12 -0400
+        with ESMTP id S229450AbjE1HeO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DCADB4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA28B4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD9DC60E9E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEC8C433D2;
-        Sun, 28 May 2023 07:34:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1824460EE9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B02C433EF;
+        Sun, 28 May 2023 07:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685259250;
-        bh=H1D1OGHN9o1PfEXoEyvnYPF/3OdQxI9yP06ens8lE+s=;
+        s=korg; t=1685259252;
+        bh=KR3TpZUvPGUSk7nD+dJj0K/1IpC2xqYY4QUwC+5yorc=;
         h=Subject:To:Cc:From:Date:From;
-        b=1Nb5GQ5DLDv9y8Gjp9ZQQd04vSJJRkKyKe7ZCn2qW7NPddmHgWOkNlnAYb8PGVmsD
-         djOkgpKsVBfhxuFJY+9hqE0/HU61LF1j3/+Muv9u8GFrnCjewdp7yt4xd2WCGSJkY0
-         T4x0XI0/gipKsr72ch47g/p2yaJAwhWGlw/xI/7k=
-Subject: FAILED: patch "[PATCH] binder: fix UAF caused by faulty buffer cleanup" failed to apply to 5.10-stable tree
+        b=qZg5bhRCCi2HWR33dxZgqv4H8eF9a9BH2G2Fp4KyasZiLBZWmAoRg7wqvybP5taBk
+         GkyA1it1Ul4+QrMst0fidCAXAgdIoML5eC+pnYMBGPcMufXLGgloBXIgNhW24EtcIo
+         VTOOcrhObhF7+T5Z7JdQt9ANPNcPiPklMt2UMO5k=
+Subject: FAILED: patch "[PATCH] binder: fix UAF caused by faulty buffer cleanup" failed to apply to 5.4-stable tree
 To:     cmllamas@google.com, gregkh@linuxfoundation.org, tkjos@google.com,
         zifantan@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 08:34:06 +0100
-Message-ID: <2023052806-sprite-program-51a5@gregkh>
+Date:   Sun, 28 May 2023 08:34:07 +0100
+Message-ID: <2023052807-utopia-paddling-0f87@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x bdc1c5fac982845a58d28690cdb56db8c88a530d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052806-sprite-program-51a5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052807-utopia-paddling-0f87@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,6 +72,8 @@ bdc1c5fac982 ("binder: fix UAF caused by faulty buffer cleanup")
 432ff1e91694 ("binder: BINDER_FREEZE ioctl")
 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
 421518a2740f ("binder: move structs from core file to header file")
+f3277cbfba76 ("binder: fix UAF when releasing todo list")
+d35d3660e065 ("binder: fix null deref of proc->context")
 
 thanks,
 
