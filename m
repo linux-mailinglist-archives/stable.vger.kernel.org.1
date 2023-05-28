@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 163B9713EA4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91149713FC6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbjE1Th0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53166 "EHLO
+        id S231386AbjE1Ts4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230437AbjE1ThZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44190AB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:24 -0700 (PDT)
+        with ESMTP id S231387AbjE1Tsy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783A79C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6BD261E56
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F47C433EF;
-        Sun, 28 May 2023 19:37:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFE1262005
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3D3C433D2;
+        Sun, 28 May 2023 19:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302643;
-        bh=ZWIp3QrFjv1is3LMfCIReXRVd+KKSSYenzvMUzrYN8A=;
+        s=korg; t=1685303329;
+        bh=dvRbrFDIMtMzICWAYyxWxGgAdwwQwzfYWXnUnAc7OXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tT1kNSDfKZldH9EROyuS16a9RtieLcwXl67C1DB6ruspufefVugWYlrJgoNNckE3r
-         CkAuZZ4j57rEtmJ9XIDApojObPhw0jKu9Ro+Opo2HG4kNHj9zKFYl8kK/GmY0w6TW+
-         7EGSUTHulCRTYdU5/IVEbUDnv3Ut5p1aKHj+AiYM=
+        b=syEWSrrjgiMbNjsGYSqx8Fl3sU66GLx7dShtbYTYh1O7EgV5PQHOFJ+SwZbxU3qqm
+         pKZR6B9tMbM/OmaSKvmVOn8VDH2taHbhwt7xY1uf5lZy4VneX0CBLuZIpKYlIaWcah
+         2RWZFL7rIlaJjg33OQKPZLnSrQnO0BEtHo/Gl5Ss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Lucian Paul-Trifu <lucian.paul-trifu@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.1 087/119] firmware: arm_ffa: Fix FFA device names for logical partitions
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 07/69] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
 Date:   Sun, 28 May 2023 20:11:27 +0100
-Message-Id: <20230528190838.437512321@linuxfoundation.org>
+Message-Id: <20230528190828.616778972@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,131 +54,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 19b8766459c41c6f318f8a548cc1c66dffd18363 upstream.
+(backported from upstream 8a5299a1278eadf1e08a598a5345c376206f171e)
 
-Each physical partition can provide multiple services each with UUID.
-Each such service can be presented as logical partition with a unique
-combination of VM ID and UUID. The number of distinct UUID in a system
-will be less than or equal to the number of logical partitions.
+For different reasons, fsl-spi driver performs bits_per_word
+modifications for different reasons:
+- On CPU mode, to minimise amount of interrupts
+- On CPM/QE mode to work around controller byte order
 
-However, currently it fails to register more than one logical partition
-or service within a physical partition as the device name contains only
-VM ID while both VM ID and UUID are maintained in the partition information.
-The kernel complains with the below message:
+For CPU mode that's done in fsl_spi_prepare_message() while
+for CPM mode that's done in fsl_spi_setup_transfer().
 
-  | sysfs: cannot create duplicate filename '/devices/arm-ffa-8001'
-  | CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc7 #8
-  | Hardware name: FVP Base RevC (DT)
-  | Call trace:
-  |  dump_backtrace+0xf8/0x118
-  |  show_stack+0x18/0x24
-  |  dump_stack_lvl+0x50/0x68
-  |  dump_stack+0x18/0x24
-  |  sysfs_create_dir_ns+0xe0/0x13c
-  |  kobject_add_internal+0x220/0x3d4
-  |  kobject_add+0x94/0x100
-  |  device_add+0x144/0x5d8
-  |  device_register+0x20/0x30
-  |  ffa_device_register+0x88/0xd8
-  |  ffa_setup_partitions+0x108/0x1b8
-  |  ffa_init+0x2ec/0x3a4
-  |  do_one_initcall+0xcc/0x240
-  |  do_initcall_level+0x8c/0xac
-  |  do_initcalls+0x54/0x94
-  |  do_basic_setup+0x1c/0x28
-  |  kernel_init_freeable+0x100/0x16c
-  |  kernel_init+0x20/0x1a0
-  |  ret_from_fork+0x10/0x20
-  | kobject_add_internal failed for arm-ffa-8001 with -EEXIST, don't try to
-  | register things with the same name in the same directory.
-  | arm_ffa arm-ffa: unable to register device arm-ffa-8001 err=-17
-  | ARM FF-A: ffa_setup_partitions: failed to register partition ID 0x8001
+Reunify all of it in fsl_spi_prepare_message(), and catch
+impossible cases early through master's bits_per_word_mask
+instead of returning EINVAL later.
 
-By virtue of being random enough to avoid collisions when generated in a
-distributed system, there is no way to compress UUID keys to the number
-of bits required to identify each. We can eliminate '-' in the name but
-it is not worth eliminating 4 bytes and add unnecessary logic for doing
-that. Also v1.0 doesn't provide the UUID of the partitions which makes
-it hard to use the same for the device name.
-
-So to keep it simple, let us alloc an ID using ida_alloc() and append the
-same to "arm-ffa" to make up a unique device name. Also stash the id value
-in ffa_dev to help freeing the ID later when the device is destroyed.
-
-Fixes: e781858488b9 ("firmware: arm_ffa: Add initial FFA bus support for device enumeration")
-Reported-by: Lucian Paul-Trifu <lucian.paul-trifu@arm.com>
-Link: https://lore.kernel.org/r/20230419-ffa_fixes_6-4-v2-3-d9108e43a176@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/bus.c |   16 +++++++++++++---
- include/linux/arm_ffa.h        |    1 +
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-spi.c |   50 +++++++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
 
---- a/drivers/firmware/arm_ffa/bus.c
-+++ b/drivers/firmware/arm_ffa/bus.c
-@@ -15,6 +15,8 @@
- 
- #include "common.h"
- 
-+static DEFINE_IDA(ffa_bus_id);
-+
- static int ffa_device_match(struct device *dev, struct device_driver *drv)
- {
- 	const struct ffa_device_id *id_table;
-@@ -131,6 +133,7 @@ static void ffa_release_device(struct de
- {
- 	struct ffa_device *ffa_dev = to_ffa_dev(dev);
- 
-+	ida_free(&ffa_bus_id, ffa_dev->id);
- 	kfree(ffa_dev);
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -203,26 +203,6 @@ static int mspi_apply_cpu_mode_quirks(st
+ 	return bits_per_word;
  }
  
-@@ -171,18 +174,24 @@ bool ffa_device_is_valid(struct ffa_devi
- struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id,
- 				       const struct ffa_ops *ops)
+-static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+-				struct spi_device *spi,
+-				int bits_per_word)
+-{
+-	/* CPM/QE uses Little Endian for words > 8
+-	 * so transform 16 and 32 bits words into 8 bits
+-	 * Unfortnatly that doesn't work for LSB so
+-	 * reject these for now */
+-	/* Note: 32 bits word, LSB works iff
+-	 * tfcr/rfcr is set to CPMFCR_GBL */
+-	if (spi->mode & SPI_LSB_FIRST &&
+-	    bits_per_word > 8)
+-		return -EINVAL;
+-	if (bits_per_word <= 8)
+-		return bits_per_word;
+-	if (bits_per_word == 16 || bits_per_word == 32)
+-		return 8; /* pretend its 8 bits */
+-	return -EINVAL;
+-}
+-
+ static int fsl_spi_setup_transfer(struct spi_device *spi,
+ 					struct spi_transfer *t)
  {
--	int ret;
-+	int id, ret;
- 	struct device *dev;
- 	struct ffa_device *ffa_dev;
+@@ -250,9 +230,6 @@ static int fsl_spi_setup_transfer(struct
+ 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
+ 							   mpc8xxx_spi,
+ 							   bits_per_word);
+-	else
+-		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
+-							  bits_per_word);
  
-+	id = ida_alloc_min(&ffa_bus_id, 1, GFP_KERNEL);
-+	if (id < 0)
-+		return NULL;
+ 	if (bits_per_word < 0)
+ 		return bits_per_word;
+@@ -370,14 +347,27 @@ static int fsl_spi_do_one_msg(struct spi
+ 	 * In CPU mode, optimize large byte transfers to use larger
+ 	 * bits_per_word values to reduce number of interrupts taken.
+ 	 */
+-	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
+-		list_for_each_entry(t, &m->transfers, transfer_list) {
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
+ 			if (t->len < 256 || t->bits_per_word != 8)
+ 				continue;
+ 			if ((t->len & 3) == 0)
+ 				t->bits_per_word = 32;
+ 			else if ((t->len & 1) == 0)
+ 				t->bits_per_word = 16;
++		} else {
++			/*
++			 * CPM/QE uses Little Endian for words > 8
++			 * so transform 16 and 32 bits words into 8 bits
++			 * Unfortnatly that doesn't work for LSB so
++			 * reject these for now
++			 * Note: 32 bits word, LSB works iff
++			 * tfcr/rfcr is set to CPMFCR_GBL
++			 */
++			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
++				return -EINVAL;
++			if (t->bits_per_word == 16 || t->bits_per_word == 32)
++				t->bits_per_word = 8; /* pretend its 8 bits */
+ 		}
+ 	}
+ 
+@@ -635,8 +625,14 @@ static struct spi_master *fsl_spi_probe(
+ 	if (mpc8xxx_spi->type == TYPE_GRLIB)
+ 		fsl_spi_grlib_probe(dev);
+ 
+-	master->bits_per_word_mask =
+-		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
++	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
++		master->bits_per_word_mask =
++			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
++	else
++		master->bits_per_word_mask =
++			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
 +
- 	ffa_dev = kzalloc(sizeof(*ffa_dev), GFP_KERNEL);
--	if (!ffa_dev)
-+	if (!ffa_dev) {
-+		ida_free(&ffa_bus_id, id);
- 		return NULL;
-+	}
++	master->bits_per_word_mask &=
+ 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
  
- 	dev = &ffa_dev->dev;
- 	dev->bus = &ffa_bus_type;
- 	dev->release = ffa_release_device;
--	dev_set_name(&ffa_dev->dev, "arm-ffa-%04x", vm_id);
-+	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
- 
- 	ffa_dev->vm_id = vm_id;
- 	ffa_dev->ops = ops;
-@@ -218,4 +227,5 @@ void arm_ffa_bus_exit(void)
- {
- 	ffa_devices_unregister();
- 	bus_unregister(&ffa_bus_type);
-+	ida_destroy(&ffa_bus_id);
- }
---- a/include/linux/arm_ffa.h
-+++ b/include/linux/arm_ffa.h
-@@ -13,6 +13,7 @@
- 
- /* FFA Bus/Device/Driver related */
- struct ffa_device {
-+	u32 id;
- 	int vm_id;
- 	bool mode_32bit;
- 	uuid_t uuid;
+ 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
 
 
