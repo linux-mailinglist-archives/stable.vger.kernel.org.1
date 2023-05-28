@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA21713C5B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA16713F15
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjE1TOg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34200 "EHLO
+        id S231186AbjE1TmT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbjE1TOf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:35 -0400
+        with ESMTP id S231174AbjE1TmN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 905BEA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAB4F9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2631661956
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44278C433EF;
-        Sun, 28 May 2023 19:14:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D7BF61EE3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA251C433D2;
+        Sun, 28 May 2023 19:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301273;
-        bh=pzrIXfi7gV7ykgOMQStKn2hAyn6kw7nxxYZ9R2tI8qY=;
+        s=korg; t=1685302911;
+        bh=V+SRqTeOIQkCJr1YG3oqjich7N1hefNlgQc35gKG3p0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UaiP0sHuo0p2c4OX/XANoFQ3MU23Apg9lahqpdS24zXM5HMzrSI1HKxLKYWhOl6TL
-         oM02HSTy032nwUpLySS/mfrbbp3MBx8ICjjw0q4HQgsszdaNLfaYRhpPjVcsZvFbcJ
-         MzYuOchfjOdeR0muoJrbn/0PQCy12pdaiWvyN+Bs=
+        b=o1i8PD2jWEQlrY+DJ6xqPfrpNRWYhQrE2zApHbwRNovp0UYgGTcCqfbEnq5WM1wVx
+         TbPisWie+rt81tLCDdw0SGD65rlBLHNZyNrcrzLfFwMTCHUX8WH0YL5PrZRAzwOuMz
+         OpqZpLbHcXfXAcMkixWtfXpXjWSA2cl3e5oLTvZY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Hao Zeng <zenghao@kylinos.cn>,
+        Steven Rostedt <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 23/86] wifi: iwlwifi: dvm: Fix memcpy: detected field-spanning write backtrace
+Subject: [PATCH 5.10 076/211] recordmcount: Fix memory leaks in the uwrite function
 Date:   Sun, 28 May 2023 20:09:57 +0100
-Message-Id: <20230528190829.417593585@linuxfoundation.org>
+Message-Id: <20230528190845.510762839@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hao Zeng <zenghao@kylinos.cn>
 
-[ Upstream commit ef16799640865f937719f0771c93be5dca18adc6 ]
+[ Upstream commit fa359d068574d29e7d2f0fdd0ebe4c6a12b5cfb9 ]
 
-A received TKIP key may be up to 32 bytes because it may contain
-MIC rx/tx keys too. These are not used by iwl and copying these
-over overflows the iwl_keyinfo.key field.
+Common realloc mistake: 'file_append' nulled but not freed upon failure
 
-Add a check to not copy more data to iwl_keyinfo.key then will fit.
+Link: https://lkml.kernel.org/r/20230426010527.703093-1-zenghao@kylinos.cn
 
-This fixes backtraces like this one:
-
- memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
- WARNING: CPU: 1 PID: 946 at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 iwlagn_send_sta_key+0x375/0x390 [iwldvm]
- <snip>
- Hardware name: Dell Inc. Latitude E6430/0H3MT5, BIOS A21 05/08/2017
- RIP: 0010:iwlagn_send_sta_key+0x375/0x390 [iwldvm]
- <snip>
- Call Trace:
-  <TASK>
-  iwl_set_dynamic_key+0x1f0/0x220 [iwldvm]
-  iwlagn_mac_set_key+0x1e4/0x280 [iwldvm]
-  drv_set_key+0xa4/0x1b0 [mac80211]
-  ieee80211_key_enable_hw_accel+0xa8/0x2d0 [mac80211]
-  ieee80211_key_replace+0x22d/0x8e0 [mac80211]
- <snip>
-
-Link: https://www.alionet.org/index.php?topic=1469.0
-Link: https://lore.kernel.org/linux-wireless/20230218191056.never.374-kees@kernel.org/
-Link: https://lore.kernel.org/linux-wireless/68760035-7f75-1b23-e355-bfb758a87d83@redhat.com/
-Cc: Kees Cook <keescook@chromium.org>
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hao Zeng <zenghao@kylinos.cn>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/recordmcount.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-index de6ec9b7ace45..f30bac02d32ce 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-@@ -1101,6 +1101,7 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
+diff --git a/scripts/recordmcount.c b/scripts/recordmcount.c
+index cce12e1971d85..ec692af8ce9eb 100644
+--- a/scripts/recordmcount.c
++++ b/scripts/recordmcount.c
+@@ -102,6 +102,7 @@ static ssize_t uwrite(void const *const buf, size_t const count)
  {
- 	__le16 key_flags;
- 	struct iwl_addsta_cmd sta_cmd;
-+	size_t to_copy;
- 	int i;
+ 	size_t cnt = count;
+ 	off_t idx = 0;
++	void *p = NULL;
  
- 	spin_lock_bh(&priv->sta_lock);
-@@ -1120,7 +1121,9 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
- 		sta_cmd.key.tkip_rx_tsc_byte2 = tkip_iv32;
- 		for (i = 0; i < 5; i++)
- 			sta_cmd.key.tkip_rx_ttak[i] = cpu_to_le16(tkip_p1k[i]);
--		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
-+		/* keyconf may contain MIC rx/tx keys which iwl does not use */
-+		to_copy = min_t(size_t, sizeof(sta_cmd.key.key), keyconf->keylen);
-+		memcpy(sta_cmd.key.key, keyconf->key, to_copy);
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		key_flags |= STA_KEY_FLG_KEY_SIZE_MSK;
+ 	file_updated = 1;
+ 
+@@ -109,7 +110,10 @@ static ssize_t uwrite(void const *const buf, size_t const count)
+ 		off_t aoffset = (file_ptr + count) - file_end;
+ 
+ 		if (aoffset > file_append_size) {
+-			file_append = realloc(file_append, aoffset);
++			p = realloc(file_append, aoffset);
++			if (!p)
++				free(file_append);
++			file_append = p;
+ 			file_append_size = aoffset;
+ 		}
+ 		if (!file_append) {
 -- 
 2.39.2
 
