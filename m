@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB2F7713DA3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECEE9713F5C
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230122AbjE1T1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
+        id S231250AbjE1Toh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230109AbjE1T1b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:31 -0400
+        with ESMTP id S231249AbjE1Tog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC22E1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C899C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C3DE61C9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA3CC433EF;
-        Sun, 28 May 2023 19:27:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0BC961F34
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7A4C433D2;
+        Sun, 28 May 2023 19:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302044;
-        bh=x1p+YrBH41T01P2D/oQylsO7bcb7MlE7vKDFLUN4ytk=;
+        s=korg; t=1685303074;
+        bh=s72tG+owOxd2jQa0PcjeIq9KRK2nC41g3mGC1A/T7x0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u2Q6IdZOLeXhlgir+gJdFDjyi8j3+SNbxwEBjK5e/GlggDqTlZ7vra+vkomgeTb4V
-         YSkCCNpnXjAtfTTMxLxfZWgSqpckkAq4DicCySI9YzVQ3fHet9EV+mO9jfE0+jYvxv
-         rS7Kxo5xINynbBbJKAJpKVRwI/bKcJlPMLe0H/wU=
+        b=tbw6Qgmo4Ig/8ZsuPn9Q5NrYk09olreKWLZvyMCCNOqXyu1OxrDzZi1TIcd5Q5VAd
+         w3enO6Xetrdma8AIyZWtlmKBRB6AG1eA6rZc19LhCX4WvDvqTFGUHRYLdmkRi0eLeT
+         VE97Ii+jE84tALKAHG7tn2VeJGJYxU6kbU3gXxOw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        syzbot+0e22d63dcebb802b9bc8@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 139/161] fbdev: udlfb: Fix endpoint check
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 142/211] can: kvaser_pciefd: Disable interrupts in probe error path
 Date:   Sun, 28 May 2023 20:11:03 +0100
-Message-Id: <20230528190841.371485614@linuxfoundation.org>
+Message-Id: <20230528190847.042899839@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,94 +53,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit ed9de4ed39875706607fb08118a58344ae6c5f42 upstream.
+commit 11164bc39459335ab93c6e99d53b7e4292fba38b upstream.
 
-The syzbot fuzzer detected a problem in the udlfb driver, caused by an
-endpoint not having the expected type:
+Disable interrupts in error path of probe function.
 
-usb 1-1: Read EDID byte 0 failed: -71
-usb 1-1: Unable to get valid EDID from device/display
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 0 PID: 9 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880
-drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted
-6.4.0-rc1-syzkaller-00016-ga4422ff22142 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google
-04/28/2023
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-...
-Call Trace:
- <TASK>
- dlfb_submit_urb+0x92/0x180 drivers/video/fbdev/udlfb.c:1980
- dlfb_set_video_mode+0x21f0/0x2950 drivers/video/fbdev/udlfb.c:315
- dlfb_ops_set_par+0x2a7/0x8d0 drivers/video/fbdev/udlfb.c:1111
- dlfb_usb_probe+0x149a/0x2710 drivers/video/fbdev/udlfb.c:1743
-
-The current approach for this issue failed to catch the problem
-because it only checks for the existence of a bulk-OUT endpoint; it
-doesn't check whether this endpoint is the one that the driver will
-actually use.
-
-We can fix the problem by instead checking that the endpoint used by
-the driver does exist and is bulk-OUT.
-
-Reported-and-tested-by: syzbot+0e22d63dcebb802b9bc8@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-CC: Pavel Skripkin <paskripkin@gmail.com>
-Fixes: aaf7dbe07385 ("video: fbdev: udlfb: properly check endpoint type")
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-7-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/udlfb.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -27,6 +27,8 @@
- #include <video/udlfb.h>
- #include "edid.h"
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -1861,6 +1861,8 @@ static int kvaser_pciefd_probe(struct pc
+ 	return 0;
  
-+#define OUT_EP_NUM	1	/* The endpoint number we will use */
-+
- static const struct fb_fix_screeninfo dlfb_fix = {
- 	.id =           "udlfb",
- 	.type =         FB_TYPE_PACKED_PIXELS,
-@@ -1652,7 +1654,7 @@ static int dlfb_usb_probe(struct usb_int
- 	struct fb_info *info;
- 	int retval;
- 	struct usb_device *usbdev = interface_to_usbdev(intf);
--	struct usb_endpoint_descriptor *out;
-+	static u8 out_ep[] = {OUT_EP_NUM + USB_DIR_OUT, 0};
+ err_free_irq:
++	/* Disable PCI interrupts */
++	iowrite32(0, pcie->reg_base + KVASER_PCIEFD_IEN_REG);
+ 	free_irq(pcie->pci->irq, pcie);
  
- 	/* usb initialization */
- 	dlfb = kzalloc(sizeof(*dlfb), GFP_KERNEL);
-@@ -1666,9 +1668,9 @@ static int dlfb_usb_probe(struct usb_int
- 	dlfb->udev = usb_get_dev(usbdev);
- 	usb_set_intfdata(intf, dlfb);
- 
--	retval = usb_find_common_endpoints(intf->cur_altsetting, NULL, &out, NULL, NULL);
--	if (retval) {
--		dev_err(&intf->dev, "Device should have at lease 1 bulk endpoint!\n");
-+	if (!usb_check_bulk_endpoints(intf, out_ep)) {
-+		dev_err(&intf->dev, "Invalid DisplayLink device!\n");
-+		retval = -EINVAL;
- 		goto error;
- 	}
- 
-@@ -1927,7 +1929,8 @@ retry:
- 		}
- 
- 		/* urb->transfer_buffer_length set to actual before submit */
--		usb_fill_bulk_urb(urb, dlfb->udev, usb_sndbulkpipe(dlfb->udev, 1),
-+		usb_fill_bulk_urb(urb, dlfb->udev,
-+			usb_sndbulkpipe(dlfb->udev, OUT_EP_NUM),
- 			buf, size, dlfb_urb_completion, unode);
- 		urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
- 
+ err_teardown_can_ctrls:
 
 
