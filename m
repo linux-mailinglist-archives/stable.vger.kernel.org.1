@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A075C713F59
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 155FE713E19
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231245AbjE1To3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:44:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59238 "EHLO
+        id S230257AbjE1TcB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:32:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231247AbjE1To2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:28 -0400
+        with ESMTP id S230259AbjE1Tb7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293EA9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FF4DC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9BA261F30
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88C1C433D2;
-        Sun, 28 May 2023 19:44:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7092E61D96
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB8AC4339B;
+        Sun, 28 May 2023 19:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303067;
-        bh=QICWxuVBGk0ImBsvXxod1gs9WgMc/laPy4CSbbuwNzY=;
+        s=korg; t=1685302315;
+        bh=fLSOeWPYfwqTxvZ6Nw1u5as7Ln2Eox3g8CjW7VZm5OA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EzgP4HEQ31g4CFTndLufhu7byyMKFGqGvzcFHsdHUdASATEw2Htw5Dm78oYV7z1Pw
-         8vnLWTlRgMxwBzrZo1/RNy82V2+GbLt32eD0FQ1AteQR6bXdz7ZmGHRbXRLulGYAf9
-         lJ4x6anFzBxa5haMYdlHLjVaklg721EGI2wBFpb4=
+        b=0L4mtpEWJ6bNG1sy7bE+o6o8XbY5EAsIQk5jqkaaFh5lCzyT25d2pc1ktpcgqXX56
+         6bC1pNRLtpn4/GZNhBCr8qo3EhdSe1KKHYvQxtH6E352u2urVWmkVJArFw30VAhr/5
+         usvF3VpUG/nzdaBU4FdfrsU26lUyZRHPnOf9p2QA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 140/211] can: kvaser_pciefd: Clear listen-only bit if not explicitly requested
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.3 085/127] power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
 Date:   Sun, 28 May 2023 20:11:01 +0100
-Message-Id: <20230528190846.995102819@linuxfoundation.org>
+Message-Id: <20230528190839.112173386@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,33 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit bf7ac55e991ca177f1ac16be51152f1ef291a4df upstream.
+commit 59a99cd462fbdf71f4e845e09f37783035088b4f upstream.
 
-The listen-only bit was never cleared, causing the controller to
-always use listen-only mode, if previously set.
+bq27xxx_external_power_changed() gets called when the charger is plugged
+in or out. Rather then immediately scheduling an update wait 0.5 seconds
+for things to stabilize, so that e.g. the (dis)charge current is stable
+when bq27xxx_battery_update() runs.
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-3-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -561,6 +561,8 @@ static void kvaser_pciefd_setup_controll
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -2099,8 +2099,8 @@ static void bq27xxx_external_power_chang
+ {
+ 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
  
- 	if (can->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
- 		mode |= KVASER_PCIEFD_KCAN_MODE_LOM;
-+	else
-+		mode &= ~KVASER_PCIEFD_KCAN_MODE_LOM;
+-	cancel_delayed_work_sync(&di->work);
+-	schedule_delayed_work(&di->work, 0);
++	/* After charger plug in/out wait 0.5s for things to stabilize */
++	mod_delayed_work(system_wq, &di->work, HZ / 2);
+ }
  
- 	mode |= KVASER_PCIEFD_KCAN_MODE_EEN;
- 	mode |= KVASER_PCIEFD_KCAN_MODE_EPEN;
+ int bq27xxx_battery_setup(struct bq27xxx_device_info *di)
 
 
