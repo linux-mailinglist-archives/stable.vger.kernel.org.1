@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C67713D28
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDB6713EE6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbjE1TW3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:22:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40112 "EHLO
+        id S230514AbjE1TkC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:40:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229971AbjE1TW2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E035D9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:25 -0700 (PDT)
+        with ESMTP id S230521AbjE1TkB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5528EB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10C1D61B38
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D09CC433EF;
-        Sun, 28 May 2023 19:22:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E08FA61EA0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09751C433EF;
+        Sun, 28 May 2023 19:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301744;
-        bh=ode1mSl3ZeNCClS8uQpprqfFvnpf01KMroNObvblLpQ=;
+        s=korg; t=1685302799;
+        bh=HYGronkBmM6Q51iGZWxw7XA7yrSq9r2duyuWRAfsOMQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l6ix3GlM7SBUb+IfrgW5PqmhTpMtKZKQqmE4/ZBmoN3rxmMCWoOkqS5WoxSWswTgP
-         EsrwalqcmOGXlFpFBr3YYk+BK5M9W0LdxRwHDsUjU3pe2kbODb1pQLgdM80ob6ATfJ
-         yVSnpBZ/rx7OBnC1uA/4xWZooalSodBhoK+bgDZ4=
+        b=PYicNzrxKrO3p0sHZiXhv18h6/yjWQB4w/EeBkDFEjVm/0FoMa8nZzAwTHkfL5q0F
+         CaS75gVQWCj1Vh23ZZwQa3HbPc7mts1s0jcsQzEjCbv3j/A2+u+ratt9G73jKhTuWm
+         JjYxrdQ6e8+gt6WhYczvcDcj0bAi6fK+JHP63jJQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/161] firmware: arm_sdei: Fix sleep from invalid context BUG
-Date:   Sun, 28 May 2023 20:09:03 +0100
-Message-Id: <20230528190837.752505540@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 023/211] ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled
+Date:   Sun, 28 May 2023 20:09:04 +0100
+Message-Id: <20230528190844.097550661@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,234 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit d2c48b2387eb89e0bf2a2e06e30987cf410acad4 ]
+[ Upstream commit a44be64bbecb15a452496f60db6eacfee2b59c79 ]
 
-Running a preempt-rt (v6.2-rc3-rt1) based kernel on an Ampere Altra
-triggers:
+When a file system currently mounted read/only is remounted
+read/write, if we clear the SB_RDONLY flag too early, before the quota
+is initialized, and there is another process/thread constantly
+attempting to create a directory, it's possible to trigger the
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
-  in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 24, name: cpuhp/0
-  preempt_count: 0, expected: 0
-  RCU nest depth: 0, expected: 0
-  3 locks held by cpuhp/0/24:
-    #0: ffffda30217c70d0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
-    #1: ffffda30217c7120 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
-    #2: ffffda3021c711f0 (sdei_list_lock){....}-{3:3}, at: sdei_cpuhp_up+0x3c/0x130
-  irq event stamp: 36
-  hardirqs last  enabled at (35): [<ffffda301e85b7bc>] finish_task_switch+0xb4/0x2b0
-  hardirqs last disabled at (36): [<ffffda301e812fec>] cpuhp_thread_fun+0x21c/0x248
-  softirqs last  enabled at (0): [<ffffda301e80b184>] copy_process+0x63c/0x1ac0
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 0 PID: 24 Comm: cpuhp/0 Not tainted 5.19.0-rc3-rt5-[...]
-  Hardware name: WIWYNN Mt.Jade Server [...]
-  Call trace:
-    dump_backtrace+0x114/0x120
-    show_stack+0x20/0x70
-    dump_stack_lvl+0x9c/0xd8
-    dump_stack+0x18/0x34
-    __might_resched+0x188/0x228
-    rt_spin_lock+0x70/0x120
-    sdei_cpuhp_up+0x3c/0x130
-    cpuhp_invoke_callback+0x250/0xf08
-    cpuhp_thread_fun+0x120/0x248
-    smpboot_thread_fn+0x280/0x320
-    kthread+0x130/0x140
-    ret_from_fork+0x10/0x20
+	WARN_ON_ONCE(dquot_initialize_needed(inode));
 
-sdei_cpuhp_up() is called in the STARTING hotplug section,
-which runs with interrupts disabled. Use a CPUHP_AP_ONLINE_DYN entry
-instead to execute the cpuhp cb later, with preemption enabled.
+in ext4_xattr_block_set(), with the following stack trace:
 
-SDEI originally got its own cpuhp slot to allow interacting
-with perf. It got superseded by pNMI and this early slot is not
-relevant anymore. [1]
+   WARNING: CPU: 0 PID: 5338 at fs/ext4/xattr.c:2141 ext4_xattr_block_set+0x2ef2/0x3680
+   RIP: 0010:ext4_xattr_block_set+0x2ef2/0x3680 fs/ext4/xattr.c:2141
+   Call Trace:
+    ext4_xattr_set_handle+0xcd4/0x15c0 fs/ext4/xattr.c:2458
+    ext4_initxattrs+0xa3/0x110 fs/ext4/xattr_security.c:44
+    security_inode_init_security+0x2df/0x3f0 security/security.c:1147
+    __ext4_new_inode+0x347e/0x43d0 fs/ext4/ialloc.c:1324
+    ext4_mkdir+0x425/0xce0 fs/ext4/namei.c:2992
+    vfs_mkdir+0x29d/0x450 fs/namei.c:4038
+    do_mkdirat+0x264/0x520 fs/namei.c:4061
+    __do_sys_mkdirat fs/namei.c:4076 [inline]
+    __se_sys_mkdirat fs/namei.c:4074 [inline]
+    __x64_sys_mkdirat+0x89/0xa0 fs/namei.c:4074
 
-Some SDEI calls (e.g. SDEI_1_0_FN_SDEI_PE_MASK) take actions on the
-calling CPU. It is checked that preemption is disabled for them.
-_ONLINE cpuhp cb are executed in the 'per CPU hotplug thread'.
-Preemption is enabled in those threads, but their cpumask is limited
-to 1 CPU.
-Move 'WARN_ON_ONCE(preemptible())' statements so that SDEI cpuhp cb
-don't trigger them.
-
-Also add a check for the SDEI_1_0_FN_SDEI_PRIVATE_RESET SDEI call
-which acts on the calling CPU.
-
-[1]:
-https://lore.kernel.org/all/5813b8c5-ae3e-87fd-fccc-94c9cd08816d@arm.com/
-
-Suggested-by: James Morse <james.morse@arm.com>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20230216084920.144064-1-pierre.gondois@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230506142419.984260-1-tytso@mit.edu
+Reported-by: syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=6513f6cb5cd6b5fc9f37e3bb70d273b94be9c34c
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_sdei.c | 37 ++++++++++++++++++++-----------------
- include/linux/cpuhotplug.h  |  1 -
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ fs/ext4/super.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index e497785cd99fe..b0e8752174c6f 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -44,6 +44,8 @@ static asmlinkage void (*sdei_firmware_call)(unsigned long function_id,
- /* entry point from firmware to arch asm code */
- static unsigned long sdei_entry_point;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index edd1409663932..681efff3af50f 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5797,6 +5797,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 	ext4_group_t g;
+ 	unsigned int journal_ioprio = DEFAULT_JOURNAL_IOPRIO;
+ 	int err = 0;
++	int enable_rw = 0;
+ #ifdef CONFIG_QUOTA
+ 	int enable_quota = 0;
+ 	int i, j;
+@@ -5989,7 +5990,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 			if (err)
+ 				goto restore_opts;
  
-+static int sdei_hp_state;
+-			sb->s_flags &= ~SB_RDONLY;
++			enable_rw = 1;
+ 			if (ext4_has_feature_mmp(sb)) {
+ 				err = ext4_multi_mount_protect(sb,
+ 						le64_to_cpu(es->s_mmp_block));
+@@ -6048,6 +6049,9 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
+ 		ext4_release_system_zone(sb);
+ 
++	if (enable_rw)
++		sb->s_flags &= ~SB_RDONLY;
 +
- struct sdei_event {
- 	/* These three are protected by the sdei_list_lock */
- 	struct list_head	list;
-@@ -305,8 +307,6 @@ int sdei_mask_local_cpu(void)
- {
- 	int err;
+ 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
+ 		ext4_stop_mmpd(sbi);
  
--	WARN_ON_ONCE(preemptible());
--
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_MASK, 0, 0, 0, 0, 0, NULL);
- 	if (err && err != -EIO) {
- 		pr_warn_once("failed to mask CPU[%u]: %d\n",
-@@ -319,6 +319,7 @@ int sdei_mask_local_cpu(void)
- 
- static void _ipi_mask_cpu(void *ignored)
- {
-+	WARN_ON_ONCE(preemptible());
- 	sdei_mask_local_cpu();
- }
- 
-@@ -326,8 +327,6 @@ int sdei_unmask_local_cpu(void)
- {
- 	int err;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_UNMASK, 0, 0, 0, 0, 0, NULL);
- 	if (err && err != -EIO) {
- 		pr_warn_once("failed to unmask CPU[%u]: %d\n",
-@@ -340,6 +339,7 @@ int sdei_unmask_local_cpu(void)
- 
- static void _ipi_unmask_cpu(void *ignored)
- {
-+	WARN_ON_ONCE(preemptible());
- 	sdei_unmask_local_cpu();
- }
- 
-@@ -347,6 +347,8 @@ static void _ipi_private_reset(void *ignored)
- {
- 	int err;
- 
-+	WARN_ON_ONCE(preemptible());
-+
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PRIVATE_RESET, 0, 0, 0, 0, 0,
- 			     NULL);
- 	if (err && err != -EIO)
-@@ -393,8 +395,6 @@ static void _local_event_enable(void *data)
- 	int err;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = sdei_api_event_enable(arg->event->event_num);
- 
- 	sdei_cross_call_return(arg, err);
-@@ -485,8 +485,6 @@ static void _local_event_unregister(void *data)
- 	int err;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = sdei_api_event_unregister(arg->event->event_num);
- 
- 	sdei_cross_call_return(arg, err);
-@@ -575,8 +573,6 @@ static void _local_event_register(void *data)
- 	struct sdei_registered_event *reg;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON(preemptible());
--
- 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
- 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
- 				      reg, 0, 0);
-@@ -756,6 +752,8 @@ static int sdei_pm_notifier(struct notifier_block *nb, unsigned long action,
- {
- 	int rv;
- 
-+	WARN_ON_ONCE(preemptible());
-+
- 	switch (action) {
- 	case CPU_PM_ENTER:
- 		rv = sdei_mask_local_cpu();
-@@ -804,7 +802,7 @@ static int sdei_device_freeze(struct device *dev)
- 	int err;
- 
- 	/* unregister private events */
--	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
-+	cpuhp_remove_state(sdei_entry_point);
- 
- 	err = sdei_unregister_shared();
- 	if (err)
-@@ -825,12 +823,15 @@ static int sdei_device_thaw(struct device *dev)
- 		return err;
- 	}
- 
--	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
-+	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
- 				&sdei_cpuhp_up, &sdei_cpuhp_down);
--	if (err)
-+	if (err < 0) {
- 		pr_warn("Failed to re-register CPU hotplug notifier...\n");
-+		return err;
-+	}
- 
--	return err;
-+	sdei_hp_state = err;
-+	return 0;
- }
- 
- static int sdei_device_restore(struct device *dev)
-@@ -862,7 +863,7 @@ static int sdei_reboot_notifier(struct notifier_block *nb, unsigned long action,
- 	 * We are going to reset the interface, after this there is no point
- 	 * doing work when we take CPUs offline.
- 	 */
--	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
-+	cpuhp_remove_state(sdei_hp_state);
- 
- 	sdei_platform_reset();
- 
-@@ -1044,13 +1045,15 @@ static int sdei_probe(struct platform_device *pdev)
- 		goto remove_cpupm;
- 	}
- 
--	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
-+	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
- 				&sdei_cpuhp_up, &sdei_cpuhp_down);
--	if (err) {
-+	if (err < 0) {
- 		pr_warn("Failed to register CPU hotplug notifier...\n");
- 		goto remove_reboot;
- 	}
- 
-+	sdei_hp_state = err;
-+
- 	return 0;
- 
- remove_reboot:
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 15835f37bd5f2..8134cc3b99cdc 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -111,7 +111,6 @@ enum cpuhp_state {
- 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
- 	CPUHP_AP_PERF_XTENSA_STARTING,
- 	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
--	CPUHP_AP_ARM_SDEI_STARTING,
- 	CPUHP_AP_ARM_VFP_STARTING,
- 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
- 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
 -- 
 2.39.2
 
