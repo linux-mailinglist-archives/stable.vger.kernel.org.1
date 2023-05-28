@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4AF713C8B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D189713E7E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbjE1TQF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:16:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35278 "EHLO
+        id S230380AbjE1TgD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbjE1TQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 032AAA2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:03 -0700 (PDT)
+        with ESMTP id S230388AbjE1TgC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D8BCF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D0C7619A2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA739C433D2;
-        Sun, 28 May 2023 19:16:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E81861E2B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1F5C433EF;
+        Sun, 28 May 2023 19:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301362;
-        bh=t0eQnPUmymtwfw1Pux8kx5lJEAcMPyrH1Tirlhmhfo0=;
+        s=korg; t=1685302560;
+        bh=834YX/0/RE92nZ3+SlAcAzzW44ch7gk7cGLTOVHCudY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=koOZUOIC1v7+6iDAcigMi33N867YqKMg8gzJkgWCXQHFtEJacpdcdFT9joMMhNxn5
-         9amgPMI1Z9c3C9wZ7bND5FhEOS3ed5D0Bqa6OQt0XLNkr66U3FsQJMOxnmcoNVD+/X
-         0ViL4wdIrBOZfHk7cxKWeIe3LHglF/kQML6Jrm3M=
+        b=1wK5HgJLvSkVcFCV9L7bjebC2fcH+sfQ6XojMrlcFSf4VRWZTILP96xpcwprr5y9C
+         3fsSLUp1AVz1+UluBEig3G0M6DoFsbbos3DSAa3WS/CwbLrrXcQyz8GQifq6HN0iZY
+         ylqxROsIv6dfWF8VBZoF2/0KI2ih3MutWxtdaNc4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 4.14 79/86] power: supply: bq27xxx: Fix bq27xxx_battery_update() race condition
+        patches@lists.linux.dev, stable@kernel.org,
+        Len Brown <len.brown@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.1 053/119] x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid platforms
 Date:   Sun, 28 May 2023 20:10:53 +0100
-Message-Id: <20230528190831.573192926@linuxfoundation.org>
+Message-Id: <20230528190837.184184678@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,92 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 5c34c0aef185dcd10881847b9ebf20046aa77cb4 upstream.
+commit edc0a2b5957652f4685ef3516f519f84807087db upstream.
 
-bq27xxx_battery_update() assumes / requires that it is only run once,
-not multiple times at the same time. But there are 3 possible callers:
+Traditionally, all CPUs in a system have identical numbers of SMT
+siblings.  That changes with hybrid processors where some logical CPUs
+have a sibling and others have none.
 
-1. bq27xxx_battery_poll() delayed_work item handler
-2. bq27xxx_battery_irq_handler_thread() I2C IRQ handler
-3. bq27xxx_battery_setup()
+Today, the CPU boot code sets the global variable smp_num_siblings when
+every CPU thread is brought up. The last thread to boot will overwrite
+it with the number of siblings of *that* thread. That last thread to
+boot will "win". If the thread is a Pcore, smp_num_siblings == 2.  If it
+is an Ecore, smp_num_siblings == 1.
 
-And there is no protection against these racing with each other,
-fix this race condition by making all callers take di->lock:
+smp_num_siblings describes if the *system* supports SMT.  It should
+specify the maximum number of SMT threads among all cores.
 
-- Rename bq27xxx_battery_update() to bq27xxx_battery_update_unlocked()
+Ensure that smp_num_siblings represents the system-wide maximum number
+of siblings by always increasing its value. Never allow it to decrease.
 
-- Add new bq27xxx_battery_update() which takes di->lock and then calls
-  bq27xxx_battery_update_unlocked()
+On MeteorLake-P platform, this fixes a problem that the Ecore CPUs are
+not updated in any cpu sibling map because the system is treated as an
+UP system when probing Ecore CPUs.
 
-- Make stale cache check code in bq27xxx_battery_get_property(), which
-  already takes di->lock directly to check the jiffies, call
-  bq27xxx_battery_update_unlocked() instead of messing with
-  the delayed_work item
+Below shows part of the CPU topology information before and after the
+fix, for both Pcore and Ecore CPU (cpu0 is Pcore, cpu 12 is Ecore).
+...
+-/sys/devices/system/cpu/cpu0/topology/package_cpus:000fff
+-/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-11
++/sys/devices/system/cpu/cpu0/topology/package_cpus:3fffff
++/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-21
+...
+-/sys/devices/system/cpu/cpu12/topology/package_cpus:001000
+-/sys/devices/system/cpu/cpu12/topology/package_cpus_list:12
++/sys/devices/system/cpu/cpu12/topology/package_cpus:3fffff
++/sys/devices/system/cpu/cpu12/topology/package_cpus_list:0-21
 
-- Make bq27xxx_battery_update_unlocked() mod the delayed-work item
-  so that the next poll is delayed to poll_interval milliseconds after
-  the last update independent of the source of the update
+Notice that the "before" 'package_cpus_list' has only one CPU.  This
+means that userspace tools like lscpu will see a little laptop like
+an 11-socket system:
 
-Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+-Core(s) per socket:  1
+-Socket(s):           11
++Core(s) per socket:  16
++Socket(s):           1
+
+This is also expected to make the scheduler do rather wonky things
+too.
+
+[ dhansen: remove CPUID detail from changelog, add end user effects ]
+
+CC: stable@kernel.org
+Fixes: bbb65d2d365e ("x86: use cpuid vector 0xb when available for detecting cpu topology")
+Fixes: 95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
+Suggested-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/20230323015640.27906-1-rui.zhang%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/topology.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1506,7 +1506,7 @@ static int bq27xxx_battery_read_health(s
- 	return POWER_SUPPLY_HEALTH_GOOD;
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -79,7 +79,7 @@ int detect_extended_topology_early(struc
+ 	 * initial apic id, which also represents 32-bit extended x2apic id.
+ 	 */
+ 	c->initial_apicid = edx;
+-	smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
+ #endif
+ 	return 0;
  }
- 
--void bq27xxx_battery_update(struct bq27xxx_device_info *di)
-+static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
- {
- 	struct bq27xxx_reg_cache cache = {0, };
- 	bool has_ci_flag = di->opts & BQ27XXX_O_ZERO;
-@@ -1554,6 +1554,16 @@ void bq27xxx_battery_update(struct bq27x
- 		di->cache = cache;
- 
- 	di->last_update = jiffies;
-+
-+	if (poll_interval > 0)
-+		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
-+}
-+
-+void bq27xxx_battery_update(struct bq27xxx_device_info *di)
-+{
-+	mutex_lock(&di->lock);
-+	bq27xxx_battery_update_unlocked(di);
-+	mutex_unlock(&di->lock);
- }
- EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
- 
-@@ -1564,9 +1574,6 @@ static void bq27xxx_battery_poll(struct
- 				     work.work);
- 
- 	bq27xxx_battery_update(di);
--
--	if (poll_interval > 0)
--		schedule_delayed_work(&di->work, poll_interval * HZ);
- }
- 
- /*
-@@ -1725,10 +1732,8 @@ static int bq27xxx_battery_get_property(
- 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
- 
- 	mutex_lock(&di->lock);
--	if (time_is_before_jiffies(di->last_update + 5 * HZ)) {
--		cancel_delayed_work_sync(&di->work);
--		bq27xxx_battery_poll(&di->work.work);
--	}
-+	if (time_is_before_jiffies(di->last_update + 5 * HZ))
-+		bq27xxx_battery_update_unlocked(di);
- 	mutex_unlock(&di->lock);
- 
- 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+@@ -109,7 +109,8 @@ int detect_extended_topology(struct cpui
+ 	 */
+ 	cpuid_count(leaf, SMT_LEVEL, &eax, &ebx, &ecx, &edx);
+ 	c->initial_apicid = edx;
+-	core_level_siblings = smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	core_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
++	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
+ 	core_plus_mask_width = ht_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
+ 	die_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
+ 	pkg_mask_width = die_plus_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
 
 
