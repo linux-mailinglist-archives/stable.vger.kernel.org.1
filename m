@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C84D713EBF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C7A713F8B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230470AbjE1Ti2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:38:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54062 "EHLO
+        id S231303AbjE1Tqn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:46:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjE1Ti1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:27 -0400
+        with ESMTP id S231307AbjE1Tqm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC457A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE83DC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30F0161113
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD0EC433EF;
-        Sun, 28 May 2023 19:38:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AF1661F7E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FA7C433D2;
+        Sun, 28 May 2023 19:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302704;
-        bh=Bsp0O2B4jKw3NxeXx7hewBA8JjuxP6RtkNDGOwycr+U=;
+        s=korg; t=1685303189;
+        bh=dIeBcgy0h135Hy5mTH/0jUsKJ7yYbg12WPl3Pp8iebg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZHWj1MP9WueCDg2aEPcb5k65/XUzaulb6mGi1JxjHC+NDHvanVUybZF2Zj821SM3w
-         N/1p0/8F2trEAu1d5UIPcGtkjbYGQ0KuIBCnEAdsfqSS3R896pFSPjkEiw4zZT7MHM
-         +7lLSxtr5XIfrwehoErznsKbZqcDFXNJ2xkjlogM=
+        b=H9+EtH/ImZnXs3CX2LCSEHysGqfQ39/pv/Koq+mmtzdyWrlESKZReYEHBxVv11Xt4
+         alf9urlcomieWiNM7mg25GS4+mG7yN0xBCG0nidPfqT9CjqUKo6Gv1BO2B6Kd2ue/z
+         SaSQl2KvvHN4uGb1T44NMpoNEGDjNqoHyogUv0tY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.1 112/119] net/mlx5: Devcom, fix error flow in mlx5_devcom_register_device
+        patches@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
+        Ratheesh Kannoth <rkannoth@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 191/211] octeontx2-pf: Fix TSOv6 offload
 Date:   Sun, 28 May 2023 20:11:52 +0100
-Message-Id: <20230528190839.198160452@linuxfoundation.org>
+Message-Id: <20230528190848.245237378@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,35 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Sunil Goutham <sgoutham@marvell.com>
 
-commit af87194352cad882d787d06fb7efa714acd95427 upstream.
+commit de678ca38861f2eb58814048076dcf95ed1b5bf9 upstream.
 
-In case devcom allocation is failed, mlx5 is always freeing the priv.
-However, this priv might have been allocated by a different thread,
-and freeing it might lead to use-after-free bugs.
-Fix it by freeing the priv only in case it was allocated by the
-running thread.
+HW adds segment size to the payload length
+in the IPv6 header. Fix payload length to
+just TCP header length instead of 'TCP header
+size + IPv6 header size'.
 
-Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 86d7476078b8 ("octeontx2-pf: TCP segmentation offload support")
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -112,7 +112,8 @@ struct mlx5_devcom *mlx5_devcom_register
- 	priv->devs[idx] = dev;
- 	devcom = mlx5_devcom_alloc(priv, idx);
- 	if (!devcom) {
--		kfree(priv);
-+		if (new_priv)
-+			kfree(priv);
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -526,9 +526,7 @@ static void otx2_sqe_add_ext(struct otx2
+ 				htons(ext->lso_sb - skb_network_offset(skb));
+ 		} else if (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6) {
+ 			ext->lso_format = pfvf->hw.lso_tsov6_idx;
+-
+-			ipv6_hdr(skb)->payload_len =
+-				htons(ext->lso_sb - skb_network_offset(skb));
++			ipv6_hdr(skb)->payload_len = htons(tcp_hdrlen(skb));
+ 		} else if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) {
+ 			__be16 l3_proto = vlan_get_protocol(skb);
+ 			struct udphdr *udph = udp_hdr(skb);
 
 
