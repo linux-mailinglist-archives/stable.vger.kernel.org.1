@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49433713EE8
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F72713C99
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230527AbjE1TkF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55066 "EHLO
+        id S229786AbjE1TQk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:16:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230525AbjE1TkE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:04 -0400
+        with ESMTP id S229801AbjE1TQj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CD1A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F82BC7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F91361EAC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBD9C433EF;
-        Sun, 28 May 2023 19:40:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15964619C2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3443AC433EF;
+        Sun, 28 May 2023 19:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302801;
-        bh=QHYHMSlyH413MkHY9jb+3AHdZiGvYl+Ef33PkzHdO5k=;
+        s=korg; t=1685301396;
+        bh=DCVNbjGMGfIbz2CpfFSPJzI4jiwj0IB8pQKaeMtyeCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2sFDae2o8ckFInv2HZfDVc9m2wpOkZPOHNFkGxyu2nQKKk8uLdce+iS+7J1elTI0j
-         Y9QRcFWj5Un5PVXyzjZDYPsY9mqschj/+pvMP81D3tLLyeNR6s2M7hESeHKQdYilWL
-         wOSewN5W/g+iCA555GJE4JfZT4Otr6lDUIKQe4lY=
+        b=glap5Niv5FSavotllpuO4Ytv4HA9x7/WOQ51e0sDgEecfyKF497M7IpbC8LmdYj0R
+         /61thUVcLWuPonNphTIjD8dfR1HoBo/DRS2yNwC0tdPGxRl3r85CQIOqq9m32S9j1e
+         eNgOr3tzEeTIJyKIX7LVc/081n4lL7Dz6NSbtSME=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>,
-        syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        Christian Brauner <brauner@kernel.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/211] fs: hfsplus: remove WARN_ON() from hfsplus_cat_{read,write}_inode()
+Subject: [PATCH 4.19 014/132] regmap: cache: Return error in cache sync operations for REGCACHE_NONE
 Date:   Sun, 28 May 2023 20:09:13 +0100
-Message-Id: <20230528190844.321802529@linuxfoundation.org>
+Message-Id: <20230528190834.009575311@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,106 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 81b21c0f0138ff5a499eafc3eb0578ad2a99622c ]
+[ Upstream commit fd883d79e4dcd2417c2b80756f22a2ff03b0f6e0 ]
 
-syzbot is hitting WARN_ON() in hfsplus_cat_{read,write}_inode(), for
-crafted filesystem image can contain bogus length. There conditions are
-not kernel bugs that can justify kernel to panic.
+There is no sense in doing a cache sync on REGCACHE_NONE regmaps.
+Instead of panicking the kernel due to missing cache_ops, return an error
+to client driver.
 
-Reported-by: syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=e2787430e752a92b8750
-Reported-by: syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=4913dca2ea6e4d43f3f1
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Message-Id: <15308173-5252-d6a3-ae3b-e96d46cb6f41@I-love.SAKURA.ne.jp>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20230313071812.13577-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/inode.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regcache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
-index c60d5ceb0d31c..7e1d889dcc07a 100644
---- a/fs/hfsplus/inode.c
-+++ b/fs/hfsplus/inode.c
-@@ -497,7 +497,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 	if (type == HFSPLUS_FOLDER) {
- 		struct hfsplus_cat_folder *folder = &entry.folder;
+diff --git a/drivers/base/regmap/regcache.c b/drivers/base/regmap/regcache.c
+index 773560348337f..b78e4b6e2c9da 100644
+--- a/drivers/base/regmap/regcache.c
++++ b/drivers/base/regmap/regcache.c
+@@ -347,6 +347,9 @@ int regcache_sync(struct regmap *map)
+ 	const char *name;
+ 	bool bypass;
  
--		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_folder));
-+		if (fd->entrylength < sizeof(struct hfsplus_cat_folder)) {
-+			pr_err("bad catalog folder entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
- 					sizeof(struct hfsplus_cat_folder));
- 		hfsplus_get_perms(inode, &folder->permissions, 1);
-@@ -517,7 +521,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 	} else if (type == HFSPLUS_FILE) {
- 		struct hfsplus_cat_file *file = &entry.file;
++	if (WARN_ON(map->cache_type == REGCACHE_NONE))
++		return -EINVAL;
++
+ 	BUG_ON(!map->cache_ops);
  
--		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_file));
-+		if (fd->entrylength < sizeof(struct hfsplus_cat_file)) {
-+			pr_err("bad catalog file entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
- 					sizeof(struct hfsplus_cat_file));
+ 	map->lock(map->lock_arg);
+@@ -416,6 +419,9 @@ int regcache_sync_region(struct regmap *map, unsigned int min,
+ 	const char *name;
+ 	bool bypass;
  
-@@ -548,6 +556,7 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 		pr_err("bad catalog entry used to create inode\n");
- 		res = -EIO;
- 	}
-+out:
- 	return res;
- }
++	if (WARN_ON(map->cache_type == REGCACHE_NONE))
++		return -EINVAL;
++
+ 	BUG_ON(!map->cache_ops);
  
-@@ -556,6 +565,7 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	struct inode *main_inode = inode;
- 	struct hfs_find_data fd;
- 	hfsplus_cat_entry entry;
-+	int res = 0;
- 
- 	if (HFSPLUS_IS_RSRC(inode))
- 		main_inode = HFSPLUS_I(inode)->rsrc_inode;
-@@ -574,7 +584,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	if (S_ISDIR(main_inode->i_mode)) {
- 		struct hfsplus_cat_folder *folder = &entry.folder;
- 
--		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_folder));
-+		if (fd.entrylength < sizeof(struct hfsplus_cat_folder)) {
-+			pr_err("bad catalog folder entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
- 					sizeof(struct hfsplus_cat_folder));
- 		/* simple node checks? */
-@@ -599,7 +613,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	} else {
- 		struct hfsplus_cat_file *file = &entry.file;
- 
--		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_file));
-+		if (fd.entrylength < sizeof(struct hfsplus_cat_file)) {
-+			pr_err("bad catalog file entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
- 					sizeof(struct hfsplus_cat_file));
- 		hfsplus_inode_write_fork(inode, &file->data_fork);
-@@ -620,5 +638,5 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	set_bit(HFSPLUS_I_CAT_DIRTY, &HFSPLUS_I(inode)->flags);
- out:
- 	hfs_find_exit(&fd);
--	return 0;
-+	return res;
- }
+ 	map->lock(map->lock_arg);
 -- 
 2.39.2
 
