@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5512B713E46
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E35E713F68
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbjE1Td5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:33:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50014 "EHLO
+        id S231265AbjE1TpG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbjE1Td4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAB5A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:55 -0700 (PDT)
+        with ESMTP id S231263AbjE1TpF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5A49E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 73D0061DDF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FAEC433EF;
-        Sun, 28 May 2023 19:33:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 842C961F44
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16AFC433EF;
+        Sun, 28 May 2023 19:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302434;
-        bh=VvpJDmCc/TNYqMDyFaSIriBvU21n2LX02zpMU4Zo9wE=;
+        s=korg; t=1685303104;
+        bh=ou45k1A72HGx4AMfDdF1aL8WlYs+Z6fY849+kKtdDz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2KSdgrkU+Xntua0nk8y8KQwq9z6Z7lhyqZ7y/2sANQRwSR9Ndb53DJmkiq08N3UT1
-         1d/Z9E0XRQSDQ0o++6u0uO2zyMC5P6716RefTMSLF4nPR1497XbcMgVp+aIlTqs8Rz
-         VtrBv65i4Bt3/t6dgAmOUjSIOW6s6ktv7l9BBNd4=
+        b=VsX1O31HjeDS9k1YoojHKV3NPeHRr8msSqx2Rb26ctsXkojN97YFNuCtvRMNGmfN8
+         CbjoHaw5zqWcpEqWP3r4T7Z5grdIjUbjqzPxMJhVmZgPalOcPfmACD4wEhHhlpIQOa
+         akEtJXCBmUFkqCAm7EMJrScjeYVNgR15fjUEb29Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.3 100/127] ASoC: Intel: Skylake: Fix declaration of enum skl_ch_cfg
-Date:   Sun, 28 May 2023 20:11:16 +0100
-Message-Id: <20230528190839.540572069@linuxfoundation.org>
+        patches@lists.linux.dev, Andrew Davis <afd@ti.com>,
+        stable <stable@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 156/211] serial: 8250_exar: Add support for USR298x PCI Modems
+Date:   Sun, 28 May 2023 20:11:17 +0100
+Message-Id: <20230528190847.384087654@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,34 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Andrew Davis <afd@ti.com>
 
-commit 95109657471311601b98e71f03d0244f48dc61bb upstream.
+[ Upstream commit 95d698869b404772cc8b72560df71548491c10bc ]
 
-Constant 'C4_CHANNEL' does not exist on the firmware side. Value 0xC is
-reserved for 'C7_1' instead.
+Possibly the last PCI controller-based (i.e. not a soft/winmodem)
+dial-up modem one can still buy.
 
-Fixes: 04afbbbb1cba ("ASoC: Intel: Skylake: Update the topology interface structure")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20230519201711.4073845-4-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Looks to have a stock XR17C154 PCI UART chip for communication, but for
+some reason when provisioning the PCI IDs they swapped the vendor and
+subvendor IDs. Otherwise this card would have worked out of the box.
+
+Searching online, some folks seem to not have this issue and others do,
+so it is possible only some batches of cards have this error.
+
+Create a new macro to handle the switched IDs and add support here.
+
+Signed-off-by: Andrew Davis <afd@ti.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230420160209.28221-1-afd@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/sound/skl-tplg-interface.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_exar.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/include/uapi/sound/skl-tplg-interface.h
-+++ b/include/uapi/sound/skl-tplg-interface.h
-@@ -66,7 +66,8 @@ enum skl_ch_cfg {
- 	SKL_CH_CFG_DUAL_MONO = 9,
- 	SKL_CH_CFG_I2S_DUAL_STEREO_0 = 10,
- 	SKL_CH_CFG_I2S_DUAL_STEREO_1 = 11,
--	SKL_CH_CFG_4_CHANNEL = 12,
-+	SKL_CH_CFG_7_1 = 12,
-+	SKL_CH_CFG_4_CHANNEL = SKL_CH_CFG_7_1,
- 	SKL_CH_CFG_INVALID
- };
+diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
+index 2c9f721091125..5c2adf14049b7 100644
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -40,9 +40,13 @@
+ #define PCI_DEVICE_ID_COMMTECH_4224PCIE		0x0020
+ #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
+ #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
++
+ #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
+ #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
  
++#define PCI_SUBDEVICE_ID_USR_2980		0x0128
++#define PCI_SUBDEVICE_ID_USR_2981		0x0129
++
+ #define PCI_DEVICE_ID_SEALEVEL_710xC		0x1001
+ #define PCI_DEVICE_ID_SEALEVEL_720xC		0x1002
+ #define PCI_DEVICE_ID_SEALEVEL_740xC		0x1004
+@@ -791,6 +795,15 @@ static const struct exar8250_board pbn_exar_XR17V8358 = {
+ 		(kernel_ulong_t)&bd			\
+ 	}
+ 
++#define USR_DEVICE(devid, sdevid, bd) {			\
++	PCI_DEVICE_SUB(					\
++		PCI_VENDOR_ID_USR,			\
++		PCI_DEVICE_ID_EXAR_##devid,		\
++		PCI_VENDOR_ID_EXAR,			\
++		PCI_SUBDEVICE_ID_USR_##sdevid), 0, 0,	\
++		(kernel_ulong_t)&bd			\
++	}
++
+ static const struct pci_device_id exar_pci_tbl[] = {
+ 	EXAR_DEVICE(ACCESSIO, COM_2S, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(ACCESSIO, COM_4S, pbn_exar_XR17C15x),
+@@ -815,6 +828,10 @@ static const struct pci_device_id exar_pci_tbl[] = {
+ 
+ 	IBM_DEVICE(XR17C152, SATURN_SERIAL_ONE_PORT, pbn_exar_ibm_saturn),
+ 
++	/* USRobotics USR298x-OEM PCI Modems */
++	USR_DEVICE(XR17C152, 2980, pbn_exar_XR17C15x),
++	USR_DEVICE(XR17C152, 2981, pbn_exar_XR17C15x),
++
+ 	/* Exar Corp. XR17C15[248] Dual/Quad/Octal UART */
+ 	EXAR_DEVICE(EXAR, XR17C152, pbn_exar_XR17C15x),
+ 	EXAR_DEVICE(EXAR, XR17C154, pbn_exar_XR17C15x),
+-- 
+2.39.2
+
 
 
