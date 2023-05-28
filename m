@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DF0713EB1
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 495FD713DAE
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230452AbjE1Th6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53730 "EHLO
+        id S230124AbjE1T1w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbjE1Th5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:57 -0400
+        with ESMTP id S230120AbjE1T1v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941D8AB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D603DB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BB2F61E6F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF6EC433D2;
-        Sun, 28 May 2023 19:37:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 739B861CC5
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9292AC433D2;
+        Sun, 28 May 2023 19:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302675;
-        bh=guxoDaOfg2nxB76Uq6kbYWKFXDOU2gubYzDBYTEQPYI=;
+        s=korg; t=1685302069;
+        bh=zq1Os+D/7yy/NJzFj2J8bClDSlPMi/oDDTlDd37Pa0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zPBPnlQVX9jSsZz+rkhXXwflALKNsdBl4seicz5rUYIp+hlhodlj0OZTdLXFx4Hnr
-         XxMW6akkqfLUicG/Lfh9xM+GsZ01z0gwokYFje0FbPZ9s4ZdWFCC3mqaU/SLZX67KR
-         OYUyiPNSNp19IDrrmzwkgyENGebH3Gh+Sbw984zc=
+        b=Pk8t3UdGd1ULnPdzCih87LL4SiJD91E/xyh3CycKdVQkDa3D3o1WaIesd+o/4j+xy
+         LHImw08pMxsEPMLeY7BTvovxqkxtVSBHiCaIJTfMRkPMe60Yr+Qesjl5bkCGYURZBQ
+         T6qhpJdVkjQVXVnx/0bN+bAL0DTZWZ+1ggp3Moso=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tyler Spivey <tspivey8@gmail.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 072/119] cifs: mapchars mount option ignored
+        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+        Jiri Pirko <jiri@nvidia.com>, David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 148/161] ipv6: Fix out-of-bounds access in ipv6_find_tlv()
 Date:   Sun, 28 May 2023 20:11:12 +0100
-Message-Id: <20230528190837.911411359@linuxfoundation.org>
+Message-Id: <20230528190841.599664847@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit cb8b02fd6343228966324528adf920bfb8b8e681 upstream.
+commit 878ecb0897f4737a4c9401f3523fd49589025671 upstream.
 
-There are two ways that special characters (not allowed in some
-other operating systems like Windows, but allowed in POSIX) have
-been mapped in the past ("SFU" and "SFM" mappings) to allow them
-to be stored in a range reserved for special chars. The default
-for Linux has been to use "mapposix" (ie the SFM mapping) but
-the conversion to the new mount API in the 5.11 kernel broke
-the ability to override the default mapping of the reserved
-characters (like '?' and '*' and '\') via "mapchars" mount option.
+optlen is fetched without checking whether there is more than one byte to parse.
+It can lead to out-of-bounds access.
 
-This patch fixes that - so can now mount with "mapchars"
-mount option to override the default ("mapposix" ie SFM) mapping.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Reported-by: Tyler Spivey <tspivey8@gmail.com>
-Fixes: 24e0a1eff9e2 ("cifs: switch to new mount api")
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c61a40432509 ("[IPV6]: Find option offset by type.")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/fs_context.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv6/exthdrs_core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/cifs/fs_context.c
-+++ b/fs/cifs/fs_context.c
-@@ -904,6 +904,14 @@ static int smb3_fs_context_parse_param(s
- 			ctx->sfu_remap = false; /* disable SFU mapping */
- 		}
- 		break;
-+	case Opt_mapchars:
-+		if (result.negated)
-+			ctx->sfu_remap = false;
-+		else {
-+			ctx->sfu_remap = true;
-+			ctx->remap = false; /* disable SFM (mapposix) mapping */
-+		}
-+		break;
- 	case Opt_user_xattr:
- 		if (result.negated)
- 			ctx->no_xattr = 1;
+--- a/net/ipv6/exthdrs_core.c
++++ b/net/ipv6/exthdrs_core.c
+@@ -143,6 +143,8 @@ int ipv6_find_tlv(const struct sk_buff *
+ 			optlen = 1;
+ 			break;
+ 		default:
++			if (len < 2)
++				goto bad;
+ 			optlen = nh[offset + 1] + 2;
+ 			if (optlen > len)
+ 				goto bad;
 
 
