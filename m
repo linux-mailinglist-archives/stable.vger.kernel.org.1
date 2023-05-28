@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFFF6713E37
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9557A713FC9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbjE1TdU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:33:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49656 "EHLO
+        id S231322AbjE1Ts7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230295AbjE1TdU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C3FA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:18 -0700 (PDT)
+        with ESMTP id S231383AbjE1Ts7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3AF7A8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8754D61DBC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58F0C433D2;
-        Sun, 28 May 2023 19:33:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90F8162004
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0396C433D2;
+        Sun, 28 May 2023 19:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302398;
-        bh=O/nfokxhGiRfmbxJvWMR67JXBTJAIl2jqAV6KaJEGXc=;
+        s=korg; t=1685303337;
+        bh=Uu+fF8Crn82Ytf5deX/AeunyvlnF0e3FQ4ZeX7rN6Mw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t2CZwd+2TLYqT+35lz8rjf9HSAS0oqiYCpr7MiK8+5aijFGpx4nZhAQTtolg0qfje
-         KHgFnq/KyIVWOgeO3X6rDTTVVxRjAPMY6tdAjziOLafFQyd+QLVgznuCG3Wj1RsoYs
-         h5uZa/pyiqijh/wwNyL/hqho8Ikb5TZpwCeTKQfk=
+        b=JOU2yiLAUU1lychiWNSuGOQDl5Ou8AhFQ+PlVLrQwCDqgUblSYvddtfheqM8D7M6d
+         uV1d86W8Br0/7dt1I2F1+Gkt23wGdD1rwCGUuR8hVKL83vQKUB5yiOwXhrl1XZPenx
+         WCrvd6FSZ3t0GclSWjVOf8pR+DAhmw5NuKZmfRNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Itamar Gozlan <igozlan@nvidia.com>,
-        Yevgeny Kliteynik <kliteyn@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.3 114/127] net/mlx5: DR, Check force-loopback RC QP capability independently from RoCE
+        patches@lists.linux.dev, Peter Collingbourne <pcc@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 10/69] arm64: Also reset KASAN tag if page is not PG_mte_tagged
 Date:   Sun, 28 May 2023 20:11:30 +0100
-Message-Id: <20230528190839.963226138@linuxfoundation.org>
+Message-Id: <20230528190828.729602333@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,59 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Peter Collingbourne <pcc@google.com>
 
-commit c7dd225bc224726c22db08e680bf787f60ebdee3 upstream.
+commit 2efbafb91e12ff5a16cbafb0085e4c10c3fca493 upstream.
 
-SW Steering uses RC QP for writing STEs to ICM. This writingis done in LB
-(loopback), and FL (force-loopback) QP is preferred for performance. FL is
-available when RoCE is enabled or disabled based on RoCE caps.
-This patch adds reading of FL capability from HCA caps in addition to the
-existing reading from RoCE caps, thus fixing the case where we didn't
-have loopback enabled when RoCE was disabled.
+Consider the following sequence of events:
 
-Fixes: 7304d603a57a ("net/mlx5: DR, Add support for force-loopback QP")
-Signed-off-by: Itamar Gozlan <igozlan@nvidia.com>
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+1) A page in a PROT_READ|PROT_WRITE VMA is faulted.
+2) Page migration allocates a page with the KASAN allocator,
+   causing it to receive a non-match-all tag, and uses it
+   to replace the page faulted in 1.
+3) The program uses mprotect() to enable PROT_MTE on the page faulted in 1.
+
+As a result of step 3, we are left with a non-match-all tag for a page
+with tags accessible to userspace, which can lead to the same kind of
+tag check faults that commit e74a68468062 ("arm64: Reset KASAN tag in
+copy_highpage with HW tags only") intended to fix.
+
+The general invariant that we have for pages in a VMA with VM_MTE_ALLOWED
+is that they cannot have a non-match-all tag. As a result of step 2, the
+invariant is broken. This means that the fix in the referenced commit
+was incomplete and we also need to reset the tag for pages without
+PG_mte_tagged.
+
+Fixes: e5b8d9218951 ("arm64: mte: reset the page tag in page->flags")
+Cc: <stable@vger.kernel.org> # 5.15
+Link: https://linux-review.googlesource.com/id/I7409cdd41acbcb215c2a7417c1e50d37b875beff
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20230420210945.2313627-1-pcc@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c |    4 +++-
- include/linux/mlx5/mlx5_ifc.h                             |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/mm/copypage.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
-@@ -117,6 +117,8 @@ int mlx5dr_cmd_query_device(struct mlx5_
- 	caps->gvmi		= MLX5_CAP_GEN(mdev, vhca_id);
- 	caps->flex_protocols	= MLX5_CAP_GEN(mdev, flex_parser_protocols);
- 	caps->sw_format_ver	= MLX5_CAP_GEN(mdev, steering_format_version);
-+	caps->roce_caps.fl_rc_qp_when_roce_disabled =
-+		MLX5_CAP_GEN(mdev, fl_rc_qp_when_roce_disabled);
+--- a/arch/arm64/mm/copypage.c
++++ b/arch/arm64/mm/copypage.c
+@@ -21,9 +21,10 @@ void copy_highpage(struct page *to, stru
  
- 	if (MLX5_CAP_GEN(mdev, roce)) {
- 		err = dr_cmd_query_nic_vport_roce_en(mdev, 0, &roce_en);
-@@ -124,7 +126,7 @@ int mlx5dr_cmd_query_device(struct mlx5_
- 			return err;
+ 	copy_page(kto, kfrom);
  
- 		caps->roce_caps.roce_en = roce_en;
--		caps->roce_caps.fl_rc_qp_when_roce_disabled =
-+		caps->roce_caps.fl_rc_qp_when_roce_disabled |=
- 			MLX5_CAP_ROCE(mdev, fl_rc_qp_when_roce_disabled);
- 		caps->roce_caps.fl_rc_qp_when_roce_enabled =
- 			MLX5_CAP_ROCE(mdev, fl_rc_qp_when_roce_enabled);
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -1679,7 +1679,9 @@ struct mlx5_ifc_cmd_hca_cap_bits {
- 	u8         rc[0x1];
- 
- 	u8         uar_4k[0x1];
--	u8         reserved_at_241[0x9];
-+	u8         reserved_at_241[0x7];
-+	u8         fl_rc_qp_when_roce_disabled[0x1];
-+	u8         regexp_params[0x1];
- 	u8         uar_sz[0x6];
- 	u8         port_selection_cap[0x1];
- 	u8         reserved_at_248[0x1];
++	page_kasan_tag_reset(to);
++
+ 	if (system_supports_mte() && test_bit(PG_mte_tagged, &from->flags)) {
+ 		set_bit(PG_mte_tagged, &to->flags);
+-		page_kasan_tag_reset(to);
+ 		/*
+ 		 * We need smp_wmb() in between setting the flags and clearing the
+ 		 * tags because if another thread reads page->flags and builds a
 
 
