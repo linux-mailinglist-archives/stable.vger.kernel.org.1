@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E68713DD0
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27BFC713F14
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbjE1T3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45788 "EHLO
+        id S231175AbjE1TmL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230180AbjE1T3N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:13 -0400
+        with ESMTP id S231166AbjE1TmK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E91F3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F20E44
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA0D161D08
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C754EC433EF;
-        Sun, 28 May 2023 19:29:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0B6B61EDA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1965FC433D2;
+        Sun, 28 May 2023 19:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302144;
-        bh=3Uf595Jknc3eLB79ThMn9PGVeA3zUR2SdQBQF6VlH5I=;
+        s=korg; t=1685302901;
+        bh=tPTK8H6KULh7td848zI8KiUvWRrfkCyQuOLGGwh6RcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BYnRVsZrm52Mq7STBgO/cJsp/s/eJFkc3qKXE8HPC1w8kH5yGF1NNNNr4VfT1SOnu
-         Wkl0dX1/kXUqPSETsIYmjFp4ivQ6zNcC0qs5PVqEHVlXmlHMgxNnjqBqrSOaX4ld0E
-         nCIq4VnVEQvaUWXcsAi06Nj/8+OsMy/nN2UBZRM0=
+        b=Q7MCvrd/0ElyWOtYoBSKZreZk/1eyefa+Pbri+hQV2uZzAhDJE4LFr8Dw6iDtUzAp
+         7RWtkA0aMtpLnnl+oiXf+HpeWogyX1mwoFnXB1ZM++jgrUJsUetjTyI3Nw8iL3SDr3
+         cGBXuGUvSRiFyFU6iBQliM7+3kk7YTuSdyGfvSE8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Stylinski <kungfujesus06@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.3 017/127] ALSA: hda/ca0132: add quirk for EVGA X299 DARK
+        patches@lists.linux.dev,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Frank Wang <frank.wang@rock-chips.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 072/211] usb: typec: tcpm: fix multiple times discover svids error
 Date:   Sun, 28 May 2023 20:09:53 +0100
-Message-Id: <20230528190836.786646303@linuxfoundation.org>
+Message-Id: <20230528190845.413417271@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,33 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Stylinski <kungfujesus06@gmail.com>
+From: Frank Wang <frank.wang@rock-chips.com>
 
-commit 7843380d07bbeffd3ce6504e73cf61f840ae76ca upstream.
+[ Upstream commit dac3b192107b978198e89ec0f77375738352e0c8 ]
 
-This quirk is necessary for surround and other DSP effects to work
-with the onboard ca0132 based audio chipset for the EVGA X299 dark
-mainboard.
+PD3.0 Spec 6.4.4.3.2 say that only Responder supports 12 or more SVIDs,
+the Discover SVIDs Command Shall be executed multiple times until a
+Discover SVIDs VDO is returned ending either with a SVID value of
+0x0000 in the last part of the last VDO or with a VDO containing two
+SVIDs with values of 0x0000.
 
-Signed-off-by: Adam Stylinski <kungfujesus06@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=67071
-Link: https://lore.kernel.org/r/ZGopOe19T1QOwizS@eggsbenedict.adamsnet
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+In the current implementation, if the last VDO does not find that the
+Discover SVIDs Command would be executed multiple times even if the
+Responder SVIDs are less than 12, and we found some odd dockers just
+meet this case. So fix it.
+
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
+Link: https://lore.kernel.org/r/20230316081149.24519-1-frank.wang@rock-chips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_ca0132.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/tcpm/tcpm.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -1306,6 +1306,7 @@ static const struct snd_pci_quirk ca0132
- 	SND_PCI_QUIRK(0x1458, 0xA026, "Gigabyte G1.Sniper Z97", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x1458, 0xA036, "Gigabyte GA-Z170X-Gaming 7", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x3842, 0x1038, "EVGA X99 Classified", QUIRK_R3DI),
-+	SND_PCI_QUIRK(0x3842, 0x104b, "EVGA X299 Dark", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x3842, 0x1055, "EVGA Z390 DARK", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x1102, 0x0013, "Recon3D", QUIRK_R3D),
- 	SND_PCI_QUIRK(0x1102, 0x0018, "Recon3D", QUIRK_R3D),
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 8333c80b5f7c1..cf0e6a80815ae 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1126,7 +1126,21 @@ static bool svdm_consume_svids(struct tcpm_port *port, const u32 *p, int cnt)
+ 		pmdata->svids[pmdata->nsvids++] = svid;
+ 		tcpm_log(port, "SVID %d: 0x%x", pmdata->nsvids, svid);
+ 	}
+-	return true;
++
++	/*
++	 * PD3.0 Spec 6.4.4.3.2: The SVIDs are returned 2 per VDO (see Table
++	 * 6-43), and can be returned maximum 6 VDOs per response (see Figure
++	 * 6-19). If the Respondersupports 12 or more SVID then the Discover
++	 * SVIDs Command Shall be executed multiple times until a Discover
++	 * SVIDs VDO is returned ending either with a SVID value of 0x0000 in
++	 * the last part of the last VDO or with a VDO containing two SVIDs
++	 * with values of 0x0000.
++	 *
++	 * However, some odd dockers support SVIDs less than 12 but without
++	 * 0x0000 in the last VDO, so we need to break the Discover SVIDs
++	 * request and return false here.
++	 */
++	return cnt == 7;
+ abort:
+ 	tcpm_log(port, "SVID_DISCOVERY_MAX(%d) too low!", SVID_DISCOVERY_MAX);
+ 	return false;
+-- 
+2.39.2
+
 
 
