@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 706C4713F98
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C845713EAF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbjE1TrE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
+        id S230458AbjE1Thy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231322AbjE1TrD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:03 -0400
+        with ESMTP id S230455AbjE1Thx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD42A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5299C7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC94461F89
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D2AC433D2;
-        Sun, 28 May 2023 19:47:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 653F261E72
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82648C433D2;
+        Sun, 28 May 2023 19:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303221;
-        bh=DWouUBcUUKyG5P/mRFpT9u2ACDYfrVo1QG4YLTB0Tho=;
+        s=korg; t=1685302670;
+        bh=D3VxdUrhLXJfpaUNtbuYkeiprPSvDf1PPCHPUXc05jQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iu0EyvCL8S1UrP8zsHbzzdgJfW9snb16Z4QyrS3n5bhlH9TWB9w8pxjPIfrR3uxrc
-         ZLy57CbZ2oD1lJHAQQ2u7+gq4qHqW8g8eS/fR9sguoFeYN0WGb/6XyzK97DYRhsEMd
-         8jNu2aDV+lm0nEprE1aL5JHF4eNlG9ZRJ5MT/ZGQ=
+        b=ZexWIwr2rHyL8To/IAWVij8YQ9ijXtV+10kn93M0wCUCxTYTiaqJ9eQTqiwF8caeu
+         X3/RLDBU/Av3DMoxoDimwoacrG77tAo0aMUlJpTOZ7kZCqQ9erMza7OlW3qv7xxU04
+         VvNo+ZSl22XVlkkaUhv/Q/QnEbXEBD7mns2j9aeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 176/211] btrfs: use nofs when cleaning up aborted transactions
+        patches@lists.linux.dev,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 097/119] ASoC: Intel: avs: Fix declaration of enum avs_channel_config
 Date:   Sun, 28 May 2023 20:11:37 +0100
-Message-Id: <20230528190847.863721371@linuxfoundation.org>
+Message-Id: <20230528190838.754999255@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,166 +56,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-commit 597441b3436a43011f31ce71dc0a6c0bf5ce958a upstream.
+commit 1cf036deebcdec46d6348842bd2f8931202fd4cd upstream.
 
-Our CI system caught a lockdep splat:
+Constant 'C4_CHANNEL' does not exist on the firmware side. Value 0xC is
+reserved for 'C7_1' instead.
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  6.3.0-rc7+ #1167 Not tainted
-  ------------------------------------------------------
-  kswapd0/46 is trying to acquire lock:
-  ffff8c6543abd650 (sb_internal#2){++++}-{0:0}, at: btrfs_commit_inode_delayed_inode+0x5f/0x120
-
-  but task is already holding lock:
-  ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
-
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (fs_reclaim){+.+.}-{0:0}:
-	 fs_reclaim_acquire+0xa5/0xe0
-	 kmem_cache_alloc+0x31/0x2c0
-	 alloc_extent_state+0x1d/0xd0
-	 __clear_extent_bit+0x2e0/0x4f0
-	 try_release_extent_mapping+0x216/0x280
-	 btrfs_release_folio+0x2e/0x90
-	 invalidate_inode_pages2_range+0x397/0x470
-	 btrfs_cleanup_dirty_bgs+0x9e/0x210
-	 btrfs_cleanup_one_transaction+0x22/0x760
-	 btrfs_commit_transaction+0x3b7/0x13a0
-	 create_subvol+0x59b/0x970
-	 btrfs_mksubvol+0x435/0x4f0
-	 __btrfs_ioctl_snap_create+0x11e/0x1b0
-	 btrfs_ioctl_snap_create_v2+0xbf/0x140
-	 btrfs_ioctl+0xa45/0x28f0
-	 __x64_sys_ioctl+0x88/0xc0
-	 do_syscall_64+0x38/0x90
-	 entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  -> #0 (sb_internal#2){++++}-{0:0}:
-	 __lock_acquire+0x1435/0x21a0
-	 lock_acquire+0xc2/0x2b0
-	 start_transaction+0x401/0x730
-	 btrfs_commit_inode_delayed_inode+0x5f/0x120
-	 btrfs_evict_inode+0x292/0x3d0
-	 evict+0xcc/0x1d0
-	 inode_lru_isolate+0x14d/0x1e0
-	 __list_lru_walk_one+0xbe/0x1c0
-	 list_lru_walk_one+0x58/0x80
-	 prune_icache_sb+0x39/0x60
-	 super_cache_scan+0x161/0x1f0
-	 do_shrink_slab+0x163/0x340
-	 shrink_slab+0x1d3/0x290
-	 shrink_node+0x300/0x720
-	 balance_pgdat+0x35c/0x7a0
-	 kswapd+0x205/0x410
-	 kthread+0xf0/0x120
-	 ret_from_fork+0x29/0x50
-
-  other info that might help us debug this:
-
-   Possible unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(fs_reclaim);
-				 lock(sb_internal#2);
-				 lock(fs_reclaim);
-    lock(sb_internal#2);
-
-   *** DEADLOCK ***
-
-  3 locks held by kswapd0/46:
-   #0: ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
-   #1: ffffffffabe50270 (shrinker_rwsem){++++}-{3:3}, at: shrink_slab+0x113/0x290
-   #2: ffff8c6543abd0e0 (&type->s_umount_key#44){++++}-{3:3}, at: super_cache_scan+0x38/0x1f0
-
-  stack backtrace:
-  CPU: 0 PID: 46 Comm: kswapd0 Not tainted 6.3.0-rc7+ #1167
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x58/0x90
-   check_noncircular+0xd6/0x100
-   ? save_trace+0x3f/0x310
-   ? add_lock_to_list+0x97/0x120
-   __lock_acquire+0x1435/0x21a0
-   lock_acquire+0xc2/0x2b0
-   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
-   start_transaction+0x401/0x730
-   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
-   btrfs_commit_inode_delayed_inode+0x5f/0x120
-   btrfs_evict_inode+0x292/0x3d0
-   ? lock_release+0x134/0x270
-   ? __pfx_wake_bit_function+0x10/0x10
-   evict+0xcc/0x1d0
-   inode_lru_isolate+0x14d/0x1e0
-   __list_lru_walk_one+0xbe/0x1c0
-   ? __pfx_inode_lru_isolate+0x10/0x10
-   ? __pfx_inode_lru_isolate+0x10/0x10
-   list_lru_walk_one+0x58/0x80
-   prune_icache_sb+0x39/0x60
-   super_cache_scan+0x161/0x1f0
-   do_shrink_slab+0x163/0x340
-   shrink_slab+0x1d3/0x290
-   shrink_node+0x300/0x720
-   balance_pgdat+0x35c/0x7a0
-   kswapd+0x205/0x410
-   ? __pfx_autoremove_wake_function+0x10/0x10
-   ? __pfx_kswapd+0x10/0x10
-   kthread+0xf0/0x120
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x29/0x50
-   </TASK>
-
-This happens because when we abort the transaction in the transaction
-commit path we call invalidate_inode_pages2_range on our block group
-cache inodes (if we have space cache v1) and any delalloc inodes we may
-have.  The plain invalidate_inode_pages2_range() call passes through
-GFP_KERNEL, which makes sense in most cases, but not here.  Wrap these
-two invalidate callees with memalloc_nofs_save/memalloc_nofs_restore to
-make sure we don't end up with the fs reclaim dependency under the
-transaction dependency.
-
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 580a5912d1fe ("ASoC: Intel: avs: Declare module configuration types")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20230519201711.4073845-5-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/soc/intel/avs/messages.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4535,7 +4535,11 @@ static void btrfs_destroy_delalloc_inode
- 		 */
- 		inode = igrab(&btrfs_inode->vfs_inode);
- 		if (inode) {
-+			unsigned int nofs_flag;
-+
-+			nofs_flag = memalloc_nofs_save();
- 			invalidate_inode_pages2(inode->i_mapping);
-+			memalloc_nofs_restore(nofs_flag);
- 			iput(inode);
- 		}
- 		spin_lock(&root->delalloc_lock);
-@@ -4640,7 +4644,12 @@ static void btrfs_cleanup_bg_io(struct b
+--- a/sound/soc/intel/avs/messages.h
++++ b/sound/soc/intel/avs/messages.h
+@@ -611,7 +611,7 @@ enum avs_channel_config {
+ 	AVS_CHANNEL_CONFIG_DUAL_MONO = 9,
+ 	AVS_CHANNEL_CONFIG_I2S_DUAL_STEREO_0 = 10,
+ 	AVS_CHANNEL_CONFIG_I2S_DUAL_STEREO_1 = 11,
+-	AVS_CHANNEL_CONFIG_4_CHANNEL = 12,
++	AVS_CHANNEL_CONFIG_7_1 = 12,
+ 	AVS_CHANNEL_CONFIG_INVALID
+ };
  
- 	inode = cache->io_ctl.inode;
- 	if (inode) {
-+		unsigned int nofs_flag;
-+
-+		nofs_flag = memalloc_nofs_save();
- 		invalidate_inode_pages2(inode->i_mapping);
-+		memalloc_nofs_restore(nofs_flag);
-+
- 		BTRFS_I(inode)->generation = 0;
- 		cache->io_ctl.inode = NULL;
- 		iput(inode);
 
 
