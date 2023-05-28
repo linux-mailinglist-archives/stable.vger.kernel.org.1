@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81275713D4F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D132713F24
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbjE1TYB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
+        id S231164AbjE1Tma (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230008AbjE1TYB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37308B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:00 -0700 (PDT)
+        with ESMTP id S231185AbjE1TmX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F5DAF1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9CC061B84
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38A6C433EF;
-        Sun, 28 May 2023 19:23:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0506C61ECC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FE7C4339B;
+        Sun, 28 May 2023 19:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301839;
-        bh=kSat0sJ/N0+p8ggDTwS2c1Cf9r4fIShQhZT+PG8AXTs=;
+        s=korg; t=1685302940;
+        bh=XbUvXclutRd19punljQ+kVrKRrXJFdUCMOyw2XIq6BU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bOR4t0+A09PV+LPf4RdYulppquoCQ6wERZ0K4IalzzBJSmpUozZIi0V5jLATIzuOn
-         vyQBjZOWc+oJnjzfpGVvc0rMR+uJQkvfsV8aSorPTG6+mGGyUfPJhFit/zQDDHKwqj
-         MjF1woNlubp6N3wMHP3P7NbNlLoo8KMnd1hVaGPU=
+        b=UTNR3T/38BhXFEKcIXdpPy7+7YDUc4Q2KHkH6WOmp40Rvo1MhHaiZsqTXpYfPNJ5C
+         RtB/wUongZILbFW18J+viYRDvYqTk4msIlJHynE1+xPS8jGJaLrC/qkDN11voLK4HK
+         BXgkQSb4UIIpUadO+4pEiN5VPAzaVhz9OIVLk8r0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qiang Ning <qning0106@126.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/161] mfd: dln2: Fix memory leak in dln2_probe()
-Date:   Sun, 28 May 2023 20:09:40 +0100
-Message-Id: <20230528190838.977407271@linuxfoundation.org>
+        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 060/211] wifi: iwlwifi: pcie: Fix integer overflow in iwl_write_to_user_buf
+Date:   Sun, 28 May 2023 20:09:41 +0100
+Message-Id: <20230528190845.088773033@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,36 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiang Ning <qning0106@126.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 96da8f148396329ba769246cb8ceaa35f1ddfc48 ]
+[ Upstream commit 58d1b717879bfeabe09b35e41ad667c79933eb2e ]
 
-When dln2_setup_rx_urbs() in dln2_probe() fails, error out_free forgets
-to call usb_put_dev() to decrease the refcount of dln2->usb_dev.
+An integer overflow occurs in the iwl_write_to_user_buf() function,
+which is called by the iwl_dbgfs_monitor_data_read() function.
 
-Fix this by adding usb_put_dev() in the error handling code of
-dln2_probe().
+static bool iwl_write_to_user_buf(char __user *user_buf, ssize_t count,
+				  void *buf, ssize_t *size,
+				  ssize_t *bytes_copied)
+{
+	int buf_size_left = count - *bytes_copied;
 
-Signed-off-by: Qiang Ning <qning0106@126.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230330024353.4503-1-qning0106@126.com
+	buf_size_left = buf_size_left - (buf_size_left % sizeof(u32));
+	if (*size > buf_size_left)
+		*size = buf_size_left;
+
+If the user passes a SIZE_MAX value to the "ssize_t count" parameter,
+the ssize_t count parameter is assigned to "int buf_size_left".
+Then compare "*size" with "buf_size_left" . Here, "buf_size_left" is a
+negative number, so "*size" is assigned "buf_size_left" and goes into
+the third argument of the copy_to_user function, causing a heap overflow.
+
+This is not a security vulnerability because iwl_dbgfs_monitor_data_read()
+is a debugfs operation with 0400 privileges.
+
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.2d80ace81532.Iecfba549e0e0be21bbb0324675392e42e75bd5ad@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/dln2.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-index 707f4287ab4a0..80952237e4b43 100644
---- a/drivers/mfd/dln2.c
-+++ b/drivers/mfd/dln2.c
-@@ -797,6 +797,7 @@ static int dln2_probe(struct usb_interface *interface,
- 	dln2_stop_rx_urbs(dln2);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 7f8b7f7697cfd..fac7cc75bc31e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2835,7 +2835,7 @@ static bool iwl_write_to_user_buf(char __user *user_buf, ssize_t count,
+ 				  void *buf, ssize_t *size,
+ 				  ssize_t *bytes_copied)
+ {
+-	int buf_size_left = count - *bytes_copied;
++	ssize_t buf_size_left = count - *bytes_copied;
  
- out_free:
-+	usb_put_dev(dln2->usb_dev);
- 	dln2_free(dln2);
- 
- 	return ret;
+ 	buf_size_left = buf_size_left - (buf_size_left % sizeof(u32));
+ 	if (*size > buf_size_left)
 -- 
 2.39.2
 
