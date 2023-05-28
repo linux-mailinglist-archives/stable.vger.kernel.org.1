@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47963713F4E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B982713E7C
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbjE1ToD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58920 "EHLO
+        id S230381AbjE1Tf6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231238AbjE1ToC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:02 -0400
+        with ESMTP id S230379AbjE1Tf5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76836BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7C29A8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B9F561195
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AB9C433D2;
-        Sun, 28 May 2023 19:44:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 503FA61E2A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA14C433EF;
+        Sun, 28 May 2023 19:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303040;
-        bh=bK/xicEL7cY9VVu7q9JnXkDgT1fPIT/TlZj5cwCjBAI=;
+        s=korg; t=1685302555;
+        bh=h1i2rT2xKkS8lzEDpg23Mmpp/L53UR+cN7hT6jyGgBw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0VPudjwZq4SlTJr1sR/kBtrOvI51ix0WG3lDeZ5DMfnPX7TXOcz2nlNuaeaDOXlaM
-         J5ePKZ2s0Uk+PIGLVYrPXvwnu+ap1pRPUBLdv2txqixadCYZ9g+2C3fGbLTAdoKVnc
-         9n3Q9O3YRo95ciHz78h0Ngyn1G6YSnoo14Jpwifo=
+        b=MniKRDh/0BxA8fwHe/5irLg7TYyfUGEztsO1cCY29y1TzrQCbBN6tmxkMqSXt0H1J
+         Rdj3VhKHvFwkDCuhGA75dp28zRw7OSfii6awHCwomv+RmDkbssqmlGN2tSP9EfE6sa
+         Gw/Oy/SsyD9hJp4zmJH6iWRcFEDPD35s5NmoXyAY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olliver Schinagl <oliver@schinagl.nl>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 130/211] ALSA: hda: Fix Oops by 9.1 surround channel names
+        patches@lists.linux.dev, Jack Xiao <Jack.Xiao@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 051/119] drm/amd/amdgpu: limit one queue per gang
 Date:   Sun, 28 May 2023 20:10:51 +0100
-Message-Id: <20230528190846.768383621@linuxfoundation.org>
+Message-Id: <20230528190837.096878529@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,57 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-commit 3b44ec8c5c44790a82f07e90db45643c762878c6 upstream.
+commit 5ee33d905f89c18d4b33da6e5eefdae6060502df upstream.
 
-get_line_out_pfx() may trigger an Oops by overflowing the static array
-with more than 8 channels.  This was reported for MacBookPro 12,1 with
-Cirrus codec.
+Limit one queue per gang in mes self test,
+due to mes schq fw change.
 
-As a workaround, extend for the 9.1 channels and also fix the
-potential Oops by unifying the code paths accessing the same array
-with the proper size check.
-
-Reported-by: Olliver Schinagl <oliver@schinagl.nl>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/64d95eb0-dbdb-cff8-a8b1-988dc22b24cd@schinagl.nl
-Link: https://lore.kernel.org/r/20230516184412.24078-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_generic.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/sound/pci/hda/hda_generic.c
-+++ b/sound/pci/hda/hda_generic.c
-@@ -1153,8 +1153,8 @@ static bool path_has_mixer(struct hda_co
- 	return path && path->ctls[ctl_type];
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -1328,12 +1328,9 @@ int amdgpu_mes_self_test(struct amdgpu_d
+ 	struct amdgpu_mes_ctx_data ctx_data = {0};
+ 	struct amdgpu_ring *added_rings[AMDGPU_MES_CTX_MAX_RINGS] = { NULL };
+ 	int gang_ids[3] = {0};
+-	int queue_types[][2] = { { AMDGPU_RING_TYPE_GFX,
+-				   AMDGPU_MES_CTX_MAX_GFX_RINGS},
+-				 { AMDGPU_RING_TYPE_COMPUTE,
+-				   AMDGPU_MES_CTX_MAX_COMPUTE_RINGS},
+-				 { AMDGPU_RING_TYPE_SDMA,
+-				   AMDGPU_MES_CTX_MAX_SDMA_RINGS } };
++	int queue_types[][2] = { { AMDGPU_RING_TYPE_GFX, 1 },
++				 { AMDGPU_RING_TYPE_COMPUTE, 1 },
++				 { AMDGPU_RING_TYPE_SDMA, 1} };
+ 	int i, r, pasid, k = 0;
  
--static const char * const channel_name[4] = {
--	"Front", "Surround", "CLFE", "Side"
-+static const char * const channel_name[] = {
-+	"Front", "Surround", "CLFE", "Side", "Back",
- };
- 
- /* give some appropriate ctl name prefix for the given line out channel */
-@@ -1180,7 +1180,7 @@ static const char *get_line_out_pfx(stru
- 
- 	/* multi-io channels */
- 	if (ch >= cfg->line_outs)
--		return channel_name[ch];
-+		goto fixed_name;
- 
- 	switch (cfg->line_out_type) {
- 	case AUTO_PIN_SPEAKER_OUT:
-@@ -1232,6 +1232,7 @@ static const char *get_line_out_pfx(stru
- 	if (cfg->line_outs == 1 && !spec->multi_ios)
- 		return "Line Out";
- 
-+ fixed_name:
- 	if (ch >= ARRAY_SIZE(channel_name)) {
- 		snd_BUG();
- 		return "PCM";
+ 	pasid = amdgpu_pasid_alloc(16);
 
 
