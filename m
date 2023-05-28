@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EA86713C21
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BC81713C22
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbjE1TFN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
+        id S229659AbjE1TFP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbjE1TFJ (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:09 -0400
+        with ESMTP id S229658AbjE1TFP (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACCF0C7
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9452C7
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F933618BF
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F124C4339B;
-        Sun, 28 May 2023 19:05:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 866AD618C1
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C5EC433D2;
+        Sun, 28 May 2023 19:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685300707;
-        bh=6c0ePsoJjhjkRTU2GdeGoHJ9zzmQiscto2TZP2yKmZk=;
+        s=korg; t=1685300713;
+        bh=pZKJ4UFCVMZGErZwQ0NVyO645xGAyZFh3epCpurpfmA=;
         h=Subject:To:From:Date:From;
-        b=kK0FiQTH80LXtJZxFOG8uOuoqlfw9xR7vVfl4MrbK0ylSaAML8D7m33/HM5RZXT67
-         MhKpubF9PbedEpGNAxDGQo/7L9ijkI9JOZSZDKxU9g3rl0y7kzoYWqUBHJNhbqLudN
-         Ngk3a2Qh0aHW2OQSKWcwH3fRsM8+d8u2ZqrwgC6M=
-Subject: patch "iio: light: vcnl4035: fixed chip ID check" added to char-misc-linus
-To:     Frank.Li@nxp.com, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org
+        b=sYDg9ZY2CdTzEg/Z+4/JwWlYo9sdOlw0+02naNA5zanZ4CqQ0ndWxNpjU92kbIc5L
+         Z/Hsrxccpg/y6onh5ZJGNKRyIO/ZCEvIryxFFqGK5ge//kKrrEe+K9C0lfWBQsdnv3
+         FRuB+9P2sTMIlmzgSvl05SbG2D4eszRRI01GtI3A=
+Subject: patch "iio: addac: ad74413: fix resistance input processing" added to char-misc-linus
+To:     linux@rasmusvillemoes.dk, Jonathan.Cameron@huawei.com,
+        Stable@vger.kernel.org, nuno.sa@analog.com
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 20:04:39 +0100
-Message-ID: <2023052839-tainted-canine-1a6d@gregkh>
+Date:   Sun, 28 May 2023 20:04:40 +0100
+Message-ID: <2023052840-shortness-judge-3ab6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,7 +50,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: light: vcnl4035: fixed chip ID check
+    iio: addac: ad74413: fix resistance input processing
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -65,60 +65,42 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From a551c26e8e568fad42120843521529241b9bceec Mon Sep 17 00:00:00 2001
-From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 1 May 2023 10:36:04 -0400
-Subject: iio: light: vcnl4035: fixed chip ID check
+From 24febc99ca725dcf42d57168a2f4e8a75a5ade92 Mon Sep 17 00:00:00 2001
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Date: Wed, 3 May 2023 11:58:17 +0200
+Subject: iio: addac: ad74413: fix resistance input processing
 
-VCNL4035 register(0xE) ID_L and ID_M define as:
+On success, ad74413r_get_single_adc_result() returns IIO_VAL_INT aka
+1. So currently, the IIO_CHAN_INFO_PROCESSED case is effectively
+equivalent to the IIO_CHAN_INFO_RAW case, and we never call
+ad74413r_adc_to_resistance_result() to convert the adc measurement to
+ohms.
 
- ID_L: 0x80
- ID_H: 7:6 (0:0)
-       5:4 (0:0) slave address = 0x60 (7-bit)
-           (0:1) slave address = 0x51 (7-bit)
-           (1:0) slave address = 0x40 (7-bit)
-           (1:0) slave address = 0x41 (7-bit)
-       3:0 Version code default	(0:0:0:0)
+Check ret for being negative rather than non-zero.
 
-So just check ID_L.
-
-Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230501143605.1615549-1-Frank.Li@nxp.com
+Fixes: fea251b6a5dbd (iio: addac: add AD74413R driver)
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20230503095817.452551-1-linux@rasmusvillemoes.dk
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/vcnl4035.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/addac/ad74413r.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-index 14e29330e972..94f5d611e98c 100644
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -8,6 +8,7 @@
-  * TODO: Proximity
-  */
- #include <linux/bitops.h>
-+#include <linux/bitfield.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
-@@ -42,6 +43,7 @@
- #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
- #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
- #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
-+#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index 07e9f6ae16a8..e3366cf5eb31 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -1007,7 +1007,7 @@ static int ad74413r_read_raw(struct iio_dev *indio_dev,
  
- /* Default values */
- #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
-@@ -413,6 +415,7 @@ static int vcnl4035_init(struct vcnl4035_data *data)
- 		return ret;
- 	}
+ 		ret = ad74413r_get_single_adc_result(indio_dev, chan->channel,
+ 						     val);
+-		if (ret)
++		if (ret < 0)
+ 			return ret;
  
-+	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
- 	if (id != VCNL4035_DEV_ID_VAL) {
- 		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
- 			id, VCNL4035_DEV_ID_VAL);
+ 		ad74413r_adc_to_resistance_result(*val, val);
 -- 
 2.40.1
 
