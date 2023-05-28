@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67C15713CF2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B008E713C6F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbjE1TUS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38690 "EHLO
+        id S229739AbjE1TPL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:15:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbjE1TUS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:18 -0400
+        with ESMTP id S229484AbjE1TPK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A440A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B180A0;
+        Sun, 28 May 2023 12:15:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00DDB61AAF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E62EC433D2;
-        Sun, 28 May 2023 19:20:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCD736158B;
+        Sun, 28 May 2023 19:15:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5B7C433D2;
+        Sun, 28 May 2023 19:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301615;
-        bh=Jk04oLCR4uxu0mnexxQZDSDcwfLJI52lvp18/Wrop24=;
+        s=korg; t=1685301308;
+        bh=tkN2zENliMK06+4dajmPd0caINgJBS1oFBw8BKBvEnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m+84g2jtBJXSXPfYP+hdXh2EInP9zGYIDnn11vDr+oFeTIypDPCjYPdaf2rAndDbR
-         V9eWcbQhXYQooEcwfsJ94mTxKEzUkg4nWDi6xjIcKVb7sq44tu54Nm9+n9DLuSYpnD
-         Ox+drmwMMBirPhRba34iBUiE2RZp3m08pkVKqiAs=
+        b=KE0hmpIgAOp8o9ee5S/CXj5xompaCLG8E2kGb0kEs+vRNNpelYUwDUdjlaqIJDY8N
+         lAwv/8klNJ6ow6UOankol/4qhyI01TFK6Un7qnnof4h42LTaEqqdHgJldnK+A6jJu5
+         9E3+cTzH4X7sTwSGuGfgnGKf72jY0tsLuvwFq6oE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        syzkaller <syzkaller@googlegroups.com>,
-        George Kennedy <george.kennedy@oracle.com>,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 100/132] vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.14 65/86] netfilter: nf_tables: allow up to 64 bytes in the set element data area
 Date:   Sun, 28 May 2023 20:10:39 +0100
-Message-Id: <20230528190836.727468203@linuxfoundation.org>
+Message-Id: <20230528190831.047564073@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,116 +52,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 8fb9ea65c9d1338b0d2bb0a9122dc942cdd32357 ]
+[ fdb9c405e35bdc6e305b9b4e20ebc141ed14fc81 ]
 
-After a call to console_unlock() in vcs_write() the vc_data struct can be
-freed by vc_port_destruct(). Because of that, the struct vc_data pointer
-must be reloaded in the while loop in vcs_write() after console_lock() to
-avoid a UAF when vcs_size() is called.
+So far, the set elements could store up to 128-bits in the data area.
 
-Syzkaller reported a UAF in vcs_size().
-
-BUG: KASAN: slab-use-after-free in vcs_size (drivers/tty/vt/vc_screen.c:215)
-Read of size 4 at addr ffff8880beab89a8 by task repro_vcs_size/4119
-
-Call Trace:
- <TASK>
-__asan_report_load4_noabort (mm/kasan/report_generic.c:380)
-vcs_size (drivers/tty/vt/vc_screen.c:215)
-vcs_write (drivers/tty/vt/vc_screen.c:664)
-vfs_write (fs/read_write.c:582 fs/read_write.c:564)
-...
- <TASK>
-
-Allocated by task 1213:
-kmalloc_trace (mm/slab_common.c:1064)
-vc_allocate (./include/linux/slab.h:559 ./include/linux/slab.h:680
-    drivers/tty/vt/vt.c:1078 drivers/tty/vt/vt.c:1058)
-con_install (drivers/tty/vt/vt.c:3334)
-tty_init_dev (drivers/tty/tty_io.c:1303 drivers/tty/tty_io.c:1415
-    drivers/tty/tty_io.c:1392)
-tty_open (drivers/tty/tty_io.c:2082 drivers/tty/tty_io.c:2128)
-chrdev_open (fs/char_dev.c:415)
-do_dentry_open (fs/open.c:921)
-vfs_open (fs/open.c:1052)
-...
-
-Freed by task 4116:
-kfree (mm/slab_common.c:1016)
-vc_port_destruct (drivers/tty/vt/vt.c:1044)
-tty_port_destructor (drivers/tty/tty_port.c:296)
-tty_port_put (drivers/tty/tty_port.c:312)
-vt_disallocate_all (drivers/tty/vt/vt_ioctl.c:662 (discriminator 2))
-vt_ioctl (drivers/tty/vt/vt_ioctl.c:903)
-tty_ioctl (drivers/tty/tty_io.c:2778)
-...
-
-The buggy address belongs to the object at ffff8880beab8800
- which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 424 bytes inside of
- freed 1024-byte region [ffff8880beab8800, ffff8880beab8c00)
-
-The buggy address belongs to the physical page:
-page:00000000afc77580 refcount:1 mapcount:0 mapping:0000000000000000
-    index:0x0 pfn:0xbeab8
-head:00000000afc77580 order:3 entire_mapcount:0 nr_pages_mapped:0
-    pincount:0
-flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
-page_type: 0xffffffff()
-raw: 000fffffc0010200 ffff888100042dc0 ffffea000426de00 dead000000000002
-raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff8880beab8880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880beab8900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff8880beab8980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                  ^
- ffff8880beab8a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880beab8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-Disabling lock debugging due to kernel taint
-
-Fixes: ac751efa6a0d ("console: rename acquire/release_console_sem() to console_lock/unlock()")
-Cc: stable <stable@kernel.org>
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/1683889728-10411-1-git-send-email-george.kennedy@oracle.com
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vc_screen.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_tables.h |    4 ++++
+ net/netfilter/nf_tables_api.c     |   35 +++++++++++++++++++++++++----------
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/tty/vt/vc_screen.c b/drivers/tty/vt/vc_screen.c
-index 5decdbad2d65c..78ea9b9c64501 100644
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -504,10 +504,17 @@ vcs_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
- 			}
- 		}
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -229,6 +229,10 @@ struct nft_set_elem {
+ 		u32		buf[NFT_DATA_VALUE_MAXLEN / sizeof(u32)];
+ 		struct nft_data	val;
+ 	} key;
++	union {
++		u32		buf[NFT_DATA_VALUE_MAXLEN / sizeof(u32)];
++		struct nft_data val;
++	} data;
+ 	void			*priv;
+ };
  
--		/* The vcs_size might have changed while we slept to grab
--		 * the user buffer, so recheck.
-+		/* The vc might have been freed or vcs_size might have changed
-+		 * while we slept to grab the user buffer, so recheck.
- 		 * Return data written up to now on failure.
- 		 */
-+		vc = vcs_vc(inode, &viewed);
-+		if (!vc) {
-+			if (written)
-+				break;
-+			ret = -ENXIO;
-+			goto unlock_out;
-+		}
- 		size = vcs_size(vc, attr, false);
- 		if (size < 0) {
- 			if (written)
--- 
-2.39.2
-
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3954,6 +3954,25 @@ static int nft_setelem_parse_flags(const
+ 	return 0;
+ }
+ 
++static int nft_setelem_parse_data(struct nft_ctx *ctx, struct nft_set *set,
++				  struct nft_data_desc *desc,
++				  struct nft_data *data,
++				  struct nlattr *attr)
++{
++	int err;
++
++	err = nft_data_init(ctx, data, NFT_DATA_VALUE_MAXLEN, desc, attr);
++	if (err < 0)
++		return err;
++
++	if (desc->type != NFT_DATA_VERDICT && desc->len != set->dlen) {
++		nft_data_release(data, desc->type);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			    const struct nlattr *attr, u32 nlmsg_flags)
+ {
+@@ -3966,7 +3985,6 @@ static int nft_add_set_elem(struct nft_c
+ 	struct nft_object *obj = NULL;
+ 	struct nft_userdata *udata;
+ 	struct nft_data_desc desc;
+-	struct nft_data data;
+ 	enum nft_registers dreg;
+ 	struct nft_trans *trans;
+ 	u32 flags = 0;
+@@ -4045,15 +4063,11 @@ static int nft_add_set_elem(struct nft_c
+ 	}
+ 
+ 	if (nla[NFTA_SET_ELEM_DATA] != NULL) {
+-		err = nft_data_init(ctx, &data, sizeof(data), &desc,
+-				    nla[NFTA_SET_ELEM_DATA]);
++		err = nft_setelem_parse_data(ctx, set, &desc, &elem.data.val,
++					     nla[NFTA_SET_ELEM_DATA]);
+ 		if (err < 0)
+ 			goto err2;
+ 
+-		err = -EINVAL;
+-		if (set->dtype != NFT_DATA_VERDICT && desc.len != set->dlen)
+-			goto err3;
+-
+ 		dreg = nft_type_to_reg(set->dtype);
+ 		list_for_each_entry(binding, &set->bindings, list) {
+ 			struct nft_ctx bind_ctx = {
+@@ -4067,7 +4081,7 @@ static int nft_add_set_elem(struct nft_c
+ 				continue;
+ 
+ 			err = nft_validate_register_store(&bind_ctx, dreg,
+-							  &data,
++							  &elem.data.val,
+ 							  desc.type, desc.len);
+ 			if (err < 0)
+ 				goto err3;
+@@ -4089,7 +4103,8 @@ static int nft_add_set_elem(struct nft_c
+ 	}
+ 
+ 	err = -ENOMEM;
+-	elem.priv = nft_set_elem_init(set, &tmpl, elem.key.val.data, data.data,
++	elem.priv = nft_set_elem_init(set, &tmpl, elem.key.val.data,
++				      elem.data.val.data,
+ 				      timeout, GFP_KERNEL);
+ 	if (elem.priv == NULL)
+ 		goto err3;
+@@ -4156,7 +4171,7 @@ err4:
+ 	kfree(elem.priv);
+ err3:
+ 	if (nla[NFTA_SET_ELEM_DATA] != NULL)
+-		nft_data_release(&data, desc.type);
++		nft_data_release(&elem.data.val, desc.type);
+ err2:
+ 	nft_data_release(&elem.key.val, NFT_DATA_VALUE);
+ err1:
 
 
