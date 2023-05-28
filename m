@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46787713D63
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0DA713DD9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbjE1TYw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41830 "EHLO
+        id S230185AbjE1T3q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230063AbjE1TYv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 483A0A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:50 -0700 (PDT)
+        with ESMTP id S230186AbjE1T3p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BABDE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D20E961BDF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02D6C433D2;
-        Sun, 28 May 2023 19:24:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDC7961D24
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0867EC433EF;
+        Sun, 28 May 2023 19:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301889;
-        bh=ClCP30ritdjQUfuEBKlxvYgyYcUAhs0rUdyEIW3NyMs=;
+        s=korg; t=1685302166;
+        bh=gTYVc90+bL2RvBttS5Q34P5EPw3kkM7fw/29llbcLUM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xQl7NHMKQGx4W53xWjSbB4YgKFkBXJyQ8qk4rhOrZ6Xe+nGvQRv0HHNyCziYQYbbK
-         HjR3QN8fqYF2+W0nsKXNiwypKDkEhRLKd4oRiLfL1r2fNyua9Ho9Gp2iiQ7sX0bSbU
-         0iPlvK6TrabtKWPhQ0ROm9AsDAaiCKZelwQ9JQBg=
+        b=iriLmZvORR7/nP7eilmoH/gmYlVbQb9q+84yrN6lS/LPav9wphXUN0B1KV9Y3/z0a
+         b5/6kbO2bV8osQ6KpU6hm1zzy7w7fIqjToWq+dDdT5KC0FDpiTTWN7IgyejznJQA+P
+         XCmxP5apKJSQI6kPhRDj/d+tt6dpiUAkcrmP1UBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 077/161] wifi: iwlwifi: mvm: dont trust firmware n_channels
+        patches@lists.linux.dev, stable@kernel.org
+Subject: [PATCH 6.3 025/127] ASoC: rt5682: Disable jack detection interrupt during suspend
 Date:   Sun, 28 May 2023 20:10:01 +0100
-Message-Id: <20230528190839.595788427@linuxfoundation.org>
+Message-Id: <20230528190837.079713041@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,60 +52,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Matthias Kaehlcke <mka@chromium.org>
 
-[ Upstream commit 682b6dc29d98e857e6ca4bbc077c7dc2899b7473 ]
+commit 8b271370e963370703819bd9795a54d658071bed upstream.
 
-If the firmware sends us a corrupted MCC response with
-n_channels much larger than the command response can be,
-we might copy far too much (uninitialized) memory and
-even crash if the n_channels is large enough to make it
-run out of the one page allocated for the FW response.
+The rt5682 driver switches its regmap to cache-only when the
+device suspends and back to regular mode on resume. When the
+jack detect interrupt fires rt5682_irq() schedules the jack
+detect work. This can result in invalid reads from the regmap
+in cache-only mode if the work runs before the device has
+resumed:
 
-Fix that by checking the lengths. Doing a < comparison
-would be sufficient, but the firmware should be doing
-it correctly, so check more strictly.
+[   56.245502] rt5682 9-001a: ASoC: error at soc_component_read_no_lock on rt5682.9-001a for register: [0x000000f0] -16
 
-Fixes: dcaf9f5ecb6f ("iwlwifi: mvm: add MCC update FW API")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230514120631.d7b233139eb4.I51fd319df8e9d41881fc8450e83d78049518a79a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Disable the jack detection interrupt during suspend and
+re-enable it on resume. The driver already schedules the
+jack detection work on resume, so any state change during
+suspend is still handled.
+
+This is essentially the same as commit f7d00a9be147 ("SoC:
+rt5682s: Disable jack detection interrupt during suspend")
+for the rt5682s.
+
+Cc: stable@kernel.org
+Signed-off-by: Matthias Kaehlcke <mka@chromium.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org
+Reviewed-by: Stephen Boyd <swboyd@chromium.org
+Link: https://lore.kernel.org/r/20230516164629.1.Ibf79e94b3442eecc0054d2b478779cc512d967fc@changeid
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/codecs/rt5682-i2c.c |    4 +++-
+ sound/soc/codecs/rt5682.c     |    6 ++++++
+ sound/soc/codecs/rt5682.h     |    1 +
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index f49887379c43f..f485c0dd75d60 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -508,6 +508,11 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
- 		struct iwl_mcc_update_resp *mcc_resp = (void *)pkt->data;
+--- a/sound/soc/codecs/rt5682-i2c.c
++++ b/sound/soc/codecs/rt5682-i2c.c
+@@ -267,7 +267,9 @@ static int rt5682_i2c_probe(struct i2c_c
+ 		ret = devm_request_threaded_irq(&i2c->dev, i2c->irq, NULL,
+ 			rt5682_irq, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING
+ 			| IRQF_ONESHOT, "rt5682", rt5682);
+-		if (ret)
++		if (!ret)
++			rt5682->irq = i2c->irq;
++		else
+ 			dev_err(&i2c->dev, "Failed to reguest IRQ: %d\n", ret);
+ 	}
  
- 		n_channels =  __le32_to_cpu(mcc_resp->n_channels);
-+		if (iwl_rx_packet_payload_len(pkt) !=
-+		    struct_size(mcc_resp, channels, n_channels)) {
-+			resp_cp = ERR_PTR(-EINVAL);
-+			goto exit;
-+		}
- 		resp_len = sizeof(struct iwl_mcc_update_resp) +
- 			   n_channels * sizeof(__le32);
- 		resp_cp = kmemdup(mcc_resp, resp_len, GFP_KERNEL);
-@@ -519,6 +524,11 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
- 		struct iwl_mcc_update_resp_v3 *mcc_resp_v3 = (void *)pkt->data;
+--- a/sound/soc/codecs/rt5682.c
++++ b/sound/soc/codecs/rt5682.c
+@@ -2959,6 +2959,9 @@ static int rt5682_suspend(struct snd_soc
+ 	if (rt5682->is_sdw)
+ 		return 0;
  
- 		n_channels =  __le32_to_cpu(mcc_resp_v3->n_channels);
-+		if (iwl_rx_packet_payload_len(pkt) !=
-+		    struct_size(mcc_resp_v3, channels, n_channels)) {
-+			resp_cp = ERR_PTR(-EINVAL);
-+			goto exit;
-+		}
- 		resp_len = sizeof(struct iwl_mcc_update_resp) +
- 			   n_channels * sizeof(__le32);
- 		resp_cp = kzalloc(resp_len, GFP_KERNEL);
--- 
-2.39.2
-
++	if (rt5682->irq)
++		disable_irq(rt5682->irq);
++
+ 	cancel_delayed_work_sync(&rt5682->jack_detect_work);
+ 	cancel_delayed_work_sync(&rt5682->jd_check_work);
+ 	if (rt5682->hs_jack && (rt5682->jack_type & SND_JACK_HEADSET) == SND_JACK_HEADSET) {
+@@ -3027,6 +3030,9 @@ static int rt5682_resume(struct snd_soc_
+ 	mod_delayed_work(system_power_efficient_wq,
+ 		&rt5682->jack_detect_work, msecs_to_jiffies(0));
+ 
++	if (rt5682->irq)
++		enable_irq(rt5682->irq);
++
+ 	return 0;
+ }
+ #else
+--- a/sound/soc/codecs/rt5682.h
++++ b/sound/soc/codecs/rt5682.h
+@@ -1462,6 +1462,7 @@ struct rt5682_priv {
+ 	int pll_out[RT5682_PLLS];
+ 
+ 	int jack_type;
++	int irq;
+ 	int irq_work_delay_time;
+ };
+ 
 
 
