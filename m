@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91149713FC6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96AFA713E34
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231386AbjE1Ts4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
+        id S230293AbjE1TdE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:33:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231387AbjE1Tsy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:54 -0400
+        with ESMTP id S230298AbjE1TdC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783A79C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89709C7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFE1262005
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3D3C433D2;
-        Sun, 28 May 2023 19:48:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D5CB61DC5
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16367C433D2;
+        Sun, 28 May 2023 19:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303329;
-        bh=dvRbrFDIMtMzICWAYyxWxGgAdwwQwzfYWXnUnAc7OXE=;
+        s=korg; t=1685302380;
+        bh=p/1qBNSjHhVQDzfbR+YBDXcVD80c/BNa3Oh5NZ0Pr2s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=syEWSrrjgiMbNjsGYSqx8Fl3sU66GLx7dShtbYTYh1O7EgV5PQHOFJ+SwZbxU3qqm
-         pKZR6B9tMbM/OmaSKvmVOn8VDH2taHbhwt7xY1uf5lZy4VneX0CBLuZIpKYlIaWcah
-         2RWZFL7rIlaJjg33OQKPZLnSrQnO0BEtHo/Gl5Ss=
+        b=x+/YBcLerDOITx/8OksF9OFNxiE6bSvrbrqSvCguMcqe5LD1oW9+1DGBFe77P2euZ
+         4Fd6aZS16tCXPhWxPvXzcgSTkqpo1ZGZauhfkxKVvZGyI3XEuJN9dxYLZrSczvn4ZK
+         dexUiUWqNmAJBNOiankEe/WvQ3EgwDr1KA3HgkOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 07/69] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
+        patches@lists.linux.dev, Tariq Toukan <tariqt@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.3 111/127] net/mlx5e: do as little as possible in napi poll when budget is 0
 Date:   Sun, 28 May 2023 20:11:27 +0100
-Message-Id: <20230528190828.616778972@linuxfoundation.org>
+Message-Id: <20230528190839.871037946@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,115 +55,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Jakub Kicinski <kuba@kernel.org>
 
-(backported from upstream 8a5299a1278eadf1e08a598a5345c376206f171e)
+commit afbed3f74830163f9559579dee382cac3cff82da upstream.
 
-For different reasons, fsl-spi driver performs bits_per_word
-modifications for different reasons:
-- On CPU mode, to minimise amount of interrupts
-- On CPM/QE mode to work around controller byte order
+NAPI gets called with budget of 0 from netpoll, which has interrupts
+disabled. We should try to free some space on Tx rings and nothing
+else.
 
-For CPU mode that's done in fsl_spi_prepare_message() while
-for CPM mode that's done in fsl_spi_setup_transfer().
+Specifically do not try to handle XDP TX or try to refill Rx buffers -
+we can't use the page pool from IRQ context. Don't check if IRQs moved,
+either, that makes no sense in netpoll. Netpoll calls _all_ the rings
+from whatever CPU it happens to be invoked on.
 
-Reunify all of it in fsl_spi_prepare_message(), and catch
-impossible cases early through master's bits_per_word_mask
-instead of returning EINVAL later.
+In general do as little as possible, the work quickly adds up when
+there's tens of rings to poll.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The immediate stack trace I was seeing is:
+
+    __do_softirq+0xd1/0x2c0
+    __local_bh_enable_ip+0xc7/0x120
+    </IRQ>
+    <TASK>
+    page_pool_put_defragged_page+0x267/0x320
+    mlx5e_free_xdpsq_desc+0x99/0xd0
+    mlx5e_poll_xdpsq_cq+0x138/0x3b0
+    mlx5e_napi_poll+0xc3/0x8b0
+    netpoll_poll_dev+0xce/0x150
+
+AFAIU page pool takes a BH lock, releases it and since BH is now
+enabled tries to run softirqs.
+
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Fixes: 60bbf7eeef10 ("mlx5: use page_pool for xdp_return_frame call")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-spi.c |   50 +++++++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 27 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -203,26 +203,6 @@ static int mspi_apply_cpu_mode_quirks(st
- 	return bits_per_word;
- }
- 
--static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
--				struct spi_device *spi,
--				int bits_per_word)
--{
--	/* CPM/QE uses Little Endian for words > 8
--	 * so transform 16 and 32 bits words into 8 bits
--	 * Unfortnatly that doesn't work for LSB so
--	 * reject these for now */
--	/* Note: 32 bits word, LSB works iff
--	 * tfcr/rfcr is set to CPMFCR_GBL */
--	if (spi->mode & SPI_LSB_FIRST &&
--	    bits_per_word > 8)
--		return -EINVAL;
--	if (bits_per_word <= 8)
--		return bits_per_word;
--	if (bits_per_word == 16 || bits_per_word == 32)
--		return 8; /* pretend its 8 bits */
--	return -EINVAL;
--}
--
- static int fsl_spi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
- {
-@@ -250,9 +230,6 @@ static int fsl_spi_setup_transfer(struct
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else
--		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
--							  bits_per_word);
- 
- 	if (bits_per_word < 0)
- 		return bits_per_word;
-@@ -370,14 +347,27 @@ static int fsl_spi_do_one_msg(struct spi
- 	 * In CPU mode, optimize large byte transfers to use larger
- 	 * bits_per_word values to reduce number of interrupts taken.
- 	 */
--	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
--		list_for_each_entry(t, &m->transfers, transfer_list) {
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
- 			if (t->len < 256 || t->bits_per_word != 8)
- 				continue;
- 			if ((t->len & 3) == 0)
- 				t->bits_per_word = 32;
- 			else if ((t->len & 1) == 0)
- 				t->bits_per_word = 16;
-+		} else {
-+			/*
-+			 * CPM/QE uses Little Endian for words > 8
-+			 * so transform 16 and 32 bits words into 8 bits
-+			 * Unfortnatly that doesn't work for LSB so
-+			 * reject these for now
-+			 * Note: 32 bits word, LSB works iff
-+			 * tfcr/rfcr is set to CPMFCR_GBL
-+			 */
-+			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
-+				return -EINVAL;
-+			if (t->bits_per_word == 16 || t->bits_per_word == 32)
-+				t->bits_per_word = 8; /* pretend its 8 bits */
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+@@ -161,20 +161,22 @@ int mlx5e_napi_poll(struct napi_struct *
  		}
  	}
  
-@@ -635,8 +625,14 @@ static struct spi_master *fsl_spi_probe(
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
- 		fsl_spi_grlib_probe(dev);
- 
--	master->bits_per_word_mask =
--		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
-+	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
-+	else
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
++	/* budget=0 means we may be in IRQ context, do as little as possible */
++	if (unlikely(!budget))
++		goto out;
 +
-+	master->bits_per_word_mask &=
- 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
+ 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
  
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
+ 	if (c->xdp)
+ 		busy |= mlx5e_poll_xdpsq_cq(&c->rq_xdpsq.cq);
+ 
+-	if (likely(budget)) { /* budget=0 means: don't poll rx rings */
+-		if (xsk_open)
+-			work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
++	if (xsk_open)
++		work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
+ 
+-		if (likely(budget - work_done))
+-			work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
++	if (likely(budget - work_done))
++		work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
+ 
+-		busy |= work_done == budget;
+-	}
++	busy |= work_done == budget;
+ 
+ 	mlx5e_poll_ico_cq(&c->icosq.cq);
+ 	if (mlx5e_poll_ico_cq(&c->async_icosq.cq))
 
 
