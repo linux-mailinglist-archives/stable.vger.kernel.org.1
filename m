@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B24B713CD4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3262B713E55
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229861AbjE1TTB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
+        id S230333AbjE1Teg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229862AbjE1TTB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F91CA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:00 -0700 (PDT)
+        with ESMTP id S230328AbjE1Tee (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD09BB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA8C361A87
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1375FC433EF;
-        Sun, 28 May 2023 19:18:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86E7E61DEA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5167C433EF;
+        Sun, 28 May 2023 19:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301539;
-        bh=jFBt1gVYkgEfMteB6WudiHutoGxDRJdxU0IIdd2TB5E=;
+        s=korg; t=1685302473;
+        bh=MXNu0FWdkJAoZoD81XoLIFEPKetyxw5nBcEGpKvSS5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rtbhUZcwWnHOyij8Z0Ty49Mc+OdLpTpkwBpjoidcK/uLPmXSt2ICKdwbJMJmlIuFm
-         SnJY/ZlCvspKMYlAhzHmVsc3DDoHXJcV80uTLif8yxpfYR722FYp/ZqouJ85TNeETo
-         LLLQS3W0Gt9oYVNiDAaVSntsgz/oWbftJaoF+FVs=
+        b=EEM1w8tDzRzCNB77h1QiPde8Vu8MszaWBt8OPHp0biEyYuN5y57uAtBxozyi+mmtK
+         FXlF8SCooTZeFYU0fobD68bTw2Qg3gDn5JmyCOQoVvBS/06f1cAQd0QO/41XuASfUT
+         AcMxb3F3ItRPPeAByYgJiEbd/yuUQUudasCLXDrY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nikhil Mahale <nmahale@nvidia.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 070/132] ALSA: hda: Add NVIDIA codec IDs a3 through a7 to patch table
+        patches@lists.linux.dev, Jack Xiao <Jack.Xiao@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        "Gong, Richard" <richard.gong@amd.com>,
+        Evan Quan <evan.quan@amd.com>
+Subject: [PATCH 6.1 009/119] drm/amd/amdgpu: update mes11 api def
 Date:   Sun, 28 May 2023 20:10:09 +0100
-Message-Id: <20230528190835.681855513@linuxfoundation.org>
+Message-Id: <20230528190835.666218139@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,38 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikhil Mahale <nmahale@nvidia.com>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-commit dc4f2ccaedddb489a83e7b12ebbdc347272aacc9 upstream.
+commit 1e7bbdba68baf6af7500dd636f18b6fcce58e945 upstream.
 
-These IDs are for AD102, AD103, AD104, AD106, and AD107 gpus with
-audio functions that are largely similar to the existing ones.
+Update the api def of mes11.
 
-Tested audio using gnome-settings, over HDMI, DP-SST and DP-MST
-connections on AD106 gpu.
-
-Signed-off-by: Nikhil Mahale <nmahale@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230517090736.15088-1-nmahale@nvidia.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Tested-and-acked-by: Evan Quan <evan.quan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Gong, Richard" <richard.gong@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/include/mes_v11_api_def.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -3937,6 +3937,11 @@ HDA_CODEC_ENTRY(0x10de009d, "GPU 9d HDMI
- HDA_CODEC_ENTRY(0x10de009e, "GPU 9e HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009f, "GPU 9f HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a0, "GPU a0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a3, "GPU a3 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a4, "GPU a4 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a5, "GPU a5 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x11069f80, "VX900 HDMI/DP",	patch_via_hdmi),
+--- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+@@ -222,7 +222,11 @@ union MESAPI_SET_HW_RESOURCES {
+ 				uint32_t apply_grbm_remote_register_dummy_read_wa : 1;
+ 				uint32_t second_gfx_pipe_enabled : 1;
+ 				uint32_t enable_level_process_quantum_check : 1;
+-				uint32_t reserved	: 25;
++				uint32_t legacy_sch_mode : 1;
++				uint32_t disable_add_queue_wptr_mc_addr : 1;
++				uint32_t enable_mes_event_int_logging : 1;
++				uint32_t enable_reg_active_poll : 1;
++				uint32_t reserved	: 21;
+ 			};
+ 			uint32_t	uint32_t_all;
+ 		};
 
 
