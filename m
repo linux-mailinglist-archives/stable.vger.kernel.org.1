@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A11CD713DD7
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA5E713CE7
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230178AbjE1T3l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46240 "EHLO
+        id S229883AbjE1TTv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjE1T3k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70DF8B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:22 -0700 (PDT)
+        with ESMTP id S229893AbjE1TTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68FD0C9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05B4F61D16
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0AFC433EF;
-        Sun, 28 May 2023 19:29:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2C7461AAF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE30C4339B;
+        Sun, 28 May 2023 19:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302161;
-        bh=4v7qDBtuBY6ifXIaIuwgt1YpHmg1lNqgT+dyUE2CDEU=;
+        s=korg; t=1685301587;
+        bh=7/jRzyfEQkVboNFA0NbjntpeVuSKHnNy9XbtqROyMSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fCL0hu2WGFqdlyBv8pFvdKfzPupVSmrimamfKZJYWLNdpHD77CnNpYyUuz7oUUehj
-         emLn9PfwS4J4PY+cUITyTKZHkyFkR8a1VOxG5i0ZFH7fAE7yd7Gwoto3wD2SyZayLF
-         G+GevYeKFqolQMN0zzhDwjeSMzitPSBSmHuiEjxQ=
+        b=mDZJ4oIz88HQBNeMv75aKJEf6JgBPOdExBkkcCAw4ih1V3Hj7ELUo0j7NwTUWBTnS
+         qjjQ6dRKvOnTELaWMxStzEmdEPv3l4Zm/04LaRrw/L1IdCrQMWPhwozb9CIR/gE6ea
+         mAoXFJVlnoX1lnwa8yXu/DKoIuBjyoHk5t/vlwiY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.3 023/127] power: supply: axp288_fuel_gauge: Fix external_power_changed race
-Date:   Sun, 28 May 2023 20:09:59 +0100
-Message-Id: <20230528190837.005558478@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+632b5d9964208bfef8c0@syzkaller.appspotmail.com,
+        Eric Dumazet <edumazet@google.com>,
+        Dong Chenchen <dongchenchen2@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 061/132] net: nsh: Use correct mac_offset to unwind gso skb in nsh_gso_segment()
+Date:   Sun, 28 May 2023 20:10:00 +0100
+Message-Id: <20230528190835.422770817@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,44 +57,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-commit f8319774d6f1567d6e7d03653174ab0c82c5c66d upstream.
+[ Upstream commit c83b49383b595be50647f0c764a48c78b5f3c4f8 ]
 
-fuel_gauge_external_power_changed() dereferences info->bat,
-which gets sets in axp288_fuel_gauge_probe() like this:
+As the call trace shows, skb_panic was caused by wrong skb->mac_header
+in nsh_gso_segment():
 
-  info->bat = devm_power_supply_register(dev, &fuel_gauge_desc, &psy_cfg);
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 3 PID: 2737 Comm: syz Not tainted 6.3.0-next-20230505 #1
+RIP: 0010:skb_panic+0xda/0xe0
+call Trace:
+ skb_push+0x91/0xa0
+ nsh_gso_segment+0x4f3/0x570
+ skb_mac_gso_segment+0x19e/0x270
+ __skb_gso_segment+0x1e8/0x3c0
+ validate_xmit_skb+0x452/0x890
+ validate_xmit_skb_list+0x99/0xd0
+ sch_direct_xmit+0x294/0x7c0
+ __dev_queue_xmit+0x16f0/0x1d70
+ packet_xmit+0x185/0x210
+ packet_snd+0xc15/0x1170
+ packet_sendmsg+0x7b/0xa0
+ sock_sendmsg+0x14f/0x160
 
-As soon as devm_power_supply_register() has called device_add()
-the external_power_changed callback can get called. So there is a window
-where fuel_gauge_external_power_changed() may get called while
-info->bat has not been set yet leading to a NULL pointer dereference.
+The root cause is:
+nsh_gso_segment() use skb->network_header - nhoff to reset mac_header
+in skb_gso_error_unwind() if inner-layer protocol gso fails.
+However, skb->network_header may be reset by inner-layer protocol
+gso function e.g. mpls_gso_segment. skb->mac_header reset by the
+inaccurate network_header will be larger than skb headroom.
 
-Fixing this is easy. The external_power_changed callback gets passed
-the power_supply which will eventually get stored in info->bat,
-so fuel_gauge_external_power_changed() can simply directly use
-the passed in psy argument which is always valid.
+nsh_gso_segment
+    nhoff = skb->network_header - skb->mac_header;
+    __skb_pull(skb,nsh_len)
+    skb_mac_gso_segment
+        mpls_gso_segment
+            skb_reset_network_header(skb);//skb->network_header+=nsh_len
+            return -EINVAL;
+    skb_gso_error_unwind
+        skb_push(skb, nsh_len);
+        skb->mac_header = skb->network_header - nhoff;
+        // skb->mac_header > skb->headroom, cause skb_push panic
 
-Fixes: 30abb3d07929 ("power: supply: axp288_fuel_gauge: Take lock before updating the valid flag")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use correct mac_offset to restore mac_header and get rid of nhoff.
+
+Fixes: c411ed854584 ("nsh: add GSO support")
+Reported-by: syzbot+632b5d9964208bfef8c0@syzkaller.appspotmail.com
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp288_fuel_gauge.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nsh/nsh.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/power/supply/axp288_fuel_gauge.c
-+++ b/drivers/power/supply/axp288_fuel_gauge.c
-@@ -507,7 +507,7 @@ static void fuel_gauge_external_power_ch
- 	mutex_lock(&info->lock);
- 	info->valid = 0; /* Force updating of the cached registers */
- 	mutex_unlock(&info->lock);
--	power_supply_changed(info->bat);
-+	power_supply_changed(psy);
- }
+diff --git a/net/nsh/nsh.c b/net/nsh/nsh.c
+index 1a30e165eeb4f..a5fa25555d7eb 100644
+--- a/net/nsh/nsh.c
++++ b/net/nsh/nsh.c
+@@ -80,13 +80,12 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
+ 				       netdev_features_t features)
+ {
+ 	struct sk_buff *segs = ERR_PTR(-EINVAL);
++	u16 mac_offset = skb->mac_header;
+ 	unsigned int nsh_len, mac_len;
+ 	__be16 proto;
+-	int nhoff;
  
- static struct power_supply_desc fuel_gauge_desc = {
+ 	skb_reset_network_header(skb);
+ 
+-	nhoff = skb->network_header - skb->mac_header;
+ 	mac_len = skb->mac_len;
+ 
+ 	if (unlikely(!pskb_may_pull(skb, NSH_BASE_HDR_LEN)))
+@@ -111,15 +110,14 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
+ 	segs = skb_mac_gso_segment(skb, features);
+ 	if (IS_ERR_OR_NULL(segs)) {
+ 		skb_gso_error_unwind(skb, htons(ETH_P_NSH), nsh_len,
+-				     skb->network_header - nhoff,
+-				     mac_len);
++				     mac_offset, mac_len);
+ 		goto out;
+ 	}
+ 
+ 	for (skb = segs; skb; skb = skb->next) {
+ 		skb->protocol = htons(ETH_P_NSH);
+ 		__skb_push(skb, nsh_len);
+-		skb_set_mac_header(skb, -nhoff);
++		skb->mac_header = mac_offset;
+ 		skb->network_header = skb->mac_header + mac_len;
+ 		skb->mac_len = mac_len;
+ 	}
+-- 
+2.39.2
+
 
 
