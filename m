@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBE3713C20
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA86713C21
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjE1TFI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60140 "EHLO
+        id S229608AbjE1TFN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjE1TFI (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:08 -0400
+        with ESMTP id S229658AbjE1TFJ (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B43C7
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACCF0C7
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D48506160D
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CAAC4339B;
-        Sun, 28 May 2023 19:05:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F933618BF
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F124C4339B;
+        Sun, 28 May 2023 19:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685300705;
-        bh=zZUpe1+pPQyWP6XC1Gu/73zpcP1NThPMIT0p+IbAHCc=;
+        s=korg; t=1685300707;
+        bh=6c0ePsoJjhjkRTU2GdeGoHJ9zzmQiscto2TZP2yKmZk=;
         h=Subject:To:From:Date:From;
-        b=Sy6DdHi0wWLTWmg0cL51B0TsBuFNkRqdW1NpRY4Y5MDtR0qOoxVYEF90z7JcCEWfc
-         bHhUH/nZem7WfG8OSejaCs3IWMG0i624F2b6D5QJg4V4HeNh26sn3GvuTG3kag0Bdl
-         yw3jsggFcj7ia/t/36S1F00fix3k7seIW8fXLggQ=
-Subject: patch "iio: adc: stm32-adc: skip adc-diff-channels setup if none is present" added to char-misc-linus
-To:     sean@geanix.com, Jonathan.Cameron@huawei.com,
+        b=kK0FiQTH80LXtJZxFOG8uOuoqlfw9xR7vVfl4MrbK0ylSaAML8D7m33/HM5RZXT67
+         MhKpubF9PbedEpGNAxDGQo/7L9ijkI9JOZSZDKxU9g3rl0y7kzoYWqUBHJNhbqLudN
+         Ngk3a2Qh0aHW2OQSKWcwH3fRsM8+d8u2ZqrwgC6M=
+Subject: patch "iio: light: vcnl4035: fixed chip ID check" added to char-misc-linus
+To:     Frank.Li@nxp.com, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 20:04:38 +0100
-Message-ID: <2023052838-overreach-twelve-aaca@gregkh>
+Date:   Sun, 28 May 2023 20:04:39 +0100
+Message-ID: <2023052839-tainted-canine-1a6d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,7 +50,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: stm32-adc: skip adc-diff-channels setup if none is present
+    iio: light: vcnl4035: fixed chip ID check
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -65,57 +65,60 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 9c0d6ccd7d6bbd275e390b55a3390b4274291d95 Mon Sep 17 00:00:00 2001
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Wed, 3 May 2023 18:20:28 +0200
-Subject: iio: adc: stm32-adc: skip adc-diff-channels setup if none is present
+From a551c26e8e568fad42120843521529241b9bceec Mon Sep 17 00:00:00 2001
+From: Frank Li <Frank.Li@nxp.com>
+Date: Mon, 1 May 2023 10:36:04 -0400
+Subject: iio: light: vcnl4035: fixed chip ID check
 
-If no adc differential channels are defined driver will fail with EINVAL:
-stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
+VCNL4035 register(0xE) ID_L and ID_M define as:
 
-Fix this by skipping the initialization if no channels are defined.
+ ID_L: 0x80
+ ID_H: 7:6 (0:0)
+       5:4 (0:0) slave address = 0x60 (7-bit)
+           (0:1) slave address = 0x51 (7-bit)
+           (1:0) slave address = 0x40 (7-bit)
+           (1:0) slave address = 0x41 (7-bit)
+       3:0 Version code default	(0:0:0:0)
 
-This applies only to the legacy way of initializing adc channels.
+So just check ID_L.
 
-Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://lore.kernel.org/r/20230503162029.3654093-1-sean@geanix.com
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230501143605.1615549-1-Frank.Li@nxp.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/stm32-adc.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/iio/light/vcnl4035.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 1aadb2ad2cab..c105d82c3e45 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -2006,16 +2006,15 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
- 	 * to get the *real* number of channels.
- 	 */
- 	ret = device_property_count_u32(dev, "st,adc-diff-channels");
--	if (ret < 0)
--		return ret;
--
--	ret /= (int)(sizeof(struct stm32_adc_diff_channel) / sizeof(u32));
--	if (ret > adc_info->max_channels) {
--		dev_err(&indio_dev->dev, "Bad st,adc-diff-channels?\n");
--		return -EINVAL;
--	} else if (ret > 0) {
--		adc->num_diff = ret;
--		num_channels += ret;
-+	if (ret > 0) {
-+		ret /= (int)(sizeof(struct stm32_adc_diff_channel) / sizeof(u32));
-+		if (ret > adc_info->max_channels) {
-+			dev_err(&indio_dev->dev, "Bad st,adc-diff-channels?\n");
-+			return -EINVAL;
-+		} else if (ret > 0) {
-+			adc->num_diff = ret;
-+			num_channels += ret;
-+		}
+diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+index 14e29330e972..94f5d611e98c 100644
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -8,6 +8,7 @@
+  * TODO: Proximity
+  */
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+@@ -42,6 +43,7 @@
+ #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
+ #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
+ #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
++#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
+ 
+ /* Default values */
+ #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
+@@ -413,6 +415,7 @@ static int vcnl4035_init(struct vcnl4035_data *data)
+ 		return ret;
  	}
  
- 	/* Optional sample time is provided either for each, or all channels */
++	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
+ 	if (id != VCNL4035_DEV_ID_VAL) {
+ 		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
+ 			id, VCNL4035_DEV_ID_VAL);
 -- 
 2.40.1
 
