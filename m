@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C25E5713E74
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E863A713F28
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjE1Tfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
+        id S231191AbjE1Tmc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjE1Tfk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EED8A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:37 -0700 (PDT)
+        with ESMTP id S231190AbjE1Tmc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F4F9E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 082E161E12
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246A1C433D2;
-        Sun, 28 May 2023 19:35:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9929D61EF4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B783AC4339E;
+        Sun, 28 May 2023 19:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302536;
-        bh=1n+jjgJ3UNZcA6zH5dUL31reArfdZP1+aJEMvQU8Lr4=;
+        s=korg; t=1685302950;
+        bh=AV8DshyKC0/ctZCWD0ixpw6bUiLKnRY3bRxXgzdHJvc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y4aoXINiQflEeXC9hRvC7mU2Gm/V+0K+92tQvy2KpZfAwa8Pr4SgK35o/niyqd7m8
-         5pa0XobdzfttCcrQkrjaL+a80ugDMXFz2PAL1JNPieHYRfdC/N8dCM1cU5Moowqi00
-         i9JYidzFFFrXCg0fDlFcM+HvYd4gWRotCUiLi9zo=
+        b=K1rzBsWqwuA5LobY+4IDWBvI+itPMo452C6acpcf1k4DvekaeMf5AbiYKZQtOcjNl
+         noVe1TEdJnrym6rzjnD5b04UrP5ctWLKJGZAOr09QLbqVThh/UHENloN4nnfsd6apH
+         quh902AkyXKLPCL1QYuy1cLg3Ajjv8Y8gsorkTW0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Wenjing Liu <Wenjing.Liu@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Robin Chen <robin.chen@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 014/119] drm/amd/display: hpd rx irq not working with eDP interface
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 093/211] net: fec: Better handle pm_runtime_get() failing in .remove()
 Date:   Sun, 28 May 2023 20:10:14 +0100
-Message-Id: <20230528190835.809312831@linuxfoundation.org>
+Message-Id: <20230528190845.917441780@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,79 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Chen <robin.chen@amd.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit eeefe7c4820b6baa0462a8b723ea0a3b5846ccae upstream.
+[ Upstream commit f816b9829b19394d318e01953aa3b2721bca040d ]
 
-[Why]
-This is the fix for the defect of commit ab144f0b4ad6
-("drm/amd/display: Allow individual control of eDP hotplug support").
+In the (unlikely) event that pm_runtime_get() (disguised as
+pm_runtime_resume_and_get()) fails, the remove callback returned an
+error early. The problem with this is that the driver core ignores the
+error value and continues removing the device. This results in a
+resource leak. Worse the devm allocated resources are freed and so if a
+callback of the driver is called later the register mapping is already
+gone which probably results in a crash.
 
-[How]
-To revise the default eDP hotplug setting and use the enum to git rid
-of the magic number for different options.
-
-Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP hotplug support")
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Robin Chen <robin.chen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eeefe7c4820b6baa0462a8b723ea0a3b5846ccae)
-Hand modified for missing file rename changes and symbol moves in 6.1.y.
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Fixes: a31eda65ba21 ("net: fec: fix clock count mis-match")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20230510200020.1534610-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_link.c |    9 +++++++--
- drivers/gpu/drm/amd/display/dc/dc_types.h     |    6 ++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-@@ -1634,14 +1634,18 @@ static bool dc_link_construct_legacy(str
- 				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 686bb873125cc..e18b3b72fc0df 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3850,9 +3850,11 @@ fec_drv_remove(struct platform_device *pdev)
+ 	struct device_node *np = pdev->dev.of_node;
+ 	int ret;
  
- 			switch (link->dc->config.allow_edp_hotplug_detection) {
--			case 1: // only the 1st eDP handles hotplug
-+			case HPD_EN_FOR_ALL_EDP:
-+				link->irq_source_hpd_rx =
-+						dal_irq_get_rx_source(link->hpd_gpio);
-+				break;
-+			case HPD_EN_FOR_PRIMARY_EDP_ONLY:
- 				if (link->link_index == 0)
- 					link->irq_source_hpd_rx =
- 						dal_irq_get_rx_source(link->hpd_gpio);
- 				else
- 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
--			case 2: // only the 2nd eDP handles hotplug
-+			case HPD_EN_FOR_SECONDARY_EDP_ONLY:
- 				if (link->link_index == 1)
- 					link->irq_source_hpd_rx =
- 						dal_irq_get_rx_source(link->hpd_gpio);
-@@ -1649,6 +1653,7 @@ static bool dc_link_construct_legacy(str
- 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
- 			default:
-+				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
- 			}
- 		}
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -993,4 +993,10 @@ struct display_endpoint_id {
- 	enum display_endpoint_type ep_type;
- };
+-	ret = pm_runtime_resume_and_get(&pdev->dev);
++	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0)
+-		return ret;
++		dev_err(&pdev->dev,
++			"Failed to resume device in remove callback (%pe)\n",
++			ERR_PTR(ret));
  
-+enum dc_hpd_enable_select {
-+	HPD_EN_FOR_ALL_EDP = 0,
-+	HPD_EN_FOR_PRIMARY_EDP_ONLY,
-+	HPD_EN_FOR_SECONDARY_EDP_ONLY,
-+};
-+
- #endif /* DC_TYPES_H_ */
+ 	cancel_work_sync(&fep->tx_timeout_work);
+ 	fec_ptp_stop(pdev);
+@@ -3865,8 +3867,13 @@ fec_drv_remove(struct platform_device *pdev)
+ 		of_phy_deregister_fixed_link(np);
+ 	of_node_put(fep->phy_node);
+ 
+-	clk_disable_unprepare(fep->clk_ahb);
+-	clk_disable_unprepare(fep->clk_ipg);
++	/* After pm_runtime_get_sync() failed, the clks are still off, so skip
++	 * disabling them again.
++	 */
++	if (ret >= 0) {
++		clk_disable_unprepare(fep->clk_ahb);
++		clk_disable_unprepare(fep->clk_ipg);
++	}
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+-- 
+2.39.2
+
 
 
