@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A69F713E3B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE484713FB0
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230302AbjE1Tda (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
+        id S231357AbjE1Tr7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230300AbjE1Td3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:29 -0400
+        with ESMTP id S231344AbjE1Tr6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEE2A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C519C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ADA1612E6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AEAC433EF;
-        Sun, 28 May 2023 19:33:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1596061FD7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356C0C433EF;
+        Sun, 28 May 2023 19:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302407;
-        bh=Ahit4sJLUQDt1oCMke5aDHSrhlY8boMO7BpScjVoYYI=;
+        s=korg; t=1685303276;
+        bh=8V2cGRuD+yiti0ypinnjGaaNTILyTkg4bIMlR70VvDg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r3AlZ/l0bRw4VG8HsitI8dwoxBJ4X2rQnOaLmygROLvg/Ekurii3UpaD21ZHoPFuI
-         bQ8ZKef/K0EqdB4OuuK6zAOysv+9VxGM1br0K980mGCn4UkZRnAiOOBE8ThlYFk7Ec
-         v5/8bECZ+erqMi5if0kAmNW+LaWrkJg2YewNnAqA=
+        b=rUFfTPOIno0SuhkIhT70UVwO6/3w9Wxn3vOYGjzYJeAGtSmSafBFsoxBUJUPvHEZ2
+         8olyJaJk7f1sAgmSaGkHE1zT5QO6wo0rDhybPtV3Hk7TvNTwsNVgHbOZC9L9gJDcMj
+         KnXW6wqvtRu4bImDgIILXDs+mL6Qsi5SvjErM1u0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Mark Bloch <mbloch@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.3 118/127] net/mlx5: Devcom, serialize devcom registration
+        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 14/69] mmc: sdhci-esdhc-imx: make "no-mmc-hs400" works
 Date:   Sun, 28 May 2023 20:11:34 +0100
-Message-Id: <20230528190840.079694862@linuxfoundation.org>
+Message-Id: <20230528190828.881920572@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,95 +53,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 1f893f57a3bf9fe1f4bcb25b55aea7f7f9712fe7 upstream.
+commit 81dce1490e28439c3cd8a8650b862a712f3061ba upstream.
 
->From one hand, mlx5 driver is allowing to probe PFs in parallel.
->From the other hand, devcom, which is a share resource between PFs, is
-registered without any lock. This might resulted in memory problems.
+After commit 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate
+ESDHC_FLAG_HS400* only on 8bit bus"), the property "no-mmc-hs400"
+from device tree file do not work any more.
+This patch reorder the code, which can avoid the warning message
+"drop HS400 support since no 8-bit bus" and also make the property
+"no-mmc-hs400" from dts file works.
 
-Hence, use the global mlx5_dev_list_lock in order to serialize devcom
-registration.
-
-Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate ESDHC_FLAG_HS400* only on 8bit bus")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230504112222.3599602-1-haibo.chen@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -3,6 +3,7 @@
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1568,6 +1568,10 @@ sdhci_esdhc_imx_probe_dt(struct platform
+ 	if (ret)
+ 		return ret;
  
- #include <linux/mlx5/vport.h>
- #include "lib/devcom.h"
-+#include "mlx5_core.h"
++	/* HS400/HS400ES require 8 bit bus */
++	if (!(host->mmc->caps & MMC_CAP_8_BIT_DATA))
++		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
++
+ 	if (mmc_gpio_get_cd(host->mmc) >= 0)
+ 		host->quirks &= ~SDHCI_QUIRK_BROKEN_CARD_DETECTION;
  
- static LIST_HEAD(devcom_list);
- 
-@@ -77,6 +78,7 @@ struct mlx5_devcom *mlx5_devcom_register
- 	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
- 		return NULL;
- 
-+	mlx5_dev_list_lock();
- 	sguid0 = mlx5_query_nic_system_image_guid(dev);
- 	list_for_each_entry(iter, &devcom_list, list) {
- 		struct mlx5_core_dev *tmp_dev = NULL;
-@@ -102,8 +104,10 @@ struct mlx5_devcom *mlx5_devcom_register
- 
- 	if (!priv) {
- 		priv = mlx5_devcom_list_alloc();
--		if (!priv)
--			return ERR_PTR(-ENOMEM);
-+		if (!priv) {
-+			devcom = ERR_PTR(-ENOMEM);
-+			goto out;
-+		}
- 
- 		idx = 0;
- 		new_priv = true;
-@@ -114,12 +118,14 @@ struct mlx5_devcom *mlx5_devcom_register
- 	if (!devcom) {
- 		if (new_priv)
- 			kfree(priv);
--		return ERR_PTR(-ENOMEM);
-+		devcom = ERR_PTR(-ENOMEM);
-+		goto out;
+@@ -1652,10 +1656,6 @@ static int sdhci_esdhc_imx_probe(struct
+ 		host->mmc_host_ops.execute_tuning = usdhc_execute_tuning;
  	}
  
- 	if (new_priv)
- 		list_add(&priv->list, &devcom_list);
+-	err = sdhci_esdhc_imx_probe_dt(pdev, host, imx_data);
+-	if (err)
+-		goto disable_ahb_clk;
 -
-+out:
-+	mlx5_dev_list_unlock();
- 	return devcom;
- }
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING)
+ 		sdhci_esdhc_ops.platform_execute_tuning =
+ 					esdhc_executing_tuning;
+@@ -1663,15 +1663,13 @@ static int sdhci_esdhc_imx_probe(struct
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_ERR004536)
+ 		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
  
-@@ -132,6 +138,7 @@ void mlx5_devcom_unregister_device(struc
- 	if (IS_ERR_OR_NULL(devcom))
- 		return;
+-	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
+-	    imx_data->socdata->flags & ESDHC_FLAG_HS400)
++	if (imx_data->socdata->flags & ESDHC_FLAG_HS400)
+ 		host->mmc->caps2 |= MMC_CAP2_HS400;
  
-+	mlx5_dev_list_lock();
- 	priv = devcom->priv;
- 	priv->devs[devcom->idx] = NULL;
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_BROKEN_AUTO_CMD23)
+ 		host->quirks2 |= SDHCI_QUIRK2_ACMD23_BROKEN;
  
-@@ -142,10 +149,12 @@ void mlx5_devcom_unregister_device(struc
- 			break;
+-	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
+-	    imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
++	if (imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
+ 		host->mmc->caps2 |= MMC_CAP2_HS400_ES;
+ 		host->mmc_host_ops.hs400_enhanced_strobe =
+ 					esdhc_hs400_enhanced_strobe;
+@@ -1693,6 +1691,10 @@ static int sdhci_esdhc_imx_probe(struct
+ 			goto disable_ahb_clk;
+ 	}
  
- 	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
--		return;
-+		goto out;
++	err = sdhci_esdhc_imx_probe_dt(pdev, host, imx_data);
++	if (err)
++		goto disable_ahb_clk;
++
+ 	sdhci_esdhc_imx_hwinit(host);
  
- 	list_del(&priv->list);
- 	kfree(priv);
-+out:
-+	mlx5_dev_list_unlock();
- }
- 
- void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
+ 	err = sdhci_add_host(host);
 
 
