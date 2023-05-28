@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44EFC713F87
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1421D713FC0
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjE1Tq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
+        id S231372AbjE1Tsh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbjE1Tq0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4756DFE
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:21 -0700 (PDT)
+        with ESMTP id S231362AbjE1Tsg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D51829C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A405361F74
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29D8C433D2;
-        Sun, 28 May 2023 19:46:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7326D6103F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92974C433D2;
+        Sun, 28 May 2023 19:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303180;
-        bh=/Ha65achCsfAVtvXbbVawppotu0f/46eBuV4vAd7t3k=;
+        s=korg; t=1685303314;
+        bh=wRHBaeDhawOPG5Ib5RCrD356vYPyA33SmBx6wdrBBSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wKQSip74n++nKhPOfmRfAfs9Dc1Dv9bqbihH2EtzRJkcPQtFqhHs4q7bv5gCzOvmH
-         igC7lvABpsB/5WJlBIBLX3mnI8lCBuJ+YUKi5K39XeeOkAjy9hzKfFFAT2fCkmFGdf
-         siE00W/8f0Z/+HFVBSPqHCfw5mm7U+y97VmAXgoc=
+        b=DF/0La94k63NTXOTnisD8ss1TA8O60oeT8wg0JUToMaUo1JhaNIyl3rFfGifZI7Ez
+         F2E146OHN35iNYXoEzA9YYIyePTuyArSb3bzTD8w0zafJLm9qXZszHbt8uv98jo3CO
+         E2N6tMW9BnEZtyOuyRodnl7+r9fXcwbL+vCWL9fU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 187/211] USB: sisusbvga: Add endpoint checks
+        patches@lists.linux.dev,
+        syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 28/69] debugobjects: Dont wake up kswapd from fill_pool()
 Date:   Sun, 28 May 2023 20:11:48 +0100
-Message-Id: <20230528190848.144884195@linuxfoundation.org>
+Message-Id: <20230528190829.421780799@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,79 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
+commit eb799279fb1f9c63c520fe8c1c41cb9154252db6 upstream.
 
-The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
+syzbot is reporting a lockdep warning in fill_pool() because the allocation
+from debugobjects is using GFP_ATOMIC, which is (__GFP_HIGH | __GFP_KSWAPD_RECLAIM)
+and therefore tries to wake up kswapd, which acquires kswapd_wait::lock.
 
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
-RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
-RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
-R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
- sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
- sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
- sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
- sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
- sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
-...
+Since fill_pool() might be called with arbitrary locks held, fill_pool()
+should not assume that acquiring kswapd_wait::lock is safe.
 
-The problem was caused by the fact that the driver does not check
-whether the endpoints it uses are actually present and have the
-appropriate types.  This can be fixed by adding a simple check of
-the endpoints.
+Use __GFP_HIGH instead and remove __GFP_NORETRY as it is pointless for
+!__GFP_DIRECT_RECLAIM allocation.
 
-Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
-Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ac7fe5a4aab ("infrastructure to debug (dynamic) objects")
+Reported-by: syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/6577e1fa-b6ee-f2be-2414-a2b51b1c5e30@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=fe0c72f0ccbb93786380
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/sisusbvga/sisusb.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ lib/debugobjects.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/misc/sisusbvga/sisusb.c
-+++ b/drivers/usb/misc/sisusbvga/sisusb.c
-@@ -3014,6 +3014,20 @@ static int sisusb_probe(struct usb_inter
- 	struct usb_device *dev = interface_to_usbdev(intf);
- 	struct sisusb_usb_data *sisusb;
- 	int retval = 0, i;
-+	static const u8 ep_addresses[] = {
-+		SISUSB_EP_GFX_IN | USB_DIR_IN,
-+		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
-+		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
-+		0};
-+
-+	/* Are the expected endpoints present? */
-+	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
-+		dev_err(&intf->dev, "Invalid USB2VGA device\n");
-+		return -EINVAL;
-+	}
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -129,7 +129,7 @@ static const char *obj_states[ODEBUG_STA
  
- 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
- 			dev->devnum);
+ static void fill_pool(void)
+ {
+-	gfp_t gfp = GFP_ATOMIC | __GFP_NORETRY | __GFP_NOWARN;
++	gfp_t gfp = __GFP_HIGH | __GFP_NOWARN;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+ 
 
 
