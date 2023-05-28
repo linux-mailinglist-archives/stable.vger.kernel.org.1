@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9557A713FC9
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 124E1713EA9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231322AbjE1Ts7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34892 "EHLO
+        id S230449AbjE1Thk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231383AbjE1Ts7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3AF7A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:57 -0700 (PDT)
+        with ESMTP id S230453AbjE1Thi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C175DC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90F8162004
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0396C433D2;
-        Sun, 28 May 2023 19:48:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5E6D61E5D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4474C433D2;
+        Sun, 28 May 2023 19:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303337;
-        bh=Uu+fF8Crn82Ytf5deX/AeunyvlnF0e3FQ4ZeX7rN6Mw=;
+        s=korg; t=1685302655;
+        bh=EXp0nepANeZaPu5yYw913qH2snU4Nqh+M7A0gqDOpjU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JOU2yiLAUU1lychiWNSuGOQDl5Ou8AhFQ+PlVLrQwCDqgUblSYvddtfheqM8D7M6d
-         uV1d86W8Br0/7dt1I2F1+Gkt23wGdD1rwCGUuR8hVKL83vQKUB5yiOwXhrl1XZPenx
-         WCrvd6FSZ3t0GclSWjVOf8pR+DAhmw5NuKZmfRNY=
+        b=X2gBEcG8zQP82nfRiy3vYogDNGsUTJhSPbTB1Vf02nljR1wyWltehqeIlMHLACIV7
+         8SBjZboQLhm1DYgGjHuEq2TXhYBA0jD3aLhre/zdN7b68ls+P8bGFgtECfTUOxri9h
+         el8dwRKTejsrXz74+89cwPTVEVlUyp8HRyp0jV6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Collingbourne <pcc@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 10/69] arm64: Also reset KASAN tag if page is not PG_mte_tagged
-Date:   Sun, 28 May 2023 20:11:30 +0100
-Message-Id: <20230528190828.729602333@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 6.1 091/119] coresight: Fix signedness bug in tmc_etr_buf_insert_barrier_packet()
+Date:   Sun, 28 May 2023 20:11:31 +0100
+Message-Id: <20230528190838.573675916@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,54 +53,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Collingbourne <pcc@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 2efbafb91e12ff5a16cbafb0085e4c10c3fca493 upstream.
+commit f67bc15e526bb9920683ad6c1891ff9e08981335 upstream.
 
-Consider the following sequence of events:
+This code generates a Smatch warning:
 
-1) A page in a PROT_READ|PROT_WRITE VMA is faulted.
-2) Page migration allocates a page with the KASAN allocator,
-   causing it to receive a non-match-all tag, and uses it
-   to replace the page faulted in 1.
-3) The program uses mprotect() to enable PROT_MTE on the page faulted in 1.
+    drivers/hwtracing/coresight/coresight-tmc-etr.c:947 tmc_etr_buf_insert_barrier_packet()
+    error: uninitialized symbol 'bufp'.
 
-As a result of step 3, we are left with a non-match-all tag for a page
-with tags accessible to userspace, which can lead to the same kind of
-tag check faults that commit e74a68468062 ("arm64: Reset KASAN tag in
-copy_highpage with HW tags only") intended to fix.
+The problem is that if tmc_sg_table_get_data() returns -EINVAL, then
+when we test if "len < CORESIGHT_BARRIER_PKT_SIZE", the negative "len"
+value is type promoted to a high unsigned long value which is greater
+than CORESIGHT_BARRIER_PKT_SIZE.  Fix this bug by adding an explicit
+check for error codes.
 
-The general invariant that we have for pages in a VMA with VM_MTE_ALLOWED
-is that they cannot have a non-match-all tag. As a result of step 2, the
-invariant is broken. This means that the fix in the referenced commit
-was incomplete and we also need to reset the tag for pages without
-PG_mte_tagged.
-
-Fixes: e5b8d9218951 ("arm64: mte: reset the page tag in page->flags")
-Cc: <stable@vger.kernel.org> # 5.15
-Link: https://linux-review.googlesource.com/id/I7409cdd41acbcb215c2a7417c1e50d37b875beff
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20230420210945.2313627-1-pcc@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 75f4e3619fe2 ("coresight: tmc-etr: Add transparent buffer management")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/7d33e244-d8b9-4c27-9653-883a13534b01@kili.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/copypage.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-tmc-etr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -21,9 +21,10 @@ void copy_highpage(struct page *to, stru
+--- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+@@ -942,7 +942,7 @@ tmc_etr_buf_insert_barrier_packet(struct
  
- 	copy_page(kto, kfrom);
- 
-+	page_kasan_tag_reset(to);
-+
- 	if (system_supports_mte() && test_bit(PG_mte_tagged, &from->flags)) {
- 		set_bit(PG_mte_tagged, &to->flags);
--		page_kasan_tag_reset(to);
- 		/*
- 		 * We need smp_wmb() in between setting the flags and clearing the
- 		 * tags because if another thread reads page->flags and builds a
+ 	len = tmc_etr_buf_get_data(etr_buf, offset,
+ 				   CORESIGHT_BARRIER_PKT_SIZE, &bufp);
+-	if (WARN_ON(len < CORESIGHT_BARRIER_PKT_SIZE))
++	if (WARN_ON(len < 0 || len < CORESIGHT_BARRIER_PKT_SIZE))
+ 		return -EINVAL;
+ 	coresight_insert_barrier_packet(bufp);
+ 	return offset + CORESIGHT_BARRIER_PKT_SIZE;
 
 
