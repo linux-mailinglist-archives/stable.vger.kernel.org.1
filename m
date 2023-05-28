@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D17DE713C53
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38EA3713D75
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbjE1TOY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
+        id S230056AbjE1TZg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjE1TOX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9614BF9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:14 -0700 (PDT)
+        with ESMTP id S230054AbjE1TZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945E2B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C03A6194D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA07C433D2;
-        Sun, 28 May 2023 19:14:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3166561BF8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED7EC433D2;
+        Sun, 28 May 2023 19:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301253;
-        bh=oIWvGqV8wuTetTozHOc5UGuB0pGZIr3+4N1N2pDBtuA=;
+        s=korg; t=1685301932;
+        bh=2qLNp0jPPO+6Yo0KT2zp6PHDwOf8p1CWlfI7ZKCZ2YQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dcruxHl4YrhxRgCZp6rhE7me8+ivMLS4m4n2iPFHtpkLeqBqiTUDqIDbG55X4QtDX
-         GlJ2sKyfS6ro6yAnV0dy478FC96M7l7cY3Caw6XJ5yyC2Xtnfo8LOvRnaVRzmvYz+V
-         A09Xr24Nnbt4lZZ48o6Gz7wFkNyrk+ainK588gQQ=
+        b=wAPRU04KxU+QeudJgcjjVLSjXSSUaHdSAU8OkC6cjKTJfqbkhfd+qcEWP1mP0Edxn
+         WblabjAawm8klLOOy8GtHa79x0yOiNY8c/R20CRwDjZJM3JSfJIcVuUwL21mYK+eVI
+         7DJmy3udRz1RRxQnIiWwJF0zRJJdETrp5OvoAVUk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 42/86] media: netup_unidvb: fix use-after-free at del_timer()
-Date:   Sun, 28 May 2023 20:10:16 +0100
-Message-Id: <20230528190830.158879558@linuxfoundation.org>
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.4 093/161] can: kvaser_pciefd: Empty SRB buffer in probe
+Date:   Sun, 28 May 2023 20:10:17 +0100
+Message-Id: <20230528190840.073314468@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +53,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-[ Upstream commit 0f5bb36bf9b39a2a96e730bf4455095b50713f63 ]
+commit c589557dd1426f5adf90c7a919d4fde5a3e4ef64 upstream.
 
-When Universal DVB card is detaching, netup_unidvb_dma_fini()
-uses del_timer() to stop dma->timeout timer. But when timer
-handler netup_unidvb_dma_timeout() is running, del_timer()
-could not stop it. As a result, the use-after-free bug could
-happen. The process is shown below:
+Empty the "Shared receive buffer" (SRB) in probe, to assure we start in a
+known state, and don't process any irrelevant packets.
 
-    (cleanup routine)          |        (timer routine)
-                               | mod_timer(&dev->tx_sim_timer, ..)
-netup_unidvb_finidev()         | (wait a time)
-  netup_unidvb_dma_fini()      | netup_unidvb_dma_timeout()
-    del_timer(&dma->timeout);  |
-                               |   ndev->pci_dev->dev //USE
-
-Fix by changing del_timer() to del_timer_sync().
-
-Link: https://lore.kernel.org/linux-media/20230308125514.4208-1-duoming@zju.edu.cn
-Fixes: 52b1eaf4c59a ("[media] netup_unidvb: NetUP Universal DVB-S/S2/T/T2/C PCI-E card driver")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-5-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/netup_unidvb/netup_unidvb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/kvaser_pciefd.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-index 03239fba87bf2..4f2ea0f035ae5 100644
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-@@ -707,7 +707,7 @@ static void netup_unidvb_dma_fini(struct netup_unidvb_dev *ndev, int num)
- 	netup_unidvb_dma_enable(dma, 0);
- 	msleep(50);
- 	cancel_work_sync(&dma->work);
--	del_timer(&dma->timeout);
-+	del_timer_sync(&dma->timeout);
- }
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -70,10 +70,12 @@ MODULE_DESCRIPTION("CAN driver for Kvase
+ #define KVASER_PCIEFD_SYSID_BUILD_REG (KVASER_PCIEFD_SYSID_BASE + 0x14)
+ /* Shared receive buffer registers */
+ #define KVASER_PCIEFD_SRB_BASE 0x1f200
++#define KVASER_PCIEFD_SRB_FIFO_LAST_REG (KVASER_PCIEFD_SRB_BASE + 0x1f4)
+ #define KVASER_PCIEFD_SRB_CMD_REG (KVASER_PCIEFD_SRB_BASE + 0x200)
+ #define KVASER_PCIEFD_SRB_IEN_REG (KVASER_PCIEFD_SRB_BASE + 0x204)
+ #define KVASER_PCIEFD_SRB_IRQ_REG (KVASER_PCIEFD_SRB_BASE + 0x20c)
+ #define KVASER_PCIEFD_SRB_STAT_REG (KVASER_PCIEFD_SRB_BASE + 0x210)
++#define KVASER_PCIEFD_SRB_RX_NR_PACKETS_REG (KVASER_PCIEFD_SRB_BASE + 0x214)
+ #define KVASER_PCIEFD_SRB_CTRL_REG (KVASER_PCIEFD_SRB_BASE + 0x218)
+ /* EPCS flash controller registers */
+ #define KVASER_PCIEFD_SPI_BASE 0x1fc00
+@@ -110,6 +112,9 @@ MODULE_DESCRIPTION("CAN driver for Kvase
+ /* DMA support */
+ #define KVASER_PCIEFD_SRB_STAT_DMA BIT(24)
  
- static int netup_unidvb_dma_setup(struct netup_unidvb_dev *ndev)
--- 
-2.39.2
-
++/* SRB current packet level */
++#define KVASER_PCIEFD_SRB_RX_NR_PACKETS_MASK 0xff
++
+ /* DMA Enable */
+ #define KVASER_PCIEFD_SRB_CTRL_DMA_ENABLE BIT(0)
+ 
+@@ -1053,6 +1058,7 @@ static int kvaser_pciefd_setup_dma(struc
+ {
+ 	int i;
+ 	u32 srb_status;
++	u32 srb_packet_count;
+ 	dma_addr_t dma_addr[KVASER_PCIEFD_DMA_COUNT];
+ 
+ 	/* Disable the DMA */
+@@ -1080,6 +1086,15 @@ static int kvaser_pciefd_setup_dma(struc
+ 		  KVASER_PCIEFD_SRB_CMD_RDB1,
+ 		  pcie->reg_base + KVASER_PCIEFD_SRB_CMD_REG);
+ 
++	/* Empty Rx FIFO */
++	srb_packet_count = ioread32(pcie->reg_base + KVASER_PCIEFD_SRB_RX_NR_PACKETS_REG) &
++			   KVASER_PCIEFD_SRB_RX_NR_PACKETS_MASK;
++	while (srb_packet_count) {
++		/* Drop current packet in FIFO */
++		ioread32(pcie->reg_base + KVASER_PCIEFD_SRB_FIFO_LAST_REG);
++		srb_packet_count--;
++	}
++
+ 	srb_status = ioread32(pcie->reg_base + KVASER_PCIEFD_SRB_STAT_REG);
+ 	if (!(srb_status & KVASER_PCIEFD_SRB_STAT_DI)) {
+ 		dev_err(&pcie->pci->dev, "DMA not idle before enabling\n");
 
 
