@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37DCB713E47
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A4F9713D0F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230307AbjE1TeA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
+        id S229936AbjE1TV2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbjE1Td7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:59 -0400
+        with ESMTP id S229931AbjE1TV1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:21:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45903A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E48A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:21:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CEAE061DD8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE23C433EF;
-        Sun, 28 May 2023 19:33:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A628961B11
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:21:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41A8C433D2;
+        Sun, 28 May 2023 19:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302437;
-        bh=INBusUWTx32+xBROsGY5lVCUP2X6qF8m6N+d2w924hU=;
+        s=korg; t=1685301685;
+        bh=Kj4R2YI2m89JegjuUvVtt1Dg208D9FEudH84eVJGXJk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oXTP/5sYxwzKLNyovmo/Nc73Ua2hcYWGJD9hg5KJr7+Xqe9BWmxMsusIO+o9XPd41
-         2jtnGI/JJO+myQ6cQXPrmfLrD2UEUY6GVcjYCoS8woV/KY1HiDRQI6VA8ug9zS+3e7
-         b1jd/xDr/ng7a09p3ChnZPKHmfeDOex3IQagySUE=
+        b=eBnaaXirC9aIIqrGVOUzFTLrLtUGdKBP2NCjCZ6Nfjp45aKULg/8YQOKKEKqM8ttY
+         Uz1VI7gtbWoZMgzhPzaefUDOUBQeh5/S6fpMIrxPJ3i1NX/eRLAuyPOmZzX7UfwDCD
+         QbASA3wsp1c/f8b2K822/L68/IwTGLiabqiAJzs8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Lucian Paul-Trifu <lucian.paul-trifu@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.3 091/127] firmware: arm_ffa: Fix FFA device names for logical partitions
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Juergen Gross <jgross@suse.com>
+Subject: [PATCH 4.19 128/132] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
 Date:   Sun, 28 May 2023 20:11:07 +0100
-Message-Id: <20230528190839.283504177@linuxfoundation.org>
+Message-Id: <20230528190837.792453580@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,131 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 19b8766459c41c6f318f8a548cc1c66dffd18363 upstream.
+commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
 
-Each physical partition can provide multiple services each with UUID.
-Each such service can be presented as logical partition with a unique
-combination of VM ID and UUID. The number of distinct UUID in a system
-will be less than or equal to the number of logical partitions.
+In the pvcalls_new_active_socket() function, most error paths call
+pvcalls_back_release_active(fedata->dev, fedata, map) which calls
+sock_release() on "sock".  The bug is that the caller also frees sock.
 
-However, currently it fails to register more than one logical partition
-or service within a physical partition as the device name contains only
-VM ID while both VM ID and UUID are maintained in the partition information.
-The kernel complains with the below message:
+Fix this by making every error path in pvcalls_new_active_socket()
+release the sock, and don't free it in the caller.
 
-  | sysfs: cannot create duplicate filename '/devices/arm-ffa-8001'
-  | CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc7 #8
-  | Hardware name: FVP Base RevC (DT)
-  | Call trace:
-  |  dump_backtrace+0xf8/0x118
-  |  show_stack+0x18/0x24
-  |  dump_stack_lvl+0x50/0x68
-  |  dump_stack+0x18/0x24
-  |  sysfs_create_dir_ns+0xe0/0x13c
-  |  kobject_add_internal+0x220/0x3d4
-  |  kobject_add+0x94/0x100
-  |  device_add+0x144/0x5d8
-  |  device_register+0x20/0x30
-  |  ffa_device_register+0x88/0xd8
-  |  ffa_setup_partitions+0x108/0x1b8
-  |  ffa_init+0x2ec/0x3a4
-  |  do_one_initcall+0xcc/0x240
-  |  do_initcall_level+0x8c/0xac
-  |  do_initcalls+0x54/0x94
-  |  do_basic_setup+0x1c/0x28
-  |  kernel_init_freeable+0x100/0x16c
-  |  kernel_init+0x20/0x1a0
-  |  ret_from_fork+0x10/0x20
-  | kobject_add_internal failed for arm-ffa-8001 with -EEXIST, don't try to
-  | register things with the same name in the same directory.
-  | arm_ffa arm-ffa: unable to register device arm-ffa-8001 err=-17
-  | ARM FF-A: ffa_setup_partitions: failed to register partition ID 0x8001
-
-By virtue of being random enough to avoid collisions when generated in a
-distributed system, there is no way to compress UUID keys to the number
-of bits required to identify each. We can eliminate '-' in the name but
-it is not worth eliminating 4 bytes and add unnecessary logic for doing
-that. Also v1.0 doesn't provide the UUID of the partitions which makes
-it hard to use the same for the device name.
-
-So to keep it simple, let us alloc an ID using ida_alloc() and append the
-same to "arm-ffa" to make up a unique device name. Also stash the id value
-in ffa_dev to help freeing the ID later when the device is destroyed.
-
-Fixes: e781858488b9 ("firmware: arm_ffa: Add initial FFA bus support for device enumeration")
-Reported-by: Lucian Paul-Trifu <lucian.paul-trifu@arm.com>
-Link: https://lore.kernel.org/r/20230419-ffa_fixes_6-4-v2-3-d9108e43a176@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/bus.c |   16 +++++++++++++---
- include/linux/arm_ffa.h        |    1 +
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/xen/pvcalls-back.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/firmware/arm_ffa/bus.c
-+++ b/drivers/firmware/arm_ffa/bus.c
-@@ -15,6 +15,8 @@
+--- a/drivers/xen/pvcalls-back.c
++++ b/drivers/xen/pvcalls-back.c
+@@ -330,8 +330,10 @@ static struct sock_mapping *pvcalls_new_
+ 	void *page;
  
- #include "common.h"
- 
-+static DEFINE_IDA(ffa_bus_id);
-+
- static int ffa_device_match(struct device *dev, struct device_driver *drv)
- {
- 	const struct ffa_device_id *id_table;
-@@ -131,6 +133,7 @@ static void ffa_release_device(struct de
- {
- 	struct ffa_device *ffa_dev = to_ffa_dev(dev);
- 
-+	ida_free(&ffa_bus_id, ffa_dev->id);
- 	kfree(ffa_dev);
- }
- 
-@@ -171,18 +174,24 @@ bool ffa_device_is_valid(struct ffa_devi
- struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id,
- 				       const struct ffa_ops *ops)
- {
--	int ret;
-+	int id, ret;
- 	struct device *dev;
- 	struct ffa_device *ffa_dev;
- 
-+	id = ida_alloc_min(&ffa_bus_id, 1, GFP_KERNEL);
-+	if (id < 0)
-+		return NULL;
-+
- 	ffa_dev = kzalloc(sizeof(*ffa_dev), GFP_KERNEL);
--	if (!ffa_dev)
-+	if (!ffa_dev) {
-+		ida_free(&ffa_bus_id, id);
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+-	if (map == NULL)
++	if (map == NULL) {
++		sock_release(sock);
  		return NULL;
 +	}
  
- 	dev = &ffa_dev->dev;
- 	dev->bus = &ffa_bus_type;
- 	dev->release = ffa_release_device;
--	dev_set_name(&ffa_dev->dev, "arm-ffa-%04x", vm_id);
-+	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
+ 	map->fedata = fedata;
+ 	map->sock = sock;
+@@ -423,10 +425,8 @@ static int pvcalls_back_connect(struct x
+ 					req->u.connect.ref,
+ 					req->u.connect.evtchn,
+ 					sock);
+-	if (!map) {
++	if (!map)
+ 		ret = -EFAULT;
+-		sock_release(sock);
+-	}
  
- 	ffa_dev->vm_id = vm_id;
- 	ffa_dev->ops = ops;
-@@ -218,4 +227,5 @@ void arm_ffa_bus_exit(void)
- {
- 	ffa_devices_unregister();
- 	bus_unregister(&ffa_bus_type);
-+	ida_destroy(&ffa_bus_id);
- }
---- a/include/linux/arm_ffa.h
-+++ b/include/linux/arm_ffa.h
-@@ -96,6 +96,7 @@
+ out:
+ 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
+@@ -567,7 +567,6 @@ static void __pvcalls_back_accept(struct
+ 					sock);
+ 	if (!map) {
+ 		ret = -EFAULT;
+-		sock_release(sock);
+ 		goto out_error;
+ 	}
  
- /* FFA Bus/Device/Driver related */
- struct ffa_device {
-+	u32 id;
- 	int vm_id;
- 	bool mode_32bit;
- 	uuid_t uuid;
 
 
