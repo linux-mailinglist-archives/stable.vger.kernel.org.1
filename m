@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89408713E77
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DD62713CDD
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbjE1Tfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51640 "EHLO
+        id S229871AbjE1TTY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:19:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjE1Tfq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:46 -0400
+        with ESMTP id S229874AbjE1TTX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 951E8B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 450BFA6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3084561E06
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB21C433EF;
-        Sun, 28 May 2023 19:35:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D765861A9F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DCC433EF;
+        Sun, 28 May 2023 19:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302543;
-        bh=Lk1VFpN1xRWamVmS76OW6veLC48QUYX42hDioYr1L0M=;
+        s=korg; t=1685301561;
+        bh=jlN6EPVbDFBOsjOsiq2g/tfa6vObHBY5rDBHnEZh4Ps=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iycCC+JxDyQ9JDBA4ZlY+JDBjSS3oOpPNCFaY4cOO94nW/IFvihm3FhUyaSmfQMtZ
-         YqkbSyWANScslraUv8LsD/kryYZFL8faBN3CwbGlLmAEV/Vih21o6qXIrkwKZEyqd3
-         8piFbtghzj9ZnKRegsplh5Yp9+7VhlZ++00MMr00=
+        b=EHb7/jl5aSH5wyKqr/ydPRWvz26k0ttd2vo3B8S+YCXFg8FHU5pfoDGmUtBYXSSun
+         Gd4Vx/ePO+V4SOx7OiS/uCqqX1ML0wpHUAh3fM+pys3EV05ut4k8vhx+DzOROD9tGo
+         RHdih6OE/6IuNy0ZeUAPTmICS79NX8SHlPSoyy78=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 017/119] x86/mm: Avoid incomplete Global INVLPG flushes
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 078/132] netfilter: nftables: statify nft_parse_register()
 Date:   Sun, 28 May 2023 20:10:17 +0100
-Message-Id: <20230528190835.902657708@linuxfoundation.org>
+Message-Id: <20230528190835.925248608@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,85 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit ce0b15d11ad837fbacc5356941712218e38a0a83 upstream.
+[ 08a01c11a5bb3de9b0a9c9b2685867e50eda9910 ]
 
-The INVLPG instruction is used to invalidate TLB entries for a
-specified virtual address.  When PCIDs are enabled, INVLPG is supposed
-to invalidate TLB entries for the specified address for both the
-current PCID *and* Global entries.  (Note: Only kernel mappings set
-Global=1.)
+This function is not used anymore by any extension, statify it.
 
-Unfortunately, some INVLPG implementations can leave Global
-translations unflushed when PCIDs are enabled.
-
-As a workaround, never enable PCIDs on affected processors.
-
-I expect there to eventually be microcode mitigations to replace this
-software workaround.  However, the exact version numbers where that
-will happen are not known today.  Once the version numbers are set in
-stone, the processor list can be tweaked to only disable PCIDs on
-affected processors with affected microcode.
-
-Note: if anyone wants a quick fix that doesn't require patching, just
-stick 'nopcid' on your kernel command-line.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/init.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ include/net/netfilter/nf_tables.h | 1 -
+ net/netfilter/nf_tables_api.c     | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -9,6 +9,7 @@
- #include <linux/sched/task.h>
- 
- #include <asm/set_memory.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/e820/api.h>
- #include <asm/init.h>
- #include <asm/page.h>
-@@ -260,6 +261,24 @@ static void __init probe_page_size_mask(
- 	}
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index bf957156e9b76..2cd847212a048 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -191,7 +191,6 @@ static inline enum nft_registers nft_type_to_reg(enum nft_data_types type)
  }
  
-+#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
-+			      .family  = 6,			\
-+			      .model = _model,			\
-+			    }
-+/*
-+ * INVLPG may not properly flush Global entries
-+ * on these CPUs when PCIDs are enabled.
-+ */
-+static const struct x86_cpu_id invlpg_miss_ids[] = {
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	{}
-+};
-+
- static void setup_pcid(void)
- {
- 	if (!IS_ENABLED(CONFIG_X86_64))
-@@ -268,6 +287,12 @@ static void setup_pcid(void)
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
+ int nft_parse_u32_check(const struct nlattr *attr, int max, u32 *dest);
+-unsigned int nft_parse_register(const struct nlattr *attr);
+ int nft_dump_register(struct sk_buff *skb, unsigned int attr, unsigned int reg);
  
-+	if (x86_match_cpu(invlpg_miss_ids)) {
-+		pr_info("Incomplete global flushes, disabling PCID");
-+		setup_clear_cpu_cap(X86_FEATURE_PCID);
-+		return;
-+	}
-+
- 	if (boot_cpu_has(X86_FEATURE_PGE)) {
- 		/*
- 		 * This can't be cr4_set_bits_and_update_boot() -- the
+ int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b86d9c14cbd69..dacdb1feb2e9a 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6987,7 +6987,7 @@ EXPORT_SYMBOL_GPL(nft_parse_u32_check);
+  *	Registers used to be 128 bit wide, these register numbers will be
+  *	mapped to the corresponding 32 bit register numbers.
+  */
+-unsigned int nft_parse_register(const struct nlattr *attr)
++static unsigned int nft_parse_register(const struct nlattr *attr)
+ {
+ 	unsigned int reg;
+ 
+@@ -6999,7 +6999,6 @@ unsigned int nft_parse_register(const struct nlattr *attr)
+ 		return reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(nft_parse_register);
+ 
+ /**
+  *	nft_dump_register - dump a register value to a netlink attribute
+-- 
+2.39.2
+
 
 
