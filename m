@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 675E9713C73
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73BF8713E1F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjE1TPS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34688 "EHLO
+        id S230265AbjE1TcN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjE1TPR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:17 -0400
+        with ESMTP id S230264AbjE1TcN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E6C5C4;
-        Sun, 28 May 2023 12:15:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582B3A7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 138206158B;
-        Sun, 28 May 2023 19:15:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303CDC433D2;
-        Sun, 28 May 2023 19:15:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8089161D9A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2DAC433EF;
+        Sun, 28 May 2023 19:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301315;
-        bh=KdbP9Gju9nKc/REI7lJ1C9p5zHGg4yjYdtLkDpLXh3o=;
+        s=korg; t=1685302330;
+        bh=QBv6S3rCgMWdj7VzV6wjTxObjtuij+K5CTJHfNCThDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AhOWavd6AsvLTe/vaY5Wq5+UxRh/qfJIEKZ/s8iy5UaGEtK/YDgJncv7+mZi90HFQ
-         pphuHLDUSPG14T6YV8NZxD7nokY6rT/u1PXfI3+uGtcUlm5Jk8qGgVCFX8zuQJULTa
-         EibfjDfnUzd8H+4Bf5DhiMdN0vfu2LiiU88hrsy4=
+        b=HQxdUtFOAfneW8HUhAT5705KEh3qD2xN4D2iTedMoReOYB1LiZIVuDstzntUiENaK
+         YWKJSGLKJskKDfE9TAAaaJxXp09PR/Bu9QvYzRpfj0tG19UwfCOTtx0ZsKm/tGGrM4
+         R/VybAkfhQUe1SNtg0PTooWourv5h3ibBda2/Wpg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 67/86] netfilter: nft_dynset: do not reject set updates with NFT_SET_EVAL
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
+Subject: [PATCH 6.3 065/127] USB: sisusbvga: Add endpoint checks
 Date:   Sun, 28 May 2023 20:10:41 +0100
-Message-Id: <20230528190831.122346503@linuxfoundation.org>
+Message-Id: <20230528190838.517076916@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,46 +53,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ 215a31f19dedd4e92a67cf5a9717ee898d012b3a ]
+commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
 
-NFT_SET_EVAL is signalling the kernel that this sets can be updated from
-the evaluation path, even if there are no expressions attached to the
-element. Otherwise, set updates with no expressions fail. Update
-description to describe the right semantics.
+The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
 
-Fixes: 22fe54d5fefc ("netfilter: nf_tables: add support for dynamic set updates")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
+RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
+R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
+FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
+ sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
+ sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
+ sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
+ sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
+ sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
+...
+
+The problem was caused by the fact that the driver does not check
+whether the endpoints it uses are actually present and have the
+appropriate types.  This can be fixed by adding a simple check of
+the endpoints.
+
+Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
+Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h |    2 +-
- net/netfilter/nft_dynset.c               |    4 +---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/usb/misc/sisusbvga/sisusbvga.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -258,7 +258,7 @@ enum nft_rule_compat_attributes {
-  * @NFT_SET_INTERVAL: set contains intervals
-  * @NFT_SET_MAP: set is used as a dictionary
-  * @NFT_SET_TIMEOUT: set uses timeouts
-- * @NFT_SET_EVAL: set contains expressions for evaluation
-+ * @NFT_SET_EVAL: set can be updated from the evaluation path
-  * @NFT_SET_OBJECT: set contains stateful objects
-  */
- enum nft_set_flags {
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -190,9 +190,7 @@ static int nft_dynset_init(const struct
- 		priv->expr = nft_expr_init(ctx, tb[NFTA_DYNSET_EXPR]);
- 		if (IS_ERR(priv->expr))
- 			return PTR_ERR(priv->expr);
--
--	} else if (set->flags & NFT_SET_EVAL)
--		return -EINVAL;
+--- a/drivers/usb/misc/sisusbvga/sisusbvga.c
++++ b/drivers/usb/misc/sisusbvga/sisusbvga.c
+@@ -2778,6 +2778,20 @@ static int sisusb_probe(struct usb_inter
+ 	struct usb_device *dev = interface_to_usbdev(intf);
+ 	struct sisusb_usb_data *sisusb;
+ 	int retval = 0, i;
++	static const u8 ep_addresses[] = {
++		SISUSB_EP_GFX_IN | USB_DIR_IN,
++		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
++		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
++		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
++		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
++		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
++		0};
++
++	/* Are the expected endpoints present? */
++	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
++		dev_err(&intf->dev, "Invalid USB2VGA device\n");
++		return -EINVAL;
 +	}
  
- 	nft_set_ext_prepare(&priv->tmpl);
- 	nft_set_ext_add_length(&priv->tmpl, NFT_SET_EXT_KEY, set->klen);
+ 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
+ 			dev->devnum);
 
 
