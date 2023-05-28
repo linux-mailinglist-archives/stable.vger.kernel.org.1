@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F608713EFF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B893713D46
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231149AbjE1Tk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
+        id S230002AbjE1TXj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231147AbjE1Tk6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A9BEA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:51 -0700 (PDT)
+        with ESMTP id S229993AbjE1TXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E80A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0508061EC4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21390C433D2;
-        Sun, 28 May 2023 19:40:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E47660F4E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B065C433D2;
+        Sun, 28 May 2023 19:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302850;
-        bh=1x11KkfiU6kqnsqZo8++iks3M+YXh0kn924v3xhVO5M=;
+        s=korg; t=1685301816;
+        bh=oHOBcHJeaDGIG5ugZ2/erKMhtehFMgYs80Xs7kg5fjA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=La67GnaYPsOBtta7/ygBDGnRKuYnl/Rn+Ml40VsNqPS3yw3zqm6nSPnPPqxUMBwjP
-         Lap94K+lSkCevpqijGiRxpOonIx20B38Khwe4OqfSbm5IweN8litInsnIx+aFVkYke
-         mIOX+MaZyWmlfrJUj+Eo+FN9kfBHROMq71uFzViE=
+        b=ko+rR5+oiewvYQLy5gvB08VhmLHrLrfArl9/SMPIv8R/XHHLuRoCm71Ne9bX6O6nn
+         7BfFe9dK/OBmZddYkOFAgodtOdjF3CVYxqATzlmJmu7A9L8HxCUYxbDnC/QgqwgdWv
+         QIVe9ijBQAQxK5jSpmx9f1QLVSFrNfKZTyLXYE2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Forza <forza@tnonline.net>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Maurizio Lombardi <mlombard@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
+        Johannes Thumshirn <jth@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/211] scsi: target: iscsit: Free cmds before session free
+Subject: [PATCH 5.4 048/161] mcb-pci: Reallocate memory region to avoid memory overlapping
 Date:   Sun, 28 May 2023 20:09:32 +0100
-Message-Id: <20230528190844.859608168@linuxfoundation.org>
+Message-Id: <20230528190838.734749738@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,62 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
 
-[ Upstream commit d8990b5a4d065f38f35d69bcd627ec5a7f8330ca ]
+[ Upstream commit 9be24faadd085c284890c3afcec7a0184642315a ]
 
-Commands from recovery entries are freed after session has been closed.
-That leads to use-after-free at command free or NPE with such call trace:
+mcb-pci requests a fixed-size memory region to parse the chameleon
+table, however, if the chameleon table is smaller that the allocated
+region, it could overlap with the IP Cores' memory regions.
 
-Time2Retain timer expired for SID: 1, cleaning up iSCSI session.
-BUG: kernel NULL pointer dereference, address: 0000000000000140
-RIP: 0010:sbitmap_queue_clear+0x3a/0xa0
-Call Trace:
- target_release_cmd_kref+0xd1/0x1f0 [target_core_mod]
- transport_generic_free_cmd+0xd1/0x180 [target_core_mod]
- iscsit_free_cmd+0x53/0xd0 [iscsi_target_mod]
- iscsit_free_connection_recovery_entries+0x29d/0x320 [iscsi_target_mod]
- iscsit_close_session+0x13a/0x140 [iscsi_target_mod]
- iscsit_check_post_dataout+0x440/0x440 [iscsi_target_mod]
- call_timer_fn+0x24/0x140
+After parsing the chameleon table, drop/reallocate the memory region
+with the actual chameleon table size.
 
-Move cleanup of recovery enrties to before session freeing.
-
-Reported-by: Forza <forza@tnonline.net>
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-7-michael.christie@oracle.com
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/20230411083329.4506-3-jth@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mcb/mcb-pci.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 6bb8403580729..075e2a6fb474f 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4385,6 +4385,9 @@ int iscsit_close_session(struct iscsi_session *sess)
- 	iscsit_stop_time2retain_timer(sess);
- 	spin_unlock_bh(&se_tpg->session_lock);
+diff --git a/drivers/mcb/mcb-pci.c b/drivers/mcb/mcb-pci.c
+index 14866aa22f753..22927c80ff469 100644
+--- a/drivers/mcb/mcb-pci.c
++++ b/drivers/mcb/mcb-pci.c
+@@ -31,7 +31,7 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct resource *res;
+ 	struct priv *priv;
+-	int ret;
++	int ret, table_size;
+ 	unsigned long flags;
  
-+	if (sess->sess_ops->ErrorRecoveryLevel == 2)
-+		iscsit_free_connection_recovery_entries(sess);
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(struct priv), GFP_KERNEL);
+@@ -90,7 +90,30 @@ static int mcb_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (ret < 0)
+ 		goto out_mcb_bus;
+ 
+-	dev_dbg(&pdev->dev, "Found %d cells\n", ret);
++	table_size = ret;
 +
- 	/*
- 	 * transport_deregister_session_configfs() will clear the
- 	 * struct se_node_acl->nacl_sess pointer now as a iscsi_np process context
-@@ -4412,9 +4415,6 @@ int iscsit_close_session(struct iscsi_session *sess)
++	if (table_size < CHAM_HEADER_SIZE) {
++		/* Release the previous resources */
++		devm_iounmap(&pdev->dev, priv->base);
++		devm_release_mem_region(&pdev->dev, priv->mapbase, CHAM_HEADER_SIZE);
++
++		/* Then, allocate it again with the actual chameleon table size */
++		res = devm_request_mem_region(&pdev->dev, priv->mapbase,
++						table_size,
++						KBUILD_MODNAME);
++		if (!res) {
++			dev_err(&pdev->dev, "Failed to request PCI memory\n");
++			ret = -EBUSY;
++			goto out_mcb_bus;
++		}
++
++		priv->base = devm_ioremap(&pdev->dev, priv->mapbase, table_size);
++		if (!priv->base) {
++			dev_err(&pdev->dev, "Cannot ioremap\n");
++			ret = -ENOMEM;
++			goto out_mcb_bus;
++		}
++	}
  
- 	transport_deregister_session(sess->se_sess);
+ 	mcb_bus_add_devices(priv->bus);
  
--	if (sess->sess_ops->ErrorRecoveryLevel == 2)
--		iscsit_free_connection_recovery_entries(sess);
--
- 	iscsit_free_all_ooo_cmdsns(sess);
- 
- 	spin_lock_bh(&se_tpg->session_lock);
 -- 
 2.39.2
 
