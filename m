@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B8A713D10
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2A4713E90
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbjE1TVa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:21:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
+        id S230411AbjE1Tgm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbjE1TVa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:21:30 -0400
+        with ESMTP id S230405AbjE1Tgl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860ABC7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:21:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E660A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 201AF61B1C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:21:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBC0C433EF;
-        Sun, 28 May 2023 19:21:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEBD261E43
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EA6C433D2;
+        Sun, 28 May 2023 19:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301687;
-        bh=j5vvx8VTbcx7YDeHezKVoK1v+mS/DTAgrOeEYFBUoY8=;
+        s=korg; t=1685302599;
+        bh=EQMTPs1bEz9qRplNUdJEjJLS1dynHEIgeYT/VvurwGU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=StUTCl1iT3a4i8kkLaIy5MRHAPgERKp1IGEhxEiJVes2LXFKRQZn6WD8R24FVy4+W
-         2Qq1IToYXYVVgTYyRb5dXrBqDt9MAd4gWTfsbL758bc2mOY5M9JUUxt8cTVY+FMylV
-         sxilTFE6Ykq882aGAVKNXlqaY/qjlkQLiTDlUKM0=
+        b=CM0NHEGbvg7llv/poT/SShhBPABVYwEpCqXyAx0g7Y/gD8WMSnYxm7391QoVQq0SK
+         E67lKaJ+yax3DTUEO0GlSmYAOo9zpIJOAsDcrbFmW2ipERjc8FcYRSgf0/B8uLOEbv
+         SMQGIATvwpIJWxog3pF+Sfs6Jxrsqpos8fSMBQv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vernon Lovejoy <vlovejoy@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 4.19 129/132] x86/show_trace_log_lvl: Ensure stack pointer is aligned, again
+        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Krzesimir Nowak <krzesimir@kinvolk.io>,
+        Andrey Ignatov <rdna@fb.com>, Yonghong Song <yhs@fb.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 068/119] bpf: Fix mask generation for 32-bit narrow loads of 64-bit fields
 Date:   Sun, 28 May 2023 20:11:08 +0100
-Message-Id: <20230528190837.832657095@linuxfoundation.org>
+Message-Id: <20230528190837.757343790@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,69 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vernon Lovejoy <vlovejoy@redhat.com>
+From: Will Deacon <will@kernel.org>
 
-commit 2e4be0d011f21593c6b316806779ba1eba2cd7e0 upstream.
+commit 0613d8ca9ab382caabe9ed2dceb429e9781e443f upstream.
 
-The commit e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-tried to align the stack pointer in show_trace_log_lvl(), otherwise the
-"stack < stack_info.end" check can't guarantee that the last read does
-not go past the end of the stack.
+A narrow load from a 64-bit context field results in a 64-bit load
+followed potentially by a 64-bit right-shift and then a bitwise AND
+operation to extract the relevant data.
 
-However, we have the same problem with the initial value of the stack
-pointer, it can also be unaligned. So without this patch this trivial
-kernel module
+In the case of a 32-bit access, an immediate mask of 0xffffffff is used
+to construct a 64-bit BPP_AND operation which then sign-extends the mask
+value and effectively acts as a glorified no-op. For example:
 
-	#include <linux/module.h>
+0:	61 10 00 00 00 00 00 00	r0 = *(u32 *)(r1 + 0)
 
-	static int init(void)
-	{
-		asm volatile("sub    $0x4,%rsp");
-		dump_stack();
-		asm volatile("add    $0x4,%rsp");
+results in the following code generation for a 64-bit field:
 
-		return -EAGAIN;
-	}
+	ldr	x7, [x7]	// 64-bit load
+	mov	x10, #0xffffffffffffffff
+	and	x7, x7, x10
 
-	module_init(init);
-	MODULE_LICENSE("GPL");
+Fix the mask generation so that narrow loads always perform a 32-bit AND
+operation:
 
-crashes the kernel.
+	ldr	x7, [x7]	// 64-bit load
+	mov	w10, #0xffffffff
+	and	w7, w7, w10
 
-Fixes: e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-Signed-off-by: Vernon Lovejoy <vlovejoy@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20230512104232.GA10227@redhat.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Krzesimir Nowak <krzesimir@kinvolk.io>
+Cc: Andrey Ignatov <rdna@fb.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Fixes: 31fd85816dbe ("bpf: permits narrower load from bpf program context fields")
+Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20230518102528.1341-1-will@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/dumpstack.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -171,7 +171,6 @@ void show_trace_log_lvl(struct task_stru
- 	printk("%sCall Trace:\n", log_lvl);
- 
- 	unwind_start(&state, task, regs, stack);
--	stack = stack ? : get_stack_pointer(task, regs);
- 	regs = unwind_get_entry_regs(&state, &partial);
- 
- 	/*
-@@ -190,9 +189,13 @@ void show_trace_log_lvl(struct task_stru
- 	 * - hardirq stack
- 	 * - entry stack
- 	 */
--	for ( ; stack; stack = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
-+	for (stack = stack ?: get_stack_pointer(task, regs);
-+	     stack;
-+	     stack = stack_info.next_sp) {
- 		const char *stack_name;
- 
-+		stack = PTR_ALIGN(stack, sizeof(long));
-+
- 		if (get_stack_info(stack, task, &stack_info, &visit_mask)) {
- 			/*
- 			 * We weren't on a valid stack.  It's possible that
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -13638,7 +13638,7 @@ static int convert_ctx_accesses(struct b
+ 					insn_buf[cnt++] = BPF_ALU64_IMM(BPF_RSH,
+ 									insn->dst_reg,
+ 									shift);
+-				insn_buf[cnt++] = BPF_ALU64_IMM(BPF_AND, insn->dst_reg,
++				insn_buf[cnt++] = BPF_ALU32_IMM(BPF_AND, insn->dst_reg,
+ 								(1ULL << size * 8) - 1);
+ 			}
+ 		}
 
 
