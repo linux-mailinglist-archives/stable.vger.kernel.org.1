@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52748713EDF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0591713D1D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbjE1Tjp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54770 "EHLO
+        id S229951AbjE1TWC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjE1Tjo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:44 -0400
+        with ESMTP id S229949AbjE1TWB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C86C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC27A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF8EE61EA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0681FC433EF;
-        Sun, 28 May 2023 19:39:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1480F61B3C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317C6C4339B;
+        Sun, 28 May 2023 19:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302782;
-        bh=AwGyhurLPuHvkuuSE7yVuKJr6FREJY7VBBnMEb17XHs=;
+        s=korg; t=1685301719;
+        bh=RY1vdKIff9EFwG/nDJVNeHn+RVI2qJk0erV2d756UTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LnBn7IoNpF/X+rlIb03a3GUVYJIUS4eYcDkKemBAJZ5DxJUpXBWT1i46Qo6uJybeU
-         Wz7nbdSGojbWixNo0KBRbjZX9eFAZt+YsH43dM77utGFz6BtUxuwt/WcPBD4rXWMmU
-         qGR0vUJc9W+42u7BTbC4rhL6T97ANxwt8k4ZTjCQ=
+        b=sByv1TRZTvLG9GnTISxOhvDtL0f2oCTwy9Hvpr0RkmWGDWYlHrpbaIGkMC3WX+M31
+         PglKcVNlhyxxXJSuUPJ68A5UbZC4DPs7yExCkskb7BZs/h4xLyQOW8+gctBiYPvsjr
+         yjsuJu9OGsW3nuK2OTe7swsj74RrUYrr6HTFtWxM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Simon Horman <simon.horman@corigine.com>,
-        Andrew Lunn <andrew@lunn.ch>,
+        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/211] net: mdio: mvusb: Fix an error handling path in mvusb_mdio_probe()
+Subject: [PATCH 5.4 001/161] driver core: add a helper to setup both the of_node and fwnode of a device
 Date:   Sun, 28 May 2023 20:08:45 +0100
-Message-Id: <20230528190843.626510541@linuxfoundation.org>
+Message-Id: <20230528190837.109851685@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,52 +57,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 27c1eaa07283b0c94becf8241f95368267cf558b ]
+[ Upstream commit 43e76d463c09a0272b84775bcc727c1eb8b384b2 ]
 
-Should of_mdiobus_register() fail, a previous usb_get_dev() call should be
-undone as in the .disconnect function.
+There are many places where both the fwnode_handle and the of_node of a
+device need to be populated. Add a function which does both so that we
+have consistency.
 
-Fixes: 04e37d92fbed ("net: phy: add marvell usb to mdio controller")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a26cc2934331 ("drm/mipi-dsi: Set the fwnode for mipi_dsi_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-mvusb.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/base/core.c    | 7 +++++++
+ include/linux/device.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/mdio/mdio-mvusb.c b/drivers/net/mdio/mdio-mvusb.c
-index d5eabddfdf51b..11e048136ac23 100644
---- a/drivers/net/mdio/mdio-mvusb.c
-+++ b/drivers/net/mdio/mdio-mvusb.c
-@@ -73,6 +73,7 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
- 	struct device *dev = &interface->dev;
- 	struct mvusb_mdio *mvusb;
- 	struct mii_bus *mdio;
-+	int ret;
- 
- 	mdio = devm_mdiobus_alloc_size(dev, sizeof(*mvusb));
- 	if (!mdio)
-@@ -93,7 +94,15 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
- 	mdio->write = mvusb_mdio_write;
- 
- 	usb_set_intfdata(interface, mvusb);
--	return of_mdiobus_register(mdio, dev->of_node);
-+	ret = of_mdiobus_register(mdio, dev->of_node);
-+	if (ret)
-+		goto put_dev;
-+
-+	return 0;
-+
-+put_dev:
-+	usb_put_dev(mvusb->udev);
-+	return ret;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 1b016fdd1a750..f8e157ede44f8 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3474,6 +3474,13 @@ void device_set_of_node_from_dev(struct device *dev, const struct device *dev2)
  }
+ EXPORT_SYMBOL_GPL(device_set_of_node_from_dev);
  
- static void mvusb_mdio_disconnect(struct usb_interface *interface)
++void device_set_node(struct device *dev, struct fwnode_handle *fwnode)
++{
++	dev->fwnode = fwnode;
++	dev->of_node = to_of_node(fwnode);
++}
++EXPORT_SYMBOL_GPL(device_set_node);
++
+ int device_match_name(struct device *dev, const void *name)
+ {
+ 	return sysfs_streq(dev_name(dev), name);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 3414b5a67b466..d74275e2047a4 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1528,6 +1528,7 @@ extern int device_online(struct device *dev);
+ extern void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
+ extern void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
+ void device_set_of_node_from_dev(struct device *dev, const struct device *dev2);
++void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
+ 
+ static inline int dev_num_vf(struct device *dev)
+ {
 -- 
 2.39.2
 
