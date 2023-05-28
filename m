@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 455B2713ECB
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43A9E713F85
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbjE1TjB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54300 "EHLO
+        id S231299AbjE1TqT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:46:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230481AbjE1Ti5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:57 -0400
+        with ESMTP id S231295AbjE1TqS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B308AA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409DEC9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50F8561E88
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7FAC433D2;
-        Sun, 28 May 2023 19:38:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C426161F70
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2887C433EF;
+        Sun, 28 May 2023 19:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302733;
-        bh=2YnKG/u1enG7Whl4T4pOCXXfFaDk9JuCPV89dYTqLEg=;
+        s=korg; t=1685303175;
+        bh=AntG3jEAUNwWfkWOZvP9omGDp32XaHBMnmnlYFEI6Oo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JRP6cEd67PTyhPs7KRgmxU7vihAXkrxvGnpykokbS8Qkd3voM8r7qO1Frmfur9sT0
-         aoPZw0leZ3kEtHCEK++FSFzjWypN2egLJEh4zT5h4GfwPMQq/FstHslFwPd8lp8l1G
-         w2z5teGTuW+hfbdtQY19RuLRX9NGEsPnq5Qc6P5E=
+        b=bzJ7sdnpf+LE0quzZFIEC+ITyoPjsqE75NPVhNYXCCNTIyjheYPTi6JisD5WluGbP
+         s0t8Jc2xzw+UMVK/wc/OBRLdoC7VVHnWSitdBzpxA5+cu8ZDYsG6G8JUSz7k/xptgR
+         Kp/VRi65Zaci+S+K0f1lv7cXsmQw5/X0GpEdPqn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.1 105/119] net/mlx5e: Use correct encap attribute during invalidation
-Date:   Sun, 28 May 2023 20:11:45 +0100
-Message-Id: <20230528190838.981343118@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+444ca0907e96f7c5e48b@syzkaller.appspotmail.com,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 185/211] udplite: Fix NULL pointer dereference in __sk_mem_raise_allocated().
+Date:   Sun, 28 May 2023 20:11:46 +0100
+Message-Id: <20230528190848.095283933@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,62 +55,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit be071cdb167fc3e25fe81922166b3d499d23e8ac upstream.
+commit ad42a35bdfc6d3c0fc4cb4027d7b2757ce665665 upstream.
 
-With introduction of post action infrastructure most of the users of encap
-attribute had been modified in order to obtain the correct attribute by
-calling mlx5e_tc_get_encap_attr() helper instead of assuming encap action
-is always on default attribute. However, the cited commit didn't modify
-mlx5e_invalidate_encap() which prevents it from destroying correct modify
-header action which leads to a warning [0]. Fix the issue by using correct
-attribute.
+syzbot reported [0] a null-ptr-deref in sk_get_rmem0() while using
+IPPROTO_UDPLITE (0x88):
+
+  14:25:52 executing program 1:
+  r0 = socket$inet6(0xa, 0x80002, 0x88)
+
+We had a similar report [1] for probably sk_memory_allocated_add()
+in __sk_mem_raise_allocated(), and commit c915fe13cbaa ("udplite: fix
+NULL pointer dereference") fixed it by setting .memory_allocated for
+udplite_prot and udplitev6_prot.
+
+To fix the variant, we need to set either .sysctl_wmem_offset or
+.sysctl_rmem.
+
+Now UDP and UDPLITE share the same value for .memory_allocated, so we
+use the same .sysctl_wmem_offset for UDP and UDPLITE.
 
 [0]:
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 PID: 6829 Comm: syz-executor.1 Not tainted 6.4.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
+RIP: 0010:sk_get_rmem0 include/net/sock.h:2907 [inline]
+RIP: 0010:__sk_mem_raise_allocated+0x806/0x17a0 net/core/sock.c:3006
+Code: c1 ea 03 80 3c 02 00 0f 85 23 0f 00 00 48 8b 44 24 08 48 8b 98 38 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 da 48 c1 ea 03 <0f> b6 14 02 48 89 d8 83 e0 07 83 c0 03 38 d0 0f 8d 6f 0a 00 00 8b
+RSP: 0018:ffffc90005d7f450 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffc90004d92000
+RDX: 0000000000000000 RSI: ffffffff88066482 RDI: ffffffff8e2ccbb8
+RBP: ffff8880173f7000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000030000
+R13: 0000000000000001 R14: 0000000000000340 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0063) knlGS:00000000f7f1cb40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 000000002e82f000 CR3: 0000000034ff0000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ __sk_mem_schedule+0x6c/0xe0 net/core/sock.c:3077
+ udp_rmem_schedule net/ipv4/udp.c:1539 [inline]
+ __udp_enqueue_schedule_skb+0x776/0xb30 net/ipv4/udp.c:1581
+ __udpv6_queue_rcv_skb net/ipv6/udp.c:666 [inline]
+ udpv6_queue_rcv_one_skb+0xc39/0x16c0 net/ipv6/udp.c:775
+ udpv6_queue_rcv_skb+0x194/0xa10 net/ipv6/udp.c:793
+ __udp6_lib_mcast_deliver net/ipv6/udp.c:906 [inline]
+ __udp6_lib_rcv+0x1bda/0x2bd0 net/ipv6/udp.c:1013
+ ip6_protocol_deliver_rcu+0x2e7/0x1250 net/ipv6/ip6_input.c:437
+ ip6_input_finish+0x150/0x2f0 net/ipv6/ip6_input.c:482
+ NF_HOOK include/linux/netfilter.h:303 [inline]
+ NF_HOOK include/linux/netfilter.h:297 [inline]
+ ip6_input+0xa0/0xd0 net/ipv6/ip6_input.c:491
+ ip6_mc_input+0x40b/0xf50 net/ipv6/ip6_input.c:585
+ dst_input include/net/dst.h:468 [inline]
+ ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
+ NF_HOOK include/linux/netfilter.h:303 [inline]
+ NF_HOOK include/linux/netfilter.h:297 [inline]
+ ipv6_rcv+0x250/0x380 net/ipv6/ip6_input.c:309
+ __netif_receive_skb_one_core+0x114/0x180 net/core/dev.c:5491
+ __netif_receive_skb+0x1f/0x1c0 net/core/dev.c:5605
+ netif_receive_skb_internal net/core/dev.c:5691 [inline]
+ netif_receive_skb+0x133/0x7a0 net/core/dev.c:5750
+ tun_rx_batched+0x4b3/0x7a0 drivers/net/tun.c:1553
+ tun_get_user+0x2452/0x39c0 drivers/net/tun.c:1989
+ tun_chr_write_iter+0xdf/0x200 drivers/net/tun.c:2035
+ call_write_iter include/linux/fs.h:1868 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x945/0xd50 fs/read_write.c:584
+ ksys_write+0x12b/0x250 fs/read_write.c:637
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0x65/0xf0 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:203
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
+RIP: 0023:0xf7f21579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
+RSP: 002b:00000000f7f1c590 EFLAGS: 00000282 ORIG_RAX: 0000000000000004
+RAX: ffffffffffffffda RBX: 00000000000000c8 RCX: 0000000020000040
+RDX: 0000000000000083 RSI: 00000000f734e000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
 
-Feb 21 09:47:35 c-237-177-40-045 kernel: WARNING: CPU: 17 PID: 654 at drivers/net/ethernet/mellanox/mlx5/core/en_tc.c:684 mlx5e_tc_attach_mod_hdr+0x1cc/0x230 [mlx5_core]
-Feb 21 09:47:35 c-237-177-40-045 kernel: RIP: 0010:mlx5e_tc_attach_mod_hdr+0x1cc/0x230 [mlx5_core]
-Feb 21 09:47:35 c-237-177-40-045 kernel: Call Trace:
-Feb 21 09:47:35 c-237-177-40-045 kernel:  <TASK>
-Feb 21 09:47:35 c-237-177-40-045 kernel:  mlx5e_tc_fib_event_work+0x8e3/0x1f60 [mlx5_core]
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? mlx5e_take_all_encap_flows+0xe0/0xe0 [mlx5_core]
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? lock_downgrade+0x6d0/0x6d0
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? lockdep_hardirqs_on_prepare+0x273/0x3f0
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? lockdep_hardirqs_on_prepare+0x273/0x3f0
-Feb 21 09:47:35 c-237-177-40-045 kernel:  process_one_work+0x7c2/0x1310
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? lockdep_hardirqs_on_prepare+0x3f0/0x3f0
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? pwq_dec_nr_in_flight+0x230/0x230
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? rwlock_bug.part.0+0x90/0x90
-Feb 21 09:47:35 c-237-177-40-045 kernel:  worker_thread+0x59d/0xec0
-Feb 21 09:47:35 c-237-177-40-045 kernel:  ? __kthread_parkme+0xd9/0x1d0
-
-Fixes: 8300f225268b ("net/mlx5e: Create new flow attr for multi table actions")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/netdev/CANaxB-yCk8hhP68L4Q2nFOJht8sqgXGGQO2AftpHs0u1xyGG5A@mail.gmail.com/ [1]
+Fixes: 850cbaddb52d ("udp: use it's own memory accounting schema")
+Reported-by: syzbot+444ca0907e96f7c5e48b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=444ca0907e96f7c5e48b
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230523163305.66466-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/udplite.c |    2 ++
+ net/ipv6/udplite.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -1338,11 +1338,13 @@ static void mlx5e_invalidate_encap(struc
- 	struct mlx5e_tc_flow *flow;
- 
- 	list_for_each_entry(flow, encap_flows, tmp_list) {
--		struct mlx5_flow_attr *attr = flow->attr;
- 		struct mlx5_esw_flow_attr *esw_attr;
-+		struct mlx5_flow_attr *attr;
- 
- 		if (!mlx5e_is_offloaded_flow(flow))
- 			continue;
-+
-+		attr = mlx5e_tc_get_encap_attr(flow);
- 		esw_attr = attr->esw_attr;
- 
- 		if (flow_flag_test(flow, SLOW))
+--- a/net/ipv4/udplite.c
++++ b/net/ipv4/udplite.c
+@@ -62,6 +62,8 @@ struct proto 	udplite_prot = {
+ 	.get_port	   = udp_v4_get_port,
+ 	.memory_allocated  = &udp_memory_allocated,
+ 	.sysctl_mem	   = sysctl_udp_mem,
++	.sysctl_wmem_offset = offsetof(struct net, ipv4.sysctl_udp_wmem_min),
++	.sysctl_rmem_offset = offsetof(struct net, ipv4.sysctl_udp_rmem_min),
+ 	.obj_size	   = sizeof(struct udp_sock),
+ 	.h.udp_table	   = &udplite_table,
+ };
+--- a/net/ipv6/udplite.c
++++ b/net/ipv6/udplite.c
+@@ -57,6 +57,8 @@ struct proto udplitev6_prot = {
+ 	.get_port	   = udp_v6_get_port,
+ 	.memory_allocated  = &udp_memory_allocated,
+ 	.sysctl_mem	   = sysctl_udp_mem,
++	.sysctl_wmem_offset = offsetof(struct net, ipv4.sysctl_udp_wmem_min),
++	.sysctl_rmem_offset = offsetof(struct net, ipv4.sysctl_udp_rmem_min),
+ 	.obj_size	   = sizeof(struct udp6_sock),
+ 	.h.udp_table	   = &udplite_table,
+ };
 
 
