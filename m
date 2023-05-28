@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11E9E713CD2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0451713E09
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbjE1TS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37910 "EHLO
+        id S229557AbjE1TbT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:31:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229862AbjE1TS4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE27A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:55 -0700 (PDT)
+        with ESMTP id S230240AbjE1TbT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D03CA7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D4E161A6D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A567C433D2;
-        Sun, 28 May 2023 19:18:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D7161D08
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1111C433EF;
+        Sun, 28 May 2023 19:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301534;
-        bh=+x8kWL0OrRN0PHoFRxlfXYZ+NObFLk1E+u2mn6dubfw=;
+        s=korg; t=1685302275;
+        bh=v5y/d6MFvgPaJmVRMETyzXieC/WwYStzyt+D2FnE6tA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UXz4IBZ0UU0V3qe5JcBOl3S6koRTlOwYQN+z2RW2CBRHDNQxcEusSHCM3prE1nqEa
-         k9Qu/aU8Ql2Ixw2FdiebbcTkbAtDEFosKB4Z4P2sTnUskexc7CJZ5KU41t3UBvhZaL
-         YxTHEfBbPDgGQJkhiqvTGPxDZ2Fn9IObqC0wH2QI=
+        b=zOW6gf/AQVbVjEg5oAXhvhztd0Sb5C3xzRuNDWflP3mC9OWh0Tfua/uoAdybjew5D
+         3nKQ9jTvdcYraMzjk9y65rSs5SKq1ggBdDbohb1yH+X303/mWeqevLyDKcxGuY8sHT
+         tugDZxaIbUoiGi+hbUCy8MvK+TKXZp6Eh6k4Eodg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 4.19 068/132] usb: typec: altmodes/displayport: fix pin_assignment_show
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.3 031/127] parisc: Use num_present_cpus() in alternative patching code
 Date:   Sun, 28 May 2023 20:10:07 +0100
-Message-Id: <20230528190835.627079592@linuxfoundation.org>
+Message-Id: <20230528190837.309019918@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +52,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Helge Deller <deller@gmx.de>
 
-commit d8f28269dd4bf9b55c3fb376ae31512730a96fce upstream.
+commit b6405f0829d7b1dd926ba3ca5f691cab835abfaa upstream.
 
-This patch fixes negative indexing of buf array in pin_assignment_show
-when get_current_pin_assignments returns 0 i.e. no compatible pin
-assignments are found.
+When patching the kernel code some alternatives depend on SMP vs. !SMP.
+Use the value of num_present_cpus() instead of num_online_cpus() to
+decide, otherwise we may run into issues if and additional CPU is
+enabled after having loaded a module while only one CPU was enabled.
 
-BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
-...
-Call trace:
-dump_backtrace+0x110/0x204
-dump_stack_lvl+0x84/0xbc
-print_report+0x358/0x974
-kasan_report+0x9c/0xfc
-__do_kernel_fault+0xd4/0x2d4
-do_bad_area+0x48/0x168
-do_tag_check_fault+0x24/0x38
-do_mem_abort+0x6c/0x14c
-el1_abort+0x44/0x68
-el1h_64_sync_handler+0x64/0xa4
-el1h_64_sync+0x78/0x7c
-pin_assignment_show+0x26c/0x33c
-dev_attr_show+0x50/0xc0
-
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230508214443.893436-1-badhri@google.com
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.1+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/parisc/kernel/alternative.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -501,6 +501,10 @@ static ssize_t pin_assignment_show(struc
+--- a/arch/parisc/kernel/alternative.c
++++ b/arch/parisc/kernel/alternative.c
+@@ -25,7 +25,7 @@ void __init_or_module apply_alternatives
+ {
+ 	struct alt_instr *entry;
+ 	int index = 0, applied = 0;
+-	int num_cpus = num_online_cpus();
++	int num_cpus = num_present_cpus();
+ 	u16 cond_check;
  
- 	mutex_unlock(&dp->lock);
- 
-+	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
-+	if (len == 0)
-+		len++;
-+
- 	buf[len - 1] = '\n';
- 	return len;
- }
+ 	cond_check = ALT_COND_ALWAYS |
 
 
