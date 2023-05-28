@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F047713DD6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07FEB713F1A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbjE1T3h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46190 "EHLO
+        id S231189AbjE1TmX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbjE1T3h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE2D189
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:20 -0700 (PDT)
+        with ESMTP id S231191AbjE1TmU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DAF106
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 617F261D1F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664A9C433EF;
-        Sun, 28 May 2023 19:29:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A6C861ECC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E76DC4339C;
+        Sun, 28 May 2023 19:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302158;
-        bh=GAKfk2bBnUNVJAUxBeYig4Vy3Gwi6jdpGt9a25Sn8gA=;
+        s=korg; t=1685302913;
+        bh=RLG+ijHUWU1lDR04gTI73NyvRPuwz4aNETfgQ6E2fDQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nkJyKz7o2acQQXkIstAuUQWRvbW/IerfG35830Exlz+YA7UDPMngm2PXNfIBjwtL0
-         8toprD31VDFY2R20ymzyxY6KgHA6oVopwUgvr9pku9AaiiFQA4I/1BuHpGoHy4N5FA
-         gp9caddD+VQBfpYoELth7xAxc4Ry07NzskjOc+0A=
+        b=AvFCXF18iTPw97FtuM1nx9PXh/3jcR9LfhiMOF9JTkhtK6KfoW+K/trC3sY6yjvLQ
+         m8//WQZArFJ5X6bBEu6CuIpYj3//nhZYuuZ8pHDgs78zTO3Ml+YuaylYQ/Qn0IzGj/
+         TT8b6fpBtIeCEJ67TI86IHghGo2mPfZCFJW2Ps3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.3 022/127] mmc: block: ensure error propagation for non-blk
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 077/211] RDMA/core: Fix multiple -Warray-bounds warnings
 Date:   Sun, 28 May 2023 20:09:58 +0100
-Message-Id: <20230528190836.971380604@linuxfoundation.org>
+Message-Id: <20230528190845.535479111@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,80 +55,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Loehle <CLoehle@hyperstone.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
+[ Upstream commit aa4d540b4150052ae3b36d286b9c833a961ce291 ]
 
-Requests to the mmc layer usually come through a block device IO.
-The exceptions are the ioctl interface, RPMB chardev ioctl
-and debugfs, which issue their own blk_mq requests through
-blk_execute_rq and do not query the BLK_STS error but the
-mmcblk-internal drv_op_result. This patch ensures that drv_op_result
-defaults to an error and has to be overwritten by the operation
-to be considered successful.
+GCC-13 (and Clang)[1] does not like to access a partially allocated
+object, since it cannot reason about it for bounds checking.
 
-The behavior leads to a bug where the request never propagates
-the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
-mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
-can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
-and thus may assume that their call executed successfully when it did not.
+In this case 140 bytes are allocated for an object of type struct
+ib_umad_packet:
 
-While always checking the blk_execute_rq return value would be
-advised, let's eliminate the error by always setting
-drv_op_result as -EIO to be overwritten on success (or other error)
+        packet = kzalloc(sizeof(*packet) + IB_MGMT_RMPP_HDR, GFP_KERNEL);
 
-Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, notice that sizeof(*packet) is only 104 bytes:
+
+struct ib_umad_packet {
+        struct ib_mad_send_buf *   msg;                  /*     0     8 */
+        struct ib_mad_recv_wc *    recv_wc;              /*     8     8 */
+        struct list_head           list;                 /*    16    16 */
+        int                        length;               /*    32     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        struct ib_user_mad         mad __attribute__((__aligned__(8))); /*    40    64 */
+
+        /* size: 104, cachelines: 2, members: 5 */
+        /* sum members: 100, holes: 1, sum holes: 4 */
+        /* forced alignments: 1, forced holes: 1, sum forced holes: 4 */
+        /* last cacheline: 40 bytes */
+} __attribute__((__aligned__(8)));
+
+and 36 bytes extra bytes are allocated for a flexible-array member in
+struct ib_user_mad:
+
+include/rdma/ib_mad.h:
+120 enum {
+...
+123         IB_MGMT_RMPP_HDR = 36,
+... }
+
+struct ib_user_mad {
+        struct ib_user_mad_hdr     hdr;                  /*     0    64 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        __u64                      data[] __attribute__((__aligned__(8))); /*    64     0 */
+
+        /* size: 64, cachelines: 1, members: 2 */
+        /* forced alignments: 1 */
+} __attribute__((__aligned__(8)));
+
+So we have sizeof(*packet) + IB_MGMT_RMPP_HDR == 140 bytes
+
+Then the address of the flex-array member (for which only 36 bytes were
+allocated) is casted and copied into a pointer to struct ib_rmpp_mad,
+which, in turn, is of size 256 bytes:
+
+        rmpp_mad = (struct ib_rmpp_mad *) packet->mad.data;
+
+struct ib_rmpp_mad {
+        struct ib_mad_hdr          mad_hdr;              /*     0    24 */
+        struct ib_rmpp_hdr         rmpp_hdr;             /*    24    12 */
+        u8                         data[220];            /*    36   220 */
+
+        /* size: 256, cachelines: 4, members: 3 */
+};
+
+The thing is that those 36 bytes allocated for flex-array member data
+in struct ib_user_mad onlly account for the size of both struct ib_mad_hdr
+and struct ib_rmpp_hdr, but nothing is left for array u8 data[220].
+So, the compiler is legitimately complaining about accessing an object
+for which not enough memory was allocated.
+
+Apparently, the only members of struct ib_rmpp_mad that are relevant
+(that are actually being used) in function ib_umad_write() are mad_hdr
+and rmpp_hdr. So, instead of casting packet->mad.data to
+(struct ib_rmpp_mad *) create a new structure
+
+struct ib_rmpp_mad_hdr {
+        struct ib_mad_hdr       mad_hdr;
+        struct ib_rmpp_hdr      rmpp_hdr;
+} __packed;
+
+and cast packet->mad.data to (struct ib_rmpp_mad_hdr *).
+
+Notice that
+
+        IB_MGMT_RMPP_HDR == sizeof(struct ib_rmpp_mad_hdr) == 36 bytes
+
+Refactor the rest of the code, accordingly.
+
+Fix the following warnings seen under GCC-13 and -Warray-bounds:
+drivers/infiniband/core/user_mad.c:564:50: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+drivers/infiniband/core/user_mad.c:566:42: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+drivers/infiniband/core/user_mad.c:618:25: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+drivers/infiniband/core/user_mad.c:622:44: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+
+Link: https://github.com/KSPP/linux/issues/273
+Link: https://godbolt.org/z/oYWaGM4Yb [1]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZBpB91qQcB10m3Fw@work
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/core/user_mad.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -266,6 +266,7 @@ static ssize_t power_ro_lock_store(struc
- 		goto out_put;
+diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
+index 4688a6657c875..3bd0dcde8576d 100644
+--- a/drivers/infiniband/core/user_mad.c
++++ b/drivers/infiniband/core/user_mad.c
+@@ -131,6 +131,11 @@ struct ib_umad_packet {
+ 	struct ib_user_mad mad;
+ };
+ 
++struct ib_rmpp_mad_hdr {
++	struct ib_mad_hdr	mad_hdr;
++	struct ib_rmpp_hdr      rmpp_hdr;
++} __packed;
++
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/ib_umad.h>
+ 
+@@ -494,11 +499,11 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 			     size_t count, loff_t *pos)
+ {
+ 	struct ib_umad_file *file = filp->private_data;
++	struct ib_rmpp_mad_hdr *rmpp_mad_hdr;
+ 	struct ib_umad_packet *packet;
+ 	struct ib_mad_agent *agent;
+ 	struct rdma_ah_attr ah_attr;
+ 	struct ib_ah *ah;
+-	struct ib_rmpp_mad *rmpp_mad;
+ 	__be64 *tid;
+ 	int ret, data_len, hdr_len, copy_offset, rmpp_active;
+ 	u8 base_version;
+@@ -506,7 +511,7 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 	if (count < hdr_size(file) + IB_MGMT_RMPP_HDR)
+ 		return -EINVAL;
+ 
+-	packet = kzalloc(sizeof *packet + IB_MGMT_RMPP_HDR, GFP_KERNEL);
++	packet = kzalloc(sizeof(*packet) + IB_MGMT_RMPP_HDR, GFP_KERNEL);
+ 	if (!packet)
+ 		return -ENOMEM;
+ 
+@@ -560,13 +565,13 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 		goto err_up;
  	}
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	blk_execute_rq(req, false);
- 	ret = req_to_mmc_queue_req(req)->drv_op_result;
- 	blk_mq_free_request(req);
-@@ -653,6 +654,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_
- 	idatas[0] = idata;
- 	req_to_mmc_queue_req(req)->drv_op =
- 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
- 	req_to_mmc_queue_req(req)->ioc_count = 1;
- 	blk_execute_rq(req, false);
-@@ -724,6 +726,7 @@ static int mmc_blk_ioctl_multi_cmd(struc
+ 
+-	rmpp_mad = (struct ib_rmpp_mad *) packet->mad.data;
+-	hdr_len = ib_get_mad_data_offset(rmpp_mad->mad_hdr.mgmt_class);
++	rmpp_mad_hdr = (struct ib_rmpp_mad_hdr *)packet->mad.data;
++	hdr_len = ib_get_mad_data_offset(rmpp_mad_hdr->mad_hdr.mgmt_class);
+ 
+-	if (ib_is_mad_class_rmpp(rmpp_mad->mad_hdr.mgmt_class)
++	if (ib_is_mad_class_rmpp(rmpp_mad_hdr->mad_hdr.mgmt_class)
+ 	    && ib_mad_kernel_rmpp_agent(agent)) {
+ 		copy_offset = IB_MGMT_RMPP_HDR;
+-		rmpp_active = ib_get_rmpp_flags(&rmpp_mad->rmpp_hdr) &
++		rmpp_active = ib_get_rmpp_flags(&rmpp_mad_hdr->rmpp_hdr) &
+ 						IB_MGMT_RMPP_FLAG_ACTIVE;
+ 	} else {
+ 		copy_offset = IB_MGMT_MAD_HDR;
+@@ -615,12 +620,12 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 		tid = &((struct ib_mad_hdr *) packet->msg->mad)->tid;
+ 		*tid = cpu_to_be64(((u64) agent->hi_tid) << 32 |
+ 				   (be64_to_cpup(tid) & 0xffffffff));
+-		rmpp_mad->mad_hdr.tid = *tid;
++		rmpp_mad_hdr->mad_hdr.tid = *tid;
  	}
- 	req_to_mmc_queue_req(req)->drv_op =
- 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = idata;
- 	req_to_mmc_queue_req(req)->ioc_count = n;
- 	blk_execute_rq(req, false);
-@@ -2808,6 +2811,7 @@ static int mmc_dbg_card_status_get(void
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	blk_execute_rq(req, false);
- 	ret = req_to_mmc_queue_req(req)->drv_op_result;
- 	if (ret >= 0) {
-@@ -2846,6 +2850,7 @@ static int mmc_ext_csd_open(struct inode
- 		goto out_free;
- 	}
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
- 	blk_execute_rq(req, false);
- 	err = req_to_mmc_queue_req(req)->drv_op_result;
+ 
+ 	if (!ib_mad_kernel_rmpp_agent(agent)
+-	   && ib_is_mad_class_rmpp(rmpp_mad->mad_hdr.mgmt_class)
+-	   && (ib_get_rmpp_flags(&rmpp_mad->rmpp_hdr) & IB_MGMT_RMPP_FLAG_ACTIVE)) {
++	    && ib_is_mad_class_rmpp(rmpp_mad_hdr->mad_hdr.mgmt_class)
++	    && (ib_get_rmpp_flags(&rmpp_mad_hdr->rmpp_hdr) & IB_MGMT_RMPP_FLAG_ACTIVE)) {
+ 		spin_lock_irq(&file->send_lock);
+ 		list_add_tail(&packet->list, &file->send_list);
+ 		spin_unlock_irq(&file->send_lock);
+-- 
+2.39.2
+
 
 
