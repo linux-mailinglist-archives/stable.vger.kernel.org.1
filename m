@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA225713FA0
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A69F713E3B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231326AbjE1TrV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
+        id S230302AbjE1Tda (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:33:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231331AbjE1TrU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:20 -0400
+        with ESMTP id S230300AbjE1Td3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE049C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEE2A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E4E561FAA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D016C433D2;
-        Sun, 28 May 2023 19:47:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ADA1612E6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AEAC433EF;
+        Sun, 28 May 2023 19:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303238;
-        bh=f1E0OZKK6d9gSe++Y1lhd+dV8AWB+uRdmXfa7ZE9KBE=;
+        s=korg; t=1685302407;
+        bh=Ahit4sJLUQDt1oCMke5aDHSrhlY8boMO7BpScjVoYYI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aVP0kZzx10zsnG+znA+XoeLyawZd1HMdeKEP4tC6Oe7kkLX0NpcO1DJi/TcjwR3Z4
-         dswMwiToHACi/VdJOc574SHNgmmix6TCC79c+Y1EtrZcc2BkdQtViCTW9ffBh16Yoy
-         h//rZDHjAcn/mvX/JnwPO1auOPQbbXckBN80agHU=
+        b=r3AlZ/l0bRw4VG8HsitI8dwoxBJ4X2rQnOaLmygROLvg/Ekurii3UpaD21ZHoPFuI
+         bQ8ZKef/K0EqdB4OuuK6zAOysv+9VxGM1br0K980mGCn4UkZRnAiOOBE8ThlYFk7Ec
+         v5/8bECZ+erqMi5if0kAmNW+LaWrkJg2YewNnAqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 173/211] parisc: Handle kgdb breakpoints only in kernel context
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Mark Bloch <mbloch@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.3 118/127] net/mlx5: Devcom, serialize devcom registration
 Date:   Sun, 28 May 2023 20:11:34 +0100
-Message-Id: <20230528190847.791049854@linuxfoundation.org>
+Message-Id: <20230528190840.079694862@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,32 +54,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 6888ff04e37d01295620a73f3f7efbc79f6ef152 upstream.
+commit 1f893f57a3bf9fe1f4bcb25b55aea7f7f9712fe7 upstream.
 
-The kernel kgdb break instructions should only be handled when running
-in kernel context.
+>From one hand, mlx5 driver is allowing to probe PFs in parallel.
+>From the other hand, devcom, which is a share resource between PFs, is
+registered without any lock. This might resulted in memory problems.
 
-Cc: <stable@vger.kernel.org> # v5.4+
-Signed-off-by: Helge Deller <deller@gmx.de>
+Hence, use the global mlx5_dev_list_lock in order to serialize devcom
+registration.
+
+Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/traps.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/arch/parisc/kernel/traps.c
-+++ b/arch/parisc/kernel/traps.c
-@@ -305,8 +305,8 @@ static void handle_break(struct pt_regs
- #endif
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -3,6 +3,7 @@
  
- #ifdef CONFIG_KGDB
--	if (unlikely(iir == PARISC_KGDB_COMPILED_BREAK_INSN ||
--		iir == PARISC_KGDB_BREAK_INSN)) {
-+	if (unlikely((iir == PARISC_KGDB_COMPILED_BREAK_INSN ||
-+		iir == PARISC_KGDB_BREAK_INSN)) && !user_mode(regs)) {
- 		kgdb_handle_exception(9, SIGTRAP, 0, regs);
- 		return;
+ #include <linux/mlx5/vport.h>
+ #include "lib/devcom.h"
++#include "mlx5_core.h"
+ 
+ static LIST_HEAD(devcom_list);
+ 
+@@ -77,6 +78,7 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
+ 		return NULL;
+ 
++	mlx5_dev_list_lock();
+ 	sguid0 = mlx5_query_nic_system_image_guid(dev);
+ 	list_for_each_entry(iter, &devcom_list, list) {
+ 		struct mlx5_core_dev *tmp_dev = NULL;
+@@ -102,8 +104,10 @@ struct mlx5_devcom *mlx5_devcom_register
+ 
+ 	if (!priv) {
+ 		priv = mlx5_devcom_list_alloc();
+-		if (!priv)
+-			return ERR_PTR(-ENOMEM);
++		if (!priv) {
++			devcom = ERR_PTR(-ENOMEM);
++			goto out;
++		}
+ 
+ 		idx = 0;
+ 		new_priv = true;
+@@ -114,12 +118,14 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	if (!devcom) {
+ 		if (new_priv)
+ 			kfree(priv);
+-		return ERR_PTR(-ENOMEM);
++		devcom = ERR_PTR(-ENOMEM);
++		goto out;
  	}
+ 
+ 	if (new_priv)
+ 		list_add(&priv->list, &devcom_list);
+-
++out:
++	mlx5_dev_list_unlock();
+ 	return devcom;
+ }
+ 
+@@ -132,6 +138,7 @@ void mlx5_devcom_unregister_device(struc
+ 	if (IS_ERR_OR_NULL(devcom))
+ 		return;
+ 
++	mlx5_dev_list_lock();
+ 	priv = devcom->priv;
+ 	priv->devs[devcom->idx] = NULL;
+ 
+@@ -142,10 +149,12 @@ void mlx5_devcom_unregister_device(struc
+ 			break;
+ 
+ 	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
+-		return;
++		goto out;
+ 
+ 	list_del(&priv->list);
+ 	kfree(priv);
++out:
++	mlx5_dev_list_unlock();
+ }
+ 
+ void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
 
 
