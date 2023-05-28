@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 143D2713CE2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03C2B713C59
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbjE1TTh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
+        id S229708AbjE1TOd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbjE1TTg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C3EA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:35 -0700 (PDT)
+        with ESMTP id S229703AbjE1TOc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C330AA2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31C7F61AAF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501CAC433D2;
-        Sun, 28 May 2023 19:19:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E6C26194D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B929C433EF;
+        Sun, 28 May 2023 19:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301574;
-        bh=6NWzeEhS3dj0d5MLsrB0DRbiQW7LUeIjMRg8Vnol7y8=;
+        s=korg; t=1685301268;
+        bh=ByH124onAx9+EYuoaCw3WFa9k6NanppjF/a/Cu2bISc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lb0dvF7iJ9vLX/M5Lc0pludPH+2/ot8zaAWBcl5hn070BArPh7yRmtn4iLHnpknE5
-         XBt/4y5LQh62FFTkKi+juLJ1S+TbKwm2cRukXQ4ZYRtq8QiLiryHc2Lf1BOz/a9xTA
-         mURWD538FKOMdT/QIrXTqs+i5Wv+5oS+Cul25Ekg=
+        b=sJ5QMg3oSSDQeCLn+tCcxmpByLt3wWr0fXnlUPzltO5ZLyUMpMjz5D6fn2Xh1swqI
+         1FdEWAjsHQcZnfCUUhsan2z0u7chIdeXA7HOfQAuQiwfvxL/1mGT0zckR4D2ScAcgO
+         2ejfJwGnfm1dIN75Fm4meWBQh6e5xF3i9x2Q86UY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peilin Ye <peilin.ye@bytedance.com>,
-        William Tu <u9012063@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 056/132] ip6_gre: Make o_seqno start from 0 in native mode
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 21/86] ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()
 Date:   Sun, 28 May 2023 20:09:55 +0100
-Message-Id: <20230528190835.281335408@linuxfoundation.org>
+Message-Id: <20230528190829.342105622@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,68 +55,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit fde98ae91f79cab4e020f40c35ed23cbdc59661c ]
+[ Upstream commit 93cdf49f6eca5e23f6546b8f28457b2e6a6961d9 ]
 
-For IP6GRE and IP6GRETAP devices, currently o_seqno starts from 1 in
-native mode.  According to RFC 2890 2.2., "The first datagram is sent
-with a sequence number of 0."  Fix it.
+When the length of best extent found is less than the length of goal extent
+we need to make sure that the best extent atleast covers the start of the
+original request. This is done by adjusting the ac_b_ex.fe_logical (logical
+start) of the extent.
 
-It is worth mentioning that o_seqno already starts from 0 in collect_md
-mode, see the "if (tunnel->parms.collect_md)" clause in __gre6_xmit(),
-where tunnel->o_seqno is passed to gre_build_header() before getting
-incremented.
+While doing so, the current logic sometimes results in the best extent's
+logical range overflowing the goal extent. Since this best extent is later
+added to the inode preallocation list, we have a possibility of introducing
+overlapping preallocations. This is discussed in detail here [1].
 
-Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Acked-by: William Tu <u9012063@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+As per Jan's suggestion, to fix this, replace the existing logic with the
+below logic for adjusting best extent as it keeps fragmentation in check
+while ensuring logical range of best extent doesn't overflow out of goal
+extent:
+
+1. Check if best extent can be kept at end of goal range and still cover
+   original start.
+2. Else, check if best extent can be kept at start of goal range and still
+   cover original start.
+3. Else, keep the best extent at start of original request.
+
+Also, add a few extra BUG_ONs that might help catch errors faster.
+
+[1] https://lore.kernel.org/r/Y+OGkVvzPN0RMv0O@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/f96aca6d415b36d1f90db86c1a8cd7e2e9d7ab0e.1679731817.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_gre.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/ext4/mballoc.c | 49 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 31 insertions(+), 18 deletions(-)
 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 17765865cb536..749b2e5adcb0a 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -731,6 +731,7 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- {
- 	struct ip6_tnl *tunnel = netdev_priv(dev);
- 	__be16 protocol;
-+	__be16 flags;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 36ace5eef84ec..ce21da3f437f0 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3403,6 +3403,7 @@ static void ext4_mb_use_inode_pa(struct ext4_allocation_context *ac,
+ 	BUG_ON(start < pa->pa_pstart);
+ 	BUG_ON(end > pa->pa_pstart + EXT4_C2B(sbi, pa->pa_len));
+ 	BUG_ON(pa->pa_free < len);
++	BUG_ON(ac->ac_b_ex.fe_len <= 0);
+ 	pa->pa_free -= len;
  
- 	if (dev->type == ARPHRD_ETHER)
- 		IPCB(skb)->flags = 0;
-@@ -746,7 +747,6 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 	if (tunnel->parms.collect_md) {
- 		struct ip_tunnel_info *tun_info;
- 		const struct ip_tunnel_key *key;
--		__be16 flags;
- 		int tun_hlen;
+ 	mb_debug(1, "use %llu/%u from inode pa %p\n", start, len, pa);
+@@ -3707,10 +3708,8 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		return -ENOMEM;
  
- 		tun_info = skb_tunnel_info(skb);
-@@ -777,15 +777,14 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 						      : 0);
+ 	if (ac->ac_b_ex.fe_len < ac->ac_g_ex.fe_len) {
+-		int winl;
+-		int wins;
+-		int win;
+-		int offs;
++		int new_bex_start;
++		int new_bex_end;
  
- 	} else {
--		if (tunnel->parms.o_flags & TUNNEL_SEQ)
--			tunnel->o_seqno++;
--
- 		if (skb_cow_head(skb, dev->needed_headroom ?: tunnel->hlen))
- 			return -ENOMEM;
+ 		/* we can't allocate as much as normalizer wants.
+ 		 * so, found space must get proper lstart
+@@ -3718,26 +3717,40 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
+ 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
  
--		gre_build_header(skb, tunnel->tun_hlen, tunnel->parms.o_flags,
-+		flags = tunnel->parms.o_flags;
-+
-+		gre_build_header(skb, tunnel->tun_hlen, flags,
- 				 protocol, tunnel->parms.o_key,
--				 htonl(tunnel->o_seqno));
-+				 (flags & TUNNEL_SEQ) ? htonl(tunnel->o_seqno++) : 0);
+-		/* we're limited by original request in that
+-		 * logical block must be covered any way
+-		 * winl is window we can move our chunk within */
+-		winl = ac->ac_o_ex.fe_logical - ac->ac_g_ex.fe_logical;
++		/*
++		 * Use the below logic for adjusting best extent as it keeps
++		 * fragmentation in check while ensuring logical range of best
++		 * extent doesn't overflow out of goal extent:
++		 *
++		 * 1. Check if best ex can be kept at end of goal and still
++		 *    cover original start
++		 * 2. Else, check if best ex can be kept at start of goal and
++		 *    still cover original start
++		 * 3. Else, keep the best ex at start of original request.
++		 */
++		new_bex_end = ac->ac_g_ex.fe_logical +
++			EXT4_C2B(sbi, ac->ac_g_ex.fe_len);
++		new_bex_start = new_bex_end - EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical >= new_bex_start)
++			goto adjust_bex;
+ 
+-		/* also, we should cover whole original request */
+-		wins = EXT4_C2B(sbi, ac->ac_b_ex.fe_len - ac->ac_o_ex.fe_len);
++		new_bex_start = ac->ac_g_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		if (ac->ac_o_ex.fe_logical < new_bex_end)
++			goto adjust_bex;
+ 
+-		/* the smallest one defines real window */
+-		win = min(winl, wins);
++		new_bex_start = ac->ac_o_ex.fe_logical;
++		new_bex_end =
++			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+ 
+-		offs = ac->ac_o_ex.fe_logical %
+-			EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+-		if (offs && offs < win)
+-			win = offs;
++adjust_bex:
++		ac->ac_b_ex.fe_logical = new_bex_start;
+ 
+-		ac->ac_b_ex.fe_logical = ac->ac_o_ex.fe_logical -
+-			EXT4_NUM_B2C(sbi, win);
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+ 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
++		BUG_ON(new_bex_end > (ac->ac_g_ex.fe_logical +
++				      EXT4_C2B(sbi, ac->ac_g_ex.fe_len)));
  	}
  
- 	return ip6_tnl_xmit(skb, dev, dsfield, fl6, encap_limit, pmtu,
+ 	/* preallocation can change ac_b_ex, thus we store actually
 -- 
 2.39.2
 
