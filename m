@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0451713E09
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60892713F3D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjE1TbT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:31:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
+        id S231206AbjE1TnY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:43:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbjE1TbT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D03CA7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:16 -0700 (PDT)
+        with ESMTP id S231215AbjE1TnX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8CD39C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D7161D08
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1111C433EF;
-        Sun, 28 May 2023 19:31:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D24F611BC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6818AC433D2;
+        Sun, 28 May 2023 19:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302275;
-        bh=v5y/d6MFvgPaJmVRMETyzXieC/WwYStzyt+D2FnE6tA=;
+        s=korg; t=1685303001;
+        bh=MS3L2TmCNSiyyJnVtemSDX4hHlcug2wwUJAjS1tW+EY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zOW6gf/AQVbVjEg5oAXhvhztd0Sb5C3xzRuNDWflP3mC9OWh0Tfua/uoAdybjew5D
-         3nKQ9jTvdcYraMzjk9y65rSs5SKq1ggBdDbohb1yH+X303/mWeqevLyDKcxGuY8sHT
-         tugDZxaIbUoiGi+hbUCy8MvK+TKXZp6Eh6k4Eodg=
+        b=1lvlDgB20NYd8qAkLshRfzZz53xuZlBrT+EGLuFIN6ZHfQU1xaPjZZIldtGOtVDTo
+         XkiTPNhllJvviDC2zJ2CDc+Agh6ktYffcwcxUqwqkaOUwE4Xyi7Rd3VLurEjA8u56K
+         sOyg/pqYq0XM4ntzIDKPBJT1dzQLwelC5I2RzFlw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.3 031/127] parisc: Use num_present_cpus() in alternative patching code
-Date:   Sun, 28 May 2023 20:10:07 +0100
-Message-Id: <20230528190837.309019918@linuxfoundation.org>
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 087/211] xfrm: dont check the default policy if the policy allows the packet
+Date:   Sun, 28 May 2023 20:10:08 +0100
+Message-Id: <20230528190845.779857307@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,32 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit b6405f0829d7b1dd926ba3ca5f691cab835abfaa upstream.
+[ Upstream commit 430cac487400494c19a8b85299e979bb07b4671f ]
 
-When patching the kernel code some alternatives depend on SMP vs. !SMP.
-Use the value of num_present_cpus() instead of num_online_cpus() to
-decide, otherwise we may run into issues if and additional CPU is
-enabled after having loaded a module while only one CPU was enabled.
+The current code doesn't let a simple "allow" policy counteract a
+default policy blocking all incoming packets:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    ip x p setdefault in block
+    ip x p a src 192.168.2.1/32 dst 192.168.2.2/32 dir in action allow
+
+At this stage, we have an allow policy (with or without transforms)
+for this packet. It doesn't matter what the default policy says, since
+the policy we looked up lets the packet through. The case of a
+blocking policy is already handled separately, so we can remove this
+check.
+
+Fixes: 2d151d39073a ("xfrm: Add possibility to set the default to block if we have no policy")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/alternative.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xfrm/xfrm_policy.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/arch/parisc/kernel/alternative.c
-+++ b/arch/parisc/kernel/alternative.c
-@@ -25,7 +25,7 @@ void __init_or_module apply_alternatives
- {
- 	struct alt_instr *entry;
- 	int index = 0, applied = 0;
--	int num_cpus = num_online_cpus();
-+	int num_cpus = num_present_cpus();
- 	u16 cond_check;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index d15aa62887de0..8ebe305f6ddd7 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3677,12 +3677,6 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		}
+ 		xfrm_nr = ti;
  
- 	cond_check = ALT_COND_ALWAYS |
+-		if (net->xfrm.policy_default[dir] == XFRM_USERPOLICY_BLOCK &&
+-		    !xfrm_nr) {
+-			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+-			goto reject;
+-		}
+-
+ 		if (npols > 1) {
+ 			xfrm_tmpl_sort(stp, tpp, xfrm_nr, family);
+ 			tpp = stp;
+-- 
+2.39.2
+
 
 
