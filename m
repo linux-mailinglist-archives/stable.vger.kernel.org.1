@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A9E713F85
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C26B7713FBE
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231299AbjE1TqT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60604 "EHLO
+        id S231370AbjE1Tsc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231295AbjE1TqS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:18 -0400
+        with ESMTP id S231362AbjE1Tsc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409DEC9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6971A8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C426161F70
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2887C433EF;
-        Sun, 28 May 2023 19:46:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8474A60FE5
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F1FC433EF;
+        Sun, 28 May 2023 19:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303175;
-        bh=AntG3jEAUNwWfkWOZvP9omGDp32XaHBMnmnlYFEI6Oo=;
+        s=korg; t=1685303310;
+        bh=gZFETnFHl7/ZN+F/cEAiMCBw5P7IPLetL1193hYjaaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bzJ7sdnpf+LE0quzZFIEC+ITyoPjsqE75NPVhNYXCCNTIyjheYPTi6JisD5WluGbP
-         s0t8Jc2xzw+UMVK/wc/OBRLdoC7VVHnWSitdBzpxA5+cu8ZDYsG6G8JUSz7k/xptgR
-         Kp/VRi65Zaci+S+K0f1lv7cXsmQw5/X0GpEdPqn4=
+        b=n74AOCpIdTPfvOpaCCf9LBXYVUFVWMblAvsN8e2kNvGvcS0v9b5tcdmnDj4ZA66ea
+         aU9cv0hj1bmYeoiRlb1v4dQElWSmJ7r6kDYW5W1JAiZkWTKulVCG9HsvXVt8DfzAm9
+         sdYw2tfZZZwI5bu08plruYsa3FIfh1IYzLDfVoz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+444ca0907e96f7c5e48b@syzkaller.appspotmail.com,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 185/211] udplite: Fix NULL pointer dereference in __sk_mem_raise_allocated().
+        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 26/69] perf/x86/uncore: Correct the number of CHAs on SPR
 Date:   Sun, 28 May 2023 20:11:46 +0100
-Message-Id: <20230528190848.095283933@linuxfoundation.org>
+Message-Id: <20230528190829.350199238@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,125 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit ad42a35bdfc6d3c0fc4cb4027d7b2757ce665665 upstream.
+commit 38776cc45eb7603df4735a0410f42cffff8e71a1 upstream.
 
-syzbot reported [0] a null-ptr-deref in sk_get_rmem0() while using
-IPPROTO_UDPLITE (0x88):
+The number of CHAs from the discovery table on some SPR variants is
+incorrect, because of a firmware issue. An accurate number can be read
+from the MSR UNC_CBO_CONFIG.
 
-  14:25:52 executing program 1:
-  r0 = socket$inet6(0xa, 0x80002, 0x88)
-
-We had a similar report [1] for probably sk_memory_allocated_add()
-in __sk_mem_raise_allocated(), and commit c915fe13cbaa ("udplite: fix
-NULL pointer dereference") fixed it by setting .memory_allocated for
-udplite_prot and udplitev6_prot.
-
-To fix the variant, we need to set either .sysctl_wmem_offset or
-.sysctl_rmem.
-
-Now UDP and UDPLITE share the same value for .memory_allocated, so we
-use the same .sysctl_wmem_offset for UDP and UDPLITE.
-
-[0]:
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 PID: 6829 Comm: syz-executor.1 Not tainted 6.4.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-RIP: 0010:sk_get_rmem0 include/net/sock.h:2907 [inline]
-RIP: 0010:__sk_mem_raise_allocated+0x806/0x17a0 net/core/sock.c:3006
-Code: c1 ea 03 80 3c 02 00 0f 85 23 0f 00 00 48 8b 44 24 08 48 8b 98 38 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 da 48 c1 ea 03 <0f> b6 14 02 48 89 d8 83 e0 07 83 c0 03 38 d0 0f 8d 6f 0a 00 00 8b
-RSP: 0018:ffffc90005d7f450 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffc90004d92000
-RDX: 0000000000000000 RSI: ffffffff88066482 RDI: ffffffff8e2ccbb8
-RBP: ffff8880173f7000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000030000
-R13: 0000000000000001 R14: 0000000000000340 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880b9800000(0063) knlGS:00000000f7f1cb40
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 000000002e82f000 CR3: 0000000034ff0000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- __sk_mem_schedule+0x6c/0xe0 net/core/sock.c:3077
- udp_rmem_schedule net/ipv4/udp.c:1539 [inline]
- __udp_enqueue_schedule_skb+0x776/0xb30 net/ipv4/udp.c:1581
- __udpv6_queue_rcv_skb net/ipv6/udp.c:666 [inline]
- udpv6_queue_rcv_one_skb+0xc39/0x16c0 net/ipv6/udp.c:775
- udpv6_queue_rcv_skb+0x194/0xa10 net/ipv6/udp.c:793
- __udp6_lib_mcast_deliver net/ipv6/udp.c:906 [inline]
- __udp6_lib_rcv+0x1bda/0x2bd0 net/ipv6/udp.c:1013
- ip6_protocol_deliver_rcu+0x2e7/0x1250 net/ipv6/ip6_input.c:437
- ip6_input_finish+0x150/0x2f0 net/ipv6/ip6_input.c:482
- NF_HOOK include/linux/netfilter.h:303 [inline]
- NF_HOOK include/linux/netfilter.h:297 [inline]
- ip6_input+0xa0/0xd0 net/ipv6/ip6_input.c:491
- ip6_mc_input+0x40b/0xf50 net/ipv6/ip6_input.c:585
- dst_input include/net/dst.h:468 [inline]
- ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
- NF_HOOK include/linux/netfilter.h:303 [inline]
- NF_HOOK include/linux/netfilter.h:297 [inline]
- ipv6_rcv+0x250/0x380 net/ipv6/ip6_input.c:309
- __netif_receive_skb_one_core+0x114/0x180 net/core/dev.c:5491
- __netif_receive_skb+0x1f/0x1c0 net/core/dev.c:5605
- netif_receive_skb_internal net/core/dev.c:5691 [inline]
- netif_receive_skb+0x133/0x7a0 net/core/dev.c:5750
- tun_rx_batched+0x4b3/0x7a0 drivers/net/tun.c:1553
- tun_get_user+0x2452/0x39c0 drivers/net/tun.c:1989
- tun_chr_write_iter+0xdf/0x200 drivers/net/tun.c:2035
- call_write_iter include/linux/fs.h:1868 [inline]
- new_sync_write fs/read_write.c:491 [inline]
- vfs_write+0x945/0xd50 fs/read_write.c:584
- ksys_write+0x12b/0x250 fs/read_write.c:637
- do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
- __do_fast_syscall_32+0x65/0xf0 arch/x86/entry/common.c:178
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:203
- entry_SYSENTER_compat_after_hwframe+0x70/0x82
-RIP: 0023:0xf7f21579
-Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-RSP: 002b:00000000f7f1c590 EFLAGS: 00000282 ORIG_RAX: 0000000000000004
-RAX: ffffffffffffffda RBX: 00000000000000c8 RCX: 0000000020000040
-RDX: 0000000000000083 RSI: 00000000f734e000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-Modules linked in:
-
-Link: https://lore.kernel.org/netdev/CANaxB-yCk8hhP68L4Q2nFOJht8sqgXGGQO2AftpHs0u1xyGG5A@mail.gmail.com/ [1]
-Fixes: 850cbaddb52d ("udp: use it's own memory accounting schema")
-Reported-by: syzbot+444ca0907e96f7c5e48b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=444ca0907e96f7c5e48b
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230523163305.66466-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
+Reported-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Stephane Eranian <eranian@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230508140206.283708-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udplite.c |    2 ++
- net/ipv6/udplite.c |    2 ++
- 2 files changed, 4 insertions(+)
+ arch/x86/events/intel/uncore_snbep.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/net/ipv4/udplite.c
-+++ b/net/ipv4/udplite.c
-@@ -62,6 +62,8 @@ struct proto 	udplite_prot = {
- 	.get_port	   = udp_v4_get_port,
- 	.memory_allocated  = &udp_memory_allocated,
- 	.sysctl_mem	   = sysctl_udp_mem,
-+	.sysctl_wmem_offset = offsetof(struct net, ipv4.sysctl_udp_wmem_min),
-+	.sysctl_rmem_offset = offsetof(struct net, ipv4.sysctl_udp_rmem_min),
- 	.obj_size	   = sizeof(struct udp_sock),
- 	.h.udp_table	   = &udplite_table,
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -5822,6 +5822,7 @@ static struct intel_uncore_type spr_unco
  };
---- a/net/ipv6/udplite.c
-+++ b/net/ipv6/udplite.c
-@@ -57,6 +57,8 @@ struct proto udplitev6_prot = {
- 	.get_port	   = udp_v6_get_port,
- 	.memory_allocated  = &udp_memory_allocated,
- 	.sysctl_mem	   = sysctl_udp_mem,
-+	.sysctl_wmem_offset = offsetof(struct net, ipv4.sysctl_udp_wmem_min),
-+	.sysctl_rmem_offset = offsetof(struct net, ipv4.sysctl_udp_rmem_min),
- 	.obj_size	   = sizeof(struct udp6_sock),
- 	.h.udp_table	   = &udplite_table,
- };
+ 
+ #define UNCORE_SPR_NUM_UNCORE_TYPES		12
++#define UNCORE_SPR_CHA				0
+ #define UNCORE_SPR_IIO				1
+ #define UNCORE_SPR_IMC				6
+ 
+@@ -6064,12 +6065,22 @@ static int uncore_type_max_boxes(struct
+ 	return max + 1;
+ }
+ 
++#define SPR_MSR_UNC_CBO_CONFIG		0x2FFE
++
+ void spr_uncore_cpu_init(void)
+ {
++	struct intel_uncore_type *type;
++	u64 num_cbo;
++
+ 	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR,
+ 						UNCORE_SPR_MSR_EXTRA_UNCORES,
+ 						spr_msr_uncores);
+ 
++	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
++	if (type) {
++		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
++		type->num_boxes = num_cbo;
++	}
+ 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
+ }
+ 
 
 
