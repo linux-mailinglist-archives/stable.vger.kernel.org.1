@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3259713DC3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA5DF713F6A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230148AbjE1T2o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45306 "EHLO
+        id S231264AbjE1TpM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbjE1T2n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:43 -0400
+        with ESMTP id S231269AbjE1TpL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828EDA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B795A9C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2055261D02
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41215C433EF;
-        Sun, 28 May 2023 19:28:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 531D061F46
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB9BC433D2;
+        Sun, 28 May 2023 19:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302121;
-        bh=XwbO+uP9z+euriGaEYmaJKRYaDunT7FebxX5uWb1vxM=;
+        s=korg; t=1685303108;
+        bh=TARnjelmXaSoSCLL4z+RzcPI1uU0sK6mZSvtA3IkMGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hWV0tWk4LeNEYUK5g3YFB8Q32YQwzGvF2K4z7Q4p9nY9t+BC4L2dgd/vA+lW/sVNV
-         SKbMNhQZvqcL9L4YfQuHZbiubRbZPGCvXUjMBMZfKOg7wyDKjYJejmrz77h6m4XImd
-         T2VwLOEYBfpPJhW0IAlW3CdbwBDhrTuRhdzX7LYA=
+        b=i+2HP9IuKJYsWemYZP+c202qa6GGKr+zRB/A2K6unTVldg4d5gQcQ58btd5mCCA7D
+         e/jBQEhm9eal3g3dMjP9iEMXcxQ1khJLq+MmEapcFv7ocdpB4zxEPaz/rMl1he3jQ3
+         Pj6O62gDP7SKF9n6ssfJ8weIUv0uoep9hBgO9X5A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.4 155/161] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Steffen Maier <maier@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 158/211] s390/qdio: fix do_sqbs() inline assembly constraint
 Date:   Sun, 28 May 2023 20:11:19 +0100
-Message-Id: <20230528190841.771658851@linuxfoundation.org>
+Message-Id: <20230528190847.431611028@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,60 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
+[ Upstream commit 2862a2fdfae875888e3c1c3634e3422e01d98147 ]
 
-In the pvcalls_new_active_socket() function, most error paths call
-pvcalls_back_release_active(fedata->dev, fedata, map) which calls
-sock_release() on "sock".  The bug is that the caller also frees sock.
+Use "a" constraint instead of "d" constraint to pass the state parameter to
+the do_sqbs() inline assembly. This prevents that general purpose register
+zero is used for the state parameter.
 
-Fix this by making every error path in pvcalls_new_active_socket()
-release the sock, and don't free it in the caller.
+If the compiler would select general purpose register zero this would be
+problematic for the used instruction in rsy format: the register used for
+the state parameter is a base register. If the base register is general
+purpose register zero the contents of the register are unexpectedly ignored
+when the instruction is executed.
 
-Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This only applies to z/VM guests using QIOASSIST with dedicated (pass through)
+QDIO-based devices such as FCP [zfcp driver] as well as real OSA or
+HiperSockets [qeth driver].
+
+A possible symptom for this case using zfcp is the following repeating kernel
+message pattern:
+
+zfcp <devbusid>: A QDIO problem occurred
+zfcp <devbusid>: A QDIO problem occurred
+zfcp <devbusid>: qdio: ZFCP on SC <sc> using AI:1 QEBSM:1 PRI:1 TDD:1 SIGA: W
+zfcp <devbusid>: A QDIO problem occurred
+zfcp <devbusid>: A QDIO problem occurred
+
+Each of the qdio problem message can be accompanied by the following entries
+for the affected subchannel <sc> in
+/sys/kernel/debug/s390dbf/qdio_error/hex_ascii for zfcp or qeth:
+
+<sc> ccq: 69....
+<sc> SQBS ERROR.
+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Cc: Steffen Maier <maier@linux.ibm.com>
+Fixes: 8129ee164267 ("[PATCH] s390: qdio V=V pass-through")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/pvcalls-back.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/s390/cio/qdio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/xen/pvcalls-back.c
-+++ b/drivers/xen/pvcalls-back.c
-@@ -321,8 +321,10 @@ static struct sock_mapping *pvcalls_new_
- 	void *page;
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
--	if (map == NULL)
-+	if (map == NULL) {
-+		sock_release(sock);
- 		return NULL;
-+	}
- 
- 	map->fedata = fedata;
- 	map->sock = sock;
-@@ -414,10 +416,8 @@ static int pvcalls_back_connect(struct x
- 					req->u.connect.ref,
- 					req->u.connect.evtchn,
- 					sock);
--	if (!map) {
-+	if (!map)
- 		ret = -EFAULT;
--		sock_release(sock);
--	}
- 
- out:
- 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
-@@ -558,7 +558,6 @@ static void __pvcalls_back_accept(struct
- 					sock);
- 	if (!map) {
- 		ret = -EFAULT;
--		sock_release(sock);
- 		goto out_error;
- 	}
- 
+diff --git a/drivers/s390/cio/qdio.h b/drivers/s390/cio/qdio.h
+index 854a21e1d3b7b..919d106141664 100644
+--- a/drivers/s390/cio/qdio.h
++++ b/drivers/s390/cio/qdio.h
+@@ -95,7 +95,7 @@ static inline int do_sqbs(u64 token, unsigned char state, int queue,
+ 		"	lgr	1,%[token]\n"
+ 		"	.insn	rsy,0xeb000000008a,%[qs],%[ccq],0(%[state])"
+ 		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart)
+-		: [state] "d" ((unsigned long)state), [token] "d" (token)
++		: [state] "a" ((unsigned long)state), [token] "d" (token)
+ 		: "memory", "cc", "1");
+ 	*count = _ccq & 0xff;
+ 	*start = _queuestart & 0xff;
+-- 
+2.39.2
+
 
 
