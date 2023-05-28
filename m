@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC5D713FD6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A60713FA7
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231397AbjE1Tth (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35184 "EHLO
+        id S231342AbjE1Trj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231395AbjE1Ttg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F289C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:35 -0700 (PDT)
+        with ESMTP id S231337AbjE1Tri (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D49B9C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 517BA62027
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F363C433D2;
-        Sun, 28 May 2023 19:49:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B800061FBF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D639AC433EF;
+        Sun, 28 May 2023 19:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303374;
-        bh=+H/Hde+lRFg/aYE/r//rQqvFjXGCwR3irRtpI7TGouE=;
+        s=korg; t=1685303256;
+        bh=y3/oTmxZMZyUd9mxFMw5smXixd37XJ8Q1HejfZBBX4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZV0wy1+evd8dBMyc/K4OdBFwDZKM29M1wIwapSphOcrZj0Q7i1GFNal8ZDHG+bjRh
-         CgR1hC2+tl0pt76Otr0vmkiCMtvkDITCNXqhany+SoiTP6bhnRHmMGkBV2k776eK66
-         vt53lULeEeInRQqAbJbSbZbTQRycJNr6PRg2cBTU=
+        b=VCozr8z24C7btVlM8WCkjuUw3gyVT50+7HhNZlPgsgJYmoJaQbnZBp8X4XU1jHDbP
+         eR1YWlmHapF7QNA9afgPjtJp8c+WzcQOFTOQiUkmaEEHSSHKiObubVP8wcaxFOR4Vl
+         JR/S/EEzRif61VmoQVK2lB6TMjWkHngopp5ohSaY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Ge <gehao@kylinos.cn>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 51/69] fs: fix undefined behavior in bit shift for SB_NOUSER
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 210/211] 3c589_cs: Fix an error handling path in tc589_probe()
 Date:   Sun, 28 May 2023 20:12:11 +0100
-Message-Id: <20230528190830.277378607@linuxfoundation.org>
+Message-Id: <20230528190848.706993580@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,77 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit f15afbd34d8fadbd375f1212e97837e32bc170cc upstream.
+commit 640bf95b2c7c2981fb471acdafbd3e0458f8390d upstream.
 
-Shifting signed 32-bit value by 31 bits is undefined, so changing
-significant bit to unsigned. It was spotted by UBSAN.
+Should tc589_config() fail, some resources need to be released as already
+done in the remove function.
 
-So let's just fix this by using the BIT() helper for all SB_* flags.
-
-Fixes: e462ec50cb5f ("VFS: Differentiate mount flags (MS_*) from internal superblock flags")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Message-Id: <20230424051835.374204-1-gehao@kylinos.cn>
-[brauner@kernel.org: use BIT() for all SB_* flags]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/d8593ae867b24c79063646e36f9b18b0790107cb.1684575975.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fs.h |   42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/3com/3c589_cs.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1398,29 +1398,29 @@ extern int send_sigurg(struct fown_struc
-  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
-  * represented in both.
-  */
--#define SB_RDONLY	 1	/* Mount read-only */
--#define SB_NOSUID	 2	/* Ignore suid and sgid bits */
--#define SB_NODEV	 4	/* Disallow access to device special files */
--#define SB_NOEXEC	 8	/* Disallow program execution */
--#define SB_SYNCHRONOUS	16	/* Writes are synced at once */
--#define SB_MANDLOCK	64	/* Allow mandatory locks on an FS */
--#define SB_DIRSYNC	128	/* Directory modifications are synchronous */
--#define SB_NOATIME	1024	/* Do not update access times. */
--#define SB_NODIRATIME	2048	/* Do not update directory access times */
--#define SB_SILENT	32768
--#define SB_POSIXACL	(1<<16)	/* VFS does not apply the umask */
--#define SB_INLINECRYPT	(1<<17)	/* Use blk-crypto for encrypted files */
--#define SB_KERNMOUNT	(1<<22) /* this is a kern_mount call */
--#define SB_I_VERSION	(1<<23) /* Update inode I_version field */
--#define SB_LAZYTIME	(1<<25) /* Update the on-disk [acm]times lazily */
-+#define SB_RDONLY       BIT(0)	/* Mount read-only */
-+#define SB_NOSUID       BIT(1)	/* Ignore suid and sgid bits */
-+#define SB_NODEV        BIT(2)	/* Disallow access to device special files */
-+#define SB_NOEXEC       BIT(3)	/* Disallow program execution */
-+#define SB_SYNCHRONOUS  BIT(4)	/* Writes are synced at once */
-+#define SB_MANDLOCK     BIT(6)	/* Allow mandatory locks on an FS */
-+#define SB_DIRSYNC      BIT(7)	/* Directory modifications are synchronous */
-+#define SB_NOATIME      BIT(10)	/* Do not update access times. */
-+#define SB_NODIRATIME   BIT(11)	/* Do not update directory access times */
-+#define SB_SILENT       BIT(15)
-+#define SB_POSIXACL     BIT(16)	/* VFS does not apply the umask */
-+#define SB_INLINECRYPT  BIT(17)	/* Use blk-crypto for encrypted files */
-+#define SB_KERNMOUNT    BIT(22)	/* this is a kern_mount call */
-+#define SB_I_VERSION    BIT(23)	/* Update inode I_version field */
-+#define SB_LAZYTIME     BIT(25)	/* Update the on-disk [acm]times lazily */
+--- a/drivers/net/ethernet/3com/3c589_cs.c
++++ b/drivers/net/ethernet/3com/3c589_cs.c
+@@ -195,6 +195,7 @@ static int tc589_probe(struct pcmcia_dev
+ {
+ 	struct el3_private *lp;
+ 	struct net_device *dev;
++	int ret;
  
- /* These sb flags are internal to the kernel */
--#define SB_SUBMOUNT     (1<<26)
--#define SB_FORCE    	(1<<27)
--#define SB_NOSEC	(1<<28)
--#define SB_BORN		(1<<29)
--#define SB_ACTIVE	(1<<30)
--#define SB_NOUSER	(1<<31)
-+#define SB_SUBMOUNT     BIT(26)
-+#define SB_FORCE        BIT(27)
-+#define SB_NOSEC        BIT(28)
-+#define SB_BORN         BIT(29)
-+#define SB_ACTIVE       BIT(30)
-+#define SB_NOUSER       BIT(31)
+ 	dev_dbg(&link->dev, "3c589_attach()\n");
  
- /* These flags relate to encoding and casefolding */
- #define SB_ENC_STRICT_MODE_FL	(1 << 0)
+@@ -218,7 +219,15 @@ static int tc589_probe(struct pcmcia_dev
+ 
+ 	dev->ethtool_ops = &netdev_ethtool_ops;
+ 
+-	return tc589_config(link);
++	ret = tc589_config(link);
++	if (ret)
++		goto err_free_netdev;
++
++	return 0;
++
++err_free_netdev:
++	free_netdev(dev);
++	return ret;
+ }
+ 
+ static void tc589_detach(struct pcmcia_device *link)
 
 
