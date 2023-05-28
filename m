@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BF8713E1F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74882713F62
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjE1TcN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48976 "EHLO
+        id S231251AbjE1Toy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbjE1TcN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:13 -0400
+        with ESMTP id S231277AbjE1Tov (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582B3A7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552AAD2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8089161D9A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2DAC433EF;
-        Sun, 28 May 2023 19:32:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7E3461F3A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49D7C433EF;
+        Sun, 28 May 2023 19:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302330;
-        bh=QBv6S3rCgMWdj7VzV6wjTxObjtuij+K5CTJHfNCThDs=;
+        s=korg; t=1685303089;
+        bh=sF6+TQ1GwFfaDmSfQjDe9uINE+FnvGGIpJsnfY9PnxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HQxdUtFOAfneW8HUhAT5705KEh3qD2xN4D2iTedMoReOYB1LiZIVuDstzntUiENaK
-         YWKJSGLKJskKDfE9TAAaaJxXp09PR/Bu9QvYzRpfj0tG19UwfCOTtx0ZsKm/tGGrM4
-         R/VybAkfhQUe1SNtg0PTooWourv5h3ibBda2/Wpg=
+        b=BHy2RsNNjCqQ4L/+7/P/ZB8RjFj+R9+qQwfgTpIldi4w6y8/aTm5u8pcE19FEzZog
+         zfqrFI5d21qR1btUYb9XNhbsAw4gCdX1o8OTIRhOn4+2T1C5Y8j/3O0G8EzqaiaNuZ
+         UBkosCy6uQUZYAXiLxRKAXevf5vKAbdIs8cJLVzk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Subject: [PATCH 6.3 065/127] USB: sisusbvga: Add endpoint checks
-Date:   Sun, 28 May 2023 20:10:41 +0100
-Message-Id: <20230528190838.517076916@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 121/211] netfilter: nft_set_rbtree: fix null deref on element insertion
+Date:   Sun, 28 May 2023 20:10:42 +0100
+Message-Id: <20230528190846.563009332@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,78 +53,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Florian Westphal <fw@strlen.de>
 
-commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
+[ Upstream commit 61ae320a29b0540c16931816299eb86bf2b66c08 ]
 
-The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
+There is no guarantee that rb_prev() will not return NULL in nft_rbtree_gc_elem():
 
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
-RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
-RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
-R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
- sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
- sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
- sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
- sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
- sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
-...
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+ nft_add_set_elem+0x14b0/0x2990
+  nf_tables_newsetelem+0x528/0xb30
 
-The problem was caused by the fact that the driver does not check
-whether the endpoints it uses are actually present and have the
-appropriate types.  This can be fixed by adding a simple check of
-the endpoints.
+Furthermore, there is a possible use-after-free while iterating,
+'node' can be free'd so we need to cache the next value to use.
 
-Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
-Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/sisusbvga/sisusbvga.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/netfilter/nft_set_rbtree.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/misc/sisusbvga/sisusbvga.c
-+++ b/drivers/usb/misc/sisusbvga/sisusbvga.c
-@@ -2778,6 +2778,20 @@ static int sisusb_probe(struct usb_inter
- 	struct usb_device *dev = interface_to_usbdev(intf);
- 	struct sisusb_usb_data *sisusb;
- 	int retval = 0, i;
-+	static const u8 ep_addresses[] = {
-+		SISUSB_EP_GFX_IN | USB_DIR_IN,
-+		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
-+		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
-+		0};
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 4b9a499fe8f4d..1ffb24f4c74ca 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -220,7 +220,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+-	struct nft_rbtree_elem *rbe_prev;
++	struct nft_rbtree_elem *rbe_prev = NULL;
+ 	struct nft_set_gc_batch *gcb;
+ 
+ 	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+@@ -228,17 +228,21 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		return -ENOMEM;
+ 
+ 	/* search for expired end interval coming before this element. */
+-	do {
++	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+ 		if (nft_rbtree_interval_end(rbe_prev))
+ 			break;
+ 
+ 		prev = rb_prev(prev);
+-	} while (prev != NULL);
++	}
 +
-+	/* Are the expected endpoints present? */
-+	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
-+		dev_err(&intf->dev, "Invalid USB2VGA device\n");
-+		return -EINVAL;
++	if (rbe_prev) {
++		rb_erase(&rbe_prev->node, &priv->root);
++		atomic_dec(&set->nelems);
 +	}
  
- 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
- 			dev->devnum);
+-	rb_erase(&rbe_prev->node, &priv->root);
+ 	rb_erase(&rbe->node, &priv->root);
+-	atomic_sub(2, &set->nelems);
++	atomic_dec(&set->nelems);
+ 
+ 	nft_set_gc_batch_add(gcb, rbe);
+ 	nft_set_gc_batch_complete(gcb);
+@@ -267,7 +271,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 			       struct nft_set_ext **ext)
+ {
+ 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
+-	struct rb_node *node, *parent, **p, *first = NULL;
++	struct rb_node *node, *next, *parent, **p, *first = NULL;
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 genmask = nft_genmask_next(net);
+ 	int d, err;
+@@ -306,7 +310,9 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	 * Values stored in the tree are in reversed order, starting from
+ 	 * highest to lowest value.
+ 	 */
+-	for (node = first; node != NULL; node = rb_next(node)) {
++	for (node = first; node != NULL; node = next) {
++		next = rb_next(node);
++
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+ 
+ 		if (!nft_set_elem_active(&rbe->ext, genmask))
+-- 
+2.39.2
+
 
 
