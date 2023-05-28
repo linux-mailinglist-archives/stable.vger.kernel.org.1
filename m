@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D62D4713C60
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E65D713CE9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjE1TOt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
+        id S229887AbjE1TTz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbjE1TOs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:48 -0400
+        with ESMTP id S229892AbjE1TTy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BD1D9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23EF8A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B91261956
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497FEC433EF;
-        Sun, 28 May 2023 19:14:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8DCF61ABC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC9EC433EF;
+        Sun, 28 May 2023 19:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301285;
-        bh=UYuDM7YaJ424cLpbqxn7E/muRLJuVvmEpF3Vez274v4=;
+        s=korg; t=1685301592;
+        bh=Cc1VnL6Phn3nTT6nMn48qDkdPiRcIU1+m86pS5D0sxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VraJydyKYYOkCt+pUfLMMMf78hdMIh1fpCaFqKNMiJSR62W3Rkqz0QcuFbAgfDVuW
-         nr0iBFr6X7QS1At83beR710ODf2q6vju159sv+rrPuTKYKlNfsp5TBxJo6tjTEjBFt
-         pTLeQQwhRlzEy49ifLwyHugDfwujIo43qFCn+6r4=
+        b=PwSStuLAhZqJ4Hx3XQKoJcbsRj5IKJGT9hpxkA5++5z7fgnD4l/4zY0PY/p3NXsG/
+         l14to51mVdYulOemvkXHteU1bsADJRShjJqoxzwH1KnRFYA3GUb+4J2QWaBr3KhO35
+         mKFVF6xsHCWRy9dS3df3R6SaV8uuWlGBXQrkQvSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olliver Schinagl <oliver@schinagl.nl>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.14 48/86] ALSA: hda: Fix Oops by 9.1 surround channel names
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 083/132] netfilter: nf_tables: validate NFTA_SET_ELEM_OBJREF based on NFT_SET_OBJECT flag
 Date:   Sun, 28 May 2023 20:10:22 +0100
-Message-Id: <20230528190830.379461623@linuxfoundation.org>
+Message-Id: <20230528190836.088879002@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,57 +53,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 3b44ec8c5c44790a82f07e90db45643c762878c6 upstream.
+[ 5a2f3dc31811e93be15522d9eb13ed61460b76c8 ]
 
-get_line_out_pfx() may trigger an Oops by overflowing the static array
-with more than 8 channels.  This was reported for MacBookPro 12,1 with
-Cirrus codec.
+If the NFTA_SET_ELEM_OBJREF netlink attribute is present and
+NFT_SET_OBJECT flag is set on, report EINVAL.
 
-As a workaround, extend for the 9.1 channels and also fix the
-potential Oops by unifying the code paths accessing the same array
-with the proper size check.
+Move existing sanity check earlier to validate that NFT_SET_OBJECT
+requires NFTA_SET_ELEM_OBJREF.
 
-Reported-by: Olliver Schinagl <oliver@schinagl.nl>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/64d95eb0-dbdb-cff8-a8b1-988dc22b24cd@schinagl.nl
-Link: https://lore.kernel.org/r/20230516184412.24078-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8aeff920dcc9 ("netfilter: nf_tables: add stateful object reference to set elements")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_generic.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/hda_generic.c
-+++ b/sound/pci/hda/hda_generic.c
-@@ -1157,8 +1157,8 @@ static bool path_has_mixer(struct hda_co
- 	return path && path->ctls[ctl_type];
- }
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ab1e0f0962a2b..5cafa90f9d807 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4440,6 +4440,15 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			return -EINVAL;
+ 	}
  
--static const char * const channel_name[4] = {
--	"Front", "Surround", "CLFE", "Side"
-+static const char * const channel_name[] = {
-+	"Front", "Surround", "CLFE", "Side", "Back",
- };
++	if (set->flags & NFT_SET_OBJECT) {
++		if (!nla[NFTA_SET_ELEM_OBJREF] &&
++		    !(flags & NFT_SET_ELEM_INTERVAL_END))
++			return -EINVAL;
++	} else {
++		if (nla[NFTA_SET_ELEM_OBJREF])
++			return -EINVAL;
++	}
++
+ 	if ((flags & NFT_SET_ELEM_INTERVAL_END) &&
+ 	     (nla[NFTA_SET_ELEM_DATA] ||
+ 	      nla[NFTA_SET_ELEM_OBJREF] ||
+@@ -4474,10 +4483,6 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	}
  
- /* give some appropriate ctl name prefix for the given line out channel */
-@@ -1184,7 +1184,7 @@ static const char *get_line_out_pfx(stru
- 
- 	/* multi-io channels */
- 	if (ch >= cfg->line_outs)
--		return channel_name[ch];
-+		goto fixed_name;
- 
- 	switch (cfg->line_out_type) {
- 	case AUTO_PIN_SPEAKER_OUT:
-@@ -1236,6 +1236,7 @@ static const char *get_line_out_pfx(stru
- 	if (cfg->line_outs == 1 && !spec->multi_ios)
- 		return "Line Out";
- 
-+ fixed_name:
- 	if (ch >= ARRAY_SIZE(channel_name)) {
- 		snd_BUG();
- 		return "PCM";
+ 	if (nla[NFTA_SET_ELEM_OBJREF] != NULL) {
+-		if (!(set->flags & NFT_SET_OBJECT)) {
+-			err = -EINVAL;
+-			goto err2;
+-		}
+ 		obj = nft_obj_lookup(ctx->table, nla[NFTA_SET_ELEM_OBJREF],
+ 				     set->objtype, genmask);
+ 		if (IS_ERR(obj)) {
+-- 
+2.39.2
+
 
 
