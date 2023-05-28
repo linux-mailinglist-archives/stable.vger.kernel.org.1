@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5429713F1B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADE8E713DD8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231193AbjE1TmY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57638 "EHLO
+        id S230182AbjE1T3o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231177AbjE1TmU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:20 -0400
+        with ESMTP id S230181AbjE1T3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A885BB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D3110A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F19761EED
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE34C433D2;
-        Sun, 28 May 2023 19:41:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 759A261D23
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95998C433EF;
+        Sun, 28 May 2023 19:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302918;
-        bh=Oi+gQzDH22UxfWh2JyqJkOQEmh0VRe7t9VVL4UTI+PE=;
+        s=korg; t=1685302163;
+        bh=1aPU3zrW/gIwiyQKJBCYJpmLqYI60l0zhiA9GIQZ5eE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hJNkhOhrZFrfUdtqlW7WQs4s9ESEo2sMnNc1YK0+48k0HWoZZYmCC0zF21eoe9qqF
-         w2UlUZTsBmAsk85igeHNIkFkuB7aqLH884FnXyuGEe3Wq1Nsy5ota4wQMg83+LHebc
-         wx8ZYh3pPwnLtR87U3lyfniKlVDxhio06U8XUPoU=
+        b=W8730+HSDHsFM2HWMbWf8v0RXjqNFDtAU2ktAW2Urzoo3gBhiYMfoA3r7WrVKM7xE
+         EGhfhmp+SvLLiUuRYkEqWRPXbP1TXk9+42TVTSzimoyvSBBt4Vg77pNVVRRYXbPcTL
+         rzFDxStT/45k25z4FGTP6ME4WQscdTvAScojUtSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/211] clk: tegra20: fix gcc-7 constant overflow warning
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.3 024/127] power: supply: bq25890: Fix external_power_changed race
 Date:   Sun, 28 May 2023 20:10:00 +0100
-Message-Id: <20230528190845.585484733@linuxfoundation.org>
+Message-Id: <20230528190837.042345979@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,75 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
+commit 029a443b9b6424170f00f6dd5b7682e682cce92e upstream.
 
-Older gcc versions get confused by comparing a u32 value to a negative
-constant in a switch()/case block:
+bq25890_charger_external_power_changed() dereferences bq->charger,
+which gets sets in bq25890_power_supply_init() like this:
 
-drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
-drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_12MHZ:
-  ^~~~
-drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_26MHZ:
+  bq->charger = devm_power_supply_register(bq->dev, &bq->desc, &psy_cfg);
 
-Make the constants unsigned instead.
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where bq25890_charger_external_power_changed() may get called while
+bq->charger has not been set yet leading to a NULL pointer dereference.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This race hits during boot sometimes on a Lenovo Yoga Book 1 yb1-x90f
+when the cht_wcove_pwrsrc (extcon) power_supply is done with detecting
+the connected charger-type which happens to exactly hit the small window:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000018
+  <snip>
+  RIP: 0010:__power_supply_is_supplied_by+0xb/0xb0
+  <snip>
+  Call Trace:
+   <TASK>
+   __power_supply_get_supplier_property+0x19/0x50
+   class_for_each_device+0xb1/0xe0
+   power_supply_get_property_from_supplier+0x2e/0x50
+   bq25890_charger_external_power_changed+0x38/0x1b0 [bq25890_charger]
+   __power_supply_changed_work+0x30/0x40
+   class_for_each_device+0xb1/0xe0
+   power_supply_changed_work+0x5f/0xe0
+  <snip>
+
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in bq->charger,
+so bq25890_charger_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
+
+Fixes: eab25b4f93aa ("power: supply: bq25890: On the bq25892 set the IINLIM based on external charger detection")
+Cc: stable@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/power/supply/bq25890_charger.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index d60ee6e318a55..fb1da5d63f4b2 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -18,24 +18,24 @@
- #define MISC_CLK_ENB 0x48
+--- a/drivers/power/supply/bq25890_charger.c
++++ b/drivers/power/supply/bq25890_charger.c
+@@ -750,7 +750,7 @@ static void bq25890_charger_external_pow
+ 	if (bq->chip_version != BQ25892)
+ 		return;
  
- #define OSC_CTRL 0x50
--#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
--#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
--#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
--#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
--#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
--#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
--
--#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
--#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
--#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
--#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
-+#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
-+#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
-+#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
-+#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
-+#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
-+#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
-+
-+#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
- 
- #define OSC_FREQ_DET 0x58
--#define OSC_FREQ_DET_TRIG (1<<31)
-+#define OSC_FREQ_DET_TRIG (1u<<31)
- 
- #define OSC_FREQ_DET_STATUS 0x5c
--#define OSC_FREQ_DET_BUSY (1<<31)
--#define OSC_FREQ_DET_CNT_MASK 0xFFFF
-+#define OSC_FREQ_DET_BUSYu (1<<31)
-+#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
- 
- #define TEGRA20_CLK_PERIPH_BANKS	3
- 
--- 
-2.39.2
-
+-	ret = power_supply_get_property_from_supplier(bq->charger,
++	ret = power_supply_get_property_from_supplier(psy,
+ 						      POWER_SUPPLY_PROP_USB_TYPE,
+ 						      &val);
+ 	if (ret)
 
 
