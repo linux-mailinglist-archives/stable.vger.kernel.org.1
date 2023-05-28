@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 956B3713D34
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49433713EE8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjE1TWz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:22:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40480 "EHLO
+        id S230527AbjE1TkF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229987AbjE1TWx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:53 -0400
+        with ESMTP id S230525AbjE1TkE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2170A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CD1A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 683FB61B6C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86628C433D2;
-        Sun, 28 May 2023 19:22:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F91361EAC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBD9C433EF;
+        Sun, 28 May 2023 19:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301771;
-        bh=refwX4PMQKaubIu4lpAzzxrNd2SVXUbA/76tj9lf82A=;
+        s=korg; t=1685302801;
+        bh=QHYHMSlyH413MkHY9jb+3AHdZiGvYl+Ef33PkzHdO5k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZeG180fQ+mavJg5dBqstlT+WvWmUm7inNPEyTRqfftt1/ecNBygkV8PSuysjRBfBx
-         ockORVPVynx0CvH1nKxeGrGAimVrH0i3h3nXAZiUd3zdBIb6V7wI6+q70gX3aGkudS
-         FHNhuR1UKap6HfEbHF9X0dCSVJqpF0OruUwnaSUk=
+        b=2sFDae2o8ckFInv2HZfDVc9m2wpOkZPOHNFkGxyu2nQKKk8uLdce+iS+7J1elTI0j
+         Y9QRcFWj5Un5PVXyzjZDYPsY9mqschj/+pvMP81D3tLLyeNR6s2M7hESeHKQdYilWL
+         wOSewN5W/g+iCA555GJE4JfZT4Otr6lDUIKQe4lY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Forza <forza@tnonline.net>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Maurizio Lombardi <mlombard@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>,
+        syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Viacheslav Dubeyko <slava@dubeyko.com>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/161] scsi: target: iscsit: Free cmds before session free
+Subject: [PATCH 5.10 032/211] fs: hfsplus: remove WARN_ON() from hfsplus_cat_{read,write}_inode()
 Date:   Sun, 28 May 2023 20:09:13 +0100
-Message-Id: <20230528190838.111896450@linuxfoundation.org>
+Message-Id: <20230528190844.321802529@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,62 +58,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit d8990b5a4d065f38f35d69bcd627ec5a7f8330ca ]
+[ Upstream commit 81b21c0f0138ff5a499eafc3eb0578ad2a99622c ]
 
-Commands from recovery entries are freed after session has been closed.
-That leads to use-after-free at command free or NPE with such call trace:
+syzbot is hitting WARN_ON() in hfsplus_cat_{read,write}_inode(), for
+crafted filesystem image can contain bogus length. There conditions are
+not kernel bugs that can justify kernel to panic.
 
-Time2Retain timer expired for SID: 1, cleaning up iSCSI session.
-BUG: kernel NULL pointer dereference, address: 0000000000000140
-RIP: 0010:sbitmap_queue_clear+0x3a/0xa0
-Call Trace:
- target_release_cmd_kref+0xd1/0x1f0 [target_core_mod]
- transport_generic_free_cmd+0xd1/0x180 [target_core_mod]
- iscsit_free_cmd+0x53/0xd0 [iscsi_target_mod]
- iscsit_free_connection_recovery_entries+0x29d/0x320 [iscsi_target_mod]
- iscsit_close_session+0x13a/0x140 [iscsi_target_mod]
- iscsit_check_post_dataout+0x440/0x440 [iscsi_target_mod]
- call_timer_fn+0x24/0x140
-
-Move cleanup of recovery enrties to before session freeing.
-
-Reported-by: Forza <forza@tnonline.net>
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-7-michael.christie@oracle.com
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=e2787430e752a92b8750
+Reported-by: syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=4913dca2ea6e4d43f3f1
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Message-Id: <15308173-5252-d6a3-ae3b-e96d46cb6f41@I-love.SAKURA.ne.jp>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/hfsplus/inode.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 8b8afa95fbbae..ab2f0ceb1e23b 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4385,6 +4385,9 @@ int iscsit_close_session(struct iscsi_session *sess)
- 	iscsit_stop_time2retain_timer(sess);
- 	spin_unlock_bh(&se_tpg->session_lock);
+diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
+index c60d5ceb0d31c..7e1d889dcc07a 100644
+--- a/fs/hfsplus/inode.c
++++ b/fs/hfsplus/inode.c
+@@ -497,7 +497,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 	if (type == HFSPLUS_FOLDER) {
+ 		struct hfsplus_cat_folder *folder = &entry.folder;
  
-+	if (sess->sess_ops->ErrorRecoveryLevel == 2)
-+		iscsit_free_connection_recovery_entries(sess);
-+
- 	/*
- 	 * transport_deregister_session_configfs() will clear the
- 	 * struct se_node_acl->nacl_sess pointer now as a iscsi_np process context
-@@ -4413,9 +4416,6 @@ int iscsit_close_session(struct iscsi_session *sess)
+-		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_folder));
++		if (fd->entrylength < sizeof(struct hfsplus_cat_folder)) {
++			pr_err("bad catalog folder entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
+ 					sizeof(struct hfsplus_cat_folder));
+ 		hfsplus_get_perms(inode, &folder->permissions, 1);
+@@ -517,7 +521,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 	} else if (type == HFSPLUS_FILE) {
+ 		struct hfsplus_cat_file *file = &entry.file;
  
- 	transport_deregister_session(sess->se_sess);
+-		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_file));
++		if (fd->entrylength < sizeof(struct hfsplus_cat_file)) {
++			pr_err("bad catalog file entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
+ 					sizeof(struct hfsplus_cat_file));
  
--	if (sess->sess_ops->ErrorRecoveryLevel == 2)
--		iscsit_free_connection_recovery_entries(sess);
--
- 	iscsit_free_all_ooo_cmdsns(sess);
+@@ -548,6 +556,7 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 		pr_err("bad catalog entry used to create inode\n");
+ 		res = -EIO;
+ 	}
++out:
+ 	return res;
+ }
  
- 	spin_lock_bh(&se_tpg->session_lock);
+@@ -556,6 +565,7 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	struct inode *main_inode = inode;
+ 	struct hfs_find_data fd;
+ 	hfsplus_cat_entry entry;
++	int res = 0;
+ 
+ 	if (HFSPLUS_IS_RSRC(inode))
+ 		main_inode = HFSPLUS_I(inode)->rsrc_inode;
+@@ -574,7 +584,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	if (S_ISDIR(main_inode->i_mode)) {
+ 		struct hfsplus_cat_folder *folder = &entry.folder;
+ 
+-		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_folder));
++		if (fd.entrylength < sizeof(struct hfsplus_cat_folder)) {
++			pr_err("bad catalog folder entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
+ 					sizeof(struct hfsplus_cat_folder));
+ 		/* simple node checks? */
+@@ -599,7 +613,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	} else {
+ 		struct hfsplus_cat_file *file = &entry.file;
+ 
+-		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_file));
++		if (fd.entrylength < sizeof(struct hfsplus_cat_file)) {
++			pr_err("bad catalog file entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
+ 					sizeof(struct hfsplus_cat_file));
+ 		hfsplus_inode_write_fork(inode, &file->data_fork);
+@@ -620,5 +638,5 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	set_bit(HFSPLUS_I_CAT_DIRTY, &HFSPLUS_I(inode)->flags);
+ out:
+ 	hfs_find_exit(&fd);
+-	return 0;
++	return res;
+ }
 -- 
 2.39.2
 
