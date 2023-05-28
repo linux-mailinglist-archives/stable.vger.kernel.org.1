@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6CD3713E52
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63199713CD0
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230313AbjE1Te2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:34:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50360 "EHLO
+        id S229849AbjE1TSz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjE1Te1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26F1A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:26 -0700 (PDT)
+        with ESMTP id S229870AbjE1TSy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B8F6A3;
+        Sun, 28 May 2023 12:18:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2543C61DE7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44220C433EF;
-        Sun, 28 May 2023 19:34:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8ADC36112D;
+        Sun, 28 May 2023 19:18:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A655AC4339B;
+        Sun, 28 May 2023 19:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302465;
-        bh=YFhqIeVEmNPf7SStHeuINYZfRW+iR9DOwmGTsRK2Cjk=;
+        s=korg; t=1685301532;
+        bh=ogM/LVfKGXYAnrt1FlY2B64qXfXE3OZYuAdr6R9fvlk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cw9V0wea1cjzq8fygxQzQktDHOcuzyLRLBdLV9m2JX9F8CTlBv8Wh+hZ40/VWKmeJ
-         k3SrchrOuLrEbXf8N5HPmKbBh/ycvoEfSLxUYfE3qILN5oRq7KZiqNLPA9gblIAh0i
-         TPy4efEu6WsLVi2ssuUpgTc/I0Kh7BEX1ocnG/HY=
+        b=bABQT2HWI9IEA0Awcx37xETEHJHM/djCQQaXPxtYfcGFBLzggPJ0SmYyphCp6VR3V
+         CmC/q/JmMJKjK2PJans46S9CDm9h1KPn5Ei2hZAOz0G8HsWI9K87uNbi2iE+ylcBJe
+         +zfdDOGpJgMRK1MJk+aOiLv9Oa9EPsI23Q50JuGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Pengfei Xu <pengfei.xu@intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/119] tpm: Re-enable TPM chip boostrapping non-tpm_tis TPM drivers
+        patches@lists.linux.dev, Maxime Bizon <mbizon@freebox.fr>,
+        linux-usb@vger.kernel.org, stable <stable@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 4.19 067/132] usb-storage: fix deadlock when a scsi command timeouts more than once
 Date:   Sun, 28 May 2023 20:10:06 +0100
-Message-Id: <20230528190835.580007732@linuxfoundation.org>
+Message-Id: <20230528190835.599725066@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,141 +54,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Maxime Bizon <mbizon@freebox.fr>
 
-[ Upstream commit 0c8862de05c1a087795ee0a87bf61a6394306cc0 ]
+commit a398d5eac6984316e71474e25b975688f282379b upstream.
 
-TPM chip bootstrapping was removed from tpm_chip_register(), and it
-was relocated to tpm_tis_core. This breaks all drivers which are not
-based on tpm_tis because the chip will not get properly initialized.
+With faulty usb-storage devices, read/write can timeout, in that case
+the SCSI layer will abort and re-issue the command. USB storage has no
+internal timeout, it relies on SCSI layer aborting commands via
+.eh_abort_handler() for non those responsive devices.
 
-Take the corrective steps:
-1. Rename tpm_chip_startup() as tpm_chip_bootstrap() and make it one-shot.
-2. Call tpm_chip_bootstrap() in tpm_chip_register(), which reverts the
-   things  as tehy used to be.
+After two consecutive timeouts of the same command, SCSI layer calls
+.eh_device_reset_handler(), without calling .eh_abort_handler() first.
 
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Fixes: 548eb516ec0f ("tpm, tpm_tis: startup chip before testing for interrupts")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Link: https://lore.kernel.org/all/ZEjqhwHWBnxcaRV5@xpf.sh.intel.com/
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 99d464506255 ("tpm: Prevent hwrng from activating during resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With usb-storage, this causes a deadlock:
+
+  -> .eh_device_reset_handler
+    -> device_reset
+      -> mutex_lock(&(us->dev_mutex));
+
+mutex already by usb_stor_control_thread(), which is waiting for
+command completion:
+
+  -> usb_stor_control_thread (mutex taken here)
+    -> usb_stor_invoke_transport
+      -> usb_stor_Bulk_transport
+        -> usb_stor_bulk_srb
+	  -> usb_stor_bulk_transfer_sglist
+	    -> usb_sg_wait
+
+Make sure we cancel any pending command in .eh_device_reset_handler()
+to avoid this.
+
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+Cc: linux-usb@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/all/ZEllnjMKT8ulZbJh@sakura/
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230505114759.1189741-1-mbizon@freebox.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-chip.c     | 22 +++++++++++++++++++---
- drivers/char/tpm/tpm.h          |  2 +-
- drivers/char/tpm/tpm_tis_core.c |  2 +-
- include/linux/tpm.h             | 13 +++++++------
- 4 files changed, 28 insertions(+), 11 deletions(-)
+ drivers/usb/storage/scsiglue.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index 47c2861af45a3..31d8074821524 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -602,13 +602,19 @@ static int tpm_get_pcr_allocation(struct tpm_chip *chip)
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -392,22 +392,25 @@ static DEF_SCSI_QCMD(queuecommand)
+  ***********************************************************************/
+ 
+ /* Command timeout and abort */
+-static int command_abort(struct scsi_cmnd *srb)
++static int command_abort_matching(struct us_data *us, struct scsi_cmnd *srb_match)
+ {
+-	struct us_data *us = host_to_us(srb->device->host);
+-
+-	usb_stor_dbg(us, "%s called\n", __func__);
+-
+ 	/*
+ 	 * us->srb together with the TIMED_OUT, RESETTING, and ABORTING
+ 	 * bits are protected by the host lock.
+ 	 */
+ 	scsi_lock(us_to_host(us));
+ 
+-	/* Is this command still active? */
+-	if (us->srb != srb) {
++	/* is there any active pending command to abort ? */
++	if (!us->srb) {
+ 		scsi_unlock(us_to_host(us));
+ 		usb_stor_dbg(us, "-- nothing to abort\n");
++		return SUCCESS;
++	}
++
++	/* Does the command match the passed srb if any ? */
++	if (srb_match && us->srb != srb_match) {
++		scsi_unlock(us_to_host(us));
++		usb_stor_dbg(us, "-- pending command mismatch\n");
+ 		return FAILED;
+ 	}
+ 
+@@ -430,6 +433,14 @@ static int command_abort(struct scsi_cmn
+ 	return SUCCESS;
  }
  
++static int command_abort(struct scsi_cmnd *srb)
++{
++	struct us_data *us = host_to_us(srb->device->host);
++
++	usb_stor_dbg(us, "%s called\n", __func__);
++	return command_abort_matching(us, srb);
++}
++
  /*
-- * tpm_chip_startup() - performs auto startup and allocates the PCRs
-+ * tpm_chip_bootstrap() - Boostrap TPM chip after power on
-  * @chip: TPM chip to use.
-+ *
-+ * Initialize TPM chip after power on. This a one-shot function: subsequent
-+ * calls will have no effect.
-  */
--int tpm_chip_startup(struct tpm_chip *chip)
-+int tpm_chip_bootstrap(struct tpm_chip *chip)
- {
- 	int rc;
+  * This invokes the transport reset mechanism to reset the state of the
+  * device
+@@ -441,6 +452,9 @@ static int device_reset(struct scsi_cmnd
  
-+	if (chip->flags & TPM_CHIP_FLAG_BOOTSTRAPPED)
-+		return 0;
+ 	usb_stor_dbg(us, "%s called\n", __func__);
+ 
++	/* abort any pending command before reset */
++	command_abort_matching(us, NULL);
 +
- 	rc = tpm_chip_start(chip);
- 	if (rc)
- 		return rc;
-@@ -621,9 +627,15 @@ int tpm_chip_startup(struct tpm_chip *chip)
- stop:
- 	tpm_chip_stop(chip);
- 
-+	/*
-+	 * Unconditionally set, as driver initialization should cease, when the
-+	 * boostrapping process fails.
-+	 */
-+	chip->flags |= TPM_CHIP_FLAG_BOOTSTRAPPED;
-+
- 	return rc;
- }
--EXPORT_SYMBOL_GPL(tpm_chip_startup);
-+EXPORT_SYMBOL_GPL(tpm_chip_bootstrap);
- 
- /*
-  * tpm_chip_register() - create a character device for the TPM chip
-@@ -640,6 +652,10 @@ int tpm_chip_register(struct tpm_chip *chip)
- {
- 	int rc;
- 
-+	rc = tpm_chip_bootstrap(chip);
-+	if (rc)
-+		return rc;
-+
- 	tpm_sysfs_add_device(chip);
- 
- 	tpm_bios_log_setup(chip);
-diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
-index 88d3bd76e0760..f6c99b3f00458 100644
---- a/drivers/char/tpm/tpm.h
-+++ b/drivers/char/tpm/tpm.h
-@@ -263,7 +263,7 @@ static inline void tpm_msleep(unsigned int delay_msec)
- 		     delay_msec * 1000);
- };
- 
--int tpm_chip_startup(struct tpm_chip *chip);
-+int tpm_chip_bootstrap(struct tpm_chip *chip);
- int tpm_chip_start(struct tpm_chip *chip);
- void tpm_chip_stop(struct tpm_chip *chip);
- struct tpm_chip *tpm_find_get_ops(struct tpm_chip *chip);
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 9f76c9a5aa422..f02b583005a53 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -1125,7 +1125,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 	init_waitqueue_head(&priv->read_queue);
- 	init_waitqueue_head(&priv->int_queue);
- 
--	rc = tpm_chip_startup(chip);
-+	rc = tpm_chip_bootstrap(chip);
- 	if (rc)
- 		goto out_err;
- 
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index dfeb25a0362de..cea64d58ef9f7 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -273,13 +273,14 @@ enum tpm2_cc_attrs {
- #define TPM_VID_ATML     0x1114
- 
- enum tpm_chip_flags {
--	TPM_CHIP_FLAG_TPM2		= BIT(1),
--	TPM_CHIP_FLAG_IRQ		= BIT(2),
--	TPM_CHIP_FLAG_VIRTUAL		= BIT(3),
--	TPM_CHIP_FLAG_HAVE_TIMEOUTS	= BIT(4),
--	TPM_CHIP_FLAG_ALWAYS_POWERED	= BIT(5),
-+	TPM_CHIP_FLAG_BOOTSTRAPPED		= BIT(0),
-+	TPM_CHIP_FLAG_TPM2			= BIT(1),
-+	TPM_CHIP_FLAG_IRQ			= BIT(2),
-+	TPM_CHIP_FLAG_VIRTUAL			= BIT(3),
-+	TPM_CHIP_FLAG_HAVE_TIMEOUTS		= BIT(4),
-+	TPM_CHIP_FLAG_ALWAYS_POWERED		= BIT(5),
- 	TPM_CHIP_FLAG_FIRMWARE_POWER_MANAGED	= BIT(6),
--	TPM_CHIP_FLAG_FIRMWARE_UPGRADE	= BIT(7),
-+	TPM_CHIP_FLAG_FIRMWARE_UPGRADE		= BIT(7),
- };
- 
- #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
--- 
-2.39.2
-
+ 	/* lock the device pointers and do the reset */
+ 	mutex_lock(&(us->dev_mutex));
+ 	result = us->transport_reset(us);
 
 
