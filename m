@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ECB7713E2A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12AC2713DB4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbjE1Tch (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49178 "EHLO
+        id S230132AbjE1T2H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:28:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230280AbjE1Tcg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2009BA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:36 -0700 (PDT)
+        with ESMTP id S230111AbjE1T2G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0B6B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A916E61DBC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C743AC433EF;
-        Sun, 28 May 2023 19:32:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BF4D61CD7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2748DC433D2;
+        Sun, 28 May 2023 19:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302355;
-        bh=njPBgyPrNWxrnHbHrzinzv56yGbS6VOLK5FOXExyefI=;
+        s=korg; t=1685302084;
+        bh=sNX/Mj0V9KkzCD4oFShtVNJF5eQo+XZOG+X35HAWUa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1IWJAoLCm7ignqoTUhriXybOe/0dRr3gqYJhQjA6VUhZL/PSCyxDuhZiyLt3oAtTw
-         lyUP6GkiWNIu/FnkutW46I+nK/woj61LXVo8GbpTkVRZTjJ99q32XeHTK5R6KLcGhS
-         +qm5DmZ2KjHKm57QHuhf9LorL7+5XDfzgtA1B9H4=
+        b=r+ZrEhdSKbqs8CUFFKvy8zkCZ4EMo/+S1cYMywRzFU4SJwC4K+fiDfwCkG9L5Ii2i
+         Tsooi41zjypAQVuQTaUFpPbyM35Chyl72RYsS0jqscA+Lp8+xOArn6AbBWvq2IK7k2
+         sLxVbW2XuLSvTO95/gLJooWcZCLpSUICH2lzPHeo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.3 102/127] ASoC: Intel: avs: Access path components under lock
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 5.4 154/161] coresight: Fix signedness bug in tmc_etr_buf_insert_barrier_packet()
 Date:   Sun, 28 May 2023 20:11:18 +0100
-Message-Id: <20230528190839.602119150@linuxfoundation.org>
+Message-Id: <20230528190841.747058721@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,48 +53,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit d849996f7458042af803b7d15a181922834c5249 upstream.
+commit f67bc15e526bb9920683ad6c1891ff9e08981335 upstream.
 
-Path and its components should be accessed under lock to prevent
-problems with one thread modifying them while other tries to read.
+This code generates a Smatch warning:
 
-Fixes: c8c960c10971 ("ASoC: Intel: avs: APL-based platforms support")
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20230519201711.4073845-3-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    drivers/hwtracing/coresight/coresight-tmc-etr.c:947 tmc_etr_buf_insert_barrier_packet()
+    error: uninitialized symbol 'bufp'.
+
+The problem is that if tmc_sg_table_get_data() returns -EINVAL, then
+when we test if "len < CORESIGHT_BARRIER_PKT_SIZE", the negative "len"
+value is type promoted to a high unsigned long value which is greater
+than CORESIGHT_BARRIER_PKT_SIZE.  Fix this bug by adding an explicit
+check for error codes.
+
+Fixes: 75f4e3619fe2 ("coresight: tmc-etr: Add transparent buffer management")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/7d33e244-d8b9-4c27-9653-883a13534b01@kili.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/avs/apl.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-tmc-etr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/intel/avs/apl.c
-+++ b/sound/soc/intel/avs/apl.c
-@@ -169,6 +169,7 @@ static bool apl_lp_streaming(struct avs_
- {
- 	struct avs_path *path;
+--- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+@@ -909,7 +909,7 @@ tmc_etr_buf_insert_barrier_packet(struct
  
-+	spin_lock(&adev->path_list_lock);
- 	/* Any gateway without buffer allocated in LP area disqualifies D0IX. */
- 	list_for_each_entry(path, &adev->path_list, node) {
- 		struct avs_path_pipeline *ppl;
-@@ -188,11 +189,14 @@ static bool apl_lp_streaming(struct avs_
- 				if (cfg->copier.dma_type == INVALID_OBJECT_ID)
- 					continue;
- 
--				if (!mod->gtw_attrs.lp_buffer_alloc)
-+				if (!mod->gtw_attrs.lp_buffer_alloc) {
-+					spin_unlock(&adev->path_list_lock);
- 					return false;
-+				}
- 			}
- 		}
- 	}
-+	spin_unlock(&adev->path_list_lock);
- 
- 	return true;
- }
+ 	len = tmc_etr_buf_get_data(etr_buf, offset,
+ 				   CORESIGHT_BARRIER_PKT_SIZE, &bufp);
+-	if (WARN_ON(len < CORESIGHT_BARRIER_PKT_SIZE))
++	if (WARN_ON(len < 0 || len < CORESIGHT_BARRIER_PKT_SIZE))
+ 		return -EINVAL;
+ 	coresight_insert_barrier_packet(bufp);
+ 	return offset + CORESIGHT_BARRIER_PKT_SIZE;
 
 
