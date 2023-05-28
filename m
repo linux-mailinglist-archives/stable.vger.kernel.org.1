@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F49713F93
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97EBF713EC7
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231312AbjE1Tq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33190 "EHLO
+        id S230500AbjE1Ti4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231315AbjE1Tq6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:58 -0400
+        with ESMTP id S230488AbjE1Tiq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376B5C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23931D9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C202D61F88
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E088DC433EF;
-        Sun, 28 May 2023 19:46:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9157461E88
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FA6C433D2;
+        Sun, 28 May 2023 19:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303209;
-        bh=1CIL6RBnOq5tntTeeM/NFFFXukTpZtqo4uw+ny1yCVk=;
+        s=korg; t=1685302724;
+        bh=xGQU3UP9u9rVob5UcnYZp6dVySPSgld0am8ChfGc3XE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vc9eGbyu9ej4o3RS+nfEOkV93WyQ63K/1EH9QI81dJrbOsydIgy+pz4sh6yEzXpQW
-         Iq9srGys9BSKFTNu1loemPOP9pw52WuqmVw7r64yQr5m9dvG7AbzoFVVhx/I6QA1XZ
-         R4y8xrhc+Lf/YBL5EjYWCDs+UkugfCYpkDkL1HfE=
+        b=HmlSe0Z79GM2Z1WWARm2NQvsdJEyG+s2coBZ6EpD8Ra4QRjF78gwDKX4/xxpQBbMI
+         Ze4+yr1LteUu49zuPOZK0TCsb4q1JqHY2lZW9VaeQfDhlQXBt4iN4zUMJkm2ow69/i
+         aKzp4H98PYjaXZEiDd0vL031BePVfaCCAd3QhV00=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daisuke Nojiri <dnojiri@chromium.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.10 198/211] power: supply: sbs-charger: Fix INHIBITED bit for Status reg
+        patches@lists.linux.dev,
+        David Epping <david.epping@missinglinkelectronics.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 119/119] net: phy: mscc: add VSC8502 to MODULE_DEVICE_TABLE
 Date:   Sun, 28 May 2023 20:11:59 +0100
-Message-Id: <20230528190848.416769687@linuxfoundation.org>
+Message-Id: <20230528190839.408162898@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,31 +55,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daisuke Nojiri <dnojiri@chromium.org>
+From: David Epping <david.epping@missinglinkelectronics.com>
 
-commit b2f2a3c9800208b0db2c2e34b05323757117faa2 upstream.
+commit 57fb54ab9f6945e204740b696bd4cee61ee04e5e upstream.
 
-CHARGE_INHIBITED bit position of the ChargerStatus register is actually
-0 not 1. This patch corrects it.
+The mscc driver implements support for VSC8502, so its ID should be in
+the MODULE_DEVICE_TABLE for automatic loading.
 
-Fixes: feb583e37f8a8 ("power: supply: add sbs-charger driver")
-Signed-off-by: Daisuke Nojiri <dnojiri@chromium.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: David Epping <david.epping@missinglinkelectronics.com>
+Fixes: d3169863310d ("net: phy: mscc: add support for VSC8502")
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/sbs-charger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/power/supply/sbs-charger.c
-+++ b/drivers/power/supply/sbs-charger.c
-@@ -25,7 +25,7 @@
- #define SBS_CHARGER_REG_STATUS			0x13
- #define SBS_CHARGER_REG_ALARM_WARNING		0x16
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2664,6 +2664,7 @@ static struct phy_driver vsc85xx_driver[
+ module_phy_driver(vsc85xx_driver);
  
--#define SBS_CHARGER_STATUS_CHARGE_INHIBITED	BIT(1)
-+#define SBS_CHARGER_STATUS_CHARGE_INHIBITED	BIT(0)
- #define SBS_CHARGER_STATUS_RES_COLD		BIT(9)
- #define SBS_CHARGER_STATUS_RES_HOT		BIT(10)
- #define SBS_CHARGER_STATUS_BATTERY_PRESENT	BIT(14)
+ static struct mdio_device_id __maybe_unused vsc85xx_tbl[] = {
++	{ PHY_ID_VSC8502, 0xfffffff0, },
+ 	{ PHY_ID_VSC8504, 0xfffffff0, },
+ 	{ PHY_ID_VSC8514, 0xfffffff0, },
+ 	{ PHY_ID_VSC8530, 0xfffffff0, },
 
 
