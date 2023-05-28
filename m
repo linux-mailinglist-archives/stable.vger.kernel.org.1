@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38BDC713CA4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45590713EF4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjE1TRF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
+        id S231132AbjE1Tkh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjE1TRE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:04 -0400
+        with ESMTP id S230522AbjE1Tkd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91C3A6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C1AF7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CE25619DD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0F9C4339B;
-        Sun, 28 May 2023 19:17:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6568E61EAB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83191C433D2;
+        Sun, 28 May 2023 19:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301422;
-        bh=+tTyT/Mlo9AAwd5T2SnjJd405rXrrwuP/DzYdXzbAdQ=;
+        s=korg; t=1685302825;
+        bh=d4yItiBzRjfMRrdZQ69EO1/cdLcaMidzsYFY2Y1AsO8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LOvQ2petuqYhtgswX9JtulY6FWhNd7POHwwzcH0c0IWXkhiu74MNqvJHSTREeuf4F
-         u6DS2aysUuYpG6dmbOiayIHtGgdRrRP+M9EBbbW3ENJSrZN+XGdj2FNnuHfLPkYz/g
-         tAgDIO0KIw0m+VUMu6+hZjw7G8HWxevYpQ+XP9RM=
+        b=PsTLZj2fjarZWHtC2hEtckQFccweRGNu5wXBmqpBIeOZz6FS5xZq/qaODqQBB/c6i
+         BwUrBYAZS7h1M53ZLPd5sCR3sB9/Cgg1G1cDE3UtZBLu1cYDPATWqNS8eAV50iyJby
+         mzOL9yXagU1dqutk/+NJVS0XQjgmSrDPT+X6y7XU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 006/132] tcp: factor out __tcp_close() helper
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>,
+        Christian Brauner <brauner@kernel.org>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 024/211] ext4: fix lockdep warning when enabling MMP
 Date:   Sun, 28 May 2023 20:09:05 +0100
-Message-Id: <20230528190833.760953134@linuxfoundation.org>
+Message-Id: <20230528190844.121029883@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,66 +56,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 77c3c95637526f1e4330cc9a4b2065f668c2c4fe ]
+[ Upstream commit 949f95ff39bf188e594e7ecd8e29b82eb108f5bf ]
 
-unlocked version of protocol level close, will be used by
-MPTCP to allow decouple orphaning and subflow level close.
+When we enable MMP in ext4_multi_mount_protect() during mount or
+remount, we end up calling sb_start_write() from write_mmp_block(). This
+triggers lockdep warning because freeze protection ranks above s_umount
+semaphore we are holding during mount / remount. The problem is harmless
+because we are guaranteed the filesystem is not frozen during mount /
+remount but still let's fix the warning by not grabbing freeze
+protection from ext4_multi_mount_protect().
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e14cadfd80d7 ("tcp: add annotations around sk->sk_shutdown accesses")
+Cc: stable@kernel.org
+Reported-by: syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=ab7e5b6f400b7778d46f01841422e5718fb81843
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20230411121019.21940-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h | 1 +
- net/ipv4/tcp.c    | 9 +++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ fs/ext4/mmp.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 9e37f3912ff19..81300a04b5808 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -389,6 +389,7 @@ void tcp_update_metrics(struct sock *sk);
- void tcp_init_metrics(struct sock *sk);
- void tcp_metrics_init(void);
- bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst);
-+void __tcp_close(struct sock *sk, long timeout);
- void tcp_close(struct sock *sk, long timeout);
- void tcp_init_sock(struct sock *sk);
- void tcp_init_transfer(struct sock *sk, int bpf_op);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 2fcf6e5a371dd..9200e7330b7d6 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2338,13 +2338,12 @@ bool tcp_check_oom(struct sock *sk, int shift)
- 	return too_many_orphans || out_of_socket_memory;
+diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
+index 92c863fd9a78d..7a9a8ed1de66c 100644
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -39,28 +39,36 @@ static void ext4_mmp_csum_set(struct super_block *sb, struct mmp_struct *mmp)
+  * Write the MMP block using REQ_SYNC to try to get the block on-disk
+  * faster.
+  */
+-static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
++static int write_mmp_block_thawed(struct super_block *sb,
++				  struct buffer_head *bh)
+ {
+ 	struct mmp_struct *mmp = (struct mmp_struct *)(bh->b_data);
+ 
+-	/*
+-	 * We protect against freezing so that we don't create dirty buffers
+-	 * on frozen filesystem.
+-	 */
+-	sb_start_write(sb);
+ 	ext4_mmp_csum_set(sb, mmp);
+ 	lock_buffer(bh);
+ 	bh->b_end_io = end_buffer_write_sync;
+ 	get_bh(bh);
+ 	submit_bh(REQ_OP_WRITE, REQ_SYNC | REQ_META | REQ_PRIO, bh);
+ 	wait_on_buffer(bh);
+-	sb_end_write(sb);
+ 	if (unlikely(!buffer_uptodate(bh)))
+ 		return -EIO;
+-
+ 	return 0;
  }
  
--void tcp_close(struct sock *sk, long timeout)
-+void __tcp_close(struct sock *sk, long timeout)
- {
- 	struct sk_buff *skb;
- 	int data_was_unread = 0;
- 	int state;
- 
--	lock_sock(sk);
- 	sk->sk_shutdown = SHUTDOWN_MASK;
- 
- 	if (sk->sk_state == TCP_LISTEN) {
-@@ -2505,6 +2504,12 @@ void tcp_close(struct sock *sk, long timeout)
- out:
- 	bh_unlock_sock(sk);
- 	local_bh_enable();
++static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
++{
++	int err;
++
++	/*
++	 * We protect against freezing so that we don't create dirty buffers
++	 * on frozen filesystem.
++	 */
++	sb_start_write(sb);
++	err = write_mmp_block_thawed(sb, bh);
++	sb_end_write(sb);
++	return err;
 +}
 +
-+void tcp_close(struct sock *sk, long timeout)
-+{
-+	lock_sock(sk);
-+	__tcp_close(sk, timeout);
- 	release_sock(sk);
- 	sock_put(sk);
- }
+ /*
+  * Read the MMP block. It _must_ be read from disk and hence we clear the
+  * uptodate flag on the buffer.
+@@ -352,7 +360,11 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	seq = mmp_new_seq();
+ 	mmp->mmp_seq = cpu_to_le32(seq);
+ 
+-	retval = write_mmp_block(sb, bh);
++	/*
++	 * On mount / remount we are protected against fs freezing (by s_umount
++	 * semaphore) and grabbing freeze protection upsets lockdep
++	 */
++	retval = write_mmp_block_thawed(sb, bh);
+ 	if (retval)
+ 		goto failed;
+ 
 -- 
 2.39.2
 
