@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 115A9713D5B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A091A713CC4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbjE1TYc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
+        id S229838AbjE1TSY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230026AbjE1TYb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:31 -0400
+        with ESMTP id S229846AbjE1TSY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F20DEBB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEA6A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84E0B61BCE
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24D9C433EF;
-        Sun, 28 May 2023 19:24:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFCA96104D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDA8C433EF;
+        Sun, 28 May 2023 19:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301870;
-        bh=xqnVCedNH7mQsCdY9m1JgAgwtMxQ5a73EXkT4swv6VQ=;
+        s=korg; t=1685301502;
+        bh=m51mPhvK+CqdrYQsaeKqNgmOl9Z79RIoIWygm3wIsJ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i/KB14rYW5DOlWgSx2YYpn5XD0eiIiSTmR3c+kzecuRINEybqTxVsLdiy+lE06qIX
-         8L5z6W9iQBuaKhAxtkZ1Du9f2xX9E/cLncZWRFWRwvrlcUyEA52LjZhy1DUAWec7QH
-         jv8HoZ+io/ehiGrQ/ZJeKEaOq9r6rhuLb25RAmig=
+        b=w9runNhBlu6TvQI6btIiIVPP+2qsMsj3a4c/aUTND7zrDXQSKhrONOpxEs2fJ7Tiz
+         276yEV5eesv8Q67dJd7pnuSOhS3NYOCJ3OnvLVnF8ZDPa2ibrblkszS34KAUQODltc
+         t5tGQCWcf5EpWrmrQl4cS53mjYwXqKe9uN4uDC1w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com,
-        Min Li <lm0963hack@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Eli Cohen <elic@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/161] Bluetooth: L2CAP: fix "bad unlock balance" in l2cap_disconnect_rsp
+Subject: [PATCH 4.19 025/132] lib: cpu_rmap: Avoid use after free on rmap->obj array entries
 Date:   Sun, 28 May 2023 20:09:24 +0100
-Message-Id: <20230528190838.480592293@linuxfoundation.org>
+Message-Id: <20230528190834.343360962@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +56,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min Li <lm0963hack@gmail.com>
+From: Eli Cohen <elic@nvidia.com>
 
-[ Upstream commit 25e97f7b1866e6b8503be349eeea44bb52d661ce ]
+[ Upstream commit 4e0473f1060aa49621d40a113afde24818101d37 ]
 
-conn->chan_lock isn't acquired before l2cap_get_chan_by_scid,
-if l2cap_get_chan_by_scid returns NULL, then 'bad unlock balance'
-is triggered.
+When calling irq_set_affinity_notifier() with NULL at the notify
+argument, it will cause freeing of the glue pointer in the
+corresponding array entry but will leave the pointer in the array. A
+subsequent call to free_irq_cpu_rmap() will try to free this entry again
+leading to possible use after free.
 
-Reported-by: syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000894f5f05f95e9f4d@google.com/
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix that by setting NULL to the array entry and checking that we have
+non-zero at the array entry when iterating over the array in
+free_irq_cpu_rmap().
+
+The current code does not suffer from this since there are no cases
+where irq_set_affinity_notifier(irq, NULL) (note the NULL passed for the
+notify arg) is called, followed by a call to free_irq_cpu_rmap() so we
+don't hit and issue. Subsequent patches in this series excersize this
+flow, hence the required fix.
+
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Eli Cohen <elic@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 1 -
- 1 file changed, 1 deletion(-)
+ lib/cpu_rmap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 3c559a177761b..5f53e75d83024 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4410,7 +4410,6 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
+diff --git a/lib/cpu_rmap.c b/lib/cpu_rmap.c
+index f610b2a10b3ed..f52389054a24f 100644
+--- a/lib/cpu_rmap.c
++++ b/lib/cpu_rmap.c
+@@ -235,7 +235,8 @@ void free_irq_cpu_rmap(struct cpu_rmap *rmap)
  
- 	chan = l2cap_get_chan_by_scid(conn, scid);
- 	if (!chan) {
--		mutex_unlock(&conn->chan_lock);
- 		return 0;
+ 	for (index = 0; index < rmap->used; index++) {
+ 		glue = rmap->obj[index];
+-		irq_set_affinity_notifier(glue->notify.irq, NULL);
++		if (glue)
++			irq_set_affinity_notifier(glue->notify.irq, NULL);
  	}
  
+ 	cpu_rmap_put(rmap);
+@@ -271,6 +272,7 @@ static void irq_cpu_rmap_release(struct kref *ref)
+ 		container_of(ref, struct irq_glue, notify.kref);
+ 
+ 	cpu_rmap_put(glue->rmap);
++	glue->rmap->obj[glue->index] = NULL;
+ 	kfree(glue);
+ }
+ 
+@@ -300,6 +302,7 @@ int irq_cpu_rmap_add(struct cpu_rmap *rmap, int irq)
+ 	rc = irq_set_affinity_notifier(irq, &glue->notify);
+ 	if (rc) {
+ 		cpu_rmap_put(glue->rmap);
++		rmap->obj[glue->index] = NULL;
+ 		kfree(glue);
+ 	}
+ 	return rc;
 -- 
 2.39.2
 
