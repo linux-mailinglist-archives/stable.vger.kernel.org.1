@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83186713E1B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2F7713DA3
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230267AbjE1TcE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48604 "EHLO
+        id S230122AbjE1T1d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230270AbjE1TcD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:03 -0400
+        with ESMTP id S230109AbjE1T1b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87A2BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC22E1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55A0561D9A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733F5C433D2;
-        Sun, 28 May 2023 19:32:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C3DE61C9C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA3CC433EF;
+        Sun, 28 May 2023 19:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302320;
-        bh=KD87JUW73vklsf894A/QoFpEQuJskImRRRWus0cwo8c=;
+        s=korg; t=1685302044;
+        bh=x1p+YrBH41T01P2D/oQylsO7bcb7MlE7vKDFLUN4ytk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dnBCDxy1TFqTRf4II7YFnUAl57O/TdepPCuMMpVnUWUz67RZxs/4GBQuVjapLoNCZ
-         EBQESZGkYkN5wqcy3iJCw+28ao/VV2d9xkx4WLw/HAItXIo7SVfjpFQuF4Hf3qTSGW
-         +P5Q7YCbk3gJWC2t2weSrDRf3oxYMmfwH+Ab3cQk=
+        b=u2Q6IdZOLeXhlgir+gJdFDjyi8j3+SNbxwEBjK5e/GlggDqTlZ7vra+vkomgeTb4V
+         YSkCCNpnXjAtfTTMxLxfZWgSqpckkAq4DicCySI9YzVQ3fHet9EV+mO9jfE0+jYvxv
+         rS7Kxo5xINynbBbJKAJpKVRwI/bKcJlPMLe0H/wU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.3 087/127] power: supply: bq24190: Call power_supply_changed() after updating input current
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        syzbot+0e22d63dcebb802b9bc8@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 139/161] fbdev: udlfb: Fix endpoint check
 Date:   Sun, 28 May 2023 20:11:03 +0100
-Message-Id: <20230528190839.168623419@linuxfoundation.org>
+Message-Id: <20230528190841.371485614@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,41 +55,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 77c2a3097d7029441e8a91aa0de1b4e5464593da upstream.
+commit ed9de4ed39875706607fb08118a58344ae6c5f42 upstream.
 
-The bq24192 model relies on external charger-type detection and once
-that is done the bq24190_charger code will update the input current.
+The syzbot fuzzer detected a problem in the udlfb driver, caused by an
+endpoint not having the expected type:
 
-In this case, when the initial power_supply_changed() call is made
-from the interrupt handler, the input settings are 5V/0.5A which
-on many devices is not enough power to charge (while the device is on).
+usb 1-1: Read EDID byte 0 failed: -71
+usb 1-1: Unable to get valid EDID from device/display
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 9 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880
+drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted
+6.4.0-rc1-syzkaller-00016-ga4422ff22142 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google
+04/28/2023
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+...
+Call Trace:
+ <TASK>
+ dlfb_submit_urb+0x92/0x180 drivers/video/fbdev/udlfb.c:1980
+ dlfb_set_video_mode+0x21f0/0x2950 drivers/video/fbdev/udlfb.c:315
+ dlfb_ops_set_par+0x2a7/0x8d0 drivers/video/fbdev/udlfb.c:1111
+ dlfb_usb_probe+0x149a/0x2710 drivers/video/fbdev/udlfb.c:1743
 
-On many devices the fuel-gauge relies in its external_power_changed
-callback to timely signal userspace about charging <-> discharging
-status changes. Add a power_supply_changed() call after updating
-the input current. This allows the fuel-gauge driver to timely recheck
-if the battery is charging after the new input current has been applied
-and then it can immediately notify userspace about this.
+The current approach for this issue failed to catch the problem
+because it only checks for the existence of a bulk-OUT endpoint; it
+doesn't check whether this endpoint is the one that the driver will
+actually use.
 
-Fixes: 18f8e6f695ac ("power: supply: bq24190_charger: Get input_current_limit from our supplier")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+We can fix the problem by instead checking that the endpoint used by
+the driver does exist and is bulk-OUT.
+
+Reported-and-tested-by: syzbot+0e22d63dcebb802b9bc8@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+CC: Pavel Skripkin <paskripkin@gmail.com>
+Fixes: aaf7dbe07385 ("video: fbdev: udlfb: properly check endpoint type")
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq24190_charger.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/udlfb.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -1262,6 +1262,7 @@ static void bq24190_input_current_limit_
- 	bq24190_charger_set_property(bdi->charger,
- 				     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
- 				     &val);
-+	power_supply_changed(bdi->charger);
- }
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -27,6 +27,8 @@
+ #include <video/udlfb.h>
+ #include "edid.h"
  
- /* Sync the input-current-limit with our parent supply (if we have one) */
++#define OUT_EP_NUM	1	/* The endpoint number we will use */
++
+ static const struct fb_fix_screeninfo dlfb_fix = {
+ 	.id =           "udlfb",
+ 	.type =         FB_TYPE_PACKED_PIXELS,
+@@ -1652,7 +1654,7 @@ static int dlfb_usb_probe(struct usb_int
+ 	struct fb_info *info;
+ 	int retval;
+ 	struct usb_device *usbdev = interface_to_usbdev(intf);
+-	struct usb_endpoint_descriptor *out;
++	static u8 out_ep[] = {OUT_EP_NUM + USB_DIR_OUT, 0};
+ 
+ 	/* usb initialization */
+ 	dlfb = kzalloc(sizeof(*dlfb), GFP_KERNEL);
+@@ -1666,9 +1668,9 @@ static int dlfb_usb_probe(struct usb_int
+ 	dlfb->udev = usb_get_dev(usbdev);
+ 	usb_set_intfdata(intf, dlfb);
+ 
+-	retval = usb_find_common_endpoints(intf->cur_altsetting, NULL, &out, NULL, NULL);
+-	if (retval) {
+-		dev_err(&intf->dev, "Device should have at lease 1 bulk endpoint!\n");
++	if (!usb_check_bulk_endpoints(intf, out_ep)) {
++		dev_err(&intf->dev, "Invalid DisplayLink device!\n");
++		retval = -EINVAL;
+ 		goto error;
+ 	}
+ 
+@@ -1927,7 +1929,8 @@ retry:
+ 		}
+ 
+ 		/* urb->transfer_buffer_length set to actual before submit */
+-		usb_fill_bulk_urb(urb, dlfb->udev, usb_sndbulkpipe(dlfb->udev, 1),
++		usb_fill_bulk_urb(urb, dlfb->udev,
++			usb_sndbulkpipe(dlfb->udev, OUT_EP_NUM),
+ 			buf, size, dlfb_urb_completion, unode);
+ 		urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 
 
 
