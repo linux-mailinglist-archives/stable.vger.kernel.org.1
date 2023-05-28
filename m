@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F9A713ECC
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40338713ECD
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230479AbjE1TjC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230481AbjE1TjC (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 28 May 2023 15:39:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230484AbjE1Ti6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2752EB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:57 -0700 (PDT)
+        with ESMTP id S230486AbjE1TjA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99646AB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B83C261E89
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F79C433D2;
-        Sun, 28 May 2023 19:38:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E77461E86
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D374C433EF;
+        Sun, 28 May 2023 19:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302736;
-        bh=p/1qBNSjHhVQDzfbR+YBDXcVD80c/BNa3Oh5NZ0Pr2s=;
+        s=korg; t=1685302738;
+        bh=mZ4KTD5fen5f2gRmA4Ey8cU94SF+hCSv6BZdHdLB/cs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0hK1wObdPWL16/F8vzs0a1c1Y7DNPr+SL3x0IYxxZFIHlc+/7ro6CYd9BIVeLYZaI
-         ZmJQIIu3mg+I6Rczr9Un+Ldb0k+m41Ad+oD7UDeoXtlxwMzgDDgCX34Gae/zBRblzC
-         jADNxd9HB9pZoZBssdHep+8eQLsriAU1EhsYFSW0=
+        b=IORSKFZvnkLpYhE/MY1cxUWUpvYpkoDIunYSAboNNggCzz50WR9/sTmkp97QgG10c
+         Zju0ihjvWoPQkdcwZd04vlKFijNFM/ciRN7z4sHL2cBAsLPCf5RR+2nNa0E4w4eQ6M
+         m2XUWwcKbcush3v70MTJMSAVqYZtHoAje5jKbcdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tariq Toukan <tariqt@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 106/119] net/mlx5e: do as little as possible in napi poll when budget is 0
-Date:   Sun, 28 May 2023 20:11:46 +0100
-Message-Id: <20230528190839.014642765@linuxfoundation.org>
+        patches@lists.linux.dev, Erez Shitrit <erezsh@nvidia.com>,
+        Alex Vesker <valex@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.1 107/119] net/mlx5: DR, Fix crc32 calculation to work on big-endian (BE) CPUs
+Date:   Sun, 28 May 2023 20:11:47 +0100
+Message-Id: <20230528190839.045433646@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
 References: <20230528190835.386670951@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,78 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Erez Shitrit <erezsh@nvidia.com>
 
-commit afbed3f74830163f9559579dee382cac3cff82da upstream.
+commit 1e5daf5565b61a96e570865091589afc9156e3d3 upstream.
 
-NAPI gets called with budget of 0 from netpoll, which has interrupts
-disabled. We should try to free some space on Tx rings and nothing
-else.
+When calculating crc for hash index we use the function crc32 that
+calculates for little-endian (LE) arch.
+Then we convert it to network endianness using htonl(), but it's wrong
+to do the conversion in BE archs since the crc32 value is already LE.
 
-Specifically do not try to handle XDP TX or try to refill Rx buffers -
-we can't use the page pool from IRQ context. Don't check if IRQs moved,
-either, that makes no sense in netpoll. Netpoll calls _all_ the rings
-from whatever CPU it happens to be invoked on.
+The solution is to switch the bytes from the crc result for all types
+of arc.
 
-In general do as little as possible, the work quickly adds up when
-there's tens of rings to poll.
-
-The immediate stack trace I was seeing is:
-
-    __do_softirq+0xd1/0x2c0
-    __local_bh_enable_ip+0xc7/0x120
-    </IRQ>
-    <TASK>
-    page_pool_put_defragged_page+0x267/0x320
-    mlx5e_free_xdpsq_desc+0x99/0xd0
-    mlx5e_poll_xdpsq_cq+0x138/0x3b0
-    mlx5e_napi_poll+0xc3/0x8b0
-    netpoll_poll_dev+0xce/0x150
-
-AFAIU page pool takes a BH lock, releases it and since BH is now
-enabled tries to run softirqs.
-
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Fixes: 60bbf7eeef10 ("mlx5: use page_pool for xdp_return_frame call")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 40416d8ede65 ("net/mlx5: DR, Replace CRC32 implementation to use kernel lib")
+Signed-off-by: Erez Shitrit <erezsh@nvidia.com>
+Reviewed-by: Alex Vesker <valex@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -161,20 +161,22 @@ int mlx5e_napi_poll(struct napi_struct *
- 		}
- 	}
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
+@@ -15,7 +15,8 @@ static u32 dr_ste_crc32_calc(const void
+ {
+ 	u32 crc = crc32(0, input_data, length);
  
-+	/* budget=0 means we may be in IRQ context, do as little as possible */
-+	if (unlikely(!budget))
-+		goto out;
-+
- 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
+-	return (__force u32)htonl(crc);
++	return (__force u32)((crc >> 24) & 0xff) | ((crc << 8) & 0xff0000) |
++			    ((crc >> 8) & 0xff00) | ((crc << 24) & 0xff000000);
+ }
  
- 	if (c->xdp)
- 		busy |= mlx5e_poll_xdpsq_cq(&c->rq_xdpsq.cq);
- 
--	if (likely(budget)) { /* budget=0 means: don't poll rx rings */
--		if (xsk_open)
--			work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
-+	if (xsk_open)
-+		work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
- 
--		if (likely(budget - work_done))
--			work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
-+	if (likely(budget - work_done))
-+		work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
- 
--		busy |= work_done == budget;
--	}
-+	busy |= work_done == budget;
- 
- 	mlx5e_poll_ico_cq(&c->icosq.cq);
- 	if (mlx5e_poll_ico_cq(&c->async_icosq.cq))
+ bool mlx5dr_ste_supp_ttl_cs_recalc(struct mlx5dr_cmd_caps *caps)
 
 
