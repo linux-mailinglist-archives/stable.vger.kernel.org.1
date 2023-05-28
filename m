@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A9BE713F2C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED198713D76
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbjE1Tmm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58006 "EHLO
+        id S230054AbjE1TZi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjE1Tml (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:41 -0400
+        with ESMTP id S230059AbjE1TZh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B47B9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02026B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3467861EF6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530E9C433EF;
-        Sun, 28 May 2023 19:42:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90E9961C00
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED21C433EF;
+        Sun, 28 May 2023 19:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302959;
-        bh=BBsYiIs9oYYeCcn2bVC7E5A+wE4nfZSCIppc6ogyjP8=;
+        s=korg; t=1685301935;
+        bh=QICWxuVBGk0ImBsvXxod1gs9WgMc/laPy4CSbbuwNzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W3CABiov1+NDs97jbouRdB2DXOhS2IXrZi0iBNx8gf7AB1jpUYCs0DuqGemdhfENq
-         XLQrnbLOpaOjJqcvc/ee7LcJmygEbe3fi1M/xCdLLYumioAygCrZUcTV87gotFyilQ
-         aE0crHDKZfIxNgUuIOEJ58qN5jw9Y6rNEbB4dwRg=
+        b=NwKuwjP6fa1uciafzcCxU+2KREzfWyJwruDZxU31fgbPq2eKiUllGU6ks5Y3m90Hv
+         /sjs1UYd8lUmGGa19xScO+7IeXmncrHcMLnaNY8PzD2aAhCtww/Q/mMksY1FY5kc2Q
+         bAGUmsyx8tOpoWSKfS8Kao2fsYCXJBXPRUuXLEC4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/211] vsock: avoid to close connected socket after the timeout
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.4 094/161] can: kvaser_pciefd: Clear listen-only bit if not explicitly requested
 Date:   Sun, 28 May 2023 20:10:18 +0100
-Message-Id: <20230528190846.007463361@linuxfoundation.org>
+Message-Id: <20230528190840.106290304@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhuang Shengen <zhuangshengen@huawei.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
+commit bf7ac55e991ca177f1ac16be51152f1ef291a4df upstream.
 
-When client and server establish a connection through vsock,
-the client send a request to the server to initiate the connection,
-then start a timer to wait for the server's response. When the server's
-RESPONSE message arrives, the timer also times out and exits. The
-server's RESPONSE message is processed first, and the connection is
-established. However, the client's timer also times out, the original
-processing logic of the client is to directly set the state of this vsock
-to CLOSE and return ETIMEDOUT. It will not notify the server when the port
-is released, causing the server port remain.
-when client's vsock_connect timeout，it should check sk state is
-ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
-is established, the client should not set the sk state to CLOSE
+The listen-only bit was never cleared, causing the controller to
+always use listen-only mode, if previously set.
 
-Note: I encountered this issue on kernel-4.18, which can be fixed by
-this patch. Then I checked the latest code in the community
-and found similar issue.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-3-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/kvaser_pciefd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 7829a5018ef9f..ce14374bbacad 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1372,7 +1372,7 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
- 			vsock_transport_cancel_pkt(vsk);
- 			vsock_remove_connected(vsk);
- 			goto out_wait;
--		} else if (timeout == 0) {
-+		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
- 			err = -ETIMEDOUT;
- 			sk->sk_state = TCP_CLOSE;
- 			sock->state = SS_UNCONNECTED;
--- 
-2.39.2
-
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -561,6 +561,8 @@ static void kvaser_pciefd_setup_controll
+ 
+ 	if (can->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
+ 		mode |= KVASER_PCIEFD_KCAN_MODE_LOM;
++	else
++		mode &= ~KVASER_PCIEFD_KCAN_MODE_LOM;
+ 
+ 	mode |= KVASER_PCIEFD_KCAN_MODE_EEN;
+ 	mode |= KVASER_PCIEFD_KCAN_MODE_EPEN;
 
 
