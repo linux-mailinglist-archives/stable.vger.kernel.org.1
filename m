@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6730A713FB3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A761713E3F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjE1TsJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34076 "EHLO
+        id S230305AbjE1Tdl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:33:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231344AbjE1TsH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:07 -0400
+        with ESMTP id S230304AbjE1Tdj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD26F5
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83ADEA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C628E61F8A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4531C433EF;
-        Sun, 28 May 2023 19:48:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18D3261DD2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3466EC433D2;
+        Sun, 28 May 2023 19:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303284;
-        bh=xlj9Beh6OB0dw16yu4Loybvh6lRsj3LLLBEYSJNB8Ng=;
+        s=korg; t=1685302417;
+        bh=0cFuVe62TUdFTUcmqFWj2tVetyVOeWgFydTmT08ljmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YX3LMns1lAEZg5JX0qeqy1nY9riew2qvkHv+vi1eQxcluKOQlA6N+65vcnyMrH3Iw
-         jfHVYvlXSgaQOnTTRNKI5oqUA8ttJjTgMBJOuJZj0sQxPe0hUF1snPqg829FNU4K8f
-         35fPkw5hRKj0KYkmiZKSeoz99H1URUVN7+Jv66ho=
+        b=a8NFh91h26qZqIXGVFq/bxzW0JfjvuDo/kEJN3D3wLf+JBAyPfFAQd1i5Ln+m89h3
+         KRT+iHRNcoGJ3F95G8Xoci3psQNQsAqOT7Dh+3ts2TzVHbHkqtIi8GwWZ5msvX/DUa
+         GjZMAx99oyX2Us7Vfbl9N4cEpqBT+p/3chvQX2cA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Schmitz <schmitzmic@gmail.com>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Finn Thain <fthain@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 5.15 17/69] m68k: Move signal frame following exception on 68020/030
+        patches@lists.linux.dev
+Subject: [PATCH 6.3 121/127] regulator: mt6359: add read check for PMIC MT6359
 Date:   Sun, 28 May 2023 20:11:37 +0100
-Message-Id: <20230528190828.994027299@linuxfoundation.org>
+Message-Id: <20230528190840.183167516@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,90 +52,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Sen Chu <sen.chu@mediatek.com>
 
-commit b845b574f86dcb6a70dfa698aa87a237b0878d2a upstream.
+commit a511637502b1caa135046d0f8fdabd55a31af8ef upstream.
 
-On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
-a stack page fault during instruction execution (i.e. not at an
-instruction boundary) and produce a format 0xB exception frame.
+Add hardware version read check for PMIC MT6359
 
-In this situation, the value of USP will be unreliable.  If a signal is
-to be delivered following the exception, this USP value is used to
-calculate the location for a signal frame.  This can result in a
-corrupted user stack.
-
-The corruption was detected in dash (actually in glibc) where it showed
-up as an intermittent "stack smashing detected" message and crash
-following signal delivery for SIGCHLD.
-
-It was hard to reproduce that failure because delivery of the signal
-raced with the page fault and because the kernel places an unpredictable
-gap of up to 7 bytes between the USP and the signal frame.
-
-A format 0xB exception frame can be produced by a bus error or an
-address error.  The 68030 Users Manual says that address errors occur
-immediately upon detection during instruction prefetch.  The instruction
-pipeline allows prefetch to overlap with other instructions, which means
-an address error can arise during the execution of a different
-instruction.  So it seems likely that this patch may help in the address
-error case also.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
-Cc: Michael Schmitz <schmitzmic@gmail.com>
-Cc: Andreas Schwab <schwab@linux-m68k.org>
-Cc: stable@vger.kernel.org
-Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Sen Chu <sen.chu@mediatek.com
+Fixes: 4cfc96547512 ("regulator: mt6359: Add support for MT6359P regulator")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com
+Link: https://lore.kernel.org/r/20230518040646.8730-1-sen.chu@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/kernel/signal.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/regulator/mt6359-regulator.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/m68k/kernel/signal.c
-+++ b/arch/m68k/kernel/signal.c
-@@ -858,11 +858,17 @@ static inline int rt_setup_ucontext(stru
- }
- 
- static inline void __user *
--get_sigframe(struct ksignal *ksig, size_t frame_size)
-+get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
- {
- 	unsigned long usp = sigsp(rdusp(), ksig);
-+	unsigned long gap = 0;
- 
--	return (void __user *)((usp - frame_size) & -8UL);
-+	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
-+		/* USP is unreliable so use worst-case value */
-+		gap = 256;
-+	}
+--- a/drivers/regulator/mt6359-regulator.c
++++ b/drivers/regulator/mt6359-regulator.c
+@@ -951,9 +951,12 @@ static int mt6359_regulator_probe(struct
+ 	struct regulator_config config = {};
+ 	struct regulator_dev *rdev;
+ 	struct mt6359_regulator_info *mt6359_info;
+-	int i, hw_ver;
++	int i, hw_ver, ret;
 +
-+	return (void __user *)((usp - gap - frame_size) & -8UL);
- }
++	ret = regmap_read(mt6397->regmap, MT6359P_HWCID, &hw_ver);
++	if (ret)
++		return ret;
  
- static int setup_frame(struct ksignal *ksig, sigset_t *set,
-@@ -880,7 +886,7 @@ static int setup_frame(struct ksignal *k
- 		return -EFAULT;
- 	}
- 
--	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
-+	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
- 
- 	if (fsize)
- 		err |= copy_to_user (frame + 1, regs + 1, fsize);
-@@ -952,7 +958,7 @@ static int setup_rt_frame(struct ksignal
- 		return -EFAULT;
- 	}
- 
--	frame = get_sigframe(ksig, sizeof(*frame));
-+	frame = get_sigframe(ksig, tregs, sizeof(*frame));
- 
- 	if (fsize)
- 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
+-	regmap_read(mt6397->regmap, MT6359P_HWCID, &hw_ver);
+ 	if (hw_ver >= MT6359P_CHIP_VER)
+ 		mt6359_info = mt6359p_regulators;
+ 	else
 
 
