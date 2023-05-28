@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5608A713CE8
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10DAE713F0F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbjE1TTx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38484 "EHLO
+        id S231163AbjE1TmA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229887AbjE1TTw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1878D9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:50 -0700 (PDT)
+        with ESMTP id S231160AbjE1Tl7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:41:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEB0FF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 639CB61AAF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E78C433EF;
-        Sun, 28 May 2023 19:19:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD98C61ED9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8BFC433D2;
+        Sun, 28 May 2023 19:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301589;
-        bh=KiOX1G68MuhDX44nqPGtQ9HgozbASF3w/W06Y2Qxqg0=;
+        s=korg; t=1685302894;
+        bh=t3zYhH8EdQHTX5cyn/Lu16El4qqVeYJmv9TixjufrzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pb0kTk8c7qe9zir3laBIxI0fH4kKeYZOagvF93+A4ynnrBiN28ALKkq8bmAM5nxBM
-         fKsLxNjteMNFxVTErS2gq5igO7E+uF+M45tFJ5BSx16aW2KeEekBbdEUO3FVmXdN9z
-         C8/Qn0b3a15bCbbxGU4/0RvKNrhYVB9E/iSRR+yk=
+        b=X3VmAADB2R760evf94zr5r9HokTeZXd87VPOhFYxNqZd27OLhn1Czea9W1kp43ug6
+         JZI12cFmO9RRL7GsVxLD3fNBnk8QZNMekxDXTJsz5vyOZHhfVYVTfRoDn5j3pj41mf
+         6Bbe5RRpkYZtN6Hg54n3B/nu1pkFExzB5QZ2TNZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Kevin Groeneveld <kgroeneveld@lenbrook.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/132] vsock: avoid to close connected socket after the timeout
+Subject: [PATCH 5.10 070/211] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
 Date:   Sun, 28 May 2023 20:09:51 +0100
-Message-Id: <20230528190835.162550478@linuxfoundation.org>
+Message-Id: <20230528190845.366566623@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,49 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhuang Shengen <zhuangshengen@huawei.com>
+From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
 
-[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
+[ Upstream commit 87c614175bbf28d3fd076dc2d166bac759e41427 ]
 
-When client and server establish a connection through vsock,
-the client send a request to the server to initiate the connection,
-then start a timer to wait for the server's response. When the server's
-RESPONSE message arrives, the timer also times out and exits. The
-server's RESPONSE message is processed first, and the connection is
-established. However, the client's timer also times out, the original
-processing logic of the client is to directly set the state of this vsock
-to CLOSE and return ETIMEDOUT. It will not notify the server when the port
-is released, causing the server port remain.
-when client's vsock_connect timeout，it should check sk state is
-ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
-is established, the client should not set the sk state to CLOSE
+When using gpio based chip select the cs value can go outside the range
+0 – 3. The various MX51_ECSPI_* macros did not take this into consideration
+resulting in possible corruption of the configuration.
 
-Note: I encountered this issue on kernel-4.18, which can be fixed by
-this patch. Then I checked the latest code in the community
-and found similar issue.
+For example for any cs value over 3 the SCLKPHA bits would not be set and
+other values in the register possibly corrupted.
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+One way to fix this is to just mask the cs bits to 2 bits. This still
+allows all 4 native chip selects to work as well as gpio chip selects
+(which can use any of the 4 chip select configurations).
+
+Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+Link: https://lore.kernel.org/r/20230318222132.3373-1-kgroeneveld@lenbrook.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index d55a47858d6d3..0dfa2dfcb4bcb 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1240,7 +1240,7 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
- 			vsock_transport_cancel_pkt(vsk);
- 			vsock_remove_connected(vsk);
- 			goto out_wait;
--		} else if (timeout == 0) {
-+		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
- 			err = -ETIMEDOUT;
- 			sk->sk_state = TCP_CLOSE;
- 			sock->state = SS_UNCONNECTED;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index bbc420865f0fd..21297cc62571a 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -242,6 +242,18 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	return true;
+ }
+ 
++/*
++ * Note the number of natively supported chip selects for MX51 is 4. Some
++ * devices may have less actual SS pins but the register map supports 4. When
++ * using gpio chip selects the cs values passed into the macros below can go
++ * outside the range 0 - 3. We therefore need to limit the cs value to avoid
++ * corrupting bits outside the allocated locations.
++ *
++ * The simplest way to do this is to just mask the cs bits to 2 bits. This
++ * still allows all 4 native chip selects to work as well as gpio chip selects
++ * (which can use any of the 4 chip select configurations).
++ */
++
+ #define MX51_ECSPI_CTRL		0x08
+ #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
+ #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
+@@ -250,16 +262,16 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
+ #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
+ #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+-#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
++#define MX51_ECSPI_CTRL_CS(cs)		((cs & 3) << 18)
+ #define MX51_ECSPI_CTRL_BL_OFFSET	20
+ #define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
+ 
+ #define MX51_ECSPI_CONFIG	0x0c
+-#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+-#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+-#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+-#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
+-#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
++#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs & 3) +  0))
++#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
++#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
++#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
++#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
+ 
+ #define MX51_ECSPI_INT		0x10
+ #define MX51_ECSPI_INT_TEEN		(1 <<  0)
 -- 
 2.39.2
 
