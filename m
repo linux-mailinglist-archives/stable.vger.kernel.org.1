@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B053713DD3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7914D713D7B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbjE1T3W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45960 "EHLO
+        id S230063AbjE1TZt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230182AbjE1T3V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:21 -0400
+        with ESMTP id S230061AbjE1TZs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F55E113
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15B40C9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0A6A61D20
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C394C433EF;
-        Sun, 28 May 2023 19:29:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A818D61C1D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BE5C433EF;
+        Sun, 28 May 2023 19:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302151;
-        bh=8H42x7HyObZag/RERfcL1OkB9QV13o7fuQhC2I+vH7c=;
+        s=korg; t=1685301947;
+        bh=q0dUb3OE3dFusqRhEDjEO+yncUQH3uMV7xsjjRnjBxY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YivQ4/bPQujPXvJU6ScMJo9BcU5CFWLw0CRMX1vhc7+dX3GlKO9ouI0pprgpEv4kM
-         Daqr6eUCGU6EH0ztyeIyq742x8iNWgcVFCMDn135zuOujT29DFgPVTSKe3pGm//X1S
-         YMu66P4tH8AbzssfynYdmtT/nRcZrbU+GfToW+pM=
+        b=SfKePt5vVGf7K4ktRuXIW13ND9u3tN1Bno5BMMOLLmc6CnnNt1WNaFFVysKw+ztK2
+         65MIhcOLB2jYxTFMZBFJFnyisv8It59IJ3wF3XpBWRMO4daTdVHD2jS0RJ6IRbr6EY
+         Bhoc6Q9ik+WjBs7HtOgYCwmLKga/367rHiD7xfII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 6.3 020/127] SUNRPC: Dont change task->tk_status after the call to rpc_exit_task
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 072/161] media: netup_unidvb: fix use-after-free at del_timer()
 Date:   Sun, 28 May 2023 20:09:56 +0100
-Message-Id: <20230528190836.896621733@linuxfoundation.org>
+Message-Id: <20230528190839.444684854@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit d180891fba995bd54e25b089b1ec98d134873586 upstream.
+[ Upstream commit 0f5bb36bf9b39a2a96e730bf4455095b50713f63 ]
 
-Some calls to rpc_exit_task() may deliberately change the value of
-task->tk_status, for instance because it gets checked by the RPC call's
-rpc_release() callback. That makes it wrong to reset the value to
-task->tk_rpc_status.
-In particular this causes a bug where the rpc_call_done() callback tries
-to fail over a set of pNFS/flexfiles writes to a different IP address,
-but the reset of task->tk_status causes nfs_commit_release_pages() to
-immediately mark the file as having a fatal error.
+When Universal DVB card is detaching, netup_unidvb_dma_fini()
+uses del_timer() to stop dma->timeout timer. But when timer
+handler netup_unidvb_dma_timeout() is running, del_timer()
+could not stop it. As a result, the use-after-free bug could
+happen. The process is shown below:
 
-Fixes: 39494194f93b ("SUNRPC: Fix races with rpc_killall_tasks()")
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    (cleanup routine)          |        (timer routine)
+                               | mod_timer(&dev->tx_sim_timer, ..)
+netup_unidvb_finidev()         | (wait a time)
+  netup_unidvb_dma_fini()      | netup_unidvb_dma_timeout()
+    del_timer(&dma->timeout);  |
+                               |   ndev->pci_dev->dev //USE
+
+Fix by changing del_timer() to del_timer_sync().
+
+Link: https://lore.kernel.org/linux-media/20230308125514.4208-1-duoming@zju.edu.cn
+Fixes: 52b1eaf4c59a ("[media] netup_unidvb: NetUP Universal DVB-S/S2/T/T2/C PCI-E card driver")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/pci/netup_unidvb/netup_unidvb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -927,11 +927,10 @@ static void __rpc_execute(struct rpc_tas
- 		 */
- 		do_action = task->tk_action;
- 		/* Tasks with an RPC error status should exit */
--		if (do_action != rpc_exit_task &&
-+		if (do_action && do_action != rpc_exit_task &&
- 		    (status = READ_ONCE(task->tk_rpc_status)) != 0) {
- 			task->tk_status = status;
--			if (do_action != NULL)
--				do_action = rpc_exit_task;
-+			do_action = rpc_exit_task;
- 		}
- 		/* Callbacks override all actions */
- 		if (task->tk_callback) {
+diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+index eb5621c9ebf85..129acf595410d 100644
+--- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
++++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+@@ -697,7 +697,7 @@ static void netup_unidvb_dma_fini(struct netup_unidvb_dev *ndev, int num)
+ 	netup_unidvb_dma_enable(dma, 0);
+ 	msleep(50);
+ 	cancel_work_sync(&dma->work);
+-	del_timer(&dma->timeout);
++	del_timer_sync(&dma->timeout);
+ }
+ 
+ static int netup_unidvb_dma_setup(struct netup_unidvb_dev *ndev)
+-- 
+2.39.2
+
 
 
