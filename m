@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E83F713871
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68DD2713876
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjE1HkR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 03:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33428 "EHLO
+        id S229478AbjE1Hmo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 03:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjE1HkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:40:16 -0400
+        with ESMTP id S229441AbjE1Hmn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:42:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240ADB4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:40:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D909BB;
+        Sun, 28 May 2023 00:42:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A936460E9B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:40:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C776BC433D2;
-        Sun, 28 May 2023 07:40:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97BEF61708;
+        Sun, 28 May 2023 07:42:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9054C433D2;
+        Sun, 28 May 2023 07:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685259614;
-        bh=FrH8AIc7TJo3jUvcDEHLofUVr82+hr66ntasZpA8dJQ=;
+        s=korg; t=1685259762;
+        bh=2HV0DemBSwa4vfAMp0bGOrOse22IQYWVe40pa2FzY1k=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aJLYmhmOXOPi+4T3wuD7PX5J0xVMJrAP9qq9dimuDNf0hpYkUijBff6rpoxvY84SN
-         qGzCk7ZvXqZCTlI9s6ypV4OV9kPCmH30yZ6oKDKpvUrIvOygRjXVEU5AwEaY9gnxeY
-         5/SxYf21LPaPAz3gH3aTgPT1ZoyStWBH7oKmy5+Y=
-Date:   Sun, 28 May 2023 08:40:11 +0100
+        b=e3m83mS21WtdATtdyB34EOj+l6oh5i9kQC9PTZMA/vVoSZ3M40azuh6TJVuspI2jt
+         mUKTkiAvIe9Gc7vyaJfpio7pB9ATwqzuA13PExRkc1kMkbX3ukDDiYdXTYLCDfpo6Y
+         VxI5aqWuz6GF3y1+7/M4nH6W5hPWbSUFIoHrZi64=
+Date:   Sun, 28 May 2023 08:42:34 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Tyler Hicks <code@tyhicks.com>
-Cc:     kernel test robot <lkp@intel.com>,
-        Hardik Garg <hargar@linux.microsoft.com>,
-        stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+To:     Hardik Garg <hargar@linux.microsoft.com>
+Cc:     stable@vger.kernel.org, shuah@kernel.org, jeffxu@google.com,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        code@tyhicks.com, niyelchu@linux.microsoft.com
 Subject: Re: [PATCH 6.1 5.15 5.10 5.4 4.19 4.14] selftests/memfd: Fix unknown
  type name build failure
-Message-ID: <2023052853-harvest-coasting-f857@gregkh>
+Message-ID: <2023052824-dagger-retread-2325@gregkh>
 References: <20230526232136.255244-1-hargar@linux.microsoft.com>
- <ZHE/avMpv2Sjqwxf@3bef23cc04e9>
- <ZHFaw6k8+2+MM1jv@sequoia>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZHFaw6k8+2+MM1jv@sequoia>
+In-Reply-To: <20230526232136.255244-1-hargar@linux.microsoft.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,36 +52,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 26, 2023 at 08:20:03PM -0500, Tyler Hicks wrote:
-> On 2023-05-27 07:23:22, kernel test robot wrote:
-> > Hi,
-> > 
-> > Thanks for your patch.
-> > 
-> > FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> > 
-> > Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-> > Subject: [PATCH 6.1 5.15 5.10 5.4 4.19 4.14] selftests/memfd: Fix unknown type name build failure
-> > Link: https://lore.kernel.org/stable/20230526232136.255244-1-hargar%40linux.microsoft.com
-> > 
-> > The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > 
-> > Please ignore this mail if the patch is not relevant for upstream.
+On Fri, May 26, 2023 at 04:21:36PM -0700, Hardik Garg wrote:
+> Partially backport v6.3 commit 11f75a01448f ("selftests/memfd: add
+> tests for MFD_NOEXEC_SEAL MFD_EXEC") to fix an unknown type name 
+> build error.
+> In some systems, the __u64 typedef is not present due to differences
+> in system headers, causing compilation errors like this one:
 > 
-> I think Hardik did the right thing here. This is a build failure bug
-> that's present in stable kernels but was fixed in upstream by an
-> unrelated commit:
+> fuse_test.c:64:8: error: unknown type name '__u64'
+>    64 | static __u64 mfd_assert_get_seals(int fd)
 > 
->  11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
+> This header includes the  __u64 typedef which increases the
+> likelihood of successful compilation on a wider variety of systems.
 > 
-> It wouldn't be right to backport that patch because MFD_NOEXEC_SEAL and
-> MFD_EXEC weren't introduced until v6.3.
-> 
-> There was an (unmerged) attempt to fix this specific build failure in upstream:
-> 
->  https://lore.kernel.org/all/20211203024706.10094-1-luke.nowakowskikrijger@canonical.com/
-> 
-> Hardik opted to follow what was done upstream in a patch specifically
-> for the stable tree.
+> Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+> ---
+>  tools/testing/selftests/memfd/fuse_test.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Yes, this is the right thing to do, you can ignore the bot :)
+Now queued up, thanks.
+
+greg k-h
