@@ -2,48 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B008E713C6F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEAD713F5F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229739AbjE1TPL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34602 "EHLO
+        id S231252AbjE1Too (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjE1TPK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B180A0;
-        Sun, 28 May 2023 12:15:09 -0700 (PDT)
+        with ESMTP id S231251AbjE1Ton (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B67129B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCD736158B;
-        Sun, 28 May 2023 19:15:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5B7C433D2;
-        Sun, 28 May 2023 19:15:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F6A161F30
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC32C433EF;
+        Sun, 28 May 2023 19:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301308;
-        bh=tkN2zENliMK06+4dajmPd0caINgJBS1oFBw8BKBvEnw=;
+        s=korg; t=1685303081;
+        bh=SWQb1EoQzjP6GCWmYP5J+/uJAIKTXjNVdAvPYYYcIJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KE0hmpIgAOp8o9ee5S/CXj5xompaCLG8E2kGb0kEs+vRNNpelYUwDUdjlaqIJDY8N
-         lAwv/8klNJ6ow6UOankol/4qhyI01TFK6Un7qnnof4h42LTaEqqdHgJldnK+A6jJu5
-         9E3+cTzH4X7sTwSGuGfgnGKf72jY0tsLuvwFq6oE=
+        b=E0XtMsRbJNtSdBGPiZL9ZOCy53Cu96OSv+MTVGbSbBHLvU0BCJ1nIMyRRG14oZz2T
+         rMFGKRC2KlHtM8hBulmkMpVqrR4oLgKxLrPKW5JxEY8wheze+io177pq0o1y5E1DgI
+         v8IRPdphvX9BZTKOFF2+Q5S3VLUOXS9pHFtJxwCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 65/86] netfilter: nf_tables: allow up to 64 bytes in the set element data area
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 118/211] cassini: Fix a memory leak in the error handling path of cas_init_one()
 Date:   Sun, 28 May 2023 20:10:39 +0100
-Message-Id: <20230528190831.047564073@linuxfoundation.org>
+Message-Id: <20230528190846.491802761@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,113 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ fdb9c405e35bdc6e305b9b4e20ebc141ed14fc81 ]
+[ Upstream commit 412cd77a2c24b191c65ea53025222418db09817c ]
 
-So far, the set elements could store up to 128-bits in the data area.
+cas_saturn_firmware_init() allocates some memory using vmalloc(). This
+memory is freed in the .remove() function but not it the error handling
+path of the probe.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the missing vfree() to avoid a memory leak, should an error occur.
+
+Fixes: fcaa40669cd7 ("cassini: use request_firmware")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |    4 ++++
- net/netfilter/nf_tables_api.c     |   35 +++++++++++++++++++++++++----------
- 2 files changed, 29 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/sun/cassini.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -229,6 +229,10 @@ struct nft_set_elem {
- 		u32		buf[NFT_DATA_VALUE_MAXLEN / sizeof(u32)];
- 		struct nft_data	val;
- 	} key;
-+	union {
-+		u32		buf[NFT_DATA_VALUE_MAXLEN / sizeof(u32)];
-+		struct nft_data val;
-+	} data;
- 	void			*priv;
- };
+diff --git a/drivers/net/ethernet/sun/cassini.c b/drivers/net/ethernet/sun/cassini.c
+index 9ff894ba8d3ea..d245f6e21e8ca 100644
+--- a/drivers/net/ethernet/sun/cassini.c
++++ b/drivers/net/ethernet/sun/cassini.c
+@@ -5122,6 +5122,8 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		cas_shutdown(cp);
+ 	mutex_unlock(&cp->pm_mutex);
  
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3954,6 +3954,25 @@ static int nft_setelem_parse_flags(const
- 	return 0;
- }
- 
-+static int nft_setelem_parse_data(struct nft_ctx *ctx, struct nft_set *set,
-+				  struct nft_data_desc *desc,
-+				  struct nft_data *data,
-+				  struct nlattr *attr)
-+{
-+	int err;
++	vfree(cp->fw_data);
 +
-+	err = nft_data_init(ctx, data, NFT_DATA_VALUE_MAXLEN, desc, attr);
-+	if (err < 0)
-+		return err;
-+
-+	if (desc->type != NFT_DATA_VERDICT && desc->len != set->dlen) {
-+		nft_data_release(data, desc->type);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			    const struct nlattr *attr, u32 nlmsg_flags)
- {
-@@ -3966,7 +3985,6 @@ static int nft_add_set_elem(struct nft_c
- 	struct nft_object *obj = NULL;
- 	struct nft_userdata *udata;
- 	struct nft_data_desc desc;
--	struct nft_data data;
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
- 	u32 flags = 0;
-@@ -4045,15 +4063,11 @@ static int nft_add_set_elem(struct nft_c
- 	}
+ 	pci_iounmap(pdev, cp->regs);
  
- 	if (nla[NFTA_SET_ELEM_DATA] != NULL) {
--		err = nft_data_init(ctx, &data, sizeof(data), &desc,
--				    nla[NFTA_SET_ELEM_DATA]);
-+		err = nft_setelem_parse_data(ctx, set, &desc, &elem.data.val,
-+					     nla[NFTA_SET_ELEM_DATA]);
- 		if (err < 0)
- 			goto err2;
  
--		err = -EINVAL;
--		if (set->dtype != NFT_DATA_VERDICT && desc.len != set->dlen)
--			goto err3;
--
- 		dreg = nft_type_to_reg(set->dtype);
- 		list_for_each_entry(binding, &set->bindings, list) {
- 			struct nft_ctx bind_ctx = {
-@@ -4067,7 +4081,7 @@ static int nft_add_set_elem(struct nft_c
- 				continue;
- 
- 			err = nft_validate_register_store(&bind_ctx, dreg,
--							  &data,
-+							  &elem.data.val,
- 							  desc.type, desc.len);
- 			if (err < 0)
- 				goto err3;
-@@ -4089,7 +4103,8 @@ static int nft_add_set_elem(struct nft_c
- 	}
- 
- 	err = -ENOMEM;
--	elem.priv = nft_set_elem_init(set, &tmpl, elem.key.val.data, data.data,
-+	elem.priv = nft_set_elem_init(set, &tmpl, elem.key.val.data,
-+				      elem.data.val.data,
- 				      timeout, GFP_KERNEL);
- 	if (elem.priv == NULL)
- 		goto err3;
-@@ -4156,7 +4171,7 @@ err4:
- 	kfree(elem.priv);
- err3:
- 	if (nla[NFTA_SET_ELEM_DATA] != NULL)
--		nft_data_release(&data, desc.type);
-+		nft_data_release(&elem.data.val, desc.type);
- err2:
- 	nft_data_release(&elem.key.val, NFT_DATA_VALUE);
- err1:
+-- 
+2.39.2
+
 
 
