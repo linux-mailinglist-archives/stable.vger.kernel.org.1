@@ -2,53 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 285B6713E23
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33289713F47
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjE1TcY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
+        id S231229AbjE1Tnt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230259AbjE1TcX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:23 -0400
+        with ESMTP id S231228AbjE1Tns (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2B8A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B62A9C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DFFE61DAD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369BDC433EF;
-        Sun, 28 May 2023 19:32:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9171F61F1C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B087EC433D2;
+        Sun, 28 May 2023 19:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302340;
-        bh=QQnnE4i3eL6R307oEqra6ayyV8n51uDN9f9ilv2MX+g=;
+        s=korg; t=1685303026;
+        bh=g8y3q0XKQCofd11GyvGsu6v1WGKiu/p9oKJM9NreuTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LWcyoIh6ACNOmy9GAr0sTP0PxeOgG+lob4kPRPbaYvM/VopfhLpAP0RFnO2cpbROx
-         d+yQq/DDJZZ5PA0jWQIG6NhtZs2NLpmaZfcDiofpCLuQnNar1Xrvlu7FRnDU2lc7L7
-         aY+PC98WeZyqjIwVMSZba6DwR1jhV6lhJN2jOy/8=
+        b=F3mP242j5SR8kvIwdnr3KWNbJ4TR+qWzVlsKN+lSOekCzLnOaQ9yzqE28lDzgsr7g
+         QIjwetGbN6vg3Nvlbnze0Dk3LCc/oD308i3RBz35HQ/q3Z3qKah3422QbJZ/E5IEPG
+         1KXPzHi4+n1V+7Vd59pHwr5B6ow78LAlJVHe2A8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
-        <thomas.hellstrom@linux.intel.com>,
-        Sarah Walker <sarah.walker@imgtec.com>,
-        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Jocelyn Falempe <jfalempe@redhat.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        Matthew Auld <matthew.auld@intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.3 069/127] drm: fix drmm_mutex_init()
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 124/211] USB: usbtmc: Fix direction for 0-length ioctl control messages
 Date:   Sun, 28 May 2023 20:10:45 +0100
-Message-Id: <20230528190838.638080983@linuxfoundation.org>
+Message-Id: <20230528190846.631554474@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -63,118 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit c21f11d182c2180d8b90eaff84f574cfa845b250 upstream.
+commit 94d25e9128988c6a1fc9070f6e98215a95795bd8 upstream.
 
-In mutex_init() lockdep identifies a lock by defining a special static
-key for each lock class. However if we wrap the macro in a function,
-like in drmm_mutex_init(), we end up generating:
+The syzbot fuzzer found a problem in the usbtmc driver: When a user
+submits an ioctl for a 0-length control transfer, the driver does not
+check that the direction is set to OUT:
 
-int drmm_mutex_init(struct drm_device *dev, struct mutex *lock)
-{
-      static struct lock_class_key __key;
+------------[ cut here ]------------
+usb 3-1: BOGUS control dir, pipe 80000b80 doesn't match bRequestType fd
+WARNING: CPU: 0 PID: 5100 at drivers/usb/core/urb.c:411 usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
+Modules linked in:
+CPU: 0 PID: 5100 Comm: syz-executor428 Not tainted 6.3.0-syzkaller-12049-g58390c8ce1bd #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
+RIP: 0010:usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
+Code: 7c 24 40 e8 1b 13 5c fb 48 8b 7c 24 40 e8 21 1d f0 fe 45 89 e8 44 89 f1 4c 89 e2 48 89 c6 48 c7 c7 e0 b5 fc 8a e8 19 c8 23 fb <0f> 0b e9 9f ee ff ff e8 ed 12 5c fb 0f b6 1d 12 8a 3c 08 31 ff 41
+RSP: 0018:ffffc90003d2fb00 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff8880789e9058 RCX: 0000000000000000
+RDX: ffff888029593b80 RSI: ffffffff814c1447 RDI: 0000000000000001
+RBP: ffff88801ea742f8 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff88802915e528
+R13: 00000000000000fd R14: 0000000080000b80 R15: ffff8880222b3100
+FS:  0000555556ca63c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9ef4d18150 CR3: 0000000073e5b000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x101/0x4b0 drivers/usb/core/message.c:58
+ usb_internal_control_msg drivers/usb/core/message.c:102 [inline]
+ usb_control_msg+0x320/0x4a0 drivers/usb/core/message.c:153
+ usbtmc_ioctl_request drivers/usb/class/usbtmc.c:1954 [inline]
+ usbtmc_ioctl+0x1b3d/0x2840 drivers/usb/class/usbtmc.c:2097
 
-      __mutex_init((lock), "lock", &__key);
-      ....
-}
+To fix this, we must override the direction in the bRequestType field
+of the control request structure when the length is 0.
 
-The static __key here is what lockdep uses to identify the lock class,
-however since this is just a normal function the key here will be
-created once, where all callers then use the same key. In effect the
-mutex->depmap.key will be the same pointer for different
-drmm_mutex_init() callers. This then results in impossible lockdep
-splats since lockdep thinks completely unrelated locks are the same lock
-class.
-
-To fix this turn drmm_mutex_init() into a macro such that it generates a
-different "static struct lock_class_key __key" for each invocation,
-which looks to be inline with what mutex_init() wants.
-
-v2:
-  - Revamp the commit message with clearer explanation of the issue.
-  - Rather export __drmm_mutex_release() than static inline.
-
-Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reported-by: Sarah Walker <sarah.walker@imgtec.com>
-Fixes: e13f13e039dc ("drm: Add DRM-managed mutex_init()")
-Cc: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230519090733.489019-1-matthew.auld@intel.com
+Reported-and-tested-by: syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/000000000000716a3705f9adb8ee@google.com/
+CC: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/ede1ee02-b718-49e7-a44c-51339fec706b@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_managed.c |   22 ++--------------------
- include/drm/drm_managed.h     |   18 +++++++++++++++++-
- 2 files changed, 19 insertions(+), 21 deletions(-)
+ drivers/usb/class/usbtmc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/drm_managed.c
-+++ b/drivers/gpu/drm/drm_managed.c
-@@ -264,28 +264,10 @@ void drmm_kfree(struct drm_device *dev,
- }
- EXPORT_SYMBOL(drmm_kfree);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -1898,6 +1898,8 @@ static int usbtmc_ioctl_request(struct u
  
--static void drmm_mutex_release(struct drm_device *dev, void *res)
-+void __drmm_mutex_release(struct drm_device *dev, void *res)
- {
- 	struct mutex *lock = res;
+ 	if (request.req.wLength > USBTMC_BUFSIZE)
+ 		return -EMSGSIZE;
++	if (request.req.wLength == 0)	/* Length-0 requests are never IN */
++		request.req.bRequestType &= ~USB_DIR_IN;
  
- 	mutex_destroy(lock);
- }
--
--/**
-- * drmm_mutex_init - &drm_device-managed mutex_init()
-- * @dev: DRM device
-- * @lock: lock to be initialized
-- *
-- * Returns:
-- * 0 on success, or a negative errno code otherwise.
-- *
-- * This is a &drm_device-managed version of mutex_init(). The initialized
-- * lock is automatically destroyed on the final drm_dev_put().
-- */
--int drmm_mutex_init(struct drm_device *dev, struct mutex *lock)
--{
--	mutex_init(lock);
--
--	return drmm_add_action_or_reset(dev, drmm_mutex_release, lock);
--}
--EXPORT_SYMBOL(drmm_mutex_init);
-+EXPORT_SYMBOL(__drmm_mutex_release);
---- a/include/drm/drm_managed.h
-+++ b/include/drm/drm_managed.h
-@@ -105,6 +105,22 @@ char *drmm_kstrdup(struct drm_device *de
+ 	is_in = request.req.bRequestType & USB_DIR_IN;
  
- void drmm_kfree(struct drm_device *dev, void *data);
- 
--int drmm_mutex_init(struct drm_device *dev, struct mutex *lock);
-+void __drmm_mutex_release(struct drm_device *dev, void *res);
-+
-+/**
-+ * drmm_mutex_init - &drm_device-managed mutex_init()
-+ * @dev: DRM device
-+ * @lock: lock to be initialized
-+ *
-+ * Returns:
-+ * 0 on success, or a negative errno code otherwise.
-+ *
-+ * This is a &drm_device-managed version of mutex_init(). The initialized
-+ * lock is automatically destroyed on the final drm_dev_put().
-+ */
-+#define drmm_mutex_init(dev, lock) ({					     \
-+	mutex_init(lock);						     \
-+	drmm_add_action_or_reset(dev, __drmm_mutex_release, lock);	     \
-+})									     \
- 
- #endif
 
 
