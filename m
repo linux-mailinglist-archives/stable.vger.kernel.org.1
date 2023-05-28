@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 225C2713E84
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1548E713E16
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230387AbjE1TgP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
+        id S230261AbjE1Tb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230393AbjE1TgO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:14 -0400
+        with ESMTP id S230260AbjE1Tb6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADABBA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7B7C134
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A88061E27
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DDDC433EF;
-        Sun, 28 May 2023 19:36:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47A0861D84
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667C0C433D2;
+        Sun, 28 May 2023 19:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302572;
-        bh=bO2P+reF06SMXdt4OJF+T+OVmdHD4dxgbdGf4VKcawY=;
+        s=korg; t=1685302308;
+        bh=ACnsGrDB10fBpebDRNKrCyNxB08zK3w7CiMEPv7FCJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IRLta7tgkSYaBv455yB1GFgAPLu26kkwnIPBex16YNN7uUAiXb5ROGad4ocgYMDks
-         YxDTCKkgL/XOl/i/hrL0HEAdUsqdELcdv6sHEcrmLx+AFNnqfJOkROlfKRX2PvQZf8
-         TAvrFir3z/f1ljaU+NT1boS3blgmlR+ggjw3RErw=
+        b=hAiLsS/VV9+l9oAuPvNMNHkZ1KfWBhjo8ziXeFG9m+BgdltLPtPUw8itlm1e44Oop
+         37lO1MmCzxQSU848ivfLCAlENOAOLMqZygE+l2zUpC0IKSTnT2JYrDCzxtwzfAZEwX
+         1o5mrcL+4ul9jaXg/WysQVDsyc0TYqUdmFIBZM5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+60748c96cf5c6df8e581@syzkaller.appspotmail.com,
-        Taehee Yoo <ap420073@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 058/119] net: fix stack overflow when LRO is disabled for virtual interfaces
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.3 082/127] power: supply: bq27xxx: Add cache parameter to bq27xxx_battery_current_and_status()
 Date:   Sun, 28 May 2023 20:10:58 +0100
-Message-Id: <20230528190837.380842953@linuxfoundation.org>
+Message-Id: <20230528190839.029779970@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,138 +53,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit ae9b15fbe63447bc1d3bba3769f409d17ca6fdf6 upstream.
+commit 35092c5819f8c5acc7bafe3fdbb13d6307c4f5e1 upstream.
 
-When the virtual interface's feature is updated, it synchronizes the
-updated feature for its own lower interface.
-This propagation logic should be worked as the iteration, not recursively.
-But it works recursively due to the netdev notification unexpectedly.
-This problem occurs when it disables LRO only for the team and bonding
-interface type.
+Add a cache parameter to bq27xxx_battery_current_and_status() so that
+it can optionally use cached flags instead of re-reading them itself.
 
-       team0
-         |
-  +------+------+-----+-----+
-  |      |      |     |     |
-team1  team2  team3  ...  team200
+This is a preparation patch for making bq27xxx_battery_update() check
+the status and have it call power_supply_changed() on status changes.
 
-If team0's LRO feature is updated, it generates the NETDEV_FEAT_CHANGE
-event to its own lower interfaces(team1 ~ team200).
-It is worked by netdev_sync_lower_features().
-So, the NETDEV_FEAT_CHANGE notification logic of each lower interface
-work iteratively.
-But generated NETDEV_FEAT_CHANGE event is also sent to the upper
-interface too.
-upper interface(team0) generates the NETDEV_FEAT_CHANGE event for its own
-lower interfaces again.
-lower and upper interfaces receive this event and generate this
-event again and again.
-So, the stack overflow occurs.
-
-But it is not the infinite loop issue.
-Because the netdev_sync_lower_features() updates features before
-generating the NETDEV_FEAT_CHANGE event.
-Already synchronized lower interfaces skip notification logic.
-So, it is just the problem that iteration logic is changed to the
-recursive unexpectedly due to the notification mechanism.
-
-Reproducer:
-
-ip link add team0 type team
-ethtool -K team0 lro on
-for i in {1..200}
-do
-        ip link add team$i master team0 type team
-        ethtool -K team$i lro on
-done
-
-ethtool -K team0 lro off
-
-In order to fix it, the notifier_ctx member of bonding/team is introduced.
-
-Reported-by: syzbot+60748c96cf5c6df8e581@syzkaller.appspotmail.com
-Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230517143010.3596250-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    8 +++++++-
- drivers/net/team/team.c         |    7 ++++++-
- include/linux/if_team.h         |    1 +
- include/net/bonding.h           |    1 +
- 4 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3921,7 +3921,11 @@ static int bond_slave_netdev_event(unsig
- 		unblock_netpoll_tx();
- 		break;
- 	case NETDEV_FEAT_CHANGE:
--		bond_compute_features(bond);
-+		if (!bond->notifier_ctx) {
-+			bond->notifier_ctx = true;
-+			bond_compute_features(bond);
-+			bond->notifier_ctx = false;
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1840,7 +1840,8 @@ static bool bq27xxx_battery_is_full(stru
+ static int bq27xxx_battery_current_and_status(
+ 	struct bq27xxx_device_info *di,
+ 	union power_supply_propval *val_curr,
+-	union power_supply_propval *val_status)
++	union power_supply_propval *val_status,
++	struct bq27xxx_reg_cache *cache)
+ {
+ 	bool single_flags = (di->opts & BQ27XXX_O_ZERO);
+ 	int curr;
+@@ -1852,10 +1853,14 @@ static int bq27xxx_battery_current_and_s
+ 		return curr;
+ 	}
+ 
+-	flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
+-	if (flags < 0) {
+-		dev_err(di->dev, "error reading flags\n");
+-		return flags;
++	if (cache) {
++		flags = cache->flags;
++	} else {
++		flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
++		if (flags < 0) {
++			dev_err(di->dev, "error reading flags\n");
++			return flags;
 +		}
+ 	}
+ 
+ 	if (di->opts & BQ27XXX_O_ZERO) {
+@@ -2001,7 +2006,7 @@ static int bq27xxx_battery_get_property(
+ 
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+-		ret = bq27xxx_battery_current_and_status(di, NULL, val);
++		ret = bq27xxx_battery_current_and_status(di, NULL, val, NULL);
  		break;
- 	case NETDEV_RESEND_IGMP:
- 		/* Propagate to master device */
-@@ -6284,6 +6288,8 @@ static int bond_init(struct net_device *
- 	if (!bond->wq)
- 		return -ENOMEM;
- 
-+	bond->notifier_ctx = false;
-+
- 	spin_lock_init(&bond->stats_lock);
- 	netdev_lockdep_set_classes(bond_dev);
- 
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -1629,6 +1629,7 @@ static int team_init(struct net_device *
- 
- 	team->dev = dev;
- 	team_set_no_mode(team);
-+	team->notifier_ctx = false;
- 
- 	team->pcpu_stats = netdev_alloc_pcpu_stats(struct team_pcpu_stats);
- 	if (!team->pcpu_stats)
-@@ -3022,7 +3023,11 @@ static int team_device_event(struct noti
- 		team_del_slave(port->team->dev, dev);
+ 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+ 		ret = bq27xxx_battery_voltage(di, val);
+@@ -2010,7 +2015,7 @@ static int bq27xxx_battery_get_property(
+ 		val->intval = di->cache.flags < 0 ? 0 : 1;
  		break;
- 	case NETDEV_FEAT_CHANGE:
--		team_compute_features(port->team);
-+		if (!port->team->notifier_ctx) {
-+			port->team->notifier_ctx = true;
-+			team_compute_features(port->team);
-+			port->team->notifier_ctx = false;
-+		}
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+-		ret = bq27xxx_battery_current_and_status(di, val, NULL);
++		ret = bq27xxx_battery_current_and_status(di, val, NULL, NULL);
  		break;
- 	case NETDEV_PRECHANGEMTU:
- 		/* Forbid to change mtu of underlaying device */
---- a/include/linux/if_team.h
-+++ b/include/linux/if_team.h
-@@ -208,6 +208,7 @@ struct team {
- 	bool queue_override_enabled;
- 	struct list_head *qom_lists; /* array of queue override mapping lists */
- 	bool port_mtu_change_allowed;
-+	bool notifier_ctx;
- 	struct {
- 		unsigned int count;
- 		unsigned int interval; /* in ms */
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -223,6 +223,7 @@ struct bonding {
- 	struct   bond_up_slave __rcu *usable_slaves;
- 	struct   bond_up_slave __rcu *all_slaves;
- 	bool     force_primary;
-+	bool     notifier_ctx;
- 	s32      slave_cnt; /* never change this value outside the attach/detach wrappers */
- 	int     (*recv_probe)(const struct sk_buff *, struct bonding *,
- 			      struct slave *);
+ 	case POWER_SUPPLY_PROP_CAPACITY:
+ 		ret = bq27xxx_simple_value(di->cache.capacity, val);
 
 
