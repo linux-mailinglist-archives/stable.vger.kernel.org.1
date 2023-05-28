@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D3B2713F45
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9F67713E21
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231221AbjE1Tnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58632 "EHLO
+        id S230269AbjE1TcS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231222AbjE1Tnn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2242BA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:42 -0700 (PDT)
+        with ESMTP id S230259AbjE1TcR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C243DA7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A17B261F20
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C019BC433EF;
-        Sun, 28 May 2023 19:43:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 590BB61DAC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78486C433EF;
+        Sun, 28 May 2023 19:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303021;
-        bh=/RNoX43CE/4NZ+HHaGvkP+mp+RJ+/t6j0byJ5fVpq3U=;
+        s=korg; t=1685302335;
+        bh=K46aWIFHdXi11oQIaFLg9AP7Zv4eCGNAAQeOb6ot5cE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pnJg7tjyiTWZJzGEg4mJyVDlK0gOtG0yiufEzmVAwO/P8xdL64qNlyrkaDTXthNUm
-         GqSqdO8v1W+kXGg0xAHiT/BFRJsmibuW33zpuf//P+ZtqhwKS5jxp/ckyjLQiHguCu
-         S+5WlnYI493ryRKDBt6H+1rcCYIittEVrZRbi9EQ=
+        b=fiY6cLkLs4SQXDExjPn2+xfr3XKTqcoJmrWOE0NvdySfJbrHTsIaOUhI6K4gWmUT5
+         K1eFSOZEM0opralgB2QsVKeaoj5EA6bAydDxuNewjl0BbjUG1r+TqjvU9LP+oTJuCe
+         9Kgmz3lBBQjZrWyJllgrz2XhEJ+tHBjZbN9EsE4c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/211] bridge: always declare tunnel functions
+        patches@lists.linux.dev
+Subject: [PATCH 6.3 067/127] ASoC: lpass: Fix for KASAN use_after_free out of bounds
 Date:   Sun, 28 May 2023 20:10:43 +0100
-Message-Id: <20230528190846.585989054@linuxfoundation.org>
+Message-Id: <20230528190838.577757138@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,61 +52,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ravulapati Vishnu Vardhan Rao <quic_visr@quicinc.com>
 
-[ Upstream commit 89dcd87ce534a3a7f267cfd58505803006f51301 ]
+commit 75e5fab7db0cecb6e16b22c34608f0b40a4c7cd1 upstream.
 
-When CONFIG_BRIDGE_VLAN_FILTERING is disabled, two functions are still
-defined but have no prototype or caller. This causes a W=1 warning for
-the missing prototypes:
+When we run syzkaller we get below Out of Bounds error.
 
-net/bridge/br_netlink_tunnel.c:29:6: error: no previous prototype for 'vlan_tunid_inrange' [-Werror=missing-prototypes]
-net/bridge/br_netlink_tunnel.c:199:5: error: no previous prototype for 'br_vlan_tunnel_info' [-Werror=missing-prototypes]
+"KASAN: slab-out-of-bounds Read in regcache_flat_read"
 
-The functions are already contitional on CONFIG_BRIDGE_VLAN_FILTERING,
-and I coulnd't easily figure out the right set of #ifdefs, so just
-move the declarations out of the #ifdef to avoid the warning,
-at a small cost in code size over a more elaborate fix.
+Below is the backtrace of the issue:
 
-Fixes: 188c67dd1906 ("net: bridge: vlan options: add support for tunnel id dumping")
-Fixes: 569da0822808 ("net: bridge: vlan options: add support for tunnel mapping set/del")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230516194625.549249-3-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KASAN: slab-out-of-bounds in regcache_flat_read+0x10c/0x110
+Read of size 4 at addr ffffff8088fbf714 by task syz-executor.4/14144
+CPU: 6 PID: 14144 Comm: syz-executor.4 Tainted: G        W
+Hardware name: Qualcomm Technologies, Inc. sc7280 CRD platform (rev5+) (DT)
+Call trace:
+dump_backtrace+0x0/0x4ec
+show_stack+0x34/0x50
+dump_stack_lvl+0xdc/0x11c
+print_address_description+0x30/0x2d8
+kasan_report+0x178/0x1e4
+__asan_report_load4_noabort+0x44/0x50
+regcache_flat_read+0x10c/0x110
+regcache_read+0xf8/0x5a0
+_regmap_read+0x45c/0x86c
+_regmap_update_bits+0x128/0x290
+regmap_update_bits_base+0xc0/0x15c
+snd_soc_component_update_bits+0xa8/0x22c
+snd_soc_component_write_field+0x68/0xd4
+tx_macro_put_dec_enum+0x1d0/0x268
+snd_ctl_elem_write+0x288/0x474
+
+By Error checking and checking valid values issue gets rectifies.
+
+Signed-off-by: Ravulapati Vishnu Vardhan Rao <quic_visr@quicinc.com
+Link: https://lore.kernel.org/r/20230511112532.16106-1-quic_visr@quicinc.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_private_tunnel.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/lpass-tx-macro.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bridge/br_private_tunnel.h b/net/bridge/br_private_tunnel.h
-index c54cc26211d7c..f6c65dc088d60 100644
---- a/net/bridge/br_private_tunnel.h
-+++ b/net/bridge/br_private_tunnel.h
-@@ -27,6 +27,10 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
- int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg);
- int br_fill_vlan_tunnel_info(struct sk_buff *skb,
- 			     struct net_bridge_vlan_group *vg);
-+bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
-+			const struct net_bridge_vlan *v_last);
-+int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
-+			u16 vid, u32 tun_id, bool *changed);
+--- a/sound/soc/codecs/lpass-tx-macro.c
++++ b/sound/soc/codecs/lpass-tx-macro.c
+@@ -746,6 +746,8 @@ static int tx_macro_put_dec_enum(struct
+ 	struct tx_macro *tx = snd_soc_component_get_drvdata(component);
  
- #ifdef CONFIG_BRIDGE_VLAN_FILTERING
- /* br_vlan_tunnel.c */
-@@ -43,10 +47,6 @@ int br_handle_ingress_vlan_tunnel(struct sk_buff *skb,
- 				  struct net_bridge_vlan_group *vg);
- int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 				 struct net_bridge_vlan *vlan);
--bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
--			const struct net_bridge_vlan *v_last);
--int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
--			u16 vid, u32 tun_id, bool *changed);
- #else
- static inline int vlan_tunnel_init(struct net_bridge_vlan_group *vg)
- {
--- 
-2.39.2
-
+ 	val = ucontrol->value.enumerated.item[0];
++	if (val >= e->items)
++		return -EINVAL;
+ 
+ 	switch (e->reg) {
+ 	case CDC_TX_INP_MUX_ADC_MUX0_CFG0:
+@@ -772,6 +774,9 @@ static int tx_macro_put_dec_enum(struct
+ 	case CDC_TX_INP_MUX_ADC_MUX7_CFG0:
+ 		mic_sel_reg = CDC_TX7_TX_PATH_CFG0;
+ 		break;
++	default:
++		dev_err(component->dev, "Error in configuration!!\n");
++		return -EINVAL;
+ 	}
+ 
+ 	if (val != 0) {
 
 
