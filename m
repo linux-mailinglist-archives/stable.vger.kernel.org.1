@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A580E713F00
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2749D713D2B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231144AbjE1TlA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55924 "EHLO
+        id S229969AbjE1TWj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231137AbjE1TlA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:41:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C87107
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:53 -0700 (PDT)
+        with ESMTP id S229955AbjE1TWi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B473DA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A6CF61EC3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9755AC433EF;
-        Sun, 28 May 2023 19:40:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AB8061B59
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D43C433D2;
+        Sun, 28 May 2023 19:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302852;
-        bh=+FJ8yemOT7JWdrZ6udMvaPqghNpIDUBbIN3TbfOTubo=;
+        s=korg; t=1685301751;
+        bh=a3qyvo4tjhloZBdN45I2BYPp4DyvNzO05vFPCYMiKak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JdMrN08mZC9DDA8JMFuwMdKVHq5hs8ZtVG0exX2Y6SG+IGyH9nDgD8BJcAY1j10CI
-         OBBejVFWcf8RdWWDkrTWeAKyKpFAAQANocm/UjKvFLsIz1djIWoEqUmAQL65/qZ5Yd
-         RsW9mtPTXoeD1E/GANsSzzEyj4ik6nDOaK2Q9kZY=
+        b=IqXkYpTkZ0qP8OC1C/8omeJ4dVDtE+yszoyBgPTmxewlVY4aYyTru0g9YnoS6bAuL
+         RfolwO/RbmXP11eFBeqJZRrad4KZwSSYfaLVv8Hgv/iQ8cJhESFn6QHNJCSmFF9Uy/
+         4dlnU/t1hX2gGHeqWyQq+7jHKWAw+DXQYR+HYCgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunguang Xu <brookxu@tencent.com>,
-        Andreas Dilger <adilger@dilger.ca>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/211] ext4: remove redundant mb_regenerate_buddy()
+        patches@lists.linux.dev, Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 022/161] ACPICA: Avoid undefined behavior: applying zero offset to null pointer
 Date:   Sun, 28 May 2023 20:09:06 +0100
-Message-Id: <20230528190844.144081608@linuxfoundation.org>
+Message-Id: <20230528190837.868712629@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_PORT autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,61 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chunguang Xu <brookxu@tencent.com>
+From: Tamir Duberstein <tamird@google.com>
 
-[ Upstream commit 6bd97bf273bdb4944904e57480f6545bca48ad77 ]
+[ Upstream commit 05bb0167c80b8f93c6a4e0451b7da9b96db990c2 ]
 
-After this patch (163a203), if an abnormal bitmap is detected, we
-will mark the group as corrupt, and we will not use this group in
-the future. Therefore, it should be meaningless to regenerate the
-buddy bitmap of this group, It might be better to delete it.
+ACPICA commit 770653e3ba67c30a629ca7d12e352d83c2541b1e
 
-Signed-off-by: Chunguang Xu <brookxu@tencent.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Link: https://lore.kernel.org/r/1604764698-4269-2-git-send-email-brookxu@tencent.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 5354b2af3406 ("ext4: allow ext4_get_group_info() to fail")
+Before this change we see the following UBSAN stack trace in Fuchsia:
+
+  #0    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #1.2  0x000020d0f660777f in ubsan_get_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:41 <libclang_rt.asan.so>+0x3d77f
+  #1.1  0x000020d0f660777f in maybe_print_stack_trace() compiler-rt/lib/ubsan/ubsan_diag.cpp:51 <libclang_rt.asan.so>+0x3d77f
+  #1    0x000020d0f660777f in ~scoped_report() compiler-rt/lib/ubsan/ubsan_diag.cpp:387 <libclang_rt.asan.so>+0x3d77f
+  #2    0x000020d0f660b96d in handlepointer_overflow_impl() compiler-rt/lib/ubsan/ubsan_handlers.cpp:809 <libclang_rt.asan.so>+0x4196d
+  #3    0x000020d0f660b50d in compiler-rt/lib/ubsan/ubsan_handlers.cpp:815 <libclang_rt.asan.so>+0x4150d
+  #4    0x000021e4213b3302 in acpi_ds_init_aml_walk(struct acpi_walk_state*, union acpi_parse_object*, struct acpi_namespace_node*, u8*, u32, struct acpi_evaluate_info*, u8) ../../third_party/acpica/source/components/dispatcher/dswstate.c:682 <platform-bus-x86.so>+0x233302
+  #5    0x000021e4213e2369 in acpi_ds_call_control_method(struct acpi_thread_state*, struct acpi_walk_state*, union acpi_parse_object*) ../../third_party/acpica/source/components/dispatcher/dsmethod.c:605 <platform-bus-x86.so>+0x262369
+  #6    0x000021e421437fac in acpi_ps_parse_aml(struct acpi_walk_state*) ../../third_party/acpica/source/components/parser/psparse.c:550 <platform-bus-x86.so>+0x2b7fac
+  #7    0x000021e4214464d2 in acpi_ps_execute_method(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/parser/psxface.c:244 <platform-bus-x86.so>+0x2c64d2
+  #8    0x000021e4213aa052 in acpi_ns_evaluate(struct acpi_evaluate_info*) ../../third_party/acpica/source/components/namespace/nseval.c:250 <platform-bus-x86.so>+0x22a052
+  #9    0x000021e421413dd8 in acpi_ns_init_one_device(acpi_handle, u32, void*, void**) ../../third_party/acpica/source/components/namespace/nsinit.c:735 <platform-bus-x86.so>+0x293dd8
+  #10   0x000021e421429e98 in acpi_ns_walk_namespace(acpi_object_type, acpi_handle, u32, u32, acpi_walk_callback, acpi_walk_callback, void*, void**) ../../third_party/acpica/source/components/namespace/nswalk.c:298 <platform-bus-x86.so>+0x2a9e98
+  #11   0x000021e4214131ac in acpi_ns_initialize_devices(u32) ../../third_party/acpica/source/components/namespace/nsinit.c:268 <platform-bus-x86.so>+0x2931ac
+  #12   0x000021e42147c40d in acpi_initialize_objects(u32) ../../third_party/acpica/source/components/utilities/utxfinit.c:304 <platform-bus-x86.so>+0x2fc40d
+  #13   0x000021e42126d603 in acpi::acpi_impl::initialize_acpi(acpi::acpi_impl*) ../../src/devices/board/lib/acpi/acpi-impl.cc:224 <platform-bus-x86.so>+0xed603
+
+Add a simple check that avoids incrementing a pointer by zero, but
+otherwise behaves as before. Note that our findings are against ACPICA
+20221020, but the same code exists on master.
+
+Link: https://github.com/acpica/acpica/commit/770653e3
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ drivers/acpi/acpica/dswstate.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index a7c42e4bfc5ec..708a5fa3c69f6 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -822,24 +822,6 @@ void ext4_mb_generate_buddy(struct super_block *sb,
- 	spin_unlock(&sbi->s_bal_lock);
- }
+diff --git a/drivers/acpi/acpica/dswstate.c b/drivers/acpi/acpica/dswstate.c
+index de79f835a3737..7979d52dfbc96 100644
+--- a/drivers/acpi/acpica/dswstate.c
++++ b/drivers/acpi/acpica/dswstate.c
+@@ -576,9 +576,14 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
+ 	ACPI_FUNCTION_TRACE(ds_init_aml_walk);
  
--static void mb_regenerate_buddy(struct ext4_buddy *e4b)
--{
--	int count;
--	int order = 1;
--	void *buddy;
--
--	while ((buddy = mb_find_buddy(e4b, order++, &count))) {
--		ext4_set_bits(buddy, 0, count);
--	}
--	e4b->bd_info->bb_fragments = 0;
--	memset(e4b->bd_info->bb_counters, 0,
--		sizeof(*e4b->bd_info->bb_counters) *
--		(e4b->bd_sb->s_blocksize_bits + 2));
--
--	ext4_mb_generate_buddy(e4b->bd_sb, e4b->bd_buddy,
--		e4b->bd_bitmap, e4b->bd_group);
--}
--
- /* The buddy information is attached the buddy cache inode
-  * for convenience. The information regarding each group
-  * is loaded via ext4_mb_load_buddy. The information involve
-@@ -1512,7 +1494,6 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 				sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
- 		}
--		mb_regenerate_buddy(e4b);
- 		goto done;
- 	}
+ 	walk_state->parser_state.aml =
+-	    walk_state->parser_state.aml_start = aml_start;
+-	walk_state->parser_state.aml_end =
+-	    walk_state->parser_state.pkg_end = aml_start + aml_length;
++	    walk_state->parser_state.aml_start =
++	    walk_state->parser_state.aml_end =
++	    walk_state->parser_state.pkg_end = aml_start;
++	/* Avoid undefined behavior: applying zero offset to null pointer */
++	if (aml_length != 0) {
++		walk_state->parser_state.aml_end += aml_length;
++		walk_state->parser_state.pkg_end += aml_length;
++	}
+ 
+ 	/* The next_op of the next_walk will be the beginning of the method */
  
 -- 
 2.39.2
