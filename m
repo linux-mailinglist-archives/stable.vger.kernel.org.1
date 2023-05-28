@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8BA5713F3A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E426713CEA
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231210AbjE1TnS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58430 "EHLO
+        id S229889AbjE1TT6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:19:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231206AbjE1TnQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 890159C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:15 -0700 (PDT)
+        with ESMTP id S229888AbjE1TT5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3983A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AD8961F14
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3828AC433EF;
-        Sun, 28 May 2023 19:43:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F45561AAF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D395C433D2;
+        Sun, 28 May 2023 19:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302994;
-        bh=sTwQHQXfEwVH9YmRF8BPcFmJAdF5AxCpw8Pf+xFkiSM=;
+        s=korg; t=1685301594;
+        bh=hs0yN7OBybA8SMRvCaZzmnOGpY14uevurk2UC/iSmcI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rRvCDtedjSnjKt3PPmh8RDfTRdqCDdZxwxS1imU7x+9VuAAiHQljHL+MSqQd6iOrQ
-         fAUvToGzaUQ+rUEozFG54t/kZeYS00awO2sMlguD4uaqx+NwUBwYPIYY7R8Rgj+w60
-         UOK0LMuWbOqZ3RNCZ7k/zsMANiQfu59T/Dp8TnUY=
+        b=cPpHigHebrJh+Iigim+L2N/KTv2ruIxThJcB3WL3deuHTE9nmZRtrnzw6YxtUEWKY
+         tc36ZWPgZIujKeYQ7GECiISWSsmHkhvAhrN6InQDGRqVlcVqKsS2ZT8jrK9rUypCdM
+         Gd+SUgPfIMb8b6uUxpva06IINgsDO43qJrAQ9nE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
-        Jon Maloy <jmaloy@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/211] tipc: add tipc_bearer_min_mtu to calculate min mtu
+        patches@lists.linux.dev, Hui Wang <hui.wang@canonical.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>,
+        msd <msd.mmq@gmail.com>
+Subject: [PATCH 4.19 092/132] ALSA: hda/realtek: Fix the mic type detection issue for ASUS G551JW
 Date:   Sun, 28 May 2023 20:10:31 +0100
-Message-Id: <20230528190846.306669949@linuxfoundation.org>
+Message-Id: <20230528190836.432481429@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,103 +54,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Hui Wang <hui.wang@canonical.com>
 
-[ Upstream commit 3ae6d66b605be604644d4bb5708a7ffd9cf1abe8 ]
+[ Upstream commit a3fd1a986e499a06ac5ef95c3a39aa4611e7444c ]
 
-As different media may requires different min mtu, and even the
-same media with different net family requires different min mtu,
-add tipc_bearer_min_mtu() to calculate min mtu accordingly.
+We need to define the codec pin 0x1b to be the mic, but somehow
+the mic doesn't support hot plugging detection, and Windows also has
+this issue, so we set it to phantom headset-mic.
 
-This API will be used to check the new mtu when doing the link
-mtu negotiation in the next patch.
+Also the determine_headset_type() often returns the omtp type by a
+mistake when we plug a ctia headset, this makes the mic can't record
+sound at all. Because most of the headset are ctia type nowadays and
+some machines have the fixed ctia type audio jack, it is possible this
+machine has the fixed ctia jack too. Here we set this mic jack to
+fixed ctia type, this could avoid the mic type detection mistake and
+make the ctia headset work stable.
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Jon Maloy <jmaloy@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 56077b56cd3f ("tipc: do not update mtu if msg_max is too small in mtu negotiation")
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214537
+Reported-and-tested-by: msd <msd.mmq@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Link: https://lore.kernel.org/r/20211012114748.5238-1-hui.wang@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 90670ef774a8 ("ALSA: hda/realtek: Add a quirk for HP EliteDesk 805")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/bearer.c    | 13 +++++++++++++
- net/tipc/bearer.h    |  3 +++
- net/tipc/udp_media.c |  5 +++--
- 3 files changed, 19 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-index 72c31ef985eb3..c6a9b3446ff89 100644
---- a/net/tipc/bearer.c
-+++ b/net/tipc/bearer.c
-@@ -525,6 +525,19 @@ int tipc_bearer_mtu(struct net *net, u32 bearer_id)
- 	return mtu;
- }
- 
-+int tipc_bearer_min_mtu(struct net *net, u32 bearer_id)
-+{
-+	int mtu = TIPC_MIN_BEARER_MTU;
-+	struct tipc_bearer *b;
-+
-+	rcu_read_lock();
-+	b = bearer_get(net, bearer_id);
-+	if (b)
-+		mtu += b->encap_hlen;
-+	rcu_read_unlock();
-+	return mtu;
-+}
-+
- /* tipc_bearer_xmit_skb - sends buffer to destination over bearer
-  */
- void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
-diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-index 6bf4550aa1ac1..711a50f449934 100644
---- a/net/tipc/bearer.h
-+++ b/net/tipc/bearer.h
-@@ -146,6 +146,7 @@ struct tipc_media {
-  * @identity: array index of this bearer within TIPC bearer array
-  * @disc: ptr to link setup request
-  * @net_plane: network plane ('A' through 'H') currently associated with bearer
-+ * @encap_hlen: encap headers length
-  * @up: bearer up flag (bit 0)
-  * @refcnt: tipc_bearer reference counter
-  *
-@@ -170,6 +171,7 @@ struct tipc_bearer {
- 	u32 identity;
- 	struct tipc_discoverer *disc;
- 	char net_plane;
-+	u16 encap_hlen;
- 	unsigned long up;
- 	refcount_t refcnt;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index faef696b17989..1f535504ee907 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8650,6 +8650,9 @@ enum {
+ 	ALC671_FIXUP_HP_HEADSET_MIC2,
+ 	ALC662_FIXUP_ACER_X2660G_HEADSET_MODE,
+ 	ALC662_FIXUP_ACER_NITRO_HEADSET_MODE,
++	ALC668_FIXUP_ASUS_NO_HEADSET_MIC,
++	ALC668_FIXUP_HEADSET_MIC,
++	ALC668_FIXUP_MIC_DET_COEF,
  };
-@@ -232,6 +234,7 @@ int tipc_bearer_setup(void);
- void tipc_bearer_cleanup(void);
- void tipc_bearer_stop(struct net *net);
- int tipc_bearer_mtu(struct net *net, u32 bearer_id);
-+int tipc_bearer_min_mtu(struct net *net, u32 bearer_id);
- bool tipc_bearer_bcast_support(struct net *net, u32 bearer_id);
- void tipc_bearer_xmit_skb(struct net *net, u32 bearer_id,
- 			  struct sk_buff *skb,
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index a236281082726..3e47501f024fd 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -730,8 +730,8 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
- 			udp_conf.local_ip.s_addr = local.ipv4.s_addr;
- 		udp_conf.use_udp_checksums = false;
- 		ub->ifindex = dev->ifindex;
--		if (tipc_mtu_bad(dev, sizeof(struct iphdr) +
--				      sizeof(struct udphdr))) {
-+		b->encap_hlen = sizeof(struct iphdr) + sizeof(struct udphdr);
-+		if (tipc_mtu_bad(dev, b->encap_hlen)) {
- 			err = -EINVAL;
- 			goto err;
- 		}
-@@ -752,6 +752,7 @@ static int tipc_udp_enable(struct net *net, struct tipc_bearer *b,
- 		else
- 			udp_conf.local_ip6 = local.ipv6;
- 		ub->ifindex = dev->ifindex;
-+		b->encap_hlen = sizeof(struct ipv6hdr) + sizeof(struct udphdr);
- 		b->mtu = 1280;
- #endif
- 	} else {
+ 
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -9026,6 +9029,29 @@ static const struct hda_fixup alc662_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC662_FIXUP_USI_FUNC
+ 	},
++	[ALC668_FIXUP_ASUS_NO_HEADSET_MIC] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1b, 0x04a1112c },
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC668_FIXUP_HEADSET_MIC
++	},
++	[ALC668_FIXUP_HEADSET_MIC] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc269_fixup_headset_mic,
++		.chained = true,
++		.chain_id = ALC668_FIXUP_MIC_DET_COEF
++	},
++	[ALC668_FIXUP_MIC_DET_COEF] = {
++		.type = HDA_FIXUP_VERBS,
++		.v.verbs = (const struct hda_verb[]) {
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x15 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x0d60 },
++			{}
++		},
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+@@ -9060,6 +9086,7 @@ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x15a7, "ASUS UX51VZH", ALC662_FIXUP_BASS_16),
+ 	SND_PCI_QUIRK(0x1043, 0x177d, "ASUS N551", ALC668_FIXUP_ASUS_Nx51),
+ 	SND_PCI_QUIRK(0x1043, 0x17bd, "ASUS N751", ALC668_FIXUP_ASUS_Nx51),
++	SND_PCI_QUIRK(0x1043, 0x185d, "ASUS G551JW", ALC668_FIXUP_ASUS_NO_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1963, "ASUS X71SL", ALC662_FIXUP_ASUS_MODE8),
+ 	SND_PCI_QUIRK(0x1043, 0x1b73, "ASUS N55SF", ALC662_FIXUP_BASS_16),
+ 	SND_PCI_QUIRK(0x1043, 0x1bf3, "ASUS N76VZ", ALC662_FIXUP_BASS_MODE4_CHMAP),
 -- 
 2.39.2
 
