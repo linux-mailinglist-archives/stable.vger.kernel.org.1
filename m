@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E532713F12
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DCC713CCA
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231168AbjE1TmF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57462 "EHLO
+        id S229851AbjE1TSp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231166AbjE1TmE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97FA01BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:39 -0700 (PDT)
+        with ESMTP id S229847AbjE1TSi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFD0A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 264AA61ECB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44441C433D2;
-        Sun, 28 May 2023 19:41:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C0CC61052
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9019C433A4;
+        Sun, 28 May 2023 19:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302896;
-        bh=84L+E4OOV9pryRDZerTuqMgutY3cW55qYJrDRDYvfCc=;
+        s=korg; t=1685301517;
+        bh=ylDQpXj6dFf/uJShMYHYyCsgNyo2+JOxX4rVDPXzNQU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DhEomDZUhxBhxVsxrcmGeehcc8zPKkuEDVF5MW/QG6c8mA182YWFj6eudlUtlg4ek
-         baWBnljqiOtCmQuJzJbfUAD72d7oO8HVPy05miXtgr9XntZpO2tg0hmMtt05T+2eWe
-         W3HPoyOLeRLcTH/qY57iO6NGoSVxemtObr+CJeRI=
+        b=lhKFSKHIxT4yzzfZHM16OPQ+/xPYlowo+jJrlY1DO6OCcxkgh/Q5/L3/WJBr1Tao2
+         LpCtnTHq8VIzSkqLfWEbx6BoEqLQ1ghrW3UUpuSlwej+CqN8JFup2Ai685gLt1sTHo
+         2l7cX+aZG0XXafhE2yeKM+aGcB8SI6fYoPU7MQeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/211] HID: wacom: generic: Set battery quirk only when we see battery data
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 053/132] drivers: provide devm_platform_ioremap_resource()
 Date:   Sun, 28 May 2023 20:09:52 +0100
-Message-Id: <20230528190845.390233290@linuxfoundation.org>
+Message-Id: <20230528190835.195227282@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,102 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Gerecke <killertofu@gmail.com>
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-[ Upstream commit bea407a427baa019758f29f4d31b26f008bb8cc6 ]
+[ Upstream commit 7945f929f1a77a1c8887a97ca07f87626858ff42 ]
 
-Some devices will include battery status usages in the HID descriptor
-but we won't see that battery data for one reason or another. For example,
-AES sensors won't send battery data unless an AES pen is in proximity.
-If a user does not have an AES pen but instead only interacts with the
-AES touchscreen with their fingers then there is no need for us to create
-a battery object. Similarly, if a family of peripherals shares the same
-HID descriptor between wired-only and wireless-capable SKUs, users of the
-former may never see a battery event and will not want a power_supply
-object created.
+There are currently 1200+ instances of using platform_get_resource()
+and devm_ioremap_resource() together in the kernel tree.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217062
-Link: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2354
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+This patch wraps these two calls in a single helper. Thanks to that
+we don't have to declare a local variable for struct resource * and can
+omit the redundant argument for resource type. We also have one
+function call less.
+
+Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 8ab5fc55d7f6 ("serial: arc_uart: fix of_iomap leak in `arc_serial_probe`")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ drivers/base/platform.c         | 18 ++++++++++++++++++
+ include/linux/platform_device.h |  3 +++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index 6c64165fae13e..d82df2393d20c 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1927,18 +1927,7 @@ static void wacom_map_usage(struct input_dev *input, struct hid_usage *usage,
- static void wacom_wac_battery_usage_mapping(struct hid_device *hdev,
- 		struct hid_field *field, struct hid_usage *usage)
- {
--	struct wacom *wacom = hid_get_drvdata(hdev);
--	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
--	struct wacom_features *features = &wacom_wac->features;
--	unsigned equivalent_usage = wacom_equivalent_usage(usage->hid);
--
--	switch (equivalent_usage) {
--	case HID_DG_BATTERYSTRENGTH:
--	case WACOM_HID_WD_BATTERY_LEVEL:
--	case WACOM_HID_WD_BATTERY_CHARGING:
--		features->quirks |= WACOM_QUIRK_BATTERY;
--		break;
--	}
-+	return;
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 349c2754eed78..ea83c279b8a36 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -80,6 +80,24 @@ struct resource *platform_get_resource(struct platform_device *dev,
  }
+ EXPORT_SYMBOL_GPL(platform_get_resource);
  
- static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *field,
-@@ -1959,18 +1948,21 @@ static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *f
- 			wacom_wac->hid_data.bat_connected = 1;
- 			wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
- 		}
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	case WACOM_HID_WD_BATTERY_LEVEL:
- 		value = value * 100 / (field->logical_maximum - field->logical_minimum);
- 		wacom_wac->hid_data.battery_capacity = value;
- 		wacom_wac->hid_data.bat_connected = 1;
- 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	case WACOM_HID_WD_BATTERY_CHARGING:
- 		wacom_wac->hid_data.bat_charging = value;
- 		wacom_wac->hid_data.ps_connected = value;
- 		wacom_wac->hid_data.bat_connected = 1;
- 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	}
- }
-@@ -1986,18 +1978,15 @@ static void wacom_wac_battery_report(struct hid_device *hdev,
- {
- 	struct wacom *wacom = hid_get_drvdata(hdev);
- 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
--	struct wacom_features *features = &wacom_wac->features;
- 
--	if (features->quirks & WACOM_QUIRK_BATTERY) {
--		int status = wacom_wac->hid_data.bat_status;
--		int capacity = wacom_wac->hid_data.battery_capacity;
--		bool charging = wacom_wac->hid_data.bat_charging;
--		bool connected = wacom_wac->hid_data.bat_connected;
--		bool powered = wacom_wac->hid_data.ps_connected;
-+	int status = wacom_wac->hid_data.bat_status;
-+	int capacity = wacom_wac->hid_data.battery_capacity;
-+	bool charging = wacom_wac->hid_data.bat_charging;
-+	bool connected = wacom_wac->hid_data.bat_connected;
-+	bool powered = wacom_wac->hid_data.ps_connected;
- 
--		wacom_notify_battery(wacom_wac, status, capacity, charging,
--				     connected, powered);
--	}
-+	wacom_notify_battery(wacom_wac, status, capacity, charging,
-+			     connected, powered);
- }
- 
- static void wacom_wac_pad_usage_mapping(struct hid_device *hdev,
++/**
++ * devm_platform_ioremap_resource - call devm_ioremap_resource() for a platform
++ *				    device
++ *
++ * @pdev: platform device to use both for memory resource lookup as well as
++ *        resource managemend
++ * @index: resource index
++ */
++void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
++					     unsigned int index)
++{
++	struct resource *res;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, index);
++	return devm_ioremap_resource(&pdev->dev, res);
++}
++EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
++
+ /**
+  * platform_get_irq - get an IRQ for a device
+  * @dev: platform device
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 1a9f38f27f656..9e5c98fcea8c6 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -51,6 +51,9 @@ extern struct device platform_bus;
+ extern void arch_setup_pdev_archdata(struct platform_device *);
+ extern struct resource *platform_get_resource(struct platform_device *,
+ 					      unsigned int, unsigned int);
++extern void __iomem *
++devm_platform_ioremap_resource(struct platform_device *pdev,
++			       unsigned int index);
+ extern int platform_get_irq(struct platform_device *, unsigned int);
+ extern int platform_irq_count(struct platform_device *);
+ extern struct resource *platform_get_resource_byname(struct platform_device *,
 -- 
 2.39.2
 
