@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 506DE713E25
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE39713E96
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230273AbjE1Tc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        id S230405AbjE1Tg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230259AbjE1Tc1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:27 -0400
+        with ESMTP id S230414AbjE1Tg4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77901A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED745C9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A97961DB0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D7AC433D2;
-        Sun, 28 May 2023 19:32:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E1A561E53
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E55C433D2;
+        Sun, 28 May 2023 19:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302345;
-        bh=8ZVBg6KYRguqBsxtRugMsE4FJebH+PCCH6wdn1uvnQI=;
+        s=korg; t=1685302613;
+        bh=/PwAq7MUFxiEKaJwH6+AFhYLtlBipTL94i+o4jAh21E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xPtzd3l+Qk4JkPnFI3f0waHlVmSDluhG/WNB14RDfVbt+ra67cgAh13/rNsvz/Bqk
-         RJE/ORObz2VPbaabaO8IH/HVXGYYj3Du7PFO5j1lEGHD832BlMIzAhc8DhkJxYi1+b
-         Db74+tjM0zfWeEvIbhSs+3gAanNcbkxn0ramzOZ0=
+        b=oAs35evN7sfH4iZgAeNFU9SuIm9/gFK/VNwDzcf484awCVnETgpSeSeodABj6chjy
+         mii8Tyf85Cec0Z1pPJG93OK0DDxroWvLxd36ijtuPxKBn/6Hfdf3eNySACYec1tXCn
+         YCd440Yqx8AOPLGuGpOaUroHUKBOBCmSGSGL2W7E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.3 071/127] octeontx2-pf: Fix TSOv6 offload
+        patches@lists.linux.dev, Liam Howlett <liam.howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.1 047/119] binder: add lockless binder_alloc_(set|get)_vma()
 Date:   Sun, 28 May 2023 20:10:47 +0100
-Message-Id: <20230528190838.700690331@linuxfoundation.org>
+Message-Id: <20230528190836.962972014@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,36 +54,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sunil Goutham <sgoutham@marvell.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit de678ca38861f2eb58814048076dcf95ed1b5bf9 upstream.
+commit 0fa53349c3acba0239369ba4cd133740a408d246 upstream.
 
-HW adds segment size to the payload length
-in the IPv6 header. Fix payload length to
-just TCP header length instead of 'TCP header
-size + IPv6 header size'.
+Bring back the original lockless design in binder_alloc to determine
+whether the buffer setup has been completed by the ->mmap() handler.
+However, this time use smp_load_acquire() and smp_store_release() to
+wrap all the ordering in a single macro call.
 
-Fixes: 86d7476078b8 ("octeontx2-pf: TCP segmentation offload support")
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Also, add comments to make it evident that binder uses alloc->vma to
+determine when the binder_alloc has been fully initialized. In these
+scenarios acquiring the mmap_lock is not required.
+
+Fixes: a43cfc87caaf ("android: binder: stop saving a pointer to the VMA")
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20230502201220.1756319-3-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/android/binder_alloc.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -652,9 +652,7 @@ static void otx2_sqe_add_ext(struct otx2
- 				htons(ext->lso_sb - skb_network_offset(skb));
- 		} else if (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6) {
- 			ext->lso_format = pfvf->hw.lso_tsov6_idx;
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -309,17 +309,18 @@ err_no_vma:
+ 	return vma ? -ENOMEM : -ESRCH;
+ }
+ 
++static inline void binder_alloc_set_vma(struct binder_alloc *alloc,
++		struct vm_area_struct *vma)
++{
++	/* pairs with smp_load_acquire in binder_alloc_get_vma() */
++	smp_store_release(&alloc->vma, vma);
++}
++
+ static inline struct vm_area_struct *binder_alloc_get_vma(
+ 		struct binder_alloc *alloc)
+ {
+-	struct vm_area_struct *vma = NULL;
 -
--			ipv6_hdr(skb)->payload_len =
--				htons(ext->lso_sb - skb_network_offset(skb));
-+			ipv6_hdr(skb)->payload_len = htons(tcp_hdrlen(skb));
- 		} else if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) {
- 			__be16 l3_proto = vlan_get_protocol(skb);
- 			struct udphdr *udph = udp_hdr(skb);
+-	if (alloc->vma) {
+-		/* Look at description in binder_alloc_set_vma */
+-		smp_rmb();
+-		vma = alloc->vma;
+-	}
+-	return vma;
++	/* pairs with smp_store_release in binder_alloc_set_vma() */
++	return smp_load_acquire(&alloc->vma);
+ }
+ 
+ static bool debug_low_async_space_locked(struct binder_alloc *alloc, int pid)
+@@ -382,6 +383,7 @@ static struct binder_buffer *binder_allo
+ 	size_t size, data_offsets_size;
+ 	int ret;
+ 
++	/* Check binder_alloc is fully initialized */
+ 	if (!binder_alloc_get_vma(alloc)) {
+ 		binder_alloc_debug(BINDER_DEBUG_USER_ERROR,
+ 				   "%d: binder_alloc_buf, no vma\n",
+@@ -777,7 +779,9 @@ int binder_alloc_mmap_handler(struct bin
+ 	buffer->free = 1;
+ 	binder_insert_free_buffer(alloc, buffer);
+ 	alloc->free_async_space = alloc->buffer_size / 2;
+-	alloc->vma = vma;
++
++	/* Signal binder_alloc is fully initialized */
++	binder_alloc_set_vma(alloc, vma);
+ 
+ 	return 0;
+ 
+@@ -959,7 +963,7 @@ int binder_alloc_get_allocated_count(str
+  */
+ void binder_alloc_vma_close(struct binder_alloc *alloc)
+ {
+-	alloc->vma = 0;
++	binder_alloc_set_vma(alloc, NULL);
+ }
+ 
+ /**
 
 
