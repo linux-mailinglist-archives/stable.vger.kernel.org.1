@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 924E5713C75
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C0D6713E20
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjE1TPU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34716 "EHLO
+        id S230264AbjE1TcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjE1TPT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95ACC4;
-        Sun, 28 May 2023 12:15:18 -0700 (PDT)
+        with ESMTP id S230259AbjE1TcP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F8DA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 779A96158B;
-        Sun, 28 May 2023 19:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970C7C433EF;
-        Sun, 28 May 2023 19:15:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F192061DA7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5A8C433D2;
+        Sun, 28 May 2023 19:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301317;
-        bh=ZrgvYMZ7dUYviZ/NCUj5O0qXO6Zjsj3iW0k25R5z5Bc=;
+        s=korg; t=1685302333;
+        bh=h5aiiAEjyEl1uNNhvlVTcntRTiG83g6Js8kuozyrJd0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OVWp8KcM/c87rGKntGxO2FTF1b0C/b/8dHJMaiDNk1L7y2v4C9U2w/Z47PnfmnV/f
-         FwxxZ8gA0G8hUJ+OibpJAD1wldS0d5XLfI3iF4AqT+5xcOnprydnSOwals1Sekdzip
-         zD1ao5hPlkzshekhzJwO1UK/nOzWFFWSIeibvIeQ=
+        b=fgbHiqyG3EM61S/6vIUkAm3Qxjf9rpnCR+a7egpAxjjkG92fIci+QCM9brBHn2pU4
+         Euph2pCXnfQKyp3bP7lChrWeg+VsDNJYN7Ip2Q+tOkpUb/BwiasMhw5iFYc+xC/QDj
+         zETXWbXuVx4LBTbFv05VeDXTeiiSCm8kM3Cj+lnM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 68/86] netfilter: nf_tables: do not allow RULE_ID to refer to another chain
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+4b3f8190f6e13b3efd74@syzkaller.appspotmail.com
+Subject: [PATCH 6.3 066/127] media: radio-shark: Add endpoint checks
 Date:   Sun, 28 May 2023 20:10:42 +0100
-Message-Id: <20230528190831.159343774@linuxfoundation.org>
+Message-Id: <20230528190838.551529362@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,56 +53,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ 36d5b2913219ac853908b0f1c664345e04313856 ]
+commit 76e31045ba030e94e72105c01b2e98f543d175ac upstream.
 
-When doing lookups for rules on the same batch by using its ID, a rule from
-a different chain can be used. If a rule is added to a chain but tries to
-be positioned next to a rule from a different chain, it will be linked to
-chain2, but the use counter on chain1 would be the one to be incremented.
+The syzbot fuzzer was able to provoke a WARNING from the radio-shark2
+driver:
 
-When looking for rules by ID, use the chain that was used for the lookup by
-name. The chain used in the context copied to the transaction needs to
-match that same chain. That way, struct nft_rule does not need to get
-enlarged with another member.
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 3271 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed2/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 3271 Comm: kworker/0:3 Not tainted 6.1.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed2/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 00 36 ea fb 48 8b 7c 24 18 e8 36 1c 02 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 a0 b6 90 8a e8 9a 29 b8 03 <0f> 0b e9 58 f8 ff ff e8 d2 35 ea fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc90003876dd0 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
+RDX: ffff8880750b0040 RSI: ffffffff816152b8 RDI: fffff5200070edac
+RBP: ffff8880172d81e0 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000001
+R13: ffff8880285c5040 R14: 0000000000000002 R15: ffff888017158200
+FS:  0000000000000000(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe03235b90 CR3: 000000000bc8e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x101/0x4b0 drivers/usb/core/message.c:58
+ usb_bulk_msg+0x226/0x550 drivers/usb/core/message.c:387
+ shark_write_reg+0x1ff/0x2e0 drivers/media/radio/radio-shark2.c:88
+...
 
-Fixes: 1a94e38d254b ("netfilter: nf_tables: add NFTA_RULE_ID attribute")
-Fixes: 75dd48e2e420 ("netfilter: nf_tables: Support RULE_ID reference in new rule")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The problem was caused by the fact that the driver does not check
+whether the endpoints it uses are actually present and have the
+appropriate types.  This can be fixed by adding a simple check of
+these endpoints (and similarly for the radio-shark driver).
+
+Link: https://syzkaller.appspot.com/bug?extid=4b3f8190f6e13b3efd74
+Reported-and-tested-by: syzbot+4b3f8190f6e13b3efd74@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/e2858ab4-4adf-46e5-bbf6-c56742034547@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/radio/radio-shark.c  |   10 ++++++++++
+ drivers/media/radio/radio-shark2.c |   10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2475,6 +2475,7 @@ err1:
- }
- 
- static struct nft_rule *nft_rule_lookup_byid(const struct net *net,
-+					     const struct nft_chain *chain,
- 					     const struct nlattr *nla)
+--- a/drivers/media/radio/radio-shark.c
++++ b/drivers/media/radio/radio-shark.c
+@@ -316,6 +316,16 @@ static int usb_shark_probe(struct usb_in
  {
- 	u32 id = ntohl(nla_get_be32(nla));
-@@ -2484,6 +2485,7 @@ static struct nft_rule *nft_rule_lookup_
- 		struct nft_rule *rule = nft_trans_rule(trans);
+ 	struct shark_device *shark;
+ 	int retval = -ENOMEM;
++	static const u8 ep_addresses[] = {
++		SHARK_IN_EP | USB_DIR_IN,
++		SHARK_OUT_EP | USB_DIR_OUT,
++		0};
++
++	/* Are the expected endpoints present? */
++	if (!usb_check_int_endpoints(intf, ep_addresses)) {
++		dev_err(&intf->dev, "Invalid radioSHARK device\n");
++		return -EINVAL;
++	}
  
- 		if (trans->msg_type == NFT_MSG_NEWRULE &&
-+		    trans->ctx.chain == chain &&
- 		    id == nft_trans_rule_id(trans))
- 			return rule;
- 	}
-@@ -2530,7 +2532,7 @@ static int nf_tables_delrule(struct net
+ 	shark = kzalloc(sizeof(struct shark_device), GFP_KERNEL);
+ 	if (!shark)
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -282,6 +282,16 @@ static int usb_shark_probe(struct usb_in
+ {
+ 	struct shark_device *shark;
+ 	int retval = -ENOMEM;
++	static const u8 ep_addresses[] = {
++		SHARK_IN_EP | USB_DIR_IN,
++		SHARK_OUT_EP | USB_DIR_OUT,
++		0};
++
++	/* Are the expected endpoints present? */
++	if (!usb_check_int_endpoints(intf, ep_addresses)) {
++		dev_err(&intf->dev, "Invalid radioSHARK2 device\n");
++		return -EINVAL;
++	}
  
- 			err = nft_delrule(&ctx, rule);
- 		} else if (nla[NFTA_RULE_ID]) {
--			rule = nft_rule_lookup_byid(net, nla[NFTA_RULE_ID]);
-+			rule = nft_rule_lookup_byid(net, chain, nla[NFTA_RULE_ID]);
- 			if (IS_ERR(rule))
- 				return PTR_ERR(rule);
- 
+ 	shark = kzalloc(sizeof(struct shark_device), GFP_KERNEL);
+ 	if (!shark)
 
 
