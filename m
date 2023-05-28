@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E6C713C6A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A608E713D88
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjE1TPG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34570 "EHLO
+        id S230089AbjE1T0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjE1TPF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 637D4A0;
-        Sun, 28 May 2023 12:15:04 -0700 (PDT)
+        with ESMTP id S230084AbjE1T0X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5CDDE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6A9D61977;
-        Sun, 28 May 2023 19:15:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9BCC433EF;
-        Sun, 28 May 2023 19:15:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E793461C40
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBE7C433D2;
+        Sun, 28 May 2023 19:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301303;
-        bh=z+Ge17M51H/18sEhYh+TODqfeF9sGApLYzIF61fME2I=;
+        s=korg; t=1685301979;
+        bh=vx1wOdMEXB9hUy5JPSwyNsaFEGp3RdgeF8ZYrvSuwHA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rlWUrMDsPc+ctvEgy3LXs/TXjOFdacp9+L4/chXk9IySXR+gaAT7N+njL0XyJqz9V
-         71yBdG1zqtwj8sJoWkAOvPYqmT53U5ppVb7+3raC2rnJLM6FiUMrdp0TOykS3Wu7Yn
-         /yMWwCQfh2j9X8MB2Cjgdl2NiR3mDwJVpoF3Kcxs=
+        b=RcSYepoh1su9mZLUd5b0qpCX8x1B7lVNW4soqqR5dJZoozicN63aRIxgN2GHj3Jji
+         meGaSHniz6FYANH6GYRrAwwApSqA0V7SK9tLwiGL6fwFbox+tOV6cmlCDoS2qg6Gq/
+         xeidm6cPX+r6GWGXgj4TIdri8cxBvvy4P8Vwahuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 63/86] netfilter: nf_tables: validate registers coming from userspace.
+        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
+        Jiri Kosina <jkosina@suse.cz>, Ping Cheng <pinglinux@gmail.com>
+Subject: [PATCH 5.4 113/161] HID: wacom: Force pen out of prox if no events have been received in a while
 Date:   Sun, 28 May 2023 20:10:37 +0100
-Message-Id: <20230528190830.961163230@linuxfoundation.org>
+Message-Id: <20230528190840.664975256@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,80 +53,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jason Gerecke <killertofu@gmail.com>
 
-[ 6e1acfa387b9ff82cfc7db8cc3b6959221a95851 ]
+commit 94b179052f95c294d83e9c9c34f7833cf3cd4305 upstream.
 
-Bail out in case userspace uses unsupported registers.
+Prox-out events may not be reliably sent by some AES firmware. This can
+cause problems for users, particularly due to arbitration logic disabling
+touch input while the pen is in prox.
 
-Fixes: 49499c3e6e18 ("netfilter: nf_tables: switch registers to 32 bit addressing")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This commit adds a timer which is reset every time a new prox event is
+received. When the timer expires we check to see if the pen is still in
+prox and force it out if necessary. This is patterend off of the same
+solution used by 'hid-letsketch' driver which has a similar problem.
+
+Link: https://github.com/linuxwacom/input-wacom/issues/310
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: Ping Cheng <pinglinux@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/hid/wacom.h     |    3 +++
+ drivers/hid/wacom_sys.c |    2 ++
+ drivers/hid/wacom_wac.c |   39 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 44 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5615,26 +5615,23 @@ int nft_parse_u32_check(const struct nla
- }
- EXPORT_SYMBOL_GPL(nft_parse_u32_check);
+--- a/drivers/hid/wacom.h
++++ b/drivers/hid/wacom.h
+@@ -91,6 +91,7 @@
+ #include <linux/leds.h>
+ #include <linux/usb/input.h>
+ #include <linux/power_supply.h>
++#include <linux/timer.h>
+ #include <asm/unaligned.h>
  
--/**
-- *	nft_parse_register - parse a register value from a netlink attribute
-- *
-- *	@attr: netlink attribute
-- *
-- *	Parse and translate a register value from a netlink attribute.
-- *	Registers used to be 128 bit wide, these register numbers will be
-- *	mapped to the corresponding 32 bit register numbers.
-- */
--static unsigned int nft_parse_register(const struct nlattr *attr)
-+static int nft_parse_register(const struct nlattr *attr, u32 *preg)
- {
- 	unsigned int reg;
+ /*
+@@ -167,6 +168,7 @@ struct wacom {
+ 	struct delayed_work init_work;
+ 	struct wacom_remote *remote;
+ 	struct work_struct mode_change_work;
++	struct timer_list idleprox_timer;
+ 	bool generic_has_leds;
+ 	struct wacom_leds {
+ 		struct wacom_group_leds *groups;
+@@ -239,4 +241,5 @@ struct wacom_led *wacom_led_find(struct
+ struct wacom_led *wacom_led_next(struct wacom *wacom, struct wacom_led *cur);
+ int wacom_equivalent_usage(int usage);
+ int wacom_initialize_leds(struct wacom *wacom);
++void wacom_idleprox_timeout(struct timer_list *list);
+ #endif
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2781,6 +2781,7 @@ static int wacom_probe(struct hid_device
+ 	INIT_WORK(&wacom->battery_work, wacom_battery_work);
+ 	INIT_WORK(&wacom->remote_work, wacom_remote_work);
+ 	INIT_WORK(&wacom->mode_change_work, wacom_mode_change_work);
++	timer_setup(&wacom->idleprox_timer, &wacom_idleprox_timeout, TIMER_DEFERRABLE);
  
- 	reg = ntohl(nla_get_be32(attr));
- 	switch (reg) {
- 	case NFT_REG_VERDICT...NFT_REG_4:
--		return reg * NFT_REG_SIZE / NFT_REG32_SIZE;
-+		*preg = reg * NFT_REG_SIZE / NFT_REG32_SIZE;
-+		break;
-+	case NFT_REG32_00...NFT_REG32_15:
-+		*preg = reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
-+		break;
- 	default:
--		return reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
-+		return -ERANGE;
- 	}
+ 	/* ask for the report descriptor to be loaded by HID */
+ 	error = hid_parse(hdev);
+@@ -2825,6 +2826,7 @@ static void wacom_remove(struct hid_devi
+ 	cancel_work_sync(&wacom->battery_work);
+ 	cancel_work_sync(&wacom->remote_work);
+ 	cancel_work_sync(&wacom->mode_change_work);
++	del_timer_sync(&wacom->idleprox_timer);
+ 	if (hdev->bus == BUS_BLUETOOTH)
+ 		device_remove_file(&hdev->dev, &dev_attr_speed);
+ 
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -11,6 +11,7 @@
+ #include "wacom_wac.h"
+ #include "wacom.h"
+ #include <linux/input/mt.h>
++#include <linux/jiffies.h>
+ 
+ /* resolution for penabled devices */
+ #define WACOM_PL_RES		20
+@@ -41,6 +42,43 @@ static int wacom_numbered_button_to_key(
+ 
+ static void wacom_update_led(struct wacom *wacom, int button_count, int mask,
+ 			     int group);
 +
-+	return 0;
- }
- 
- /**
-@@ -5685,7 +5682,10 @@ int nft_parse_register_load(const struct
- 	u32 reg;
- 	int err;
- 
--	reg = nft_parse_register(attr);
-+	err = nft_parse_register(attr, &reg);
-+	if (err < 0)
-+		return err;
++static void wacom_force_proxout(struct wacom_wac *wacom_wac)
++{
++	struct input_dev *input = wacom_wac->pen_input;
 +
- 	err = nft_validate_register_load(reg, len);
- 	if (err < 0)
- 		return err;
-@@ -5761,7 +5761,10 @@ int nft_parse_register_store(const struc
- 	int err;
- 	u32 reg;
- 
--	reg = nft_parse_register(attr);
-+	err = nft_parse_register(attr, &reg);
-+	if (err < 0)
-+		return err;
++	wacom_wac->shared->stylus_in_proximity = 0;
 +
- 	err = nft_validate_register_store(ctx, reg, data, type, len);
- 	if (err < 0)
- 		return err;
++	input_report_key(input, BTN_TOUCH, 0);
++	input_report_key(input, BTN_STYLUS, 0);
++	input_report_key(input, BTN_STYLUS2, 0);
++	input_report_key(input, BTN_STYLUS3, 0);
++	input_report_key(input, wacom_wac->tool[0], 0);
++	if (wacom_wac->serial[0]) {
++		input_report_abs(input, ABS_MISC, 0);
++	}
++	input_report_abs(input, ABS_PRESSURE, 0);
++
++	wacom_wac->tool[0] = 0;
++	wacom_wac->id[0] = 0;
++	wacom_wac->serial[0] = 0;
++
++	input_sync(input);
++}
++
++void wacom_idleprox_timeout(struct timer_list *list)
++{
++	struct wacom *wacom = from_timer(wacom, list, idleprox_timer);
++	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
++
++	if (!wacom_wac->hid_data.sense_state) {
++		return;
++	}
++
++	hid_warn(wacom->hdev, "%s: tool appears to be hung in-prox. forcing it out.\n", __func__);
++	wacom_force_proxout(wacom_wac);
++}
++
+ /*
+  * Percent of battery capacity for Graphire.
+  * 8th value means AC online and show 100% capacity.
+@@ -2328,6 +2366,7 @@ static void wacom_wac_pen_event(struct h
+ 		value = field->logical_maximum - value;
+ 		break;
+ 	case HID_DG_INRANGE:
++		mod_timer(&wacom->idleprox_timer, jiffies + msecs_to_jiffies(100));
+ 		wacom_wac->hid_data.inrange_state = value;
+ 		if (!(features->quirks & WACOM_QUIRK_SENSE))
+ 			wacom_wac->hid_data.sense_state = value;
 
 
