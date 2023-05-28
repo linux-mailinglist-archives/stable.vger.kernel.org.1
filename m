@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE433713D55
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 986B8713DE6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjE1TYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
+        id S230191AbjE1TaC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbjE1TYQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:16 -0400
+        with ESMTP id S230205AbjE1TaB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD6E0B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A362AA7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63F1161BBB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A5AC433EF;
-        Sun, 28 May 2023 19:24:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8463261D23
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1807C433EF;
+        Sun, 28 May 2023 19:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301853;
-        bh=NWkzZzjsWSZf/r1KM5fgBCAQAKb4gc703HWUuOiAnJA=;
+        s=korg; t=1685302196;
+        bh=3/K6Vj0R8rVMutOrG20aBMNiH8Nh4oXkRkicMsQDUsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X/gwMeSU14YKSPoRasWdkuy48BbJEQmoaeHfCJ/uFnO3cEXP8MDOWX9atERK7NuSJ
-         xDp0lngfxoaB+9llb8cbVWwb8+N092t4pDX1Z1gkUlBhZxL3TQNkConl+3M4ausqxm
-         dlkctXNAc8yEOzl+eDC8IvY1b8LK694EvIZqwUgE=
+        b=Rkg7znY/ZnhS4rpF3ficy37+ZJFoMyDXsMGQ3s9jERKn6p/WB66LJbxnZHX8miPZU
+         m+0nuBkQcgcyIgaGOeVh3S7p7l8WMQ5INg+LPBqEeZErdfgJNnUbkmdfjdrKb8ait+
+         fk8DLjeAnZ1B4Qr6XEgL+EuFgtiJUw8k5Gyp01Ho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/161] net: fec: Better handle pm_runtime_get() failing in .remove()
+        patches@lists.linux.dev, Gregory Oakes <gregory.oakes@amd.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.3 010/127] watchdog: sp5100_tco: Immediately trigger upon starting.
 Date:   Sun, 28 May 2023 20:09:46 +0100
-Message-Id: <20230528190839.149691537@linuxfoundation.org>
+Message-Id: <20230528190836.540007196@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,61 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Gregory Oakes <gregory.oakes@amd.com>
 
-[ Upstream commit f816b9829b19394d318e01953aa3b2721bca040d ]
+commit 4eda19cc8a29cde3580ed73bf11dc73b4e757697 upstream.
 
-In the (unlikely) event that pm_runtime_get() (disguised as
-pm_runtime_resume_and_get()) fails, the remove callback returned an
-error early. The problem with this is that the driver core ignores the
-error value and continues removing the device. This results in a
-resource leak. Worse the devm allocated resources are freed and so if a
-callback of the driver is called later the register mapping is already
-gone which probably results in a crash.
+The watchdog countdown is supposed to begin when the device file is
+opened. Instead, it would begin countdown upon the first write to or
+close of the device file. Now, the ping operation is called within the
+start operation which ensures the countdown begins. From experimenation,
+it does not appear possible to do this with a single write including
+both the start bit and the trigger bit. So, it is done as two distinct
+writes.
 
-Fixes: a31eda65ba21 ("net: fec: fix clock count mis-match")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230510200020.1534610-1-u.kleine-koenig@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gregory Oakes <gregory.oakes@amd.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230316201312.17538-1-gregory.oakes@amd.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/watchdog/sp5100_tco.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index e1b8c58c4d6b2..f67f104049dba 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3769,7 +3769,9 @@ fec_drv_remove(struct platform_device *pdev)
+--- a/drivers/watchdog/sp5100_tco.c
++++ b/drivers/watchdog/sp5100_tco.c
+@@ -115,6 +115,10 @@ static int tco_timer_start(struct watchd
+ 	val |= SP5100_WDT_START_STOP_BIT;
+ 	writel(val, SP5100_WDT_CONTROL(tco->tcobase));
  
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
--		return ret;
-+		dev_err(&pdev->dev,
-+			"Failed to resume device in remove callback (%pe)\n",
-+			ERR_PTR(ret));
++	/* This must be a distinct write. */
++	val |= SP5100_WDT_TRIGGER_BIT;
++	writel(val, SP5100_WDT_CONTROL(tco->tcobase));
++
+ 	return 0;
+ }
  
- 	cancel_work_sync(&fep->tx_timeout_work);
- 	fec_ptp_stop(pdev);
-@@ -3782,8 +3784,13 @@ fec_drv_remove(struct platform_device *pdev)
- 		of_phy_deregister_fixed_link(np);
- 	of_node_put(fep->phy_node);
- 
--	clk_disable_unprepare(fep->clk_ahb);
--	clk_disable_unprepare(fep->clk_ipg);
-+	/* After pm_runtime_get_sync() failed, the clks are still off, so skip
-+	 * disabling them again.
-+	 */
-+	if (ret >= 0) {
-+		clk_disable_unprepare(fep->clk_ahb);
-+		clk_disable_unprepare(fep->clk_ipg);
-+	}
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
--- 
-2.39.2
-
 
 
