@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EB7A713C77
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D3B2713F45
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbjE1TPY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34768 "EHLO
+        id S231221AbjE1Tnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229747AbjE1TPX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:23 -0400
+        with ESMTP id S231222AbjE1Tnn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF3AC4;
-        Sun, 28 May 2023 12:15:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2242BA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC67F6197E;
-        Sun, 28 May 2023 19:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15714C433D2;
-        Sun, 28 May 2023 19:15:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A17B261F20
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C019BC433EF;
+        Sun, 28 May 2023 19:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301320;
-        bh=JxHPDKDYzVppuuwiXIsri3v/d5JAGQaFs0FQSUDYTF4=;
+        s=korg; t=1685303021;
+        bh=/RNoX43CE/4NZ+HHaGvkP+mp+RJ+/t6j0byJ5fVpq3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NKr1kSaIlTvc8GcfT4dDr4KMvvId72E5C1UovlIPdHaOPm1C6DVB1kiWlNY8joIoO
-         JVyXgNbmH0Dn6XHk5uBf8WUMEDuBLYgYxqqAkJiuv+rjxVuP4Thc9aF4v6wjZ0oCez
-         yKRXKLK9s+r3vGFeiS4w+cpLftUrsNHaHRDqAizI=
+        b=pnJg7tjyiTWZJzGEg4mJyVDlK0gOtG0yiufEzmVAwO/P8xdL64qNlyrkaDTXthNUm
+         GqSqdO8v1W+kXGg0xAHiT/BFRJsmibuW33zpuf//P+ZtqhwKS5jxp/ckyjLQiHguCu
+         S+5WlnYI493ryRKDBt6H+1rcCYIittEVrZRbi9EQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 69/86] netfilter: nf_tables: do not allow SET_ID to refer to another table
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 122/211] bridge: always declare tunnel functions
 Date:   Sun, 28 May 2023 20:10:43 +0100
-Message-Id: <20230528190831.198763104@linuxfoundation.org>
+Message-Id: <20230528190846.585989054@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,93 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ 470ee20e069a6d05ae549f7d0ef2bdbcee6a81b2 ]
+[ Upstream commit 89dcd87ce534a3a7f267cfd58505803006f51301 ]
 
-When doing lookups for sets on the same batch by using its ID, a set from a
-different table can be used.
+When CONFIG_BRIDGE_VLAN_FILTERING is disabled, two functions are still
+defined but have no prototype or caller. This causes a W=1 warning for
+the missing prototypes:
 
-Then, when the table is removed, a reference to the set may be kept after
-the set is freed, leading to a potential use-after-free.
+net/bridge/br_netlink_tunnel.c:29:6: error: no previous prototype for 'vlan_tunid_inrange' [-Werror=missing-prototypes]
+net/bridge/br_netlink_tunnel.c:199:5: error: no previous prototype for 'br_vlan_tunnel_info' [-Werror=missing-prototypes]
 
-When looking for sets by ID, use the table that was used for the lookup by
-name, and only return sets belonging to that same table.
+The functions are already contitional on CONFIG_BRIDGE_VLAN_FILTERING,
+and I coulnd't easily figure out the right set of #ifdefs, so just
+move the declarations out of the #ifdef to avoid the warning,
+at a small cost in code size over a more elaborate fix.
 
-This fixes CVE-2022-2586, also reported as ZDI-CAN-17470.
-
-Reported-by: Team Orca of Sea Security (@seasecresponse)
-Fixes: 958bee14d071 ("netfilter: nf_tables: use new transaction infrastructure to handle sets")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 188c67dd1906 ("net: bridge: vlan options: add support for tunnel id dumping")
+Fixes: 569da0822808 ("net: bridge: vlan options: add support for tunnel mapping set/del")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230516194625.549249-3-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |    2 ++
- net/netfilter/nf_tables_api.c     |    7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ net/bridge/br_private_tunnel.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -381,6 +381,7 @@ void nft_unregister_set(struct nft_set_t
-  *
-  *	@list: table set list node
-  *	@bindings: list of set bindings
-+ *	@table: table this set belongs to
-  * 	@name: name of the set
-  * 	@ktype: key type (numeric type defined by userspace, not used in the kernel)
-  * 	@dtype: data type (verdict or numeric type defined by userspace)
-@@ -404,6 +405,7 @@ void nft_unregister_set(struct nft_set_t
- struct nft_set {
- 	struct list_head		list;
- 	struct list_head		bindings;
-+	struct nft_table		*table;
- 	char				*name;
- 	u32				ktype;
- 	u32				dtype;
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2746,6 +2746,7 @@ static struct nft_set *nf_tables_set_loo
- }
+diff --git a/net/bridge/br_private_tunnel.h b/net/bridge/br_private_tunnel.h
+index c54cc26211d7c..f6c65dc088d60 100644
+--- a/net/bridge/br_private_tunnel.h
++++ b/net/bridge/br_private_tunnel.h
+@@ -27,6 +27,10 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
+ int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg);
+ int br_fill_vlan_tunnel_info(struct sk_buff *skb,
+ 			     struct net_bridge_vlan_group *vg);
++bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
++			const struct net_bridge_vlan *v_last);
++int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
++			u16 vid, u32 tun_id, bool *changed);
  
- static struct nft_set *nf_tables_set_lookup_byid(const struct net *net,
-+						 const struct nft_table *table,
- 						 const struct nlattr *nla,
- 						 u8 genmask)
+ #ifdef CONFIG_BRIDGE_VLAN_FILTERING
+ /* br_vlan_tunnel.c */
+@@ -43,10 +47,6 @@ int br_handle_ingress_vlan_tunnel(struct sk_buff *skb,
+ 				  struct net_bridge_vlan_group *vg);
+ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+ 				 struct net_bridge_vlan *vlan);
+-bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
+-			const struct net_bridge_vlan *v_last);
+-int br_vlan_tunnel_info(const struct net_bridge_port *p, int cmd,
+-			u16 vid, u32 tun_id, bool *changed);
+ #else
+ static inline int vlan_tunnel_init(struct net_bridge_vlan_group *vg)
  {
-@@ -2757,6 +2758,7 @@ static struct nft_set *nf_tables_set_loo
- 			struct nft_set *set = nft_trans_set(trans);
- 
- 			if (id == nft_trans_set_id(trans) &&
-+			    set->table == table &&
- 			    nft_active_genmask(set, genmask))
- 				return set;
- 		}
-@@ -2777,7 +2779,7 @@ struct nft_set *nft_set_lookup(const str
- 		if (!nla_set_id)
- 			return set;
- 
--		set = nf_tables_set_lookup_byid(net, nla_set_id, genmask);
-+		set = nf_tables_set_lookup_byid(net, table, nla_set_id, genmask);
- 	}
- 	return set;
- }
-@@ -3272,6 +3274,7 @@ static int nf_tables_newset(struct net *
- 	}
- 
- 	INIT_LIST_HEAD(&set->bindings);
-+	set->table = table;
- 	set->ops   = ops;
- 	set->ktype = ktype;
- 	set->klen  = desc.klen;
-@@ -4209,7 +4212,7 @@ static int nf_tables_newsetelem(struct n
- 				   genmask);
- 	if (IS_ERR(set)) {
- 		if (nla[NFTA_SET_ELEM_LIST_SET_ID]) {
--			set = nf_tables_set_lookup_byid(net,
-+			set = nf_tables_set_lookup_byid(net, ctx.table,
- 					nla[NFTA_SET_ELEM_LIST_SET_ID],
- 					genmask);
- 		}
+-- 
+2.39.2
+
 
 
