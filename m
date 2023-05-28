@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33FA9713E50
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB90713D66
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230324AbjE1TeX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:34:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
+        id S230038AbjE1TZA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjE1TeW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C752EA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:21 -0700 (PDT)
+        with ESMTP id S230037AbjE1TY7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857BBA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 539AF61DEA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA22C433EF;
-        Sun, 28 May 2023 19:34:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23BEE61B9F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4328EC433EF;
+        Sun, 28 May 2023 19:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302460;
-        bh=g3a+J6zJJz23/RyYviFr08+3UhC8iK3afvwi81twaPM=;
+        s=korg; t=1685301897;
+        bh=98sajEv0tHNw2PgOQpWN5m2kGn3JYJ7/rbT7yyHuWJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MLDC9Sf87ZVouaePROzH9MhVbH2s1H7w6R6hNqw4O1bOK9CtVtBPQobU91GRDipJs
-         FWoBoBNSpdJGw8ts2xGyuiaLLdcvFcDLtDnCp1ij0Teo+n6NaUte0DHNA/HJnQb/05
-         jvVoJaM95N+T6Ogg0dgbs59AXsa5gSOPAdj3U3MM=
+        b=gZnnQHHe0QRX3tt6wghWQp8NUjKn4W/SYEB7H93olBgWVeP7wDd7yDmeBBpVeEvD8
+         phnGNekRhXoTb3v9mPJsZo3vBIgSrwYZDrzFCxKdImv8sFqdgDZosc974FDzGg6NpA
+         d/bmSRwmuvo/5ro/g7fRIdBTESc2xqZHfE67Mgc0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/119] tpm_tis: Use tpm_chip_{start,stop} decoration inside tpm_tis_resume
+Subject: [PATCH 5.4 080/161] vlan: fix a potential uninit-value in vlan_dev_hard_start_xmit()
 Date:   Sun, 28 May 2023 20:10:04 +0100
-Message-Id: <20230528190835.520110532@linuxfoundation.org>
+Message-Id: <20230528190839.688199698@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,108 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1398aa803f198b7a386fdd8404666043e95f4c16 ]
+[ Upstream commit dacab578c7c6cd06c50c89dfa36b0e0f10decd4e ]
 
-Before sending a TPM command, CLKRUN protocol must be disabled. This is not
-done in the case of tpm1_do_selftest() call site inside tpm_tis_resume().
+syzbot triggered the following splat [1], sending an empty message
+through pppoe_sendmsg().
 
-Address this by decorating the calls with tpm_chip_{start,stop}, which
-should be always used to arm and disarm the TPM chip for transmission.
+When VLAN_FLAG_REORDER_HDR flag is set, vlan_dev_hard_header()
+does not push extra bytes for the VLAN header, because vlan is offloaded.
 
-Finally, move the call to the main TPM driver callback as the last step
-because it should arm the chip by itself, if it needs that type of
-functionality.
+Unfortunately vlan_dev_hard_start_xmit() first reads veth->h_vlan_proto
+before testing (vlan->flags & VLAN_FLAG_REORDER_HDR).
 
-Cc: stable@vger.kernel.org
-Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Closes: https://lore.kernel.org/linux-integrity/CS68AWILHXS4.3M36M1EKZLUMS@suppilovahvero/
-Fixes: a3fbfae82b4c ("tpm: take TPM chip power gating out of tpm_transmit()")
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+We need to swap the two conditions.
+
+[1]
+BUG: KMSAN: uninit-value in vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
+vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
+__netdev_start_xmit include/linux/netdevice.h:4883 [inline]
+netdev_start_xmit include/linux/netdevice.h:4897 [inline]
+xmit_one net/core/dev.c:3580 [inline]
+dev_hard_start_xmit+0x253/0xa20 net/core/dev.c:3596
+__dev_queue_xmit+0x3c7f/0x5ac0 net/core/dev.c:4246
+dev_queue_xmit include/linux/netdevice.h:3053 [inline]
+pppoe_sendmsg+0xa93/0xb80 drivers/net/ppp/pppoe.c:900
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
+__do_sys_sendmmsg net/socket.c:2670 [inline]
+__se_sys_sendmmsg net/socket.c:2667 [inline]
+__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:774
+slab_alloc_node mm/slub.c:3452 [inline]
+kmem_cache_alloc_node+0x543/0xab0 mm/slub.c:3497
+kmalloc_reserve+0x148/0x470 net/core/skbuff.c:520
+__alloc_skb+0x3a7/0x850 net/core/skbuff.c:606
+alloc_skb include/linux/skbuff.h:1277 [inline]
+sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2583
+pppoe_sendmsg+0x3af/0xb80 drivers/net/ppp/pppoe.c:867
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
+___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
+__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
+__do_sys_sendmmsg net/socket.c:2670 [inline]
+__se_sys_sendmmsg net/socket.c:2667 [inline]
+__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+CPU: 0 PID: 29770 Comm: syz-executor.0 Not tainted 6.3.0-rc6-syzkaller-gc478e5b17829 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 43 +++++++++++++++------------------
- 1 file changed, 19 insertions(+), 24 deletions(-)
+ net/8021q/vlan_dev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index a35c117ee7c80..a5c22fb4ad428 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -1190,25 +1190,20 @@ static void tpm_tis_reenable_interrupts(struct tpm_chip *chip)
- 	u32 intmask;
- 	int rc;
- 
--	if (chip->ops->clk_enable != NULL)
--		chip->ops->clk_enable(chip, true);
--
--	/* reenable interrupts that device may have lost or
--	 * BIOS/firmware may have disabled
-+	/*
-+	 * Re-enable interrupts that device may have lost or BIOS/firmware may
-+	 * have disabled.
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index b10f31f98cb87..0a3a167916218 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -109,8 +109,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
+ 	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+ 	 * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
  	 */
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), priv->irq);
--	if (rc < 0)
--		goto out;
-+	if (rc < 0) {
-+		dev_err(&chip->dev, "Setting IRQ failed.\n");
-+		return;
-+	}
- 
- 	intmask = priv->int_mask | TPM_GLOBAL_INT_ENABLE;
--
--	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
--
--out:
--	if (chip->ops->clk_enable != NULL)
--		chip->ops->clk_enable(chip, false);
--
--	return;
-+	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
-+	if (rc < 0)
-+		dev_err(&chip->dev, "Enabling interrupts failed.\n");
- }
- 
- int tpm_tis_resume(struct device *dev)
-@@ -1216,27 +1211,27 @@ int tpm_tis_resume(struct device *dev)
- 	struct tpm_chip *chip = dev_get_drvdata(dev);
- 	int ret;
- 
--	ret = tpm_tis_request_locality(chip, 0);
--	if (ret < 0)
-+	ret = tpm_chip_start(chip);
-+	if (ret)
- 		return ret;
- 
- 	if (chip->flags & TPM_CHIP_FLAG_IRQ)
- 		tpm_tis_reenable_interrupts(chip);
- 
--	ret = tpm_pm_resume(dev);
--	if (ret)
--		goto out;
--
- 	/*
- 	 * TPM 1.2 requires self-test on resume. This function actually returns
- 	 * an error code but for unknown reason it isn't handled.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_TPM2))
- 		tpm1_do_selftest(chip);
--out:
--	tpm_tis_relinquish_locality(chip, 0);
- 
--	return ret;
-+	tpm_chip_stop(chip);
-+
-+	ret = tpm_pm_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(tpm_tis_resume);
- #endif
+-	if (veth->h_vlan_proto != vlan->vlan_proto ||
+-	    vlan->flags & VLAN_FLAG_REORDER_HDR) {
++	if (vlan->flags & VLAN_FLAG_REORDER_HDR ||
++	    veth->h_vlan_proto != vlan->vlan_proto) {
+ 		u16 vlan_tci;
+ 		vlan_tci = vlan->vlan_id;
+ 		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
 -- 
 2.39.2
 
