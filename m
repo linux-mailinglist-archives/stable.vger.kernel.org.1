@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C469713DFF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CE6713E6D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbjE1Ta4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:30:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47424 "EHLO
+        id S230356AbjE1Tfc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230231AbjE1Taz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:55 -0400
+        with ESMTP id S230358AbjE1Tfa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 867ADDF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6CBD2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10BD061D68
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF3AC433D2;
-        Sun, 28 May 2023 19:30:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE58F61DFD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAF7C433EF;
+        Sun, 28 May 2023 19:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302250;
-        bh=ZQKUqK2QCJ3QauNXIQl/Cp3CBG2qy3fAVPd5b1f9VsE=;
+        s=korg; t=1685302519;
+        bh=25tjAdUm3c6D2XIZPacVqK3o3HonEiko5ThM8IC+aS4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DgmRwe8wULZNCmEzZTm0uTWBuldJ/RmPfpMn3rZ993BGIMPHQeA+uow75NH8LxqWN
-         1gQ1VAZi4qRG2UYzZ00YAQvUh56XZJ0YEXRh5PsNMV0rrNFMmQb76yaUFXLrETnlRp
-         wvEuKBZaCOn7LmzLUZ8Zk6e1yJfPJkEZbvCId7s4=
+        b=CkPVa6ZWRxZOHV1BaqbDQzkOYHRWAH0VaPRCJ9FmhJAkeRCjydzpBtZTmW3Qmp0ED
+         qexxlZjVvlZn3Qca4IaqpH/v8+lQ5pIfeOw0ULos6zjVfIW9JUpCcx3rf0vYHrYEZK
+         i91LJY+eIKMlQgEl7X17N/2PwPk8+oxYk1PBAa6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.3 059/127] irqchip/mips-gic: Use raw spinlock for gic_lock
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 035/119] parisc: Allow to reboot machine after system halt
 Date:   Sun, 28 May 2023 20:10:35 +0100
-Message-Id: <20230528190838.300291217@linuxfoundation.org>
+Message-Id: <20230528190836.541983621@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,158 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 3d6a0e4197c04599d75d85a608c8bb16a630a38c upstream.
+commit 2028315cf59bb899a5ac7e87dc48ecb8fac7ac24 upstream.
 
-Since we may hold gic_lock in hardirq context, use raw spinlock
-makes more sense given that it is for low-level interrupt handling
-routine and the critical section is small.
+In case a machine can't power-off itself on system shutdown,
+allow the user to reboot it by pressing the RETURN key.
 
-Fixes BUG:
-
-[    0.426106] =============================
-[    0.426257] [ BUG: Invalid wait context ]
-[    0.426422] 6.3.0-rc7-next-20230421-dirty #54 Not tainted
-[    0.426638] -----------------------------
-[    0.426766] swapper/0/1 is trying to lock:
-[    0.426954] ffffffff8104e7b8 (gic_lock){....}-{3:3}, at: gic_set_type+0x30/08
-
-Fixes: 95150ae8b330 ("irqchip: mips-gic: Implement irq_set_type callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230424103156.66753-3-jiaxun.yang@flygoat.com
+Cc: <stable@vger.kernel.org> # v4.14+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-mips-gic.c |   30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ arch/parisc/kernel/process.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -50,7 +50,7 @@ void __iomem *mips_gic_base;
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -122,13 +122,18 @@ void machine_power_off(void)
+ 	/* It seems we have no way to power the system off via
+ 	 * software. The user has to press the button himself. */
  
- static DEFINE_PER_CPU_READ_MOSTLY(unsigned long[GIC_MAX_LONGS], pcpu_masks);
+-	printk(KERN_EMERG "System shut down completed.\n"
+-	       "Please power this system off now.");
++	printk("Power off or press RETURN to reboot.\n");
  
--static DEFINE_SPINLOCK(gic_lock);
-+static DEFINE_RAW_SPINLOCK(gic_lock);
- static struct irq_domain *gic_irq_domain;
- static int gic_shared_intrs;
- static unsigned int gic_cpu_pin;
-@@ -211,7 +211,7 @@ static int gic_set_type(struct irq_data
- 
- 	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	switch (type & IRQ_TYPE_SENSE_MASK) {
- 	case IRQ_TYPE_EDGE_FALLING:
- 		pol = GIC_POL_FALLING_EDGE;
-@@ -251,7 +251,7 @@ static int gic_set_type(struct irq_data
- 	else
- 		irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
- 						 handle_level_irq, NULL);
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
- }
-@@ -269,7 +269,7 @@ static int gic_set_affinity(struct irq_d
- 		return -EINVAL;
- 
- 	/* Assumption : cpumask refers to a single CPU */
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 
- 	/* Re-route this IRQ */
- 	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpu)));
-@@ -280,7 +280,7 @@ static int gic_set_affinity(struct irq_d
- 		set_bit(irq, per_cpu_ptr(pcpu_masks, cpu));
- 
- 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return IRQ_SET_MASK_OK;
- }
-@@ -358,12 +358,12 @@ static void gic_mask_local_irq_all_vpes(
- 	cd = irq_data_get_irq_chip_data(d);
- 	cd->mask = false;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	for_each_online_cpu(cpu) {
- 		write_gic_vl_other(mips_cm_vp_id(cpu));
- 		write_gic_vo_rmask(BIT(intr));
- 	}
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 	/* prevent soft lockup/stalled CPU messages for endless loop. */
+ 	rcu_sysrq_start();
+ 	lockup_detector_soft_poweroff();
+-	for (;;);
++	while (1) {
++		/* reboot if user presses RETURN key */
++		if (pdc_iodc_getc() == 13) {
++			printk("Rebooting...\n");
++			machine_restart(NULL);
++		}
++	}
  }
  
- static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
-@@ -376,12 +376,12 @@ static void gic_unmask_local_irq_all_vpe
- 	cd = irq_data_get_irq_chip_data(d);
- 	cd->mask = true;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	for_each_online_cpu(cpu) {
- 		write_gic_vl_other(mips_cm_vp_id(cpu));
- 		write_gic_vo_smask(BIT(intr));
- 	}
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static void gic_all_vpes_irq_cpu_online(void)
-@@ -394,7 +394,7 @@ static void gic_all_vpes_irq_cpu_online(
- 	unsigned long flags;
- 	int i;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 
- 	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
- 		unsigned int intr = local_intrs[i];
-@@ -408,7 +408,7 @@ static void gic_all_vpes_irq_cpu_online(
- 			write_gic_vl_smask(BIT(intr));
- 	}
- 
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static struct irq_chip gic_all_vpes_local_irq_controller = {
-@@ -438,11 +438,11 @@ static int gic_shared_irq_domain_map(str
- 
- 	data = irq_get_irq_data(virq);
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
- 	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
- 	irq_data_update_effective_affinity(data, cpumask_of(cpu));
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
- }
-@@ -537,12 +537,12 @@ static int gic_irq_domain_map(struct irq
- 	if (!gic_local_irq_is_routable(intr))
- 		return -EPERM;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	for_each_online_cpu(cpu) {
- 		write_gic_vl_other(mips_cm_vp_id(cpu));
- 		write_gic_vo_map(mips_gic_vx_map_reg(intr), map);
- 	}
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
- }
+ void (*pm_power_off)(void);
 
 
