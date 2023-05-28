@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBE0E713F43
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33FA9713E50
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbjE1Tnj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58586 "EHLO
+        id S230324AbjE1TeX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbjE1Tni (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:38 -0400
+        with ESMTP id S230326AbjE1TeW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 276959C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C752EA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B053C61F1C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE73AC433EF;
-        Sun, 28 May 2023 19:43:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 539AF61DEA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA22C433EF;
+        Sun, 28 May 2023 19:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303016;
-        bh=UlKBe9JdPpRlQ6pW4qAlSVvezPtjcalcGgOT7fGe+Jw=;
+        s=korg; t=1685302460;
+        bh=g3a+J6zJJz23/RyYviFr08+3UhC8iK3afvwi81twaPM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uO0iQ6SnhrJxzN6ZBA1noHQvwU1+smCv90dcPz62W6XPmO1+ns3iDIeZaLWFqA+kf
-         fud5l5WzDAZlkW+vlpi5bX5GArIZoacS3+OrW6xym7yBPhdqWZaXwDtJD4JmsVLEPc
-         6rg0QTyNU5ghCUowttEW/MJq7OvfFYRI7u8JvSls=
+        b=MLDC9Sf87ZVouaePROzH9MhVbH2s1H7w6R6hNqw4O1bOK9CtVtBPQobU91GRDipJs
+         FWoBoBNSpdJGw8ts2xGyuiaLLdcvFcDLtDnCp1ij0Teo+n6NaUte0DHNA/HJnQb/05
+         jvVoJaM95N+T6Ogg0dgbs59AXsa5gSOPAdj3U3MM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qiang Ning <qning0106@126.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/211] mfd: dln2: Fix memory leak in dln2_probe()
+        patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 004/119] tpm_tis: Use tpm_chip_{start,stop} decoration inside tpm_tis_resume
 Date:   Sun, 28 May 2023 20:10:04 +0100
-Message-Id: <20230528190845.685259054@linuxfoundation.org>
+Message-Id: <20230528190835.520110532@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,36 +55,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiang Ning <qning0106@126.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 96da8f148396329ba769246cb8ceaa35f1ddfc48 ]
+[ Upstream commit 1398aa803f198b7a386fdd8404666043e95f4c16 ]
 
-When dln2_setup_rx_urbs() in dln2_probe() fails, error out_free forgets
-to call usb_put_dev() to decrease the refcount of dln2->usb_dev.
+Before sending a TPM command, CLKRUN protocol must be disabled. This is not
+done in the case of tpm1_do_selftest() call site inside tpm_tis_resume().
 
-Fix this by adding usb_put_dev() in the error handling code of
-dln2_probe().
+Address this by decorating the calls with tpm_chip_{start,stop}, which
+should be always used to arm and disarm the TPM chip for transmission.
 
-Signed-off-by: Qiang Ning <qning0106@126.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230330024353.4503-1-qning0106@126.com
+Finally, move the call to the main TPM driver callback as the last step
+because it should arm the chip by itself, if it needs that type of
+functionality.
+
+Cc: stable@vger.kernel.org
+Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Closes: https://lore.kernel.org/linux-integrity/CS68AWILHXS4.3M36M1EKZLUMS@suppilovahvero/
+Fixes: a3fbfae82b4c ("tpm: take TPM chip power gating out of tpm_transmit()")
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/dln2.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/char/tpm/tpm_tis_core.c | 43 +++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-index 852129ea07666..fc65f9e25fda8 100644
---- a/drivers/mfd/dln2.c
-+++ b/drivers/mfd/dln2.c
-@@ -836,6 +836,7 @@ static int dln2_probe(struct usb_interface *interface,
- 	dln2_stop_rx_urbs(dln2);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index a35c117ee7c80..a5c22fb4ad428 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -1190,25 +1190,20 @@ static void tpm_tis_reenable_interrupts(struct tpm_chip *chip)
+ 	u32 intmask;
+ 	int rc;
  
- out_free:
-+	usb_put_dev(dln2->usb_dev);
- 	dln2_free(dln2);
+-	if (chip->ops->clk_enable != NULL)
+-		chip->ops->clk_enable(chip, true);
+-
+-	/* reenable interrupts that device may have lost or
+-	 * BIOS/firmware may have disabled
++	/*
++	 * Re-enable interrupts that device may have lost or BIOS/firmware may
++	 * have disabled.
+ 	 */
+ 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), priv->irq);
+-	if (rc < 0)
+-		goto out;
++	if (rc < 0) {
++		dev_err(&chip->dev, "Setting IRQ failed.\n");
++		return;
++	}
  
- 	return ret;
+ 	intmask = priv->int_mask | TPM_GLOBAL_INT_ENABLE;
+-
+-	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
+-
+-out:
+-	if (chip->ops->clk_enable != NULL)
+-		chip->ops->clk_enable(chip, false);
+-
+-	return;
++	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
++	if (rc < 0)
++		dev_err(&chip->dev, "Enabling interrupts failed.\n");
+ }
+ 
+ int tpm_tis_resume(struct device *dev)
+@@ -1216,27 +1211,27 @@ int tpm_tis_resume(struct device *dev)
+ 	struct tpm_chip *chip = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = tpm_tis_request_locality(chip, 0);
+-	if (ret < 0)
++	ret = tpm_chip_start(chip);
++	if (ret)
+ 		return ret;
+ 
+ 	if (chip->flags & TPM_CHIP_FLAG_IRQ)
+ 		tpm_tis_reenable_interrupts(chip);
+ 
+-	ret = tpm_pm_resume(dev);
+-	if (ret)
+-		goto out;
+-
+ 	/*
+ 	 * TPM 1.2 requires self-test on resume. This function actually returns
+ 	 * an error code but for unknown reason it isn't handled.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_TPM2))
+ 		tpm1_do_selftest(chip);
+-out:
+-	tpm_tis_relinquish_locality(chip, 0);
+ 
+-	return ret;
++	tpm_chip_stop(chip);
++
++	ret = tpm_pm_resume(dev);
++	if (ret)
++		return ret;
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(tpm_tis_resume);
+ #endif
 -- 
 2.39.2
 
