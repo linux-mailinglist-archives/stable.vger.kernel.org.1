@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3FD0713DFE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33570713D85
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbjE1Tay (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47402 "EHLO
+        id S230079AbjE1T0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230231AbjE1Tay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:54 -0400
+        with ESMTP id S230081AbjE1T0N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B857DA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED737B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95F7A61D5C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EDAC4339B;
-        Sun, 28 May 2023 19:30:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 870F861C36
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4171C433D2;
+        Sun, 28 May 2023 19:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302248;
-        bh=TPxPC0ZuGaoOv8E1oSCW0PGJGkLqO2rqJ9zkuesxreI=;
+        s=korg; t=1685301972;
+        bh=PFOlSRFaisdiM99JiILJLGWokKN4IMRSYC9iOn2zyFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EmKyFPHxB0JFH6ACsJ7W5z65MCcn1gaeerxtuHwXyzr9V/Z/hOnu9QNtEd2g55Zw7
-         3mODLBycrECD1S8/2h/r3Pchei+Y7jEXwtXNBG6p7KbzvrymIY1FVXNJz6NGKF1OeR
-         kQ8basdRMl6AcwMUGOT7xlygjktC9Jg0Iir9WF2I=
+        b=o4tfSm/4aFtvmQMdnKZ3EdJd82XyieOFZVo2jQJjUHCJVFyHruU17cI4c2nV3nRiZ
+         7FxhhCGGYwKixw39e5TEUAPxfT/UGlr7UIC1FVg6A9TcG+qpdIrAZrb/Xc4kHw/dqs
+         C1i+QBkLYfRkl2+hQrPsMEW3aOYNDIPEtMbd/vPE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.3 058/127] irqchip/mips-gic: Dont touch vl_map if a local interrupt is not routable
+        patches@lists.linux.dev,
+        Hugues ANGUELKOV <hanguelkov@randorisec.fr>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 110/161] netfilter: nf_tables: stricter validation of element data
 Date:   Sun, 28 May 2023 20:10:34 +0100
-Message-Id: <20230528190838.265599708@linuxfoundation.org>
+Message-Id: <20230528190840.579537409@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,45 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 2c6c9c049510163090b979ea5f92a68ae8d93c45 upstream.
+[ 7e6bc1f6cabcd30aba0b11219d8e01b952eacbb6 ]
 
-When a GIC local interrupt is not routable, it's vl_map will be used
-to control some internal states for core (providing IPTI, IPPCI, IPFDC
-input signal for core). Overriding it will interfere core's intetrupt
-controller.
+Make sure element data type and length do not mismatch the one specified
+by the set declaration.
 
-Do not touch vl_map if a local interrupt is not routable, we are not
-going to remap it.
-
-Before dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on
-irq_cpu_online()"), if a local interrupt is not routable, then it won't
-be requested from GIC Local domain, and thus gic_all_vpes_irq_cpu_online
-won't be called for that particular interrupt.
-
-Fixes: dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230424103156.66753-2-jiaxun.yang@flygoat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d7402642eaf ("netfilter: nf_tables: variable sized set element keys / data")
+Reported-by: Hugues ANGUELKOV <hanguelkov@randorisec.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mips-gic.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_tables_api.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -400,6 +400,8 @@ static void gic_all_vpes_irq_cpu_online(
- 		unsigned int intr = local_intrs[i];
- 		struct gic_all_vpes_chip_data *cd;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 8648b3ced6221..c82c4635c0a96 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4315,13 +4315,20 @@ static int nft_setelem_parse_data(struct nft_ctx *ctx, struct nft_set *set,
+ 				  struct nft_data *data,
+ 				  struct nlattr *attr)
+ {
++	u32 dtype;
+ 	int err;
  
-+		if (!gic_local_irq_is_routable(intr))
-+			continue;
- 		cd = &gic_all_vpes_chip_data[intr];
- 		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
- 		if (cd->mask)
+ 	err = nft_data_init(ctx, data, NFT_DATA_VALUE_MAXLEN, desc, attr);
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (desc->type != NFT_DATA_VERDICT && desc->len != set->dlen) {
++	if (set->dtype == NFT_DATA_VERDICT)
++		dtype = NFT_DATA_VERDICT;
++	else
++		dtype = NFT_DATA_VALUE;
++
++	if (dtype != desc->type ||
++	    set->dlen != desc->len) {
+ 		nft_data_release(data, desc->type);
+ 		return -EINVAL;
+ 	}
+-- 
+2.39.2
+
 
 
