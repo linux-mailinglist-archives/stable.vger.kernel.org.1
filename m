@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6A34713C91
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1123E713F57
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbjE1TQV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:16:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
+        id S231246AbjE1ToZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229784AbjE1TQT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D09A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:18 -0700 (PDT)
+        with ESMTP id S231245AbjE1ToY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9D29E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F13D619B5
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC71C433D2;
-        Sun, 28 May 2023 19:16:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A08161F30
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2307AC433D2;
+        Sun, 28 May 2023 19:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301377;
-        bh=vFIHBP2yNALhdeoScsxhdESV2tVOJeQs+64RnXr0B5k=;
+        s=korg; t=1685303062;
+        bh=8vu415bm7cRMTv6jb4cllI2JnLcimu50U+uPxJ2hhJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Oos4mSYIIBOOewtAYFO25/eUPzt4hYxbFYkdQ9N+LgK+bBxPa0KlmJoO/yrkcDIWh
-         HllowWFP2tlzNMjkTp4LqlUAyA1G6dFQpLHsdeqOH+X3b0czc8F8D3AfPbcKV5ngbX
-         Ob/AnC7DP5Pta/lajnzzpucE6svCApbsJacmrl10=
+        b=2rJGu1S2tNZgf+m+jjDAlzQEQTobo4UH+3NZRdY5ogF7e7b2QpEpuS5fEcO0QltJe
+         N2I4x/7bZzmKEGE0kAwvSM81iW42jN0N9YxLFPOnIr2lELOrdFgL+R/J7r0MXZVGDZ
+         L3qzmXvN9U8mqLQYi48QnDGc1FdavioIcHc7am/g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Zhu Yanjun <zyjzyj2000@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 85/86] forcedeth: Fix an error handling path in nv_probe()
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 138/211] can: kvaser_pciefd: Call request_irq() before enabling interrupts
 Date:   Sun, 28 May 2023 20:10:59 +0100
-Message-Id: <20230528190831.780028401@linuxfoundation.org>
+Message-Id: <20230528190846.949081774@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,35 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit 5b17a4971d3b2a073f4078dd65331efbe35baa2d upstream.
+commit 84762d8da89d29ba842317eb842973e628c27391 upstream.
 
-If an error occures after calling nv_mgmt_acquire_sema(), it should be
-undone with a corresponding nv_mgmt_release_sema() call.
+Make sure the interrupt handler is registered before enabling interrupts.
 
-Add it in the error handling path of the probe as already done in the
-remove function.
-
-Fixes: cac1c52c3621 ("forcedeth: mgmt unit interface")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Zhu Yanjun <zyjzyj2000@gmail.com>
-Link: https://lore.kernel.org/r/355e9a7d351b32ad897251b6f81b5886fcdc6766.1684571393.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-4-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/nvidia/forcedeth.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/kvaser_pciefd.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/nvidia/forcedeth.c
-+++ b/drivers/net/ethernet/nvidia/forcedeth.c
-@@ -6020,6 +6020,7 @@ static int nv_probe(struct pci_dev *pci_
- 	return 0;
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -1825,6 +1825,11 @@ static int kvaser_pciefd_probe(struct pc
+ 	if (err)
+ 		goto err_teardown_can_ctrls;
  
- out_error:
-+	nv_mgmt_release_sema(dev);
- 	if (phystate_orig)
- 		writel(phystate|NVREG_ADAPTCTL_RUNNING, base + NvRegAdapterControl);
- out_freering:
++	err = request_irq(pcie->pci->irq, kvaser_pciefd_irq_handler,
++			  IRQF_SHARED, KVASER_PCIEFD_DRV_NAME, pcie);
++	if (err)
++		goto err_teardown_can_ctrls;
++
+ 	iowrite32(KVASER_PCIEFD_SRB_IRQ_DPD0 | KVASER_PCIEFD_SRB_IRQ_DPD1,
+ 		  pcie->reg_base + KVASER_PCIEFD_SRB_IRQ_REG);
+ 
+@@ -1845,11 +1850,6 @@ static int kvaser_pciefd_probe(struct pc
+ 	iowrite32(KVASER_PCIEFD_SRB_CMD_RDB1,
+ 		  pcie->reg_base + KVASER_PCIEFD_SRB_CMD_REG);
+ 
+-	err = request_irq(pcie->pci->irq, kvaser_pciefd_irq_handler,
+-			  IRQF_SHARED, KVASER_PCIEFD_DRV_NAME, pcie);
+-	if (err)
+-		goto err_teardown_can_ctrls;
+-
+ 	err = kvaser_pciefd_reg_candev(pcie);
+ 	if (err)
+ 		goto err_free_irq;
 
 
