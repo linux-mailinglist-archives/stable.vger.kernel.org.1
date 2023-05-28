@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DAFF713FC4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C84D713EBF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbjE1Tss (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34718 "EHLO
+        id S230470AbjE1Ti2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231377AbjE1Tsr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:47 -0400
+        with ESMTP id S230466AbjE1Ti1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C97FC7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC457A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F1F861FFF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407C5C433EF;
-        Sun, 28 May 2023 19:48:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30F0161113
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD0EC433EF;
+        Sun, 28 May 2023 19:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303324;
-        bh=oK4YHGRh/FoqTyZRdKMN16Qna3+juwxKCahoc52TLaA=;
+        s=korg; t=1685302704;
+        bh=Bsp0O2B4jKw3NxeXx7hewBA8JjuxP6RtkNDGOwycr+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sbM8bVG92mmYJw8OQng76+D1FQTGa3KfLgJVsyoizDUoi7iO+DI+RvWLmqOxt9eZx
-         jZc4knEHN1BKZDmivygxBtwYsFBW+uiIoZJyXqFooiS79ERVjp6L6e5l6RD72jpx+4
-         4Cg+m/9KaiYhPsBU39AMo9e4r0blOaEfjFCaMh34=
+        b=ZHWj1MP9WueCDg2aEPcb5k65/XUzaulb6mGi1JxjHC+NDHvanVUybZF2Zj821SM3w
+         N/1p0/8F2trEAu1d5UIPcGtkjbYGQ0KuIBCnEAdsfqSS3R896pFSPjkEiw4zZT7MHM
+         +7lLSxtr5XIfrwehoErznsKbZqcDFXNJ2xkjlogM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 32/69] USB: core: Add routines for endpoint checks in old drivers
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.1 112/119] net/mlx5: Devcom, fix error flow in mlx5_devcom_register_device
 Date:   Sun, 28 May 2023 20:11:52 +0100
-Message-Id: <20230528190829.567793911@linuxfoundation.org>
+Message-Id: <20230528190839.198160452@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,150 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 13890626501ffda22b18213ddaf7930473da5792 upstream.
+commit af87194352cad882d787d06fb7efa714acd95427 upstream.
 
-Many of the older USB drivers in the Linux USB stack were written
-based simply on a vendor's device specification.  They use the
-endpoint information in the spec and assume these endpoints will
-always be present, with the properties listed, in any device matching
-the given vendor and product IDs.
+In case devcom allocation is failed, mlx5 is always freeing the priv.
+However, this priv might have been allocated by a different thread,
+and freeing it might lead to use-after-free bugs.
+Fix it by freeing the priv only in case it was allocated by the
+running thread.
 
-While that may have been true back then, with spoofing and fuzzing it
-is not true any more.  More and more we are finding that those old
-drivers need to perform at least a minimum of checking before they try
-to use any endpoint other than ep0.
-
-To make this checking as simple as possible, we now add a couple of
-utility routines to the USB core.  usb_check_bulk_endpoints() and
-usb_check_int_endpoints() take an interface pointer together with a
-list of endpoint addresses (numbers and directions).  They check that
-the interface's current alternate setting includes endpoints with
-those addresses and that each of these endpoints has the right type:
-bulk or interrupt, respectively.
-
-Although we already have usb_find_common_endpoints() and related
-routines meant for a similar purpose, they are not well suited for
-this kind of checking.  Those routines find endpoints of various
-kinds, but only one (either the first or the last) of each kind, and
-they don't verify that the endpoints' addresses agree with what the
-caller expects.
-
-In theory the new routines could be more general: They could take a
-particular altsetting as their argument instead of always using the
-interface's current altsetting.  In practice I think this won't matter
-too much; multiple altsettings tend to be used for transferring media
-(audio or visual) over isochronous endpoints, not bulk or interrupt.
-Drivers for such devices will generally require more sophisticated
-checking than these simplistic routines provide.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/dd2c8e8c-2c87-44ea-ba17-c64b97e201c9@rowland.harvard.edu
+Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/usb.c |   76 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/usb.h    |    5 +++
- 2 files changed, 81 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -207,6 +207,82 @@ int usb_find_common_endpoints_reverse(st
- EXPORT_SYMBOL_GPL(usb_find_common_endpoints_reverse);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -112,7 +112,8 @@ struct mlx5_devcom *mlx5_devcom_register
+ 	priv->devs[idx] = dev;
+ 	devcom = mlx5_devcom_alloc(priv, idx);
+ 	if (!devcom) {
+-		kfree(priv);
++		if (new_priv)
++			kfree(priv);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
  
- /**
-+ * usb_find_endpoint() - Given an endpoint address, search for the endpoint's
-+ * usb_host_endpoint structure in an interface's current altsetting.
-+ * @intf: the interface whose current altsetting should be searched
-+ * @ep_addr: the endpoint address (number and direction) to find
-+ *
-+ * Search the altsetting's list of endpoints for one with the specified address.
-+ *
-+ * Return: Pointer to the usb_host_endpoint if found, %NULL otherwise.
-+ */
-+static const struct usb_host_endpoint *usb_find_endpoint(
-+		const struct usb_interface *intf, unsigned int ep_addr)
-+{
-+	int n;
-+	const struct usb_host_endpoint *ep;
-+
-+	n = intf->cur_altsetting->desc.bNumEndpoints;
-+	ep = intf->cur_altsetting->endpoint;
-+	for (; n > 0; (--n, ++ep)) {
-+		if (ep->desc.bEndpointAddress == ep_addr)
-+			return ep;
-+	}
-+	return NULL;
-+}
-+
-+/**
-+ * usb_check_bulk_endpoints - Check whether an interface's current altsetting
-+ * contains a set of bulk endpoints with the given addresses.
-+ * @intf: the interface whose current altsetting should be searched
-+ * @ep_addrs: 0-terminated array of the endpoint addresses (number and
-+ * direction) to look for
-+ *
-+ * Search for endpoints with the specified addresses and check their types.
-+ *
-+ * Return: %true if all the endpoints are found and are bulk, %false otherwise.
-+ */
-+bool usb_check_bulk_endpoints(
-+		const struct usb_interface *intf, const u8 *ep_addrs)
-+{
-+	const struct usb_host_endpoint *ep;
-+
-+	for (; *ep_addrs; ++ep_addrs) {
-+		ep = usb_find_endpoint(intf, *ep_addrs);
-+		if (!ep || !usb_endpoint_xfer_bulk(&ep->desc))
-+			return false;
-+	}
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(usb_check_bulk_endpoints);
-+
-+/**
-+ * usb_check_int_endpoints - Check whether an interface's current altsetting
-+ * contains a set of interrupt endpoints with the given addresses.
-+ * @intf: the interface whose current altsetting should be searched
-+ * @ep_addrs: 0-terminated array of the endpoint addresses (number and
-+ * direction) to look for
-+ *
-+ * Search for endpoints with the specified addresses and check their types.
-+ *
-+ * Return: %true if all the endpoints are found and are interrupt,
-+ * %false otherwise.
-+ */
-+bool usb_check_int_endpoints(
-+		const struct usb_interface *intf, const u8 *ep_addrs)
-+{
-+	const struct usb_host_endpoint *ep;
-+
-+	for (; *ep_addrs; ++ep_addrs) {
-+		ep = usb_find_endpoint(intf, *ep_addrs);
-+		if (!ep || !usb_endpoint_xfer_int(&ep->desc))
-+			return false;
-+	}
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(usb_check_int_endpoints);
-+
-+/**
-  * usb_find_alt_setting() - Given a configuration, find the alternate setting
-  * for the given interface.
-  * @config: the configuration to search (not necessarily the current config).
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -279,6 +279,11 @@ void usb_put_intf(struct usb_interface *
- #define USB_MAXINTERFACES	32
- #define USB_MAXIADS		(USB_MAXINTERFACES/2)
- 
-+bool usb_check_bulk_endpoints(
-+		const struct usb_interface *intf, const u8 *ep_addrs);
-+bool usb_check_int_endpoints(
-+		const struct usb_interface *intf, const u8 *ep_addrs);
-+
- /*
-  * USB Resume Timer: Every Host controller driver should drive the resume
-  * signalling on the bus for the amount of time defined by this macro.
 
 
