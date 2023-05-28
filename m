@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E26F5713C85
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B63AD713DF8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbjE1TPx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34978 "EHLO
+        id S230220AbjE1Tal (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjE1TPv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:51 -0400
+        with ESMTP id S230226AbjE1Tak (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54E0D8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:15:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 616F2EA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FC476199D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2CDC4339C;
-        Sun, 28 May 2023 19:15:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D541661D5F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C9CC433EF;
+        Sun, 28 May 2023 19:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301349;
-        bh=PKRZpl7fzCqWuiYsLexm06CPBRvp83F2I25Pzjtu+Rg=;
+        s=korg; t=1685302233;
+        bh=KZz5WWOM+nfpJGWsIUdWG2qofC9e+dE5hLyNQv737sY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rILlWoD5XleQMrJcN6x00PnC7OTQxJcLf5v3crmHu4DoHSqSFWwFrM6M5MW3qWltE
-         OnZXkglmc7OBIkTE6dLScU8TURaesKVZGmV+oiML9OBSHC3+kNjZjvtjhQ9GPPKFoq
-         M65M42SofqxFxCXxr28byMZRAo/OvNgVnuqw7OA8=
+        b=w6l9zvQQsiugUNJND3NJa/3CNINA7Y+b5YL9NQbdX5gm0wdzK3yF9ZoznQPv4mca2
+         iYLdifZi4Og5QOjjfdd1pYk3YE88N60wC9UMrLso+9mPjYt2FgClnWGyix9ffL/iTs
+         rxDzDRWFnQOSewc5bYj3lkQJI10LA0YghaBcjta4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Laura Garcia <nevola@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 54/86] netfilter: nf_tables: bogus EBUSY in helper removal from transaction
+        patches@lists.linux.dev, Liam Howlett <liam.howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.3 052/127] binder: add lockless binder_alloc_(set|get)_vma()
 Date:   Sun, 28 May 2023 20:10:28 +0100
-Message-Id: <20230528190830.600171765@linuxfoundation.org>
+Message-Id: <20230528190838.056644436@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,60 +54,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit 8ffcd32f64633926163cdd07a7d295c500a947d1 upstream.
+commit 0fa53349c3acba0239369ba4cd133740a408d246 upstream.
 
-Proper use counter updates when activating and deactivating the object,
-otherwise, this hits bogus EBUSY error.
+Bring back the original lockless design in binder_alloc to determine
+whether the buffer setup has been completed by the ->mmap() handler.
+However, this time use smp_load_acquire() and smp_store_release() to
+wrap all the ordering in a single macro call.
 
-Fixes: cd5125d8f518 ("netfilter: nf_tables: split set destruction in deactivate and destroy phase")
-Reported-by: Laura Garcia <nevola@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Also, add comments to make it evident that binder uses alloc->vma to
+determine when the binder_alloc has been fully initialized. In these
+scenarios acquiring the mmap_lock is not required.
+
+Fixes: a43cfc87caaf ("android: binder: stop saving a pointer to the VMA")
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20230502201220.1756319-3-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_objref.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/android/binder_alloc.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/net/netfilter/nft_objref.c
-+++ b/net/netfilter/nft_objref.c
-@@ -64,21 +64,34 @@ nla_put_failure:
- 	return -1;
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index eb082b33115b..e7c9d466f8e8 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -309,17 +309,18 @@ err_no_vma:
+ 	return vma ? -ENOMEM : -ESRCH;
  }
  
--static void nft_objref_destroy(const struct nft_ctx *ctx,
--			       const struct nft_expr *expr)
-+static void nft_objref_deactivate(const struct nft_ctx *ctx,
-+				  const struct nft_expr *expr,
-+				  enum nft_trans_phase phase)
- {
- 	struct nft_object *obj = nft_objref_priv(expr);
- 
-+	if (phase == NFT_TRANS_COMMIT)
-+		return;
-+
- 	obj->use--;
- }
- 
-+static void nft_objref_activate(const struct nft_ctx *ctx,
-+				const struct nft_expr *expr)
++static inline void binder_alloc_set_vma(struct binder_alloc *alloc,
++		struct vm_area_struct *vma)
 +{
-+	struct nft_object *obj = nft_objref_priv(expr);
-+
-+	obj->use++;
++	/* pairs with smp_load_acquire in binder_alloc_get_vma() */
++	smp_store_release(&alloc->vma, vma);
 +}
 +
- static struct nft_expr_type nft_objref_type;
- static const struct nft_expr_ops nft_objref_ops = {
- 	.type		= &nft_objref_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_object *)),
- 	.eval		= nft_objref_eval,
- 	.init		= nft_objref_init,
--	.destroy	= nft_objref_destroy,
-+	.activate	= nft_objref_activate,
-+	.deactivate	= nft_objref_deactivate,
- 	.dump		= nft_objref_dump,
- };
+ static inline struct vm_area_struct *binder_alloc_get_vma(
+ 		struct binder_alloc *alloc)
+ {
+-	struct vm_area_struct *vma = NULL;
+-
+-	if (alloc->vma) {
+-		/* Look at description in binder_alloc_set_vma */
+-		smp_rmb();
+-		vma = alloc->vma;
+-	}
+-	return vma;
++	/* pairs with smp_store_release in binder_alloc_set_vma() */
++	return smp_load_acquire(&alloc->vma);
+ }
  
+ static bool debug_low_async_space_locked(struct binder_alloc *alloc, int pid)
+@@ -382,6 +383,7 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
+ 	size_t size, data_offsets_size;
+ 	int ret;
+ 
++	/* Check binder_alloc is fully initialized */
+ 	if (!binder_alloc_get_vma(alloc)) {
+ 		binder_alloc_debug(BINDER_DEBUG_USER_ERROR,
+ 				   "%d: binder_alloc_buf, no vma\n",
+@@ -777,7 +779,9 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
+ 	buffer->free = 1;
+ 	binder_insert_free_buffer(alloc, buffer);
+ 	alloc->free_async_space = alloc->buffer_size / 2;
+-	alloc->vma = vma;
++
++	/* Signal binder_alloc is fully initialized */
++	binder_alloc_set_vma(alloc, vma);
+ 
+ 	return 0;
+ 
+@@ -959,7 +963,7 @@ int binder_alloc_get_allocated_count(struct binder_alloc *alloc)
+  */
+ void binder_alloc_vma_close(struct binder_alloc *alloc)
+ {
+-	alloc->vma = 0;
++	binder_alloc_set_vma(alloc, NULL);
+ }
+ 
+ /**
+-- 
+2.40.1
+
 
 
