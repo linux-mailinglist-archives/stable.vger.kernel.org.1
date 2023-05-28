@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E95C713C36
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A608C713D4A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbjE1TNJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:13:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33126 "EHLO
+        id S230018AbjE1TXz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjE1TNJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:09 -0400
+        with ESMTP id S229993AbjE1TXs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B925FA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F3AA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 574BC618D9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F64C433EF;
-        Sun, 28 May 2023 19:13:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64C7460F77
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68819C433D2;
+        Sun, 28 May 2023 19:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301186;
-        bh=7ejSfEP/MfWk7l4/Sz7wUJBazTUAaNb51zY7QDpeo7Y=;
+        s=korg; t=1685301826;
+        bh=3nSx2KCemwv4hbknYteFY1HJuji8xiFBfgoofsSnr+4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ijUvrekCM4U82ijcsV2LD4De8Z0UQ/rfLWkfHCQV4LEnc4adScwJMhonsCmSJn2ui
-         14ZoikcS1TsH+aWfovpDoAGRS7cq0m3RkGMbLUTCZyZ5XXePaMgDFTW7KlsZ2D3H+2
-         BxxC7akCL+cjG4pubvL/vMT7m3Hnb9aG/MAE2DWs=
+        b=l5O5FyOxTJp1yMbg+kpv76HuP4So0tHpaA9YPwX8fUnfCPRH0Mmc2Jam1QCVHba3E
+         I32vUuv5Oig/qfLL4y5GGXAog9rdUlXrIJFYvG/o0AhybopeLDTxaHdFNHyNgsofNb
+         jUded5DMhcMJTqplF3qPFZKFXzSjP0G8VXjMFLwQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 02/86] netlink: annotate accesses to nlk->cb_running
+Subject: [PATCH 5.4 052/161] clk: tegra20: fix gcc-7 constant overflow warning
 Date:   Sun, 28 May 2023 20:09:36 +0100
-Message-Id: <20230528190828.647288023@linuxfoundation.org>
+Message-Id: <20230528190838.856025861@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,107 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a939d14919b799e6fff8a9c80296ca229ba2f8a4 ]
+[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
 
-Both netlink_recvmsg() and netlink_native_seq_show() read
-nlk->cb_running locklessly. Use READ_ONCE() there.
+Older gcc versions get confused by comparing a u32 value to a negative
+constant in a switch()/case block:
 
-Add corresponding WRITE_ONCE() to netlink_dump() and
-__netlink_dump_start()
+drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
+drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_12MHZ:
+  ^~~~
+drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_26MHZ:
 
-syzbot reported:
-BUG: KCSAN: data-race in __netlink_dump_start / netlink_recvmsg
+Make the constants unsigned instead.
 
-write to 0xffff88813ea4db59 of 1 bytes by task 28219 on cpu 0:
-__netlink_dump_start+0x3af/0x4d0 net/netlink/af_netlink.c:2399
-netlink_dump_start include/linux/netlink.h:308 [inline]
-rtnetlink_rcv_msg+0x70f/0x8c0 net/core/rtnetlink.c:6130
-netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2577
-rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6192
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1942
-sock_sendmsg_nosec net/socket.c:724 [inline]
-sock_sendmsg net/socket.c:747 [inline]
-sock_write_iter+0x1aa/0x230 net/socket.c:1138
-call_write_iter include/linux/fs.h:1851 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x463/0x760 fs/read_write.c:584
-ksys_write+0xeb/0x1a0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x42/0x50 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff88813ea4db59 of 1 bytes by task 28222 on cpu 1:
-netlink_recvmsg+0x3b4/0x730 net/netlink/af_netlink.c:2022
-sock_recvmsg_nosec+0x4c/0x80 net/socket.c:1017
-____sys_recvmsg+0x2db/0x310 net/socket.c:2718
-___sys_recvmsg net/socket.c:2762 [inline]
-do_recvmmsg+0x2e5/0x710 net/socket.c:2856
-__sys_recvmmsg net/socket.c:2935 [inline]
-__do_sys_recvmmsg net/socket.c:2958 [inline]
-__se_sys_recvmmsg net/socket.c:2951 [inline]
-__x64_sys_recvmmsg+0xe2/0x160 net/socket.c:2951
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x00 -> 0x01
-
-Fixes: 16b304f3404f ("netlink: Eliminate kmalloc in netlink dump operation.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index d7b0a7aa29a83..4b40edb51b9e5 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1977,7 +1977,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index 3e0f04f0e16e5..3f74497d73e58 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -18,24 +18,24 @@
+ #define MISC_CLK_ENB 0x48
  
- 	skb_free_datagram(sk, skb);
+ #define OSC_CTRL 0x50
+-#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
+-#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
+-#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
+-#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
+-#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
+-#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
+-
+-#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
+-#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
+-#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
+-#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
++#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
++#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
++#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
++#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
++#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
++#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
++
++#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
++#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
++#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
++#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
  
--	if (nlk->cb_running &&
-+	if (READ_ONCE(nlk->cb_running) &&
- 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
- 		ret = netlink_dump(sk);
- 		if (ret) {
-@@ -2259,7 +2259,7 @@ static int netlink_dump(struct sock *sk)
- 	if (cb->done)
- 		cb->done(cb);
+ #define OSC_FREQ_DET 0x58
+-#define OSC_FREQ_DET_TRIG (1<<31)
++#define OSC_FREQ_DET_TRIG (1u<<31)
  
--	nlk->cb_running = false;
-+	WRITE_ONCE(nlk->cb_running, false);
- 	module = cb->module;
- 	skb = cb->skb;
- 	mutex_unlock(nlk->cb_mutex);
-@@ -2320,7 +2320,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
- 			goto error_put;
- 	}
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
  
--	nlk->cb_running = true;
-+	WRITE_ONCE(nlk->cb_running, true);
- 	nlk->dump_done_errno = INT_MAX;
+ #define TEGRA20_CLK_PERIPH_BANKS	3
  
- 	mutex_unlock(nlk->cb_mutex);
-@@ -2633,7 +2633,7 @@ static int netlink_seq_show(struct seq_file *seq, void *v)
- 			   nlk->groups ? (u32)nlk->groups[0] : 0,
- 			   sk_rmem_alloc_get(s),
- 			   sk_wmem_alloc_get(s),
--			   nlk->cb_running,
-+			   READ_ONCE(nlk->cb_running),
- 			   refcount_read(&s->sk_refcnt),
- 			   atomic_read(&s->sk_drops),
- 			   sock_i_ino(s)
 -- 
 2.39.2
 
