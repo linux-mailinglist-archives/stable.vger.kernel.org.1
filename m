@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 196E2713C82
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7BF713E5F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbjE1TPt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35016 "EHLO
+        id S230346AbjE1TfK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbjE1TPo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:44 -0400
+        with ESMTP id S230326AbjE1TfJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77AEAA2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:15:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8677C10A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 146FD61991
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30943C433D2;
-        Sun, 28 May 2023 19:15:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D1A1861DFD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2E8C433EF;
+        Sun, 28 May 2023 19:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301342;
-        bh=raaNxaKuHJ08Pgb0zC6OosSbOjmqhnvtFf1KAelBPcw=;
+        s=korg; t=1685302492;
+        bh=CKaavuVwpesSYcF8tqwT9QrLkyFKL6cCL28Tl2heQUw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E+8vYWPp7iQh2WGl3qvnMMVjwcP/p/GzrawKWb16fXnhqjg45Ya6QCpX/VeftZNnI
-         RX05q4xAyafkYA+JxtRvsFruKHcdijs7ZMjb/9Kt5AqQXvTF1OQ6bb6gv5F8USKJ2s
-         P7qeWcKjuChIquxmq0uF9avyuGIyqINkRugksDuM=
+        b=wP76KX714BOxIULDKrR6QP/5rBdmrl0k1mDyGEL3N/MpPVoMy2xFIOVdMDevNm9RF
+         yPM5yoLI8wdYUT/5Wu82dGeIibHlz7Xh89UdMQQiI396PeRLW4p8ESS5J0Zol6F/nT
+         aaXFjgibkKw+KOIIfx+q/x8MtREn/TapEqDUlSZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vitaliy Tomin <tomin@iszf.irk.ru>,
-        stable <stable@kernel.org>
-Subject: [PATCH 4.14 51/86] serial: Add support for Advantech PCI-1611U card
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 025/119] power: supply: axp288_fuel_gauge: Fix external_power_changed race
 Date:   Sun, 28 May 2023 20:10:25 +0100
-Message-Id: <20230528190830.496838403@linuxfoundation.org>
+Message-Id: <20230528190836.182826520@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,48 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vitaliy Tomin <tomin@iszf.irk.ru>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit d2b00516de0e1d696724247098f6733a6ea53908 upstream.
+commit f8319774d6f1567d6e7d03653174ab0c82c5c66d upstream.
 
-Add support for Advantech PCI-1611U card
+fuel_gauge_external_power_changed() dereferences info->bat,
+which gets sets in axp288_fuel_gauge_probe() like this:
 
-Advantech provides opensource drivers for this and many others card
-based on legacy copy of 8250_pci driver called adv950
+  info->bat = devm_power_supply_register(dev, &fuel_gauge_desc, &psy_cfg);
 
-https://www.advantech.com/emt/support/details/driver?id=1-TDOIMJ
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where fuel_gauge_external_power_changed() may get called while
+info->bat has not been set yet leading to a NULL pointer dereference.
 
-It is hard to maintain to run as out of tree module on newer kernels.
-Just adding PCI ID to kernel 8250_pci works perfect.
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in info->bat,
+so fuel_gauge_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
 
-Signed-off-by: Vitaliy Tomin <tomin@iszf.irk.ru>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230423034512.2671157-1-tomin@iszf.irk.ru
+Fixes: 30abb3d07929 ("power: supply: axp288_fuel_gauge: Take lock before updating the valid flag")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/power/supply/axp288_fuel_gauge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1651,6 +1651,8 @@ pci_wch_ch38x_setup(struct serial_privat
- #define PCI_SUBDEVICE_ID_SIIG_DUAL_30	0x2530
- #define PCI_VENDOR_ID_ADVANTECH		0x13fe
- #define PCI_DEVICE_ID_INTEL_CE4100_UART 0x2e66
-+#define PCI_DEVICE_ID_ADVANTECH_PCI1600	0x1600
-+#define PCI_DEVICE_ID_ADVANTECH_PCI1600_1611	0x1611
- #define PCI_DEVICE_ID_ADVANTECH_PCI3620	0x3620
- #define PCI_DEVICE_ID_ADVANTECH_PCI3618	0x3618
- #define PCI_DEVICE_ID_ADVANTECH_PCIf618	0xf618
-@@ -3851,6 +3853,9 @@ static SIMPLE_DEV_PM_OPS(pciserial_pm_op
- 			 pciserial_resume_one);
+diff --git a/drivers/power/supply/axp288_fuel_gauge.c b/drivers/power/supply/axp288_fuel_gauge.c
+index 05f413178462..3be6f3b10ea4 100644
+--- a/drivers/power/supply/axp288_fuel_gauge.c
++++ b/drivers/power/supply/axp288_fuel_gauge.c
+@@ -507,7 +507,7 @@ static void fuel_gauge_external_power_changed(struct power_supply *psy)
+ 	mutex_lock(&info->lock);
+ 	info->valid = 0; /* Force updating of the cached registers */
+ 	mutex_unlock(&info->lock);
+-	power_supply_changed(info->bat);
++	power_supply_changed(psy);
+ }
  
- static const struct pci_device_id serial_pci_tbl[] = {
-+	{	PCI_VENDOR_ID_ADVANTECH, PCI_DEVICE_ID_ADVANTECH_PCI1600,
-+		PCI_DEVICE_ID_ADVANTECH_PCI1600_1611, PCI_ANY_ID, 0, 0,
-+		pbn_b0_4_921600 },
- 	/* Advantech use PCI_DEVICE_ID_ADVANTECH_PCI3620 (0x3620) as 'PCI_SUBVENDOR_ID' */
- 	{	PCI_VENDOR_ID_ADVANTECH, PCI_DEVICE_ID_ADVANTECH_PCI3620,
- 		PCI_DEVICE_ID_ADVANTECH_PCI3620, 0x0001, 0, 0,
+ static struct power_supply_desc fuel_gauge_desc = {
+-- 
+2.40.1
+
 
 
