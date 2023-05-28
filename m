@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE31713C8F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E35EA713F55
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbjE1TQO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:16:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35434 "EHLO
+        id S231243AbjE1ToU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbjE1TQO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBC5A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:13 -0700 (PDT)
+        with ESMTP id S231241AbjE1ToT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91CB49B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF0CB619A2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC88C433EF;
-        Sun, 28 May 2023 19:16:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2540261195
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B01C433D2;
+        Sun, 28 May 2023 19:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301372;
-        bh=IK3xFDM/vJDMW5hkcakojbUcbiGRgMjnwW2Em/OxSHk=;
+        s=korg; t=1685303057;
+        bh=CpLG7NOiNg+qULVZAh19q+rOHLU3KdkEc4vXup95nos=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otvWu+pbKtRpjiexixGvohEpRksY8RxYLdv039Tp+lk3fI84KVWiVyEzEXk0I4hkR
-         XbB0RI7ROYmfe1B2Upt2oPcQxS/IAOsbnDpUazW2/AF6Crio3rqI0BrtdFAu+ohEG7
-         TG7y9i1ktvyOV0ETSrzl2nisOINnJls42mIBaeBU=
+        b=Sl6IvhwbJwrBO0tbrDA3W6og7i0ekCcjK5JKCvXQewoosuqJVw34LbGQrBr00tyHR
+         1uA7jntC6ICQ8eusdROzsJOfY6LweiWzxWxVxy8CMeTGNedKkc6uTVpDIPxyJp4tyh
+         cdSqgYLVH4KpM/s3BQTk7U+0vmEG0Go3SJaK6WOI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Juergen Gross <jgross@suse.com>
-Subject: [PATCH 4.14 83/86] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
+        patches@lists.linux.dev, Oleksij Rempel <o.rempel@pengutronix.de>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH 5.10 136/211] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
 Date:   Sun, 28 May 2023 20:10:57 +0100
-Message-Id: <20230528190831.706484607@linuxfoundation.org>
+Message-Id: <20230528190846.904355294@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,60 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
+commit db2773d65b02aed319a93efdfb958087771d4e19 upstream.
 
-In the pvcalls_new_active_socket() function, most error paths call
-pvcalls_back_release_active(fedata->dev, fedata, map) which calls
-sock_release() on "sock".  The bug is that the caller also frees sock.
+The control message provided by isotp support MSG_CMSG_COMPAT but
+blocked recvmsg() syscalls that have set this flag, i.e. on 32bit user
+space on 64 bit kernels.
 
-Fix this by making every error path in pvcalls_new_active_socket()
-release the sock, and don't free it in the caller.
-
-Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Link: https://github.com/hartkopp/can-isotp/issues/59
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Suggested-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Fixes: 42bf50a1795a ("can: isotp: support MSG_TRUNC flag when reading from socket")
+Link: https://lore.kernel.org/20230505110308.81087-2-mkl@pengutronix.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/pvcalls-back.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/can/isotp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/xen/pvcalls-back.c
-+++ b/drivers/xen/pvcalls-back.c
-@@ -338,8 +338,10 @@ static struct sock_mapping *pvcalls_new_
- 	void *page;
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1016,7 +1016,7 @@ static int isotp_recvmsg(struct socket *
+ 	int noblock = flags & MSG_DONTWAIT;
+ 	int ret = 0;
  
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
--	if (map == NULL)
-+	if (map == NULL) {
-+		sock_release(sock);
- 		return NULL;
-+	}
+-	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK))
++	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK | MSG_CMSG_COMPAT))
+ 		return -EINVAL;
  
- 	map->fedata = fedata;
- 	map->sock = sock;
-@@ -431,10 +433,8 @@ static int pvcalls_back_connect(struct x
- 					req->u.connect.ref,
- 					req->u.connect.evtchn,
- 					sock);
--	if (!map) {
-+	if (!map)
- 		ret = -EFAULT;
--		sock_release(sock);
--	}
- 
- out:
- 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
-@@ -575,7 +575,6 @@ static void __pvcalls_back_accept(struct
- 					sock);
- 	if (!map) {
- 		ret = -EFAULT;
--		sock_release(sock);
- 		goto out_error;
- 	}
- 
+ 	if (!so->bound)
 
 
