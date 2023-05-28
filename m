@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22596713E2C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E5A713DBD
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230287AbjE1Tco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49256 "EHLO
+        id S230142AbjE1T23 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:28:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230284AbjE1Tcn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA54A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:42 -0700 (PDT)
+        with ESMTP id S230139AbjE1T23 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23374A7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9481D61DBA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06FEC433D2;
-        Sun, 28 May 2023 19:32:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A788B61040
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BA6C433D2;
+        Sun, 28 May 2023 19:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302361;
-        bh=tlN1MXKmvWwtwLomffp7nqQLqUEEJ6ofhs2tEj/TMlo=;
+        s=korg; t=1685302107;
+        bh=j5vvx8VTbcx7YDeHezKVoK1v+mS/DTAgrOeEYFBUoY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eIXI7QVkBSfh4l8sqcVrB7I3bWusLYEuXDp9wLS9yXUDSiRDf0NE9M1nOfOeFGNe2
-         r6lmT064xaO5gxpshpQAMQHT3PpaaKz/bkN114DPkEyS/+SbD/I5n7KQXtUYPv6/c/
-         AwyMKFOSfmXssDV/G9ioDOxjdpwRQSb0HwRH3REw=
+        b=N92em4+akuwDmzpH8vspHhV30g3kAWDwjF2C9kLGW1xTqoUo/V4Tb1yt+NSeb0Uzs
+         HyJkeDY66cfEqclIFih3TpYgKBgFCymRDukKso99Yr8CEbUqxMBs1MeGut4ipIVrnR
+         XukHHE6rU9DS5PmWCfsHIYoBNfQrUKFog7m8Vq8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.3 104/127] cxl: Move cxl_await_media_ready() to before capacity info retrieval
+        patches@lists.linux.dev, Vernon Lovejoy <vlovejoy@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.4 156/161] x86/show_trace_log_lvl: Ensure stack pointer is aligned, again
 Date:   Sun, 28 May 2023 20:11:20 +0100
-Message-Id: <20230528190839.661683140@linuxfoundation.org>
+Message-Id: <20230528190841.797032591@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,145 +54,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Vernon Lovejoy <vlovejoy@redhat.com>
 
-commit e764f12208b99ac7892c4e3f6bf88d71ca71036f upstream.
+commit 2e4be0d011f21593c6b316806779ba1eba2cd7e0 upstream.
 
-Move cxl_await_media_ready() to cxl_pci probe before driver starts issuing
-IDENTIFY and retrieving memory device information to ensure that the
-device is ready to provide the information. Allow cxl_pci_probe() to succeed
-even if media is not ready. Cache the media failure in cxlds and don't ask
-the device for any media information.
+The commit e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
+tried to align the stack pointer in show_trace_log_lvl(), otherwise the
+"stack < stack_info.end" check can't guarantee that the last read does
+not go past the end of the stack.
 
-The rationale for proceeding in the !media_ready case is to allow for
-mailbox operations to interrogate and/or remediate the device. After
-media is repaired then rebinding the cxl_pci driver is expected to
-restart the capacity scan.
+However, we have the same problem with the initial value of the stack
+pointer, it can also be unaligned. So without this patch this trivial
+kernel module
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Fixes: b39cb1052a5c ("cxl/mem: Register CXL memX devices")
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/168445310026.3251520.8124296540679268206.stgit@djiang5-mobl3
-[djbw: fixup cxl_test]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+	#include <linux/module.h>
+
+	static int init(void)
+	{
+		asm volatile("sub    $0x4,%rsp");
+		dump_stack();
+		asm volatile("add    $0x4,%rsp");
+
+		return -EAGAIN;
+	}
+
+	module_init(init);
+	MODULE_LICENSE("GPL");
+
+crashes the kernel.
+
+Fixes: e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
+Signed-off-by: Vernon Lovejoy <vlovejoy@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20230512104232.GA10227@redhat.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/mbox.c      |   15 ++++++++++-----
- drivers/cxl/cxlmem.h         |    2 ++
- drivers/cxl/mem.c            |    3 +++
- drivers/cxl/pci.c            |    6 ++++++
- drivers/cxl/port.c           |    6 ------
- tools/testing/cxl/test/mem.c |    1 +
- 6 files changed, 22 insertions(+), 11 deletions(-)
+ arch/x86/kernel/dumpstack.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -984,7 +984,7 @@ static int cxl_mem_get_partition_info(st
-  * cxl_dev_state_identify() - Send the IDENTIFY command to the device.
-  * @cxlds: The device data for the operation
-  *
-- * Return: 0 if identify was executed successfully.
-+ * Return: 0 if identify was executed successfully or media not ready.
-  *
-  * This will dispatch the identify command to the device and on success populate
-  * structures to be exported to sysfs.
-@@ -996,6 +996,9 @@ int cxl_dev_state_identify(struct cxl_de
- 	struct cxl_mbox_cmd mbox_cmd;
- 	int rc;
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -171,7 +171,6 @@ void show_trace_log_lvl(struct task_stru
+ 	printk("%sCall Trace:\n", log_lvl);
  
-+	if (!cxlds->media_ready)
-+		return 0;
-+
- 	mbox_cmd = (struct cxl_mbox_cmd) {
- 		.opcode = CXL_MBOX_OP_IDENTIFY,
- 		.size_out = sizeof(id),
-@@ -1065,10 +1068,12 @@ int cxl_mem_create_range_info(struct cxl
- 				   cxlds->persistent_only_bytes, "pmem");
- 	}
+ 	unwind_start(&state, task, regs, stack);
+-	stack = stack ? : get_stack_pointer(task, regs);
+ 	regs = unwind_get_entry_regs(&state, &partial);
  
--	rc = cxl_mem_get_partition_info(cxlds);
--	if (rc) {
--		dev_err(dev, "Failed to query partition information\n");
--		return rc;
-+	if (cxlds->media_ready) {
-+		rc = cxl_mem_get_partition_info(cxlds);
-+		if (rc) {
-+			dev_err(dev, "Failed to query partition information\n");
-+			return rc;
-+		}
- 	}
- 
- 	rc = add_dpa_res(dev, &cxlds->dpa_res, &cxlds->ram_res, 0,
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -227,6 +227,7 @@ struct cxl_event_state {
-  * @regs: Parsed register blocks
-  * @cxl_dvsec: Offset to the PCIe device DVSEC
-  * @rcd: operating in RCD mode (CXL 3.0 9.11.8 CXL Devices Attached to an RCH)
-+ * @media_ready: Indicate whether the device media is usable
-  * @payload_size: Size of space for payload
-  *                (CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register)
-  * @lsa_size: Size of Label Storage Area
-@@ -264,6 +265,7 @@ struct cxl_dev_state {
- 	int cxl_dvsec;
- 
- 	bool rcd;
-+	bool media_ready;
- 	size_t payload_size;
- 	size_t lsa_size;
- 	struct mutex mbox_mutex; /* Protects device mailbox and firmware */
---- a/drivers/cxl/mem.c
-+++ b/drivers/cxl/mem.c
-@@ -104,6 +104,9 @@ static int cxl_mem_probe(struct device *
- 	struct dentry *dentry;
- 	int rc;
- 
-+	if (!cxlds->media_ready)
-+		return -EBUSY;
-+
  	/*
- 	 * Someone is trying to reattach this device after it lost its port
- 	 * connection (an endpoint port previously registered by this memdev was
---- a/drivers/cxl/pci.c
-+++ b/drivers/cxl/pci.c
-@@ -757,6 +757,12 @@ static int cxl_pci_probe(struct pci_dev
- 	if (rc)
- 		dev_dbg(&pdev->dev, "Failed to map RAS capability.\n");
+@@ -190,9 +189,13 @@ void show_trace_log_lvl(struct task_stru
+ 	 * - hardirq stack
+ 	 * - entry stack
+ 	 */
+-	for ( ; stack; stack = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
++	for (stack = stack ?: get_stack_pointer(task, regs);
++	     stack;
++	     stack = stack_info.next_sp) {
+ 		const char *stack_name;
  
-+	rc = cxl_await_media_ready(cxlds);
-+	if (rc == 0)
-+		cxlds->media_ready = true;
-+	else
-+		dev_warn(&pdev->dev, "Media not active (%d)\n", rc);
++		stack = PTR_ALIGN(stack, sizeof(long));
 +
- 	rc = cxl_pci_setup_mailbox(cxlds);
- 	if (rc)
- 		return rc;
---- a/drivers/cxl/port.c
-+++ b/drivers/cxl/port.c
-@@ -117,12 +117,6 @@ static int cxl_endpoint_port_probe(struc
- 	if (rc)
- 		return rc;
- 
--	rc = cxl_await_media_ready(cxlds);
--	if (rc) {
--		dev_err(&port->dev, "Media not active (%d)\n", rc);
--		return rc;
--	}
--
- 	rc = devm_cxl_enumerate_decoders(cxlhdm, &info);
- 	if (rc)
- 		return rc;
---- a/tools/testing/cxl/test/mem.c
-+++ b/tools/testing/cxl/test/mem.c
-@@ -1010,6 +1010,7 @@ static int cxl_mock_mem_probe(struct pla
- 	if (rc)
- 		return rc;
- 
-+	cxlds->media_ready = true;
- 	rc = cxl_dev_state_identify(cxlds);
- 	if (rc)
- 		return rc;
+ 		if (get_stack_info(stack, task, &stack_info, &visit_mask)) {
+ 			/*
+ 			 * We weren't on a valid stack.  It's possible that
 
 
