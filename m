@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B781E713FAA
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60E5713E2D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231343AbjE1Trq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33772 "EHLO
+        id S230285AbjE1Tcq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbjE1Trq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:46 -0400
+        with ESMTP id S230284AbjE1Tcp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1F6A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A893B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13F2761FBF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32618C433EF;
-        Sun, 28 May 2023 19:47:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15DDC61DBA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D2AC433D2;
+        Sun, 28 May 2023 19:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303263;
-        bh=BhDNn27Yu9vs0xcrGEcdpul8nBZT7A3wklMAHCkaJi4=;
+        s=korg; t=1685302363;
+        bh=oyyn4KZunJtb3sLgatkDof/E/uxkqjH/c3QQBwEkKa8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A0poaAmF3QVpHuGrbIGh/i5awPdDcV3CFXP5WTiookLWNRHXbsOc5+irpdTO6QtBS
-         5Cz7v7XZBzR9dxJ1rDnCNGCFTOKtGpWCBQbzuH75NZ37pq+8tGdGnD8kW7wtf1SgZg
-         bMY4dShDO/zw86ITrc4Yos0NXVV9F+On0+q/3PbY=
+        b=kszrnNA7vkaKpxWxuF0iTcdHbmL449Gi5DoO0HJjel4aYTnPnFMKegjstgHydQTy5
+         lItRWuGMcm9H8wdE67rp4V7RoqlhUJw/FjCk8rlja1P7b2eT1vdgPMqqwORz9L5yy6
+         CpLBI6dsxw39zrK1NkjpXCHMyq1pNRg0vp2jETkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Elson Roy Serrao <quic_eserrao@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/69] usb: gadget: Properly configure the device for remote wakeup
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.3 105/127] sctp: fix an issue that plpmtu can never go to complete state
 Date:   Sun, 28 May 2023 20:11:21 +0100
-Message-Id: <20230528190828.408769873@linuxfoundation.org>
+Message-Id: <20230528190839.692125675@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,197 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit b93c2a68f3d9dc98ec30dcb342ae47c1c8d09d18 ]
+commit 6ca328e985cd995dfd1d5de44046e6074f853fbb upstream.
 
-The wakeup bit in the bmAttributes field indicates whether the device
-is configured for remote wakeup. But this field should be allowed to
-set only if the UDC supports such wakeup mechanism. So configure this
-field based on UDC capability. Also inform the UDC whether the device
-is configured for remote wakeup by implementing a gadget op.
+When doing plpmtu probe, the probe size is growing every time when it
+receives the ACK during the Search state until the probe fails. When
+the failure occurs, pl.probe_high is set and it goes to the Complete
+state.
 
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Link: https://lore.kernel.org/r/1679694482-16430-2-git-send-email-quic_eserrao@quicinc.com
+However, if the link pmtu is huge, like 65535 in loopback_dev, the probe
+eventually keeps using SCTP_MAX_PLPMTU as the probe size and never fails.
+Because of that, pl.probe_high can not be set, and the plpmtu probe can
+never go to the Complete state.
+
+Fix it by setting pl.probe_high to SCTP_MAX_PLPMTU when the probe size
+grows to SCTP_MAX_PLPMTU in sctp_transport_pl_recv(). Also, not allow
+the probe size greater than SCTP_MAX_PLPMTU in the Complete state.
+
+Fixes: b87641aff9e7 ("sctp: do state transition when a probe succeeds on HB ACK recv path")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 4e8ef34e36f2 ("usb: dwc3: fix gadget mode suspend interrupt handler issue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c | 18 ++++++++++++++++++
- drivers/usb/gadget/configfs.c  |  3 +++
- drivers/usb/gadget/udc/core.c  | 27 +++++++++++++++++++++++++++
- drivers/usb/gadget/udc/trace.h |  5 +++++
- include/linux/usb/composite.h  |  2 ++
- include/linux/usb/gadget.h     |  8 ++++++++
- 6 files changed, 63 insertions(+)
+ net/sctp/transport.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 553382ce38378..0886cff9aa1c0 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -498,6 +498,19 @@ static u8 encode_bMaxPower(enum usb_device_speed speed,
- 		return min(val, 900U) / 8;
- }
+--- a/net/sctp/transport.c
++++ b/net/sctp/transport.c
+@@ -324,9 +324,12 @@ bool sctp_transport_pl_recv(struct sctp_
+ 		t->pl.probe_size += SCTP_PL_BIG_STEP;
+ 	} else if (t->pl.state == SCTP_PL_SEARCH) {
+ 		if (!t->pl.probe_high) {
+-			t->pl.probe_size = min(t->pl.probe_size + SCTP_PL_BIG_STEP,
+-					       SCTP_MAX_PLPMTU);
+-			return false;
++			if (t->pl.probe_size < SCTP_MAX_PLPMTU) {
++				t->pl.probe_size = min(t->pl.probe_size + SCTP_PL_BIG_STEP,
++						       SCTP_MAX_PLPMTU);
++				return false;
++			}
++			t->pl.probe_high = SCTP_MAX_PLPMTU;
+ 		}
+ 		t->pl.probe_size += SCTP_PL_MIN_STEP;
+ 		if (t->pl.probe_size >= t->pl.probe_high) {
+@@ -341,7 +344,7 @@ bool sctp_transport_pl_recv(struct sctp_
+ 	} else if (t->pl.state == SCTP_PL_COMPLETE) {
+ 		/* Raise probe_size again after 30 * interval in Search Complete */
+ 		t->pl.state = SCTP_PL_SEARCH; /* Search Complete -> Search */
+-		t->pl.probe_size += SCTP_PL_MIN_STEP;
++		t->pl.probe_size = min(t->pl.probe_size + SCTP_PL_MIN_STEP, SCTP_MAX_PLPMTU);
+ 	}
  
-+void check_remote_wakeup_config(struct usb_gadget *g,
-+				struct usb_configuration *c)
-+{
-+	if (USB_CONFIG_ATT_WAKEUP & c->bmAttributes) {
-+		/* Reset the rw bit if gadget is not capable of it */
-+		if (!g->wakeup_capable && g->ops->set_remote_wakeup) {
-+			WARN(c->cdev, "Clearing wakeup bit for config c.%d\n",
-+			     c->bConfigurationValue);
-+			c->bmAttributes &= ~USB_CONFIG_ATT_WAKEUP;
-+		}
-+	}
-+}
-+
- static int config_buf(struct usb_configuration *config,
- 		enum usb_device_speed speed, void *buf, u8 type)
- {
-@@ -945,6 +958,11 @@ static int set_config(struct usb_composite_dev *cdev,
- 		power = min(power, 500U);
- 	else
- 		power = min(power, 900U);
-+
-+	if (USB_CONFIG_ATT_WAKEUP & c->bmAttributes)
-+		usb_gadget_set_remote_wakeup(gadget, 1);
-+	else
-+		usb_gadget_set_remote_wakeup(gadget, 0);
- done:
- 	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
- 		usb_gadget_set_selfpowered(gadget);
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 5cbf4084daedc..528b9ec1d9e85 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1384,6 +1384,9 @@ static int configfs_composite_bind(struct usb_gadget *gadget,
- 		if (gadget_is_otg(gadget))
- 			c->descriptors = otg_desc;
- 
-+		/* Properly configure the bmAttributes wakeup bit */
-+		check_remote_wakeup_config(gadget, c);
-+
- 		cfg = container_of(c, struct config_usb_cfg, c);
- 		if (!list_empty(&cfg->string_list)) {
- 			i = 0;
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index 61099f2d057dc..6c05a3a9b542f 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -508,6 +508,33 @@ int usb_gadget_wakeup(struct usb_gadget *gadget)
- }
- EXPORT_SYMBOL_GPL(usb_gadget_wakeup);
- 
-+/**
-+ * usb_gadget_set_remote_wakeup - configures the device remote wakeup feature.
-+ * @gadget:the device being configured for remote wakeup
-+ * @set:value to be configured.
-+ *
-+ * set to one to enable remote wakeup feature and zero to disable it.
-+ *
-+ * returns zero on success, else negative errno.
-+ */
-+int usb_gadget_set_remote_wakeup(struct usb_gadget *gadget, int set)
-+{
-+	int ret = 0;
-+
-+	if (!gadget->ops->set_remote_wakeup) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
-+	ret = gadget->ops->set_remote_wakeup(gadget, set);
-+
-+out:
-+	trace_usb_gadget_set_remote_wakeup(gadget, ret);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(usb_gadget_set_remote_wakeup);
-+
- /**
-  * usb_gadget_set_selfpowered - sets the device selfpowered feature.
-  * @gadget:the device being declared as self-powered
-diff --git a/drivers/usb/gadget/udc/trace.h b/drivers/usb/gadget/udc/trace.h
-index 98584f6b6c662..428819311afbf 100644
---- a/drivers/usb/gadget/udc/trace.h
-+++ b/drivers/usb/gadget/udc/trace.h
-@@ -91,6 +91,11 @@ DEFINE_EVENT(udc_log_gadget, usb_gadget_wakeup,
- 	TP_ARGS(g, ret)
- );
- 
-+DEFINE_EVENT(udc_log_gadget, usb_gadget_set_remote_wakeup,
-+	TP_PROTO(struct usb_gadget *g, int ret),
-+	TP_ARGS(g, ret)
-+);
-+
- DEFINE_EVENT(udc_log_gadget, usb_gadget_set_selfpowered,
- 	TP_PROTO(struct usb_gadget *g, int ret),
- 	TP_ARGS(g, ret)
-diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
-index 9d27622792867..0399d1226323b 100644
---- a/include/linux/usb/composite.h
-+++ b/include/linux/usb/composite.h
-@@ -426,6 +426,8 @@ extern int composite_dev_prepare(struct usb_composite_driver *composite,
- extern int composite_os_desc_req_prepare(struct usb_composite_dev *cdev,
- 					 struct usb_ep *ep0);
- void composite_dev_cleanup(struct usb_composite_dev *cdev);
-+void check_remote_wakeup_config(struct usb_gadget *g,
-+				struct usb_configuration *c);
- 
- static inline struct usb_composite_driver *to_cdriver(
- 		struct usb_gadget_driver *gdrv)
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 10fe57cf40bec..c5bc739266ed6 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -311,6 +311,7 @@ struct usb_udc;
- struct usb_gadget_ops {
- 	int	(*get_frame)(struct usb_gadget *);
- 	int	(*wakeup)(struct usb_gadget *);
-+	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
- 	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
- 	int	(*vbus_session) (struct usb_gadget *, int is_active);
- 	int	(*vbus_draw) (struct usb_gadget *, unsigned mA);
-@@ -385,6 +386,8 @@ struct usb_gadget_ops {
-  * @connected: True if gadget is connected.
-  * @lpm_capable: If the gadget max_speed is FULL or HIGH, this flag
-  *	indicates that it supports LPM as per the LPM ECN & errata.
-+ * @wakeup_capable: True if gadget is capable of sending remote wakeup.
-+ * @wakeup_armed: True if gadget is armed by the host for remote wakeup.
-  * @irq: the interrupt number for device controller.
-  *
-  * Gadgets have a mostly-portable "gadget driver" implementing device
-@@ -445,6 +448,8 @@ struct usb_gadget {
- 	unsigned			deactivated:1;
- 	unsigned			connected:1;
- 	unsigned			lpm_capable:1;
-+	unsigned			wakeup_capable:1;
-+	unsigned			wakeup_armed:1;
- 	int				irq;
- };
- #define work_to_gadget(w)	(container_of((w), struct usb_gadget, work))
-@@ -600,6 +605,7 @@ static inline int gadget_is_otg(struct usb_gadget *g)
- #if IS_ENABLED(CONFIG_USB_GADGET)
- int usb_gadget_frame_number(struct usb_gadget *gadget);
- int usb_gadget_wakeup(struct usb_gadget *gadget);
-+int usb_gadget_set_remote_wakeup(struct usb_gadget *gadget, int set);
- int usb_gadget_set_selfpowered(struct usb_gadget *gadget);
- int usb_gadget_clear_selfpowered(struct usb_gadget *gadget);
- int usb_gadget_vbus_connect(struct usb_gadget *gadget);
-@@ -615,6 +621,8 @@ static inline int usb_gadget_frame_number(struct usb_gadget *gadget)
- { return 0; }
- static inline int usb_gadget_wakeup(struct usb_gadget *gadget)
- { return 0; }
-+static inline int usb_gadget_set_remote_wakeup(struct usb_gadget *gadget, int set)
-+{ return 0; }
- static inline int usb_gadget_set_selfpowered(struct usb_gadget *gadget)
- { return 0; }
- static inline int usb_gadget_clear_selfpowered(struct usb_gadget *gadget)
--- 
-2.39.2
-
+ 	return t->pl.state == SCTP_PL_COMPLETE;
 
 
