@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6600713DF3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3798713D02
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjE1Ta2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46944 "EHLO
+        id S229921AbjE1TUz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbjE1TaY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:24 -0400
+        with ESMTP id S229914AbjE1TUz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31F0A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8353CA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6811C61D4A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87685C4339B;
-        Sun, 28 May 2023 19:30:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 161C961AFE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B00C433EF;
+        Sun, 28 May 2023 19:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302222;
-        bh=7xFwNCjNfnSz8Oi433LP+2xgTQ/2cwcCMAeC0k9Ndao=;
+        s=korg; t=1685301652;
+        bh=l99n+/hFTNadIblDlaaa9YkgJKmajgwzcYzJmMQlkp0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJAwr7pHVQbFiWNfPr2LVWHcht3izqMVDKV4BIRyoLwprBXlH1lC5eokpi5T1KKLS
-         cgLGrhlWmRKpscPmSlNYJdytLgOp/8eUyn09HnKprL4EnoQkcp8voo4yw0qng8p5mG
-         FYb9crTn+pkSVfY2ehEe9gAo7DtBssaPAMiMXIwA=
+        b=gCSLYfYrLgPsU13dPtpWC/ciRg0Nxl2o8n0apa4w+Hy8fKcLiQ4eZStq7G1vl3Z42
+         yMcgaLOjYFMmb0vgbj22Lo4e2gVPufTuEJQghztX2iIYhmGch64ImHSy52p6Y0kwNv
+         zm/VqmhcqlVVJom1kIOtfrQ+Tsbfu5dqomF3rAic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
-        Jonatas Esteves <jntesteves@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 049/127] drm/amd/pm: Fix output of pp_od_clk_voltage
+        patches@lists.linux.dev, Sergey Bostandzhyan <jin@mediatomb.cc>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 086/132] Add Acer Aspire Ethos 8951G model quirk
 Date:   Sun, 28 May 2023 20:10:25 +0100
-Message-Id: <20230528190837.949321802@linuxfoundation.org>
+Message-Id: <20230528190836.190608940@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +53,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonatas Esteves <jntesteves@gmail.com>
+From: Sergey Bostandzhyan <jin@mediatomb.cc>
 
-commit 40baba5693b9af586dc1063af603d05a79e57a6b upstream.
+[ Upstream commit 00066e9733f629e536f6b7957de2ce11a85fe15a ]
 
-Printing the other clock types should not be conditioned on being able
-to print OD_SCLK. Some GPUs currently have limited capability of only
-printing a subset of these.
+This notebook has 6 built in speakers for 5.1 surround support, however
+only two got autodetected and have also not been assigned correctly.
 
-Since this condition was introduced in v5.18-rc1, reading from
-`pp_od_clk_voltage` has been returning empty on the Asus ROG Strix G15
-(2021).
+This patch enables all speakers and also fixes muting when headphones are
+plugged in.
 
-Fixes: 79c65f3fcbb1 ("drm/amd/pm: do not expose power implementation details to amdgpu_pm.c")
-Reviewed-by: Evan Quan <evan.quan@amd.com>
-Signed-off-by: Jonatas Esteves <jntesteves@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The speaker layout is as follows:
+
+pin 0x15 Front Left / Front Right
+pin 0x18 Front Center / Subwoofer
+pin 0x1b Rear Left / Rear Right (Surround)
+
+The quirk will be enabled automatically on this hardware, but can also be
+activated manually via the model=aspire-ethos module parameter.
+
+Caveat: pin 0x1b is shared between headphones jack and surround speakers.
+When headphones are plugged in, the surround speakers get muted
+automatically by the hardware, however all other speakers remain
+unmuted. Currently it's not possible to make use of the generic automute
+function in the driver, because such shared pins are not supported.
+
+If we would change the pin settings to identify the pin as headphones,
+the surround channel and thus the ability to select 5.1 profiles would
+get lost.
+
+This quirk solves the above problem by monitoring jack state of 0x1b and
+by connecting/disconnecting all remaining speaker pins when something
+gets plugged in or unplugged from the headphones jack port.
+
+Signed-off-by: Sergey Bostandzhyan <jin@mediatomb.cc>
+Link: https://lore.kernel.org/r/20190906093343.GA7640@xn--80adja5bqm.su
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 90670ef774a8 ("ALSA: hda/realtek: Add a quirk for HP EliteDesk 805")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c | 71 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -869,13 +869,11 @@ static ssize_t amdgpu_get_pp_od_clk_volt
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 546872e724275..98b6e93084e5e 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8511,6 +8511,45 @@ static void alc662_fixup_usi_headset_mic(struct hda_codec *codec,
  	}
- 	if (ret == -ENOENT) {
- 		size = amdgpu_dpm_print_clock_levels(adev, OD_SCLK, buf);
--		if (size > 0) {
--			size += amdgpu_dpm_print_clock_levels(adev, OD_MCLK, buf + size);
--			size += amdgpu_dpm_print_clock_levels(adev, OD_VDDC_CURVE, buf + size);
--			size += amdgpu_dpm_print_clock_levels(adev, OD_VDDGFX_OFFSET, buf + size);
--			size += amdgpu_dpm_print_clock_levels(adev, OD_RANGE, buf + size);
--			size += amdgpu_dpm_print_clock_levels(adev, OD_CCLK, buf + size);
--		}
-+		size += amdgpu_dpm_print_clock_levels(adev, OD_MCLK, buf + size);
-+		size += amdgpu_dpm_print_clock_levels(adev, OD_VDDC_CURVE, buf + size);
-+		size += amdgpu_dpm_print_clock_levels(adev, OD_VDDGFX_OFFSET, buf + size);
-+		size += amdgpu_dpm_print_clock_levels(adev, OD_RANGE, buf + size);
-+		size += amdgpu_dpm_print_clock_levels(adev, OD_CCLK, buf + size);
- 	}
+ }
  
- 	if (size == 0)
++static void alc662_aspire_ethos_mute_speakers(struct hda_codec *codec,
++					struct hda_jack_callback *cb)
++{
++	/* surround speakers at 0x1b already get muted automatically when
++	 * headphones are plugged in, but we have to mute/unmute the remaining
++	 * channels manually:
++	 * 0x15 - front left/front right
++	 * 0x18 - front center/ LFE
++	 */
++	if (snd_hda_jack_detect_state(codec, 0x1b) == HDA_JACK_PRESENT) {
++		snd_hda_set_pin_ctl_cache(codec, 0x15, 0);
++		snd_hda_set_pin_ctl_cache(codec, 0x18, 0);
++	} else {
++		snd_hda_set_pin_ctl_cache(codec, 0x15, PIN_OUT);
++		snd_hda_set_pin_ctl_cache(codec, 0x18, PIN_OUT);
++	}
++}
++
++static void alc662_fixup_aspire_ethos_hp(struct hda_codec *codec,
++					const struct hda_fixup *fix, int action)
++{
++    /* Pin 0x1b: shared headphones jack and surround speakers */
++	if (!is_jack_detectable(codec, 0x1b))
++		return;
++
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		snd_hda_jack_detect_enable_callback(codec, 0x1b,
++				alc662_aspire_ethos_mute_speakers);
++		break;
++	case HDA_FIXUP_ACT_INIT:
++		/* Make sure to start in a correct state, i.e. if
++		 * headphones have been plugged in before powering up the system
++		 */
++		alc662_aspire_ethos_mute_speakers(codec, NULL);
++		break;
++	}
++}
++
+ static struct coef_fw alc668_coefs[] = {
+ 	WRITE_COEF(0x01, 0xbebe), WRITE_COEF(0x02, 0xaaaa), WRITE_COEF(0x03,    0x0),
+ 	WRITE_COEF(0x04, 0x0180), WRITE_COEF(0x06,    0x0), WRITE_COEF(0x07, 0x0f80),
+@@ -8582,6 +8621,9 @@ enum {
+ 	ALC662_FIXUP_USI_FUNC,
+ 	ALC662_FIXUP_USI_HEADSET_MODE,
+ 	ALC662_FIXUP_LENOVO_MULTI_CODECS,
++	ALC669_FIXUP_ACER_ASPIRE_ETHOS,
++	ALC669_FIXUP_ACER_ASPIRE_ETHOS_SUBWOOFER,
++	ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET,
+ };
+ 
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -8908,6 +8950,33 @@ static const struct hda_fixup alc662_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc233_alc662_fixup_lenovo_dual_codecs,
+ 	},
++	[ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc662_fixup_aspire_ethos_hp,
++	},
++	[ALC669_FIXUP_ACER_ASPIRE_ETHOS_SUBWOOFER] = {
++		.type = HDA_FIXUP_VERBS,
++		/* subwoofer needs an extra GPIO setting to become audible */
++		.v.verbs = (const struct hda_verb[]) {
++			{0x01, AC_VERB_SET_GPIO_MASK, 0x02},
++			{0x01, AC_VERB_SET_GPIO_DIRECTION, 0x02},
++			{0x01, AC_VERB_SET_GPIO_DATA, 0x00},
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET
++	},
++	[ALC669_FIXUP_ACER_ASPIRE_ETHOS] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x15, 0x92130110 }, /* front speakers */
++			{ 0x18, 0x99130111 }, /* center/subwoofer */
++			{ 0x1b, 0x11130012 }, /* surround plus jack for HP */
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC669_FIXUP_ACER_ASPIRE_ETHOS_SUBWOOFER
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+@@ -8953,6 +9022,7 @@ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x19da, 0xa130, "Zotac Z68", ALC662_FIXUP_ZOTAC_Z68),
+ 	SND_PCI_QUIRK(0x1b0a, 0x01b8, "ACER Veriton", ALC662_FIXUP_ACER_VERITON),
+ 	SND_PCI_QUIRK(0x1b35, 0x2206, "CZC P10T", ALC662_FIXUP_CZC_P10T),
++	SND_PCI_QUIRK(0x1025, 0x0566, "Acer Aspire Ethos 8951G", ALC669_FIXUP_ACER_ASPIRE_ETHOS),
+ 
+ #if 0
+ 	/* Below is a quirk table taken from the old code.
+@@ -9045,6 +9115,7 @@ static const struct hda_model_fixup alc662_fixup_models[] = {
+ 	{.id = ALC892_FIXUP_ASROCK_MOBO, .name = "asrock-mobo"},
+ 	{.id = ALC662_FIXUP_USI_HEADSET_MODE, .name = "usi-headset"},
+ 	{.id = ALC662_FIXUP_LENOVO_MULTI_CODECS, .name = "dual-codecs"},
++	{.id = ALC669_FIXUP_ACER_ASPIRE_ETHOS, .name = "aspire-ethos"},
+ 	{}
+ };
+ 
+-- 
+2.39.2
+
 
 
