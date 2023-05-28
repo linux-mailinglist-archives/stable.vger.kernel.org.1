@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1548E713E16
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9974713F56
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230261AbjE1Tb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
+        id S231241AbjE1ToX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230260AbjE1Tb6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7B7C134
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:49 -0700 (PDT)
+        with ESMTP id S231245AbjE1ToW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E2FA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47A0861D84
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667C0C433D2;
-        Sun, 28 May 2023 19:31:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93EE461195
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B278CC433EF;
+        Sun, 28 May 2023 19:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302308;
-        bh=ACnsGrDB10fBpebDRNKrCyNxB08zK3w7CiMEPv7FCJQ=;
+        s=korg; t=1685303060;
+        bh=SziM+m8/qxWT77h6bP7BQ9YWaCksXg1puRGW77keGcg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hAiLsS/VV9+l9oAuPvNMNHkZ1KfWBhjo8ziXeFG9m+BgdltLPtPUw8itlm1e44Oop
-         37lO1MmCzxQSU848ivfLCAlENOAOLMqZygE+l2zUpC0IKSTnT2JYrDCzxtwzfAZEwX
-         1o5mrcL+4ul9jaXg/WysQVDsyc0TYqUdmFIBZM5g=
+        b=JyQmzsbEmH6+nvAnI53jni0yDuGnGFrsIxO0KvrwFUzgrOoj+9wd8HQrgiREkx08/
+         NjMqJ5zkurAWA+x09H4kEWldqJdsL929owzoqrEL23cN6QiAQDhswj1410u+aDNv+Z
+         OINOxKScsaieUGu2865ArZe1v39FnvuaVgqvFJTg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.3 082/127] power: supply: bq27xxx: Add cache parameter to bq27xxx_battery_current_and_status()
+        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 137/211] can: kvaser_pciefd: Set CAN_STATE_STOPPED in kvaser_pciefd_stop()
 Date:   Sun, 28 May 2023 20:10:58 +0100
-Message-Id: <20230528190839.029779970@linuxfoundation.org>
+Message-Id: <20230528190846.927058907@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,72 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-commit 35092c5819f8c5acc7bafe3fdbb13d6307c4f5e1 upstream.
+commit aed0e6ca7dbb8fbea9bc69c9ac663d5533c8c5d8 upstream.
 
-Add a cache parameter to bq27xxx_battery_current_and_status() so that
-it can optionally use cached flags instead of re-reading them itself.
+Set can.state to CAN_STATE_STOPPED in kvaser_pciefd_stop().
+Without this fix, wrong CAN state was repported after the interface was
+brought down.
 
-This is a preparation patch for making bq27xxx_battery_update() check
-the status and have it call power_supply_changed() on status changes.
-
-Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/r/20230516134318.104279-2-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1840,7 +1840,8 @@ static bool bq27xxx_battery_is_full(stru
- static int bq27xxx_battery_current_and_status(
- 	struct bq27xxx_device_info *di,
- 	union power_supply_propval *val_curr,
--	union power_supply_propval *val_status)
-+	union power_supply_propval *val_status,
-+	struct bq27xxx_reg_cache *cache)
- {
- 	bool single_flags = (di->opts & BQ27XXX_O_ZERO);
- 	int curr;
-@@ -1852,10 +1853,14 @@ static int bq27xxx_battery_current_and_s
- 		return curr;
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -721,6 +721,7 @@ static int kvaser_pciefd_stop(struct net
+ 		iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+ 		del_timer(&can->bec_poll_timer);
  	}
++	can->can.state = CAN_STATE_STOPPED;
+ 	close_candev(netdev);
  
--	flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
--	if (flags < 0) {
--		dev_err(di->dev, "error reading flags\n");
--		return flags;
-+	if (cache) {
-+		flags = cache->flags;
-+	} else {
-+		flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
-+		if (flags < 0) {
-+			dev_err(di->dev, "error reading flags\n");
-+			return flags;
-+		}
- 	}
- 
- 	if (di->opts & BQ27XXX_O_ZERO) {
-@@ -2001,7 +2006,7 @@ static int bq27xxx_battery_get_property(
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_STATUS:
--		ret = bq27xxx_battery_current_and_status(di, NULL, val);
-+		ret = bq27xxx_battery_current_and_status(di, NULL, val, NULL);
- 		break;
- 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
- 		ret = bq27xxx_battery_voltage(di, val);
-@@ -2010,7 +2015,7 @@ static int bq27xxx_battery_get_property(
- 		val->intval = di->cache.flags < 0 ? 0 : 1;
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
--		ret = bq27xxx_battery_current_and_status(di, val, NULL);
-+		ret = bq27xxx_battery_current_and_status(di, val, NULL, NULL);
- 		break;
- 	case POWER_SUPPLY_PROP_CAPACITY:
- 		ret = bq27xxx_simple_value(di->cache.capacity, val);
+ 	return ret;
 
 
