@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0A03713D08
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A175D713F30
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbjE1TVK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39204 "EHLO
+        id S231203AbjE1Tm4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229926AbjE1TVJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:21:09 -0400
+        with ESMTP id S231204AbjE1Tmx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1458AA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:21:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 766E79C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3B2761B0B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4791C433D2;
-        Sun, 28 May 2023 19:21:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCA4A61EF6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3EC433EF;
+        Sun, 28 May 2023 19:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301668;
-        bh=Bh5G2Em+T7xBoDb3ZNMXyvdvgB3AD/yIAW2f34mbyZo=;
+        s=korg; t=1685302970;
+        bh=/8z3MiwoOdYuQFrOq2H2udGKJOPohiLlE+2VyN2i7cM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ufYwsU3fz3iuEEvPGKUGHVz8eIh+/iXicEtDMlWEpEbOd5F1fRuGUFnJQHlpSKmZv
-         7Lwf0txMQs2IyM6l4CH4O9X/fJLVFnt4SX3GQylKLm19cQPRA+c8lo2PFqPvbL+FVG
-         sT7oY/FU597AVF7HIxuE5Mx6JQgCwyEnwbrzIaSw=
+        b=B5X4o3TH/TMLyrT9Pmb6ccezWfJr+LeiHrP7qvvmwAWrD4lshhIEMwnbxyuayQy05
+         /o6eOlltM9XJ0c6I57EYgdIu/SWgiuuqDzpXuBtE0U3+FbmE+aK2sXLtV/bk93P2EL
+         IOR4HVIDYtM1TUhBA9a4+yZ99QhUhxdtWSh0ikaU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugues ANGUELKOV <hanguelkov@randorisec.fr>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Ke Zhang <m202171830@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 082/132] netfilter: nf_tables: stricter validation of element data
-Date:   Sun, 28 May 2023 20:10:21 +0100
-Message-Id: <20230528190836.058529372@linuxfoundation.org>
+Subject: [PATCH 5.10 101/211] serial: arc_uart: fix of_iomap leak in `arc_serial_probe`
+Date:   Sun, 28 May 2023 20:10:22 +0100
+Message-Id: <20230528190846.099854548@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ke Zhang <m202171830@hust.edu.cn>
 
-[ 7e6bc1f6cabcd30aba0b11219d8e01b952eacbb6 ]
+[ Upstream commit 8ab5fc55d7f65d58a3c3aeadf11bdf60267cd2bd ]
 
-Make sure element data type and length do not mismatch the one specified
-by the set declaration.
+Smatch reports:
 
-Fixes: 7d7402642eaf ("netfilter: nf_tables: variable sized set element keys / data")
-Reported-by: Hugues ANGUELKOV <hanguelkov@randorisec.fr>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+drivers/tty/serial/arc_uart.c:631 arc_serial_probe() warn:
+'port->membase' from of_iomap() not released on lines: 631.
+
+In arc_serial_probe(), if uart_add_one_port() fails,
+port->membase is not released, which would cause a resource leak.
+
+To fix this, I replace of_iomap with devm_platform_ioremap_resource.
+
+Fixes: 8dbe1d5e09a7 ("serial/arc: inline the probe helper")
+Signed-off-by: Ke Zhang <m202171830@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230428031636.44642-1-m202171830@hust.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/tty/serial/arc_uart.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index c1cbcfb58b476..ab1e0f0962a2b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4163,13 +4163,20 @@ static int nft_setelem_parse_data(struct nft_ctx *ctx, struct nft_set *set,
- 				  struct nft_data *data,
- 				  struct nlattr *attr)
- {
-+	u32 dtype;
- 	int err;
- 
- 	err = nft_data_init(ctx, data, NFT_DATA_VALUE_MAXLEN, desc, attr);
- 	if (err < 0)
- 		return err;
- 
--	if (desc->type != NFT_DATA_VERDICT && desc->len != set->dlen) {
-+	if (set->dtype == NFT_DATA_VERDICT)
-+		dtype = NFT_DATA_VERDICT;
-+	else
-+		dtype = NFT_DATA_VALUE;
-+
-+	if (dtype != desc->type ||
-+	    set->dlen != desc->len) {
- 		nft_data_release(data, desc->type);
- 		return -EINVAL;
+diff --git a/drivers/tty/serial/arc_uart.c b/drivers/tty/serial/arc_uart.c
+index 17c3fc398fc65..6f7a7d2dcf3aa 100644
+--- a/drivers/tty/serial/arc_uart.c
++++ b/drivers/tty/serial/arc_uart.c
+@@ -609,10 +609,11 @@ static int arc_serial_probe(struct platform_device *pdev)
  	}
+ 	uart->baud = val;
+ 
+-	port->membase = of_iomap(np, 0);
+-	if (!port->membase)
++	port->membase = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(port->membase)) {
+ 		/* No point of dev_err since UART itself is hosed here */
+-		return -ENXIO;
++		return PTR_ERR(port->membase);
++	}
+ 
+ 	port->irq = irq_of_parse_and_map(np, 0);
+ 
 -- 
 2.39.2
 
