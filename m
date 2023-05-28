@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 919CB713D67
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9DB713E51
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbjE1TZD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:25:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41946 "EHLO
+        id S230327AbjE1Te0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbjE1TZC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:02 -0400
+        with ESMTP id S230325AbjE1TeZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF698B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA1CA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8446261B9F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13C4C433D2;
-        Sun, 28 May 2023 19:24:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B879461DDF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D487CC433EF;
+        Sun, 28 May 2023 19:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301900;
-        bh=g8y3q0XKQCofd11GyvGsu6v1WGKiu/p9oKJM9NreuTY=;
+        s=korg; t=1685302463;
+        bh=+ng182VXoaorijH+aJoj0N5R4C3zmDVwf1vMsbSuGBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XKieG2WXlQC7VX/z0KDb+ZdI1lKNJP8lzij04Pjw1hVivxTfph1QyYepPVrKpm/Do
-         HmKhhWX+8sFxHBHzQH9I+VUNF2WRQkI4AMHQdV4JGCEfYVGu678IG4LIc5CFbbSqwW
-         dh6dSqf0r13KFOFC0UcAWC7SA9IQY3b/JU0gqS1Q=
+        b=nN302edBia1XNJWdB4jBkk5k/VogUjHypU2GI10FpatWSKYoeX+xACiRT30JQohZz
+         4lGwZR7uvhg+CTr7caLefXpEL11wNwvxpBVhCwDLQOOPz7y3BkbxJZnHF3ArRfKk6a
+         wcKv0I5rT0hFOGBqVJ5hsUd/XSBgxy4vIv32jykE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 081/161] USB: usbtmc: Fix direction for 0-length ioctl control messages
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 005/119] tpm, tpm_tis: startup chip before testing for interrupts
 Date:   Sun, 28 May 2023 20:10:05 +0100
-Message-Id: <20230528190839.717824829@linuxfoundation.org>
+Message-Id: <20230528190835.546402889@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +54,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-commit 94d25e9128988c6a1fc9070f6e98215a95795bd8 upstream.
+[ Upstream commit 548eb516ec0f7a484a23a902835899341164b8ea ]
 
-The syzbot fuzzer found a problem in the usbtmc driver: When a user
-submits an ioctl for a 0-length control transfer, the driver does not
-check that the direction is set to OUT:
+In tpm_tis_gen_interrupt() a request for a property value is sent to the
+TPM to test if interrupts are generated. However after a power cycle the
+TPM responds with TPM_RC_INITIALIZE which indicates that the TPM is not
+yet properly initialized.
+Fix this by first starting the TPM up before the request is sent. For this
+the startup implementation is removed from tpm_chip_register() and put
+into the new function tpm_chip_startup() which is called before the
+interrupts are tested.
 
-------------[ cut here ]------------
-usb 3-1: BOGUS control dir, pipe 80000b80 doesn't match bRequestType fd
-WARNING: CPU: 0 PID: 5100 at drivers/usb/core/urb.c:411 usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
-Modules linked in:
-CPU: 0 PID: 5100 Comm: syz-executor428 Not tainted 6.3.0-syzkaller-12049-g58390c8ce1bd #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
-RIP: 0010:usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
-Code: 7c 24 40 e8 1b 13 5c fb 48 8b 7c 24 40 e8 21 1d f0 fe 45 89 e8 44 89 f1 4c 89 e2 48 89 c6 48 c7 c7 e0 b5 fc 8a e8 19 c8 23 fb <0f> 0b e9 9f ee ff ff e8 ed 12 5c fb 0f b6 1d 12 8a 3c 08 31 ff 41
-RSP: 0018:ffffc90003d2fb00 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff8880789e9058 RCX: 0000000000000000
-RDX: ffff888029593b80 RSI: ffffffff814c1447 RDI: 0000000000000001
-RBP: ffff88801ea742f8 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff88802915e528
-R13: 00000000000000fd R14: 0000000080000b80 R15: ffff8880222b3100
-FS:  0000555556ca63c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9ef4d18150 CR3: 0000000073e5b000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- usb_start_wait_urb+0x101/0x4b0 drivers/usb/core/message.c:58
- usb_internal_control_msg drivers/usb/core/message.c:102 [inline]
- usb_control_msg+0x320/0x4a0 drivers/usb/core/message.c:153
- usbtmc_ioctl_request drivers/usb/class/usbtmc.c:1954 [inline]
- usbtmc_ioctl+0x1b3d/0x2840 drivers/usb/class/usbtmc.c:2097
-
-To fix this, we must override the direction in the bRequestType field
-of the control request structure when the length is 0.
-
-Reported-and-tested-by: syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/000000000000716a3705f9adb8ee@google.com/
-CC: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/ede1ee02-b718-49e7-a44c-51339fec706b@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Stable-dep-of: 99d464506255 ("tpm: Prevent hwrng from activating during resume")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/tpm/tpm-chip.c     | 38 +++++++++++++++++++++------------
+ drivers/char/tpm/tpm.h          |  1 +
+ drivers/char/tpm/tpm_tis_core.c |  5 +++++
+ 3 files changed, 30 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -1898,6 +1898,8 @@ static int usbtmc_ioctl_request(struct u
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index 5165f6d3da228..47c2861af45a3 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -601,6 +601,30 @@ static int tpm_get_pcr_allocation(struct tpm_chip *chip)
+ 	return rc;
+ }
  
- 	if (request.req.wLength > USBTMC_BUFSIZE)
- 		return -EMSGSIZE;
-+	if (request.req.wLength == 0)	/* Length-0 requests are never IN */
-+		request.req.bRequestType &= ~USB_DIR_IN;
++/*
++ * tpm_chip_startup() - performs auto startup and allocates the PCRs
++ * @chip: TPM chip to use.
++ */
++int tpm_chip_startup(struct tpm_chip *chip)
++{
++	int rc;
++
++	rc = tpm_chip_start(chip);
++	if (rc)
++		return rc;
++
++	rc = tpm_auto_startup(chip);
++	if (rc)
++		goto stop;
++
++	rc = tpm_get_pcr_allocation(chip);
++stop:
++	tpm_chip_stop(chip);
++
++	return rc;
++}
++EXPORT_SYMBOL_GPL(tpm_chip_startup);
++
+ /*
+  * tpm_chip_register() - create a character device for the TPM chip
+  * @chip: TPM chip to use.
+@@ -616,20 +640,6 @@ int tpm_chip_register(struct tpm_chip *chip)
+ {
+ 	int rc;
  
- 	is_in = request.req.bRequestType & USB_DIR_IN;
+-	rc = tpm_chip_start(chip);
+-	if (rc)
+-		return rc;
+-	rc = tpm_auto_startup(chip);
+-	if (rc) {
+-		tpm_chip_stop(chip);
+-		return rc;
+-	}
+-
+-	rc = tpm_get_pcr_allocation(chip);
+-	tpm_chip_stop(chip);
+-	if (rc)
+-		return rc;
+-
+ 	tpm_sysfs_add_device(chip);
  
+ 	tpm_bios_log_setup(chip);
+diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
+index 830014a266090..88d3bd76e0760 100644
+--- a/drivers/char/tpm/tpm.h
++++ b/drivers/char/tpm/tpm.h
+@@ -263,6 +263,7 @@ static inline void tpm_msleep(unsigned int delay_msec)
+ 		     delay_msec * 1000);
+ };
+ 
++int tpm_chip_startup(struct tpm_chip *chip);
+ int tpm_chip_start(struct tpm_chip *chip);
+ void tpm_chip_stop(struct tpm_chip *chip);
+ struct tpm_chip *tpm_find_get_ops(struct tpm_chip *chip);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index a5c22fb4ad428..9f76c9a5aa422 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -1124,6 +1124,11 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 	/* INTERRUPT Setup */
+ 	init_waitqueue_head(&priv->read_queue);
+ 	init_waitqueue_head(&priv->int_queue);
++
++	rc = tpm_chip_startup(chip);
++	if (rc)
++		goto out_err;
++
+ 	if (irq != -1) {
+ 		/*
+ 		 * Before doing irq testing issue a command to the TPM in polling mode
+-- 
+2.39.2
+
 
 
