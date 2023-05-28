@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91E84713D56
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F40C713C32
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjE1TYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41452 "EHLO
+        id S229670AbjE1TM7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:12:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230021AbjE1TYS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:18 -0400
+        with ESMTP id S229643AbjE1TM6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:12:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B7EBB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78881A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:12:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D197D61BB3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE62BC4339B;
-        Sun, 28 May 2023 19:24:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ECA2618E8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:12:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C53FC433EF;
+        Sun, 28 May 2023 19:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301856;
-        bh=fTMC+3ejefycFpdxiJLglvi755D/DounOAsuK+tUDTg=;
+        s=korg; t=1685301176;
+        bh=RuYs2oxVaw26xXUG6UGRExQkAqtgvH0zeAidQM9doPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t5Q+4NvewLLJUIEhdOloqH6tzFtPk6NdvCsoA68qpUgXc3AERlhilrVdvEEiLDWmS
-         zbm/l66xRWpc1zmz6BC4MxA1aSdqHbza7zCeknmnplYTx7SIvw6N2RUysChzsKmSH/
-         Zi2dVSm9nMYhEkRiMul8TEQ+CWjHh0iuAURBG4N8=
+        b=qkPluSiqYwketPi+KlGBsmKsP4Qw89RSqVqgVS7mXAQAyjFJOojCRh1YX1qw0Pfu9
+         28zBtuhHkR1k9SkHLBlABzoKSZh1j1N4Yp7laUYMt/NGL0Vp+LgeCOVD7i7d4hit0h
+         OQj5s2DkbHeH/66BYj0jeE27LBB1coj4h2t8EvjE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/161] ALSA: firewire-digi00x: prevent potential use after free
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 13/86] wifi: brcmfmac: cfg80211: Pass the PMK in binary instead of hex
 Date:   Sun, 28 May 2023 20:09:47 +0100
-Message-Id: <20230528190839.178911723@linuxfoundation.org>
+Message-Id: <20230528190829.039878931@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,39 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit c0e72058d5e21982e61a29de6b098f7c1f0db498 ]
+[ Upstream commit 89b89e52153fda2733562776c7c9d9d3ebf8dd6d ]
 
-This code was supposed to return an error code if init_stream()
-failed, but it instead freed dg00x->rx_stream and returned success.
-This potentially leads to a use after free.
+Apparently the hex passphrase mechanism does not work on newer
+chips/firmware (e.g. BCM4387). It seems there was a simple way of
+passing it in binary all along, so use that and avoid the hexification.
 
-Fixes: 9a08067ec318 ("ALSA: firewire-digi00x: support AMDTP domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/c224cbd5-d9e2-4cd4-9bcf-2138eb1d35c6@kili.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+OpenBSD has been doing it like this from the beginning, so this should
+work on all chips.
+
+Also clear the structure before setting the PMK. This was leaking
+uninitialized stack contents to the device.
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230214092423.15175-6-marcan@marcan.st
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/digi00x/digi00x-stream.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/sound/firewire/digi00x/digi00x-stream.c b/sound/firewire/digi00x/digi00x-stream.c
-index d6a92460060f6..1a841c858e06e 100644
---- a/sound/firewire/digi00x/digi00x-stream.c
-+++ b/sound/firewire/digi00x/digi00x-stream.c
-@@ -259,8 +259,10 @@ int snd_dg00x_stream_init_duplex(struct snd_dg00x *dg00x)
- 		return err;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index df0e48e4cf5b3..4abb948f607fa 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1349,13 +1349,14 @@ static u16 brcmf_map_fw_linkdown_reason(const struct brcmf_event_msg *e)
+ static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
+ {
+ 	struct brcmf_wsec_pmk_le pmk;
+-	int i, err;
++	int err;
++
++	memset(&pmk, 0, sizeof(pmk));
  
- 	err = init_stream(dg00x, &dg00x->tx_stream);
--	if (err < 0)
-+	if (err < 0) {
- 		destroy_stream(dg00x, &dg00x->rx_stream);
-+		return err;
-+	}
+-	/* convert to firmware key format */
+-	pmk.key_len = cpu_to_le16(pmk_len << 1);
+-	pmk.flags = cpu_to_le16(BRCMF_WSEC_PASSPHRASE);
+-	for (i = 0; i < pmk_len; i++)
+-		snprintf(&pmk.key[2 * i], 3, "%02x", pmk_data[i]);
++	/* pass pmk directly */
++	pmk.key_len = cpu_to_le16(pmk_len);
++	pmk.flags = cpu_to_le16(0);
++	memcpy(pmk.key, pmk_data, pmk_len);
  
- 	err = amdtp_domain_init(&dg00x->domain);
- 	if (err < 0) {
+ 	/* store psk in firmware */
+ 	err = brcmf_fil_cmd_data_set(ifp, BRCMF_C_SET_WSEC_PMK,
 -- 
 2.39.2
 
