@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C6C713C69
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35E0713E00
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229719AbjE1TPE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
+        id S230230AbjE1Ta5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjE1TPD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31EC2A2;
-        Sun, 28 May 2023 12:15:02 -0700 (PDT)
+        with ESMTP id S230232AbjE1Taz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E7BDC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7427661977;
-        Sun, 28 May 2023 19:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C7BC433EF;
-        Sun, 28 May 2023 19:15:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7180561D73
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBC3C4339B;
+        Sun, 28 May 2023 19:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301300;
-        bh=wupWEI6oDFRpR1L+AYSUYZEIfhSfz9b0pLTyfJAngQM=;
+        s=korg; t=1685302252;
+        bh=KHIy/DjASbBH8ipHKTTc0diXLpYwEkyqj69dj12HUyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rcUNHWpJrPcWHFuYNuwqlv4NTkU5YDiW2RzcuJTKoKxQ2v4wd0IB/CvqEBIhXEukR
-         oDZlB0H4r1dwPofx+j5fZfVCBiez3EYDF2uq4cuUg8VfOQbzpN7k/1DOlCA8E6ZEVD
-         iz7hCjmh/hCkZEVxT7CUv1ToThsy3mtvzjwv4UBU=
+        b=08CT2OQoJsVdmTgSKa6PaD+rh42ud+jxlMVzI44lXeZ8qMePXNRwGkZPApry8xgMy
+         0lnZyIgI59f/QC1kT2la7tuMLP6RjyT6nHpqQQ62zcWVYyN60Cqs8g0/ioo5IHAYQE
+         ky44/vFAZx7oE1kq638/eAMv3xuVFHsxvfnT7V7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 62/86] netfilter: nftables: statify nft_parse_register()
+        patches@lists.linux.dev,
+        syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.3 060/127] debugobjects: Dont wake up kswapd from fill_pool()
 Date:   Sun, 28 May 2023 20:10:36 +0100
-Message-Id: <20230528190830.922304407@linuxfoundation.org>
+Message-Id: <20230528190838.341040132@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,47 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ 08a01c11a5bb3de9b0a9c9b2685867e50eda9910 ]
+commit eb799279fb1f9c63c520fe8c1c41cb9154252db6 upstream.
 
-This function is not used anymore by any extension, statify it.
+syzbot is reporting a lockdep warning in fill_pool() because the allocation
+from debugobjects is using GFP_ATOMIC, which is (__GFP_HIGH | __GFP_KSWAPD_RECLAIM)
+and therefore tries to wake up kswapd, which acquires kswapd_wait::lock.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Since fill_pool() might be called with arbitrary locks held, fill_pool()
+should not assume that acquiring kswapd_wait::lock is safe.
+
+Use __GFP_HIGH instead and remove __GFP_NORETRY as it is pointless for
+!__GFP_DIRECT_RECLAIM allocation.
+
+Fixes: 3ac7fe5a4aab ("infrastructure to debug (dynamic) objects")
+Reported-by: syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/6577e1fa-b6ee-f2be-2414-a2b51b1c5e30@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=fe0c72f0ccbb93786380
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |    1 -
- net/netfilter/nf_tables_api.c     |    3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ lib/debugobjects.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -195,7 +195,6 @@ static inline enum nft_registers nft_typ
- }
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -126,7 +126,7 @@ static const char *obj_states[ODEBUG_STA
  
- int nft_parse_u32_check(const struct nlattr *attr, int max, u32 *dest);
--unsigned int nft_parse_register(const struct nlattr *attr);
- int nft_dump_register(struct sk_buff *skb, unsigned int attr, unsigned int reg);
- 
- int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len);
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5624,7 +5624,7 @@ EXPORT_SYMBOL_GPL(nft_parse_u32_check);
-  *	Registers used to be 128 bit wide, these register numbers will be
-  *	mapped to the corresponding 32 bit register numbers.
-  */
--unsigned int nft_parse_register(const struct nlattr *attr)
-+static unsigned int nft_parse_register(const struct nlattr *attr)
+ static void fill_pool(void)
  {
- 	unsigned int reg;
+-	gfp_t gfp = GFP_ATOMIC | __GFP_NORETRY | __GFP_NOWARN;
++	gfp_t gfp = __GFP_HIGH | __GFP_NOWARN;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
  
-@@ -5636,7 +5636,6 @@ unsigned int nft_parse_register(const st
- 		return reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
- 	}
- }
--EXPORT_SYMBOL_GPL(nft_parse_register);
- 
- /**
-  *	nft_dump_register - dump a register value to a netlink attribute
 
 
