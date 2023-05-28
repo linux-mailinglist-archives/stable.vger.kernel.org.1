@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB782713AD1
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56F01713AD3
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229729AbjE1Qzk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34568 "EHLO
+        id S229728AbjE1Qzo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjE1Qzj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:39 -0400
+        with ESMTP id S229726AbjE1Qzn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073D1BD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C293EBD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9164160F3E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC887C433EF;
-        Sun, 28 May 2023 16:55:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58CC760F4B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E16C4339C;
+        Sun, 28 May 2023 16:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292937;
-        bh=TT/nNMuRU1BwmFJ31blHiV/kRYc9Xdp9TKcZpZsyJGI=;
+        s=korg; t=1685292941;
+        bh=tUJq67w5o9kw3oH+WSlZJOffLKN0PmdaDQ0pmXCX/pk=;
         h=Subject:To:Cc:From:Date:From;
-        b=fXDyFLdxeQrATa1rxP3lr9vWyrjbiSZggdaMvYK8Hb4bXbxz6+SQtKd+BDkz2WU8O
-         AppAWvtqGG8evMfDSUhtTBUd6arsguSHD+wuVECRtZOR1m95cWweEZdYtYAPD2pnTu
-         MR9s6s6n1gbyuXsLgxP1TurxRkTjPW2ODfP+HM/0=
-Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Add ->fast_switch() callback" failed to apply to 6.1-stable tree
-To:     gautham.shenoy@amd.com, rafael.j.wysocki@intel.com,
-        wyes.karny@amd.com
+        b=SHwrXyQ/qZ8/2GP21YiavYFVJ98tmoeAi9Ty/sBFYn/AjyzkT8KGRcHcQtDIdorEJ
+         kKuRHyZz3JHakaCxLy3LIOKjME30NwufsyA9BM0TjTF+ISlZBaIfbLqNaL81M544w6
+         6WF2cWEcqI2+5QXH4UQXUW2QYke1eHMCjQDFwdMw=
+Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Update policy->cur in" failed to apply to 6.3-stable tree
+To:     wyes.karny@amd.com, rafael.j.wysocki@intel.com,
+        stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:53:58 +0100
-Message-ID: <2023052858-overgrown-profile-8066@gregkh>
+Date:   Sun, 28 May 2023 17:54:34 +0100
+Message-ID: <2023052834-enlighten-vacate-bfd6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,29 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54
+git cherry-pick -x 3bf8c6307bad5c0cc09cde982e146d847859b651
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052858-overgrown-profile-8066@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052834-enlighten-vacate-bfd6@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-4badf2eb1e98 ("cpufreq: amd-pstate: Add ->fast_switch() callback")
+3bf8c6307bad ("cpufreq: amd-pstate: Update policy->cur in amd_pstate_adjust_perf()")
 2dd6d0ebf740 ("cpufreq: amd-pstate: Add guided autonomous mode")
 3e6e07805764 ("Documentation: cpufreq: amd-pstate: Move amd_pstate param to alphabetical order")
-5014603e409b ("Documentation: introduce amd pstate active mode kernel command line options")
-ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-36c5014e5460 ("cpufreq: amd-pstate: optimize driver working mode selection in amd_pstate_param()")
-4f3085f87b51 ("cpufreq: amd-pstate: fix kernel hang issue while amd-pstate unregistering")
 
 thanks,
 
@@ -79,94 +75,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54 Mon Sep 17 00:00:00 2001
-From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Date: Wed, 17 May 2023 16:28:15 +0000
-Subject: [PATCH] cpufreq: amd-pstate: Add ->fast_switch() callback
+From 3bf8c6307bad5c0cc09cde982e146d847859b651 Mon Sep 17 00:00:00 2001
+From: Wyes Karny <wyes.karny@amd.com>
+Date: Thu, 18 May 2023 05:58:19 +0000
+Subject: [PATCH] cpufreq: amd-pstate: Update policy->cur in
+ amd_pstate_adjust_perf()
 
-Schedutil normally calls the adjust_perf callback for drivers with
-adjust_perf callback available and fast_switch_possible flag set.
-However, when frequency invariance is disabled and schedutil tries to
-invoke fast_switch. So, there is a chance of kernel crash if this
-function pointer is not set. To protect against this scenario add
-fast_switch callback to amd_pstate driver.
+Driver should update policy->cur after updating the frequency.
+Currently amd_pstate doesn't update policy->cur when `adjust_perf`
+is used. Which causes /proc/cpuinfo to show wrong cpu frequency.
+Fix this by updating policy->cur with correct frequency value in
+adjust_perf function callback.
+
+- Before the fix: (setting min freq to 1.5 MHz)
+
+[root@amd]# cat /proc/cpuinfo | grep "cpu MHz" | sort | uniq --count
+      1 cpu MHz         : 1777.016
+      1 cpu MHz         : 1797.160
+      1 cpu MHz         : 1797.270
+    189 cpu MHz         : 400.000
+
+- After the fix: (setting min freq to 1.5 MHz)
+
+[root@amd]# cat /proc/cpuinfo | grep "cpu MHz" | sort | uniq --count
+      1 cpu MHz         : 1753.353
+      1 cpu MHz         : 1756.838
+      1 cpu MHz         : 1776.466
+      1 cpu MHz         : 1776.873
+      1 cpu MHz         : 1777.308
+      1 cpu MHz         : 1779.900
+    183 cpu MHz         : 1805.231
+      1 cpu MHz         : 1956.815
+      1 cpu MHz         : 2246.203
+      1 cpu MHz         : 2259.984
 
 Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+[ rjw: Subject edits ]
+Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
 diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 5a3d4aa0f45a..45711fc0a856 100644
+index ac54779f5a49..ddd346a239e0 100644
 --- a/drivers/cpufreq/amd-pstate.c
 +++ b/drivers/cpufreq/amd-pstate.c
-@@ -444,9 +444,8 @@ static int amd_pstate_verify(struct cpufreq_policy_data *policy)
- 	return 0;
- }
- 
--static int amd_pstate_target(struct cpufreq_policy *policy,
--			     unsigned int target_freq,
--			     unsigned int relation)
-+static int amd_pstate_update_freq(struct cpufreq_policy *policy,
-+				  unsigned int target_freq, bool fast_switch)
+@@ -501,12 +501,14 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
+ 				   unsigned long capacity)
  {
- 	struct cpufreq_freqs freqs;
+ 	unsigned long max_perf, min_perf, des_perf,
+-		      cap_perf, lowest_nonlinear_perf;
++		      cap_perf, lowest_nonlinear_perf, max_freq;
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
  	struct amd_cpudata *cpudata = policy->driver_data;
-@@ -465,14 +464,37 @@ static int amd_pstate_target(struct cpufreq_policy *policy,
- 	des_perf = DIV_ROUND_CLOSEST(target_freq * cap_perf,
- 				     cpudata->max_freq);
++	unsigned int target_freq;
  
--	cpufreq_freq_transition_begin(policy, &freqs);
-+	WARN_ON(fast_switch && !policy->fast_switch_enabled);
-+	/*
-+	 * If fast_switch is desired, then there aren't any registered
-+	 * transition notifiers. See comment for
-+	 * cpufreq_enable_fast_switch().
-+	 */
-+	if (!fast_switch)
-+		cpufreq_freq_transition_begin(policy, &freqs);
+ 	cap_perf = READ_ONCE(cpudata->highest_perf);
+ 	lowest_nonlinear_perf = READ_ONCE(cpudata->lowest_nonlinear_perf);
++	max_freq = READ_ONCE(cpudata->max_freq);
+ 
+ 	des_perf = cap_perf;
+ 	if (target_perf < capacity)
+@@ -523,6 +525,10 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
+ 	if (max_perf < min_perf)
+ 		max_perf = min_perf;
+ 
++	des_perf = clamp_t(unsigned long, des_perf, min_perf, max_perf);
++	target_freq = div_u64(des_perf * max_freq, max_perf);
++	policy->cur = target_freq;
 +
- 	amd_pstate_update(cpudata, min_perf, des_perf,
--			  max_perf, false, policy->governor->flags);
--	cpufreq_freq_transition_end(policy, &freqs, false);
-+			max_perf, fast_switch, policy->governor->flags);
-+
-+	if (!fast_switch)
-+		cpufreq_freq_transition_end(policy, &freqs, false);
- 
- 	return 0;
- }
- 
-+static int amd_pstate_target(struct cpufreq_policy *policy,
-+			     unsigned int target_freq,
-+			     unsigned int relation)
-+{
-+	return amd_pstate_update_freq(policy, target_freq, false);
-+}
-+
-+static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
-+				  unsigned int target_freq)
-+{
-+	return amd_pstate_update_freq(policy, target_freq, true);
-+}
-+
- static void amd_pstate_adjust_perf(unsigned int cpu,
- 				   unsigned long _min_perf,
- 				   unsigned long target_perf,
-@@ -715,6 +737,7 @@ static int amd_pstate_cpu_exit(struct cpufreq_policy *policy)
- 
- 	freq_qos_remove_request(&cpudata->req[1]);
- 	freq_qos_remove_request(&cpudata->req[0]);
-+	policy->fast_switch_possible = false;
- 	kfree(cpudata);
- 
- 	return 0;
-@@ -1309,6 +1332,7 @@ static struct cpufreq_driver amd_pstate_driver = {
- 	.flags		= CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify		= amd_pstate_verify,
- 	.target		= amd_pstate_target,
-+	.fast_switch    = amd_pstate_fast_switch,
- 	.init		= amd_pstate_cpu_init,
- 	.exit		= amd_pstate_cpu_exit,
- 	.suspend	= amd_pstate_cpu_suspend,
+ 	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, true,
+ 			policy->governor->flags);
+ 	cpufreq_cpu_put(policy);
 
