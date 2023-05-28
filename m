@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8582713ABB
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 515E6713ABC
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjE1Quy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
+        id S229688AbjE1Qu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbjE1Qux (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:50:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AE4C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:50:50 -0700 (PDT)
+        with ESMTP id S229665AbjE1Qu4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:50:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95F9C6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:50:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 088E4617AC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:50:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2447BC433EF;
-        Sun, 28 May 2023 16:50:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77C86617A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:50:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A13EC433EF;
+        Sun, 28 May 2023 16:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292649;
-        bh=HzXwx8nhAtHbuGP0JuEeOAPrIof1VNjvXHVcS40qA20=;
+        s=korg; t=1685292651;
+        bh=ZN4k+wEJXVNJu+1AXZRO0N66OOZPbbOLcu9yR6FP7LM=;
         h=Subject:To:Cc:From:Date:From;
-        b=PKrSSPr02fuCakFjcl2ZjjK+Jqtc1XWk1TNwoFg10xlZNG0bNLj0/xg3aRvTMh1YH
-         jj2+gdD1LVtwnMgID//xyXK7JNG5EQ7e1XnZ/H/VjlS6U1CLVGrvEvJV655vgWY0Ls
-         gdf1SLz4eejxKwi+qLWSYrizB56jcdKFo7RA0Wtg=
-Subject: FAILED: patch "[PATCH] net/mlx5e: Fix deadlock in tc route query code" failed to apply to 5.15-stable tree
-To:     vladbu@nvidia.com, roid@nvidia.com, saeedm@nvidia.com,
-        shayd@nvidia.com, tariqt@nvidia.com
+        b=greou/gFCfndpqPbx8b3nrKio1bIgjMa4h/pDo/J7did5+T8oFIW9buG1+ZJPIGG4
+         ha0IRoUj9sp3JI31DZnnO9YWQ+xf8pJoz4Nn2ZKF6zzNhUGjlVeexcHc4ishlLNruo
+         EZrYNy48yQbgg44Dq3BoUsp7ADTW8U6ddCDCWfp4=
+Subject: FAILED: patch "[PATCH] net/mlx5e: do as little as possible in napi poll when budget" failed to apply to 4.19-stable tree
+To:     kuba@kernel.org, davem@davemloft.net, simon.horman@corigine.com,
+        tariqt@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:50:17 +0100
-Message-ID: <2023052817-obligate-dramatic-13ed@gregkh>
+Date:   Sun, 28 May 2023 17:50:45 +0100
+Message-ID: <2023052845-probably-overpass-092e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,24 +49,31 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 691c041bf20899fc13c793f92ba61ab660fa3a30
+git cherry-pick -x afbed3f74830163f9559579dee382cac3cff82da
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052817-obligate-dramatic-13ed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052845-probably-overpass-092e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-691c041bf208 ("net/mlx5e: Fix deadlock in tc route query code")
-8a6e75e5f57e ("net/mlx5: devcom only supports 2 ports")
+afbed3f74830 ("net/mlx5e: do as little as possible in napi poll when budget is 0")
+214baf22870c ("net/mlx5e: Support HTB offload")
+1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
+145e5637d941 ("net/mlx5e: Add TX PTP port object support")
+1a7f51240dfb ("net/mlx5e: Split SW group counters update function")
+0b676aaecc25 ("net/mlx5e: Change skb fifo push/pop API to be used without SQ")
+579524c6eace ("net/mlx5e: Validate stop_room size upon user input")
+3180472f582b ("net/mlx5: Add functions to set/query MFRL register")
+573a8095f68c ("Merge tag 'mlx5-updates-2020-09-21' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux")
 
 thanks,
 
@@ -74,354 +81,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 691c041bf20899fc13c793f92ba61ab660fa3a30 Mon Sep 17 00:00:00 2001
-From: Vlad Buslov <vladbu@nvidia.com>
-Date: Fri, 31 Mar 2023 14:20:51 +0200
-Subject: [PATCH] net/mlx5e: Fix deadlock in tc route query code
+From afbed3f74830163f9559579dee382cac3cff82da Mon Sep 17 00:00:00 2001
+From: Jakub Kicinski <kuba@kernel.org>
+Date: Tue, 16 May 2023 18:59:35 -0700
+Subject: [PATCH] net/mlx5e: do as little as possible in napi poll when budget
+ is 0
 
-Cited commit causes ABBA deadlock[0] when peer flows are created while
-holding the devcom rw semaphore. Due to peer flows offload implementation
-the lock is taken much higher up the call chain and there is no obvious way
-to easily fix the deadlock. Instead, since tc route query code needs the
-peer eswitch structure only to perform a lookup in xarray and doesn't
-perform any sleeping operations with it, refactor the code for lockless
-execution in following ways:
+NAPI gets called with budget of 0 from netpoll, which has interrupts
+disabled. We should try to free some space on Tx rings and nothing
+else.
 
-- RCUify the devcom 'data' pointer. When resetting the pointer
-synchronously wait for RCU grace period before returning. This is fine
-since devcom is currently only used for synchronization of
-pairing/unpairing of eswitches which is rare and already expensive as-is.
+Specifically do not try to handle XDP TX or try to refill Rx buffers -
+we can't use the page pool from IRQ context. Don't check if IRQs moved,
+either, that makes no sense in netpoll. Netpoll calls _all_ the rings
+from whatever CPU it happens to be invoked on.
 
-- Wrap all usages of 'paired' boolean in {READ|WRITE}_ONCE(). The flag has
-already been used in some unlocked contexts without proper
-annotations (e.g. users of mlx5_devcom_is_paired() function), but it wasn't
-an issue since all relevant code paths checked it again after obtaining the
-devcom semaphore. Now it is also used by mlx5_devcom_get_peer_data_rcu() as
-"best effort" check to return NULL when devcom is being unpaired. Note that
-while RCU read lock doesn't prevent the unpaired flag from being changed
-concurrently it still guarantees that reader can continue to use 'data'.
+In general do as little as possible, the work quickly adds up when
+there's tens of rings to poll.
 
-- Refactor mlx5e_tc_query_route_vport() function to use new
-mlx5_devcom_get_peer_data_rcu() API which fixes the deadlock.
+The immediate stack trace I was seeing is:
 
-[0]:
+    __do_softirq+0xd1/0x2c0
+    __local_bh_enable_ip+0xc7/0x120
+    </IRQ>
+    <TASK>
+    page_pool_put_defragged_page+0x267/0x320
+    mlx5e_free_xdpsq_desc+0x99/0xd0
+    mlx5e_poll_xdpsq_cq+0x138/0x3b0
+    mlx5e_napi_poll+0xc3/0x8b0
+    netpoll_poll_dev+0xce/0x150
 
-[  164.599612] ======================================================
-[  164.600142] WARNING: possible circular locking dependency detected
-[  164.600667] 6.3.0-rc3+ #1 Not tainted
-[  164.601021] ------------------------------------------------------
-[  164.601557] handler1/3456 is trying to acquire lock:
-[  164.601998] ffff88811f1714b0 (&esw->offloads.encap_tbl_lock){+.+.}-{3:3}, at: mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.603078]
-               but task is already holding lock:
-[  164.603617] ffff88810137fc98 (&comp->sem){++++}-{3:3}, at: mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.604459]
-               which lock already depends on the new lock.
+AFAIU page pool takes a BH lock, releases it and since BH is now
+enabled tries to run softirqs.
 
-[  164.605190]
-               the existing dependency chain (in reverse order) is:
-[  164.605848]
-               -> #1 (&comp->sem){++++}-{3:3}:
-[  164.606380]        down_read+0x39/0x50
-[  164.606772]        mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.607336]        mlx5e_tc_query_route_vport+0x86/0xc0 [mlx5_core]
-[  164.607914]        mlx5e_tc_tun_route_lookup+0x1a4/0x1d0 [mlx5_core]
-[  164.608495]        mlx5e_attach_decap_route+0xc6/0x1e0 [mlx5_core]
-[  164.609063]        mlx5e_tc_add_fdb_flow+0x1ea/0x360 [mlx5_core]
-[  164.609627]        __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.610175]        mlx5e_configure_flower+0x952/0x1a20 [mlx5_core]
-[  164.610741]        tc_setup_cb_add+0xd4/0x200
-[  164.611146]        fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.611661]        fl_change+0xc95/0x18a0 [cls_flower]
-[  164.612116]        tc_new_tfilter+0x3fc/0xd20
-[  164.612516]        rtnetlink_rcv_msg+0x418/0x5b0
-[  164.612936]        netlink_rcv_skb+0x54/0x100
-[  164.613339]        netlink_unicast+0x190/0x250
-[  164.613746]        netlink_sendmsg+0x245/0x4a0
-[  164.614150]        sock_sendmsg+0x38/0x60
-[  164.614522]        ____sys_sendmsg+0x1d0/0x1e0
-[  164.614934]        ___sys_sendmsg+0x80/0xc0
-[  164.615320]        __sys_sendmsg+0x51/0x90
-[  164.615701]        do_syscall_64+0x3d/0x90
-[  164.616083]        entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.616568]
-               -> #0 (&esw->offloads.encap_tbl_lock){+.+.}-{3:3}:
-[  164.617210]        __lock_acquire+0x159e/0x26e0
-[  164.617638]        lock_acquire+0xc2/0x2a0
-[  164.618018]        __mutex_lock+0x92/0xcd0
-[  164.618401]        mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.618943]        post_process_attr+0x153/0x2d0 [mlx5_core]
-[  164.619471]        mlx5e_tc_add_fdb_flow+0x164/0x360 [mlx5_core]
-[  164.620021]        __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.620564]        mlx5e_configure_flower+0xe33/0x1a20 [mlx5_core]
-[  164.621125]        tc_setup_cb_add+0xd4/0x200
-[  164.621531]        fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.622047]        fl_change+0xc95/0x18a0 [cls_flower]
-[  164.622500]        tc_new_tfilter+0x3fc/0xd20
-[  164.622906]        rtnetlink_rcv_msg+0x418/0x5b0
-[  164.623324]        netlink_rcv_skb+0x54/0x100
-[  164.623727]        netlink_unicast+0x190/0x250
-[  164.624138]        netlink_sendmsg+0x245/0x4a0
-[  164.624544]        sock_sendmsg+0x38/0x60
-[  164.624919]        ____sys_sendmsg+0x1d0/0x1e0
-[  164.625340]        ___sys_sendmsg+0x80/0xc0
-[  164.625731]        __sys_sendmsg+0x51/0x90
-[  164.626117]        do_syscall_64+0x3d/0x90
-[  164.626502]        entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.626995]
-               other info that might help us debug this:
-
-[  164.627725]  Possible unsafe locking scenario:
-
-[  164.628268]        CPU0                    CPU1
-[  164.628683]        ----                    ----
-[  164.629098]   lock(&comp->sem);
-[  164.629421]                                lock(&esw->offloads.encap_tbl_lock);
-[  164.630066]                                lock(&comp->sem);
-[  164.630555]   lock(&esw->offloads.encap_tbl_lock);
-[  164.630993]
-                *** DEADLOCK ***
-
-[  164.631575] 3 locks held by handler1/3456:
-[  164.631962]  #0: ffff888124b75130 (&block->cb_lock){++++}-{3:3}, at: tc_setup_cb_add+0x5b/0x200
-[  164.632703]  #1: ffff888116e512b8 (&esw->mode_lock){++++}-{3:3}, at: mlx5_esw_hold+0x39/0x50 [mlx5_core]
-[  164.633552]  #2: ffff88810137fc98 (&comp->sem){++++}-{3:3}, at: mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.634435]
-               stack backtrace:
-[  164.634883] CPU: 17 PID: 3456 Comm: handler1 Not tainted 6.3.0-rc3+ #1
-[  164.635431] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-[  164.636340] Call Trace:
-[  164.636616]  <TASK>
-[  164.636863]  dump_stack_lvl+0x47/0x70
-[  164.637217]  check_noncircular+0xfe/0x110
-[  164.637601]  __lock_acquire+0x159e/0x26e0
-[  164.637977]  ? mlx5_cmd_set_fte+0x5b0/0x830 [mlx5_core]
-[  164.638472]  lock_acquire+0xc2/0x2a0
-[  164.638828]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.639339]  ? lock_is_held_type+0x98/0x110
-[  164.639728]  __mutex_lock+0x92/0xcd0
-[  164.640074]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.640576]  ? __lock_acquire+0x382/0x26e0
-[  164.640958]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.641468]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.641965]  mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.642454]  ? lock_release+0xbf/0x240
-[  164.642819]  post_process_attr+0x153/0x2d0 [mlx5_core]
-[  164.643318]  mlx5e_tc_add_fdb_flow+0x164/0x360 [mlx5_core]
-[  164.643835]  __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.644340]  mlx5e_configure_flower+0xe33/0x1a20 [mlx5_core]
-[  164.644862]  ? lock_acquire+0xc2/0x2a0
-[  164.645219]  tc_setup_cb_add+0xd4/0x200
-[  164.645588]  fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.646067]  fl_change+0xc95/0x18a0 [cls_flower]
-[  164.646488]  tc_new_tfilter+0x3fc/0xd20
-[  164.646861]  ? tc_del_tfilter+0x810/0x810
-[  164.647236]  rtnetlink_rcv_msg+0x418/0x5b0
-[  164.647621]  ? rtnl_setlink+0x160/0x160
-[  164.647982]  netlink_rcv_skb+0x54/0x100
-[  164.648348]  netlink_unicast+0x190/0x250
-[  164.648722]  netlink_sendmsg+0x245/0x4a0
-[  164.649090]  sock_sendmsg+0x38/0x60
-[  164.649434]  ____sys_sendmsg+0x1d0/0x1e0
-[  164.649804]  ? copy_msghdr_from_user+0x6d/0xa0
-[  164.650213]  ___sys_sendmsg+0x80/0xc0
-[  164.650563]  ? lock_acquire+0xc2/0x2a0
-[  164.650926]  ? lock_acquire+0xc2/0x2a0
-[  164.651286]  ? __fget_files+0x5/0x190
-[  164.651644]  ? find_held_lock+0x2b/0x80
-[  164.652006]  ? __fget_files+0xb9/0x190
-[  164.652365]  ? lock_release+0xbf/0x240
-[  164.652723]  ? __fget_files+0xd3/0x190
-[  164.653079]  __sys_sendmsg+0x51/0x90
-[  164.653435]  do_syscall_64+0x3d/0x90
-[  164.653784]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.654229] RIP: 0033:0x7f378054f8bd
-[  164.654577] Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 6a c3 f4 ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 be c3 f4 ff 48
-[  164.656041] RSP: 002b:00007f377fa114b0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-[  164.656701] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f378054f8bd
-[  164.657297] RDX: 0000000000000000 RSI: 00007f377fa11540 RDI: 0000000000000014
-[  164.657885] RBP: 00007f377fa12278 R08: 0000000000000000 R09: 000000000000015c
-[  164.658472] R10: 00007f377fa123d0 R11: 0000000000000293 R12: 0000560962d99bd0
-[  164.665317] R13: 0000000000000000 R14: 0000560962d99bd0 R15: 00007f377fa11540
-
-Fixes: f9d196bd632b ("net/mlx5e: Use correct eswitch for stack devices with lag")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
 Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 60bbf7eeef10 ("mlx5: use page_pool for xdp_return_frame call")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 65fe40f55d84..416ab6b6da97 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1665,11 +1665,9 @@ bool mlx5e_tc_is_vf_tunnel(struct net_device *out_dev, struct net_device *route_
- int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *route_dev, u16 *vport)
- {
- 	struct mlx5e_priv *out_priv, *route_priv;
--	struct mlx5_devcom *devcom = NULL;
- 	struct mlx5_core_dev *route_mdev;
- 	struct mlx5_eswitch *esw;
- 	u16 vhca_id;
--	int err;
- 
- 	out_priv = netdev_priv(out_dev);
- 	esw = out_priv->mdev->priv.eswitch;
-@@ -1678,6 +1676,9 @@ int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *ro
- 
- 	vhca_id = MLX5_CAP_GEN(route_mdev, vhca_id);
- 	if (mlx5_lag_is_active(out_priv->mdev)) {
-+		struct mlx5_devcom *devcom;
-+		int err;
-+
- 		/* In lag case we may get devices from different eswitch instances.
- 		 * If we failed to get vport num, it means, mostly, that we on the wrong
- 		 * eswitch.
-@@ -1686,16 +1687,16 @@ int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *ro
- 		if (err != -ENOENT)
- 			return err;
- 
-+		rcu_read_lock();
- 		devcom = out_priv->mdev->priv.devcom;
--		esw = mlx5_devcom_get_peer_data(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
--		if (!esw)
--			return -ENODEV;
-+		esw = mlx5_devcom_get_peer_data_rcu(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
-+		err = esw ? mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport) : -ENODEV;
-+		rcu_read_unlock();
-+
-+		return err;
- 	}
- 
--	err = mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport);
--	if (devcom)
--		mlx5_devcom_release_peer_data(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
--	return err;
-+	return mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport);
- }
- 
- static int
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index adefde3ea941..070d55f13419 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -13,7 +13,7 @@ static LIST_HEAD(devcom_list);
- 
- struct mlx5_devcom_component {
- 	struct {
--		void *data;
-+		void __rcu *data;
- 	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
- 
- 	mlx5_devcom_event_handler_t handler;
-@@ -162,7 +162,7 @@ void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
- 	comp->handler = handler;
--	comp->device[devcom->idx].data = data;
-+	rcu_assign_pointer(comp->device[devcom->idx].data, data);
- 	up_write(&comp->sem);
- }
- 
-@@ -176,8 +176,9 @@ void mlx5_devcom_unregister_component(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	comp->device[devcom->idx].data = NULL;
-+	RCU_INIT_POINTER(comp->device[devcom->idx].data, NULL);
- 	up_write(&comp->sem);
-+	synchronize_rcu();
- }
- 
- int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
-@@ -193,12 +194,15 @@ int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
--		if (i != devcom->idx && comp->device[i].data) {
--			err = comp->handler(event, comp->device[i].data,
--					    event_data);
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
-+		void *data = rcu_dereference_protected(comp->device[i].data,
-+						       lockdep_is_held(&comp->sem));
-+
-+		if (i != devcom->idx && data) {
-+			err = comp->handler(event, data, event_data);
- 			break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+index a50bfda18e96..fbb2d963fb7e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+@@ -161,20 +161,22 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
  		}
-+	}
- 
- 	up_write(&comp->sem);
- 	return err;
-@@ -213,7 +217,7 @@ void mlx5_devcom_set_paired(struct mlx5_devcom *devcom,
- 	comp = &devcom->priv->components[id];
- 	WARN_ON(!rwsem_is_locked(&comp->sem));
- 
--	comp->paired = paired;
-+	WRITE_ONCE(comp->paired, paired);
- }
- 
- bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
-@@ -222,7 +226,7 @@ bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
- 	if (IS_ERR_OR_NULL(devcom))
- 		return false;
- 
--	return devcom->priv->components[id].paired;
-+	return READ_ONCE(devcom->priv->components[id].paired);
- }
- 
- void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
-@@ -236,7 +240,7 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_read(&comp->sem);
--	if (!comp->paired) {
-+	if (!READ_ONCE(comp->paired)) {
- 		up_read(&comp->sem);
- 		return NULL;
  	}
-@@ -245,7 +249,29 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 		if (i != devcom->idx)
- 			break;
  
--	return comp->device[i].data;
-+	return rcu_dereference_protected(comp->device[i].data, lockdep_is_held(&comp->sem));
-+}
++	/* budget=0 means we may be in IRQ context, do as little as possible */
++	if (unlikely(!budget))
++		goto out;
 +
-+void *mlx5_devcom_get_peer_data_rcu(struct mlx5_devcom *devcom, enum mlx5_devcom_components id)
-+{
-+	struct mlx5_devcom_component *comp;
-+	int i;
-+
-+	if (IS_ERR_OR_NULL(devcom))
-+		return NULL;
-+
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
-+		if (i != devcom->idx)
-+			break;
-+
-+	comp = &devcom->priv->components[id];
-+	/* This can change concurrently, however 'data' pointer will remain
-+	 * valid for the duration of RCU read section.
-+	 */
-+	if (!READ_ONCE(comp->paired))
-+		return NULL;
-+
-+	return rcu_dereference(comp->device[i].data);
- }
+ 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
  
- void mlx5_devcom_release_peer_data(struct mlx5_devcom *devcom,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-index 94313c18bb64..9a496f4722da 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -41,6 +41,7 @@ bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
+ 	if (c->xdp)
+ 		busy |= mlx5e_poll_xdpsq_cq(&c->rq_xdpsq.cq);
  
- void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 				enum mlx5_devcom_components id);
-+void *mlx5_devcom_get_peer_data_rcu(struct mlx5_devcom *devcom, enum mlx5_devcom_components id);
- void mlx5_devcom_release_peer_data(struct mlx5_devcom *devcom,
- 				   enum mlx5_devcom_components id);
+-	if (likely(budget)) { /* budget=0 means: don't poll rx rings */
+-		if (xsk_open)
+-			work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
++	if (xsk_open)
++		work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
  
+-		if (likely(budget - work_done))
+-			work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
++	if (likely(budget - work_done))
++		work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
+ 
+-		busy |= work_done == budget;
+-	}
++	busy |= work_done == budget;
+ 
+ 	mlx5e_poll_ico_cq(&c->icosq.cq);
+ 	if (mlx5e_poll_ico_cq(&c->async_icosq.cq))
 
