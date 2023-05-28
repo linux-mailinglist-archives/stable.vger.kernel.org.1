@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03816713E2E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9095713FAB
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbjE1Tcs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49324 "EHLO
+        id S231348AbjE1Trt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:47:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbjE1Tcr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:47 -0400
+        with ESMTP id S231346AbjE1Trs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B9FC7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B3FB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E55061DB2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5B6C433EF;
-        Sun, 28 May 2023 19:32:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8109461FCD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCDCC433EF;
+        Sun, 28 May 2023 19:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302365;
-        bh=jZwCVYRwomB0GO/E7pd4QMROKXE4wDu48IuisVSdih4=;
+        s=korg; t=1685303265;
+        bh=LLD/YNdSs9CiOnKKPPoHuqGsRejom82hxh5tAzSSe7g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0hgSaUmO1f0bnGuJsJpqLtiEAR2QSvJ6X9HWVFpPFyjdMDpGUQBbDcFVoM0LroGDc
-         aC2f1N/gWQPGzmF3vTs2fbPko0vkkA5V+PoXbqTv1sIzESc1LqZx6hjXLPFIoQ5D3d
-         uhcOEx8txuKWqrXRIxaK2UgHa+jsQkQLrIR7QBpw=
+        b=aDp54lAcX+1PkYGaKC6KpGNBBbre3hbwT1cNzXdRYhmw9U1A/6Ejll9U0NMgWF21l
+         NJ56Z9jzWhf7F75Hc51zGDuBfhj9nkTzX9J2ZA2tphFa7lw94DioSP/AcaHEZ03Mvo
+         fKn/wupHogmbW4/8CD8Zmg0e+mkL2SBy9POEbkoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Zhu Yanjun <zyjzyj2000@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.3 106/127] forcedeth: Fix an error handling path in nv_probe()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Linyu Yuan <quic_linyyuan@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 02/69] usb: dwc3: fix gadget mode suspend interrupt handler issue
 Date:   Sun, 28 May 2023 20:11:22 +0100
-Message-Id: <20230528190839.724954680@linuxfoundation.org>
+Message-Id: <20230528190828.437588639@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,35 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Linyu Yuan <quic_linyyuan@quicinc.com>
 
-commit 5b17a4971d3b2a073f4078dd65331efbe35baa2d upstream.
+[ Upstream commit 4e8ef34e36f2839ef8c8da521ab7035956436818 ]
 
-If an error occures after calling nv_mgmt_acquire_sema(), it should be
-undone with a corresponding nv_mgmt_release_sema() call.
+When work in gadget mode, currently driver doesn't update software level
+link_state correctly as link state change event is not enabled for most
+devices, in function dwc3_gadget_suspend_interrupt(), it will only pass
+suspend event to UDC core when software level link state changes, so when
+interrupt generated in sequences of suspend -> reset -> conndone ->
+suspend, link state is not updated during reset and conndone, so second
+suspend interrupt event will not pass to UDC core.
 
-Add it in the error handling path of the probe as already done in the
-remove function.
+Remove link_state compare in dwc3_gadget_suspend_interrupt() and add a
+suspended flag to replace the compare function.
 
-Fixes: cac1c52c3621 ("forcedeth: mgmt unit interface")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Zhu Yanjun <zyjzyj2000@gmail.com>
-Link: https://lore.kernel.org/r/355e9a7d351b32ad897251b6f81b5886fcdc6766.1684571393.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 799e9dc82968 ("usb: dwc3: gadget: conditionally disable Link State change events")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Linyu Yuan <quic_linyyuan@quicinc.com>
+Link: https://lore.kernel.org/r/20230512004524.31950-1-quic_linyyuan@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/nvidia/forcedeth.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.h   |  2 ++
+ drivers/usb/dwc3/gadget.c | 10 +++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/nvidia/forcedeth.c
-+++ b/drivers/net/ethernet/nvidia/forcedeth.c
-@@ -6138,6 +6138,7 @@ static int nv_probe(struct pci_dev *pci_
- 	return 0;
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 725653711411d..84cdac33cb359 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1085,6 +1085,7 @@ struct dwc3_scratchpad_array {
+  *	3	- Reserved
+  * @dis_metastability_quirk: set to disable metastability quirk.
+  * @dis_split_quirk: set to disable split boundary.
++ * @suspended: set to track suspend event due to U3/L2.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+  *			increments or 0 to disable.
+  * @max_cfg_eps: current max number of IN eps used across all USB configs.
+@@ -1298,6 +1299,7 @@ struct dwc3 {
  
- out_error:
-+	nv_mgmt_release_sema(dev);
- 	if (phystate_orig)
- 		writel(phystate|NVREG_ADAPTCTL_RUNNING, base + NvRegAdapterControl);
- out_freering:
+ 	unsigned		dis_split_quirk:1;
+ 	unsigned		async_callbacks:1;
++	unsigned		suspended:1;
+ 
+ 	u16			imod_interval;
+ 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 7ff77a0de5152..e42d50e4aba30 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3694,6 +3694,8 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
+ {
+ 	int			reg;
+ 
++	dwc->suspended = false;
++
+ 	dwc3_gadget_set_link_state(dwc, DWC3_LINK_STATE_RX_DET);
+ 
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+@@ -3714,6 +3716,8 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+ {
+ 	u32			reg;
+ 
++	dwc->suspended = false;
++
+ 	/*
+ 	 * Ideally, dwc3_reset_gadget() would trigger the function
+ 	 * drivers to stop any active transfers through ep disable.
+@@ -3919,6 +3923,8 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
+ 
+ static void dwc3_gadget_wakeup_interrupt(struct dwc3 *dwc)
+ {
++	dwc->suspended = false;
++
+ 	/*
+ 	 * TODO take core out of low power mode when that's
+ 	 * implemented.
+@@ -4034,8 +4040,10 @@ static void dwc3_gadget_suspend_interrupt(struct dwc3 *dwc,
+ {
+ 	enum dwc3_link_state next = evtinfo & DWC3_LINK_STATE_MASK;
+ 
+-	if (dwc->link_state != next && next == DWC3_LINK_STATE_U3)
++	if (!dwc->suspended && next == DWC3_LINK_STATE_U3) {
++		dwc->suspended = true;
+ 		dwc3_suspend_gadget(dwc);
++	}
+ 
+ 	dwc->link_state = next;
+ }
+-- 
+2.39.2
+
 
 
