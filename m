@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 010C0713E3C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1739713EAD
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230301AbjE1Tdc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:33:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49762 "EHLO
+        id S230435AbjE1Ths (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230300AbjE1Tdc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:32 -0400
+        with ESMTP id S230451AbjE1Ths (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124A2A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112BEAB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A347612E6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C4CC433EF;
-        Sun, 28 May 2023 19:33:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F9C661E50
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7736DC433EF;
+        Sun, 28 May 2023 19:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302410;
-        bh=1VLUA8HWeq6VhVyIy4GFFWdztGzpB+qVMQNLruE0kb4=;
+        s=korg; t=1685302665;
+        bh=Ima5WBTGAQip3VNZZXYRFN57qAXgEIT9Tl8MIGXwSL8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LkZ8Y9twUIWvmftyCD3qGZVIKUPEY/UUGsJTMe5GlsMU3PF7v8Pldq+lEyqFqfJOi
-         UnXOQYtsq3o8cJLftq9zzSW/oocVXgIbWJfR4tw2mTZEU6v6RY3H+A82S5D8ZmKrwq
-         y9MT3vStg/FA46xGEhUSK2MoeWfSdZB7a42jVZyE=
+        b=ddAXyyyTMOydi+h9NQ8L+hMyqe/nGy8Qqh04Flc0DIkVOWlBv3Otq2Omd78xhkGUp
+         ZrQLL4A4VTJNKIKcHUlE+NoIURKCoO/mxU0oB4aq0WgjPnf89/GL6QoXOWaRzvKhZg
+         VSOo8Atf6/YToH32nQ2sx9oVX+VbPj3jnZiNy9Ek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.3 119/127] arm64: dts: imx8mn-var-som: fix PHY detection bug by adding deassert delay
+        patches@lists.linux.dev, Vernon Lovejoy <vlovejoy@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 6.1 095/119] x86/show_trace_log_lvl: Ensure stack pointer is aligned, again
 Date:   Sun, 28 May 2023 20:11:35 +0100
-Message-Id: <20230528190840.113729818@linuxfoundation.org>
+Message-Id: <20230528190838.692923735@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +54,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Vernon Lovejoy <vlovejoy@redhat.com>
 
-commit f161cea5a20f3aeeb637a88ad1705fc2720b4d58 upstream.
+commit 2e4be0d011f21593c6b316806779ba1eba2cd7e0 upstream.
 
-While testing the ethernet interface on a Variscite symphony carrier
-board using an imx8mn SOM with an onboard ADIN1300 PHY (EC hardware
-configuration), the ethernet PHY is not detected.
+The commit e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
+tried to align the stack pointer in show_trace_log_lvl(), otherwise the
+"stack < stack_info.end" check can't guarantee that the last read does
+not go past the end of the stack.
 
-The ADIN1300 datasheet indicate that the "Management interface
-active (t4)" state is reached at most 5ms after the reset signal is
-deasserted.
+However, we have the same problem with the initial value of the stack
+pointer, it can also be unaligned. So without this patch this trivial
+kernel module
 
-The device tree in Variscite custom git repository uses the following
-property:
+	#include <linux/module.h>
 
-    phy-reset-post-delay = <20>;
+	static int init(void)
+	{
+		asm volatile("sub    $0x4,%rsp");
+		dump_stack();
+		asm volatile("add    $0x4,%rsp");
 
-Add a new MDIO property 'reset-deassert-us' of 20ms to have the same
-delay inside the ethphy node. Adding this property fixes the problem
-with the PHY detection.
+		return -EAGAIN;
+	}
 
-Note that this SOM can also have an Atheros AR8033 PHY. In this case,
-a 1ms deassert delay is sufficient. Add a comment to that effect.
+	module_init(init);
+	MODULE_LICENSE("GPL");
 
-Fixes: ade0176dd8a0 ("arm64: dts: imx8mn-var-som: Add Variscite VAR-SOM-MX8MN System on Module")
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+crashes the kernel.
+
+Fixes: e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
+Signed-off-by: Vernon Lovejoy <vlovejoy@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20230512104232.GA10227@redhat.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kernel/dumpstack.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-@@ -98,11 +98,17 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -195,7 +195,6 @@ static void show_trace_log_lvl(struct ta
+ 	printk("%sCall Trace:\n", log_lvl);
  
--		ethphy: ethernet-phy@4 {
-+		ethphy: ethernet-phy@4 { /* AR8033 or ADIN1300 */
- 			compatible = "ethernet-phy-ieee802.3-c22";
- 			reg = <4>;
- 			reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <10000>;
-+			/*
-+			 * Deassert delay:
-+			 * ADIN1300 requires 5ms.
-+			 * AR8033   requires 1ms.
-+			 */
-+			reset-deassert-us = <20000>;
- 		};
- 	};
- };
+ 	unwind_start(&state, task, regs, stack);
+-	stack = stack ? : get_stack_pointer(task, regs);
+ 	regs = unwind_get_entry_regs(&state, &partial);
+ 
+ 	/*
+@@ -214,9 +213,13 @@ static void show_trace_log_lvl(struct ta
+ 	 * - hardirq stack
+ 	 * - entry stack
+ 	 */
+-	for ( ; stack; stack = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
++	for (stack = stack ?: get_stack_pointer(task, regs);
++	     stack;
++	     stack = stack_info.next_sp) {
+ 		const char *stack_name;
+ 
++		stack = PTR_ALIGN(stack, sizeof(long));
++
+ 		if (get_stack_info(stack, task, &stack_info, &visit_mask)) {
+ 			/*
+ 			 * We weren't on a valid stack.  It's possible that
 
 
