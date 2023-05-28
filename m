@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBDB6713EE6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD8E713CA3
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbjE1TkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
+        id S229799AbjE1TRD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230521AbjE1TkB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5528EB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:00 -0700 (PDT)
+        with ESMTP id S229795AbjE1TRC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A431A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E08FA61EA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09751C433EF;
-        Sun, 28 May 2023 19:39:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBAB8619EF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9292C433EF;
+        Sun, 28 May 2023 19:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302799;
-        bh=HYGronkBmM6Q51iGZWxw7XA7yrSq9r2duyuWRAfsOMQ=;
+        s=korg; t=1685301420;
+        bh=AZhhvawArSKkcTAmiz04exIWyoy05W02J3W/bj0B9gQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PYicNzrxKrO3p0sHZiXhv18h6/yjWQB4w/EeBkDFEjVm/0FoMa8nZzAwTHkfL5q0F
-         CaS75gVQWCj1Vh23ZZwQa3HbPc7mts1s0jcsQzEjCbv3j/A2+u+ratt9G73jKhTuWm
-         JjYxrdQ6e8+gt6WhYczvcDcj0bAi6fK+JHP63jJQ=
+        b=jq+P6fHhAbUBDqstfKFYan/SmSwobr0OiTBa5S9d+Im2VqfdOz1UBpNRVt4M7hF4N
+         Z/3uLuJ6Ofnbk7Q5ETaj7w/rrZvGG5TZS90ULMQOxcTcTglRIFGEx1gyIwZjrK2s7A
+         3JZxYyteZM8CQki5Irt3HbPAIv+mz+bOohA6mhBs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/211] ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled
+        patches@lists.linux.dev, Soheil Hassas Yeganeh <soheil@google.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 005/132] tcp: return EPOLLOUT from tcp_poll only when notsent_bytes is half the limit
 Date:   Sun, 28 May 2023 20:09:04 +0100
-Message-Id: <20230528190844.097550661@linuxfoundation.org>
+Message-Id: <20230528190833.728570413@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,74 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Soheil Hassas Yeganeh <soheil@google.com>
 
-[ Upstream commit a44be64bbecb15a452496f60db6eacfee2b59c79 ]
+[ Upstream commit 8ba3c9d1c6d75d1e6af2087278b30e17f68e1fff ]
 
-When a file system currently mounted read/only is remounted
-read/write, if we clear the SB_RDONLY flag too early, before the quota
-is initialized, and there is another process/thread constantly
-attempting to create a directory, it's possible to trigger the
+If there was any event available on the TCP socket, tcp_poll()
+will be called to retrieve all the events.  In tcp_poll(), we call
+sk_stream_is_writeable() which returns true as long as we are at least
+one byte below notsent_lowat.  This will result in quite a few
+spurious EPLLOUT and frequent tiny sendmsg() calls as a result.
 
-	WARN_ON_ONCE(dquot_initialize_needed(inode));
+Similar to sk_stream_write_space(), use __sk_stream_is_writeable
+with a wake value of 1, so that we set EPOLLOUT only if half the
+space is available for write.
 
-in ext4_xattr_block_set(), with the following stack trace:
-
-   WARNING: CPU: 0 PID: 5338 at fs/ext4/xattr.c:2141 ext4_xattr_block_set+0x2ef2/0x3680
-   RIP: 0010:ext4_xattr_block_set+0x2ef2/0x3680 fs/ext4/xattr.c:2141
-   Call Trace:
-    ext4_xattr_set_handle+0xcd4/0x15c0 fs/ext4/xattr.c:2458
-    ext4_initxattrs+0xa3/0x110 fs/ext4/xattr_security.c:44
-    security_inode_init_security+0x2df/0x3f0 security/security.c:1147
-    __ext4_new_inode+0x347e/0x43d0 fs/ext4/ialloc.c:1324
-    ext4_mkdir+0x425/0xce0 fs/ext4/namei.c:2992
-    vfs_mkdir+0x29d/0x450 fs/namei.c:4038
-    do_mkdirat+0x264/0x520 fs/namei.c:4061
-    __do_sys_mkdirat fs/namei.c:4076 [inline]
-    __se_sys_mkdirat fs/namei.c:4074 [inline]
-    __x64_sys_mkdirat+0x89/0xa0 fs/namei.c:4074
-
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230506142419.984260-1-tytso@mit.edu
-Reported-by: syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=6513f6cb5cd6b5fc9f37e3bb70d273b94be9c34c
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Soheil Hassas Yeganeh <soheil@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e14cadfd80d7 ("tcp: add annotations around sk->sk_shutdown accesses")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/tcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index edd1409663932..681efff3af50f 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5797,6 +5797,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 	ext4_group_t g;
- 	unsigned int journal_ioprio = DEFAULT_JOURNAL_IOPRIO;
- 	int err = 0;
-+	int enable_rw = 0;
- #ifdef CONFIG_QUOTA
- 	int enable_quota = 0;
- 	int i, j;
-@@ -5989,7 +5990,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 			if (err)
- 				goto restore_opts;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 68f89fe7f9233..2fcf6e5a371dd 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -576,7 +576,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
+ 			mask |= EPOLLIN | EPOLLRDNORM;
  
--			sb->s_flags &= ~SB_RDONLY;
-+			enable_rw = 1;
- 			if (ext4_has_feature_mmp(sb)) {
- 				err = ext4_multi_mount_protect(sb,
- 						le64_to_cpu(es->s_mmp_block));
-@@ -6048,6 +6049,9 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
- 
-+	if (enable_rw)
-+		sb->s_flags &= ~SB_RDONLY;
-+
- 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
- 		ext4_stop_mmpd(sbi);
- 
+ 		if (!(sk->sk_shutdown & SEND_SHUTDOWN)) {
+-			if (sk_stream_is_writeable(sk)) {
++			if (__sk_stream_is_writeable(sk, 1)) {
+ 				mask |= EPOLLOUT | EPOLLWRNORM;
+ 			} else {  /* send SIGIO later */
+ 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
+@@ -588,7 +588,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
+ 				 * pairs with the input side.
+ 				 */
+ 				smp_mb__after_atomic();
+-				if (sk_stream_is_writeable(sk))
++				if (__sk_stream_is_writeable(sk, 1))
+ 					mask |= EPOLLOUT | EPOLLWRNORM;
+ 			}
+ 		} else
 -- 
 2.39.2
 
