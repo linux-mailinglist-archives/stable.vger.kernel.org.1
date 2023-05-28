@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A39C713FB1
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72225713F82
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbjE1TsG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
+        id S231297AbjE1TqK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231354AbjE1TsB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5889E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:59 -0700 (PDT)
+        with ESMTP id S231295AbjE1TqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0259B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AC8661FD9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BFDC4339C;
-        Sun, 28 May 2023 19:47:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7093D61F66
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD7C433EF;
+        Sun, 28 May 2023 19:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303278;
-        bh=QLZ1eCGJ+58eBr63e1ucrArrqF/xvK8IEXlCm78ogMM=;
+        s=korg; t=1685303167;
+        bh=uSt7my5bwExGXqgKSxE8LTprG2bTuj+AP8/U6RLX3iI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BlkHSO0zlbZojL9jjcUSJh6B0pa/22vev9VecODOBNYb3PMOeVV7Gp5yZfclJdLfr
-         61aa6SvkHCbNwOnPIWT4Xq3LUZQZFzn3j4m9YKwff18I5LUFserJl2+nLuHhYTGUte
-         xSAe6zQNr/SZk8nPTPT4ehn/fp9kVeE5lVhUrwwk=
+        b=SUSxQokBbOdPIEulwslHYfIiE7bKCsF5MT8Ezb4voTNpSo3of+YO+uwNUv9L0MXZ4
+         jhTiAkQ0Zu9hCG6oKeKZXKHHSfw5sCMFhzRJAHSTM1+Z6piLvjDO4PN8lGJfET244X
+         SHi33Ed9plD+2eZV7nICDrm50ivFM4XRUFTaljwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org
-Subject: [PATCH 5.15 15/69] ASoC: rt5682: Disable jack detection interrupt during suspend
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 174/211] parisc: Allow to reboot machine after system halt
 Date:   Sun, 28 May 2023 20:11:35 +0100
-Message-Id: <20230528190828.918940416@linuxfoundation.org>
+Message-Id: <20230528190847.815222892@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,85 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthias Kaehlcke <mka@chromium.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 8b271370e963370703819bd9795a54d658071bed upstream.
+commit 2028315cf59bb899a5ac7e87dc48ecb8fac7ac24 upstream.
 
-The rt5682 driver switches its regmap to cache-only when the
-device suspends and back to regular mode on resume. When the
-jack detect interrupt fires rt5682_irq() schedules the jack
-detect work. This can result in invalid reads from the regmap
-in cache-only mode if the work runs before the device has
-resumed:
+In case a machine can't power-off itself on system shutdown,
+allow the user to reboot it by pressing the RETURN key.
 
-[   56.245502] rt5682 9-001a: ASoC: error at soc_component_read_no_lock on rt5682.9-001a for register: [0x000000f0] -16
-
-Disable the jack detection interrupt during suspend and
-re-enable it on resume. The driver already schedules the
-jack detection work on resume, so any state change during
-suspend is still handled.
-
-This is essentially the same as commit f7d00a9be147 ("SoC:
-rt5682s: Disable jack detection interrupt during suspend")
-for the rt5682s.
-
-Cc: stable@kernel.org
-Signed-off-by: Matthias Kaehlcke <mka@chromium.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org
-Reviewed-by: Stephen Boyd <swboyd@chromium.org
-Link: https://lore.kernel.org/r/20230516164629.1.Ibf79e94b3442eecc0054d2b478779cc512d967fc@changeid
-Signed-off-by: Mark Brown <broonie@kernel.org
+Cc: <stable@vger.kernel.org> # v4.14+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5682-i2c.c |    4 +++-
- sound/soc/codecs/rt5682.c     |    6 ++++++
- sound/soc/codecs/rt5682.h     |    1 +
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/process.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/sound/soc/codecs/rt5682-i2c.c
-+++ b/sound/soc/codecs/rt5682-i2c.c
-@@ -268,7 +268,9 @@ static int rt5682_i2c_probe(struct i2c_c
- 		ret = devm_request_threaded_irq(&i2c->dev, i2c->irq, NULL,
- 			rt5682_irq, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING
- 			| IRQF_ONESHOT, "rt5682", rt5682);
--		if (ret)
-+		if (!ret)
-+			rt5682->irq = i2c->irq;
-+		else
- 			dev_err(&i2c->dev, "Failed to reguest IRQ: %d\n", ret);
- 	}
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -123,13 +123,18 @@ void machine_power_off(void)
+ 	/* It seems we have no way to power the system off via
+ 	 * software. The user has to press the button himself. */
  
---- a/sound/soc/codecs/rt5682.c
-+++ b/sound/soc/codecs/rt5682.c
-@@ -2951,6 +2951,9 @@ static int rt5682_suspend(struct snd_soc
- 	if (rt5682->is_sdw)
- 		return 0;
+-	printk(KERN_EMERG "System shut down completed.\n"
+-	       "Please power this system off now.");
++	printk("Power off or press RETURN to reboot.\n");
  
-+	if (rt5682->irq)
-+		disable_irq(rt5682->irq);
-+
- 	cancel_delayed_work_sync(&rt5682->jack_detect_work);
- 	cancel_delayed_work_sync(&rt5682->jd_check_work);
- 	if (rt5682->hs_jack && (rt5682->jack_type & SND_JACK_HEADSET) == SND_JACK_HEADSET) {
-@@ -3019,6 +3022,9 @@ static int rt5682_resume(struct snd_soc_
- 	mod_delayed_work(system_power_efficient_wq,
- 		&rt5682->jack_detect_work, msecs_to_jiffies(0));
- 
-+	if (rt5682->irq)
-+		enable_irq(rt5682->irq);
-+
- 	return 0;
+ 	/* prevent soft lockup/stalled CPU messages for endless loop. */
+ 	rcu_sysrq_start();
+ 	lockup_detector_soft_poweroff();
+-	for (;;);
++	while (1) {
++		/* reboot if user presses RETURN key */
++		if (pdc_iodc_getc() == 13) {
++			printk("Rebooting...\n");
++			machine_restart(NULL);
++		}
++	}
  }
- #else
---- a/sound/soc/codecs/rt5682.h
-+++ b/sound/soc/codecs/rt5682.h
-@@ -1462,6 +1462,7 @@ struct rt5682_priv {
- 	int pll_out[RT5682_PLLS];
  
- 	int jack_type;
-+	int irq;
- 	int irq_work_delay_time;
- };
- 
+ void (*pm_power_off)(void);
 
 
