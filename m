@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A329E713DA7
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B19713F7A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230103AbjE1T1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44338 "EHLO
+        id S231281AbjE1Tpw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbjE1T1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47141A7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:35 -0700 (PDT)
+        with ESMTP id S231285AbjE1Tpu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F108BB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25FFB61C2F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4203FC4339B;
-        Sun, 28 May 2023 19:27:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1985E61F45
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B3CC433D2;
+        Sun, 28 May 2023 19:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302054;
-        bh=/Ha65achCsfAVtvXbbVawppotu0f/46eBuV4vAd7t3k=;
+        s=korg; t=1685303148;
+        bh=SKnT9DdmycCLFVp9Sa4n1Kw/lLPO+McGuDN4gPJE4qg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FCoALCPonjLoDd1INu94yHeMKF95gvTpauWrpTHoM1NSlU1UV13+ip55uab+8eHQS
-         ZbJ2eV09Kf+csgcJiFwlr3zTZCsdXBWCq1Yffps4He6q7+YwucEm5P3uWhA4C+KDey
-         t9NSOBiAy57iH4JDLdsvJuk5jtyvT76km4HBtfmo=
+        b=oRSyQ9Igv4Kr6Mf+vUO7XS5Zl2Enid8pWyg/+UG668PX9wXRViDsjYjRFUO7vg2Qh
+         c2d+1n3TFxL7rVdc5ainZv/kSbPsC9y10yRt9IblB6FrtqL2mOqYmuPh1o6GMxqyie
+         GCbVGc4VnVa2o6gVPstomOqpmEIi2yakyo6QINU0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 143/161] USB: sisusbvga: Add endpoint checks
+        patches@lists.linux.dev, Frank Schilder <frans@dtu.dk>,
+        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 146/211] ceph: force updating the msg pointer in non-split case
 Date:   Sun, 28 May 2023 20:11:07 +0100
-Message-Id: <20230528190841.475284366@linuxfoundation.org>
+Message-Id: <20230528190847.139549261@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,79 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit df05a9b05e466a46725564528b277d0c570d0104 upstream.
+commit 4cafd0400bcb6187c0d4ab4d4b0229a89ac4f8c2 upstream.
 
-The syzbot fuzzer was able to provoke a WARNING from the sisusbvga driver:
+When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
+request may still contain a list of 'split_realms', and we need
+to skip it anyway. Or it will be parsed as a corrupt snaptrace.
 
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 1 PID: 26 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 1 PID: 26 Comm: kworker/1:1 Not tainted 6.2.0-rc5-syzkaller-00199-g5af6ce704936 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Code: 7c 24 18 e8 6c 50 80 fb 48 8b 7c 24 18 e8 62 1a 01 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 60 b1 fa 8a e8 84 b0 be 03 <0f> 0b e9 58 f8 ff ff e8 3e 50 80 fb 48 81 c5 c0 05 00 00 e9 84 f7
-RSP: 0018:ffffc90000a1ed18 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff888012783a80 RSI: ffffffff816680ec RDI: fffff52000143d95
-RBP: ffff888079020000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000003
-R13: ffff888017d33370 R14: 0000000000000003 R15: ffff888021213600
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005592753a60b0 CR3: 0000000022899000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sisusb_bulkout_msg drivers/usb/misc/sisusbvga/sisusbvga.c:224 [inline]
- sisusb_send_bulk_msg.constprop.0+0x904/0x1230 drivers/usb/misc/sisusbvga/sisusbvga.c:379
- sisusb_send_bridge_packet drivers/usb/misc/sisusbvga/sisusbvga.c:567 [inline]
- sisusb_do_init_gfxdevice drivers/usb/misc/sisusbvga/sisusbvga.c:2077 [inline]
- sisusb_init_gfxdevice+0x87b/0x4000 drivers/usb/misc/sisusbvga/sisusbvga.c:2177
- sisusb_probe+0x9cd/0xbe2 drivers/usb/misc/sisusbvga/sisusbvga.c:2869
-...
-
-The problem was caused by the fact that the driver does not check
-whether the endpoints it uses are actually present and have the
-appropriate types.  This can be fixed by adding a simple check of
-the endpoints.
-
-Link: https://syzkaller.appspot.com/bug?extid=23be03b56c5259385d79
-Reported-and-tested-by: syzbot+23be03b56c5259385d79@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/48ef98f7-51ae-4f63-b8d3-0ef2004bb60a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61200
+Reported-by: Frank Schilder <frans@dtu.dk>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/sisusbvga/sisusb.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/ceph/snap.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/usb/misc/sisusbvga/sisusb.c
-+++ b/drivers/usb/misc/sisusbvga/sisusb.c
-@@ -3014,6 +3014,20 @@ static int sisusb_probe(struct usb_inter
- 	struct usb_device *dev = interface_to_usbdev(intf);
- 	struct sisusb_usb_data *sisusb;
- 	int retval = 0, i;
-+	static const u8 ep_addresses[] = {
-+		SISUSB_EP_GFX_IN | USB_DIR_IN,
-+		SISUSB_EP_GFX_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_BULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_GFX_LBULK_OUT | USB_DIR_OUT,
-+		SISUSB_EP_BRIDGE_IN | USB_DIR_IN,
-+		SISUSB_EP_BRIDGE_OUT | USB_DIR_OUT,
-+		0};
-+
-+	/* Are the expected endpoints present? */
-+	if (!usb_check_bulk_endpoints(intf, ep_addresses)) {
-+		dev_err(&intf->dev, "Invalid USB2VGA device\n");
-+		return -EINVAL;
-+	}
+--- a/fs/ceph/snap.c
++++ b/fs/ceph/snap.c
+@@ -1008,6 +1008,19 @@ skip_inode:
+ 				continue;
+ 			adjust_snap_realm_parent(mdsc, child, realm->ino);
+ 		}
++	} else {
++		/*
++		 * In the non-split case both 'num_split_inos' and
++		 * 'num_split_realms' should be 0, making this a no-op.
++		 * However the MDS happens to populate 'split_realms' list
++		 * in one of the UPDATE op cases by mistake.
++		 *
++		 * Skip both lists just in case to ensure that 'p' is
++		 * positioned at the start of realm info, as expected by
++		 * ceph_update_snap_trace().
++		 */
++		p += sizeof(u64) * num_split_inos;
++		p += sizeof(u64) * num_split_realms;
+ 	}
  
- 	dev_info(&dev->dev, "USB2VGA dongle found at address %d\n",
- 			dev->devnum);
+ 	/*
 
 
