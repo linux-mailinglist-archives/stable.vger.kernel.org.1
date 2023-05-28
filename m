@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B205713EEE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB4B713D41
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231130AbjE1TkW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55300 "EHLO
+        id S229996AbjE1TX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231124AbjE1TkT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9EF10A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:14 -0700 (PDT)
+        with ESMTP id S229997AbjE1TX0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3479A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69D3861EA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D61C4339B;
-        Sun, 28 May 2023 19:40:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 394DD60F4E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563B4C433D2;
+        Sun, 28 May 2023 19:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302813;
-        bh=pEAwytCHpXV8+5xoAdFDjnInboir0Chw8KlpkgREbrs=;
+        s=korg; t=1685301804;
+        bh=9+hvF/FtcPwZfUY6iJ7Sk8sjeDDT51QmvS8WyXUpgbg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F/Mr+RzdBGlhxDoljiXjKHiDtqc5tctv9O8LWG9BME7nqVw9w9t+H+p5n2x92+cCD
-         P60YQllPKRuegDMGsuVzaTXaRzLSZo648e0GMoVr7ZuZHwkqg81mC9+N2Xw48S9Kr9
-         dA7RFUrE/VH0a85cfwOjLJN3mmTm63MqruV77+ZY=
+        b=HFBS+2EAyvWt2McyAFNKRdVx5jPRSImLIq/9M7DPL5bBbDRuaUqmM68qFIPJHiVVY
+         M3NiXFVtjMl+T4UtZFhgX3YfA28IT0VGCpZZshL0SWadh4QHCa6us8QYksp230smJ3
+         Y+SMSFIVwREEGQvE1eSF+k4m8S1A3ZsbtWDS2W6Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/211] firmware: arm_sdei: Fix sleep from invalid context BUG
-Date:   Sun, 28 May 2023 20:09:18 +0100
-Message-Id: <20230528190844.459697158@linuxfoundation.org>
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 035/161] f2fs: fix to drop all dirty pages during umount() if cp_error is set
+Date:   Sun, 28 May 2023 20:09:19 +0100
+Message-Id: <20230528190838.314971398@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,234 +54,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d2c48b2387eb89e0bf2a2e06e30987cf410acad4 ]
+[ Upstream commit c9b3649a934d131151111354bcbb638076f03a30 ]
 
-Running a preempt-rt (v6.2-rc3-rt1) based kernel on an Ampere Altra
-triggers:
+xfstest generic/361 reports a bug as below:
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
-  in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 24, name: cpuhp/0
-  preempt_count: 0, expected: 0
-  RCU nest depth: 0, expected: 0
-  3 locks held by cpuhp/0/24:
-    #0: ffffda30217c70d0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
-    #1: ffffda30217c7120 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x5c/0x248
-    #2: ffffda3021c711f0 (sdei_list_lock){....}-{3:3}, at: sdei_cpuhp_up+0x3c/0x130
-  irq event stamp: 36
-  hardirqs last  enabled at (35): [<ffffda301e85b7bc>] finish_task_switch+0xb4/0x2b0
-  hardirqs last disabled at (36): [<ffffda301e812fec>] cpuhp_thread_fun+0x21c/0x248
-  softirqs last  enabled at (0): [<ffffda301e80b184>] copy_process+0x63c/0x1ac0
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 0 PID: 24 Comm: cpuhp/0 Not tainted 5.19.0-rc3-rt5-[...]
-  Hardware name: WIWYNN Mt.Jade Server [...]
-  Call trace:
-    dump_backtrace+0x114/0x120
-    show_stack+0x20/0x70
-    dump_stack_lvl+0x9c/0xd8
-    dump_stack+0x18/0x34
-    __might_resched+0x188/0x228
-    rt_spin_lock+0x70/0x120
-    sdei_cpuhp_up+0x3c/0x130
-    cpuhp_invoke_callback+0x250/0xf08
-    cpuhp_thread_fun+0x120/0x248
-    smpboot_thread_fn+0x280/0x320
-    kthread+0x130/0x140
-    ret_from_fork+0x10/0x20
+f2fs_bug_on(sbi, sbi->fsync_node_num);
 
-sdei_cpuhp_up() is called in the STARTING hotplug section,
-which runs with interrupts disabled. Use a CPUHP_AP_ONLINE_DYN entry
-instead to execute the cpuhp cb later, with preemption enabled.
+kernel BUG at fs/f2fs/super.c:1627!
+RIP: 0010:f2fs_put_super+0x3a8/0x3b0
+Call Trace:
+ generic_shutdown_super+0x8c/0x1b0
+ kill_block_super+0x2b/0x60
+ kill_f2fs_super+0x87/0x110
+ deactivate_locked_super+0x39/0x80
+ deactivate_super+0x46/0x50
+ cleanup_mnt+0x109/0x170
+ __cleanup_mnt+0x16/0x20
+ task_work_run+0x65/0xa0
+ exit_to_user_mode_prepare+0x175/0x190
+ syscall_exit_to_user_mode+0x25/0x50
+ do_syscall_64+0x4c/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-SDEI originally got its own cpuhp slot to allow interacting
-with perf. It got superseded by pNMI and this early slot is not
-relevant anymore. [1]
+During umount(), if cp_error is set, f2fs_wait_on_all_pages() should
+not stop waiting all F2FS_WB_CP_DATA pages to be writebacked, otherwise,
+fsync_node_num can be non-zero after f2fs_wait_on_all_pages() causing
+this bug.
 
-Some SDEI calls (e.g. SDEI_1_0_FN_SDEI_PE_MASK) take actions on the
-calling CPU. It is checked that preemption is disabled for them.
-_ONLINE cpuhp cb are executed in the 'per CPU hotplug thread'.
-Preemption is enabled in those threads, but their cpumask is limited
-to 1 CPU.
-Move 'WARN_ON_ONCE(preemptible())' statements so that SDEI cpuhp cb
-don't trigger them.
+In this case, to avoid deadloop in f2fs_wait_on_all_pages(), it needs
+to drop all dirty pages rather than redirtying them.
 
-Also add a check for the SDEI_1_0_FN_SDEI_PRIVATE_RESET SDEI call
-which acts on the calling CPU.
-
-[1]:
-https://lore.kernel.org/all/5813b8c5-ae3e-87fd-fccc-94c9cd08816d@arm.com/
-
-Suggested-by: James Morse <james.morse@arm.com>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20230216084920.144064-1-pierre.gondois@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_sdei.c | 37 ++++++++++++++++++++-----------------
- include/linux/cpuhotplug.h  |  1 -
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ fs/f2fs/checkpoint.c | 12 ++++++++++--
+ fs/f2fs/data.c       |  3 ++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index 840754dcc6ca4..5a877d76078f7 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -44,6 +44,8 @@ static asmlinkage void (*sdei_firmware_call)(unsigned long function_id,
- /* entry point from firmware to arch asm code */
- static unsigned long sdei_entry_point;
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 57318010f8e6a..84e98dacd4524 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -306,8 +306,15 @@ static int __f2fs_write_meta_page(struct page *page,
  
-+static int sdei_hp_state;
-+
- struct sdei_event {
- 	/* These three are protected by the sdei_list_lock */
- 	struct list_head	list;
-@@ -302,8 +304,6 @@ int sdei_mask_local_cpu(void)
- {
- 	int err;
+ 	trace_f2fs_writepage(page, META);
  
--	WARN_ON_ONCE(preemptible());
--
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_MASK, 0, 0, 0, 0, 0, NULL);
- 	if (err && err != -EIO) {
- 		pr_warn_once("failed to mask CPU[%u]: %d\n",
-@@ -316,6 +316,7 @@ int sdei_mask_local_cpu(void)
- 
- static void _ipi_mask_cpu(void *ignored)
- {
-+	WARN_ON_ONCE(preemptible());
- 	sdei_mask_local_cpu();
- }
- 
-@@ -323,8 +324,6 @@ int sdei_unmask_local_cpu(void)
- {
- 	int err;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PE_UNMASK, 0, 0, 0, 0, 0, NULL);
- 	if (err && err != -EIO) {
- 		pr_warn_once("failed to unmask CPU[%u]: %d\n",
-@@ -337,6 +336,7 @@ int sdei_unmask_local_cpu(void)
- 
- static void _ipi_unmask_cpu(void *ignored)
- {
-+	WARN_ON_ONCE(preemptible());
- 	sdei_unmask_local_cpu();
- }
- 
-@@ -344,6 +344,8 @@ static void _ipi_private_reset(void *ignored)
- {
- 	int err;
- 
-+	WARN_ON_ONCE(preemptible());
-+
- 	err = invoke_sdei_fn(SDEI_1_0_FN_SDEI_PRIVATE_RESET, 0, 0, 0, 0, 0,
- 			     NULL);
- 	if (err && err != -EIO)
-@@ -390,8 +392,6 @@ static void _local_event_enable(void *data)
- 	int err;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = sdei_api_event_enable(arg->event->event_num);
- 
- 	sdei_cross_call_return(arg, err);
-@@ -480,8 +480,6 @@ static void _local_event_unregister(void *data)
- 	int err;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON_ONCE(preemptible());
--
- 	err = sdei_api_event_unregister(arg->event->event_num);
- 
- 	sdei_cross_call_return(arg, err);
-@@ -562,8 +560,6 @@ static void _local_event_register(void *data)
- 	struct sdei_registered_event *reg;
- 	struct sdei_crosscall_args *arg = data;
- 
--	WARN_ON(preemptible());
--
- 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
- 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
- 				      reg, 0, 0);
-@@ -718,6 +714,8 @@ static int sdei_pm_notifier(struct notifier_block *nb, unsigned long action,
- {
- 	int rv;
- 
-+	WARN_ON_ONCE(preemptible());
-+
- 	switch (action) {
- 	case CPU_PM_ENTER:
- 		rv = sdei_mask_local_cpu();
-@@ -766,7 +764,7 @@ static int sdei_device_freeze(struct device *dev)
- 	int err;
- 
- 	/* unregister private events */
--	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
-+	cpuhp_remove_state(sdei_entry_point);
- 
- 	err = sdei_unregister_shared();
- 	if (err)
-@@ -787,12 +785,15 @@ static int sdei_device_thaw(struct device *dev)
- 		return err;
- 	}
- 
--	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
-+	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
- 				&sdei_cpuhp_up, &sdei_cpuhp_down);
--	if (err)
-+	if (err < 0) {
- 		pr_warn("Failed to re-register CPU hotplug notifier...\n");
-+		return err;
+-	if (unlikely(f2fs_cp_error(sbi)))
++	if (unlikely(f2fs_cp_error(sbi))) {
++		if (is_sbi_flag_set(sbi, SBI_IS_CLOSE)) {
++			ClearPageUptodate(page);
++			dec_page_count(sbi, F2FS_DIRTY_META);
++			unlock_page(page);
++			return 0;
++		}
+ 		goto redirty_out;
 +	}
+ 	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
+ 		goto redirty_out;
+ 	if (wbc->for_reclaim && page->index < GET_SUM_BLOCK(sbi, 0))
+@@ -1277,7 +1284,8 @@ void f2fs_wait_on_all_pages(struct f2fs_sb_info *sbi, int type)
+ 		if (!get_pages(sbi, type))
+ 			break;
  
--	return err;
-+	sdei_hp_state = err;
-+	return 0;
- }
+-		if (unlikely(f2fs_cp_error(sbi)))
++		if (unlikely(f2fs_cp_error(sbi) &&
++			!is_sbi_flag_set(sbi, SBI_IS_CLOSE)))
+ 			break;
  
- static int sdei_device_restore(struct device *dev)
-@@ -824,7 +825,7 @@ static int sdei_reboot_notifier(struct notifier_block *nb, unsigned long action,
- 	 * We are going to reset the interface, after this there is no point
- 	 * doing work when we take CPUs offline.
- 	 */
--	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
-+	cpuhp_remove_state(sdei_hp_state);
- 
- 	sdei_platform_reset();
- 
-@@ -1004,13 +1005,15 @@ static int sdei_probe(struct platform_device *pdev)
- 		goto remove_cpupm;
+ 		io_schedule_timeout(HZ/50);
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 03dffb126d5cc..8f78050c935d7 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2130,7 +2130,8 @@ static int __write_data_page(struct page *page, bool *submitted,
+ 		 * don't drop any dirty dentry pages for keeping lastest
+ 		 * directory structure.
+ 		 */
+-		if (S_ISDIR(inode->i_mode))
++		if (S_ISDIR(inode->i_mode) &&
++				!is_sbi_flag_set(sbi, SBI_IS_CLOSE))
+ 			goto redirty_out;
+ 		goto out;
  	}
- 
--	err = cpuhp_setup_state(CPUHP_AP_ARM_SDEI_STARTING, "SDEI",
-+	err = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "SDEI",
- 				&sdei_cpuhp_up, &sdei_cpuhp_down);
--	if (err) {
-+	if (err < 0) {
- 		pr_warn("Failed to register CPU hotplug notifier...\n");
- 		goto remove_reboot;
- 	}
- 
-+	sdei_hp_state = err;
-+
- 	return 0;
- 
- remove_reboot:
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index fc945f9df2c1d..cb87247da5ba1 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -115,7 +115,6 @@ enum cpuhp_state {
- 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
- 	CPUHP_AP_PERF_XTENSA_STARTING,
- 	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
--	CPUHP_AP_ARM_SDEI_STARTING,
- 	CPUHP_AP_ARM_VFP_STARTING,
- 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
- 	CPUHP_AP_PERF_ARM_HW_BREAKPOINT_STARTING,
 -- 
 2.39.2
 
