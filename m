@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E62B713EFE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCC0713CAE
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbjE1Tky (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55802 "EHLO
+        id S229817AbjE1TRi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjE1Tky (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:54 -0400
+        with ESMTP id S229821AbjE1TRf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E38ED
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82526FE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9ABED61EB0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A2BC433EF;
-        Sun, 28 May 2023 19:40:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14A56619DD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C32C433D2;
+        Sun, 28 May 2023 19:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302848;
-        bh=U7DpjXJqLrMBjTEkmblErRKInvpmeg6KHd3oPtjX0RU=;
+        s=korg; t=1685301446;
+        bh=eeO0lSOmFdS0t5FxdvOmr6yp2SjHparweclfsSyj6Ew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RT9ASt8XRcyT83ahOGUu//BagTsMNe93i8uvvVXrSC1iDXLhsAZL3KCVWqBUIxu9L
-         2x25YEBs8T05iekEvd6wPc/yzAEtPpZItyCG3HrymhJQty+/+FyrR1pJX443XUmoUR
-         JyCtolJ8dc7ylKwcQe68SWj7U4tn9mvwxg2BYn04=
+        b=rKUqmfKGCGaLiqqlIEa4OX9d3JT+xxFnb6fViwtZ+Lg5pt97jEc0hZkAostbzrdEy
+         3Lz/rqFz7Xfs0ymTdnSankeCeiTYel8RYPxJBjoxhP0jcq6LaKqVjJB+6Ta+Yl/w1s
+         QLM+7SgMneyhTltGShWcldxxDVsHV45yC/+IuJno=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Piotr Raczynski <piotr.raczynski@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/211] net: Catch invalid index in XPS mapping
-Date:   Sun, 28 May 2023 20:09:31 +0100
-Message-Id: <20230528190844.833871681@linuxfoundation.org>
+Subject: [PATCH 4.19 033/132] staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE
+Date:   Sun, 28 May 2023 20:09:32 +0100
+Message-Id: <20230528190834.602039867@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
 
-[ Upstream commit 5dd0dfd55baec0742ba8f5625a0dd064aca7db16 ]
+[ Upstream commit fda2093860df4812d69052a8cf4997e53853a340 ]
 
-When setting the XPS value of a TX queue, warn the user once if the
-index of the queue is greater than the number of allocated TX queues.
+Replace macro RTL_PCI_DEVICE with PCI_DEVICE to get rid of rtl819xp_ops
+which is empty.
 
-Previously, this scenario went uncaught. In the best case, it resulted
-in unnecessary allocations. In the worst case, it resulted in
-out-of-bounds memory references through calls to `netdev_get_tx_queue(
-dev, index)`. Therefore, it is important to inform the user but not
-worth returning an error and risk downing the netdevice.
-
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
-Link: https://lore.kernel.org/r/20230321150725.127229-1-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Link: https://lore.kernel.org/r/8b45ee783fa91196b7c9d6fc840a189496afd2f4.1677133271.git.philipp.g.hortmann@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 6 +++---
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.h | 5 -----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1eaf224a90ce5..29e6e11c481c6 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -2628,6 +2628,8 @@ int __netif_set_xps_queue(struct net_device *dev, const unsigned long *mask,
- 	bool active = false;
- 	unsigned int nr_ids;
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+index d5ef1986bde4d..0afe4ed9ca885 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -61,9 +61,9 @@ static const struct rtl819x_ops rtl819xp_ops = {
+ };
  
-+	WARN_ON_ONCE(index >= dev->num_tx_queues);
-+
- 	if (dev->num_tc) {
- 		/* Do not allow XPS on subordinate device directly */
- 		num_tc = dev->num_tc;
+ static struct pci_device_id rtl8192_pci_id_tbl[] = {
+-	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
+-	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
+-	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
++	{PCI_DEVICE(0x10ec, 0x8192)},
++	{PCI_DEVICE(0x07aa, 0x0044)},
++	{PCI_DEVICE(0x07aa, 0x0047)},
+ 	{}
+ };
+ 
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+index 866fe4d4cb28d..964cc5b8eb91d 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+@@ -67,11 +67,6 @@
+ #define IS_HARDWARE_TYPE_8192SE(_priv)		\
+ 	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 == NIC_8192SE)
+ 
+-#define RTL_PCI_DEVICE(vend, dev, cfg) \
+-	.vendor = (vend), .device = (dev), \
+-	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
+-	.driver_data = (kernel_ulong_t)&(cfg)
+-
+ #define TOTAL_CAM_ENTRY		32
+ #define CAM_CONTENT_COUNT	8
+ 
 -- 
 2.39.2
 
