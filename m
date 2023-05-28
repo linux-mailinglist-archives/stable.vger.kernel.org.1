@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DBED713F72
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91EF4713EA3
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231267AbjE1Tpc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:45:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59860 "EHLO
+        id S230443AbjE1ThY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbjE1Tpb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:31 -0400
+        with ESMTP id S230449AbjE1ThX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0287B9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E085BB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D0B361F44
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3BEC4339B;
-        Sun, 28 May 2023 19:45:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 752BB61E56
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B71C433EF;
+        Sun, 28 May 2023 19:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303129;
-        bh=dvRbrFDIMtMzICWAYyxWxGgAdwwQwzfYWXnUnAc7OXE=;
+        s=korg; t=1685302640;
+        bh=JZc95wvwJQZN4o0/e9AFt62sr0H7rDgK566d7dlf010=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YLkAZ+FFJIt1QaFLTSvq47LMNIOxt7y+mPNrLdzV63AUk6Jr9V5tYZlv3yC4Bdz63
-         D9GwxYH7lN9SaakL87zzlu/xnlVx+iMZX7znK6xvonbpfvdfrRN6L3F/D9vzjLgvYg
-         zq8rCpjD0ntrs4g/K3WA77RyaTU40UimTgS504fA=
+        b=nCAdvt+hSQa/T1hfPK8OZH37k0WIV44TNpxZcrQakM6Ed8nolnITw94gb3T5ytL08
+         gfJmubt7cJG+9g7Spqjcubsjq/B+Dmq+hY4vgz0Lv0eflX5e3/mE+xn8c6v84zdXn4
+         TF7MQjuUy1y1333AgQadmAArin8PZOZuhvUAO8MY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 165/211] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
+        patches@lists.linux.dev, Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.1 086/119] firmware: arm_ffa: Check if ffa_driver remove is present before executing
 Date:   Sun, 28 May 2023 20:11:26 +0100
-Message-Id: <20230528190847.599826488@linuxfoundation.org>
+Message-Id: <20230528190838.402964807@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,115 +52,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-(backported from upstream 8a5299a1278eadf1e08a598a5345c376206f171e)
+commit b71b55248a580e9c9befc4ae060539f1f8e477da upstream.
 
-For different reasons, fsl-spi driver performs bits_per_word
-modifications for different reasons:
-- On CPU mode, to minimise amount of interrupts
-- On CPM/QE mode to work around controller byte order
+Currently ffa_drv->remove() is called unconditionally from
+ffa_device_remove(). Since the driver registration doesn't check for it
+and allows it to be registered without .remove callback, we need to check
+for the presence of it before executing it from ffa_device_remove() to
+above a NULL pointer dereference like the one below:
 
-For CPU mode that's done in fsl_spi_prepare_message() while
-for CPM mode that's done in fsl_spi_setup_transfer().
+  | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+  | Mem abort info:
+  |   ESR = 0x0000000086000004
+  |   EC = 0x21: IABT (current EL), IL = 32 bits
+  |   SET = 0, FnV = 0
+  |   EA = 0, S1PTW = 0
+  |   FSC = 0x04: level 0 translation fault
+  | user pgtable: 4k pages, 48-bit VAs, pgdp=0000000881cc8000
+  | [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+  | Internal error: Oops: 0000000086000004 [#1] PREEMPT SMP
+  | CPU: 3 PID: 130 Comm: rmmod Not tainted 6.3.0-rc7 #6
+  | Hardware name: FVP Base RevC (DT)
+  | pstate: 63402809 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=-c)
+  | pc : 0x0
+  | lr : ffa_device_remove+0x20/0x2c
+  | Call trace:
+  |  0x0
+  |  device_release_driver_internal+0x16c/0x260
+  |  driver_detach+0x90/0xd0
+  |  bus_remove_driver+0xdc/0x11c
+  |  driver_unregister+0x30/0x54
+  |  ffa_driver_unregister+0x14/0x20
+  |  cleanup_module+0x18/0xeec
+  |  __arm64_sys_delete_module+0x234/0x378
+  |  invoke_syscall+0x40/0x108
+  |  el0_svc_common+0xb4/0xf0
+  |  do_el0_svc+0x30/0xa4
+  |  el0_svc+0x2c/0x7c
+  |  el0t_64_sync_handler+0x84/0xf0
+  |  el0t_64_sync+0x190/0x194
 
-Reunify all of it in fsl_spi_prepare_message(), and catch
-impossible cases early through master's bits_per_word_mask
-instead of returning EINVAL later.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 244f5d597e1e ("firmware: arm_ffa: Add missing remove callback to ffa_bus_type")
+Link: https://lore.kernel.org/r/20230419-ffa_fixes_6-4-v2-1-d9108e43a176@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-spi.c |   50 +++++++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 27 deletions(-)
+ drivers/firmware/arm_ffa/bus.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -203,26 +203,6 @@ static int mspi_apply_cpu_mode_quirks(st
- 	return bits_per_word;
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -53,7 +53,8 @@ static void ffa_device_remove(struct dev
+ {
+ 	struct ffa_driver *ffa_drv = to_ffa_driver(dev->driver);
+ 
+-	ffa_drv->remove(to_ffa_dev(dev));
++	if (ffa_drv->remove)
++		ffa_drv->remove(to_ffa_dev(dev));
  }
  
--static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
--				struct spi_device *spi,
--				int bits_per_word)
--{
--	/* CPM/QE uses Little Endian for words > 8
--	 * so transform 16 and 32 bits words into 8 bits
--	 * Unfortnatly that doesn't work for LSB so
--	 * reject these for now */
--	/* Note: 32 bits word, LSB works iff
--	 * tfcr/rfcr is set to CPMFCR_GBL */
--	if (spi->mode & SPI_LSB_FIRST &&
--	    bits_per_word > 8)
--		return -EINVAL;
--	if (bits_per_word <= 8)
--		return bits_per_word;
--	if (bits_per_word == 16 || bits_per_word == 32)
--		return 8; /* pretend its 8 bits */
--	return -EINVAL;
--}
--
- static int fsl_spi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
- {
-@@ -250,9 +230,6 @@ static int fsl_spi_setup_transfer(struct
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else
--		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
--							  bits_per_word);
- 
- 	if (bits_per_word < 0)
- 		return bits_per_word;
-@@ -370,14 +347,27 @@ static int fsl_spi_do_one_msg(struct spi
- 	 * In CPU mode, optimize large byte transfers to use larger
- 	 * bits_per_word values to reduce number of interrupts taken.
- 	 */
--	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
--		list_for_each_entry(t, &m->transfers, transfer_list) {
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
- 			if (t->len < 256 || t->bits_per_word != 8)
- 				continue;
- 			if ((t->len & 3) == 0)
- 				t->bits_per_word = 32;
- 			else if ((t->len & 1) == 0)
- 				t->bits_per_word = 16;
-+		} else {
-+			/*
-+			 * CPM/QE uses Little Endian for words > 8
-+			 * so transform 16 and 32 bits words into 8 bits
-+			 * Unfortnatly that doesn't work for LSB so
-+			 * reject these for now
-+			 * Note: 32 bits word, LSB works iff
-+			 * tfcr/rfcr is set to CPMFCR_GBL
-+			 */
-+			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
-+				return -EINVAL;
-+			if (t->bits_per_word == 16 || t->bits_per_word == 32)
-+				t->bits_per_word = 8; /* pretend its 8 bits */
- 		}
- 	}
- 
-@@ -635,8 +625,14 @@ static struct spi_master *fsl_spi_probe(
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
- 		fsl_spi_grlib_probe(dev);
- 
--	master->bits_per_word_mask =
--		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
-+	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
-+	else
-+		master->bits_per_word_mask =
-+			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
-+
-+	master->bits_per_word_mask &=
- 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
- 
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
+ static int ffa_device_uevent(struct device *dev, struct kobj_uevent_env *env)
 
 
