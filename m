@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24128713AC7
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EBB6713AC8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjE1QwZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60998 "EHLO
+        id S229489AbjE1Qwe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:52:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjE1QwY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:52:24 -0400
+        with ESMTP id S229445AbjE1Qwd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:52:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADC7A4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:52:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEA2BD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:52:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBF8D617A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:52:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15362C433D2;
-        Sun, 28 May 2023 16:52:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3FC8617C3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:52:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AF9C433D2;
+        Sun, 28 May 2023 16:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292742;
-        bh=uNmM4tI3LbJzdvU+/+ewZOXsDKUiTPpRu21CB0/sF90=;
+        s=korg; t=1685292751;
+        bh=Ddi8uTzOwiSoOVXPmXQ8+N2Sm5iz+vf37GpWv0uympA=;
         h=Subject:To:Cc:From:Date:From;
-        b=gGpIBjJxJakcqAR9NxlOGclDMhZPuIz2I7sJghOSlPDC7JJw0kQgc3KIsZ7IYhdOc
-         aGB+sDtae5wW2aPBFgg/5hFiTM9Sa0ETew9iHfjxfMZww4Fd3W5p/HuQsdzKDJr1Ub
-         W2FMxAGN/HBN4T84DMZzChdFewo52BKaCUvmLfsk=
-Subject: FAILED: patch "[PATCH] net/mlx5: Devcom, serialize devcom registration" failed to apply to 5.15-stable tree
+        b=HX2qPg9l087Q08glqcmp6X8xeJyggSkKfoqaq0XaJ8sJAAYAravqj/JXJeeUmgs28
+         HqX2M5uN5nSWew8Il8gBjVGIzlYsiJj/VitwqFS6iIfDI6Kd5zkjWdoClP+IK8Ax6t
+         ZYOkUNmTzDO/+sNskNgvEsx87t3KX1ekuGsFQglk=
+Subject: FAILED: patch "[PATCH] net/mlx5: Devcom, serialize devcom registration" failed to apply to 5.10-stable tree
 To:     shayd@nvidia.com, mbloch@nvidia.com, saeedm@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sun, 28 May 2023 17:52:20 +0100
-Message-ID: <2023052819-emit-savior-ef9a@gregkh>
+Message-ID: <2023052820-childcare-gumminess-835c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1f893f57a3bf9fe1f4bcb25b55aea7f7f9712fe7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052819-emit-savior-ef9a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052820-childcare-gumminess-835c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
