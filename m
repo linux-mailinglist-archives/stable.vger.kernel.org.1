@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1BE713C28
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A8E713C2A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:05:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjE1TFb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60274 "EHLO
+        id S229668AbjE1TFh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:05:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjE1TFb (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:31 -0400
+        with ESMTP id S229628AbjE1TFg (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:05:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19690C9
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E9D90
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:05:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9A596160D
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84D0C433EF;
-        Sun, 28 May 2023 19:05:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 885DD618CB
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:05:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B9DC433EF;
+        Sun, 28 May 2023 19:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685300729;
-        bh=K+V2rj3uwd8VOd6oWMonK0mJrUAgCGyRCMoJKHrohfY=;
+        s=korg; t=1685300734;
+        bh=EyH+0ReLRDRu0/mZg5JpwnK0PHfafp3YCuYNu1OCChg=;
         h=Subject:To:From:Date:From;
-        b=ONj6SDOwJ/I5Ard8WlaHvSs6FuUjJL/VqYd9KVK69sZ/F4l74p3Pja2O2ww8mMEhg
-         yo/slRyIOWAlU3W7XakYDOtG/d14XEVYWpwFP6mWx9v3BO35nZf5OW26pXzfatgpdp
-         9A2orqacosn2ny+fAgm2pF7XcUwxTWZJal1Bldko=
-Subject: patch "dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476" added to char-misc-linus
-To:     geert+renesas@glider.be, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org, krzysztof.kozlowski@linaro.org,
-        marek.vasut+renesas@mailbox.org, wsa+renesas@sang-engineering.com
+        b=w9071BxCpHcgAjfWSQuk6x1+OU2X93Yl6hdeGCy5rx9HVrrOW0VLUmrCjFEtHOE4Q
+         nVd6/bdDtluVwaRLA6i+f38M6Bi4uztCrPexoafCxxqC+y0rzTgXu0IEUkVNT0FPE4
+         optMfLQ+6dpthVaWS5IAxqx7I5spQwyeEuMXpnlw=
+Subject: patch "iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY" added to char-misc-linus
+To:     honda@mechatrax.com, Jonathan.Cameron@huawei.com,
+        Stable@vger.kernel.org
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 20:04:44 +0100
-Message-ID: <2023052844-pusher-disparity-63b6@gregkh>
+Date:   Sun, 28 May 2023 20:04:45 +0100
+Message-ID: <2023052845-cardigan-pursuable-07a5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,7 +50,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476
+    iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -66,40 +65,53 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 55720d242052e860b9fde445e302e0425722e7f1 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Tue, 9 May 2023 14:34:22 +0200
-Subject: dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476
- compatible value
+From 626d312028bec44209d0ecd5beaa9b1aa8945f7d Mon Sep 17 00:00:00 2001
+From: Masahiro Honda <honda@mechatrax.com>
+Date: Thu, 18 May 2023 20:08:16 +0900
+Subject: iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY
+ flag
 
-The conversion to json-schema accidentally dropped the "ad" part prefix
-from the compatible value.
+The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
+line to indicate the completion of a conversion. However, some devices
+cannot properly detect the completion of a conversion by an interrupt.
+This is for the reason mentioned in the following commit.
 
-Fixes: 8c41245872e2 ("dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be
+commit e9849777d0e2 ("genirq: Add flag to force mask in
+                      disable_irq[_nosync]()")
+
+A read operation is performed by an extra interrupt before the completion
+of a conversion. At this time, the value read from the ADC data register
+is the same as the previous conversion result. This patch fixes the issue
+by setting IRQ_DISABLE_UNLAZY flag.
+
+Fixes: 0c6ef985a1fd ("iio: adc: ad7791: fix IRQ flags")
+Fixes: 1a913270e57a ("iio: adc: ad7793: Fix IRQ flag")
+Fixes: e081102f3077 ("iio: adc: ad7780: Fix IRQ flag")
+Fixes: 89a86da5cb8e ("iio: adc: ad7192: Add IRQ flag")
+Fixes: 79ef91493f54 ("iio: adc: ad7124: Set IRQ type to falling")
+Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+Link: https://lore.kernel.org/r/20230518110816.248-1-honda@mechatrax.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- .../devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml       | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-index 1c7aee5ed3e0..36dff3250ea7 100644
---- a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-@@ -90,7 +90,7 @@ patternProperties:
-             of the MAX chips to the GyroADC, while MISO line of each Maxim
-             ADC connects to a shared input pin of the GyroADC.
-         enum:
--          - adi,7476
-+          - adi,ad7476
-           - fujitsu,mb88101a
-           - maxim,max1162
-           - maxim,max11100
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index d8570f620785..7e2192870743 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_de
+ 	init_completion(&sigma_delta->completion);
+ 
+ 	sigma_delta->irq_dis = true;
++
++	/* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing an IRQ */
++	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = devm_request_irq(dev, sigma_delta->spi->irq,
+ 			       ad_sd_data_rdy_trig_poll,
+ 			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
 -- 
 2.40.1
 
