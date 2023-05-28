@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE137713C86
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213A4713D06
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:21:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbjE1TPy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35158 "EHLO
+        id S229924AbjE1TVG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:21:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbjE1TPy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:54 -0400
+        with ESMTP id S229914AbjE1TVE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:21:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F66A2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:15:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C37A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:21:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D179F619A5
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:15:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC3BC433A0;
-        Sun, 28 May 2023 19:15:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3C9E61B0A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58E0C433EF;
+        Sun, 28 May 2023 19:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301352;
-        bh=lrOShuD1J7fhyB15rBLpvhFDnnnVo4vovmawdpsJHKs=;
+        s=korg; t=1685301663;
+        bh=6lFJb2qu6Jl/Tb98M0+nnZyTi2Elemq9PVmfwf9gavY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZqTlCxnpEv9zotqV60Sb6lr/sNbt3Nsqz99CViyuBcBWZVZVynPxFbDytJEZHuT7d
-         iZuJ9dr3DxMbmDnPofLdT18Q4hmEEzXKrT9wJ+dgi1bFSxF4hvDw3nJGXTIERzOiWr
-         ySy+H79HXlVNwL++85HdXemcoZrRJdDbcGsynYH4=
+        b=TCLn8F9Vwe7iv/TwcFa48eH0WYfA/dk644hw7ZyY9q+RLhb3G/iPU2EJFqVJc0puo
+         /qcM+VoKAUCLO+VnlCFaZIua6Y9Gn3HBZibpvIRA3t6sE9VnKeJHNWPKjTQ9hT2Prh
+         0DNFjmyaJKaIGZo0VrHj+W1ATNPlUtv5vkU6ESf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-        Mark Brown <broonie@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 4.14 55/86] spi: spi-fsl-spi: automatically adapt bits-per-word in cpu mode
+        patches@lists.linux.dev, Jian-Hong Pan <jian-hong@endlessm.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 090/132] ALSA: hda/realtek - Enable the headset of Acer N50-600 with ALC662
 Date:   Sun, 28 May 2023 20:10:29 +0100
-Message-Id: <20230528190830.639785964@linuxfoundation.org>
+Message-Id: <20230528190836.348516894@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+From: Jian-Hong Pan <jian-hong@endlessm.com>
 
-(cherry picked from upstream af0e6242909c3c4297392ca3e94eff1b4db71a97)
+[ Upstream commit a124458a127ccd7629e20cd7bae3e1f758ed32aa ]
 
-Taking one interrupt for every byte is rather slow. Since the
-controller is perfectly capable of transmitting 32 bits at a time,
-change t->bits_per-word to 32 when the length is divisible by 4 and
-large enough that the reduced number of interrupts easily compensates
-for the one or two extra fsl_spi_setup_transfer() calls this causes.
+A headset on the desktop like Acer N50-600 does not work, until quirk
+ALC662_FIXUP_ACER_NITRO_HEADSET_MODE is applied.
 
-Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20200317082806.73194-3-jian-hong@endlessm.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 90670ef774a8 ("ALSA: hda/realtek: Add a quirk for HP EliteDesk 805")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ sound/pci/hda/patch_realtek.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -357,12 +357,28 @@ static int fsl_spi_bufs(struct spi_devic
- static int fsl_spi_do_one_msg(struct spi_master *master,
- 			      struct spi_message *m)
- {
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
- 	struct spi_device *spi = m->spi;
- 	struct spi_transfer *t, *first;
- 	unsigned int cs_change;
- 	const int nsecs = 50;
- 	int status;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index f361bfd86846c..7f5063b5ce89b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8649,6 +8649,7 @@ enum {
+ 	ALC669_FIXUP_ACER_ASPIRE_ETHOS_HEADSET,
+ 	ALC671_FIXUP_HP_HEADSET_MIC2,
+ 	ALC662_FIXUP_ACER_X2660G_HEADSET_MODE,
++	ALC662_FIXUP_ACER_NITRO_HEADSET_MODE,
+ };
  
-+	/*
-+	 * In CPU mode, optimize large byte transfers to use larger
-+	 * bits_per_word values to reduce number of interrupts taken.
-+	 */
-+	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
-+		list_for_each_entry(t, &m->transfers, transfer_list) {
-+			if (t->len < 256 || t->bits_per_word != 8)
-+				continue;
-+			if ((t->len & 3) == 0)
-+				t->bits_per_word = 32;
-+			else if ((t->len & 1) == 0)
-+				t->bits_per_word = 16;
-+		}
-+	}
-+
- 	/* Don't allow changes if CS is active */
- 	first = list_first_entry(&m->transfers, struct spi_transfer,
- 			transfer_list);
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -9015,6 +9016,16 @@ static const struct hda_fixup alc662_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC662_FIXUP_USI_FUNC
+ 	},
++	[ALC662_FIXUP_ACER_NITRO_HEADSET_MODE] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1a, 0x01a11140 }, /* use as headset mic, without its own jack detect */
++			{ 0x1b, 0x0221144f },
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC662_FIXUP_USI_FUNC
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+@@ -9026,6 +9037,7 @@ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1025, 0x0349, "eMachines eM250", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x034a, "Gateway LT27", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x038b, "Acer Aspire 8943G", ALC662_FIXUP_ASPIRE),
++	SND_PCI_QUIRK(0x1025, 0x123c, "Acer Nitro N50-600", ALC662_FIXUP_ACER_NITRO_HEADSET_MODE),
+ 	SND_PCI_QUIRK(0x1025, 0x124e, "Acer 2660G", ALC662_FIXUP_ACER_X2660G_HEADSET_MODE),
+ 	SND_PCI_QUIRK(0x1028, 0x05d8, "Dell", ALC668_FIXUP_DELL_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x05db, "Dell", ALC668_FIXUP_DELL_MIC_NO_PRESENCE),
+-- 
+2.39.2
+
 
 
