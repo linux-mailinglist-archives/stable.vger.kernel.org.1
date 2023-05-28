@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB42713E30
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26D4D713EA2
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbjE1Tcx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49414 "EHLO
+        id S230426AbjE1ThV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbjE1Tcw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D150BA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:51 -0700 (PDT)
+        with ESMTP id S230433AbjE1ThU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846CFAB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 539BB61DBC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B73C433D2;
-        Sun, 28 May 2023 19:32:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22A1461E62
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C46AC4339B;
+        Sun, 28 May 2023 19:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302370;
-        bh=WZNNr/jFwvpOCfTERojNBuQinP4DKgH1ZJ4s4Ot/nAQ=;
+        s=korg; t=1685302638;
+        bh=8s8AD71lfyyNrUM4xPKFaUP/3S4cqKW5UGyZAX6JCmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V5VYqUKcq0W48JUNemCAsF+jfSCmD4cYF4tvZj7Am02Hf1u3AzDRGznBHj92ap0kl
-         oSMB4hIa8uZ996or7lSPwpYB9SiQYbCfJ5Hs7I2GVB4bnnW8wYj5LOF5sj1Na0KcOB
-         id3i1JUyh2atj2yW9KcG+wPhb9IbJF6CGhrCHZU0=
+        b=ZcQOPKXCS7+1Bw5oAzdG1ZHxfL7JRO39GHymk4B5oHyrxvVF7CF3iyuH+zB0OesiY
+         HM1B7+68qYol3Wh0CkXxxE/Gd5l4XXYl7grNdsCcRpTQ6LU1Z6c8zd4wwXaxrMJ5ht
+         MDGToWTrc39iIHbOuPQcRoiaVswKSeBc1Z243nzQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.3 108/127] net/mlx5e: Fix SQ wake logic in ptp napi_poll context
-Date:   Sun, 28 May 2023 20:11:24 +0100
-Message-Id: <20230528190839.785189011@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Etienne Carriere <etienne.carriere@linaro.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.1 085/119] optee: fix uninited async notif value
+Date:   Sun, 28 May 2023 20:11:25 +0100
+Message-Id: <20230528190838.369628545@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,81 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Etienne Carriere <etienne.carriere@linaro.org>
 
-commit 7aa50380191635e5897a773f272829cc961a2be5 upstream.
+commit 654d0310007146fae87b0c1a68f81e53ad519b14 upstream.
 
-Check in the mlx5e_ptp_poll_ts_cq context if the ptp tx sq should be woken
-up. Before change, the ptp tx sq may never wake up if the ptp tx ts skb
-fifo is full when mlx5e_poll_tx_cq checks if the queue should be woken up.
+Fixes an uninitialized variable in irq_handler() that could lead to
+unpredictable behavior in case OP-TEE fails to handle SMC function ID
+OPTEE_SMC_GET_ASYNC_NOTIF_VALUE. This change ensures that in that case
+get_async_notif_value() properly reports there are no notification
+event.
 
-Fixes: 1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/r/202304200755.OoiuclDZ-lkp@intel.com/
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/all/d9b7f69b-c737-4cb3-8e74-79fe00c934f9@kili.mountain/
+Fixes: 6749e69c4dad ("optee: add asynchronous notifications")
+Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c  |    2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h |    2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c   |   19 ++++++++++++-------
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/tee/optee/smc_abi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-@@ -175,6 +175,8 @@ static bool mlx5e_ptp_poll_ts_cq(struct
- 	/* ensure cq space is freed before enabling more cqes */
- 	wmb();
+diff --git a/drivers/tee/optee/smc_abi.c b/drivers/tee/optee/smc_abi.c
+index a1c1fa1a9c28..e6e0428f8e7b 100644
+--- a/drivers/tee/optee/smc_abi.c
++++ b/drivers/tee/optee/smc_abi.c
+@@ -984,8 +984,10 @@ static u32 get_async_notif_value(optee_invoke_fn *invoke_fn, bool *value_valid,
  
-+	mlx5e_txqsq_wake(&ptpsq->txqsq);
-+
- 	return work_done == budget;
- }
+ 	invoke_fn(OPTEE_SMC_GET_ASYNC_NOTIF_VALUE, 0, 0, 0, 0, 0, 0, 0, &res);
  
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-@@ -182,6 +182,8 @@ static inline u16 mlx5e_txqsq_get_next_p
- 	return pi;
- }
- 
-+void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq);
-+
- static inline u16 mlx5e_shampo_get_cqe_header_index(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
- {
- 	return be16_to_cpu(cqe->shampo.header_entry_index) & (rq->mpwqe.shampo->hd_per_wq - 1);
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -762,6 +762,17 @@ static void mlx5e_tx_wi_consume_fifo_skb
- 	}
- }
- 
-+void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq)
-+{
-+	if (netif_tx_queue_stopped(sq->txq) &&
-+	    mlx5e_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room) &&
-+	    mlx5e_ptpsq_fifo_has_room(sq) &&
-+	    !test_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state)) {
-+		netif_tx_wake_queue(sq->txq);
-+		sq->stats->wake++;
+-	if (res.a0)
++	if (res.a0) {
++		*value_valid = false;
+ 		return 0;
 +	}
-+}
-+
- bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
- {
- 	struct mlx5e_sq_stats *stats;
-@@ -861,13 +872,7 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *c
- 
- 	netdev_tx_completed_queue(sq->txq, npkts, nbytes);
- 
--	if (netif_tx_queue_stopped(sq->txq) &&
--	    mlx5e_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room) &&
--	    mlx5e_ptpsq_fifo_has_room(sq) &&
--	    !test_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state)) {
--		netif_tx_wake_queue(sq->txq);
--		stats->wake++;
--	}
-+	mlx5e_txqsq_wake(sq);
- 
- 	return (i == MLX5E_TX_CQ_POLL_BUDGET);
- }
+ 	*value_valid = (res.a2 & OPTEE_SMC_ASYNC_NOTIF_VALUE_VALID);
+ 	*value_pending = (res.a2 & OPTEE_SMC_ASYNC_NOTIF_VALUE_PENDING);
+ 	return res.a1;
+-- 
+2.40.1
+
 
 
