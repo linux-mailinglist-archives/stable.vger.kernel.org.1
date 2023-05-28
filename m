@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D97F713D1F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF84713D40
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbjE1TWH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:22:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39810 "EHLO
+        id S229994AbjE1TXY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbjE1TWG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:06 -0400
+        with ESMTP id S229993AbjE1TXY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A564A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29DE9A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2C4461B3C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE31C433EF;
-        Sun, 28 May 2023 19:22:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC1B660EE0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0EDC433EF;
+        Sun, 28 May 2023 19:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301724;
-        bh=Vy5+BQO3VbhljkkvwLP/PGF/MlHEjNVSyO2vB46eA/s=;
+        s=korg; t=1685301802;
+        bh=LGa5rmrsNWZw33RZf0cWsonH+rv2VN+FUrGrm2H+D4U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Cq8NVz3PPE4SIlFGMDk1SD4ff0+sEZM6Oo26mNLBiosTdj7XgLzFzmt/d8hggGSs
-         D7fsfFJzIQIsI9nXSYHg504x3HJfsfhiVOS856raEIjzpWZlIW+mYN1ziNFJD/O7Js
-         1tKtDsa49fX9x/JNrgrN0/Giwzl3m4R9bKV3vWpY=
+        b=rFZZTdCY6L2pKwm4/SLXwib3mAnM+yVtveaet7u4YCi2Yk56ZPf5m99q4QBj/zBqD
+         o3Dir2lwjCnW1OZ7tyt7gmLsEHo184+EkB/GB1yZzAVLfMb1npo6gPkqaTDItNyKNE
+         9GifQGoV9LjZGB/hUKStjUvm9R0/qMwHKXEYJSCc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kristoffer Ericson <Kristoffer.ericson@gmail.com>,
-        patches@armlinux.org.uk,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Roy Novich <royno@nvidia.com>,
+        Aya Levin <ayal@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/161] ARM: 9296/1: HP Jornada 7XX: fix kernel-doc warnings
-Date:   Sun, 28 May 2023 20:08:47 +0100
-Message-Id: <20230528190837.187829225@linuxfoundation.org>
+Subject: [PATCH 5.4 004/161] linux/dim: Do nothing if no time delta between samples
+Date:   Sun, 28 May 2023 20:08:48 +0100
+Message-Id: <20230528190837.226129476@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
 References: <20230528190837.051205996@linuxfoundation.org>
@@ -58,67 +59,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Roy Novich <royno@nvidia.com>
 
-[ Upstream commit 46dd6078dbc7e363a8bb01209da67015a1538929 ]
+[ Upstream commit 162bd18eb55adf464a0fa2b4144b8d61c75ff7c2 ]
 
-Fix kernel-doc warnings from the kernel test robot:
+Add return value for dim_calc_stats. This is an indication for the
+caller if curr_stats was assigned by the function. Avoid using
+curr_stats uninitialized over {rdma/net}_dim, when no time delta between
+samples. Coverity reported this potential use of an uninitialized
+variable.
 
-jornada720_ssp.c:24: warning: Function parameter or member 'jornada_ssp_lock' not described in 'DEFINE_SPINLOCK'
-jornada720_ssp.c:24: warning: expecting prototype for arch/arm/mac(). Prototype was for DEFINE_SPINLOCK() instead
-jornada720_ssp.c:34: warning: Function parameter or member 'byte' not described in 'jornada_ssp_reverse'
-jornada720_ssp.c:57: warning: Function parameter or member 'byte' not described in 'jornada_ssp_byte'
-jornada720_ssp.c:85: warning: Function parameter or member 'byte' not described in 'jornada_ssp_inout'
-
-Link: lore.kernel.org/r/202304210535.tWby3jWF-lkp@intel.com
-
-Fixes: 69ebb22277a5 ("[ARM] 4506/1: HP Jornada 7XX: Addition of SSP Platform Driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Kristoffer Ericson <Kristoffer.ericson@gmail.com>
-Cc: patches@armlinux.org.uk
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 4c4dbb4a7363 ("net/mlx5e: Move dynamic interrupt coalescing code to include/linux")
+Fixes: cb3c7fd4f839 ("net/mlx5e: Support adaptive RX coalescing")
+Signed-off-by: Roy Novich <royno@nvidia.com>
+Reviewed-by: Aya Levin <ayal@nvidia.com>
+Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://lore.kernel.org/r/20230507135743.138993-1-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-sa1100/jornada720_ssp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/dim.h | 3 ++-
+ lib/dim/dim.c       | 5 +++--
+ lib/dim/net_dim.c   | 3 ++-
+ lib/dim/rdma_dim.c  | 3 ++-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-sa1100/jornada720_ssp.c b/arch/arm/mach-sa1100/jornada720_ssp.c
-index 1dbe98948ce30..9627c4cf3e41d 100644
---- a/arch/arm/mach-sa1100/jornada720_ssp.c
-+++ b/arch/arm/mach-sa1100/jornada720_ssp.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
--/**
-+/*
-  *  arch/arm/mac-sa1100/jornada720_ssp.c
+diff --git a/include/linux/dim.h b/include/linux/dim.h
+index 2571da63877c5..ad5f219ce2ff2 100644
+--- a/include/linux/dim.h
++++ b/include/linux/dim.h
+@@ -233,8 +233,9 @@ void dim_park_tired(struct dim *dim);
   *
-  *  Copyright (C) 2006/2007 Kristoffer Ericson <Kristoffer.Ericson@gmail.com>
-@@ -26,6 +26,7 @@ static unsigned long jornada_ssp_flags;
+  * Calculate the delta between two samples (in data rates).
+  * Takes into consideration counter wrap-around.
++ * Returned boolean indicates whether curr_stats are reliable.
+  */
+-void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
++bool dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
+ 		    struct dim_stats *curr_stats);
  
  /**
-  * jornada_ssp_reverse - reverses input byte
-+ * @byte: input byte to reverse
-  *
-  * we need to reverse all data we receive from the mcu due to its physical location
-  * returns : 01110111 -> 11101110
-@@ -46,6 +47,7 @@ EXPORT_SYMBOL(jornada_ssp_reverse);
+diff --git a/lib/dim/dim.c b/lib/dim/dim.c
+index 38045d6d05381..e89aaf07bde50 100644
+--- a/lib/dim/dim.c
++++ b/lib/dim/dim.c
+@@ -54,7 +54,7 @@ void dim_park_tired(struct dim *dim)
+ }
+ EXPORT_SYMBOL(dim_park_tired);
  
- /**
-  * jornada_ssp_byte - waits for ready ssp bus and sends byte
-+ * @byte: input byte to transmit
-  *
-  * waits for fifo buffer to clear and then transmits, if it doesn't then we will
-  * timeout after <timeout> rounds. Needs mcu running before its called.
-@@ -77,6 +79,7 @@ EXPORT_SYMBOL(jornada_ssp_byte);
+-void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
++bool dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
+ 		    struct dim_stats *curr_stats)
+ {
+ 	/* u32 holds up to 71 minutes, should be enough */
+@@ -66,7 +66,7 @@ void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
+ 			     start->comp_ctr);
  
- /**
-  * jornada_ssp_inout - decide if input is command or trading byte
-+ * @byte: input byte to send (may be %TXDUMMY)
-  *
-  * returns : (jornada_ssp_byte(byte)) on success
-  *         : %-ETIMEDOUT on timeout failure
+ 	if (!delta_us)
+-		return;
++		return false;
+ 
+ 	curr_stats->ppms = DIV_ROUND_UP(npkts * USEC_PER_MSEC, delta_us);
+ 	curr_stats->bpms = DIV_ROUND_UP(nbytes * USEC_PER_MSEC, delta_us);
+@@ -79,5 +79,6 @@ void dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
+ 	else
+ 		curr_stats->cpe_ratio = 0;
+ 
++	return true;
+ }
+ EXPORT_SYMBOL(dim_calc_stats);
+diff --git a/lib/dim/net_dim.c b/lib/dim/net_dim.c
+index dae3b51ac3d9b..0e4f3a686f1de 100644
+--- a/lib/dim/net_dim.c
++++ b/lib/dim/net_dim.c
+@@ -227,7 +227,8 @@ void net_dim(struct dim *dim, struct dim_sample end_sample)
+ 				  dim->start_sample.event_ctr);
+ 		if (nevents < DIM_NEVENTS)
+ 			break;
+-		dim_calc_stats(&dim->start_sample, &end_sample, &curr_stats);
++		if (!dim_calc_stats(&dim->start_sample, &end_sample, &curr_stats))
++			break;
+ 		if (net_dim_decision(&curr_stats, dim)) {
+ 			dim->state = DIM_APPLY_NEW_PROFILE;
+ 			schedule_work(&dim->work);
+diff --git a/lib/dim/rdma_dim.c b/lib/dim/rdma_dim.c
+index f7e26c7b4749f..d32c8b105adc9 100644
+--- a/lib/dim/rdma_dim.c
++++ b/lib/dim/rdma_dim.c
+@@ -88,7 +88,8 @@ void rdma_dim(struct dim *dim, u64 completions)
+ 		nevents = curr_sample->event_ctr - dim->start_sample.event_ctr;
+ 		if (nevents < DIM_NEVENTS)
+ 			break;
+-		dim_calc_stats(&dim->start_sample, curr_sample, &curr_stats);
++		if (!dim_calc_stats(&dim->start_sample, curr_sample, &curr_stats))
++			break;
+ 		if (rdma_dim_decision(&curr_stats, dim)) {
+ 			dim->state = DIM_APPLY_NEW_PROFILE;
+ 			schedule_work(&dim->work);
 -- 
 2.39.2
 
