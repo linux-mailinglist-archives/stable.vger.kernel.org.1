@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1739713EAD
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EB78713FB2
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230435AbjE1Ths (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53602 "EHLO
+        id S231361AbjE1TsH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbjE1Ths (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112BEAB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:47 -0700 (PDT)
+        with ESMTP id S231362AbjE1TsF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BF9B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F9C661E50
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7736DC433EF;
-        Sun, 28 May 2023 19:37:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30C2461FD7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252BDC433D2;
+        Sun, 28 May 2023 19:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302665;
-        bh=Ima5WBTGAQip3VNZZXYRFN57qAXgEIT9Tl8MIGXwSL8=;
+        s=korg; t=1685303281;
+        bh=kEtby9vnpKUNBsShYn6qU6m2TrA66bqrhgn8AOmt0v8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ddAXyyyTMOydi+h9NQ8L+hMyqe/nGy8Qqh04Flc0DIkVOWlBv3Otq2Omd78xhkGUp
-         ZrQLL4A4VTJNKIKcHUlE+NoIURKCoO/mxU0oB4aq0WgjPnf89/GL6QoXOWaRzvKhZg
-         VSOo8Atf6/YToH32nQ2sx9oVX+VbPj3jnZiNy9Ek=
+        b=MBfeOv6DiWdlLjz9xpz0IHHnEExIAgwQPVX01h37t0fJs9jFFANtLSRD8/9xzUn07
+         QI8HNgjGrc4aP9kQLLTCyNIeSbG00EQI5blP2odxdeXUiCYFPmMhYhSEI3frr4ixN4
+         YHuiNJFHXWOKxe7LeGW2xcXHei1zq6J+HQYqDt/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vernon Lovejoy <vlovejoy@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 6.1 095/119] x86/show_trace_log_lvl: Ensure stack pointer is aligned, again
-Date:   Sun, 28 May 2023 20:11:35 +0100
-Message-Id: <20230528190838.692923735@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 16/69] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize
+Date:   Sun, 28 May 2023 20:11:36 +0100
+Message-Id: <20230528190828.950720665@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,69 +56,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vernon Lovejoy <vlovejoy@redhat.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit 2e4be0d011f21593c6b316806779ba1eba2cd7e0 upstream.
+commit 7e01c7f7046efc2c7c192c3619db43292b98e997 upstream.
 
-The commit e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-tried to align the stack pointer in show_trace_log_lvl(), otherwise the
-"stack < stack_info.end" check can't guarantee that the last read does
-not go past the end of the stack.
+Currently in cdc_ncm_check_tx_max(), if dwNtbOutMaxSize is lower than
+the calculated "min" value, but greater than zero, the logic sets
+tx_max to dwNtbOutMaxSize. This is then used to allocate a new SKB in
+cdc_ncm_fill_tx_frame() where all the data is handled.
 
-However, we have the same problem with the initial value of the stack
-pointer, it can also be unaligned. So without this patch this trivial
-kernel module
+For small values of dwNtbOutMaxSize the memory allocated during
+alloc_skb(dwNtbOutMaxSize, GFP_ATOMIC) will have the same size, due to
+how size is aligned at alloc time:
+	size = SKB_DATA_ALIGN(size);
+        size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+Thus we hit the same bug that we tried to squash with
+commit 2be6d4d16a084 ("net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero")
 
-	#include <linux/module.h>
+Low values of dwNtbOutMaxSize do not cause an issue presently because at
+alloc_skb() time more memory (512b) is allocated than required for the
+SKB headers alone (320b), leaving some space (512b - 320b = 192b)
+for CDC data (172b).
 
-	static int init(void)
-	{
-		asm volatile("sub    $0x4,%rsp");
-		dump_stack();
-		asm volatile("add    $0x4,%rsp");
+However, if more elements (for example 3 x u64 = [24b]) were added to
+one of the SKB header structs, say 'struct skb_shared_info',
+increasing its original size (320b [320b aligned]) to something larger
+(344b [384b aligned]), then suddenly the CDC data (172b) no longer
+fits in the spare SKB data area (512b - 384b = 128b).
 
-		return -EAGAIN;
-	}
+Consequently the SKB bounds checking semantics fails and panics:
 
-	module_init(init);
-	MODULE_LICENSE("GPL");
+skbuff: skb_over_panic: text:ffffffff831f755b len:184 put:172 head:ffff88811f1c6c00 data:ffff88811f1c6c00 tail:0xb8 end:0x80 dev:<NULL>
+------------[ cut here ]------------
+kernel BUG at net/core/skbuff.c:113!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 57 Comm: kworker/0:2 Not tainted 5.15.106-syzkaller-00249-g19c0ed55a470 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
+Workqueue: mld mld_ifc_work
+RIP: 0010:skb_panic net/core/skbuff.c:113 [inline]
+RIP: 0010:skb_over_panic+0x14c/0x150 net/core/skbuff.c:118
+[snip]
+Call Trace:
+ <TASK>
+ skb_put+0x151/0x210 net/core/skbuff.c:2047
+ skb_put_zero include/linux/skbuff.h:2422 [inline]
+ cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1131 [inline]
+ cdc_ncm_fill_tx_frame+0x11ab/0x3da0 drivers/net/usb/cdc_ncm.c:1308
+ cdc_ncm_tx_fixup+0xa3/0x100
 
-crashes the kernel.
+Deal with too low values of dwNtbOutMaxSize, clamp it in the range
+[USB_CDC_NCM_NTB_MIN_OUT_SIZE, CDC_NCM_NTB_MAX_SIZE_TX]. We ensure
+enough data space is allocated to handle CDC data by making sure
+dwNtbOutMaxSize is not smaller than USB_CDC_NCM_NTB_MIN_OUT_SIZE.
 
-Fixes: e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-Signed-off-by: Vernon Lovejoy <vlovejoy@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20230512104232.GA10227@redhat.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 289507d3364f ("net: cdc_ncm: use sysfs for rx/tx aggregation tuning")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=b982f1059506db48409d
+Link: https://lore.kernel.org/all/20211202143437.1411410-1-lee.jones@linaro.org/
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230517133808.1873695-2-tudor.ambarus@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/dumpstack.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/usb/cdc_ncm.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -195,7 +195,6 @@ static void show_trace_log_lvl(struct ta
- 	printk("%sCall Trace:\n", log_lvl);
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -180,9 +180,12 @@ static u32 cdc_ncm_check_tx_max(struct u
+ 	else
+ 		min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth32);
  
- 	unwind_start(&state, task, regs, stack);
--	stack = stack ? : get_stack_pointer(task, regs);
- 	regs = unwind_get_entry_regs(&state, &partial);
+-	max = min_t(u32, CDC_NCM_NTB_MAX_SIZE_TX, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize));
+-	if (max == 0)
++	if (le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize) == 0)
+ 		max = CDC_NCM_NTB_MAX_SIZE_TX; /* dwNtbOutMaxSize not set */
++	else
++		max = clamp_t(u32, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize),
++			      USB_CDC_NCM_NTB_MIN_OUT_SIZE,
++			      CDC_NCM_NTB_MAX_SIZE_TX);
  
- 	/*
-@@ -214,9 +213,13 @@ static void show_trace_log_lvl(struct ta
- 	 * - hardirq stack
- 	 * - entry stack
- 	 */
--	for ( ; stack; stack = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
-+	for (stack = stack ?: get_stack_pointer(task, regs);
-+	     stack;
-+	     stack = stack_info.next_sp) {
- 		const char *stack_name;
+ 	/* some devices set dwNtbOutMaxSize too low for the above default */
+ 	min = min(min, max);
+@@ -1243,6 +1246,9 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev
+ 			 * further.
+ 			 */
+ 			if (skb_out == NULL) {
++				/* If even the smallest allocation fails, abort. */
++				if (ctx->tx_curr_size == USB_CDC_NCM_NTB_MIN_OUT_SIZE)
++					goto alloc_failed;
+ 				ctx->tx_low_mem_max_cnt = min(ctx->tx_low_mem_max_cnt + 1,
+ 							      (unsigned)CDC_NCM_LOW_MEM_MAX_CNT);
+ 				ctx->tx_low_mem_val = ctx->tx_low_mem_max_cnt;
+@@ -1261,13 +1267,8 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev
+ 			skb_out = alloc_skb(ctx->tx_curr_size, GFP_ATOMIC);
  
-+		stack = PTR_ALIGN(stack, sizeof(long));
-+
- 		if (get_stack_info(stack, task, &stack_info, &visit_mask)) {
- 			/*
- 			 * We weren't on a valid stack.  It's possible that
+ 			/* No allocation possible so we will abort */
+-			if (skb_out == NULL) {
+-				if (skb != NULL) {
+-					dev_kfree_skb_any(skb);
+-					dev->net->stats.tx_dropped++;
+-				}
+-				goto exit_no_skb;
+-			}
++			if (!skb_out)
++				goto alloc_failed;
+ 			ctx->tx_low_mem_val--;
+ 		}
+ 		if (ctx->is_ndp16) {
+@@ -1460,6 +1461,11 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev
+ 
+ 	return skb_out;
+ 
++alloc_failed:
++	if (skb) {
++		dev_kfree_skb_any(skb);
++		dev->net->stats.tx_dropped++;
++	}
+ exit_no_skb:
+ 	/* Start timer, if there is a remaining non-empty skb */
+ 	if (ctx->tx_curr_skb != NULL && n > 0)
 
 
