@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F7E713E2B
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1CC713E9A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230280AbjE1Tck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49210 "EHLO
+        id S230418AbjE1ThH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230284AbjE1Tck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:40 -0400
+        with ESMTP id S230417AbjE1ThG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C82EA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB93FA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 961B561DB2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532C6C433EF;
-        Sun, 28 May 2023 19:32:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DD4761E50
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC2BC4339B;
+        Sun, 28 May 2023 19:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302358;
-        bh=NV1TH6hlbzc3g1jriiJ3ketLS5xIsDJhOAFWfNDmhVk=;
+        s=korg; t=1685302623;
+        bh=zpR3DFAGaY+CQn5iuwig5ydvQhhV7QLKxHeCoDg0+v8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xs6YPZDcJSePZuEzifVD4Oxn9CJuIFJ2cvY9pSdLA40i7XBVE5V6uWw8W3TARwY/B
-         1ranWrDT8FosnJggiDuoMRLft0q8maOPs9q+Yk2RYmbuxfcepWLp9B1f1VoG48tB15
-         DdAMBBmjRtMDXr0R+lGD/FbbuxLopiHq5RSBaONg=
+        b=A8KjEkv5CF8Trtxu2LGb9GiCTEOm8IpyCO1enLxYmfloT5rB7RtqvQDx9RR/yCxPK
+         eMvqwWiU1iE2ZMfLtbDcsgYo8hZ5YA2FFRm6CI9HIXBeO3li26iYzRzCurLR/CF6pm
+         G2SSDRR2fF1tPztDptO6NT/w1UY0KXkTyu5bZJX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.3 103/127] cxl: Wait Memory_Info_Valid before access memory related info
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 079/119] power: supply: bq27xxx: Move bq27xxx_battery_update() down
 Date:   Sun, 28 May 2023 20:11:19 +0100
-Message-Id: <20230528190839.630456414@linuxfoundation.org>
+Message-Id: <20230528190838.149765249@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,148 +53,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit ce17ad0d54985e2595a3e615fda31df61808a08c upstream.
+commit ff4c4a2a4437a6d03787c7aafb2617f20c3ef45f upstream.
 
-The Memory_Info_Valid bit (CXL 3.0 8.1.3.8.2) indicates that the CXL
-Range Size High and Size Low registers are valid. The bit must be set
-within 1 second of reset deassertion to the device. Check valid bit
-before we check the Memory_Active bit when waiting for
-cxl_await_media_ready() to ensure that the memory info is valid for
-consumption. Also ensures both DVSEC ranges 1 and 2 are ready if DVSEC
-Capability indicates they are both supported.
+Move the bq27xxx_battery_update() functions to below
+the bq27xxx_battery_current_and_status() function.
 
-Fixes: 523e594d9cc0 ("cxl/pci: Implement wait for media active")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/168444687469.3134781.11033518965387297327.stgit@djiang5-mobl3
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+This is just moving a block of text, no functional changes.
+
+This is a preparation patch for making bq27xxx_battery_update() check
+the status and have it call power_supply_changed() on status changes.
+
+Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/pci.c |   85 +++++++++++++++++++++++++++++++++++++++++++------
- drivers/cxl/cxlpci.h   |    2 +
- 2 files changed, 78 insertions(+), 9 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |  122 ++++++++++++++++-----------------
+ 1 file changed, 61 insertions(+), 61 deletions(-)
 
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -101,23 +101,57 @@ int devm_cxl_port_enumerate_dports(struc
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1761,67 +1761,6 @@ static int bq27xxx_battery_read_health(s
+ 	return POWER_SUPPLY_HEALTH_GOOD;
  }
- EXPORT_SYMBOL_NS_GPL(devm_cxl_port_enumerate_dports, CXL);
  
--/*
-- * Wait up to @media_ready_timeout for the device to report memory
-- * active.
-- */
--int cxl_await_media_ready(struct cxl_dev_state *cxlds)
-+static int cxl_dvsec_mem_range_valid(struct cxl_dev_state *cxlds, int id)
-+{
-+	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
-+	int d = cxlds->cxl_dvsec;
-+	bool valid = false;
-+	int rc, i;
-+	u32 temp;
-+
-+	if (id > CXL_DVSEC_RANGE_MAX)
-+		return -EINVAL;
-+
-+	/* Check MEM INFO VALID bit first, give up after 1s */
-+	i = 1;
-+	do {
-+		rc = pci_read_config_dword(pdev,
-+					   d + CXL_DVSEC_RANGE_SIZE_LOW(id),
-+					   &temp);
-+		if (rc)
-+			return rc;
-+
-+		valid = FIELD_GET(CXL_DVSEC_MEM_INFO_VALID, temp);
-+		if (valid)
-+			break;
-+		msleep(1000);
-+	} while (i--);
-+
-+	if (!valid) {
-+		dev_err(&pdev->dev,
-+			"Timeout awaiting memory range %d valid after 1s.\n",
-+			id);
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int cxl_dvsec_mem_range_active(struct cxl_dev_state *cxlds, int id)
+-static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
+-{
+-	struct bq27xxx_reg_cache cache = {0, };
+-	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+-
+-	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+-	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -1; /* read error */
+-	if (cache.flags >= 0) {
+-		cache.temperature = bq27xxx_battery_read_temperature(di);
+-		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
+-			cache.time_to_empty = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE);
+-		if (di->regs[BQ27XXX_REG_TTECP] != INVALID_REG_ADDR)
+-			cache.time_to_empty_avg = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP);
+-		if (di->regs[BQ27XXX_REG_TTF] != INVALID_REG_ADDR)
+-			cache.time_to_full = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF);
+-
+-		cache.charge_full = bq27xxx_battery_read_fcc(di);
+-		cache.capacity = bq27xxx_battery_read_soc(di);
+-		if (di->regs[BQ27XXX_REG_AE] != INVALID_REG_ADDR)
+-			cache.energy = bq27xxx_battery_read_energy(di);
+-		di->cache.flags = cache.flags;
+-		cache.health = bq27xxx_battery_read_health(di);
+-		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
+-			cache.cycle_count = bq27xxx_battery_read_cyct(di);
+-
+-		/* We only have to read charge design full once */
+-		if (di->charge_design_full <= 0)
+-			di->charge_design_full = bq27xxx_battery_read_dcap(di);
+-	}
+-
+-	if ((di->cache.capacity != cache.capacity) ||
+-	    (di->cache.flags != cache.flags))
+-		power_supply_changed(di->bat);
+-
+-	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
+-		di->cache = cache;
+-
+-	di->last_update = jiffies;
+-
+-	if (!di->removed && poll_interval > 0)
+-		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
+-}
+-
+-void bq27xxx_battery_update(struct bq27xxx_device_info *di)
+-{
+-	mutex_lock(&di->lock);
+-	bq27xxx_battery_update_unlocked(di);
+-	mutex_unlock(&di->lock);
+-}
+-EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
+-
+-static void bq27xxx_battery_poll(struct work_struct *work)
+-{
+-	struct bq27xxx_device_info *di =
+-			container_of(work, struct bq27xxx_device_info,
+-				     work.work);
+-
+-	bq27xxx_battery_update(di);
+-}
+-
+ static bool bq27xxx_battery_is_full(struct bq27xxx_device_info *di, int flags)
  {
- 	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
- 	int d = cxlds->cxl_dvsec;
- 	bool active = false;
--	u64 md_status;
- 	int rc, i;
-+	u32 temp;
+ 	if (di->opts & BQ27XXX_O_ZERO)
+@@ -1895,6 +1834,67 @@ static int bq27xxx_battery_current_and_s
+ 	return 0;
+ }
  
--	for (i = media_ready_timeout; i; i--) {
--		u32 temp;
-+	if (id > CXL_DVSEC_RANGE_MAX)
-+		return -EINVAL;
- 
-+	/* Check MEM ACTIVE bit, up to 60s timeout by default */
-+	for (i = media_ready_timeout; i; i--) {
- 		rc = pci_read_config_dword(
--			pdev, d + CXL_DVSEC_RANGE_SIZE_LOW(0), &temp);
-+			pdev, d + CXL_DVSEC_RANGE_SIZE_LOW(id), &temp);
- 		if (rc)
- 			return rc;
- 
-@@ -134,6 +168,39 @@ int cxl_await_media_ready(struct cxl_dev
- 		return -ETIMEDOUT;
- 	}
- 
-+	return 0;
++static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
++{
++	struct bq27xxx_reg_cache cache = {0, };
++	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
++
++	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
++	if ((cache.flags & 0xff) == 0xff)
++		cache.flags = -1; /* read error */
++	if (cache.flags >= 0) {
++		cache.temperature = bq27xxx_battery_read_temperature(di);
++		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
++			cache.time_to_empty = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE);
++		if (di->regs[BQ27XXX_REG_TTECP] != INVALID_REG_ADDR)
++			cache.time_to_empty_avg = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP);
++		if (di->regs[BQ27XXX_REG_TTF] != INVALID_REG_ADDR)
++			cache.time_to_full = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF);
++
++		cache.charge_full = bq27xxx_battery_read_fcc(di);
++		cache.capacity = bq27xxx_battery_read_soc(di);
++		if (di->regs[BQ27XXX_REG_AE] != INVALID_REG_ADDR)
++			cache.energy = bq27xxx_battery_read_energy(di);
++		di->cache.flags = cache.flags;
++		cache.health = bq27xxx_battery_read_health(di);
++		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
++			cache.cycle_count = bq27xxx_battery_read_cyct(di);
++
++		/* We only have to read charge design full once */
++		if (di->charge_design_full <= 0)
++			di->charge_design_full = bq27xxx_battery_read_dcap(di);
++	}
++
++	if ((di->cache.capacity != cache.capacity) ||
++	    (di->cache.flags != cache.flags))
++		power_supply_changed(di->bat);
++
++	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
++		di->cache = cache;
++
++	di->last_update = jiffies;
++
++	if (!di->removed && poll_interval > 0)
++		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
 +}
 +
-+/*
-+ * Wait up to @media_ready_timeout for the device to report memory
-+ * active.
-+ */
-+int cxl_await_media_ready(struct cxl_dev_state *cxlds)
++void bq27xxx_battery_update(struct bq27xxx_device_info *di)
 +{
-+	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
-+	int d = cxlds->cxl_dvsec;
-+	int rc, i, hdm_count;
-+	u64 md_status;
-+	u16 cap;
++	mutex_lock(&di->lock);
++	bq27xxx_battery_update_unlocked(di);
++	mutex_unlock(&di->lock);
++}
++EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
 +
-+	rc = pci_read_config_word(pdev,
-+				  d + CXL_DVSEC_CAP_OFFSET, &cap);
-+	if (rc)
-+		return rc;
++static void bq27xxx_battery_poll(struct work_struct *work)
++{
++	struct bq27xxx_device_info *di =
++			container_of(work, struct bq27xxx_device_info,
++				     work.work);
 +
-+	hdm_count = FIELD_GET(CXL_DVSEC_HDM_COUNT_MASK, cap);
-+	for (i = 0; i < hdm_count; i++) {
-+		rc = cxl_dvsec_mem_range_valid(cxlds, i);
-+		if (rc)
-+			return rc;
-+	}
++	bq27xxx_battery_update(di);
++}
 +
-+	for (i = 0; i < hdm_count; i++) {
-+		rc = cxl_dvsec_mem_range_active(cxlds, i);
-+		if (rc)
-+			return rc;
-+	}
-+
- 	md_status = readq(cxlds->regs.memdev + CXLMDEV_STATUS_OFFSET);
- 	if (!CXLMDEV_READY(md_status))
- 		return -EIO;
---- a/drivers/cxl/cxlpci.h
-+++ b/drivers/cxl/cxlpci.h
-@@ -31,6 +31,8 @@
- #define   CXL_DVSEC_RANGE_BASE_LOW(i)	(0x24 + (i * 0x10))
- #define     CXL_DVSEC_MEM_BASE_LOW_MASK	GENMASK(31, 28)
- 
-+#define CXL_DVSEC_RANGE_MAX		2
-+
- /* CXL 2.0 8.1.4: Non-CXL Function Map DVSEC */
- #define CXL_DVSEC_FUNCTION_MAP					2
- 
+ /*
+  * Get the average power in µW
+  * Return < 0 if something fails.
 
 
