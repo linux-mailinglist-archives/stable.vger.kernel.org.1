@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18AD4713E2F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9EF713EA0
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbjE1Tcv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:32:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49390 "EHLO
+        id S230431AbjE1ThQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbjE1Tcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:50 -0400
+        with ESMTP id S230426AbjE1ThQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9FDA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:32:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A961EB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E21ED61DBA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9ABC433D2;
-        Sun, 28 May 2023 19:32:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A84361E5B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5872EC433EF;
+        Sun, 28 May 2023 19:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302368;
-        bh=XpT/uLPkQkfBq7ruSn+8ZeTy22ee0bpTz6I5pnEGt4g=;
+        s=korg; t=1685302633;
+        bh=KD87JUW73vklsf894A/QoFpEQuJskImRRRWus0cwo8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Blh/6s5VrkWen6WYeOK9lydeWFVf4uSR24DTgkRl0wK8K/y5hRE4QXp67etNjn+u7
-         O6sMg4G5qvHOj+HSbSPAQpZ6BCWTTT+mgq3qzoiQ4wkWids7e2El8wsU19Z+fdSpeQ
-         52Am1vYrsqvLWIX/ZqO2qWnI702KQc11ORUs+Qao=
+        b=n+FhUIHtA57RNC2n50nxNZBbr0tYjc19WRJv076hUNgthjDH/AZ9oAdgsSvzziEVq
+         xjK9VCTBESXDaykPh4XzjpOhYZuYp9NPvTxk/ApECcqdJhfUsQW/nrECiCmTl+cVlY
+         kw4oZwUuuTPhJnTGTo1dDRym5p9QMJadCaL5DlhU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.3 107/127] platform/mellanox: mlxbf-pmc: fix sscanf() error checking
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 083/119] power: supply: bq24190: Call power_supply_changed() after updating input current
 Date:   Sun, 28 May 2023 20:11:23 +0100
-Message-Id: <20230528190839.757623807@linuxfoundation.org>
+Message-Id: <20230528190838.291800061@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 95e4b25192e9238fd2dbe85d96dd2f8fd1ce9d14 upstream.
+commit 77c2a3097d7029441e8a91aa0de1b4e5464593da upstream.
 
-The sscanf() function never returns negatives.  It returns the number of
-items successfully read.
+The bq24192 model relies on external charger-type detection and once
+that is done the bq24190_charger code will update the input current.
 
-Fixes: 1a218d312e65 ("platform/mellanox: mlxbf-pmc: Add Mellanox BlueField PMC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/4ccdfd28-099b-40bf-8d77-ad4ea2e76b93@kili.mountain
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+In this case, when the initial power_supply_changed() call is made
+from the interrupt handler, the input settings are 5V/0.5A which
+on many devices is not enough power to charge (while the device is on).
+
+On many devices the fuel-gauge relies in its external_power_changed
+callback to timely signal userspace about charging <-> discharging
+status changes. Add a power_supply_changed() call after updating
+the input current. This allows the fuel-gauge driver to timely recheck
+if the battery is charging after the new input current has been applied
+and then it can immediately notify userspace about this.
+
+Fixes: 18f8e6f695ac ("power: supply: bq24190_charger: Get input_current_limit from our supplier")
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mellanox/mlxbf-pmc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/power/supply/bq24190_charger.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/mellanox/mlxbf-pmc.c
-+++ b/drivers/platform/mellanox/mlxbf-pmc.c
-@@ -1348,9 +1348,8 @@ static int mlxbf_pmc_map_counters(struct
+--- a/drivers/power/supply/bq24190_charger.c
++++ b/drivers/power/supply/bq24190_charger.c
+@@ -1262,6 +1262,7 @@ static void bq24190_input_current_limit_
+ 	bq24190_charger_set_property(bdi->charger,
+ 				     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+ 				     &val);
++	power_supply_changed(bdi->charger);
+ }
  
- 	for (i = 0; i < pmc->total_blocks; ++i) {
- 		if (strstr(pmc->block_name[i], "tile")) {
--			ret = sscanf(pmc->block_name[i], "tile%d", &tile_num);
--			if (ret < 0)
--				return ret;
-+			if (sscanf(pmc->block_name[i], "tile%d", &tile_num) != 1)
-+				return -EINVAL;
- 
- 			if (tile_num >= pmc->tile_count)
- 				continue;
+ /* Sync the input-current-limit with our parent supply (if we have one) */
 
 
