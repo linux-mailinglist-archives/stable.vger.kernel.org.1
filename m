@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A2F713D62
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5429713F1B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbjE1TYw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
+        id S231193AbjE1TmY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230045AbjE1TYs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:48 -0400
+        with ESMTP id S231177AbjE1TmU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5919BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A885BB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A8C861BBB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88485C433D2;
-        Sun, 28 May 2023 19:24:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F19761EED
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE34C433D2;
+        Sun, 28 May 2023 19:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301886;
-        bh=PP/vIuljADhnibvqjbD8TJfV5ZrYy3ShefFqcCMNquM=;
+        s=korg; t=1685302918;
+        bh=Oi+gQzDH22UxfWh2JyqJkOQEmh0VRe7t9VVL4UTI+PE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KSu6IuwmAD/+22vbrWKqRqAMJz/blY13net6IxcmygprrQna+aEEfMjZV0+wc8xSF
-         wZOYv9UBicMiNWAt9oFJjoEFLMZR2/kwksp8DBLEnW5JkBIyBGk12HprsvV5VoQEGQ
-         LDODMQPz+e4pjOoVC1kRsITdDoC+gbWVKacam7Is=
+        b=hJNkhOhrZFrfUdtqlW7WQs4s9ESEo2sMnNc1YK0+48k0HWoZZYmCC0zF21eoe9qqF
+         w2UlUZTsBmAsk85igeHNIkFkuB7aqLH884FnXyuGEe3Wq1Nsy5ota4wQMg83+LHebc
+         wx8ZYh3pPwnLtR87U3lyfniKlVDxhio06U8XUPoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/161] net: bcmgenet: Restore phy_stop() depending upon suspend/close
+Subject: [PATCH 5.10 079/211] clk: tegra20: fix gcc-7 constant overflow warning
 Date:   Sun, 28 May 2023 20:10:00 +0100
-Message-Id: <20230528190839.566943064@linuxfoundation.org>
+Message-Id: <20230528190845.585484733@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 225c657945c4a6307741cb3cc89467eadcc26e9b ]
+[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
 
-Removing the phy_stop() from bcmgenet_netif_stop() ended up causing
-warnings from the PHY library that phy_start() is called from the
-RUNNING state since we are no longer stopping the PHY state machine
-during bcmgenet_suspend().
+Older gcc versions get confused by comparing a u32 value to a negative
+constant in a switch()/case block:
 
-Restore the call to phy_stop() but make it conditional on being called
-from the close or suspend path.
+drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
+drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_12MHZ:
+  ^~~~
+drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_26MHZ:
 
-Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
-Fixes: 93e0401e0fc0 ("net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20230515025608.2587012-1-f.fainelli@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Make the constants unsigned instead.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 468f79c270ac3..750acbf294640 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2973,7 +2973,7 @@ static int bcmgenet_open(struct net_device *dev)
- 	return ret;
- }
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index d60ee6e318a55..fb1da5d63f4b2 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -18,24 +18,24 @@
+ #define MISC_CLK_ENB 0x48
  
--static void bcmgenet_netif_stop(struct net_device *dev)
-+static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ #define OSC_CTRL 0x50
+-#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
+-#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
+-#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
+-#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
+-#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
+-#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
+-
+-#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
+-#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
+-#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
+-#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
++#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
++#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
++#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
++#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
++#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
++#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
++
++#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
++#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
++#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
++#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
  
-@@ -2988,6 +2988,8 @@ static void bcmgenet_netif_stop(struct net_device *dev)
- 	/* Disable MAC transmit. TX DMA disabled must be done before this */
- 	umac_enable_set(priv, CMD_TX_EN, false);
+ #define OSC_FREQ_DET 0x58
+-#define OSC_FREQ_DET_TRIG (1<<31)
++#define OSC_FREQ_DET_TRIG (1u<<31)
  
-+	if (stop_phy)
-+		phy_stop(dev->phydev);
- 	bcmgenet_disable_rx_napi(priv);
- 	bcmgenet_intr_disable(priv);
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
  
-@@ -3013,7 +3015,7 @@ static int bcmgenet_close(struct net_device *dev)
+ #define TEGRA20_CLK_PERIPH_BANKS	3
  
- 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
- 
--	bcmgenet_netif_stop(dev);
-+	bcmgenet_netif_stop(dev, false);
- 
- 	/* Really kill the PHY state machine and disconnect from it */
- 	phy_disconnect(dev->phydev);
-@@ -3711,7 +3713,7 @@ static int bcmgenet_suspend(struct device *d)
- 
- 	netif_device_detach(dev);
- 
--	bcmgenet_netif_stop(dev);
-+	bcmgenet_netif_stop(dev, true);
- 
- 	if (!device_may_wakeup(d))
- 		phy_suspend(dev->phydev);
 -- 
 2.39.2
 
