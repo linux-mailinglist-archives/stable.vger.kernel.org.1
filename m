@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 055C3713CDF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A94C713F2D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229873AbjE1TTb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38222 "EHLO
+        id S231195AbjE1Tmp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229875AbjE1TTa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:30 -0400
+        with ESMTP id S231194AbjE1Tmo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56AAAA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E16B9B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D259161113
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91CCC433EF;
-        Sun, 28 May 2023 19:19:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A160461F05
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEDBC433D2;
+        Sun, 28 May 2023 19:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301567;
-        bh=JcG6bXVze23BXAHDCXmQGrqYhlckdnLQO2HvR343y8s=;
+        s=korg; t=1685302962;
+        bh=uFUgcJ10Fe6kYRudC89cKeNGUIM8LFRXh2Va97Y1yyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1EYIDO7seyHFC+rOqsXs7bA7M8e4FqyHwrM3c+b1DtxP3b2vZZMHZ/BtF0DUmDXnW
-         2YnFRgBt1Qws4rjWGg4kDHOpVUhjLWKb90ZsrIvclNbn5lybz45/2w90gAr+fkqYPZ
-         etZlGv/1nzD+phy0RfLiG6bPUa6fZFeX6hCZUuck=
+        b=ZJU5YmSFaZ65KCUqQMxQaeLEdypEhneDqA+K5vccroKhZ6yAANoSRxDDUqmVuellz
+         H4YAdfBF/Gs/cjNO5qGlUJ1TFcIEneTXx/gis34V87K4/HWgWJlqzUsWQY/pQUK5QG
+         7mT9o1UlH81QAi0l6v8fcVfbRRq+tqOuSfLX6ilA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 080/132] netfilter: nf_tables: add nft_setelem_parse_key()
+Subject: [PATCH 5.10 098/211] ipv4/tcp: do not use per netns ctl sockets
 Date:   Sun, 28 May 2023 20:10:19 +0100
-Message-Id: <20230528190835.994025938@linuxfoundation.org>
+Message-Id: <20230528190846.030515064@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,247 +54,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ 20a1452c35425b2cef76f21f8395ef069dfddfa9 ]
+[ Upstream commit 37ba017dcc3b1123206808979834655ddcf93251 ]
 
-Add helper function to parse the set element key netlink attribute.
+TCP ipv4 uses per-cpu/per-netns ctl sockets in order to send
+RST and some ACK packets (on behalf of TIMEWAIT sockets).
 
-v4: No changes
-v3: New patch
+This adds memory and cpu costs, which do not seem needed.
+Now typical servers have 256 or more cores, this adds considerable
+tax to netns users.
 
-[sbrivio: refactor error paths and labels; use NFT_DATA_VALUE_MAXLEN
-  instead of sizeof(*key) in helper, value can be longer than that;
-  rebase]
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+tcp sockets are used from BH context, are not receiving packets,
+and do not store any persistent state but the 'struct net' pointer
+in order to be able to use IPv4 output functions.
+
+Note that I attempted a related change in the past, that had
+to be hot-fixed in commit bdbbb8527b6f ("ipv4: tcp: get rid of ugly unicast_sock")
+
+This patch could very well surface old bugs, on layers not
+taking care of sk->sk_kern_sock properly.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 1e306ec49a1f ("tcp: fix possible sk_priority leak in tcp_v4_send_reset()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 91 +++++++++++++++++------------------
- 1 file changed, 45 insertions(+), 46 deletions(-)
+ include/net/netns/ipv4.h |  1 -
+ net/ipv4/tcp_ipv4.c      | 61 ++++++++++++++++++----------------------
+ 2 files changed, 27 insertions(+), 35 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 48f8d3d2b6d7c..acd0566a35860 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4140,11 +4140,28 @@ static int nft_setelem_parse_flags(const struct nft_set *set,
- 	return 0;
+diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
+index d8b320cf54ba0..4a4a5270ff6f2 100644
+--- a/include/net/netns/ipv4.h
++++ b/include/net/netns/ipv4.h
+@@ -71,7 +71,6 @@ struct netns_ipv4 {
+ 	struct sock		*mc_autojoin_sk;
+ 
+ 	struct inet_peer_base	*peers;
+-	struct sock  * __percpu	*tcp_sk;
+ 	struct fqdir		*fqdir;
+ #ifdef CONFIG_NETFILTER
+ 	struct xt_table		*iptable_filter;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 8bd7b1ec3b6a3..275ae42be99e0 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -91,6 +91,8 @@ static int tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
+ struct inet_hashinfo tcp_hashinfo;
+ EXPORT_SYMBOL(tcp_hashinfo);
+ 
++static DEFINE_PER_CPU(struct sock *, ipv4_tcp_sk);
++
+ static u32 tcp_v4_init_seq(const struct sk_buff *skb)
+ {
+ 	return secure_tcp_seq(ip_hdr(skb)->daddr,
+@@ -794,7 +796,8 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 	arg.tos = ip_hdr(skb)->tos;
+ 	arg.uid = sock_net_uid(net, sk && sk_fullsock(sk) ? sk : NULL);
+ 	local_bh_disable();
+-	ctl_sk = this_cpu_read(*net->ipv4.tcp_sk);
++	ctl_sk = this_cpu_read(ipv4_tcp_sk);
++	sock_net_set(ctl_sk, net);
+ 	if (sk) {
+ 		ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
+ 				   inet_twsk(sk)->tw_mark : sk->sk_mark;
+@@ -809,6 +812,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 			      transmit_time);
+ 
+ 	ctl_sk->sk_mark = 0;
++	sock_net_set(ctl_sk, &init_net);
+ 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
+ 	__TCP_INC_STATS(net, TCP_MIB_OUTRSTS);
+ 	local_bh_enable();
+@@ -892,7 +896,8 @@ static void tcp_v4_send_ack(const struct sock *sk,
+ 	arg.tos = tos;
+ 	arg.uid = sock_net_uid(net, sk_fullsock(sk) ? sk : NULL);
+ 	local_bh_disable();
+-	ctl_sk = this_cpu_read(*net->ipv4.tcp_sk);
++	ctl_sk = this_cpu_read(ipv4_tcp_sk);
++	sock_net_set(ctl_sk, net);
+ 	ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
+ 			   inet_twsk(sk)->tw_mark : sk->sk_mark;
+ 	ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
+@@ -905,6 +910,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
+ 			      transmit_time);
+ 
+ 	ctl_sk->sk_mark = 0;
++	sock_net_set(ctl_sk, &init_net);
+ 	__TCP_INC_STATS(net, TCP_MIB_OUTSEGS);
+ 	local_bh_enable();
+ }
+@@ -2828,41 +2834,14 @@ EXPORT_SYMBOL(tcp_prot);
+ 
+ static void __net_exit tcp_sk_exit(struct net *net)
+ {
+-	int cpu;
+-
+ 	if (net->ipv4.tcp_congestion_control)
+ 		bpf_module_put(net->ipv4.tcp_congestion_control,
+ 			       net->ipv4.tcp_congestion_control->owner);
+-
+-	for_each_possible_cpu(cpu)
+-		inet_ctl_sock_destroy(*per_cpu_ptr(net->ipv4.tcp_sk, cpu));
+-	free_percpu(net->ipv4.tcp_sk);
  }
  
-+static int nft_setelem_parse_key(struct nft_ctx *ctx, struct nft_set *set,
-+				 struct nft_data *key, struct nlattr *attr)
-+{
-+	struct nft_data_desc desc;
-+	int err;
+ static int __net_init tcp_sk_init(struct net *net)
+ {
+-	int res, cpu, cnt;
+-
+-	net->ipv4.tcp_sk = alloc_percpu(struct sock *);
+-	if (!net->ipv4.tcp_sk)
+-		return -ENOMEM;
+-
+-	for_each_possible_cpu(cpu) {
+-		struct sock *sk;
+-
+-		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
+-					   IPPROTO_TCP, net);
+-		if (res)
+-			goto fail;
+-		sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
+-
+-		/* Please enforce IP_DF and IPID==0 for RST and
+-		 * ACK sent in SYN-RECV and TIME-WAIT state.
+-		 */
+-		inet_sk(sk)->pmtudisc = IP_PMTUDISC_DO;
+-
+-		*per_cpu_ptr(net->ipv4.tcp_sk, cpu) = sk;
+-	}
++	int cnt;
+ 
+ 	net->ipv4.sysctl_tcp_ecn = 2;
+ 	net->ipv4.sysctl_tcp_ecn_fallback = 1;
+@@ -2947,10 +2926,6 @@ static int __net_init tcp_sk_init(struct net *net)
+ 		net->ipv4.tcp_congestion_control = &tcp_reno;
+ 
+ 	return 0;
+-fail:
+-	tcp_sk_exit(net);
+-
+-	return res;
+ }
+ 
+ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+@@ -3027,6 +3002,24 @@ static void __init bpf_iter_register(void)
+ 
+ void __init tcp_v4_init(void)
+ {
++	int cpu, res;
 +
-+	err = nft_data_init(ctx, key, NFT_DATA_VALUE_MAXLEN, &desc, attr);
-+	if (err < 0)
-+		return err;
++	for_each_possible_cpu(cpu) {
++		struct sock *sk;
 +
-+	if (desc.type != NFT_DATA_VALUE || desc.len != set->klen) {
-+		nft_data_release(key, desc.type);
-+		return -EINVAL;
++		res = inet_ctl_sock_create(&sk, PF_INET, SOCK_RAW,
++					   IPPROTO_TCP, &init_net);
++		if (res)
++			panic("Failed to create the TCP control socket.\n");
++		sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
++
++		/* Please enforce IP_DF and IPID==0 for RST and
++		 * ACK sent in SYN-RECV and TIME-WAIT state.
++		 */
++		inet_sk(sk)->pmtudisc = IP_PMTUDISC_DO;
++
++		per_cpu(ipv4_tcp_sk, cpu) = sk;
 +	}
-+
-+	return 0;
-+}
-+
- static int nft_get_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			    const struct nlattr *attr)
- {
- 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
--	struct nft_data_desc desc;
- 	struct nft_set_elem elem;
- 	struct sk_buff *skb;
- 	uint32_t flags = 0;
-@@ -4163,17 +4180,11 @@ static int nft_get_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (err < 0)
- 		return err;
- 
--	err = nft_data_init(ctx, &elem.key.val, sizeof(elem.key), &desc,
--			    nla[NFTA_SET_ELEM_KEY]);
-+	err = nft_setelem_parse_key(ctx, set, &elem.key.val,
-+				    nla[NFTA_SET_ELEM_KEY]);
- 	if (err < 0)
- 		return err;
- 
--	err = -EINVAL;
--	if (desc.type != NFT_DATA_VALUE || desc.len != set->klen) {
--		nft_data_release(&elem.key.val, desc.type);
--		return err;
--	}
--
- 	priv = set->ops->get(ctx->net, set, &elem, flags);
- 	if (IS_ERR(priv))
- 		return PTR_ERR(priv);
-@@ -4364,13 +4375,13 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- {
- 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
- 	u8 genmask = nft_genmask_next(ctx->net);
--	struct nft_data_desc d1, d2;
- 	struct nft_set_ext_tmpl tmpl;
- 	struct nft_set_ext *ext, *ext2;
- 	struct nft_set_elem elem;
- 	struct nft_set_binding *binding;
- 	struct nft_object *obj = NULL;
- 	struct nft_userdata *udata;
-+	struct nft_data_desc desc;
- 	struct nft_data data;
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
-@@ -4425,15 +4436,12 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		timeout = set->timeout;
- 	}
- 
--	err = nft_data_init(ctx, &elem.key.val, sizeof(elem.key), &d1,
--			    nla[NFTA_SET_ELEM_KEY]);
-+	err = nft_setelem_parse_key(ctx, set, &elem.key.val,
-+				    nla[NFTA_SET_ELEM_KEY]);
- 	if (err < 0)
- 		goto err1;
--	err = -EINVAL;
--	if (d1.type != NFT_DATA_VALUE || d1.len != set->klen)
--		goto err2;
- 
--	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, d1.len);
-+	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, set->klen);
- 	if (timeout > 0) {
- 		nft_set_ext_add(&tmpl, NFT_SET_EXT_EXPIRATION);
- 		if (timeout != set->timeout)
-@@ -4455,13 +4463,13 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	}
- 
- 	if (nla[NFTA_SET_ELEM_DATA] != NULL) {
--		err = nft_data_init(ctx, &data, sizeof(data), &d2,
-+		err = nft_data_init(ctx, &data, sizeof(data), &desc,
- 				    nla[NFTA_SET_ELEM_DATA]);
- 		if (err < 0)
- 			goto err2;
- 
- 		err = -EINVAL;
--		if (set->dtype != NFT_DATA_VERDICT && d2.len != set->dlen)
-+		if (set->dtype != NFT_DATA_VERDICT && desc.len != set->dlen)
- 			goto err3;
- 
- 		dreg = nft_type_to_reg(set->dtype);
-@@ -4478,18 +4486,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 
- 			err = nft_validate_register_store(&bind_ctx, dreg,
- 							  &data,
--							  d2.type, d2.len);
-+							  desc.type, desc.len);
- 			if (err < 0)
- 				goto err3;
- 
--			if (d2.type == NFT_DATA_VERDICT &&
-+			if (desc.type == NFT_DATA_VERDICT &&
- 			    (data.verdict.code == NFT_GOTO ||
- 			     data.verdict.code == NFT_JUMP))
- 				nft_validate_state_update(ctx->net,
- 							  NFT_VALIDATE_NEED);
- 		}
- 
--		nft_set_ext_add_length(&tmpl, NFT_SET_EXT_DATA, d2.len);
-+		nft_set_ext_add_length(&tmpl, NFT_SET_EXT_DATA, desc.len);
- 	}
- 
- 	/* The full maximum length of userdata can exceed the maximum
-@@ -4572,9 +4580,9 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	kfree(elem.priv);
- err3:
- 	if (nla[NFTA_SET_ELEM_DATA] != NULL)
--		nft_data_release(&data, d2.type);
-+		nft_data_release(&data, desc.type);
- err2:
--	nft_data_release(&elem.key.val, d1.type);
-+	nft_data_release(&elem.key.val, NFT_DATA_VALUE);
- err1:
- 	return err;
- }
-@@ -4670,7 +4678,6 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- {
- 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
- 	struct nft_set_ext_tmpl tmpl;
--	struct nft_data_desc desc;
- 	struct nft_set_elem elem;
- 	struct nft_set_ext *ext;
- 	struct nft_trans *trans;
-@@ -4681,11 +4688,10 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- 	err = nla_parse_nested(nla, NFTA_SET_ELEM_MAX, attr,
- 			       nft_set_elem_policy, NULL);
- 	if (err < 0)
--		goto err1;
-+		return err;
- 
--	err = -EINVAL;
- 	if (nla[NFTA_SET_ELEM_KEY] == NULL)
--		goto err1;
-+		return -EINVAL;
- 
- 	nft_set_ext_prepare(&tmpl);
- 
-@@ -4695,37 +4701,31 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (flags != 0)
- 		nft_set_ext_add(&tmpl, NFT_SET_EXT_FLAGS);
- 
--	err = nft_data_init(ctx, &elem.key.val, sizeof(elem.key), &desc,
--			    nla[NFTA_SET_ELEM_KEY]);
-+	err = nft_setelem_parse_key(ctx, set, &elem.key.val,
-+				    nla[NFTA_SET_ELEM_KEY]);
- 	if (err < 0)
--		goto err1;
--
--	err = -EINVAL;
--	if (desc.type != NFT_DATA_VALUE || desc.len != set->klen)
--		goto err2;
-+		return err;
- 
--	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, desc.len);
-+	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, set->klen);
- 
- 	err = -ENOMEM;
- 	elem.priv = nft_set_elem_init(set, &tmpl, elem.key.val.data, NULL, 0,
- 				      GFP_KERNEL);
- 	if (elem.priv == NULL)
--		goto err2;
-+		goto fail_elem;
- 
- 	ext = nft_set_elem_ext(set, elem.priv);
- 	if (flags)
- 		*nft_set_ext_flags(ext) = flags;
- 
- 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_DELSETELEM, set);
--	if (trans == NULL) {
--		err = -ENOMEM;
--		goto err3;
--	}
-+	if (trans == NULL)
-+		goto fail_trans;
- 
- 	priv = set->ops->deactivate(ctx->net, set, &elem);
- 	if (priv == NULL) {
- 		err = -ENOENT;
--		goto err4;
-+		goto fail_ops;
- 	}
- 	kfree(elem.priv);
- 	elem.priv = priv;
-@@ -4736,13 +4736,12 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- 	list_add_tail(&trans->list, &ctx->net->nft.commit_list);
- 	return 0;
- 
--err4:
-+fail_ops:
- 	kfree(trans);
--err3:
-+fail_trans:
- 	kfree(elem.priv);
--err2:
--	nft_data_release(&elem.key.val, desc.type);
--err1:
-+fail_elem:
-+	nft_data_release(&elem.key.val, NFT_DATA_VALUE);
- 	return err;
- }
+ 	if (register_pernet_subsys(&tcp_sk_ops))
+ 		panic("Failed to create the TCP control socket.\n");
  
 -- 
 2.39.2
