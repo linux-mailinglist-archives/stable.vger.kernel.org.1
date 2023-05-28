@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF5B71384F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02169713852
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjE1H1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 03:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58402 "EHLO
+        id S229450AbjE1H1s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 03:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjE1H1g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:27:36 -0400
+        with ESMTP id S229468AbjE1H1p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:27:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E399EC7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:27:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F43CDE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:27:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C74E60B80
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB8AC433D2;
-        Sun, 28 May 2023 07:27:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD14A60FAB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:27:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075D0C433EF;
+        Sun, 28 May 2023 07:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685258854;
-        bh=Y4kn0Wfcq4LIDoI98xDefP+hrMAk3Ll0I/aXVpkcrFY=;
+        s=korg; t=1685258863;
+        bh=LHqP/aNq4aM+IfRJ4APph1CaMbH+MRgbCppPkrRYuaI=;
         h=Subject:To:Cc:From:Date:From;
-        b=p1scQyFXi1+Yr21YAbydHlvPLDJhPnKl0EffnbBmdBVt1do7TG7ZVZzJBhli0b4an
-         +fOEA5ct5LxiS8SWMsEjqaDx7jgu3Ta5Lamgv+g1aPeNDJcBWhO/+eYjPDJcwTYW5E
-         l1l8bllDZ17Uen3nFT5lpSJfga/vYgKfkiK0zJkw=
-Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Update policy->cur in" failed to apply to 6.3-stable tree
+        b=sf0CD+47DTQHbrrIoii3uNua+w83jfXY517/2b958Y9cNJEdn4LXw/ElxuYMZ+HE5
+         CEW7E0rC/NEZsaODfr4O2fTc02AiFYGalc/d+tra1OjOjIcYjMd45ckkAd5QsxWEL/
+         +bdkpnugYT/gDnHwjmJO1znPcM8vNvJIcHB88lIQ=
+Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Update policy->cur in" failed to apply to 6.1-stable tree
 To:     wyes.karny@amd.com, rafael.j.wysocki@intel.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 08:27:32 +0100
-Message-ID: <2023052831-chest-shabby-7961@gregkh>
+Date:   Sun, 28 May 2023 08:27:33 +0100
+Message-ID: <2023052832-arise-impeding-18c7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,25 +49,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3bf8c6307bad5c0cc09cde982e146d847859b651
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052831-chest-shabby-7961@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052832-arise-impeding-18c7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 3bf8c6307bad ("cpufreq: amd-pstate: Update policy->cur in amd_pstate_adjust_perf()")
 2dd6d0ebf740 ("cpufreq: amd-pstate: Add guided autonomous mode")
 3e6e07805764 ("Documentation: cpufreq: amd-pstate: Move amd_pstate param to alphabetical order")
+5014603e409b ("Documentation: introduce amd pstate active mode kernel command line options")
+ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
+36c5014e5460 ("cpufreq: amd-pstate: optimize driver working mode selection in amd_pstate_param()")
+4f3085f87b51 ("cpufreq: amd-pstate: fix kernel hang issue while amd-pstate unregistering")
 
 thanks,
 
