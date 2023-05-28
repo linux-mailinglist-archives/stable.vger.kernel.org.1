@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 583F9713C34
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79C47713D7E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbjE1TNE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:13:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33094 "EHLO
+        id S230061AbjE1TZ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbjE1TND (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A832FC4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:02 -0700 (PDT)
+        with ESMTP id S230074AbjE1TZ4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF51B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BF21618F1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A0EC4339B;
-        Sun, 28 May 2023 19:13:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09E2F61C32
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2824AC4339B;
+        Sun, 28 May 2023 19:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301181;
-        bh=hveISeaU9FkwcltR0ICWbAguyn61drmwjK/h450Kasw=;
+        s=korg; t=1685301954;
+        bh=htDnQPPTK0T6AosbxRErJZ2KbgQTcim5FlO8G19BaE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a1WkE3hBk+6Wr85TNfPIBSm7yJilldfQXINNCSQMLysPexD0BpJvGWOB5BbmCW7P6
-         VKkDmAupdo1RCkui4dB4+SasJ92ziPJuCfXeaN+ycVbhKIJ6no4bLx4PYQCPARMJsN
-         j0Ux/4BAFnkHXmatnDHFN39pFGb49Ds5Ssbe5PT0=
+        b=Rb37+1LzHBrKdoA2BG76yUAp70Gc9QdhJiWMq0ckEtjee5ibQOKJH2l7X8VvwxN8K
+         wWG4Kag5A0FCL1kNc/wXNs7FYKOsCfAH1Xl8uN44yuaoXaVII1pLiHIp5d+1m4H5Rd
+         hvV8uSrIErq/d/+b3AiJgOmwBd43E1Dgw4ztmo1I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Ke Zhang <m202171830@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 15/86] net: pasemi: Fix return type of pasemi_mac_start_tx()
+Subject: [PATCH 5.4 065/161] serial: arc_uart: fix of_iomap leak in `arc_serial_probe`
 Date:   Sun, 28 May 2023 20:09:49 +0100
-Message-Id: <20230528190829.118855609@linuxfoundation.org>
+Message-Id: <20230528190839.237991447@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,52 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ke Zhang <m202171830@hust.edu.cn>
 
-[ Upstream commit c8384d4a51e7cb0e6587f3143f29099f202c5de1 ]
+[ Upstream commit 8ab5fc55d7f65d58a3c3aeadf11bdf60267cd2bd ]
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-warning in clang aims to catch these at compile time, which reveals:
+Smatch reports:
 
-  drivers/net/ethernet/pasemi/pasemi_mac.c:1665:21: error: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          .ndo_start_xmit         = pasemi_mac_start_tx,
-                                    ^~~~~~~~~~~~~~~~~~~
-  1 error generated.
+drivers/tty/serial/arc_uart.c:631 arc_serial_probe() warn:
+'port->membase' from of_iomap() not released on lines: 631.
 
-->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
-'netdev_tx_t', not 'int'. Adjust the return type of
-pasemi_mac_start_tx() to match the prototype's to resolve the warning.
-While PowerPC does not currently implement support for kCFI, it could in
-the future, which means this warning becomes a fatal CFI failure at run
-time.
+In arc_serial_probe(), if uart_add_one_port() fails,
+port->membase is not released, which would cause a resource leak.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1750
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://lore.kernel.org/r/20230319-pasemi-incompatible-pointer-types-strict-v1-1-1b9459d8aef0@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To fix this, I replace of_iomap with devm_platform_ioremap_resource.
+
+Fixes: 8dbe1d5e09a7 ("serial/arc: inline the probe helper")
+Signed-off-by: Ke Zhang <m202171830@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230428031636.44642-1-m202171830@hust.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pasemi/pasemi_mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/arc_uart.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/pasemi/pasemi_mac.c b/drivers/net/ethernet/pasemi/pasemi_mac.c
-index 6ccdce21ca9b5..c891ee70099a7 100644
---- a/drivers/net/ethernet/pasemi/pasemi_mac.c
-+++ b/drivers/net/ethernet/pasemi/pasemi_mac.c
-@@ -1436,7 +1436,7 @@ static void pasemi_mac_queue_csdesc(const struct sk_buff *skb,
- 	write_dma_reg(PAS_DMA_TXCHAN_INCR(txring->chan.chno), 2);
- }
+diff --git a/drivers/tty/serial/arc_uart.c b/drivers/tty/serial/arc_uart.c
+index d904a3a345e74..dd4be3c8c049c 100644
+--- a/drivers/tty/serial/arc_uart.c
++++ b/drivers/tty/serial/arc_uart.c
+@@ -613,10 +613,11 @@ static int arc_serial_probe(struct platform_device *pdev)
+ 	}
+ 	uart->baud = val;
  
--static int pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t pasemi_mac_start_tx(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct pasemi_mac * const mac = netdev_priv(dev);
- 	struct pasemi_mac_txring * const txring = tx_ring(mac);
+-	port->membase = of_iomap(np, 0);
+-	if (!port->membase)
++	port->membase = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(port->membase)) {
+ 		/* No point of dev_err since UART itself is hosed here */
+-		return -ENXIO;
++		return PTR_ERR(port->membase);
++	}
+ 
+ 	port->irq = irq_of_parse_and_map(np, 0);
+ 
 -- 
 2.39.2
 
