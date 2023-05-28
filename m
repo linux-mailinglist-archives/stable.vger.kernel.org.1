@@ -2,45 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D4F713D54
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27ED713DE5
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbjE1TYO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41402 "EHLO
+        id S230199AbjE1TaB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjE1TYN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:13 -0400
+        with ESMTP id S230192AbjE1TaA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF28C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635DFDE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 010EC61BA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F014C433D2;
-        Sun, 28 May 2023 19:24:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFC4D61D47
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C5CC433D2;
+        Sun, 28 May 2023 19:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301851;
-        bh=HpNp+kaoEwq5uTxFJrERqIfK0ijhovHbWtU6rLeec70=;
+        s=korg; t=1685302193;
+        bh=ic1yI0gG2132Y5euY1asRjAztg6LVos+sWE6RQAV6+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yd99R/PC1idKsyHzzeSgkEUOmzkQeVHnLAacSx2j89Ei8VMRAtUyugRfnENheAPz+
-         mI3elz8rkfe5E0OKEuWwfOtK5n/Nlck+yKjTZHbfwRGPGgBUUZJCeLIzkQeqEsqEFM
-         qSp9TkeAWRKcvO7/Xhkb7KT+Sj+2+uVYzsLml6RM=
+        b=eMlKOoWfkN6RLpE6JHR6SgUc0jRWF0nFh+aZXOhCFgL0RDTXqqFKvYcK80+J7wKqO
+         FmJ5gPRpXZnIXYN0OiBtqOP/QSI3fhMWBy/TpKOzVFTYX6uPaK3aZtStOnD6A85siJ
+         9C2EfYMnDDnOMnjOgT3gtDjSfM0LumtEc4C/MOXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tobias Brunner <tobias@strongswan.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Nhat Pham <nphamcs@gmail.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Minchan Kim <minchan@kernel.org>,
+        Dan Streetman <ddstreet@ieee.org>,
+        Nitin Gupta <ngupta@vflare.org>,
+        Seth Jennings <sjenning@redhat.com>,
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/161] af_key: Reject optional tunnel/BEET mode templates in outbound policies
+Subject: [PATCH 6.3 009/127] zsmalloc: move LRU update from zs_map_object() to zs_malloc()
 Date:   Sun, 28 May 2023 20:09:45 +0100
-Message-Id: <20230528190839.121577348@linuxfoundation.org>
+Message-Id: <20230528190836.504675836@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,68 +61,180 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tobias Brunner <tobias@strongswan.org>
+From: Nhat Pham <nphamcs@gmail.com>
 
-[ Upstream commit cf3128a7aca55b2eefb68281d44749c683bdc96f ]
+[ Upstream commit d461aac924b937bcb4fd0ca1242b3ef6868ecddd ]
 
-xfrm_state_find() uses `encap_family` of the current template with
-the passed local and remote addresses to find a matching state.
-If an optional tunnel or BEET mode template is skipped in a mixed-family
-scenario, there could be a mismatch causing an out-of-bounds read as
-the addresses were not replaced to match the family of the next template.
+Under memory pressure, we sometimes observe the following crash:
 
-While there are theoretical use cases for optional templates in outbound
-policies, the only practical one is to skip IPComp states in inbound
-policies if uncompressed packets are received that are handled by an
-implicitly created IPIP state instead.
+[ 5694.832838] ------------[ cut here ]------------
+[ 5694.842093] list_del corruption, ffff888014b6a448->next is LIST_POISON1 (dead000000000100)
+[ 5694.858677] WARNING: CPU: 33 PID: 418824 at lib/list_debug.c:47 __list_del_entry_valid+0x42/0x80
+[ 5694.961820] CPU: 33 PID: 418824 Comm: fuse_counters.s Kdump: loaded Tainted: G S                5.19.0-0_fbk3_rc3_hoangnhatpzsdynshrv41_10870_g85a9558a25de #1
+[ 5694.990194] Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM16 05/24/2021
+[ 5695.007072] RIP: 0010:__list_del_entry_valid+0x42/0x80
+[ 5695.017351] Code: 08 48 83 c2 22 48 39 d0 74 24 48 8b 10 48 39 f2 75 2c 48 8b 51 08 b0 01 48 39 f2 75 34 c3 48 c7 c7 55 d7 78 82 e8 4e 45 3b 00 <0f> 0b eb 31 48 c7 c7 27 a8 70 82 e8 3e 45 3b 00 0f 0b eb 21 48 c7
+[ 5695.054919] RSP: 0018:ffffc90027aef4f0 EFLAGS: 00010246
+[ 5695.065366] RAX: 41fe484987275300 RBX: ffff888008988180 RCX: 0000000000000000
+[ 5695.079636] RDX: ffff88886006c280 RSI: ffff888860060480 RDI: ffff888860060480
+[ 5695.093904] RBP: 0000000000000002 R08: 0000000000000000 R09: ffffc90027aef370
+[ 5695.108175] R10: 0000000000000000 R11: ffffffff82fdf1c0 R12: 0000000010000002
+[ 5695.122447] R13: ffff888014b6a448 R14: ffff888014b6a420 R15: 00000000138dc240
+[ 5695.136717] FS:  00007f23a7d3f740(0000) GS:ffff888860040000(0000) knlGS:0000000000000000
+[ 5695.152899] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 5695.164388] CR2: 0000560ceaab6ac0 CR3: 000000001c06c001 CR4: 00000000007706e0
+[ 5695.178659] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 5695.192927] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 5695.207197] PKRU: 55555554
+[ 5695.212602] Call Trace:
+[ 5695.217486]  <TASK>
+[ 5695.221674]  zs_map_object+0x91/0x270
+[ 5695.229000]  zswap_frontswap_store+0x33d/0x870
+[ 5695.237885]  ? do_raw_spin_lock+0x5d/0xa0
+[ 5695.245899]  __frontswap_store+0x51/0xb0
+[ 5695.253742]  swap_writepage+0x3c/0x60
+[ 5695.261063]  shrink_page_list+0x738/0x1230
+[ 5695.269255]  shrink_lruvec+0x5ec/0xcd0
+[ 5695.276749]  ? shrink_slab+0x187/0x5f0
+[ 5695.284240]  ? mem_cgroup_iter+0x6e/0x120
+[ 5695.292255]  shrink_node+0x293/0x7b0
+[ 5695.299402]  do_try_to_free_pages+0xea/0x550
+[ 5695.307940]  try_to_free_pages+0x19a/0x490
+[ 5695.316126]  __folio_alloc+0x19ff/0x3e40
+[ 5695.323971]  ? __filemap_get_folio+0x8a/0x4e0
+[ 5695.332681]  ? walk_component+0x2a8/0xb50
+[ 5695.340697]  ? generic_permission+0xda/0x2a0
+[ 5695.349231]  ? __filemap_get_folio+0x8a/0x4e0
+[ 5695.357940]  ? walk_component+0x2a8/0xb50
+[ 5695.365955]  vma_alloc_folio+0x10e/0x570
+[ 5695.373796]  ? walk_component+0x52/0xb50
+[ 5695.381634]  wp_page_copy+0x38c/0xc10
+[ 5695.388953]  ? filename_lookup+0x378/0xbc0
+[ 5695.397140]  handle_mm_fault+0x87f/0x1800
+[ 5695.405157]  do_user_addr_fault+0x1bd/0x570
+[ 5695.413520]  exc_page_fault+0x5d/0x110
+[ 5695.421017]  asm_exc_page_fault+0x22/0x30
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Tobias Brunner <tobias@strongswan.org>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+After some investigation, I have found the following issue: unlike other
+zswap backends, zsmalloc performs the LRU list update at the object
+mapping time, rather than when the slot for the object is allocated.
+This deviation was discussed and agreed upon during the review process
+of the zsmalloc writeback patch series:
+
+https://lore.kernel.org/lkml/Y3flcAXNxxrvy3ZH@cmpxchg.org/
+
+Unfortunately, this introduces a subtle bug that occurs when there is a
+concurrent store and reclaim, which interleave as follows:
+
+zswap_frontswap_store()            shrink_worker()
+  zs_malloc()                        zs_zpool_shrink()
+    spin_lock(&pool->lock)             zs_reclaim_page()
+    zspage = find_get_zspage()
+    spin_unlock(&pool->lock)
+                                         spin_lock(&pool->lock)
+                                         zspage = list_first_entry(&pool->lru)
+                                         list_del(&zspage->lru)
+                                           zspage->lru.next = LIST_POISON1
+                                           zspage->lru.prev = LIST_POISON2
+                                         spin_unlock(&pool->lock)
+  zs_map_object()
+    spin_lock(&pool->lock)
+    if (!list_empty(&zspage->lru))
+      list_del(&zspage->lru)
+        CHECK_DATA_CORRUPTION(next == LIST_POISON1) /* BOOM */
+
+With the current upstream code, this issue rarely happens. zswap only
+triggers writeback when the pool is already full, at which point all
+further store attempts are short-circuited. This creates an implicit
+pseudo-serialization between reclaim and store. I am working on a new
+zswap shrinking mechanism, which makes interleaving reclaim and store
+more likely, exposing this bug.
+
+zbud and z3fold do not have this problem, because they perform the LRU
+list update in the alloc function, while still holding the pool's lock.
+This patch fixes the aforementioned bug by moving the LRU update back to
+zs_malloc(), analogous to zbud and z3fold.
+
+Link: https://lkml.kernel.org/r/20230505185054.2417128-1-nphamcs@gmail.com
+Fixes: 64f768c6b32e ("zsmalloc: add a LRU to zs_pool to keep track of zspages in LRU order")
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Minchan Kim <minchan@kernel.org>
+Cc: Dan Streetman <ddstreet@ieee.org>
+Cc: Nitin Gupta <ngupta@vflare.org>
+Cc: Seth Jennings <sjenning@redhat.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/key/af_key.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/zsmalloc.c | 36 +++++++++---------------------------
+ 1 file changed, 9 insertions(+), 27 deletions(-)
 
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index 92f71e8f321cd..1a33c46d9c894 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -1944,7 +1944,8 @@ static u32 gen_reqid(struct net *net)
- }
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 3aed46ab7e6cb..0d451b61573cb 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1350,31 +1350,6 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
+ 	obj_to_location(obj, &page, &obj_idx);
+ 	zspage = get_zspage(page);
  
- static int
--parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_ipsecrequest *rq)
-+parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_policy *pol,
-+		   struct sadb_x_ipsecrequest *rq)
- {
- 	struct net *net = xp_net(xp);
- 	struct xfrm_tmpl *t = xp->xfrm_vec + xp->xfrm_nr;
-@@ -1962,9 +1963,12 @@ parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_ipsecrequest *rq)
- 	if ((mode = pfkey_mode_to_xfrm(rq->sadb_x_ipsecrequest_mode)) < 0)
- 		return -EINVAL;
- 	t->mode = mode;
--	if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_USE)
-+	if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_USE) {
-+		if ((mode == XFRM_MODE_TUNNEL || mode == XFRM_MODE_BEET) &&
-+		    pol->sadb_x_policy_dir == IPSEC_DIR_OUTBOUND)
-+			return -EINVAL;
- 		t->optional = 1;
--	else if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_UNIQUE) {
-+	} else if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_UNIQUE) {
- 		t->reqid = rq->sadb_x_ipsecrequest_reqid;
- 		if (t->reqid > IPSEC_MANUAL_REQID_MAX)
- 			t->reqid = 0;
-@@ -2006,7 +2010,7 @@ parse_ipsecrequests(struct xfrm_policy *xp, struct sadb_x_policy *pol)
- 		    rq->sadb_x_ipsecrequest_len < sizeof(*rq))
- 			return -EINVAL;
+-#ifdef CONFIG_ZPOOL
+-	/*
+-	 * Move the zspage to front of pool's LRU.
+-	 *
+-	 * Note that this is swap-specific, so by definition there are no ongoing
+-	 * accesses to the memory while the page is swapped out that would make
+-	 * it "hot". A new entry is hot, then ages to the tail until it gets either
+-	 * written back or swaps back in.
+-	 *
+-	 * Furthermore, map is also called during writeback. We must not put an
+-	 * isolated page on the LRU mid-reclaim.
+-	 *
+-	 * As a result, only update the LRU when the page is mapped for write
+-	 * when it's first instantiated.
+-	 *
+-	 * This is a deviation from the other backends, which perform this update
+-	 * in the allocation function (zbud_alloc, z3fold_alloc).
+-	 */
+-	if (mm == ZS_MM_WO) {
+-		if (!list_empty(&zspage->lru))
+-			list_del(&zspage->lru);
+-		list_add(&zspage->lru, &pool->lru);
+-	}
+-#endif
+-
+ 	/*
+ 	 * migration cannot move any zpages in this zspage. Here, pool->lock
+ 	 * is too heavy since callers would take some time until they calls
+@@ -1544,9 +1519,8 @@ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp)
+ 		fix_fullness_group(class, zspage);
+ 		record_obj(handle, obj);
+ 		class_stat_inc(class, OBJ_USED, 1);
+-		spin_unlock(&pool->lock);
  
--		if ((err = parse_ipsecrequest(xp, rq)) < 0)
-+		if ((err = parse_ipsecrequest(xp, pol, rq)) < 0)
- 			return err;
- 		len -= rq->sadb_x_ipsecrequest_len;
- 		rq = (void*)((u8*)rq + rq->sadb_x_ipsecrequest_len);
+-		return handle;
++		goto out;
+ 	}
+ 
+ 	spin_unlock(&pool->lock);
+@@ -1570,6 +1544,14 @@ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp)
+ 
+ 	/* We completely set up zspage so mark them as movable */
+ 	SetZsPageMovable(pool, zspage);
++out:
++#ifdef CONFIG_ZPOOL
++	/* Add/move zspage to beginning of LRU */
++	if (!list_empty(&zspage->lru))
++		list_del(&zspage->lru);
++	list_add(&zspage->lru, &pool->lru);
++#endif
++
+ 	spin_unlock(&pool->lock);
+ 
+ 	return handle;
 -- 
 2.39.2
 
