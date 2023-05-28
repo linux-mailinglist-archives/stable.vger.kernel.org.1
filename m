@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B023713CB4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54750713C39
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbjE1TRv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37002 "EHLO
+        id S229531AbjE1TNR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjE1TRv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:51 -0400
+        with ESMTP id S229486AbjE1TNQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204AFE3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CCEA0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99DE1619DD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F71C433EF;
-        Sun, 28 May 2023 19:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 218AF618F4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6DAC433EF;
+        Sun, 28 May 2023 19:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301461;
-        bh=v4sqEc/qTJkHjx1YF3AtGzgyrqhnANThYzMzNBiQpMA=;
+        s=korg; t=1685301194;
+        bh=nhV7KGgkMqY2g/XLwvQZElIC26CIz2CgGzK4ssMKeHg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2czjOcBVvmVSrI5Z21MKJS1nvUgT9gNKKioNTdTWQTWWKWIkUPa+vrgdA6/hTeaSP
-         A7K6N+pssLOOfashhKkzDjM7xOA9RqQuLF4P+oLV8GPUIsUw2R6c2GOULorpQH90B3
-         B1cat7Efz6IQzfSojicUkRojcOF6cWUVkfyr7JOI=
+        b=X1nrxqRc1tsH8KoqmNrJK4yyyDglZrp9GNv6tDkb6Vo/uBLkiB+w26aCb6YGFuI4r
+         +q+6P3YpcFn4vJU4d1Fcw1ekQgCHnzTii+GvamMcDZwfGv95jUDolRWsXTw2hOHbP5
+         h5aTvF08gxOVWvFsvh1uT2gWmz3DNUPJbbWmwVm8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 039/132] serial: 8250: Reinit port->pm on port specific driver unbind
-Date:   Sun, 28 May 2023 20:09:38 +0100
-Message-Id: <20230528190834.781629469@linuxfoundation.org>
+Subject: [PATCH 4.14 05/86] af_unix: Fix a data race of sk->sk_receive_queue->qlen.
+Date:   Sun, 28 May 2023 20:09:39 +0100
+Message-Id: <20230528190828.755150621@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,54 +57,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 04e82793f068d2f0ffe62fcea03d007a8cdc16a7 ]
+[ Upstream commit 679ed006d416ea0cecfe24a99d365d1dea69c683 ]
 
-When we unbind a serial port hardware specific 8250 driver, the generic
-serial8250 driver takes over the port. After that we see an oops about 10
-seconds later. This can produce the following at least on some TI SoCs:
+KCSAN found a data race of sk->sk_receive_queue->qlen where recvmsg()
+updates qlen under the queue lock and sendmsg() checks qlen under
+unix_state_sock(), not the queue lock, so the reader side needs
+READ_ONCE().
 
-Unhandled fault: imprecise external abort (0x1406)
-Internal error: : 1406 [#1] SMP ARM
+BUG: KCSAN: data-race in __skb_try_recv_from_queue / unix_wait_for_peer
 
-Turns out that we may still have the serial port hardware specific driver
-port->pm in use, and serial8250_pm() tries to call it after the port
-specific driver is gone:
+write (marked) to 0xffff888019fe7c68 of 4 bytes by task 49792 on cpu 0:
+ __skb_unlink include/linux/skbuff.h:2347 [inline]
+ __skb_try_recv_from_queue+0x3de/0x470 net/core/datagram.c:197
+ __skb_try_recv_datagram+0xf7/0x390 net/core/datagram.c:263
+ __unix_dgram_recvmsg+0x109/0x8a0 net/unix/af_unix.c:2452
+ unix_dgram_recvmsg+0x94/0xa0 net/unix/af_unix.c:2549
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ ____sys_recvmsg+0x3a3/0x3b0 net/socket.c:2720
+ ___sys_recvmsg+0xc8/0x150 net/socket.c:2764
+ do_recvmmsg+0x182/0x560 net/socket.c:2858
+ __sys_recvmmsg net/socket.c:2937 [inline]
+ __do_sys_recvmmsg net/socket.c:2960 [inline]
+ __se_sys_recvmmsg net/socket.c:2953 [inline]
+ __x64_sys_recvmmsg+0x153/0x170 net/socket.c:2953
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-serial8250_pm [8250_base] from uart_change_pm+0x54/0x8c [serial_base]
-uart_change_pm [serial_base] from uart_hangup+0x154/0x198 [serial_base]
-uart_hangup [serial_base] from __tty_hangup.part.0+0x328/0x37c
-__tty_hangup.part.0 from disassociate_ctty+0x154/0x20c
-disassociate_ctty from do_exit+0x744/0xaac
-do_exit from do_group_exit+0x40/0x8c
-do_group_exit from __wake_up_parent+0x0/0x1c
+read to 0xffff888019fe7c68 of 4 bytes by task 49793 on cpu 1:
+ skb_queue_len include/linux/skbuff.h:2127 [inline]
+ unix_recvq_full net/unix/af_unix.c:229 [inline]
+ unix_wait_for_peer+0x154/0x1a0 net/unix/af_unix.c:1445
+ unix_dgram_sendmsg+0x13bc/0x14b0 net/unix/af_unix.c:2048
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:747
+ ____sys_sendmsg+0x20e/0x620 net/socket.c:2503
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2557
+ __sys_sendmmsg+0x11d/0x370 net/socket.c:2643
+ __do_sys_sendmmsg net/socket.c:2672 [inline]
+ __se_sys_sendmmsg net/socket.c:2669 [inline]
+ __x64_sys_sendmmsg+0x58/0x70 net/socket.c:2669
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Let's fix the issue by calling serial8250_set_defaults() in
-serial8250_unregister_port(). This will set the port back to using
-the serial8250 default functions, and sets the port->pm to point to
-serial8250_pm.
+value changed: 0x0000000b -> 0x00000001
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230418101407.12403-1-tony@atomide.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 49793 Comm: syz-executor.0 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-index d2df7d71d6667..a0325af2832a0 100644
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1125,6 +1125,7 @@ void serial8250_unregister_port(int line)
- 		uart->port.type = PORT_UNKNOWN;
- 		uart->port.dev = &serial8250_isa_devs->dev;
- 		uart->capabilities = 0;
-+		serial8250_init_port(uart);
- 		serial8250_apply_quirks(uart);
- 		uart_add_one_port(&serial8250_reg, &uart->port);
- 	} else {
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 0e494902fadaa..375d4e20efd6b 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1236,7 +1236,7 @@ static long unix_wait_for_peer(struct sock *other, long timeo)
+ 
+ 	sched = !sock_flag(other, SOCK_DEAD) &&
+ 		!(other->sk_shutdown & RCV_SHUTDOWN) &&
+-		unix_recvq_full(other);
++		unix_recvq_full_lockless(other);
+ 
+ 	unix_state_unlock(other);
+ 
 -- 
 2.39.2
 
