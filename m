@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E1F713F33
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC657713E5E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231202AbjE1TnA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
+        id S230339AbjE1TfE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjE1Tm7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:59 -0400
+        with ESMTP id S230344AbjE1TfD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 823D09B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A3213D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 174F861EFB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320A9C433EF;
-        Sun, 28 May 2023 19:42:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C5CA61DF2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AECEC433EF;
+        Sun, 28 May 2023 19:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302977;
-        bh=EetHrH/awP2i4Q01v7YKid5h6BTpaVO8eL3gehpPVjI=;
+        s=korg; t=1685302489;
+        bh=axy+H+F2WHwmOB61QmoJgbJuD3hVk1Yo7kakkRMSKVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bJTUTtoGCD54n+oKGBWqvBu+qMfzjui6SD0Ox4N+gOhK73lwKpby7CLLJrvqOolpe
-         6y+1ghfeU/qIgxZ/Qy3k9TTAZitAy4hYAOjKVa2Qa3zYmYm16YybgiLZDeVPO85Xbh
-         8qdie7vYQ1e1qDso4xQis9ZmCT5i3e1CkqjjoE/E=
+        b=jA873vZZDOfvffJBm40z2IHH09ZwaJ5BxnJNf6pylIop5fk3zVWU4T5xqi9oHT6jP
+         EtqM0vI5BHlAgQAS2tm+O3TIWirdiwrTYIYVCh0iC5Cw+UZe/AQ7jJ/JayzJHskSgI
+         A0R50a8htbF/Kp4XS/3DyY1dHMO7RsnLtp5FZ97A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Hao Lan <lanhao@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/211] net: hns3: fix sending pfc frames after reset issue
+        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 024/119] mmc: block: ensure error propagation for non-blk
 Date:   Sun, 28 May 2023 20:10:24 +0100
-Message-Id: <20230528190846.145488541@linuxfoundation.org>
+Message-Id: <20230528190836.150791727@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,91 +54,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Christian Loehle <CLoehle@hyperstone.com>
 
-[ Upstream commit f14db07064727dd3bc0906c77a6d2759c1bbb395 ]
+commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
 
-To prevent the system from abnormally sending PFC frames after an
-abnormal reset. The hns3 driver notifies the firmware to disable pfc
-before reset.
+Requests to the mmc layer usually come through a block device IO.
+The exceptions are the ioctl interface, RPMB chardev ioctl
+and debugfs, which issue their own blk_mq requests through
+blk_execute_rq and do not query the BLK_STS error but the
+mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+defaults to an error and has to be overwritten by the operation
+to be considered successful.
 
-Fixes: 35d93a30040c ("net: hns3: adjust the process of PF reset")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The behavior leads to a bug where the request never propagates
+the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+and thus may assume that their call executed successfully when it did not.
+
+While always checking the blk_execute_rq return value would be
+advised, let's eliminate the error by always setting
+drv_op_result as -EIO to be overwritten on success (or other error)
+
+Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c |  4 ++--
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h |  5 +++++
- 3 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/mmc/core/block.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 2070e26a3a358..1ec1709446bab 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7023,12 +7023,15 @@ static void hclge_ae_stop(struct hnae3_handle *handle)
- 	/* If it is not PF reset or FLR, the firmware will disable the MAC,
- 	 * so it only need to stop phy here.
- 	 */
--	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) &&
--	    hdev->reset_type != HNAE3_FUNC_RESET &&
--	    hdev->reset_type != HNAE3_FLR_RESET) {
--		hclge_mac_stop_phy(hdev);
--		hclge_update_link_status(hdev);
--		return;
-+	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state)) {
-+		hclge_pfc_pause_en_cfg(hdev, HCLGE_PFC_TX_RX_DISABLE,
-+				       HCLGE_PFC_DISABLE);
-+		if (hdev->reset_type != HNAE3_FUNC_RESET &&
-+		    hdev->reset_type != HNAE3_FLR_RESET) {
-+			hclge_mac_stop_phy(hdev);
-+			hclge_update_link_status(hdev);
-+			return;
-+		}
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -266,6 +266,7 @@ static ssize_t power_ro_lock_store(struc
+ 		goto out_put;
  	}
- 
- 	for (i = 0; i < handle->kinfo.num_tqps; i++)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index 9168e39b63641..b3ceaaaeacaeb 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -169,8 +169,8 @@ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
- 	return hclge_cmd_send(&hdev->hw, &desc, 1);
- }
- 
--static int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
--				  u8 pfc_bitmap)
-+int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
-+			   u8 pfc_bitmap)
- {
- 	struct hclge_desc desc;
- 	struct hclge_pfc_en_cmd *pfc = (struct hclge_pfc_en_cmd *)desc.data;
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-index bb2a2d8e92591..42932c879b360 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-@@ -117,6 +117,9 @@ struct hclge_bp_to_qs_map_cmd {
- 	u32 rsvd1;
- };
- 
-+#define HCLGE_PFC_DISABLE	0
-+#define HCLGE_PFC_TX_RX_DISABLE	0
-+
- struct hclge_pfc_en_cmd {
- 	u8 tx_rx_en_bitmap;
- 	u8 pri_en_bitmap;
-@@ -164,6 +167,8 @@ void hclge_tm_schd_info_update(struct hclge_dev *hdev, u8 num_tc);
- void hclge_tm_pfc_info_update(struct hclge_dev *hdev);
- int hclge_tm_dwrr_cfg(struct hclge_dev *hdev);
- int hclge_tm_init_hw(struct hclge_dev *hdev, bool init);
-+int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
-+			   u8 pfc_bitmap);
- int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
- int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
- int hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
--- 
-2.39.2
-
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(req, false);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	blk_mq_free_request(req);
+@@ -657,6 +658,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_
+ 	idatas[0] = idata;
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
+ 	req_to_mmc_queue_req(req)->ioc_count = 1;
+ 	blk_execute_rq(req, false);
+@@ -728,6 +730,7 @@ static int mmc_blk_ioctl_multi_cmd(struc
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idata;
+ 	req_to_mmc_queue_req(req)->ioc_count = n;
+ 	blk_execute_rq(req, false);
+@@ -2812,6 +2815,7 @@ static int mmc_dbg_card_status_get(void
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(req, false);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	if (ret >= 0) {
+@@ -2850,6 +2854,7 @@ static int mmc_ext_csd_open(struct inode
+ 		goto out_free;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
+ 	blk_execute_rq(req, false);
+ 	err = req_to_mmc_queue_req(req)->drv_op_result;
 
 
