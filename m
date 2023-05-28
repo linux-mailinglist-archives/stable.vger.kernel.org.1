@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4418A713CFC
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7548713D94
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229912AbjE1TUo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38880 "EHLO
+        id S230093AbjE1T1H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbjE1TUm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:42 -0400
+        with ESMTP id S230101AbjE1T1F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDA2A6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81CCE3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F06A061AF3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1853CC433D2;
-        Sun, 28 May 2023 19:20:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61C2861C50
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C8EC433EF;
+        Sun, 28 May 2023 19:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301640;
-        bh=YIYuWSkVrx5HTq1PSTXsDmqNNAItd/pyfszMtfdaa6s=;
+        s=korg; t=1685302009;
+        bh=/0pygCrS8V7+iIBdNKXz6qy/OflDOjf8W9xTLfaXszE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KznGpwgltFTc2t2vOXrxtAXWlSwwHzYuAPCwpIPwFKlFr5XJvXG5z6iB8nqCxaH8M
-         nSE1r2UMFV8GBv2o1rdAKF3qeJWJDGv5HzvOycfxHBUbBDGTislZp5kBV9TQkTVBb1
-         g0CZnSs7GePEJ3AQ4TA1u33i1+yBd5IJymAV3r3g=
+        b=mjCJRWpSNB1j1Z6tRIjrgdUEithSborIlbu9z5I2KLidOJMdFYK2+uvN9RkmYGRIi
+         vgtj4vYmSsrH5anyf4N3i/tPVeOpRCiXP9qRt0jtBOdetT5pfhoggKsBSPtJeuE2YJ
+         u4JSHBk9hUNhBKiOe60tjbG8+/zk2xHgNyEoJpjI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.19 109/132] btrfs: use nofs when cleaning up aborted transactions
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.4 124/161] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
 Date:   Sun, 28 May 2023 20:10:48 +0100
-Message-Id: <20230528190837.087328186@linuxfoundation.org>
+Message-Id: <20230528190840.957144180@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,166 +54,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 597441b3436a43011f31ce71dc0a6c0bf5ce958a upstream.
+(backported from upstream 8a5299a1278eadf1e08a598a5345c376206f171e)
 
-Our CI system caught a lockdep splat:
+For different reasons, fsl-spi driver performs bits_per_word
+modifications for different reasons:
+- On CPU mode, to minimise amount of interrupts
+- On CPM/QE mode to work around controller byte order
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  6.3.0-rc7+ #1167 Not tainted
-  ------------------------------------------------------
-  kswapd0/46 is trying to acquire lock:
-  ffff8c6543abd650 (sb_internal#2){++++}-{0:0}, at: btrfs_commit_inode_delayed_inode+0x5f/0x120
+For CPU mode that's done in fsl_spi_prepare_message() while
+for CPM mode that's done in fsl_spi_setup_transfer().
 
-  but task is already holding lock:
-  ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
+Reunify all of it in fsl_spi_prepare_message(), and catch
+impossible cases early through master's bits_per_word_mask
+instead of returning EINVAL later.
 
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (fs_reclaim){+.+.}-{0:0}:
-	 fs_reclaim_acquire+0xa5/0xe0
-	 kmem_cache_alloc+0x31/0x2c0
-	 alloc_extent_state+0x1d/0xd0
-	 __clear_extent_bit+0x2e0/0x4f0
-	 try_release_extent_mapping+0x216/0x280
-	 btrfs_release_folio+0x2e/0x90
-	 invalidate_inode_pages2_range+0x397/0x470
-	 btrfs_cleanup_dirty_bgs+0x9e/0x210
-	 btrfs_cleanup_one_transaction+0x22/0x760
-	 btrfs_commit_transaction+0x3b7/0x13a0
-	 create_subvol+0x59b/0x970
-	 btrfs_mksubvol+0x435/0x4f0
-	 __btrfs_ioctl_snap_create+0x11e/0x1b0
-	 btrfs_ioctl_snap_create_v2+0xbf/0x140
-	 btrfs_ioctl+0xa45/0x28f0
-	 __x64_sys_ioctl+0x88/0xc0
-	 do_syscall_64+0x38/0x90
-	 entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  -> #0 (sb_internal#2){++++}-{0:0}:
-	 __lock_acquire+0x1435/0x21a0
-	 lock_acquire+0xc2/0x2b0
-	 start_transaction+0x401/0x730
-	 btrfs_commit_inode_delayed_inode+0x5f/0x120
-	 btrfs_evict_inode+0x292/0x3d0
-	 evict+0xcc/0x1d0
-	 inode_lru_isolate+0x14d/0x1e0
-	 __list_lru_walk_one+0xbe/0x1c0
-	 list_lru_walk_one+0x58/0x80
-	 prune_icache_sb+0x39/0x60
-	 super_cache_scan+0x161/0x1f0
-	 do_shrink_slab+0x163/0x340
-	 shrink_slab+0x1d3/0x290
-	 shrink_node+0x300/0x720
-	 balance_pgdat+0x35c/0x7a0
-	 kswapd+0x205/0x410
-	 kthread+0xf0/0x120
-	 ret_from_fork+0x29/0x50
-
-  other info that might help us debug this:
-
-   Possible unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(fs_reclaim);
-				 lock(sb_internal#2);
-				 lock(fs_reclaim);
-    lock(sb_internal#2);
-
-   *** DEADLOCK ***
-
-  3 locks held by kswapd0/46:
-   #0: ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
-   #1: ffffffffabe50270 (shrinker_rwsem){++++}-{3:3}, at: shrink_slab+0x113/0x290
-   #2: ffff8c6543abd0e0 (&type->s_umount_key#44){++++}-{3:3}, at: super_cache_scan+0x38/0x1f0
-
-  stack backtrace:
-  CPU: 0 PID: 46 Comm: kswapd0 Not tainted 6.3.0-rc7+ #1167
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x58/0x90
-   check_noncircular+0xd6/0x100
-   ? save_trace+0x3f/0x310
-   ? add_lock_to_list+0x97/0x120
-   __lock_acquire+0x1435/0x21a0
-   lock_acquire+0xc2/0x2b0
-   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
-   start_transaction+0x401/0x730
-   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
-   btrfs_commit_inode_delayed_inode+0x5f/0x120
-   btrfs_evict_inode+0x292/0x3d0
-   ? lock_release+0x134/0x270
-   ? __pfx_wake_bit_function+0x10/0x10
-   evict+0xcc/0x1d0
-   inode_lru_isolate+0x14d/0x1e0
-   __list_lru_walk_one+0xbe/0x1c0
-   ? __pfx_inode_lru_isolate+0x10/0x10
-   ? __pfx_inode_lru_isolate+0x10/0x10
-   list_lru_walk_one+0x58/0x80
-   prune_icache_sb+0x39/0x60
-   super_cache_scan+0x161/0x1f0
-   do_shrink_slab+0x163/0x340
-   shrink_slab+0x1d3/0x290
-   shrink_node+0x300/0x720
-   balance_pgdat+0x35c/0x7a0
-   kswapd+0x205/0x410
-   ? __pfx_autoremove_wake_function+0x10/0x10
-   ? __pfx_kswapd+0x10/0x10
-   kthread+0xf0/0x120
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x29/0x50
-   </TASK>
-
-This happens because when we abort the transaction in the transaction
-commit path we call invalidate_inode_pages2_range on our block group
-cache inodes (if we have space cache v1) and any delalloc inodes we may
-have.  The plain invalidate_inode_pages2_range() call passes through
-GFP_KERNEL, which makes sense in most cases, but not here.  Wrap these
-two invalidate callees with memalloc_nofs_save/memalloc_nofs_restore to
-make sure we don't end up with the fs reclaim dependency under the
-transaction dependency.
-
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/0ce96fe96e8b07cba0613e4097cfd94d09b8919a.1680371809.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-fsl-spi.c |   50 +++++++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4348,7 +4348,11 @@ static void btrfs_destroy_delalloc_inode
- 		 */
- 		inode = igrab(&btrfs_inode->vfs_inode);
- 		if (inode) {
-+			unsigned int nofs_flag;
-+
-+			nofs_flag = memalloc_nofs_save();
- 			invalidate_inode_pages2(inode->i_mapping);
-+			memalloc_nofs_restore(nofs_flag);
- 			iput(inode);
- 		}
- 		spin_lock(&root->delalloc_lock);
-@@ -4466,7 +4470,12 @@ static void btrfs_cleanup_bg_io(struct b
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -204,26 +204,6 @@ static int mspi_apply_cpu_mode_quirks(st
+ 	return bits_per_word;
+ }
  
- 	inode = cache->io_ctl.inode;
- 	if (inode) {
-+		unsigned int nofs_flag;
+-static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+-				struct spi_device *spi,
+-				int bits_per_word)
+-{
+-	/* CPM/QE uses Little Endian for words > 8
+-	 * so transform 16 and 32 bits words into 8 bits
+-	 * Unfortnatly that doesn't work for LSB so
+-	 * reject these for now */
+-	/* Note: 32 bits word, LSB works iff
+-	 * tfcr/rfcr is set to CPMFCR_GBL */
+-	if (spi->mode & SPI_LSB_FIRST &&
+-	    bits_per_word > 8)
+-		return -EINVAL;
+-	if (bits_per_word <= 8)
+-		return bits_per_word;
+-	if (bits_per_word == 16 || bits_per_word == 32)
+-		return 8; /* pretend its 8 bits */
+-	return -EINVAL;
+-}
+-
+ static int fsl_spi_setup_transfer(struct spi_device *spi,
+ 					struct spi_transfer *t)
+ {
+@@ -251,9 +231,6 @@ static int fsl_spi_setup_transfer(struct
+ 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
+ 							   mpc8xxx_spi,
+ 							   bits_per_word);
+-	else
+-		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
+-							  bits_per_word);
+ 
+ 	if (bits_per_word < 0)
+ 		return bits_per_word;
+@@ -371,14 +348,27 @@ static int fsl_spi_do_one_msg(struct spi
+ 	 * In CPU mode, optimize large byte transfers to use larger
+ 	 * bits_per_word values to reduce number of interrupts taken.
+ 	 */
+-	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
+-		list_for_each_entry(t, &m->transfers, transfer_list) {
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
+ 			if (t->len < 256 || t->bits_per_word != 8)
+ 				continue;
+ 			if ((t->len & 3) == 0)
+ 				t->bits_per_word = 32;
+ 			else if ((t->len & 1) == 0)
+ 				t->bits_per_word = 16;
++		} else {
++			/*
++			 * CPM/QE uses Little Endian for words > 8
++			 * so transform 16 and 32 bits words into 8 bits
++			 * Unfortnatly that doesn't work for LSB so
++			 * reject these for now
++			 * Note: 32 bits word, LSB works iff
++			 * tfcr/rfcr is set to CPMFCR_GBL
++			 */
++			if (m->spi->mode & SPI_LSB_FIRST && t->bits_per_word > 8)
++				return -EINVAL;
++			if (t->bits_per_word == 16 || t->bits_per_word == 32)
++				t->bits_per_word = 8; /* pretend its 8 bits */
+ 		}
+ 	}
+ 
+@@ -637,8 +627,14 @@ static struct spi_master * fsl_spi_probe
+ 	if (mpc8xxx_spi->type == TYPE_GRLIB)
+ 		fsl_spi_grlib_probe(dev);
+ 
+-	master->bits_per_word_mask =
+-		(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32)) &
++	if (mpc8xxx_spi->flags & SPI_CPM_MODE)
++		master->bits_per_word_mask =
++			(SPI_BPW_RANGE_MASK(4, 8) | SPI_BPW_MASK(16) | SPI_BPW_MASK(32));
++	else
++		master->bits_per_word_mask =
++			(SPI_BPW_RANGE_MASK(4, 16) | SPI_BPW_MASK(32));
 +
-+		nofs_flag = memalloc_nofs_save();
- 		invalidate_inode_pages2(inode->i_mapping);
-+		memalloc_nofs_restore(nofs_flag);
-+
- 		BTRFS_I(inode)->generation = 0;
- 		cache->io_ctl.inode = NULL;
- 		iput(inode);
++	master->bits_per_word_mask &=
+ 		SPI_BPW_RANGE_MASK(1, mpc8xxx_spi->max_bits_per_word);
+ 
+ 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
 
 
