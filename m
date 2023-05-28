@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89055713F35
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED22713DF4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231205AbjE1TnE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58326 "EHLO
+        id S230216AbjE1Ta3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjE1TnE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:04 -0400
+        with ESMTP id S230220AbjE1Ta2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 565919E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A728CDE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5D4461F12
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D361C433D2;
-        Sun, 28 May 2023 19:43:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E854061D4F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEC8C433D2;
+        Sun, 28 May 2023 19:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302982;
-        bh=rhAWndNEGW0/IgAkDMGfg4Iw2J2stBFw12Q8ul+I4u4=;
+        s=korg; t=1685302225;
+        bh=XktxH3/hbUNNoaNIiVwnuzT4+djUighnKX/FL+0Oezw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=atiVcdNbFvxcOmKPG6GeSs+jf0ZFvuDQEQsrGNR9GnnBynWrEcx7K6Z84VWaNTGQm
-         fqbY5/aWA+85HNl8uKHvw/Kh/VSjYkfNepEnztfJjUkxjirb8qnkfT+b86d+HDRbEh
-         UEFBFNiM/EWTHJ58uWlaooDheqZRbFHPIoJGxstY=
+        b=dkfSdE3pV5l2nbm0/358V+co2u1PccwoAI3I54FtIqDD/EEw+lsMJk00uDQX/8mgG
+         4VnZ5EUISjk/Q7ZlsPSN2/Z7PudvJawbqU1FvXqG6P1fjTqHjaDCA2raZ27ZhVk2AU
+         8i/cMm0BsH6j7qJ45o34Ty1ZlOBlmpdywuq8Oeq0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/211] media: netup_unidvb: fix use-after-free at del_timer()
+        patches@lists.linux.dev, Liam Howlett <liam.howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.3 050/127] Revert "binder_alloc: add missing mmap_lock calls when using the VMA"
 Date:   Sun, 28 May 2023 20:10:26 +0100
-Message-Id: <20230528190846.191833222@linuxfoundation.org>
+Message-Id: <20230528190837.981455980@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 0f5bb36bf9b39a2a96e730bf4455095b50713f63 ]
+commit b15655b12ddca7ade09807f790bafb6fab61b50a upstream.
 
-When Universal DVB card is detaching, netup_unidvb_dma_fini()
-uses del_timer() to stop dma->timeout timer. But when timer
-handler netup_unidvb_dma_timeout() is running, del_timer()
-could not stop it. As a result, the use-after-free bug could
-happen. The process is shown below:
+This reverts commit 44e602b4e52f70f04620bbbf4fe46ecb40170bde.
 
-    (cleanup routine)          |        (timer routine)
-                               | mod_timer(&dev->tx_sim_timer, ..)
-netup_unidvb_finidev()         | (wait a time)
-  netup_unidvb_dma_fini()      | netup_unidvb_dma_timeout()
-    del_timer(&dma->timeout);  |
-                               |   ndev->pci_dev->dev //USE
+This caused a performance regression particularly when pages are getting
+reclaimed. We don't need to acquire the mmap_lock to determine when the
+binder buffer has been fully initialized. A subsequent patch will bring
+back the lockless approach for this.
 
-Fix by changing del_timer() to del_timer_sync().
+[cmllamas: resolved trivial conflicts with renaming of alloc->mm]
 
-Link: https://lore.kernel.org/linux-media/20230308125514.4208-1-duoming@zju.edu.cn
-Fixes: 52b1eaf4c59a ("[media] netup_unidvb: NetUP Universal DVB-S/S2/T/T2/C PCI-E card driver")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 44e602b4e52f ("binder_alloc: add missing mmap_lock calls when using the VMA")
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20230502201220.1756319-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/netup_unidvb/netup_unidvb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |   31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-index 77bae14685513..a71814e2772d1 100644
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-@@ -697,7 +697,7 @@ static void netup_unidvb_dma_fini(struct netup_unidvb_dev *ndev, int num)
- 	netup_unidvb_dma_enable(dma, 0);
- 	msleep(50);
- 	cancel_work_sync(&dma->work);
--	del_timer(&dma->timeout);
-+	del_timer_sync(&dma->timeout);
- }
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -380,15 +380,12 @@ static struct binder_buffer *binder_allo
+ 	size_t size, data_offsets_size;
+ 	int ret;
  
- static int netup_unidvb_dma_setup(struct netup_unidvb_dev *ndev)
--- 
-2.39.2
-
+-	mmap_read_lock(alloc->mm);
+ 	if (!binder_alloc_get_vma(alloc)) {
+-		mmap_read_unlock(alloc->mm);
+ 		binder_alloc_debug(BINDER_DEBUG_USER_ERROR,
+ 				   "%d: binder_alloc_buf, no vma\n",
+ 				   alloc->pid);
+ 		return ERR_PTR(-ESRCH);
+ 	}
+-	mmap_read_unlock(alloc->mm);
+ 
+ 	data_offsets_size = ALIGN(data_size, sizeof(void *)) +
+ 		ALIGN(offsets_size, sizeof(void *));
+@@ -916,25 +913,17 @@ void binder_alloc_print_pages(struct seq
+ 	 * Make sure the binder_alloc is fully initialized, otherwise we might
+ 	 * read inconsistent state.
+ 	 */
+-
+-	mmap_read_lock(alloc->mm);
+-	if (binder_alloc_get_vma(alloc) == NULL) {
+-		mmap_read_unlock(alloc->mm);
+-		goto uninitialized;
+-	}
+-
+-	mmap_read_unlock(alloc->mm);
+-	for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
+-		page = &alloc->pages[i];
+-		if (!page->page_ptr)
+-			free++;
+-		else if (list_empty(&page->lru))
+-			active++;
+-		else
+-			lru++;
++	if (binder_alloc_get_vma(alloc) != NULL) {
++		for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
++			page = &alloc->pages[i];
++			if (!page->page_ptr)
++				free++;
++			else if (list_empty(&page->lru))
++				active++;
++			else
++				lru++;
++		}
+ 	}
+-
+-uninitialized:
+ 	mutex_unlock(&alloc->mutex);
+ 	seq_printf(m, "  pages: %d:%d:%d\n", active, lru, free);
+ 	seq_printf(m, "  pages high watermark: %zu\n", alloc->pages_high);
 
 
