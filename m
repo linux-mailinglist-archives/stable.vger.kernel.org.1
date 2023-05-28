@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1D8A713CB2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E95C713C36
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229819AbjE1TRt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36952 "EHLO
+        id S229475AbjE1TNJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjE1TRs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:48 -0400
+        with ESMTP id S229558AbjE1TNJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D55CF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B925FA0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6B7261A0D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2551C433EF;
-        Sun, 28 May 2023 19:17:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 574BC618D9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F64C433EF;
+        Sun, 28 May 2023 19:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301456;
-        bh=NsyeYRC4mB8gWu1xL0mOeu1yGFR5monoBvryZtXN2UY=;
+        s=korg; t=1685301186;
+        bh=7ejSfEP/MfWk7l4/Sz7wUJBazTUAaNb51zY7QDpeo7Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yoZ9W9hpIy/XVXpsvlGrisuDoCmI1J0EWsJojTKSO/H5PPhys75gaYJnCvVcTNEn3
-         nkcNzEpxbcAYCwUXH0z6NI7Joo1K7N8CGd+xMO0S1GKvkzqaEXgkGoBr7IDtONpd+i
-         s5Bykmmpim7Z/Ixh3piL5cZid/xrpTG5+0l1IenQ=
+        b=ijUvrekCM4U82ijcsV2LD4De8Z0UQ/rfLWkfHCQV4LEnc4adScwJMhonsCmSJn2ui
+         14ZoikcS1TsH+aWfovpDoAGRS7cq0m3RkGMbLUTCZyZ5XXePaMgDFTW7KlsZ2D3H+2
+         BxxC7akCL+cjG4pubvL/vMT7m3Hnb9aG/MAE2DWs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 037/132] HID: wacom: generic: Set battery quirk only when we see battery data
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 02/86] netlink: annotate accesses to nlk->cb_running
 Date:   Sun, 28 May 2023 20:09:36 +0100
-Message-Id: <20230528190834.725556237@linuxfoundation.org>
+Message-Id: <20230528190828.647288023@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,102 +55,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Gerecke <killertofu@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bea407a427baa019758f29f4d31b26f008bb8cc6 ]
+[ Upstream commit a939d14919b799e6fff8a9c80296ca229ba2f8a4 ]
 
-Some devices will include battery status usages in the HID descriptor
-but we won't see that battery data for one reason or another. For example,
-AES sensors won't send battery data unless an AES pen is in proximity.
-If a user does not have an AES pen but instead only interacts with the
-AES touchscreen with their fingers then there is no need for us to create
-a battery object. Similarly, if a family of peripherals shares the same
-HID descriptor between wired-only and wireless-capable SKUs, users of the
-former may never see a battery event and will not want a power_supply
-object created.
+Both netlink_recvmsg() and netlink_native_seq_show() read
+nlk->cb_running locklessly. Use READ_ONCE() there.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217062
-Link: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/2354
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Add corresponding WRITE_ONCE() to netlink_dump() and
+__netlink_dump_start()
+
+syzbot reported:
+BUG: KCSAN: data-race in __netlink_dump_start / netlink_recvmsg
+
+write to 0xffff88813ea4db59 of 1 bytes by task 28219 on cpu 0:
+__netlink_dump_start+0x3af/0x4d0 net/netlink/af_netlink.c:2399
+netlink_dump_start include/linux/netlink.h:308 [inline]
+rtnetlink_rcv_msg+0x70f/0x8c0 net/core/rtnetlink.c:6130
+netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2577
+rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6192
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1942
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+sock_write_iter+0x1aa/0x230 net/socket.c:1138
+call_write_iter include/linux/fs.h:1851 [inline]
+new_sync_write fs/read_write.c:491 [inline]
+vfs_write+0x463/0x760 fs/read_write.c:584
+ksys_write+0xeb/0x1a0 fs/read_write.c:637
+__do_sys_write fs/read_write.c:649 [inline]
+__se_sys_write fs/read_write.c:646 [inline]
+__x64_sys_write+0x42/0x50 fs/read_write.c:646
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffff88813ea4db59 of 1 bytes by task 28222 on cpu 1:
+netlink_recvmsg+0x3b4/0x730 net/netlink/af_netlink.c:2022
+sock_recvmsg_nosec+0x4c/0x80 net/socket.c:1017
+____sys_recvmsg+0x2db/0x310 net/socket.c:2718
+___sys_recvmsg net/socket.c:2762 [inline]
+do_recvmmsg+0x2e5/0x710 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0xe2/0x160 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00 -> 0x01
+
+Fixes: 16b304f3404f ("netlink: Eliminate kmalloc in netlink dump operation.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ net/netlink/af_netlink.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index da6053deb954a..0747e58472c1e 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1839,18 +1839,7 @@ static void wacom_map_usage(struct input_dev *input, struct hid_usage *usage,
- static void wacom_wac_battery_usage_mapping(struct hid_device *hdev,
- 		struct hid_field *field, struct hid_usage *usage)
- {
--	struct wacom *wacom = hid_get_drvdata(hdev);
--	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
--	struct wacom_features *features = &wacom_wac->features;
--	unsigned equivalent_usage = wacom_equivalent_usage(usage->hid);
--
--	switch (equivalent_usage) {
--	case HID_DG_BATTERYSTRENGTH:
--	case WACOM_HID_WD_BATTERY_LEVEL:
--	case WACOM_HID_WD_BATTERY_CHARGING:
--		features->quirks |= WACOM_QUIRK_BATTERY;
--		break;
--	}
-+	return;
- }
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index d7b0a7aa29a83..4b40edb51b9e5 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1977,7 +1977,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
  
- static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *field,
-@@ -1871,18 +1860,21 @@ static void wacom_wac_battery_event(struct hid_device *hdev, struct hid_field *f
- 			wacom_wac->hid_data.bat_connected = 1;
- 			wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
- 		}
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	case WACOM_HID_WD_BATTERY_LEVEL:
- 		value = value * 100 / (field->logical_maximum - field->logical_minimum);
- 		wacom_wac->hid_data.battery_capacity = value;
- 		wacom_wac->hid_data.bat_connected = 1;
- 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
- 	case WACOM_HID_WD_BATTERY_CHARGING:
- 		wacom_wac->hid_data.bat_charging = value;
- 		wacom_wac->hid_data.ps_connected = value;
- 		wacom_wac->hid_data.bat_connected = 1;
- 		wacom_wac->hid_data.bat_status = WACOM_POWER_SUPPLY_STATUS_AUTO;
-+		wacom_wac->features.quirks |= WACOM_QUIRK_BATTERY;
- 		break;
+ 	skb_free_datagram(sk, skb);
+ 
+-	if (nlk->cb_running &&
++	if (READ_ONCE(nlk->cb_running) &&
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+ 		ret = netlink_dump(sk);
+ 		if (ret) {
+@@ -2259,7 +2259,7 @@ static int netlink_dump(struct sock *sk)
+ 	if (cb->done)
+ 		cb->done(cb);
+ 
+-	nlk->cb_running = false;
++	WRITE_ONCE(nlk->cb_running, false);
+ 	module = cb->module;
+ 	skb = cb->skb;
+ 	mutex_unlock(nlk->cb_mutex);
+@@ -2320,7 +2320,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 			goto error_put;
  	}
- }
-@@ -1898,18 +1890,15 @@ static void wacom_wac_battery_report(struct hid_device *hdev,
- {
- 	struct wacom *wacom = hid_get_drvdata(hdev);
- 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
--	struct wacom_features *features = &wacom_wac->features;
  
--	if (features->quirks & WACOM_QUIRK_BATTERY) {
--		int status = wacom_wac->hid_data.bat_status;
--		int capacity = wacom_wac->hid_data.battery_capacity;
--		bool charging = wacom_wac->hid_data.bat_charging;
--		bool connected = wacom_wac->hid_data.bat_connected;
--		bool powered = wacom_wac->hid_data.ps_connected;
-+	int status = wacom_wac->hid_data.bat_status;
-+	int capacity = wacom_wac->hid_data.battery_capacity;
-+	bool charging = wacom_wac->hid_data.bat_charging;
-+	bool connected = wacom_wac->hid_data.bat_connected;
-+	bool powered = wacom_wac->hid_data.ps_connected;
+-	nlk->cb_running = true;
++	WRITE_ONCE(nlk->cb_running, true);
+ 	nlk->dump_done_errno = INT_MAX;
  
--		wacom_notify_battery(wacom_wac, status, capacity, charging,
--				     connected, powered);
--	}
-+	wacom_notify_battery(wacom_wac, status, capacity, charging,
-+			     connected, powered);
- }
- 
- static void wacom_wac_pad_usage_mapping(struct hid_device *hdev,
+ 	mutex_unlock(nlk->cb_mutex);
+@@ -2633,7 +2633,7 @@ static int netlink_seq_show(struct seq_file *seq, void *v)
+ 			   nlk->groups ? (u32)nlk->groups[0] : 0,
+ 			   sk_rmem_alloc_get(s),
+ 			   sk_wmem_alloc_get(s),
+-			   nlk->cb_running,
++			   READ_ONCE(nlk->cb_running),
+ 			   refcount_read(&s->sk_refcnt),
+ 			   atomic_read(&s->sk_drops),
+ 			   sock_i_ino(s)
 -- 
 2.39.2
 
