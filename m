@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9FC713D91
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1487B713E94
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230092AbjE1T04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
+        id S230413AbjE1Tgx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjE1T0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAD218D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:43 -0700 (PDT)
+        with ESMTP id S230414AbjE1Tgw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A079AB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 082D961C55
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252DFC433EF;
-        Sun, 28 May 2023 19:26:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A566761E51
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6B9C433EF;
+        Sun, 28 May 2023 19:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302002;
-        bh=dmZBw8R2g7FQarp89y4f2fqt3U9m/gMOnwcFcmlwzaM=;
+        s=korg; t=1685302609;
+        bh=XktxH3/hbUNNoaNIiVwnuzT4+djUighnKX/FL+0Oezw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UMMEMU2A9o6QZrIqCua7G5PkyEdkSUyuBgOWw2qbH5L/exutfIqGfPVdJ6pp6lgRJ
-         mVTXxyf/+IGFFUIDAa+MqUwR/NAikXkN0zF8RFvyLeeUk48DrKmEVtXtlyXgW03KSZ
-         IqBJ76tGLdEg696BnUEhbdU+oF0xqS1gL3Zsg53w=
+        b=Wa9FediT6i6W9V783DBm83JpaYd9YpiVR0qxUA8plzPpD7fsW6JpPXzxvjrZk5iZW
+         BjG1y9gSMxjAVo57ZgQRloCDYPXlQNL43H3mn0YHLlzXA8382RNYnfPbygjpfRGn31
+         a50IucamMW8+Wmwnlrr5zhygMAJXjxxyBDYKnr/Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 121/161] s390/qdio: get rid of register asm
+        patches@lists.linux.dev, Liam Howlett <liam.howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.1 045/119] Revert "binder_alloc: add missing mmap_lock calls when using the VMA"
 Date:   Sun, 28 May 2023 20:10:45 +0100
-Message-Id: <20230528190840.875219286@linuxfoundation.org>
+Message-Id: <20230528190836.888343168@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,172 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit d3e2ff5436d6ee38b572ba5c01dc7994769bec54 ]
+commit b15655b12ddca7ade09807f790bafb6fab61b50a upstream.
 
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: 2862a2fdfae8 ("s390/qdio: fix do_sqbs() inline assembly constraint")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit 44e602b4e52f70f04620bbbf4fe46ecb40170bde.
+
+This caused a performance regression particularly when pages are getting
+reclaimed. We don't need to acquire the mmap_lock to determine when the
+binder buffer has been fully initialized. A subsequent patch will bring
+back the lockless approach for this.
+
+[cmllamas: resolved trivial conflicts with renaming of alloc->mm]
+
+Fixes: 44e602b4e52f ("binder_alloc: add missing mmap_lock calls when using the VMA")
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20230502201220.1756319-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/qdio.h      | 25 ++++++++-------
- drivers/s390/cio/qdio_main.c | 62 +++++++++++++++++++-----------------
- 2 files changed, 46 insertions(+), 41 deletions(-)
+ drivers/android/binder_alloc.c |   31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/s390/cio/qdio.h b/drivers/s390/cio/qdio.h
-index 3b0a4483a2520..e91d2a589957c 100644
---- a/drivers/s390/cio/qdio.h
-+++ b/drivers/s390/cio/qdio.h
-@@ -88,15 +88,15 @@ enum qdio_irq_states {
- static inline int do_sqbs(u64 token, unsigned char state, int queue,
- 			  int *start, int *count)
- {
--	register unsigned long _ccq asm ("0") = *count;
--	register unsigned long _token asm ("1") = token;
- 	unsigned long _queuestart = ((unsigned long)queue << 32) | *start;
-+	unsigned long _ccq = *count;
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -380,15 +380,12 @@ static struct binder_buffer *binder_allo
+ 	size_t size, data_offsets_size;
+ 	int ret;
  
- 	asm volatile(
--		"	.insn	rsy,0xeb000000008A,%1,0,0(%2)"
--		: "+d" (_ccq), "+d" (_queuestart)
--		: "d" ((unsigned long)state), "d" (_token)
--		: "memory", "cc");
-+		"	lgr	1,%[token]\n"
-+		"	.insn	rsy,0xeb000000008a,%[qs],%[ccq],0(%[state])"
-+		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart)
-+		: [state] "d" ((unsigned long)state), [token] "d" (token)
-+		: "memory", "cc", "1");
- 	*count = _ccq & 0xff;
- 	*start = _queuestart & 0xff;
+-	mmap_read_lock(alloc->mm);
+ 	if (!binder_alloc_get_vma(alloc)) {
+-		mmap_read_unlock(alloc->mm);
+ 		binder_alloc_debug(BINDER_DEBUG_USER_ERROR,
+ 				   "%d: binder_alloc_buf, no vma\n",
+ 				   alloc->pid);
+ 		return ERR_PTR(-ESRCH);
+ 	}
+-	mmap_read_unlock(alloc->mm);
  
-@@ -106,16 +106,17 @@ static inline int do_sqbs(u64 token, unsigned char state, int queue,
- static inline int do_eqbs(u64 token, unsigned char *state, int queue,
- 			  int *start, int *count, int ack)
- {
--	register unsigned long _ccq asm ("0") = *count;
--	register unsigned long _token asm ("1") = token;
- 	unsigned long _queuestart = ((unsigned long)queue << 32) | *start;
- 	unsigned long _state = (unsigned long)ack << 63;
-+	unsigned long _ccq = *count;
- 
- 	asm volatile(
--		"	.insn	rrf,0xB99c0000,%1,%2,0,0"
--		: "+d" (_ccq), "+d" (_queuestart), "+d" (_state)
--		: "d" (_token)
--		: "memory", "cc");
-+		"	lgr	1,%[token]\n"
-+		"	.insn	rrf,0xb99c0000,%[qs],%[state],%[ccq],0"
-+		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart),
-+		  [state] "+&d" (_state)
-+		: [token] "d" (token)
-+		: "memory", "cc", "1");
- 	*count = _ccq & 0xff;
- 	*start = _queuestart & 0xff;
- 	*state = _state & 0xff;
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index 5b63c505a2f7c..620655bcbe80d 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -31,38 +31,41 @@ MODULE_DESCRIPTION("QDIO base support");
- MODULE_LICENSE("GPL");
- 
- static inline int do_siga_sync(unsigned long schid,
--			       unsigned int out_mask, unsigned int in_mask,
-+			       unsigned long out_mask, unsigned long in_mask,
- 			       unsigned int fc)
- {
--	register unsigned long __fc asm ("0") = fc;
--	register unsigned long __schid asm ("1") = schid;
--	register unsigned long out asm ("2") = out_mask;
--	register unsigned long in asm ("3") = in_mask;
- 	int cc;
- 
- 	asm volatile(
-+		"	lgr	0,%[fc]\n"
-+		"	lgr	1,%[schid]\n"
-+		"	lgr	2,%[out]\n"
-+		"	lgr	3,%[in]\n"
- 		"	siga	0\n"
--		"	ipm	%0\n"
--		"	srl	%0,28\n"
--		: "=d" (cc)
--		: "d" (__fc), "d" (__schid), "d" (out), "d" (in) : "cc");
-+		"	ipm	%[cc]\n"
-+		"	srl	%[cc],28\n"
-+		: [cc] "=&d" (cc)
-+		: [fc] "d" (fc), [schid] "d" (schid),
-+		  [out] "d" (out_mask), [in] "d" (in_mask)
-+		: "cc", "0", "1", "2", "3");
- 	return cc;
- }
- 
--static inline int do_siga_input(unsigned long schid, unsigned int mask,
--				unsigned int fc)
-+static inline int do_siga_input(unsigned long schid, unsigned long mask,
-+				unsigned long fc)
- {
--	register unsigned long __fc asm ("0") = fc;
--	register unsigned long __schid asm ("1") = schid;
--	register unsigned long __mask asm ("2") = mask;
- 	int cc;
- 
- 	asm volatile(
-+		"	lgr	0,%[fc]\n"
-+		"	lgr	1,%[schid]\n"
-+		"	lgr	2,%[mask]\n"
- 		"	siga	0\n"
--		"	ipm	%0\n"
--		"	srl	%0,28\n"
--		: "=d" (cc)
--		: "d" (__fc), "d" (__schid), "d" (__mask) : "cc");
-+		"	ipm	%[cc]\n"
-+		"	srl	%[cc],28\n"
-+		: [cc] "=&d" (cc)
-+		: [fc] "d" (fc), [schid] "d" (schid), [mask] "d" (mask)
-+		: "cc", "0", "1", "2");
- 	return cc;
- }
- 
-@@ -78,23 +81,24 @@ static inline int do_siga_input(unsigned long schid, unsigned int mask,
-  * Note: For IQDC unicast queues only the highest priority queue is processed.
-  */
- static inline int do_siga_output(unsigned long schid, unsigned long mask,
--				 unsigned int *bb, unsigned int fc,
-+				 unsigned int *bb, unsigned long fc,
- 				 unsigned long aob)
- {
--	register unsigned long __fc asm("0") = fc;
--	register unsigned long __schid asm("1") = schid;
--	register unsigned long __mask asm("2") = mask;
--	register unsigned long __aob asm("3") = aob;
- 	int cc;
- 
- 	asm volatile(
-+		"	lgr	0,%[fc]\n"
-+		"	lgr	1,%[schid]\n"
-+		"	lgr	2,%[mask]\n"
-+		"	lgr	3,%[aob]\n"
- 		"	siga	0\n"
--		"	ipm	%0\n"
--		"	srl	%0,28\n"
--		: "=d" (cc), "+d" (__fc), "+d" (__aob)
--		: "d" (__schid), "d" (__mask)
--		: "cc");
--	*bb = __fc >> 31;
-+		"	lgr	%[fc],0\n"
-+		"	ipm	%[cc]\n"
-+		"	srl	%[cc],28\n"
-+		: [cc] "=&d" (cc), [fc] "+&d" (fc)
-+		: [schid] "d" (schid), [mask] "d" (mask), [aob] "d" (aob)
-+		: "cc", "0", "1", "2", "3");
-+	*bb = fc >> 31;
- 	return cc;
- }
- 
--- 
-2.39.2
-
+ 	data_offsets_size = ALIGN(data_size, sizeof(void *)) +
+ 		ALIGN(offsets_size, sizeof(void *));
+@@ -916,25 +913,17 @@ void binder_alloc_print_pages(struct seq
+ 	 * Make sure the binder_alloc is fully initialized, otherwise we might
+ 	 * read inconsistent state.
+ 	 */
+-
+-	mmap_read_lock(alloc->mm);
+-	if (binder_alloc_get_vma(alloc) == NULL) {
+-		mmap_read_unlock(alloc->mm);
+-		goto uninitialized;
+-	}
+-
+-	mmap_read_unlock(alloc->mm);
+-	for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
+-		page = &alloc->pages[i];
+-		if (!page->page_ptr)
+-			free++;
+-		else if (list_empty(&page->lru))
+-			active++;
+-		else
+-			lru++;
++	if (binder_alloc_get_vma(alloc) != NULL) {
++		for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
++			page = &alloc->pages[i];
++			if (!page->page_ptr)
++				free++;
++			else if (list_empty(&page->lru))
++				active++;
++			else
++				lru++;
++		}
+ 	}
+-
+-uninitialized:
+ 	mutex_unlock(&alloc->mutex);
+ 	seq_printf(m, "  pages: %d:%d:%d\n", active, lru, free);
+ 	seq_printf(m, "  pages high watermark: %zu\n", alloc->pages_high);
 
 
