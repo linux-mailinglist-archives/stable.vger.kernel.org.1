@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95580713EF7
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14844713D5E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231135AbjE1Tkj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55482 "EHLO
+        id S230032AbjE1TYk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:24:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230522AbjE1Tkh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:37 -0400
+        with ESMTP id S230030AbjE1TYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3AFAB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 472B5A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63D8361EC0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A3BC433A1;
-        Sun, 28 May 2023 19:40:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCB0061BBB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96B3C433EF;
+        Sun, 28 May 2023 19:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302835;
-        bh=+FGIPg4YD0pcqDluuVYG8o76/9fxCfjQb7Re24R7gDU=;
+        s=korg; t=1685301877;
+        bh=lTy7IDSLgtTrZBotiWdMEJxRjafNuUN+OW8PH2fbAf0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2mjxTJHjMDLqdDoYEDySjZj3j7hg7pRoWwTXALQ97B15Az5e7cV3wOiVCLJuxqVmc
-         Glz456c2svzrdAPCHdml4htSUT+uYfRo4aHu9Gkx49JgPli2/SDh25vjb3sASflk8K
-         mEhRb52NfI5rZhHgEVk0Zv9aDwYN5aBwN7GJv66Q=
+        b=aq4DwWmvzqBQhL4uruXnjgjnbnSx2eCIefIHptyBczmEoOLv1D/Kooq3B/5aKf0JL
+         2GsSOiNUvCt1Lwet0OAg6VDH3hWbe1oFHQo/IVPgi3OoPTCvY3rt/23+cR5NYQYvez
+         eXON2Sy5tuV58KE9QjN5WQNAEqDWVhhzmEVFZeaQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        KP Singh <kpsingh@kernel.org>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/211] bpf: Annotate data races in bpf_local_storage
-Date:   Sun, 28 May 2023 20:09:26 +0100
-Message-Id: <20230528190844.692933215@linuxfoundation.org>
+Subject: [PATCH 5.4 043/161] HID: logitech-hidpp: Reconcile USB and Unifying serials
+Date:   Sun, 28 May 2023 20:09:27 +0100
+Message-Id: <20230528190838.586448783@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,81 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Bastien Nocera <hadess@hadess.net>
 
-[ Upstream commit 0a09a2f933c73dc76ab0b72da6855f44342a8903 ]
+[ Upstream commit 5b3691d15e04b6d5a32c915577b8dbc5cfb56382 ]
 
-There are a few cases where hlist_node is checked to be unhashed without
-holding the lock protecting its modification. In this case, one must use
-hlist_unhashed_lockless to avoid load tearing and KCSAN reports. Fix
-this by using lockless variant in places not protected by the lock.
+Now that USB HID++ devices can gather a serial number that matches the
+one that would be gathered when connected through a Unifying receiver,
+remove the last difference by dropping the product ID as devices
+usually have different product IDs when connected through USB or
+Unifying.
 
-Since this is not prompted by any actual KCSAN reports but only from
-code review, I have not included a fixes tag.
+For example, on the serials on a G903 wired/wireless mouse:
+- Unifying before patch: 4067-e8-ce-cd-45
+- USB before patch: c086-e8-ce-cd-45
+- Unifying and USB after patch: e8-ce-cd-45
 
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: KP Singh <kpsingh@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20230221200646.2500777-4-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Link: https://lore.kernel.org/r/20230302130117.3975-2-hadess@hadess.net
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_local_storage.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 8aaaaef99f09f..f753965726205 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -48,11 +48,21 @@ owner_storage(struct bpf_local_storage_map *smap, void *owner)
- 	return map->ops->map_owner_storage_ptr(owner);
- }
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index 2fd64361884cf..b8558292801ec 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -809,8 +809,7 @@ static int hidpp_unifying_init(struct hidpp_device *hidpp)
+ 	if (ret)
+ 		return ret;
  
-+static bool selem_linked_to_storage_lockless(const struct bpf_local_storage_elem *selem)
-+{
-+	return !hlist_unhashed_lockless(&selem->snode);
-+}
-+
- static bool selem_linked_to_storage(const struct bpf_local_storage_elem *selem)
- {
- 	return !hlist_unhashed(&selem->snode);
- }
+-	snprintf(hdev->uniq, sizeof(hdev->uniq), "%04x-%4phD",
+-		 hdev->product, &serial);
++	snprintf(hdev->uniq, sizeof(hdev->uniq), "%4phD", &serial);
+ 	dbg_hid("HID++ Unifying: Got serial: %s\n", hdev->uniq);
  
-+static bool selem_linked_to_map_lockless(const struct bpf_local_storage_elem *selem)
-+{
-+	return !hlist_unhashed_lockless(&selem->map_node);
-+}
-+
- static bool selem_linked_to_map(const struct bpf_local_storage_elem *selem)
- {
- 	return !hlist_unhashed(&selem->map_node);
-@@ -140,7 +150,7 @@ static void __bpf_selem_unlink_storage(struct bpf_local_storage_elem *selem)
- 	struct bpf_local_storage *local_storage;
- 	bool free_local_storage = false;
+ 	name = hidpp_unifying_get_name(hidpp);
+@@ -945,8 +944,7 @@ static int hidpp_serial_init(struct hidpp_device *hidpp)
+ 	if (ret)
+ 		return ret;
  
--	if (unlikely(!selem_linked_to_storage(selem)))
-+	if (unlikely(!selem_linked_to_storage_lockless(selem)))
- 		/* selem has already been unlinked from sk */
- 		return;
+-	snprintf(hdev->uniq, sizeof(hdev->uniq), "%04x-%4phD",
+-		 hdev->product, &serial);
++	snprintf(hdev->uniq, sizeof(hdev->uniq), "%4phD", &serial);
+ 	dbg_hid("HID++ DeviceInformation: Got serial: %s\n", hdev->uniq);
  
-@@ -167,7 +177,7 @@ void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
- 	struct bpf_local_storage_map *smap;
- 	struct bpf_local_storage_map_bucket *b;
- 
--	if (unlikely(!selem_linked_to_map(selem)))
-+	if (unlikely(!selem_linked_to_map_lockless(selem)))
- 		/* selem has already be unlinked from smap */
- 		return;
- 
-@@ -365,7 +375,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		err = check_flags(old_sdata, map_flags);
- 		if (err)
- 			return ERR_PTR(err);
--		if (old_sdata && selem_linked_to_storage(SELEM(old_sdata))) {
-+		if (old_sdata && selem_linked_to_storage_lockless(SELEM(old_sdata))) {
- 			copy_map_value_locked(&smap->map, old_sdata->data,
- 					      value, false);
- 			return old_sdata;
+ 	return 0;
 -- 
 2.39.2
 
