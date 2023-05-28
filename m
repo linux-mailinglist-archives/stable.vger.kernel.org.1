@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCEB4713863
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E5F713864
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbjE1Hef (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 03:34:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
+        id S229473AbjE1Hek (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 03:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjE1Hef (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:35 -0400
+        with ESMTP id S229450AbjE1Hej (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C714BB4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E4E5D9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E34A60FE3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEC3C433EF;
-        Sun, 28 May 2023 07:34:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7E1D60E9E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87C6C433D2;
+        Sun, 28 May 2023 07:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685259272;
-        bh=B4LxGxIww4U6p4t21P54Kr/xI/5VcOc/ti7gTk05mvI=;
+        s=korg; t=1685259277;
+        bh=ZlS7x++afv5ADulwHBZz5O3Z8iXHJcpKaX1iupnrJ7g=;
         h=Subject:To:Cc:From:Date:From;
-        b=lQ7ZAcCqBZvUOP6ppE2uvEW5HarEGhVR5MRtsCwKt1/gpbjWxAl017rymygAtTw9e
-         5K1jHthBjr3Ry94doDhvGIo5h0U2TZXBzxM2jFiaQjfiwahgWzN4kZpy565099J1qs
-         jlXi5zkNKGOzyAeS5RunVTqWD7Ljd1DSJUKNsnLY=
-Subject: FAILED: patch "[PATCH] binder: fix UAF of alloc->vma in race with munmap()" failed to apply to 5.15-stable tree
+        b=F2Rx78KhEn/o9ixUGS2so/pV/fa88WOIWMlC0Mg8RdqQ22vyJN5YTmrLa8S4ZwidO
+         gyNzimAj06tT/AAYKIVVnYZdrWy/GkLi1+rr8ohbBxs5gdGjU3zI7o96tPpANhj412
+         pzQFcPwGxmA7TIg71Yex3UvvxSQLaWgPfvhCc39I=
+Subject: FAILED: patch "[PATCH] binder: fix UAF of alloc->vma in race with munmap()" failed to apply to 5.10-stable tree
 To:     cmllamas@google.com, gregkh@linuxfoundation.org, jannh@google.com,
         liam.howlett@oracle.com, minchan@kernel.org,
         stable@vger.kernel.org, tkjos@google.com,
         yang.shi@linux.alibaba.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 08:34:30 +0100
-Message-ID: <2023052830-unblended-envision-4bbd@gregkh>
+Date:   Sun, 28 May 2023 08:34:32 +0100
+Message-ID: <2023052832-opposing-flavoring-f084@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d1d8875c8c13517f6fd1ff8d4d3e1ac366a17e07
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052830-unblended-envision-4bbd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052832-opposing-flavoring-f084@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
