@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3002E713D9E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7629713F4D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230101AbjE1T1a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
+        id S231231AbjE1ToC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbjE1T10 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:26 -0400
+        with ESMTP id S231234AbjE1ToA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B34B2F1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19460A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 487AF61C4B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BD8C433EF;
-        Sun, 28 May 2023 19:27:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AFCE61F1D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B43C433EF;
+        Sun, 28 May 2023 19:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302032;
-        bh=0KYHw7Q0bMSBlq82sNPdLQSDYBwW59FlSWPCDRdcSWE=;
+        s=korg; t=1685303038;
+        bh=o+sFnpDsI5vom+a96zL0vc/IFdGBeICZxjaTycgZMNw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j/Mp9SjhCx296kjhlY4OUXF+xEHcp2v/YEakI49rXweQIE9S0hWGroUvVEIMgrTwh
-         96hmlA+dk/gCvP0ioqJ6xoYWJM/VYDnVEJ2fDce/s8ue8nWp2o+hHIh9XhMZZjy32Q
-         uMWS37NRDUZZRhTJHb1eq4niZDHb6tmLPKDz4Bp0=
+        b=G3WwbNKzFzXlIIvXwcmnSeWWUr1MZps3F1w1di7oNQP/HFKRRKO9R3XDiIxV0wg97
+         sC6Gp1D9VQFdvxcmTR61twBf3u71YZZJWLM3Zp/cYJ8UwV+ZIIGVvaJbgsNwQJ1vGW
+         CO+flrKuz+JrBcaW4pf/r3SFK2MFi410mIq31P14=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kbuild test robot <lkp@intel.com>,
-        Pablo Greco <pgreco@centosproject.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Vegard Nossum <vegard.nossum@oracle.com>
-Subject: [PATCH 5.4 126/161] mt76: mt7615: Fix build with older compilers
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 129/211] usb: typec: altmodes/displayport: fix pin_assignment_show
 Date:   Sun, 28 May 2023 20:10:50 +0100
-Message-Id: <20230528190841.013581504@linuxfoundation.org>
+Message-Id: <20230528190846.745646024@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Greco <pgreco@centosproject.org>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit f53300fdaa84dc02f96ab9446b5bac4d20016c43 upstream.
+commit d8f28269dd4bf9b55c3fb376ae31512730a96fce upstream.
 
-Some compilers (tested with 4.8.5 from CentOS 7) fail properly process
-FIELD_GET inside an inline function, which ends up in a BUILD_BUG_ON.
-Convert inline function to a macro.
+This patch fixes negative indexing of buf array in pin_assignment_show
+when get_current_pin_assignments returns 0 i.e. no compatible pin
+assignments are found.
 
-Fixes commit bf92e7685100 ("mt76: mt7615: add support for per-chain
-signal strength reporting")
-Reported in https://lkml.org/lkml/2019/9/21/146
+BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
+...
+Call trace:
+dump_backtrace+0x110/0x204
+dump_stack_lvl+0x84/0xbc
+print_report+0x358/0x974
+kasan_report+0x9c/0xfc
+__do_kernel_fault+0xd4/0x2d4
+do_bad_area+0x48/0x168
+do_tag_check_fault+0x24/0x38
+do_mem_abort+0x6c/0x14c
+el1_abort+0x44/0x68
+el1h_64_sync_handler+0x64/0xa4
+el1h_64_sync+0x78/0x7c
+pin_assignment_show+0x26c/0x33c
+dev_attr_show+0x50/0xc0
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Pablo Greco <pgreco@centosproject.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230508214443.893436-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -13,10 +13,7 @@
- #include "../dma.h"
- #include "mac.h"
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -503,6 +503,10 @@ static ssize_t pin_assignment_show(struc
  
--static inline s8 to_rssi(u32 field, u32 rxv)
--{
--	return (FIELD_GET(field, rxv) - 220) / 2;
--}
-+#define to_rssi(field, rxv)		((FIELD_GET(field, rxv) - 220) / 2)
+ 	mutex_unlock(&dp->lock);
  
- static struct mt76_wcid *mt7615_rx_get_wcid(struct mt7615_dev *dev,
- 					    u8 idx, bool unicast)
++	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
++	if (len == 0)
++		len++;
++
+ 	buf[len - 1] = '\n';
+ 	return len;
+ }
 
 
