@@ -2,52 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60780713FBF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D48E713F86
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231360AbjE1Tsf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
+        id S231295AbjE1TqY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbjE1Tse (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604D49C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:33 -0700 (PDT)
+        with ESMTP id S231300AbjE1TqX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08960EC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9D0461053
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B9DC433EF;
-        Sun, 28 May 2023 19:48:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A3D61F70
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469F3C4339B;
+        Sun, 28 May 2023 19:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303312;
-        bh=834YX/0/RE92nZ3+SlAcAzzW44ch7gk7cGLTOVHCudY=;
+        s=korg; t=1685303177;
+        bh=Vtod2lSK6B3ckdCS1HH7odSa9XZ6gyx6hwzIiZ4S8vg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NnSbquiYL9denTREsGdtQbDpTB6ZehSWZg8pmNYKJ90mMx8uHsfAxwrBSEjOdSbb1
-         EeR2Z6vQFc25IcpVU6SFAywntk6UA27ZN6IlHMTYuRR9hAUtLwCLEenWzT1GDoMHrM
-         o2wQFNRcEalIV/lUKipV4dzJSV7jGYU+bk7QmPO0=
+        b=s9M9ZrogeCBCtIW5J6xaJSjaBi3RB6Yxd8HfYfnB/gC4tWmdcTOzD2NuhNNHxHu++
+         PRLmzInwGQvD/hAp6U4Wuv7JmbStBqZgafIHiP5g77dVsYUZi2MkdawDRwEZk6I6cp
+         BjcO6UgEXlNhB0vcFNRoEx39V4kBLaB3um5E44xM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Len Brown <len.brown@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 27/69] x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid platforms
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 186/211] USB: core: Add routines for endpoint checks in old drivers
 Date:   Sun, 28 May 2023 20:11:47 +0100
-Message-Id: <20230528190829.383305085@linuxfoundation.org>
+Message-Id: <20230528190848.119906352@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,90 +52,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit edc0a2b5957652f4685ef3516f519f84807087db upstream.
+commit 13890626501ffda22b18213ddaf7930473da5792 upstream.
 
-Traditionally, all CPUs in a system have identical numbers of SMT
-siblings.  That changes with hybrid processors where some logical CPUs
-have a sibling and others have none.
+Many of the older USB drivers in the Linux USB stack were written
+based simply on a vendor's device specification.  They use the
+endpoint information in the spec and assume these endpoints will
+always be present, with the properties listed, in any device matching
+the given vendor and product IDs.
 
-Today, the CPU boot code sets the global variable smp_num_siblings when
-every CPU thread is brought up. The last thread to boot will overwrite
-it with the number of siblings of *that* thread. That last thread to
-boot will "win". If the thread is a Pcore, smp_num_siblings == 2.  If it
-is an Ecore, smp_num_siblings == 1.
+While that may have been true back then, with spoofing and fuzzing it
+is not true any more.  More and more we are finding that those old
+drivers need to perform at least a minimum of checking before they try
+to use any endpoint other than ep0.
 
-smp_num_siblings describes if the *system* supports SMT.  It should
-specify the maximum number of SMT threads among all cores.
+To make this checking as simple as possible, we now add a couple of
+utility routines to the USB core.  usb_check_bulk_endpoints() and
+usb_check_int_endpoints() take an interface pointer together with a
+list of endpoint addresses (numbers and directions).  They check that
+the interface's current alternate setting includes endpoints with
+those addresses and that each of these endpoints has the right type:
+bulk or interrupt, respectively.
 
-Ensure that smp_num_siblings represents the system-wide maximum number
-of siblings by always increasing its value. Never allow it to decrease.
+Although we already have usb_find_common_endpoints() and related
+routines meant for a similar purpose, they are not well suited for
+this kind of checking.  Those routines find endpoints of various
+kinds, but only one (either the first or the last) of each kind, and
+they don't verify that the endpoints' addresses agree with what the
+caller expects.
 
-On MeteorLake-P platform, this fixes a problem that the Ecore CPUs are
-not updated in any cpu sibling map because the system is treated as an
-UP system when probing Ecore CPUs.
+In theory the new routines could be more general: They could take a
+particular altsetting as their argument instead of always using the
+interface's current altsetting.  In practice I think this won't matter
+too much; multiple altsettings tend to be used for transferring media
+(audio or visual) over isochronous endpoints, not bulk or interrupt.
+Drivers for such devices will generally require more sophisticated
+checking than these simplistic routines provide.
 
-Below shows part of the CPU topology information before and after the
-fix, for both Pcore and Ecore CPU (cpu0 is Pcore, cpu 12 is Ecore).
-...
--/sys/devices/system/cpu/cpu0/topology/package_cpus:000fff
--/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-11
-+/sys/devices/system/cpu/cpu0/topology/package_cpus:3fffff
-+/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-21
-...
--/sys/devices/system/cpu/cpu12/topology/package_cpus:001000
--/sys/devices/system/cpu/cpu12/topology/package_cpus_list:12
-+/sys/devices/system/cpu/cpu12/topology/package_cpus:3fffff
-+/sys/devices/system/cpu/cpu12/topology/package_cpus_list:0-21
-
-Notice that the "before" 'package_cpus_list' has only one CPU.  This
-means that userspace tools like lscpu will see a little laptop like
-an 11-socket system:
-
--Core(s) per socket:  1
--Socket(s):           11
-+Core(s) per socket:  16
-+Socket(s):           1
-
-This is also expected to make the scheduler do rather wonky things
-too.
-
-[ dhansen: remove CPUID detail from changelog, add end user effects ]
-
-CC: stable@kernel.org
-Fixes: bbb65d2d365e ("x86: use cpuid vector 0xb when available for detecting cpu topology")
-Fixes: 95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
-Suggested-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20230323015640.27906-1-rui.zhang%40intel.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/dd2c8e8c-2c87-44ea-ba17-c64b97e201c9@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/topology.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/core/usb.c |   76 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/usb.h    |    5 +++
+ 2 files changed, 81 insertions(+)
 
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -79,7 +79,7 @@ int detect_extended_topology_early(struc
- 	 * initial apic id, which also represents 32-bit extended x2apic id.
- 	 */
- 	c->initial_apicid = edx;
--	smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
- #endif
- 	return 0;
- }
-@@ -109,7 +109,8 @@ int detect_extended_topology(struct cpui
- 	 */
- 	cpuid_count(leaf, SMT_LEVEL, &eax, &ebx, &ecx, &edx);
- 	c->initial_apicid = edx;
--	core_level_siblings = smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	core_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
- 	core_plus_mask_width = ht_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
- 	die_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
- 	pkg_mask_width = die_plus_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -208,6 +208,82 @@ int usb_find_common_endpoints_reverse(st
+ EXPORT_SYMBOL_GPL(usb_find_common_endpoints_reverse);
+ 
+ /**
++ * usb_find_endpoint() - Given an endpoint address, search for the endpoint's
++ * usb_host_endpoint structure in an interface's current altsetting.
++ * @intf: the interface whose current altsetting should be searched
++ * @ep_addr: the endpoint address (number and direction) to find
++ *
++ * Search the altsetting's list of endpoints for one with the specified address.
++ *
++ * Return: Pointer to the usb_host_endpoint if found, %NULL otherwise.
++ */
++static const struct usb_host_endpoint *usb_find_endpoint(
++		const struct usb_interface *intf, unsigned int ep_addr)
++{
++	int n;
++	const struct usb_host_endpoint *ep;
++
++	n = intf->cur_altsetting->desc.bNumEndpoints;
++	ep = intf->cur_altsetting->endpoint;
++	for (; n > 0; (--n, ++ep)) {
++		if (ep->desc.bEndpointAddress == ep_addr)
++			return ep;
++	}
++	return NULL;
++}
++
++/**
++ * usb_check_bulk_endpoints - Check whether an interface's current altsetting
++ * contains a set of bulk endpoints with the given addresses.
++ * @intf: the interface whose current altsetting should be searched
++ * @ep_addrs: 0-terminated array of the endpoint addresses (number and
++ * direction) to look for
++ *
++ * Search for endpoints with the specified addresses and check their types.
++ *
++ * Return: %true if all the endpoints are found and are bulk, %false otherwise.
++ */
++bool usb_check_bulk_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs)
++{
++	const struct usb_host_endpoint *ep;
++
++	for (; *ep_addrs; ++ep_addrs) {
++		ep = usb_find_endpoint(intf, *ep_addrs);
++		if (!ep || !usb_endpoint_xfer_bulk(&ep->desc))
++			return false;
++	}
++	return true;
++}
++EXPORT_SYMBOL_GPL(usb_check_bulk_endpoints);
++
++/**
++ * usb_check_int_endpoints - Check whether an interface's current altsetting
++ * contains a set of interrupt endpoints with the given addresses.
++ * @intf: the interface whose current altsetting should be searched
++ * @ep_addrs: 0-terminated array of the endpoint addresses (number and
++ * direction) to look for
++ *
++ * Search for endpoints with the specified addresses and check their types.
++ *
++ * Return: %true if all the endpoints are found and are interrupt,
++ * %false otherwise.
++ */
++bool usb_check_int_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs)
++{
++	const struct usb_host_endpoint *ep;
++
++	for (; *ep_addrs; ++ep_addrs) {
++		ep = usb_find_endpoint(intf, *ep_addrs);
++		if (!ep || !usb_endpoint_xfer_int(&ep->desc))
++			return false;
++	}
++	return true;
++}
++EXPORT_SYMBOL_GPL(usb_check_int_endpoints);
++
++/**
+  * usb_find_alt_setting() - Given a configuration, find the alternate setting
+  * for the given interface.
+  * @config: the configuration to search (not necessarily the current config).
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -279,6 +279,11 @@ void usb_put_intf(struct usb_interface *
+ #define USB_MAXINTERFACES	32
+ #define USB_MAXIADS		(USB_MAXINTERFACES/2)
+ 
++bool usb_check_bulk_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs);
++bool usb_check_int_endpoints(
++		const struct usb_interface *intf, const u8 *ep_addrs);
++
+ /*
+  * USB Resume Timer: Every Host controller driver should drive the resume
+  * signalling on the bus for the amount of time defined by this macro.
 
 
