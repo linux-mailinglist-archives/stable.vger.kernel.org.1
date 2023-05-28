@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88888713860
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62CEC713861
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbjE1HeK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 03:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
+        id S229477AbjE1HeN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 03:34:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjE1HeJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDA9B4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:08 -0700 (PDT)
+        with ESMTP id S229450AbjE1HeM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DCADB4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8967160EE9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91ACC433EF;
-        Sun, 28 May 2023 07:34:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD9DC60E9E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEC8C433D2;
+        Sun, 28 May 2023 07:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685259247;
-        bh=+5XeHFbC9WUQpCNRNbZ9/qqVYqcpqsA4eky/HbTNA7I=;
+        s=korg; t=1685259250;
+        bh=H1D1OGHN9o1PfEXoEyvnYPF/3OdQxI9yP06ens8lE+s=;
         h=Subject:To:Cc:From:Date:From;
-        b=pPtIDP73FJ6Q5d1Yh9wEH0oMp5nb+YQmsiix+eWSpY3yAG0vNBBS9axuwAUZHJdk/
-         QpFKU0L9s+RVNwX/CzWRN8lm1lUx/9inhPRY5iBVmbJ9+TJ0moQIFyanZp49wvBf6f
-         dNTm0duiPyHn8JviVxp8Cc+1M+py/bxl2+WfEm4E=
-Subject: FAILED: patch "[PATCH] binder: fix UAF caused by faulty buffer cleanup" failed to apply to 5.15-stable tree
+        b=1Nb5GQ5DLDv9y8Gjp9ZQQd04vSJJRkKyKe7ZCn2qW7NPddmHgWOkNlnAYb8PGVmsD
+         djOkgpKsVBfhxuFJY+9hqE0/HU61LF1j3/+Muv9u8GFrnCjewdp7yt4xd2WCGSJkY0
+         T4x0XI0/gipKsr72ch47g/p2yaJAwhWGlw/xI/7k=
+Subject: FAILED: patch "[PATCH] binder: fix UAF caused by faulty buffer cleanup" failed to apply to 5.10-stable tree
 To:     cmllamas@google.com, gregkh@linuxfoundation.org, tkjos@google.com,
         zifantan@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 08:34:04 +0100
-Message-ID: <2023052804-exploit-passion-ce51@gregkh>
+Date:   Sun, 28 May 2023 08:34:06 +0100
+Message-ID: <2023052806-sprite-program-51a5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,25 +49,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x bdc1c5fac982845a58d28690cdb56db8c88a530d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052804-exploit-passion-ce51@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052806-sprite-program-51a5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 bdc1c5fac982 ("binder: fix UAF caused by faulty buffer cleanup")
 9864bb480133 ("Binder: add TF_UPDATE_TXN to replace outdated txn")
 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
+5fdb55c1ac95 ("binder: make sure fd closes complete")
+432ff1e91694 ("binder: BINDER_FREEZE ioctl")
+0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
+421518a2740f ("binder: move structs from core file to header file")
 
 thanks,
 
