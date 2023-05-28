@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1123E713F57
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16AE8713D19
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231246AbjE1ToZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59206 "EHLO
+        id S229929AbjE1TVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231245AbjE1ToY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:24 -0400
+        with ESMTP id S229953AbjE1TVv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:21:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9D29E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB5AD2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:21:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A08161F30
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2307AC433D2;
-        Sun, 28 May 2023 19:44:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58A7161B22
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:21:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7565CC433EF;
+        Sun, 28 May 2023 19:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303062;
-        bh=8vu415bm7cRMTv6jb4cllI2JnLcimu50U+uPxJ2hhJY=;
+        s=korg; t=1685301709;
+        bh=Vq+LpJbwCTrbIP1QboJ5zmJL+RgJRJTi2osprRgpdUo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2rJGu1S2tNZgf+m+jjDAlzQEQTobo4UH+3NZRdY5ogF7e7b2QpEpuS5fEcO0QltJe
-         N2I4x/7bZzmKEGE0kAwvSM81iW42jN0N9YxLFPOnIr2lELOrdFgL+R/J7r0MXZVGDZ
-         L3qzmXvN9U8mqLQYi48QnDGc1FdavioIcHc7am/g=
+        b=ENX5THoVIv2Nu7poi57lAurSTJkDvUSaIop/xU2Yg/JCw3FK4dy23RBVNd0cBoszE
+         +M6DVizbQ3VGRmj9ZQKS6FqpzFkcelFkpQVqhksVfp4d9nXILBc2NEt7dZ+qpl+aHN
+         KBV/rQvDQrUJtLBpi2Pk/lacloaUcecbd2BwOc+U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 138/211] can: kvaser_pciefd: Call request_irq() before enabling interrupts
+        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Krzesimir Nowak <krzesimir@kinvolk.io>,
+        Andrey Ignatov <rdna@fb.com>, Yonghong Song <yhs@fb.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 4.19 120/132] bpf: Fix mask generation for 32-bit narrow loads of 64-bit fields
 Date:   Sun, 28 May 2023 20:10:59 +0100
-Message-Id: <20230528190846.949081774@linuxfoundation.org>
+Message-Id: <20230528190837.487753081@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,47 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Will Deacon <will@kernel.org>
 
-commit 84762d8da89d29ba842317eb842973e628c27391 upstream.
+commit 0613d8ca9ab382caabe9ed2dceb429e9781e443f upstream.
 
-Make sure the interrupt handler is registered before enabling interrupts.
+A narrow load from a 64-bit context field results in a 64-bit load
+followed potentially by a 64-bit right-shift and then a bitwise AND
+operation to extract the relevant data.
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-4-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+In the case of a 32-bit access, an immediate mask of 0xffffffff is used
+to construct a 64-bit BPP_AND operation which then sign-extends the mask
+value and effectively acts as a glorified no-op. For example:
+
+0:	61 10 00 00 00 00 00 00	r0 = *(u32 *)(r1 + 0)
+
+results in the following code generation for a 64-bit field:
+
+	ldr	x7, [x7]	// 64-bit load
+	mov	x10, #0xffffffffffffffff
+	and	x7, x7, x10
+
+Fix the mask generation so that narrow loads always perform a 32-bit AND
+operation:
+
+	ldr	x7, [x7]	// 64-bit load
+	mov	w10, #0xffffffff
+	and	w7, w7, w10
+
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Krzesimir Nowak <krzesimir@kinvolk.io>
+Cc: Andrey Ignatov <rdna@fb.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Fixes: 31fd85816dbe ("bpf: permits narrower load from bpf program context fields")
+Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20230518102528.1341-1-will@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/bpf/verifier.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1825,6 +1825,11 @@ static int kvaser_pciefd_probe(struct pc
- 	if (err)
- 		goto err_teardown_can_ctrls;
- 
-+	err = request_irq(pcie->pci->irq, kvaser_pciefd_irq_handler,
-+			  IRQF_SHARED, KVASER_PCIEFD_DRV_NAME, pcie);
-+	if (err)
-+		goto err_teardown_can_ctrls;
-+
- 	iowrite32(KVASER_PCIEFD_SRB_IRQ_DPD0 | KVASER_PCIEFD_SRB_IRQ_DPD1,
- 		  pcie->reg_base + KVASER_PCIEFD_SRB_IRQ_REG);
- 
-@@ -1845,11 +1850,6 @@ static int kvaser_pciefd_probe(struct pc
- 	iowrite32(KVASER_PCIEFD_SRB_CMD_RDB1,
- 		  pcie->reg_base + KVASER_PCIEFD_SRB_CMD_REG);
- 
--	err = request_irq(pcie->pci->irq, kvaser_pciefd_irq_handler,
--			  IRQF_SHARED, KVASER_PCIEFD_DRV_NAME, pcie);
--	if (err)
--		goto err_teardown_can_ctrls;
--
- 	err = kvaser_pciefd_reg_candev(pcie);
- 	if (err)
- 		goto err_free_irq;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5936,7 +5936,7 @@ static int convert_ctx_accesses(struct b
+ 					insn_buf[cnt++] = BPF_ALU64_IMM(BPF_RSH,
+ 									insn->dst_reg,
+ 									shift);
+-				insn_buf[cnt++] = BPF_ALU64_IMM(BPF_AND, insn->dst_reg,
++				insn_buf[cnt++] = BPF_ALU32_IMM(BPF_AND, insn->dst_reg,
+ 								(1ULL << size * 8) - 1);
+ 			}
+ 		}
 
 
