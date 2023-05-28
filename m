@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE8E713DD8
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA794713CCB
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230182AbjE1T3o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
+        id S229845AbjE1TSp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbjE1T3o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D3110A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:24 -0700 (PDT)
+        with ESMTP id S229844AbjE1TSl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9ECC7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 759A261D23
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95998C433EF;
-        Sun, 28 May 2023 19:29:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CB136112D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15480C433D2;
+        Sun, 28 May 2023 19:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302163;
-        bh=1aPU3zrW/gIwiyQKJBCYJpmLqYI60l0zhiA9GIQZ5eE=;
+        s=korg; t=1685301519;
+        bh=nCxRayotihsDDsKhagEX5TmcyVywQKCDnsWucwN4T9Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W8730+HSDHsFM2HWMbWf8v0RXjqNFDtAU2ktAW2Urzoo3gBhiYMfoA3r7WrVKM7xE
-         EGhfhmp+SvLLiUuRYkEqWRPXbP1TXk9+42TVTSzimoyvSBBt4Vg77pNVVRRYXbPcTL
-         rzFDxStT/45k25z4FGTP6ME4WQscdTvAScojUtSc=
+        b=i4i7HqZvbRtDbvbvk8Ewr6GsEwsFsQnXFdRf8TXSSmwniSxs3n5zMOKoVZ1q+Y4vF
+         w03dv4Jr7XQfFgPGStiUL95ykZbBjGi1dIhssXgQlC1NPouUOzRWrrJn9Q1i2f4fFz
+         u1aAl2rdP2cIodBFjEZXHQ+JUdlRuqcEbf0hAeKs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.3 024/127] power: supply: bq25890: Fix external_power_changed race
-Date:   Sun, 28 May 2023 20:10:00 +0100
-Message-Id: <20230528190837.042345979@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 062/132] net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()
+Date:   Sun, 28 May 2023 20:10:01 +0100
+Message-Id: <20230528190835.450541740@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,64 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit 029a443b9b6424170f00f6dd5b7682e682cce92e upstream.
+[ Upstream commit 93e0401e0fc0c54b0ac05b687cd135c2ac38187c ]
 
-bq25890_charger_external_power_changed() dereferences bq->charger,
-which gets sets in bq25890_power_supply_init() like this:
+The call to phy_stop() races with the later call to phy_disconnect(),
+resulting in concurrent phy_suspend() calls being run from different
+CPUs. The final call to phy_disconnect() ensures that the PHY is
+stopped and suspended, too.
 
-  bq->charger = devm_power_supply_register(bq->dev, &bq->desc, &psy_cfg);
-
-As soon as devm_power_supply_register() has called device_add()
-the external_power_changed callback can get called. So there is a window
-where bq25890_charger_external_power_changed() may get called while
-bq->charger has not been set yet leading to a NULL pointer dereference.
-
-This race hits during boot sometimes on a Lenovo Yoga Book 1 yb1-x90f
-when the cht_wcove_pwrsrc (extcon) power_supply is done with detecting
-the connected charger-type which happens to exactly hit the small window:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  <snip>
-  RIP: 0010:__power_supply_is_supplied_by+0xb/0xb0
-  <snip>
-  Call Trace:
-   <TASK>
-   __power_supply_get_supplier_property+0x19/0x50
-   class_for_each_device+0xb1/0xe0
-   power_supply_get_property_from_supplier+0x2e/0x50
-   bq25890_charger_external_power_changed+0x38/0x1b0 [bq25890_charger]
-   __power_supply_changed_work+0x30/0x40
-   class_for_each_device+0xb1/0xe0
-   power_supply_changed_work+0x5f/0xe0
-  <snip>
-
-Fixing this is easy. The external_power_changed callback gets passed
-the power_supply which will eventually get stored in bq->charger,
-so bq25890_charger_external_power_changed() can simply directly use
-the passed in psy argument which is always valid.
-
-Fixes: eab25b4f93aa ("power: supply: bq25890: On the bq25892 set the IINLIM based on external charger detection")
-Cc: stable@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq25890_charger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/power/supply/bq25890_charger.c
-+++ b/drivers/power/supply/bq25890_charger.c
-@@ -750,7 +750,7 @@ static void bq25890_charger_external_pow
- 	if (bq->chip_version != BQ25892)
- 		return;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 84bcb3ce00f73..b3dedd56a9882 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2995,7 +2995,6 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
  
--	ret = power_supply_get_property_from_supplier(bq->charger,
-+	ret = power_supply_get_property_from_supplier(psy,
- 						      POWER_SUPPLY_PROP_USB_TYPE,
- 						      &val);
- 	if (ret)
+-	phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
+ 
+-- 
+2.39.2
+
 
 
