@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65556713DB2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5512B713E46
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230133AbjE1T2C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:28:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
+        id S230314AbjE1Td5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjE1T2B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:01 -0400
+        with ESMTP id S230312AbjE1Td4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE0AA7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAB5A8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 291FD61C4A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465C6C433EF;
-        Sun, 28 May 2023 19:27:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73D0061DDF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FAEC433EF;
+        Sun, 28 May 2023 19:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302079;
-        bh=cOTnS9nq4eOAnN7qp8Mv/l2LLyyC1cV9OYHRXpCJ7Pk=;
+        s=korg; t=1685302434;
+        bh=VvpJDmCc/TNYqMDyFaSIriBvU21n2LX02zpMU4Zo9wE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xQuVu/M6SiqlB2lUM9FQ8mPIjV+Cz7D9sAHE3NdGfACdVUZTT0FQkOhzapbkdc0Up
-         amnvTPgeqdoqvBzTJHt4b9GKdV44oV3sHrs7nay52vrgA0dWTr+6K7hmgtIMuobX/B
-         tIzgxtFPBTVP2Xt4tGNvvM54wjo0dT+7pdNkDI5g=
+        b=2KSdgrkU+Xntua0nk8y8KQwq9z6Z7lhyqZ7y/2sANQRwSR9Ndb53DJmkiq08N3UT1
+         1d/Z9E0XRQSDQ0o++6u0uO2zyMC5P6716RefTMSLF4nPR1497XbcMgVp+aIlTqs8Rz
+         VtrBv65i4Bt3/t6dgAmOUjSIOW6s6ktv7l9BBNd4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.4 152/161] power: supply: bq27xxx: Fix poll_interval handling and races on remove
+        patches@lists.linux.dev,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.3 100/127] ASoC: Intel: Skylake: Fix declaration of enum skl_ch_cfg
 Date:   Sun, 28 May 2023 20:11:16 +0100
-Message-Id: <20230528190841.699000007@linuxfoundation.org>
+Message-Id: <20230528190839.540572069@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,94 +56,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-commit c00bc80462afc7963f449d7f21d896d2f629cacc upstream.
+commit 95109657471311601b98e71f03d0244f48dc61bb upstream.
 
-Before this patch bq27xxx_battery_teardown() was setting poll_interval = 0
-to avoid bq27xxx_battery_update() requeuing the delayed_work item.
+Constant 'C4_CHANNEL' does not exist on the firmware side. Value 0xC is
+reserved for 'C7_1' instead.
 
-There are 2 problems with this:
-
-1. If the driver is unbound through sysfs, rather then the module being
-   rmmod-ed, this changes poll_interval unexpectedly
-
-2. This is racy, after it being set poll_interval could be changed
-   before bq27xxx_battery_update() checks it through
-   /sys/module/bq27xxx_battery/parameters/poll_interval
-
-Fix this by added a removed attribute to struct bq27xxx_device_info and
-using that instead of setting poll_interval to 0.
-
-There also is another poll_interval related race on remove(), writing
-/sys/module/bq27xxx_battery/parameters/poll_interval will requeue
-the delayed_work item for all devices on the bq27xxx_battery_devices
-list and the device being removed was only removed from that list
-after cancelling the delayed_work item.
-
-Fix this by moving the removal from the bq27xxx_battery_devices list
-to before cancelling the delayed_work item.
-
-Fixes: 8cfaaa811894 ("bq27x00_battery: Fix OOPS caused by unregistring bq27x00 driver")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 04afbbbb1cba ("ASoC: Intel: Skylake: Update the topology interface structure")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20230519201711.4073845-4-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |   22 +++++++++-------------
- include/linux/power/bq27xxx_battery.h  |    1 +
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ include/uapi/sound/skl-tplg-interface.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1598,7 +1598,7 @@ static void bq27xxx_battery_update_unloc
+--- a/include/uapi/sound/skl-tplg-interface.h
++++ b/include/uapi/sound/skl-tplg-interface.h
+@@ -66,7 +66,8 @@ enum skl_ch_cfg {
+ 	SKL_CH_CFG_DUAL_MONO = 9,
+ 	SKL_CH_CFG_I2S_DUAL_STEREO_0 = 10,
+ 	SKL_CH_CFG_I2S_DUAL_STEREO_1 = 11,
+-	SKL_CH_CFG_4_CHANNEL = 12,
++	SKL_CH_CFG_7_1 = 12,
++	SKL_CH_CFG_4_CHANNEL = SKL_CH_CFG_7_1,
+ 	SKL_CH_CFG_INVALID
+ };
  
- 	di->last_update = jiffies;
- 
--	if (poll_interval > 0)
-+	if (!di->removed && poll_interval > 0)
- 		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
- }
- 
-@@ -1915,22 +1915,18 @@ EXPORT_SYMBOL_GPL(bq27xxx_battery_setup)
- 
- void bq27xxx_battery_teardown(struct bq27xxx_device_info *di)
- {
--	/*
--	 * power_supply_unregister call bq27xxx_battery_get_property which
--	 * call bq27xxx_battery_poll.
--	 * Make sure that bq27xxx_battery_poll will not call
--	 * schedule_delayed_work again after unregister (which cause OOPS).
--	 */
--	poll_interval = 0;
--
--	cancel_delayed_work_sync(&di->work);
--
--	power_supply_unregister(di->bat);
--
- 	mutex_lock(&bq27xxx_list_lock);
- 	list_del(&di->list);
- 	mutex_unlock(&bq27xxx_list_lock);
- 
-+	/* Set removed to avoid bq27xxx_battery_update() re-queuing the work */
-+	mutex_lock(&di->lock);
-+	di->removed = true;
-+	mutex_unlock(&di->lock);
-+
-+	cancel_delayed_work_sync(&di->work);
-+
-+	power_supply_unregister(di->bat);
- 	mutex_destroy(&di->lock);
- }
- EXPORT_SYMBOL_GPL(bq27xxx_battery_teardown);
---- a/include/linux/power/bq27xxx_battery.h
-+++ b/include/linux/power/bq27xxx_battery.h
-@@ -64,6 +64,7 @@ struct bq27xxx_device_info {
- 	struct bq27xxx_access_methods bus;
- 	struct bq27xxx_reg_cache cache;
- 	int charge_design_full;
-+	bool removed;
- 	unsigned long last_update;
- 	struct delayed_work work;
- 	struct power_supply *bat;
 
 
