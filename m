@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0A9713DE0
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C63EF713C3A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjE1T3w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46432 "EHLO
+        id S229491AbjE1TNU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:13:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbjE1T3v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B96EEB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:41 -0700 (PDT)
+        with ESMTP id S229486AbjE1TNT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC47A2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D80161D16
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3A4C433EF;
-        Sun, 28 May 2023 19:29:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4FEA618F9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31A4C433EF;
+        Sun, 28 May 2023 19:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302181;
-        bh=abbRKnp1zzMnJdGS4SO2xGzuHR5HXAct+6UKDH2yqbo=;
+        s=korg; t=1685301197;
+        bh=6oshVciF23uQHCikDHNmKnGQsl2XchcwdwEeZTu0m3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z4yYtpn+h20GnRM1O3BKAv5HlZ784RZaxQHSdT2rRJnGqV0zbq7SDZQd6GQ6GzMhK
-         kl/vFm8X1lDjs8n4Z/xGrsGxF1RDRPtZ6d8w+ammm8yNseFRXSG5i2PpdcdTCR1awX
-         3QODAhnDFvuAza8Uea2HA9ItN/5UxUds6t6AQbcw=
+        b=kAapAi3yAX6sndeqbSLMSvcXI6MFe7oTvsATwPXdEf6kqXGuk1SZY91vTnSBzgjRn
+         VPs7fhvOQRCm6x8jHBz5aZe5r+vYQ4bsP+QTdIkc0ZrWyhCyTHNy5B9AqBOh/lnKtv
+         vxrra3u+3yLZW+zdSjV2JI5nhkhqYAN1P27XIMYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        =?UTF-8?q?Michael=20Niew=C3=B6hner?= <linux@mniewoehner.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>,
+        syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Viacheslav Dubeyko <slava@dubeyko.com>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 004/127] tpm, tpm_tis: Only handle supported interrupts
+Subject: [PATCH 4.14 06/86] fs: hfsplus: remove WARN_ON() from hfsplus_cat_{read,write}_inode()
 Date:   Sun, 28 May 2023 20:09:40 +0100
-Message-Id: <20230528190836.328826439@linuxfoundation.org>
+Message-Id: <20230528190828.790869511@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,226 +58,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit e87fcf0dc2b47fac5b4824f00f74dfbcd4acd363 ]
+[ Upstream commit 81b21c0f0138ff5a499eafc3eb0578ad2a99622c ]
 
-According to the TPM Interface Specification (TIS) support for "stsValid"
-and "commandReady" interrupts is only optional.
-This has to be taken into account when handling the interrupts in functions
-like wait_for_tpm_stat(). To determine the supported interrupts use the
-capability query.
+syzbot is hitting WARN_ON() in hfsplus_cat_{read,write}_inode(), for
+crafted filesystem image can contain bogus length. There conditions are
+not kernel bugs that can justify kernel to panic.
 
-Also adjust wait_for_tpm_stat() to only wait for interrupt reported status
-changes. After that process all the remaining status changes by polling
-the status register.
-
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Michael Niewöhner <linux@mniewoehner.de>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 1398aa803f19 ("tpm_tis: Use tpm_chip_{start,stop} decoration inside tpm_tis_resume")
+Reported-by: syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=e2787430e752a92b8750
+Reported-by: syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=4913dca2ea6e4d43f3f1
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Message-Id: <15308173-5252-d6a3-ae3b-e96d46cb6f41@I-love.SAKURA.ne.jp>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 120 +++++++++++++++++++-------------
- drivers/char/tpm/tpm_tis_core.h |   1 +
- 2 files changed, 73 insertions(+), 48 deletions(-)
+ fs/hfsplus/inode.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 6b05a84c3a206..a35c117ee7c80 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -53,41 +53,63 @@ static int wait_for_tpm_stat(struct tpm_chip *chip, u8 mask,
- 	long rc;
- 	u8 status;
- 	bool canceled = false;
-+	u8 sts_mask = 0;
-+	int ret = 0;
+diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
+index ccb2a94c2032a..4924a489c8ac0 100644
+--- a/fs/hfsplus/inode.c
++++ b/fs/hfsplus/inode.c
+@@ -488,7 +488,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 	if (type == HFSPLUS_FOLDER) {
+ 		struct hfsplus_cat_folder *folder = &entry.folder;
  
- 	/* check current status */
- 	status = chip->ops->status(chip);
- 	if ((status & mask) == mask)
- 		return 0;
+-		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_folder));
++		if (fd->entrylength < sizeof(struct hfsplus_cat_folder)) {
++			pr_err("bad catalog folder entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
+ 					sizeof(struct hfsplus_cat_folder));
+ 		hfsplus_get_perms(inode, &folder->permissions, 1);
+@@ -508,7 +512,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 	} else if (type == HFSPLUS_FILE) {
+ 		struct hfsplus_cat_file *file = &entry.file;
  
--	stop = jiffies + timeout;
-+	/* check what status changes can be handled by irqs */
-+	if (priv->int_mask & TPM_INTF_STS_VALID_INT)
-+		sts_mask |= TPM_STS_VALID;
+-		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_file));
++		if (fd->entrylength < sizeof(struct hfsplus_cat_file)) {
++			pr_err("bad catalog file entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
+ 					sizeof(struct hfsplus_cat_file));
  
--	if (chip->flags & TPM_CHIP_FLAG_IRQ) {
-+	if (priv->int_mask & TPM_INTF_DATA_AVAIL_INT)
-+		sts_mask |= TPM_STS_DATA_AVAIL;
-+
-+	if (priv->int_mask & TPM_INTF_CMD_READY_INT)
-+		sts_mask |= TPM_STS_COMMAND_READY;
-+
-+	sts_mask &= mask;
-+
-+	stop = jiffies + timeout;
-+	/* process status changes with irq support */
-+	if (sts_mask) {
-+		ret = -ETIME;
- again:
- 		timeout = stop - jiffies;
- 		if ((long)timeout <= 0)
- 			return -ETIME;
- 		rc = wait_event_interruptible_timeout(*queue,
--			wait_for_tpm_stat_cond(chip, mask, check_cancel,
-+			wait_for_tpm_stat_cond(chip, sts_mask, check_cancel,
- 					       &canceled),
- 			timeout);
- 		if (rc > 0) {
- 			if (canceled)
- 				return -ECANCELED;
--			return 0;
-+			ret = 0;
- 		}
- 		if (rc == -ERESTARTSYS && freezing(current)) {
- 			clear_thread_flag(TIF_SIGPENDING);
- 			goto again;
- 		}
--	} else {
--		do {
--			usleep_range(priv->timeout_min,
--				     priv->timeout_max);
--			status = chip->ops->status(chip);
--			if ((status & mask) == mask)
--				return 0;
--		} while (time_before(jiffies, stop));
+@@ -539,6 +547,7 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 		pr_err("bad catalog entry used to create inode\n");
+ 		res = -EIO;
  	}
-+
-+	if (ret)
-+		return ret;
-+
-+	mask &= ~sts_mask;
-+	if (!mask) /* all done */
-+		return 0;
-+	/* process status changes without irq support */
-+	do {
-+		status = chip->ops->status(chip);
-+		if ((status & mask) == mask)
-+			return 0;
-+		usleep_range(priv->timeout_min,
-+			     priv->timeout_max);
-+	} while (time_before(jiffies, stop));
- 	return -ETIME;
++out:
+ 	return res;
  }
  
-@@ -1032,8 +1054,40 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 	if (rc < 0)
- 		goto out_err;
+@@ -547,6 +556,7 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	struct inode *main_inode = inode;
+ 	struct hfs_find_data fd;
+ 	hfsplus_cat_entry entry;
++	int res = 0;
  
--	intmask |= TPM_INTF_CMD_READY_INT | TPM_INTF_LOCALITY_CHANGE_INT |
--		   TPM_INTF_DATA_AVAIL_INT | TPM_INTF_STS_VALID_INT;
-+	/* Figure out the capabilities */
-+	rc = tpm_tis_read32(priv, TPM_INTF_CAPS(priv->locality), &intfcaps);
-+	if (rc < 0)
-+		goto out_err;
-+
-+	dev_dbg(dev, "TPM interface capabilities (0x%x):\n",
-+		intfcaps);
-+	if (intfcaps & TPM_INTF_BURST_COUNT_STATIC)
-+		dev_dbg(dev, "\tBurst Count Static\n");
-+	if (intfcaps & TPM_INTF_CMD_READY_INT) {
-+		intmask |= TPM_INTF_CMD_READY_INT;
-+		dev_dbg(dev, "\tCommand Ready Int Support\n");
-+	}
-+	if (intfcaps & TPM_INTF_INT_EDGE_FALLING)
-+		dev_dbg(dev, "\tInterrupt Edge Falling\n");
-+	if (intfcaps & TPM_INTF_INT_EDGE_RISING)
-+		dev_dbg(dev, "\tInterrupt Edge Rising\n");
-+	if (intfcaps & TPM_INTF_INT_LEVEL_LOW)
-+		dev_dbg(dev, "\tInterrupt Level Low\n");
-+	if (intfcaps & TPM_INTF_INT_LEVEL_HIGH)
-+		dev_dbg(dev, "\tInterrupt Level High\n");
-+	if (intfcaps & TPM_INTF_LOCALITY_CHANGE_INT) {
-+		intmask |= TPM_INTF_LOCALITY_CHANGE_INT;
-+		dev_dbg(dev, "\tLocality Change Int Support\n");
-+	}
-+	if (intfcaps & TPM_INTF_STS_VALID_INT) {
-+		intmask |= TPM_INTF_STS_VALID_INT;
-+		dev_dbg(dev, "\tSts Valid Int Support\n");
-+	}
-+	if (intfcaps & TPM_INTF_DATA_AVAIL_INT) {
-+		intmask |= TPM_INTF_DATA_AVAIL_INT;
-+		dev_dbg(dev, "\tData Avail Int Support\n");
-+	}
-+
- 	intmask &= ~TPM_GLOBAL_INT_ENABLE;
+ 	if (HFSPLUS_IS_RSRC(inode))
+ 		main_inode = HFSPLUS_I(inode)->rsrc_inode;
+@@ -565,7 +575,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	if (S_ISDIR(main_inode->i_mode)) {
+ 		struct hfsplus_cat_folder *folder = &entry.folder;
  
- 	rc = tpm_tis_request_locality(chip, 0);
-@@ -1067,32 +1121,6 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		goto out_err;
- 	}
+-		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_folder));
++		if (fd.entrylength < sizeof(struct hfsplus_cat_folder)) {
++			pr_err("bad catalog folder entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
+ 					sizeof(struct hfsplus_cat_folder));
+ 		/* simple node checks? */
+@@ -590,7 +604,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	} else {
+ 		struct hfsplus_cat_file *file = &entry.file;
  
--	/* Figure out the capabilities */
--	rc = tpm_tis_read32(priv, TPM_INTF_CAPS(priv->locality), &intfcaps);
--	if (rc < 0)
--		goto out_err;
--
--	dev_dbg(dev, "TPM interface capabilities (0x%x):\n",
--		intfcaps);
--	if (intfcaps & TPM_INTF_BURST_COUNT_STATIC)
--		dev_dbg(dev, "\tBurst Count Static\n");
--	if (intfcaps & TPM_INTF_CMD_READY_INT)
--		dev_dbg(dev, "\tCommand Ready Int Support\n");
--	if (intfcaps & TPM_INTF_INT_EDGE_FALLING)
--		dev_dbg(dev, "\tInterrupt Edge Falling\n");
--	if (intfcaps & TPM_INTF_INT_EDGE_RISING)
--		dev_dbg(dev, "\tInterrupt Edge Rising\n");
--	if (intfcaps & TPM_INTF_INT_LEVEL_LOW)
--		dev_dbg(dev, "\tInterrupt Level Low\n");
--	if (intfcaps & TPM_INTF_INT_LEVEL_HIGH)
--		dev_dbg(dev, "\tInterrupt Level High\n");
--	if (intfcaps & TPM_INTF_LOCALITY_CHANGE_INT)
--		dev_dbg(dev, "\tLocality Change Int Support\n");
--	if (intfcaps & TPM_INTF_STS_VALID_INT)
--		dev_dbg(dev, "\tSts Valid Int Support\n");
--	if (intfcaps & TPM_INTF_DATA_AVAIL_INT)
--		dev_dbg(dev, "\tData Avail Int Support\n");
--
- 	/* INTERRUPT Setup */
- 	init_waitqueue_head(&priv->read_queue);
- 	init_waitqueue_head(&priv->int_queue);
-@@ -1123,7 +1151,9 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		else
- 			tpm_tis_probe_irq(chip, intmask);
- 
--		if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
-+		if (chip->flags & TPM_CHIP_FLAG_IRQ) {
-+			priv->int_mask = intmask;
-+		} else {
- 			dev_err(&chip->dev, FW_BUG
- 					"TPM interrupt not working, polling instead\n");
- 
-@@ -1170,13 +1200,7 @@ static void tpm_tis_reenable_interrupts(struct tpm_chip *chip)
- 	if (rc < 0)
- 		goto out;
- 
--	rc = tpm_tis_read32(priv, TPM_INT_ENABLE(priv->locality), &intmask);
--	if (rc < 0)
--		goto out;
--
--	intmask |= TPM_INTF_CMD_READY_INT
--	    | TPM_INTF_LOCALITY_CHANGE_INT | TPM_INTF_DATA_AVAIL_INT
--	    | TPM_INTF_STS_VALID_INT | TPM_GLOBAL_INT_ENABLE;
-+	intmask = priv->int_mask | TPM_GLOBAL_INT_ENABLE;
- 
- 	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
- 
-diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
-index 4a58b870b4188..e978f457fd4d4 100644
---- a/drivers/char/tpm/tpm_tis_core.h
-+++ b/drivers/char/tpm/tpm_tis_core.h
-@@ -96,6 +96,7 @@ struct tpm_tis_data {
- 	unsigned int locality_count;
- 	int locality;
- 	int irq;
-+	unsigned int int_mask;
- 	unsigned long flags;
- 	void __iomem *ilb_base_addr;
- 	u16 clkrun_enabled;
+-		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_file));
++		if (fd.entrylength < sizeof(struct hfsplus_cat_file)) {
++			pr_err("bad catalog file entry\n");
++			res = -EIO;
++			goto out;
++		}
+ 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
+ 					sizeof(struct hfsplus_cat_file));
+ 		hfsplus_inode_write_fork(inode, &file->data_fork);
+@@ -611,5 +629,5 @@ int hfsplus_cat_write_inode(struct inode *inode)
+ 	set_bit(HFSPLUS_I_CAT_DIRTY, &HFSPLUS_I(inode)->flags);
+ out:
+ 	hfs_find_exit(&fd);
+-	return 0;
++	return res;
+ }
 -- 
 2.39.2
 
