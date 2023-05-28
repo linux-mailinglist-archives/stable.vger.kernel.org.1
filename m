@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D1F6713C79
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B399713D90
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjE1TPZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:15:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34794 "EHLO
+        id S230094AbjE1T0y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229752AbjE1TPZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:15:25 -0400
+        with ESMTP id S230092AbjE1T0v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5697C4;
-        Sun, 28 May 2023 12:15:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0466B10E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5831761985;
-        Sun, 28 May 2023 19:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760DFC4339B;
-        Sun, 28 May 2023 19:15:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83EE261C4A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB91C433D2;
+        Sun, 28 May 2023 19:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301322;
-        bh=qCM25N3wd9PFEAHJJI4BiACDhPBqY00Ba2+BKVg653E=;
+        s=korg; t=1685302000;
+        bh=18Ee4Bua2dfHZ4jRABEb/0P4YaMS84O3+6jsiP61PXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UHlp07ZIHHuAjgpK1e8tcoq7izMvP8Kjw56nqrkndSTRHpBEmhwux72coHuDn0h+F
-         YrsxFbKh50U6Ei2a3Z9fia4RnNY4vOOfMHTrmVx14NkHaV2IilGGzQgBsvewCzOLG/
-         iln2GDusr4e1ZbwKNu1v6/CxIkR0GNQVenIXUXI0=
+        b=qjIO8ZeSLkyFVc4d2DBiM93K1K2DUPHiIlIV6lBHoF81O/nb15EukwUyUEx1rUUBG
+         qBW1yRdinDu/MgYa5uaYTrzngfH9DPTgYeKiIxB7/okSx7vbpJ50QWGsWyi1Y60LbX
+         6L+T8i3pp0h4oXh9O931iPqsR1OnLH0ozI/BliNs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Andrew Paniakin <apanyaki@amazon.com>
-Subject: [PATCH 4.14 70/86] netfilter: nf_tables: fix register ordering
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        syzkaller <syzkaller@googlegroups.com>,
+        George Kennedy <george.kennedy@oracle.com>,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 120/161] vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF
 Date:   Sun, 28 May 2023 20:10:44 +0100
-Message-Id: <20230528190831.237501132@linuxfoundation.org>
+Message-Id: <20230528190840.850421420@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,60 +56,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: George Kennedy <george.kennedy@oracle.com>
 
-[ d209df3e7f7002d9099fdb0f6df0f972b4386a63 ]
+[ Upstream commit 8fb9ea65c9d1338b0d2bb0a9122dc942cdd32357 ]
 
-[ We hit the trace described in commit message with the
-kselftest/nft_trans_stress.sh. This patch diverges from the upstream one
-since kernel 4.14 does not have following symbols:
-nft_chain_filter_init, nf_tables_flowtable_notifier ]
+After a call to console_unlock() in vcs_write() the vc_data struct can be
+freed by vc_port_destruct(). Because of that, the struct vc_data pointer
+must be reloaded in the while loop in vcs_write() after console_lock() to
+avoid a UAF when vcs_size() is called.
 
-We must register nfnetlink ops last, as that exposes nf_tables to
-userspace.  Without this, we could theoretically get nfnetlink request
-before net->nft state has been initialized.
+Syzkaller reported a UAF in vcs_size().
 
-Fixes: 99633ab29b213 ("netfilter: nf_tables: complete net namespace support")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[apanyaki: backport to v4.14-stable]
-Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+BUG: KASAN: slab-use-after-free in vcs_size (drivers/tty/vt/vc_screen.c:215)
+Read of size 4 at addr ffff8880beab89a8 by task repro_vcs_size/4119
+
+Call Trace:
+ <TASK>
+__asan_report_load4_noabort (mm/kasan/report_generic.c:380)
+vcs_size (drivers/tty/vt/vc_screen.c:215)
+vcs_write (drivers/tty/vt/vc_screen.c:664)
+vfs_write (fs/read_write.c:582 fs/read_write.c:564)
+...
+ <TASK>
+
+Allocated by task 1213:
+kmalloc_trace (mm/slab_common.c:1064)
+vc_allocate (./include/linux/slab.h:559 ./include/linux/slab.h:680
+    drivers/tty/vt/vt.c:1078 drivers/tty/vt/vt.c:1058)
+con_install (drivers/tty/vt/vt.c:3334)
+tty_init_dev (drivers/tty/tty_io.c:1303 drivers/tty/tty_io.c:1415
+    drivers/tty/tty_io.c:1392)
+tty_open (drivers/tty/tty_io.c:2082 drivers/tty/tty_io.c:2128)
+chrdev_open (fs/char_dev.c:415)
+do_dentry_open (fs/open.c:921)
+vfs_open (fs/open.c:1052)
+...
+
+Freed by task 4116:
+kfree (mm/slab_common.c:1016)
+vc_port_destruct (drivers/tty/vt/vt.c:1044)
+tty_port_destructor (drivers/tty/tty_port.c:296)
+tty_port_put (drivers/tty/tty_port.c:312)
+vt_disallocate_all (drivers/tty/vt/vt_ioctl.c:662 (discriminator 2))
+vt_ioctl (drivers/tty/vt/vt_ioctl.c:903)
+tty_ioctl (drivers/tty/tty_io.c:2778)
+...
+
+The buggy address belongs to the object at ffff8880beab8800
+ which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 424 bytes inside of
+ freed 1024-byte region [ffff8880beab8800, ffff8880beab8c00)
+
+The buggy address belongs to the physical page:
+page:00000000afc77580 refcount:1 mapcount:0 mapping:0000000000000000
+    index:0x0 pfn:0xbeab8
+head:00000000afc77580 order:3 entire_mapcount:0 nr_pages_mapped:0
+    pincount:0
+flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: 0xffffffff()
+raw: 000fffffc0010200 ffff888100042dc0 ffffea000426de00 dead000000000002
+raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff8880beab8880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880beab8900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff8880beab8980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                  ^
+ ffff8880beab8a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8880beab8a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+Disabling lock debugging due to kernel taint
+
+Fixes: ac751efa6a0d ("console: rename acquire/release_console_sem() to console_lock/unlock()")
+Cc: stable <stable@kernel.org>
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/1683889728-10411-1-git-send-email-george.kennedy@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/tty/vt/vc_screen.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6105,18 +6105,25 @@ static int __init nf_tables_module_init(
- 		goto err1;
- 	}
+diff --git a/drivers/tty/vt/vc_screen.c b/drivers/tty/vt/vc_screen.c
+index 48d74269f1d59..a6813e3393ece 100644
+--- a/drivers/tty/vt/vc_screen.c
++++ b/drivers/tty/vt/vc_screen.c
+@@ -523,10 +523,17 @@ vcs_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+ 			}
+ 		}
  
--	err = nf_tables_core_module_init();
-+	err = register_pernet_subsys(&nf_tables_net_ops);
- 	if (err < 0)
- 		goto err2;
- 
--	err = nfnetlink_subsys_register(&nf_tables_subsys);
-+	err = nf_tables_core_module_init();
- 	if (err < 0)
- 		goto err3;
- 
-+	/* must be last */
-+	err = nfnetlink_subsys_register(&nf_tables_subsys);
-+	if (err < 0)
-+		goto err4;
-+
- 	pr_info("nf_tables: (c) 2007-2009 Patrick McHardy <kaber@trash.net>\n");
--	return register_pernet_subsys(&nf_tables_net_ops);
--err3:
-+	return err;
-+err4:
- 	nf_tables_core_module_exit();
-+err3:
-+	unregister_pernet_subsys(&nf_tables_net_ops);
- err2:
- 	kfree(info);
- err1:
+-		/* The vcs_size might have changed while we slept to grab
+-		 * the user buffer, so recheck.
++		/* The vc might have been freed or vcs_size might have changed
++		 * while we slept to grab the user buffer, so recheck.
+ 		 * Return data written up to now on failure.
+ 		 */
++		vc = vcs_vc(inode, &viewed);
++		if (!vc) {
++			if (written)
++				break;
++			ret = -ENXIO;
++			goto unlock_out;
++		}
+ 		size = vcs_size(vc, attr, false);
+ 		if (size < 0) {
+ 			if (written)
+-- 
+2.39.2
+
 
 
