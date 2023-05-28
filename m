@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 898BB713C4F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44AE8713E05
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjE1TOP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
+        id S230237AbjE1TbI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjE1TOP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC58DC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:07 -0700 (PDT)
+        with ESMTP id S230238AbjE1TbH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53D34B1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF89E61927
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D4DC433EF;
-        Sun, 28 May 2023 19:14:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7ED061D63
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007FFC433D2;
+        Sun, 28 May 2023 19:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301246;
-        bh=SJjX2uqS/9D2+GfOT/eA9XkhtSUgjCUqjjkzu3b651Q=;
+        s=korg; t=1685302265;
+        bh=i6FBoeECACKt1pvh281YTXRR4k/KDad4V/Zf/tzrb6o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p0PWPbpyPyVGsdSEISvUHPD4QBYrVEktP6Y6a+aHibX5dOJ3CPxD8egb9cVanBtOo
-         v2hePQKLd3VXvKMVn7jbeFlZRMA3RM72k/bZkwEbICL6QqRSlbT6hoCNAZ1JPYwxhi
-         gbWx5uhWr+YsHfPa5rZTo2xr13xlUrwF6DSmwqiU=
+        b=S1tnXajGElTqbU5p0sB254zyoyhONj3pB7dTiRb5uI4cgnzLtoir4ee+vp91U0aw5
+         44LYeBSyW28ZN2H7C3Mvo7CoBYRZZzteq/7mxJCKnZCQVdArypVLsvOj00RbSfBdFS
+         mWoOyfj2u7W0/ysPm+j9ze7Ync5UqIrEihCbAD54=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tobias Brunner <tobias@strongswan.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 39/86] af_key: Reject optional tunnel/BEET mode templates in outbound policies
+        patches@lists.linux.dev, Dave Chinner <dchinner@redhat.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Brian Foster <bfoster@redhat.com>
+Subject: [PATCH 6.3 037/127] xfs: fix livelock in delayed allocation at ENOSPC
 Date:   Sun, 28 May 2023 20:10:13 +0100
-Message-Id: <20230528190830.049209673@linuxfoundation.org>
+Message-Id: <20230528190837.533619394@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,70 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tobias Brunner <tobias@strongswan.org>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit cf3128a7aca55b2eefb68281d44749c683bdc96f ]
+commit 9419092fb2630c30e4ffeb9ef61007ef0c61827a upstream.
 
-xfrm_state_find() uses `encap_family` of the current template with
-the passed local and remote addresses to find a matching state.
-If an optional tunnel or BEET mode template is skipped in a mixed-family
-scenario, there could be a mismatch causing an out-of-bounds read as
-the addresses were not replaced to match the family of the next template.
+On a filesystem with a non-zero stripe unit and a large sequential
+write, delayed allocation will set a minimum allocation length of
+the stripe unit. If allocation fails because there are no extents
+long enough for an aligned minlen allocation, it is supposed to
+fall back to unaligned allocation which allows single block extents
+to be allocated.
 
-While there are theoretical use cases for optional templates in outbound
-policies, the only practical one is to skip IPComp states in inbound
-policies if uncompressed packets are received that are handled by an
-implicitly created IPIP state instead.
+When the allocator code was rewritting in the 6.3 cycle, this
+fallback was broken - the old code used args->fsbno as the both the
+allocation target and the allocation result, the new code passes the
+target as a separate parameter. The conversion didn't handle the
+aligned->unaligned fallback path correctly - it reset args->fsbno to
+the target fsbno on failure which broke allocation failure detection
+in the high level code and so it never fell back to unaligned
+allocations.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Tobias Brunner <tobias@strongswan.org>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This resulted in a loop in writeback trying to allocate an aligned
+block, getting a false positive success, trying to insert the result
+in the BMBT. This did nothing because the extent already was in the
+BMBT (merge results in an unchanged extent) and so it returned the
+prior extent to the conversion code as the current iomap.
+
+Because the iomap returned didn't cover the offset we tried to map,
+xfs_convert_blocks() then retries the allocation, which fails in the
+same way and now we have a livelock.
+
+Reported-and-tested-by: Brian Foster <bfoster@redhat.com>
+Fixes: 85843327094f ("xfs: factor xfs_bmap_btalloc()")
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/key/af_key.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/xfs/libxfs/xfs_bmap.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index 09a0ea651f577..49813e6d05ed7 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -1950,7 +1950,8 @@ static u32 gen_reqid(struct net *net)
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -3505,7 +3505,6 @@ xfs_bmap_btalloc_at_eof(
+ 	 * original non-aligned state so the caller can proceed on allocation
+ 	 * failure as if this function was never called.
+ 	 */
+-	args->fsbno = ap->blkno;
+ 	args->alignment = 1;
+ 	return 0;
  }
- 
- static int
--parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_ipsecrequest *rq)
-+parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_policy *pol,
-+		   struct sadb_x_ipsecrequest *rq)
- {
- 	struct net *net = xp_net(xp);
- 	struct xfrm_tmpl *t = xp->xfrm_vec + xp->xfrm_nr;
-@@ -1968,9 +1969,12 @@ parse_ipsecrequest(struct xfrm_policy *xp, struct sadb_x_ipsecrequest *rq)
- 	if ((mode = pfkey_mode_to_xfrm(rq->sadb_x_ipsecrequest_mode)) < 0)
- 		return -EINVAL;
- 	t->mode = mode;
--	if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_USE)
-+	if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_USE) {
-+		if ((mode == XFRM_MODE_TUNNEL || mode == XFRM_MODE_BEET) &&
-+		    pol->sadb_x_policy_dir == IPSEC_DIR_OUTBOUND)
-+			return -EINVAL;
- 		t->optional = 1;
--	else if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_UNIQUE) {
-+	} else if (rq->sadb_x_ipsecrequest_level == IPSEC_LEVEL_UNIQUE) {
- 		t->reqid = rq->sadb_x_ipsecrequest_reqid;
- 		if (t->reqid > IPSEC_MANUAL_REQID_MAX)
- 			t->reqid = 0;
-@@ -2012,7 +2016,7 @@ parse_ipsecrequests(struct xfrm_policy *xp, struct sadb_x_policy *pol)
- 		    rq->sadb_x_ipsecrequest_len < sizeof(*rq))
- 			return -EINVAL;
- 
--		if ((err = parse_ipsecrequest(xp, rq)) < 0)
-+		if ((err = parse_ipsecrequest(xp, pol, rq)) < 0)
- 			return err;
- 		len -= rq->sadb_x_ipsecrequest_len;
- 		rq = (void*)((u8*)rq + rq->sadb_x_ipsecrequest_len);
--- 
-2.39.2
-
 
 
