@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3526713F39
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E0A713DFA
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231209AbjE1TnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58422 "EHLO
+        id S230226AbjE1Tar (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231206AbjE1TnP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A64A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:13 -0700 (PDT)
+        with ESMTP id S230225AbjE1Taq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 209C0F4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4C9A61F13
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3495C4339E;
-        Sun, 28 May 2023 19:43:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A373E61D4A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1476C433EF;
+        Sun, 28 May 2023 19:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302992;
-        bh=Q2MFxnOA5XJ19UZeafyACZ3xgh6OMdVVdIJWHzVUdYY=;
+        s=korg; t=1685302238;
+        bh=RRqZ1TgbI249GOFaj8WbfBJR8wLUs2OPLIPtG60PmYI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jVLUb+26JH3i31UBlyO5ZoIX+9AxY6yi26LM5QDF4m+MHn/i03ZaKZSxXAz2Q6iDD
-         vPnpnZDosgLSsmNy9Aitzw0th4wf4Rg5kmhwgR3SoLG8r+UXvo8lQojY/G4MmHyRcX
-         rpqEwT8f54oDuacwFDQdevcJur7bII2XFBOWFO2c=
+        b=SA+0nGUrROqJG9T0klY7j51cOhogiEnEFm7rxnZg9PyqAahjVetLeWvwFewXyIXmz
+         iqn1iBvXAcjvidxyt1Ip4/LzRm1loz0EgRXFRzbndsHnHHTtZo6cLS95/7PFeZ8ldQ
+         +N6gPsP7LX7Sgu1C3cvIA1gIN0zgONAmWHhQu4xI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/211] net/tipc: fix tipc header files for kernel-doc
+        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Yang Shi <yang.shi@linux.alibaba.com>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Carlos Llamas <cmllamas@google.com>,
+        Todd Kjos <tkjos@google.com>
+Subject: [PATCH 6.3 054/127] binder: fix UAF of alloc->vma in race with munmap()
 Date:   Sun, 28 May 2023 20:10:30 +0100
-Message-Id: <20230528190846.282410431@linuxfoundation.org>
+Message-Id: <20230528190838.125558868@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,200 +57,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit ff10527e89826aaf76480ee47e6fd05213189963 ]
+commit d1d8875c8c13517f6fd1ff8d4d3e1ac366a17e07 upstream.
 
-Fix tipc header files for adding to the networking docbook.
+[ cmllamas: clean forward port from commit 015ac18be7de ("binder: fix
+  UAF of alloc->vma in race with munmap()") in 5.10 stable. It is needed
+  in mainline after the revert of commit a43cfc87caaf ("android: binder:
+  stop saving a pointer to the VMA") as pointed out by Liam. The commit
+  log and tags have been tweaked to reflect this. ]
 
-Remove some uses of "/**" that were not kernel-doc notation.
+In commit 720c24192404 ("ANDROID: binder: change down_write to
+down_read") binder assumed the mmap read lock is sufficient to protect
+alloc->vma inside binder_update_page_range(). This used to be accurate
+until commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
+munmap"), which now downgrades the mmap_lock after detaching the vma
+from the rbtree in munmap(). Then it proceeds to teardown and free the
+vma with only the read lock held.
 
-Fix some source formatting to eliminate Sphinx warnings.
+This means that accesses to alloc->vma in binder_update_page_range() now
+will race with vm_area_free() in munmap() and can cause a UAF as shown
+in the following KASAN trace:
 
-Add missing struct member and function argument kernel-doc descriptions.
+  ==================================================================
+  BUG: KASAN: use-after-free in vm_insert_page+0x7c/0x1f0
+  Read of size 8 at addr ffff16204ad00600 by task server/558
 
-Correct the description of a couple of struct members that were
-marked as "(FIXME)".
+  CPU: 3 PID: 558 Comm: server Not tainted 5.10.150-00001-gdc8dcf942daa #1
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x0/0x2a0
+   show_stack+0x18/0x2c
+   dump_stack+0xf8/0x164
+   print_address_description.constprop.0+0x9c/0x538
+   kasan_report+0x120/0x200
+   __asan_load8+0xa0/0xc4
+   vm_insert_page+0x7c/0x1f0
+   binder_update_page_range+0x278/0x50c
+   binder_alloc_new_buf+0x3f0/0xba0
+   binder_transaction+0x64c/0x3040
+   binder_thread_write+0x924/0x2020
+   binder_ioctl+0x1610/0x2e5c
+   __arm64_sys_ioctl+0xd4/0x120
+   el0_svc_common.constprop.0+0xac/0x270
+   do_el0_svc+0x38/0xa0
+   el0_svc+0x1c/0x2c
+   el0_sync_handler+0xe8/0x114
+   el0_sync+0x180/0x1c0
 
-Documentation/networking/tipc:18: ../net/tipc/name_table.h:65: WARNING: Unexpected indentation.
-Documentation/networking/tipc:18: ../net/tipc/name_table.h:66: WARNING: Block quote ends without a blank line; unexpected unindent.
+  Allocated by task 559:
+   kasan_save_stack+0x38/0x6c
+   __kasan_kmalloc.constprop.0+0xe4/0xf0
+   kasan_slab_alloc+0x18/0x2c
+   kmem_cache_alloc+0x1b0/0x2d0
+   vm_area_alloc+0x28/0x94
+   mmap_region+0x378/0x920
+   do_mmap+0x3f0/0x600
+   vm_mmap_pgoff+0x150/0x17c
+   ksys_mmap_pgoff+0x284/0x2dc
+   __arm64_sys_mmap+0x84/0xa4
+   el0_svc_common.constprop.0+0xac/0x270
+   do_el0_svc+0x38/0xa0
+   el0_svc+0x1c/0x2c
+   el0_sync_handler+0xe8/0x114
+   el0_sync+0x180/0x1c0
 
-../net/tipc/bearer.h:128: warning: Function parameter or member 'min_win' not described in 'tipc_media'
-../net/tipc/bearer.h:128: warning: Function parameter or member 'max_win' not described in 'tipc_media'
+  Freed by task 560:
+   kasan_save_stack+0x38/0x6c
+   kasan_set_track+0x28/0x40
+   kasan_set_free_info+0x24/0x4c
+   __kasan_slab_free+0x100/0x164
+   kasan_slab_free+0x14/0x20
+   kmem_cache_free+0xc4/0x34c
+   vm_area_free+0x1c/0x2c
+   remove_vma+0x7c/0x94
+   __do_munmap+0x358/0x710
+   __vm_munmap+0xbc/0x130
+   __arm64_sys_munmap+0x4c/0x64
+   el0_svc_common.constprop.0+0xac/0x270
+   do_el0_svc+0x38/0xa0
+   el0_svc+0x1c/0x2c
+   el0_sync_handler+0xe8/0x114
+   el0_sync+0x180/0x1c0
 
-../net/tipc/bearer.h:171: warning: Function parameter or member 'min_win' not described in 'tipc_bearer'
-../net/tipc/bearer.h:171: warning: Function parameter or member 'max_win' not described in 'tipc_bearer'
-../net/tipc/bearer.h:171: warning: Function parameter or member 'disc' not described in 'tipc_bearer'
-../net/tipc/bearer.h:171: warning: Function parameter or member 'up' not described in 'tipc_bearer'
-../net/tipc/bearer.h:171: warning: Function parameter or member 'refcnt' not described in 'tipc_bearer'
+  [...]
+  ==================================================================
 
-../net/tipc/name_distr.h:68: warning: Function parameter or member 'port' not described in 'distr_item'
+To prevent the race above, revert back to taking the mmap write lock
+inside binder_update_page_range(). One might expect an increase of mmap
+lock contention. However, binder already serializes these calls via top
+level alloc->mutex. Also, there was no performance impact shown when
+running the binder benchmark tests.
 
-../net/tipc/name_table.h:111: warning: Function parameter or member 'services' not described in 'name_table'
-../net/tipc/name_table.h:111: warning: Function parameter or member 'cluster_scope_lock' not described in 'name_table'
-../net/tipc/name_table.h:111: warning: Function parameter or member 'rc_dests' not described in 'name_table'
-../net/tipc/name_table.h:111: warning: Function parameter or member 'snd_nxt' not described in 'name_table'
-
-../net/tipc/subscr.h:67: warning: Function parameter or member 'kref' not described in 'tipc_subscription'
-../net/tipc/subscr.h:67: warning: Function parameter or member 'net' not described in 'tipc_subscription'
-../net/tipc/subscr.h:67: warning: Function parameter or member 'service_list' not described in 'tipc_subscription'
-../net/tipc/subscr.h:67: warning: Function parameter or member 'conid' not described in 'tipc_subscription'
-../net/tipc/subscr.h:67: warning: Function parameter or member 'inactive' not described in 'tipc_subscription'
-../net/tipc/subscr.h:67: warning: Function parameter or member 'lock' not described in 'tipc_subscription'
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 56077b56cd3f ("tipc: do not update mtu if msg_max is too small in mtu negotiation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c0fd2101781e ("Revert "android: binder: stop saving a pointer to the VMA"")
+Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/all/20230518144052.xkj6vmddccq4v66b@revolver
+Cc: <stable@vger.kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yang Shi <yang.shi@linux.alibaba.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Acked-by: Todd Kjos <tkjos@google.com>
+Link: https://lore.kernel.org/r/20230519195950.1775656-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/bearer.h     | 10 +++++++---
- net/tipc/crypto.h     |  6 +++---
- net/tipc/name_distr.h |  2 +-
- net/tipc/name_table.h |  9 ++++++---
- net/tipc/subscr.h     | 11 +++++++----
- 5 files changed, 24 insertions(+), 14 deletions(-)
+ drivers/android/binder_alloc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-index bc0023119da2f..6bf4550aa1ac1 100644
---- a/net/tipc/bearer.h
-+++ b/net/tipc/bearer.h
-@@ -93,7 +93,8 @@ struct tipc_bearer;
-  * @raw2addr: convert from raw addr format to media addr format
-  * @priority: default link (and bearer) priority
-  * @tolerance: default time (in ms) before declaring link failure
-- * @window: default window (in packets) before declaring link congestion
-+ * @min_win: minimum window (in packets) before declaring link congestion
-+ * @max_win: maximum window (in packets) before declaring link congestion
-  * @mtu: max packet size bearer can support for media type not dependent on
-  * underlying device MTU
-  * @type_id: TIPC media identifier
-@@ -138,12 +139,15 @@ struct tipc_media {
-  * @pt: packet type for bearer
-  * @rcu: rcu struct for tipc_bearer
-  * @priority: default link priority for bearer
-- * @window: default window size for bearer
-+ * @min_win: minimum window (in packets) before declaring link congestion
-+ * @max_win: maximum window (in packets) before declaring link congestion
-  * @tolerance: default link tolerance for bearer
-  * @domain: network domain to which links can be established
-  * @identity: array index of this bearer within TIPC bearer array
-- * @link_req: ptr to (optional) structure making periodic link setup requests
-+ * @disc: ptr to link setup request
-  * @net_plane: network plane ('A' through 'H') currently associated with bearer
-+ * @up: bearer up flag (bit 0)
-+ * @refcnt: tipc_bearer reference counter
-  *
-  * Note: media-specific code is responsible for initialization of the fields
-  * indicated below when a bearer is enabled; TIPC's generic bearer code takes
-diff --git a/net/tipc/crypto.h b/net/tipc/crypto.h
-index e71193bd5e369..ce7d4cc8a9e0c 100644
---- a/net/tipc/crypto.h
-+++ b/net/tipc/crypto.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/**
-+/*
-  * net/tipc/crypto.h: Include file for TIPC crypto
-  *
-  * Copyright (c) 2019, Ericsson AB
-@@ -53,7 +53,7 @@
- #define TIPC_AES_GCM_IV_SIZE		12
- #define TIPC_AES_GCM_TAG_SIZE		16
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -212,7 +212,7 @@ static int binder_update_page_range(stru
+ 		mm = alloc->mm;
  
--/**
-+/*
-  * TIPC crypto modes:
-  * - CLUSTER_KEY:
-  *	One single key is used for both TX & RX in all nodes in the cluster.
-@@ -69,7 +69,7 @@ enum {
- extern int sysctl_tipc_max_tfms __read_mostly;
- extern int sysctl_tipc_key_exchange_enabled __read_mostly;
+ 	if (mm) {
+-		mmap_read_lock(mm);
++		mmap_write_lock(mm);
+ 		vma = alloc->vma;
+ 	}
  
--/**
-+/*
-  * TIPC encryption message format:
-  *
-  *     3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
-diff --git a/net/tipc/name_distr.h b/net/tipc/name_distr.h
-index 092323158f060..e231e6964d611 100644
---- a/net/tipc/name_distr.h
-+++ b/net/tipc/name_distr.h
-@@ -46,7 +46,7 @@
-  * @type: name sequence type
-  * @lower: name sequence lower bound
-  * @upper: name sequence upper bound
-- * @ref: publishing port reference
-+ * @port: publishing port reference
-  * @key: publication key
-  *
-  * ===> All fields are stored in network byte order. <===
-diff --git a/net/tipc/name_table.h b/net/tipc/name_table.h
-index 8064e1986e2c8..5a82a01369d67 100644
---- a/net/tipc/name_table.h
-+++ b/net/tipc/name_table.h
-@@ -60,8 +60,8 @@ struct tipc_group;
-  * @key: publication key, unique across the cluster
-  * @id: publication id
-  * @binding_node: all publications from the same node which bound this one
-- * - Remote publications: in node->publ_list
-- *   Used by node/name distr to withdraw publications when node is lost
-+ * - Remote publications: in node->publ_list;
-+ * Used by node/name distr to withdraw publications when node is lost
-  * - Local/node scope publications: in name_table->node_scope list
-  * - Local/cluster scope publications: in name_table->cluster_scope list
-  * @binding_sock: all publications from the same socket which bound this one
-@@ -92,13 +92,16 @@ struct publication {
- 
- /**
-  * struct name_table - table containing all existing port name publications
-- * @seq_hlist: name sequence hash lists
-+ * @services: name sequence hash lists
-  * @node_scope: all local publications with node scope
-  *               - used by name_distr during re-init of name table
-  * @cluster_scope: all local publications with cluster scope
-  *               - used by name_distr to send bulk updates to new nodes
-  *               - used by name_distr during re-init of name table
-+ * @cluster_scope_lock: lock for accessing @cluster_scope
-  * @local_publ_count: number of publications issued by this node
-+ * @rc_dests: destination node counter
-+ * @snd_nxt: next sequence number to be used
-  */
- struct name_table {
- 	struct hlist_head services[TIPC_NAMETBL_SIZE];
-diff --git a/net/tipc/subscr.h b/net/tipc/subscr.h
-index 6ebbec1bedd1a..63bdce9358fe6 100644
---- a/net/tipc/subscr.h
-+++ b/net/tipc/subscr.h
-@@ -47,12 +47,15 @@ struct tipc_conn;
- 
- /**
-  * struct tipc_subscription - TIPC network topology subscription object
-- * @subscriber: pointer to its subscriber
-- * @seq: name sequence associated with subscription
-+ * @kref: reference count for this subscription
-+ * @net: network namespace associated with subscription
-  * @timer: timer governing subscription duration (optional)
-- * @nameseq_list: adjacent subscriptions in name sequence's subscription list
-+ * @service_list: adjacent subscriptions in name sequence's subscription list
-  * @sub_list: adjacent subscriptions in subscriber's subscription list
-  * @evt: template for events generated by subscription
-+ * @conid: connection identifier of topology server
-+ * @inactive: true if this subscription is inactive
-+ * @lock: serialize up/down and timer events
-  */
- struct tipc_subscription {
- 	struct kref kref;
-@@ -63,7 +66,7 @@ struct tipc_subscription {
- 	struct tipc_event evt;
- 	int conid;
- 	bool inactive;
--	spinlock_t lock; /* serialize up/down and timer events */
-+	spinlock_t lock;
- };
- 
- struct tipc_subscription *tipc_sub_subscribe(struct net *net,
--- 
-2.39.2
-
+@@ -270,7 +270,7 @@ static int binder_update_page_range(stru
+ 		trace_binder_alloc_page_end(alloc, index);
+ 	}
+ 	if (mm) {
+-		mmap_read_unlock(mm);
++		mmap_write_unlock(mm);
+ 		mmput(mm);
+ 	}
+ 	return 0;
+@@ -303,7 +303,7 @@ err_page_ptr_cleared:
+ 	}
+ err_no_vma:
+ 	if (mm) {
+-		mmap_read_unlock(mm);
++		mmap_write_unlock(mm);
+ 		mmput(mm);
+ 	}
+ 	return vma ? -ENOMEM : -ESRCH;
 
 
