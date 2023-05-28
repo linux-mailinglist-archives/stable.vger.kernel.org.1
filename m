@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB85E713CBE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CC8713DC7
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbjE1TSL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37336 "EHLO
+        id S230161AbjE1T2x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjE1TSK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:10 -0400
+        with ESMTP id S230143AbjE1T2w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4D7E1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AAFAA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1756061A2A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335CAC433D2;
-        Sun, 28 May 2023 19:18:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11A6A61D0A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B562C433EF;
+        Sun, 28 May 2023 19:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301486;
-        bh=GyKS/StQHbvVydPVGyto5KjCAvzWubzDkTCDzemEp3Q=;
+        s=korg; t=1685302129;
+        bh=2q7wgJ2rTXpnnQuOtI06xvZXFfgFbae/YxtHR0ceDVQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tbhEY5dG7XIbeFTgyy/p6FCzpygWwQdjDLDWbX9/BNevZd36bB2bCuwPeKWh6/i3K
-         w707fGOlva3Jugw/YyWRHd0VM7p4fINDGTBcG8OUAMA4OF8a+Gbi/qz9j5If90lrug
-         snZ8MsSIIwzva8LNK8IXUtGERORrCBPXk5+Cdgo8=
+        b=ZkhkvEaQHI3xOvFzk3d5vPShFTdKF0Npc5sjRhH73USC/qaGU6geF4Db4L7M0RxHN
+         kfMahKg7LvAlFtb/DJA9Qoegkgc9Q8h+vKdFSQvFc4h4pQk4oCORvJceamesyOtzsi
+         gNZMXvhOHX92GrXoTNplc9wVsKRZG8qsHfTtLCeY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 048/132] btrfs: fix space cache inconsistency after error loading it from disk
+        patches@lists.linux.dev,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Tarun Sahu <tsahu@linux.ibm.com>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Piyush Sachdeva <piyushs@linux.ibm.com>
+Subject: [PATCH 6.3 011/127] mm/vmemmap/devdax: fix kernel crash when probing devdax devices
 Date:   Sun, 28 May 2023 20:09:47 +0100
-Message-Id: <20230528190835.049562078@linuxfoundation.org>
+Message-Id: <20230528190836.576332411@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +60,153 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-[ Upstream commit 0004ff15ea26015a0a3a6182dca3b9d1df32e2b7 ]
+commit 87a7ae75d7383afa998f57656d1d14e2a730cc47 upstream.
 
-When loading a free space cache from disk, at __load_free_space_cache(),
-if we fail to insert a bitmap entry, we still increment the number of
-total bitmaps in the btrfs_free_space_ctl structure, which is incorrect
-since we failed to add the bitmap entry. On error we then empty the
-cache by calling __btrfs_remove_free_space_cache(), which will result
-in getting the total bitmaps counter set to 1.
+commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory savings for
+compound devmaps") added support for using optimized vmmemap for devdax
+devices.  But how vmemmap mappings are created are architecture specific.
+For example, powerpc with hash translation doesn't have vmemmap mappings
+in init_mm page table instead they are bolted table entries in the
+hardware page table
 
-A failure to load a free space cache is not critical, so if a failure
-happens we just rebuild the cache by scanning the extent tree, which
-happens at block-group.c:caching_thread(). Yet the failure will result
-in having the total bitmaps of the btrfs_free_space_ctl always bigger
-by 1 then the number of bitmap entries we have. So fix this by having
-the total bitmaps counter be incremented only if we successfully added
-the bitmap entry.
+vmemmap_populate_compound_pages() used by vmemmap optimization code is not
+aware of these architecture-specific mapping.  Hence allow architecture to
+opt for this feature.  I selected architectures supporting
+HUGETLB_PAGE_OPTIMIZE_VMEMMAP option as also supporting this feature.
 
-Fixes: a67509c30079 ("Btrfs: add a io_ctl struct and helpers for dealing with the space cache")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-CC: stable@vger.kernel.org # 4.4+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the below crash on ppc64.
+
+BUG: Unable to handle kernel data access on write at 0xc00c000100400038
+Faulting instruction address: 0xc000000001269d90
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+Modules linked in:
+CPU: 7 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc5-150500.34-default+ #2 5c90a668b6bbd142599890245c2fb5de19d7d28a
+Hardware name: IBM,9009-42G POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.40 (VL950_099) hv:phyp pSeries
+NIP:  c000000001269d90 LR: c0000000004c57d4 CTR: 0000000000000000
+REGS: c000000003632c30 TRAP: 0300   Not tainted  (6.3.0-rc5-150500.34-default+)
+MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24842228  XER: 00000000
+CFAR: c0000000004c57d0 DAR: c00c000100400038 DSISR: 42000000 IRQMASK: 0
+....
+NIP [c000000001269d90] __init_single_page.isra.74+0x14/0x4c
+LR [c0000000004c57d4] __init_zone_device_page+0x44/0xd0
+Call Trace:
+[c000000003632ed0] [c000000003632f60] 0xc000000003632f60 (unreliable)
+[c000000003632f10] [c0000000004c5ca0] memmap_init_zone_device+0x170/0x250
+[c000000003632fe0] [c0000000005575f8] memremap_pages+0x2c8/0x7f0
+[c0000000036330c0] [c000000000557b5c] devm_memremap_pages+0x3c/0xa0
+[c000000003633100] [c000000000d458a8] dev_dax_probe+0x108/0x3e0
+[c0000000036331a0] [c000000000d41430] dax_bus_probe+0xb0/0x140
+[c0000000036331d0] [c000000000cef27c] really_probe+0x19c/0x520
+[c000000003633260] [c000000000cef6b4] __driver_probe_device+0xb4/0x230
+[c0000000036332e0] [c000000000cef888] driver_probe_device+0x58/0x120
+[c000000003633320] [c000000000cefa6c] __device_attach_driver+0x11c/0x1e0
+[c0000000036333a0] [c000000000cebc58] bus_for_each_drv+0xa8/0x130
+[c000000003633400] [c000000000ceefcc] __device_attach+0x15c/0x250
+[c0000000036334a0] [c000000000ced458] bus_probe_device+0x108/0x110
+[c0000000036334f0] [c000000000ce92dc] device_add+0x7fc/0xa10
+[c0000000036335b0] [c000000000d447c8] devm_create_dev_dax+0x1d8/0x530
+[c000000003633640] [c000000000d46b60] __dax_pmem_probe+0x200/0x270
+[c0000000036337b0] [c000000000d46bf0] dax_pmem_probe+0x20/0x70
+[c0000000036337d0] [c000000000d2279c] nvdimm_bus_probe+0xac/0x2b0
+[c000000003633860] [c000000000cef27c] really_probe+0x19c/0x520
+[c0000000036338f0] [c000000000cef6b4] __driver_probe_device+0xb4/0x230
+[c000000003633970] [c000000000cef888] driver_probe_device+0x58/0x120
+[c0000000036339b0] [c000000000cefd08] __driver_attach+0x1d8/0x240
+[c000000003633a30] [c000000000cebb04] bus_for_each_dev+0xb4/0x130
+[c000000003633a90] [c000000000cee564] driver_attach+0x34/0x50
+[c000000003633ab0] [c000000000ced878] bus_add_driver+0x218/0x300
+[c000000003633b40] [c000000000cf1144] driver_register+0xa4/0x1b0
+[c000000003633bb0] [c000000000d21a0c] __nd_driver_register+0x5c/0x100
+[c000000003633c10] [c00000000206a2e8] dax_pmem_init+0x34/0x48
+[c000000003633c30] [c0000000000132d0] do_one_initcall+0x60/0x320
+[c000000003633d00] [c0000000020051b0] kernel_init_freeable+0x360/0x400
+[c000000003633de0] [c000000000013764] kernel_init+0x34/0x1d0
+[c000000003633e50] [c00000000000de14] ret_from_kernel_thread+0x5c/0x64
+
+Link: https://lkml.kernel.org/r/20230411142214.64464-1-aneesh.kumar@linux.ibm.com
+Fixes: 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory savings for compound devmaps")
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Reported-by: Tarun Sahu <tsahu@linux.ibm.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Piyush Sachdeva <piyushs@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-cache.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/mm.h  |   16 ++++++++++++++++
+ mm/page_alloc.c     |   10 ++++++----
+ mm/sparse-vmemmap.c |    3 +--
+ 3 files changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 6511cb71986c9..b623e9f3b4c49 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -783,15 +783,16 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
- 			}
- 			spin_lock(&ctl->tree_lock);
- 			ret = link_free_space(ctl, e);
--			ctl->total_bitmaps++;
--			ctl->op->recalc_thresholds(ctl);
--			spin_unlock(&ctl->tree_lock);
- 			if (ret) {
-+				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
-+			ctl->total_bitmaps++;
-+			ctl->op->recalc_thresholds(ctl);
-+			spin_unlock(&ctl->tree_lock);
- 			list_add_tail(&e->list, &bitmaps);
- 		}
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3425,6 +3425,22 @@ void vmemmap_populate_print_last(void);
+ void vmemmap_free(unsigned long start, unsigned long end,
+ 		struct vmem_altmap *altmap);
+ #endif
++
++#ifdef CONFIG_ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
++static inline bool vmemmap_can_optimize(struct vmem_altmap *altmap,
++					   struct dev_pagemap *pgmap)
++{
++	return is_power_of_2(sizeof(struct page)) &&
++		pgmap && (pgmap_vmemmap_nr(pgmap) > 1) && !altmap;
++}
++#else
++static inline bool vmemmap_can_optimize(struct vmem_altmap *altmap,
++					   struct dev_pagemap *pgmap)
++{
++	return false;
++}
++#endif
++
+ void register_page_bootmem_memmap(unsigned long section_nr, struct page *map,
+ 				  unsigned long nr_pages);
  
--- 
-2.39.2
-
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6905,10 +6905,12 @@ static void __ref __init_zone_device_pag
+  * of an altmap. See vmemmap_populate_compound_pages().
+  */
+ static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
+-					      unsigned long nr_pages)
++					      struct dev_pagemap *pgmap)
+ {
+-	return is_power_of_2(sizeof(struct page)) &&
+-		!altmap ? 2 * (PAGE_SIZE / sizeof(struct page)) : nr_pages;
++	if (!vmemmap_can_optimize(altmap, pgmap))
++		return pgmap_vmemmap_nr(pgmap);
++
++	return 2 * (PAGE_SIZE / sizeof(struct page));
+ }
+ 
+ static void __ref memmap_init_compound(struct page *head,
+@@ -6973,7 +6975,7 @@ void __ref memmap_init_zone_device(struc
+ 			continue;
+ 
+ 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
+-				     compound_nr_pages(altmap, pfns_per_compound));
++				     compound_nr_pages(altmap, pgmap));
+ 	}
+ 
+ 	pr_info("%s initialised %lu pages in %ums\n", __func__,
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -458,8 +458,7 @@ struct page * __meminit __populate_secti
+ 		!IS_ALIGNED(nr_pages, PAGES_PER_SUBSECTION)))
+ 		return NULL;
+ 
+-	if (is_power_of_2(sizeof(struct page)) &&
+-	    pgmap && pgmap_vmemmap_nr(pgmap) > 1 && !altmap)
++	if (vmemmap_can_optimize(altmap, pgmap))
+ 		r = vmemmap_populate_compound_pages(pfn, start, end, nid, pgmap);
+ 	else
+ 		r = vmemmap_populate(start, end, nid, altmap);
 
 
