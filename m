@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D73C713F04
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF1E713C96
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231150AbjE1TlJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S229779AbjE1TQd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:16:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbjE1TlJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:41:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F350D9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:03 -0700 (PDT)
+        with ESMTP id S229786AbjE1TQc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E76FDC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C2E661ED1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586C8C433D2;
-        Sun, 28 May 2023 19:41:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF443619BA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE826C4339B;
+        Sun, 28 May 2023 19:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302862;
-        bh=WtAkYOp+p4PtgipB/QstJeJHuD4d8uxBARJy8/sgJ2s=;
+        s=korg; t=1685301389;
+        bh=iOCXSVpPo1H8kjRyU4F/rq1Wrf27mf5IoOBSEFrY0B4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vuq6S7T6Re0n5vk5U3dvf6aKOZGnD+zWA9YKvyfptld/uFRJC+CplSSCuaT3XhMOc
-         dVsMLGBE9tMgo13zv8i+5HeLbYKgFMdEu3hRl0F4tbGoyJdTndm3CBew25rRCG/tVN
-         4NlWDA50NaoK2Jx6HzkyRCR1ynnNuP861sG6bkRk=
+        b=wofQ+TDLUM0j19h8oZbMAM73PQZqr/i0vo/Rq4xsdQCrfXZ8xy1GDvVKRDrs0Egaw
+         rGuB648OgFqxsSIPTaohx4k8c0g/5BNdLMvqC7EXaxsS70ix5rh/CbAfSFcHPh/2e0
+         IBqkOhkuDiEe413/WXsKhEJoOOI9Lo921E6VXtZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+e2efa3efc15a1c9e95c3@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>, Jan Kara <jack@suse.cz>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/211] ext4: allow ext4_get_group_info() to fail
+Subject: [PATCH 4.19 011/132] af_unix: Fix data races around sk->sk_shutdown.
 Date:   Sun, 28 May 2023 20:09:10 +0100
-Message-Id: <20230528190844.244826071@linuxfoundation.org>
+Message-Id: <20230528190833.914777996@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,424 +57,151 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 5354b2af34064a4579be8bc0e2f15a7b70f14b5f ]
+[ Upstream commit e1d09c2c2f5793474556b60f83900e088d0d366d ]
 
-Previously, ext4_get_group_info() would treat an invalid group number
-as BUG(), since in theory it should never happen.  However, if a
-malicious attaker (or fuzzer) modifies the superblock via the block
-device while it is the file system is mounted, it is possible for
-s_first_data_block to get set to a very large number.  In that case,
-when calculating the block group of some block number (such as the
-starting block of a preallocation region), could result in an
-underflow and very large block group number.  Then the BUG_ON check in
-ext4_get_group_info() would fire, resutling in a denial of service
-attack that can be triggered by root or someone with write access to
-the block device.
+KCSAN found a data race around sk->sk_shutdown where unix_release_sock()
+and unix_shutdown() update it under unix_state_lock(), OTOH unix_poll()
+and unix_dgram_poll() read it locklessly.
 
-For a quality of implementation perspective, it's best that even if
-the system administrator does something that they shouldn't, that it
-will not trigger a BUG.  So instead of BUG'ing, ext4_get_group_info()
-will call ext4_error and return NULL.  We also add fallback code in
-all of the callers of ext4_get_group_info() that it might NULL.
+We need to annotate the writes and reads with WRITE_ONCE() and READ_ONCE().
 
-Also, since ext4_get_group_info() was already borderline to be an
-inline function, un-inline it.  The results in a next reduction of the
-compiled text size of ext4 by roughly 2k.
+BUG: KCSAN: data-race in unix_poll / unix_release_sock
 
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230430154311.579720-2-tytso@mit.edu
-Reported-by: syzbot+e2efa3efc15a1c9e95c3@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=69b28112e098b070f639efb356393af3ffec4220
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Reviewed-by: Jan Kara <jack@suse.cz>
+write to 0xffff88800d0f8aec of 1 bytes by task 264 on cpu 0:
+ unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
+ unix_release+0x59/0x80 net/unix/af_unix.c:1042
+ __sock_release+0x7d/0x170 net/socket.c:653
+ sock_close+0x19/0x30 net/socket.c:1397
+ __fput+0x179/0x5e0 fs/file_table.c:321
+ ____fput+0x15/0x20 fs/file_table.c:349
+ task_work_run+0x116/0x1a0 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
+ do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+read to 0xffff88800d0f8aec of 1 bytes by task 222 on cpu 1:
+ unix_poll+0xa3/0x2a0 net/unix/af_unix.c:3170
+ sock_poll+0xcf/0x2b0 net/socket.c:1385
+ vfs_poll include/linux/poll.h:88 [inline]
+ ep_item_poll.isra.0+0x78/0xc0 fs/eventpoll.c:855
+ ep_send_events fs/eventpoll.c:1694 [inline]
+ ep_poll fs/eventpoll.c:1823 [inline]
+ do_epoll_wait+0x6c4/0xea0 fs/eventpoll.c:2258
+ __do_sys_epoll_wait fs/eventpoll.c:2270 [inline]
+ __se_sys_epoll_wait fs/eventpoll.c:2265 [inline]
+ __x64_sys_epoll_wait+0xcc/0x190 fs/eventpoll.c:2265
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+value changed: 0x00 -> 0x03
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 222 Comm: dbus-broker Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c  | 18 ++++++++++++-
- fs/ext4/ext4.h    | 15 ++---------
- fs/ext4/ialloc.c  | 12 ++++++---
- fs/ext4/mballoc.c | 64 +++++++++++++++++++++++++++++++++++++++--------
- fs/ext4/super.c   |  2 ++
- 5 files changed, 82 insertions(+), 29 deletions(-)
+ net/unix/af_unix.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index 50a0e90e8af9b..a43167042b6b1 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -319,6 +319,22 @@ static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
- 	return (next_zero_bit < bitmap_size ? next_zero_bit : 0);
- }
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 0b2d466fb8585..b0dcbb08e60db 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -536,7 +536,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 	/* Clear state */
+ 	unix_state_lock(sk);
+ 	sock_orphan(sk);
+-	sk->sk_shutdown = SHUTDOWN_MASK;
++	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+ 	path	     = u->path;
+ 	u->path.dentry = NULL;
+ 	u->path.mnt = NULL;
+@@ -554,7 +554,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 		if (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) {
+ 			unix_state_lock(skpair);
+ 			/* No more writes */
+-			skpair->sk_shutdown = SHUTDOWN_MASK;
++			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
+ 			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
+ 				skpair->sk_err = ECONNRESET;
+ 			unix_state_unlock(skpair);
+@@ -2551,7 +2551,7 @@ static int unix_shutdown(struct socket *sock, int mode)
+ 	++mode;
  
-+struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
-+					    ext4_group_t group)
-+{
-+	 struct ext4_group_info **grp_info;
-+	 long indexv, indexh;
-+
-+	 if (unlikely(group >= EXT4_SB(sb)->s_groups_count)) {
-+		 ext4_error(sb, "invalid group %u", group);
-+		 return NULL;
-+	 }
-+	 indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
-+	 indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
-+	 grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
-+	 return grp_info[indexh];
-+}
-+
- /*
-  * Return the block number which was discovered to be invalid, or 0 if
-  * the block bitmap is valid.
-@@ -393,7 +409,7 @@ static int ext4_validate_block_bitmap(struct super_block *sb,
- 
- 	if (buffer_verified(bh))
- 		return 0;
--	if (EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-+	if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
- 		return -EFSCORRUPTED;
- 
- 	ext4_lock_group(sb, block_group);
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 1de55d8e0d354..84a240025aa46 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -2551,6 +2551,8 @@ extern void ext4_check_blocks_bitmap(struct super_block *);
- extern struct ext4_group_desc * ext4_get_group_desc(struct super_block * sb,
- 						    ext4_group_t block_group,
- 						    struct buffer_head ** bh);
-+extern struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
-+						   ext4_group_t group);
- extern int ext4_should_retry_alloc(struct super_block *sb, int *retries);
- 
- extern struct buffer_head *ext4_read_block_bitmap_nowait(struct super_block *sb,
-@@ -3198,19 +3200,6 @@ static inline void ext4_isize_set(struct ext4_inode *raw_inode, loff_t i_size)
- 	raw_inode->i_size_high = cpu_to_le32(i_size >> 32);
- }
- 
--static inline
--struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
--					    ext4_group_t group)
--{
--	 struct ext4_group_info **grp_info;
--	 long indexv, indexh;
--	 BUG_ON(group >= EXT4_SB(sb)->s_groups_count);
--	 indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
--	 indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
--	 grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
--	 return grp_info[indexh];
--}
--
- /*
-  * Reading s_groups_count requires using smp_rmb() afterwards.  See
-  * the locking protocol documented in the comments of ext4_group_add()
-diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-index c53c9b1322049..d178543ca13f1 100644
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -91,7 +91,7 @@ static int ext4_validate_inode_bitmap(struct super_block *sb,
- 
- 	if (buffer_verified(bh))
- 		return 0;
--	if (EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
-+	if (!grp || EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
- 		return -EFSCORRUPTED;
- 
- 	ext4_lock_group(sb, block_group);
-@@ -293,7 +293,7 @@ void ext4_free_inode(handle_t *handle, struct inode *inode)
- 	}
- 	if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
- 		grp = ext4_get_group_info(sb, block_group);
--		if (unlikely(EXT4_MB_GRP_IBITMAP_CORRUPT(grp))) {
-+		if (!grp || unlikely(EXT4_MB_GRP_IBITMAP_CORRUPT(grp))) {
- 			fatal = -EFSCORRUPTED;
- 			goto error_return;
- 		}
-@@ -1045,7 +1045,7 @@ struct inode *__ext4_new_inode(handle_t *handle, struct inode *dir,
- 			 * Skip groups with already-known suspicious inode
- 			 * tables
- 			 */
--			if (EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
-+			if (!grp || EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
- 				goto next_group;
- 		}
- 
-@@ -1180,6 +1180,10 @@ struct inode *__ext4_new_inode(handle_t *handle, struct inode *dir,
- 
- 		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
- 			grp = ext4_get_group_info(sb, group);
-+			if (!grp) {
-+				err = -EFSCORRUPTED;
-+				goto out;
-+			}
- 			down_read(&grp->alloc_sem); /*
- 						     * protect vs itable
- 						     * lazyinit
-@@ -1523,7 +1527,7 @@ int ext4_init_inode_table(struct super_block *sb, ext4_group_t group,
- 	}
- 
- 	gdp = ext4_get_group_desc(sb, group, &group_desc_bh);
--	if (!gdp)
-+	if (!gdp || !grp)
- 		goto out;
- 
- 	/*
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 84d74ba02b378..f18aa35b82b04 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -684,6 +684,8 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 	MB_CHECK_ASSERT(e4b->bd_info->bb_fragments == fragments);
- 
- 	grp = ext4_get_group_info(sb, e4b->bd_group);
-+	if (!grp)
-+		return NULL;
- 	list_for_each(cur, &grp->bb_prealloc_list) {
- 		ext4_group_t groupnr;
- 		struct ext4_prealloc_space *pa;
-@@ -767,9 +769,9 @@ mb_set_largest_free_order(struct super_block *sb, struct ext4_group_info *grp)
- 
- static noinline_for_stack
- void ext4_mb_generate_buddy(struct super_block *sb,
--				void *buddy, void *bitmap, ext4_group_t group)
-+			    void *buddy, void *bitmap, ext4_group_t group,
-+			    struct ext4_group_info *grp)
+ 	unix_state_lock(sk);
+-	sk->sk_shutdown |= mode;
++	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | mode);
+ 	other = unix_peer(sk);
+ 	if (other)
+ 		sock_hold(other);
+@@ -2568,7 +2568,7 @@ static int unix_shutdown(struct socket *sock, int mode)
+ 		if (mode&SEND_SHUTDOWN)
+ 			peer_mode |= RCV_SHUTDOWN;
+ 		unix_state_lock(other);
+-		other->sk_shutdown |= peer_mode;
++		WRITE_ONCE(other->sk_shutdown, other->sk_shutdown | peer_mode);
+ 		unix_state_unlock(other);
+ 		other->sk_state_change(other);
+ 		if (peer_mode == SHUTDOWN_MASK)
+@@ -2687,16 +2687,18 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
  {
--	struct ext4_group_info *grp = ext4_get_group_info(sb, group);
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
- 	ext4_grpblk_t i = 0;
-@@ -889,6 +891,8 @@ static int ext4_mb_init_cache(struct page *page, char *incore, gfp_t gfp)
- 			break;
+ 	struct sock *sk = sock->sk;
+ 	__poll_t mask;
++	u8 shutdown;
  
- 		grinfo = ext4_get_group_info(sb, group);
-+		if (!grinfo)
-+			continue;
- 		/*
- 		 * If page is uptodate then we came here after online resize
- 		 * which added some new uninitialized group info structs, so
-@@ -954,6 +958,10 @@ static int ext4_mb_init_cache(struct page *page, char *incore, gfp_t gfp)
- 				group, page->index, i * blocksize);
- 			trace_ext4_mb_buddy_bitmap_load(sb, group);
- 			grinfo = ext4_get_group_info(sb, group);
-+			if (!grinfo) {
-+				err = -EFSCORRUPTED;
-+				goto out;
-+			}
- 			grinfo->bb_fragments = 0;
- 			memset(grinfo->bb_counters, 0,
- 			       sizeof(*grinfo->bb_counters) *
-@@ -964,7 +972,7 @@ static int ext4_mb_init_cache(struct page *page, char *incore, gfp_t gfp)
- 			ext4_lock_group(sb, group);
- 			/* init the buddy */
- 			memset(data, 0xff, blocksize);
--			ext4_mb_generate_buddy(sb, data, incore, group);
-+			ext4_mb_generate_buddy(sb, data, incore, group, grinfo);
- 			ext4_unlock_group(sb, group);
- 			incore = NULL;
- 		} else {
-@@ -1078,6 +1086,9 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
- 	might_sleep();
- 	mb_debug(sb, "init group %u\n", group);
- 	this_grp = ext4_get_group_info(sb, group);
-+	if (!this_grp)
-+		return -EFSCORRUPTED;
-+
- 	/*
- 	 * This ensures that we don't reinit the buddy cache
- 	 * page which map to the group from which we are already
-@@ -1152,6 +1163,8 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
++	shutdown = READ_ONCE(sk->sk_shutdown);
  
- 	blocks_per_page = PAGE_SIZE / sb->s_blocksize;
- 	grp = ext4_get_group_info(sb, group);
-+	if (!grp)
-+		return -EFSCORRUPTED;
+ 	/* exceptional events? */
+ 	if (sk->sk_err)
+ 		mask |= EPOLLERR;
+-	if (sk->sk_shutdown == SHUTDOWN_MASK)
++	if (shutdown == SHUTDOWN_MASK)
+ 		mask |= EPOLLHUP;
+-	if (sk->sk_shutdown & RCV_SHUTDOWN)
++	if (shutdown & RCV_SHUTDOWN)
+ 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
  
- 	e4b->bd_blkbits = sb->s_blocksize_bits;
- 	e4b->bd_info = grp;
-@@ -1864,6 +1877,8 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	struct ext4_group_info *grp = ext4_get_group_info(ac->ac_sb, group);
- 	struct ext4_free_extent ex;
+ 	/* readable? */
+@@ -2724,18 +2726,20 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
+ 	struct sock *sk = sock->sk, *other;
+ 	unsigned int writable;
+ 	__poll_t mask;
++	u8 shutdown;
  
-+	if (!grp)
-+		return -EFSCORRUPTED;
- 	if (!(ac->ac_flags & (EXT4_MB_HINT_TRY_GOAL | EXT4_MB_HINT_GOAL_ONLY)))
- 		return 0;
- 	if (grp->bb_free == 0)
-@@ -2088,7 +2103,7 @@ static bool ext4_mb_good_group(struct ext4_allocation_context *ac,
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
++	shutdown = READ_ONCE(sk->sk_shutdown);
  
- 	BUG_ON(cr < 0 || cr >= 4);
+ 	/* exceptional events? */
+ 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
+ 		mask |= EPOLLERR |
+ 			(sock_flag(sk, SOCK_SELECT_ERR_QUEUE) ? EPOLLPRI : 0);
  
--	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(grp)))
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(grp) || !grp))
- 		return false;
+-	if (sk->sk_shutdown & RCV_SHUTDOWN)
++	if (shutdown & RCV_SHUTDOWN)
+ 		mask |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
+-	if (sk->sk_shutdown == SHUTDOWN_MASK)
++	if (shutdown == SHUTDOWN_MASK)
+ 		mask |= EPOLLHUP;
  
- 	free = grp->bb_free;
-@@ -2151,6 +2166,8 @@ static int ext4_mb_good_group_nolock(struct ext4_allocation_context *ac,
- 	ext4_grpblk_t free;
- 	int ret = 0;
- 
-+	if (!grp)
-+		return -EFSCORRUPTED;
- 	if (sbi->s_mb_stats)
- 		atomic64_inc(&sbi->s_bal_cX_groups_considered[ac->ac_criteria]);
- 	if (should_lock)
-@@ -2223,7 +2240,7 @@ ext4_group_t ext4_mb_prefetch(struct super_block *sb, ext4_group_t group,
- 		 * prefetch once, so we avoid getblk() call, which can
- 		 * be expensive.
- 		 */
--		if (!EXT4_MB_GRP_TEST_AND_SET_READ(grp) &&
-+		if (gdp && grp && !EXT4_MB_GRP_TEST_AND_SET_READ(grp) &&
- 		    EXT4_MB_GRP_NEED_INIT(grp) &&
- 		    ext4_free_group_clusters(sb, gdp) > 0 &&
- 		    !(ext4_has_group_desc_csum(sb) &&
-@@ -2267,7 +2284,7 @@ void ext4_mb_prefetch_fini(struct super_block *sb, ext4_group_t group,
- 		group--;
- 		grp = ext4_get_group_info(sb, group);
- 
--		if (EXT4_MB_GRP_NEED_INIT(grp) &&
-+		if (grp && gdp && EXT4_MB_GRP_NEED_INIT(grp) &&
- 		    ext4_free_group_clusters(sb, gdp) > 0 &&
- 		    !(ext4_has_group_desc_csum(sb) &&
- 		      (gdp->bg_flags & cpu_to_le16(EXT4_BG_BLOCK_UNINIT)))) {
-@@ -2525,6 +2542,8 @@ static int ext4_mb_seq_groups_show(struct seq_file *seq, void *v)
- 		sizeof(struct ext4_group_info);
- 
- 	grinfo = ext4_get_group_info(sb, group);
-+	if (!grinfo)
-+		return 0;
- 	/* Load the group info in memory only if not already loaded. */
- 	if (unlikely(EXT4_MB_GRP_NEED_INIT(grinfo))) {
- 		err = ext4_mb_load_buddy(sb, group, &e4b);
-@@ -2535,7 +2554,7 @@ static int ext4_mb_seq_groups_show(struct seq_file *seq, void *v)
- 		buddy_loaded = 1;
- 	}
- 
--	memcpy(&sg, ext4_get_group_info(sb, group), i);
-+	memcpy(&sg, grinfo, i);
- 
- 	if (buddy_loaded)
- 		ext4_mb_unload_buddy(&e4b);
-@@ -2812,8 +2831,12 @@ static int ext4_mb_init_backend(struct super_block *sb)
- 
- err_freebuddy:
- 	cachep = get_groupinfo_cache(sb->s_blocksize_bits);
--	while (i-- > 0)
--		kmem_cache_free(cachep, ext4_get_group_info(sb, i));
-+	while (i-- > 0) {
-+		struct ext4_group_info *grp = ext4_get_group_info(sb, i);
-+
-+		if (grp)
-+			kmem_cache_free(cachep, grp);
-+	}
- 	i = sbi->s_group_info_size;
- 	rcu_read_lock();
- 	group_info = rcu_dereference(sbi->s_group_info);
-@@ -3020,6 +3043,8 @@ int ext4_mb_release(struct super_block *sb)
- 		for (i = 0; i < ngroups; i++) {
- 			cond_resched();
- 			grinfo = ext4_get_group_info(sb, i);
-+			if (!grinfo)
-+				continue;
- 			mb_group_bb_bitmap_free(grinfo);
- 			ext4_lock_group(sb, i);
- 			count = ext4_mb_cleanup_pa(grinfo);
-@@ -3933,6 +3958,8 @@ static void ext4_mb_generate_from_freelist(struct super_block *sb, void *bitmap,
- 	struct ext4_free_data *entry;
- 
- 	grp = ext4_get_group_info(sb, group);
-+	if (!grp)
-+		return;
- 	n = rb_first(&(grp->bb_free_root));
- 
- 	while (n) {
-@@ -3960,6 +3987,9 @@ void ext4_mb_generate_from_pa(struct super_block *sb, void *bitmap,
- 	int preallocated = 0;
- 	int len;
- 
-+	if (!grp)
-+		return;
-+
- 	/* all form of preallocation discards first load group,
- 	 * so the only competing code is preallocation use.
- 	 * we don't need any locking here
-@@ -4151,6 +4181,8 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 
- 	ei = EXT4_I(ac->ac_inode);
- 	grp = ext4_get_group_info(sb, ac->ac_b_ex.fe_group);
-+	if (!grp)
-+		return;
- 
- 	pa->pa_obj_lock = &ei->i_prealloc_lock;
- 	pa->pa_inode = ac->ac_inode;
-@@ -4204,6 +4236,8 @@ ext4_mb_new_group_pa(struct ext4_allocation_context *ac)
- 	atomic_add(pa->pa_free, &EXT4_SB(sb)->s_mb_preallocated);
- 
- 	grp = ext4_get_group_info(sb, ac->ac_b_ex.fe_group);
-+	if (!grp)
-+		return;
- 	lg = ac->ac_lg;
- 	BUG_ON(lg == NULL);
- 
-@@ -4332,6 +4366,8 @@ ext4_mb_discard_group_preallocations(struct super_block *sb,
- 	int err;
- 	int free = 0;
- 
-+	if (!grp)
-+		return 0;
- 	mb_debug(sb, "discard preallocation for group %u\n", group);
- 	if (list_empty(&grp->bb_prealloc_list))
- 		goto out_dbg;
-@@ -4569,6 +4605,9 @@ static inline void ext4_mb_show_pa(struct super_block *sb)
- 		struct ext4_prealloc_space *pa;
- 		ext4_grpblk_t start;
- 		struct list_head *cur;
-+
-+		if (!grp)
-+			continue;
- 		ext4_lock_group(sb, i);
- 		list_for_each(cur, &grp->bb_prealloc_list) {
- 			pa = list_entry(cur, struct ext4_prealloc_space,
-@@ -5372,6 +5411,7 @@ static void ext4_mb_clear_bb(handle_t *handle, struct inode *inode,
- 	struct buffer_head *bitmap_bh = NULL;
- 	struct super_block *sb = inode->i_sb;
- 	struct ext4_group_desc *gdp;
-+	struct ext4_group_info *grp;
- 	unsigned int overflow;
- 	ext4_grpblk_t bit;
- 	struct buffer_head *gd_bh;
-@@ -5397,8 +5437,8 @@ static void ext4_mb_clear_bb(handle_t *handle, struct inode *inode,
- 	overflow = 0;
- 	ext4_get_group_no_and_offset(sb, block, &block_group, &bit);
- 
--	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(
--			ext4_get_group_info(sb, block_group))))
-+	grp = ext4_get_group_info(sb, block_group);
-+	if (unlikely(!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp)))
- 		return;
- 
- 	/*
-@@ -5986,6 +6026,8 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 
- 	for (group = first_group; group <= last_group; group++) {
- 		grp = ext4_get_group_info(sb, group);
-+		if (!grp)
-+			continue;
- 		/* We only do this if the grp has never been initialized */
- 		if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
- 			ret = ext4_mb_init_group(sb, group, GFP_NOFS);
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 681efff3af50f..d89750e90bc4b 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1011,6 +1011,8 @@ void ext4_mark_group_bitmap_corrupted(struct super_block *sb,
- 	struct ext4_group_desc *gdp = ext4_get_group_desc(sb, group, NULL);
- 	int ret;
- 
-+	if (!grp || !gdp)
-+		return;
- 	if (flags & EXT4_GROUP_INFO_BBITMAP_CORRUPT) {
- 		ret = ext4_test_and_set_bit(EXT4_GROUP_INFO_BBITMAP_CORRUPT_BIT,
- 					    &grp->bb_state);
+ 	/* readable? */
 -- 
 2.39.2
 
