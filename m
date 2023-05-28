@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC24713D1E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24738713EE1
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbjE1TWE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
+        id S230508AbjE1Tjw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbjE1TWE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:04 -0400
+        with ESMTP id S230527AbjE1Tjt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045AEA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528ADA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E37561B38
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94EEC433EF;
-        Sun, 28 May 2023 19:22:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C191F61EA6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF33FC433EF;
+        Sun, 28 May 2023 19:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301722;
-        bh=NfHq+RDrTB3DvYgfdMEggXw5Rza5L0+HTQkuOQ2NCB4=;
+        s=korg; t=1685302787;
+        bh=CPnhfC65kJJOyV32CmtJ1fCJzO85FOCorZQHf6Hm9Hk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u0Z5j38aDx4ZUHY+z0Rj/3e13FmCUOU5I4pyEGTftEKWZG/w0NgnRfBJkwIJ2mhO5
-         q6cnnpMCmDI847KLcDyPCIyPrN5iV2E69sRD9sUF5nA7J+mb/1MolOZFnxEtJOWgoR
-         MID6frIIGeAZTbIZoRirUtk6kFvLsf7hzSVywb4c=
+        b=gar30DwvgRQ1ilI4yte5ozGlU2OmH8MyNQX2SvU9lDCpQh1K0avhjOnU4gyxQiVL5
+         ROREPfXbveYw1oZ3YzrluAmy5uQ/xNy+KdxEACY0xnL+ImIPO8cA1uBCRIruHznZkC
+         WrHTlEflVGLtLE80C65I261C7sMMyWsOV/ciZlS8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Saravana Kannan <saravanak@google.com>,
-        Maxime Ripard <maxime@cerno.tech>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 002/161] drm/mipi-dsi: Set the fwnode for mipi_dsi_device
-Date:   Sun, 28 May 2023 20:08:46 +0100
-Message-Id: <20230528190837.148229499@linuxfoundation.org>
+Subject: [PATCH 5.10 006/211] net: Fix load-tearing on sk->sk_stamp in sock_recv_cmsgs().
+Date:   Sun, 28 May 2023 20:08:47 +0100
+Message-Id: <20230528190843.678109677@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +56,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravana Kannan <saravanak@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit a26cc2934331b57b5a7164bff344f0a2ec245fc0 ]
+[ Upstream commit dfd9248c071a3710c24365897459538551cb7167 ]
 
-After commit 3fb16866b51d ("driver core: fw_devlink: Make cycle
-detection more robust"), fw_devlink prints an error when consumer
-devices don't have their fwnode set. This used to be ignored silently.
+KCSAN found a data race in sock_recv_cmsgs() where the read access
+to sk->sk_stamp needs READ_ONCE().
 
-Set the fwnode mipi_dsi_device so fw_devlink can find them and properly
-track their dependencies.
+BUG: KCSAN: data-race in packet_recvmsg / packet_recvmsg
 
-This fixes errors like this:
-[    0.334054] nwl-dsi 30a00000.mipi-dsi: Failed to create device link with regulator-lcd-1v8
-[    0.346964] nwl-dsi 30a00000.mipi-dsi: Failed to create device link with backlight-dsi
+write (marked) to 0xffff88803c81f258 of 8 bytes by task 19171 on cpu 0:
+ sock_write_timestamp include/net/sock.h:2670 [inline]
+ sock_recv_cmsgs include/net/sock.h:2722 [inline]
+ packet_recvmsg+0xb97/0xd00 net/packet/af_packet.c:3489
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ sock_recvmsg+0x11a/0x130 net/socket.c:1040
+ sock_read_iter+0x176/0x220 net/socket.c:1118
+ call_read_iter include/linux/fs.h:1845 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x5e0/0x630 fs/read_write.c:470
+ ksys_read+0x163/0x1a0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x41/0x50 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Reported-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-Link: https://lore.kernel.org/lkml/2a8e407f4f18c9350f8629a2b5fa18673355b2ae.camel@puri.sm/
-Fixes: 068a00233969 ("drm: Add MIPI DSI bus support")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-Link: https://lore.kernel.org/r/20230310063910.2474472-1-saravanak@google.com
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+read to 0xffff88803c81f258 of 8 bytes by task 19183 on cpu 1:
+ sock_recv_cmsgs include/net/sock.h:2721 [inline]
+ packet_recvmsg+0xb64/0xd00 net/packet/af_packet.c:3489
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ sock_recvmsg+0x11a/0x130 net/socket.c:1040
+ sock_read_iter+0x176/0x220 net/socket.c:1118
+ call_read_iter include/linux/fs.h:1845 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x5e0/0x630 fs/read_write.c:470
+ ksys_read+0x163/0x1a0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x41/0x50 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+value changed: 0xffffffffc4653600 -> 0x0000000000000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19183 Comm: syz-executor.5 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 6c7c98bad488 ("sock: avoid dirtying sk_stamp, if possible")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230508175543.55756-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 2 +-
+ include/net/sock.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index b942c69e9b489..17a96f1d9234c 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -221,7 +221,7 @@ mipi_dsi_device_register_full(struct mipi_dsi_host *host,
- 		return dsi;
- 	}
- 
--	dsi->dev.of_node = info->node;
-+	device_set_node(&dsi->dev, of_fwnode_handle(info->node));
- 	dsi->channel = info->channel;
- 	strlcpy(dsi->name, info->type, sizeof(dsi->name));
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 1d8529311d6f9..651dc0a7bbd58 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2535,7 +2535,7 @@ static inline void sock_recv_ts_and_drops(struct msghdr *msg, struct sock *sk,
+ 		__sock_recv_ts_and_drops(msg, sk, skb);
+ 	else if (unlikely(sock_flag(sk, SOCK_TIMESTAMP)))
+ 		sock_write_timestamp(sk, skb->tstamp);
+-	else if (unlikely(sk->sk_stamp == SK_DEFAULT_STAMP))
++	else if (unlikely(sock_read_timestamp(sk) == SK_DEFAULT_STAMP))
+ 		sock_write_timestamp(sk, 0);
+ }
  
 -- 
 2.39.2
