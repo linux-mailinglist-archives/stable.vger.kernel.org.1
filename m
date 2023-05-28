@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB7BD713D97
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E1F713F33
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbjE1T1W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
+        id S231202AbjE1TnA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230106AbjE1T1Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:16 -0400
+        with ESMTP id S231194AbjE1Tm7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD2ADC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 823D09B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCDE361C83
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA273C433D2;
-        Sun, 28 May 2023 19:26:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 174F861EFB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320A9C433EF;
+        Sun, 28 May 2023 19:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302017;
-        bh=s6tw1OkRS3ZT3ZenMDn477F8HxvmiMwxvuZ87/nIYL8=;
+        s=korg; t=1685302977;
+        bh=EetHrH/awP2i4Q01v7YKid5h6BTpaVO8eL3gehpPVjI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gwEWPxDtHbZ3tmFaeK5Kp6lEfR4c9J5XmOuEGXwB28VtPyC+YFgUbbWL2kqY9wwgw
-         xnpufwXki77bCVoaAqzBZ/gVK0czYAV2jbCnPrOg3Lp0yd5JSZQEi6mv1mneRCyn+H
-         A7vZ0ZZ61BfWO+7UrHYlhoCxsphzWfH1HxTX1dmQ=
+        b=bJTUTtoGCD54n+oKGBWqvBu+qMfzjui6SD0Ox4N+gOhK73lwKpby7CLLJrvqOolpe
+         6y+1ghfeU/qIgxZ/Qy3k9TTAZitAy4hYAOjKVa2Qa3zYmYm16YybgiLZDeVPO85Xbh
+         8qdie7vYQ1e1qDso4xQis9ZmCT5i3e1CkqjjoE/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frank Schilder <frans@dtu.dk>,
-        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.4 100/161] ceph: force updating the msg pointer in non-split case
+        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
+        Hao Lan <lanhao@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 103/211] net: hns3: fix sending pfc frames after reset issue
 Date:   Sun, 28 May 2023 20:10:24 +0100
-Message-Id: <20230528190840.289649777@linuxfoundation.org>
+Message-Id: <20230528190846.145488541@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-commit 4cafd0400bcb6187c0d4ab4d4b0229a89ac4f8c2 upstream.
+[ Upstream commit f14db07064727dd3bc0906c77a6d2759c1bbb395 ]
 
-When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
-request may still contain a list of 'split_realms', and we need
-to skip it anyway. Or it will be parsed as a corrupt snaptrace.
+To prevent the system from abnormally sending PFC frames after an
+abnormal reset. The hns3 driver notifies the firmware to disable pfc
+before reset.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61200
-Reported-by: Frank Schilder <frans@dtu.dk>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 35d93a30040c ("net: hns3: adjust the process of PF reset")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/snap.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
+ .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c |  4 ++--
+ .../net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h |  5 +++++
+ 3 files changed, 16 insertions(+), 8 deletions(-)
 
---- a/fs/ceph/snap.c
-+++ b/fs/ceph/snap.c
-@@ -1005,6 +1005,19 @@ skip_inode:
- 				continue;
- 			adjust_snap_realm_parent(mdsc, child, realm->ino);
- 		}
-+	} else {
-+		/*
-+		 * In the non-split case both 'num_split_inos' and
-+		 * 'num_split_realms' should be 0, making this a no-op.
-+		 * However the MDS happens to populate 'split_realms' list
-+		 * in one of the UPDATE op cases by mistake.
-+		 *
-+		 * Skip both lists just in case to ensure that 'p' is
-+		 * positioned at the start of realm info, as expected by
-+		 * ceph_update_snap_trace().
-+		 */
-+		p += sizeof(u64) * num_split_inos;
-+		p += sizeof(u64) * num_split_realms;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 2070e26a3a358..1ec1709446bab 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7023,12 +7023,15 @@ static void hclge_ae_stop(struct hnae3_handle *handle)
+ 	/* If it is not PF reset or FLR, the firmware will disable the MAC,
+ 	 * so it only need to stop phy here.
+ 	 */
+-	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) &&
+-	    hdev->reset_type != HNAE3_FUNC_RESET &&
+-	    hdev->reset_type != HNAE3_FLR_RESET) {
+-		hclge_mac_stop_phy(hdev);
+-		hclge_update_link_status(hdev);
+-		return;
++	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state)) {
++		hclge_pfc_pause_en_cfg(hdev, HCLGE_PFC_TX_RX_DISABLE,
++				       HCLGE_PFC_DISABLE);
++		if (hdev->reset_type != HNAE3_FUNC_RESET &&
++		    hdev->reset_type != HNAE3_FLR_RESET) {
++			hclge_mac_stop_phy(hdev);
++			hclge_update_link_status(hdev);
++			return;
++		}
  	}
  
- 	/*
+ 	for (i = 0; i < handle->kinfo.num_tqps; i++)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+index 9168e39b63641..b3ceaaaeacaeb 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+@@ -169,8 +169,8 @@ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
+ 	return hclge_cmd_send(&hdev->hw, &desc, 1);
+ }
+ 
+-static int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
+-				  u8 pfc_bitmap)
++int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
++			   u8 pfc_bitmap)
+ {
+ 	struct hclge_desc desc;
+ 	struct hclge_pfc_en_cmd *pfc = (struct hclge_pfc_en_cmd *)desc.data;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
+index bb2a2d8e92591..42932c879b360 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
+@@ -117,6 +117,9 @@ struct hclge_bp_to_qs_map_cmd {
+ 	u32 rsvd1;
+ };
+ 
++#define HCLGE_PFC_DISABLE	0
++#define HCLGE_PFC_TX_RX_DISABLE	0
++
+ struct hclge_pfc_en_cmd {
+ 	u8 tx_rx_en_bitmap;
+ 	u8 pri_en_bitmap;
+@@ -164,6 +167,8 @@ void hclge_tm_schd_info_update(struct hclge_dev *hdev, u8 num_tc);
+ void hclge_tm_pfc_info_update(struct hclge_dev *hdev);
+ int hclge_tm_dwrr_cfg(struct hclge_dev *hdev);
+ int hclge_tm_init_hw(struct hclge_dev *hdev, bool init);
++int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
++			   u8 pfc_bitmap);
+ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
+ int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
+ int hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
+-- 
+2.39.2
+
 
 
