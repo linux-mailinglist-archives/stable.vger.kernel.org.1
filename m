@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B48E713D83
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 185DE713F63
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbjE1T0L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42634 "EHLO
+        id S231260AbjE1Toy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230079AbjE1T0K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 433A7A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:08 -0700 (PDT)
+        with ESMTP id S231286AbjE1Tox (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C80A8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD04D61C36
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA041C433EF;
-        Sun, 28 May 2023 19:26:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2766061F39
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E35C433D2;
+        Sun, 28 May 2023 19:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301967;
-        bh=bLXmjvRHB1tq3gfRNFs4AHETemxzZrfcGxdq2hZOvKY=;
+        s=korg; t=1685303091;
+        bh=V4+uVPq24SNd3Ty0/xxUQNaFaoUqdJtVSW7XDl7GwzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=clIejDjnRcrvvqsdnN276zmJJFKigzZ+UFkF0oA/QmqDvcQrjBtk2tGXbs5aJRS1T
-         L+FChojxLQtwrXty5A+kpy0UVANg6iYiqElISiFg6T/ZqkffFxN1cYdAc94W4jHRn9
-         ff6T9Aegwjtzayn0uIi7djnLrBvHiYrh+eHAX+To=
+        b=A0B4uTjySmQz0/RFe98EsBn44D181eDoUwmu9eg0bOIU3voX4esb5SAcwdG87Tk8T
+         lGBDnezjkStB5rSxuSXOGRraTo7itsvYDvIc8+8rWpJGKAsBa6v6vzFU3tN2ui7PdV
+         oxiFlWy0kkR4DPCnB3bWZBXA7AgH7o1t8PTy7uLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Jon Maloy <jmaloy@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 108/161] netfilter: nf_tables: add nft_setelem_parse_key()
-Date:   Sun, 28 May 2023 20:10:32 +0100
-Message-Id: <20230528190840.525653495@linuxfoundation.org>
+Subject: [PATCH 5.10 112/211] tipc: check the bearer min mtu properly when setting it by netlink
+Date:   Sun, 28 May 2023 20:10:33 +0100
+Message-Id: <20230528190846.352944244@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,248 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ 20a1452c35425b2cef76f21f8395ef069dfddfa9 ]
+[ Upstream commit 35a089b5d793d2bfd2cc7cfa6104545184de2ce7 ]
 
-Add helper function to parse the set element key netlink attribute.
+Checking the bearer min mtu with tipc_udp_mtu_bad() only works for
+IPv4 UDP bearer, and IPv6 UDP bearer has a different value for the
+min mtu. This patch checks with encap_hlen + TIPC_MIN_BEARER_MTU
+for min mtu, which works for both IPv4 and IPv6 UDP bearer.
 
-v4: No changes
-v3: New patch
+Note that tipc_udp_mtu_bad() is still used to check media min mtu
+in __tipc_nl_media_set(), as m->mtu currently is only used by the
+IPv4 UDP bearer as its default mtu value.
 
-[sbrivio: refactor error paths and labels; use NFT_DATA_VALUE_MAXLEN
-  instead of sizeof(*key) in helper, value can be longer than that;
-  rebase]
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 682cd3cf946b ("tipc: confgiure and apply UDP bearer MTU on running links")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Jon Maloy <jmaloy@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 91 +++++++++++++++++------------------
- 1 file changed, 45 insertions(+), 46 deletions(-)
+ net/tipc/bearer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a90bf82ea1435..13a8a78b8ee8b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4292,11 +4292,28 @@ static int nft_setelem_parse_flags(const struct nft_set *set,
- 	return 0;
- }
- 
-+static int nft_setelem_parse_key(struct nft_ctx *ctx, struct nft_set *set,
-+				 struct nft_data *key, struct nlattr *attr)
-+{
-+	struct nft_data_desc desc;
-+	int err;
-+
-+	err = nft_data_init(ctx, key, NFT_DATA_VALUE_MAXLEN, &desc, attr);
-+	if (err < 0)
-+		return err;
-+
-+	if (desc.type != NFT_DATA_VALUE || desc.len != set->klen) {
-+		nft_data_release(key, desc.type);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int nft_get_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			    const struct nlattr *attr)
- {
- 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
--	struct nft_data_desc desc;
- 	struct nft_set_elem elem;
- 	struct sk_buff *skb;
- 	uint32_t flags = 0;
-@@ -4315,17 +4332,11 @@ static int nft_get_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (err < 0)
- 		return err;
- 
--	err = nft_data_init(ctx, &elem.key.val, sizeof(elem.key), &desc,
--			    nla[NFTA_SET_ELEM_KEY]);
-+	err = nft_setelem_parse_key(ctx, set, &elem.key.val,
-+				    nla[NFTA_SET_ELEM_KEY]);
- 	if (err < 0)
- 		return err;
- 
--	err = -EINVAL;
--	if (desc.type != NFT_DATA_VALUE || desc.len != set->klen) {
--		nft_data_release(&elem.key.val, desc.type);
--		return err;
--	}
--
- 	priv = set->ops->get(ctx->net, set, &elem, flags);
- 	if (IS_ERR(priv))
- 		return PTR_ERR(priv);
-@@ -4518,13 +4529,13 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- {
- 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
- 	u8 genmask = nft_genmask_next(ctx->net);
--	struct nft_data_desc d1, d2;
- 	struct nft_set_ext_tmpl tmpl;
- 	struct nft_set_ext *ext, *ext2;
- 	struct nft_set_elem elem;
- 	struct nft_set_binding *binding;
- 	struct nft_object *obj = NULL;
- 	struct nft_userdata *udata;
-+	struct nft_data_desc desc;
- 	struct nft_data data;
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
-@@ -4590,15 +4601,12 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			return err;
- 	}
- 
--	err = nft_data_init(ctx, &elem.key.val, sizeof(elem.key), &d1,
--			    nla[NFTA_SET_ELEM_KEY]);
-+	err = nft_setelem_parse_key(ctx, set, &elem.key.val,
-+				    nla[NFTA_SET_ELEM_KEY]);
- 	if (err < 0)
- 		goto err1;
--	err = -EINVAL;
--	if (d1.type != NFT_DATA_VALUE || d1.len != set->klen)
--		goto err2;
- 
--	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, d1.len);
-+	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, set->klen);
- 	if (timeout > 0) {
- 		nft_set_ext_add(&tmpl, NFT_SET_EXT_EXPIRATION);
- 		if (timeout != set->timeout)
-@@ -4621,13 +4629,13 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	}
- 
- 	if (nla[NFTA_SET_ELEM_DATA] != NULL) {
--		err = nft_data_init(ctx, &data, sizeof(data), &d2,
-+		err = nft_data_init(ctx, &data, sizeof(data), &desc,
- 				    nla[NFTA_SET_ELEM_DATA]);
- 		if (err < 0)
- 			goto err2;
- 
- 		err = -EINVAL;
--		if (set->dtype != NFT_DATA_VERDICT && d2.len != set->dlen)
-+		if (set->dtype != NFT_DATA_VERDICT && desc.len != set->dlen)
- 			goto err3;
- 
- 		dreg = nft_type_to_reg(set->dtype);
-@@ -4644,18 +4652,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 
- 			err = nft_validate_register_store(&bind_ctx, dreg,
- 							  &data,
--							  d2.type, d2.len);
-+							  desc.type, desc.len);
- 			if (err < 0)
- 				goto err3;
- 
--			if (d2.type == NFT_DATA_VERDICT &&
-+			if (desc.type == NFT_DATA_VERDICT &&
- 			    (data.verdict.code == NFT_GOTO ||
- 			     data.verdict.code == NFT_JUMP))
- 				nft_validate_state_update(ctx->net,
- 							  NFT_VALIDATE_NEED);
- 		}
- 
--		nft_set_ext_add_length(&tmpl, NFT_SET_EXT_DATA, d2.len);
-+		nft_set_ext_add_length(&tmpl, NFT_SET_EXT_DATA, desc.len);
- 	}
- 
- 	/* The full maximum length of userdata can exceed the maximum
-@@ -4738,9 +4746,9 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	kfree(elem.priv);
- err3:
- 	if (nla[NFTA_SET_ELEM_DATA] != NULL)
--		nft_data_release(&data, d2.type);
-+		nft_data_release(&data, desc.type);
- err2:
--	nft_data_release(&elem.key.val, d1.type);
-+	nft_data_release(&elem.key.val, NFT_DATA_VALUE);
- err1:
- 	return err;
- }
-@@ -4836,7 +4844,6 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- {
- 	struct nlattr *nla[NFTA_SET_ELEM_MAX + 1];
- 	struct nft_set_ext_tmpl tmpl;
--	struct nft_data_desc desc;
- 	struct nft_set_elem elem;
- 	struct nft_set_ext *ext;
- 	struct nft_trans *trans;
-@@ -4847,11 +4854,10 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- 	err = nla_parse_nested_deprecated(nla, NFTA_SET_ELEM_MAX, attr,
- 					  nft_set_elem_policy, NULL);
- 	if (err < 0)
--		goto err1;
-+		return err;
- 
--	err = -EINVAL;
- 	if (nla[NFTA_SET_ELEM_KEY] == NULL)
--		goto err1;
-+		return -EINVAL;
- 
- 	nft_set_ext_prepare(&tmpl);
- 
-@@ -4861,37 +4867,31 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (flags != 0)
- 		nft_set_ext_add(&tmpl, NFT_SET_EXT_FLAGS);
- 
--	err = nft_data_init(ctx, &elem.key.val, sizeof(elem.key), &desc,
--			    nla[NFTA_SET_ELEM_KEY]);
-+	err = nft_setelem_parse_key(ctx, set, &elem.key.val,
-+				    nla[NFTA_SET_ELEM_KEY]);
- 	if (err < 0)
--		goto err1;
--
--	err = -EINVAL;
--	if (desc.type != NFT_DATA_VALUE || desc.len != set->klen)
--		goto err2;
-+		return err;
- 
--	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, desc.len);
-+	nft_set_ext_add_length(&tmpl, NFT_SET_EXT_KEY, set->klen);
- 
- 	err = -ENOMEM;
- 	elem.priv = nft_set_elem_init(set, &tmpl, elem.key.val.data, NULL, 0,
- 				      0, GFP_KERNEL);
- 	if (elem.priv == NULL)
--		goto err2;
-+		goto fail_elem;
- 
- 	ext = nft_set_elem_ext(set, elem.priv);
- 	if (flags)
- 		*nft_set_ext_flags(ext) = flags;
- 
- 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_DELSETELEM, set);
--	if (trans == NULL) {
--		err = -ENOMEM;
--		goto err3;
--	}
-+	if (trans == NULL)
-+		goto fail_trans;
- 
- 	priv = set->ops->deactivate(ctx->net, set, &elem);
- 	if (priv == NULL) {
- 		err = -ENOENT;
--		goto err4;
-+		goto fail_ops;
- 	}
- 	kfree(elem.priv);
- 	elem.priv = priv;
-@@ -4902,13 +4902,12 @@ static int nft_del_setelem(struct nft_ctx *ctx, struct nft_set *set,
- 	list_add_tail(&trans->list, &ctx->net->nft.commit_list);
- 	return 0;
- 
--err4:
-+fail_ops:
- 	kfree(trans);
--err3:
-+fail_trans:
- 	kfree(elem.priv);
--err2:
--	nft_data_release(&elem.key.val, desc.type);
--err1:
-+fail_elem:
-+	nft_data_release(&elem.key.val, NFT_DATA_VALUE);
- 	return err;
- }
- 
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index c6a9b3446ff89..91e678fa3feb5 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -1135,8 +1135,8 @@ int __tipc_nl_bearer_set(struct sk_buff *skb, struct genl_info *info)
+ 				return -EINVAL;
+ 			}
+ #ifdef CONFIG_TIPC_MEDIA_UDP
+-			if (tipc_udp_mtu_bad(nla_get_u32
+-					     (props[TIPC_NLA_PROP_MTU]))) {
++			if (nla_get_u32(props[TIPC_NLA_PROP_MTU]) <
++			    b->encap_hlen + TIPC_MIN_BEARER_MTU) {
+ 				NL_SET_ERR_MSG(info->extack,
+ 					       "MTU value is out-of-range");
+ 				return -EINVAL;
 -- 
 2.39.2
 
