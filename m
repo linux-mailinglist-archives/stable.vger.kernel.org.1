@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7600713CAB
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A354713D44
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbjE1TRX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36510 "EHLO
+        id S229999AbjE1TXe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjE1TRV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:21 -0400
+        with ESMTP id S229993AbjE1TXd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B3FA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5E0A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA6D761A00
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C03C433D2;
-        Sun, 28 May 2023 19:17:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D7D760F8C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898F7C433EF;
+        Sun, 28 May 2023 19:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301439;
-        bh=7tGG+NOlssfu/NITwNH5Vwr/UrNSkYrA8md/wSgniNg=;
+        s=korg; t=1685301811;
+        bh=/iUXaNDT7alYUMx3eEkk5Db82StVg7wrmF8S1M+pKgw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F41/agBGDsCvld6S21lDmKEJaioSs3QD+NiLIoe1DYBDD2yqarPUUYHgx8UgQjO7O
-         EEnyNknu/jnMnSbFcmhckVbcRr2jikoRTXLHN/T5mnUxOdneX0Mai41I+zFAFQMqnz
-         nwyFleJ1qPF6wuE2yRVA7G7MfA/lN+OBRasMI1z0=
+        b=BOw+X38ehulV55yxrHpzNC/8rquP4YsjZpYcBH8bw1az+AxLKPhOX5YYtT/SSSA9M
+         D0fDHBGYP2c+IRu8ypomDlV9bQfxkNIz1b8Z3PIhXzTWnFfESy7AIiALo3BNGITJDx
+         u7pMhX5JjRIkNLmP0Yt+HrQfORrHBf85uAvO2h6U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Frank Wang <frank.wang@rock-chips.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 030/132] f2fs: fix to drop all dirty pages during umount() if cp_error is set
-Date:   Sun, 28 May 2023 20:09:29 +0100
-Message-Id: <20230528190834.503251699@linuxfoundation.org>
+Subject: [PATCH 5.4 046/161] usb: typec: tcpm: fix multiple times discover svids error
+Date:   Sun, 28 May 2023 20:09:30 +0100
+Message-Id: <20230528190838.672446042@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,91 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Frank Wang <frank.wang@rock-chips.com>
 
-[ Upstream commit c9b3649a934d131151111354bcbb638076f03a30 ]
+[ Upstream commit dac3b192107b978198e89ec0f77375738352e0c8 ]
 
-xfstest generic/361 reports a bug as below:
+PD3.0 Spec 6.4.4.3.2 say that only Responder supports 12 or more SVIDs,
+the Discover SVIDs Command Shall be executed multiple times until a
+Discover SVIDs VDO is returned ending either with a SVID value of
+0x0000 in the last part of the last VDO or with a VDO containing two
+SVIDs with values of 0x0000.
 
-f2fs_bug_on(sbi, sbi->fsync_node_num);
+In the current implementation, if the last VDO does not find that the
+Discover SVIDs Command would be executed multiple times even if the
+Responder SVIDs are less than 12, and we found some odd dockers just
+meet this case. So fix it.
 
-kernel BUG at fs/f2fs/super.c:1627!
-RIP: 0010:f2fs_put_super+0x3a8/0x3b0
-Call Trace:
- generic_shutdown_super+0x8c/0x1b0
- kill_block_super+0x2b/0x60
- kill_f2fs_super+0x87/0x110
- deactivate_locked_super+0x39/0x80
- deactivate_super+0x46/0x50
- cleanup_mnt+0x109/0x170
- __cleanup_mnt+0x16/0x20
- task_work_run+0x65/0xa0
- exit_to_user_mode_prepare+0x175/0x190
- syscall_exit_to_user_mode+0x25/0x50
- do_syscall_64+0x4c/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-During umount(), if cp_error is set, f2fs_wait_on_all_pages() should
-not stop waiting all F2FS_WB_CP_DATA pages to be writebacked, otherwise,
-fsync_node_num can be non-zero after f2fs_wait_on_all_pages() causing
-this bug.
-
-In this case, to avoid deadloop in f2fs_wait_on_all_pages(), it needs
-to drop all dirty pages rather than redirtying them.
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
+Link: https://lore.kernel.org/r/20230316081149.24519-1-frank.wang@rock-chips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/checkpoint.c | 12 ++++++++++--
- fs/f2fs/data.c       |  3 ++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-index a563de5ccd217..621e0d4f1fbf5 100644
---- a/fs/f2fs/checkpoint.c
-+++ b/fs/f2fs/checkpoint.c
-@@ -273,8 +273,15 @@ static int __f2fs_write_meta_page(struct page *page,
- 
- 	trace_f2fs_writepage(page, META);
- 
--	if (unlikely(f2fs_cp_error(sbi)))
-+	if (unlikely(f2fs_cp_error(sbi))) {
-+		if (is_sbi_flag_set(sbi, SBI_IS_CLOSE)) {
-+			ClearPageUptodate(page);
-+			dec_page_count(sbi, F2FS_DIRTY_META);
-+			unlock_page(page);
-+			return 0;
-+		}
- 		goto redirty_out;
-+	}
- 	if (unlikely(is_sbi_flag_set(sbi, SBI_POR_DOING)))
- 		goto redirty_out;
- 	if (wbc->for_reclaim && page->index < GET_SUM_BLOCK(sbi, 0))
-@@ -1185,7 +1192,8 @@ void f2fs_wait_on_all_pages_writeback(struct f2fs_sb_info *sbi)
- 		if (!get_pages(sbi, F2FS_WB_CP_DATA))
- 			break;
- 
--		if (unlikely(f2fs_cp_error(sbi)))
-+		if (unlikely(f2fs_cp_error(sbi) &&
-+			!is_sbi_flag_set(sbi, SBI_IS_CLOSE)))
- 			break;
- 
- 		io_schedule_timeout(5*HZ);
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 56b2dadd623b2..419586809cef6 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1885,7 +1885,8 @@ static int __write_data_page(struct page *page, bool *submitted,
- 		 * don't drop any dirty dentry pages for keeping lastest
- 		 * directory structure.
- 		 */
--		if (S_ISDIR(inode->i_mode))
-+		if (S_ISDIR(inode->i_mode) &&
-+				!is_sbi_flag_set(sbi, SBI_IS_CLOSE))
- 			goto redirty_out;
- 		goto out;
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index fb18264b702e6..b259a4a28f81a 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1018,7 +1018,21 @@ static bool svdm_consume_svids(struct tcpm_port *port, const __le32 *payload,
+ 		pmdata->svids[pmdata->nsvids++] = svid;
+ 		tcpm_log(port, "SVID %d: 0x%x", pmdata->nsvids, svid);
  	}
+-	return true;
++
++	/*
++	 * PD3.0 Spec 6.4.4.3.2: The SVIDs are returned 2 per VDO (see Table
++	 * 6-43), and can be returned maximum 6 VDOs per response (see Figure
++	 * 6-19). If the Respondersupports 12 or more SVID then the Discover
++	 * SVIDs Command Shall be executed multiple times until a Discover
++	 * SVIDs VDO is returned ending either with a SVID value of 0x0000 in
++	 * the last part of the last VDO or with a VDO containing two SVIDs
++	 * with values of 0x0000.
++	 *
++	 * However, some odd dockers support SVIDs less than 12 but without
++	 * 0x0000 in the last VDO, so we need to break the Discover SVIDs
++	 * request and return false here.
++	 */
++	return cnt == 7;
+ abort:
+ 	tcpm_log(port, "SVID_DISCOVERY_MAX(%d) too low!", SVID_DISCOVERY_MAX);
+ 	return false;
 -- 
 2.39.2
 
