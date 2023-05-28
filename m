@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2A4713E90
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170DA713DA8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjE1Tgm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:36:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52370 "EHLO
+        id S230115AbjE1T1k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:27:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230405AbjE1Tgl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:36:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E660A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:36:40 -0700 (PDT)
+        with ESMTP id S230111AbjE1T1j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F394BA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DEBD261E43
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:36:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EA6C433D2;
-        Sun, 28 May 2023 19:36:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A7E561CAE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AA5C433EF;
+        Sun, 28 May 2023 19:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302599;
-        bh=EQMTPs1bEz9qRplNUdJEjJLS1dynHEIgeYT/VvurwGU=;
+        s=korg; t=1685302057;
+        bh=h5aiiAEjyEl1uNNhvlVTcntRTiG83g6Js8kuozyrJd0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CM0NHEGbvg7llv/poT/SShhBPABVYwEpCqXyAx0g7Y/gD8WMSnYxm7391QoVQq0SK
-         E67lKaJ+yax3DTUEO0GlSmYAOo9zpIJOAsDcrbFmW2ipERjc8FcYRSgf0/B8uLOEbv
-         SMQGIATvwpIJWxog3pF+Sfs6Jxrsqpos8fSMBQv8=
+        b=W1xVrosrRl89eeR7l54OFHPgn9Ct+5ZiQp7slA+m2Hpeo0BdXUQ4hRhXMNP8nds75
+         9OaUz+D1c6ErU+1MV4y6HTgQED5894qePJUzqGp0ifNqez3emw1mH5Ntug/fx6G5x4
+         0JFze5RgzktD5Y78LKA92EnVY16tV/jgLTs92KjQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Krzesimir Nowak <krzesimir@kinvolk.io>,
-        Andrey Ignatov <rdna@fb.com>, Yonghong Song <yhs@fb.com>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 068/119] bpf: Fix mask generation for 32-bit narrow loads of 64-bit fields
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+4b3f8190f6e13b3efd74@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 144/161] media: radio-shark: Add endpoint checks
 Date:   Sun, 28 May 2023 20:11:08 +0100
-Message-Id: <20230528190837.757343790@linuxfoundation.org>
+Message-Id: <20230528190841.499647441@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,58 +53,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Will Deacon <will@kernel.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 0613d8ca9ab382caabe9ed2dceb429e9781e443f upstream.
+commit 76e31045ba030e94e72105c01b2e98f543d175ac upstream.
 
-A narrow load from a 64-bit context field results in a 64-bit load
-followed potentially by a 64-bit right-shift and then a bitwise AND
-operation to extract the relevant data.
+The syzbot fuzzer was able to provoke a WARNING from the radio-shark2
+driver:
 
-In the case of a 32-bit access, an immediate mask of 0xffffffff is used
-to construct a 64-bit BPP_AND operation which then sign-extends the mask
-value and effectively acts as a glorified no-op. For example:
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 3271 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed2/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 3271 Comm: kworker/0:3 Not tainted 6.1.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed2/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 00 36 ea fb 48 8b 7c 24 18 e8 36 1c 02 ff 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 a0 b6 90 8a e8 9a 29 b8 03 <0f> 0b e9 58 f8 ff ff e8 d2 35 ea fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc90003876dd0 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
+RDX: ffff8880750b0040 RSI: ffffffff816152b8 RDI: fffff5200070edac
+RBP: ffff8880172d81e0 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000000 R12: 0000000000000001
+R13: ffff8880285c5040 R14: 0000000000000002 R15: ffff888017158200
+FS:  0000000000000000(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe03235b90 CR3: 000000000bc8e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ usb_start_wait_urb+0x101/0x4b0 drivers/usb/core/message.c:58
+ usb_bulk_msg+0x226/0x550 drivers/usb/core/message.c:387
+ shark_write_reg+0x1ff/0x2e0 drivers/media/radio/radio-shark2.c:88
+...
 
-0:	61 10 00 00 00 00 00 00	r0 = *(u32 *)(r1 + 0)
+The problem was caused by the fact that the driver does not check
+whether the endpoints it uses are actually present and have the
+appropriate types.  This can be fixed by adding a simple check of
+these endpoints (and similarly for the radio-shark driver).
 
-results in the following code generation for a 64-bit field:
-
-	ldr	x7, [x7]	// 64-bit load
-	mov	x10, #0xffffffffffffffff
-	and	x7, x7, x10
-
-Fix the mask generation so that narrow loads always perform a 32-bit AND
-operation:
-
-	ldr	x7, [x7]	// 64-bit load
-	mov	w10, #0xffffffff
-	and	w7, w7, w10
-
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Krzesimir Nowak <krzesimir@kinvolk.io>
-Cc: Andrey Ignatov <rdna@fb.com>
-Acked-by: Yonghong Song <yhs@fb.com>
-Fixes: 31fd85816dbe ("bpf: permits narrower load from bpf program context fields")
-Signed-off-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20230518102528.1341-1-will@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://syzkaller.appspot.com/bug?extid=4b3f8190f6e13b3efd74
+Reported-and-tested-by: syzbot+4b3f8190f6e13b3efd74@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/e2858ab4-4adf-46e5-bbf6-c56742034547@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/radio/radio-shark.c  |   10 ++++++++++
+ drivers/media/radio/radio-shark2.c |   10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13638,7 +13638,7 @@ static int convert_ctx_accesses(struct b
- 					insn_buf[cnt++] = BPF_ALU64_IMM(BPF_RSH,
- 									insn->dst_reg,
- 									shift);
--				insn_buf[cnt++] = BPF_ALU64_IMM(BPF_AND, insn->dst_reg,
-+				insn_buf[cnt++] = BPF_ALU32_IMM(BPF_AND, insn->dst_reg,
- 								(1ULL << size * 8) - 1);
- 			}
- 		}
+--- a/drivers/media/radio/radio-shark.c
++++ b/drivers/media/radio/radio-shark.c
+@@ -316,6 +316,16 @@ static int usb_shark_probe(struct usb_in
+ {
+ 	struct shark_device *shark;
+ 	int retval = -ENOMEM;
++	static const u8 ep_addresses[] = {
++		SHARK_IN_EP | USB_DIR_IN,
++		SHARK_OUT_EP | USB_DIR_OUT,
++		0};
++
++	/* Are the expected endpoints present? */
++	if (!usb_check_int_endpoints(intf, ep_addresses)) {
++		dev_err(&intf->dev, "Invalid radioSHARK device\n");
++		return -EINVAL;
++	}
+ 
+ 	shark = kzalloc(sizeof(struct shark_device), GFP_KERNEL);
+ 	if (!shark)
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -282,6 +282,16 @@ static int usb_shark_probe(struct usb_in
+ {
+ 	struct shark_device *shark;
+ 	int retval = -ENOMEM;
++	static const u8 ep_addresses[] = {
++		SHARK_IN_EP | USB_DIR_IN,
++		SHARK_OUT_EP | USB_DIR_OUT,
++		0};
++
++	/* Are the expected endpoints present? */
++	if (!usb_check_int_endpoints(intf, ep_addresses)) {
++		dev_err(&intf->dev, "Invalid radioSHARK2 device\n");
++		return -EINVAL;
++	}
+ 
+ 	shark = kzalloc(sizeof(struct shark_device), GFP_KERNEL);
+ 	if (!shark)
 
 
