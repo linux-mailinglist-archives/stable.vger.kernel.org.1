@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAB94713D3F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65A04713ED8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229992AbjE1TXX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40860 "EHLO
+        id S230499AbjE1Tj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbjE1TXW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC140C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:20 -0700 (PDT)
+        with ESMTP id S230498AbjE1Tj1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB63BB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5460960F7C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725B6C433D2;
-        Sun, 28 May 2023 19:23:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E744561E99
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F30C4339C;
+        Sun, 28 May 2023 19:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301799;
-        bh=rXmJwtzfP5hSk1ECHyKYEmGPL5S6T2uC+eIiof+g6q4=;
+        s=korg; t=1685302765;
+        bh=s7nqY3O8udYW3XHwpCleoeVZCLfI9kyJVppd+dnJmNU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RylFp+oaVTUMSCXDjYwxnhgWvV0NatoZ36zIE55v8fe6H2xX2xY1BoQoog26SskyV
-         0VUXMYnUgcJt5Xd/gpR6WMKpQHxVjb6bjMIc+y6zTOQGLAuRcoWetnAxxFxIVE0IwU
-         E6USD+aV1ngemd12FccvAF1LgrmUAUfQtvPeQZYQ=
+        b=ufp/e8IvJF97fybzHKiCZ0ULCKvberquD1rNeZnuFNZVni6b6bIg2OXGiUhf9W9Zp
+         QMw+xN1QVnl9BHYHpN0Dcal9pV1PJhQmQvf7IkVrFgv+yB58+RTHkZioMto0rRvnyw
+         ZLb2MbmDAZS0JezkvyFNdnvIHnxnq5E1GjIL6y6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,18 +37,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Michal Kubiak <michal.kubiak@intel.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/161] af_unix: Fix a data race of sk->sk_receive_queue->qlen.
-Date:   Sun, 28 May 2023 20:08:57 +0100
-Message-Id: <20230528190837.530018369@linuxfoundation.org>
+Subject: [PATCH 5.10 017/211] af_unix: Fix a data race of sk->sk_receive_queue->qlen.
+Date:   Sun, 28 May 2023 20:08:58 +0100
+Message-Id: <20230528190843.956542098@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -121,10 +121,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f33e90bd0683b..35a941684f16e 100644
+index 28721e9575b75..a210275368560 100644
 --- a/net/unix/af_unix.c
 +++ b/net/unix/af_unix.c
-@@ -1227,7 +1227,7 @@ static long unix_wait_for_peer(struct sock *other, long timeo)
+@@ -1236,7 +1236,7 @@ static long unix_wait_for_peer(struct sock *other, long timeo)
  
  	sched = !sock_flag(other, SOCK_DEAD) &&
  		!(other->sk_shutdown & RCV_SHUTDOWN) &&
