@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A982713CF6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66958713D8E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbjE1TU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38768 "EHLO
+        id S230088AbjE1T0p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:26:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbjE1TU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:27 -0400
+        with ESMTP id S230097AbjE1T0o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5774EA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44649FE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9A3261A6D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13457C4339B;
-        Sun, 28 May 2023 19:20:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE3B861C3D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06A9C4339C;
+        Sun, 28 May 2023 19:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301625;
-        bh=lrOShuD1J7fhyB15rBLpvhFDnnnVo4vovmawdpsJHKs=;
+        s=korg; t=1685301994;
+        bh=ShfW5tceOJq5wLS5tXnbk1XDQJbOwkiuWzcA6zD5aRc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KwY3yj6eP11QoonjLaT/58wTlbliKY0ijVo9p7aPr9uZUU+cpkVWCsIqIN4doH9/f
-         y2We7kBtwp5phv46nc7Gev4I5JNBjemKBgCVpX3wXkAqD/3Gd0G37KeAfiKQsz+B+A
-         kxorLBplof1XJBJhP4+lr4xJ/ukzgBVVefztnP9k=
+        b=HpVlyvqeq3P0vrSAulDRZh4oVmXJVxXZ3gQ4zsKcdB4gOCjugvblJkEL8FYbwCih6
+         ZMb87Pdnd+vruajKaSbbzAHv0ElNWM+HSTUDSZib04O0+2jo9SgPXNReuJIYyYaD6+
+         m5LDhU0CRwwrvS6EkyRP4nDfo1DvUIWRdH21NwBA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-        Mark Brown <broonie@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 4.19 103/132] spi: spi-fsl-spi: automatically adapt bits-per-word in cpu mode
+        =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 118/161] usb: gadget: u_ether: Fix host MAC address case
 Date:   Sun, 28 May 2023 20:10:42 +0100
-Message-Id: <20230528190836.846410074@linuxfoundation.org>
+Message-Id: <20230528190840.799967034@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+From: Konrad Gräfe <k.graefe@gateware.de>
 
-(cherry picked from upstream af0e6242909c3c4297392ca3e94eff1b4db71a97)
+[ Upstream commit 3c0f4f09c063e143822393d99cb2b19a85451c07 ]
 
-Taking one interrupt for every byte is rather slow. Since the
-controller is perfectly capable of transmitting 32 bits at a time,
-change t->bits_per-word to 32 when the length is divisible by 4 and
-large enough that the reduced number of interrupts easily compensates
-for the one or two extra fsl_spi_setup_transfer() calls this causes.
+The CDC-ECM specification [1] requires to send the host MAC address as
+an uppercase hexadecimal string in chapter "5.4 Ethernet Networking
+Functional Descriptor":
+    The Unicode character is chosen from the set of values 30h through
+    39h and 41h through 46h (0-9 and A-F).
 
-Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+However, snprintf(.., "%pm", ..) generates a lowercase MAC address
+string. While most host drivers are tolerant to this, UsbNcm.sys on
+Windows 10 is not. Instead it uses a different MAC address with all
+bytes set to zero including and after the first byte containing a
+lowercase letter. On Windows 11 Microsoft fixed it, but apparently they
+did not backport the fix.
+
+This change fixes the issue by upper-casing the MAC to comply with the
+specification.
+
+[1]: https://www.usb.org/document-library/class-definitions-communication-devices-12, file ECM120.pdf
+
+Fixes: bcd4a1c40bee ("usb: gadget: u_ether: construct with default values and add setters/getters")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konrad Gräfe <k.graefe@gateware.de>
+Link: https://lore.kernel.org/r/20230505143640.443014-1-k.graefe@gateware.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/usb/gadget/function/u_ether.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -357,12 +357,28 @@ static int fsl_spi_bufs(struct spi_devic
- static int fsl_spi_do_one_msg(struct spi_master *master,
- 			      struct spi_message *m)
- {
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
- 	struct spi_device *spi = m->spi;
- 	struct spi_transfer *t, *first;
- 	unsigned int cs_change;
- 	const int nsecs = 50;
- 	int status;
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index d9f9c7a678d8b..af3cb3bfdc29a 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -17,6 +17,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
+ #include <linux/if_vlan.h>
++#include <linux/string_helpers.h>
+ #include <linux/usb/composite.h>
  
-+	/*
-+	 * In CPU mode, optimize large byte transfers to use larger
-+	 * bits_per_word values to reduce number of interrupts taken.
-+	 */
-+	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
-+		list_for_each_entry(t, &m->transfers, transfer_list) {
-+			if (t->len < 256 || t->bits_per_word != 8)
-+				continue;
-+			if ((t->len & 3) == 0)
-+				t->bits_per_word = 32;
-+			else if ((t->len & 1) == 0)
-+				t->bits_per_word = 16;
-+		}
-+	}
+ #include "u_ether.h"
+@@ -940,6 +941,8 @@ int gether_get_host_addr_cdc(struct net_device *net, char *host_addr, int len)
+ 	dev = netdev_priv(net);
+ 	snprintf(host_addr, len, "%pm", dev->host_mac);
+ 
++	string_upper(host_addr, host_addr);
 +
- 	/* Don't allow changes if CS is active */
- 	first = list_first_entry(&m->transfers, struct spi_transfer,
- 			transfer_list);
+ 	return strlen(host_addr);
+ }
+ EXPORT_SYMBOL_GPL(gether_get_host_addr_cdc);
+-- 
+2.39.2
+
 
 
