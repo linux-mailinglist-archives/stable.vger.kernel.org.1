@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB35C713DB0
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F543713E44
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbjE1T17 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44912 "EHLO
+        id S230304AbjE1Tdw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbjE1T16 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:58 -0400
+        with ESMTP id S230307AbjE1Tdv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C124CB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBADAA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4891D61C4A
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64655C433D2;
-        Sun, 28 May 2023 19:27:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8145761DD6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA76C433D2;
+        Sun, 28 May 2023 19:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302074;
-        bh=FsWroIyK0i5xJGyka44Isj5pcezDiajg9dLIb3W+pfw=;
+        s=korg; t=1685302429;
+        bh=lDXRw96IBTVM8BzoP2BJafYoc19wNQydSTfO1WEElOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XC+CGVZWY9XAkLdW1GeP9dECfRbbaWBPaznNsupF1U5URVKyI+H5Y9o0mnw35CQFZ
-         jl4uZRDt6P+km6VL3g6sqpKQd6SX7mzxBOhFOYAR6NMUNK7upJ88lqIgWVWNflRgkA
-         ADJZOaTjVOdvsisEVorqNldaTPwj9EgBUvXj5Y9Y=
+        b=Ckr+OcxQqdfIb/EEx1Wn4EJ8HYomYsVgiUZ19YRa27WEXnTnvrL0h8zhYVDxIheyS
+         y2E0e35OagEko6fKuDnZdA2OytBLjoehTAyEtvMzQhJ00ozDhrtErA0MnzYf4dKaf6
+         Z5o2Sr1ZZko6uNSRhGCto1Gtkp5KflB5FCIbk5gg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.4 150/161] power: supply: bq27xxx: Fix bq27xxx_battery_update() race condition
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.3 098/127] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
 Date:   Sun, 28 May 2023 20:11:14 +0100
-Message-Id: <20230528190841.649471657@linuxfoundation.org>
+Message-Id: <20230528190839.483314012@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,92 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 5c34c0aef185dcd10881847b9ebf20046aa77cb4 upstream.
+commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
 
-bq27xxx_battery_update() assumes / requires that it is only run once,
-not multiple times at the same time. But there are 3 possible callers:
+In the pvcalls_new_active_socket() function, most error paths call
+pvcalls_back_release_active(fedata->dev, fedata, map) which calls
+sock_release() on "sock".  The bug is that the caller also frees sock.
 
-1. bq27xxx_battery_poll() delayed_work item handler
-2. bq27xxx_battery_irq_handler_thread() I2C IRQ handler
-3. bq27xxx_battery_setup()
+Fix this by making every error path in pvcalls_new_active_socket()
+release the sock, and don't free it in the caller.
 
-And there is no protection against these racing with each other,
-fix this race condition by making all callers take di->lock:
-
-- Rename bq27xxx_battery_update() to bq27xxx_battery_update_unlocked()
-
-- Add new bq27xxx_battery_update() which takes di->lock and then calls
-  bq27xxx_battery_update_unlocked()
-
-- Make stale cache check code in bq27xxx_battery_get_property(), which
-  already takes di->lock directly to check the jiffies, call
-  bq27xxx_battery_update_unlocked() instead of messing with
-  the delayed_work item
-
-- Make bq27xxx_battery_update_unlocked() mod the delayed-work item
-  so that the next poll is delayed to poll_interval milliseconds after
-  the last update independent of the source of the update
-
-Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/xen/pvcalls-back.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1547,7 +1547,7 @@ static int bq27xxx_battery_read_health(s
- 	return POWER_SUPPLY_HEALTH_GOOD;
- }
+--- a/drivers/xen/pvcalls-back.c
++++ b/drivers/xen/pvcalls-back.c
+@@ -325,8 +325,10 @@ static struct sock_mapping *pvcalls_new_
+ 	void *page;
  
--void bq27xxx_battery_update(struct bq27xxx_device_info *di)
-+static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
- {
- 	struct bq27xxx_reg_cache cache = {0, };
- 	bool has_ci_flag = di->opts & BQ27XXX_O_ZERO;
-@@ -1597,6 +1597,16 @@ void bq27xxx_battery_update(struct bq27x
- 		di->cache = cache;
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+-	if (map == NULL)
++	if (map == NULL) {
++		sock_release(sock);
+ 		return NULL;
++	}
  
- 	di->last_update = jiffies;
-+
-+	if (poll_interval > 0)
-+		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
-+}
-+
-+void bq27xxx_battery_update(struct bq27xxx_device_info *di)
-+{
-+	mutex_lock(&di->lock);
-+	bq27xxx_battery_update_unlocked(di);
-+	mutex_unlock(&di->lock);
- }
- EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
- 
-@@ -1607,9 +1617,6 @@ static void bq27xxx_battery_poll(struct
- 				     work.work);
- 
- 	bq27xxx_battery_update(di);
--
--	if (poll_interval > 0)
--		schedule_delayed_work(&di->work, poll_interval * HZ);
- }
- 
- /*
-@@ -1770,10 +1777,8 @@ static int bq27xxx_battery_get_property(
- 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
- 
- 	mutex_lock(&di->lock);
--	if (time_is_before_jiffies(di->last_update + 5 * HZ)) {
--		cancel_delayed_work_sync(&di->work);
--		bq27xxx_battery_poll(&di->work.work);
+ 	map->fedata = fedata;
+ 	map->sock = sock;
+@@ -418,10 +420,8 @@ static int pvcalls_back_connect(struct x
+ 					req->u.connect.ref,
+ 					req->u.connect.evtchn,
+ 					sock);
+-	if (!map) {
++	if (!map)
+ 		ret = -EFAULT;
+-		sock_release(sock);
 -	}
-+	if (time_is_before_jiffies(di->last_update + 5 * HZ))
-+		bq27xxx_battery_update_unlocked(di);
- 	mutex_unlock(&di->lock);
  
- 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+ out:
+ 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
+@@ -561,7 +561,6 @@ static void __pvcalls_back_accept(struct
+ 					sock);
+ 	if (!map) {
+ 		ret = -EFAULT;
+-		sock_release(sock);
+ 		goto out_error;
+ 	}
+ 
 
 
