@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B187713DCA
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E379713C35
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbjE1T3F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45592 "EHLO
+        id S229641AbjE1TNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbjE1T3C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:02 -0400
+        with ESMTP id S229475AbjE1TNG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE66BFF;
-        Sun, 28 May 2023 12:28:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54520A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E29C61D13;
-        Sun, 28 May 2023 19:28:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52876C433EF;
-        Sun, 28 May 2023 19:28:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEAF0618E2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F84C433D2;
+        Sun, 28 May 2023 19:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302136;
-        bh=5ggJml8Y0RdYXX3sXuOlmebpMMjT9tIUaTbIoZT4CQs=;
+        s=korg; t=1685301184;
+        bh=EDJ8xgwfZmJvZP/oI0VldhPcP6EQrhu6jfQi+R/yZhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yLZtjeSNITkCY8Z5dHB0SesboAQzp5YJ8WJ4zR0h7yDVDGXx/Gsy1LlSlfec2nCqB
-         xSrHHbW79esCFJITxADKGhjtRZNjLApxiYOohWQ6JjiZwCwVko4UbT3Wboo0MLcsf2
-         djj5SW32DuOvqhWHeIVh/DPFbZfmgHRnf8HGwp/A=
+        b=1UPX0B20SJ+VAp59pOMfbTYn9+Wt5cN07OpxVgzkWO5VV6YCuHnTguaG8pQXpH6X+
+         eKqFkSIXxFEwft0KSV43ODRVxKJ+f14/WfVQWFXWQV0IRw2wY4XbcyxzomFDfsegyn
+         /zMyX7NnRxP+nHMf468l+eQb+T0B43lCnqHYtRgE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Arcari <darcari@redhat.com>,
-        Jithu Joseph <jithu.joseph@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 6.3 014/127] platform/x86/intel/ifs: Annotate work queue on stack so object debug does not complain
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Piotr Raczynski <piotr.raczynski@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 16/86] net: Catch invalid index in XPS mapping
 Date:   Sun, 28 May 2023 20:09:50 +0100
-Message-Id: <20230528190836.689708217@linuxfoundation.org>
+Message-Id: <20230528190829.156076232@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,63 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Arcari <darcari@redhat.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 3279decb2c3c8d58cb0b70ed5235c480735a36ee upstream.
+[ Upstream commit 5dd0dfd55baec0742ba8f5625a0dd064aca7db16 ]
 
-Object Debug results in the following warning while attempting to load
-ifs firmware:
+When setting the XPS value of a TX queue, warn the user once if the
+index of the queue is greater than the number of allocated TX queues.
 
-[  220.007422] ODEBUG: object 000000003bf952db is on stack 00000000e843994b, but NOT annotated.
-[  220.007459] ------------[ cut here ]------------
-[  220.007461] WARNING: CPU: 0 PID: 11774 at lib/debugobjects.c:548 __debug_object_init.cold+0x22e/0x2d5
-[  220.137476] RIP: 0010:__debug_object_init.cold+0x22e/0x2d5
-[  220.254774] Call Trace:
-[  220.257641]  <TASK>
-[  220.265606]  scan_chunks_sanity_check+0x368/0x5f0 [intel_ifs]
-[  220.288292]  ifs_load_firmware+0x2a3/0x400 [intel_ifs]
-[  220.332793]  current_batch_store+0xea/0x160 [intel_ifs]
-[  220.357947]  kernfs_fop_write_iter+0x355/0x530
-[  220.363048]  new_sync_write+0x28e/0x4a0
-[  220.381226]  vfs_write+0x62a/0x920
-[  220.385160]  ksys_write+0xf9/0x1d0
-[  220.399421]  do_syscall_64+0x59/0x90
-[  220.440635]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[  220.566845] ---[ end trace 3a01b299db142b41 ]---
+Previously, this scenario went uncaught. In the best case, it resulted
+in unnecessary allocations. In the worst case, it resulted in
+out-of-bounds memory references through calls to `netdev_get_tx_queue(
+dev, index)`. Therefore, it is important to inform the user but not
+worth returning an error and risk downing the netdevice.
 
-Correct this by calling INIT_WORK_ONSTACK instead of INIT_WORK.
-
-Fixes: 684ec215706d ("platform/x86/intel/ifs: Authenticate and copy to secured memory")
-
-Signed-off-by: David Arcari <darcari@redhat.com>
-Cc: Jithu Joseph <jithu.joseph@intel.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Mark Gross <markgross@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230523105400.674152-1-darcari@redhat.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
+Link: https://lore.kernel.org/r/20230321150725.127229-1-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/ifs/load.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/platform/x86/intel/ifs/load.c
-+++ b/drivers/platform/x86/intel/ifs/load.c
-@@ -208,7 +208,7 @@ static int scan_chunks_sanity_check(stru
- 			continue;
- 		reinit_completion(&ifs_done);
- 		local_work.dev = dev;
--		INIT_WORK(&local_work.w, copy_hashes_authenticate_chunks);
-+		INIT_WORK_ONSTACK(&local_work.w, copy_hashes_authenticate_chunks);
- 		schedule_work_on(cpu, &local_work.w);
- 		wait_for_completion(&ifs_done);
- 		if (ifsd->loading_error) {
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 86f762a1cf7ac..a4d68da682322 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -2165,6 +2165,8 @@ int netif_set_xps_queue(struct net_device *dev, const struct cpumask *mask,
+ 	struct xps_map *map, *new_map;
+ 	bool active = false;
+ 
++	WARN_ON_ONCE(index >= dev->num_tx_queues);
++
+ 	if (dev->num_tc) {
+ 		num_tc = dev->num_tc;
+ 		tc = netdev_txq_to_tc(dev, index);
+-- 
+2.39.2
+
 
 
