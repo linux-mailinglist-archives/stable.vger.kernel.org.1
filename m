@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9722713C5E
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67A2F713D62
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229711AbjE1TOn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
+        id S230034AbjE1TYw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbjE1TOm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC3DA0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:41 -0700 (PDT)
+        with ESMTP id S230045AbjE1TYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5919BB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A92861962
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77717C433D2;
-        Sun, 28 May 2023 19:14:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A8C861BBB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88485C433D2;
+        Sun, 28 May 2023 19:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301280;
-        bh=7ADUiHZS/SIeohP0AoapQcEWSWTEIvGy4MJC2Le0n7o=;
+        s=korg; t=1685301886;
+        bh=PP/vIuljADhnibvqjbD8TJfV5ZrYy3ShefFqcCMNquM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lNXT4Pxtn2YghKJzo+u6yU6SWfqBNbQHNU5N9KDp493AY8Z/OZeVfSNHLZ/8bzzsV
-         z4U9zNOhkCOXnu3181KAbASAt3dmnwM1pQaJknBU1bxL1Ht/kgdlrrIM1Xgq+RmnT8
-         8f08iwWY0lAphy90ZC/lrCFwk/hAkwjpsjIOjzPc=
+        b=KSu6IuwmAD/+22vbrWKqRqAMJz/blY13net6IxcmygprrQna+aEEfMjZV0+wc8xSF
+         wZOYv9UBicMiNWAt9oFJjoEFLMZR2/kwksp8DBLEnW5JkBIyBGk12HprsvV5VoQEGQ
+         LDODMQPz+e4pjOoVC1kRsITdDoC+gbWVKacam7Is=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 26/86] HID: logitech-hidpp: Dont use the USB serial for USB devices
+Subject: [PATCH 5.4 076/161] net: bcmgenet: Restore phy_stop() depending upon suspend/close
 Date:   Sun, 28 May 2023 20:10:00 +0100
-Message-Id: <20230528190829.530509506@linuxfoundation.org>
+Message-Id: <20230528190839.566943064@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,99 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit 7ad1fe0da0fa91bf920b79ab05ae97bfabecc4f4 ]
+[ Upstream commit 225c657945c4a6307741cb3cc89467eadcc26e9b ]
 
-For devices that support the 0x0003 feature (Device Information) version 4,
-set the serial based on the output of that feature, rather than relying
-on the usbhid code setting the USB serial.
+Removing the phy_stop() from bcmgenet_netif_stop() ended up causing
+warnings from the PHY library that phy_start() is called from the
+RUNNING state since we are no longer stopping the PHY state machine
+during bcmgenet_suspend().
 
-This should allow the serial when connected through USB to (nearly)
-match the one when connected through a unifying receiver.
+Restore the call to phy_stop() but make it conditional on being called
+from the close or suspend path.
 
-For example, on the serials on a G903 wired/wireless mouse:
-- Unifying: 4067-e8-ce-cd-45
-- USB before patch: 017C385C3837
-- USB after patch: c086-e8-ce-cd-45
-
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Link: https://lore.kernel.org/r/20230302130117.3975-1-hadess@hadess.net
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Fixes: 93e0401e0fc0 ("net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Link: https://lore.kernel.org/r/20230515025608.2587012-1-f.fainelli@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 51 ++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 6ad776b4711b7..e2db4731eb825 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -777,6 +777,55 @@ static bool hidpp_is_connected(struct hidpp_device *hidpp)
- 	return ret == 0;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 468f79c270ac3..750acbf294640 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2973,7 +2973,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 	return ret;
  }
  
-+/* -------------------------------------------------------------------------- */
-+/* 0x0003: Device Information                                                 */
-+/* -------------------------------------------------------------------------- */
-+
-+#define HIDPP_PAGE_DEVICE_INFORMATION			0x0003
-+
-+#define CMD_GET_DEVICE_INFO				0x00
-+
-+static int hidpp_get_serial(struct hidpp_device *hidpp, u32 *serial)
-+{
-+	struct hidpp_report response;
-+	u8 feature_type;
-+	u8 feature_index;
-+	int ret;
-+
-+	ret = hidpp_root_get_feature(hidpp, HIDPP_PAGE_DEVICE_INFORMATION,
-+				     &feature_index,
-+				     &feature_type);
-+	if (ret)
-+		return ret;
-+
-+	ret = hidpp_send_fap_command_sync(hidpp, feature_index,
-+					  CMD_GET_DEVICE_INFO,
-+					  NULL, 0, &response);
-+	if (ret)
-+		return ret;
-+
-+	/* See hidpp_unifying_get_serial() */
-+	*serial = *((u32 *)&response.rap.params[1]);
-+	return 0;
-+}
-+
-+static int hidpp_serial_init(struct hidpp_device *hidpp)
-+{
-+	struct hid_device *hdev = hidpp->hid_dev;
-+	u32 serial;
-+	int ret;
-+
-+	ret = hidpp_get_serial(hidpp, &serial);
-+	if (ret)
-+		return ret;
-+
-+	snprintf(hdev->uniq, sizeof(hdev->uniq), "%04x-%4phD",
-+		 hdev->product, &serial);
-+	dbg_hid("HID++ DeviceInformation: Got serial: %s\n", hdev->uniq);
-+
-+	return 0;
-+}
-+
- /* -------------------------------------------------------------------------- */
- /* 0x0005: GetDeviceNameType                                                  */
- /* -------------------------------------------------------------------------- */
-@@ -3039,6 +3088,8 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+-static void bcmgenet_netif_stop(struct net_device *dev)
++static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
  
- 	if (hidpp->quirks & HIDPP_QUIRK_UNIFYING)
- 		hidpp_unifying_init(hidpp);
-+	else if (hid_is_usb(hidpp->hid_dev))
-+		hidpp_serial_init(hidpp);
+@@ -2988,6 +2988,8 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
  
- 	connected = hidpp_is_connected(hidpp);
- 	atomic_set(&hidpp->connected, connected);
++	if (stop_phy)
++		phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
+ 
+@@ -3013,7 +3015,7 @@ static int bcmgenet_close(struct net_device *dev)
+ 
+ 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
+ 
+-	bcmgenet_netif_stop(dev);
++	bcmgenet_netif_stop(dev, false);
+ 
+ 	/* Really kill the PHY state machine and disconnect from it */
+ 	phy_disconnect(dev->phydev);
+@@ -3711,7 +3713,7 @@ static int bcmgenet_suspend(struct device *d)
+ 
+ 	netif_device_detach(dev);
+ 
+-	bcmgenet_netif_stop(dev);
++	bcmgenet_netif_stop(dev, true);
+ 
+ 	if (!device_may_wakeup(d))
+ 		phy_suspend(dev->phydev);
 -- 
 2.39.2
 
