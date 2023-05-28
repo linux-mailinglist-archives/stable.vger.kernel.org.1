@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F678713C61
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C69F713E67
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjE1TOv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34430 "EHLO
+        id S230362AbjE1Tf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229713AbjE1TOu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9FFC9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:49 -0700 (PDT)
+        with ESMTP id S230363AbjE1TfZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315C0109
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 946F06196B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE8BC433D2;
-        Sun, 28 May 2023 19:14:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1203C61E06
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304AFC433EF;
+        Sun, 28 May 2023 19:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301288;
-        bh=CzGxuQbX8Ecz9PJKVkJSdxiuFWlqI8LMQw5sn7EbAGA=;
+        s=korg; t=1685302509;
+        bh=oYJfFKttYLizDzll8gvpai86bvGG257IY/PdTCPAdfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j6/sQ6RcRcefa2KA7qBWYX83lYlBV8Y8MuwR70/JByp7dqXp+3OU4j6Wd8iNA7EZr
-         Fuxoj0jubm/m5L3g99vvVEyQYtQvMS10qrU94Fa2VpB5AGjuFSJGsxwNP8IixcrpJu
-         Br8rkd1qyq25xQN6F+21wuZuXsH4rReOCrFuhMjU=
+        b=ic/rSmchpxoS1XF8k77SoEFGwgWf+WsBXQI4KBEE3FuZPspP5Lm7kcIEC2yz2wFpU
+         FnXTkdkA7H93DV4tyvcJOLfTuSub3sJ5qRav89Nk4CB3yM6pl3ju2JOou4vJ9G5NpT
+         exKJFuiUqmCMBNFfbk8Ya6J7w5Lg2Fag/ZPeNutI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 4.14 57/86] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 6.1 031/119] xtensa: add __bswap{si,di}2 helpers
 Date:   Sun, 28 May 2023 20:10:31 +0100
-Message-Id: <20230528190830.718485853@linuxfoundation.org>
+Message-Id: <20230528190836.392132131@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,94 +52,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-(cherry picked from upstream fc96ec826bced75cc6b9c07a4ac44bbf651337ab)
+commit 034f4a7877c32a8efd6beee4d71ed14e424499a9 upstream.
 
-On CPM, the RISC core is a lot more efficiant when doing transfers
-in 16-bits chunks than in 8-bits chunks, but unfortunately the
-words need to be byte swapped as seen in a previous commit.
+gcc-13 may generate calls for __bswap{si,di}2. This breaks the kernel
+build when optimization for size is selected. Add __bswap{si,di}2
+helpers to fix that.
 
-So, for large tranfers with an even size, allocate a temporary tx
-buffer and byte-swap data before and after transfer.
-
-This change allows setting higher speed for transfer. For instance
-on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
-that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
-at 25 MHz while a word transfer at the same speed uses 0.032%
-of CPM load. This means the speed can be 6 times higher in
-word mode for the same CPM load.
-
-For the time being, only do it on CPM1 as there must be a
-trade-off between the CPM load reduction and the CPU load required
-to byte swap the data.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 19c5699f9aff ("xtensa: don't link with libgcc")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
- drivers/spi/spi-fsl-spi.c |    3 +++
- 2 files changed, 26 insertions(+)
+ arch/xtensa/kernel/xtensa_ksyms.c |    4 ++++
+ arch/xtensa/lib/Makefile          |    2 +-
+ arch/xtensa/lib/bswapdi2.S        |   21 +++++++++++++++++++++
+ arch/xtensa/lib/bswapsi2.S        |   16 ++++++++++++++++
+ 4 files changed, 42 insertions(+), 1 deletion(-)
+ create mode 100644 arch/xtensa/lib/bswapdi2.S
+ create mode 100644 arch/xtensa/lib/bswapsi2.S
 
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -25,6 +25,7 @@
- #include <linux/spi/spi.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
-+#include <linux/byteorder/generic.h>
+--- a/arch/xtensa/kernel/xtensa_ksyms.c
++++ b/arch/xtensa/kernel/xtensa_ksyms.c
+@@ -56,6 +56,8 @@ EXPORT_SYMBOL(empty_zero_page);
+  */
+ extern long long __ashrdi3(long long, int);
+ extern long long __ashldi3(long long, int);
++extern long long __bswapdi2(long long);
++extern int __bswapsi2(int);
+ extern long long __lshrdi3(long long, int);
+ extern int __divsi3(int, int);
+ extern int __modsi3(int, int);
+@@ -66,6 +68,8 @@ extern unsigned long long __umulsidi3(un
  
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -124,6 +125,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
- 		mspi->rx_dma = mspi->dma_dummy_rx;
- 		mspi->map_rx_dma = 0;
- 	}
-+	if (t->bits_per_word == 16 && t->tx_buf) {
-+		const u16 *src = t->tx_buf;
-+		u16 *dst;
-+		int i;
-+
-+		dst = kmalloc(t->len, GFP_KERNEL);
-+		if (!dst)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < t->len >> 1; i++)
-+			dst[i] = cpu_to_le16p(src + i);
-+
-+		mspi->tx = dst;
-+		mspi->map_tx_dma = 1;
-+	}
+ EXPORT_SYMBOL(__ashldi3);
+ EXPORT_SYMBOL(__ashrdi3);
++EXPORT_SYMBOL(__bswapdi2);
++EXPORT_SYMBOL(__bswapsi2);
+ EXPORT_SYMBOL(__lshrdi3);
+ EXPORT_SYMBOL(__divsi3);
+ EXPORT_SYMBOL(__modsi3);
+--- a/arch/xtensa/lib/Makefile
++++ b/arch/xtensa/lib/Makefile
+@@ -4,7 +4,7 @@
+ #
  
- 	if (mspi->map_tx_dma) {
- 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
-@@ -177,6 +193,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
- 	if (mspi->map_rx_dma)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
+ lib-y	+= memcopy.o memset.o checksum.o \
+-	   ashldi3.o ashrdi3.o lshrdi3.o \
++	   ashldi3.o ashrdi3.o bswapdi2.o bswapsi2.o lshrdi3.o \
+ 	   divsi3.o udivsi3.o modsi3.o umodsi3.o mulsi3.o umulsidi3.o \
+ 	   usercopy.o strncpy_user.o strnlen_user.o
+ lib-$(CONFIG_PCI) += pci-auto.o
+--- /dev/null
++++ b/arch/xtensa/lib/bswapdi2.S
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later WITH GCC-exception-2.0 */
++#include <linux/linkage.h>
++#include <asm/asmmacro.h>
++#include <asm/core.h>
 +
-+	if (t->bits_per_word == 16 && t->rx_buf) {
-+		int i;
++ENTRY(__bswapdi2)
 +
-+		for (i = 0; i < t->len; i += 2)
-+			le16_to_cpus(t->rx_buf + i);
-+	}
- }
- EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
- 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -366,6 +366,9 @@ static int fsl_spi_do_one_msg(struct spi
- 				return -EINVAL;
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
-+			if (t->bits_per_word == 8 && t->len >= 256 &&
-+			    (mpc8xxx_spi->flags & SPI_CPM1))
-+				t->bits_per_word = 16;
- 		}
- 	}
- 
++	abi_entry_default
++	ssai	8
++	srli	a4, a2, 16
++	src	a4, a4, a2
++	src	a4, a4, a4
++	src	a4, a2, a4
++	srli	a2, a3, 16
++	src	a2, a2, a3
++	src	a2, a2, a2
++	src	a2, a3, a2
++	mov	a3, a4
++	abi_ret_default
++
++ENDPROC(__bswapdi2)
+--- /dev/null
++++ b/arch/xtensa/lib/bswapsi2.S
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later WITH GCC-exception-2.0 */
++#include <linux/linkage.h>
++#include <asm/asmmacro.h>
++#include <asm/core.h>
++
++ENTRY(__bswapsi2)
++
++	abi_entry_default
++	ssai	8
++	srli	a3, a2, 16
++	src	a3, a3, a2
++	src	a3, a3, a3
++	src	a2, a2, a3
++	abi_ret_default
++
++ENDPROC(__bswapsi2)
 
 
