@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E92713F96
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C94713FEB
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjE1TrC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
+        id S231424AbjE1Tua (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:50:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231317AbjE1TrB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:01 -0400
+        with ESMTP id S231416AbjE1Tua (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:50:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A90BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78969C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:50:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E89B361F78
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13705C433EF;
-        Sun, 28 May 2023 19:46:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72AE562057
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:50:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9066EC433D2;
+        Sun, 28 May 2023 19:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303216;
-        bh=XwbO+uP9z+euriGaEYmaJKRYaDunT7FebxX5uWb1vxM=;
+        s=korg; t=1685303427;
+        bh=NzSuCDquSRyGSL/9He700VpgzWy155VEdg4950KBWAo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xDSljLb+rUh3tBaxppFtyI0D5f6rtRFIqg7aAEMK/jSh27fTBW2BThNPeA9Ro/PI9
-         5Hpl5M5PhU8sB0uG87wH6eWKWP1ER9Eqtz8YoEqc/UHZ4mmzhVpxkh7rZCgg3GvqAy
-         yepCG7Fjd3LqzZ0mkBsxOiNKYGMDsFkKxoGhalTc=
+        b=0pFR5uPqzQG473KTqWIs8xKO+U2HnY+eb+A/e/YkiLudaDJojjLODIw6RfmR/gCkS
+         TVT01Lm9TkycHvmPnILiy5PtPwL+QEi417NnZswbLKmbNYbmnrTuhSutpRJ8f9fw++
+         JsVMaZq0Vt0ttSnMnYUh/bJOQfpYGqrecPHTg608=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 201/211] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 42/69] power: supply: leds: Fix blink to LED on transition
 Date:   Sun, 28 May 2023 20:12:02 +0100
-Message-Id: <20230528190848.491895336@linuxfoundation.org>
+Message-Id: <20230528190829.943757799@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,60 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
+commit e4484643991e0f6b89060092563f0dbab9450cbb upstream.
 
-In the pvcalls_new_active_socket() function, most error paths call
-pvcalls_back_release_active(fedata->dev, fedata, map) which calls
-sock_release() on "sock".  The bug is that the caller also frees sock.
+When a battery's status changes from charging to full then
+the charging-blink-full-solid trigger tries to change
+the LED from blinking to solid/on.
 
-Fix this by making every error path in pvcalls_new_active_socket()
-release the sock, and don't free it in the caller.
+As is documented in include/linux/leds.h to deactivate blinking /
+to make the LED solid a LED_OFF must be send:
 
-Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
-Signed-off-by: Juergen Gross <jgross@suse.com>
+"""
+         * Deactivate blinking again when the brightness is set to LED_OFF
+         * via the brightness_set() callback.
+"""
+
+led_set_brighness() calls with a brightness value other then 0 / LED_OFF
+merely change the brightness of the LED in its on state while it is
+blinking.
+
+So power_supply_update_bat_leds() must first send a LED_OFF event
+before the LED_FULL to disable blinking.
+
+Fixes: 6501f728c56f ("power_supply: Add new LED trigger charging-blink-solid-full")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/pvcalls-back.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/power/supply/power_supply_leds.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/xen/pvcalls-back.c
-+++ b/drivers/xen/pvcalls-back.c
-@@ -321,8 +321,10 @@ static struct sock_mapping *pvcalls_new_
- 	void *page;
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
--	if (map == NULL)
-+	if (map == NULL) {
-+		sock_release(sock);
- 		return NULL;
-+	}
- 
- 	map->fedata = fedata;
- 	map->sock = sock;
-@@ -414,10 +416,8 @@ static int pvcalls_back_connect(struct x
- 					req->u.connect.ref,
- 					req->u.connect.evtchn,
- 					sock);
--	if (!map) {
-+	if (!map)
- 		ret = -EFAULT;
--		sock_release(sock);
--	}
- 
- out:
- 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
-@@ -558,7 +558,6 @@ static void __pvcalls_back_accept(struct
- 					sock);
- 	if (!map) {
- 		ret = -EFAULT;
--		sock_release(sock);
- 		goto out_error;
- 	}
- 
+--- a/drivers/power/supply/power_supply_leds.c
++++ b/drivers/power/supply/power_supply_leds.c
+@@ -34,8 +34,9 @@ static void power_supply_update_bat_leds
+ 		led_trigger_event(psy->charging_full_trig, LED_FULL);
+ 		led_trigger_event(psy->charging_trig, LED_OFF);
+ 		led_trigger_event(psy->full_trig, LED_FULL);
+-		led_trigger_event(psy->charging_blink_full_solid_trig,
+-			LED_FULL);
++		/* Going from blink to LED on requires a LED_OFF event to stop blink */
++		led_trigger_event(psy->charging_blink_full_solid_trig, LED_OFF);
++		led_trigger_event(psy->charging_blink_full_solid_trig, LED_FULL);
+ 		break;
+ 	case POWER_SUPPLY_STATUS_CHARGING:
+ 		led_trigger_event(psy->charging_full_trig, LED_FULL);
 
 
