@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B67713F97
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF24713FCF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231315AbjE1TrD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33346 "EHLO
+        id S231390AbjE1TtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231319AbjE1TrC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:02 -0400
+        with ESMTP id S231389AbjE1TtT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78053C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E181D9B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56C3261F8F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755A8C4339B;
-        Sun, 28 May 2023 19:46:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77BF06201D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD1EC433EF;
+        Sun, 28 May 2023 19:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303218;
-        bh=KpiWTTX/oxkCyfiQwoYkwXb3Ut3FckUwB2v9IjJVVpo=;
+        s=korg; t=1685303357;
+        bh=Xtv38U0szJX0GiUfVjA2TI1hF6b1xoHHD4lQf47fY7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VyKFg/kpr0x4L4C53hYCkCeC7sWSFGmZnS/S6gPq2fYlE0KVyihhkrN7/lBz+HNhH
-         O7wotOj+eHn5TyRUQKi2MkSN0unCRpwEVCIRXDEFPXpqNp61vAqA0LbzNW6RJuRMTs
-         udJ54C9PFpfj9vXYmtcH9OMH4rCFAq8a/4uo1Zio=
+        b=zW8wCdWEt8V4avnLS8zGRhQUwtqJXDvECGtlUC5dAWWT565Drzqt3NzzuNe44QjJW
+         d7T5O5JkKssk3LJwD0/3KzuD1QkylUQOT+/Y8th5/qLZd8nL5P0L0ZPqKrkHCgq7rJ
+         gk0k/4b8eILwFqQB39rkVpKET7EHAfw9jW++H7lk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vernon Lovejoy <vlovejoy@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.10 202/211] x86/show_trace_log_lvl: Ensure stack pointer is aligned, again
-Date:   Sun, 28 May 2023 20:12:03 +0100
-Message-Id: <20230528190848.515546040@linuxfoundation.org>
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 44/69] power: supply: bq27xxx: Fix bq27xxx_battery_update() race condition
+Date:   Sun, 28 May 2023 20:12:04 +0100
+Message-Id: <20230528190830.018072142@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,69 +53,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vernon Lovejoy <vlovejoy@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 2e4be0d011f21593c6b316806779ba1eba2cd7e0 upstream.
+commit 5c34c0aef185dcd10881847b9ebf20046aa77cb4 upstream.
 
-The commit e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-tried to align the stack pointer in show_trace_log_lvl(), otherwise the
-"stack < stack_info.end" check can't guarantee that the last read does
-not go past the end of the stack.
+bq27xxx_battery_update() assumes / requires that it is only run once,
+not multiple times at the same time. But there are 3 possible callers:
 
-However, we have the same problem with the initial value of the stack
-pointer, it can also be unaligned. So without this patch this trivial
-kernel module
+1. bq27xxx_battery_poll() delayed_work item handler
+2. bq27xxx_battery_irq_handler_thread() I2C IRQ handler
+3. bq27xxx_battery_setup()
 
-	#include <linux/module.h>
+And there is no protection against these racing with each other,
+fix this race condition by making all callers take di->lock:
 
-	static int init(void)
-	{
-		asm volatile("sub    $0x4,%rsp");
-		dump_stack();
-		asm volatile("add    $0x4,%rsp");
+- Rename bq27xxx_battery_update() to bq27xxx_battery_update_unlocked()
 
-		return -EAGAIN;
-	}
+- Add new bq27xxx_battery_update() which takes di->lock and then calls
+  bq27xxx_battery_update_unlocked()
 
-	module_init(init);
-	MODULE_LICENSE("GPL");
+- Make stale cache check code in bq27xxx_battery_get_property(), which
+  already takes di->lock directly to check the jiffies, call
+  bq27xxx_battery_update_unlocked() instead of messing with
+  the delayed_work item
 
-crashes the kernel.
+- Make bq27xxx_battery_update_unlocked() mod the delayed-work item
+  so that the next poll is delayed to poll_interval milliseconds after
+  the last update independent of the source of the update
 
-Fixes: e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-Signed-off-by: Vernon Lovejoy <vlovejoy@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20230512104232.GA10227@redhat.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/dumpstack.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -195,7 +195,6 @@ void show_trace_log_lvl(struct task_stru
- 	printk("%sCall Trace:\n", log_lvl);
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1755,7 +1755,7 @@ static int bq27xxx_battery_read_health(s
+ 	return POWER_SUPPLY_HEALTH_GOOD;
+ }
  
- 	unwind_start(&state, task, regs, stack);
--	stack = stack ? : get_stack_pointer(task, regs);
- 	regs = unwind_get_entry_regs(&state, &partial);
+-void bq27xxx_battery_update(struct bq27xxx_device_info *di)
++static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
+ {
+ 	struct bq27xxx_reg_cache cache = {0, };
+ 	bool has_ci_flag = di->opts & BQ27XXX_O_HAS_CI;
+@@ -1806,6 +1806,16 @@ void bq27xxx_battery_update(struct bq27x
+ 		di->cache = cache;
  
- 	/*
-@@ -214,9 +213,13 @@ void show_trace_log_lvl(struct task_stru
- 	 * - hardirq stack
- 	 * - entry stack
- 	 */
--	for ( ; stack; stack = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
-+	for (stack = stack ?: get_stack_pointer(task, regs);
-+	     stack;
-+	     stack = stack_info.next_sp) {
- 		const char *stack_name;
- 
-+		stack = PTR_ALIGN(stack, sizeof(long));
+ 	di->last_update = jiffies;
 +
- 		if (get_stack_info(stack, task, &stack_info, &visit_mask)) {
- 			/*
- 			 * We weren't on a valid stack.  It's possible that
++	if (poll_interval > 0)
++		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
++}
++
++void bq27xxx_battery_update(struct bq27xxx_device_info *di)
++{
++	mutex_lock(&di->lock);
++	bq27xxx_battery_update_unlocked(di);
++	mutex_unlock(&di->lock);
+ }
+ EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
+ 
+@@ -1816,9 +1826,6 @@ static void bq27xxx_battery_poll(struct
+ 				     work.work);
+ 
+ 	bq27xxx_battery_update(di);
+-
+-	if (poll_interval > 0)
+-		schedule_delayed_work(&di->work, poll_interval * HZ);
+ }
+ 
+ static bool bq27xxx_battery_is_full(struct bq27xxx_device_info *di, int flags)
+@@ -1991,10 +1998,8 @@ static int bq27xxx_battery_get_property(
+ 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
+ 
+ 	mutex_lock(&di->lock);
+-	if (time_is_before_jiffies(di->last_update + 5 * HZ)) {
+-		cancel_delayed_work_sync(&di->work);
+-		bq27xxx_battery_poll(&di->work.work);
+-	}
++	if (time_is_before_jiffies(di->last_update + 5 * HZ))
++		bq27xxx_battery_update_unlocked(di);
+ 	mutex_unlock(&di->lock);
+ 
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
 
 
