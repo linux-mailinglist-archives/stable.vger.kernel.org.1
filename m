@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA799713F60
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9302E713CF3
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231254AbjE1Toq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:44:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59394 "EHLO
+        id S229902AbjE1TUU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231251AbjE1Toq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9E29B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:45 -0700 (PDT)
+        with ESMTP id S229899AbjE1TUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE67DA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6E6861F37
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BF9C433D2;
-        Sun, 28 May 2023 19:44:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C7EC61ADB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893E8C433EF;
+        Sun, 28 May 2023 19:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303084;
-        bh=Aig8BKVtcdHXTBiWE//PFnhEEIen2/fP2ryL/8fOTwM=;
+        s=korg; t=1685301617;
+        bh=UyJZ+b5FTVFJkSbJvZNYrfR6CjHKLnfQTAeMZve1RgQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pPQ2UV4L7+qh3lXeQZqFkpOwPdJNqlVZ7iu096pNo+WOxx9SiCMSLwrOl0GugkdDG
-         KBmxCvIVHNfbiEw2/ZFmk34TyPplmIPLg2pWoV7QRHbzv+V1vULbxPAblk9hNBc5Tv
-         O948DcPn1yhj4K0EhGO+GXJo73yrWcoi68HXXrBU=
+        b=nhvWY/0UfLXG+xFdVipIjIAfaEiSObGHpht7xoVeOAtg+VC8uzP67c8/NZUeINKi3
+         F/2/A9I2c1dncMUW4cgQQbzXbuvPy80ONKDJlOYkykhKw1Enxbv2jMwOJQRstTIe6I
+         9klO9zme/G5JixqbDOGcmyLTdloCx7RbBdCymslw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 119/211] igb: fix bit_shift to be in [1..8] range
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 101/132] s390/qdio: get rid of register asm
 Date:   Sun, 28 May 2023 20:10:40 +0100
-Message-Id: <20230528190846.515609422@linuxfoundation.org>
+Message-Id: <20230528190836.765596033@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,48 +55,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 60d758659f1fb49e0d5b6ac2691ede8c0958795b ]
+[ Upstream commit d3e2ff5436d6ee38b572ba5c01dc7994769bec54 ]
 
-In igb_hash_mc_addr() the expression:
-        "mc_addr[4] >> 8 - bit_shift", right shifting "mc_addr[4]"
-shift by more than 7 bits always yields zero, so hash becomes not so different.
-Add initialization with bit_shift = 1 and add a loop condition to ensure
-bit_shift will be always in [1..8] range.
-
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: 2862a2fdfae8 ("s390/qdio: fix do_sqbs() inline assembly constraint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/e1000_mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/cio/qdio.h      | 25 ++++++++-------
+ drivers/s390/cio/qdio_main.c | 62 +++++++++++++++++++-----------------
+ 2 files changed, 46 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/e1000_mac.c b/drivers/net/ethernet/intel/igb/e1000_mac.c
-index fd8eb2f9ab9dc..57e813405b311 100644
---- a/drivers/net/ethernet/intel/igb/e1000_mac.c
-+++ b/drivers/net/ethernet/intel/igb/e1000_mac.c
-@@ -426,7 +426,7 @@ void igb_mta_set(struct e1000_hw *hw, u32 hash_value)
- static u32 igb_hash_mc_addr(struct e1000_hw *hw, u8 *mc_addr)
+diff --git a/drivers/s390/cio/qdio.h b/drivers/s390/cio/qdio.h
+index ed60b8d4efe68..289ee9db577a2 100644
+--- a/drivers/s390/cio/qdio.h
++++ b/drivers/s390/cio/qdio.h
+@@ -88,15 +88,15 @@ enum qdio_irq_states {
+ static inline int do_sqbs(u64 token, unsigned char state, int queue,
+ 			  int *start, int *count)
  {
- 	u32 hash_value, hash_mask;
--	u8 bit_shift = 0;
-+	u8 bit_shift = 1;
+-	register unsigned long _ccq asm ("0") = *count;
+-	register unsigned long _token asm ("1") = token;
+ 	unsigned long _queuestart = ((unsigned long)queue << 32) | *start;
++	unsigned long _ccq = *count;
  
- 	/* Register count multiplied by bits per register */
- 	hash_mask = (hw->mac.mta_reg_count * 32) - 1;
-@@ -434,7 +434,7 @@ static u32 igb_hash_mc_addr(struct e1000_hw *hw, u8 *mc_addr)
- 	/* For a mc_filter_type of 0, bit_shift is the number of left-shifts
- 	 * where 0xFF would still fall within the hash mask.
- 	 */
--	while (hash_mask >> bit_shift != 0xFF)
-+	while (hash_mask >> bit_shift != 0xFF && bit_shift < 4)
- 		bit_shift++;
+ 	asm volatile(
+-		"	.insn	rsy,0xeb000000008A,%1,0,0(%2)"
+-		: "+d" (_ccq), "+d" (_queuestart)
+-		: "d" ((unsigned long)state), "d" (_token)
+-		: "memory", "cc");
++		"	lgr	1,%[token]\n"
++		"	.insn	rsy,0xeb000000008a,%[qs],%[ccq],0(%[state])"
++		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart)
++		: [state] "d" ((unsigned long)state), [token] "d" (token)
++		: "memory", "cc", "1");
+ 	*count = _ccq & 0xff;
+ 	*start = _queuestart & 0xff;
  
- 	/* The portion of the address that is used for the hash table
+@@ -106,16 +106,17 @@ static inline int do_sqbs(u64 token, unsigned char state, int queue,
+ static inline int do_eqbs(u64 token, unsigned char *state, int queue,
+ 			  int *start, int *count, int ack)
+ {
+-	register unsigned long _ccq asm ("0") = *count;
+-	register unsigned long _token asm ("1") = token;
+ 	unsigned long _queuestart = ((unsigned long)queue << 32) | *start;
+ 	unsigned long _state = (unsigned long)ack << 63;
++	unsigned long _ccq = *count;
+ 
+ 	asm volatile(
+-		"	.insn	rrf,0xB99c0000,%1,%2,0,0"
+-		: "+d" (_ccq), "+d" (_queuestart), "+d" (_state)
+-		: "d" (_token)
+-		: "memory", "cc");
++		"	lgr	1,%[token]\n"
++		"	.insn	rrf,0xb99c0000,%[qs],%[state],%[ccq],0"
++		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart),
++		  [state] "+&d" (_state)
++		: [token] "d" (token)
++		: "memory", "cc", "1");
+ 	*count = _ccq & 0xff;
+ 	*start = _queuestart & 0xff;
+ 	*state = _state & 0xff;
+diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
+index 4b7cc8d425b1c..6100cf4df54b6 100644
+--- a/drivers/s390/cio/qdio_main.c
++++ b/drivers/s390/cio/qdio_main.c
+@@ -31,38 +31,41 @@ MODULE_DESCRIPTION("QDIO base support");
+ MODULE_LICENSE("GPL");
+ 
+ static inline int do_siga_sync(unsigned long schid,
+-			       unsigned int out_mask, unsigned int in_mask,
++			       unsigned long out_mask, unsigned long in_mask,
+ 			       unsigned int fc)
+ {
+-	register unsigned long __fc asm ("0") = fc;
+-	register unsigned long __schid asm ("1") = schid;
+-	register unsigned long out asm ("2") = out_mask;
+-	register unsigned long in asm ("3") = in_mask;
+ 	int cc;
+ 
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[schid]\n"
++		"	lgr	2,%[out]\n"
++		"	lgr	3,%[in]\n"
+ 		"	siga	0\n"
+-		"	ipm	%0\n"
+-		"	srl	%0,28\n"
+-		: "=d" (cc)
+-		: "d" (__fc), "d" (__schid), "d" (out), "d" (in) : "cc");
++		"	ipm	%[cc]\n"
++		"	srl	%[cc],28\n"
++		: [cc] "=&d" (cc)
++		: [fc] "d" (fc), [schid] "d" (schid),
++		  [out] "d" (out_mask), [in] "d" (in_mask)
++		: "cc", "0", "1", "2", "3");
+ 	return cc;
+ }
+ 
+-static inline int do_siga_input(unsigned long schid, unsigned int mask,
+-				unsigned int fc)
++static inline int do_siga_input(unsigned long schid, unsigned long mask,
++				unsigned long fc)
+ {
+-	register unsigned long __fc asm ("0") = fc;
+-	register unsigned long __schid asm ("1") = schid;
+-	register unsigned long __mask asm ("2") = mask;
+ 	int cc;
+ 
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[schid]\n"
++		"	lgr	2,%[mask]\n"
+ 		"	siga	0\n"
+-		"	ipm	%0\n"
+-		"	srl	%0,28\n"
+-		: "=d" (cc)
+-		: "d" (__fc), "d" (__schid), "d" (__mask) : "cc");
++		"	ipm	%[cc]\n"
++		"	srl	%[cc],28\n"
++		: [cc] "=&d" (cc)
++		: [fc] "d" (fc), [schid] "d" (schid), [mask] "d" (mask)
++		: "cc", "0", "1", "2");
+ 	return cc;
+ }
+ 
+@@ -78,23 +81,24 @@ static inline int do_siga_input(unsigned long schid, unsigned int mask,
+  * Note: For IQDC unicast queues only the highest priority queue is processed.
+  */
+ static inline int do_siga_output(unsigned long schid, unsigned long mask,
+-				 unsigned int *bb, unsigned int fc,
++				 unsigned int *bb, unsigned long fc,
+ 				 unsigned long aob)
+ {
+-	register unsigned long __fc asm("0") = fc;
+-	register unsigned long __schid asm("1") = schid;
+-	register unsigned long __mask asm("2") = mask;
+-	register unsigned long __aob asm("3") = aob;
+ 	int cc;
+ 
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[schid]\n"
++		"	lgr	2,%[mask]\n"
++		"	lgr	3,%[aob]\n"
+ 		"	siga	0\n"
+-		"	ipm	%0\n"
+-		"	srl	%0,28\n"
+-		: "=d" (cc), "+d" (__fc), "+d" (__aob)
+-		: "d" (__schid), "d" (__mask)
+-		: "cc");
+-	*bb = __fc >> 31;
++		"	lgr	%[fc],0\n"
++		"	ipm	%[cc]\n"
++		"	srl	%[cc],28\n"
++		: [cc] "=&d" (cc), [fc] "+&d" (fc)
++		: [schid] "d" (schid), [mask] "d" (mask), [aob] "d" (aob)
++		: "cc", "0", "1", "2", "3");
++	*bb = fc >> 31;
+ 	return cc;
+ }
+ 
 -- 
 2.39.2
 
