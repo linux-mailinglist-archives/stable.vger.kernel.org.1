@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F81713EB0
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D504713FB4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbjE1Th4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53692 "EHLO
+        id S231344AbjE1TsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbjE1Thz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:55 -0400
+        with ESMTP id S231362AbjE1TsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C15C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDDAAB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C100461E73
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF037C433EF;
-        Sun, 28 May 2023 19:37:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B905B61FD4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E00C433D2;
+        Sun, 28 May 2023 19:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302673;
-        bh=qrD8wfnTTJEc5E/cZKki5LTb+rfZyKWIc3jhkRz6Qb8=;
+        s=korg; t=1685303287;
+        bh=f1E0OZKK6d9gSe++Y1lhd+dV8AWB+uRdmXfa7ZE9KBE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1/ebwPUTPmV8TUHvc85GtNSKvz53vMdEU09tWUtCRZL+DwE/dR8+993QyLwoAd/QN
-         EGoNNjoWJgOtc8u3gSanBcjSOOe0AUgEqomqgLFnwDmwTxlmQmZMi9VUXwX8PUJCha
-         jLqNzU9adZ6z0KpmsL4C3s6DuopeZPOsDjadcBxs=
+        b=VsJ2yMLA81Vy5UiYLod7MbtsNkSXSPigCko67y/+kPQNhna49s9lFmyPygM008ioj
+         PQiZjgDAMWvrrpUWbTl09Ny2XbW4Trksy626gqwQondtNwIH0wBfKj7TX0VaSLl48H
+         mgSUoP9KOIw1BP5xp/XPKhv/lz9RXgsNdAJaOQHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 098/119] ASoC: Intel: avs: Access path components under lock
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 18/69] parisc: Handle kgdb breakpoints only in kernel context
 Date:   Sun, 28 May 2023 20:11:38 +0100
-Message-Id: <20230528190838.781692587@linuxfoundation.org>
+Message-Id: <20230528190829.031274547@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
+References: <20230528190828.358612414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,48 +52,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Helge Deller <deller@gmx.de>
 
-commit d849996f7458042af803b7d15a181922834c5249 upstream.
+commit 6888ff04e37d01295620a73f3f7efbc79f6ef152 upstream.
 
-Path and its components should be accessed under lock to prevent
-problems with one thread modifying them while other tries to read.
+The kernel kgdb break instructions should only be handled when running
+in kernel context.
 
-Fixes: c8c960c10971 ("ASoC: Intel: avs: APL-based platforms support")
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20230519201711.4073845-3-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.4+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/avs/apl.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/traps.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/intel/avs/apl.c
-+++ b/sound/soc/intel/avs/apl.c
-@@ -173,6 +173,7 @@ static bool apl_lp_streaming(struct avs_
- {
- 	struct avs_path *path;
+--- a/arch/parisc/kernel/traps.c
++++ b/arch/parisc/kernel/traps.c
+@@ -305,8 +305,8 @@ static void handle_break(struct pt_regs
+ #endif
  
-+	spin_lock(&adev->path_list_lock);
- 	/* Any gateway without buffer allocated in LP area disqualifies D0IX. */
- 	list_for_each_entry(path, &adev->path_list, node) {
- 		struct avs_path_pipeline *ppl;
-@@ -192,11 +193,14 @@ static bool apl_lp_streaming(struct avs_
- 				if (cfg->copier.dma_type == INVALID_OBJECT_ID)
- 					continue;
- 
--				if (!mod->gtw_attrs.lp_buffer_alloc)
-+				if (!mod->gtw_attrs.lp_buffer_alloc) {
-+					spin_unlock(&adev->path_list_lock);
- 					return false;
-+				}
- 			}
- 		}
+ #ifdef CONFIG_KGDB
+-	if (unlikely(iir == PARISC_KGDB_COMPILED_BREAK_INSN ||
+-		iir == PARISC_KGDB_BREAK_INSN)) {
++	if (unlikely((iir == PARISC_KGDB_COMPILED_BREAK_INSN ||
++		iir == PARISC_KGDB_BREAK_INSN)) && !user_mode(regs)) {
+ 		kgdb_handle_exception(9, SIGTRAP, 0, regs);
+ 		return;
  	}
-+	spin_unlock(&adev->path_list_lock);
- 
- 	return true;
- }
 
 
