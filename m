@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A3B713F69
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06CEF713EB9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231263AbjE1TpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59648 "EHLO
+        id S230456AbjE1TiN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231267AbjE1TpJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57649A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:07 -0700 (PDT)
+        with ESMTP id S230466AbjE1TiM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2794FAB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E93BE61F44
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149B0C433D2;
-        Sun, 28 May 2023 19:45:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B217461E6F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D035BC4339B;
+        Sun, 28 May 2023 19:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303106;
-        bh=oGaB5Wyq4WoUQYfQvkD33Pe08pN29vUIzygTCh8EMEo=;
+        s=korg; t=1685302690;
+        bh=ACnsGrDB10fBpebDRNKrCyNxB08zK3w7CiMEPv7FCJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uhp+22jGGe1LrMUvZB9ry5WRCdKQSXdI3qNZAmvmGpK3hy6InyKLeIJ36Oucqe5OF
-         tzQ/096UIiaJ27yc+RB647aZrdi/dJxAk5+RghrY77tTzR69KaDW++KIbIqBxi8aY+
-         nTv3aAbW6Lju2eAH6xcKV5mEdM0htPuoe+LBSNj0=
+        b=XCR4wCvUVEt6IsvcOiNEyiNlV82eYfHR8RMrR+zEDvnmchGFCXNcRTt44ZRtYZXGh
+         hXmnSdh6ImJYzidvv2qho3/agJqT0xqmu/4P7PabFqPrXCIVbXZsuJtezPoC1fpBTO
+         TVq8ovKlu8RxJJAOv13BVwyCpEbt71D+2Zlx3V3s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/211] s390/qdio: get rid of register asm
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 078/119] power: supply: bq27xxx: Add cache parameter to bq27xxx_battery_current_and_status()
 Date:   Sun, 28 May 2023 20:11:18 +0100
-Message-Id: <20230528190847.408104857@linuxfoundation.org>
+Message-Id: <20230528190838.113093162@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,172 +53,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d3e2ff5436d6ee38b572ba5c01dc7994769bec54 ]
+commit 35092c5819f8c5acc7bafe3fdbb13d6307c4f5e1 upstream.
 
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: 2862a2fdfae8 ("s390/qdio: fix do_sqbs() inline assembly constraint")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a cache parameter to bq27xxx_battery_current_and_status() so that
+it can optionally use cached flags instead of re-reading them itself.
+
+This is a preparation patch for making bq27xxx_battery_update() check
+the status and have it call power_supply_changed() on status changes.
+
+Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/qdio.h      | 25 ++++++++-------
- drivers/s390/cio/qdio_main.c | 62 +++++++++++++++++++-----------------
- 2 files changed, 46 insertions(+), 41 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/s390/cio/qdio.h b/drivers/s390/cio/qdio.h
-index cd2df4ff8e0ef..854a21e1d3b7b 100644
---- a/drivers/s390/cio/qdio.h
-+++ b/drivers/s390/cio/qdio.h
-@@ -88,15 +88,15 @@ enum qdio_irq_states {
- static inline int do_sqbs(u64 token, unsigned char state, int queue,
- 			  int *start, int *count)
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1840,7 +1840,8 @@ static bool bq27xxx_battery_is_full(stru
+ static int bq27xxx_battery_current_and_status(
+ 	struct bq27xxx_device_info *di,
+ 	union power_supply_propval *val_curr,
+-	union power_supply_propval *val_status)
++	union power_supply_propval *val_status,
++	struct bq27xxx_reg_cache *cache)
  {
--	register unsigned long _ccq asm ("0") = *count;
--	register unsigned long _token asm ("1") = token;
- 	unsigned long _queuestart = ((unsigned long)queue << 32) | *start;
-+	unsigned long _ccq = *count;
+ 	bool single_flags = (di->opts & BQ27XXX_O_ZERO);
+ 	int curr;
+@@ -1852,10 +1853,14 @@ static int bq27xxx_battery_current_and_s
+ 		return curr;
+ 	}
  
- 	asm volatile(
--		"	.insn	rsy,0xeb000000008A,%1,0,0(%2)"
--		: "+d" (_ccq), "+d" (_queuestart)
--		: "d" ((unsigned long)state), "d" (_token)
--		: "memory", "cc");
-+		"	lgr	1,%[token]\n"
-+		"	.insn	rsy,0xeb000000008a,%[qs],%[ccq],0(%[state])"
-+		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart)
-+		: [state] "d" ((unsigned long)state), [token] "d" (token)
-+		: "memory", "cc", "1");
- 	*count = _ccq & 0xff;
- 	*start = _queuestart & 0xff;
+-	flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
+-	if (flags < 0) {
+-		dev_err(di->dev, "error reading flags\n");
+-		return flags;
++	if (cache) {
++		flags = cache->flags;
++	} else {
++		flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
++		if (flags < 0) {
++			dev_err(di->dev, "error reading flags\n");
++			return flags;
++		}
+ 	}
  
-@@ -106,16 +106,17 @@ static inline int do_sqbs(u64 token, unsigned char state, int queue,
- static inline int do_eqbs(u64 token, unsigned char *state, int queue,
- 			  int *start, int *count, int ack)
- {
--	register unsigned long _ccq asm ("0") = *count;
--	register unsigned long _token asm ("1") = token;
- 	unsigned long _queuestart = ((unsigned long)queue << 32) | *start;
- 	unsigned long _state = (unsigned long)ack << 63;
-+	unsigned long _ccq = *count;
+ 	if (di->opts & BQ27XXX_O_ZERO) {
+@@ -2001,7 +2006,7 @@ static int bq27xxx_battery_get_property(
  
- 	asm volatile(
--		"	.insn	rrf,0xB99c0000,%1,%2,0,0"
--		: "+d" (_ccq), "+d" (_queuestart), "+d" (_state)
--		: "d" (_token)
--		: "memory", "cc");
-+		"	lgr	1,%[token]\n"
-+		"	.insn	rrf,0xb99c0000,%[qs],%[state],%[ccq],0"
-+		: [ccq] "+&d" (_ccq), [qs] "+&d" (_queuestart),
-+		  [state] "+&d" (_state)
-+		: [token] "d" (token)
-+		: "memory", "cc", "1");
- 	*count = _ccq & 0xff;
- 	*start = _queuestart & 0xff;
- 	*state = _state & 0xff;
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index 3e29c26f01856..e3c55fc2363ac 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -31,38 +31,41 @@ MODULE_DESCRIPTION("QDIO base support");
- MODULE_LICENSE("GPL");
- 
- static inline int do_siga_sync(unsigned long schid,
--			       unsigned int out_mask, unsigned int in_mask,
-+			       unsigned long out_mask, unsigned long in_mask,
- 			       unsigned int fc)
- {
--	register unsigned long __fc asm ("0") = fc;
--	register unsigned long __schid asm ("1") = schid;
--	register unsigned long out asm ("2") = out_mask;
--	register unsigned long in asm ("3") = in_mask;
- 	int cc;
- 
- 	asm volatile(
-+		"	lgr	0,%[fc]\n"
-+		"	lgr	1,%[schid]\n"
-+		"	lgr	2,%[out]\n"
-+		"	lgr	3,%[in]\n"
- 		"	siga	0\n"
--		"	ipm	%0\n"
--		"	srl	%0,28\n"
--		: "=d" (cc)
--		: "d" (__fc), "d" (__schid), "d" (out), "d" (in) : "cc");
-+		"	ipm	%[cc]\n"
-+		"	srl	%[cc],28\n"
-+		: [cc] "=&d" (cc)
-+		: [fc] "d" (fc), [schid] "d" (schid),
-+		  [out] "d" (out_mask), [in] "d" (in_mask)
-+		: "cc", "0", "1", "2", "3");
- 	return cc;
- }
- 
--static inline int do_siga_input(unsigned long schid, unsigned int mask,
--				unsigned int fc)
-+static inline int do_siga_input(unsigned long schid, unsigned long mask,
-+				unsigned long fc)
- {
--	register unsigned long __fc asm ("0") = fc;
--	register unsigned long __schid asm ("1") = schid;
--	register unsigned long __mask asm ("2") = mask;
- 	int cc;
- 
- 	asm volatile(
-+		"	lgr	0,%[fc]\n"
-+		"	lgr	1,%[schid]\n"
-+		"	lgr	2,%[mask]\n"
- 		"	siga	0\n"
--		"	ipm	%0\n"
--		"	srl	%0,28\n"
--		: "=d" (cc)
--		: "d" (__fc), "d" (__schid), "d" (__mask) : "cc");
-+		"	ipm	%[cc]\n"
-+		"	srl	%[cc],28\n"
-+		: [cc] "=&d" (cc)
-+		: [fc] "d" (fc), [schid] "d" (schid), [mask] "d" (mask)
-+		: "cc", "0", "1", "2");
- 	return cc;
- }
- 
-@@ -78,23 +81,24 @@ static inline int do_siga_input(unsigned long schid, unsigned int mask,
-  * Note: For IQDC unicast queues only the highest priority queue is processed.
-  */
- static inline int do_siga_output(unsigned long schid, unsigned long mask,
--				 unsigned int *bb, unsigned int fc,
-+				 unsigned int *bb, unsigned long fc,
- 				 unsigned long aob)
- {
--	register unsigned long __fc asm("0") = fc;
--	register unsigned long __schid asm("1") = schid;
--	register unsigned long __mask asm("2") = mask;
--	register unsigned long __aob asm("3") = aob;
- 	int cc;
- 
- 	asm volatile(
-+		"	lgr	0,%[fc]\n"
-+		"	lgr	1,%[schid]\n"
-+		"	lgr	2,%[mask]\n"
-+		"	lgr	3,%[aob]\n"
- 		"	siga	0\n"
--		"	ipm	%0\n"
--		"	srl	%0,28\n"
--		: "=d" (cc), "+d" (__fc), "+d" (__aob)
--		: "d" (__schid), "d" (__mask)
--		: "cc");
--	*bb = __fc >> 31;
-+		"	lgr	%[fc],0\n"
-+		"	ipm	%[cc]\n"
-+		"	srl	%[cc],28\n"
-+		: [cc] "=&d" (cc), [fc] "+&d" (fc)
-+		: [schid] "d" (schid), [mask] "d" (mask), [aob] "d" (aob)
-+		: "cc", "0", "1", "2", "3");
-+	*bb = fc >> 31;
- 	return cc;
- }
- 
--- 
-2.39.2
-
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+-		ret = bq27xxx_battery_current_and_status(di, NULL, val);
++		ret = bq27xxx_battery_current_and_status(di, NULL, val, NULL);
+ 		break;
+ 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+ 		ret = bq27xxx_battery_voltage(di, val);
+@@ -2010,7 +2015,7 @@ static int bq27xxx_battery_get_property(
+ 		val->intval = di->cache.flags < 0 ? 0 : 1;
+ 		break;
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+-		ret = bq27xxx_battery_current_and_status(di, val, NULL);
++		ret = bq27xxx_battery_current_and_status(di, val, NULL, NULL);
+ 		break;
+ 	case POWER_SUPPLY_PROP_CAPACITY:
+ 		ret = bq27xxx_simple_value(di->cache.capacity, val);
 
 
