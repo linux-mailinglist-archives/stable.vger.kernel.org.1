@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 265A5713D9C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B181C713E5A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjE1T13 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44316 "EHLO
+        id S230343AbjE1Tew (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230112AbjE1T1Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D66E10D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:11 -0700 (PDT)
+        with ESMTP id S230354AbjE1Ter (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B150D9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCCBB61C9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBD4C433D2;
-        Sun, 28 May 2023 19:27:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2BA761DFD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD6FC433D2;
+        Sun, 28 May 2023 19:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302030;
-        bh=+xqrqDJV7aD7XFOKsu7JiQkLbEToOfZ1r4dNOv6ZyJ4=;
+        s=korg; t=1685302480;
+        bh=nr+LTTGYO3fcmUoCemDoPqF3Cv2xXD5hcW23N04V83o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uNcjiryAfFzznQ7Ff9UJl1cm6+WIza9HazpPvJXZjbOXW41UXMTAcDoDkJycUv83m
-         aao0BqjSESrEY2gNHb5wL6SWPLMYj7OW/O8+Xs990IhSGp8lqx6gbDxJN+6qcZpKiJ
-         +zm6auqatbNmcTQEsqO6NxSmiPDXHFNGQ85WuVAs=
+        b=ZfWvrv61hk2Ee95d9uvEypNfnOsP/O3vMRmfrQGqBrqcyXBEJksObZ/jFT+uittGS
+         w1UK0F/apC/1yErxSTYAAuPaYAHx4/ZwRH1DtobXuQNbmy3u4HLgqhGV2OTNCSiHtM
+         Z+5oTaanuN3P97dAwN2OseeKpnbIrcqt3D05W598=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.4 095/161] can: kvaser_pciefd: Do not send EFLUSH command on TFD interrupt
-Date:   Sun, 28 May 2023 20:10:19 +0100
-Message-Id: <20230528190840.142478611@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 020/119] ALSA: hda: Fix unhandled register update during auto-suspend period
+Date:   Sun, 28 May 2023 20:10:20 +0100
+Message-Id: <20230528190836.003818796@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,93 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 262d7a52ba27525e3c1203230c9f0524e48bbb34 upstream.
+commit 81302b1c7c997e8a56c1c2fc63a296ebeb0cd2d0 upstream.
 
-Under certain circumstances we send two EFLUSH commands, resulting in two
-EFLUSH ack packets, while only expecting a single EFLUSH ack.
-This can cause the driver Tx flush completion to get out of sync.
+It's reported that the recording started right after the driver probe
+doesn't work properly, and it turned out that this is related with the
+codec auto-suspend.  Namely, after the probe phase, the usage count
+goes zero, and the auto-suspend is programmed, but the codec is kept
+still active until the auto-suspend expiration.  When an application
+(e.g. alsactl) updates the mixer values at this moment, the values are
+cached but not actually written.  Then, starting arecord thereafter
+also results in the silence because of the missing unmute.
 
-To avoid this problem, don't enable the "Transmit buffer flush done" (TFD)
-interrupt and remove the code handling it.
-Now we only send EFLUSH command after receiving status packet with
-"Init detected" (IDET) bit set.
+The root cause is the handling of "lazy update" mode; when a mixer
+value is updated *after* the suspend, it should update only the cache
+and exits.  At the resume, the cached value is written to the device,
+in turn.  The problem is that the current code misinterprets the state
+of auto-suspend as if it were already suspended.
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-6-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Although we can add the check of the actual device state after
+pm_runtime_get_if_in_use() for catching the missing state, this won't
+suffice; the second call of regmap_update_bits_check() will skip
+writing the register because the cache has been already updated by the
+first call.  So we'd need fixes in two different places.
+
+OTOH, a simpler fix is to replace pm_runtime_get_if_in_use() with
+pm_runtime_get_if_active() (with ign_usage_count=true).  This change
+implies that the driver takes the pm refcount if the device is still
+in ACTIVE state and continues the processing.  A small caveat is that
+this will leave the auto-suspend timer.  But, since the timer callback
+itself checks the device state and aborts gracefully when it's active,
+this won't be any substantial problem.
+
+Long story short: we address the missing register-write problem just
+by replacing the pm_runtime_*() call in snd_hda_keep_power_up().
+
+Fixes: fc4f000bf8c0 ("ALSA: hda - Fix unexpected resume through regmap code path")
+Reported-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Closes: https://lore.kernel.org/r/a7478636-af11-92ab-731c-9b13c582a70d@linux.intel.com
+Suggested-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230518113520.15213-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |   21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ sound/hda/hdac_device.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -533,7 +533,7 @@ static int kvaser_pciefd_set_tx_irq(stru
- 	      KVASER_PCIEFD_KCAN_IRQ_TOF | KVASER_PCIEFD_KCAN_IRQ_ABD |
- 	      KVASER_PCIEFD_KCAN_IRQ_TAE | KVASER_PCIEFD_KCAN_IRQ_TAL |
- 	      KVASER_PCIEFD_KCAN_IRQ_FDIC | KVASER_PCIEFD_KCAN_IRQ_BPP |
--	      KVASER_PCIEFD_KCAN_IRQ_TAR | KVASER_PCIEFD_KCAN_IRQ_TFD;
-+	      KVASER_PCIEFD_KCAN_IRQ_TAR;
- 
- 	iowrite32(msk, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
-@@ -581,7 +581,7 @@ static void kvaser_pciefd_start_controll
- 
- 	spin_lock_irqsave(&can->lock, irq);
- 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
--	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
-+	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 	status = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_STAT_REG);
-@@ -624,7 +624,7 @@ static int kvaser_pciefd_bus_on(struct k
- 	iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
- 
--	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
-+	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 	mode = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_MODE_REG);
-@@ -1009,8 +1009,7 @@ static int kvaser_pciefd_setup_can_ctrls
- 		SET_NETDEV_DEV(netdev, &pcie->pci->dev);
- 
- 		iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
--		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD |
--			  KVASER_PCIEFD_KCAN_IRQ_TFD,
-+		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 		pcie->can[i] = can;
-@@ -1439,9 +1438,6 @@ static int kvaser_pciefd_handle_status_p
- 		cmd = KVASER_PCIEFD_KCAN_CMD_AT;
- 		cmd |= ++can->cmd_seq << KVASER_PCIEFD_KCAN_CMD_SEQ_SHIFT;
- 		iowrite32(cmd, can->reg_base + KVASER_PCIEFD_KCAN_CMD_REG);
--
--		iowrite32(KVASER_PCIEFD_KCAN_IRQ_TFD,
--			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 	} else if (p->header[0] & KVASER_PCIEFD_SPACK_IDET &&
- 		   p->header[0] & KVASER_PCIEFD_SPACK_IRM &&
- 		   cmdseq == (p->header[1] & KVASER_PCIEFD_PACKET_SEQ_MSK) &&
-@@ -1730,15 +1726,6 @@ static int kvaser_pciefd_transmit_irq(st
- 	if (irq & KVASER_PCIEFD_KCAN_IRQ_TOF)
- 		netdev_err(can->can.dev, "Tx FIFO overflow\n");
- 
--	if (irq & KVASER_PCIEFD_KCAN_IRQ_TFD) {
--		u8 count = ioread32(can->reg_base +
--				    KVASER_PCIEFD_KCAN_TX_NPACKETS_REG) & 0xff;
--
--		if (count == 0)
--			iowrite32(KVASER_PCIEFD_KCAN_CTRL_EFLUSH,
--				  can->reg_base + KVASER_PCIEFD_KCAN_CTRL_REG);
--	}
--
- 	if (irq & KVASER_PCIEFD_KCAN_IRQ_BPP)
- 		netdev_err(can->can.dev,
- 			   "Fail to change bittiming, when not in reset mode\n");
+--- a/sound/hda/hdac_device.c
++++ b/sound/hda/hdac_device.c
+@@ -611,7 +611,7 @@ EXPORT_SYMBOL_GPL(snd_hdac_power_up_pm);
+ int snd_hdac_keep_power_up(struct hdac_device *codec)
+ {
+ 	if (!atomic_inc_not_zero(&codec->in_pm)) {
+-		int ret = pm_runtime_get_if_in_use(&codec->dev);
++		int ret = pm_runtime_get_if_active(&codec->dev, true);
+ 		if (!ret)
+ 			return -1;
+ 		if (ret < 0)
 
 
