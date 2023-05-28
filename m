@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F543713E44
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE70713F65
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbjE1Tdw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49966 "EHLO
+        id S231256AbjE1To7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbjE1Tdv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:51 -0400
+        with ESMTP id S231259AbjE1To6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBADAA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8519E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8145761DD6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA76C433D2;
-        Sun, 28 May 2023 19:33:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22FBA61F3F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EE3C4339B;
+        Sun, 28 May 2023 19:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302429;
-        bh=lDXRw96IBTVM8BzoP2BJafYoc19wNQydSTfO1WEElOI=;
+        s=korg; t=1685303096;
+        bh=gapljJqKSbufkbGXlgMmAggUktYg7zqOrsV/4YsczjA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ckr+OcxQqdfIb/EEx1Wn4EJ8HYomYsVgiUZ19YRa27WEXnTnvrL0h8zhYVDxIheyS
-         y2E0e35OagEko6fKuDnZdA2OytBLjoehTAyEtvMzQhJ00ozDhrtErA0MnzYf4dKaf6
-         Z5o2Sr1ZZko6uNSRhGCto1Gtkp5KflB5FCIbk5gg=
+        b=OsANoOKkKXGuV+ByYm+C6OHC//3NQGf1f06KgLAS9ufyvPjHwoEOpc4NSy59PelVs
+         IAfp6LwZ34s40HC/ROyYK4+vy7fxk+cXu+IqghihS0UM9pZcE3YWn773g7xAz5V/kX
+         CzHkBKA1eWcHDTn0gxbti49tnRyxFrxVZKFi2BWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.3 098/127] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
+        patches@lists.linux.dev, Will Deacon <will@kernel.org>,
+        Quentin Perret <qperret@google.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 5.10 153/211] KVM: arm64: Link position-independent string routines into .hyp.text
 Date:   Sun, 28 May 2023 20:11:14 +0100
-Message-Id: <20230528190839.483314012@linuxfoundation.org>
+Message-Id: <20230528190847.312277436@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,60 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Will Deacon <will@kernel.org>
 
-commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
+commit 7b4a7b5e6fefd15f708f959dd43e188444e252ec upstream
 
-In the pvcalls_new_active_socket() function, most error paths call
-pvcalls_back_release_active(fedata->dev, fedata, map) which calls
-sock_release() on "sock".  The bug is that the caller also frees sock.
+Pull clear_page(), copy_page(), memcpy() and memset() into the nVHE hyp
+code and ensure that we always execute the '__pi_' entry point on the
+offchance that it changes in future.
 
-Fix this by making every error path in pvcalls_new_active_socket()
-release the sock, and don't free it in the caller.
+[ qperret: Commit title nits and added linker script alias ]
 
-Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Quentin Perret <qperret@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20210319100146.1149909-3-qperret@google.com
+[sudip: adjust context]
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/pvcalls-back.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/hyp_image.h |    3 +++
+ arch/arm64/kernel/image-vars.h     |   11 +++++++++++
+ arch/arm64/kvm/hyp/nvhe/Makefile   |    4 ++++
+ 3 files changed, 18 insertions(+)
 
---- a/drivers/xen/pvcalls-back.c
-+++ b/drivers/xen/pvcalls-back.c
-@@ -325,8 +325,10 @@ static struct sock_mapping *pvcalls_new_
- 	void *page;
+--- a/arch/arm64/include/asm/hyp_image.h
++++ b/arch/arm64/include/asm/hyp_image.h
+@@ -31,6 +31,9 @@
+  */
+ #define KVM_NVHE_ALIAS(sym)	kvm_nvhe_sym(sym) = sym;
  
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
--	if (map == NULL)
-+	if (map == NULL) {
-+		sock_release(sock);
- 		return NULL;
-+	}
++/* Defines a linker script alias for KVM nVHE hyp symbols */
++#define KVM_NVHE_ALIAS_HYP(first, sec)	kvm_nvhe_sym(first) = kvm_nvhe_sym(sec);
++
+ #endif /* LINKER_SCRIPT */
  
- 	map->fedata = fedata;
- 	map->sock = sock;
-@@ -418,10 +420,8 @@ static int pvcalls_back_connect(struct x
- 					req->u.connect.ref,
- 					req->u.connect.evtchn,
- 					sock);
--	if (!map) {
-+	if (!map)
- 		ret = -EFAULT;
--		sock_release(sock);
--	}
+ #endif /* __ARM64_HYP_IMAGE_H__ */
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -103,6 +103,17 @@ KVM_NVHE_ALIAS(gic_nonsecure_priorities)
+ KVM_NVHE_ALIAS(__start___kvm_ex_table);
+ KVM_NVHE_ALIAS(__stop___kvm_ex_table);
  
- out:
- 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
-@@ -561,7 +561,6 @@ static void __pvcalls_back_accept(struct
- 					sock);
- 	if (!map) {
- 		ret = -EFAULT;
--		sock_release(sock);
- 		goto out_error;
- 	}
++/* Position-independent library routines */
++KVM_NVHE_ALIAS_HYP(clear_page, __pi_clear_page);
++KVM_NVHE_ALIAS_HYP(copy_page, __pi_copy_page);
++KVM_NVHE_ALIAS_HYP(memcpy, __pi_memcpy);
++KVM_NVHE_ALIAS_HYP(memset, __pi_memset);
++
++#ifdef CONFIG_KASAN
++KVM_NVHE_ALIAS_HYP(__memcpy, __pi_memcpy);
++KVM_NVHE_ALIAS_HYP(__memset, __pi_memset);
++#endif
++
+ #endif /* CONFIG_KVM */
  
+ #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
+--- a/arch/arm64/kvm/hyp/nvhe/Makefile
++++ b/arch/arm64/kvm/hyp/nvhe/Makefile
+@@ -6,9 +6,13 @@
+ asflags-y := -D__KVM_NVHE_HYPERVISOR__
+ ccflags-y := -D__KVM_NVHE_HYPERVISOR__
+ 
++lib-objs := clear_page.o copy_page.o memcpy.o memset.o
++lib-objs := $(addprefix ../../../lib/, $(lib-objs))
++
+ obj-y := timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o hyp-init.o host.o hyp-main.o
+ obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
+ 	 ../fpsimd.o ../hyp-entry.o
++obj-y += $(lib-objs)
+ 
+ ##
+ ## Build rules for compiling nVHE hyp code
 
 
