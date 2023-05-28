@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A593713AD2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB782713AD1
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbjE1Qzm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:55:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34580 "EHLO
+        id S229729AbjE1Qzk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:55:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjE1Qzl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FF83BD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:40 -0700 (PDT)
+        with ESMTP id S229726AbjE1Qzj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073D1BD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F293F60F4B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C137C433EF;
-        Sun, 28 May 2023 16:55:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9164160F3E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC887C433EF;
+        Sun, 28 May 2023 16:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292939;
-        bh=gx3V7Fe80RxY05rY3EJixGuWNRk0rwGz8i4e5d39rF0=;
+        s=korg; t=1685292937;
+        bh=TT/nNMuRU1BwmFJ31blHiV/kRYc9Xdp9TKcZpZsyJGI=;
         h=Subject:To:Cc:From:Date:From;
-        b=PMxMw6E2SEg9ydP7qEWIsu9suPLfCpauTAG6ZIQTFQbxxO0hQ/SXy705aPHPrp65s
-         OWdMhx8+99LGDkJepOvI6vsYW32E6tra8/vl3N1riLJHK9ooUr+efZLKfeBAK6XQgZ
-         TUuBxr2ZXbaGqCpLFEGcP8tT6aQjkwlVLuqyeekM=
-Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Add ->fast_switch() callback" failed to apply to 6.3-stable tree
+        b=fXDyFLdxeQrATa1rxP3lr9vWyrjbiSZggdaMvYK8Hb4bXbxz6+SQtKd+BDkz2WU8O
+         AppAWvtqGG8evMfDSUhtTBUd6arsguSHD+wuVECRtZOR1m95cWweEZdYtYAPD2pnTu
+         MR9s6s6n1gbyuXsLgxP1TurxRkTjPW2ODfP+HM/0=
+Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Add ->fast_switch() callback" failed to apply to 6.1-stable tree
 To:     gautham.shenoy@amd.com, rafael.j.wysocki@intel.com,
         wyes.karny@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sun, 28 May 2023 17:53:58 +0100
-Message-ID: <2023052858-danger-kilowatt-29cc@gregkh>
+Message-ID: <2023052858-overgrown-profile-8066@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,25 +49,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052858-danger-kilowatt-29cc@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052858-overgrown-profile-8066@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 4badf2eb1e98 ("cpufreq: amd-pstate: Add ->fast_switch() callback")
 2dd6d0ebf740 ("cpufreq: amd-pstate: Add guided autonomous mode")
 3e6e07805764 ("Documentation: cpufreq: amd-pstate: Move amd_pstate param to alphabetical order")
+5014603e409b ("Documentation: introduce amd pstate active mode kernel command line options")
+ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
+36c5014e5460 ("cpufreq: amd-pstate: optimize driver working mode selection in amd_pstate_param()")
+4f3085f87b51 ("cpufreq: amd-pstate: fix kernel hang issue while amd-pstate unregistering")
 
 thanks,
 
