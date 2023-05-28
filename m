@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB66713DB3
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ACA9713EB7
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbjE1T2E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
+        id S230459AbjE1TiL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbjE1T2D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:03 -0400
+        with ESMTP id S230466AbjE1TiK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3E1A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C5EBB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DD0A61CC5
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F96C433EF;
-        Sun, 28 May 2023 19:28:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E32D61E77
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C937C433D2;
+        Sun, 28 May 2023 19:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302082;
-        bh=1CIL6RBnOq5tntTeeM/NFFFXukTpZtqo4uw+ny1yCVk=;
+        s=korg; t=1685302687;
+        bh=VRQuVpm7GwZtd9sZnDN6atDLPlzNL3RGcWsWnDKH6Zk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RA9cETdjPmVR0V1rSWO2Q/fTsj+okkQ5xt0HPk5z4ZOrFCz9N6H3j9PRAYtRKrUe1
-         H8IFZofDnBERZZAXwdnBj+csIIThYO7PpK5m2oilEAKn7aKenglA3SRPyPzXnOf9fh
-         4rFpuXo55y9EbpYzAMQ5K60+xJRxCPCJc01F3qMw=
+        b=GFZgPft6c3+ln1szGmaLwMS42wF71U5uVtUkUAjI1yg499cDgSDDwpEcE90FjeHMf
+         nWybxn9ajD8HI8UbCQ9JtrTk5tDxXc0sJwFgTQNA1BXKHiHjW3QmywC7abiaBYPZEd
+         sKo2R0j0usDn855RYjBemnt7qcY1yFzBFV691rSU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daisuke Nojiri <dnojiri@chromium.org>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.4 153/161] power: supply: sbs-charger: Fix INHIBITED bit for Status reg
+Subject: [PATCH 6.1 077/119] power: supply: bq27xxx: Fix poll_interval handling and races on remove
 Date:   Sun, 28 May 2023 20:11:17 +0100
-Message-Id: <20230528190841.723266797@linuxfoundation.org>
+Message-Id: <20230528190838.078666449@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,31 +53,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daisuke Nojiri <dnojiri@chromium.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit b2f2a3c9800208b0db2c2e34b05323757117faa2 upstream.
+commit c00bc80462afc7963f449d7f21d896d2f629cacc upstream.
 
-CHARGE_INHIBITED bit position of the ChargerStatus register is actually
-0 not 1. This patch corrects it.
+Before this patch bq27xxx_battery_teardown() was setting poll_interval = 0
+to avoid bq27xxx_battery_update() requeuing the delayed_work item.
 
-Fixes: feb583e37f8a8 ("power: supply: add sbs-charger driver")
-Signed-off-by: Daisuke Nojiri <dnojiri@chromium.org>
+There are 2 problems with this:
+
+1. If the driver is unbound through sysfs, rather then the module being
+   rmmod-ed, this changes poll_interval unexpectedly
+
+2. This is racy, after it being set poll_interval could be changed
+   before bq27xxx_battery_update() checks it through
+   /sys/module/bq27xxx_battery/parameters/poll_interval
+
+Fix this by added a removed attribute to struct bq27xxx_device_info and
+using that instead of setting poll_interval to 0.
+
+There also is another poll_interval related race on remove(), writing
+/sys/module/bq27xxx_battery/parameters/poll_interval will requeue
+the delayed_work item for all devices on the bq27xxx_battery_devices
+list and the device being removed was only removed from that list
+after cancelling the delayed_work item.
+
+Fix this by moving the removal from the bq27xxx_battery_devices list
+to before cancelling the delayed_work item.
+
+Fixes: 8cfaaa811894 ("bq27x00_battery: Fix OOPS caused by unregistring bq27x00 driver")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/sbs-charger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery.c |   22 +++++++++-------------
+ include/linux/power/bq27xxx_battery.h  |    1 +
+ 2 files changed, 10 insertions(+), 13 deletions(-)
 
---- a/drivers/power/supply/sbs-charger.c
-+++ b/drivers/power/supply/sbs-charger.c
-@@ -25,7 +25,7 @@
- #define SBS_CHARGER_REG_STATUS			0x13
- #define SBS_CHARGER_REG_ALARM_WARNING		0x16
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1801,7 +1801,7 @@ static void bq27xxx_battery_update_unloc
  
--#define SBS_CHARGER_STATUS_CHARGE_INHIBITED	BIT(1)
-+#define SBS_CHARGER_STATUS_CHARGE_INHIBITED	BIT(0)
- #define SBS_CHARGER_STATUS_RES_COLD		BIT(9)
- #define SBS_CHARGER_STATUS_RES_HOT		BIT(10)
- #define SBS_CHARGER_STATUS_BATTERY_PRESENT	BIT(14)
+ 	di->last_update = jiffies;
+ 
+-	if (poll_interval > 0)
++	if (!di->removed && poll_interval > 0)
+ 		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
+ }
+ 
+@@ -2132,22 +2132,18 @@ EXPORT_SYMBOL_GPL(bq27xxx_battery_setup)
+ 
+ void bq27xxx_battery_teardown(struct bq27xxx_device_info *di)
+ {
+-	/*
+-	 * power_supply_unregister call bq27xxx_battery_get_property which
+-	 * call bq27xxx_battery_poll.
+-	 * Make sure that bq27xxx_battery_poll will not call
+-	 * schedule_delayed_work again after unregister (which cause OOPS).
+-	 */
+-	poll_interval = 0;
+-
+-	cancel_delayed_work_sync(&di->work);
+-
+-	power_supply_unregister(di->bat);
+-
+ 	mutex_lock(&bq27xxx_list_lock);
+ 	list_del(&di->list);
+ 	mutex_unlock(&bq27xxx_list_lock);
+ 
++	/* Set removed to avoid bq27xxx_battery_update() re-queuing the work */
++	mutex_lock(&di->lock);
++	di->removed = true;
++	mutex_unlock(&di->lock);
++
++	cancel_delayed_work_sync(&di->work);
++
++	power_supply_unregister(di->bat);
+ 	mutex_destroy(&di->lock);
+ }
+ EXPORT_SYMBOL_GPL(bq27xxx_battery_teardown);
+--- a/include/linux/power/bq27xxx_battery.h
++++ b/include/linux/power/bq27xxx_battery.h
+@@ -68,6 +68,7 @@ struct bq27xxx_device_info {
+ 	struct bq27xxx_access_methods bus;
+ 	struct bq27xxx_reg_cache cache;
+ 	int charge_design_full;
++	bool removed;
+ 	unsigned long last_update;
+ 	struct delayed_work work;
+ 	struct power_supply *bat;
 
 
