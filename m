@@ -2,153 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B5F713CFD
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334C3713E7A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbjE1TUr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38916 "EHLO
+        id S230377AbjE1Tfy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229917AbjE1TUp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:45 -0400
+        with ESMTP id S230378AbjE1Tfx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7277C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4319DA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65F6E61AF9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F61C433EF;
-        Sun, 28 May 2023 19:20:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D2BD61E06
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB697C433EF;
+        Sun, 28 May 2023 19:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301642;
-        bh=YKBI8dZ9JVAUJk/M6U7MxX6zhCtHJ6Ua8P4pOwDJ5Jw=;
+        s=korg; t=1685302551;
+        bh=RRqZ1TgbI249GOFaj8WbfBJR8wLUs2OPLIPtG60PmYI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SFTdh7Zn0DsqE2V+zQd9C7uG/mMFSNyP3L3YKg4iih2z+VFiJfyH+ew5oYOG+S+XJ
-         kCqgUVDqkAOf0MmZ1p6gK3Nq4G5sANZC23gp/41sdUTm6mvV2azYSSp1AlDvsNUCuw
-         P3IBmQL3gZJmZaIfbYGXI3jkjWH/QdAE8ylUyioA=
+        b=hCRc9kNGv54hPzWBhkmx0VJ0X6pxbcM/cJ5xX235sHArL6KhuxWLBwO4NvZUhcsqn
+         tqGE2aRrnWToZAZRSX/D0+GZFmfCYOUs8MSfRboaW/mPj7QO2ROrOBimEuviObny/L
+         qm8a0H8sxx6Kwq5cOthd4pDol52gui8uhq0afRLw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Subject: [PATCH 4.19 110/132] x86/mm: Avoid incomplete Global INVLPG flushes
+        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Yang Shi <yang.shi@linux.alibaba.com>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Carlos Llamas <cmllamas@google.com>,
+        Todd Kjos <tkjos@google.com>
+Subject: [PATCH 6.1 049/119] binder: fix UAF of alloc->vma in race with munmap()
 Date:   Sun, 28 May 2023 20:10:49 +0100
-Message-Id: <20230528190837.126907894@linuxfoundation.org>
+Message-Id: <20230528190837.029528967@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit ce0b15d11ad837fbacc5356941712218e38a0a83 upstream.
+commit d1d8875c8c13517f6fd1ff8d4d3e1ac366a17e07 upstream.
 
-The INVLPG instruction is used to invalidate TLB entries for a
-specified virtual address.  When PCIDs are enabled, INVLPG is supposed
-to invalidate TLB entries for the specified address for both the
-current PCID *and* Global entries.  (Note: Only kernel mappings set
-Global=1.)
+[ cmllamas: clean forward port from commit 015ac18be7de ("binder: fix
+  UAF of alloc->vma in race with munmap()") in 5.10 stable. It is needed
+  in mainline after the revert of commit a43cfc87caaf ("android: binder:
+  stop saving a pointer to the VMA") as pointed out by Liam. The commit
+  log and tags have been tweaked to reflect this. ]
 
-Unfortunately, some INVLPG implementations can leave Global
-translations unflushed when PCIDs are enabled.
+In commit 720c24192404 ("ANDROID: binder: change down_write to
+down_read") binder assumed the mmap read lock is sufficient to protect
+alloc->vma inside binder_update_page_range(). This used to be accurate
+until commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
+munmap"), which now downgrades the mmap_lock after detaching the vma
+from the rbtree in munmap(). Then it proceeds to teardown and free the
+vma with only the read lock held.
 
-As a workaround, never enable PCIDs on affected processors.
+This means that accesses to alloc->vma in binder_update_page_range() now
+will race with vm_area_free() in munmap() and can cause a UAF as shown
+in the following KASAN trace:
 
-I expect there to eventually be microcode mitigations to replace this
-software workaround.  However, the exact version numbers where that
-will happen are not known today.  Once the version numbers are set in
-stone, the processor list can be tweaked to only disable PCIDs on
-affected processors with affected microcode.
+  ==================================================================
+  BUG: KASAN: use-after-free in vm_insert_page+0x7c/0x1f0
+  Read of size 8 at addr ffff16204ad00600 by task server/558
 
-Note: if anyone wants a quick fix that doesn't require patching, just
-stick 'nopcid' on your kernel command-line.
+  CPU: 3 PID: 558 Comm: server Not tainted 5.10.150-00001-gdc8dcf942daa #1
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x0/0x2a0
+   show_stack+0x18/0x2c
+   dump_stack+0xf8/0x164
+   print_address_description.constprop.0+0x9c/0x538
+   kasan_report+0x120/0x200
+   __asan_load8+0xa0/0xc4
+   vm_insert_page+0x7c/0x1f0
+   binder_update_page_range+0x278/0x50c
+   binder_alloc_new_buf+0x3f0/0xba0
+   binder_transaction+0x64c/0x3040
+   binder_thread_write+0x924/0x2020
+   binder_ioctl+0x1610/0x2e5c
+   __arm64_sys_ioctl+0xd4/0x120
+   el0_svc_common.constprop.0+0xac/0x270
+   do_el0_svc+0x38/0xa0
+   el0_svc+0x1c/0x2c
+   el0_sync_handler+0xe8/0x114
+   el0_sync+0x180/0x1c0
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+  Allocated by task 559:
+   kasan_save_stack+0x38/0x6c
+   __kasan_kmalloc.constprop.0+0xe4/0xf0
+   kasan_slab_alloc+0x18/0x2c
+   kmem_cache_alloc+0x1b0/0x2d0
+   vm_area_alloc+0x28/0x94
+   mmap_region+0x378/0x920
+   do_mmap+0x3f0/0x600
+   vm_mmap_pgoff+0x150/0x17c
+   ksys_mmap_pgoff+0x284/0x2dc
+   __arm64_sys_mmap+0x84/0xa4
+   el0_svc_common.constprop.0+0xac/0x270
+   do_el0_svc+0x38/0xa0
+   el0_svc+0x1c/0x2c
+   el0_sync_handler+0xe8/0x114
+   el0_sync+0x180/0x1c0
+
+  Freed by task 560:
+   kasan_save_stack+0x38/0x6c
+   kasan_set_track+0x28/0x40
+   kasan_set_free_info+0x24/0x4c
+   __kasan_slab_free+0x100/0x164
+   kasan_slab_free+0x14/0x20
+   kmem_cache_free+0xc4/0x34c
+   vm_area_free+0x1c/0x2c
+   remove_vma+0x7c/0x94
+   __do_munmap+0x358/0x710
+   __vm_munmap+0xbc/0x130
+   __arm64_sys_munmap+0x4c/0x64
+   el0_svc_common.constprop.0+0xac/0x270
+   do_el0_svc+0x38/0xa0
+   el0_svc+0x1c/0x2c
+   el0_sync_handler+0xe8/0x114
+   el0_sync+0x180/0x1c0
+
+  [...]
+  ==================================================================
+
+To prevent the race above, revert back to taking the mmap write lock
+inside binder_update_page_range(). One might expect an increase of mmap
+lock contention. However, binder already serializes these calls via top
+level alloc->mutex. Also, there was no performance impact shown when
+running the binder benchmark tests.
+
+Fixes: c0fd2101781e ("Revert "android: binder: stop saving a pointer to the VMA"")
+Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/all/20230518144052.xkj6vmddccq4v66b@revolver
+Cc: <stable@vger.kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yang Shi <yang.shi@linux.alibaba.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Acked-by: Todd Kjos <tkjos@google.com>
+Link: https://lore.kernel.org/r/20230519195950.1775656-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/intel-family.h |    5 +++++
- arch/x86/mm/init.c                  |   25 +++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ drivers/android/binder_alloc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -74,6 +74,11 @@
- #define	INTEL_FAM6_LAKEFIELD		0x8A
- #define INTEL_FAM6_ALDERLAKE		0x97
- #define INTEL_FAM6_ALDERLAKE_L		0x9A
-+#define INTEL_FAM6_ALDERLAKE_N		0xBE
-+
-+#define INTEL_FAM6_RAPTORLAKE		0xB7
-+#define INTEL_FAM6_RAPTORLAKE_P		0xBA
-+#define INTEL_FAM6_RAPTORLAKE_S		0xBF
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -212,7 +212,7 @@ static int binder_update_page_range(stru
+ 		mm = alloc->mm;
  
- /* "Small Core" Processors (Atom) */
- 
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -9,6 +9,7 @@
- #include <linux/kmemleak.h>
- 
- #include <asm/set_memory.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/e820/api.h>
- #include <asm/init.h>
- #include <asm/page.h>
-@@ -207,6 +208,24 @@ static void __init probe_page_size_mask(
+ 	if (mm) {
+-		mmap_read_lock(mm);
++		mmap_write_lock(mm);
+ 		vma = alloc->vma;
  	}
- }
  
-+#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
-+			      .family  = 6,			\
-+			      .model = _model,			\
-+			    }
-+/*
-+ * INVLPG may not properly flush Global entries
-+ * on these CPUs when PCIDs are enabled.
-+ */
-+static const struct x86_cpu_id invlpg_miss_ids[] = {
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	{}
-+};
-+
- static void setup_pcid(void)
- {
- 	if (!IS_ENABLED(CONFIG_X86_64))
-@@ -215,6 +234,12 @@ static void setup_pcid(void)
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
-+	if (x86_match_cpu(invlpg_miss_ids)) {
-+		pr_info("Incomplete global flushes, disabling PCID");
-+		setup_clear_cpu_cap(X86_FEATURE_PCID);
-+		return;
-+	}
-+
- 	if (boot_cpu_has(X86_FEATURE_PGE)) {
- 		/*
- 		 * This can't be cr4_set_bits_and_update_boot() -- the
+@@ -270,7 +270,7 @@ static int binder_update_page_range(stru
+ 		trace_binder_alloc_page_end(alloc, index);
+ 	}
+ 	if (mm) {
+-		mmap_read_unlock(mm);
++		mmap_write_unlock(mm);
+ 		mmput(mm);
+ 	}
+ 	return 0;
+@@ -303,7 +303,7 @@ err_page_ptr_cleared:
+ 	}
+ err_no_vma:
+ 	if (mm) {
+-		mmap_read_unlock(mm);
++		mmap_write_unlock(mm);
+ 		mmput(mm);
+ 	}
+ 	return vma ? -ENOMEM : -ESRCH;
 
 
