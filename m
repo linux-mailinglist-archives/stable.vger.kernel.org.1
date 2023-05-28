@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F7CB713F67
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65556713DB2
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231259AbjE1TpE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59596 "EHLO
+        id S230133AbjE1T2C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:28:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231263AbjE1TpD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:03 -0400
+        with ESMTP id S230127AbjE1T2B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75B8D9E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE0AA7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11C4761F3E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E734C433EF;
-        Sun, 28 May 2023 19:45:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 291FD61C4A
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465C6C433EF;
+        Sun, 28 May 2023 19:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303101;
-        bh=2q22I2lRFTHVhkvncshxUPqfvDe4ofdwelF3AJwj2Kw=;
+        s=korg; t=1685302079;
+        bh=cOTnS9nq4eOAnN7qp8Mv/l2LLyyC1cV9OYHRXpCJ7Pk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZUH+gGogFsGJiQnZs3v7Tlq9yGeN4I+JrACWC+KoiX0wXeAC2JBOJAPq9pI/xBxcc
-         CORprD+kDDpIGD6rDWC5Hoxcqd7qT+T9mt+WSIbnTgjMgUgkejR+MBXIeEe72qrT2I
-         EXs2WKIMEPeWfXf2CRsu+gdx4KqpnHm9q4DviGKY=
+        b=xQuVu/M6SiqlB2lUM9FQ8mPIjV+Cz7D9sAHE3NdGfACdVUZTT0FQkOhzapbkdc0Up
+         amnvTPgeqdoqvBzTJHt4b9GKdV44oV3sHrs7nay52vrgA0dWTr+6K7hmgtIMuobX/B
+         tIzgxtFPBTVP2Xt4tGNvvM54wjo0dT+7pdNkDI5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthew Howell <matthew.howell@sealevel.com>,
-        stable <stable@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/211] serial: exar: Add support for Sealevel 7xxxC serial cards
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.4 152/161] power: supply: bq27xxx: Fix poll_interval handling and races on remove
 Date:   Sun, 28 May 2023 20:11:16 +0100
-Message-Id: <20230528190847.359685587@linuxfoundation.org>
+Message-Id: <20230528190841.699000007@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +53,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthew Howell <matthew.howell@sealevel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 14ee78d5932afeb710c8305196a676a715bfdea8 ]
+commit c00bc80462afc7963f449d7f21d896d2f629cacc upstream.
 
-Add support for Sealevel 7xxxC serial cards.
+Before this patch bq27xxx_battery_teardown() was setting poll_interval = 0
+to avoid bq27xxx_battery_update() requeuing the delayed_work item.
 
-This patch:
-* Adds IDs to recognize 7xxxC cards from Sealevel Systems.
-* Updates exar_pci_probe() to set nr_ports to last two bytes of primary
-  dev ID for these cards.
+There are 2 problems with this:
 
-Signed-off-by: Matthew Howell <matthew.howell@sealevel.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2301191440010.22558@tstest-VirtualBox
+1. If the driver is unbound through sysfs, rather then the module being
+   rmmod-ed, this changes poll_interval unexpectedly
+
+2. This is racy, after it being set poll_interval could be changed
+   before bq27xxx_battery_update() checks it through
+   /sys/module/bq27xxx_battery/parameters/poll_interval
+
+Fix this by added a removed attribute to struct bq27xxx_device_info and
+using that instead of setting poll_interval to 0.
+
+There also is another poll_interval related race on remove(), writing
+/sys/module/bq27xxx_battery/parameters/poll_interval will requeue
+the delayed_work item for all devices on the bq27xxx_battery_devices
+list and the device being removed was only removed from that list
+after cancelling the delayed_work item.
+
+Fix this by moving the removal from the bq27xxx_battery_devices list
+to before cancelling the delayed_work item.
+
+Fixes: 8cfaaa811894 ("bq27x00_battery: Fix OOPS caused by unregistring bq27x00 driver")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 95d698869b40 ("serial: 8250_exar: Add support for USR298x PCI Modems")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c |   22 +++++++++-------------
+ include/linux/power/bq27xxx_battery.h  |    1 +
+ 2 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
-index 3d82902bfe5b9..2c9f721091125 100644
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -43,6 +43,12 @@
- #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
- #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1598,7 +1598,7 @@ static void bq27xxx_battery_update_unloc
  
-+#define PCI_DEVICE_ID_SEALEVEL_710xC		0x1001
-+#define PCI_DEVICE_ID_SEALEVEL_720xC		0x1002
-+#define PCI_DEVICE_ID_SEALEVEL_740xC		0x1004
-+#define PCI_DEVICE_ID_SEALEVEL_780xC		0x1008
-+#define PCI_DEVICE_ID_SEALEVEL_716xC		0x1010
-+
- #define UART_EXAR_INT0		0x80
- #define UART_EXAR_8XMODE	0x88	/* 8X sampling rate select */
- #define UART_EXAR_SLEEP		0x8b	/* Sleep mode */
-@@ -600,6 +606,8 @@ exar_pci_probe(struct pci_dev *pcidev, const struct pci_device_id *ent)
- 		nr_ports = BIT(((pcidev->device & 0x38) >> 3) - 1);
- 	else if (board->num_ports)
- 		nr_ports = board->num_ports;
-+	else if (pcidev->vendor == PCI_VENDOR_ID_SEALEVEL)
-+		nr_ports = pcidev->device & 0xff;
- 	else
- 		nr_ports = pcidev->device & 0x0f;
+ 	di->last_update = jiffies;
  
-@@ -826,6 +834,12 @@ static const struct pci_device_id exar_pci_tbl[] = {
- 	EXAR_DEVICE(COMMTECH, 4224PCI335, pbn_fastcom335_4),
- 	EXAR_DEVICE(COMMTECH, 2324PCI335, pbn_fastcom335_4),
- 	EXAR_DEVICE(COMMTECH, 2328PCI335, pbn_fastcom335_8),
+-	if (poll_interval > 0)
++	if (!di->removed && poll_interval > 0)
+ 		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
+ }
+ 
+@@ -1915,22 +1915,18 @@ EXPORT_SYMBOL_GPL(bq27xxx_battery_setup)
+ 
+ void bq27xxx_battery_teardown(struct bq27xxx_device_info *di)
+ {
+-	/*
+-	 * power_supply_unregister call bq27xxx_battery_get_property which
+-	 * call bq27xxx_battery_poll.
+-	 * Make sure that bq27xxx_battery_poll will not call
+-	 * schedule_delayed_work again after unregister (which cause OOPS).
+-	 */
+-	poll_interval = 0;
+-
+-	cancel_delayed_work_sync(&di->work);
+-
+-	power_supply_unregister(di->bat);
+-
+ 	mutex_lock(&bq27xxx_list_lock);
+ 	list_del(&di->list);
+ 	mutex_unlock(&bq27xxx_list_lock);
+ 
++	/* Set removed to avoid bq27xxx_battery_update() re-queuing the work */
++	mutex_lock(&di->lock);
++	di->removed = true;
++	mutex_unlock(&di->lock);
 +
-+	EXAR_DEVICE(SEALEVEL, 710xC, pbn_exar_XR17V35x),
-+	EXAR_DEVICE(SEALEVEL, 720xC, pbn_exar_XR17V35x),
-+	EXAR_DEVICE(SEALEVEL, 740xC, pbn_exar_XR17V35x),
-+	EXAR_DEVICE(SEALEVEL, 780xC, pbn_exar_XR17V35x),
-+	EXAR_DEVICE(SEALEVEL, 716xC, pbn_exar_XR17V35x),
- 	{ 0, }
- };
- MODULE_DEVICE_TABLE(pci, exar_pci_tbl);
--- 
-2.39.2
-
++	cancel_delayed_work_sync(&di->work);
++
++	power_supply_unregister(di->bat);
+ 	mutex_destroy(&di->lock);
+ }
+ EXPORT_SYMBOL_GPL(bq27xxx_battery_teardown);
+--- a/include/linux/power/bq27xxx_battery.h
++++ b/include/linux/power/bq27xxx_battery.h
+@@ -64,6 +64,7 @@ struct bq27xxx_device_info {
+ 	struct bq27xxx_access_methods bus;
+ 	struct bq27xxx_reg_cache cache;
+ 	int charge_design_full;
++	bool removed;
+ 	unsigned long last_update;
+ 	struct delayed_work work;
+ 	struct power_supply *bat;
 
 
