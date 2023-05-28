@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2651171385F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88888713860
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 09:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjE1Hdi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 03:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60214 "EHLO
+        id S229484AbjE1HeK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 03:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjE1Hdh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:33:37 -0400
+        with ESMTP id S229475AbjE1HeJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 03:34:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38657B4
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:33:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDA9B4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 00:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C211D60EAC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E154FC433D2;
-        Sun, 28 May 2023 07:33:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8967160EE9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91ACC433EF;
+        Sun, 28 May 2023 07:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685259215;
-        bh=fpOhW1NAUAL9Zp6fDZYoxPQCFtrYXOneYBfNCsRnUDs=;
+        s=korg; t=1685259247;
+        bh=+5XeHFbC9WUQpCNRNbZ9/qqVYqcpqsA4eky/HbTNA7I=;
         h=Subject:To:Cc:From:Date:From;
-        b=D0s9o/Tdvt/lmU3kfAf2zQg28w8Q0bFmlvJ+0faRPv0gBPqD88uRXgvvCpxcx+lUY
-         AP58rn/2ndbZVDHRZ5tDrDdgJp+C5KZNplHg86/Bj0EinTAL40QvckipjWMabGZIoc
-         tp62YzTxR3JBvU2ptkYTx1ow6EdpnK8karVXCn7g=
-Subject: FAILED: patch "[PATCH] binder: add lockless binder_alloc_(set|get)_vma()" failed to apply to 5.15-stable tree
-To:     cmllamas@google.com, gregkh@linuxfoundation.org,
-        liam.howlett@oracle.com, surenb@google.com
+        b=pPtIDP73FJ6Q5d1Yh9wEH0oMp5nb+YQmsiix+eWSpY3yAG0vNBBS9axuwAUZHJdk/
+         QpFKU0L9s+RVNwX/CzWRN8lm1lUx/9inhPRY5iBVmbJ9+TJ0moQIFyanZp49wvBf6f
+         dNTm0duiPyHn8JviVxp8Cc+1M+py/bxl2+WfEm4E=
+Subject: FAILED: patch "[PATCH] binder: fix UAF caused by faulty buffer cleanup" failed to apply to 5.15-stable tree
+To:     cmllamas@google.com, gregkh@linuxfoundation.org, tkjos@google.com,
+        zifantan@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 08:33:32 +0100
-Message-ID: <2023052832-ideally-gleeful-6ac6@gregkh>
+Date:   Sun, 28 May 2023 08:34:04 +0100
+Message-ID: <2023052804-exploit-passion-ce51@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -58,20 +58,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0fa53349c3acba0239369ba4cd133740a408d246
+git cherry-pick -x bdc1c5fac982845a58d28690cdb56db8c88a530d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052832-ideally-gleeful-6ac6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052804-exploit-passion-ce51@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-0fa53349c3ac ("binder: add lockless binder_alloc_(set|get)_vma()")
-c0fd2101781e ("Revert "android: binder: stop saving a pointer to the VMA"")
-b15655b12ddc ("Revert "binder_alloc: add missing mmap_lock calls when using the VMA"")
-7b0dbd940765 ("binder: fix binder_alloc kernel-doc warnings")
-d6d04d71daae ("binder: remove binder_alloc_set_vma()")
-e66b77e50522 ("binder: rename alloc->vma_vm_mm to alloc->mm")
-50e177c5bfd9 ("Merge 6.0-rc4 into char-misc-next")
+bdc1c5fac982 ("binder: fix UAF caused by faulty buffer cleanup")
+9864bb480133 ("Binder: add TF_UPDATE_TXN to replace outdated txn")
+32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
 
 thanks,
 
@@ -79,85 +75,157 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0fa53349c3acba0239369ba4cd133740a408d246 Mon Sep 17 00:00:00 2001
+From bdc1c5fac982845a58d28690cdb56db8c88a530d Mon Sep 17 00:00:00 2001
 From: Carlos Llamas <cmllamas@google.com>
-Date: Tue, 2 May 2023 20:12:19 +0000
-Subject: [PATCH] binder: add lockless binder_alloc_(set|get)_vma()
+Date: Fri, 5 May 2023 20:30:20 +0000
+Subject: [PATCH] binder: fix UAF caused by faulty buffer cleanup
 
-Bring back the original lockless design in binder_alloc to determine
-whether the buffer setup has been completed by the ->mmap() handler.
-However, this time use smp_load_acquire() and smp_store_release() to
-wrap all the ordering in a single macro call.
+In binder_transaction_buffer_release() the 'failed_at' offset indicates
+the number of objects to clean up. However, this function was changed by
+commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
+to release all the objects in the buffer when 'failed_at' is zero.
 
-Also, add comments to make it evident that binder uses alloc->vma to
-determine when the binder_alloc has been fully initialized. In these
-scenarios acquiring the mmap_lock is not required.
+This introduced an issue when a transaction buffer is released without
+any objects having been processed so far. In this case, 'failed_at' is
+indeed zero yet it is misinterpreted as releasing the entire buffer.
 
-Fixes: a43cfc87caaf ("android: binder: stop saving a pointer to the VMA")
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
+This leads to use-after-free errors where nodes are incorrectly freed
+and subsequently accessed. Such is the case in the following KASAN
+report:
+
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
+  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
+
+  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x94/0xec
+   show_stack+0x18/0x24
+   dump_stack_lvl+0x48/0x60
+   print_report+0xf8/0x5b8
+   kasan_report+0xb8/0xfc
+   __asan_load8+0x9c/0xb8
+   binder_thread_read+0xc40/0x1f30
+   binder_ioctl+0xd9c/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+
+  Allocated by task 474:
+   kasan_save_stack+0x3c/0x64
+   kasan_set_track+0x2c/0x40
+   kasan_save_alloc_info+0x24/0x34
+   __kasan_kmalloc+0xb8/0xbc
+   kmalloc_trace+0x48/0x5c
+   binder_new_node+0x3c/0x3a4
+   binder_transaction+0x2b58/0x36f0
+   binder_thread_write+0x8e0/0x1b78
+   binder_ioctl+0x14a0/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+
+  Freed by task 475:
+   kasan_save_stack+0x3c/0x64
+   kasan_set_track+0x2c/0x40
+   kasan_save_free_info+0x38/0x5c
+   __kasan_slab_free+0xe8/0x154
+   __kmem_cache_free+0x128/0x2bc
+   kfree+0x58/0x70
+   binder_dec_node_tmpref+0x178/0x1fc
+   binder_transaction_buffer_release+0x430/0x628
+   binder_transaction+0x1954/0x36f0
+   binder_thread_write+0x8e0/0x1b78
+   binder_ioctl+0x14a0/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+  ==================================================================
+
+In order to avoid these issues, let's always calculate the intended
+'failed_at' offset beforehand. This is renamed and wrapped in a helper
+function to make it clear and convenient.
+
+Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
+Reported-by: Zi Fan Tan <zifantan@google.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20230502201220.1756319-3-cmllamas@google.com
+Acked-by: Todd Kjos <tkjos@google.com>
+Link: https://lore.kernel.org/r/20230505203020.4101154-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index eb082b33115b..e7c9d466f8e8 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -309,17 +309,18 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
- 	return vma ? -ENOMEM : -ESRCH;
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index fb56bfc45096..8fb7672021ee 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -1934,24 +1934,23 @@ static void binder_deferred_fd_close(int fd)
+ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 					      struct binder_thread *thread,
+ 					      struct binder_buffer *buffer,
+-					      binder_size_t failed_at,
++					      binder_size_t off_end_offset,
+ 					      bool is_failure)
+ {
+ 	int debug_id = buffer->debug_id;
+-	binder_size_t off_start_offset, buffer_offset, off_end_offset;
++	binder_size_t off_start_offset, buffer_offset;
+ 
+ 	binder_debug(BINDER_DEBUG_TRANSACTION,
+ 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
+ 		     proc->pid, buffer->debug_id,
+ 		     buffer->data_size, buffer->offsets_size,
+-		     (unsigned long long)failed_at);
++		     (unsigned long long)off_end_offset);
+ 
+ 	if (buffer->target_node)
+ 		binder_dec_node(buffer->target_node, 1, 0);
+ 
+ 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
+-	off_end_offset = is_failure && failed_at ? failed_at :
+-				off_start_offset + buffer->offsets_size;
++
+ 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
+ 	     buffer_offset += sizeof(binder_size_t)) {
+ 		struct binder_object_header *hdr;
+@@ -2111,6 +2110,21 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 	}
  }
  
-+static inline void binder_alloc_set_vma(struct binder_alloc *alloc,
-+		struct vm_area_struct *vma)
++/* Clean up all the objects in the buffer */
++static inline void binder_release_entire_buffer(struct binder_proc *proc,
++						struct binder_thread *thread,
++						struct binder_buffer *buffer,
++						bool is_failure)
 +{
-+	/* pairs with smp_load_acquire in binder_alloc_get_vma() */
-+	smp_store_release(&alloc->vma, vma);
++	binder_size_t off_end_offset;
++
++	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
++	off_end_offset += buffer->offsets_size;
++
++	binder_transaction_buffer_release(proc, thread, buffer,
++					  off_end_offset, is_failure);
 +}
 +
- static inline struct vm_area_struct *binder_alloc_get_vma(
- 		struct binder_alloc *alloc)
- {
--	struct vm_area_struct *vma = NULL;
--
--	if (alloc->vma) {
--		/* Look at description in binder_alloc_set_vma */
--		smp_rmb();
--		vma = alloc->vma;
--	}
--	return vma;
-+	/* pairs with smp_store_release in binder_alloc_set_vma() */
-+	return smp_load_acquire(&alloc->vma);
+ static int binder_translate_binder(struct flat_binder_object *fp,
+ 				   struct binder_transaction *t,
+ 				   struct binder_thread *thread)
+@@ -2806,7 +2820,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
+ 		t_outdated->buffer = NULL;
+ 		buffer->transaction = NULL;
+ 		trace_binder_transaction_update_buffer_release(buffer);
+-		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);
++		binder_release_entire_buffer(proc, NULL, buffer, false);
+ 		binder_alloc_free_buf(&proc->alloc, buffer);
+ 		kfree(t_outdated);
+ 		binder_stats_deleted(BINDER_STAT_TRANSACTION);
+@@ -3775,7 +3789,7 @@ binder_free_buf(struct binder_proc *proc,
+ 		binder_node_inner_unlock(buf_node);
+ 	}
+ 	trace_binder_transaction_buffer_release(buffer);
+-	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
++	binder_release_entire_buffer(proc, thread, buffer, is_failure);
+ 	binder_alloc_free_buf(&proc->alloc, buffer);
  }
  
- static bool debug_low_async_space_locked(struct binder_alloc *alloc, int pid)
-@@ -382,6 +383,7 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
- 	size_t size, data_offsets_size;
- 	int ret;
- 
-+	/* Check binder_alloc is fully initialized */
- 	if (!binder_alloc_get_vma(alloc)) {
- 		binder_alloc_debug(BINDER_DEBUG_USER_ERROR,
- 				   "%d: binder_alloc_buf, no vma\n",
-@@ -777,7 +779,9 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
- 	buffer->free = 1;
- 	binder_insert_free_buffer(alloc, buffer);
- 	alloc->free_async_space = alloc->buffer_size / 2;
--	alloc->vma = vma;
-+
-+	/* Signal binder_alloc is fully initialized */
-+	binder_alloc_set_vma(alloc, vma);
- 
- 	return 0;
- 
-@@ -959,7 +963,7 @@ int binder_alloc_get_allocated_count(struct binder_alloc *alloc)
-  */
- void binder_alloc_vma_close(struct binder_alloc *alloc)
- {
--	alloc->vma = 0;
-+	binder_alloc_set_vma(alloc, NULL);
- }
- 
- /**
 
