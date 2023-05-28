@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE705713EF6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 115A9713D5B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229770AbjE1Tki (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:40:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55502 "EHLO
+        id S230022AbjE1TYc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231137AbjE1Tkg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:40:36 -0400
+        with ESMTP id S230026AbjE1TYb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F8A3C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:40:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F20DEBB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4193761EBE
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:40:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60105C433EF;
-        Sun, 28 May 2023 19:40:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 84E0B61BCE
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24D9C433EF;
+        Sun, 28 May 2023 19:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302830;
-        bh=IGfIzOT7oHVhB9sFos7UW2q2/INaAcipA+hvzY46HZ0=;
+        s=korg; t=1685301870;
+        bh=xqnVCedNH7mQsCdY9m1JgAgwtMxQ5a73EXkT4swv6VQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CylxNqm8z0PT5UXRVeeYE1dN53Qa8JdE+u9ogRGH9AA09vDfc6k6om65BGHpXyD97
-         avccFwuzAJfD2sNj73xwgX9fk8U1f8phtXiJbwUKzKonhcVXU8wCSIRUzVb1GfqILK
-         0f2EvHINBiuyjBiDcOIl4V72a7BlNBNdTFxaayoI=
+        b=i/KB14rYW5DOlWgSx2YYpn5XD0eiIiSTmR3c+kzecuRINEybqTxVsLdiy+lE06qIX
+         8L5z6W9iQBuaKhAxtkZ1Du9f2xX9E/cLncZWRFWRwvrlcUyEA52LjZhy1DUAWec7QH
+         jv8HoZ+io/ehiGrQ/ZJeKEaOq9r6rhuLb25RAmig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, erhard_f@mailbox.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com,
+        Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/211] drm/amd: Fix an out of bounds error in BIOS parser
+Subject: [PATCH 5.4 040/161] Bluetooth: L2CAP: fix "bad unlock balance" in l2cap_disconnect_rsp
 Date:   Sun, 28 May 2023 20:09:24 +0100
-Message-Id: <20230528190844.632471127@linuxfoundation.org>
+Message-Id: <20230528190838.480592293@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Min Li <lm0963hack@gmail.com>
 
-[ Upstream commit d116db180decec1b21bba31d2ff495ac4d8e1b83 ]
+[ Upstream commit 25e97f7b1866e6b8503be349eeea44bb52d661ce ]
 
-The array is hardcoded to 8 in atomfirmware.h, but firmware provides
-a bigger one sometimes. Deferencing the larger array causes an out
-of bounds error.
+conn->chan_lock isn't acquired before l2cap_get_chan_by_scid,
+if l2cap_get_chan_by_scid returns NULL, then 'bad unlock balance'
+is triggered.
 
-commit 4fc1ba4aa589 ("drm/amd/display: fix array index out of bound error
-in bios parser") fixed some of this, but there are two other cases
-not covered by it.  Fix those as well.
-
-Reported-by: erhard_f@mailbox.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=214853
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2473
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000894f5f05f95e9f4d@google.com/
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/bluetooth/l2cap_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 930d2b7d34489..9dd41eaf32cb5 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -406,11 +406,8 @@ static enum bp_result get_gpio_i2c_info(
- 	info->i2c_slave_address = record->i2c_slave_addr;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 3c559a177761b..5f53e75d83024 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4410,7 +4410,6 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
  
- 	/* TODO: check how to get register offset for en, Y, etc. */
--	info->gpio_info.clk_a_register_index =
--			le16_to_cpu(
--			header->gpio_pin[table_index].data_a_reg_index);
--	info->gpio_info.clk_a_shift =
--			header->gpio_pin[table_index].gpio_bitshift;
-+	info->gpio_info.clk_a_register_index = le16_to_cpu(pin->data_a_reg_index);
-+	info->gpio_info.clk_a_shift = pin->gpio_bitshift;
+ 	chan = l2cap_get_chan_by_scid(conn, scid);
+ 	if (!chan) {
+-		mutex_unlock(&conn->chan_lock);
+ 		return 0;
+ 	}
  
- 	return BP_RESULT_OK;
- }
 -- 
 2.39.2
 
