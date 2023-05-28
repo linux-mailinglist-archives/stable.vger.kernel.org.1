@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB04713F73
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163B9713EA4
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbjE1Tpe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59874 "EHLO
+        id S230440AbjE1Th0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbjE1Tpd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:33 -0400
+        with ESMTP id S230437AbjE1ThZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB6F9B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44190AB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E647B61F45
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11982C433EF;
-        Sun, 28 May 2023 19:45:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6BD261E56
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F47C433EF;
+        Sun, 28 May 2023 19:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303131;
-        bh=MPUKUD3Ude5txd15bwOm4zTWDhjg7NyNOPaZ35ze0Qg=;
+        s=korg; t=1685302643;
+        bh=ZWIp3QrFjv1is3LMfCIReXRVd+KKSSYenzvMUzrYN8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=19PK+5ruZ6f9oOtMF1L5vBh1ksseLW8NlZtthV9PFw0LA2kv6T115NGX/6tv7UaOf
-         QlknRQ1VI3mFF+VWDevaF5DSIFUxXYNQqYB1+y5J/b87RE5eI6bUY9v7VvIfIw+gVb
-         8FB8sU1NiFrHNDAuhLluasm+HnbHq75AwjG+e/iw=
+        b=tT1kNSDfKZldH9EROyuS16a9RtieLcwXl67C1DB6ruspufefVugWYlrJgoNNckE3r
+         CkAuZZ4j57rEtmJ9XIDApojObPhw0jKu9Ro+Opo2HG4kNHj9zKFYl8kK/GmY0w6TW+
+         7EGSUTHulCRTYdU5/IVEbUDnv3Ut5p1aKHj+AiYM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 166/211] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+        Lucian Paul-Trifu <lucian.paul-trifu@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.1 087/119] firmware: arm_ffa: Fix FFA device names for logical partitions
 Date:   Sun, 28 May 2023 20:11:27 +0100
-Message-Id: <20230528190847.624808660@linuxfoundation.org>
+Message-Id: <20230528190838.437512321@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,94 +54,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-(cherry picked from upstream fc96ec826bced75cc6b9c07a4ac44bbf651337ab)
+commit 19b8766459c41c6f318f8a548cc1c66dffd18363 upstream.
 
-On CPM, the RISC core is a lot more efficiant when doing transfers
-in 16-bits chunks than in 8-bits chunks, but unfortunately the
-words need to be byte swapped as seen in a previous commit.
+Each physical partition can provide multiple services each with UUID.
+Each such service can be presented as logical partition with a unique
+combination of VM ID and UUID. The number of distinct UUID in a system
+will be less than or equal to the number of logical partitions.
 
-So, for large tranfers with an even size, allocate a temporary tx
-buffer and byte-swap data before and after transfer.
+However, currently it fails to register more than one logical partition
+or service within a physical partition as the device name contains only
+VM ID while both VM ID and UUID are maintained in the partition information.
+The kernel complains with the below message:
 
-This change allows setting higher speed for transfer. For instance
-on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
-that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
-at 25 MHz while a word transfer at the same speed uses 0.032%
-of CPM load. This means the speed can be 6 times higher in
-word mode for the same CPM load.
+  | sysfs: cannot create duplicate filename '/devices/arm-ffa-8001'
+  | CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc7 #8
+  | Hardware name: FVP Base RevC (DT)
+  | Call trace:
+  |  dump_backtrace+0xf8/0x118
+  |  show_stack+0x18/0x24
+  |  dump_stack_lvl+0x50/0x68
+  |  dump_stack+0x18/0x24
+  |  sysfs_create_dir_ns+0xe0/0x13c
+  |  kobject_add_internal+0x220/0x3d4
+  |  kobject_add+0x94/0x100
+  |  device_add+0x144/0x5d8
+  |  device_register+0x20/0x30
+  |  ffa_device_register+0x88/0xd8
+  |  ffa_setup_partitions+0x108/0x1b8
+  |  ffa_init+0x2ec/0x3a4
+  |  do_one_initcall+0xcc/0x240
+  |  do_initcall_level+0x8c/0xac
+  |  do_initcalls+0x54/0x94
+  |  do_basic_setup+0x1c/0x28
+  |  kernel_init_freeable+0x100/0x16c
+  |  kernel_init+0x20/0x1a0
+  |  ret_from_fork+0x10/0x20
+  | kobject_add_internal failed for arm-ffa-8001 with -EEXIST, don't try to
+  | register things with the same name in the same directory.
+  | arm_ffa arm-ffa: unable to register device arm-ffa-8001 err=-17
+  | ARM FF-A: ffa_setup_partitions: failed to register partition ID 0x8001
 
-For the time being, only do it on CPM1 as there must be a
-trade-off between the CPM load reduction and the CPU load required
-to byte swap the data.
+By virtue of being random enough to avoid collisions when generated in a
+distributed system, there is no way to compress UUID keys to the number
+of bits required to identify each. We can eliminate '-' in the name but
+it is not worth eliminating 4 bytes and add unnecessary logic for doing
+that. Also v1.0 doesn't provide the UUID of the partitions which makes
+it hard to use the same for the device name.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+So to keep it simple, let us alloc an ID using ida_alloc() and append the
+same to "arm-ffa" to make up a unique device name. Also stash the id value
+in ffa_dev to help freeing the ID later when the device is destroyed.
+
+Fixes: e781858488b9 ("firmware: arm_ffa: Add initial FFA bus support for device enumeration")
+Reported-by: Lucian Paul-Trifu <lucian.paul-trifu@arm.com>
+Link: https://lore.kernel.org/r/20230419-ffa_fixes_6-4-v2-3-d9108e43a176@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
- drivers/spi/spi-fsl-spi.c |    3 +++
- 2 files changed, 26 insertions(+)
+ drivers/firmware/arm_ffa/bus.c |   16 +++++++++++++---
+ include/linux/arm_ffa.h        |    1 +
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -21,6 +21,7 @@
- #include <linux/spi/spi.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
-+#include <linux/byteorder/generic.h>
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -15,6 +15,8 @@
  
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
- 		mspi->rx_dma = mspi->dma_dummy_rx;
- 		mspi->map_rx_dma = 0;
- 	}
-+	if (t->bits_per_word == 16 && t->tx_buf) {
-+		const u16 *src = t->tx_buf;
-+		u16 *dst;
-+		int i;
-+
-+		dst = kmalloc(t->len, GFP_KERNEL);
-+		if (!dst)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < t->len >> 1; i++)
-+			dst[i] = cpu_to_le16p(src + i);
-+
-+		mspi->tx = dst;
-+		mspi->map_tx_dma = 1;
-+	}
+ #include "common.h"
  
- 	if (mspi->map_tx_dma) {
- 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
-@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
- 	if (mspi->map_rx_dma)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
++static DEFINE_IDA(ffa_bus_id);
 +
-+	if (t->bits_per_word == 16 && t->rx_buf) {
-+		int i;
-+
-+		for (i = 0; i < t->len; i += 2)
-+			le16_to_cpus(t->rx_buf + i);
-+	}
+ static int ffa_device_match(struct device *dev, struct device_driver *drv)
+ {
+ 	const struct ffa_device_id *id_table;
+@@ -131,6 +133,7 @@ static void ffa_release_device(struct de
+ {
+ 	struct ffa_device *ffa_dev = to_ffa_dev(dev);
+ 
++	ida_free(&ffa_bus_id, ffa_dev->id);
+ 	kfree(ffa_dev);
  }
- EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
  
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -368,6 +368,9 @@ static int fsl_spi_do_one_msg(struct spi
- 				return -EINVAL;
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
-+			if (t->bits_per_word == 8 && t->len >= 256 &&
-+			    (mpc8xxx_spi->flags & SPI_CPM1))
-+				t->bits_per_word = 16;
- 		}
- 	}
+@@ -171,18 +174,24 @@ bool ffa_device_is_valid(struct ffa_devi
+ struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id,
+ 				       const struct ffa_ops *ops)
+ {
+-	int ret;
++	int id, ret;
+ 	struct device *dev;
+ 	struct ffa_device *ffa_dev;
  
++	id = ida_alloc_min(&ffa_bus_id, 1, GFP_KERNEL);
++	if (id < 0)
++		return NULL;
++
+ 	ffa_dev = kzalloc(sizeof(*ffa_dev), GFP_KERNEL);
+-	if (!ffa_dev)
++	if (!ffa_dev) {
++		ida_free(&ffa_bus_id, id);
+ 		return NULL;
++	}
+ 
+ 	dev = &ffa_dev->dev;
+ 	dev->bus = &ffa_bus_type;
+ 	dev->release = ffa_release_device;
+-	dev_set_name(&ffa_dev->dev, "arm-ffa-%04x", vm_id);
++	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
+ 
+ 	ffa_dev->vm_id = vm_id;
+ 	ffa_dev->ops = ops;
+@@ -218,4 +227,5 @@ void arm_ffa_bus_exit(void)
+ {
+ 	ffa_devices_unregister();
+ 	bus_unregister(&ffa_bus_type);
++	ida_destroy(&ffa_bus_id);
+ }
+--- a/include/linux/arm_ffa.h
++++ b/include/linux/arm_ffa.h
+@@ -13,6 +13,7 @@
+ 
+ /* FFA Bus/Device/Driver related */
+ struct ffa_device {
++	u32 id;
+ 	int vm_id;
+ 	bool mode_32bit;
+ 	uuid_t uuid;
 
 
