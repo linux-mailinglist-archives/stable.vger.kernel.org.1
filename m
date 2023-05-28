@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B71F3713A1A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 16:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59156713A1C
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 16:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjE1Ofc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 10:35:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36482 "EHLO
+        id S229505AbjE1Ofx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 10:35:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjE1Ofb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 10:35:31 -0400
+        with ESMTP id S229445AbjE1Ofw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 10:35:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C21BD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:35:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142B0B8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 07:35:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0035060D2E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 14:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C912C433D2;
-        Sun, 28 May 2023 14:35:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5364615A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 14:35:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F2BC433D2;
+        Sun, 28 May 2023 14:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685284529;
-        bh=1aloG2ebKxgN/VIGXKH6JTE0ZsDy3s4xr9GZ1s6WVQ4=;
+        s=korg; t=1685284550;
+        bh=fQbzfVBLgYuGtqG7oN1Mph03m0byaA19dVDTtRjeGJU=;
         h=Subject:To:Cc:From:Date:From;
-        b=HLJSqCGPIedJgF1mFpCChxys7BtHAeXuQ92dKNpyG7w3xKbUJmSTOz6qFiPjvzoxy
-         mp2HGHs1TXpTb2Fu8J3d9Ode7DLRR0QtX1Scv+awWy70JpH588LpsNsDuC4jHFLyW4
-         28aMqM1nZon9t8W/EU4R5Ec9geMDhv5g/ETr4mV0=
-Subject: FAILED: patch "[PATCH] x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid" failed to apply to 4.14-stable tree
-To:     rui.zhang@intel.com, dave.hansen@linux.intel.com,
-        len.brown@intel.com, peterz@infradead.org
+        b=xE1VoDTaMvph38HFUUELySyUKV3lvRDBaXkrPCyPNp5SB2KzyGRrMFnb7UUq5hNUg
+         2wC7Moeib2E4ukQxBSuUXbjd7CpyNOUroWocIcdv77RQ7GeWDO4tl/1HoXlcEmS/ma
+         c5f+CaRq6jemln5VYl/z2eWcPPc5Rn8UpXvThg+U=
+Subject: FAILED: patch "[PATCH] irqchip/mips-gic: Use raw spinlock for gic_lock" failed to apply to 5.15-stable tree
+To:     jiaxun.yang@flygoat.com, fancer.lancer@gmail.com, maz@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 15:35:18 +0100
-Message-ID: <2023052818-glider-vivacious-f7d5@gregkh>
+Date:   Sun, 28 May 2023 15:35:47 +0100
+Message-ID: <2023052847-fame-brigade-3ea0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,35 +48,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x edc0a2b5957652f4685ef3516f519f84807087db
+git cherry-pick -x 3d6a0e4197c04599d75d85a608c8bb16a630a38c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052818-glider-vivacious-f7d5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052847-fame-brigade-3ea0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-edc0a2b59576 ("x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid platforms")
-7745f03eb395 ("x86/topology: Add CPUID.1F multi-die/package support")
-95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
-55e6d279abd9 ("x86/cpu: Remove the pointless CPU printout")
-9305bd6ca7b4 ("x86/CPU: Move x86_cpuinfo::x86_max_cores assignment to detect_num_cpu_cores()")
-a2aa578fec8c ("x86/Centaur: Report correct CPU/cache topology")
-2cc61be60e37 ("x86/CPU: Make intel_num_cpu_cores() generic")
-b5cf8707e6c9 ("x86/CPU: Move cpu local function declarations to local header")
-6c4f5abaf356 ("x86/CPU: Modify detect_extended_topology() to return result")
-60882cc159e1 ("x86/Centaur: Initialize supported CPU features properly")
-7d5905dc14a8 ("x86 / CPU: Always show current CPU frequency in /proc/cpuinfo")
-b29c6ef7bb12 ("x86 / CPU: Avoid unnecessary IPIs in arch_freq_get_on_cpu()")
-d6ec9d9a4def ("Merge branch 'x86-asm-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
+3d6a0e4197c0 ("irqchip/mips-gic: Use raw spinlock for gic_lock")
+dd098a0e0319 ("irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
 
 thanks,
 
@@ -85,89 +73,156 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From edc0a2b5957652f4685ef3516f519f84807087db Mon Sep 17 00:00:00 2001
-From: Zhang Rui <rui.zhang@intel.com>
-Date: Thu, 23 Mar 2023 09:56:40 +0800
-Subject: [PATCH] x86/topology: Fix erroneous smp_num_siblings on Intel Hybrid
- platforms
+From 3d6a0e4197c04599d75d85a608c8bb16a630a38c Mon Sep 17 00:00:00 2001
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Mon, 24 Apr 2023 11:31:56 +0100
+Subject: [PATCH] irqchip/mips-gic: Use raw spinlock for gic_lock
 
-Traditionally, all CPUs in a system have identical numbers of SMT
-siblings.  That changes with hybrid processors where some logical CPUs
-have a sibling and others have none.
+Since we may hold gic_lock in hardirq context, use raw spinlock
+makes more sense given that it is for low-level interrupt handling
+routine and the critical section is small.
 
-Today, the CPU boot code sets the global variable smp_num_siblings when
-every CPU thread is brought up. The last thread to boot will overwrite
-it with the number of siblings of *that* thread. That last thread to
-boot will "win". If the thread is a Pcore, smp_num_siblings == 2.  If it
-is an Ecore, smp_num_siblings == 1.
+Fixes BUG:
 
-smp_num_siblings describes if the *system* supports SMT.  It should
-specify the maximum number of SMT threads among all cores.
+[    0.426106] =============================
+[    0.426257] [ BUG: Invalid wait context ]
+[    0.426422] 6.3.0-rc7-next-20230421-dirty #54 Not tainted
+[    0.426638] -----------------------------
+[    0.426766] swapper/0/1 is trying to lock:
+[    0.426954] ffffffff8104e7b8 (gic_lock){....}-{3:3}, at: gic_set_type+0x30/08
 
-Ensure that smp_num_siblings represents the system-wide maximum number
-of siblings by always increasing its value. Never allow it to decrease.
+Fixes: 95150ae8b330 ("irqchip: mips-gic: Implement irq_set_type callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230424103156.66753-3-jiaxun.yang@flygoat.com
 
-On MeteorLake-P platform, this fixes a problem that the Ecore CPUs are
-not updated in any cpu sibling map because the system is treated as an
-UP system when probing Ecore CPUs.
-
-Below shows part of the CPU topology information before and after the
-fix, for both Pcore and Ecore CPU (cpu0 is Pcore, cpu 12 is Ecore).
-...
--/sys/devices/system/cpu/cpu0/topology/package_cpus:000fff
--/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-11
-+/sys/devices/system/cpu/cpu0/topology/package_cpus:3fffff
-+/sys/devices/system/cpu/cpu0/topology/package_cpus_list:0-21
-...
--/sys/devices/system/cpu/cpu12/topology/package_cpus:001000
--/sys/devices/system/cpu/cpu12/topology/package_cpus_list:12
-+/sys/devices/system/cpu/cpu12/topology/package_cpus:3fffff
-+/sys/devices/system/cpu/cpu12/topology/package_cpus_list:0-21
-
-Notice that the "before" 'package_cpus_list' has only one CPU.  This
-means that userspace tools like lscpu will see a little laptop like
-an 11-socket system:
-
--Core(s) per socket:  1
--Socket(s):           11
-+Core(s) per socket:  16
-+Socket(s):           1
-
-This is also expected to make the scheduler do rather wonky things
-too.
-
-[ dhansen: remove CPUID detail from changelog, add end user effects ]
-
-CC: stable@kernel.org
-Fixes: bbb65d2d365e ("x86: use cpuid vector 0xb when available for detecting cpu topology")
-Fixes: 95f3d39ccf7a ("x86/cpu/topology: Provide detect_extended_topology_early()")
-Suggested-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20230323015640.27906-1-rui.zhang%40intel.com
-
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index 5e868b62a7c4..0270925fe013 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -79,7 +79,7 @@ int detect_extended_topology_early(struct cpuinfo_x86 *c)
- 	 * initial apic id, which also represents 32-bit extended x2apic id.
- 	 */
- 	c->initial_apicid = edx;
--	smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
- #endif
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index b568d55ef7c5..6d5ecc10a870 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -50,7 +50,7 @@ void __iomem *mips_gic_base;
+ 
+ static DEFINE_PER_CPU_READ_MOSTLY(unsigned long[GIC_MAX_LONGS], pcpu_masks);
+ 
+-static DEFINE_SPINLOCK(gic_lock);
++static DEFINE_RAW_SPINLOCK(gic_lock);
+ static struct irq_domain *gic_irq_domain;
+ static int gic_shared_intrs;
+ static unsigned int gic_cpu_pin;
+@@ -210,7 +210,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+ 
+ 	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+ 	case IRQ_TYPE_EDGE_FALLING:
+ 		pol = GIC_POL_FALLING_EDGE;
+@@ -250,7 +250,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+ 	else
+ 		irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
+ 						 handle_level_irq, NULL);
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
  	return 0;
  }
-@@ -109,7 +109,8 @@ int detect_extended_topology(struct cpuinfo_x86 *c)
- 	 */
- 	cpuid_count(leaf, SMT_LEVEL, &eax, &ebx, &ecx, &edx);
- 	c->initial_apicid = edx;
--	core_level_siblings = smp_num_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	core_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
-+	smp_num_siblings = max_t(int, smp_num_siblings, LEVEL_MAX_SIBLINGS(ebx));
- 	core_plus_mask_width = ht_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
- 	die_level_siblings = LEVEL_MAX_SIBLINGS(ebx);
- 	pkg_mask_width = die_plus_mask_width = BITS_SHIFT_NEXT_LEVEL(eax);
+@@ -268,7 +268,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+ 		return -EINVAL;
+ 
+ 	/* Assumption : cpumask refers to a single CPU */
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 
+ 	/* Re-route this IRQ */
+ 	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpu)));
+@@ -279,7 +279,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+ 		set_bit(irq, per_cpu_ptr(pcpu_masks, cpu));
+ 
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
+ 	return IRQ_SET_MASK_OK;
+ }
+@@ -357,12 +357,12 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ 	cd = irq_data_get_irq_chip_data(d);
+ 	cd->mask = false;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	for_each_online_cpu(cpu) {
+ 		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_rmask(BIT(intr));
+ 	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ }
+ 
+ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+@@ -375,12 +375,12 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+ 	cd = irq_data_get_irq_chip_data(d);
+ 	cd->mask = true;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	for_each_online_cpu(cpu) {
+ 		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_smask(BIT(intr));
+ 	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ }
+ 
+ static void gic_all_vpes_irq_cpu_online(void)
+@@ -393,7 +393,7 @@ static void gic_all_vpes_irq_cpu_online(void)
+ 	unsigned long flags;
+ 	int i;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
+ 		unsigned int intr = local_intrs[i];
+@@ -407,7 +407,7 @@ static void gic_all_vpes_irq_cpu_online(void)
+ 			write_gic_vl_smask(BIT(intr));
+ 	}
+ 
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ }
+ 
+ static struct irq_chip gic_all_vpes_local_irq_controller = {
+@@ -437,11 +437,11 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 
+ 	data = irq_get_irq_data(virq);
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
+ 	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
+ 	irq_data_update_effective_affinity(data, cpumask_of(cpu));
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
+ 	return 0;
+ }
+@@ -533,12 +533,12 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 	if (!gic_local_irq_is_routable(intr))
+ 		return -EPERM;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	for_each_online_cpu(cpu) {
+ 		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_map(mips_gic_vx_map_reg(intr), map);
+ 	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
+ 	return 0;
+ }
 
