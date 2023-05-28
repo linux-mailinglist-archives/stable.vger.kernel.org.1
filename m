@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C10713DAB
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8357F713F7C
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:45:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230102AbjE1T1p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44694 "EHLO
+        id S231279AbjE1Tp4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:45:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbjE1T1o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:44 -0400
+        with ESMTP id S231294AbjE1Tp4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:45:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F56CC9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5212A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:45:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CAE961CAC
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9E9C433EF;
-        Sun, 28 May 2023 19:27:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D72C61F5E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:45:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5E9C433EF;
+        Sun, 28 May 2023 19:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302062;
-        bh=wbjwYQ1PjXTeI/UE7qkqz1UbUfHLMY8QtM84mMGQzOw=;
+        s=korg; t=1685303153;
+        bh=hsYVjHiTXwRpFWIA6bLkI5JzoEY7wNSJJnBl+GGZyGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpLbpWGvDho1oUF8aYUWcZOq4XfpB8UOUSBsuGiE9ahUjGsAOvUVRuxYsufhKKleY
-         HDjt9a2V2+lVMmwzymur8lpgf6v5Se1LzBAmpX7js0Lj48sbSzGNn5E/lGaD8opxI3
-         OC9LMgTzvO+oYf5tjLI7q4bhPkP8OBynqpn2vf0Q=
+        b=KAePiiXCd1K3RNH/iJJ7tUjkYzoLc8r5InbKrN+mBHfOz6L6FzyzZXEMcpfYlwKEk
+         CJx/Uum2A61napdQD9n/xtFY5hCXrzDlcZ8hWEOMGOTxlx1bAfxN733qFHLhIXMkK/
+         7R+rzYQvL1rfZfyR5p2CCPOEG/WH08RGp5i0symI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 145/161] net: fix skb leak in __skb_tstamp_tx()
+        patches@lists.linux.dev,
+        =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.10 148/211] powerpc/64s/radix: Fix soft dirty tracking
 Date:   Sun, 28 May 2023 20:11:09 +0100
-Message-Id: <20230528190841.524364778@linuxfoundation.org>
+Message-Id: <20230528190847.190386040@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pratyush Yadav <ptyadav@amazon.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 8a02fb71d7192ff1a9a47c9d937624966c6e09af upstream.
+commit 66b2ca086210732954a7790d63d35542936fc664 upstream.
 
-Commit 50749f2dd685 ("tcp/udp: Fix memleaks of sk and zerocopy skbs with
-TX timestamp.") added a call to skb_orphan_frags_rx() to fix leaks with
-zerocopy skbs. But it ended up adding a leak of its own. When
-skb_orphan_frags_rx() fails, the function just returns, leaking the skb
-it just cloned. Free it before returning.
+It was reported that soft dirty tracking doesn't work when using the
+Radix MMU.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+The tracking is supposed to work by clearing the soft dirty bit for a
+mapping and then write protecting the PTE. If/when the page is written
+to, a page fault occurs and the soft dirty bit is added back via
+pte_mkdirty(). For example in wp_page_reuse():
 
-Fixes: 50749f2dd685 ("tcp/udp: Fix memleaks of sk and zerocopy skbs with TX timestamp.")
-Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230522153020.32422-1-ptyadav@amazon.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+	if (ptep_set_access_flags(vma, vmf->address, vmf->pte, entry, 1))
+		update_mmu_cache(vma, vmf->address, vmf->pte);
+
+Unfortunately on radix _PAGE_SOFTDIRTY is being dropped by
+radix__ptep_set_access_flags(), called from ptep_set_access_flags(),
+meaning the soft dirty bit is not set even though the page has been
+written to.
+
+Fix it by adding _PAGE_SOFTDIRTY to the set of bits that are able to be
+changed in radix__ptep_set_access_flags().
+
+Fixes: b0b5e9b13047 ("powerpc/mm/radix: Add radix pte #defines")
+Cc: stable@vger.kernel.org # v4.7+
+Reported-by: Dan Horák <dan@danny.cz>
+Link: https://lore.kernel.org/r/20230511095558.56663a50f86bdc4cd97700b7@danny.cz
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230511114224.977423-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/radix_pgtable.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4633,8 +4633,10 @@ void __skb_tstamp_tx(struct sk_buff *ori
- 	} else {
- 		skb = skb_clone(orig_skb, GFP_ATOMIC);
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1064,8 +1064,8 @@ void radix__ptep_set_access_flags(struct
+ 				  pte_t entry, unsigned long address, int psize)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
+-					      _PAGE_RW | _PAGE_EXEC);
++	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_SOFT_DIRTY |
++					      _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
  
--		if (skb_orphan_frags_rx(skb, GFP_ATOMIC))
-+		if (skb_orphan_frags_rx(skb, GFP_ATOMIC)) {
-+			kfree_skb(skb);
- 			return;
-+		}
- 	}
- 	if (!skb)
- 		return;
+ 	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
+ 	/*
 
 
