@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F167713CA2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82919713F07
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjE1TRB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36262 "EHLO
+        id S231158AbjE1TlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjE1TRA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D46BBA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:58 -0700 (PDT)
+        with ESMTP id S231161AbjE1TlU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:41:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A70DF113
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71D6C619DD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C595C433EF;
-        Sun, 28 May 2023 19:16:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66DDD61ECC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AA1C433D2;
+        Sun, 28 May 2023 19:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301417;
-        bh=sKPhx/jHu4zoymasg7Zmc2F7b3BKrPyY0EVLgrfEQfE=;
+        s=korg; t=1685302869;
+        bh=Vn2iljI9e0T/K28XJB0twwjZtWRTFI02ulin/D1OkJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zF4xILBltO61V5B+QpE4b95u5SHNW1RLfjDsPMO9WHBnUQ2bCy30KbS2Yx6CpZeb/
-         3IK8i0gxRvi12oRv/YEhfAtRBs/d+bmxkeLNfKFQgcfP6a1s4xZbxO9Xn/gEyi/QPq
-         4AJq4+b53MgK8nC7q/Q4N+E18Lsur0bbmj8zt3Wo=
+        b=Ly5xfCOOdHV4hBep6N8otWptOkodINQXXJVO+Ot5emx0H1++1h/qyBY0j3NuaeEPn
+         C4cmI/qbB8btqn0eGaguAY8wN2eVfViSs6vFQQKPD3jfZnY8pJGYbAOkEcTDXl7gKi
+         7ksMUeoVKVIj9U4KJG8jIjgWNB2uDCpQkcRstfxo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Soheil Hassas Yeganeh <soheil@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 004/132] tcp: reduce POLLOUT events caused by TCP_NOTSENT_LOWAT
+        patches@lists.linux.dev, Andreas Dilger <adilger.kernel@dilger.ca>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 022/211] ext4: reflect error codes from ext4_multi_mount_protect() to its callers
 Date:   Sun, 28 May 2023 20:09:03 +0100
-Message-Id: <20230528190833.698687214@linuxfoundation.org>
+Message-Id: <20230528190844.074758468@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,157 +53,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit a74f0fa082b76c6a76cba5672f36218518bfdc09 ]
+[ Upstream commit 3b50d5018ed06a647bb26c44bb5ae74e59c903c7 ]
 
-TCP_NOTSENT_LOWAT socket option or sysctl was added in linux-3.12
-as a step to enable bigger tcp sndbuf limits.
+This will allow more fine-grained errno codes to be returned by the
+mount system call.
 
-It works reasonably well, but the following happens :
-
-Once the limit is reached, TCP stack generates
-an [E]POLLOUT event for every incoming ACK packet.
-
-This causes a high number of context switches.
-
-This patch implements the strategy David Miller added
-in sock_def_write_space() :
-
- - If TCP socket has a notsent_lowat constraint of X bytes,
-   allow sendmsg() to fill up to X bytes, but send [E]POLLOUT
-   only if number of notsent bytes is below X/2
-
-This considerably reduces TCP_NOTSENT_LOWAT overhead,
-while allowing to keep the pipe full.
-
-Tested:
- 100 ms RTT netem testbed between A and B, 100 concurrent TCP_STREAM
-
-A:/# cat /proc/sys/net/ipv4/tcp_wmem
-4096	262144	64000000
-A:/# super_netperf 100 -H B -l 1000 -- -K bbr &
-
-A:/# grep TCP /proc/net/sockstat
-TCP: inuse 203 orphan 0 tw 19 alloc 414 mem 1364904 # This is about 54 MB of memory per flow :/
-
-A:/# vmstat 5 5
-procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
- r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
- 0  0      0 256220672  13532 694976    0    0    10     0   28   14  0  1 99  0  0
- 2  0      0 256320016  13532 698480    0    0   512     0 715901 5927  0 10 90  0  0
- 0  0      0 256197232  13532 700992    0    0   735    13 771161 5849  0 11 89  0  0
- 1  0      0 256233824  13532 703320    0    0   512    23 719650 6635  0 11 89  0  0
- 2  0      0 256226880  13532 705780    0    0   642     4 775650 6009  0 12 88  0  0
-
-A:/# echo 2097152 >/proc/sys/net/ipv4/tcp_notsent_lowat
-
-A:/# grep TCP /proc/net/sockstat
-TCP: inuse 203 orphan 0 tw 19 alloc 414 mem 86411 # 3.5 MB per flow
-
-A:/# vmstat 5 5  # check that context switches have not inflated too much.
-procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
- r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
- 2  0      0 260386512  13592 662148    0    0    10     0   17   14  0  1 99  0  0
- 0  0      0 260519680  13592 604184    0    0   512    13 726843 12424  0 10 90  0  0
- 1  1      0 260435424  13592 598360    0    0   512    25 764645 12925  0 10 90  0  0
- 1  0      0 260855392  13592 578380    0    0   512     7 722943 13624  0 11 88  0  0
- 1  0      0 260445008  13592 601176    0    0   614    34 772288 14317  0 10 90  0  0
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e14cadfd80d7 ("tcp: add annotations around sk->sk_shutdown accesses")
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting r/w until quota is re-enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 20 +++++++++++++++-----
- include/net/tcp.h  |  8 ++++++--
- net/core/stream.c  |  2 +-
- 3 files changed, 22 insertions(+), 8 deletions(-)
+ fs/ext4/mmp.c   |  9 ++++++++-
+ fs/ext4/super.c | 16 +++++++++-------
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 629cc89b7f0e4..cfbd241935a30 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1130,7 +1130,7 @@ struct proto {
- 	unsigned int		inuse_idx;
+diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
+index bc364c119af6a..92c863fd9a78d 100644
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -290,6 +290,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	if (mmp_block < le32_to_cpu(es->s_first_data_block) ||
+ 	    mmp_block >= ext4_blocks_count(es)) {
+ 		ext4_warning(sb, "Invalid MMP block in superblock");
++		retval = -EINVAL;
+ 		goto failed;
+ 	}
+ 
+@@ -315,6 +316,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 
+ 	if (seq == EXT4_MMP_SEQ_FSCK) {
+ 		dump_mmp_msg(sb, mmp, "fsck is running on the filesystem");
++		retval = -EBUSY;
+ 		goto failed;
+ 	}
+ 
+@@ -328,6 +330,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 
+ 	if (schedule_timeout_interruptible(HZ * wait_time) != 0) {
+ 		ext4_warning(sb, "MMP startup interrupted, failing mount\n");
++		retval = -ETIMEDOUT;
+ 		goto failed;
+ 	}
+ 
+@@ -338,6 +341,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	if (seq != le32_to_cpu(mmp->mmp_seq)) {
+ 		dump_mmp_msg(sb, mmp,
+ 			     "Device is already active on another node.");
++		retval = -EBUSY;
+ 		goto failed;
+ 	}
+ 
+@@ -357,6 +361,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	 */
+ 	if (schedule_timeout_interruptible(HZ * wait_time) != 0) {
+ 		ext4_warning(sb, "MMP startup interrupted, failing mount");
++		retval = -ETIMEDOUT;
+ 		goto failed;
+ 	}
+ 
+@@ -367,6 +372,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 	if (seq != le32_to_cpu(mmp->mmp_seq)) {
+ 		dump_mmp_msg(sb, mmp,
+ 			     "Device is already active on another node.");
++		retval = -EBUSY;
+ 		goto failed;
+ 	}
+ 
+@@ -383,6 +389,7 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 		EXT4_SB(sb)->s_mmp_tsk = NULL;
+ 		ext4_warning(sb, "Unable to create kmmpd thread for %s.",
+ 			     sb->s_id);
++		retval = -ENOMEM;
+ 		goto failed;
+ 	}
+ 
+@@ -390,5 +397,5 @@ int ext4_multi_mount_protect(struct super_block *sb,
+ 
+ failed:
+ 	brelse(bh);
+-	return 1;
++	return retval;
+ }
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index d75aa45a846d1..edd1409663932 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -4777,9 +4777,11 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	needs_recovery = (es->s_last_orphan != 0 ||
+ 			  ext4_has_feature_journal_needs_recovery(sb));
+ 
+-	if (ext4_has_feature_mmp(sb) && !sb_rdonly(sb))
+-		if (ext4_multi_mount_protect(sb, le64_to_cpu(es->s_mmp_block)))
++	if (ext4_has_feature_mmp(sb) && !sb_rdonly(sb)) {
++		err = ext4_multi_mount_protect(sb, le64_to_cpu(es->s_mmp_block));
++		if (err)
+ 			goto failed_mount3a;
++	}
+ 
+ 	/*
+ 	 * The first inode we look at is the journal inode.  Don't try
+@@ -5988,12 +5990,12 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 				goto restore_opts;
+ 
+ 			sb->s_flags &= ~SB_RDONLY;
+-			if (ext4_has_feature_mmp(sb))
+-				if (ext4_multi_mount_protect(sb,
+-						le64_to_cpu(es->s_mmp_block))) {
+-					err = -EROFS;
++			if (ext4_has_feature_mmp(sb)) {
++				err = ext4_multi_mount_protect(sb,
++						le64_to_cpu(es->s_mmp_block));
++				if (err)
+ 					goto restore_opts;
+-				}
++			}
+ #ifdef CONFIG_QUOTA
+ 			enable_quota = 1;
  #endif
- 
--	bool			(*stream_memory_free)(const struct sock *sk);
-+	bool			(*stream_memory_free)(const struct sock *sk, int wake);
- 	bool			(*stream_memory_read)(const struct sock *sk);
- 	/* Memory pressure */
- 	void			(*enter_memory_pressure)(struct sock *sk);
-@@ -1212,19 +1212,29 @@ static inline void sk_refcnt_debug_release(const struct sock *sk)
- #define sk_refcnt_debug_release(sk) do { } while (0)
- #endif /* SOCK_REFCNT_DEBUG */
- 
--static inline bool sk_stream_memory_free(const struct sock *sk)
-+static inline bool __sk_stream_memory_free(const struct sock *sk, int wake)
- {
- 	if (sk->sk_wmem_queued >= sk->sk_sndbuf)
- 		return false;
- 
- 	return sk->sk_prot->stream_memory_free ?
--		sk->sk_prot->stream_memory_free(sk) : true;
-+		sk->sk_prot->stream_memory_free(sk, wake) : true;
- }
- 
--static inline bool sk_stream_is_writeable(const struct sock *sk)
-+static inline bool sk_stream_memory_free(const struct sock *sk)
-+{
-+	return __sk_stream_memory_free(sk, 0);
-+}
-+
-+static inline bool __sk_stream_is_writeable(const struct sock *sk, int wake)
- {
- 	return sk_stream_wspace(sk) >= sk_stream_min_wspace(sk) &&
--	       sk_stream_memory_free(sk);
-+	       __sk_stream_memory_free(sk, wake);
-+}
-+
-+static inline bool sk_stream_is_writeable(const struct sock *sk)
-+{
-+	return __sk_stream_is_writeable(sk, 0);
- }
- 
- static inline int sk_under_cgroup_hierarchy(struct sock *sk,
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 9a154fe06c60d..9e37f3912ff19 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1884,12 +1884,16 @@ static inline u32 tcp_notsent_lowat(const struct tcp_sock *tp)
- 	return tp->notsent_lowat ?: READ_ONCE(net->ipv4.sysctl_tcp_notsent_lowat);
- }
- 
--static inline bool tcp_stream_memory_free(const struct sock *sk)
-+/* @wake is one when sk_stream_write_space() calls us.
-+ * This sends EPOLLOUT only if notsent_bytes is half the limit.
-+ * This mimics the strategy used in sock_def_write_space().
-+ */
-+static inline bool tcp_stream_memory_free(const struct sock *sk, int wake)
- {
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	u32 notsent_bytes = READ_ONCE(tp->write_seq) - tp->snd_nxt;
- 
--	return notsent_bytes < tcp_notsent_lowat(tp);
-+	return (notsent_bytes << wake) < tcp_notsent_lowat(tp);
- }
- 
- #ifdef CONFIG_PROC_FS
-diff --git a/net/core/stream.c b/net/core/stream.c
-index 23e6669d3f8d2..cd60746877b1e 100644
---- a/net/core/stream.c
-+++ b/net/core/stream.c
-@@ -32,7 +32,7 @@ void sk_stream_write_space(struct sock *sk)
- 	struct socket *sock = sk->sk_socket;
- 	struct socket_wq *wq;
- 
--	if (sk_stream_is_writeable(sk) && sock) {
-+	if (__sk_stream_is_writeable(sk, 1) && sock) {
- 		clear_bit(SOCK_NOSPACE, &sock->flags);
- 
- 		rcu_read_lock();
 -- 
 2.39.2
 
