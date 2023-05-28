@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFC5C713F9F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CCE713E4B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231330AbjE1TrT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33514 "EHLO
+        id S230319AbjE1TeJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbjE1TrS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 345EA9B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:17 -0700 (PDT)
+        with ESMTP id S230313AbjE1TeJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11116A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BAC6561FA7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88F7C433EF;
-        Sun, 28 May 2023 19:47:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F94B61DEA
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0A8C433D2;
+        Sun, 28 May 2023 19:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303236;
-        bh=wRHBaeDhawOPG5Ib5RCrD356vYPyA33SmBx6wdrBBSI=;
+        s=korg; t=1685302447;
+        bh=Mb7vC4HaS36Qt/3xSV8OVLEzv5520vqh75pTPeWKkpg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e5lw12LAWPn0PytbVvk0GWkH7OxlU5ObinxH7E/VVddiM27w8JP7O8AK8+MMeTPug
-         Bwvrx8oJtFEkYYX6Wehz8rMk/q88+MqlnjEavVr3CByaYIC7fD9J/7l5KLpfs2oORr
-         iH0J4vJ2UrGeF8H3xJaZx2Yi5LqVPeisO3GDDh8k=
+        b=r/oWu7ZZXpv/FUDiRQkzEFAlq7a/pbpGC64Am7CfHwZr4yS0Ca04nrqgnv6YxrDIT
+         yTGSkf+kZ2Gf5+i7W4LDGhGEsshKleneJDkAV0WqBpCg52guHT0ceFAiqEMpUbbiNO
+         Sklwkh5Z89XsAWwETUQkYNvlQl0wM6qwTsCxtR3c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 182/211] debugobjects: Dont wake up kswapd from fill_pool()
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Liu Ying <victor.liu@nxp.com>, Marek Vasut <marex@denx.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 127/127] Revert "arm64: dts: imx8mp: Drop simple-bus from fsl,imx8mp-media-blk-ctrl"
 Date:   Sun, 28 May 2023 20:11:43 +0100
-Message-Id: <20230528190848.017800831@linuxfoundation.org>
+Message-Id: <20230528190840.351644456@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,41 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit eb799279fb1f9c63c520fe8c1c41cb9154252db6 upstream.
+This reverts commit bd2573ee0f91c0e6d2bee8599110453e2909060e which is
+commit 5a51e1f2b083423f75145c512ee284862ab33854 upstream.
 
-syzbot is reporting a lockdep warning in fill_pool() because the allocation
-from debugobjects is using GFP_ATOMIC, which is (__GFP_HIGH | __GFP_KSWAPD_RECLAIM)
-and therefore tries to wake up kswapd, which acquires kswapd_wait::lock.
+Marc writes:
+	can you please revert this patch, without the corresponding driver patch
+	[1] it breaks probing of the device, as no one populates the sub-nodes.
 
-Since fill_pool() might be called with arbitrary locks held, fill_pool()
-should not assume that acquiring kswapd_wait::lock is safe.
+	[1] 9cb6d1b39a8f ("soc: imx: imx8m-blk-ctrl: Scan subnodes and bind
+	drivers to them")
 
-Use __GFP_HIGH instead and remove __GFP_NORETRY as it is pointless for
-!__GFP_DIRECT_RECLAIM allocation.
-
-Fixes: 3ac7fe5a4aab ("infrastructure to debug (dynamic) objects")
-Reported-by: syzbot <syzbot+fe0c72f0ccbb93786380@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/6577e1fa-b6ee-f2be-2414-a2b51b1c5e30@I-love.SAKURA.ne.jp
-Closes: https://syzkaller.appspot.com/bug?extid=fe0c72f0ccbb93786380
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/r/20230523-justly-situated-317e792f4c1b-mkl@pengutronix.de
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Liu Ying <victor.liu@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/debugobjects.c |    2 +-
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -129,7 +129,7 @@ static const char *obj_states[ODEBUG_STA
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1151,7 +1151,7 @@
  
- static void fill_pool(void)
- {
--	gfp_t gfp = GFP_ATOMIC | __GFP_NORETRY | __GFP_NOWARN;
-+	gfp_t gfp = __GFP_HIGH | __GFP_NOWARN;
- 	struct debug_obj *obj;
- 	unsigned long flags;
- 
+ 			media_blk_ctrl: blk-ctrl@32ec0000 {
+ 				compatible = "fsl,imx8mp-media-blk-ctrl",
+-					     "syscon";
++					     "simple-bus", "syscon";
+ 				reg = <0x32ec0000 0x10000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
 
 
