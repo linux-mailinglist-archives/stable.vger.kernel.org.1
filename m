@@ -2,45 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72945713B15
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 19:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5AF4713B28
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 19:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjE1RRi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 13:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40478 "EHLO
+        id S229603AbjE1RgK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 13:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjE1RRh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 13:17:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 943BAB1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 10:17:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2400960D2E
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 17:17:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FC7C433D2;
-        Sun, 28 May 2023 17:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685294255;
-        bh=yxGL6/JL6F+7RAhZsFbTRAEsHoP80XPK7LzsE5KgzjE=;
-        h=Subject:To:Cc:From:Date:From;
-        b=c4lgD+vMOfg6PUNCw73g2/Nakr0xg8eSSQl+50+/kZnrs71WarSIPjyJ22VHXCaPX
-         n7CKkt1e4YW6ML4W+DME2LWn8/6iQ4/4pc8XnhPC7VFcp93EvdqtY7dsAd9cu+VN01
-         eqE5M+16BoCwy3jsvZ8Ve37EJAmG+CMHJlfy2pD8=
-Subject: FAILED: patch "[PATCH] net/mlx5e: do as little as possible in napi poll when budget" failed to apply to 5.4-stable tree
-To:     kuba@kernel.org, davem@davemloft.net, simon.horman@corigine.com,
-        tariqt@nvidia.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 18:17:33 +0100
-Message-ID: <2023052832-bunkbed-probable-b8e8@gregkh>
+        with ESMTP id S229582AbjE1RgK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 13:36:10 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D6BC7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 10:36:03 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f601c57d8dso18234375e9.0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 10:36:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1685295362; x=1687887362;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VgPDfFpDepN09tAvzxisbxa58llXbpe18nSgqJnJRjU=;
+        b=rgj5G2s+N52emvHq9W1ntw8O5uPxq+pFx+5FwzcifTQGSiHAVomnhwVHf1nnidWt6q
+         NrIujJh8uDAKJiVEE2AO+RaCfhYUiVuG0bcdG8m17Zt7PxdybGrfmJRSr/bJcL9zIB3t
+         bALRae5eRglG6ztQSpzYuISK6BCpS0ttutLSZenNkgg56GBcfDlsFeO0bOBrIVIG29W0
+         oFD5E1UKAIS6mRSN9YmJenVDqSCujgfmoCF52NYyyOfHDs4CYcbxG77k8++6omrvvUNu
+         xBWCslqPWucSlU2a0ghvYOqCiF3LeEISxTb6aUughSQlgc2OQvWsKVK1ZPP23IEUHdZQ
+         EyIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685295362; x=1687887362;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VgPDfFpDepN09tAvzxisbxa58llXbpe18nSgqJnJRjU=;
+        b=Ar636mnfiAc09kAUxyLsXiaNqS7L6/PW9n4uRipY0D9RFQj2gEw6YQMvp8S+Asf5wB
+         EoCJuS64phqSc9z+9rR0eKSgkuxGs7b8/9H2S9VVY5PIGtYBcolSpAgG8U4fwoZqbn4H
+         EyvQuWqsv39lipDNUOd91NHPZ9y5TDLYCFLvuYNnNCgyYGaY3EgIIYg5jrVMxfTq9j9L
+         JVRQ4jBHv8i9K+S3YPlPBzCATImAylIYfr0X9gga4PD92t/4m777fpUp6I1B0NwcTgzc
+         0xFAUJsVl1lOL+OrZqOiwesSSGMQpA40MTdFgaTHN4wmwltkJcZouPr8rbJjqGAsUK3Z
+         OjWQ==
+X-Gm-Message-State: AC+VfDyWWMKZB8ggT0OrzVu5y1ZU7k8r47UwiNfDrYDjLpm0eX9xsWeF
+        pUAaYoKm40rtTRdr7evJ3RUosg==
+X-Google-Smtp-Source: ACHHUZ5z6UUO9qErx7rddM51YnwXRZiYQBfzXxkC1QPVxR3oFA3IrRiJbAnW7uzu+eZzQY+dbKlJ4Q==
+X-Received: by 2002:a7b:ca42:0:b0:3f6:8ba:6ea2 with SMTP id m2-20020a7bca42000000b003f608ba6ea2mr4894454wml.15.1685295362339;
+        Sun, 28 May 2023 10:36:02 -0700 (PDT)
+Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
+        by smtp.gmail.com with ESMTPSA id z10-20020a7bc7ca000000b003f602e2b653sm15334523wmk.28.2023.05.28.10.36.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 May 2023 10:36:02 -0700 (PDT)
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH net 0/8] selftests: mptcp: skip tests not supported by old
+ kernels (part 1)
+Date:   Sun, 28 May 2023 19:35:25 +0200
+Message-Id: <20230528-upstream-net-20230528-mptcp-selftests-support-old-kernels-part-1-v1-0-a32d85577fc6@tessares.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN6Qc2QC/z2O0QqCQBBFf0XmuSFdK6RfiR7WdcwlXYeZMQLx3
+ 1uDerzncjl3BSWJpHAtVhB6RY1zyqE6FBAGnx6EscsZXOnq8uwaXFhNyE+YyPBPJ7bAqDT2Rmq
+ KujDPYjiPHT5JEo2K7DOoMA8uddOfujaUkDWtV8JWfArDLrLjz7CXLNTH9/ffDbIR7tv2ATEX4
+ d20AAAA
+To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Christoph Paasch <cpaasch@apple.com>,
+        Florian Westphal <fw@strlen.de>,
+        Davide Caratti <dcaratti@redhat.com>,
+        Kishen Maloor <kishen.maloor@intel.com>
+Cc:     netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3353;
+ i=matthieu.baerts@tessares.net; h=from:subject:message-id;
+ bh=75HYeXxG55KPo56OT1QMXARO4lwKjONuoUweD6PxHRY=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkc5EA0+GzNb8nihOX2uRnYncESRC+xg4pKxRCH
+ 3sJCo5oNgiJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZHORAAAKCRD2t4JPQmmg
+ c/j5D/sH3eiNSTv3LwOpchmkjY6MqFbvbi6mOgFz//+ZA0bTiNqOHHdCPpT54xqZaA3w79kikmr
+ A3Nn57sA4oAQNkhsrDKLIhZ74yita2bAjZTAa9xsO9BcIrTv2K59oz+2g/tydCEetWEp77iQsF1
+ qF8S8+OVYuKBsU8VtXf+Or49hbqu6RwzbE2VdMGy0OZjm4ZAJFWN0mmUTI0BeblLUrJYdFVfidQ
+ IhVhot7uV/NMKB/ih5GxWEXkll5zmLlkD976ykMnsOkWZDsupmnCXujpoKSKwjnAexP1nNZvuRP
+ xQJ00+M7iSNgzmMVWQT4LBqGs+eQ6McrpHVLKeoQea+bcCuaUJ9O/+DY/JIDH3zlVDV2ce0yNrc
+ lqyurAfO1rrs6HCOt4oJbF+dZLE81nHck5wgCh6txZwx3Ho7AwK61Yz9h5WU+n5k76dK1gVHd+I
+ gZykh5/XdL/vs2PoQa2IzWALvXThrdaVmT8iaaKSVWnlB7nBE0nR4uK6DzyfGKnu09vFBL1UZU2
+ LnJBV+pDuMkBZ8/MKofyiF4H6mtwBGthu/qX0b0Ws2YQnh1iVlR1txdAv5ulwbseJVWSb/7xF4N
+ 2h3Qm7xQFoUfJRE7UJC0QiGlwrGyoDugRPS+fihDgB4RraM4Cl9BykS+bvq77erhoyzGZ5D9liD
+ c7IFbmwDq/IFJjw==
+X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,110 +101,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+After a few years of increasing test coverage in the MPTCP selftests, we
+realised [1] the last version of the selftests is supposed to run on old
+kernels without issues.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Supporting older versions is not that easy for this MPTCP case: these
+selftests are often validating the internals by checking packets that
+are exchanged, when some MIB counters are incremented after some
+actions, how connections are getting opened and closed in some cases,
+etc. In other words, it is not limited to the socket interface between
+the userspace and the kernelspace. In addition, the current selftests
+run a lot of different sub-tests but the TAP13 protocol used in the
+selftests don't support sub-tests: in other words, one failure in
+sub-tests implies that the whole selftest is seen as failed at the end
+because sub-tests are not tracked. It is then important to skip
+sub-tests not supported by old kernels.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+To minimise the modifications and reduce the complexity to support old
+versions, the idea is to look at external signs and skip the whole
+selftests or just some sub-tests before starting them.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x afbed3f74830163f9559579dee382cac3cff82da
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052832-bunkbed-probable-b8e8@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+This first part focuses on marking the different selftests as skipped
+if MPTCP is not even supported. That's what is done in patches 2 to 8.
+Patch 2/8 introduces a new file (mptcp_lib.sh) to be able to re-use some
+helpers in the different selftests. The first MPTCP selftest has been
+introduced in v5.6.
 
-Possible dependencies:
+Patch 1/8 is a bit different but still linked: it modifies mptcp_join.sh
+selftest not to use 'cmp --bytes' which is not supported by the BusyBox
+implementation. It is apparently quite common to use BusyBox in CI
+environments. This tool is needed for a subtest introduced in v6.1.
 
-afbed3f74830 ("net/mlx5e: do as little as possible in napi poll when budget is 0")
-214baf22870c ("net/mlx5e: Support HTB offload")
-1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
-145e5637d941 ("net/mlx5e: Add TX PTP port object support")
-1a7f51240dfb ("net/mlx5e: Split SW group counters update function")
-0b676aaecc25 ("net/mlx5e: Change skb fifo push/pop API to be used without SQ")
-579524c6eace ("net/mlx5e: Validate stop_room size upon user input")
-3180472f582b ("net/mlx5: Add functions to set/query MFRL register")
-573a8095f68c ("Merge tag 'mlx5-updates-2020-09-21' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux")
+Link: https://lore.kernel.org/stable/CA+G9fYtDGpgT4dckXD-y-N92nqUxuvue_7AtDdBcHrbOMsDZLg@mail.gmail.com/ [1]
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+---
+Matthieu Baerts (8):
+      selftests: mptcp: join: avoid using 'cmp --bytes'
+      selftests: mptcp: connect: skip if MPTCP is not supported
+      selftests: mptcp: pm nl: skip if MPTCP is not supported
+      selftests: mptcp: join: skip if MPTCP is not supported
+      selftests: mptcp: diag: skip if MPTCP is not supported
+      selftests: mptcp: simult flows: skip if MPTCP is not supported
+      selftests: mptcp: sockopt: skip if MPTCP is not supported
+      selftests: mptcp: userspace pm: skip if MPTCP is not supported
 
-thanks,
+ tools/testing/selftests/net/mptcp/Makefile         |  2 +-
+ tools/testing/selftests/net/mptcp/diag.sh          |  4 +++
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |  4 +++
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    | 17 +++++++--
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     | 40 ++++++++++++++++++++++
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh |  4 +++
+ tools/testing/selftests/net/mptcp/pm_netlink.sh    |  4 +++
+ tools/testing/selftests/net/mptcp/simult_flows.sh  |  4 +++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh  |  4 +++
+ 9 files changed, 80 insertions(+), 3 deletions(-)
+---
+base-commit: 9b9e46aa07273ceb96866b2e812b46f1ee0b8d2f
+change-id: 20230528-upstream-net-20230528-mptcp-selftests-support-old-kernels-part-1-305638f4dbc0
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From afbed3f74830163f9559579dee382cac3cff82da Mon Sep 17 00:00:00 2001
-From: Jakub Kicinski <kuba@kernel.org>
-Date: Tue, 16 May 2023 18:59:35 -0700
-Subject: [PATCH] net/mlx5e: do as little as possible in napi poll when budget
- is 0
-
-NAPI gets called with budget of 0 from netpoll, which has interrupts
-disabled. We should try to free some space on Tx rings and nothing
-else.
-
-Specifically do not try to handle XDP TX or try to refill Rx buffers -
-we can't use the page pool from IRQ context. Don't check if IRQs moved,
-either, that makes no sense in netpoll. Netpoll calls _all_ the rings
-from whatever CPU it happens to be invoked on.
-
-In general do as little as possible, the work quickly adds up when
-there's tens of rings to poll.
-
-The immediate stack trace I was seeing is:
-
-    __do_softirq+0xd1/0x2c0
-    __local_bh_enable_ip+0xc7/0x120
-    </IRQ>
-    <TASK>
-    page_pool_put_defragged_page+0x267/0x320
-    mlx5e_free_xdpsq_desc+0x99/0xd0
-    mlx5e_poll_xdpsq_cq+0x138/0x3b0
-    mlx5e_napi_poll+0xc3/0x8b0
-    netpoll_poll_dev+0xce/0x150
-
-AFAIU page pool takes a BH lock, releases it and since BH is now
-enabled tries to run softirqs.
-
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Fixes: 60bbf7eeef10 ("mlx5: use page_pool for xdp_return_frame call")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-index a50bfda18e96..fbb2d963fb7e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -161,20 +161,22 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
- 		}
- 	}
- 
-+	/* budget=0 means we may be in IRQ context, do as little as possible */
-+	if (unlikely(!budget))
-+		goto out;
-+
- 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
- 
- 	if (c->xdp)
- 		busy |= mlx5e_poll_xdpsq_cq(&c->rq_xdpsq.cq);
- 
--	if (likely(budget)) { /* budget=0 means: don't poll rx rings */
--		if (xsk_open)
--			work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
-+	if (xsk_open)
-+		work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
- 
--		if (likely(budget - work_done))
--			work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
-+	if (likely(budget - work_done))
-+		work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
- 
--		busy |= work_done == budget;
--	}
-+	busy |= work_done == budget;
- 
- 	mlx5e_poll_ico_cq(&c->icosq.cq);
- 	if (mlx5e_poll_ico_cq(&c->async_icosq.cq))
+Best regards,
+-- 
+Matthieu Baerts <matthieu.baerts@tessares.net>
 
