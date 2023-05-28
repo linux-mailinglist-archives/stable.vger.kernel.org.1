@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B018713EC9
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D39713F83
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230480AbjE1Ti7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
+        id S231301AbjE1TqO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:46:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230499AbjE1Ti4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A0AC9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:50 -0700 (PDT)
+        with ESMTP id S231298AbjE1TqM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5770C9C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 741B661E88
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923B7C433EF;
-        Sun, 28 May 2023 19:38:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E61BE61F5E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D391C433EF;
+        Sun, 28 May 2023 19:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302728;
-        bh=OXAeKMjNpncyGE6G9rpaunZQW80MRg9WFqPtyUVTfO4=;
+        s=korg; t=1685303170;
+        bh=7OmCtundpP8qjlKK40vgClQHTLXscEQd/cGiTN0VE8o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K6TuGq4sEV8w1gj+23IlWuPoWPsjMiFBrP6DstBL47SBGEnefnSZyRWnaKfVq5nb+
-         Zq66ju0+VU0ErQjpu7gRS1Oh/FpRgRjtK5GJDSxFH60JTiKOXfqo7Sko0C75NtWK/V
-         tF4jsSyvwVRKuKBy9sbdbAzeaqXCQLcdyME1kY8k=
+        b=Mu8RCZN+x+LvL+R4vMiohnZmTHgY3dhjDIrDvAkICs6W4N2wEvQy8oS8AqxFpXUVp
+         Fa7ujHv+4k6IVVuCWx9fxIZhBN8xcFobVK/JHwKCuV+Izg+OKMredyYdptGWPO5JdK
+         PCIiA2ZWIwm5OKFL+jqR+RRL7ZpQd5rqDPABW9/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.1 103/119] net/mlx5e: Fix SQ wake logic in ptp napi_poll context
-Date:   Sun, 28 May 2023 20:11:43 +0100
-Message-Id: <20230528190838.921202007@linuxfoundation.org>
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        syzbot+0e22d63dcebb802b9bc8@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 183/211] fbdev: udlfb: Fix endpoint check
+Date:   Sun, 28 May 2023 20:11:44 +0100
+Message-Id: <20230528190848.043530678@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,81 +55,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 7aa50380191635e5897a773f272829cc961a2be5 upstream.
+commit ed9de4ed39875706607fb08118a58344ae6c5f42 upstream.
 
-Check in the mlx5e_ptp_poll_ts_cq context if the ptp tx sq should be woken
-up. Before change, the ptp tx sq may never wake up if the ptp tx ts skb
-fifo is full when mlx5e_poll_tx_cq checks if the queue should be woken up.
+The syzbot fuzzer detected a problem in the udlfb driver, caused by an
+endpoint not having the expected type:
 
-Fixes: 1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+usb 1-1: Read EDID byte 0 failed: -71
+usb 1-1: Unable to get valid EDID from device/display
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 9 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880
+drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted
+6.4.0-rc1-syzkaller-00016-ga4422ff22142 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google
+04/28/2023
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+...
+Call Trace:
+ <TASK>
+ dlfb_submit_urb+0x92/0x180 drivers/video/fbdev/udlfb.c:1980
+ dlfb_set_video_mode+0x21f0/0x2950 drivers/video/fbdev/udlfb.c:315
+ dlfb_ops_set_par+0x2a7/0x8d0 drivers/video/fbdev/udlfb.c:1111
+ dlfb_usb_probe+0x149a/0x2710 drivers/video/fbdev/udlfb.c:1743
+
+The current approach for this issue failed to catch the problem
+because it only checks for the existence of a bulk-OUT endpoint; it
+doesn't check whether this endpoint is the one that the driver will
+actually use.
+
+We can fix the problem by instead checking that the endpoint used by
+the driver does exist and is bulk-OUT.
+
+Reported-and-tested-by: syzbot+0e22d63dcebb802b9bc8@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+CC: Pavel Skripkin <paskripkin@gmail.com>
+Fixes: aaf7dbe07385 ("video: fbdev: udlfb: properly check endpoint type")
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c  |    2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h |    2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c   |   19 ++++++++++++-------
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/video/fbdev/udlfb.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-@@ -175,6 +175,8 @@ static bool mlx5e_ptp_poll_ts_cq(struct
- 	/* ensure cq space is freed before enabling more cqes */
- 	wmb();
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -27,6 +27,8 @@
+ #include <video/udlfb.h>
+ #include "edid.h"
  
-+	mlx5e_txqsq_wake(&ptpsq->txqsq);
++#define OUT_EP_NUM	1	/* The endpoint number we will use */
 +
- 	return work_done == budget;
- }
+ static const struct fb_fix_screeninfo dlfb_fix = {
+ 	.id =           "udlfb",
+ 	.type =         FB_TYPE_PACKED_PIXELS,
+@@ -1651,7 +1653,7 @@ static int dlfb_usb_probe(struct usb_int
+ 	struct fb_info *info;
+ 	int retval;
+ 	struct usb_device *usbdev = interface_to_usbdev(intf);
+-	struct usb_endpoint_descriptor *out;
++	static u8 out_ep[] = {OUT_EP_NUM + USB_DIR_OUT, 0};
  
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
-@@ -177,6 +177,8 @@ static inline u16 mlx5e_txqsq_get_next_p
- 	return pi;
- }
+ 	/* usb initialization */
+ 	dlfb = kzalloc(sizeof(*dlfb), GFP_KERNEL);
+@@ -1665,9 +1667,9 @@ static int dlfb_usb_probe(struct usb_int
+ 	dlfb->udev = usb_get_dev(usbdev);
+ 	usb_set_intfdata(intf, dlfb);
  
-+void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq);
-+
- static inline u16 mlx5e_shampo_get_cqe_header_index(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
- {
- 	return be16_to_cpu(cqe->shampo.header_entry_index) & (rq->mpwqe.shampo->hd_per_wq - 1);
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -777,6 +777,17 @@ static void mlx5e_tx_wi_consume_fifo_skb
+-	retval = usb_find_common_endpoints(intf->cur_altsetting, NULL, &out, NULL, NULL);
+-	if (retval) {
+-		dev_err(&intf->dev, "Device should have at lease 1 bulk endpoint!\n");
++	if (!usb_check_bulk_endpoints(intf, out_ep)) {
++		dev_err(&intf->dev, "Invalid DisplayLink device!\n");
++		retval = -EINVAL;
+ 		goto error;
  	}
- }
  
-+void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq)
-+{
-+	if (netif_tx_queue_stopped(sq->txq) &&
-+	    mlx5e_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room) &&
-+	    mlx5e_ptpsq_fifo_has_room(sq) &&
-+	    !test_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state)) {
-+		netif_tx_wake_queue(sq->txq);
-+		sq->stats->wake++;
-+	}
-+}
-+
- bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
- {
- 	struct mlx5e_sq_stats *stats;
-@@ -876,13 +887,7 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *c
+@@ -1926,7 +1928,8 @@ retry:
+ 		}
  
- 	netdev_tx_completed_queue(sq->txq, npkts, nbytes);
+ 		/* urb->transfer_buffer_length set to actual before submit */
+-		usb_fill_bulk_urb(urb, dlfb->udev, usb_sndbulkpipe(dlfb->udev, 1),
++		usb_fill_bulk_urb(urb, dlfb->udev,
++			usb_sndbulkpipe(dlfb->udev, OUT_EP_NUM),
+ 			buf, size, dlfb_urb_completion, unode);
+ 		urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
  
--	if (netif_tx_queue_stopped(sq->txq) &&
--	    mlx5e_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room) &&
--	    mlx5e_ptpsq_fifo_has_room(sq) &&
--	    !test_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state)) {
--		netif_tx_wake_queue(sq->txq);
--		stats->wake++;
--	}
-+	mlx5e_txqsq_wake(sq);
- 
- 	return (i == MLX5E_TX_CQ_POLL_BUDGET);
- }
 
 
