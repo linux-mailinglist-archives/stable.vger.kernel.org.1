@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81FFA713DDD
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBE0E713F43
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230187AbjE1T3u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:29:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46400 "EHLO
+        id S231219AbjE1Tnj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbjE1T3t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975F3E3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:34 -0700 (PDT)
+        with ESMTP id S231218AbjE1Tni (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 276959C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3076A61D20
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E40CC433D2;
-        Sun, 28 May 2023 19:29:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B053C61F1C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE73AC433EF;
+        Sun, 28 May 2023 19:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302173;
-        bh=WXusbuxJxNLUtiC90KbgHLYQVt7wvRu9vcnskZDucdA=;
+        s=korg; t=1685303016;
+        bh=UlKBe9JdPpRlQ6pW4qAlSVvezPtjcalcGgOT7fGe+Jw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FpSwcZjx2rJ5iBJjEDmcaYC4jX7iwfirmvYYNgJRPn1mei4IeqrkCeBV38CKJ4ptF
-         Ch833Dhl1gZ82cZALa1jtyIKuyxJCoplS8YRm1UlonS/KVeCIQ0AeoFcPI4N1Zkk7y
-         F9gPdZbW3AH47w8R6NPetcOy3ck9jSSNCVtdBOIs=
+        b=uO0iQ6SnhrJxzN6ZBA1noHQvwU1+smCv90dcPz62W6XPmO1+ns3iDIeZaLWFqA+kf
+         fud5l5WzDAZlkW+vlpi5bX5GArIZoacS3+OrW6xym7yBPhdqWZaXwDtJD4JmsVLEPc
+         6rg0QTyNU5ghCUowttEW/MJq7OvfFYRI7u8JvSls=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.3 028/127] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
+        patches@lists.linux.dev, Qiang Ning <qning0106@126.com>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 083/211] mfd: dln2: Fix memory leak in dln2_probe()
 Date:   Sun, 28 May 2023 20:10:04 +0100
-Message-Id: <20230528190837.194993963@linuxfoundation.org>
+Message-Id: <20230528190845.685259054@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,125 +53,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Qiang Ning <qning0106@126.com>
 
-commit 3632679d9e4f879f49949bb5b050e0de553e4739 upstream.
+[ Upstream commit 96da8f148396329ba769246cb8ceaa35f1ddfc48 ]
 
-With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
-protocol field of the flow structure, build by raw_sendmsg() /
-rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
-lookup when some policies are defined with a protocol in the selector.
+When dln2_setup_rx_urbs() in dln2_probe() fails, error out_free forgets
+to call usb_put_dev() to decrease the refcount of dln2->usb_dev.
 
-For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
-specify the protocol. Just accept all values for IPPROTO_RAW socket.
+Fix this by adding usb_put_dev() in the error handling code of
+dln2_probe().
 
-For ipv4, the sin_port field of 'struct sockaddr_in' could not be used
-without breaking backward compatibility (the value of this field was never
-checked). Let's add a new kind of control message, so that the userland
-could specify which protocol is used.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-CC: stable@vger.kernel.org
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://lore.kernel.org/r/20230522120820.1319391-1-nicolas.dichtel@6wind.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Qiang Ning <qning0106@126.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230330024353.4503-1-qning0106@126.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h        |    2 ++
- include/uapi/linux/in.h |    1 +
- net/ipv4/ip_sockglue.c  |   12 +++++++++++-
- net/ipv4/raw.c          |    5 ++++-
- net/ipv6/raw.c          |    3 ++-
- 5 files changed, 20 insertions(+), 3 deletions(-)
+ drivers/mfd/dln2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -76,6 +76,7 @@ struct ipcm_cookie {
- 	__be32			addr;
- 	int			oif;
- 	struct ip_options_rcu	*opt;
-+	__u8			protocol;
- 	__u8			ttl;
- 	__s16			tos;
- 	char			priority;
-@@ -96,6 +97,7 @@ static inline void ipcm_init_sk(struct i
- 	ipcm->sockc.tsflags = inet->sk.sk_tsflags;
- 	ipcm->oif = READ_ONCE(inet->sk.sk_bound_dev_if);
- 	ipcm->addr = inet->inet_saddr;
-+	ipcm->protocol = inet->inet_num;
- }
+diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
+index 852129ea07666..fc65f9e25fda8 100644
+--- a/drivers/mfd/dln2.c
++++ b/drivers/mfd/dln2.c
+@@ -836,6 +836,7 @@ static int dln2_probe(struct usb_interface *interface,
+ 	dln2_stop_rx_urbs(dln2);
  
- #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
---- a/include/uapi/linux/in.h
-+++ b/include/uapi/linux/in.h
-@@ -163,6 +163,7 @@ struct in_addr {
- #define IP_MULTICAST_ALL		49
- #define IP_UNICAST_IF			50
- #define IP_LOCAL_PORT_RANGE		51
-+#define IP_PROTOCOL			52
+ out_free:
++	usb_put_dev(dln2->usb_dev);
+ 	dln2_free(dln2);
  
- #define MCAST_EXCLUDE	0
- #define MCAST_INCLUDE	1
---- a/net/ipv4/ip_sockglue.c
-+++ b/net/ipv4/ip_sockglue.c
-@@ -317,7 +317,14 @@ int ip_cmsg_send(struct sock *sk, struct
- 			ipc->tos = val;
- 			ipc->priority = rt_tos2priority(ipc->tos);
- 			break;
--
-+		case IP_PROTOCOL:
-+			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
-+				return -EINVAL;
-+			val = *(int *)CMSG_DATA(cmsg);
-+			if (val < 1 || val > 255)
-+				return -EINVAL;
-+			ipc->protocol = val;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -1761,6 +1768,9 @@ int do_ip_getsockopt(struct sock *sk, in
- 	case IP_LOCAL_PORT_RANGE:
- 		val = inet->local_port_range.hi << 16 | inet->local_port_range.lo;
- 		break;
-+	case IP_PROTOCOL:
-+		val = inet_sk(sk)->inet_num;
-+		break;
- 	default:
- 		sockopt_release_sock(sk);
- 		return -ENOPROTOOPT;
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -532,6 +532,9 @@ static int raw_sendmsg(struct sock *sk,
- 	}
- 
- 	ipcm_init_sk(&ipc, inet);
-+	/* Keep backward compat */
-+	if (hdrincl)
-+		ipc.protocol = IPPROTO_RAW;
- 
- 	if (msg->msg_controllen) {
- 		err = ip_cmsg_send(sk, msg, &ipc, false);
-@@ -599,7 +602,7 @@ static int raw_sendmsg(struct sock *sk,
- 
- 	flowi4_init_output(&fl4, ipc.oif, ipc.sockc.mark, tos,
- 			   RT_SCOPE_UNIVERSE,
--			   hdrincl ? IPPROTO_RAW : sk->sk_protocol,
-+			   hdrincl ? ipc.protocol : sk->sk_protocol,
- 			   inet_sk_flowi_flags(sk) |
- 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
- 			   daddr, saddr, 0, 0, sk->sk_uid);
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -793,7 +793,8 @@ static int rawv6_sendmsg(struct sock *sk
- 
- 		if (!proto)
- 			proto = inet->inet_num;
--		else if (proto != inet->inet_num)
-+		else if (proto != inet->inet_num &&
-+			 inet->inet_num != IPPROTO_RAW)
- 			return -EINVAL;
- 
- 		if (proto > 255)
+ 	return ret;
+-- 
+2.39.2
+
 
 
