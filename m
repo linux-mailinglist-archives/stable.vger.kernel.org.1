@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27BFC713F14
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252F9713CD6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231175AbjE1TmL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
+        id S229866AbjE1TTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:19:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231166AbjE1TmK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:10 -0400
+        with ESMTP id S229871AbjE1TTI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F20E44
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 437D7DF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0B6B61EDA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1965FC433D2;
-        Sun, 28 May 2023 19:41:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CDE9E61A8B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF3BC433D2;
+        Sun, 28 May 2023 19:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302901;
-        bh=tPTK8H6KULh7td848zI8KiUvWRrfkCyQuOLGGwh6RcM=;
+        s=korg; t=1685301544;
+        bh=htDnQPPTK0T6AosbxRErJZ2KbgQTcim5FlO8G19BaE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q7MCvrd/0ElyWOtYoBSKZreZk/1eyefa+Pbri+hQV2uZzAhDJE4LFr8Dw6iDtUzAp
-         7RWtkA0aMtpLnnl+oiXf+HpeWogyX1mwoFnXB1ZM++jgrUJsUetjTyI3Nw8iL3SDr3
-         cGBXuGUvSRiFyFU6iBQliM7+3kk7YTuSdyGfvSE8=
+        b=OfykG+f5mCSN6DvMFm1Rhhxvoh410zk3hiVuGnR3amE+SyCJIsdfwfHUlLda5Gaqx
+         h0orw7po2RpilrjTx2ETjC10ddnXJlLpqXaflX9WZz0AulieXVI+Wu36bwoeKSzbFu
+         JoohX0lQno7biKxs928KEenu07tr91/SisZgDWu4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Frank Wang <frank.wang@rock-chips.com>,
+        patches@lists.linux.dev, Ke Zhang <m202171830@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 072/211] usb: typec: tcpm: fix multiple times discover svids error
+Subject: [PATCH 4.19 054/132] serial: arc_uart: fix of_iomap leak in `arc_serial_probe`
 Date:   Sun, 28 May 2023 20:09:53 +0100
-Message-Id: <20230528190845.413417271@linuxfoundation.org>
+Message-Id: <20230528190835.221759471@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Wang <frank.wang@rock-chips.com>
+From: Ke Zhang <m202171830@hust.edu.cn>
 
-[ Upstream commit dac3b192107b978198e89ec0f77375738352e0c8 ]
+[ Upstream commit 8ab5fc55d7f65d58a3c3aeadf11bdf60267cd2bd ]
 
-PD3.0 Spec 6.4.4.3.2 say that only Responder supports 12 or more SVIDs,
-the Discover SVIDs Command Shall be executed multiple times until a
-Discover SVIDs VDO is returned ending either with a SVID value of
-0x0000 in the last part of the last VDO or with a VDO containing two
-SVIDs with values of 0x0000.
+Smatch reports:
 
-In the current implementation, if the last VDO does not find that the
-Discover SVIDs Command would be executed multiple times even if the
-Responder SVIDs are less than 12, and we found some odd dockers just
-meet this case. So fix it.
+drivers/tty/serial/arc_uart.c:631 arc_serial_probe() warn:
+'port->membase' from of_iomap() not released on lines: 631.
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Frank Wang <frank.wang@rock-chips.com>
-Link: https://lore.kernel.org/r/20230316081149.24519-1-frank.wang@rock-chips.com
+In arc_serial_probe(), if uart_add_one_port() fails,
+port->membase is not released, which would cause a resource leak.
+
+To fix this, I replace of_iomap with devm_platform_ioremap_resource.
+
+Fixes: 8dbe1d5e09a7 ("serial/arc: inline the probe helper")
+Signed-off-by: Ke Zhang <m202171830@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230428031636.44642-1-m202171830@hust.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/tty/serial/arc_uart.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 8333c80b5f7c1..cf0e6a80815ae 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1126,7 +1126,21 @@ static bool svdm_consume_svids(struct tcpm_port *port, const u32 *p, int cnt)
- 		pmdata->svids[pmdata->nsvids++] = svid;
- 		tcpm_log(port, "SVID %d: 0x%x", pmdata->nsvids, svid);
+diff --git a/drivers/tty/serial/arc_uart.c b/drivers/tty/serial/arc_uart.c
+index d904a3a345e74..dd4be3c8c049c 100644
+--- a/drivers/tty/serial/arc_uart.c
++++ b/drivers/tty/serial/arc_uart.c
+@@ -613,10 +613,11 @@ static int arc_serial_probe(struct platform_device *pdev)
  	}
--	return true;
-+
-+	/*
-+	 * PD3.0 Spec 6.4.4.3.2: The SVIDs are returned 2 per VDO (see Table
-+	 * 6-43), and can be returned maximum 6 VDOs per response (see Figure
-+	 * 6-19). If the Respondersupports 12 or more SVID then the Discover
-+	 * SVIDs Command Shall be executed multiple times until a Discover
-+	 * SVIDs VDO is returned ending either with a SVID value of 0x0000 in
-+	 * the last part of the last VDO or with a VDO containing two SVIDs
-+	 * with values of 0x0000.
-+	 *
-+	 * However, some odd dockers support SVIDs less than 12 but without
-+	 * 0x0000 in the last VDO, so we need to break the Discover SVIDs
-+	 * request and return false here.
-+	 */
-+	return cnt == 7;
- abort:
- 	tcpm_log(port, "SVID_DISCOVERY_MAX(%d) too low!", SVID_DISCOVERY_MAX);
- 	return false;
+ 	uart->baud = val;
+ 
+-	port->membase = of_iomap(np, 0);
+-	if (!port->membase)
++	port->membase = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(port->membase)) {
+ 		/* No point of dev_err since UART itself is hosed here */
+-		return -ENXIO;
++		return PTR_ERR(port->membase);
++	}
+ 
+ 	port->irq = irq_of_parse_and_map(np, 0);
+ 
 -- 
 2.39.2
 
