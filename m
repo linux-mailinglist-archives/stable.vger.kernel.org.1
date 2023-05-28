@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DDFD713AA4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3C2713AB8
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjE1Qnz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:43:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57150 "EHLO
+        id S229683AbjE1Qup (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:50:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjE1Qny (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:43:54 -0400
+        with ESMTP id S229665AbjE1Quo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:50:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7BABB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:43:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E89BD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:50:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85EC960DD5
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C95C433D2;
-        Sun, 28 May 2023 16:43:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC2D1617A9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:50:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B83C433A0;
+        Sun, 28 May 2023 16:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292231;
-        bh=l7Z/z+iwx82RFOZ5Kqcoptz6c8JU0uUy0aFOzUpsB7U=;
+        s=korg; t=1685292642;
+        bh=xHCao+A//0ENZAidlwVkLlXwOZFbexbyUYlVtd94UFA=;
         h=Subject:To:Cc:From:Date:From;
-        b=nvqWV5AutWFYD+2/cB/UAGNBeMBF/c/l4X312eZJz4aN6WQy3PUluSU1BpNEOSjhM
-         vAT3caPiL7rIHdyIFRdqim12mSB7ccXkx0JO7YLMZL00+oGaBKijqt5HTV13eM3cWW
-         smlLRPVzLnH/9aKpfQy/77qEvAO8Ij9BCTaOZ8ug=
-Subject: FAILED: patch "[PATCH] platform/x86: ISST: Remove 8 socket limit" failed to apply to 5.15-stable tree
-To:     steve.wahl@hpe.com, hdegoede@redhat.com,
-        ilpo.jarvinen@linux.intel.com
+        b=aN0m1vJ3FmqPXhSu65uC38MikfsMpcphiCh35ex5ANOphCWcmKskFnoQyPM3CVIG3
+         w7B7U4iS3splEu90OmNUSEKn8dab9fRt99rFe7nC+tQ/7PHzsddBi5spTGbVvjuX8D
+         marhxl+O+UH5yIv8sjNqNsYJz+qPcycol+PdyaZ4=
+Subject: FAILED: patch "[PATCH] cxl: Move cxl_await_media_ready() to before capacity info" failed to apply to 6.1-stable tree
+To:     dave.jiang@intel.com, dan.j.williams@intel.com, ira.weiny@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:43:48 +0100
-Message-ID: <2023052848-preset-slapping-3df7@gregkh>
+Date:   Sun, 28 May 2023 17:48:26 +0100
+Message-ID: <2023052826-shallow-paltry-04ed@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,24 +48,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x bbb320bfe2c3e9740fe89cfa0a7089b4e8bfc4ff
+git cherry-pick -x e764f12208b99ac7892c4e3f6bf88d71ca71036f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052848-preset-slapping-3df7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052826-shallow-paltry-04ed@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-bbb320bfe2c3 ("platform/x86: ISST: Remove 8 socket limit")
-9a1aac8a96dc ("platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering")
+e764f12208b9 ("cxl: Move cxl_await_media_ready() to before capacity info retrieval")
+fd35fdcbf75b ("cxl/test: Add mock test for set_timestamp")
+f8d22bf50ca5 ("tools/testing/cxl: Mock support for Get Poison List")
+a5fcd228ca1d ("Merge branch 'for-6.3/cxl-rr-emu' into cxl/next")
 
 thanks,
 
@@ -74,63 +75,149 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bbb320bfe2c3e9740fe89cfa0a7089b4e8bfc4ff Mon Sep 17 00:00:00 2001
-From: Steve Wahl <steve.wahl@hpe.com>
-Date: Fri, 19 May 2023 11:04:20 -0500
-Subject: [PATCH] platform/x86: ISST: Remove 8 socket limit
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From e764f12208b99ac7892c4e3f6bf88d71ca71036f Mon Sep 17 00:00:00 2001
+From: Dave Jiang <dave.jiang@intel.com>
+Date: Thu, 18 May 2023 16:38:20 -0700
+Subject: [PATCH] cxl: Move cxl_await_media_ready() to before capacity info
+ retrieval
 
-Stop restricting the PCI search to a range of PCI domains fed to
-pci_get_domain_bus_and_slot().  Instead, use for_each_pci_dev() and
-look at all PCI domains in one pass.
+Move cxl_await_media_ready() to cxl_pci probe before driver starts issuing
+IDENTIFY and retrieving memory device information to ensure that the
+device is ready to provide the information. Allow cxl_pci_probe() to succeed
+even if media is not ready. Cache the media failure in cxlds and don't ask
+the device for any media information.
 
-On systems with more than 8 sockets, this avoids error messages like
-"Information: Invalid level, Can't get TDP control information at
-specified levels on cpu 480" from the intel speed select utility.
+The rationale for proceeding in the !media_ready case is to allow for
+mailbox operations to interrogate and/or remediate the device. After
+media is repaired then rebinding the cxl_pci driver is expected to
+restart the capacity scan.
 
-Fixes: aa2ddd242572 ("platform/x86: ISST: Use numa node id for cpu pci dev mapping")
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230519160420.2588475-1-steve.wahl@hpe.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: b39cb1052a5c ("cxl/mem: Register CXL memX devices")
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/168445310026.3251520.8124296540679268206.stgit@djiang5-mobl3
+[djbw: fixup cxl_test]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-index e0572a29212e..02fe360a59c7 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-@@ -304,14 +304,13 @@ struct isst_if_pkg_info {
- static struct isst_if_cpu_info *isst_cpu_info;
- static struct isst_if_pkg_info *isst_pkg_info;
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 23b9ff920d7e..2c8dc7e2b84d 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -1028,7 +1028,7 @@ static int cxl_mem_get_partition_info(struct cxl_dev_state *cxlds)
+  * cxl_dev_state_identify() - Send the IDENTIFY command to the device.
+  * @cxlds: The device data for the operation
+  *
+- * Return: 0 if identify was executed successfully.
++ * Return: 0 if identify was executed successfully or media not ready.
+  *
+  * This will dispatch the identify command to the device and on success populate
+  * structures to be exported to sysfs.
+@@ -1041,6 +1041,9 @@ int cxl_dev_state_identify(struct cxl_dev_state *cxlds)
+ 	u32 val;
+ 	int rc;
  
--#define ISST_MAX_PCI_DOMAINS	8
++	if (!cxlds->media_ready)
++		return 0;
++
+ 	mbox_cmd = (struct cxl_mbox_cmd) {
+ 		.opcode = CXL_MBOX_OP_IDENTIFY,
+ 		.size_out = sizeof(id),
+@@ -1115,10 +1118,12 @@ int cxl_mem_create_range_info(struct cxl_dev_state *cxlds)
+ 				   cxlds->persistent_only_bytes, "pmem");
+ 	}
+ 
+-	rc = cxl_mem_get_partition_info(cxlds);
+-	if (rc) {
+-		dev_err(dev, "Failed to query partition information\n");
+-		return rc;
++	if (cxlds->media_ready) {
++		rc = cxl_mem_get_partition_info(cxlds);
++		if (rc) {
++			dev_err(dev, "Failed to query partition information\n");
++			return rc;
++		}
+ 	}
+ 
+ 	rc = add_dpa_res(dev, &cxlds->dpa_res, &cxlds->ram_res, 0,
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index db12b6313afb..a2845a7a69d8 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -266,6 +266,7 @@ struct cxl_poison_state {
+  * @regs: Parsed register blocks
+  * @cxl_dvsec: Offset to the PCIe device DVSEC
+  * @rcd: operating in RCD mode (CXL 3.0 9.11.8 CXL Devices Attached to an RCH)
++ * @media_ready: Indicate whether the device media is usable
+  * @payload_size: Size of space for payload
+  *                (CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register)
+  * @lsa_size: Size of Label Storage Area
+@@ -303,6 +304,7 @@ struct cxl_dev_state {
+ 	int cxl_dvsec;
+ 
+ 	bool rcd;
++	bool media_ready;
+ 	size_t payload_size;
+ 	size_t lsa_size;
+ 	struct mutex mbox_mutex; /* Protects device mailbox and firmware */
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+index 10caf180b3fa..519edd0eb196 100644
+--- a/drivers/cxl/mem.c
++++ b/drivers/cxl/mem.c
+@@ -124,6 +124,9 @@ static int cxl_mem_probe(struct device *dev)
+ 	struct dentry *dentry;
+ 	int rc;
+ 
++	if (!cxlds->media_ready)
++		return -EBUSY;
++
+ 	/*
+ 	 * Someone is trying to reattach this device after it lost its port
+ 	 * connection (an endpoint port previously registered by this memdev was
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index f7a5b8e9c102..0872f2233ed0 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -708,6 +708,12 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (rc)
+ 		dev_dbg(&pdev->dev, "Failed to map RAS capability.\n");
+ 
++	rc = cxl_await_media_ready(cxlds);
++	if (rc == 0)
++		cxlds->media_ready = true;
++	else
++		dev_warn(&pdev->dev, "Media not active (%d)\n", rc);
++
+ 	rc = cxl_pci_setup_mailbox(cxlds);
+ 	if (rc)
+ 		return rc;
+diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
+index 17a95f469c26..c23b6164e1c0 100644
+--- a/drivers/cxl/port.c
++++ b/drivers/cxl/port.c
+@@ -117,12 +117,6 @@ static int cxl_endpoint_port_probe(struct cxl_port *port)
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = cxl_await_media_ready(cxlds);
+-	if (rc) {
+-		dev_err(&port->dev, "Media not active (%d)\n", rc);
+-		return rc;
+-	}
 -
- static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn)
- {
- 	struct pci_dev *matched_pci_dev = NULL;
- 	struct pci_dev *pci_dev = NULL;
-+	struct pci_dev *_pci_dev = NULL;
- 	int no_matches = 0, pkg_id;
--	int i, bus_number;
-+	int bus_number;
+ 	rc = devm_cxl_enumerate_decoders(cxlhdm, &info);
+ 	if (rc)
+ 		return rc;
+diff --git a/tools/testing/cxl/test/mem.c b/tools/testing/cxl/test/mem.c
+index ba572d03c687..34b48027b3de 100644
+--- a/tools/testing/cxl/test/mem.c
++++ b/tools/testing/cxl/test/mem.c
+@@ -1256,6 +1256,7 @@ static int cxl_mock_mem_probe(struct platform_device *pdev)
+ 	if (rc)
+ 		return rc;
  
- 	if (bus_no < 0 || bus_no >= ISST_MAX_BUS_NUMBER || cpu < 0 ||
- 	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
-@@ -323,12 +322,11 @@ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn
- 	if (bus_number < 0)
- 		return NULL;
- 
--	for (i = 0; i < ISST_MAX_PCI_DOMAINS; ++i) {
--		struct pci_dev *_pci_dev;
-+	for_each_pci_dev(_pci_dev) {
- 		int node;
- 
--		_pci_dev = pci_get_domain_bus_and_slot(i, bus_number, PCI_DEVFN(dev, fn));
--		if (!_pci_dev)
-+		if (_pci_dev->bus->number != bus_number ||
-+		    _pci_dev->devfn != PCI_DEVFN(dev, fn))
- 			continue;
- 
- 		++no_matches;
++	cxlds->media_ready = true;
+ 	rc = cxl_dev_state_identify(cxlds);
+ 	if (rc)
+ 		return rc;
 
