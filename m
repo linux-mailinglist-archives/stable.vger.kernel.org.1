@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AE8713E05
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB556713CD9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbjE1TbI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47634 "EHLO
+        id S229867AbjE1TTN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:19:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230238AbjE1TbH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:07 -0400
+        with ESMTP id S229870AbjE1TTN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53D34B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F88A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7ED061D63
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007FFC433D2;
-        Sun, 28 May 2023 19:31:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1425161A8B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AAFC433D2;
+        Sun, 28 May 2023 19:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302265;
-        bh=i6FBoeECACKt1pvh281YTXRR4k/KDad4V/Zf/tzrb6o=;
+        s=korg; t=1685301551;
+        bh=1QDPKVswq73fwiya8lW2M9dHLicBA+Ah42wWJ0CXtWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S1tnXajGElTqbU5p0sB254zyoyhONj3pB7dTiRb5uI4cgnzLtoir4ee+vp91U0aw5
-         44LYeBSyW28ZN2H7C3Mvo7CoBYRZZzteq/7mxJCKnZCQVdArypVLsvOj00RbSfBdFS
-         mWoOyfj2u7W0/ysPm+j9ze7Ync5UqIrEihCbAD54=
+        b=MSg1/y7XM8oiMfPTsL2HI1da5C3Bjl7PCX6g4npqm5oFyeruTeEN7VrzxX0oAuKpV
+         VLMqG8tLlWxNTGbhycaSs3qXVVgHxWUf1PLC0sJAgwbFNlmCpEoxv6AcQx6M9sB5yY
+         adKrDnumUNm9ewmtXhMSXDe/q98rI2qCR42pYAY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Chinner <dchinner@redhat.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Brian Foster <bfoster@redhat.com>
-Subject: [PATCH 6.3 037/127] xfs: fix livelock in delayed allocation at ENOSPC
+        patches@lists.linux.dev, Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 4.19 074/132] tpm/tpm_tis: Disable interrupts for more Lenovo devices
 Date:   Sun, 28 May 2023 20:10:13 +0100
-Message-Id: <20230528190837.533619394@linuxfoundation.org>
+Message-Id: <20230528190835.795158741@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-commit 9419092fb2630c30e4ffeb9ef61007ef0c61827a upstream.
+commit e7d3e5c4b1dd50a70b31524c3228c62bb41bbab2 upstream.
 
-On a filesystem with a non-zero stripe unit and a large sequential
-write, delayed allocation will set a minimum allocation length of
-the stripe unit. If allocation fails because there are no extents
-long enough for an aligned minlen allocation, it is supposed to
-fall back to unaligned allocation which allows single block extents
-to be allocated.
+The P360 Tiny suffers from an irq storm issue like the T490s, so add
+an entry for it to tpm_tis_dmi_table, and force polling. There also
+previously was a report from the previous attempt to enable interrupts
+that involved a ThinkPad L490. So an entry is added for it as well.
 
-When the allocator code was rewritting in the 6.3 cycle, this
-fallback was broken - the old code used args->fsbno as the both the
-allocation target and the allocation result, the new code passes the
-target as a separate parameter. The conversion didn't handle the
-aligned->unaligned fallback path correctly - it reset args->fsbno to
-the target fsbno on failure which broke allocation failure detection
-in the high level code and so it never fell back to unaligned
-allocations.
-
-This resulted in a loop in writeback trying to allocate an aligned
-block, getting a false positive success, trying to insert the result
-in the BMBT. This did nothing because the extent already was in the
-BMBT (merge results in an unchanged extent) and so it returned the
-prior extent to the conversion code as the current iomap.
-
-Because the iomap returned didn't cover the offset we tried to map,
-xfs_convert_blocks() then retries the allocation, which fails in the
-same way and now we have a livelock.
-
-Reported-and-tested-by: Brian Foster <bfoster@redhat.com>
-Fixes: 85843327094f ("xfs: factor xfs_bmap_btalloc()")
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Peter Zijlstra <peterz@infradead.org> # P360 Tiny
+Closes: https://lore.kernel.org/linux-integrity/20230505130731.GO83892@hirez.programming.kicks-ass.net/
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/char/tpm/tpm_tis.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -3505,7 +3505,6 @@ xfs_bmap_btalloc_at_eof(
- 	 * original non-aligned state so the caller can proceed on allocation
- 	 * failure as if this function was never called.
- 	 */
--	args->fsbno = ap->blkno;
- 	args->alignment = 1;
- 	return 0;
- }
+--- a/drivers/char/tpm/tpm_tis.c
++++ b/drivers/char/tpm/tpm_tis.c
+@@ -87,6 +87,22 @@ static const struct dmi_system_id tpm_ti
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T490s"),
+ 		},
+ 	},
++	{
++		.callback = tpm_tis_disable_irq,
++		.ident = "ThinkStation P360 Tiny",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkStation P360 Tiny"),
++		},
++	},
++	{
++		.callback = tpm_tis_disable_irq,
++		.ident = "ThinkPad L490",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L490"),
++		},
++	},
+ 	{}
+ };
+ 
 
 
