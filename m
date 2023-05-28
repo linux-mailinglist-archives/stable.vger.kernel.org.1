@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C26B7713FBE
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F9A713ECC
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231370AbjE1Tsc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34510 "EHLO
+        id S230479AbjE1TjC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:39:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbjE1Tsc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:32 -0400
+        with ESMTP id S230484AbjE1Ti6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6971A8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2752EB1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8474A60FE5
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F1FC433EF;
-        Sun, 28 May 2023 19:48:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B83C261E89
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F79C433D2;
+        Sun, 28 May 2023 19:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303310;
-        bh=gZFETnFHl7/ZN+F/cEAiMCBw5P7IPLetL1193hYjaaQ=;
+        s=korg; t=1685302736;
+        bh=p/1qBNSjHhVQDzfbR+YBDXcVD80c/BNa3Oh5NZ0Pr2s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n74AOCpIdTPfvOpaCCf9LBXYVUFVWMblAvsN8e2kNvGvcS0v9b5tcdmnDj4ZA66ea
-         aU9cv0hj1bmYeoiRlb1v4dQElWSmJ7r6kDYW5W1JAiZkWTKulVCG9HsvXVt8DfzAm9
-         sdYw2tfZZZwI5bu08plruYsa3FIfh1IYzLDfVoz8=
+        b=0hK1wObdPWL16/F8vzs0a1c1Y7DNPr+SL3x0IYxxZFIHlc+/7ro6CYd9BIVeLYZaI
+         ZmJQIIu3mg+I6Rczr9Un+Ldb0k+m41Ad+oD7UDeoXtlxwMzgDDgCX34Gae/zBRblzC
+         jADNxd9HB9pZoZBssdHep+8eQLsriAU1EhsYFSW0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 26/69] perf/x86/uncore: Correct the number of CHAs on SPR
+        patches@lists.linux.dev, Tariq Toukan <tariqt@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 106/119] net/mlx5e: do as little as possible in napi poll when budget is 0
 Date:   Sun, 28 May 2023 20:11:46 +0100
-Message-Id: <20230528190829.350199238@linuxfoundation.org>
+Message-Id: <20230528190839.014642765@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +55,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 38776cc45eb7603df4735a0410f42cffff8e71a1 upstream.
+commit afbed3f74830163f9559579dee382cac3cff82da upstream.
 
-The number of CHAs from the discovery table on some SPR variants is
-incorrect, because of a firmware issue. An accurate number can be read
-from the MSR UNC_CBO_CONFIG.
+NAPI gets called with budget of 0 from netpoll, which has interrupts
+disabled. We should try to free some space on Tx rings and nothing
+else.
 
-Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Stephane Eranian <eranian@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230508140206.283708-1-kan.liang@linux.intel.com
+Specifically do not try to handle XDP TX or try to refill Rx buffers -
+we can't use the page pool from IRQ context. Don't check if IRQs moved,
+either, that makes no sense in netpoll. Netpoll calls _all_ the rings
+from whatever CPU it happens to be invoked on.
+
+In general do as little as possible, the work quickly adds up when
+there's tens of rings to poll.
+
+The immediate stack trace I was seeing is:
+
+    __do_softirq+0xd1/0x2c0
+    __local_bh_enable_ip+0xc7/0x120
+    </IRQ>
+    <TASK>
+    page_pool_put_defragged_page+0x267/0x320
+    mlx5e_free_xdpsq_desc+0x99/0xd0
+    mlx5e_poll_xdpsq_cq+0x138/0x3b0
+    mlx5e_napi_poll+0xc3/0x8b0
+    netpoll_poll_dev+0xce/0x150
+
+AFAIU page pool takes a BH lock, releases it and since BH is now
+enabled tries to run softirqs.
+
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Fixes: 60bbf7eeef10 ("mlx5: use page_pool for xdp_return_frame call")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5822,6 +5822,7 @@ static struct intel_uncore_type spr_unco
- };
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+@@ -161,20 +161,22 @@ int mlx5e_napi_poll(struct napi_struct *
+ 		}
+ 	}
  
- #define UNCORE_SPR_NUM_UNCORE_TYPES		12
-+#define UNCORE_SPR_CHA				0
- #define UNCORE_SPR_IIO				1
- #define UNCORE_SPR_IMC				6
- 
-@@ -6064,12 +6065,22 @@ static int uncore_type_max_boxes(struct
- 	return max + 1;
- }
- 
-+#define SPR_MSR_UNC_CBO_CONFIG		0x2FFE
++	/* budget=0 means we may be in IRQ context, do as little as possible */
++	if (unlikely(!budget))
++		goto out;
 +
- void spr_uncore_cpu_init(void)
- {
-+	struct intel_uncore_type *type;
-+	u64 num_cbo;
-+
- 	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR,
- 						UNCORE_SPR_MSR_EXTRA_UNCORES,
- 						spr_msr_uncores);
+ 	busy |= mlx5e_poll_xdpsq_cq(&c->xdpsq.cq);
  
-+	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
-+	if (type) {
-+		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
-+		type->num_boxes = num_cbo;
-+	}
- 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
- }
+ 	if (c->xdp)
+ 		busy |= mlx5e_poll_xdpsq_cq(&c->rq_xdpsq.cq);
  
+-	if (likely(budget)) { /* budget=0 means: don't poll rx rings */
+-		if (xsk_open)
+-			work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
++	if (xsk_open)
++		work_done = mlx5e_poll_rx_cq(&xskrq->cq, budget);
+ 
+-		if (likely(budget - work_done))
+-			work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
++	if (likely(budget - work_done))
++		work_done += mlx5e_poll_rx_cq(&rq->cq, budget - work_done);
+ 
+-		busy |= work_done == budget;
+-	}
++	busy |= work_done == budget;
+ 
+ 	mlx5e_poll_ico_cq(&c->icosq.cq);
+ 	if (mlx5e_poll_ico_cq(&c->async_icosq.cq))
 
 
