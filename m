@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE93A713AD4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5DED713AD5
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjE1Qzr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:55:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34612 "EHLO
+        id S229731AbjE1Qzt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjE1Qzq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BD2BD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:45 -0700 (PDT)
+        with ESMTP id S229726AbjE1Qzt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:55:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1B7BD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:55:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAC3861138
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E881AC433D2;
-        Sun, 28 May 2023 16:55:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A08460F4B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:55:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65297C433EF;
+        Sun, 28 May 2023 16:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292944;
-        bh=uUzztB6p3zEobtHz/iQxdrVEE1yGbZ4lNXcOoKo2H4c=;
+        s=korg; t=1685292946;
+        bh=tG0LgZH5PqGLjyl/3qUqH9H0INJiYx9I4/NFj/4xxKM=;
         h=Subject:To:Cc:From:Date:From;
-        b=wpFCQy6+VllxOPQfnfGt5jF70OrfnKgxAU+U1hCLXfnq27EzhsJp/UUkq06U1Cg8d
-         IK4z11jRj8MfAzravyWRFgKi0QxyjCZbzjjH5mif020UQPQjU/U4Bb8/3ny0Je1Bld
-         01dAVC0uPW5Mh42kqYBjxropXE/ANzOfOADubplY=
-Subject: FAILED: patch "[PATCH] cpufreq: amd-pstate: Update policy->cur in" failed to apply to 6.1-stable tree
-To:     wyes.karny@amd.com, rafael.j.wysocki@intel.com,
-        stable@vger.kernel.org
+        b=zLjDPXaHkKvyG6xlFjbdzTEIM9GOIl9Bp9FgIvE02UWFQUHjpW6nY95f9/3Z08wo8
+         WjIFs2VyDOWLoJtxMgjBxo0UAQd3jVKK76J7r6Fc+JgdjhNEPLVKneYDog1zpoieGn
+         MNtDy9uJTT/xHyG5P3P246Rsn2jwHZcsyvL2lkLY=
+Subject: FAILED: patch "[PATCH] page_pool: fix inconsistency for page_pool_ring_[un]lock()" failed to apply to 6.1-stable tree
+To:     linyunsheng@huawei.com, brouer@redhat.com,
+        ilias.apalodimas@linaro.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:54:35 +0100
-Message-ID: <2023052835-scoring-scary-c0c6@gregkh>
+Date:   Sun, 28 May 2023 17:55:21 +0100
+Message-ID: <2023052820-treachery-paper-0d3a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,20 +58,15 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3bf8c6307bad5c0cc09cde982e146d847859b651
+git cherry-pick -x 368d3cb406cdd074d1df2ad9ec06d1bfcb664882
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052835-scoring-scary-c0c6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052820-treachery-paper-0d3a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-3bf8c6307bad ("cpufreq: amd-pstate: Update policy->cur in amd_pstate_adjust_perf()")
-2dd6d0ebf740 ("cpufreq: amd-pstate: Add guided autonomous mode")
-3e6e07805764 ("Documentation: cpufreq: amd-pstate: Move amd_pstate param to alphabetical order")
-5014603e409b ("Documentation: introduce amd pstate active mode kernel command line options")
-ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-36c5014e5460 ("cpufreq: amd-pstate: optimize driver working mode selection in amd_pstate_param()")
-4f3085f87b51 ("cpufreq: amd-pstate: fix kernel hang issue while amd-pstate unregistering")
+368d3cb406cd ("page_pool: fix inconsistency for page_pool_ring_[un]lock()")
+542bcea4be86 ("net: page_pool: use in_softirq() instead")
 
 thanks,
 
@@ -79,75 +74,121 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3bf8c6307bad5c0cc09cde982e146d847859b651 Mon Sep 17 00:00:00 2001
-From: Wyes Karny <wyes.karny@amd.com>
-Date: Thu, 18 May 2023 05:58:19 +0000
-Subject: [PATCH] cpufreq: amd-pstate: Update policy->cur in
- amd_pstate_adjust_perf()
+From 368d3cb406cdd074d1df2ad9ec06d1bfcb664882 Mon Sep 17 00:00:00 2001
+From: Yunsheng Lin <linyunsheng@huawei.com>
+Date: Mon, 22 May 2023 11:17:14 +0800
+Subject: [PATCH] page_pool: fix inconsistency for page_pool_ring_[un]lock()
 
-Driver should update policy->cur after updating the frequency.
-Currently amd_pstate doesn't update policy->cur when `adjust_perf`
-is used. Which causes /proc/cpuinfo to show wrong cpu frequency.
-Fix this by updating policy->cur with correct frequency value in
-adjust_perf function callback.
+page_pool_ring_[un]lock() use in_softirq() to decide which
+spin lock variant to use, and when they are called in the
+context with in_softirq() being false, spin_lock_bh() is
+called in page_pool_ring_lock() while spin_unlock() is
+called in page_pool_ring_unlock(), because spin_lock_bh()
+has disabled the softirq in page_pool_ring_lock(), which
+causes inconsistency for spin lock pair calling.
 
-- Before the fix: (setting min freq to 1.5 MHz)
+This patch fixes it by returning in_softirq state from
+page_pool_producer_lock(), and use it to decide which
+spin lock variant to use in page_pool_producer_unlock().
 
-[root@amd]# cat /proc/cpuinfo | grep "cpu MHz" | sort | uniq --count
-      1 cpu MHz         : 1777.016
-      1 cpu MHz         : 1797.160
-      1 cpu MHz         : 1797.270
-    189 cpu MHz         : 400.000
+As pool->ring has both producer and consumer lock, so
+rename it to page_pool_producer_[un]lock() to reflect
+the actual usage. Also move them to page_pool.c as they
+are only used there, and remove the 'inline' as the
+compiler may have better idea to do inlining or not.
 
-- After the fix: (setting min freq to 1.5 MHz)
+Fixes: 7886244736a4 ("net: page_pool: Add bulk support for ptr_ring")
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Link: https://lore.kernel.org/r/20230522031714.5089-1-linyunsheng@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-[root@amd]# cat /proc/cpuinfo | grep "cpu MHz" | sort | uniq --count
-      1 cpu MHz         : 1753.353
-      1 cpu MHz         : 1756.838
-      1 cpu MHz         : 1776.466
-      1 cpu MHz         : 1776.873
-      1 cpu MHz         : 1777.308
-      1 cpu MHz         : 1779.900
-    183 cpu MHz         : 1805.231
-      1 cpu MHz         : 1956.815
-      1 cpu MHz         : 2246.203
-      1 cpu MHz         : 2259.984
-
-Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-[ rjw: Subject edits ]
-Cc: 5.17+ <stable@vger.kernel.org> # 5.17+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index ac54779f5a49..ddd346a239e0 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -501,12 +501,14 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
- 				   unsigned long capacity)
- {
- 	unsigned long max_perf, min_perf, des_perf,
--		      cap_perf, lowest_nonlinear_perf;
-+		      cap_perf, lowest_nonlinear_perf, max_freq;
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
- 	struct amd_cpudata *cpudata = policy->driver_data;
-+	unsigned int target_freq;
+diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+index c8ec2f34722b..126f9e294389 100644
+--- a/include/net/page_pool.h
++++ b/include/net/page_pool.h
+@@ -399,22 +399,4 @@ static inline void page_pool_nid_changed(struct page_pool *pool, int new_nid)
+ 		page_pool_update_nid(pool, new_nid);
+ }
  
- 	cap_perf = READ_ONCE(cpudata->highest_perf);
- 	lowest_nonlinear_perf = READ_ONCE(cpudata->lowest_nonlinear_perf);
-+	max_freq = READ_ONCE(cpudata->max_freq);
+-static inline void page_pool_ring_lock(struct page_pool *pool)
+-	__acquires(&pool->ring.producer_lock)
+-{
+-	if (in_softirq())
+-		spin_lock(&pool->ring.producer_lock);
+-	else
+-		spin_lock_bh(&pool->ring.producer_lock);
+-}
+-
+-static inline void page_pool_ring_unlock(struct page_pool *pool)
+-	__releases(&pool->ring.producer_lock)
+-{
+-	if (in_softirq())
+-		spin_unlock(&pool->ring.producer_lock);
+-	else
+-		spin_unlock_bh(&pool->ring.producer_lock);
+-}
+-
+ #endif /* _NET_PAGE_POOL_H */
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index e212e9d7edcb..a3e12a61d456 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -134,6 +134,29 @@ EXPORT_SYMBOL(page_pool_ethtool_stats_get);
+ #define recycle_stat_add(pool, __stat, val)
+ #endif
  
- 	des_perf = cap_perf;
- 	if (target_perf < capacity)
-@@ -523,6 +525,10 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
- 	if (max_perf < min_perf)
- 		max_perf = min_perf;
- 
-+	des_perf = clamp_t(unsigned long, des_perf, min_perf, max_perf);
-+	target_freq = div_u64(des_perf * max_freq, max_perf);
-+	policy->cur = target_freq;
++static bool page_pool_producer_lock(struct page_pool *pool)
++	__acquires(&pool->ring.producer_lock)
++{
++	bool in_softirq = in_softirq();
 +
- 	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, true,
- 			policy->governor->flags);
- 	cpufreq_cpu_put(policy);
++	if (in_softirq)
++		spin_lock(&pool->ring.producer_lock);
++	else
++		spin_lock_bh(&pool->ring.producer_lock);
++
++	return in_softirq;
++}
++
++static void page_pool_producer_unlock(struct page_pool *pool,
++				      bool in_softirq)
++	__releases(&pool->ring.producer_lock)
++{
++	if (in_softirq)
++		spin_unlock(&pool->ring.producer_lock);
++	else
++		spin_unlock_bh(&pool->ring.producer_lock);
++}
++
+ static int page_pool_init(struct page_pool *pool,
+ 			  const struct page_pool_params *params)
+ {
+@@ -617,6 +640,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 			     int count)
+ {
+ 	int i, bulk_len = 0;
++	bool in_softirq;
+ 
+ 	for (i = 0; i < count; i++) {
+ 		struct page *page = virt_to_head_page(data[i]);
+@@ -635,7 +659,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 		return;
+ 
+ 	/* Bulk producer into ptr_ring page_pool cache */
+-	page_pool_ring_lock(pool);
++	in_softirq = page_pool_producer_lock(pool);
+ 	for (i = 0; i < bulk_len; i++) {
+ 		if (__ptr_ring_produce(&pool->ring, data[i])) {
+ 			/* ring full */
+@@ -644,7 +668,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 		}
+ 	}
+ 	recycle_stat_add(pool, ring, i);
+-	page_pool_ring_unlock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+ 	/* Hopefully all pages was return into ptr_ring */
+ 	if (likely(i == bulk_len))
 
