@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06E43713DA9
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BAD3713E0E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230109AbjE1T1l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:27:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
+        id S230255AbjE1Tbl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:31:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbjE1T1l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:41 -0400
+        with ESMTP id S230248AbjE1Tbj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C430B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE96B11F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C19D61C2F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B5AC433D2;
-        Sun, 28 May 2023 19:27:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26F3D61D92
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E5C433D2;
+        Sun, 28 May 2023 19:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302059;
-        bh=tFlZ1aSe/GzwZxPQAU3MOsiiw0swo8BuPaxnnSYynWk=;
+        s=korg; t=1685302287;
+        bh=zq1Os+D/7yy/NJzFj2J8bClDSlPMi/oDDTlDd37Pa0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z+oMqXE+YSxzAgz2LVKrQq8YlHrtuGbGmxTpLt+TPDlBJlxvPiB77NCXvviO/yz45
-         xiY8o/N42VqJySVPaH1+th9UGRqv0BzdBo7OJ3MV7xWUIw2BaXze+G94Jc/tEltLMY
-         GC6Ej675H7cbYALKjCszK4mMFmfcZWBOel6zs5fc=
+        b=SE+dW2IH+9SvorPK/wpODp8zIgM2MUhBZ3vpZL1gLqo/1v6xUJKQ5JCdV7VpFnNgi
+         ePWa740+uSVzT1Q1m1vM9pPsB6SX/rYZH0ZiGMsVY+v5TDd1FR9/9yIZOStwXwUl+t
+         px6fFFqCmx6ewBaP0nHPoMJmSOeCR5900SS3sSHw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Stylinski <kungfujesus06@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 127/161] ALSA: hda/ca0132: add quirk for EVGA X299 DARK
+        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+        Jiri Pirko <jiri@nvidia.com>, David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.3 075/127] ipv6: Fix out-of-bounds access in ipv6_find_tlv()
 Date:   Sun, 28 May 2023 20:10:51 +0100
-Message-Id: <20230528190841.040813011@linuxfoundation.org>
+Message-Id: <20230528190838.817753829@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,33 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Stylinski <kungfujesus06@gmail.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit 7843380d07bbeffd3ce6504e73cf61f840ae76ca upstream.
+commit 878ecb0897f4737a4c9401f3523fd49589025671 upstream.
 
-This quirk is necessary for surround and other DSP effects to work
-with the onboard ca0132 based audio chipset for the EVGA X299 dark
-mainboard.
+optlen is fetched without checking whether there is more than one byte to parse.
+It can lead to out-of-bounds access.
 
-Signed-off-by: Adam Stylinski <kungfujesus06@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=67071
-Link: https://lore.kernel.org/r/ZGopOe19T1QOwizS@eggsbenedict.adamsnet
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: c61a40432509 ("[IPV6]: Find option offset by type.")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_ca0132.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/exthdrs_core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -1182,6 +1182,7 @@ static const struct snd_pci_quirk ca0132
- 	SND_PCI_QUIRK(0x1458, 0xA026, "Gigabyte G1.Sniper Z97", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x1458, 0xA036, "Gigabyte GA-Z170X-Gaming 7", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x3842, 0x1038, "EVGA X99 Classified", QUIRK_R3DI),
-+	SND_PCI_QUIRK(0x3842, 0x104b, "EVGA X299 Dark", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x3842, 0x1055, "EVGA Z390 DARK", QUIRK_R3DI),
- 	SND_PCI_QUIRK(0x1102, 0x0013, "Recon3D", QUIRK_R3D),
- 	SND_PCI_QUIRK(0x1102, 0x0018, "Recon3D", QUIRK_R3D),
+--- a/net/ipv6/exthdrs_core.c
++++ b/net/ipv6/exthdrs_core.c
+@@ -143,6 +143,8 @@ int ipv6_find_tlv(const struct sk_buff *
+ 			optlen = 1;
+ 			break;
+ 		default:
++			if (len < 2)
++				goto bad;
+ 			optlen = nh[offset + 1] + 2;
+ 			if (optlen > len)
+ 				goto bad;
 
 
