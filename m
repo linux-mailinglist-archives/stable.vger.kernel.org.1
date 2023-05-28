@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76CC4713D86
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 855C5713F50
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230081AbjE1T0S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:26:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
+        id S231234AbjE1ToI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230088AbjE1T0R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:17 -0400
+        with ESMTP id S231238AbjE1ToI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F63ED9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F1AC7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC36C61C32
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FC4C433D2;
-        Sun, 28 May 2023 19:26:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 139E861F1C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B8FC433D2;
+        Sun, 28 May 2023 19:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301974;
-        bh=O98pf8c6NbpihGkObk3xwEsHUefAA9YhDwltUcuQFZo=;
+        s=korg; t=1685303045;
+        bh=ioiffQi7+glXYpnv2T2hs3eV8eWUtsErc2kMUmrsdc4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MPCYXJ8cK2CDGZlN/XP79p1SIx1sOmBDYR6EYE17fJDc09eXRvMWoDBcTeFe7Blsh
-         +YlI2xVDNWz1unbdpa4U6zbUMB7yy8fxpP5WTcS2L4Dgs8rUqJPaTjR/oG08ozG+m8
-         JUl//eYmq4dY1kjJJ8mbGeUu0X6G2oECftuhP1Ws=
+        b=nNrAqhokXZMPqy3Bwi9mzEWhjNMFXywmBmv/tHI/YdVe4tDY3ykJkD8ltiRTuxfD6
+         +vq7a80VKxhL152562CZJlew5axr4bjtwJYZ6+dnyVLHX7e+C44TKANMKKFyEYB+0P
+         fxXppT+pJmnZL8pwGmfM85fK1X/bC3MGyk+rOqlk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/161] netfilter: nf_tables: validate NFTA_SET_ELEM_OBJREF based on NFT_SET_OBJECT flag
+Subject: [PATCH 5.10 114/211] net: bcmgenet: Restore phy_stop() depending upon suspend/close
 Date:   Sun, 28 May 2023 20:10:35 +0100
-Message-Id: <20230528190840.609838798@linuxfoundation.org>
+Message-Id: <20230528190846.398764671@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,54 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ 5a2f3dc31811e93be15522d9eb13ed61460b76c8 ]
+[ Upstream commit 225c657945c4a6307741cb3cc89467eadcc26e9b ]
 
-If the NFTA_SET_ELEM_OBJREF netlink attribute is present and
-NFT_SET_OBJECT flag is set on, report EINVAL.
+Removing the phy_stop() from bcmgenet_netif_stop() ended up causing
+warnings from the PHY library that phy_start() is called from the
+RUNNING state since we are no longer stopping the PHY state machine
+during bcmgenet_suspend().
 
-Move existing sanity check earlier to validate that NFT_SET_OBJECT
-requires NFTA_SET_ELEM_OBJREF.
+Restore the call to phy_stop() but make it conditional on being called
+from the close or suspend path.
 
-Fixes: 8aeff920dcc9 ("netfilter: nf_tables: add stateful object reference to set elements")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: c96e731c93ff ("net: bcmgenet: connect and disconnect from the PHY state machine")
+Fixes: 93e0401e0fc0 ("net: bcmgenet: Remove phy_stop() from bcmgenet_netif_stop()")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Link: https://lore.kernel.org/r/20230515025608.2587012-1-f.fainelli@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index c82c4635c0a96..e4eef4947cc75 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4595,6 +4595,15 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			return -EINVAL;
- 	}
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 20b161620fee9..145488449f133 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3397,7 +3397,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 	return ret;
+ }
  
-+	if (set->flags & NFT_SET_OBJECT) {
-+		if (!nla[NFTA_SET_ELEM_OBJREF] &&
-+		    !(flags & NFT_SET_ELEM_INTERVAL_END))
-+			return -EINVAL;
-+	} else {
-+		if (nla[NFTA_SET_ELEM_OBJREF])
-+			return -EINVAL;
-+	}
-+
- 	if ((flags & NFT_SET_ELEM_INTERVAL_END) &&
- 	     (nla[NFTA_SET_ELEM_DATA] ||
- 	      nla[NFTA_SET_ELEM_OBJREF] ||
-@@ -4639,10 +4648,6 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	}
+-static void bcmgenet_netif_stop(struct net_device *dev)
++static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
  
- 	if (nla[NFTA_SET_ELEM_OBJREF] != NULL) {
--		if (!(set->flags & NFT_SET_OBJECT)) {
--			err = -EINVAL;
--			goto err2;
--		}
- 		obj = nft_obj_lookup(ctx->net, ctx->table,
- 				     nla[NFTA_SET_ELEM_OBJREF],
- 				     set->objtype, genmask);
+@@ -3412,6 +3412,8 @@ static void bcmgenet_netif_stop(struct net_device *dev)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
+ 
++	if (stop_phy)
++		phy_stop(dev->phydev);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
+ 
+@@ -3437,7 +3439,7 @@ static int bcmgenet_close(struct net_device *dev)
+ 
+ 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
+ 
+-	bcmgenet_netif_stop(dev);
++	bcmgenet_netif_stop(dev, false);
+ 
+ 	/* Really kill the PHY state machine and disconnect from it */
+ 	phy_disconnect(dev->phydev);
+@@ -4239,7 +4241,7 @@ static int bcmgenet_suspend(struct device *d)
+ 
+ 	netif_device_detach(dev);
+ 
+-	bcmgenet_netif_stop(dev);
++	bcmgenet_netif_stop(dev, true);
+ 
+ 	if (!device_may_wakeup(d))
+ 		phy_suspend(dev->phydev);
 -- 
 2.39.2
 
