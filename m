@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3ED3713CB1
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A53BA713C2E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbjE1TRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36910 "EHLO
+        id S229591AbjE1TMt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:12:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbjE1TRp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:17:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC118A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:17:34 -0700 (PDT)
+        with ESMTP id S229566AbjE1TMs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:12:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655F5A2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:12:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 583A961A09
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:17:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7518EC433D2;
-        Sun, 28 May 2023 19:17:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF4C1618E2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:12:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF98C433D2;
+        Sun, 28 May 2023 19:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301453;
-        bh=OBnYemhLidyhm9VTux1jSIVKfe1e5KyRpGC26GYX0Q0=;
+        s=korg; t=1685301166;
+        bh=EniFRDxZ4cGLB/cYer56m9xbWVrrV9O2o/zdnld57Ao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FvoEm/ldBhkRpzVEJEuRUIkX72oFIWVOiHsy01ZyPcEhMW1hlW50rnG9BB0fI/iaB
-         nv0gnT8VidoIR3/5/Fz2KH24KI3qQQYw0/WiuphJbnkugQZr4eLzjN7U3HRfLtWolm
-         J+o2LoMl2mY7Y+/iMerAeHRkr84Qp+WlsMyaFx/s=
+        b=bH7kLWlPtqSDbjISTwuJ4y+wbw/DkV1NVJiT/xJxJE0CaG92aluTKf2m1XT+yJ3Eg
+         POiAggZPjIvuoYje+CJbyJFrM0AbI1jCqeqdBiq39XAfnEXCtWe1pNkc/4uK087MkE
+         Qn31y/Md62sSXOE0hYY6tEZ73eihTkhQ8Yyz6n6Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kevin Groeneveld <kgroeneveld@lenbrook.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 036/132] spi: spi-imx: fix MX51_ECSPI_* macros when cs > 3
+Subject: [PATCH 4.14 01/86] net: Fix load-tearing on sk->sk_stamp in sock_recv_cmsgs().
 Date:   Sun, 28 May 2023 20:09:35 +0100
-Message-Id: <20230528190834.694347553@linuxfoundation.org>
+Message-Id: <20230528190828.615121644@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,75 +58,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 87c614175bbf28d3fd076dc2d166bac759e41427 ]
+[ Upstream commit dfd9248c071a3710c24365897459538551cb7167 ]
 
-When using gpio based chip select the cs value can go outside the range
-0 – 3. The various MX51_ECSPI_* macros did not take this into consideration
-resulting in possible corruption of the configuration.
+KCSAN found a data race in sock_recv_cmsgs() where the read access
+to sk->sk_stamp needs READ_ONCE().
 
-For example for any cs value over 3 the SCLKPHA bits would not be set and
-other values in the register possibly corrupted.
+BUG: KCSAN: data-race in packet_recvmsg / packet_recvmsg
 
-One way to fix this is to just mask the cs bits to 2 bits. This still
-allows all 4 native chip selects to work as well as gpio chip selects
-(which can use any of the 4 chip select configurations).
+write (marked) to 0xffff88803c81f258 of 8 bytes by task 19171 on cpu 0:
+ sock_write_timestamp include/net/sock.h:2670 [inline]
+ sock_recv_cmsgs include/net/sock.h:2722 [inline]
+ packet_recvmsg+0xb97/0xd00 net/packet/af_packet.c:3489
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ sock_recvmsg+0x11a/0x130 net/socket.c:1040
+ sock_read_iter+0x176/0x220 net/socket.c:1118
+ call_read_iter include/linux/fs.h:1845 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x5e0/0x630 fs/read_write.c:470
+ ksys_read+0x163/0x1a0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x41/0x50 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
-Link: https://lore.kernel.org/r/20230318222132.3373-1-kgroeneveld@lenbrook.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+read to 0xffff88803c81f258 of 8 bytes by task 19183 on cpu 1:
+ sock_recv_cmsgs include/net/sock.h:2721 [inline]
+ packet_recvmsg+0xb64/0xd00 net/packet/af_packet.c:3489
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ sock_recvmsg+0x11a/0x130 net/socket.c:1040
+ sock_read_iter+0x176/0x220 net/socket.c:1118
+ call_read_iter include/linux/fs.h:1845 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x5e0/0x630 fs/read_write.c:470
+ ksys_read+0x163/0x1a0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x41/0x50 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+value changed: 0xffffffffc4653600 -> 0x0000000000000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19183 Comm: syz-executor.5 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 6c7c98bad488 ("sock: avoid dirtying sk_stamp, if possible")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230508175543.55756-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ include/net/sock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index ec2296a4c44dd..1ad4b69292ad8 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -237,6 +237,18 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 	return true;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index f6d0d96419b1e..ee1a2217a98c0 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2317,7 +2317,7 @@ static inline void sock_recv_ts_and_drops(struct msghdr *msg, struct sock *sk,
+ 		__sock_recv_ts_and_drops(msg, sk, skb);
+ 	else if (unlikely(sock_flag(sk, SOCK_TIMESTAMP)))
+ 		sock_write_timestamp(sk, skb->tstamp);
+-	else if (unlikely(sk->sk_stamp == SK_DEFAULT_STAMP))
++	else if (unlikely(sock_read_timestamp(sk) == SK_DEFAULT_STAMP))
+ 		sock_write_timestamp(sk, 0);
  }
  
-+/*
-+ * Note the number of natively supported chip selects for MX51 is 4. Some
-+ * devices may have less actual SS pins but the register map supports 4. When
-+ * using gpio chip selects the cs values passed into the macros below can go
-+ * outside the range 0 - 3. We therefore need to limit the cs value to avoid
-+ * corrupting bits outside the allocated locations.
-+ *
-+ * The simplest way to do this is to just mask the cs bits to 2 bits. This
-+ * still allows all 4 native chip selects to work as well as gpio chip selects
-+ * (which can use any of the 4 chip select configurations).
-+ */
-+
- #define MX51_ECSPI_CTRL		0x08
- #define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
- #define MX51_ECSPI_CTRL_XCH		(1 <<  2)
-@@ -245,16 +257,16 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_CTRL_DRCTL(drctl)	((drctl) << 16)
- #define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
- #define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
--#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
-+#define MX51_ECSPI_CTRL_CS(cs)		((cs & 3) << 18)
- #define MX51_ECSPI_CTRL_BL_OFFSET	20
- #define MX51_ECSPI_CTRL_BL_MASK		(0xfff << 20)
- 
- #define MX51_ECSPI_CONFIG	0x0c
--#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
--#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
--#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
--#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
--#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
-+#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs & 3) +  0))
-+#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs & 3) +  4))
-+#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs & 3) +  8))
-+#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs & 3) + 12))
-+#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs & 3) + 20))
- 
- #define MX51_ECSPI_INT		0x10
- #define MX51_ECSPI_INT_TEEN		(1 <<  0)
 -- 
 2.39.2
 
