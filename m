@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C63EF713C3A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBF6E713F23
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjE1TNU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:13:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
+        id S231178AbjE1Tma (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjE1TNT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:13:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC47A2
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:18 -0700 (PDT)
+        with ESMTP id S231209AbjE1TmW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6EBFE3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4FEA618F9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31A4C433EF;
-        Sun, 28 May 2023 19:13:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9513361EE0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51E2C433D2;
+        Sun, 28 May 2023 19:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301197;
-        bh=6oshVciF23uQHCikDHNmKnGQsl2XchcwdwEeZTu0m3Y=;
+        s=korg; t=1685302938;
+        bh=Ri0G/P2daiMRam2SiD7BzsYVmsaC1vTt6LiLO+wDKF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kAapAi3yAX6sndeqbSLMSvcXI6MFe7oTvsATwPXdEf6kqXGuk1SZY91vTnSBzgjRn
-         VPs7fhvOQRCm6x8jHBz5aZe5r+vYQ4bsP+QTdIkc0ZrWyhCyTHNy5B9AqBOh/lnKtv
-         vxrra3u+3yLZW+zdSjV2JI5nhkhqYAN1P27XIMYY=
+        b=RUAn8RBbJ0ON7gC24oMUdjPPn3wcMuWrZ2bO5/xnpmVRn04xg5p07c6mGsrlp7fJA
+         VUQf1eGhbYfiac4J6F8LUYbw7FTzcOkSlXv1AbCcFP89BgZeAjwDCM22o/WCqLKZ50
+         WQEMmXYj11QxTwe6MJf71KnjBBA8rXWCtUNeClvk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>,
-        syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Daniel Gabay <daniel.gabay@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 06/86] fs: hfsplus: remove WARN_ON() from hfsplus_cat_{read,write}_inode()
+Subject: [PATCH 5.10 059/211] wifi: iwlwifi: pcie: fix possible NULL pointer dereference
 Date:   Sun, 28 May 2023 20:09:40 +0100
-Message-Id: <20230528190828.790869511@linuxfoundation.org>
+Message-Id: <20230528190845.063035651@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,106 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 81b21c0f0138ff5a499eafc3eb0578ad2a99622c ]
+[ Upstream commit b655b9a9f8467684cfa8906713d33b71ea8c8f54 ]
 
-syzbot is hitting WARN_ON() in hfsplus_cat_{read,write}_inode(), for
-crafted filesystem image can contain bogus length. There conditions are
-not kernel bugs that can justify kernel to panic.
+It is possible that iwl_pci_probe() will fail and free the trans,
+then afterwards iwl_pci_remove() will be called and crash by trying
+to access trans which is already freed, fix it.
 
-Reported-by: syzbot <syzbot+e2787430e752a92b8750@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=e2787430e752a92b8750
-Reported-by: syzbot <syzbot+4913dca2ea6e4d43f3f1@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=4913dca2ea6e4d43f3f1
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Message-Id: <15308173-5252-d6a3-ae3b-e96d46cb6f41@I-love.SAKURA.ne.jp>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+iwlwifi 0000:01:00.0: Detected crf-id 0xa5a5a5a2, cnv-id 0xa5a5a5a2
+		      wfpm id 0xa5a5a5a2
+iwlwifi 0000:01:00.0: Can't find a correct rfid for crf id 0x5a2
+...
+BUG: kernel NULL pointer dereference, address: 0000000000000028
+...
+RIP: 0010:iwl_pci_remove+0x12/0x30 [iwlwifi]
+pci_device_remove+0x3e/0xb0
+device_release_driver_internal+0x103/0x1f0
+driver_detach+0x4c/0x90
+bus_remove_driver+0x5c/0xd0
+driver_unregister+0x31/0x50
+pci_unregister_driver+0x40/0x90
+iwl_pci_unregister_driver+0x15/0x20 [iwlwifi]
+__exit_compat+0x9/0x98 [iwlwifi]
+__x64_sys_delete_module+0x147/0x260
+
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230413213309.082f6e21341b.I0db21d7fa9a828d571ca886713bd0b5d0b6e1e5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/inode.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
-index ccb2a94c2032a..4924a489c8ac0 100644
---- a/fs/hfsplus/inode.c
-+++ b/fs/hfsplus/inode.c
-@@ -488,7 +488,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 	if (type == HFSPLUS_FOLDER) {
- 		struct hfsplus_cat_folder *folder = &entry.folder;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 4e43efd5d1ea1..dc0a507213ca6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1214,6 +1214,9 @@ static void iwl_pci_remove(struct pci_dev *pdev)
+ {
+ 	struct iwl_trans *trans = pci_get_drvdata(pdev);
  
--		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_folder));
-+		if (fd->entrylength < sizeof(struct hfsplus_cat_folder)) {
-+			pr_err("bad catalog folder entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
- 					sizeof(struct hfsplus_cat_folder));
- 		hfsplus_get_perms(inode, &folder->permissions, 1);
-@@ -508,7 +512,11 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 	} else if (type == HFSPLUS_FILE) {
- 		struct hfsplus_cat_file *file = &entry.file;
++	if (!trans)
++		return;
++
+ 	iwl_drv_stop(trans->drv);
  
--		WARN_ON(fd->entrylength < sizeof(struct hfsplus_cat_file));
-+		if (fd->entrylength < sizeof(struct hfsplus_cat_file)) {
-+			pr_err("bad catalog file entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
- 					sizeof(struct hfsplus_cat_file));
- 
-@@ -539,6 +547,7 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 		pr_err("bad catalog entry used to create inode\n");
- 		res = -EIO;
- 	}
-+out:
- 	return res;
- }
- 
-@@ -547,6 +556,7 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	struct inode *main_inode = inode;
- 	struct hfs_find_data fd;
- 	hfsplus_cat_entry entry;
-+	int res = 0;
- 
- 	if (HFSPLUS_IS_RSRC(inode))
- 		main_inode = HFSPLUS_I(inode)->rsrc_inode;
-@@ -565,7 +575,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	if (S_ISDIR(main_inode->i_mode)) {
- 		struct hfsplus_cat_folder *folder = &entry.folder;
- 
--		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_folder));
-+		if (fd.entrylength < sizeof(struct hfsplus_cat_folder)) {
-+			pr_err("bad catalog folder entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
- 					sizeof(struct hfsplus_cat_folder));
- 		/* simple node checks? */
-@@ -590,7 +604,11 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	} else {
- 		struct hfsplus_cat_file *file = &entry.file;
- 
--		WARN_ON(fd.entrylength < sizeof(struct hfsplus_cat_file));
-+		if (fd.entrylength < sizeof(struct hfsplus_cat_file)) {
-+			pr_err("bad catalog file entry\n");
-+			res = -EIO;
-+			goto out;
-+		}
- 		hfs_bnode_read(fd.bnode, &entry, fd.entryoffset,
- 					sizeof(struct hfsplus_cat_file));
- 		hfsplus_inode_write_fork(inode, &file->data_fork);
-@@ -611,5 +629,5 @@ int hfsplus_cat_write_inode(struct inode *inode)
- 	set_bit(HFSPLUS_I_CAT_DIRTY, &HFSPLUS_I(inode)->flags);
- out:
- 	hfs_find_exit(&fd);
--	return 0;
-+	return res;
- }
+ 	iwl_trans_pcie_free(trans);
 -- 
 2.39.2
 
