@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 312DD713C2F
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D42D713F0A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbjE1TMw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:12:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33022 "EHLO
+        id S231157AbjE1Tlj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjE1TMu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:12:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC0F5A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:12:49 -0700 (PDT)
+        with ESMTP id S231160AbjE1Tli (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:41:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6761BD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:41:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E45E60DF3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:12:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF76C433D2;
-        Sun, 28 May 2023 19:12:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DC9661ED3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:41:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC71C433EF;
+        Sun, 28 May 2023 19:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301168;
-        bh=JayhGJ+wvicz/0HtZ+mIEHy5D+aoDtGqENBOibQMLH8=;
+        s=korg; t=1685302877;
+        bh=t0cKe2cHOnGAtsQCasBMgUnSszKnn56mYy16TcMhNkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FUoM5FfcWikB70BRUvXDZtxa65ort6nGm81jI7OljDvyrF0kvLcIvNIH5rQCK3xjA
-         QC47QHNBaLm+YWa6tY+nZpanoVDEqwOSCFx8ApZod5pLcXxcWuE+pLBRBwKgk3emME
-         S7Sz5ulG/yUzzRNFrptSxnMER+ttfKxcs3f8wdfo=
+        b=2MtclPjW3C1/GdPMhWFxAkEUtUap/gObvg0nB28m30l10mv8Rg9iC7delWoseJ5yN
+         Tt8a/s2rffoN3skZ/APH8BEfI/eOVi2GrKO8krYeSX2WKMJ+drwT7j2pLwWq7MqG0F
+         0lY+BIXx8yMSJ76s88oOydpUb7O7H64c3cBop+WQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nur Hussein <hussein@unixcat.org>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev, Nagarajan Maran <quic_nmaran@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 10/86] drm/tegra: Avoid potential 32-bit integer overflow
+Subject: [PATCH 5.10 063/211] wifi: ath11k: Fix SKB corruption in REO destination ring
 Date:   Sun, 28 May 2023 20:09:44 +0100
-Message-Id: <20230528190828.930466981@linuxfoundation.org>
+Message-Id: <20230528190845.181571866@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,35 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nur Hussein <hussein@unixcat.org>
+From: Nagarajan Maran <quic_nmaran@quicinc.com>
 
-[ Upstream commit 2429b3c529da29d4277d519bd66d034842dcd70c ]
+[ Upstream commit f9fff67d2d7ca6fa8066132003a3deef654c55b1 ]
 
-In tegra_sor_compute_config(), the 32-bit value mode->clock is
-multiplied by 1000, and assigned to the u64 variable pclk. We can avoid
-a potential 32-bit integer overflow by casting mode->clock to u64 before
-we do the arithmetic and assignment.
+While running traffics for a long time, randomly an RX descriptor
+filled with value "0" from REO destination ring is received.
+This descriptor which is invalid causes the wrong SKB (SKB stored in
+the IDR lookup with buffer id "0") to be fetched which in turn
+causes SKB memory corruption issue and the same leads to crash
+after some time.
 
-Signed-off-by: Nur Hussein <hussein@unixcat.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Changed the start id for idr allocation to "1" and the buffer id "0"
+is reserved for error validation. Introduced Sanity check to validate
+the descriptor, before processing the SKB.
+
+Crash Signature :
+
+Unable to handle kernel paging request at virtual address 3f004900
+PC points to "b15_dma_inv_range+0x30/0x50"
+LR points to "dma_cache_maint_page+0x8c/0x128".
+The Backtrace obtained is as follows:
+[<8031716c>] (b15_dma_inv_range) from [<80313a4c>] (dma_cache_maint_page+0x8c/0x128)
+[<80313a4c>] (dma_cache_maint_page) from [<80313b90>] (__dma_page_dev_to_cpu+0x28/0xcc)
+[<80313b90>] (__dma_page_dev_to_cpu) from [<7fb5dd68>] (ath11k_dp_process_rx+0x1e8/0x4a4 [ath11k])
+[<7fb5dd68>] (ath11k_dp_process_rx [ath11k]) from [<7fb53c20>] (ath11k_dp_service_srng+0xb0/0x2ac [ath11k])
+[<7fb53c20>] (ath11k_dp_service_srng [ath11k]) from [<7f67bba4>] (ath11k_pci_ext_grp_napi_poll+0x1c/0x78 [ath11k_pci])
+[<7f67bba4>] (ath11k_pci_ext_grp_napi_poll [ath11k_pci]) from [<807d5cf4>] (__napi_poll+0x28/0xb8)
+[<807d5cf4>] (__napi_poll) from [<807d5f28>] (net_rx_action+0xf0/0x280)
+[<807d5f28>] (net_rx_action) from [<80302148>] (__do_softirq+0xd0/0x280)
+[<80302148>] (__do_softirq) from [<80320408>] (irq_exit+0x74/0xd4)
+[<80320408>] (irq_exit) from [<803638a4>] (__handle_domain_irq+0x90/0xb4)
+[<803638a4>] (__handle_domain_irq) from [<805bedec>] (gic_handle_irq+0x58/0x90)
+[<805bedec>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230403191533.28114-1-quic_nmaran@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/sor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
-index 352ae52be3418..76451c8bfb46b 100644
---- a/drivers/gpu/drm/tegra/sor.c
-+++ b/drivers/gpu/drm/tegra/sor.c
-@@ -709,7 +709,7 @@ static int tegra_sor_compute_config(struct tegra_sor *sor,
- 				    struct drm_dp_link *link)
- {
- 	const u64 f = 100000, link_rate = link->rate * 1000;
--	const u64 pclk = mode->clock * 1000;
-+	const u64 pclk = (u64)mode->clock * 1000;
- 	u64 input, output, watermark, num;
- 	struct tegra_sor_params params;
- 	u32 num_syms_per_line;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 578fdc446bc03..583bcf148403b 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -324,10 +324,10 @@ int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
+ 			goto fail_free_skb;
+ 
+ 		spin_lock_bh(&rx_ring->idr_lock);
+-		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
+-				   rx_ring->bufs_max * 3, GFP_ATOMIC);
++		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 1,
++				   (rx_ring->bufs_max * 3) + 1, GFP_ATOMIC);
+ 		spin_unlock_bh(&rx_ring->idr_lock);
+-		if (buf_id < 0)
++		if (buf_id <= 0)
+ 			goto fail_dma_unmap;
+ 
+ 		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
+@@ -2564,6 +2564,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 				   cookie);
+ 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
+ 
++		if (unlikely(buf_id == 0))
++			continue;
++
+ 		ar = ab->pdevs[mac_id].ar;
+ 		rx_ring = &ar->dp.rx_refill_buf_ring;
+ 		spin_lock_bh(&rx_ring->idr_lock);
 -- 
 2.39.2
 
