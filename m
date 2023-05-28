@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7672713CDC
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C66A713E08
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229876AbjE1TTX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38160 "EHLO
+        id S230238AbjE1TbR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229873AbjE1TTW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6FDC9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:19 -0700 (PDT)
+        with ESMTP id S230251AbjE1TbP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:31:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB76ACF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 763FB61A9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C69C4339C;
-        Sun, 28 May 2023 19:19:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3847C61D08
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53538C433EF;
+        Sun, 28 May 2023 19:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301558;
-        bh=3GyzVBRZgc3Fx999uxNsFhjsZyp/4v/Uz7Mc+bQvT/M=;
+        s=korg; t=1685302272;
+        bh=x/gCY11JZF577XCTfHyD0knk59Rm48p6S0TPVcuvELE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pmjM6dpHIYack+0AUb1DnXEIQHlmxvSCjrP/i82f81wMMprLLLD7tKuEV60804Tcj
-         sGF3ae8FatvItyDFbqVys/FFF4YZRXQ6go/iBNe+1lA5I4aAXViN8SeutwcuM6s6fU
-         +idNe2/DgMD4sI2AzT8huNgCWhk+WiMlxkDDjy2o=
+        b=ZgNdfeXaAZcxzP1oB/aBlKBE7CSSsRl8farK2N3JeVAv7dVpeCWf0IiwH16Mq/yy1
+         So6u2ayDFvtj2bOj2NO59kmsPvxRt0nxo5CwFtVLJUmUkrmvon3Yp1XuC9Ys1+3u7H
+         nQ45WZzm09G1Jv+oQ0Syrj2GIHeq0IcPm4cz/1xw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 077/132] netfilter: nftables: add nft_parse_register_store() and use it
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 040/127] btrfs: use nofs when cleaning up aborted transactions
 Date:   Sun, 28 May 2023 20:10:16 +0100
-Message-Id: <20230528190835.892923424@linuxfoundation.org>
+Message-Id: <20230528190837.638055437@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,592 +53,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ 345023b0db315648ccc3c1a36aee88304a8b4d91 ]
+commit 597441b3436a43011f31ce71dc0a6c0bf5ce958a upstream.
 
-This new function combines the netlink register attribute parser
-and the store validation function.
+Our CI system caught a lockdep splat:
 
-This update requires to replace:
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.3.0-rc7+ #1167 Not tainted
+  ------------------------------------------------------
+  kswapd0/46 is trying to acquire lock:
+  ffff8c6543abd650 (sb_internal#2){++++}-{0:0}, at: btrfs_commit_inode_delayed_inode+0x5f/0x120
 
-        enum nft_registers      dreg:8;
+  but task is already holding lock:
+  ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
 
-in many of the expression private areas otherwise compiler complains
-with:
+  which lock already depends on the new lock.
 
-        error: cannot take address of bit-field ‘dreg’
+  the existing dependency chain (in reverse order) is:
 
-when passing the register field as reference.
+  -> #1 (fs_reclaim){+.+.}-{0:0}:
+	 fs_reclaim_acquire+0xa5/0xe0
+	 kmem_cache_alloc+0x31/0x2c0
+	 alloc_extent_state+0x1d/0xd0
+	 __clear_extent_bit+0x2e0/0x4f0
+	 try_release_extent_mapping+0x216/0x280
+	 btrfs_release_folio+0x2e/0x90
+	 invalidate_inode_pages2_range+0x397/0x470
+	 btrfs_cleanup_dirty_bgs+0x9e/0x210
+	 btrfs_cleanup_one_transaction+0x22/0x760
+	 btrfs_commit_transaction+0x3b7/0x13a0
+	 create_subvol+0x59b/0x970
+	 btrfs_mksubvol+0x435/0x4f0
+	 __btrfs_ioctl_snap_create+0x11e/0x1b0
+	 btrfs_ioctl_snap_create_v2+0xbf/0x140
+	 btrfs_ioctl+0xa45/0x28f0
+	 __x64_sys_ioctl+0x88/0xc0
+	 do_syscall_64+0x38/0x90
+	 entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  -> #0 (sb_internal#2){++++}-{0:0}:
+	 __lock_acquire+0x1435/0x21a0
+	 lock_acquire+0xc2/0x2b0
+	 start_transaction+0x401/0x730
+	 btrfs_commit_inode_delayed_inode+0x5f/0x120
+	 btrfs_evict_inode+0x292/0x3d0
+	 evict+0xcc/0x1d0
+	 inode_lru_isolate+0x14d/0x1e0
+	 __list_lru_walk_one+0xbe/0x1c0
+	 list_lru_walk_one+0x58/0x80
+	 prune_icache_sb+0x39/0x60
+	 super_cache_scan+0x161/0x1f0
+	 do_shrink_slab+0x163/0x340
+	 shrink_slab+0x1d3/0x290
+	 shrink_node+0x300/0x720
+	 balance_pgdat+0x35c/0x7a0
+	 kswapd+0x205/0x410
+	 kthread+0xf0/0x120
+	 ret_from_fork+0x29/0x50
+
+  other info that might help us debug this:
+
+   Possible unsafe locking scenario:
+
+	 CPU0                    CPU1
+	 ----                    ----
+    lock(fs_reclaim);
+				 lock(sb_internal#2);
+				 lock(fs_reclaim);
+    lock(sb_internal#2);
+
+   *** DEADLOCK ***
+
+  3 locks held by kswapd0/46:
+   #0: ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
+   #1: ffffffffabe50270 (shrinker_rwsem){++++}-{3:3}, at: shrink_slab+0x113/0x290
+   #2: ffff8c6543abd0e0 (&type->s_umount_key#44){++++}-{3:3}, at: super_cache_scan+0x38/0x1f0
+
+  stack backtrace:
+  CPU: 0 PID: 46 Comm: kswapd0 Not tainted 6.3.0-rc7+ #1167
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x58/0x90
+   check_noncircular+0xd6/0x100
+   ? save_trace+0x3f/0x310
+   ? add_lock_to_list+0x97/0x120
+   __lock_acquire+0x1435/0x21a0
+   lock_acquire+0xc2/0x2b0
+   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
+   start_transaction+0x401/0x730
+   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
+   btrfs_commit_inode_delayed_inode+0x5f/0x120
+   btrfs_evict_inode+0x292/0x3d0
+   ? lock_release+0x134/0x270
+   ? __pfx_wake_bit_function+0x10/0x10
+   evict+0xcc/0x1d0
+   inode_lru_isolate+0x14d/0x1e0
+   __list_lru_walk_one+0xbe/0x1c0
+   ? __pfx_inode_lru_isolate+0x10/0x10
+   ? __pfx_inode_lru_isolate+0x10/0x10
+   list_lru_walk_one+0x58/0x80
+   prune_icache_sb+0x39/0x60
+   super_cache_scan+0x161/0x1f0
+   do_shrink_slab+0x163/0x340
+   shrink_slab+0x1d3/0x290
+   shrink_node+0x300/0x720
+   balance_pgdat+0x35c/0x7a0
+   kswapd+0x205/0x410
+   ? __pfx_autoremove_wake_function+0x10/0x10
+   ? __pfx_kswapd+0x10/0x10
+   kthread+0xf0/0x120
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x29/0x50
+   </TASK>
+
+This happens because when we abort the transaction in the transaction
+commit path we call invalidate_inode_pages2_range on our block group
+cache inodes (if we have space cache v1) and any delalloc inodes we may
+have.  The plain invalidate_inode_pages2_range() call passes through
+GFP_KERNEL, which makes sense in most cases, but not here.  Wrap these
+two invalidate callees with memalloc_nofs_save/memalloc_nofs_restore to
+make sure we don't end up with the fs reclaim dependency under the
+transaction dependency.
+
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h      |  8 +++---
- include/net/netfilter/nf_tables_core.h |  4 +--
- include/net/netfilter/nft_fib.h        |  2 +-
- net/netfilter/nf_tables_api.c          | 34 ++++++++++++++++++++++----
- net/netfilter/nft_bitwise.c            |  8 +++---
- net/netfilter/nft_byteorder.c          |  8 +++---
- net/netfilter/nft_ct.c                 |  7 +++---
- net/netfilter/nft_exthdr.c             |  8 +++---
- net/netfilter/nft_fib.c                |  5 ++--
- net/netfilter/nft_hash.c               | 17 ++++++-------
- net/netfilter/nft_immediate.c          |  6 ++---
- net/netfilter/nft_lookup.c             |  8 +++---
- net/netfilter/nft_meta.c               |  7 +++---
- net/netfilter/nft_numgen.c             | 15 +++++-------
- net/netfilter/nft_osf.c                |  8 +++---
- net/netfilter/nft_payload.c            |  6 ++---
- net/netfilter/nft_rt.c                 |  7 +++---
- net/netfilter/nft_socket.c             |  7 +++---
- net/netfilter/nft_tunnel.c             |  8 +++---
- 19 files changed, 92 insertions(+), 81 deletions(-)
+ fs/btrfs/disk-io.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index e7b1e241f6f6e..bf957156e9b76 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -195,10 +195,10 @@ unsigned int nft_parse_register(const struct nlattr *attr);
- int nft_dump_register(struct sk_buff *skb, unsigned int attr, unsigned int reg);
- 
- int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len);
--int nft_validate_register_store(const struct nft_ctx *ctx,
--				enum nft_registers reg,
--				const struct nft_data *data,
--				enum nft_data_types type, unsigned int len);
-+int nft_parse_register_store(const struct nft_ctx *ctx,
-+			     const struct nlattr *attr, u8 *dreg,
-+			     const struct nft_data *data,
-+			     enum nft_data_types type, unsigned int len);
- 
- /**
-  *	struct nft_userdata - user defined data associated with an object
-diff --git a/include/net/netfilter/nf_tables_core.h b/include/net/netfilter/nf_tables_core.h
-index c81c12a825de4..6a3f76e012be3 100644
---- a/include/net/netfilter/nf_tables_core.h
-+++ b/include/net/netfilter/nf_tables_core.h
-@@ -28,7 +28,7 @@ struct nft_cmp_fast_expr {
- 
- struct nft_immediate_expr {
- 	struct nft_data		data;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- 	u8			dlen;
- };
- 
-@@ -48,7 +48,7 @@ struct nft_payload {
- 	enum nft_payload_bases	base:8;
- 	u8			offset;
- 	u8			len;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- };
- 
- struct nft_payload_set {
-diff --git a/include/net/netfilter/nft_fib.h b/include/net/netfilter/nft_fib.h
-index a88f92737308d..1f87267395291 100644
---- a/include/net/netfilter/nft_fib.h
-+++ b/include/net/netfilter/nft_fib.h
-@@ -3,7 +3,7 @@
- #define _NFT_FIB_H_
- 
- struct nft_fib {
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- 	u8			result;
- 	u32			flags;
- };
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3b4cb6a9e85d5..b86d9c14cbd69 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3687,6 +3687,12 @@ static int nf_tables_delset(struct net *net, struct sock *nlsk,
- 	return nft_delset(&ctx, set);
- }
- 
-+static int nft_validate_register_store(const struct nft_ctx *ctx,
-+				       enum nft_registers reg,
-+				       const struct nft_data *data,
-+				       enum nft_data_types type,
-+				       unsigned int len);
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4951,7 +4951,11 @@ static void btrfs_destroy_delalloc_inode
+ 		 */
+ 		inode = igrab(&btrfs_inode->vfs_inode);
+ 		if (inode) {
++			unsigned int nofs_flag;
 +
- static int nf_tables_bind_check_setelem(const struct nft_ctx *ctx,
- 					struct nft_set *set,
- 					const struct nft_set_iter *iter,
-@@ -7067,10 +7073,11 @@ EXPORT_SYMBOL_GPL(nft_parse_register_load);
-  * 	A value of NULL for the data means that its runtime gathered
-  * 	data.
-  */
--int nft_validate_register_store(const struct nft_ctx *ctx,
--				enum nft_registers reg,
--				const struct nft_data *data,
--				enum nft_data_types type, unsigned int len)
-+static int nft_validate_register_store(const struct nft_ctx *ctx,
-+				       enum nft_registers reg,
-+				       const struct nft_data *data,
-+				       enum nft_data_types type,
-+				       unsigned int len)
- {
- 	int err;
- 
-@@ -7102,7 +7109,24 @@ int nft_validate_register_store(const struct nft_ctx *ctx,
- 		return 0;
- 	}
- }
--EXPORT_SYMBOL_GPL(nft_validate_register_store);
-+
-+int nft_parse_register_store(const struct nft_ctx *ctx,
-+			     const struct nlattr *attr, u8 *dreg,
-+			     const struct nft_data *data,
-+			     enum nft_data_types type, unsigned int len)
-+{
-+	int err;
-+	u32 reg;
-+
-+	reg = nft_parse_register(attr);
-+	err = nft_validate_register_store(ctx, reg, data, type, len);
-+	if (err < 0)
-+		return err;
-+
-+	*dreg = reg;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nft_parse_register_store);
- 
- static const struct nla_policy nft_verdict_policy[NFTA_VERDICT_MAX + 1] = {
- 	[NFTA_VERDICT_CODE]	= { .type = NLA_U32 },
-diff --git a/net/netfilter/nft_bitwise.c b/net/netfilter/nft_bitwise.c
-index 23a8a9d119876..c1055251ebdeb 100644
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -19,7 +19,7 @@
- 
- struct nft_bitwise {
- 	u8			sreg;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- 	u8			len;
- 	struct nft_data		mask;
- 	struct nft_data		xor;
-@@ -73,9 +73,9 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 	if (err < 0)
- 		return err;
- 
--	priv->dreg = nft_parse_register(tb[NFTA_BITWISE_DREG]);
--	err = nft_validate_register_store(ctx, priv->dreg, NULL,
--					  NFT_DATA_VALUE, priv->len);
-+	err = nft_parse_register_store(ctx, tb[NFTA_BITWISE_DREG],
-+				       &priv->dreg, NULL, NFT_DATA_VALUE,
-+				       priv->len);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
-index c81d618137ce8..5e1fbdd7b2846 100644
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -20,7 +20,7 @@
- 
- struct nft_byteorder {
- 	u8			sreg;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- 	enum nft_byteorder_ops	op:8;
- 	u8			len;
- 	u8			size;
-@@ -144,9 +144,9 @@ static int nft_byteorder_init(const struct nft_ctx *ctx,
- 	if (err < 0)
- 		return err;
- 
--	priv->dreg = nft_parse_register(tb[NFTA_BYTEORDER_DREG]);
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, priv->len);
-+	return nft_parse_register_store(ctx, tb[NFTA_BYTEORDER_DREG],
-+					&priv->dreg, NULL, NFT_DATA_VALUE,
-+					priv->len);
- }
- 
- static int nft_byteorder_dump(struct sk_buff *skb, const struct nft_expr *expr)
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 045e350ba03ea..f29f02805bcc0 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -29,7 +29,7 @@ struct nft_ct {
- 	enum nft_ct_keys	key:8;
- 	enum ip_conntrack_dir	dir:8;
- 	union {
--		enum nft_registers	dreg:8;
-+		u8		dreg;
- 		u8		sreg;
- 	};
- };
-@@ -486,9 +486,8 @@ static int nft_ct_get_init(const struct nft_ctx *ctx,
++			nofs_flag = memalloc_nofs_save();
+ 			invalidate_inode_pages2(inode->i_mapping);
++			memalloc_nofs_restore(nofs_flag);
+ 			iput(inode);
  		}
- 	}
+ 		spin_lock(&root->delalloc_lock);
+@@ -5057,7 +5061,12 @@ static void btrfs_cleanup_bg_io(struct b
  
--	priv->dreg = nft_parse_register(tb[NFTA_CT_DREG]);
--	err = nft_validate_register_store(ctx, priv->dreg, NULL,
--					  NFT_DATA_VALUE, len);
-+	err = nft_parse_register_store(ctx, tb[NFTA_CT_DREG], &priv->dreg, NULL,
-+				       NFT_DATA_VALUE, len);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index 340520f10b686..8d0f14cd7cc3e 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -22,7 +22,7 @@ struct nft_exthdr {
- 	u8			offset;
- 	u8			len;
- 	u8			op;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- 	u8			sreg;
- 	u8			flags;
- };
-@@ -258,12 +258,12 @@ static int nft_exthdr_init(const struct nft_ctx *ctx,
- 	priv->type   = nla_get_u8(tb[NFTA_EXTHDR_TYPE]);
- 	priv->offset = offset;
- 	priv->len    = len;
--	priv->dreg   = nft_parse_register(tb[NFTA_EXTHDR_DREG]);
- 	priv->flags  = flags;
- 	priv->op     = op;
- 
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, priv->len);
-+	return nft_parse_register_store(ctx, tb[NFTA_EXTHDR_DREG],
-+					&priv->dreg, NULL, NFT_DATA_VALUE,
-+					priv->len);
- }
- 
- static int nft_exthdr_tcp_set_init(const struct nft_ctx *ctx,
-diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
-index 21df8cccea658..ce6891337304d 100644
---- a/net/netfilter/nft_fib.c
-+++ b/net/netfilter/nft_fib.c
-@@ -88,7 +88,6 @@ int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 		return -EINVAL;
- 
- 	priv->result = ntohl(nla_get_be32(tb[NFTA_FIB_RESULT]));
--	priv->dreg = nft_parse_register(tb[NFTA_FIB_DREG]);
- 
- 	switch (priv->result) {
- 	case NFT_FIB_RESULT_OIF:
-@@ -108,8 +107,8 @@ int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 		return -EINVAL;
- 	}
- 
--	err = nft_validate_register_store(ctx, priv->dreg, NULL,
--					  NFT_DATA_VALUE, len);
-+	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
-+				       NULL, NFT_DATA_VALUE, len);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/net/netfilter/nft_hash.c b/net/netfilter/nft_hash.c
-index d08a14cfe56b7..513419aca9c66 100644
---- a/net/netfilter/nft_hash.c
-+++ b/net/netfilter/nft_hash.c
-@@ -19,7 +19,7 @@
- 
- struct nft_jhash {
- 	u8			sreg;
--	enum nft_registers      dreg:8;
-+	u8			dreg;
- 	u8			len;
- 	bool			autogen_seed:1;
- 	u32			modulus;
-@@ -65,7 +65,7 @@ static void nft_jhash_map_eval(const struct nft_expr *expr,
- }
- 
- struct nft_symhash {
--	enum nft_registers      dreg:8;
-+	u8			dreg;
- 	u32			modulus;
- 	u32			offset;
- 	struct nft_set		*map;
-@@ -136,8 +136,6 @@ static int nft_jhash_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_HASH_OFFSET])
- 		priv->offset = ntohl(nla_get_be32(tb[NFTA_HASH_OFFSET]));
- 
--	priv->dreg = nft_parse_register(tb[NFTA_HASH_DREG]);
--
- 	err = nft_parse_u32_check(tb[NFTA_HASH_LEN], U8_MAX, &len);
- 	if (err < 0)
- 		return err;
-@@ -164,8 +162,8 @@ static int nft_jhash_init(const struct nft_ctx *ctx,
- 		get_random_bytes(&priv->seed, sizeof(priv->seed));
- 	}
- 
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, sizeof(u32));
-+	return nft_parse_register_store(ctx, tb[NFTA_HASH_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, sizeof(u32));
- }
- 
- static int nft_jhash_map_init(const struct nft_ctx *ctx,
-@@ -195,8 +193,6 @@ static int nft_symhash_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_HASH_OFFSET])
- 		priv->offset = ntohl(nla_get_be32(tb[NFTA_HASH_OFFSET]));
- 
--	priv->dreg = nft_parse_register(tb[NFTA_HASH_DREG]);
--
- 	priv->modulus = ntohl(nla_get_be32(tb[NFTA_HASH_MODULUS]));
- 	if (priv->modulus < 1)
- 		return -ERANGE;
-@@ -204,8 +200,9 @@ static int nft_symhash_init(const struct nft_ctx *ctx,
- 	if (priv->offset + priv->modulus - 1 < priv->offset)
- 		return -EOVERFLOW;
- 
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, sizeof(u32));
-+	return nft_parse_register_store(ctx, tb[NFTA_HASH_DREG],
-+					&priv->dreg, NULL, NFT_DATA_VALUE,
-+					sizeof(u32));
- }
- 
- static int nft_symhash_map_init(const struct nft_ctx *ctx,
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index 3f6d1d2a62818..af4e2a4bce93e 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -50,9 +50,9 @@ static int nft_immediate_init(const struct nft_ctx *ctx,
- 
- 	priv->dlen = desc.len;
- 
--	priv->dreg = nft_parse_register(tb[NFTA_IMMEDIATE_DREG]);
--	err = nft_validate_register_store(ctx, priv->dreg, &priv->data,
--					  desc.type, desc.len);
-+	err = nft_parse_register_store(ctx, tb[NFTA_IMMEDIATE_DREG],
-+				       &priv->dreg, &priv->data, desc.type,
-+				       desc.len);
- 	if (err < 0)
- 		goto err1;
- 
-diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index 671f124d56b34..3c380fb326511 100644
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -21,7 +21,7 @@
- struct nft_lookup {
- 	struct nft_set			*set;
- 	u8				sreg;
--	enum nft_registers		dreg:8;
-+	u8				dreg;
- 	bool				invert;
- 	struct nft_set_binding		binding;
- };
-@@ -100,9 +100,9 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
- 		if (!(set->flags & NFT_SET_MAP))
- 			return -EINVAL;
- 
--		priv->dreg = nft_parse_register(tb[NFTA_LOOKUP_DREG]);
--		err = nft_validate_register_store(ctx, priv->dreg, NULL,
--						  set->dtype, set->dlen);
-+		err = nft_parse_register_store(ctx, tb[NFTA_LOOKUP_DREG],
-+					       &priv->dreg, NULL, set->dtype,
-+					       set->dlen);
- 		if (err < 0)
- 			return err;
- 	} else if (set->flags & NFT_SET_MAP)
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index 7af90ed221113..061a29bd30661 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -30,7 +30,7 @@
- struct nft_meta {
- 	enum nft_meta_keys	key:8;
- 	union {
--		enum nft_registers	dreg:8;
-+		u8		dreg;
- 		u8		sreg;
- 	};
- };
-@@ -358,9 +358,8 @@ static int nft_meta_get_init(const struct nft_ctx *ctx,
- 		return -EOPNOTSUPP;
- 	}
- 
--	priv->dreg = nft_parse_register(tb[NFTA_META_DREG]);
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, len);
-+	return nft_parse_register_store(ctx, tb[NFTA_META_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, len);
- }
- 
- static int nft_meta_get_validate(const struct nft_ctx *ctx,
-diff --git a/net/netfilter/nft_numgen.c b/net/netfilter/nft_numgen.c
-index 3cc1b3dc3c3cd..8ff82f17ecba9 100644
---- a/net/netfilter/nft_numgen.c
-+++ b/net/netfilter/nft_numgen.c
-@@ -20,7 +20,7 @@
- static DEFINE_PER_CPU(struct rnd_state, nft_numgen_prandom_state);
- 
- struct nft_ng_inc {
--	enum nft_registers      dreg:8;
-+	u8			dreg;
- 	u32			modulus;
- 	atomic_t		counter;
- 	u32			offset;
-@@ -70,11 +70,10 @@ static int nft_ng_inc_init(const struct nft_ctx *ctx,
- 	if (priv->offset + priv->modulus - 1 < priv->offset)
- 		return -EOVERFLOW;
- 
--	priv->dreg = nft_parse_register(tb[NFTA_NG_DREG]);
- 	atomic_set(&priv->counter, priv->modulus - 1);
- 
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, sizeof(u32));
-+	return nft_parse_register_store(ctx, tb[NFTA_NG_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, sizeof(u32));
- }
- 
- static int nft_ng_dump(struct sk_buff *skb, enum nft_registers dreg,
-@@ -104,7 +103,7 @@ static int nft_ng_inc_dump(struct sk_buff *skb, const struct nft_expr *expr)
- }
- 
- struct nft_ng_random {
--	enum nft_registers      dreg:8;
-+	u8			dreg;
- 	u32			modulus;
- 	u32			offset;
- };
-@@ -144,10 +143,8 @@ static int nft_ng_random_init(const struct nft_ctx *ctx,
- 
- 	prandom_init_once(&nft_numgen_prandom_state);
- 
--	priv->dreg = nft_parse_register(tb[NFTA_NG_DREG]);
--
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, sizeof(u32));
-+	return nft_parse_register_store(ctx, tb[NFTA_NG_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, sizeof(u32));
- }
- 
- static int nft_ng_random_dump(struct sk_buff *skb, const struct nft_expr *expr)
-diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
-index 4fac2d9a4b885..af2ce7a8c5877 100644
---- a/net/netfilter/nft_osf.c
-+++ b/net/netfilter/nft_osf.c
-@@ -5,7 +5,7 @@
- #include <linux/netfilter/nfnetlink_osf.h>
- 
- struct nft_osf {
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- };
- 
- static const struct nla_policy nft_osf_policy[NFTA_OSF_MAX + 1] = {
-@@ -55,9 +55,9 @@ static int nft_osf_init(const struct nft_ctx *ctx,
- 	if (!tb[NFTA_OSF_DREG])
- 		return -EINVAL;
- 
--	priv->dreg = nft_parse_register(tb[NFTA_OSF_DREG]);
--	err = nft_validate_register_store(ctx, priv->dreg, NULL,
--					  NFT_DATA_VALUE, NFT_OSF_MAXGENRELEN);
-+	err = nft_parse_register_store(ctx, tb[NFTA_OSF_DREG], &priv->dreg,
-+				       NULL, NFT_DATA_VALUE,
-+				       NFT_OSF_MAXGENRELEN);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 6c5312fecac5c..77cfd5182784f 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -135,10 +135,10 @@ static int nft_payload_init(const struct nft_ctx *ctx,
- 	priv->base   = ntohl(nla_get_be32(tb[NFTA_PAYLOAD_BASE]));
- 	priv->offset = ntohl(nla_get_be32(tb[NFTA_PAYLOAD_OFFSET]));
- 	priv->len    = ntohl(nla_get_be32(tb[NFTA_PAYLOAD_LEN]));
--	priv->dreg   = nft_parse_register(tb[NFTA_PAYLOAD_DREG]);
- 
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, priv->len);
-+	return nft_parse_register_store(ctx, tb[NFTA_PAYLOAD_DREG],
-+					&priv->dreg, NULL, NFT_DATA_VALUE,
-+					priv->len);
- }
- 
- static int nft_payload_dump(struct sk_buff *skb, const struct nft_expr *expr)
-diff --git a/net/netfilter/nft_rt.c b/net/netfilter/nft_rt.c
-index 76dba9f6b6f62..edce109ef4b01 100644
---- a/net/netfilter/nft_rt.c
-+++ b/net/netfilter/nft_rt.c
-@@ -18,7 +18,7 @@
- 
- struct nft_rt {
- 	enum nft_rt_keys	key:8;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- };
- 
- static u16 get_tcpmss(const struct nft_pktinfo *pkt, const struct dst_entry *skbdst)
-@@ -134,9 +134,8 @@ static int nft_rt_get_init(const struct nft_ctx *ctx,
- 		return -EOPNOTSUPP;
- 	}
- 
--	priv->dreg = nft_parse_register(tb[NFTA_RT_DREG]);
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, len);
-+	return nft_parse_register_store(ctx, tb[NFTA_RT_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, len);
- }
- 
- static int nft_rt_get_dump(struct sk_buff *skb,
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index 4026ec38526f6..7e4f7063f4811 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -10,7 +10,7 @@
- struct nft_socket {
- 	enum nft_socket_keys		key:8;
- 	union {
--		enum nft_registers	dreg:8;
-+		u8			dreg;
- 	};
- };
- 
-@@ -119,9 +119,8 @@ static int nft_socket_init(const struct nft_ctx *ctx,
- 		return -EOPNOTSUPP;
- 	}
- 
--	priv->dreg = nft_parse_register(tb[NFTA_SOCKET_DREG]);
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, len);
-+	return nft_parse_register_store(ctx, tb[NFTA_SOCKET_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, len);
- }
- 
- static int nft_socket_dump(struct sk_buff *skb,
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 3fc55c81f16ac..ab69a34210a8d 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -14,7 +14,7 @@
- 
- struct nft_tunnel {
- 	enum nft_tunnel_keys	key:8;
--	enum nft_registers	dreg:8;
-+	u8			dreg;
- };
- 
- static void nft_tunnel_get_eval(const struct nft_expr *expr,
-@@ -72,10 +72,8 @@ static int nft_tunnel_get_init(const struct nft_ctx *ctx,
- 		return -EOPNOTSUPP;
- 	}
- 
--	priv->dreg = nft_parse_register(tb[NFTA_TUNNEL_DREG]);
--
--	return nft_validate_register_store(ctx, priv->dreg, NULL,
--					   NFT_DATA_VALUE, len);
-+	return nft_parse_register_store(ctx, tb[NFTA_TUNNEL_DREG], &priv->dreg,
-+					NULL, NFT_DATA_VALUE, len);
- }
- 
- static int nft_tunnel_get_dump(struct sk_buff *skb,
--- 
-2.39.2
-
+ 	inode = cache->io_ctl.inode;
+ 	if (inode) {
++		unsigned int nofs_flag;
++
++		nofs_flag = memalloc_nofs_save();
+ 		invalidate_inode_pages2(inode->i_mapping);
++		memalloc_nofs_restore(nofs_flag);
++
+ 		BTRFS_I(inode)->generation = 0;
+ 		cache->io_ctl.inode = NULL;
+ 		iput(inode);
 
 
