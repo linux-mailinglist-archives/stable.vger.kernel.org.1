@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B49713F5A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C6D713E1A
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231248AbjE1Toc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:44:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59256 "EHLO
+        id S230260AbjE1TcD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:32:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231247AbjE1Tob (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8274F9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:30 -0700 (PDT)
+        with ESMTP id S230256AbjE1TcC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:32:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 194E3E1
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:31:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F20B61F30
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED3EC433EF;
-        Sun, 28 May 2023 19:44:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD89F61D93
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:31:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07784C433EF;
+        Sun, 28 May 2023 19:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303069;
-        bh=jNLVgv27fS9XcjCO4LXkTZ4eZTRMZG3xxJNE5RCdZwQ=;
+        s=korg; t=1685302318;
+        bh=GLV1C1ErYgkvYT2GwjdOFnXlIsgHmDCo7sn7f3Hgii8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WFqko0okKSvrN4KsICfESMQa/LTZHPV7yVgOSxvN4upDKJwaAc0kEK/gaPiiZMBsK
-         NenkJ22dX9nA84R6ikCd9VGo2Hift7tyQROLQzy+hjgzsTCk18saOIIg0jOEihNJXa
-         m+zTWI8pRl9QiIJCJ0LHqI1Clp84aVHsbBieiZvs=
+        b=dZ3usvkjufTQGARj4KB0dsJ0Xf0jVHNUhe+mgEY1A3uSi0TbE/tFiyEGdmQx9bwdv
+         vWTCj9I8pyOt06PtiRYoI/enrSJyvP4lrsi+n/zFaDR+MemgvBE6/jy0ImAmS7bEVg
+         Www7cYi+84umanOuatRXXPWS+JD7JsJZih5bacn8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 141/211] can: kvaser_pciefd: Do not send EFLUSH command on TFD interrupt
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.3 086/127] power: supply: bq25890: Call power_supply_changed() after updating input current or voltage
 Date:   Sun, 28 May 2023 20:11:02 +0100
-Message-Id: <20230528190847.018105197@linuxfoundation.org>
+Message-Id: <20230528190839.140549212@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,93 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 262d7a52ba27525e3c1203230c9f0524e48bbb34 upstream.
+commit ad3d9c779b1f09f3f3a6fefd07af407c7bc7c9a7 upstream.
 
-Under certain circumstances we send two EFLUSH commands, resulting in two
-EFLUSH ack packets, while only expecting a single EFLUSH ack.
-This can cause the driver Tx flush completion to get out of sync.
+The bq25892 model relies on external charger-type detection and once
+that is done the bq25890_charger code will update the input current
+and if pumpexpress is used also the input voltage.
 
-To avoid this problem, don't enable the "Transmit buffer flush done" (TFD)
-interrupt and remove the code handling it.
-Now we only send EFLUSH command after receiving status packet with
-"Init detected" (IDET) bit set.
+In this case, when the initial power_supply_changed() call is made
+from the interrupt handler, the input settings are 5V/0.5A which
+on many devices is not enough power to charge (while the device is on).
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://lore.kernel.org/r/20230516134318.104279-6-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+On many devices the fuel-gauge relies in its external_power_changed
+callback to timely signal userspace about charging <-> discharging
+status changes. Add a power_supply_changed() call after updating
+the input current or voltage. This allows the fuel-gauge driver
+to timely recheck if the battery is charging after the new input
+settings have been applied and then it can immediately notify
+userspace about this.
+
+Fixes: 48f45b094dbb ("power: supply: bq25890: Support higher charging voltages through Pump Express+ protocol")
+Fixes: eab25b4f93aa ("power: supply: bq25890: On the bq25892 set the IINLIM based on external charger detection")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c |   21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ drivers/power/supply/bq25890_charger.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -533,7 +533,7 @@ static int kvaser_pciefd_set_tx_irq(stru
- 	      KVASER_PCIEFD_KCAN_IRQ_TOF | KVASER_PCIEFD_KCAN_IRQ_ABD |
- 	      KVASER_PCIEFD_KCAN_IRQ_TAE | KVASER_PCIEFD_KCAN_IRQ_TAL |
- 	      KVASER_PCIEFD_KCAN_IRQ_FDIC | KVASER_PCIEFD_KCAN_IRQ_BPP |
--	      KVASER_PCIEFD_KCAN_IRQ_TAR | KVASER_PCIEFD_KCAN_IRQ_TFD;
-+	      KVASER_PCIEFD_KCAN_IRQ_TAR;
+--- a/drivers/power/supply/bq25890_charger.c
++++ b/drivers/power/supply/bq25890_charger.c
+@@ -775,6 +775,7 @@ static void bq25890_charger_external_pow
+ 	}
  
- 	iowrite32(msk, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+ 	bq25890_field_write(bq, F_IINLIM, input_current_limit);
++	power_supply_changed(psy);
+ }
  
-@@ -581,7 +581,7 @@ static void kvaser_pciefd_start_controll
+ static int bq25890_get_chip_state(struct bq25890_device *bq,
+@@ -1106,6 +1107,8 @@ static void bq25890_pump_express_work(st
+ 	dev_info(bq->dev, "Hi-voltage charging requested, input voltage is %d mV\n",
+ 		 voltage);
  
- 	spin_lock_irqsave(&can->lock, irq);
- 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
--	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
-+	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 	status = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_STAT_REG);
-@@ -624,7 +624,7 @@ static int kvaser_pciefd_bus_on(struct k
- 	iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 	iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
- 
--	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD | KVASER_PCIEFD_KCAN_IRQ_TFD,
-+	iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 		  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 	mode = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_MODE_REG);
-@@ -1011,8 +1011,7 @@ static int kvaser_pciefd_setup_can_ctrls
- 		SET_NETDEV_DEV(netdev, &pcie->pci->dev);
- 
- 		iowrite32(-1, can->reg_base + KVASER_PCIEFD_KCAN_IRQ_REG);
--		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD |
--			  KVASER_PCIEFD_KCAN_IRQ_TFD,
-+		iowrite32(KVASER_PCIEFD_KCAN_IRQ_ABD,
- 			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 
- 		pcie->can[i] = can;
-@@ -1441,9 +1440,6 @@ static int kvaser_pciefd_handle_status_p
- 		cmd = KVASER_PCIEFD_KCAN_CMD_AT;
- 		cmd |= ++can->cmd_seq << KVASER_PCIEFD_KCAN_CMD_SEQ_SHIFT;
- 		iowrite32(cmd, can->reg_base + KVASER_PCIEFD_KCAN_CMD_REG);
--
--		iowrite32(KVASER_PCIEFD_KCAN_IRQ_TFD,
--			  can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
- 	} else if (p->header[0] & KVASER_PCIEFD_SPACK_IDET &&
- 		   p->header[0] & KVASER_PCIEFD_SPACK_IRM &&
- 		   cmdseq == (p->header[1] & KVASER_PCIEFD_PACKET_SEQ_MSK) &&
-@@ -1732,15 +1728,6 @@ static int kvaser_pciefd_transmit_irq(st
- 	if (irq & KVASER_PCIEFD_KCAN_IRQ_TOF)
- 		netdev_err(can->can.dev, "Tx FIFO overflow\n");
- 
--	if (irq & KVASER_PCIEFD_KCAN_IRQ_TFD) {
--		u8 count = ioread32(can->reg_base +
--				    KVASER_PCIEFD_KCAN_TX_NPACKETS_REG) & 0xff;
--
--		if (count == 0)
--			iowrite32(KVASER_PCIEFD_KCAN_CTRL_EFLUSH,
--				  can->reg_base + KVASER_PCIEFD_KCAN_CTRL_REG);
--	}
--
- 	if (irq & KVASER_PCIEFD_KCAN_IRQ_BPP)
- 		netdev_err(can->can.dev,
- 			   "Fail to change bittiming, when not in reset mode\n");
++	power_supply_changed(bq->charger);
++
+ 	return;
+ error_print:
+ 	bq25890_field_write(bq, F_PUMPX_EN, 0);
 
 
