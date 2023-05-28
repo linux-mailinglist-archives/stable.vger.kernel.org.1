@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24738713EE1
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D97F713D1F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230508AbjE1Tjw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
+        id S229952AbjE1TWH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:22:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230527AbjE1Tjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528ADA8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:48 -0700 (PDT)
+        with ESMTP id S229949AbjE1TWG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A564A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C191F61EA6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF33FC433EF;
-        Sun, 28 May 2023 19:39:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2C4461B3C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE31C433EF;
+        Sun, 28 May 2023 19:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302787;
-        bh=CPnhfC65kJJOyV32CmtJ1fCJzO85FOCorZQHf6Hm9Hk=;
+        s=korg; t=1685301724;
+        bh=Vy5+BQO3VbhljkkvwLP/PGF/MlHEjNVSyO2vB46eA/s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gar30DwvgRQ1ilI4yte5ozGlU2OmH8MyNQX2SvU9lDCpQh1K0avhjOnU4gyxQiVL5
-         ROREPfXbveYw1oZ3YzrluAmy5uQ/xNy+KdxEACY0xnL+ImIPO8cA1uBCRIruHznZkC
-         WrHTlEflVGLtLE80C65I261C7sMMyWsOV/ciZlS8=
+        b=2Cq8NVz3PPE4SIlFGMDk1SD4ff0+sEZM6Oo26mNLBiosTdj7XgLzFzmt/d8hggGSs
+         D7fsfFJzIQIsI9nXSYHg504x3HJfsfhiVOS856raEIjzpWZlIW+mYN1ziNFJD/O7Js
+         1tKtDsa49fX9x/JNrgrN0/Giwzl3m4R9bKV3vWpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kristoffer Ericson <Kristoffer.ericson@gmail.com>,
+        patches@armlinux.org.uk,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/211] net: Fix load-tearing on sk->sk_stamp in sock_recv_cmsgs().
+Subject: [PATCH 5.4 003/161] ARM: 9296/1: HP Jornada 7XX: fix kernel-doc warnings
 Date:   Sun, 28 May 2023 20:08:47 +0100
-Message-Id: <20230528190843.678109677@linuxfoundation.org>
+Message-Id: <20230528190837.187829225@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,80 +58,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit dfd9248c071a3710c24365897459538551cb7167 ]
+[ Upstream commit 46dd6078dbc7e363a8bb01209da67015a1538929 ]
 
-KCSAN found a data race in sock_recv_cmsgs() where the read access
-to sk->sk_stamp needs READ_ONCE().
+Fix kernel-doc warnings from the kernel test robot:
 
-BUG: KCSAN: data-race in packet_recvmsg / packet_recvmsg
+jornada720_ssp.c:24: warning: Function parameter or member 'jornada_ssp_lock' not described in 'DEFINE_SPINLOCK'
+jornada720_ssp.c:24: warning: expecting prototype for arch/arm/mac(). Prototype was for DEFINE_SPINLOCK() instead
+jornada720_ssp.c:34: warning: Function parameter or member 'byte' not described in 'jornada_ssp_reverse'
+jornada720_ssp.c:57: warning: Function parameter or member 'byte' not described in 'jornada_ssp_byte'
+jornada720_ssp.c:85: warning: Function parameter or member 'byte' not described in 'jornada_ssp_inout'
 
-write (marked) to 0xffff88803c81f258 of 8 bytes by task 19171 on cpu 0:
- sock_write_timestamp include/net/sock.h:2670 [inline]
- sock_recv_cmsgs include/net/sock.h:2722 [inline]
- packet_recvmsg+0xb97/0xd00 net/packet/af_packet.c:3489
- sock_recvmsg_nosec net/socket.c:1019 [inline]
- sock_recvmsg+0x11a/0x130 net/socket.c:1040
- sock_read_iter+0x176/0x220 net/socket.c:1118
- call_read_iter include/linux/fs.h:1845 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x5e0/0x630 fs/read_write.c:470
- ksys_read+0x163/0x1a0 fs/read_write.c:613
- __do_sys_read fs/read_write.c:623 [inline]
- __se_sys_read fs/read_write.c:621 [inline]
- __x64_sys_read+0x41/0x50 fs/read_write.c:621
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+Link: lore.kernel.org/r/202304210535.tWby3jWF-lkp@intel.com
 
-read to 0xffff88803c81f258 of 8 bytes by task 19183 on cpu 1:
- sock_recv_cmsgs include/net/sock.h:2721 [inline]
- packet_recvmsg+0xb64/0xd00 net/packet/af_packet.c:3489
- sock_recvmsg_nosec net/socket.c:1019 [inline]
- sock_recvmsg+0x11a/0x130 net/socket.c:1040
- sock_read_iter+0x176/0x220 net/socket.c:1118
- call_read_iter include/linux/fs.h:1845 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x5e0/0x630 fs/read_write.c:470
- ksys_read+0x163/0x1a0 fs/read_write.c:613
- __do_sys_read fs/read_write.c:623 [inline]
- __se_sys_read fs/read_write.c:621 [inline]
- __x64_sys_read+0x41/0x50 fs/read_write.c:621
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0xffffffffc4653600 -> 0x0000000000000000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19183 Comm: syz-executor.5 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 6c7c98bad488 ("sock: avoid dirtying sk_stamp, if possible")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230508175543.55756-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 69ebb22277a5 ("[ARM] 4506/1: HP Jornada 7XX: Addition of SSP Platform Driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Kristoffer Ericson <Kristoffer.ericson@gmail.com>
+Cc: patches@armlinux.org.uk
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-sa1100/jornada720_ssp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 1d8529311d6f9..651dc0a7bbd58 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2535,7 +2535,7 @@ static inline void sock_recv_ts_and_drops(struct msghdr *msg, struct sock *sk,
- 		__sock_recv_ts_and_drops(msg, sk, skb);
- 	else if (unlikely(sock_flag(sk, SOCK_TIMESTAMP)))
- 		sock_write_timestamp(sk, skb->tstamp);
--	else if (unlikely(sk->sk_stamp == SK_DEFAULT_STAMP))
-+	else if (unlikely(sock_read_timestamp(sk) == SK_DEFAULT_STAMP))
- 		sock_write_timestamp(sk, 0);
- }
+diff --git a/arch/arm/mach-sa1100/jornada720_ssp.c b/arch/arm/mach-sa1100/jornada720_ssp.c
+index 1dbe98948ce30..9627c4cf3e41d 100644
+--- a/arch/arm/mach-sa1100/jornada720_ssp.c
++++ b/arch/arm/mach-sa1100/jornada720_ssp.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  *  arch/arm/mac-sa1100/jornada720_ssp.c
+  *
+  *  Copyright (C) 2006/2007 Kristoffer Ericson <Kristoffer.Ericson@gmail.com>
+@@ -26,6 +26,7 @@ static unsigned long jornada_ssp_flags;
  
+ /**
+  * jornada_ssp_reverse - reverses input byte
++ * @byte: input byte to reverse
+  *
+  * we need to reverse all data we receive from the mcu due to its physical location
+  * returns : 01110111 -> 11101110
+@@ -46,6 +47,7 @@ EXPORT_SYMBOL(jornada_ssp_reverse);
+ 
+ /**
+  * jornada_ssp_byte - waits for ready ssp bus and sends byte
++ * @byte: input byte to transmit
+  *
+  * waits for fifo buffer to clear and then transmits, if it doesn't then we will
+  * timeout after <timeout> rounds. Needs mcu running before its called.
+@@ -77,6 +79,7 @@ EXPORT_SYMBOL(jornada_ssp_byte);
+ 
+ /**
+  * jornada_ssp_inout - decide if input is command or trading byte
++ * @byte: input byte to send (may be %TXDUMMY)
+  *
+  * returns : (jornada_ssp_byte(byte)) on success
+  *         : %-ETIMEDOUT on timeout failure
 -- 
 2.39.2
 
