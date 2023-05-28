@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D518713EA6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3158713DAD
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230444AbjE1Thc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:37:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53302 "EHLO
+        id S230119AbjE1T1t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230437AbjE1Thb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:37:31 -0400
+        with ESMTP id S230111AbjE1T1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159D6C9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:37:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775F9C7
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:27:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F09E61E62
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:37:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC426C433EF;
-        Sun, 28 May 2023 19:37:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E40961CAC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:27:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CBFC4339B;
+        Sun, 28 May 2023 19:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302648;
-        bh=zq1Os+D/7yy/NJzFj2J8bClDSlPMi/oDDTlDd37Pa0U=;
+        s=korg; t=1685302067;
+        bh=MBd6irBdb/wto2BXNYq38WYwRTaLZzRutkrQ+S6TQws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T711HN/3vk8tizsDc8gKwXQ79BM080Wf62ur/hoVP0Eu3NCDysZgnR3iINLnu9qRr
-         NvYmRwjbq//V2xBjxZd0Q2mqcIu0d7Bzx7f0RPjvYcBxd7z2ed+0ZHSHkfj+svo3vA
-         nRxrg80AjwS4ciV4i+S/3YaTXbrXgLNnlr3Bl+8M=
+        b=1VoPEYqhh4ERjAQPt817qCmSGhAMpqDvQxOKT2Ijb6+Vd8gfkCSJLmnOzNLh9z7m8
+         uEF5zagWPu6+in48i4vOsRaDhvY3u4Ind4wi1w9QQadgfwARd0UaSAxMZ8XQttCylo
+         WRmFJM8jw/Mmpr/gvXqC9PodsVU+WJB83kLF4u+U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-        Jiri Pirko <jiri@nvidia.com>, David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 071/119] ipv6: Fix out-of-bounds access in ipv6_find_tlv()
+        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Krzesimir Nowak <krzesimir@kinvolk.io>,
+        Andrey Ignatov <rdna@fb.com>, Yonghong Song <yhs@fb.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.4 147/161] bpf: Fix mask generation for 32-bit narrow loads of 64-bit fields
 Date:   Sun, 28 May 2023 20:11:11 +0100
-Message-Id: <20230528190837.876014596@linuxfoundation.org>
+Message-Id: <20230528190841.574457821@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,36 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Will Deacon <will@kernel.org>
 
-commit 878ecb0897f4737a4c9401f3523fd49589025671 upstream.
+commit 0613d8ca9ab382caabe9ed2dceb429e9781e443f upstream.
 
-optlen is fetched without checking whether there is more than one byte to parse.
-It can lead to out-of-bounds access.
+A narrow load from a 64-bit context field results in a 64-bit load
+followed potentially by a 64-bit right-shift and then a bitwise AND
+operation to extract the relevant data.
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+In the case of a 32-bit access, an immediate mask of 0xffffffff is used
+to construct a 64-bit BPP_AND operation which then sign-extends the mask
+value and effectively acts as a glorified no-op. For example:
 
-Fixes: c61a40432509 ("[IPV6]: Find option offset by type.")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+0:	61 10 00 00 00 00 00 00	r0 = *(u32 *)(r1 + 0)
+
+results in the following code generation for a 64-bit field:
+
+	ldr	x7, [x7]	// 64-bit load
+	mov	x10, #0xffffffffffffffff
+	and	x7, x7, x10
+
+Fix the mask generation so that narrow loads always perform a 32-bit AND
+operation:
+
+	ldr	x7, [x7]	// 64-bit load
+	mov	w10, #0xffffffff
+	and	w7, w7, w10
+
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Krzesimir Nowak <krzesimir@kinvolk.io>
+Cc: Andrey Ignatov <rdna@fb.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Fixes: 31fd85816dbe ("bpf: permits narrower load from bpf program context fields")
+Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20230518102528.1341-1-will@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs_core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/verifier.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv6/exthdrs_core.c
-+++ b/net/ipv6/exthdrs_core.c
-@@ -143,6 +143,8 @@ int ipv6_find_tlv(const struct sk_buff *
- 			optlen = 1;
- 			break;
- 		default:
-+			if (len < 2)
-+				goto bad;
- 			optlen = nh[offset + 1] + 2;
- 			if (optlen > len)
- 				goto bad;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8966,7 +8966,7 @@ static int convert_ctx_accesses(struct b
+ 					insn_buf[cnt++] = BPF_ALU64_IMM(BPF_RSH,
+ 									insn->dst_reg,
+ 									shift);
+-				insn_buf[cnt++] = BPF_ALU64_IMM(BPF_AND, insn->dst_reg,
++				insn_buf[cnt++] = BPF_ALU32_IMM(BPF_AND, insn->dst_reg,
+ 								(1ULL << size * 8) - 1);
+ 			}
+ 		}
 
 
