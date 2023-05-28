@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11C1C713C9C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4F5713D38
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbjE1TQs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36052 "EHLO
+        id S229984AbjE1TXE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbjE1TQr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80369CF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:46 -0700 (PDT)
+        with ESMTP id S229980AbjE1TXD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:23:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB87A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:23:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F05FA619DD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DC1C433D2;
-        Sun, 28 May 2023 19:16:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 091C361B6C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C53C433D2;
+        Sun, 28 May 2023 19:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301405;
-        bh=h8zhWTe2I29JDuWAspqdVpVRsV+rthBQkSspwK141f0=;
+        s=korg; t=1685301781;
+        bh=p0q0mMosvivQT2FFQw0lZPZ/WTgoCKn7jHt41ML0rco=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VfI9IP1etSAyUi+sFSid9jUXp3FBhOiVC7ZNO5QzVMqLYcVErCjQCuewdmF6NToHW
-         441sUdNo8h0pCjs0Lk6cl2TxETD7o0kJQxB5Wr+zPTlLC5JsKyRXaEFHHdSxnRUC+Q
-         W0EBA4ZZVJQ80grAiaI9dBgKQ49y6eXcsigW+aF0=
+        b=vdXmeLbmfcDq0W5L5+x/ip8E6/oX/wB0mE2BbiJuTznqmYU2E+9zlvva4AGoEew1L
+         f3g6bEYc7lFE2D3ttNdpI8kLFEXFRcTZcTxdMYtGvhCwVxC8KFNrcabn85vMHCCV1n
+         8MZHpQAlpBbQR9dSwUsFckKd5HaMFqRabOGQSixk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 017/132] ACPI: EC: Fix oops when removing custom query handlers
-Date:   Sun, 28 May 2023 20:09:16 +0100
-Message-Id: <20230528190834.094382398@linuxfoundation.org>
+        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 033/161] ext4: set goal start correctly in ext4_mb_normalize_request
+Date:   Sun, 28 May 2023 20:09:17 +0100
+Message-Id: <20230528190838.243636442@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +54,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit e5b492c6bb900fcf9722e05f4a10924410e170c1 ]
+[ Upstream commit b07ffe6927c75d99af534d685282ea188d9f71a6 ]
 
-When removing custom query handlers, the handler might still
-be used inside the EC query workqueue, causing a kernel oops
-if the module holding the callback function was already unloaded.
+We need to set ac_g_ex to notify the goal start used in
+ext4_mb_find_by_goal. Set ac_g_ex instead of ac_f_ex in
+ext4_mb_normalize_request.
+Besides we should assure goal start is in range [first_data_block,
+blocks_count) as ext4_mb_initialize_context does.
 
-Fix this by flushing the EC query workqueue when removing
-custom query handlers.
+[ Added a check to make sure size is less than ar->pright; otherwise
+  we could end up passing an underflowed value of ar->pright - size to
+  ext4_get_group_no_and_offset(), which will trigger a BUG_ON later on.
+  - TYT ]
 
-Tested on a Acer Travelmate 4002WLMi
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230303172120.3800725-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/mballoc.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 3394ec64fe95d..d2fde87e4d0d4 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1153,6 +1153,7 @@ static void acpi_ec_remove_query_handlers(struct acpi_ec *ec,
- void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index caab9781bee7d..bdab18942e302 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3091,6 +3091,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
+ 				struct ext4_allocation_request *ar)
  {
- 	acpi_ec_remove_query_handlers(ec, false, query_bit);
-+	flush_workqueue(ec_query_wq);
- }
- EXPORT_SYMBOL_GPL(acpi_ec_remove_query_handler);
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
++	struct ext4_super_block *es = sbi->s_es;
+ 	int bsbits, max;
+ 	ext4_lblk_t end;
+ 	loff_t size, start_off;
+@@ -3271,18 +3272,21 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
+ 	ac->ac_g_ex.fe_len = EXT4_NUM_B2C(sbi, size);
+ 
+ 	/* define goal start in order to merge */
+-	if (ar->pright && (ar->lright == (start + size))) {
++	if (ar->pright && (ar->lright == (start + size)) &&
++	    ar->pright >= size &&
++	    ar->pright - size >= le32_to_cpu(es->s_first_data_block)) {
+ 		/* merge to the right */
+ 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pright - size,
+-						&ac->ac_f_ex.fe_group,
+-						&ac->ac_f_ex.fe_start);
++						&ac->ac_g_ex.fe_group,
++						&ac->ac_g_ex.fe_start);
+ 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
+ 	}
+-	if (ar->pleft && (ar->lleft + 1 == start)) {
++	if (ar->pleft && (ar->lleft + 1 == start) &&
++	    ar->pleft + 1 < ext4_blocks_count(es)) {
+ 		/* merge to the left */
+ 		ext4_get_group_no_and_offset(ac->ac_sb, ar->pleft + 1,
+-						&ac->ac_f_ex.fe_group,
+-						&ac->ac_f_ex.fe_start);
++						&ac->ac_g_ex.fe_group,
++						&ac->ac_g_ex.fe_start);
+ 		ac->ac_flags |= EXT4_MB_HINT_TRY_GOAL;
+ 	}
  
 -- 
 2.39.2
