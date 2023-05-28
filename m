@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8302E713DB6
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 294BB713F52
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjE1T2M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45036 "EHLO
+        id S231238AbjE1ToN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230134AbjE1T2L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:11 -0400
+        with ESMTP id S231237AbjE1ToM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47569B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADDC9B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE36E61CE8
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAA5C433D2;
-        Sun, 28 May 2023 19:28:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E17B261195
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E3BC433EF;
+        Sun, 28 May 2023 19:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302089;
-        bh=uCaTRAS2A29vU6MOgP1kpFbtFKG/M/lSezWtur8nIy4=;
+        s=korg; t=1685303050;
+        bh=MQUVZt76hloCkU9P2U2Yzf/bE0UXjoiewcvN1I3RjrY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LkL0T/rvHAXgX/L/UlaBLIvnSW0ts/znLkfwOsxKNJn1HFcTRzIFOR7Ef0vFRMvXE
-         FHOOm18lfx1gddTN1G7qB+ux5gW0wb0a9OJkoW6JxSk7mL85DhNc9SLWgpxSPawfHo
-         LfhQiQofN3xsJUsAccSvMvy4rInFszNfjM9Na42U=
+        b=K+4dEW9QCOVjiu23rhbp+OmCx6A7pqR8vtTLcRAkbIdPljQNmaDuLVfkS/wYz/WcT
+         4WlBHuXPqNxJikGh866EPKxa2Lwv/IQqVHaSyWAn9s2oaTjBdZyOlDFPFbvVj/x0Uq
+         JdI2nfa8RFLl4805zHiWko3PDs6z+49etsTrbqvw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Schmitz <schmitzmic@gmail.com>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Finn Thain <fthain@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 5.4 129/161] m68k: Move signal frame following exception on 68020/030
-Date:   Sun, 28 May 2023 20:10:53 +0100
-Message-Id: <20230528190841.094552271@linuxfoundation.org>
+        patches@lists.linux.dev, Ai Chao <aichao@kylinos.cn>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 133/211] ALSA: hda/realtek: Add a quirk for HP EliteDesk 805
+Date:   Sun, 28 May 2023 20:10:54 +0100
+Message-Id: <20230528190846.837434156@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,90 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Ai Chao <aichao@kylinos.cn>
 
-commit b845b574f86dcb6a70dfa698aa87a237b0878d2a upstream.
+commit 90670ef774a8b6700c38ce1222e6aa263be54d5f upstream.
 
-On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
-a stack page fault during instruction execution (i.e. not at an
-instruction boundary) and produce a format 0xB exception frame.
+Add a quirk for HP EliteDesk 805 to fixup ALC3867 headset MIC no sound.
 
-In this situation, the value of USP will be unreliable.  If a signal is
-to be delivered following the exception, this USP value is used to
-calculate the location for a signal frame.  This can result in a
-corrupted user stack.
-
-The corruption was detected in dash (actually in glibc) where it showed
-up as an intermittent "stack smashing detected" message and crash
-following signal delivery for SIGCHLD.
-
-It was hard to reproduce that failure because delivery of the signal
-raced with the page fault and because the kernel places an unpredictable
-gap of up to 7 bytes between the USP and the signal frame.
-
-A format 0xB exception frame can be produced by a bus error or an
-address error.  The 68030 Users Manual says that address errors occur
-immediately upon detection during instruction prefetch.  The instruction
-pipeline allows prefetch to overlap with other instructions, which means
-an address error can arise during the execution of a different
-instruction.  So it seems likely that this patch may help in the address
-error case also.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
-Cc: Michael Schmitz <schmitzmic@gmail.com>
-Cc: Andreas Schwab <schwab@linux-m68k.org>
-Cc: stable@vger.kernel.org
-Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Ai Chao <aichao@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230506022653.2074343-1-aichao@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/kernel/signal.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/m68k/kernel/signal.c
-+++ b/arch/m68k/kernel/signal.c
-@@ -883,11 +883,17 @@ static inline int rt_setup_ucontext(stru
- }
- 
- static inline void __user *
--get_sigframe(struct ksignal *ksig, size_t frame_size)
-+get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
- {
- 	unsigned long usp = sigsp(rdusp(), ksig);
-+	unsigned long gap = 0;
- 
--	return (void __user *)((usp - frame_size) & -8UL);
-+	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
-+		/* USP is unreliable so use worst-case value */
-+		gap = 256;
-+	}
-+
-+	return (void __user *)((usp - gap - frame_size) & -8UL);
- }
- 
- static int setup_frame(struct ksignal *ksig, sigset_t *set,
-@@ -905,7 +911,7 @@ static int setup_frame(struct ksignal *k
- 		return -EFAULT;
- 	}
- 
--	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
-+	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
- 
- 	if (fsize)
- 		err |= copy_to_user (frame + 1, regs + 1, fsize);
-@@ -976,7 +982,7 @@ static int setup_rt_frame(struct ksignal
- 		return -EFAULT;
- 	}
- 
--	frame = get_sigframe(ksig, sizeof(*frame));
-+	frame = get_sigframe(ksig, tregs, sizeof(*frame));
- 
- 	if (fsize)
- 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11159,6 +11159,7 @@ static const struct snd_pci_quirk alc662
+ 	SND_PCI_QUIRK(0x103c, 0x1632, "HP RP5800", ALC662_FIXUP_HP_RP5800),
+ 	SND_PCI_QUIRK(0x103c, 0x870c, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
+ 	SND_PCI_QUIRK(0x103c, 0x8719, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
++	SND_PCI_QUIRK(0x103c, 0x872b, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
+ 	SND_PCI_QUIRK(0x103c, 0x873e, "HP", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x103c, 0x877e, "HP 288 Pro G6", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x103c, 0x885f, "HP 288 Pro G8", ALC671_FIXUP_HP_HEADSET_MIC2),
 
 
