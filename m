@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33289713F47
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D8A713CF9
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231229AbjE1Tnt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58728 "EHLO
+        id S229909AbjE1TUf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:20:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231228AbjE1Tns (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:48 -0400
+        with ESMTP id S229907AbjE1TUf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:20:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B62A9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1920DA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:20:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9171F61F1C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B087EC433D2;
-        Sun, 28 May 2023 19:43:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A371D61AEF
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E13C433EF;
+        Sun, 28 May 2023 19:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303026;
-        bh=g8y3q0XKQCofd11GyvGsu6v1WGKiu/p9oKJM9NreuTY=;
+        s=korg; t=1685301633;
+        bh=M6MtEyEIjQZ5TBaG0Vr8zAQvg3BIBF/pfm4zWUyY7fk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F3mP242j5SR8kvIwdnr3KWNbJ4TR+qWzVlsKN+lSOekCzLnOaQ9yzqE28lDzgsr7g
-         QIjwetGbN6vg3Nvlbnze0Dk3LCc/oD308i3RBz35HQ/q3Z3qKah3422QbJZ/E5IEPG
-         1KXPzHi4+n1V+7Vd59pHwr5B6ow78LAlJVHe2A8I=
+        b=zPHLBg2bcvHEXXVcJvdJifWTTiKM/sRKX/YHo8MpRqXobVmmbDbEye8VLDhbWsGhJ
+         goH35aDMvdbJzTe2INvQ33xGpoIUpK8MpH6cKThjWW6jRPn2MySmI4/c2yCKKrhual
+         oN7BEEJTdEeQOVP9tLEUdcteocF6HR46kp8pVr1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 124/211] USB: usbtmc: Fix direction for 0-length ioctl control messages
+        patches@lists.linux.dev, Adam Stylinski <kungfujesus06@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 106/132] ALSA: hda/ca0132: add quirk for EVGA X299 DARK
 Date:   Sun, 28 May 2023 20:10:45 +0100
-Message-Id: <20230528190846.631554474@linuxfoundation.org>
+Message-Id: <20230528190836.969966427@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Adam Stylinski <kungfujesus06@gmail.com>
 
-commit 94d25e9128988c6a1fc9070f6e98215a95795bd8 upstream.
+commit 7843380d07bbeffd3ce6504e73cf61f840ae76ca upstream.
 
-The syzbot fuzzer found a problem in the usbtmc driver: When a user
-submits an ioctl for a 0-length control transfer, the driver does not
-check that the direction is set to OUT:
+This quirk is necessary for surround and other DSP effects to work
+with the onboard ca0132 based audio chipset for the EVGA X299 dark
+mainboard.
 
-------------[ cut here ]------------
-usb 3-1: BOGUS control dir, pipe 80000b80 doesn't match bRequestType fd
-WARNING: CPU: 0 PID: 5100 at drivers/usb/core/urb.c:411 usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
-Modules linked in:
-CPU: 0 PID: 5100 Comm: syz-executor428 Not tainted 6.3.0-syzkaller-12049-g58390c8ce1bd #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
-RIP: 0010:usb_submit_urb+0x14a7/0x1880 drivers/usb/core/urb.c:411
-Code: 7c 24 40 e8 1b 13 5c fb 48 8b 7c 24 40 e8 21 1d f0 fe 45 89 e8 44 89 f1 4c 89 e2 48 89 c6 48 c7 c7 e0 b5 fc 8a e8 19 c8 23 fb <0f> 0b e9 9f ee ff ff e8 ed 12 5c fb 0f b6 1d 12 8a 3c 08 31 ff 41
-RSP: 0018:ffffc90003d2fb00 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff8880789e9058 RCX: 0000000000000000
-RDX: ffff888029593b80 RSI: ffffffff814c1447 RDI: 0000000000000001
-RBP: ffff88801ea742f8 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff88802915e528
-R13: 00000000000000fd R14: 0000000080000b80 R15: ffff8880222b3100
-FS:  0000555556ca63c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9ef4d18150 CR3: 0000000073e5b000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- usb_start_wait_urb+0x101/0x4b0 drivers/usb/core/message.c:58
- usb_internal_control_msg drivers/usb/core/message.c:102 [inline]
- usb_control_msg+0x320/0x4a0 drivers/usb/core/message.c:153
- usbtmc_ioctl_request drivers/usb/class/usbtmc.c:1954 [inline]
- usbtmc_ioctl+0x1b3d/0x2840 drivers/usb/class/usbtmc.c:2097
-
-To fix this, we must override the direction in the bRequestType field
-of the control request structure when the length is 0.
-
-Reported-and-tested-by: syzbot+ce77725b89b7bd52425c@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/000000000000716a3705f9adb8ee@google.com/
-CC: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/ede1ee02-b718-49e7-a44c-51339fec706b@rowland.harvard.edu
+Signed-off-by: Adam Stylinski <kungfujesus06@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=67071
+Link: https://lore.kernel.org/r/ZGopOe19T1QOwizS@eggsbenedict.adamsnet
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_ca0132.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -1898,6 +1898,8 @@ static int usbtmc_ioctl_request(struct u
- 
- 	if (request.req.wLength > USBTMC_BUFSIZE)
- 		return -EMSGSIZE;
-+	if (request.req.wLength == 0)	/* Length-0 requests are never IN */
-+		request.req.bRequestType &= ~USB_DIR_IN;
- 
- 	is_in = request.req.bRequestType & USB_DIR_IN;
- 
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -1070,6 +1070,7 @@ static const struct snd_pci_quirk ca0132
+ 	SND_PCI_QUIRK(0x1458, 0xA026, "Gigabyte G1.Sniper Z97", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x1458, 0xA036, "Gigabyte GA-Z170X-Gaming 7", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x3842, 0x1038, "EVGA X99 Classified", QUIRK_R3DI),
++	SND_PCI_QUIRK(0x3842, 0x104b, "EVGA X299 Dark", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x3842, 0x1055, "EVGA Z390 DARK", QUIRK_R3DI),
+ 	SND_PCI_QUIRK(0x1102, 0x0013, "Recon3D", QUIRK_R3D),
+ 	{}
 
 
