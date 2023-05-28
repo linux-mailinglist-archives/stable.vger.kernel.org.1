@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B305A713F31
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03C92713E5D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231200AbjE1Tm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:42:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58238 "EHLO
+        id S230353AbjE1Te4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbjE1Tmz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:42:55 -0400
+        with ESMTP id S230326AbjE1Tex (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:34:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93845A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:42:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D982D9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:34:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D38C61F0C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C407C433EF;
-        Sun, 28 May 2023 19:42:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0126561DF6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:34:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EB1C433EF;
+        Sun, 28 May 2023 19:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302972;
-        bh=h67YwGsBDeTa94CobgOOyHgk/AS9UF/cKa9jzmBNIFg=;
+        s=korg; t=1685302487;
+        bh=8V+uoCTM32v783hLLdrYfx+1njT+Z4MUQugsmYODs2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8yz1s7MWDbiTv8u4JuiWM+QQAxcd8jWi/V3E8HMAeYdBvcbg8utLiovrTDPgBisk
-         qwQ9/sue3ym3qfGXTb6n3iTI6rgOr7r6zSxSvlLCxxT5bj7BXO8lw+lSCTfdqGboTE
-         v3EqSG2b4qrAeKd9kAFcKnt5a+H50w+MHZ0HK+4o=
+        b=VSvRmZB5nS+XEU9W4rXLQyZ1p3aj8lx3cDG2LLRi4XqeAPDWiSRVe98eb43PNpIFM
+         9RaklwHx1E9b3dB+8PpSnF5t6VJic+nkwrHxKihFzAk0FITwjITXSq9X1vUeaGLge0
+         Z5tYQP8OXTb1O9/AJoQ5Wx/inD5VTXWniO2uH+5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Traynor <ktraynor@redhat.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        William Tu <u9012063@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/211] erspan: get the proto with the md version for collect_md
+        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 023/119] mmc: sdhci-esdhc-imx: make "no-mmc-hs400" works
 Date:   Sun, 28 May 2023 20:10:23 +0100
-Message-Id: <20230528190846.122258352@linuxfoundation.org>
+Message-Id: <20230528190836.121090211@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,81 +53,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit d80fc101d2eb9b3188c228d61223890aeea480a4 ]
+commit 81dce1490e28439c3cd8a8650b862a712f3061ba upstream.
 
-In commit 20704bd1633d ("erspan: build the header with the right proto
-according to erspan_ver"), it gets the proto with t->parms.erspan_ver,
-but t->parms.erspan_ver is not used by collect_md branch, and instead
-it should get the proto with md->version for collect_md.
+After commit 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate
+ESDHC_FLAG_HS400* only on 8bit bus"), the property "no-mmc-hs400"
+from device tree file do not work any more.
+This patch reorder the code, which can avoid the warning message
+"drop HS400 support since no 8-bit bus" and also make the property
+"no-mmc-hs400" from dts file works.
 
-Thanks to Kevin for pointing this out.
-
-Fixes: 20704bd1633d ("erspan: build the header with the right proto according to erspan_ver")
-Fixes: 94d7d8f29287 ("ip6_gre: add erspan v2 support")
-Reported-by: Kevin Traynor <ktraynor@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: William Tu <u9012063@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ed5c3b22fc7 ("mmc: sdhci-esdhc-imx: Propagate ESDHC_FLAG_HS400* only on 8bit bus")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230504112222.3599602-1-haibo.chen@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_gre.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 2332b5b81c551..7b50e1811678e 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1015,12 +1015,14 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 					    ntohl(tun_id),
- 					    ntohl(md->u.index), truncate,
- 					    false);
-+			proto = htons(ETH_P_ERSPAN);
- 		} else if (md->version == 2) {
- 			erspan_build_header_v2(skb,
- 					       ntohl(tun_id),
- 					       md->u.md2.dir,
- 					       get_hwid(&md->u.md2),
- 					       truncate, false);
-+			proto = htons(ETH_P_ERSPAN2);
- 		} else {
- 			goto tx_err;
- 		}
-@@ -1043,24 +1045,25 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 			break;
- 		}
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1585,6 +1585,10 @@ sdhci_esdhc_imx_probe_dt(struct platform
+ 	if (ret)
+ 		return ret;
  
--		if (t->parms.erspan_ver == 1)
-+		if (t->parms.erspan_ver == 1) {
- 			erspan_build_header(skb, ntohl(t->parms.o_key),
- 					    t->parms.index,
- 					    truncate, false);
--		else if (t->parms.erspan_ver == 2)
-+			proto = htons(ETH_P_ERSPAN);
-+		} else if (t->parms.erspan_ver == 2) {
- 			erspan_build_header_v2(skb, ntohl(t->parms.o_key),
- 					       t->parms.dir,
- 					       t->parms.hwid,
- 					       truncate, false);
--		else
-+			proto = htons(ETH_P_ERSPAN2);
-+		} else {
- 			goto tx_err;
-+		}
++	/* HS400/HS400ES require 8 bit bus */
++	if (!(host->mmc->caps & MMC_CAP_8_BIT_DATA))
++		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
++
+ 	if (mmc_gpio_get_cd(host->mmc) >= 0)
+ 		host->quirks &= ~SDHCI_QUIRK_BROKEN_CARD_DETECTION;
  
- 		fl6.daddr = t->parms.raddr;
+@@ -1669,10 +1673,6 @@ static int sdhci_esdhc_imx_probe(struct
+ 		host->mmc_host_ops.execute_tuning = usdhc_execute_tuning;
  	}
  
- 	/* Push GRE header. */
--	proto = (t->parms.erspan_ver == 1) ? htons(ETH_P_ERSPAN)
--					   : htons(ETH_P_ERSPAN2);
- 	gre_build_header(skb, 8, TUNNEL_SEQ, proto, 0, htonl(atomic_fetch_inc(&t->o_seqno)));
+-	err = sdhci_esdhc_imx_probe_dt(pdev, host, imx_data);
+-	if (err)
+-		goto disable_ahb_clk;
+-
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING)
+ 		sdhci_esdhc_ops.platform_execute_tuning =
+ 					esdhc_executing_tuning;
+@@ -1680,15 +1680,13 @@ static int sdhci_esdhc_imx_probe(struct
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_ERR004536)
+ 		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
  
- 	/* TooBig packet may have updated dst->dev's mtu */
--- 
-2.39.2
-
+-	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
+-	    imx_data->socdata->flags & ESDHC_FLAG_HS400)
++	if (imx_data->socdata->flags & ESDHC_FLAG_HS400)
+ 		host->mmc->caps2 |= MMC_CAP2_HS400;
+ 
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_BROKEN_AUTO_CMD23)
+ 		host->quirks2 |= SDHCI_QUIRK2_ACMD23_BROKEN;
+ 
+-	if (host->mmc->caps & MMC_CAP_8_BIT_DATA &&
+-	    imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
++	if (imx_data->socdata->flags & ESDHC_FLAG_HS400_ES) {
+ 		host->mmc->caps2 |= MMC_CAP2_HS400_ES;
+ 		host->mmc_host_ops.hs400_enhanced_strobe =
+ 					esdhc_hs400_enhanced_strobe;
+@@ -1710,6 +1708,10 @@ static int sdhci_esdhc_imx_probe(struct
+ 			goto disable_ahb_clk;
+ 	}
+ 
++	err = sdhci_esdhc_imx_probe_dt(pdev, host, imx_data);
++	if (err)
++		goto disable_ahb_clk;
++
+ 	sdhci_esdhc_imx_hwinit(host);
+ 
+ 	err = sdhci_add_host(host);
 
 
