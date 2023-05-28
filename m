@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22C61713C1A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB9B713C1B
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjE1TEm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:04:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60052 "EHLO
+        id S229657AbjE1TEq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:04:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjE1TEl (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:04:41 -0400
+        with ESMTP id S229659AbjE1TEn (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 28 May 2023 15:04:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C90290
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:04:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2238C4
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 12:04:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFC3F614FF
-        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F60C433D2;
-        Sun, 28 May 2023 19:04:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76E5560F7E
+        for <Stable@vger.kernel.org>; Sun, 28 May 2023 19:04:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94546C433D2;
+        Sun, 28 May 2023 19:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685300679;
-        bh=U8RhwrNdYIYmkSHzQJX7YwDImy0uaquifSPlLW0tXxo=;
+        s=korg; t=1685300681;
+        bh=MMLFx6Ea5VLVavqczOH5el9rjkzBQp70cCXDk8k8TR0=;
         h=Subject:To:From:Date:From;
-        b=eHKwPhw9na5APv8OaWuZZZb2pfbdBMrcLo1pfN/T0tnuuyXPfi2kn7odc8sHa6vFz
-         sJpgEuHIZ4naIQGe0NkkQlhoSZngdDA+4xT8V5qEkG845iy4XegZxxRPbPukQiGfMx
-         gd6AEIAflcLDa3VXX3VbxVfawbDpv9qDK9mKhq7U=
-Subject: patch "iio: ad4130: Make sure clock provider gets removed" added to char-misc-linus
+        b=HimTOVb9/RFCNSjpzGPjzCCWkWVAlFtAdNRiKygfOwOKXRG82Wi7afCZaA+/3Ia1R
+         rXTTiSc8tM7loo3YWfwEfC2HNMliCS7IDJUI0j4qRV+OBASb5NsY9HlwtuWbPC3hrg
+         NqpGma5El2gTiwp1ebTKNZgYIRz9NFPMfTqKp4jA=
+Subject: patch "iio: tmag5273: Fix runtime PM leak on measurement error" added to char-misc-linus
 To:     lars@metafoo.de, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org
+        Stable@vger.kernel.org, gerald.loacker@wolfvision.net,
+        nuno.sa@analog.com
 From:   <gregkh@linuxfoundation.org>
 Date:   Sun, 28 May 2023 20:04:32 +0100
-Message-ID: <2023052832-revocable-gnarly-12c0@gregkh>
+Message-ID: <2023052832-pants-ramrod-323f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,7 +51,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: ad4130: Make sure clock provider gets removed
+    iio: tmag5273: Fix runtime PM leak on measurement error
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -65,64 +66,48 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 28f73ded19d403697f87473c9b85a27eb8ed9cf2 Mon Sep 17 00:00:00 2001
+From 265c82ea8b172129cb6d4eff41af856c3aff6168 Mon Sep 17 00:00:00 2001
 From: Lars-Peter Clausen <lars@metafoo.de>
-Date: Fri, 14 Apr 2023 08:07:02 -0700
-Subject: iio: ad4130: Make sure clock provider gets removed
+Date: Thu, 13 Apr 2023 18:37:52 -0700
+Subject: iio: tmag5273: Fix runtime PM leak on measurement error
 
-The ad4130 driver registers a clock provider, but never removes it. This
-leaves a stale clock provider behind that references freed clocks when the
-device is unbound.
+The tmag5273 gets a runtime PM reference before reading a measurement and
+releases it when done. But if the measurement fails the tmag5273_read_raw()
+function exits before releasing the reference.
 
-Register a managed action to remove the clock provider when the device is
-removed.
+Make sure that this error path also releases the runtime PM reference.
 
-Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
+Fixes: 866a1389174b ("iio: magnetometer: add ti tmag5273 driver")
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Link: https://lore.kernel.org/r/20230414150702.518441-1-lars@metafoo.de
+Acked-by: Gerald Loacker <gerald.loacker@wolfvision.net>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20230414013752.498767-1-lars@metafoo.de
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad4130.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/iio/magnetometer/tmag5273.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index 38394341fd6e..5a5dd5e87ffc 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -1817,6 +1817,11 @@ static const struct clk_ops ad4130_int_clk_ops = {
- 	.unprepare = ad4130_int_clk_unprepare,
- };
+diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
+index 28bb7efe8df8..e155a75b3cd2 100644
+--- a/drivers/iio/magnetometer/tmag5273.c
++++ b/drivers/iio/magnetometer/tmag5273.c
+@@ -296,12 +296,13 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
  
-+static void ad4130_clk_del_provider(void *of_node)
-+{
-+	of_clk_del_provider(of_node);
-+}
+ 		ret = tmag5273_get_measure(data, &t, &x, &y, &z, &angle, &magnitude);
+-		if (ret)
+-			return ret;
+ 
+ 		pm_runtime_mark_last_busy(data->dev);
+ 		pm_runtime_put_autosuspend(data->dev);
+ 
++		if (ret)
++			return ret;
 +
- static int ad4130_setup_int_clk(struct ad4130_state *st)
- {
- 	struct device *dev = &st->spi->dev;
-@@ -1824,6 +1829,7 @@ static int ad4130_setup_int_clk(struct ad4130_state *st)
- 	struct clk_init_data init;
- 	const char *clk_name;
- 	struct clk *clk;
-+	int ret;
- 
- 	if (st->int_pin_sel == AD4130_INT_PIN_CLK ||
- 	    st->mclk_sel != AD4130_MCLK_76_8KHZ)
-@@ -1843,7 +1849,11 @@ static int ad4130_setup_int_clk(struct ad4130_state *st)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 
--	return of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
-+	ret = of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(dev, ad4130_clk_del_provider, of_node);
- }
- 
- static int ad4130_setup(struct iio_dev *indio_dev)
+ 		switch (chan->address) {
+ 		case TEMPERATURE:
+ 			*val = t;
 -- 
 2.40.1
 
