@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42B4E713DBA
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE31713C8F
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:16:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbjE1T2X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:28:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45130 "EHLO
+        id S229772AbjE1TQO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:16:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230139AbjE1T2W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:28:22 -0400
+        with ESMTP id S229774AbjE1TQO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:16:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2471A7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:28:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBC5A0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:16:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3143A60F55
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F308C433D2;
-        Sun, 28 May 2023 19:28:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF0CB619A2
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:16:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC88C433EF;
+        Sun, 28 May 2023 19:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302099;
-        bh=kMF8ZiP0Nl3h+zvj7guPZoN4AgAlXMumLJJcEo1IiEY=;
+        s=korg; t=1685301372;
+        bh=IK3xFDM/vJDMW5hkcakojbUcbiGRgMjnwW2Em/OxSHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AIONZo/Fh6Y3Rs7iAZQT2RoUGFdXHFsfLashtUdNmHFeErtDMjtYvQ8ZBrJPl5lnF
-         yID00mEDHullcuReiJqVSlWuzTXvPN79abyJcz9Fl/O7uG884Bt7tWYPTapF3WBXzR
-         3z17tl1mtwzjulUxWMNLoZ3rr8bAAkECyY96rR3M=
+        b=otvWu+pbKtRpjiexixGvohEpRksY8RxYLdv039Tp+lk3fI84KVWiVyEzEXk0I4hkR
+         XbB0RI7ROYmfe1B2Upt2oPcQxS/IAOsbnDpUazW2/AF6Crio3rqI0BrtdFAu+ohEG7
+         TG7y9i1ktvyOV0ETSrzl2nisOINnJls42mIBaeBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 133/161] btrfs: use nofs when cleaning up aborted transactions
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Juergen Gross <jgross@suse.com>
+Subject: [PATCH 4.14 83/86] xen/pvcalls-back: fix double frees with pvcalls_new_active_socket()
 Date:   Sun, 28 May 2023 20:10:57 +0100
-Message-Id: <20230528190841.208197337@linuxfoundation.org>
+Message-Id: <20230528190831.706484607@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,166 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 597441b3436a43011f31ce71dc0a6c0bf5ce958a upstream.
+commit 8fafac202d18230bb9926bda48e563fd2cce2a4f upstream.
 
-Our CI system caught a lockdep splat:
+In the pvcalls_new_active_socket() function, most error paths call
+pvcalls_back_release_active(fedata->dev, fedata, map) which calls
+sock_release() on "sock".  The bug is that the caller also frees sock.
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  6.3.0-rc7+ #1167 Not tainted
-  ------------------------------------------------------
-  kswapd0/46 is trying to acquire lock:
-  ffff8c6543abd650 (sb_internal#2){++++}-{0:0}, at: btrfs_commit_inode_delayed_inode+0x5f/0x120
+Fix this by making every error path in pvcalls_new_active_socket()
+release the sock, and don't free it in the caller.
 
-  but task is already holding lock:
-  ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
-
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (fs_reclaim){+.+.}-{0:0}:
-	 fs_reclaim_acquire+0xa5/0xe0
-	 kmem_cache_alloc+0x31/0x2c0
-	 alloc_extent_state+0x1d/0xd0
-	 __clear_extent_bit+0x2e0/0x4f0
-	 try_release_extent_mapping+0x216/0x280
-	 btrfs_release_folio+0x2e/0x90
-	 invalidate_inode_pages2_range+0x397/0x470
-	 btrfs_cleanup_dirty_bgs+0x9e/0x210
-	 btrfs_cleanup_one_transaction+0x22/0x760
-	 btrfs_commit_transaction+0x3b7/0x13a0
-	 create_subvol+0x59b/0x970
-	 btrfs_mksubvol+0x435/0x4f0
-	 __btrfs_ioctl_snap_create+0x11e/0x1b0
-	 btrfs_ioctl_snap_create_v2+0xbf/0x140
-	 btrfs_ioctl+0xa45/0x28f0
-	 __x64_sys_ioctl+0x88/0xc0
-	 do_syscall_64+0x38/0x90
-	 entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  -> #0 (sb_internal#2){++++}-{0:0}:
-	 __lock_acquire+0x1435/0x21a0
-	 lock_acquire+0xc2/0x2b0
-	 start_transaction+0x401/0x730
-	 btrfs_commit_inode_delayed_inode+0x5f/0x120
-	 btrfs_evict_inode+0x292/0x3d0
-	 evict+0xcc/0x1d0
-	 inode_lru_isolate+0x14d/0x1e0
-	 __list_lru_walk_one+0xbe/0x1c0
-	 list_lru_walk_one+0x58/0x80
-	 prune_icache_sb+0x39/0x60
-	 super_cache_scan+0x161/0x1f0
-	 do_shrink_slab+0x163/0x340
-	 shrink_slab+0x1d3/0x290
-	 shrink_node+0x300/0x720
-	 balance_pgdat+0x35c/0x7a0
-	 kswapd+0x205/0x410
-	 kthread+0xf0/0x120
-	 ret_from_fork+0x29/0x50
-
-  other info that might help us debug this:
-
-   Possible unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(fs_reclaim);
-				 lock(sb_internal#2);
-				 lock(fs_reclaim);
-    lock(sb_internal#2);
-
-   *** DEADLOCK ***
-
-  3 locks held by kswapd0/46:
-   #0: ffffffffabe61b40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x4aa/0x7a0
-   #1: ffffffffabe50270 (shrinker_rwsem){++++}-{3:3}, at: shrink_slab+0x113/0x290
-   #2: ffff8c6543abd0e0 (&type->s_umount_key#44){++++}-{3:3}, at: super_cache_scan+0x38/0x1f0
-
-  stack backtrace:
-  CPU: 0 PID: 46 Comm: kswapd0 Not tainted 6.3.0-rc7+ #1167
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x58/0x90
-   check_noncircular+0xd6/0x100
-   ? save_trace+0x3f/0x310
-   ? add_lock_to_list+0x97/0x120
-   __lock_acquire+0x1435/0x21a0
-   lock_acquire+0xc2/0x2b0
-   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
-   start_transaction+0x401/0x730
-   ? btrfs_commit_inode_delayed_inode+0x5f/0x120
-   btrfs_commit_inode_delayed_inode+0x5f/0x120
-   btrfs_evict_inode+0x292/0x3d0
-   ? lock_release+0x134/0x270
-   ? __pfx_wake_bit_function+0x10/0x10
-   evict+0xcc/0x1d0
-   inode_lru_isolate+0x14d/0x1e0
-   __list_lru_walk_one+0xbe/0x1c0
-   ? __pfx_inode_lru_isolate+0x10/0x10
-   ? __pfx_inode_lru_isolate+0x10/0x10
-   list_lru_walk_one+0x58/0x80
-   prune_icache_sb+0x39/0x60
-   super_cache_scan+0x161/0x1f0
-   do_shrink_slab+0x163/0x340
-   shrink_slab+0x1d3/0x290
-   shrink_node+0x300/0x720
-   balance_pgdat+0x35c/0x7a0
-   kswapd+0x205/0x410
-   ? __pfx_autoremove_wake_function+0x10/0x10
-   ? __pfx_kswapd+0x10/0x10
-   kthread+0xf0/0x120
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x29/0x50
-   </TASK>
-
-This happens because when we abort the transaction in the transaction
-commit path we call invalidate_inode_pages2_range on our block group
-cache inodes (if we have space cache v1) and any delalloc inodes we may
-have.  The plain invalidate_inode_pages2_range() call passes through
-GFP_KERNEL, which makes sense in most cases, but not here.  Wrap these
-two invalidate callees with memalloc_nofs_save/memalloc_nofs_restore to
-make sure we don't end up with the fs reclaim dependency under the
-transaction dependency.
-
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 5db4d286a8ef ("xen/pvcalls: implement connect command")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/e5f98dc2-0305-491f-a860-71bbd1398a2f@kili.mountain
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/xen/pvcalls-back.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4408,7 +4408,11 @@ static void btrfs_destroy_delalloc_inode
- 		 */
- 		inode = igrab(&btrfs_inode->vfs_inode);
- 		if (inode) {
-+			unsigned int nofs_flag;
-+
-+			nofs_flag = memalloc_nofs_save();
- 			invalidate_inode_pages2(inode->i_mapping);
-+			memalloc_nofs_restore(nofs_flag);
- 			iput(inode);
- 		}
- 		spin_lock(&root->delalloc_lock);
-@@ -4526,7 +4530,12 @@ static void btrfs_cleanup_bg_io(struct b
+--- a/drivers/xen/pvcalls-back.c
++++ b/drivers/xen/pvcalls-back.c
+@@ -338,8 +338,10 @@ static struct sock_mapping *pvcalls_new_
+ 	void *page;
  
- 	inode = cache->io_ctl.inode;
- 	if (inode) {
-+		unsigned int nofs_flag;
-+
-+		nofs_flag = memalloc_nofs_save();
- 		invalidate_inode_pages2(inode->i_mapping);
-+		memalloc_nofs_restore(nofs_flag);
-+
- 		BTRFS_I(inode)->generation = 0;
- 		cache->io_ctl.inode = NULL;
- 		iput(inode);
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+-	if (map == NULL)
++	if (map == NULL) {
++		sock_release(sock);
+ 		return NULL;
++	}
+ 
+ 	map->fedata = fedata;
+ 	map->sock = sock;
+@@ -431,10 +433,8 @@ static int pvcalls_back_connect(struct x
+ 					req->u.connect.ref,
+ 					req->u.connect.evtchn,
+ 					sock);
+-	if (!map) {
++	if (!map)
+ 		ret = -EFAULT;
+-		sock_release(sock);
+-	}
+ 
+ out:
+ 	rsp = RING_GET_RESPONSE(&fedata->ring, fedata->ring.rsp_prod_pvt++);
+@@ -575,7 +575,6 @@ static void __pvcalls_back_accept(struct
+ 					sock);
+ 	if (!map) {
+ 		ret = -EFAULT;
+-		sock_release(sock);
+ 		goto out_error;
+ 	}
+ 
 
 
