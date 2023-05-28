@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C60713FC7
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8326713E35
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231377AbjE1Ts5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34862 "EHLO
+        id S230286AbjE1TdF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:33:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231393AbjE1Tsz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:48:55 -0400
+        with ESMTP id S230294AbjE1TdE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:33:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F1CE1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:48:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF7AA3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:33:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7705E62004
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AC8C433EF;
-        Sun, 28 May 2023 19:48:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85E0C61DBC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:33:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F5AC4339B;
+        Sun, 28 May 2023 19:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303331;
-        bh=MPUKUD3Ude5txd15bwOm4zTWDhjg7NyNOPaZ35ze0Qg=;
+        s=korg; t=1685302383;
+        bh=mZ4KTD5fen5f2gRmA4Ey8cU94SF+hCSv6BZdHdLB/cs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L2okzRWz5/iqAYgxA9xJzdgrOs1tocczhMwk1PSqso6Ez/ymWeodVf4m0+CqpsAUV
-         Rg5REl5KGK8BSJYwPhr+5XC8tFkojEaqBLsD7FKClw10U1q/h/d6nDcvArxc12dFae
-         mGY4x8wBv7OM/j84P6JmC836jv1XSbLBA1t1sqHw=
+        b=kzyYgzcywNPooa127ygFBerqx9xuh7wi+S7jOzwTr1xpqGHGqR7wyJE9wyKXoEotX
+         oD7c+JwqhREkgbo7qWUtQdKQPfmtzDlvcjM7nuGfiY27GjF4y85DHmKXeJpqy1SOU8
+         3C73fnWFSrz95+mAPO6VIXCivD6eX9LqNpc0zVxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 08/69] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+        patches@lists.linux.dev, Erez Shitrit <erezsh@nvidia.com>,
+        Alex Vesker <valex@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.3 112/127] net/mlx5: DR, Fix crc32 calculation to work on big-endian (BE) CPUs
 Date:   Sun, 28 May 2023 20:11:28 +0100
-Message-Id: <20230528190828.656041914@linuxfoundation.org>
+Message-Id: <20230528190839.901714963@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
-References: <20230528190828.358612414@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,94 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Erez Shitrit <erezsh@nvidia.com>
 
-(cherry picked from upstream fc96ec826bced75cc6b9c07a4ac44bbf651337ab)
+commit 1e5daf5565b61a96e570865091589afc9156e3d3 upstream.
 
-On CPM, the RISC core is a lot more efficiant when doing transfers
-in 16-bits chunks than in 8-bits chunks, but unfortunately the
-words need to be byte swapped as seen in a previous commit.
+When calculating crc for hash index we use the function crc32 that
+calculates for little-endian (LE) arch.
+Then we convert it to network endianness using htonl(), but it's wrong
+to do the conversion in BE archs since the crc32 value is already LE.
 
-So, for large tranfers with an even size, allocate a temporary tx
-buffer and byte-swap data before and after transfer.
+The solution is to switch the bytes from the crc result for all types
+of arc.
 
-This change allows setting higher speed for transfer. For instance
-on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
-that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
-at 25 MHz while a word transfer at the same speed uses 0.032%
-of CPM load. This means the speed can be 6 times higher in
-word mode for the same CPM load.
-
-For the time being, only do it on CPM1 as there must be a
-trade-off between the CPM load reduction and the CPU load required
-to byte swap the data.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 40416d8ede65 ("net/mlx5: DR, Replace CRC32 implementation to use kernel lib")
+Signed-off-by: Erez Shitrit <erezsh@nvidia.com>
+Reviewed-by: Alex Vesker <valex@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
- drivers/spi/spi-fsl-spi.c |    3 +++
- 2 files changed, 26 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -21,6 +21,7 @@
- #include <linux/spi/spi.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
-+#include <linux/byteorder/generic.h>
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ste.c
+@@ -15,7 +15,8 @@ static u32 dr_ste_crc32_calc(const void
+ {
+ 	u32 crc = crc32(0, input_data, length);
  
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
- 		mspi->rx_dma = mspi->dma_dummy_rx;
- 		mspi->map_rx_dma = 0;
- 	}
-+	if (t->bits_per_word == 16 && t->tx_buf) {
-+		const u16 *src = t->tx_buf;
-+		u16 *dst;
-+		int i;
-+
-+		dst = kmalloc(t->len, GFP_KERNEL);
-+		if (!dst)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < t->len >> 1; i++)
-+			dst[i] = cpu_to_le16p(src + i);
-+
-+		mspi->tx = dst;
-+		mspi->map_tx_dma = 1;
-+	}
- 
- 	if (mspi->map_tx_dma) {
- 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
-@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
- 	if (mspi->map_rx_dma)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
-+
-+	if (t->bits_per_word == 16 && t->rx_buf) {
-+		int i;
-+
-+		for (i = 0; i < t->len; i += 2)
-+			le16_to_cpus(t->rx_buf + i);
-+	}
+-	return (__force u32)htonl(crc);
++	return (__force u32)((crc >> 24) & 0xff) | ((crc << 8) & 0xff0000) |
++			    ((crc >> 8) & 0xff00) | ((crc << 24) & 0xff000000);
  }
- EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
  
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -368,6 +368,9 @@ static int fsl_spi_do_one_msg(struct spi
- 				return -EINVAL;
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
-+			if (t->bits_per_word == 8 && t->len >= 256 &&
-+			    (mpc8xxx_spi->flags & SPI_CPM1))
-+				t->bits_per_word = 16;
- 		}
- 	}
- 
+ bool mlx5dr_ste_supp_ttl_cs_recalc(struct mlx5dr_cmd_caps *caps)
 
 
