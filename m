@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDA81713FDB
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 229DA713FDC
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231405AbjE1Ttt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:49:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35328 "EHLO
+        id S231404AbjE1Ttw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:49:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231407AbjE1Tts (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA93F9C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:47 -0700 (PDT)
+        with ESMTP id S231398AbjE1Ttv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:49:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419A29C
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:49:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 521D962023
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E33C433EF;
-        Sun, 28 May 2023 19:49:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE0D562036
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:49:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8498C433EF;
+        Sun, 28 May 2023 19:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303386;
-        bh=Ima5WBTGAQip3VNZZXYRFN57qAXgEIT9Tl8MIGXwSL8=;
+        s=korg; t=1685303389;
+        bh=VvpJDmCc/TNYqMDyFaSIriBvU21n2LX02zpMU4Zo9wE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tWQytnvEN3bQBQQycRweuTBucROQKc2Tkd8JrYhMlKCVMerJVHN2nHbGdRS2egfRI
-         vLLRnXgic/v54C0LL7TqILqCh72XhbDnM6BsYl8XXgiXWG2Sha3dVdKX1DhWf+SkU9
-         XLhY28Rx3XK9ZCY6WRsXJlx+PKWM1F7R3TlGIj4c=
+        b=e5GlNON9RXzCUjLIZyra4PA8oGSjWfcD3Rd8ZJjs3wCxO3VApkQYTjjlw6tl+m7zw
+         KTFOqWp8bUBElY33NImLl3rnA5zbdJAp7TewALAOgEUddkKfxzN1D7svGXhnSrGXhA
+         S85wTkalZrG6KB0DKyHTJfwBmWsENDD4QKznFWxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vernon Lovejoy <vlovejoy@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 55/69] x86/show_trace_log_lvl: Ensure stack pointer is aligned, again
-Date:   Sun, 28 May 2023 20:12:15 +0100
-Message-Id: <20230528190830.426912582@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 56/69] ASoC: Intel: Skylake: Fix declaration of enum skl_ch_cfg
+Date:   Sun, 28 May 2023 20:12:16 +0100
+Message-Id: <20230528190830.465238227@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528190828.358612414@linuxfoundation.org>
 References: <20230528190828.358612414@linuxfoundation.org>
@@ -44,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,69 +56,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vernon Lovejoy <vlovejoy@redhat.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-commit 2e4be0d011f21593c6b316806779ba1eba2cd7e0 upstream.
+commit 95109657471311601b98e71f03d0244f48dc61bb upstream.
 
-The commit e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-tried to align the stack pointer in show_trace_log_lvl(), otherwise the
-"stack < stack_info.end" check can't guarantee that the last read does
-not go past the end of the stack.
+Constant 'C4_CHANNEL' does not exist on the firmware side. Value 0xC is
+reserved for 'C7_1' instead.
 
-However, we have the same problem with the initial value of the stack
-pointer, it can also be unaligned. So without this patch this trivial
-kernel module
-
-	#include <linux/module.h>
-
-	static int init(void)
-	{
-		asm volatile("sub    $0x4,%rsp");
-		dump_stack();
-		asm volatile("add    $0x4,%rsp");
-
-		return -EAGAIN;
-	}
-
-	module_init(init);
-	MODULE_LICENSE("GPL");
-
-crashes the kernel.
-
-Fixes: e335bb51cc15 ("x86/unwind: Ensure stack pointer is aligned")
-Signed-off-by: Vernon Lovejoy <vlovejoy@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20230512104232.GA10227@redhat.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 04afbbbb1cba ("ASoC: Intel: Skylake: Update the topology interface structure")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20230519201711.4073845-4-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/dumpstack.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/uapi/sound/skl-tplg-interface.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -195,7 +195,6 @@ static void show_trace_log_lvl(struct ta
- 	printk("%sCall Trace:\n", log_lvl);
+--- a/include/uapi/sound/skl-tplg-interface.h
++++ b/include/uapi/sound/skl-tplg-interface.h
+@@ -66,7 +66,8 @@ enum skl_ch_cfg {
+ 	SKL_CH_CFG_DUAL_MONO = 9,
+ 	SKL_CH_CFG_I2S_DUAL_STEREO_0 = 10,
+ 	SKL_CH_CFG_I2S_DUAL_STEREO_1 = 11,
+-	SKL_CH_CFG_4_CHANNEL = 12,
++	SKL_CH_CFG_7_1 = 12,
++	SKL_CH_CFG_4_CHANNEL = SKL_CH_CFG_7_1,
+ 	SKL_CH_CFG_INVALID
+ };
  
- 	unwind_start(&state, task, regs, stack);
--	stack = stack ? : get_stack_pointer(task, regs);
- 	regs = unwind_get_entry_regs(&state, &partial);
- 
- 	/*
-@@ -214,9 +213,13 @@ static void show_trace_log_lvl(struct ta
- 	 * - hardirq stack
- 	 * - entry stack
- 	 */
--	for ( ; stack; stack = PTR_ALIGN(stack_info.next_sp, sizeof(long))) {
-+	for (stack = stack ?: get_stack_pointer(task, regs);
-+	     stack;
-+	     stack = stack_info.next_sp) {
- 		const char *stack_name;
- 
-+		stack = PTR_ALIGN(stack, sizeof(long));
-+
- 		if (get_stack_info(stack, task, &stack_info, &visit_mask)) {
- 			/*
- 			 * We weren't on a valid stack.  It's possible that
 
 
