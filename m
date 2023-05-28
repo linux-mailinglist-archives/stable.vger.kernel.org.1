@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70DA8713E75
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E55CA713C51
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230376AbjE1Tfl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:35:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51578 "EHLO
+        id S229501AbjE1TOU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:14:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230370AbjE1Tfk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:35:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91604BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:35:39 -0700 (PDT)
+        with ESMTP id S229632AbjE1TOT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506CAF4
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:14:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7223961E06
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:35:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B26C433EF;
-        Sun, 28 May 2023 19:35:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC9AC61943
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:14:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEB0C433EF;
+        Sun, 28 May 2023 19:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302538;
-        bh=POgPahcTg1VFE65JOxLCqUFxAHkIII2BQn2FO8T9HIM=;
+        s=korg; t=1685301251;
+        bh=Wofvu0uYSW1dsOaFF3klLrihLIDNEaJRFZsG87h1pLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FTbdAAc9jJPRrasUWSZdNc2p4OwVF7ZTNze9k7l7FTe37kECI8OiYRVlSzMHZb8YV
-         NpLhLOl8Ra2RV/9P7H3DxilkhE6x0j4D+vQWHkIjOc3gFWtiGJe7dp3qNaSHgoC10S
-         srQ8FbQzw0a/6G+P4GRJRA1WBeizHni3O7g8OFEo=
+        b=rR44UOIWfs5eHU+YL2WY0DDWLnirtsAZk3H2c10yjXKrUr63qxH5hNFryCgnRbed9
+         1pxLzlDlim1FfUJu9ej+VHVshzcr/okGKCmN05HrQ8bYbREqC5+zBNMRQaLm0oNUki
+         NY0SgRNBBifSPEM6UXThbosK2LbU3tFqzQoisJUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 015/119] ocfs2: Switch to security_inode_init_security()
+        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 41/86] vsock: avoid to close connected socket after the timeout
 Date:   Sun, 28 May 2023 20:10:15 +0100
-Message-Id: <20230528190835.838766017@linuxfoundation.org>
+Message-Id: <20230528190830.119083940@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
-References: <20230528190835.386670951@linuxfoundation.org>
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+References: <20230528190828.564682883@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,118 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Zhuang Shengen <zhuangshengen@huawei.com>
 
-commit de3004c874e740304cc4f4a83d6200acb511bbda upstream.
+[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
 
-In preparation for removing security_old_inode_init_security(), switch to
-security_inode_init_security().
+When client and server establish a connection through vsock,
+the client send a request to the server to initiate the connection,
+then start a timer to wait for the server's response. When the server's
+RESPONSE message arrives, the timer also times out and exits. The
+server's RESPONSE message is processed first, and the connection is
+established. However, the client's timer also times out, the original
+processing logic of the client is to directly set the state of this vsock
+to CLOSE and return ETIMEDOUT. It will not notify the server when the port
+is released, causing the server port remain.
+when client's vsock_connect timeout，it should check sk state is
+ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
+is established, the client should not set the sk state to CLOSE
 
-Extend the existing ocfs2_initxattrs() to take the
-ocfs2_security_xattr_info structure from fs_info, and populate the
-name/value/len triple with the first xattr provided by LSMs.
+Note: I encountered this issue on kernel-4.18, which can be fixed by
+this patch. Then I checked the latest code in the community
+and found similar issue.
 
-As fs_info was not used before, ocfs2_initxattrs() can now handle the case
-of replicating the behavior of security_old_inode_init_security(), i.e.
-just obtaining the xattr, in addition to setting all xattrs provided by
-LSMs.
-
-Supporting multiple xattrs is not currently supported where
-security_old_inode_init_security() was called (mknod, symlink), as it
-requires non-trivial changes that can be done at a later time. Like for
-reiserfs, even if EVM is invoked, it will not provide an xattr (if it is
-not the first to set it, its xattr will be discarded; if it is the first,
-it does not have xattrs to calculate the HMAC on).
-
-Finally, since security_inode_init_security(), unlike
-security_old_inode_init_security(), returns zero instead of -EOPNOTSUPP if
-no xattrs were provided by LSMs or if inodes are private, additionally
-check in ocfs2_init_security_get() if the xattr name is set.
-
-If not, act as if security_old_inode_init_security() returned -EOPNOTSUPP,
-and set si->enable to zero to notify to the functions following
-ocfs2_init_security_get() that no xattrs are available.
-
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c |    2 ++
- fs/ocfs2/xattr.c |   30 ++++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 4 deletions(-)
+ net/vmw_vsock/af_vsock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -242,6 +242,7 @@ static int ocfs2_mknod(struct user_names
- 	int want_meta = 0;
- 	int xattr_credits = 0;
- 	struct ocfs2_security_xattr_info si = {
-+		.name = NULL,
- 		.enable = 1,
- 	};
- 	int did_quota_inode = 0;
-@@ -1805,6 +1806,7 @@ static int ocfs2_symlink(struct user_nam
- 	int want_clusters = 0;
- 	int xattr_credits = 0;
- 	struct ocfs2_security_xattr_info si = {
-+		.name = NULL,
- 		.enable = 1,
- 	};
- 	int did_quota = 0, did_quota_inode = 0;
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -7259,9 +7259,21 @@ static int ocfs2_xattr_security_set(cons
- static int ocfs2_initxattrs(struct inode *inode, const struct xattr *xattr_array,
- 		     void *fs_info)
- {
-+	struct ocfs2_security_xattr_info *si = fs_info;
- 	const struct xattr *xattr;
- 	int err = 0;
- 
-+	if (si) {
-+		si->value = kmemdup(xattr_array->value, xattr_array->value_len,
-+				    GFP_KERNEL);
-+		if (!si->value)
-+			return -ENOMEM;
-+
-+		si->name = xattr_array->name;
-+		si->value_len = xattr_array->value_len;
-+		return 0;
-+	}
-+
- 	for (xattr = xattr_array; xattr->name != NULL; xattr++) {
- 		err = ocfs2_xattr_set(inode, OCFS2_XATTR_INDEX_SECURITY,
- 				      xattr->name, xattr->value,
-@@ -7277,13 +7289,23 @@ int ocfs2_init_security_get(struct inode
- 			    const struct qstr *qstr,
- 			    struct ocfs2_security_xattr_info *si)
- {
-+	int ret;
-+
- 	/* check whether ocfs2 support feature xattr */
- 	if (!ocfs2_supports_xattr(OCFS2_SB(dir->i_sb)))
- 		return -EOPNOTSUPP;
--	if (si)
--		return security_old_inode_init_security(inode, dir, qstr,
--							&si->name, &si->value,
--							&si->value_len);
-+	if (si) {
-+		ret = security_inode_init_security(inode, dir, qstr,
-+						   &ocfs2_initxattrs, si);
-+		/*
-+		 * security_inode_init_security() does not return -EOPNOTSUPP,
-+		 * we have to check the xattr ourselves.
-+		 */
-+		if (!ret && !si->name)
-+			si->enable = 0;
-+
-+		return ret;
-+	}
- 
- 	return security_inode_init_security(inode, dir, qstr,
- 					    &ocfs2_initxattrs, NULL);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 2ec4359d7321d..356f5525a0028 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1247,7 +1247,7 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
+ 			vsock_transport_cancel_pkt(vsk);
+ 			vsock_remove_connected(vsk);
+ 			goto out_wait;
+-		} else if (timeout == 0) {
++		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+ 			err = -ETIMEDOUT;
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
+-- 
+2.39.2
+
 
 
