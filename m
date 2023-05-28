@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E15A713CBF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A05AC713D58
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbjE1TSP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
+        id S230024AbjE1TYY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:24:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229830AbjE1TSN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:13 -0400
+        with ESMTP id S230022AbjE1TYY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC07A0
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A271ABB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F2E861A2B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB77C433EF;
-        Sun, 28 May 2023 19:18:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A71A61BB3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2BCC433D2;
+        Sun, 28 May 2023 19:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301489;
-        bh=nH/toalEzVo2/o1Taz0tVWXd3gRJySjVLbuWOffDaOc=;
+        s=korg; t=1685301862;
+        bh=0dgqrvT8RCZqWL51rahR045Hjc2XDtKKbgGz2xckccM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wieCwguaR3pDEs9QV9MuioLkiVvnAKkQr//v/Wl5ths91MNT4C0nzc43KrvYdbAgX
-         30XqCQ4EPOaO5NGDF9RB0ErGT2pbNeERYls6HQt2C6kp+lCOQ2V8k8sFnJadb2gn9Y
-         90h1WDp/f4Yoh7CrpPfjmJyVwg4Wz4EznvTe16CQ=
+        b=x/wAzH3l7DgZsJ6NdldvWo5fKr39oHM6QxAzozEsV16pSgF8ohx8cGvuKqJMv+nj/
+         IDqDCV0tmmbIQtew/VDySsxnMv7n5qLxhFaIK2a/Cwulom+LliwxMJjyM1PC1JlvBD
+         saPhJwc3BjUVVbVEpUwJzU0J90VkaYpq267zhzNI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Renninger <trenn@suse.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Wyes Karny <wyes.karny@amd.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Zhuang Shengen <zhuangshengen@huawei.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 049/132] cpupower: Make TSC read per CPU for Mperf monitor
+Subject: [PATCH 5.4 064/161] vsock: avoid to close connected socket after the timeout
 Date:   Sun, 28 May 2023 20:09:48 +0100
-Message-Id: <20230528190835.079140179@linuxfoundation.org>
+Message-Id: <20230528190839.206384241@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,157 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wyes Karny <wyes.karny@amd.com>
+From: Zhuang Shengen <zhuangshengen@huawei.com>
 
-[ Upstream commit c2adb1877b76fc81ae041e1db1a6ed2078c6746b ]
+[ Upstream commit 6d4486efe9c69626cab423456169e250a5cd3af5 ]
 
-System-wide TSC read could cause a drift in C0 percentage calculation.
-Because if first TSC is read and then one by one mperf is read for all
-cpus, this introduces drift between mperf reading of later CPUs and TSC
-reading.  To lower this drift read TSC per CPU and also just after mperf
-read.  This technique improves C0 percentage calculation in Mperf monitor.
+When client and server establish a connection through vsock,
+the client send a request to the server to initiate the connection,
+then start a timer to wait for the server's response. When the server's
+RESPONSE message arrives, the timer also times out and exits. The
+server's RESPONSE message is processed first, and the connection is
+established. However, the client's timer also times out, the original
+processing logic of the client is to directly set the state of this vsock
+to CLOSE and return ETIMEDOUT. It will not notify the server when the port
+is released, causing the server port remain.
+when client's vsock_connect timeout，it should check sk state is
+ESTABLISHED or not. if sk state is ESTABLISHED, it means the connection
+is established, the client should not set the sk state to CLOSE
 
-Before fix: (System 100% busy)
+Note: I encountered this issue on kernel-4.18, which can be fixed by
+this patch. Then I checked the latest code in the community
+and found similar issue.
 
-              | Mperf              || RAPL        || Idle_Stats
- PKG|CORE| CPU| C0   | Cx   | Freq  || pack | core  || POLL | C1   | C2
-   0|   0|   0| 87.15| 12.85|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   0| 256| 84.62| 15.38|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   1|   1| 87.15| 12.85|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   1| 257| 84.08| 15.92|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   2|   2| 86.61| 13.39|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   2| 258| 83.26| 16.74|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   3|   3| 86.61| 13.39|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   3| 259| 83.60| 16.40|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   4|   4| 86.33| 13.67|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   4| 260| 83.33| 16.67|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   5|   5| 86.06| 13.94|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   5| 261| 83.05| 16.95|  2695||168659003|3970468||  0.00|  0.00| 0.00
-   0|   6|   6| 85.51| 14.49|  2695||168659003|3970468||  0.00|  0.00| 0.00
-
-After fix: (System 100% busy)
-
-             | Mperf              || RAPL        || Idle_Stats
- PKG|CORE| CPU| C0   | Cx   | Freq  || pack | core  || POLL | C1   | C2
-   0|   0|   0| 98.03|  1.97|  2415||163295480|3811189||  0.00|  0.00| 0.00
-   0|   0| 256| 98.50|  1.50|  2394||163295480|3811189||  0.00|  0.00| 0.00
-   0|   1|   1| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   1| 257| 99.99|  0.01|  2375||163295480|3811189||  0.00|  0.00| 0.00
-   0|   2|   2| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   2| 258|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   3|   3|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   3| 259| 99.99|  0.01|  2435||163295480|3811189||  0.00|  0.00| 0.00
-   0|   4|   4|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   4| 260|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
-   0|   5|   5| 99.99|  0.01|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   5| 261|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
-   0|   6|   6|100.00|  0.00|  2401||163295480|3811189||  0.00|  0.00| 0.00
-   0|   6| 262|100.00|  0.00|  2435||163295480|3811189||  0.00|  0.00| 0.00
-
-Cc: Thomas Renninger <trenn@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Dominik Brodowski <linux@dominikbrodowski.net>
-
-Fixes: 7fe2f6399a84 ("cpupowerutils - cpufrequtils extended with quite some features")
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Zhuang Shengen <zhuangshengen@huawei.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../utils/idle_monitor/mperf_monitor.c        | 31 +++++++++----------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ net/vmw_vsock/af_vsock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index d7c2a6d13dea1..2221e43c63ce0 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -67,8 +67,8 @@ static int max_freq_mode;
-  */
- static unsigned long max_frequency;
- 
--static unsigned long long tsc_at_measure_start;
--static unsigned long long tsc_at_measure_end;
-+static unsigned long long *tsc_at_measure_start;
-+static unsigned long long *tsc_at_measure_end;
- static unsigned long long *mperf_previous_count;
- static unsigned long long *aperf_previous_count;
- static unsigned long long *mperf_current_count;
-@@ -131,7 +131,7 @@ static int mperf_get_count_percent(unsigned int id, double *percent,
- 	aperf_diff = aperf_current_count[cpu] - aperf_previous_count[cpu];
- 
- 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
--		tsc_diff = tsc_at_measure_end - tsc_at_measure_start;
-+		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
- 		*percent = 100.0 * mperf_diff / tsc_diff;
- 		dprint("%s: TSC Ref - mperf_diff: %llu, tsc_diff: %llu\n",
- 		       mperf_cstates[id].name, mperf_diff, tsc_diff);
-@@ -168,7 +168,7 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
- 
- 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
- 		/* Calculate max_freq from TSC count */
--		tsc_diff = tsc_at_measure_end - tsc_at_measure_start;
-+		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
- 		time_diff = timespec_diff_us(time_start, time_end);
- 		max_frequency = tsc_diff / time_diff;
- 	}
-@@ -187,33 +187,27 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
- static int mperf_start(void)
- {
- 	int cpu;
--	unsigned long long dbg;
- 
- 	clock_gettime(CLOCK_REALTIME, &time_start);
--	mperf_get_tsc(&tsc_at_measure_start);
- 
--	for (cpu = 0; cpu < cpu_count; cpu++)
-+	for (cpu = 0; cpu < cpu_count; cpu++) {
-+		mperf_get_tsc(&tsc_at_measure_start[cpu]);
- 		mperf_init_stats(cpu);
-+	}
- 
--	mperf_get_tsc(&dbg);
--	dprint("TSC diff: %llu\n", dbg - tsc_at_measure_start);
- 	return 0;
- }
- 
- static int mperf_stop(void)
- {
--	unsigned long long dbg;
- 	int cpu;
- 
--	for (cpu = 0; cpu < cpu_count; cpu++)
-+	for (cpu = 0; cpu < cpu_count; cpu++) {
- 		mperf_measure_stats(cpu);
-+		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+	}
- 
--	mperf_get_tsc(&tsc_at_measure_end);
- 	clock_gettime(CLOCK_REALTIME, &time_end);
--
--	mperf_get_tsc(&dbg);
--	dprint("TSC diff: %llu\n", dbg - tsc_at_measure_end);
--
- 	return 0;
- }
- 
-@@ -311,7 +305,8 @@ struct cpuidle_monitor *mperf_register(void)
- 	aperf_previous_count = calloc(cpu_count, sizeof(unsigned long long));
- 	mperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
- 	aperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
--
-+	tsc_at_measure_start = calloc(cpu_count, sizeof(unsigned long long));
-+	tsc_at_measure_end = calloc(cpu_count, sizeof(unsigned long long));
- 	mperf_monitor.name_len = strlen(mperf_monitor.name);
- 	return &mperf_monitor;
- }
-@@ -322,6 +317,8 @@ void mperf_unregister(void)
- 	free(aperf_previous_count);
- 	free(mperf_current_count);
- 	free(aperf_current_count);
-+	free(tsc_at_measure_start);
-+	free(tsc_at_measure_end);
- 	free(is_valid);
- }
- 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 28f6188458c42..4cd65a1a07f97 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1232,7 +1232,7 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
+ 			vsock_transport_cancel_pkt(vsk);
+ 			vsock_remove_connected(vsk);
+ 			goto out_wait;
+-		} else if (timeout == 0) {
++		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+ 			err = -ETIMEDOUT;
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
 -- 
 2.39.2
 
