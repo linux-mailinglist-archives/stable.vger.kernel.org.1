@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8211D713F3C
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11E9E713CD2
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231214AbjE1TnW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58466 "EHLO
+        id S229846AbjE1TS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231213AbjE1TnV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:43:21 -0400
+        with ESMTP id S229862AbjE1TS4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3339C
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:43:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE27A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2A4961195
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:43:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07556C433A0;
-        Sun, 28 May 2023 19:43:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D4E161A6D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A567C433D2;
+        Sun, 28 May 2023 19:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302999;
-        bh=LI4b+9tFb/RqbTrXw9A7qgu7+paR6/5YEOhHq/OMQwo=;
+        s=korg; t=1685301534;
+        bh=+x8kWL0OrRN0PHoFRxlfXYZ+NObFLk1E+u2mn6dubfw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hY+45ONQT3dViGBBWmSSXkOFLZnWZ5YZd0r4eZZvEKBLaTbzYikUYRpq3gS+s0wKB
-         99OvFYz0owbM85H9fJNUoah/Cp2jUaKKMjhLmwGJxbh4DMo1ELqPdGFI/EfLO38jbw
-         0wOGHwEukLYkuxZr65vOsv3HXQfIdvP4fmK1Q87U=
+        b=UXz4IBZ0UU0V3qe5JcBOl3S6koRTlOwYQN+z2RW2CBRHDNQxcEusSHCM3prE1nqEa
+         k9Qu/aU8Ql2Ixw2FdiebbcTkbAtDEFosKB4Z4P2sTnUskexc7CJZ5KU41t3UBvhZaL
+         YxTHEfBbPDgGQJkhiqvTGPxDZ2Fn9IObqC0wH2QI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/211] btrfs: fix space cache inconsistency after error loading it from disk
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 4.19 068/132] usb: typec: altmodes/displayport: fix pin_assignment_show
 Date:   Sun, 28 May 2023 20:10:07 +0100
-Message-Id: <20230528190845.756865604@linuxfoundation.org>
+Message-Id: <20230528190835.627079592@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit 0004ff15ea26015a0a3a6182dca3b9d1df32e2b7 ]
+commit d8f28269dd4bf9b55c3fb376ae31512730a96fce upstream.
 
-When loading a free space cache from disk, at __load_free_space_cache(),
-if we fail to insert a bitmap entry, we still increment the number of
-total bitmaps in the btrfs_free_space_ctl structure, which is incorrect
-since we failed to add the bitmap entry. On error we then empty the
-cache by calling __btrfs_remove_free_space_cache(), which will result
-in getting the total bitmaps counter set to 1.
+This patch fixes negative indexing of buf array in pin_assignment_show
+when get_current_pin_assignments returns 0 i.e. no compatible pin
+assignments are found.
 
-A failure to load a free space cache is not critical, so if a failure
-happens we just rebuild the cache by scanning the extent tree, which
-happens at block-group.c:caching_thread(). Yet the failure will result
-in having the total bitmaps of the btrfs_free_space_ctl always bigger
-by 1 then the number of bitmap entries we have. So fix this by having
-the total bitmaps counter be incremented only if we successfully added
-the bitmap entry.
+BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
+...
+Call trace:
+dump_backtrace+0x110/0x204
+dump_stack_lvl+0x84/0xbc
+print_report+0x358/0x974
+kasan_report+0x9c/0xfc
+__do_kernel_fault+0xd4/0x2d4
+do_bad_area+0x48/0x168
+do_tag_check_fault+0x24/0x38
+do_mem_abort+0x6c/0x14c
+el1_abort+0x44/0x68
+el1h_64_sync_handler+0x64/0xa4
+el1h_64_sync+0x78/0x7c
+pin_assignment_show+0x26c/0x33c
+dev_attr_show+0x50/0xc0
 
-Fixes: a67509c30079 ("Btrfs: add a io_ctl struct and helpers for dealing with the space cache")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-CC: stable@vger.kernel.org # 4.4+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230508214443.893436-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-cache.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index ba280707d5ec2..4989c60b1df9c 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -794,15 +794,16 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
- 			}
- 			spin_lock(&ctl->tree_lock);
- 			ret = link_free_space(ctl, e);
--			ctl->total_bitmaps++;
--			ctl->op->recalc_thresholds(ctl);
--			spin_unlock(&ctl->tree_lock);
- 			if (ret) {
-+				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
-+			ctl->total_bitmaps++;
-+			ctl->op->recalc_thresholds(ctl);
-+			spin_unlock(&ctl->tree_lock);
- 			list_add_tail(&e->list, &bitmaps);
- 		}
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -501,6 +501,10 @@ static ssize_t pin_assignment_show(struc
  
--- 
-2.39.2
-
+ 	mutex_unlock(&dp->lock);
+ 
++	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
++	if (len == 0)
++		len++;
++
+ 	buf[len - 1] = '\n';
+ 	return len;
+ }
 
 
