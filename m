@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBB90713D66
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92DE4713CCF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjE1TZA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:25:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41920 "EHLO
+        id S229863AbjE1TSx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:18:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbjE1TY7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:24:59 -0400
+        with ESMTP id S229849AbjE1TSv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857BBA3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:24:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B78A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23BEE61B9F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4328EC433EF;
-        Sun, 28 May 2023 19:24:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D482461A6D
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA11AC433EF;
+        Sun, 28 May 2023 19:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301897;
-        bh=98sajEv0tHNw2PgOQpWN5m2kGn3JYJ7/rbT7yyHuWJw=;
+        s=korg; t=1685301529;
+        bh=ix7Zlo2wEhgrYrjU0RCJYqpXIXSck7jDSRzxu3rRb/g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gZnnQHHe0QRX3tt6wghWQp8NUjKn4W/SYEB7H93olBgWVeP7wDd7yDmeBBpVeEvD8
-         phnGNekRhXoTb3v9mPJsZo3vBIgSrwYZDrzFCxKdImv8sFqdgDZosc974FDzGg6NpA
-         d/bmSRwmuvo/5ro/g7fRIdBTESc2xqZHfE67Mgc0=
+        b=OCgiWXcOFsiDXmFH8xdJyd7FLYOCtWwRvJc659n4fzyEdBrHCN8mQQbilfPhU53FF
+         foRfYerNGpQVOjvyGubOzDIkxzY7GJxlkHiys5/gW/8anHvtetdCSM87HgDEdSORWu
+         MVaY28DBJs30tZTNrKpKcpLafvg5Y5BUvBwyDDMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,12 +35,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Eric Dumazet <edumazet@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 080/161] vlan: fix a potential uninit-value in vlan_dev_hard_start_xmit()
-Date:   Sun, 28 May 2023 20:10:04 +0100
-Message-Id: <20230528190839.688199698@linuxfoundation.org>
+Subject: [PATCH 4.19 066/132] vlan: fix a potential uninit-value in vlan_dev_hard_start_xmit()
+Date:   Sun, 28 May 2023 20:10:05 +0100
+Message-Id: <20230528190835.571066014@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
+References: <20230528190833.565872088@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -126,10 +126,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index b10f31f98cb87..0a3a167916218 100644
+index c80add6edf598..ba9b8980f100d 100644
 --- a/net/8021q/vlan_dev.c
 +++ b/net/8021q/vlan_dev.c
-@@ -109,8 +109,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
+@@ -115,8 +115,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
  	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
  	 * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
  	 */
