@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C154C713CE5
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F047713DD6
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjE1TTq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38364 "EHLO
+        id S230184AbjE1T3h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:29:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbjE1TTo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:19:44 -0400
+        with ESMTP id S230185AbjE1T3h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A17C7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:19:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE2D189
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE60161ABA
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:19:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98DCC433EF;
-        Sun, 28 May 2023 19:19:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 617F261D1F
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664A9C433EF;
+        Sun, 28 May 2023 19:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301582;
-        bh=xA7gKpJ0iPNGtWc7xKjeyjINFoZEU8ev4VbNH7ka+T8=;
+        s=korg; t=1685302158;
+        bh=GAKfk2bBnUNVJAUxBeYig4Vy3Gwi6jdpGt9a25Sn8gA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tj1/9shOL7ZvaepQ9Hct81XN2qWr0+3GePANgx8CmnZtHpyEayOQxVJDlrOf4wrGg
-         DfKUw333PNVhkuaHpN0/uTGQ/sFoswr4VQeQLwvcYFl158n7gK3Sj8n1k74dWE+LW3
-         /iyLctVGkJ0z0i4JvfRbHi7qRMExBgWO9Nvot5Rg=
+        b=nkJyKz7o2acQQXkIstAuUQWRvbW/IerfG35830Exlz+YA7UDPMngm2PXNfIBjwtL0
+         8toprD31VDFY2R20ymzyxY6KgHA6oVopwUgvr9pku9AaiiFQA4I/1BuHpGoHy4N5FA
+         gp9caddD+VQBfpYoELth7xAxc4Ry07NzskjOc+0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 059/132] media: netup_unidvb: fix use-after-free at del_timer()
+        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.3 022/127] mmc: block: ensure error propagation for non-blk
 Date:   Sun, 28 May 2023 20:09:58 +0100
-Message-Id: <20230528190835.362265163@linuxfoundation.org>
+Message-Id: <20230528190836.971380604@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +54,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Christian Loehle <CLoehle@hyperstone.com>
 
-[ Upstream commit 0f5bb36bf9b39a2a96e730bf4455095b50713f63 ]
+commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
 
-When Universal DVB card is detaching, netup_unidvb_dma_fini()
-uses del_timer() to stop dma->timeout timer. But when timer
-handler netup_unidvb_dma_timeout() is running, del_timer()
-could not stop it. As a result, the use-after-free bug could
-happen. The process is shown below:
+Requests to the mmc layer usually come through a block device IO.
+The exceptions are the ioctl interface, RPMB chardev ioctl
+and debugfs, which issue their own blk_mq requests through
+blk_execute_rq and do not query the BLK_STS error but the
+mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+defaults to an error and has to be overwritten by the operation
+to be considered successful.
 
-    (cleanup routine)          |        (timer routine)
-                               | mod_timer(&dev->tx_sim_timer, ..)
-netup_unidvb_finidev()         | (wait a time)
-  netup_unidvb_dma_fini()      | netup_unidvb_dma_timeout()
-    del_timer(&dma->timeout);  |
-                               |   ndev->pci_dev->dev //USE
+The behavior leads to a bug where the request never propagates
+the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+and thus may assume that their call executed successfully when it did not.
 
-Fix by changing del_timer() to del_timer_sync().
+While always checking the blk_execute_rq return value would be
+advised, let's eliminate the error by always setting
+drv_op_result as -EIO to be overwritten on success (or other error)
 
-Link: https://lore.kernel.org/linux-media/20230308125514.4208-1-duoming@zju.edu.cn
-Fixes: 52b1eaf4c59a ("[media] netup_unidvb: NetUP Universal DVB-S/S2/T/T2/C PCI-E card driver")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/netup_unidvb/netup_unidvb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/block.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-index de3fc62810e6c..0ead74c40a7b7 100644
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-@@ -706,7 +706,7 @@ static void netup_unidvb_dma_fini(struct netup_unidvb_dev *ndev, int num)
- 	netup_unidvb_dma_enable(dma, 0);
- 	msleep(50);
- 	cancel_work_sync(&dma->work);
--	del_timer(&dma->timeout);
-+	del_timer_sync(&dma->timeout);
- }
- 
- static int netup_unidvb_dma_setup(struct netup_unidvb_dev *ndev)
--- 
-2.39.2
-
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -266,6 +266,7 @@ static ssize_t power_ro_lock_store(struc
+ 		goto out_put;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(req, false);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	blk_mq_free_request(req);
+@@ -653,6 +654,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_
+ 	idatas[0] = idata;
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
+ 	req_to_mmc_queue_req(req)->ioc_count = 1;
+ 	blk_execute_rq(req, false);
+@@ -724,6 +726,7 @@ static int mmc_blk_ioctl_multi_cmd(struc
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idata;
+ 	req_to_mmc_queue_req(req)->ioc_count = n;
+ 	blk_execute_rq(req, false);
+@@ -2808,6 +2811,7 @@ static int mmc_dbg_card_status_get(void
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(req, false);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	if (ret >= 0) {
+@@ -2846,6 +2850,7 @@ static int mmc_ext_csd_open(struct inode
+ 		goto out_free;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
+ 	blk_execute_rq(req, false);
+ 	err = req_to_mmc_queue_req(req)->drv_op_result;
 
 
