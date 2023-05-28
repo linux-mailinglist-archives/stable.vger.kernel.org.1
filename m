@@ -2,153 +2,201 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D32E713F9A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A34C4713ECF
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231325AbjE1TrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33406 "EHLO
+        id S230486AbjE1TjH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231319AbjE1TrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:47:08 -0400
+        with ESMTP id S230484AbjE1TjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339879B
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:47:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B85CA8
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDD4561F89
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:47:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE4BC433EF;
-        Sun, 28 May 2023 19:47:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0378C61E8E
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E78C433D2;
+        Sun, 28 May 2023 19:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303226;
-        bh=P7bRb+9wG0+QchUj46MMIXNRcWwn+5GnX4wnEBGlxZ8=;
+        s=korg; t=1685302743;
+        bh=O4taliS3do75b0yGL8cDsl/ev88AxnwfMtXp3+OurZw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C2QI1I3a4Kf0E2zA2teLwX1hN1bJ5U81Di2F40d4zWApiSpSDAapOssmXMRAPOZsk
-         9kF7Xq1oIUhBkSC6z702mUt1dBb2OyZOISCq4QTN+yEKlMBhZdTnHXHcJtdzpWMAq9
-         O89VeGN3w2nOIuWRL+1qFF7m9/nx7SFuNUBxsmfE=
+        b=Eid8vjVD2F3oT9upY55cLBEPhC1PZ0J2dHsSg/jobl7quosMEpLenmnT/Cvaa0/Qu
+         qpgDbjCZ4SYHiRiVbH/dckXROt0XcyhyRGIV4fg8bG67hsLy4Q7GMizO9hV8taKDYD
+         l7UZ10ZHP5sxUZjvnLMb6mOyh9ZmrjpSGBPqbTlg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Subject: [PATCH 5.10 178/211] x86/mm: Avoid incomplete Global INVLPG flushes
+        patches@lists.linux.dev,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.1 099/119] cxl: Wait Memory_Info_Valid before access memory related info
 Date:   Sun, 28 May 2023 20:11:39 +0100
-Message-Id: <20230528190847.917644009@linuxfoundation.org>
+Message-Id: <20230528190838.810801538@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit ce0b15d11ad837fbacc5356941712218e38a0a83 upstream.
+commit ce17ad0d54985e2595a3e615fda31df61808a08c upstream.
 
-The INVLPG instruction is used to invalidate TLB entries for a
-specified virtual address.  When PCIDs are enabled, INVLPG is supposed
-to invalidate TLB entries for the specified address for both the
-current PCID *and* Global entries.  (Note: Only kernel mappings set
-Global=1.)
+The Memory_Info_Valid bit (CXL 3.0 8.1.3.8.2) indicates that the CXL
+Range Size High and Size Low registers are valid. The bit must be set
+within 1 second of reset deassertion to the device. Check valid bit
+before we check the Memory_Active bit when waiting for
+cxl_await_media_ready() to ensure that the memory info is valid for
+consumption. Also ensures both DVSEC ranges 1 and 2 are ready if DVSEC
+Capability indicates they are both supported.
 
-Unfortunately, some INVLPG implementations can leave Global
-translations unflushed when PCIDs are enabled.
-
-As a workaround, never enable PCIDs on affected processors.
-
-I expect there to eventually be microcode mitigations to replace this
-software workaround.  However, the exact version numbers where that
-will happen are not known today.  Once the version numbers are set in
-stone, the processor list can be tweaked to only disable PCIDs on
-affected processors with affected microcode.
-
-Note: if anyone wants a quick fix that doesn't require patching, just
-stick 'nopcid' on your kernel command-line.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Fixes: 523e594d9cc0 ("cxl/pci: Implement wait for media active")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/168444687469.3134781.11033518965387297327.stgit@djiang5-mobl3
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/intel-family.h |    5 +++++
- arch/x86/mm/init.c                  |   25 +++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ drivers/cxl/core/pci.c |   85 +++++++++++++++++++++++++++++++++++++++++++------
+ drivers/cxl/cxlpci.h   |    2 +
+ 2 files changed, 78 insertions(+), 9 deletions(-)
 
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -98,6 +98,11 @@
- #define	INTEL_FAM6_LAKEFIELD		0x8A
- #define INTEL_FAM6_ALDERLAKE		0x97
- #define INTEL_FAM6_ALDERLAKE_L		0x9A
-+#define INTEL_FAM6_ALDERLAKE_N		0xBE
-+
-+#define INTEL_FAM6_RAPTORLAKE		0xB7
-+#define INTEL_FAM6_RAPTORLAKE_P		0xBA
-+#define INTEL_FAM6_RAPTORLAKE_S		0xBF
- 
- /* "Small Core" Processors (Atom) */
- 
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -9,6 +9,7 @@
- #include <linux/sched/task.h>
- 
- #include <asm/set_memory.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/e820/api.h>
- #include <asm/init.h>
- #include <asm/page.h>
-@@ -254,6 +255,24 @@ static void __init probe_page_size_mask(
- 	}
+--- a/drivers/cxl/core/pci.c
++++ b/drivers/cxl/core/pci.c
+@@ -103,23 +103,57 @@ int devm_cxl_port_enumerate_dports(struc
  }
+ EXPORT_SYMBOL_NS_GPL(devm_cxl_port_enumerate_dports, CXL);
  
-+#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
-+			      .family  = 6,			\
-+			      .model = _model,			\
-+			    }
-+/*
-+ * INVLPG may not properly flush Global entries
-+ * on these CPUs when PCIDs are enabled.
-+ */
-+static const struct x86_cpu_id invlpg_miss_ids[] = {
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
-+	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
-+	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	{}
-+};
+-/*
+- * Wait up to @media_ready_timeout for the device to report memory
+- * active.
+- */
+-int cxl_await_media_ready(struct cxl_dev_state *cxlds)
++static int cxl_dvsec_mem_range_valid(struct cxl_dev_state *cxlds, int id)
++{
++	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
++	int d = cxlds->cxl_dvsec;
++	bool valid = false;
++	int rc, i;
++	u32 temp;
 +
- static void setup_pcid(void)
- {
- 	if (!IS_ENABLED(CONFIG_X86_64))
-@@ -262,6 +281,12 @@ static void setup_pcid(void)
- 	if (!boot_cpu_has(X86_FEATURE_PCID))
- 		return;
- 
-+	if (x86_match_cpu(invlpg_miss_ids)) {
-+		pr_info("Incomplete global flushes, disabling PCID");
-+		setup_clear_cpu_cap(X86_FEATURE_PCID);
-+		return;
++	if (id > CXL_DVSEC_RANGE_MAX)
++		return -EINVAL;
++
++	/* Check MEM INFO VALID bit first, give up after 1s */
++	i = 1;
++	do {
++		rc = pci_read_config_dword(pdev,
++					   d + CXL_DVSEC_RANGE_SIZE_LOW(id),
++					   &temp);
++		if (rc)
++			return rc;
++
++		valid = FIELD_GET(CXL_DVSEC_MEM_INFO_VALID, temp);
++		if (valid)
++			break;
++		msleep(1000);
++	} while (i--);
++
++	if (!valid) {
++		dev_err(&pdev->dev,
++			"Timeout awaiting memory range %d valid after 1s.\n",
++			id);
++		return -ETIMEDOUT;
 +	}
 +
- 	if (boot_cpu_has(X86_FEATURE_PGE)) {
- 		/*
- 		 * This can't be cr4_set_bits_and_update_boot() -- the
++	return 0;
++}
++
++static int cxl_dvsec_mem_range_active(struct cxl_dev_state *cxlds, int id)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
+ 	int d = cxlds->cxl_dvsec;
+ 	bool active = false;
+-	u64 md_status;
+ 	int rc, i;
++	u32 temp;
+ 
+-	for (i = media_ready_timeout; i; i--) {
+-		u32 temp;
++	if (id > CXL_DVSEC_RANGE_MAX)
++		return -EINVAL;
+ 
++	/* Check MEM ACTIVE bit, up to 60s timeout by default */
++	for (i = media_ready_timeout; i; i--) {
+ 		rc = pci_read_config_dword(
+-			pdev, d + CXL_DVSEC_RANGE_SIZE_LOW(0), &temp);
++			pdev, d + CXL_DVSEC_RANGE_SIZE_LOW(id), &temp);
+ 		if (rc)
+ 			return rc;
+ 
+@@ -136,6 +170,39 @@ int cxl_await_media_ready(struct cxl_dev
+ 		return -ETIMEDOUT;
+ 	}
+ 
++	return 0;
++}
++
++/*
++ * Wait up to @media_ready_timeout for the device to report memory
++ * active.
++ */
++int cxl_await_media_ready(struct cxl_dev_state *cxlds)
++{
++	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
++	int d = cxlds->cxl_dvsec;
++	int rc, i, hdm_count;
++	u64 md_status;
++	u16 cap;
++
++	rc = pci_read_config_word(pdev,
++				  d + CXL_DVSEC_CAP_OFFSET, &cap);
++	if (rc)
++		return rc;
++
++	hdm_count = FIELD_GET(CXL_DVSEC_HDM_COUNT_MASK, cap);
++	for (i = 0; i < hdm_count; i++) {
++		rc = cxl_dvsec_mem_range_valid(cxlds, i);
++		if (rc)
++			return rc;
++	}
++
++	for (i = 0; i < hdm_count; i++) {
++		rc = cxl_dvsec_mem_range_active(cxlds, i);
++		if (rc)
++			return rc;
++	}
++
+ 	md_status = readq(cxlds->regs.memdev + CXLMDEV_STATUS_OFFSET);
+ 	if (!CXLMDEV_READY(md_status))
+ 		return -EIO;
+--- a/drivers/cxl/cxlpci.h
++++ b/drivers/cxl/cxlpci.h
+@@ -31,6 +31,8 @@
+ #define   CXL_DVSEC_RANGE_BASE_LOW(i)	(0x24 + (i * 0x10))
+ #define     CXL_DVSEC_MEM_BASE_LOW_MASK	GENMASK(31, 28)
+ 
++#define CXL_DVSEC_RANGE_MAX		2
++
+ /* CXL 2.0 8.1.4: Non-CXL Function Map DVSEC */
+ #define CXL_DVSEC_FUNCTION_MAP					2
+ 
 
 
