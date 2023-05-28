@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBCFD713D89
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4D8713F5E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjE1T00 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:26:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42918 "EHLO
+        id S231253AbjE1Tol (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbjE1T0Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:26:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC93B1
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:22 -0700 (PDT)
+        with ESMTP id S231252AbjE1Tol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:44:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C02A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:44:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59F9761C2F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7842DC433EF;
-        Sun, 28 May 2023 19:26:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4E1E61F30
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2931C433EF;
+        Sun, 28 May 2023 19:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301981;
-        bh=RbjbjmXiVcKCAlEtYvAx2GzwsCBKb/1elEmkaVwhe9o=;
+        s=korg; t=1685303079;
+        bh=VLrVlZJEdSBrbq7lRajrlYXueJwusFCrFaXGcNToal0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ls+50DEpoSJeKh0kizecwLkLiex8MufOYiU2rg0ccBIQLcA1ZKW0MUMMS4bTypL0T
-         fjkQsKwbT1WozAPlsreFAbBlqnqFGb5+weoQveSbx21hcdKz+Lk9RBlen4td/vjKiJ
-         0E1k8laNSqYR/DrinJQW2oJanwo4zuA5LUsFaDBk=
+        b=AomKaN95LPm6oNRX6GCSla+E9hF6mjkmSO8fPCJlo65rE0nQPyw1bjza4i7s1ZsBE
+         pddUAxf/02/v9leHIAzMgnmT18+iqrQLbNvjKnIyeoolok/Ogw5vyi0dLLKHBYBcBM
+         dPWutjBVPUyQH68ZmTJe7zH0WKJ7cVWx/0RWqp7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
-        Aaron Armstrong Skomra <aaron.skomra@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>, Ping Cheng <pinglinux@gmail.com>
-Subject: [PATCH 5.4 114/161] HID: wacom: Add new Intuos Pro Small (PTH-460) device IDs
+        patches@lists.linux.dev, John Starks <jostarks@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 117/211] scsi: storvsc: Dont pass unused PFNs to Hyper-V host
 Date:   Sun, 28 May 2023 20:10:38 +0100
-Message-Id: <20230528190840.691495755@linuxfoundation.org>
+Message-Id: <20230528190846.468572750@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
-References: <20230528190837.051205996@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,41 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit 0627f3df95e1609693f89e7ceb4156ac5db6e358 upstream.
+[ Upstream commit 4e81a6cba517cb33584308a331f14f5e3fec369b ]
 
-Add the new PIDs to wacom_wac.c to support the new model in the Intuos Pro series.
+In a SCSI request, storvsc pre-allocates space for up to
+MAX_PAGE_BUFFER_COUNT physical frame numbers to be passed to Hyper-V.  If
+the size of the I/O request requires more PFNs, a separate memory area of
+exactly the correct size is dynamically allocated.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Tested-by: Aaron Armstrong Skomra <aaron.skomra@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Ping Cheng <pinglinux@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But when the pre-allocated area is used, current code always passes
+MAX_PAGE_BUFFER_COUNT PFNs to Hyper-V, even if fewer are needed.  While
+this doesn't break anything because the additional PFNs are always zero,
+more bytes than necessary are copied into the VMBus channel ring buffer.
+This takes CPU cycles and wastes space in the ring buffer. For a typical 4
+Kbyte I/O that requires only a single PFN, 248 unnecessary bytes are
+copied.
+
+Fix this by setting the payload_sz based on the actual number of PFNs
+required, not the size of the pre-allocated space.
+
+Reported-by: John Starks <jostarks@microsoft.com>
+Fixes: 8f43710543ef ("scsi: storvsc: Support PAGE_SIZE larger than 4K")
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1684171241-16209-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/storvsc_drv.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -4840,6 +4840,10 @@ static const struct wacom_features wacom
- static const struct wacom_features wacom_features_0x3c8 =
- 	{ "Wacom Intuos BT M", 21600, 13500, 4095, 63,
- 	  INTUOSHT3_BT, WACOM_INTUOS_RES, WACOM_INTUOS_RES, 4 };
-+static const struct wacom_features wacom_features_0x3dd =
-+	{ "Wacom Intuos Pro S", 31920, 19950, 8191, 63,
-+	  INTUOSP2S_BT, WACOM_INTUOS3_RES, WACOM_INTUOS3_RES, 7,
-+	  .touch_max = 10 };
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index e38aebcabb26f..70b4868fe2f7d 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1756,7 +1756,7 @@ static int storvsc_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *scmnd)
  
- static const struct wacom_features wacom_features_HID_ANY_ID =
- 	{ "Wacom HID", .type = HID_GENERIC, .oVid = HID_ANY_ID, .oPid = HID_ANY_ID };
-@@ -5019,6 +5023,7 @@ const struct hid_device_id wacom_ids[] =
- 	{ BT_DEVICE_WACOM(0x393) },
- 	{ BT_DEVICE_WACOM(0x3c6) },
- 	{ BT_DEVICE_WACOM(0x3c8) },
-+	{ BT_DEVICE_WACOM(0x3dd) },
- 	{ USB_DEVICE_WACOM(0x4001) },
- 	{ USB_DEVICE_WACOM(0x4004) },
- 	{ USB_DEVICE_WACOM(0x5000) },
+ 	length = scsi_bufflen(scmnd);
+ 	payload = (struct vmbus_packet_mpb_array *)&cmd_request->mpb;
+-	payload_sz = sizeof(cmd_request->mpb);
++	payload_sz = 0;
+ 
+ 	if (sg_count) {
+ 		unsigned int hvpgoff = 0;
+@@ -1764,10 +1764,10 @@ static int storvsc_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *scmnd)
+ 		unsigned int hvpg_count = HVPFN_UP(offset_in_hvpg + length);
+ 		u64 hvpfn;
+ 
+-		if (hvpg_count > MAX_PAGE_BUFFER_COUNT) {
++		payload_sz = (hvpg_count * sizeof(u64) +
++			      sizeof(struct vmbus_packet_mpb_array));
+ 
+-			payload_sz = (hvpg_count * sizeof(u64) +
+-				      sizeof(struct vmbus_packet_mpb_array));
++		if (hvpg_count > MAX_PAGE_BUFFER_COUNT) {
+ 			payload = kzalloc(payload_sz, GFP_ATOMIC);
+ 			if (!payload)
+ 				return SCSI_MLQUEUE_DEVICE_BUSY;
+-- 
+2.39.2
+
 
 
