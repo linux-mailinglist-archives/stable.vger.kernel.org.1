@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC8C713AC2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E145F713AC3
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 18:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbjE1Qvg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 12:51:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60862 "EHLO
+        id S229535AbjE1Qvj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 12:51:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjE1Qvg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:51:36 -0400
+        with ESMTP id S229491AbjE1Qvi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 12:51:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 669B4AD
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:51:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D06AD
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 09:51:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFCCA617BB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:51:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A035C433EF;
-        Sun, 28 May 2023 16:51:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D26A60AF9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 16:51:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7BCC433D2;
+        Sun, 28 May 2023 16:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685292693;
-        bh=sc2VnFNqUNS2xaHC39IVukXE2oUWh4TJOg/+yP9ZiiY=;
+        s=korg; t=1685292695;
+        bh=9cMI1ANdQyJgirp/iauy+SYxMCgxdeQvYePBFxl3t5k=;
         h=Subject:To:Cc:From:Date:From;
-        b=PKFd7Pj8C55whdep3u+OdnesmocZyn1xq+vTgzcOakBU1KVH7AlqPD3VSJlGKXUqN
-         vE4BPq1dOJCImRWIHxhkyp80VAvyFFPEXXyvuW/UParCGMfc/ET/nrHimyNwqUECUu
-         2CLXTOCcFvFxLhVPc1+uMSh3/Q7VGKt88Ext53TY=
-Subject: FAILED: patch "[PATCH] net/mlx5: Handle pairing of E-switch via uplink un/load APIs" failed to apply to 5.10-stable tree
+        b=RYt+ma44Og8fy3fGD9m7JJJps+aRCC5HcCsNVSA6mV7oPs9dGd5AR408GTKkmPrmg
+         aidlmRbyTLPVFXJXIqaii4x3yL37MPlWvbRowzIfZfDMP2LIwzAKgHWJCz4Z2ILSzu
+         jOgjKdWLNjJ9EwT7hGLHSDDQenDPJFaQFaCDxv24=
+Subject: FAILED: patch "[PATCH] net/mlx5: Handle pairing of E-switch via uplink un/load APIs" failed to apply to 5.4-stable tree
 To:     shayd@nvidia.com, roid@nvidia.com, saeedm@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 28 May 2023 17:51:28 +0100
-Message-ID: <2023052828-hatchet-drier-8e0e@gregkh>
+Date:   Sun, 28 May 2023 17:51:30 +0100
+Message-ID: <2023052830-jeep-cod-05b2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2be5bd42a5bba1a05daedc86cf0e248210009669
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052828-hatchet-drier-8e0e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023052830-jeep-cod-05b2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
