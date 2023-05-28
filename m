@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6382713C4A
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D10713D6D
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:25:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbjE1TOH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:14:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33782 "EHLO
+        id S230049AbjE1TZP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbjE1TOF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:14:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85EF0CF
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:13:54 -0700 (PDT)
+        with ESMTP id S230047AbjE1TZO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:25:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E798A3
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:25:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1652761901
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2510C433D2;
-        Sun, 28 May 2023 19:13:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6B9A61C00
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2894C433EF;
+        Sun, 28 May 2023 19:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301233;
-        bh=3n+SNcNMcP7hfTQJNvXdLvIKxdODuYOCP6fDOZ6oYRM=;
+        s=korg; t=1685301912;
+        bh=+x8kWL0OrRN0PHoFRxlfXYZ+NObFLk1E+u2mn6dubfw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uYPCccfyYfUtxnBsBUcpC1uU8ZT80LVlx7Yfnwp8bvgUqM8GoabUOH96s9kUJKqO9
-         ngon5FKMVE7dWtJsibYTILjtja6NI2B5+Tu1N9YX4hgDz7oduWHZNMpqTyjxMGOj4a
-         xHqDpjOW7Qc65+icHR0HDYrc4ijny5nLd7p4ZGaA=
+        b=mfORpGe18LPV4pNft7FCihhbBi7DVWAKDfiFdBiWvljMFTc9eGqzqMZLzhYJfAjGk
+         gkOIH3Kgr2kckmFR93N8cauvsWU3sjsdmjOVTXodbpd39eLMKhnSjPTlnvABiwh0OL
+         ABsguZKExDJk+khUwiHA8XnLhTLytrz6bynqFw4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vicki Pfau <vi@endrift.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 35/86] Input: xpad - add constants for GIP interface numbers
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 085/161] usb: typec: altmodes/displayport: fix pin_assignment_show
 Date:   Sun, 28 May 2023 20:10:09 +0100
-Message-Id: <20230528190829.885786347@linuxfoundation.org>
+Message-Id: <20230528190839.840111025@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
-References: <20230528190828.564682883@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,47 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vicki Pfau <vi@endrift.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit f9b2e603c6216824e34dc9a67205d98ccc9a41ca ]
+commit d8f28269dd4bf9b55c3fb376ae31512730a96fce upstream.
 
-Wired GIP devices present multiple interfaces with the same USB identification
-other than the interface number. This adds constants for differentiating two of
-them and uses them where appropriate
+This patch fixes negative indexing of buf array in pin_assignment_show
+when get_current_pin_assignments returns 0 i.e. no compatible pin
+assignments are found.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20230411031650.960322-2-vi@endrift.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
+...
+Call trace:
+dump_backtrace+0x110/0x204
+dump_stack_lvl+0x84/0xbc
+print_report+0x358/0x974
+kasan_report+0x9c/0xfc
+__do_kernel_fault+0xd4/0x2d4
+do_bad_area+0x48/0x168
+do_tag_check_fault+0x24/0x38
+do_mem_abort+0x6c/0x14c
+el1_abort+0x44/0x68
+el1h_64_sync_handler+0x64/0xa4
+el1h_64_sync+0x78/0x7c
+pin_assignment_show+0x26c/0x33c
+dev_attr_show+0x50/0xc0
+
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230508214443.893436-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/typec/altmodes/displayport.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 1a12f95227301..f1c2bc108fd76 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -506,6 +506,9 @@ struct xboxone_init_packet {
- 	}
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -501,6 +501,10 @@ static ssize_t pin_assignment_show(struc
  
+ 	mutex_unlock(&dp->lock);
  
-+#define GIP_WIRED_INTF_DATA 0
-+#define GIP_WIRED_INTF_AUDIO 1
++	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
++	if (len == 0)
++		len++;
 +
- /*
-  * This packet is required for all Xbox One pads with 2015
-  * or later firmware installed (or present from the factory).
-@@ -1830,7 +1833,7 @@ static int xpad_probe(struct usb_interface *intf, const struct usb_device_id *id
- 	}
- 
- 	if (xpad->xtype == XTYPE_XBOXONE &&
--	    intf->cur_altsetting->desc.bInterfaceNumber != 0) {
-+	    intf->cur_altsetting->desc.bInterfaceNumber != GIP_WIRED_INTF_DATA) {
- 		/*
- 		 * The Xbox One controller lists three interfaces all with the
- 		 * same interface class, subclass and protocol. Differentiate by
--- 
-2.39.2
-
+ 	buf[len - 1] = '\n';
+ 	return len;
+ }
 
 
