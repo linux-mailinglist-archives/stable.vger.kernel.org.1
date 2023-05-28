@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E3B6713EE4
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56347713D2E
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230511AbjE1Tj5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54980 "EHLO
+        id S229970AbjE1TWn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230513AbjE1Tj4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:56 -0400
+        with ESMTP id S229973AbjE1TWm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A8DABB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA15A6
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC79F61EA9
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1551AC433D2;
-        Sun, 28 May 2023 19:39:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D80461B38
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1E2C4339B;
+        Sun, 28 May 2023 19:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302794;
-        bh=ngzSCm+RyY5SbriAOJwKsvK1ljhOGsUJtRjHu0X1A9A=;
+        s=korg; t=1685301756;
+        bh=KNq5JtC9wo1nRstONVa73mKF2Mfy53I6/vwzRgCCcQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MenSLdIHmac/waeMAsgUIkzPkbiMTCKKBikDXVuE34ecvE6eFigssei0UWAnG2wMS
-         6f770TmSUqplTfmzp3x/IdeG7GJ+/EkzbuhSNpwaZT64SvWjBy/mTz9zFrs6UE0cn3
-         iO/6ln/1NZaHBLTbQ+XkKy5nyfC4TmxorgFZXJsk=
+        b=o46WJ4HAEBT6mt234CcgiYnIEMA7Hb0EpTqzZPiI4F7U7Ui0TBWQ4NEKYK5KRaa0A
+         DzXiX/BAgU91TjqbezvHsBShb0Yd91RCgbzV1crx646QdY+CZwTJr/r2mmhhccg60C
+         wlC/xMGdGwVa/GSIk6Bsp7QkEH+M3MSgMcBHWnPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/211] net: annotate sk->sk_err write from do_recvmmsg()
+Subject: [PATCH 5.4 006/161] netfilter: conntrack: fix possible bug_on with enable_hooks=1
 Date:   Sun, 28 May 2023 20:08:50 +0100
-Message-Id: <20230528190843.754262673@linuxfoundation.org>
+Message-Id: <20230528190837.288895261@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +54,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e05a5f510f26607616fecdd4ac136310c8bea56b ]
+[ Upstream commit e72eeab542dbf4f544e389e64fa13b82a1b6d003 ]
 
-do_recvmmsg() can write to sk->sk_err from multiple threads.
+I received a bug report (no reproducer so far) where we trip over
 
-As said before, many other points reading or writing sk_err
-need annotations.
+712         rcu_read_lock();
+713         ct_hook = rcu_dereference(nf_ct_hook);
+714         BUG_ON(ct_hook == NULL);  // here
 
-Fixes: 34b88a68f26a ("net: Fix use after free in the recvmmsg exit path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In nf_conntrack_destroy().
+
+First turn this BUG_ON into a WARN.  I think it was triggered
+via enable_hooks=1 flag.
+
+When this flag is turned on, the conntrack hooks are registered
+before nf_ct_hook pointer gets assigned.
+This opens a short window where packets enter the conntrack machinery,
+can have skb->_nfct set up and a subsequent kfree_skb might occur
+before nf_ct_hook is set.
+
+Call nf_conntrack_init_end() to set nf_ct_hook before we register the
+pernet ops.
+
+Fixes: ba3fbe663635 ("netfilter: nf_conntrack: provide modparam to always register conntrack hooks")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/core.c                    | 6 ++++--
+ net/netfilter/nf_conntrack_standalone.c | 3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/socket.c b/net/socket.c
-index 8657112a687a4..84223419da862 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2764,7 +2764,7 @@ static int do_recvmmsg(int fd, struct mmsghdr __user *mmsg,
- 		 * error to return on the next call or if the
- 		 * app asks about it using getsockopt(SO_ERROR).
- 		 */
--		sock->sk->sk_err = -err;
-+		WRITE_ONCE(sock->sk->sk_err, -err);
- 	}
- out_put:
- 	fput_light(sock->file, fput_needed);
+diff --git a/net/netfilter/core.c b/net/netfilter/core.c
+index 451b2df998ea7..c35f45afd394d 100644
+--- a/net/netfilter/core.c
++++ b/net/netfilter/core.c
+@@ -577,9 +577,11 @@ void nf_conntrack_destroy(struct nf_conntrack *nfct)
+ 
+ 	rcu_read_lock();
+ 	ct_hook = rcu_dereference(nf_ct_hook);
+-	BUG_ON(ct_hook == NULL);
+-	ct_hook->destroy(nfct);
++	if (ct_hook)
++		ct_hook->destroy(nfct);
+ 	rcu_read_unlock();
++
++	WARN_ON(!ct_hook);
+ }
+ EXPORT_SYMBOL(nf_conntrack_destroy);
+ 
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 43c3c3be6defc..1e3dbed9d7840 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -1180,11 +1180,12 @@ static int __init nf_conntrack_standalone_init(void)
+ 	nf_conntrack_htable_size_user = nf_conntrack_htable_size;
+ #endif
+ 
++	nf_conntrack_init_end();
++
+ 	ret = register_pernet_subsys(&nf_conntrack_net_ops);
+ 	if (ret < 0)
+ 		goto out_pernet;
+ 
+-	nf_conntrack_init_end();
+ 	return 0;
+ 
+ out_pernet:
 -- 
 2.39.2
 
