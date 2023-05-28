@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2914B713DEF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7BD713D97
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230215AbjE1TaV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46910 "EHLO
+        id S230118AbjE1T1W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:27:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230207AbjE1TaT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:30:19 -0400
+        with ESMTP id S230106AbjE1T1Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:27:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05388A3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:30:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD2ADC
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:26:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 888DA61D4F
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67C5C433EF;
-        Sun, 28 May 2023 19:30:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCDE361C83
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA273C433D2;
+        Sun, 28 May 2023 19:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302218;
-        bh=2DBTToYIxCmJtsTvy4uY/RwMz0EtYANGVkbPiACxozw=;
+        s=korg; t=1685302017;
+        bh=s6tw1OkRS3ZT3ZenMDn477F8HxvmiMwxvuZ87/nIYL8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c4Zfca24wsjQLBDtrkvtFRIGRUMRxod5zUi3YbbRo8NYymeVlhosUF/aTov7XRtT1
-         3DbOWfQx4AfPcs2eKA0vxZi5LxHZWikJNccvfaAY2OIPi2YjEc+45vYYV7KNa8dki9
-         xEH+lKv2fQE7/oWvVbVsJxk5k1fbvw4YDgumjk7s=
+        b=gwEWPxDtHbZ3tmFaeK5Kp6lEfR4c9J5XmOuEGXwB28VtPyC+YFgUbbWL2kqY9wwgw
+         xnpufwXki77bCVoaAqzBZ/gVK0czYAV2jbCnPrOg3Lp0yd5JSZQEi6mv1mneRCyn+H
+         A7vZ0ZZ61BfWO+7UrHYlhoCxsphzWfH1HxTX1dmQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aaron Liu <aaron.liu@amd.com>,
-        Jesse zhang <jesse.zhang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 047/127] drm/amdgpu: dont enable secure display on incompatible platforms
-Date:   Sun, 28 May 2023 20:10:23 +0100
-Message-Id: <20230528190837.879072720@linuxfoundation.org>
+        patches@lists.linux.dev, Frank Schilder <frans@dtu.dk>,
+        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.4 100/161] ceph: force updating the msg pointer in non-split case
+Date:   Sun, 28 May 2023 20:10:24 +0100
+Message-Id: <20230528190840.289649777@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
-References: <20230528190836.161231414@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,44 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 7fc602dbfd548045862df096910b7d21e6d300bf upstream.
+commit 4cafd0400bcb6187c0d4ab4d4b0229a89ac4f8c2 upstream.
 
-[why]
-[drm] psp gfx command LOAD_TA(0x1) failed and response status is (0x7)
-[drm] psp gfx command INVOKE_CMD(0x3) failed and response status is (0x4)
-amdgpu 0000:04:00.0: amdgpu: Secure display: Generic Failure.
+When the MClientSnap reqeust's op is not CEPH_SNAP_OP_SPLIT the
+request may still contain a list of 'split_realms', and we need
+to skip it anyway. Or it will be parsed as a corrupt snaptrace.
 
-[how]
-don't enable secure display on incompatible platforms
-
-Suggested-by: Aaron Liu <aaron.liu@amd.com>
-Signed-off-by: Jesse zhang <jesse.zhang@amd.com>
-Reviewed-by: Aaron Liu <aaron.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61200
+Reported-by: Frank Schilder <frans@dtu.dk>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/psp_v10_0.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/ceph/snap.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
-@@ -57,7 +57,13 @@ static int psp_v10_0_init_microcode(stru
- 	if (err)
- 		return err;
+--- a/fs/ceph/snap.c
++++ b/fs/ceph/snap.c
+@@ -1005,6 +1005,19 @@ skip_inode:
+ 				continue;
+ 			adjust_snap_realm_parent(mdsc, child, realm->ino);
+ 		}
++	} else {
++		/*
++		 * In the non-split case both 'num_split_inos' and
++		 * 'num_split_realms' should be 0, making this a no-op.
++		 * However the MDS happens to populate 'split_realms' list
++		 * in one of the UPDATE op cases by mistake.
++		 *
++		 * Skip both lists just in case to ensure that 'p' is
++		 * positioned at the start of realm info, as expected by
++		 * ceph_update_snap_trace().
++		 */
++		p += sizeof(u64) * num_split_inos;
++		p += sizeof(u64) * num_split_realms;
+ 	}
  
--	return psp_init_ta_microcode(psp, ucode_prefix);
-+	err = psp_init_ta_microcode(psp, ucode_prefix);
-+	if ((adev->ip_versions[GC_HWIP][0] == IP_VERSION(9, 1, 0)) &&
-+		(adev->pdev->revision == 0xa1) &&
-+		(psp->securedisplay_context.context.bin_desc.fw_version >= 0x27000008)) {
-+		adev->psp.securedisplay_context.context.bin_desc.size_bytes = 0;
-+	}
-+	return err;
- }
- 
- static int psp_v10_0_ring_create(struct psp_context *psp,
+ 	/*
 
 
