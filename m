@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92DE4713CCF
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C81713DDE
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbjE1TSx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:18:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
+        id S230181AbjE1T3u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229849AbjE1TSv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:18:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B78A6
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:18:50 -0700 (PDT)
+        with ESMTP id S230191AbjE1T3t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:29:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D585C9
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:29:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D482461A6D
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:18:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA11AC433EF;
-        Sun, 28 May 2023 19:18:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A604D61D12
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:29:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4533C433EF;
+        Sun, 28 May 2023 19:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685301529;
-        bh=ix7Zlo2wEhgrYrjU0RCJYqpXIXSck7jDSRzxu3rRb/g=;
+        s=korg; t=1685302176;
+        bh=ABme0fA1hR0JaUJkzAQNv2U73OO1LdrZ+mPK12nhfO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OCgiWXcOFsiDXmFH8xdJyd7FLYOCtWwRvJc659n4fzyEdBrHCN8mQQbilfPhU53FF
-         foRfYerNGpQVOjvyGubOzDIkxzY7GJxlkHiys5/gW/8anHvtetdCSM87HgDEdSORWu
-         MVaY28DBJs30tZTNrKpKcpLafvg5Y5BUvBwyDDMM=
+        b=ArvWJPfPXshGyiQik5i+cQ0NNvu4MJNEESJcRsLkVkDzDsXC4WNRT6XJ3rGaUpKA1
+         8tFGYCE2MQY0okkAqyfaj+EQN5cl0a6KFWj49WTQ6MPvlmkabExwAZUtmXKBlC20w5
+         pccvEL69LJpkLyXMs89O+v8M7HSx3dMRjWOmk4b4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 066/132] vlan: fix a potential uninit-value in vlan_dev_hard_start_xmit()
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 6.3 029/127] xtensa: fix signal delivery to FDPIC process
 Date:   Sun, 28 May 2023 20:10:05 +0100
-Message-Id: <20230528190835.571066014@linuxfoundation.org>
+Message-Id: <20230528190837.233319608@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190833.565872088@linuxfoundation.org>
-References: <20230528190833.565872088@linuxfoundation.org>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+References: <20230528190836.161231414@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,93 +52,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit dacab578c7c6cd06c50c89dfa36b0e0f10decd4e ]
+commit 9c2cc74fb31ec76b8b118c97041a6a154a3ff219 upstream.
 
-syzbot triggered the following splat [1], sending an empty message
-through pppoe_sendmsg().
+Fetch function descriptor pointed to by the signal handler pointer from
+userspace on signal delivery and function pointer pointed to by the
+sa_restorer on return from the signal handler.
 
-When VLAN_FLAG_REORDER_HDR flag is set, vlan_dev_hard_header()
-does not push extra bytes for the VLAN header, because vlan is offloaded.
-
-Unfortunately vlan_dev_hard_start_xmit() first reads veth->h_vlan_proto
-before testing (vlan->flags & VLAN_FLAG_REORDER_HDR).
-
-We need to swap the two conditions.
-
-[1]
-BUG: KMSAN: uninit-value in vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
-vlan_dev_hard_start_xmit+0x171/0x7f0 net/8021q/vlan_dev.c:111
-__netdev_start_xmit include/linux/netdevice.h:4883 [inline]
-netdev_start_xmit include/linux/netdevice.h:4897 [inline]
-xmit_one net/core/dev.c:3580 [inline]
-dev_hard_start_xmit+0x253/0xa20 net/core/dev.c:3596
-__dev_queue_xmit+0x3c7f/0x5ac0 net/core/dev.c:4246
-dev_queue_xmit include/linux/netdevice.h:3053 [inline]
-pppoe_sendmsg+0xa93/0xb80 drivers/net/ppp/pppoe.c:900
-sock_sendmsg_nosec net/socket.c:724 [inline]
-sock_sendmsg net/socket.c:747 [inline]
-____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
-___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
-__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
-__do_sys_sendmmsg net/socket.c:2670 [inline]
-__se_sys_sendmmsg net/socket.c:2667 [inline]
-__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was created at:
-slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:774
-slab_alloc_node mm/slub.c:3452 [inline]
-kmem_cache_alloc_node+0x543/0xab0 mm/slub.c:3497
-kmalloc_reserve+0x148/0x470 net/core/skbuff.c:520
-__alloc_skb+0x3a7/0x850 net/core/skbuff.c:606
-alloc_skb include/linux/skbuff.h:1277 [inline]
-sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2583
-pppoe_sendmsg+0x3af/0xb80 drivers/net/ppp/pppoe.c:867
-sock_sendmsg_nosec net/socket.c:724 [inline]
-sock_sendmsg net/socket.c:747 [inline]
-____sys_sendmsg+0xa24/0xe40 net/socket.c:2501
-___sys_sendmsg+0x2a1/0x3f0 net/socket.c:2555
-__sys_sendmmsg+0x411/0xa50 net/socket.c:2641
-__do_sys_sendmmsg net/socket.c:2670 [inline]
-__se_sys_sendmmsg net/socket.c:2667 [inline]
-__x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2667
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-CPU: 0 PID: 29770 Comm: syz-executor.0 Not tainted 6.3.0-rc6-syzkaller-gc478e5b17829 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e3ddb8bbe0f8 ("xtensa: add FDPIC and static PIE support for noMMU")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/8021q/vlan_dev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/xtensa/kernel/signal.c |   35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index c80add6edf598..ba9b8980f100d 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -115,8 +115,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
- 	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
- 	 * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
+--- a/arch/xtensa/kernel/signal.c
++++ b/arch/xtensa/kernel/signal.c
+@@ -343,7 +343,19 @@ static int setup_frame(struct ksignal *k
+ 	struct rt_sigframe *frame;
+ 	int err = 0, sig = ksig->sig;
+ 	unsigned long sp, ra, tp, ps;
++	unsigned long handler = (unsigned long)ksig->ka.sa.sa_handler;
++	unsigned long handler_fdpic_GOT = 0;
+ 	unsigned int base;
++	bool fdpic = IS_ENABLED(CONFIG_BINFMT_ELF_FDPIC) &&
++		(current->personality & FDPIC_FUNCPTRS);
++
++	if (fdpic) {
++		unsigned long __user *fdpic_func_desc =
++			(unsigned long __user *)handler;
++		if (__get_user(handler, &fdpic_func_desc[0]) ||
++		    __get_user(handler_fdpic_GOT, &fdpic_func_desc[1]))
++			return -EFAULT;
++	}
+ 
+ 	sp = regs->areg[1];
+ 
+@@ -373,20 +385,26 @@ static int setup_frame(struct ksignal *k
+ 	err |= __copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set));
+ 
+ 	if (ksig->ka.sa.sa_flags & SA_RESTORER) {
+-		ra = (unsigned long)ksig->ka.sa.sa_restorer;
++		if (fdpic) {
++			unsigned long __user *fdpic_func_desc =
++				(unsigned long __user *)ksig->ka.sa.sa_restorer;
++
++			err |= __get_user(ra, fdpic_func_desc);
++		} else {
++			ra = (unsigned long)ksig->ka.sa.sa_restorer;
++		}
+ 	} else {
+ 
+ 		/* Create sys_rt_sigreturn syscall in stack frame */
+ 
+ 		err |= gen_return_code(frame->retcode);
+-
+-		if (err) {
+-			return -EFAULT;
+-		}
+ 		ra = (unsigned long) frame->retcode;
+ 	}
+ 
+-	/* 
++	if (err)
++		return -EFAULT;
++
++	/*
+ 	 * Create signal handler execution context.
+ 	 * Return context not modified until this point.
  	 */
--	if (veth->h_vlan_proto != vlan->vlan_proto ||
--	    vlan->flags & VLAN_FLAG_REORDER_HDR) {
-+	if (vlan->flags & VLAN_FLAG_REORDER_HDR ||
-+	    veth->h_vlan_proto != vlan->vlan_proto) {
- 		u16 vlan_tci;
- 		vlan_tci = vlan->vlan_id;
- 		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
--- 
-2.39.2
-
+@@ -394,8 +412,7 @@ static int setup_frame(struct ksignal *k
+ 	/* Set up registers for signal handler; preserve the threadptr */
+ 	tp = regs->threadptr;
+ 	ps = regs->ps;
+-	start_thread(regs, (unsigned long) ksig->ka.sa.sa_handler,
+-		     (unsigned long) frame);
++	start_thread(regs, handler, (unsigned long)frame);
+ 
+ 	/* Set up a stack frame for a call4 if userspace uses windowed ABI */
+ 	if (ps & PS_WOE_MASK) {
+@@ -413,6 +430,8 @@ static int setup_frame(struct ksignal *k
+ 	regs->areg[base + 4] = (unsigned long) &frame->uc;
+ 	regs->threadptr = tp;
+ 	regs->ps = ps;
++	if (fdpic)
++		regs->areg[base + 11] = handler_fdpic_GOT;
+ 
+ 	pr_debug("SIG rt deliver (%s:%d): signal=%d sp=%p pc=%08lx\n",
+ 		 current->comm, current->pid, sig, frame, regs->pc);
 
 
