@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91181713EE2
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C007E713D21
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230509AbjE1Tjw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54912 "EHLO
+        id S229962AbjE1TWM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjE1Tjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:39:51 -0400
+        with ESMTP id S229957AbjE1TWL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:22:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D5AAB
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:39:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4DDA0
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:22:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27F5661EA7
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468B9C433EF;
-        Sun, 28 May 2023 19:39:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FF1461B4B
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:22:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DFEC4339B;
+        Sun, 28 May 2023 19:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685302789;
-        bh=2S2EbkdphXGt9TNjlpiyfAuhlbzT+5NG/SB3ThDrQSQ=;
+        s=korg; t=1685301729;
+        bh=HuayMjO89gWx18c1IMs1LluOCUqY9ForkCLk5xr3zHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ReGmDihNnjM6ZFQ3IyHd7spaupXIaWBvk/qQ1u1Xo0QGL4/B9Iz/yJ8RarOxV5SLm
-         0M/T4fdoWUT6D0ATxYEymxNSFu3hJeiTOjMfW7DNcN1wXk65ixArhTZ3s1AvAsoplO
-         UhipVdjhFPWSVTIWJZghM2yp8vSMu+bNDhqQlVKk=
+        b=YquWXNfrKUc5pzCVh6HEJF5l99aCQ1yifqaAZZoDufbgNpaFiX4aKqms4p7Myr6BC
+         MxXTtnTqXkMoKs0I6QtqqOqlF2rCJdz0fMUYk6VWPgDlATX/Z2YfHGoPQeh0TRJcwl
+         wqJwFYC+EfRiFxxpygnaRknfT0/TFAdJ8xOlsQ48=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/211] netfilter: conntrack: fix possible bug_on with enable_hooks=1
-Date:   Sun, 28 May 2023 20:08:48 +0100
-Message-Id: <20230528190843.703632358@linuxfoundation.org>
+Subject: [PATCH 5.4 005/161] net: Fix load-tearing on sk->sk_stamp in sock_recv_cmsgs().
+Date:   Sun, 28 May 2023 20:08:49 +0100
+Message-Id: <20230528190837.255793677@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190837.051205996@linuxfoundation.org>
+References: <20230528190837.051205996@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,75 +56,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit e72eeab542dbf4f544e389e64fa13b82a1b6d003 ]
+[ Upstream commit dfd9248c071a3710c24365897459538551cb7167 ]
 
-I received a bug report (no reproducer so far) where we trip over
+KCSAN found a data race in sock_recv_cmsgs() where the read access
+to sk->sk_stamp needs READ_ONCE().
 
-712         rcu_read_lock();
-713         ct_hook = rcu_dereference(nf_ct_hook);
-714         BUG_ON(ct_hook == NULL);  // here
+BUG: KCSAN: data-race in packet_recvmsg / packet_recvmsg
 
-In nf_conntrack_destroy().
+write (marked) to 0xffff88803c81f258 of 8 bytes by task 19171 on cpu 0:
+ sock_write_timestamp include/net/sock.h:2670 [inline]
+ sock_recv_cmsgs include/net/sock.h:2722 [inline]
+ packet_recvmsg+0xb97/0xd00 net/packet/af_packet.c:3489
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ sock_recvmsg+0x11a/0x130 net/socket.c:1040
+ sock_read_iter+0x176/0x220 net/socket.c:1118
+ call_read_iter include/linux/fs.h:1845 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x5e0/0x630 fs/read_write.c:470
+ ksys_read+0x163/0x1a0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x41/0x50 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-First turn this BUG_ON into a WARN.  I think it was triggered
-via enable_hooks=1 flag.
+read to 0xffff88803c81f258 of 8 bytes by task 19183 on cpu 1:
+ sock_recv_cmsgs include/net/sock.h:2721 [inline]
+ packet_recvmsg+0xb64/0xd00 net/packet/af_packet.c:3489
+ sock_recvmsg_nosec net/socket.c:1019 [inline]
+ sock_recvmsg+0x11a/0x130 net/socket.c:1040
+ sock_read_iter+0x176/0x220 net/socket.c:1118
+ call_read_iter include/linux/fs.h:1845 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x5e0/0x630 fs/read_write.c:470
+ ksys_read+0x163/0x1a0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x41/0x50 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-When this flag is turned on, the conntrack hooks are registered
-before nf_ct_hook pointer gets assigned.
-This opens a short window where packets enter the conntrack machinery,
-can have skb->_nfct set up and a subsequent kfree_skb might occur
-before nf_ct_hook is set.
+value changed: 0xffffffffc4653600 -> 0x0000000000000000
 
-Call nf_conntrack_init_end() to set nf_ct_hook before we register the
-pernet ops.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19183 Comm: syz-executor.5 Not tainted 6.3.0-rc7-02330-gca6270c12e20 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
 
-Fixes: ba3fbe663635 ("netfilter: nf_conntrack: provide modparam to always register conntrack hooks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 6c7c98bad488 ("sock: avoid dirtying sk_stamp, if possible")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230508175543.55756-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/core.c                    | 6 ++++--
- net/netfilter/nf_conntrack_standalone.c | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ include/net/sock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/core.c b/net/netfilter/core.c
-index 60332fdb6dd44..5b7578adbf0f1 100644
---- a/net/netfilter/core.c
-+++ b/net/netfilter/core.c
-@@ -674,9 +674,11 @@ void nf_conntrack_destroy(struct nf_conntrack *nfct)
- 
- 	rcu_read_lock();
- 	ct_hook = rcu_dereference(nf_ct_hook);
--	BUG_ON(ct_hook == NULL);
--	ct_hook->destroy(nfct);
-+	if (ct_hook)
-+		ct_hook->destroy(nfct);
- 	rcu_read_unlock();
-+
-+	WARN_ON(!ct_hook);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 26dd07e47a7c7..fa19c6ba24441 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2448,7 +2448,7 @@ static inline void sock_recv_ts_and_drops(struct msghdr *msg, struct sock *sk,
+ 		__sock_recv_ts_and_drops(msg, sk, skb);
+ 	else if (unlikely(sock_flag(sk, SOCK_TIMESTAMP)))
+ 		sock_write_timestamp(sk, skb->tstamp);
+-	else if (unlikely(sk->sk_stamp == SK_DEFAULT_STAMP))
++	else if (unlikely(sock_read_timestamp(sk) == SK_DEFAULT_STAMP))
+ 		sock_write_timestamp(sk, 0);
  }
- EXPORT_SYMBOL(nf_conntrack_destroy);
  
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index e12b52019a550..b613de96ad855 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -1170,11 +1170,12 @@ static int __init nf_conntrack_standalone_init(void)
- 	nf_conntrack_htable_size_user = nf_conntrack_htable_size;
- #endif
- 
-+	nf_conntrack_init_end();
-+
- 	ret = register_pernet_subsys(&nf_conntrack_net_ops);
- 	if (ret < 0)
- 		goto out_pernet;
- 
--	nf_conntrack_init_end();
- 	return 0;
- 
- out_pernet:
 -- 
 2.39.2
 
