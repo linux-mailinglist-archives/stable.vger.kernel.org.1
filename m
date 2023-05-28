@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18471713F92
-	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0483713EC5
+	for <lists+stable@lfdr.de>; Sun, 28 May 2023 21:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbjE1Tq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 28 May 2023 15:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33204 "EHLO
+        id S230478AbjE1Til (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 28 May 2023 15:38:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231312AbjE1Tq6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:46:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00BDE3
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:46:47 -0700 (PDT)
+        with ESMTP id S230475AbjE1Tik (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 28 May 2023 15:38:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12259AB
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 12:38:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64FC761F89
-        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:46:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81078C433D2;
-        Sun, 28 May 2023 19:46:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4F8061E89
+        for <stable@vger.kernel.org>; Sun, 28 May 2023 19:38:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A13C433EF;
+        Sun, 28 May 2023 19:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685303206;
-        bh=+tGk2iaxhtkOFDugsJqkibyfMfZ57vn5twDf783OVf4=;
+        s=korg; t=1685302719;
+        bh=y3/oTmxZMZyUd9mxFMw5smXixd37XJ8Q1HejfZBBX4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VSg8obc50G79lt1YBpC8px8iGbkpvwBCTCB1CCvcgzUrifrQQTDUxvc/1D08fy6Z6
-         sQnlquCN2D33TlM7/G+gUYCPfiZCfQgRV8P6M7G56EB4x2tOXjVk0/aAV3bsjIJ5Cu
-         J0yFRfV0ig0RvnQQW8t+KqmBmakkuGNQLBy0rCQ4=
+        b=SIBnm72asPd8HVSRhgZbDfrzr7/89fOfJKMTDStdifOa5vljFS0KdLAW7ssT7AkQP
+         Pz2BDpRIJOFe19LFRLhYwE/WgU0jUKuYTVYc8DQo37BejczkFwWX1vS334vu1DvvYY
+         vaK+0sX0pL8C8X3+t3VVGIe/M2yVhDiWsle2HDpo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.10 197/211] power: supply: bq27xxx: Fix poll_interval handling and races on remove
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 118/119] 3c589_cs: Fix an error handling path in tc589_probe()
 Date:   Sun, 28 May 2023 20:11:58 +0100
-Message-Id: <20230528190848.392995998@linuxfoundation.org>
+Message-Id: <20230528190839.378482184@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
-References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+References: <20230528190835.386670951@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,94 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit c00bc80462afc7963f449d7f21d896d2f629cacc upstream.
+commit 640bf95b2c7c2981fb471acdafbd3e0458f8390d upstream.
 
-Before this patch bq27xxx_battery_teardown() was setting poll_interval = 0
-to avoid bq27xxx_battery_update() requeuing the delayed_work item.
+Should tc589_config() fail, some resources need to be released as already
+done in the remove function.
 
-There are 2 problems with this:
-
-1. If the driver is unbound through sysfs, rather then the module being
-   rmmod-ed, this changes poll_interval unexpectedly
-
-2. This is racy, after it being set poll_interval could be changed
-   before bq27xxx_battery_update() checks it through
-   /sys/module/bq27xxx_battery/parameters/poll_interval
-
-Fix this by added a removed attribute to struct bq27xxx_device_info and
-using that instead of setting poll_interval to 0.
-
-There also is another poll_interval related race on remove(), writing
-/sys/module/bq27xxx_battery/parameters/poll_interval will requeue
-the delayed_work item for all devices on the bq27xxx_battery_devices
-list and the device being removed was only removed from that list
-after cancelling the delayed_work item.
-
-Fix this by moving the removal from the bq27xxx_battery_devices list
-to before cancelling the delayed_work item.
-
-Fixes: 8cfaaa811894 ("bq27x00_battery: Fix OOPS caused by unregistring bq27x00 driver")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/d8593ae867b24c79063646e36f9b18b0790107cb.1684575975.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |   22 +++++++++-------------
- include/linux/power/bq27xxx_battery.h  |    1 +
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/3com/3c589_cs.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1733,7 +1733,7 @@ static void bq27xxx_battery_update_unloc
- 
- 	di->last_update = jiffies;
- 
--	if (poll_interval > 0)
-+	if (!di->removed && poll_interval > 0)
- 		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
- }
- 
-@@ -2063,22 +2063,18 @@ EXPORT_SYMBOL_GPL(bq27xxx_battery_setup)
- 
- void bq27xxx_battery_teardown(struct bq27xxx_device_info *di)
+--- a/drivers/net/ethernet/3com/3c589_cs.c
++++ b/drivers/net/ethernet/3com/3c589_cs.c
+@@ -195,6 +195,7 @@ static int tc589_probe(struct pcmcia_dev
  {
--	/*
--	 * power_supply_unregister call bq27xxx_battery_get_property which
--	 * call bq27xxx_battery_poll.
--	 * Make sure that bq27xxx_battery_poll will not call
--	 * schedule_delayed_work again after unregister (which cause OOPS).
--	 */
--	poll_interval = 0;
--
--	cancel_delayed_work_sync(&di->work);
--
--	power_supply_unregister(di->bat);
--
- 	mutex_lock(&bq27xxx_list_lock);
- 	list_del(&di->list);
- 	mutex_unlock(&bq27xxx_list_lock);
+ 	struct el3_private *lp;
+ 	struct net_device *dev;
++	int ret;
  
-+	/* Set removed to avoid bq27xxx_battery_update() re-queuing the work */
-+	mutex_lock(&di->lock);
-+	di->removed = true;
-+	mutex_unlock(&di->lock);
+ 	dev_dbg(&link->dev, "3c589_attach()\n");
+ 
+@@ -218,7 +219,15 @@ static int tc589_probe(struct pcmcia_dev
+ 
+ 	dev->ethtool_ops = &netdev_ethtool_ops;
+ 
+-	return tc589_config(link);
++	ret = tc589_config(link);
++	if (ret)
++		goto err_free_netdev;
 +
-+	cancel_delayed_work_sync(&di->work);
++	return 0;
 +
-+	power_supply_unregister(di->bat);
- 	mutex_destroy(&di->lock);
++err_free_netdev:
++	free_netdev(dev);
++	return ret;
  }
- EXPORT_SYMBOL_GPL(bq27xxx_battery_teardown);
---- a/include/linux/power/bq27xxx_battery.h
-+++ b/include/linux/power/bq27xxx_battery.h
-@@ -67,6 +67,7 @@ struct bq27xxx_device_info {
- 	struct bq27xxx_access_methods bus;
- 	struct bq27xxx_reg_cache cache;
- 	int charge_design_full;
-+	bool removed;
- 	unsigned long last_update;
- 	struct delayed_work work;
- 	struct power_supply *bat;
+ 
+ static void tc589_detach(struct pcmcia_device *link)
 
 
