@@ -2,147 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0C1714CE3
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 17:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45C7B714CE4
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 17:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjE2PUI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 11:20:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
+        id S229797AbjE2PU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 11:20:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229813AbjE2PUI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 11:20:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD97C4
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 08:20:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C3B4615F0
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 15:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6EFC433EF;
-        Mon, 29 May 2023 15:20:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685373605;
-        bh=h9tJAJnproQuDZcvwq4om2ArE2Plhkd9lflhYBc59Vo=;
-        h=Subject:To:From:Date:From;
-        b=YujnV2/p889LZqA9FbSmmDPlHYKZe1Ta00dEiBYng6ZEAwW6BUdOv1rtKnVTDE1GW
-         o5PRz41LIVjYOt29ONk7jeb1+vUiwakt7dO34RKUAM/yCKAv00JtwvOC6htFcGtCh5
-         /Ab4J2UbDcpily+CV2PBC/9zMduAT8hoyScRVT3M=
-Subject: patch "mm: page_table_check: Ensure user pages are not slab pages" added to usb-linus
-To:     lrh2000@pku.edu.cn, gregkh@linuxfoundation.org,
-        pasha.tatashin@soleen.com, stable@vger.kernel.org
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 29 May 2023 16:19:52 +0100
-Message-ID: <2023052952-tripping-denial-8786@gregkh>
+        with ESMTP id S229485AbjE2PU2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 11:20:28 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA163C9;
+        Mon, 29 May 2023 08:20:27 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b011cffe7fso21592145ad.1;
+        Mon, 29 May 2023 08:20:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685373627; x=1687965627;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gvc0Sypc7fVXcvgTsHV4j3N88EBzVEma04rOGpLqnUU=;
+        b=MENfSFGTaCBdxZAFqE4sG0TtxWV15Fno/PeOwVzCXbN8GeB47TYDzyOfRUj/U5z2Ux
+         1H08GDzKA5tTGK+zXkZyUQvknW1HYerlxtcZScLUorKhgzXl5J7xHQhb55WswLega4dx
+         pF5irxc1i97I8vZqcvYN5PJL8bQdNEGlM8LsE5Re8ew1IlfqYCMPi8Bwp1cFMXWLT8FX
+         UrlTD5ifd4HZ6SmeRTE2vwYo8ENcwUzqND33PRxSbroBqzyxlnSI29kwm5Rc2G2ZRZBb
+         lI0TEPeZfCA8gYMdUF6pKctS9CYM5PyhYyG/RDzSs7mMpGdsFY/K7Sjof2xfSbPC6S/Y
+         rybA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685373627; x=1687965627;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gvc0Sypc7fVXcvgTsHV4j3N88EBzVEma04rOGpLqnUU=;
+        b=QPaiscoZTZelvI20nOlAeqob1l09L02R4707ImFPJLpXnIQnNmAvhw3JroM3feC7o2
+         X3cnSFatPVJ+xnbFoJYn7txlq3VAfhSVLoHIxJwBAqzDGSfuyWvyAuirwYW4NVW0+bhc
+         byKdSu8gxSfpIYHXbTe2KRmP8dySnmfi5NTQy2PfzRcNzMPeASZzzTDAtHBcZwnyUKjD
+         JDd3GLaQgNMejy1+zJ9J0ssPWqpfLYwI0MUJMXgphFCJB8uHdW2Y6uFvXWpMzQxlUkUh
+         Q4GnNl5oa3/4bpoOESvS7G7obPjTbTufabGHeQaNqzNAMr+froUkSaxoeyK0LJ6qAZ88
+         3zhA==
+X-Gm-Message-State: AC+VfDwMUV3a+XZx7l+uLUKjK0xGtp4O+Knf47/M0dttlz9pOPsYtCFV
+        iatvBonTT6DcdDnqCjEqWaE=
+X-Google-Smtp-Source: ACHHUZ59ESDKQoF2T4ui0T0ADbVS1ZkuYfAEn3lC7NGBQz1TnVvi1bwsZY9nbiys8LXpzliPh0jcWw==
+X-Received: by 2002:a17:902:cecd:b0:1af:a2a4:837f with SMTP id d13-20020a170902cecd00b001afa2a4837fmr12174462plg.26.1685373627117;
+        Mon, 29 May 2023 08:20:27 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id jo8-20020a170903054800b001ac937171e4sm3510861plb.254.2023.05.29.08.20.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 May 2023 08:20:26 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <bb173e8e-c275-e153-83cd-019861b30e09@roeck-us.net>
+Date:   Mon, 29 May 2023 08:20:23 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+References: <20230528190833.565872088@linuxfoundation.org>
+ <e98d3b88-980b-4487-baf8-4685cfe62209@roeck-us.net>
+ <468bc707-0814-4d83-9087-74768d98203a@roeck-us.net>
+ <CA+G9fYspKgo+qF5Onq_HDz1-w6NscULrFUSw=YKp+1e=4NkBBQ@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 4.19 000/132] 4.19.284-rc1 review
+In-Reply-To: <CA+G9fYspKgo+qF5Onq_HDz1-w6NscULrFUSw=YKp+1e=4NkBBQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 5/29/23 07:28, Naresh Kamboju wrote:
+> On Mon, 29 May 2023 at 19:19, Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> On Mon, May 29, 2023 at 06:48:10AM -0700, Guenter Roeck wrote:
+>>> On Sun, May 28, 2023 at 08:08:59PM +0100, Greg Kroah-Hartman wrote:
+>>>> This is the start of the stable review cycle for the 4.19.284 release.
+>>>> There are 132 patches in this series, all will be posted as a response
+>>>> to this one.  If anyone has any issues with these being applied, please
+>>>> let me know.
+>>>>
+>>>> Responses should be made by Tue, 30 May 2023 19:08:13 +0000.
+>>>> Anything received after that time might be too late.
+>>>>
+>>>
+>>> Building s390:defconfig ... failed
+>>> Building s390:allnoconfig ... failed
+>>> Building s390:tinyconfig ... failed
+> 
+> We do noticed these set of build failures,
+> 
+> Seems like the following commit might have caused this
+> build break
+> 
+>   drivers: provide devm_platform_ioremap_resource()
+>    [ Upstream commit 7945f929f1a77a1c8887a97ca07f87626858ff42 ]
+> 
+> 
 
-This is a note to let you know that I've just added the patch titled
+Yes. devm_ioremap_resource() is only defined with CONFIG_HAS_IOMEM,
+That dependency was added to platform.c with commit 837ccda3480d
+("drivers: depend on HAS_IOMEM for devm_platform_ioremap_resource()")
+which wasn't backported.
 
-    mm: page_table_check: Ensure user pages are not slab pages
+Guenter
 
-to my usb git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-in the usb-linus branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will hopefully also be merged in Linus's tree for the
-next -rc kernel release.
-
-If you have any questions about this process, please let me know.
-
-
-From 44d0fb387b53e56c8a050bac5c7d460e21eb226f Mon Sep 17 00:00:00 2001
-From: Ruihan Li <lrh2000@pku.edu.cn>
-Date: Mon, 15 May 2023 21:09:58 +0800
-Subject: mm: page_table_check: Ensure user pages are not slab pages
-
-The current uses of PageAnon in page table check functions can lead to
-type confusion bugs between struct page and slab [1], if slab pages are
-accidentally mapped into the user space. This is because slab reuses the
-bits in struct page to store its internal states, which renders PageAnon
-ineffective on slab pages.
-
-Since slab pages are not expected to be mapped into the user space, this
-patch adds BUG_ON(PageSlab(page)) checks to make sure that slab pages
-are not inadvertently mapped. Otherwise, there must be some bugs in the
-kernel.
-
-Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
-Fixes: df4e817b7108 ("mm: page table check")
-Cc: <stable@vger.kernel.org> # 5.17
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Link: https://lore.kernel.org/r/20230515130958.32471-5-lrh2000@pku.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/linux/page-flags.h | 6 ++++++
- mm/page_table_check.c      | 6 ++++++
- 2 files changed, 12 insertions(+)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 1c68d67b832f..92a2063a0a23 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -617,6 +617,12 @@ PAGEFLAG_FALSE(VmemmapSelfHosted, vmemmap_self_hosted)
-  * Please note that, confusingly, "page_mapping" refers to the inode
-  * address_space which maps the page from disk; whereas "page_mapped"
-  * refers to user virtual address space into which the page is mapped.
-+ *
-+ * For slab pages, since slab reuses the bits in struct page to store its
-+ * internal states, the page->mapping does not exist as such, nor do these
-+ * flags below.  So in order to avoid testing non-existent bits, please
-+ * make sure that PageSlab(page) actually evaluates to false before calling
-+ * the following functions (e.g., PageAnon).  See mm/slab.h.
-  */
- #define PAGE_MAPPING_ANON	0x1
- #define PAGE_MAPPING_MOVABLE	0x2
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 25d8610c0042..f2baf97d5f38 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -71,6 +71,8 @@ static void page_table_check_clear(struct mm_struct *mm, unsigned long addr,
- 
- 	page = pfn_to_page(pfn);
- 	page_ext = page_ext_get(page);
-+
-+	BUG_ON(PageSlab(page));
- 	anon = PageAnon(page);
- 
- 	for (i = 0; i < pgcnt; i++) {
-@@ -107,6 +109,8 @@ static void page_table_check_set(struct mm_struct *mm, unsigned long addr,
- 
- 	page = pfn_to_page(pfn);
- 	page_ext = page_ext_get(page);
-+
-+	BUG_ON(PageSlab(page));
- 	anon = PageAnon(page);
- 
- 	for (i = 0; i < pgcnt; i++) {
-@@ -133,6 +137,8 @@ void __page_table_check_zero(struct page *page, unsigned int order)
- 	struct page_ext *page_ext;
- 	unsigned long i;
- 
-+	BUG_ON(PageSlab(page));
-+
- 	page_ext = page_ext_get(page);
- 	BUG_ON(!page_ext);
- 	for (i = 0; i < (1ul << order); i++) {
--- 
-2.40.1
-
+>>>
+>>> --------------
+>>> Error log:
+>>> s390-linux-ld: drivers/base/platform.o: in function `devm_platform_ioremap_resource':
+>>> drivers/base/platform.c:97: undefined reference to `devm_ioremap_resource'
+>>> madrivers/base/platform.cke[1]: *** [Makefile:1061: vmlinux] Error 1
+>>> make: *** [Makefile:153: sub-make] Error 2
+>>
+>> This also affects um:defconfig.
+>>
+>> Guenter
+> 
+> - Naresh
 
