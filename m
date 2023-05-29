@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF991714FF8
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 21:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0453B715073
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 22:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjE2Tup (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 15:50:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60892 "EHLO
+        id S229662AbjE2UWI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 16:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjE2Tuo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 15:50:44 -0400
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6A192;
-        Mon, 29 May 2023 12:50:43 -0700 (PDT)
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-64d24136685so2499330b3a.1;
-        Mon, 29 May 2023 12:50:43 -0700 (PDT)
+        with ESMTP id S229567AbjE2UWI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 16:22:08 -0400
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B45BE;
+        Mon, 29 May 2023 13:22:07 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-64d30ab1f89so2462506b3a.3;
+        Mon, 29 May 2023 13:22:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685389843; x=1687981843;
+        d=1e100.net; s=20221208; t=1685391727; x=1687983727;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
         bh=MAnY68W9tQQFxirzvgmzIs7axxvCCPBIV4gB1cEwbKs=;
-        b=ey6ouAopKAJDiZeKbVFX9s+CVDuD10jD5MWXQljszeVh2DZHev4oRpUMiaFuPlpVkm
-         4qITVaW0Bc2KFdlVxiHiLCDnVGCLSlV6DP8fBvPkt66cJE4YZ6yrgJ7EDNQ6n5OcEITn
-         JPGtvwTG89XJMwbPJ7XgzrUEp8rTe2Lxy7gZtoAHud2/5jiBn3CWm3ysNz+/l4aoxtxQ
-         0RsYzdtopRExUMaH+pP943U32mE96JlRyUXQpH+rGNrLPQjtsL+wWmNbOgAmMnL6pbRs
-         Fu1IiGqjOelh8520LV6m7Rr0Wls9fQL66NsWFE/BnB9XtX+Z3wuWnHKu8f+SSWSqdzcO
-         uCig==
-X-Gm-Message-State: AC+VfDx5as0dsV5glI2pGB2Sv3DRX3UyETq6ku4fgOrI0E69c6FQ1k5f
-        N0FSqK1MjahSRRz5+RsxJSc=
-X-Google-Smtp-Source: ACHHUZ6T2OA24hg6NpIMcaquz8fMTD2Jb28OB83h0iUNjjnk4ddaFAddVClwWGvb75oWJ0bBbCA3mg==
-X-Received: by 2002:a05:6a00:10ca:b0:64f:d4a8:8fa9 with SMTP id d10-20020a056a0010ca00b0064fd4a88fa9mr580815pfu.9.1685389841765;
-        Mon, 29 May 2023 12:50:41 -0700 (PDT)
+        b=OVhSoldwwqXhd0OC3l7Rd0s2eK1FHOsoUQKeRPo9c8hhS1+0ERgtA+nE4yjsp9Mjbv
+         Xsf5z8tqzGzRAdFe/fe874pgsYR4ffUFPfkAEwK3wR4ltoDKqbi7mFQrdvWthkg1s4Rp
+         eMVoGxRu4MxqNlSO/A+rPJ+dS97DFi3aduagLEgQONoBzDljTNcGUGZ9BS9YJIZlCJXP
+         6oB4/2McrK8JMqR7p0Vpx/rsrdOQ6OZXWCg6XpILm2Tdrq1RV1qYfeXUMz3o991MHm0Q
+         0ZLvoWHtdreYB5UV37SDvc/P8r2yZNlvca+1Rv28epms0hoa8zMPQkQmNeE9zM5Ki3lq
+         Hs1w==
+X-Gm-Message-State: AC+VfDzVgcScr0AXAo5mNF96osPDlX70++wg7hpNS3yqEncAEBmrU8M2
+        E6daSarTyZcsLj2o7i/wLPs=
+X-Google-Smtp-Source: ACHHUZ4kbOzbFQO2vJ+IW7zM+gyhgOYAWCSf/xu8KqGlSzzvfTH3lyUkKwk7AqESaXfvPmDj0c+4fQ==
+X-Received: by 2002:a05:6a20:914e:b0:10a:e177:9e73 with SMTP id x14-20020a056a20914e00b0010ae1779e73mr67536pzc.46.1685391726540;
+        Mon, 29 May 2023 13:22:06 -0700 (PDT)
 Received: from asus.hsd1.ca.comcast.net ([98.51.102.78])
-        by smtp.gmail.com with ESMTPSA id e10-20020a62ee0a000000b0063b488f3305sm273360pfi.155.2023.05.29.12.50.40
+        by smtp.gmail.com with ESMTPSA id b19-20020a639313000000b0051b0e564963sm7439342pge.49.2023.05.29.13.22.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 May 2023 12:50:41 -0700 (PDT)
+        Mon, 29 May 2023 13:22:06 -0700 (PDT)
 From:   Bart Van Assche <bvanassche@acm.org>
 To:     "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc:     linux-scsi@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, linux-scsi@vger.kernel.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Bart Van Assche <bvanassche@acm.org>, stable@vger.kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>,
         "James E.J. Bottomley" <jejb@linux.ibm.com>
 Subject: [PATCH] scsi: stex: Fix gcc 13 warnings
-Date:   Mon, 29 May 2023 12:50:34 -0700
-Message-Id: <20230529195034.3077-1-bvanassche@acm.org>
+Date:   Mon, 29 May 2023 13:21:51 -0700
+Message-Id: <20230529202157.11361-1-bvanassche@acm.org>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
