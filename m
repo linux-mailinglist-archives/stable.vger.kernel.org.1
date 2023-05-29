@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C595714CE2
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 17:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0C1714CE3
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 17:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbjE2PUG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 11:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
+        id S229814AbjE2PUI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 11:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjE2PUG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 11:20:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79406DB
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 08:20:04 -0700 (PDT)
+        with ESMTP id S229813AbjE2PUI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 11:20:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD97C4
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 08:20:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0912615C8
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 15:20:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1591DC433D2;
-        Mon, 29 May 2023 15:20:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C3B4615F0
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 15:20:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6EFC433EF;
+        Mon, 29 May 2023 15:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685373603;
-        bh=jv9I8e7wwc4bpKEeJMTOYGAzMnLoGpUJ6w9EFYHtgWY=;
+        s=korg; t=1685373605;
+        bh=h9tJAJnproQuDZcvwq4om2ArE2Plhkd9lflhYBc59Vo=;
         h=Subject:To:From:Date:From;
-        b=qh+yBLlKaVkGqDWZA50uSEOc9b+YGBJEZrklK4x6LPRu+LvPb3VREje3RqiaZmbsB
-         5BW9XUrMfpAw3yqGgsI0sAlp8Q1FhXKVTcyiLp1r545V2Gx9OPo2WxpEggDkZ2WT/v
-         yVOmZgOcGzYTvtRYdgJ0bEt1t95FjNalzQ7JdKQ8=
-Subject: patch "mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM" added to usb-linus
-To:     lrh2000@pku.edu.cn, david@redhat.com, gregkh@linuxfoundation.org,
+        b=YujnV2/p889LZqA9FbSmmDPlHYKZe1Ta00dEiBYng6ZEAwW6BUdOv1rtKnVTDE1GW
+         o5PRz41LIVjYOt29ONk7jeb1+vUiwakt7dO34RKUAM/yCKAv00JtwvOC6htFcGtCh5
+         /Ab4J2UbDcpily+CV2PBC/9zMduAT8hoyScRVT3M=
+Subject: patch "mm: page_table_check: Ensure user pages are not slab pages" added to usb-linus
+To:     lrh2000@pku.edu.cn, gregkh@linuxfoundation.org,
         pasha.tatashin@soleen.com, stable@vger.kernel.org
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 29 May 2023 16:19:51 +0100
-Message-ID: <2023052951-eating-slit-3a4e@gregkh>
+Date:   Mon, 29 May 2023 16:19:52 +0100
+Message-ID: <2023052952-tripping-denial-8786@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,7 +50,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM
+    mm: page_table_check: Ensure user pages are not slab pages
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
@@ -65,77 +65,83 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 81a31a860bb61d54eb688af2568d9332ed9b8942 Mon Sep 17 00:00:00 2001
+From 44d0fb387b53e56c8a050bac5c7d460e21eb226f Mon Sep 17 00:00:00 2001
 From: Ruihan Li <lrh2000@pku.edu.cn>
-Date: Mon, 15 May 2023 21:09:57 +0800
-Subject: mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM
+Date: Mon, 15 May 2023 21:09:58 +0800
+Subject: mm: page_table_check: Ensure user pages are not slab pages
 
-Without EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary
-physical memory regions into the userspace via /dev/mem. At the same
-time, pages may change their properties (e.g., from anonymous pages to
-named pages) while they are still being mapped in the userspace, leading
-to "corruption" detected by the page table check.
+The current uses of PageAnon in page table check functions can lead to
+type confusion bugs between struct page and slab [1], if slab pages are
+accidentally mapped into the user space. This is because slab reuses the
+bits in struct page to store its internal states, which renders PageAnon
+ineffective on slab pages.
 
-To avoid these false positives, this patch makes PAGE_TABLE_CHECK
-depends on EXCLUSIVE_SYSTEM_RAM. This dependency is understandable
-because PAGE_TABLE_CHECK is a hardening technique but /dev/mem without
-STRICT_DEVMEM (i.e., !EXCLUSIVE_SYSTEM_RAM) is itself a security
-problem.
+Since slab pages are not expected to be mapped into the user space, this
+patch adds BUG_ON(PageSlab(page)) checks to make sure that slab pages
+are not inadvertently mapped. Otherwise, there must be some bugs in the
+kernel.
 
-Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be
-mapped via /dev/mem. However, these pages are always considered as named
-pages, so they won't break the logic used in the page table check.
-
+Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
+Fixes: df4e817b7108 ("mm: page table check")
 Cc: <stable@vger.kernel.org> # 5.17
 Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Acked-by: David Hildenbrand <david@redhat.com>
 Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Link: https://lore.kernel.org/r/20230515130958.32471-4-lrh2000@pku.edu.cn
+Link: https://lore.kernel.org/r/20230515130958.32471-5-lrh2000@pku.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/mm/page_table_check.rst | 19 +++++++++++++++++++
- mm/Kconfig.debug                      |  1 +
- 2 files changed, 20 insertions(+)
+ include/linux/page-flags.h | 6 ++++++
+ mm/page_table_check.c      | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/Documentation/mm/page_table_check.rst b/Documentation/mm/page_table_check.rst
-index cfd8f4117cf3..c12838ce6b8d 100644
---- a/Documentation/mm/page_table_check.rst
-+++ b/Documentation/mm/page_table_check.rst
-@@ -52,3 +52,22 @@ Build kernel with:
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 1c68d67b832f..92a2063a0a23 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -617,6 +617,12 @@ PAGEFLAG_FALSE(VmemmapSelfHosted, vmemmap_self_hosted)
+  * Please note that, confusingly, "page_mapping" refers to the inode
+  * address_space which maps the page from disk; whereas "page_mapped"
+  * refers to user virtual address space into which the page is mapped.
++ *
++ * For slab pages, since slab reuses the bits in struct page to store its
++ * internal states, the page->mapping does not exist as such, nor do these
++ * flags below.  So in order to avoid testing non-existent bits, please
++ * make sure that PageSlab(page) actually evaluates to false before calling
++ * the following functions (e.g., PageAnon).  See mm/slab.h.
+  */
+ #define PAGE_MAPPING_ANON	0x1
+ #define PAGE_MAPPING_MOVABLE	0x2
+diff --git a/mm/page_table_check.c b/mm/page_table_check.c
+index 25d8610c0042..f2baf97d5f38 100644
+--- a/mm/page_table_check.c
++++ b/mm/page_table_check.c
+@@ -71,6 +71,8 @@ static void page_table_check_clear(struct mm_struct *mm, unsigned long addr,
  
- Optionally, build kernel with PAGE_TABLE_CHECK_ENFORCED in order to have page
- table support without extra kernel parameter.
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
 +
-+Implementation notes
-+====================
++	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
+ 
+ 	for (i = 0; i < pgcnt; i++) {
+@@ -107,6 +109,8 @@ static void page_table_check_set(struct mm_struct *mm, unsigned long addr,
+ 
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
 +
-+We specifically decided not to use VMA information in order to avoid relying on
-+MM states (except for limited "struct page" info). The page table check is a
-+separate from Linux-MM state machine that verifies that the user accessible
-+pages are not falsely shared.
++	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
+ 
+ 	for (i = 0; i < pgcnt; i++) {
+@@ -133,6 +137,8 @@ void __page_table_check_zero(struct page *page, unsigned int order)
+ 	struct page_ext *page_ext;
+ 	unsigned long i;
+ 
++	BUG_ON(PageSlab(page));
 +
-+PAGE_TABLE_CHECK depends on EXCLUSIVE_SYSTEM_RAM. The reason is that without
-+EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary physical memory
-+regions into the userspace via /dev/mem. At the same time, pages may change
-+their properties (e.g., from anonymous pages to named pages) while they are
-+still being mapped in the userspace, leading to "corruption" detected by the
-+page table check.
-+
-+Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be mapped via
-+/dev/mem. However, these pages are always considered as named pages, so they
-+won't break the logic used in the page table check.
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index a925415b4d10..018a5bd2f576 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -98,6 +98,7 @@ config PAGE_OWNER
- config PAGE_TABLE_CHECK
- 	bool "Check for invalid mappings in user page tables"
- 	depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK
-+	depends on EXCLUSIVE_SYSTEM_RAM
- 	select PAGE_EXTENSION
- 	help
- 	  Check that anonymous page is not being mapped twice with read write
+ 	page_ext = page_ext_get(page);
+ 	BUG_ON(!page_ext);
+ 	for (i = 0; i < (1ul << order); i++) {
 -- 
 2.40.1
 
