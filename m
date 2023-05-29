@@ -2,69 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC546714CA8
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 17:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C595714CE2
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 17:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjE2PH3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 11:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51532 "EHLO
+        id S229790AbjE2PUG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 11:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjE2PH2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 11:07:28 -0400
-X-Greylist: delayed 608 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 29 May 2023 08:07:26 PDT
-Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [IPv6:2001:1600:4:17::42ac])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9E8E3
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 08:07:25 -0700 (PDT)
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QVJXW2WkFzMpyk5;
-        Mon, 29 May 2023 16:57:15 +0200 (CEST)
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4QVJXS2kmszMq014;
-        Mon, 29 May 2023 16:57:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
-        s=20191114; t=1685372235;
-        bh=k2yksphiVr17PfyANZFLI9Exwg8Jhb/+C2VCBIF3McU=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=vnqdvI7B2gcSPoa7xG8gAG2+wFvjlop8mh8W0i0AQQCQpGtFQWtCyZw5X1UmldqHK
-         tyXavk+wtMv7AztQ2Am3KJETPgAycVz0ahjWSwI3uyosYnEBM8/hQROg2eos2b6C+5
-         QIm1JmslgodAazXJaphzDWQX+cq57AuR2F6jmPDc=
-Message-ID: <a0c3e6d4-2827-d9b4-8f4e-aef25997fa8a@digikod.net>
-Date:   Mon, 29 May 2023 16:57:11 +0200
+        with ESMTP id S229485AbjE2PUG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 11:20:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79406DB
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 08:20:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0912615C8
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 15:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1591DC433D2;
+        Mon, 29 May 2023 15:20:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685373603;
+        bh=jv9I8e7wwc4bpKEeJMTOYGAzMnLoGpUJ6w9EFYHtgWY=;
+        h=Subject:To:From:Date:From;
+        b=qh+yBLlKaVkGqDWZA50uSEOc9b+YGBJEZrklK4x6LPRu+LvPb3VREje3RqiaZmbsB
+         5BW9XUrMfpAw3yqGgsI0sAlp8Q1FhXKVTcyiLp1r545V2Gx9OPo2WxpEggDkZ2WT/v
+         yVOmZgOcGzYTvtRYdgJ0bEt1t95FjNalzQ7JdKQ8=
+Subject: patch "mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM" added to usb-linus
+To:     lrh2000@pku.edu.cn, david@redhat.com, gregkh@linuxfoundation.org,
+        pasha.tatashin@soleen.com, stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 29 May 2023 16:19:51 +0100
+Message-ID: <2023052951-eating-slit-3a4e@gregkh>
 MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [PATCH v1 1/5] hostfs: Fix ephemeral inodes
-Content-Language: en-US
-From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-To:     Richard Weinberger <richard@nod.at>
-Cc:     anton ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Christopher Obbard <chris.obbard@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        =?UTF-8?Q?G=c3=bcnther_Noack?= <gnoack3000@gmail.com>,
-        kuba <kuba@kernel.org>, James Morris <jmorris@namei.org>,
-        Jeff Xu <jeffxu@google.com>, Kees Cook <keescook@chromium.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Ritesh Raj Sarraf <ritesh@collabora.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sjoerd Simons <sjoerd@collabora.com>,
-        Willem de Bruijn <willemb@google.com>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-kselftest <linux-kselftest@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-References: <20230309165455.175131-1-mic@digikod.net>
- <20230309165455.175131-2-mic@digikod.net>
- <133970354.9328381.1684703636966.JavaMail.zimbra@nod.at>
- <8249dd59-ce08-2253-1697-301ad082d905@digikod.net>
-In-Reply-To: <8249dd59-ce08-2253-1697-301ad082d905@digikod.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -72,84 +48,95 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-On 26/05/2023 18:40, Mickaël Salaün wrote:
-> 
-> On 21/05/2023 23:13, Richard Weinberger wrote:
->> ----- Ursprüngliche Mail -----
->>> Von: "Mickaël Salaün" <mic@digikod.net>
->>> hostfs creates a new inode for each opened or created file, which created
->>> useless inode allocations and forbade identifying a host file with a kernel
->>> inode.
->>>
->>> Fix this uncommon filesystem behavior by tying kernel inodes to host
->>> file's inode and device IDs.  Even if the host filesystem inodes may be
->>> recycled, this cannot happen while a file referencing it is open, which
->>> is the case with hostfs.  It should be noted that hostfs inode IDs may
->>> not be unique for the same hostfs superblock because multiple host's
->>> (backed) superblocks may be used.
->>>
->>> Delete inodes when dropping them to force backed host's file descriptors
->>> closing.
->>>
->>> This enables to entirely remove ARCH_EPHEMERAL_INODES, and then makes
->>> Landlock fully supported by UML.  This is very useful for testing
->>> (ongoing and backported) changes.
->>
->> Removing ARCH_EPHEMERAL_INODES should be a patch on its own, IMHO.
-> 
-> OK, I'll do that in the next series.
+This is a note to let you know that I've just added the patch titled
 
-Well, I added ARCH_EPHEMERAL_INODES for Landlock specifically because of 
-this hostfs inconsistency, and it is not used by anything else in the 
-kernel: https://git.kernel.org/torvalds/c/cb2c7d1a1776
-I then think it makes sense to remove this Kconfig option with the 
-hostfs change. Moreover, this protects against erroneously backporting 
-the ARCH_EPHEMERAL_INODES change, which would silently introduce a bug 
-for Landlock.
+    mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM
+
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-linus branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
 
 
-> 
->>
->>> These changes also factor out and simplify some helpers thanks to the
->>> new hostfs_inode_update() and the hostfs_iget() revamp: read_name(),
->>> hostfs_create(), hostfs_lookup(), hostfs_mknod(), and
->>> hostfs_fill_sb_common().
->>>
->>> A following commit with new Landlock tests check this new hostfs inode
->>> consistency.
->>>
->>> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
->>> Cc: Johannes Berg <johannes@sipsolutions.net>
->>> Cc: Richard Weinberger <richard@nod.at>
->>> Cc: <stable@vger.kernel.org> # 5.15.x: ce72750f04d6: hostfs: Fix writeback of
->>> dirty pages
->>> Cc: <stable@vger.kernel.org> # 5.15+
->>
->> I'm not sure whether this patch qualifies as stable material.
->> While I fully agree that the current behavoir is odd, nothing user visible
->> is really broken so far.
-> I added the ARCH_EPHEMERAL_INODES knob to avoid unexpected behavior.
-> Thanks to that there is no regression for Landlock, but it's unfortunate
-> that we could not use UML to test old kernel versions. According to this
-> odd behavior, I guess some user space may not work with hostfs because
-> of this issue, hence this Cc. I can remove it if you think it is not the
-> case.
-> 
-> 
->>
->>> Signed-off-by: Mickaël Salaün <mic@digikod.net>
->>> Link: https://lore.kernel.org/r/20230309165455.175131-2-mic@digikod.net
->>
->> Other than that, patch looks good to me.
-> 
-> Good, I'll send a new series with your suggestions.
+From 81a31a860bb61d54eb688af2568d9332ed9b8942 Mon Sep 17 00:00:00 2001
+From: Ruihan Li <lrh2000@pku.edu.cn>
+Date: Mon, 15 May 2023 21:09:57 +0800
+Subject: mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM
 
-Can I add your Signed-off-by to this patch (without touching 
-ARCH_EPHEMERAL_INODES changes, but removing the Cc stable)?
+Without EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary
+physical memory regions into the userspace via /dev/mem. At the same
+time, pages may change their properties (e.g., from anonymous pages to
+named pages) while they are still being mapped in the userspace, leading
+to "corruption" detected by the page table check.
 
-Are you OK for me to push this patch (with the whole series) in the 
-Landlock and next tree?
+To avoid these false positives, this patch makes PAGE_TABLE_CHECK
+depends on EXCLUSIVE_SYSTEM_RAM. This dependency is understandable
+because PAGE_TABLE_CHECK is a hardening technique but /dev/mem without
+STRICT_DEVMEM (i.e., !EXCLUSIVE_SYSTEM_RAM) is itself a security
+problem.
 
-I'll send a new series splitting the Landlock tests to make a patch 
-dedicated to Landlock with hostfs tests (not backported), and with 
-another patch containing backportable and independent new Landlock FS tests.
+Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be
+mapped via /dev/mem. However, these pages are always considered as named
+pages, so they won't break the logic used in the page table check.
+
+Cc: <stable@vger.kernel.org> # 5.17
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Link: https://lore.kernel.org/r/20230515130958.32471-4-lrh2000@pku.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ Documentation/mm/page_table_check.rst | 19 +++++++++++++++++++
+ mm/Kconfig.debug                      |  1 +
+ 2 files changed, 20 insertions(+)
+
+diff --git a/Documentation/mm/page_table_check.rst b/Documentation/mm/page_table_check.rst
+index cfd8f4117cf3..c12838ce6b8d 100644
+--- a/Documentation/mm/page_table_check.rst
++++ b/Documentation/mm/page_table_check.rst
+@@ -52,3 +52,22 @@ Build kernel with:
+ 
+ Optionally, build kernel with PAGE_TABLE_CHECK_ENFORCED in order to have page
+ table support without extra kernel parameter.
++
++Implementation notes
++====================
++
++We specifically decided not to use VMA information in order to avoid relying on
++MM states (except for limited "struct page" info). The page table check is a
++separate from Linux-MM state machine that verifies that the user accessible
++pages are not falsely shared.
++
++PAGE_TABLE_CHECK depends on EXCLUSIVE_SYSTEM_RAM. The reason is that without
++EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary physical memory
++regions into the userspace via /dev/mem. At the same time, pages may change
++their properties (e.g., from anonymous pages to named pages) while they are
++still being mapped in the userspace, leading to "corruption" detected by the
++page table check.
++
++Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be mapped via
++/dev/mem. However, these pages are always considered as named pages, so they
++won't break the logic used in the page table check.
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index a925415b4d10..018a5bd2f576 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -98,6 +98,7 @@ config PAGE_OWNER
+ config PAGE_TABLE_CHECK
+ 	bool "Check for invalid mappings in user page tables"
+ 	depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK
++	depends on EXCLUSIVE_SYSTEM_RAM
+ 	select PAGE_EXTENSION
+ 	help
+ 	  Check that anonymous page is not being mapped twice with read write
+-- 
+2.40.1
+
+
