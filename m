@@ -2,108 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35508714660
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 10:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4E1714560
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 09:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjE2Iiu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 04:38:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45254 "EHLO
+        id S231341AbjE2HX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 03:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjE2Iit (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 04:38:49 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3150AAC
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 01:38:48 -0700 (PDT)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1q3YOd-0006QX-FL; Mon, 29 May 2023 10:38:31 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 375001CD69E;
-        Mon, 29 May 2023 07:21:24 +0000 (UTC)
-Date:   Mon, 29 May 2023 09:21:23 +0200
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Marek Vasut <marex@denx.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.3 127/127] Revert "arm64: dts: imx8mp: Drop simple-bus
- from fsl,imx8mp-media-blk-ctrl"
-Message-ID: <20230529-opium-platform-776d927f2a0c-mkl@pengutronix.de>
+        with ESMTP id S229572AbjE2HX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 03:23:28 -0400
+Received: from qproxy5-pub.mail.unifiedlayer.com (qproxy5-pub.mail.unifiedlayer.com [69.89.21.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20079A7
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 00:23:27 -0700 (PDT)
+Received: from alt-proxy28.mail.unifiedlayer.com (alt-proxy28.mail.unifiedlayer.com [74.220.216.123])
+        by qproxy5.mail.unifiedlayer.com (Postfix) with ESMTP id B56248032D71
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 07:23:26 +0000 (UTC)
+Received: from cmgw13.mail.unifiedlayer.com (unknown [10.0.90.128])
+        by progateway1.mail.pro1.eigbox.com (Postfix) with ESMTP id 543201003A12C
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 07:23:26 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id 3XDyqghWcNX2a3XDyqDvxR; Mon, 29 May 2023 07:23:26 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=NMAQR22g c=1 sm=1 tr=0 ts=647452ee
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
+ a=P0xRbXHiH_UA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=6LOf6/O485ZKjiwMNNJFVV/JEzoDz/h+7BIORfbfe8g=; b=tkOUDxoIqqzQrXkBx1uaqPhcb4
+        c6ts7AJNG8GblKEmHaY5RBveG9j1r0nIhm15RdQ0t9OyJJ3JBRThnIp6dDLf54PiCf6NEf4R2wlut
+        eMxYepumOoig3pPemnLF/Y2WldqWuRbOYKGSXzZL1Mtlfa0CyIOSlUekpvc8wevVgZRhtD/6dbxLr
+        BWFuEdHAm4hW++oq0HbMM0L5HjuDhOZwQJgTxWiyP2FJUYpS6haTCfEQ3qCFmWr675cbpyk8T6u+1
+        tklhaWq+gGHaTW+PKOQ5QaSTqKfChArfzpH98NPOQ+lm8WZySINA8JYKYXuy72OEvoku5GL4JVIM7
+        cvOUklEg==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:41956 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <re@w6rz.net>)
+        id 1q3XDx-001Ng2-CO;
+        Mon, 29 May 2023 01:23:25 -0600
+Subject: Re: [PATCH 6.3 000/127] 6.3.5-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
 References: <20230528190836.161231414@linuxfoundation.org>
- <20230528190840.351644456@linuxfoundation.org>
- <511be6c7-7e58-02a9-46fa-e9a134eac8af@denx.de>
+In-Reply-To: <20230528190836.161231414@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <8c062b1e-48f6-9e7c-444d-1e6b6bb9986c@w6rz.net>
+Date:   Mon, 29 May 2023 00:23:23 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="farkmu5gmuszzu3f"
-Content-Disposition: inline
-In-Reply-To: <511be6c7-7e58-02a9-46fa-e9a134eac8af@denx.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1q3XDx-001Ng2-CO
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:41956
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 5/28/23 12:09 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.5 release.
+> There are 127 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 30 May 2023 19:08:13 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
---farkmu5gmuszzu3f
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-On 29.05.2023 01:48:05, Marek Vasut wrote:
-> On 5/28/23 21:11, Greg Kroah-Hartman wrote:
-> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >=20
-> > This reverts commit bd2573ee0f91c0e6d2bee8599110453e2909060e which is
-> > commit 5a51e1f2b083423f75145c512ee284862ab33854 upstream.
-> >=20
-> > Marc writes:
-> > 	can you please revert this patch, without the corresponding driver pat=
-ch
-> > 	[1] it breaks probing of the device, as no one populates the sub-nodes.
-> >=20
-> > 	[1] 9cb6d1b39a8f ("soc: imx: imx8m-blk-ctrl: Scan subnodes and bind
-> > 	drivers to them")
->=20
-> Would it make more sense to pick the missing blk-ctrl patch instead ?
+Tested-by: Ron Economos <re@w6rz.net>
 
-For me, that's fine, too.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---farkmu5gmuszzu3f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmR0UnAACgkQvlAcSiqK
-BOgivgf/V1PMU3Z8NK9iBRd8SxzDpJU650CrGs10uasM9AK1iVk8rMhaOQgYv1+a
-vpsZEmY293ClljjRP0NjIQWeJVLYI7aszURhnP/jDddCVU9A7xdQqd+xABL2M+SH
-F6HqAeYdHRg+yKnkVNXFegEzyd+vf5pdtT5CfhAyfa0UfJGAlZyf/HeKLC8ySndD
-rMtsKceeRmyyFz0xbLc3uoXAInGrdaeEmcpiRBUiLI1gEZkmRqY5Dbu5TXW6EU7B
-38eyuDcqNixH8eUlPqpiPN+JuGD7cuspbQLzJ8ufrOaXvm1py/h52z5g/Vh/fb/E
-PKum+kEmwnFwnhMXCmBN5fgQqv60Fw==
-=6oh+
------END PGP SIGNATURE-----
-
---farkmu5gmuszzu3f--
