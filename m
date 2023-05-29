@@ -2,144 +2,241 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6D9714E07
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 18:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00ABC714E4A
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 18:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjE2QSg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 12:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58172 "EHLO
+        id S229628AbjE2Q2g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 12:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjE2QSf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 12:18:35 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C7F8A3;
-        Mon, 29 May 2023 09:18:33 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f6042d605dso22695545e9.2;
-        Mon, 29 May 2023 09:18:33 -0700 (PDT)
+        with ESMTP id S229632AbjE2Q2c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 12:28:32 -0400
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81C0CF
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 09:28:28 -0700 (PDT)
+Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-456fe3597bdso2558239e0c.0
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 09:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685377112; x=1687969112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OS7Cd231F040G33nTg/JdwMNbg9I56weKfa+JuzR9V0=;
-        b=odFSh468vCEXSATMzrGBnyFPDEPBnu3/GVtTQzp2WbXOltmvSGkGEzlC+K8uKcxOUK
-         BYYZO3kOcY8anhzgBOM6eu2JYSW1pbA8imDeBahG2zyaSZEaB0IcQh5Ze1XwlYq4jIDY
-         KelS15P78jje2Xt/QEEsGMzhwwlpa5oUQBJ1dAWnUgDFDo8WAy3DvrQgmAHMZ+JDff+L
-         C+HUaai8+J2dlLY0DigOEZjxf2blWamfHgxRO/kjSklzV24Si3sLDtOa8183sh/g7NiP
-         OMgXLYoeAhgFdMZIEnib1pOtsX2fU4TsK6pA2bkKNPWSkiM2WC4x7RsOvk4Zoblle2YU
-         fETw==
+        d=linaro.org; s=google; t=1685377708; x=1687969708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3mGVS8e33OBT2D+ihh0Bl0HYXVlJC6aCF3+d5a7kFn4=;
+        b=MWXiGG03Q5ItKMLHhQxUjZHpdVSqG6LU6yO2fZBy6o328eEZp/llGkdYzBBZOyFYP3
+         jFkchrCcyZd+JUXLWmnruXJwY0BEdFvbV5/iHr7P4yxo7fCD6iTGQOMkl7aSWqjKGAPw
+         dmcXcLqa6heJBW57PorHd4+TxPbiOrro1sOyCxHTNd9E1xFoz31DCnOf3bXTBHkBhiup
+         rlUWy1edFWMl7kcKuUPQV9K56niElOySDkz+ny1pB1eotK0GKlVU+NeLHhhxpHzTKy4t
+         PY25cR/tjHDHKGHbbZT1BOFY01BVECCJkczwH28L+NpYa+W+wYSLEQOVjjJqrmZrIitS
+         95MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685377112; x=1687969112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OS7Cd231F040G33nTg/JdwMNbg9I56weKfa+JuzR9V0=;
-        b=lyltKF5Tp7SP+N0v778Z1rL69SW48XDQlYseZEq0fJDw2DRtbZz6PXZ7a5uuqbIgZv
-         1TQlL4wArHvhJmadlZjTmWsOs1Wp6MnCJV1HJXkzbCP45u+Y00IxSHdW+5eiYdASGkBo
-         DMhN3FUywXBLrZzlK5Y88OsTz3gKA51xEUL2LKj6UW9iUl0nomdmqK+3xV/pFGd3agvA
-         DcfpUrse5xCxn9YevfsUUJPZYe2MlmzfibKvMUK4lak0UmJX35PbpRwKe4xfKa9mGZ0J
-         i++OTsS6NUZ1sxX4J/qCl6WZ0f41GVr/ASg5hFInBGDCih8apGZmNXvVNKrDcwoPhUfH
-         PeWw==
-X-Gm-Message-State: AC+VfDwuJzdEm7FNBlfQuLJrsnqRGM928bjyEvO2Zlw1H++Eg3kh7RqZ
-        fXLkM46BYvQD2hFgfEECHUQ=
-X-Google-Smtp-Source: ACHHUZ5yb7656A5Pt8QU+Hxu5DFAGjmIz71TZJhb5cmkFGg3fCgQ27dRj5NsY4DDPtehbz40yOKrMQ==
-X-Received: by 2002:a7b:c84c:0:b0:3f6:cfc7:8bcf with SMTP id c12-20020a7bc84c000000b003f6cfc78bcfmr9832893wml.34.1685377111877;
-        Mon, 29 May 2023 09:18:31 -0700 (PDT)
-Received: from [192.168.2.177] ([207.188.167.132])
-        by smtp.gmail.com with ESMTPSA id x11-20020a1c7c0b000000b003f50876905dsm14723899wmc.6.2023.05.29.09.18.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 May 2023 09:18:30 -0700 (PDT)
-Message-ID: <eb9d9814-2dd4-ee87-b1ca-4660b59abec4@gmail.com>
-Date:   Mon, 29 May 2023 18:18:30 +0200
+        d=1e100.net; s=20221208; t=1685377708; x=1687969708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3mGVS8e33OBT2D+ihh0Bl0HYXVlJC6aCF3+d5a7kFn4=;
+        b=L9H55VVGayZdb8e8ZO3QV4IP/dEXYCBYNlkTERPN9vSEKFLbzVlxrGmYV19IuI3m4W
+         FQxJoX0IhyErKon6+L5sG5O9UPKZhPVI0u3QckKzv6TVySoJHUjG0kuphryT1W0gSWy0
+         whJlBYe5z3vIrMMAxP6Owb0HSXaCkRT8PUg48BsFY6ECXuTLC6c7jD7Iz+V5GVzDqr6D
+         4iUizwXKw7a6VpspslFhZBOMlo68FnrQC/xnIGVqXzBTwsTTPlkQkK9ZqYTvTfDP1/Cg
+         xftkX4wT/jQhYCUOQ3s0CIhb6BMlfKZpSQq7Tfxe80GVYMl8l+wdE5p26p+WBHZUK/oV
+         YGNA==
+X-Gm-Message-State: AC+VfDy/cARxdgSD93vRakFZ2TG9Rr7jEPTyEWjEWeOJHxhXwL6Kby15
+        sTs9Kv1Cp+Uz9+Ol9xsDs0pEzsx39Io5bo/VG9w0KA==
+X-Google-Smtp-Source: ACHHUZ6j07CFGRw3O3MdJ19GtPNyI19rJl2wlCFs1X9aIik7XosV2eaW29S378M4H9FWQ7+YB75fMAiZoxF9NSGZ8PQ=
+X-Received: by 2002:a1f:60d1:0:b0:456:f578:10a1 with SMTP id
+ u200-20020a1f60d1000000b00456f57810a1mr2978154vkb.0.1685377707718; Mon, 29
+ May 2023 09:28:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] arm64: dts: mt7986: use size of reserved partition for
- bl2
-Content-Language: en-US, ca-ES, es-ES
-To:     Frank Wunderlich <linux@fw-web.de>,
-        linux-mediatek@lists.infradead.org
-Cc:     Frank Wunderlich <frank-w@public-files.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20230528113343.7649-1-linux@fw-web.de>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20230528113343.7649-1-linux@fw-web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230528190843.514829708@linuxfoundation.org>
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Mon, 29 May 2023 21:58:16 +0530
+Message-ID: <CA+G9fYtxV+Vzbz2RyS-qF1edZOrTEpuoXK+ZPKN4sqrVB_NiyA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/211] 5.10.181-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, 29 May 2023 at 01:10, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.181 release.
+> There are 211 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 30 May 2023 19:08:13 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.181-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
-On 28/05/2023 13:33, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> To store uncompressed bl2 more space is required than partition is
-> actually defined.
-> 
-> There is currently no known usage of this reserved partition.
-> Openwrt uses same partition layout.
-> 
-> We added same change to u-boot with commit d7bb1099 [1].
-> 
-> [1] https://source.denx.de/u-boot/u-boot/-/commit/d7bb109900c1ca754a0198b9afb50e3161ffc21e
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 8e01fb15b815 ("arm64: dts: mt7986: add Bananapi R3")
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Applied, thanks!
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> ---
-> If the bl2 does not fit into the bl2-partition (cut off), board does
-> not boot, thats why i want to increase it now. My current bl2 is 197K
-> for nor and i ran into this problem.
-> 
-> Openwrt uses also the first reserved partition to give bl2 more
-> space:
-> 
-> https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=target/linux/mediatek/dts/mt7986a-bananapi-bpi-r3-nor.dts;h=f597b869abc80d1a73f44ebb85ad4da17376bb52;hb=HEAD#l22
-> 
-> so imho it should be same in mainline to not require complex bl2
-> compression.
-> 
-> have now sent the board-specific dts to uboot too:
-> https://source.denx.de/u-boot/u-boot/-/commit/d7bb109900c1ca754a0198b9afb50e3161ffc21e
-> ---
->   .../boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nor.dtso     | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nor.dtso b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nor.dtso
-> index 84aa229e80f3..e48881be4ed6 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nor.dtso
-> +++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nor.dtso
-> @@ -27,15 +27,10 @@ partitions {
->   
->   					partition@0 {
->   						label = "bl2";
-> -						reg = <0x0 0x20000>;
-> +						reg = <0x0 0x40000>;
->   						read-only;
->   					};
->   
-> -					partition@20000 {
-> -						label = "reserved";
-> -						reg = <0x20000 0x20000>;
-> -					};
-> -
->   					partition@40000 {
->   						label = "u-boot-env";
->   						reg = <0x40000 0x40000>;
+## Build
+* kernel: 5.10.181-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.10.y
+* git commit: 80ae453d08c191989cbf98440279674059eca336
+* git describe: v5.10.180-212-g80ae453d08c1
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.180-212-g80ae453d08c1
+
+## Test Regressions (compared to v5.10.180)
+
+## Metric Regressions (compared to v5.10.180)
+
+## Test Fixes (compared to v5.10.180)
+
+## Metric Fixes (compared to v5.10.180)
+
+## Test result summary
+total: 133331, pass: 110831, fail: 3975, skip: 18332, xfail: 193
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 116 passed, 1 failed
+* arm64: 45 total, 43 passed, 2 failed
+* i386: 35 total, 33 passed, 2 failed
+* mips: 27 total, 26 passed, 1 failed
+* parisc: 8 total, 8 passed, 0 failed
+* powerpc: 26 total, 20 passed, 6 failed
+* riscv: 12 total, 11 passed, 1 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 36 passed, 2 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
