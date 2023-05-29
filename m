@@ -2,17 +2,17 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B80171510D
-	for <lists+stable@lfdr.de>; Mon, 29 May 2023 23:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A032C715110
+	for <lists+stable@lfdr.de>; Mon, 29 May 2023 23:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbjE2Vpa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 17:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S229531AbjE2VqQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 17:46:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjE2Vp3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 17:45:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3E1D9
+        with ESMTP id S229632AbjE2Vpb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 17:45:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF1ADB
         for <stable@vger.kernel.org>; Mon, 29 May 2023 14:44:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
         s=mimecast20190719; t=1685396683;
@@ -20,30 +20,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EaalMx5t9L/479ORaQaZNvDA8YmlHp0+0hNnc67s3Xg=;
-        b=CWHzJdZlVRuEeYKb15ZdT7lg84p8PsHMnk2WBlGC3lC6Xr0bKdF+FZte6OlKtwZ9oRD5E3
-        4PczTLzcK4wtqPKZkxqweK08kam2gSfbqDICIjSeY2g82xt9a+L6dLRJqlDWKETfj2p0wo
-        vR/iUK4lMnY7LQxMMbRDCxKMQPG80KQ=
+        bh=WrazTyIFHqKIgZ3EsajFGLEMDyPFsl7X9HOB3HcAr/I=;
+        b=Lo3FIvvEWivF2zgX5rgYdbnLsnETTdLXo1TkojBloV/flkPf23ihdU5olAuUgILDcaGwyH
+        sha48LOwXbzP8vS/fscOfNdMc/t+RKcNpgL9QeLdV/sbJiBnBGbplfhcE1dlN6tbzKdqqv
+        6eweL4tXhGB0eGgXSurvoz56BDt1j5U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-480-iemu7-3dPg-kyi9GxBNrTw-1; Mon, 29 May 2023 17:44:42 -0400
-X-MC-Unique: iemu7-3dPg-kyi9GxBNrTw-1
+ us-mta-653-6l4e936WMBSQcvOXdQdNDA-1; Mon, 29 May 2023 17:44:42 -0400
+X-MC-Unique: 6l4e936WMBSQcvOXdQdNDA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2122D185A78B
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50B74800B2A
         for <stable@vger.kernel.org>; Mon, 29 May 2023 21:44:42 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fs.lab.eng.bos.redhat.com [10.16.224.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EE82F2166B2B;
-        Mon, 29 May 2023 21:44:41 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2910F2166B2B;
+        Mon, 29 May 2023 21:44:42 +0000 (UTC)
 From:   Alexander Aring <aahringo@redhat.com>
 To:     teigland@redhat.com
 Cc:     cluster-devel@redhat.com, aahringo@redhat.com,
         stable@vger.kernel.org
-Subject: [PATCH dlm/next 02/12] fs: dlm: clear pending bit when queue was empty
-Date:   Mon, 29 May 2023 17:44:30 -0400
-Message-Id: <20230529214440.2542721-2-aahringo@redhat.com>
+Subject: [PATCH dlm/next 03/12] fs: dlm: fix missing pending to false
+Date:   Mon, 29 May 2023 17:44:31 -0400
+Message-Id: <20230529214440.2542721-3-aahringo@redhat.com>
 In-Reply-To: <20230529214440.2542721-1-aahringo@redhat.com>
 References: <20230529214440.2542721-1-aahringo@redhat.com>
 MIME-Version: 1.0
@@ -59,39 +59,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This patch clears the DLM_IFL_CB_PENDING_BIT flag which will be set when
-there is callback work queued when there was no callback to dequeue. It
-is a buggy case and should never happen, that's why there is a
-WARN_ON(). However if the case happens we are prepared to somehow
-recover from it.
+This patch sets the process_dlm_messages_pending boolean to false when
+there was no message to process. It is a case which should not happen
+but if we are prepared to recover from this situation by setting pending
+boolean to false.
 
 Cc: stable@vger.kernel.org
-Fixes: 61bed0baa4db ("fs: dlm: use a non-static queue for callbacks")
+Fixes: dbb751ffab0b ("fs: dlm: parallelize lowcomms socket handling")
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/ast.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/dlm/lowcomms.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/dlm/ast.c b/fs/dlm/ast.c
-index 700ff2e0515a..ff0ef4653535 100644
---- a/fs/dlm/ast.c
-+++ b/fs/dlm/ast.c
-@@ -181,10 +181,12 @@ void dlm_callback_work(struct work_struct *work)
- 
- 	spin_lock(&lkb->lkb_cb_lock);
- 	rv = dlm_dequeue_lkb_callback(lkb, &cb);
--	spin_unlock(&lkb->lkb_cb_lock);
--
--	if (WARN_ON_ONCE(rv == DLM_DEQUEUE_CALLBACK_EMPTY))
-+	if (WARN_ON_ONCE(rv == DLM_DEQUEUE_CALLBACK_EMPTY)) {
-+		clear_bit(DLM_IFL_CB_PENDING_BIT, &lkb->lkb_iflags);
-+		spin_unlock(&lkb->lkb_cb_lock);
- 		goto out;
-+	}
-+	spin_unlock(&lkb->lkb_cb_lock);
- 
- 	for (;;) {
- 		castfn = lkb->lkb_astfn;
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 3d3802c47b8b..5aad4d4842eb 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -898,6 +898,7 @@ static void process_dlm_messages(struct work_struct *work)
+ 	pentry = list_first_entry_or_null(&processqueue,
+ 					  struct processqueue_entry, list);
+ 	if (WARN_ON_ONCE(!pentry)) {
++		process_dlm_messages_pending = false;
+ 		spin_unlock(&processqueue_lock);
+ 		return;
+ 	}
 -- 
 2.31.1
 
