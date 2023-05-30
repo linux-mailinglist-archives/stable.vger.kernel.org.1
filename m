@@ -2,194 +2,338 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E18BF7152D4
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 03:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A507152FE
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 03:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229798AbjE3BIM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 29 May 2023 21:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54858 "EHLO
+        id S229803AbjE3Bjw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 29 May 2023 21:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbjE3BIL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 21:08:11 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 763DBD9
-        for <stable@vger.kernel.org>; Mon, 29 May 2023 18:08:09 -0700 (PDT)
-Received: (qmail 389654 invoked by uid 1000); 29 May 2023 21:08:08 -0400
-Date:   Mon, 29 May 2023 21:08:08 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
-        xuetao09@huawei.com, quic_eserrao@quicinc.com,
-        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
-        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
-        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v4 3/3] usb: gadget: udc: core: Offload
- usb_udc_vbus_handler processing
-Message-ID: <eca2b381-2b1f-47de-8385-ea448f2cbdb3@rowland.harvard.edu>
-References: <20230529234816.3720623-1-badhri@google.com>
- <20230529234816.3720623-3-badhri@google.com>
+        with ESMTP id S229597AbjE3Bjv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 29 May 2023 21:39:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F78D9;
+        Mon, 29 May 2023 18:39:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C4D2628E2;
+        Tue, 30 May 2023 01:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38849C433EF;
+        Tue, 30 May 2023 01:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685410788;
+        bh=Fc2RpQel+qFTuy8pAbXgl1N/NoGp11aHR8zxbS1/fzs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=axYUFodp8nl3/X+l5R/JV70OISdLXtY8c6vptkG0y1k5D1oySZWdSp7FrD7u3eYA9
+         a8jXDCciKA22Z+OaithlS/EDeqVeHZm+iEwUGvAxqaMPsUsIC9zLFU3zjvlJGRII52
+         bm04xsjs23C9qttFGTPgMXOEmCuw5wp/yPzXo12IBiZCsXOeU5tYX1RXFDJZxqKRQC
+         makGZ+wygan3Lb7nArHGPR/wQfLnH9fI+8wQUlS7mXuPLDIOXQSge9sFKgXJC/54U+
+         8bmn0GO1o9EASbVWa0rCoioTyxe3qi0zllBWof2HZK0T1fSs6UIQwhMmR/Nnt4qu6c
+         7FN4gf94kXiNQ==
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     linux-integrity@vger.kernel.org
+Cc:     Jason Gunthorpe <jgg@nvidia.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
+        stable@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
+        Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH RFC] tpm: tpm_vtpm_proxy: fix a race condition in the locality change
+Date:   Tue, 30 May 2023 04:39:41 +0300
+Message-Id: <20230530013942.232590-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230529234816.3720623-3-badhri@google.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 29, 2023 at 11:48:16PM +0000, Badhri Jagan Sridharan wrote:
-> chipidea udc calls usb_udc_vbus_handler from udc_start gadget
-> ops causing a deadlock. Avoid this by offloading usb_udc_vbus_handler
-> processing.
+From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
 
-This is not a good explanation.  In particular, it doesn't explain why 
-moving the processing to a workqueue is the proper solution.
+The driver has three issues (in priority order) in the locality change:
 
-You should describe the issue I raised earlier, namely, that 
-usb_udc_vbus_handler() has to run in interrupt context but it calls 
-usb_udc_connect_control(), which has to run in process context.  And 
-explain _why_ these routines have to run in those contexts.
+1. Because of mutex_unlock(&proxy_dev->buf_lock) in-between write and read
+   operations in the locality change, another thread can send a TPM command
+   in-between.
+2. The driver uses __user pointer and copy_to_user() and
+   copy_from_user() with a kernel address during the locality change.
+3. For invalid locality change request from user space, the driver
+   sets errno to EFAULT, while for invalid input data EINVAL should
+   be used.
 
-> ---
->  drivers/usb/gadget/udc/core.c | 269 ++++++++++++++++------------------
->  1 file changed, 123 insertions(+), 146 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-> index 4641153e9706..26380e621e9f 100644
-> --- a/drivers/usb/gadget/udc/core.c
-> +++ b/drivers/usb/gadget/udc/core.c
-> @@ -38,9 +38,10 @@ static const struct bus_type gadget_bus_type;
->   * for udcs who do not care about vbus status, this value is always true
->   * @started: the UDC's started state. True if the UDC had started.
->   * @connect_lock: protects udc->vbus, udc->started, gadget->connect, gadget->deactivate related
-> - * functions. usb_gadget_connect_locked, usb_gadget_disconnect_locked,
-> - * usb_udc_connect_control_locked, usb_gadget_udc_start_locked, usb_gadget_udc_stop_locked are
-> - * called with this lock held.
-> + * functions. usb_gadget_pullup_update_locked called with this lock held.
-> + * @vbus_events: list head for processing vbus updates on usb_udc_vbus_handler.
-> + * @vbus_events_lock: protects vbus_events list
-> + * @vbus_work: work item that invokes usb_gadget_pullup_update_locked.
->   *
->   * This represents the internal data structure which is used by the UDC-class
->   * to hold information about udc driver and gadget together.
-> @@ -53,6 +54,20 @@ struct usb_udc {
->  	bool				vbus;
->  	bool				started;
->  	struct mutex			connect_lock;
-> +	struct list_head		vbus_events;
-> +	spinlock_t			vbus_events_lock;
-> +	struct work_struct		vbus_work;
+Address this by:
 
-Do you really need three new fields here?  Isn't vbus_work sufficient?
+1. Introduce __vtpm_proxy_read_unlocked(),  __vtpm_proxy_write_unlocked()
+   and __vtpm_proxy_read_write_locked().
+2. Make locality change atomic by calling __vtpm_proxy_read_write_locked(),
+   instead of tpm_transmit_cmd().
 
-> +	bool				unbinding;
+Cc: stable@vger.kernel.org
+Fixes: be4c9acfe297 ("tpm: vtpm_proxy: Implement request_locality function.")
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+---
+NOTE: I did not have test env available, when I wrote this. Thus, it has
+an RFC tag for the moment.
+ drivers/char/tpm/tpm_vtpm_proxy.c | 162 ++++++++++++++----------------
+ 1 file changed, 73 insertions(+), 89 deletions(-)
 
-Do not include this in the same patch.  The unbinding flag does 
-something different from the vbus_work structure, so it belongs in a 
-different patch.
+diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
+index 30e953988cab..8f43a82e5590 100644
+--- a/drivers/char/tpm/tpm_vtpm_proxy.c
++++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+@@ -38,7 +38,6 @@ struct proxy_dev {
+ #define STATE_OPENED_FLAG        BIT(0)
+ #define STATE_WAIT_RESPONSE_FLAG BIT(1)  /* waiting for emulator response */
+ #define STATE_REGISTERED_FLAG	 BIT(2)
+-#define STATE_DRIVER_COMMAND     BIT(3)  /* sending a driver specific command */
+ 
+ 	size_t req_len;              /* length of queued TPM request */
+ 	size_t resp_len;             /* length of queued TPM response */
+@@ -58,106 +57,112 @@ static void vtpm_proxy_delete_device(struct proxy_dev *proxy_dev);
+  * Functions related to 'server side'
+  */
+ 
+-/**
+- * vtpm_proxy_fops_read - Read TPM commands on 'server side'
+- *
+- * @filp: file pointer
+- * @buf: read buffer
+- * @count: number of bytes to read
+- * @off: offset
+- *
+- * Return:
+- *	Number of bytes read or negative error code
+- */
+-static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
+-				    size_t count, loff_t *off)
++static ssize_t __vtpm_proxy_read_unlocked(struct proxy_dev *proxy_dev, char __user *buf,
++					  size_t count)
+ {
+-	struct proxy_dev *proxy_dev = filp->private_data;
+ 	size_t len;
+-	int sig, rc;
+-
+-	sig = wait_event_interruptible(proxy_dev->wq,
+-		proxy_dev->req_len != 0 ||
+-		!(proxy_dev->state & STATE_OPENED_FLAG));
+-	if (sig)
+-		return -EINTR;
+-
+-	mutex_lock(&proxy_dev->buf_lock);
++	int rc;
+ 
+-	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
++	if (!(proxy_dev->state & STATE_OPENED_FLAG))
+ 		return -EPIPE;
+-	}
+ 
+ 	len = proxy_dev->req_len;
+ 
+ 	if (count < len || len > sizeof(proxy_dev->buffer)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
+ 		pr_debug("Invalid size in recv: count=%zd, req_len=%zd\n",
+ 			 count, len);
+ 		return -EIO;
+ 	}
+ 
+-	rc = copy_to_user(buf, proxy_dev->buffer, len);
++	if (buf)
++		rc = copy_to_user(buf, proxy_dev->buffer, len);
++
+ 	memset(proxy_dev->buffer, 0, len);
+ 	proxy_dev->req_len = 0;
+ 
+ 	if (!rc)
+ 		proxy_dev->state |= STATE_WAIT_RESPONSE_FLAG;
+ 
+-	mutex_unlock(&proxy_dev->buf_lock);
+-
+ 	if (rc)
+ 		return -EFAULT;
+ 
+ 	return len;
+ }
+ 
+-/**
+- * vtpm_proxy_fops_write - Write TPM responses on 'server side'
+- *
+- * @filp: file pointer
+- * @buf: write buffer
+- * @count: number of bytes to write
+- * @off: offset
+- *
+- * Return:
+- *	Number of bytes read or negative error value
+- */
+-static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
+-				     size_t count, loff_t *off)
++static ssize_t __vtpm_proxy_write_unlocked(struct proxy_dev *proxy_dev, const char __user *buf,
++					   size_t count)
+ {
+-	struct proxy_dev *proxy_dev = filp->private_data;
+-
+-	mutex_lock(&proxy_dev->buf_lock);
+-
+-	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
++	if (!(proxy_dev->state & STATE_OPENED_FLAG))
+ 		return -EPIPE;
+-	}
+ 
+ 	if (count > sizeof(proxy_dev->buffer) ||
+-	    !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
++	    !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG))
+ 		return -EIO;
+-	}
+ 
+ 	proxy_dev->state &= ~STATE_WAIT_RESPONSE_FLAG;
+ 
+ 	proxy_dev->req_len = 0;
+ 
+-	if (copy_from_user(proxy_dev->buffer, buf, count)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
++	if (buf && copy_from_user(proxy_dev->buffer, buf, count))
+ 		return -EFAULT;
+-	}
+ 
+ 	proxy_dev->resp_len = count;
++	return count;
++}
+ 
++static ssize_t __vtpm_proxy_read_write_unlocked(struct proxy_dev *proxy_dev, char __user *buf,
++						size_t count)
++{
++	ssize_t rc;
++
++	do {
++		rc = __vtpm_proxy_write_unlocked(proxy_dev, buf, count);
++		if (rc < 0)
++			break;
++		rc = __vtpm_proxy_read_unlocked(proxy_dev, buf, rc);
++	} while (0);
++
++	return rc;
++}
++
++/*
++ * See struct file_operations.
++ */
++static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
++				    size_t count, loff_t *off)
++{
++	struct proxy_dev *proxy_dev = filp->private_data;
++	ssize_t rc;
++	int sig;
++
++	sig = wait_event_interruptible(proxy_dev->wq,
++		proxy_dev->req_len != 0 ||
++		!(proxy_dev->state & STATE_OPENED_FLAG));
++	if (sig)
++		return -EINTR;
++
++	mutex_lock(&proxy_dev->buf_lock);
++	rc = __vtpm_proxy_read_unlocked(proxy_dev, buf, count);
+ 	mutex_unlock(&proxy_dev->buf_lock);
+ 
++	return rc;
++}
++
++/*
++ * See struct file_operations.
++ */
++static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
++				     size_t count, loff_t *off)
++{
++	struct proxy_dev *proxy_dev = filp->private_data;
++	int rc;
++
++	mutex_lock(&proxy_dev->buf_lock);
++	rc = __vtpm_proxy_write_unlocked(proxy_dev, buf, count);
++	mutex_unlock(&proxy_dev->buf_lock);
+ 	wake_up_interruptible(&proxy_dev->wq);
+ 
+-	return count;
++	return rc;
+ }
+ 
+ /*
+@@ -295,28 +300,6 @@ static int vtpm_proxy_tpm_op_recv(struct tpm_chip *chip, u8 *buf, size_t count)
+ 	return len;
+ }
+ 
+-static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
+-					u8 *buf, size_t count)
+-{
+-	struct tpm_header *hdr = (struct tpm_header *)buf;
+-
+-	if (count < sizeof(struct tpm_header))
+-		return 0;
+-
+-	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+-		switch (be32_to_cpu(hdr->ordinal)) {
+-		case TPM2_CC_SET_LOCALITY:
+-			return 1;
+-		}
+-	} else {
+-		switch (be32_to_cpu(hdr->ordinal)) {
+-		case TPM_ORD_SET_LOCALITY:
+-			return 1;
+-		}
+-	}
+-	return 0;
+-}
+-
+ /*
+  * Called when core TPM driver forwards TPM requests to 'server side'.
+  *
+@@ -330,6 +313,7 @@ static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
+ static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
+ {
+ 	struct proxy_dev *proxy_dev = dev_get_drvdata(&chip->dev);
++	unsigned int ord = ((struct tpm_header *)buf)->ordinal;
+ 
+ 	if (count > sizeof(proxy_dev->buffer)) {
+ 		dev_err(&chip->dev,
+@@ -338,9 +322,11 @@ static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
+ 		return -EIO;
+ 	}
+ 
+-	if (!(proxy_dev->state & STATE_DRIVER_COMMAND) &&
+-	    vtpm_proxy_is_driver_command(chip, buf, count))
+-		return -EFAULT;
++	if ((chip->flags & TPM_CHIP_FLAG_TPM2) && ord == TPM2_CC_SET_LOCALITY)
++		return -EINVAL;
++
++	if (ord == TPM_ORD_SET_LOCALITY)
++		return -EINVAL;
+ 
+ 	mutex_lock(&proxy_dev->buf_lock);
+ 
+@@ -409,12 +395,10 @@ static int vtpm_proxy_request_locality(struct tpm_chip *chip, int locality)
+ 		return rc;
+ 	tpm_buf_append_u8(&buf, locality);
+ 
+-	proxy_dev->state |= STATE_DRIVER_COMMAND;
+-
+-	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting to set locality");
+-
+-	proxy_dev->state &= ~STATE_DRIVER_COMMAND;
+-
++	mutex_lock(&proxy_dev->buf_lock);
++	memcpy(proxy_dev->buffer, buf.data, tpm_buf_length(&buf));
++	rc = __vtpm_proxy_read_write_unlocked(proxy_dev, NULL, tpm_buf_length(&buf));
++	mutex_unlock(&proxy_dev->buf_lock);
+ 	if (rc < 0) {
+ 		locality = rc;
+ 		goto out;
+-- 
+2.39.2
 
-> +};
-> +
-> +/**
-> + * struct vbus_event - used to notify vbus updates posted through usb_udc_vbus_handler.
-> + * @vbus_on: true when vbus is on. false other wise.
-> + * @node: list node for maintaining a list of pending updates to be processed.
-> + */
-> +struct vbus_event {
-> +	bool vbus_on;
-> +	struct list_head node;
->  };
-
-Why do we need this?  Why can't the work routine simply set the pullup 
-according to the current setting of vbus and the other flags?  That's 
-what usb_udc_vbus_handler() does now.
-
->  
->  static struct class *udc_class;
-> @@ -693,40 +708,46 @@ int usb_gadget_vbus_disconnect(struct usb_gadget *gadget)
->  EXPORT_SYMBOL_GPL(usb_gadget_vbus_disconnect);
->  
->  /* Internal version of usb_gadget_connect needs to be called with connect_lock held. */
-> -static int usb_gadget_connect_locked(struct usb_gadget *gadget)
-> +static int usb_gadget_pullup_update_locked(struct usb_gadget *gadget)
->  	__must_hold(&gadget->udc->connect_lock)
->  {
->  	int ret = 0;
-> +	bool connect = !gadget->deactivated && gadget->udc->started && gadget->udc->vbus &&
-> +		       !gadget->udc->unbinding;
-
-Since you are wrapping this line anyway, you might as well wrap it 
-before column 76.
-
->  
->  	if (!gadget->ops->pullup) {
->  		ret = -EOPNOTSUPP;
->  		goto out;
->  	}
->  
-> -	if (gadget->connected)
-> -		goto out;
-> -
-> -	if (gadget->deactivated || !gadget->udc->started) {
-> -		/*
-> -		 * If gadget is deactivated we only save new state.
-> -		 * Gadget will be connected automatically after activation.
-> -		 *
-> -		 * udc first needs to be started before gadget can be pulled up.
-> -		 */
-> -		gadget->connected = true;
-> -		goto out;
-> +	if (connect != gadget->connected) {
-> +		ret = gadget->ops->pullup(gadget, connect);
-> +		if (!ret)
-> +			gadget->connected = connect;
-> +		mutex_lock(&udc_lock);
-> +		if (!connect)
-> +			gadget->udc->driver->disconnect(gadget);
-> +		mutex_unlock(&udc_lock);
->  	}
-
-What will happen if the gadget isn't deactivated, but it is started and 
-VBUS power is prevent and the driver isn't unbinding, but the gadget 
-driver decides to call usb_gadget_disconnect()?
-
->  
-> -	ret = gadget->ops->pullup(gadget, 1);
-> -	if (!ret)
-> -		gadget->connected = 1;
-> -
->  out:
->  	trace_usb_gadget_connect(gadget, ret);
->  
->  	return ret;
->  }
->  
-> +static int usb_gadget_set_vbus(struct usb_gadget *gadget, bool vbus)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&gadget->udc->connect_lock);
-> +	gadget->udc->vbus = vbus;
-
-Why does this have to be here?  What's wrong with setting vbus in 
-interrupt context?
-
-> +	ret = usb_gadget_pullup_update_locked(gadget);
-> +	mutex_unlock(&gadget->udc->connect_lock);
-
-Sorry, but at this point I'm getting tired of pointing out all the 
-problems in this patch, so I'm going to stop here.
-
-How about instead doing something really simple, like just make 
-usb_udc_vbus_handler() queue up a work routine that calls 
-usb_udc_connect_control()?  Just a minimal change that will be really 
-easy to review.
-
-Alan Stern
