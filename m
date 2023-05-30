@@ -2,110 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DFAC715DCB
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 13:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63722715DD4
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 13:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbjE3Lu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 07:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53140 "EHLO
+        id S231788AbjE3LvP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 07:51:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229747AbjE3LuZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 07:50:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBAF3B0;
-        Tue, 30 May 2023 04:50:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CFB262E7D;
-        Tue, 30 May 2023 11:50:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D1688C433EF;
-        Tue, 30 May 2023 11:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685447422;
-        bh=byI1jSqOxqzrLfxKAKoP4+VRuLNT5KsfgGVDhPHa2TI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=D7ksxtq//RH+wajtrjjSh9iQTCJVWdz2tYayDljwrAxdv4506GgB6n0nRApkI+/QL
-         0haQ1OAJUExxMrkMgd2VeXmIA9cv06Tcs0l8aF5PDQU2o/UprUK+qWINuatHB91rHC
-         s4PlvfanUn/eTFozn9W/DMzk/2ZNJ4HGXZjAn8R6Va6exVw1BHIo5bGjjzLP4ZVoIa
-         AdZWVms1HBg4oZaS/3DCRlrqT8g7julZyzaSXQ9wkdod9ta6s+ucRcKk9Blv7C8akk
-         GAnxpMHiktC4oJ4k7cfRf9E9X0ARlkFRoqEXNF6Iv+ive2EYCmHpZB5IcqfbzfWzyb
-         6b6CAbfvBHulw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B61FBE52BFB;
-        Tue, 30 May 2023 11:50:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231758AbjE3LvO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 07:51:14 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A84CBEA
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 04:51:10 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-510f525e06cso7622652a12.2
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 04:51:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1685447469; x=1688039469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VXw2bJhZ/bTyaEyxNQlJ8soVao7954SJAKnERIc09i4=;
+        b=autIVxQ3xlvfVjTszY4j7+kzC2GuU0njfhIYohgWpp1qmD6xio9ea4zY0tbwtCd7Pk
+         Cp3DjJqyNpteL0lGjtfZLLq18W210AQ+o7/oK1DpZxDqbJ4cNjOHvGDtVQMlFifBkNzb
+         4AZEqwfIIoWEvuYWgOSyjyZ0AzjiTnaMh5JUI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685447469; x=1688039469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VXw2bJhZ/bTyaEyxNQlJ8soVao7954SJAKnERIc09i4=;
+        b=WhCh4QESA/bjjCoDt8PsRfGRKt+imSUvWSmSD6CRpwl8VMUWDxnol/Hqh63DxId2Qt
+         /3KBGKPx8S1qhxzillG6YXoYi4DEH6AYSYPhIrdjEyXTYIVxKX09r9/3B/uUcNSxHoeb
+         E7H2PFuCVhaue+BM7lhW5YOmwtzCD/c42uSPNwr7zdu0kXp4Rx21Av1Qe4WsLVCGGq7i
+         kgDljxqhUQNvu3xVA4/GhJQVrFGNicwsWY1cIam97Ueo4muORBEGEhV/l1o+D9CsMZE7
+         Tyfe5QmUe+BX3UhGHavW8hKJTBFj0SImFZAHft+vnaFsTeAUb9c3sBPDya6YkQ8o+jF0
+         F/XA==
+X-Gm-Message-State: AC+VfDxodX7D/4/jA/gvXb4gzKgtYN1WwMKu4htX5bQSxDG/v0pigo9t
+        CALgB3/3V94T1IBMefUGBYee471FkNsqTyE/lnYnTYFK
+X-Google-Smtp-Source: ACHHUZ4HqTOnMr9jWM3Xaij/auI+yBjZTay482KnRRq9tq5N7rwAEzsDQGnBmUPIuKqc0/slpUNJ1g==
+X-Received: by 2002:a17:907:6e25:b0:973:ea41:3f0c with SMTP id sd37-20020a1709076e2500b00973ea413f0cmr2388266ejc.20.1685447468834;
+        Tue, 30 May 2023 04:51:08 -0700 (PDT)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id lf4-20020a170907174400b0096f7500502csm7290265ejc.199.2023.05.30.04.51.08
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 May 2023 04:51:08 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5147e8972a1so6984828a12.0
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 04:51:08 -0700 (PDT)
+X-Received: by 2002:a17:907:3f11:b0:961:b0:3dfd with SMTP id
+ hq17-20020a1709073f1100b0096100b03dfdmr2439731ejc.7.1685447467702; Tue, 30
+ May 2023 04:51:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/8] selftests: mptcp: skip tests not supported by old
- kernels (part 1)
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168544742274.5689.17805805293315572360.git-patchwork-notify@kernel.org>
-Date:   Tue, 30 May 2023 11:50:22 +0000
-References: <20230528-upstream-net-20230528-mptcp-selftests-support-old-kernels-part-1-v1-0-a32d85577fc6@tessares.net>
-In-Reply-To: <20230528-upstream-net-20230528-mptcp-selftests-support-old-kernels-part-1-v1-0-a32d85577fc6@tessares.net>
-To:     Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        shuah@kernel.org, cpaasch@apple.com, fw@strlen.de,
-        dcaratti@redhat.com, kishen.maloor@intel.com,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230528190835.386670951@linuxfoundation.org> <ZHXUGdFMIcB5HL8s@duo.ucw.cz>
+In-Reply-To: <ZHXUGdFMIcB5HL8s@duo.ucw.cz>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 30 May 2023 07:50:50 -0400
+X-Gmail-Original-Message-ID: <CAHk-=wjekYoijzNK-MCQKvrO_7m0m9nRmt3ebKcHyhR-XJimUA@mail.gmail.com>
+Message-ID: <CAHk-=wjekYoijzNK-MCQKvrO_7m0m9nRmt3ebKcHyhR-XJimUA@mail.gmail.com>
+Subject: Re: Wrong/strange TPM patches was Re: [PATCH 6.1 000/119] 6.1.31-rc1 review
+To:     Pavel Machek <pavel@denx.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, l.sanfilippo@kunbus.com,
+        jarkko@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+On Tue, May 30, 2023 at 6:46=E2=80=AFAM Pavel Machek <pavel@denx.de> wrote:
+>
+> > Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> >     tpm, tpm_tis: Avoid cache incoherency in test for interrupts
+>
+> Description on this one is wrong/confused.
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Yes. Commit 858e8b792d06 ("tpm, tpm_tis: Avoid cache incoherency in
+test for interrupts") in mainline.
 
-On Sun, 28 May 2023 19:35:25 +0200 you wrote:
-> After a few years of increasing test coverage in the MPTCP selftests, we
-> realised [1] the last version of the selftests is supposed to run on old
-> kernels without issues.
-> 
-> Supporting older versions is not that easy for this MPTCP case: these
-> selftests are often validating the internals by checking packets that
-> are exchanged, when some MIB counters are incremented after some
-> actions, how connections are getting opened and closed in some cases,
-> etc. In other words, it is not limited to the socket interface between
-> the userspace and the kernelspace. In addition, the current selftests
-> run a lot of different sub-tests but the TAP13 protocol used in the
-> selftests don't support sub-tests: in other words, one failure in
-> sub-tests implies that the whole selftest is seen as failed at the end
-> because sub-tests are not tracked. It is then important to skip
-> sub-tests not supported by old kernels.
-> 
-> [...]
+The change to test_bit/set_bit may be a good one (and adding the
+IRQ_TESTED case to the bit flags), but that commit wasn't it.
 
-Here is the summary with links:
-  - [net,1/8] selftests: mptcp: join: avoid using 'cmp --bytes'
-    https://git.kernel.org/netdev/net/c/d328fe870674
-  - [net,2/8] selftests: mptcp: connect: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/d83013bdf90a
-  - [net,3/8] selftests: mptcp: pm nl: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/0f4955a40daf
-  - [net,4/8] selftests: mptcp: join: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/715c78a82e00
-  - [net,5/8] selftests: mptcp: diag: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/46565acdd29f
-  - [net,6/8] selftests: mptcp: simult flows: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/9161f21c74a1
-  - [net,7/8] selftests: mptcp: sockopt: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/cf6f0fda7af7
-  - [net,8/8] selftests: mptcp: userspace pm: skip if MPTCP is not supported
-    https://git.kernel.org/netdev/net/c/63212608a92a
+As you say, the enum should now enumerate bits, not bitmasks.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+             Linus
