@@ -2,93 +2,326 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C07C716F08
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 22:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B09716F10
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 22:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbjE3UqN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 16:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
+        id S229834AbjE3UuR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 16:50:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230194AbjE3UqM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 16:46:12 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C42A08E
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:46:10 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-3f6c6320d4eso14241cf.1
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685479570; x=1688071570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pr06SdwCclh2zvxEhUJpXnyPxEiUxaGZRfUn2lWDHfU=;
-        b=wgszgCOPzKS/eLro6ja1PmQxsYOjUp8PXM+Swi1b3geif0q8T060pvy1gMVwZtfWOb
-         FL9Tyf7b94KpPgOcaGyP5nDYKVAdBX0Re8BzliJbAyEnFwK4+on/hFIxNzGVI9sNMlZs
-         MJSXy3b/lOvM5bWZINlP/C4SXsd3dicw63NsJOgHjejKWFPeqv5yMrNe19Rwk9Ii+D7+
-         8d6HpD7AbKBen6lc9A+Y2h1hljftzsr8SEcPBnTph3dwlNHc+XDVuR7fm6hrxDsgQYQ+
-         GJ0vud2oNQjSJEmbKTgRkKejRzquMcW1dBRk6kQUmZgDudEZ879dggOnwPfpjOD6F5y4
-         oZJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685479570; x=1688071570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pr06SdwCclh2zvxEhUJpXnyPxEiUxaGZRfUn2lWDHfU=;
-        b=YMrR8DU1008q3RMROrQk4DANXDRvAih83XHU8lXgPKkaamjyBT256RRsecRAOgJKde
-         1GhngNSOjTfuhOfbMstuJyTSdbmfgTbYvYOiQ0KsJIU1dwTEb4hDN+y1kt5goTX+qhOg
-         TfEbGybnnaV4jIXHKXGIqdgoDHgrbBiAWM8kxZUOPS4SrRrorxxDLgd194ldjBx0QSz/
-         /U4Mz6ZAyS5q6aoRv7W1GGhYj7tPdphCJvkkfLfkSmjpUdsfMkFgzvT3/RcEaXJLKv/D
-         6R7MONT4rCwLhztQPZ6K+/5ZO6c23exFlAm9/eGBk9tkhbP+6XT0LmHWc+HHc+pr6p03
-         XktA==
-X-Gm-Message-State: AC+VfDyYE4c95oi/7zF+81IOYPqa0E7Qqk5VlUCQjw5Uys7xSwK1lsW8
-        lhhlu7gV0FOhAqYfdhogvAT0WyQODRy7gv3WdqEhnA==
-X-Google-Smtp-Source: ACHHUZ4jJZKLPPo4/StebD/Mknpi3tNY4VHMroMJx9drsU138Agu7XkXbVs4RIR2E01Thou8y3+90/FSSZVQUAlewLU=
-X-Received: by 2002:ac8:7e8c:0:b0:3e8:684b:195d with SMTP id
- w12-20020ac87e8c000000b003e8684b195dmr20043qtj.10.1685479569818; Tue, 30 May
- 2023 13:46:09 -0700 (PDT)
+        with ESMTP id S230031AbjE3UuM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 16:50:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D565FEC;
+        Tue, 30 May 2023 13:50:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F995602E2;
+        Tue, 30 May 2023 20:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28501C433D2;
+        Tue, 30 May 2023 20:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685479807;
+        bh=eSe4k0GdqCWzcoai33dkHcs/AUteRh6wSrOhKZwSjXA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oNwdRsyDs+uiAsWL6jP5bKhLas9kNKzsI1nn26JyySpI+sV0U7//F7jHbgS2fRe0j
+         YpO4YYiOt2ACaAPFLibCR9EDzBg0oj26YEHCPr8Z9ZG5kRpmeUIZVmfSFl8sBlrRBY
+         J6suioUK8jQyQL97LBMtgBo02riAlIqTTPEqxQmgtFl1Rsfxy6cmyB74Ft/yPlDTHa
+         5blPOeOHdOxTkt74Eps8ADWwaNEV+Cz06otIKf6UDHFLGZE4pq2q1Op5UDFLsJiO4U
+         I9xRILu5k53CDnaYpUHOXXMTOYWPYaT39ghz63QZ/6uRy1E+0LIjZZASkQbV6Yd9ny
+         ZH/XFCmHhmDTA==
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     linux-integrity@vger.kernel.org
+Cc:     Jason Gunthorpe <jgg@nvidia.com>,
+        Alejandro Cabrera <alejandro.cabreraaldaya@tuni.fi>,
+        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
+        stable@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
+        Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] tpm: factor out the user space mm from tpm_vtpm_set_locality()
+Date:   Tue, 30 May 2023 23:50:01 +0300
+Message-Id: <20230530205001.1302975-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230530193213.1663411-1-oliver.upton@linux.dev>
-In-Reply-To: <20230530193213.1663411-1-oliver.upton@linux.dev>
-From:   Yu Zhao <yuzhao@google.com>
-Date:   Tue, 30 May 2023 14:45:33 -0600
-Message-ID: <CAOUHufbUNhnYKqHAffcM82hyJp0vgfFWmFkhzyrx_W4rkGbgkg@mail.gmail.com>
-Subject: Re: [PATCH] KVM: arm64: Drop last page ref in kvm_pgtable_stage2_free_removed()
-To:     Oliver Upton <oliver.upton@linux.dev>
-Cc:     kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Fuad Tabba <tabba@google.com>, Will Deacon <will@kernel.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023 at 1:32=E2=80=AFPM Oliver Upton <oliver.upton@linux.de=
-v> wrote:
->
-> The reference count on page table allocations is increased for every
-> 'counted' PTE (valid or donated) in the table in addition to the initial
-> reference from ->zalloc_page(). kvm_pgtable_stage2_free_removed() fails
-> to drop the last reference on the root of the table walk, meaning we
-> leak memory.
->
-> Fix it by dropping the last reference after the free walker returns,
-> at which point all references for 'counted' PTEs have been released.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 5c359cca1faf ("KVM: arm64: Tear down unlinked stage-2 subtree afte=
-r break-before-make")
-> Reported-by: Yu Zhao <yuzhao@google.com>
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
 
-Tested-by: Yu Zhao <yuzhao@google.com>
+vtpm_proxy_fops_set_locality() causes kernel buffers to be passed to
+copy_from_user() and copy_to_user().
+
+Factor out the crippled code away with help of an internal API for
+managing struct proxy_dev instances.
+
+Link: https://lore.kernel.org/all/20230530020133.235765-1-jarkko@kernel.org/
+Cc: stable@vger.kernel.org # v4.14+
+Fixes: be4c9acfe297 ("tpm: vtpm_proxy: Implement request_locality function.")
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+---
+I've tested this on RISC-V QEMU and have not noticed issues so far, and
+thus dropped the RFC tag. I've been looking into the code a lot lately
+as I'm building a boot time support for it, which will allow to e.g.
+test IMA without a physical TPM.	
+ drivers/char/tpm/tpm_vtpm_proxy.c | 168 ++++++++++++++++--------------
+ 1 file changed, 87 insertions(+), 81 deletions(-)
+
+diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
+index 30e953988cab..83496742cc19 100644
+--- a/drivers/char/tpm/tpm_vtpm_proxy.c
++++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+@@ -38,7 +38,6 @@ struct proxy_dev {
+ #define STATE_OPENED_FLAG        BIT(0)
+ #define STATE_WAIT_RESPONSE_FLAG BIT(1)  /* waiting for emulator response */
+ #define STATE_REGISTERED_FLAG	 BIT(2)
+-#define STATE_DRIVER_COMMAND     BIT(3)  /* sending a driver specific command */
+ 
+ 	size_t req_len;              /* length of queued TPM request */
+ 	size_t resp_len;             /* length of queued TPM response */
+@@ -58,6 +57,53 @@ static void vtpm_proxy_delete_device(struct proxy_dev *proxy_dev);
+  * Functions related to 'server side'
+  */
+ 
++static ssize_t __vtpm_proxy_copy_from(struct proxy_dev *proxy_dev, u8 *buf, size_t count)
++{
++	size_t len = proxy_dev->req_len;
++
++	if (!(proxy_dev->state & STATE_OPENED_FLAG))
++		return -EPIPE;
++
++	if (count < len || len > sizeof(proxy_dev->buffer)) {
++		pr_debug("Invalid size in recv: count=%zd, req_len=%zd\n", count, len);
++		return -EIO;
++	}
++
++	memcpy(buf, proxy_dev->buffer, len);
++	memset(proxy_dev->buffer, 0, len);
++	proxy_dev->req_len = 0;
++	proxy_dev->state |= STATE_WAIT_RESPONSE_FLAG;
++
++	return len;
++}
++
++static ssize_t __vtpm_proxy_copy_to(struct proxy_dev *proxy_dev, const u8 *buf, size_t count)
++{
++	if (!(proxy_dev->state & STATE_OPENED_FLAG))
++		return -EPIPE;
++
++	if (count > sizeof(proxy_dev->buffer) || !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG))
++		return -EIO;
++
++	proxy_dev->state &= ~STATE_WAIT_RESPONSE_FLAG;
++	proxy_dev->req_len = 0;
++	proxy_dev->resp_len = count;
++	memcpy(proxy_dev->buffer, buf, count);
++
++	return count;
++}
++
++static int vtpm_proxy_wait_for(struct proxy_dev *proxy_dev)
++{
++	if (wait_event_interruptible(
++		proxy_dev->wq,
++		proxy_dev->req_len != 0 || !(proxy_dev->state & STATE_OPENED_FLAG)))
++		return -EINTR;
++
++	return 0;
++}
++
++
+ /**
+  * vtpm_proxy_fops_read - Read TPM commands on 'server side'
+  *
+@@ -73,44 +119,26 @@ static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
+ 				    size_t count, loff_t *off)
+ {
+ 	struct proxy_dev *proxy_dev = filp->private_data;
+-	size_t len;
+-	int sig, rc;
++	u8 *kernel_buf;
++	ssize_t rc;
+ 
+-	sig = wait_event_interruptible(proxy_dev->wq,
+-		proxy_dev->req_len != 0 ||
+-		!(proxy_dev->state & STATE_OPENED_FLAG));
+-	if (sig)
+-		return -EINTR;
+-
+-	mutex_lock(&proxy_dev->buf_lock);
+-
+-	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
+-		return -EPIPE;
+-	}
+-
+-	len = proxy_dev->req_len;
+-
+-	if (count < len || len > sizeof(proxy_dev->buffer)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
+-		pr_debug("Invalid size in recv: count=%zd, req_len=%zd\n",
+-			 count, len);
+-		return -EIO;
+-	}
+-
+-	rc = copy_to_user(buf, proxy_dev->buffer, len);
+-	memset(proxy_dev->buffer, 0, len);
+-	proxy_dev->req_len = 0;
++	rc = vtpm_proxy_wait_for(proxy_dev);
++	if (rc)
++		return rc;
+ 
+-	if (!rc)
+-		proxy_dev->state |= STATE_WAIT_RESPONSE_FLAG;
++	kernel_buf = kzalloc(sizeof(proxy_dev->buffer), GFP_KERNEL);
++	if (!kernel_buf)
++		return -ENOMEM;
+ 
++	mutex_lock(&proxy_dev->buf_lock);
++	rc = __vtpm_proxy_copy_from(proxy_dev, buf, count);
+ 	mutex_unlock(&proxy_dev->buf_lock);
+ 
+-	if (rc)
+-		return -EFAULT;
++	if (!rc && copy_to_user(buf, kernel_buf, count))
++		rc = -EFAULT;
+ 
+-	return len;
++	kfree(kernel_buf);
++	return rc;
+ }
+ 
+ /**
+@@ -128,36 +156,26 @@ static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
+ 				     size_t count, loff_t *off)
+ {
+ 	struct proxy_dev *proxy_dev = filp->private_data;
++	u8 *kernel_buf;
++	int rc;
+ 
+-	mutex_lock(&proxy_dev->buf_lock);
+-
+-	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
+-		return -EPIPE;
+-	}
+-
+-	if (count > sizeof(proxy_dev->buffer) ||
+-	    !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
+-		return -EIO;
+-	}
+-
+-	proxy_dev->state &= ~STATE_WAIT_RESPONSE_FLAG;
+-
+-	proxy_dev->req_len = 0;
++	kernel_buf = kzalloc(sizeof(proxy_dev->buffer), GFP_KERNEL);
++	if (!kernel_buf)
++		return -ENOMEM;
+ 
+-	if (copy_from_user(proxy_dev->buffer, buf, count)) {
+-		mutex_unlock(&proxy_dev->buf_lock);
++	if (copy_from_user(kernel_buf, buf, count)) {
++		kfree(kernel_buf);
+ 		return -EFAULT;
+ 	}
+ 
+-	proxy_dev->resp_len = count;
+-
++	mutex_lock(&proxy_dev->buf_lock);
++	rc = __vtpm_proxy_copy_to(proxy_dev, kernel_buf, count);
+ 	mutex_unlock(&proxy_dev->buf_lock);
+ 
+ 	wake_up_interruptible(&proxy_dev->wq);
++	kfree(kernel_buf);
+ 
+-	return count;
++	return rc;
+ }
+ 
+ /*
+@@ -295,28 +313,6 @@ static int vtpm_proxy_tpm_op_recv(struct tpm_chip *chip, u8 *buf, size_t count)
+ 	return len;
+ }
+ 
+-static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
+-					u8 *buf, size_t count)
+-{
+-	struct tpm_header *hdr = (struct tpm_header *)buf;
+-
+-	if (count < sizeof(struct tpm_header))
+-		return 0;
+-
+-	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+-		switch (be32_to_cpu(hdr->ordinal)) {
+-		case TPM2_CC_SET_LOCALITY:
+-			return 1;
+-		}
+-	} else {
+-		switch (be32_to_cpu(hdr->ordinal)) {
+-		case TPM_ORD_SET_LOCALITY:
+-			return 1;
+-		}
+-	}
+-	return 0;
+-}
+-
+ /*
+  * Called when core TPM driver forwards TPM requests to 'server side'.
+  *
+@@ -330,6 +326,7 @@ static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
+ static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
+ {
+ 	struct proxy_dev *proxy_dev = dev_get_drvdata(&chip->dev);
++	unsigned int ord = ((struct tpm_header *)buf)->ordinal;
+ 
+ 	if (count > sizeof(proxy_dev->buffer)) {
+ 		dev_err(&chip->dev,
+@@ -338,8 +335,10 @@ static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
+ 		return -EIO;
+ 	}
+ 
+-	if (!(proxy_dev->state & STATE_DRIVER_COMMAND) &&
+-	    vtpm_proxy_is_driver_command(chip, buf, count))
++	if ((chip->flags & TPM_CHIP_FLAG_TPM2) && ord == TPM2_CC_SET_LOCALITY)
++		return -EFAULT;
++
++	if (ord == TPM_ORD_SET_LOCALITY)
+ 		return -EFAULT;
+ 
+ 	mutex_lock(&proxy_dev->buf_lock);
+@@ -407,13 +406,20 @@ static int vtpm_proxy_request_locality(struct tpm_chip *chip, int locality)
+ 				  TPM_ORD_SET_LOCALITY);
+ 	if (rc)
+ 		return rc;
++
+ 	tpm_buf_append_u8(&buf, locality);
+ 
+-	proxy_dev->state |= STATE_DRIVER_COMMAND;
++	mutex_lock(&proxy_dev->buf_lock);
++	rc = __vtpm_proxy_copy_to(proxy_dev, buf.data, tpm_buf_length(&buf));
++	mutex_unlock(&proxy_dev->buf_lock);
+ 
+-	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting to set locality");
++	rc = vtpm_proxy_wait_for(proxy_dev);
++	if (rc)
++		return rc;
+ 
+-	proxy_dev->state &= ~STATE_DRIVER_COMMAND;
++	mutex_lock(&proxy_dev->buf_lock);
++	rc = __vtpm_proxy_copy_from(proxy_dev, buf.data, tpm_buf_length(&buf));
++	mutex_unlock(&proxy_dev->buf_lock);
+ 
+ 	if (rc < 0) {
+ 		locality = rc;
+-- 
+2.39.2
+
