@@ -2,106 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A3F715994
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 11:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F34771599E
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 11:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjE3JK5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 05:10:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
+        id S229965AbjE3JNg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 05:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229875AbjE3JKz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 05:10:55 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC852BE
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:10:52 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d2b42a8f9so3267254b3a.3
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:10:52 -0700 (PDT)
+        with ESMTP id S229972AbjE3JNf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 05:13:35 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730A8E8
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:13:33 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-64d30ab1ef2so3114824b3a.2
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:13:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685437852; x=1688029852;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=onOtf3YpfaNIv3nZ9cKNkXLIUusMOopfwbATlSrWpbw=;
-        b=RXqCEEJhV6OGEnAoWVj4vRJC8JD3cre3T9CO+jViL0uO9FNvzTN050w5Z8oG6Tmoqr
-         z7XpsT/LbXV0ljmTxgoOzkiCQhuMW16wT4PrWxfwGkbylDLru29va+oEv1+TXuXaUhxv
-         JzH6NiDVQpVuo2C440W67g/Dlk3w1gp/6yezfwfvuc29hIgGQXRZ9GGTVB7s1pCD0W+A
-         3D6uEIrIKdXrGjsfw7jz4MOO1Y7s4VFgO6U41nz5g829UKUQEItYOhhWPzCXmX+KrHZc
-         yyT/gc4PMu1qDUeNg/qE7Y6JAJ14xZLC68dMtYWggnDbKZrkpN9uhdKY1m/YpUPl9OZf
-         KayQ==
+        d=linaro.org; s=google; t=1685438013; x=1688030013;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YyyX52BF67Diz7Uf4mK/fLgyb9Q3DsmlKfmTtraC+Kc=;
+        b=qhpLK30bDaXs2103YXxXpPhPc9s/QNqCZj9KumXFLCR9TTKSCLJQE+c6iGbdMsJrK1
+         Q1fp47dMZcqYjxeTbuXkNHnJRYHHXaQWSX4SUNNL1SoC0rpTYATl9Akj6eG/rrGIf6ef
+         GftP40ZjmYSLYaEQeZpUpw0hAIC/fWA+Xga094ToFIptD4zI7muZzLtioAI7/MPItX/d
+         b0btwY1DqYJAU4RMB3OK73yoiSIMCaPAKMRMhHNHWm5WUYnXpSQiw/9JGXeVoGJMp7eC
+         1w6VPReUF9a+IdFMumse+29Apj3Op1kFYnmJFGVdeEXpZLRK2inLG3XM7CwPU6z2wFvC
+         aTHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685437852; x=1688029852;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=onOtf3YpfaNIv3nZ9cKNkXLIUusMOopfwbATlSrWpbw=;
-        b=W6SpUWDpRwK8b7byWVlg04dhnMJDy+Gn8FFtaL7BjvzNrLSsD1WWEvoQrEuWyjpeMR
-         XJmw4Em+ChXXn/PX/zhKK2CSvwJsHRTC2J/Amf9lA2CYlngTpsH5HnnzToPpo/VRvhZO
-         YnJT9Qymqz9RnCPMxb+TvFgVXCzLd6Eo+Mgiw+fCvkip+QAz9t2Y0Bsbx6UCghgx+ttb
-         J1oYCVNOnw1hlXHBde7+nZ06WApOveBEbx0ZBLSV3Ovl5TVaLoujDrvROEiicMH9DrVl
-         9tgCtxeesERs4MIjXCt+7jerPGF57msWckltxiMkLmI0RgYo4wO71ivP/ASn3rhIrKDw
-         86Zg==
-X-Gm-Message-State: AC+VfDytUHJk6A/cg15EiUBjggXLhRDw7IW5jAD0OFxWmmmGRIuEUdjA
-        GPaDA5RQeLt8ARrzZmHlZXjNUdzF0vI=
-X-Google-Smtp-Source: ACHHUZ4Bor7htKvGfqJzdw6RI0hLi1+zrMZI6QSdVJqFo+9WzSkljqA631x4M+AQP6tv8sfi8TqYVw==
-X-Received: by 2002:a05:6a20:9382:b0:111:97f:6db1 with SMTP id x2-20020a056a20938200b00111097f6db1mr2094513pzh.19.1685437852066;
-        Tue, 30 May 2023 02:10:52 -0700 (PDT)
-Received: from [192.168.43.80] (subs09a-223-255-225-74.three.co.id. [223.255.225.74])
-        by smtp.gmail.com with ESMTPSA id j21-20020a17090a589500b0024e33c69ee5sm8359465pji.5.2023.05.30.02.10.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 May 2023 02:10:51 -0700 (PDT)
-Message-ID: <eb7db3a4-1e26-353e-0b31-88e0d5f4fb12@gmail.com>
-Date:   Tue, 30 May 2023 16:10:48 +0700
+        d=1e100.net; s=20221208; t=1685438013; x=1688030013;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YyyX52BF67Diz7Uf4mK/fLgyb9Q3DsmlKfmTtraC+Kc=;
+        b=VJwCtQujIC1QVN1ydudEm0UQXRtTwYYNGIlVXh3LWRicN3gs+t57i6K6syFuybkeKV
+         HBvoXSwe9Y1rpXPPN6KuLeCmj+RpqFfBxkwOh1hhktEMjWCD622pFgnIsj/beKxOlTna
+         cyAcTw5fsFf9t79RItQWuMIFUMqPRJsTzBlvCGH2w5EdaiOHUa14MZWFYWCW3WGdj7iZ
+         ZdLIpixZOsX/QUyozaSNwRWpfx4tHZnuAuL5MzcpUxgGBMvMB29dnmiL7AMqvAntpEKE
+         QSHrB1oNXi2AycSn/B2AE5VL1UzK9iSlPR7CVy39Jdke1KnOdsTp3lROkq1jJQuXNQfM
+         9GYg==
+X-Gm-Message-State: AC+VfDw56738d8nzVC82O1FNV+MS0ef2Ehx9yAkHfFPvMr/iLQcA4TXZ
+        oU1pOOsd6zLUDp/9PmdvZOhVOL7Wnpa4vGR6nbo=
+X-Google-Smtp-Source: ACHHUZ75GlZV0riMuA+mh9FpJNHYTb//2BMZQzskvLcCzyby+XqrOWQk0a7PECu6ai46safOQB5OAQ==
+X-Received: by 2002:a05:6a20:9e4a:b0:10c:d33a:5c50 with SMTP id mt10-20020a056a209e4a00b0010cd33a5c50mr1807478pzb.36.1685438012962;
+        Tue, 30 May 2023 02:13:32 -0700 (PDT)
+Received: from localhost ([122.172.87.195])
+        by smtp.gmail.com with ESMTPSA id c17-20020aa78c11000000b0063afb08afeesm1224572pfd.67.2023.05.30.02.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 02:13:32 -0700 (PDT)
+Date:   Tue, 30 May 2023 14:43:30 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc:     Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] opp: Fix use-after-free in lazy_opp_tables after probe
+ deferral
+Message-ID: <20230530091330.e3nawo6ey2an4ir2@vireshk-i7>
+References: <20230524-opp-lazy-uaf-v1-1-f5f95cb4b6de@kernkonzept.com>
+ <20230529053148.xuhuv6skg2xqworr@vireshk-i7>
+ <ZHW0YY4xoUmR_UPg@kernkonzept.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: 6.1.30: thunderbolt: Clear registers properly when auto clear
- isn't in use cause call trace after resume
-Content-Language: en-US
-To:     beld zhang <beldzhang@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        stable@vger.kernel.org
-References: <CAG7aomXv2KV9es2RiGwguesRnUTda-XzmeE42m0=GdpJ2qMOcg@mail.gmail.com>
- <ZHKW5NeabmfhgLbY@debian.me> <261a70b7-a425-faed-8cd5-7fbf807bdef7@amd.com>
- <20230529113813.GZ45886@black.fi.intel.com>
- <e37b2f7f-d204-4204-ce72-e108975c2fe0@amd.com>
- <CAG7aomWsZAfHNCg9jS2P_dWjTh2O6Umx71rG7Xri+ZvpHw8+jQ@mail.gmail.com>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <CAG7aomWsZAfHNCg9jS2P_dWjTh2O6Umx71rG7Xri+ZvpHw8+jQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZHW0YY4xoUmR_UPg@kernkonzept.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/30/23 11:27, beld zhang wrote:
-> test passed both 6.1.30 and 6.4-rc4
-> comments at bugzilla.
-> 
+On 30-05-23, 10:31, Stephan Gerhold wrote:
+> Thanks, this seems to fix the crash as well. Are you going to handle it
+> or should I send a v2 with this diff?
 
-tl;dr:
+Please send a V2 :)
 
-> A: http://en.wikipedia.org/wiki/Top_post
-> Q: Were do I find info about this thing called top-posting?
-> A: Because it messes up the order in which people normally read text.
-> Q: Why is top-posting such a bad thing?
-> A: Top-posting.
-> Q: What is the most annoying thing in e-mail?
+> During _allocate_opp_table() it's accessed without the opp_table_lock,
+> because of
 > 
-> A: No.
-> Q: Should I include quotations after my reply?
+> 	/* Drop the lock to reduce the size of critical section */
+> 	mutex_unlock(&opp_table_lock);
 > 
-> http://daringfireball.net/2007/07/on_top
+> 	if (opp_table) {
+> 		/* ... */
+> 		mutex_lock(&opp_table_lock);
+> 	} else {
+> 		opp_table = _allocate_opp_table(dev, index);
+> 
+> 		mutex_lock(&opp_table_lock);
+> 		/* ... */
+> 	}
+> 
+> This doesn't seem to cause any problems in my case though so it's
+> unrelated to the crash I observed.
 
-Please don't top-post your reply in the future. Reply inline
-with appropriate context instead.
+Hmm, right. Maybe we need a lock for that list, want to take that up ?
 
 -- 
-An old man doll... just what I always wanted! - Clara
-
+viresh
