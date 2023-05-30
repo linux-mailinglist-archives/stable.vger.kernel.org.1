@@ -2,245 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E80C716100
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 15:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7139B716163
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 15:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232504AbjE3NDu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 09:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33958 "EHLO
+        id S232298AbjE3NSd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 09:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232240AbjE3NDs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 09:03:48 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B8110A
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 06:03:38 -0700 (PDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34UCZ7fO002237;
-        Tue, 30 May 2023 13:03:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=HTqTWJanzmyoezdUZmxJPg4pu2yGsHQow4SQZN9248g=;
- b=CrRc5BQkew8KAuDG/py3Lhsfya7faq6rBBG+xnOvwaD64/G7QVNLhB8344/jPSrBiBV5
- 0a09xNWFRIjfGjb2vo6x01IdIS7T5oofGMf+HaDkeyqlIM980EKigM/KnoMXKt6k91y7
- rUpcZEkwd8DN0ZjrX9JJs3FrqDHjTIbzx1PAvqheWUAA4KhrXbBK8SpcYf84jJ841QF7
- WicL0rUHF3Aca+U9ZgmY2G13aPSp0tnYMeA98AFaPzIO87YWE3UNq2CylUT47bKMh+Ii
- X2H/NNhQ9GD3VZlJOEPf8cMiPnxStePD4nDksVivwSUE5Qo1yh8vp1FAQid2t4nnhuQc Og== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwgnjt1u8-1
+        with ESMTP id S232608AbjE3NS2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 09:18:28 -0400
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D672CE5;
+        Tue, 30 May 2023 06:18:25 -0700 (PDT)
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+        by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34UCQrk5018554;
+        Tue, 30 May 2023 13:18:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=PPS06212021;
+ bh=5JAWP9UH606r5C0h/RjYpcXMxncX2hdFyFXSwKepAuE=;
+ b=LeOQIM5rMQtoQcYw/0fVo1jce+i4dUJQqPDjanTXzvhpX2FUPS4uNvS8tS67tzqDbUAM
+ wu9EiCSXw578W4TqHvNfAG2GNY5U4n3HirS0mcqn/hx99+qfGJIwEb9z3+CGm1SH3HsA
+ 97s06FSOKv2Mca6oE8jnzZO27yfExMYLFe1N8TbobPes60gZYBUWPSdzy/UtyPfah9XY
+ HyIlO1kqSpMhsKhIOI/DhZsuAKjamG+a3dSn6MU0AIHPFpHYR3Qk5tbWi1cBmru/HC22
+ n/y1vxaU3vcbBQpzY25O0YUKIj1Z+LrcWw+t86DQV0slLWYdx1R1w6+ROthO7c+nF5sx 2A== 
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+        by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3qu8u8jkef-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 13:03:14 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-        by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34U2YCn5006218;
-        Tue, 30 May 2023 13:03:12 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-        by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3qu9g598kk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 13:03:12 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-        by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34UD39Cx23396872
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 May 2023 13:03:09 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EBBA52004D;
-        Tue, 30 May 2023 13:03:08 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 70F4C20043;
-        Tue, 30 May 2023 13:03:07 +0000 (GMT)
-Received: from li-7e025c4c-278d-11b2-a85c-da661cef46c1.in.ibm.com (unknown [9.109.218.210])
-        by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 30 May 2023 13:03:07 +0000 (GMT)
-From:   Piyush Sachdeva <piyushs@linux.ibm.com>
+        Tue, 30 May 2023 13:18:08 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XL45CBwXAy//9IjwAnYz1ly52G8APBilxs+O6GTVnQjUnC1Gfvt81d4DMnWT7WcX3aYiQRu4cjWrmbdGFZ4HD5RNRqw1itDSInSO5EvgdWRQgT8uAy/8KJsbLQT9zLJiRq+gEPMjdKmvfmNaQHvIkbCfXENtyF4CgbXvxQGrDX+BliZIY672bysHxuZw0+Eg9OkuuONHXanfIKntL52GfEJ8+MvIVko3m1Vx7T30lbwuTzuuwbowArF00wmi3/UuzTolmOmj4a7JbB53tCFhTbPPlZXlUC6ewrHw0tJIWr4nsw50pksxCBlvn/dMCx7OsN1LNQkYIb/GYRwH1Zh75w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5JAWP9UH606r5C0h/RjYpcXMxncX2hdFyFXSwKepAuE=;
+ b=DRa+rqP0ZwtBsraKmeJkW2dkgMIMXrZdEvSMJxtDvKobm1OU5Fdq3oX2aRvIcn49gdkrWUcaWfFcfUgiNqL8LiAK/BDUHzz3KPYU1oKeG/104tGNjMFDCH07JgoqnCA07bmOxf5J0CM4NAEEK/euBg3CtvDeeAQKvolFD2DAu8CzmOGc7MlGQxq5X8t3qN54pCdhxuz9/dT96Ti3qP2PE6KKojUJGnHTB1x3WNrem3CYMUa09VM1+3a+pdKns0VJIpjuPRLlJSt/TdSCqSYsmvFtB7cogTrcDWD0npuUWTzqRLwQtShJ0sucYx+XPVrk6g9mVAtTzcmid7Ck2rL1Fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from PH0PR11MB4952.namprd11.prod.outlook.com (2603:10b6:510:40::15)
+ by IA1PR11MB7366.namprd11.prod.outlook.com (2603:10b6:208:422::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
+ 2023 13:17:53 +0000
+Received: from PH0PR11MB4952.namprd11.prod.outlook.com
+ ([fe80::5693:5120:1f58:9efa]) by PH0PR11MB4952.namprd11.prod.outlook.com
+ ([fe80::5693:5120:1f58:9efa%3]) with mapi id 15.20.6433.022; Tue, 30 May 2023
+ 13:17:52 +0000
+From:   Dragos-Marian Panait <dragos.panait@windriver.com>
 To:     stable@vger.kernel.org
-Cc:     "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Tarun Sahu <tsahu@linux.ibm.com>,
-        Joao Martins <joao.m.martins@oracle.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.30] mm/vmemmap/devdax: fix kernel crash when probing devdax devices
-Date:   Tue, 30 May 2023 18:33:06 +0530
-Message-Id: <43baafa1897127eb0e362bba3e785740017afc50.1684485577.git.piyushs@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <2023050737-caravan-flannels-c001@gregkh>
-References: <2023050737-caravan-flannels-c001@gregkh>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WBij19iWFs-6fAJjQ_WxP5PcZsZ4AZ2w
-X-Proofpoint-ORIG-GUID: WBij19iWFs-6fAJjQ_WxP5PcZsZ4AZ2w
+Cc:     Ruihan Li <lrh2000@pku.edu.cn>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 4.14 0/1] Hardening against CVE-2023-2002
+Date:   Tue, 30 May 2023 16:17:39 +0300
+Message-Id: <20230530131740.269890-1-dragos.panait@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR0501CA0025.eurprd05.prod.outlook.com
+ (2603:10a6:800:60::11) To PH0PR11MB4952.namprd11.prod.outlook.com
+ (2603:10b6:510:40::15)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB4952:EE_|IA1PR11MB7366:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d01ad0b-a15e-4265-de8b-08db61104603
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xWdVonYG1AS1V5uvEUAjZJYA9wwNCfNHWTTH2I2Zpb0ottWeuVsDRuJLvhH6cL8JO9OTyDUw4zD2e8wL6Zc3gpUym4j502k7nx3DP4815+eoCsKlgGCHZ7LlDAKPZw+4lWnvN7UqOoA+BBI1p7H4LRIsPU2TnX5GOlLvZs1zTWk7pMfUVoG9mjvIQNDnqNxm88d3AC2gMKv1tjPb8A1gZvFyH6F1j3+US01oj3rRFhFsYUpNLjV68u8XM4eQCvjAnN2sk/fZJZv54UIMSBmTyQOP1siBSf22FyatpUbFi7SXihfaMzNVEEmOL1aMmmcyAk6UjkWRH2OW8K0Rt+9okwhoNKad4a6Qnl54B1UnX5gKv5IerHxHcswTriWmppN5WM/PWotf9IHykI2epGifPo6hqvWYxDmyna5gXiBNkv+aviZaMtr2dAWkMmW/MF3E35bJtuVpDsX6o0MDfhlPdJrtBxVnJPijEpwYEAI1CljFUICjGpha9H7ULQJfXTI6pjQUNRptdkt9X6xaFT/OqemWyGoXPAXxZVnCyGdo6axvUbMeWsNqckSE3a5QDYWfPfQtWL3Nd2gFC3IH8/y/Fd84FExdhnoO2U1EjkCGnz4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB4952.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(346002)(39850400004)(136003)(396003)(451199021)(6486002)(41300700001)(6666004)(52116002)(316002)(86362001)(186003)(4744005)(36756003)(2906002)(6512007)(6506007)(26005)(1076003)(7416002)(8676002)(8936002)(5660300002)(966005)(2616005)(478600001)(38100700002)(38350700002)(54906003)(6916009)(4326008)(66946007)(66556008)(66476007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?V5ZixhYqgHefq3tARBYmjfKMY4mROk1cr1aY0wD3HiVefnSpkUOYH5iriD9B?=
+ =?us-ascii?Q?DSZ1vghSi4bn+emODs80U4tkkBuEaMXRnq/9U6cPEB61VrjB0kOuqFUwgFJu?=
+ =?us-ascii?Q?2w3MEE6JZLYmCPdBW9XbAqfW3lj3TOpoGuiuHyWqA+9XBnz/c8YDIPuNV4Te?=
+ =?us-ascii?Q?o7O6ze+MtkaHAR8R/9+WsqaGgBPJ4Pn24RoJyuRGfWoyC6Agg3TyPnkC/8t4?=
+ =?us-ascii?Q?qylCoG75gECTXbQEVafGjMV3sJdyFmkOVspb9e0a4ehOWHI45M5Ob6eD8stn?=
+ =?us-ascii?Q?d0m3MGiVTV+PY7kNOf2MI8AEbPQtAiDWKGhR6HXnL0K1s+i776mOc29g9mIF?=
+ =?us-ascii?Q?ACv5l9mqJzA0KW7i7t+1svNjQ0wP6X9kEYdhHamSu3Hst5oitDX7gDLw5SBZ?=
+ =?us-ascii?Q?lncLehhlj1unR1WTfoqYIXGztVM7udQMu1JvWeXj6MWusb8NZbdR8bM1Ilpa?=
+ =?us-ascii?Q?qLXWL7wODMNugOroEM6OfX5FcyhxOrWBQMcUHEOkZ58twoqPxd/FH7OyqWjC?=
+ =?us-ascii?Q?/reE0Agy/9a2jaXegA2JKsJVHRqzDzv321FLDB9VPZCi6M5Rjk/zcTT11P1q?=
+ =?us-ascii?Q?nFEmDpMzIk2ErWrmuvUrbDqOhc8WvLIEaWNBsGfD0PTfJo3QAYr1b40zLgQD?=
+ =?us-ascii?Q?kwL/IRtoDn/rjvolpOE18+fVtyPCzKR9iQt84I5fWQW3mzGLP9x7TM1O116G?=
+ =?us-ascii?Q?t6OAE8K/85a6zU7dBwoLZVW517p1KFzRFyTXvQZrUbyWy5QwxFJrrEu67Jaa?=
+ =?us-ascii?Q?MjLs3DuVGiu+U2wce5N5qYOmOSmbEJ8Ft5OH5QHFb/0sXBNkim9mOabIyhYc?=
+ =?us-ascii?Q?f8t42qSIghcrTnfTNY0kRb7mT8Fh/+O9eyhE3GdxKffh28rCyBOxG+7pga7S?=
+ =?us-ascii?Q?b2pCDl0SxxUaAT31Qo8gbZzdMkO3EgPda0EX8G0nkRtGpSoSufGMhtBq56DM?=
+ =?us-ascii?Q?4eppIt/oGZ2x2deCYmEregSPXd4U9nvh0t92UmPcQvKA/oSY9GDjC7V7CBkz?=
+ =?us-ascii?Q?MoirA8GtB+mykT8Ry1D50ruIvv67GR2smXghjHayGQQybZJAVt7e/7fRWrrB?=
+ =?us-ascii?Q?39KvV+dERJd/fjTGa+b70ZyJKJjvHms2W4sXdQvNhBSJjETivsbbUsQOFOEB?=
+ =?us-ascii?Q?3UWdi/sqWsGx4LFLfRnS2r8a3H4ziGYooGnIOaeeNP06rv8J2+9PVc3K5DlG?=
+ =?us-ascii?Q?Um7k4TxxuxVCRdcIhd9AFs+tkYoV4Ji1FOleHWlxcH9GzdhxgtjKXrU5+wDT?=
+ =?us-ascii?Q?+LNVgk9PfphXZMhwLnxcYD7JYdWAGTibVvdTzJTVVNAsrahsXtEkv3Z6Xf0B?=
+ =?us-ascii?Q?tlcH5SaRqzbvvuxC1ctx9AuqpXmXlBDMMrqLO2tTDJp6djLgxogz1zjAs8sm?=
+ =?us-ascii?Q?SH+PjEN60BJh/aqEqbvMLtRGKtWcmLWUOkQlS4h4DA6VWZkOXloZKimUP4Wf?=
+ =?us-ascii?Q?DtID/QvEgYe6+Vq1EmNHDHUiPEVVEyNb5HObFmxRTGoBfMIb1+6CZbd4y4km?=
+ =?us-ascii?Q?DyVSrCCk0aTK8Bw7ndhUQxcxVjXRWfObA0hmE1ayNC1SE3iJk38bkVZnenYQ?=
+ =?us-ascii?Q?wUSilX3QkONSRsByDZN8cfcJSV+08GGZ+z4gfdziAajwBlNUyqGmwma+q7k+?=
+ =?us-ascii?Q?oA=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d01ad0b-a15e-4265-de8b-08db61104603
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4952.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 13:17:52.8353
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AJgQeqZ488nue8eOaqmSCpgkfzgCHOQ+CXQX2Z8aFXa1lqI3RN9189jmulmJth2kZgR/wAtyaklXH7CQwcUPHCFNXWQRb4Hd824wYzqX2UE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7366
+X-Proofpoint-ORIG-GUID: x4cIq-HlchNO5g6enZOcraIxMFw9FT8J
+X-Proofpoint-GUID: x4cIq-HlchNO5g6enZOcraIxMFw9FT8J
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-30_08,2023-05-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 priorityscore=1501 mlxlogscore=999 adultscore=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 phishscore=0 clxscore=1015 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305300103
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ definitions=2023-05-30_10,2023-05-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 bulkscore=0 mlxlogscore=602 impostorscore=0
+ suspectscore=0 adultscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305300108
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+The following commit is needed to harden against CVE-2023-2002:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=000c2fa2c144c499c881a101819cf1936a1f7cf2
 
-[ Upstream commit 87a7ae75d7383afa998f57656d1d14e2a730cc47 ]
+Ruihan Li (1):
+  bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
 
-commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory savings for
-compound devmaps") added support for using optimized vmmemap for devdax
-devices.  But how vmemmap mappings are created are architecture specific.
-For example, powerpc with hash translation doesn't have vmemmap mappings
-in init_mm page table instead they are bolted table entries in the
-hardware page table
+ net/bluetooth/hci_sock.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-vmemmap_populate_compound_pages() used by vmemmap optimization code is not
-aware of these architecture-specific mapping.  Hence allow architecture to
-opt for this feature.  I selected architectures supporting
-HUGETLB_PAGE_OPTIMIZE_VMEMMAP option as also supporting this feature.
 
-This patch fixes the below crash on ppc64.
-
-BUG: Unable to handle kernel data access on write at 0xc00c000100400038
-Faulting instruction address: 0xc000000001269d90
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-Modules linked in:
-CPU: 7 PID: 1 Comm: swapper/0 Not tainted 6.3.0-rc5-150500.34-default+ #2 5c90a668b6bbd142599890245c2fb5de19d7d28a
-Hardware name: IBM,9009-42G POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.40 (VL950_099) hv:phyp pSeries
-NIP:  c000000001269d90 LR: c0000000004c57d4 CTR: 0000000000000000
-REGS: c000000003632c30 TRAP: 0300   Not tainted  (6.3.0-rc5-150500.34-default+)
-MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24842228  XER: 00000000
-CFAR: c0000000004c57d0 DAR: c00c000100400038 DSISR: 42000000 IRQMASK: 0
-....
-NIP [c000000001269d90] __init_single_page.isra.74+0x14/0x4c
-LR [c0000000004c57d4] __init_zone_device_page+0x44/0xd0
-Call Trace:
-[c000000003632ed0] [c000000003632f60] 0xc000000003632f60 (unreliable)
-[c000000003632f10] [c0000000004c5ca0] memmap_init_zone_device+0x170/0x250
-[c000000003632fe0] [c0000000005575f8] memremap_pages+0x2c8/0x7f0
-[c0000000036330c0] [c000000000557b5c] devm_memremap_pages+0x3c/0xa0
-[c000000003633100] [c000000000d458a8] dev_dax_probe+0x108/0x3e0
-[c0000000036331a0] [c000000000d41430] dax_bus_probe+0xb0/0x140
-[c0000000036331d0] [c000000000cef27c] really_probe+0x19c/0x520
-[c000000003633260] [c000000000cef6b4] __driver_probe_device+0xb4/0x230
-[c0000000036332e0] [c000000000cef888] driver_probe_device+0x58/0x120
-[c000000003633320] [c000000000cefa6c] __device_attach_driver+0x11c/0x1e0
-[c0000000036333a0] [c000000000cebc58] bus_for_each_drv+0xa8/0x130
-[c000000003633400] [c000000000ceefcc] __device_attach+0x15c/0x250
-[c0000000036334a0] [c000000000ced458] bus_probe_device+0x108/0x110
-[c0000000036334f0] [c000000000ce92dc] device_add+0x7fc/0xa10
-[c0000000036335b0] [c000000000d447c8] devm_create_dev_dax+0x1d8/0x530
-[c000000003633640] [c000000000d46b60] __dax_pmem_probe+0x200/0x270
-[c0000000036337b0] [c000000000d46bf0] dax_pmem_probe+0x20/0x70
-[c0000000036337d0] [c000000000d2279c] nvdimm_bus_probe+0xac/0x2b0
-[c000000003633860] [c000000000cef27c] really_probe+0x19c/0x520
-[c0000000036338f0] [c000000000cef6b4] __driver_probe_device+0xb4/0x230
-[c000000003633970] [c000000000cef888] driver_probe_device+0x58/0x120
-[c0000000036339b0] [c000000000cefd08] __driver_attach+0x1d8/0x240
-[c000000003633a30] [c000000000cebb04] bus_for_each_dev+0xb4/0x130
-[c000000003633a90] [c000000000cee564] driver_attach+0x34/0x50
-[c000000003633ab0] [c000000000ced878] bus_add_driver+0x218/0x300
-[c000000003633b40] [c000000000cf1144] driver_register+0xa4/0x1b0
-[c000000003633bb0] [c000000000d21a0c] __nd_driver_register+0x5c/0x100
-[c000000003633c10] [c00000000206a2e8] dax_pmem_init+0x34/0x48
-[c000000003633c30] [c0000000000132d0] do_one_initcall+0x60/0x320
-[c000000003633d00] [c0000000020051b0] kernel_init_freeable+0x360/0x400
-[c000000003633de0] [c000000000013764] kernel_init+0x34/0x1d0
-[c000000003633e50] [c00000000000de14] ret_from_kernel_thread+0x5c/0x64
-
-Link: https://lkml.kernel.org/r/20230411142214.64464-1-aneesh.kumar@linux.ibm.com
-Fixes: 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory savings for compound devmaps")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reported-by: Tarun Sahu <tsahu@linux.ibm.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Piyush Sachdeva <piyushs@linux.ibm.com>
-(cherry picked from commit 87a7ae75d7383afa998f57656d1d14e2a730cc47)
----
- include/linux/mm.h  | 16 ++++++++++++++++
- mm/page_alloc.c     | 10 ++++++----
- mm/sparse-vmemmap.c |  3 +--
- 3 files changed, 23 insertions(+), 6 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1f79667824eb..ced82b9c18e5 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3425,6 +3425,22 @@ void vmemmap_populate_print_last(void);
- void vmemmap_free(unsigned long start, unsigned long end,
- 		struct vmem_altmap *altmap);
- #endif
-+
-+#ifdef CONFIG_ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-+static inline bool vmemmap_can_optimize(struct vmem_altmap *altmap,
-+					   struct dev_pagemap *pgmap)
-+{
-+	return is_power_of_2(sizeof(struct page)) &&
-+		pgmap && (pgmap_vmemmap_nr(pgmap) > 1) && !altmap;
-+}
-+#else
-+static inline bool vmemmap_can_optimize(struct vmem_altmap *altmap,
-+					   struct dev_pagemap *pgmap)
-+{
-+	return false;
-+}
-+#endif
-+
- void register_page_bootmem_memmap(unsigned long section_nr, struct page *map,
- 				  unsigned long nr_pages);
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8e39705c7bdc..afcfb2a94e6e 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6905,10 +6905,12 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
-  * of an altmap. See vmemmap_populate_compound_pages().
-  */
- static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
--					      unsigned long nr_pages)
-+					      struct dev_pagemap *pgmap)
- {
--	return is_power_of_2(sizeof(struct page)) &&
--		!altmap ? 2 * (PAGE_SIZE / sizeof(struct page)) : nr_pages;
-+	if (!vmemmap_can_optimize(altmap, pgmap))
-+		return pgmap_vmemmap_nr(pgmap);
-+
-+	return 2 * (PAGE_SIZE / sizeof(struct page));
- }
- 
- static void __ref memmap_init_compound(struct page *head,
-@@ -6973,7 +6975,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 			continue;
- 
- 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
--				     compound_nr_pages(altmap, pfns_per_compound));
-+				     compound_nr_pages(altmap, pgmap));
- 	}
- 
- 	pr_info("%s initialised %lu pages in %ums\n", __func__,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index c5398a5960d0..10d73a0dfcec 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -458,8 +458,7 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
- 		!IS_ALIGNED(nr_pages, PAGES_PER_SUBSECTION)))
- 		return NULL;
- 
--	if (is_power_of_2(sizeof(struct page)) &&
--	    pgmap && pgmap_vmemmap_nr(pgmap) > 1 && !altmap)
-+	if (vmemmap_can_optimize(altmap, pgmap))
- 		r = vmemmap_populate_compound_pages(pfn, start, end, nid, pgmap);
- 	else
- 		r = vmemmap_populate(start, end, nid, altmap);
+base-commit: b3f141a5bc7f877e96528dd31a139854ec4d6017
 -- 
 2.40.1
 
