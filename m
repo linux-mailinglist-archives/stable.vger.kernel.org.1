@@ -2,107 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1734D715912
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 10:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A3F715994
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 11:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbjE3IyT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 04:54:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55740 "EHLO
+        id S229917AbjE3JK5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 05:10:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229731AbjE3IyS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 04:54:18 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BB0CD
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 01:54:17 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 59C035C00DC;
-        Tue, 30 May 2023 04:54:16 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Tue, 30 May 2023 04:54:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1685436856; x=1685523256; bh=Pu
-        1vGnbkUbzCpHzDqQJB0TnKUeJ/w+4r4naQ3zg4reE=; b=mWo+6FfcyhkwhnqoMN
-        2IlgYJffre73/buPnRYn4lnXxgsDOd8hp234ShhnAiMvxHRhk9h8phvmIuhWjq12
-        57vA/WeYA5i1S1Fst6qcSDyShupGqqVJL3ELtDRPt+Go7AZA4ZrB0prppgoef0yW
-        feCAqhHy0e5plF1sijOZo7wJDMr9hFYaj0SRMRxSj8BexsWt/y0kPA18Cbuo0xOX
-        J8lJS/T/+Y+/OMauZ8/9qb8XVA4//DuUR30GbJxSim5yj+tGlSH5+zesdqsWUG69
-        m2sZqQP9wzK8rnfycVepjNPuQW5p7Vqj5yfHTNuqggk8p3P2vHIeOd05zoO5lN1D
-        1ccw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1685436856; x=1685523256; bh=Pu1vGnbkUbzCp
-        HzDqQJB0TnKUeJ/w+4r4naQ3zg4reE=; b=sqyJkQ4DRUtXTxvh5w2VwXl18NIgU
-        S2aWvHX24RVi1bjI8rN2e8LQ8mG6aJmzwSuk52Ovi0kA+g5jSR9PZT4O1+cGFY2P
-        EGdypeoctCkqwYvSFRMQzVKfwy04D0EAFyrcQt06vfwSExpxFrnr9JwJ0Iks/48Y
-        8zQ8zE1uVpoujIU+NesNFRm+O361xq+E/UiehhE/yMSFKs5zS43a7h+YgJLc6hkq
-        NPslQwMlufeg9MVCFI5Smhs5kzN90GWcFyjzceX/m51s/NIXBjHUIqystYMeIvjb
-        C6/2VvALXHcvDjxpzr0/LQRVs0toh+TQ4ZM/tWcvTE95paIWmfmPJm2xg==
-X-ME-Sender: <xms:t7l1ZM9EgrkWe-ewuStuzY0H1iCCrALkCt3k-J8dm-YOLSUBqiVHHg>
-    <xme:t7l1ZEtiEz81t_s0Yw4musenMBVDDDr7AAxiGMho-tiwpp4UQ2Nm9MB2SRxkyaiJ5
-    xK2MrunZQD_-ecwJAg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekjedgtdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:t7l1ZCCUFORe1GCKolM8FNnRKsuhdqlqGcqbDUOWjByl-I7z-ZJtzg>
-    <xmx:t7l1ZMc9OywkgfUqOFH2h8YB2MIPsf6LbQ2obe8Ckx0WBN5V3Gu04A>
-    <xmx:t7l1ZBPccdB7BGxId8xH75fYPIt0iW_D6A-hd8ZDys_ek3lGXrwJxw>
-    <xmx:uLl1ZCpMX7FZRMl9Hn01C2EGDhL-YNdDkdoS9j2v1kQ9Iz6lQauf1g>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id D4CF8B60086; Tue, 30 May 2023 04:54:15 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
-Mime-Version: 1.0
-Message-Id: <4716f9fd-0e09-4e69-a802-09ddecff2733@app.fastmail.com>
-In-Reply-To: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
-References: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
-Date:   Tue, 30 May 2023 10:53:55 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Dan Carpenter" <dan.carpenter@linaro.org>, stable@vger.kernel.org
-Cc:     "laurent.pinchart" <laurent.pinchart@ideasonboard.com>,
-        "Hans Verkuil" <hverkuil-cisco@xs4all.nl>,
-        "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>
-Subject: Re: randconfig fixes for 5.10.y
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229875AbjE3JKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 05:10:55 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC852BE
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:10:52 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d2b42a8f9so3267254b3a.3
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:10:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685437852; x=1688029852;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=onOtf3YpfaNIv3nZ9cKNkXLIUusMOopfwbATlSrWpbw=;
+        b=RXqCEEJhV6OGEnAoWVj4vRJC8JD3cre3T9CO+jViL0uO9FNvzTN050w5Z8oG6Tmoqr
+         z7XpsT/LbXV0ljmTxgoOzkiCQhuMW16wT4PrWxfwGkbylDLru29va+oEv1+TXuXaUhxv
+         JzH6NiDVQpVuo2C440W67g/Dlk3w1gp/6yezfwfvuc29hIgGQXRZ9GGTVB7s1pCD0W+A
+         3D6uEIrIKdXrGjsfw7jz4MOO1Y7s4VFgO6U41nz5g829UKUQEItYOhhWPzCXmX+KrHZc
+         yyT/gc4PMu1qDUeNg/qE7Y6JAJ14xZLC68dMtYWggnDbKZrkpN9uhdKY1m/YpUPl9OZf
+         KayQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685437852; x=1688029852;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=onOtf3YpfaNIv3nZ9cKNkXLIUusMOopfwbATlSrWpbw=;
+        b=W6SpUWDpRwK8b7byWVlg04dhnMJDy+Gn8FFtaL7BjvzNrLSsD1WWEvoQrEuWyjpeMR
+         XJmw4Em+ChXXn/PX/zhKK2CSvwJsHRTC2J/Amf9lA2CYlngTpsH5HnnzToPpo/VRvhZO
+         YnJT9Qymqz9RnCPMxb+TvFgVXCzLd6Eo+Mgiw+fCvkip+QAz9t2Y0Bsbx6UCghgx+ttb
+         J1oYCVNOnw1hlXHBde7+nZ06WApOveBEbx0ZBLSV3Ovl5TVaLoujDrvROEiicMH9DrVl
+         9tgCtxeesERs4MIjXCt+7jerPGF57msWckltxiMkLmI0RgYo4wO71ivP/ASn3rhIrKDw
+         86Zg==
+X-Gm-Message-State: AC+VfDytUHJk6A/cg15EiUBjggXLhRDw7IW5jAD0OFxWmmmGRIuEUdjA
+        GPaDA5RQeLt8ARrzZmHlZXjNUdzF0vI=
+X-Google-Smtp-Source: ACHHUZ4Bor7htKvGfqJzdw6RI0hLi1+zrMZI6QSdVJqFo+9WzSkljqA631x4M+AQP6tv8sfi8TqYVw==
+X-Received: by 2002:a05:6a20:9382:b0:111:97f:6db1 with SMTP id x2-20020a056a20938200b00111097f6db1mr2094513pzh.19.1685437852066;
+        Tue, 30 May 2023 02:10:52 -0700 (PDT)
+Received: from [192.168.43.80] (subs09a-223-255-225-74.three.co.id. [223.255.225.74])
+        by smtp.gmail.com with ESMTPSA id j21-20020a17090a589500b0024e33c69ee5sm8359465pji.5.2023.05.30.02.10.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 May 2023 02:10:51 -0700 (PDT)
+Message-ID: <eb7db3a4-1e26-353e-0b31-88e0d5f4fb12@gmail.com>
+Date:   Tue, 30 May 2023 16:10:48 +0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: 6.1.30: thunderbolt: Clear registers properly when auto clear
+ isn't in use cause call trace after resume
+Content-Language: en-US
+To:     beld zhang <beldzhang@gmail.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        stable@vger.kernel.org
+References: <CAG7aomXv2KV9es2RiGwguesRnUTda-XzmeE42m0=GdpJ2qMOcg@mail.gmail.com>
+ <ZHKW5NeabmfhgLbY@debian.me> <261a70b7-a425-faed-8cd5-7fbf807bdef7@amd.com>
+ <20230529113813.GZ45886@black.fi.intel.com>
+ <e37b2f7f-d204-4204-ce72-e108975c2fe0@amd.com>
+ <CAG7aomWsZAfHNCg9jS2P_dWjTh2O6Umx71rG7Xri+ZvpHw8+jQ@mail.gmail.com>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <CAG7aomWsZAfHNCg9jS2P_dWjTh2O6Umx71rG7Xri+ZvpHw8+jQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023, at 10:22, Dan Carpenter wrote:
->
-> I'm going to be doing regular randconfig testing on stable so let me
-> know if you have any advice.
+On 5/30/23 11:27, beld zhang wrote:
+> test passed both 6.1.30 and 6.4-rc4
+> comments at bugzilla.
+> 
 
-Just one thing: In my spot for random projects, I occasionally
-publish my latest "randconfig-*" branch, which may help you figure
-out if I have seen a particular build failure before:
+tl;dr:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/refs/heads
+> A: http://en.wikipedia.org/wiki/Top_post
+> Q: Were do I find info about this thing called top-posting?
+> A: Because it messes up the order in which people normally read text.
+> Q: Why is top-posting such a bad thing?
+> A: Top-posting.
+> Q: What is the most annoying thing in e-mail?
+> 
+> A: No.
+> Q: Should I include quotations after my reply?
+> 
+> http://daringfireball.net/2007/07/on_top
 
-This tree should build without any warnings or errors on arm, arm64
-and x86, so if you run into something that you can't immediately
-see if it as a fix already, you can try bisecting against the
-latest branch there to see how I addressed it locally or upstream.
+Please don't top-post your reply in the future. Reply inline
+with appropriate context instead.
 
-It's a mix of patches that I submitted already but were not picked
-up yet, that might need a minor rework based on comments, or that
-are not acceptable for one reason or another.
+-- 
+An old man doll... just what I always wanted! - Clara
 
-      Arnd
