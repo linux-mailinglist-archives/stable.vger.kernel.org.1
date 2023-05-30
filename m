@@ -2,133 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7445C71588B
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 10:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1734D715912
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 10:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbjE3IcC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 04:32:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43984 "EHLO
+        id S230085AbjE3IyT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 04:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjE3IcB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 04:32:01 -0400
-Received: from mx.kernkonzept.com (serv1.kernkonzept.com [IPv6:2a01:4f8:1c1c:b490::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3665B0;
-        Tue, 30 May 2023 01:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kernkonzept.com; s=mx1; h=In-Reply-To:Content-Type:MIME-Version:References:
-        Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:Reply-To:
-        Content-ID:Content-Description;
-        bh=xxZiuTwjLOZE6OJVRI8BOAJnaeWqlQ7edowHad2fcVc=; b=R5wIjQrLvjYY7D/iqXCshIqAwj
-        h0AhxKvT+FoY/KsdQm7aaEQahuzBhYl1YyhJ3RVpk2qJeT/A72T1ZfbSnNLDJFw+eyeoXdrRGNCvz
-        dpVeD3bh5KRjebQi+hYomrZmiOp9b+5PDV+gViI4jMcePuXL44sXqmhQDAdnM56y7WRdAeEdnT1FW
-        YisBpnv35Csu8rtDBOyX+nPNa4pXBnr0ob3L4IP8JytQP0CFHZ3xzujxMT1ZmvLpHGbAxXrTOg2gv
-        7LqKHolRTTkhrwzKzNg9fgWNtH4l7KlThTY04bdtTeW/VWxQV8xij/OU2DqPBSpVm8bv6BKEQv6EH
-        ia0o9aeg==;
-Received: from [10.22.3.24] (helo=kernkonzept.com)
-        by mx.kernkonzept.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.94.2)
-        id 1q3uli-003bTB-WA; Tue, 30 May 2023 10:31:51 +0200
-Date:   Tue, 30 May 2023 10:31:44 +0200
-From:   Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] opp: Fix use-after-free in lazy_opp_tables after probe
- deferral
-Message-ID: <ZHW0YY4xoUmR_UPg@kernkonzept.com>
-References: <20230524-opp-lazy-uaf-v1-1-f5f95cb4b6de@kernkonzept.com>
- <20230529053148.xuhuv6skg2xqworr@vireshk-i7>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230529053148.xuhuv6skg2xqworr@vireshk-i7>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229731AbjE3IyS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 04:54:18 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BB0CD
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 01:54:17 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 59C035C00DC;
+        Tue, 30 May 2023 04:54:16 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Tue, 30 May 2023 04:54:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1685436856; x=1685523256; bh=Pu
+        1vGnbkUbzCpHzDqQJB0TnKUeJ/w+4r4naQ3zg4reE=; b=mWo+6FfcyhkwhnqoMN
+        2IlgYJffre73/buPnRYn4lnXxgsDOd8hp234ShhnAiMvxHRhk9h8phvmIuhWjq12
+        57vA/WeYA5i1S1Fst6qcSDyShupGqqVJL3ELtDRPt+Go7AZA4ZrB0prppgoef0yW
+        feCAqhHy0e5plF1sijOZo7wJDMr9hFYaj0SRMRxSj8BexsWt/y0kPA18Cbuo0xOX
+        J8lJS/T/+Y+/OMauZ8/9qb8XVA4//DuUR30GbJxSim5yj+tGlSH5+zesdqsWUG69
+        m2sZqQP9wzK8rnfycVepjNPuQW5p7Vqj5yfHTNuqggk8p3P2vHIeOd05zoO5lN1D
+        1ccw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1685436856; x=1685523256; bh=Pu1vGnbkUbzCp
+        HzDqQJB0TnKUeJ/w+4r4naQ3zg4reE=; b=sqyJkQ4DRUtXTxvh5w2VwXl18NIgU
+        S2aWvHX24RVi1bjI8rN2e8LQ8mG6aJmzwSuk52Ovi0kA+g5jSR9PZT4O1+cGFY2P
+        EGdypeoctCkqwYvSFRMQzVKfwy04D0EAFyrcQt06vfwSExpxFrnr9JwJ0Iks/48Y
+        8zQ8zE1uVpoujIU+NesNFRm+O361xq+E/UiehhE/yMSFKs5zS43a7h+YgJLc6hkq
+        NPslQwMlufeg9MVCFI5Smhs5kzN90GWcFyjzceX/m51s/NIXBjHUIqystYMeIvjb
+        C6/2VvALXHcvDjxpzr0/LQRVs0toh+TQ4ZM/tWcvTE95paIWmfmPJm2xg==
+X-ME-Sender: <xms:t7l1ZM9EgrkWe-ewuStuzY0H1iCCrALkCt3k-J8dm-YOLSUBqiVHHg>
+    <xme:t7l1ZEtiEz81t_s0Yw4musenMBVDDDr7AAxiGMho-tiwpp4UQ2Nm9MB2SRxkyaiJ5
+    xK2MrunZQD_-ecwJAg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekjedgtdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
+    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:t7l1ZCCUFORe1GCKolM8FNnRKsuhdqlqGcqbDUOWjByl-I7z-ZJtzg>
+    <xmx:t7l1ZMc9OywkgfUqOFH2h8YB2MIPsf6LbQ2obe8Ckx0WBN5V3Gu04A>
+    <xmx:t7l1ZBPccdB7BGxId8xH75fYPIt0iW_D6A-hd8ZDys_ek3lGXrwJxw>
+    <xmx:uLl1ZCpMX7FZRMl9Hn01C2EGDhL-YNdDkdoS9j2v1kQ9Iz6lQauf1g>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id D4CF8B60086; Tue, 30 May 2023 04:54:15 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
+Mime-Version: 1.0
+Message-Id: <4716f9fd-0e09-4e69-a802-09ddecff2733@app.fastmail.com>
+In-Reply-To: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
+References: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
+Date:   Tue, 30 May 2023 10:53:55 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Dan Carpenter" <dan.carpenter@linaro.org>, stable@vger.kernel.org
+Cc:     "laurent.pinchart" <laurent.pinchart@ideasonboard.com>,
+        "Hans Verkuil" <hverkuil-cisco@xs4all.nl>,
+        "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
+        "Randy Dunlap" <rdunlap@infradead.org>
+Subject: Re: randconfig fixes for 5.10.y
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 29, 2023 at 11:01:48AM +0530, Viresh Kumar wrote:
-> On 24-05-23, 19:56, Stephan Gerhold wrote:
-> > When dev_pm_opp_of_find_icc_paths() in _allocate_opp_table() returns
-> > -EPROBE_DEFER, the opp_table is freed again, to wait until all the
-> > interconnect paths are available.
-> > 
-> > However, if the OPP table is using required-opps then it may already
-> > have been added to the global lazy_opp_tables list. The error path
-> > does not remove the opp_table from the list again.
-> > 
-> > This can cause crashes later when the provider of the required-opps
-> > is added, since we will iterate over OPP tables that have already been
-> > freed. E.g.:
-> > 
-> >   Unable to handle kernel NULL pointer dereference when read
-> >   CPU: 0 PID: 7 Comm: kworker/0:0 Not tainted 6.4.0-rc3
-> >   PC is at _of_add_opp_table_v2 (include/linux/of.h:949
-> >   drivers/opp/of.c:98 drivers/opp/of.c:344 drivers/opp/of.c:404
-> >   drivers/opp/of.c:1032) -> lazy_link_required_opp_table()
-> > 
-> > Fix this by removing the opp_table from the list before freeing it.
-> 
-> I think you need this instead:
-> 
-> diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-> index 954c94865cf5..b5973fefdfd8 100644
-> --- a/drivers/opp/core.c
-> +++ b/drivers/opp/core.c
-> @@ -1358,7 +1358,10 @@ static struct opp_table *_allocate_opp_table(struct device *dev, int index)
->         return opp_table;
-> 
->  remove_opp_dev:
-> +       _of_clear_opp_table(opp_table);
->         _remove_opp_dev(opp_dev, opp_table);
-> +       mutex_destroy(&opp_table->genpd_virt_dev_lock);
-> +       mutex_destroy(&opp_table->lock);
->  err:
->         kfree(opp_table);
->         return ERR_PTR(ret);
-> 
+On Tue, May 30, 2023, at 10:22, Dan Carpenter wrote:
+>
+> I'm going to be doing regular randconfig testing on stable so let me
+> know if you have any advice.
 
-Thanks, this seems to fix the crash as well. Are you going to handle it
-or should I send a v2 with this diff?
+Just one thing: In my spot for random projects, I occasionally
+publish my latest "randconfig-*" branch, which may help you figure
+out if I have seen a particular build failure before:
 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 7eba0c7641b0 ("opp: Allow lazy-linking of required-opps")
-> > Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-> > ---
-> > This fixes the crash I ran into after adding an OPP table with
-> > both "required-opps" and interconnect paths (opp-peak-kBps).
-> > 
-> > By the way, the "lazy_opp_tables" does not seem to be protected by any
-> > locks(?)
-> 
-> It is always accessed with opp_table_lock held I believe.
-> 
+https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/refs/heads
 
-During _allocate_opp_table() it's accessed without the opp_table_lock,
-because of
+This tree should build without any warnings or errors on arm, arm64
+and x86, so if you run into something that you can't immediately
+see if it as a fix already, you can try bisecting against the
+latest branch there to see how I addressed it locally or upstream.
 
-	/* Drop the lock to reduce the size of critical section */
-	mutex_unlock(&opp_table_lock);
+It's a mix of patches that I submitted already but were not picked
+up yet, that might need a minor rework based on comments, or that
+are not acceptable for one reason or another.
 
-	if (opp_table) {
-		/* ... */
-		mutex_lock(&opp_table_lock);
-	} else {
-		opp_table = _allocate_opp_table(dev, index);
-
-		mutex_lock(&opp_table_lock);
-		/* ... */
-	}
-
-This doesn't seem to cause any problems in my case though so it's
-unrelated to the crash I observed.
-
-Thanks,
-Stephan
--- 
-Kernkonzept GmbH at Dresden, Germany, HRB 31129, CEO Dr.-Ing. Michael Hohmuth
+      Arnd
