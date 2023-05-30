@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9757D717103
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 00:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC87717107
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 00:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233147AbjE3Wwu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 18:52:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59696 "EHLO
+        id S233452AbjE3Wwv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 18:52:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233309AbjE3Wwq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 18:52:46 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0FB1107
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:40 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b0424c5137so23805355ad.1
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:40 -0700 (PDT)
+        with ESMTP id S233453AbjE3Wws (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 18:52:48 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BACC123
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:42 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1b02085bf8dso26960185ad.0
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1685487160; x=1688079160;
+        d=broadcom.com; s=google; t=1685487162; x=1688079162;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=liWWbNJi2+7iB84NlMEezGj/xtFRGQ0If+ZoOjYVcBU=;
-        b=VFPhph8Vt8IiX32X1TbPu3bbBI6fUh/fo7+E7IqbLAi949cN3qMpAhF6RIFVa0za9i
-         ngNk93HojZ7oOJIlaswKxit9KnoOnD9n0pMUt98pCRNteRk3o/2kHGjCkcLCbCz0/H+T
-         vY8WlwnRO1cd3acMQbOZrKwvZi3gzKZ3+hk78=
+        bh=PTUMdJdCqNq9WmMHLWVSeeqpX590VOOaPH7QKPVq0As=;
+        b=h7T4oi6DknbRfqg95jBjOhkfH+OjZtQLVE+i/EucpW2oeruQnZ97R9AGyFYs3zPtj8
+         TAmoGyEdbSYuOkpZyMGGGSqu12aDZU1IUhyxWB8WNeNtb5v+8/KzJlat+ziWkn0KXgdu
+         z8fmInYffX4I420C8fh8O5nqNeU9tXPR7qfjA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685487160; x=1688079160;
+        d=1e100.net; s=20221208; t=1685487162; x=1688079162;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=liWWbNJi2+7iB84NlMEezGj/xtFRGQ0If+ZoOjYVcBU=;
-        b=KmVulZK3iA6NwGpWsOnsbIMS4Un7LEa7q6yk26rqXi49HQlKyI9aphcmEhn9/GfVt4
-         WqD9+oDxKT+lPqTCH20Ui4rmcwbAuRYBWm3ISjqX/gXQaTinWJatdcgBp/ms+/ucOZX1
-         /Q99cKPq4bfv9I+R/byh0m8gpilZnYpgoXT7ZrdfPvaZx5VRCCy55DDaPr1Eb/+wD0vY
-         pXmOU9canx500XszolKcoF3iy2PKSFSLoT7H1iTgS7HKnx6a8BxICp6H66pevuDwE2I+
-         viP1xenWDBWGuZnFgr43Rv2iKecKGjcQ5dBYwhXfaEwI0TK/oIi1w5/lrcZlORhg4DQy
-         e/Bg==
-X-Gm-Message-State: AC+VfDx5JKt0zKlcUpSX/FHPgcVWHASibO/vHEpKDcp2c9Rv+okz93NX
-        XBPYBDm3YFtcgoB4JuF5fCXJaQ+BWYGj0JX3qTf3iHIMiMULNxnuPr2EIkNcY5Wuvqq/u06PZyE
-        jjCC5NjOVlCTDXRJfkzwAfqrG0chhY5Ls8K71EFPiVfgrcRb1Vrp4DGuvstQtiqZHYIyHMXIXfI
-        /1F95tk0rf3w==
-X-Google-Smtp-Source: ACHHUZ7yJRuL9xFFKSz/yN+4OYBaYez0aEkoWfkN6me4233VKKMjoRkyoStMmPoTORo0ffgK3lzitg==
-X-Received: by 2002:a17:902:e80b:b0:1b0:3cda:635b with SMTP id u11-20020a170902e80b00b001b03cda635bmr4407603plg.0.1685487159780;
-        Tue, 30 May 2023 15:52:39 -0700 (PDT)
+        bh=PTUMdJdCqNq9WmMHLWVSeeqpX590VOOaPH7QKPVq0As=;
+        b=AfAYJX/oBPM2aHS0+eQmC0NWI4k6AKI4sYrk3LNbBZg1NP2KUuRkS+AEy4nLoyeNqm
+         826oZjxL4jMbNVvWEn5xuBSBCsOS5Lw10pGMC52h2Oq80BOnFz+2BZYjDQl1LtYRQ9no
+         emJge+UMQX9y7115mQzTYx8y5mWFnoT44l9o6Nnl2HkEy6188cZ0XXmjSNXZXBfhzYtp
+         ta6/qOntByUpOo9GDOymsmkx9UfZ1ObyUBY1GZ4Yfepe99mL+XuIyt+FFw/SrsU0hraD
+         8W8oA//8SyzO+MKn6X3yNrccG550oYsrrlWA9btv2PrjcVqhqSGfkqLJQyBVTLIhmlbS
+         6YDQ==
+X-Gm-Message-State: AC+VfDy1RYq0SwDUAPdjYOWn/lklEDwnYg3VEvbYXBeBh5wjKBPT5nmQ
+        gYfKMQdP6w7eecYkjiY5+IiuNYstM6fJEu85SGcb3P80X2NHSuEU84Ehl3JCptX7KaABxGA+Amz
+        sPJzmx2wi/V0sZoWMFA06HA9dEIPz0CZKpcENd9ZjXyqWYOouTXqldFVPTbmDcIe94880MXxfIw
+        +KZpF/ESPr4g==
+X-Google-Smtp-Source: ACHHUZ514tMNVAPyXUUwKU7m15MSmGf6kR5Vrqsm0Cgrx6cTalyH0/gkws0SpyTliJjKa47mardFWA==
+X-Received: by 2002:a17:903:120f:b0:1ae:1364:6079 with SMTP id l15-20020a170903120f00b001ae13646079mr4127903plh.44.1685487161594;
+        Tue, 30 May 2023 15:52:41 -0700 (PDT)
 Received: from stbirv-lnx-3.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id s3-20020a170902b18300b001a1b66af22fsm10805011plr.62.2023.05.30.15.52.38
+        by smtp.gmail.com with ESMTPSA id s3-20020a170902b18300b001a1b66af22fsm10805011plr.62.2023.05.30.15.52.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 15:52:39 -0700 (PDT)
+        Tue, 30 May 2023 15:52:41 -0700 (PDT)
 From:   Florian Fainelli <florian.fainelli@broadcom.com>
 To:     stable@vger.kernel.org
 Cc:     Radu Rendec <rrendec@redhat.com>,
@@ -62,15 +62,15 @@ Cc:     Radu Rendec <rrendec@redhat.com>,
         Jeremy Linton <jeremy.linton@arm.com>,
         linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
         (AARCH64 ARCHITECTURE)), linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 6.3 3/4] cacheinfo: Add arm64 early level initializer implementation
-Date:   Tue, 30 May 2023 15:49:13 -0700
-Message-Id: <20230530224914.1251409-4-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 6.3 4/4] cacheinfo: Allow early level detection when DT/ACPI info is missing/broken
+Date:   Tue, 30 May 2023 15:49:14 -0700
+Message-Id: <20230530224914.1251409-5-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230530224914.1251409-1-florian.fainelli@broadcom.com>
 References: <20230530224914.1251409-1-florian.fainelli@broadcom.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000746f9905fcf10f77"
+        boundary="00000000000091b06505fcf10f1e"
 X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -81,99 +81,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---000000000000746f9905fcf10f77
+--00000000000091b06505fcf10f1e
 Content-Transfer-Encoding: 8bit
 
 From: Radu Rendec <rrendec@redhat.com>
 
-commit c931680cfa958c8fe9ace31a1dbeefff75597d54 upstream
+commit e103d55465db06c5344201fd5fa11bb19bc479c5 upstream
 
-This patch adds an architecture specific early cache level detection
-handler for arm64. This is basically the CLIDR_EL1 based detection that
-was previously done (only) in init_cache_level().
+Recent work enables cacheinfo memory for secondary CPUs to be allocated
+early, while still running on the primary CPU. That allows cacheinfo
+memory to be allocated safely on RT kernels. To make that work, the
+number of cache levels/leaves must be defined in the device tree or ACPI
+tables. Further work adds a path for early detection of the number of
+cache levels/leaves, which makes it possible to allocate the cacheinfo
+memory early without requiring extra DT/ACPI information.
 
-This is part of a patch series that attempts to further the work in
-commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU").
-Previously, in the absence of any DT/ACPI cache info, architecture
-specific cache detection and info allocation for secondary CPUs would
-happen in non-preemptible context during early CPU initialization and
-trigger a "BUG: sleeping function called from invalid context" splat on
-an RT kernel.
+This patch addresses a specific issue with ACPI systems with no PPTT. In
+that case, parse_acpi_topology() returns an error code, which in turn
+makes init_cpu_topology() return early, before fetch_cache_info() is
+called. In that case, the early cache level detection doesn't run.
 
-This patch does not solve the problem completely for RT kernels. It
-relies on the assumption that on most systems, the CPUs are symmetrical
-and therefore have the same number of cache leaves. The cacheinfo memory
-is allocated early (on the primary CPU), relying on the new handler. If
-later (when CLIDR_EL1 based detection runs again on the secondary CPU)
-the initial assumption proves to be wrong and the CPU has in fact more
-leaves, the cacheinfo memory is reallocated, and that still triggers a
-splat on an RT kernel.
-
-In other words, asymmetrical CPU systems *must* still provide cacheinfo
-data in DT/ACPI to avoid the splat on RT kernels (unless secondary CPUs
-happen to have less leaves than the primary CPU). But symmetrical CPU
-systems (the majority) can now get away without the additional DT/ACPI
-data and rely on CLIDR_EL1 based detection.
+The solution is to simply remove the "return" statement and let the code
+flow fall through to calling fetch_cache_info().
 
 Signed-off-by: Radu Rendec <rrendec@redhat.com>
+Reported-by: Pierre Gondois <pierre.gondois@arm.com>
+Link: https://lore.kernel.org/all/dea94484-797f-3034-7b86-6d88801c0d91@arm.com/
 Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://lore.kernel.org/r/20230412185759.755408-3-rrendec@redhat.com
+Link: https://lore.kernel.org/r/20230412185759.755408-4-rrendec@redhat.com
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- arch/arm64/kernel/cacheinfo.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/base/arch_topology.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
-index c307f69e9b55..d9c9218fa1fd 100644
---- a/arch/arm64/kernel/cacheinfo.c
-+++ b/arch/arm64/kernel/cacheinfo.c
-@@ -38,11 +38,9 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
- 	this_leaf->type = type;
- }
- 
--int init_cache_level(unsigned int cpu)
-+static void detect_cache_level(unsigned int *level_p, unsigned int *leaves_p)
- {
- 	unsigned int ctype, level, leaves;
--	int fw_level, ret;
--	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
- 
- 	for (level = 1, leaves = 0; level <= MAX_CACHE_LEVEL; level++) {
- 		ctype = get_cache_type(level);
-@@ -54,6 +52,27 @@ int init_cache_level(unsigned int cpu)
- 		leaves += (ctype == CACHE_TYPE_SEPARATE) ? 2 : 1;
+diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+index c4b6198d7461..b741b5ba82bd 100644
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -835,10 +835,10 @@ void __init init_cpu_topology(void)
+ 	if (ret) {
+ 		/*
+ 		 * Discard anything that was parsed if we hit an error so we
+-		 * don't use partial information.
++		 * don't use partial information. But do not return yet to give
++		 * arch-specific early cache level detection a chance to run.
+ 		 */
+ 		reset_cpu_topology();
+-		return;
  	}
  
-+	*level_p = level;
-+	*leaves_p = leaves;
-+}
-+
-+int early_cache_level(unsigned int cpu)
-+{
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+
-+	detect_cache_level(&this_cpu_ci->num_levels, &this_cpu_ci->num_leaves);
-+
-+	return 0;
-+}
-+
-+int init_cache_level(unsigned int cpu)
-+{
-+	unsigned int level, leaves;
-+	int fw_level, ret;
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+
-+	detect_cache_level(&level, &leaves);
-+
- 	if (acpi_disabled) {
- 		fw_level = of_find_last_cache_level(cpu);
- 	} else {
+ 	for_each_possible_cpu(cpu) {
 -- 
 2.25.1
 
 
---000000000000746f9905fcf10f77
+--00000000000091b06505fcf10f1e
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -244,14 +207,14 @@ kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
 NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
 AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
 LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIA45pLgcIT2vQic2
-09MgXM6i6ijwrXftctJ/UQqDtGBmMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTIzMDUzMDIyNTI0MFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIErdImYe5e9I3r9q
+UoF6RkdIUgQ5ygnInNexfUDXCD6YMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDUzMDIyNTI0MlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
 AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQC77jquEdSPBMcKqKhPERF8KVMWENMT+Sxm
-3mBFHFfNdPOEUrdI+HxIHd78kYlXDSdt1BqxvTDAa1OIpnY5hAkJI9vYgZziTsGAFTU6hQ6qUBQ6
-mcEztuAXhp5/DFFsu1kB1oupXndPDsfN3gVpJIaSwmbXVngP51Q4ya68lHi3nsg/T+e4ydPHYEEG
-OETUdfRawxGq6DmFst25k1NP8eQABjYVi1YTZjworc/tJsyTjaZilPNleQSc6m7Eb9SX2FGd3uMh
-An30utklonIEVe31aD+uSqtiHCf+rrGmWgdqwDpC6qzTHlC3uI+UsrTG85FFz/t6jew5S+7Fzexy
-wvm+
---000000000000746f9905fcf10f77--
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCzMLTOQ2FzlBhxdP/6ufd8lF4OlIooHZIu
+Gc+ks/VUVUnr18djXHtUbQC847gmHqbZm2tXv+EzzMS0v3CS1b6pBxVoYdoVsOgzXbGkCfX12uJz
+L7ZBnBl/QTc3R3d0S2egBwlo8rTrZT3/Jn1JEOWGC3Z42fnyky3G/AxiqGkxD82ax8jrIn+uYTUt
+W/J+cjdL39yDgwNPs1n5uge8iqgkTU+KlICE+OViDpSLRs83DmxLJ6DZsQFYcjOmruxezlob+h7K
+ShzEHyyXnX0drGO2kvnPVblcl+KHL6Hd4KcvSG3iPrY0k4ft4pc5Bk4M5J1g2vqIYNNGpmBMw5Uj
+oOXD
+--00000000000091b06505fcf10f1e--
