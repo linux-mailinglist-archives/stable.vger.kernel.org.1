@@ -2,84 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF80715A58
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 11:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 771FF715B00
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 12:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbjE3Jjl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 05:39:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51868 "EHLO
+        id S230500AbjE3KFd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 06:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjE3Jjk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 05:39:40 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38529FE
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:39:37 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-96f5685f902so634676466b.2
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 02:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685439575; x=1688031575;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YRqiASN2Kmi3N/FjLZoykugsqpLt95mGg2ga2qP8t0k=;
-        b=moZNHxMKQfc7KylSCti8ZIiOJsQYrtlm6EQJZnzkqeSxc66pmC13mKtPPhLC+uuPFF
-         pJnyAVM6swCiAFZDgTlj4FRsAoIGSxRjOKQX98H/WfYS8K2jydUARLE0vc5j0uoPvIQD
-         vuAUdFcHSEOR4LRyWviImHt/ARyW5j1lL7a4rn3qyfuSGm1AjEtKkvv/E4M10QjFmMLv
-         lhet4mIsRkMadBLvFXqlEFdE+Svyw52H4yXVCALcfBBWFH+pwRiy6dkBrl8o+uPlAtnC
-         L9FIRd1EJMOIFSWZjb+nR/39PMqsp0FeY51qpVg69W2d9Sxow+7A8ummBPPv9K7xK+Pq
-         PaFg==
+        with ESMTP id S230305AbjE3KFb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 06:05:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB7EF7
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 03:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685441085;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0rOfxpMKudv/OZPqUJd3UZe63NtZeJsmKL7503HrnT0=;
+        b=DWIrU2K7bP+0UaEbOvykLRxX147JMujQcZOudxPG8cwg69yt0IB3kncdYt+BETgDBydUBh
+        BN7mgLNF1W27ji5s/Ug5v1Cbp33QD7rlZ4zPKZNBAb86YAUmy7YAY1UqavHeXbSljxN9px
+        vKjzLH5jmFoL1voQcmabKy96d98yyEw=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-250-C8xMqbF7PKW-Jn98xVO15A-1; Tue, 30 May 2023 06:04:43 -0400
+X-MC-Unique: C8xMqbF7PKW-Jn98xVO15A-1
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-3f8283a3a66so2946431cf.1
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 03:04:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685439575; x=1688031575;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YRqiASN2Kmi3N/FjLZoykugsqpLt95mGg2ga2qP8t0k=;
-        b=L0JJFH16bT9igEx4raM9g9i+LpKnwcyKPIYZrFkSBE+jloUuT7Tr+3WMrl1VbNUXh1
-         7rYs9pJWGUvqmTDdsVasHEVJriytj99ImKoMEPsCebeR6TzZoHhdaoTSBpIimnjnf5s4
-         ZVFaEwpqenmdRdCavjnb9SQfnfcSkZN2p8O6fcTFDVK6ckCoEiA8QPuQDvnu9lg82hWC
-         iGjkRBLYOzslfscjI3gAy/Ictk94Fd7IIj+2nGdSXhxgnAx6SgmfNTaU3wKoSJNuzOrK
-         eL+7Fa9CUkQLlVHs1zAZ3kSxoxKSd0J3Sx3FiFJZwyr9d4rL3mmyiVRBWDqa2jyeQ8tz
-         6UgA==
-X-Gm-Message-State: AC+VfDzG7FMHLia4yrpCFVU0doCg2O9JBIxsO7ha+0xI/eGjFb/Ihtlo
-        zYRVrl0VVWd8z0XkUteqm0CF03e6pr5Tlz5Qn0zax70fVA23jw==
-X-Google-Smtp-Source: ACHHUZ6bxaoh9Ba4yLpLutEJdBKukSolRXIWn9BKGnBlwbQu2ZMEk/xPPn1VxnopY1+zeIn1rUhxQfXZ5cJiVe/LYpo=
-X-Received: by 2002:a2e:3c11:0:b0:2ac:7ae8:2c10 with SMTP id
- j17-20020a2e3c11000000b002ac7ae82c10mr528990lja.33.1685439574952; Tue, 30 May
- 2023 02:39:34 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ab3:1999:0:b0:22f:3a39:53c4 with HTTP; Tue, 30 May 2023
- 02:39:33 -0700 (PDT)
-Reply-To: officialeuromillions@gmail.com
-From:   Euro Millions <pete.wetzlinger@gmail.com>
-Date:   Tue, 30 May 2023 10:39:33 +0100
-Message-ID: <CAAik_9S+2CGVc5nLRxy0PEirNyRBokXRbX8_wWjguMg61+NtMQ@mail.gmail.com>
-Subject: Aw
-To:     undisclosed-recipients:;
+        d=1e100.net; s=20221208; t=1685441083; x=1688033083;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0rOfxpMKudv/OZPqUJd3UZe63NtZeJsmKL7503HrnT0=;
+        b=Y3hrwmKxoMJZ7O5Ci02/QkqUrEQPj1+C7iqRXwE4591AsQPqRuKpA8JKG6mQOBa0x2
+         wwuKDk7Z82hYfcZK1fxAiaPxk6az2TIyKVzrCVFqtiRrMvtGcMFi+2XdoxSij0AWmFUL
+         pScXZHpayAiq2RyO1sZ7nv9HsH1gJNJNfOThZQ/O0pjYdPSXKDs7Cb/cUwvxgrP2zSRR
+         V5oscO3G0gq/6cehP1El4O+4ODnqJfAlWDLxiiPkL1YRgglGpzTZA+qHsd9mOoReB8Xi
+         v0v2qI/M1TXwtDWmL0WoXeDI2RLI7h3eKnsSPt39AY2OnzS1CUBRAcift7eJQeLHXx+D
+         GtmQ==
+X-Gm-Message-State: AC+VfDyL7NssuV2m3hLgGPDlp+5pJWNTic6uPsVy0/rMdOz92HUNjJSd
+        lszpaz5SOlmqzs1cYIXHhBR4HKB5i4yvBO3iYXjHPL2+ByPDoUL4/TRt/b/QUY41y8JnEtaR74N
+        R8v0yMawsa/8ZBCB4sWATSRrA
+X-Received: by 2002:a05:6214:e4e:b0:625:ba46:27cf with SMTP id o14-20020a0562140e4e00b00625ba4627cfmr1585910qvc.2.1685441083438;
+        Tue, 30 May 2023 03:04:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5j41B9i33Ri3qPI7OwceeU9fboi2Hka3a7gfcqLbtL58UfmrI1UFEAQjj5eGkBTrIw2TKIJA==
+X-Received: by 2002:a05:6214:e4e:b0:625:ba46:27cf with SMTP id o14-20020a0562140e4e00b00625ba4627cfmr1585888qvc.2.1685441083197;
+        Tue, 30 May 2023 03:04:43 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-248-97.dyn.eolo.it. [146.241.248.97])
+        by smtp.gmail.com with ESMTPSA id q20-20020ad44354000000b0062596d5b6a0sm4482088qvs.54.2023.05.30.03.04.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 03:04:42 -0700 (PDT)
+Message-ID: <5a432a0c18719adcfe4768e1c541010a8c22ea11.camel@redhat.com>
+Subject: Re: [PATCH V3,net] net: mana: Fix perf regression: remove rx_cqes,
+ tx_cqes counters
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Haiyang Zhang <haiyangz@microsoft.com>,
+        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
+Cc:     decui@microsoft.com, kys@microsoft.com, paulros@microsoft.com,
+        olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net,
+        wei.liu@kernel.org, edumazet@google.com, kuba@kernel.org,
+        leon@kernel.org, longli@microsoft.com, ssengar@linux.microsoft.com,
+        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
+        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
+        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
+        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Date:   Tue, 30 May 2023 12:04:36 +0200
+In-Reply-To: <1685115537-31675-1-git-send-email-haiyangz@microsoft.com>
+References: <1685115537-31675-1-git-send-email-haiyangz@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Herzlichen Gl=C3=BCckwunsch, Sie haben am 25.=C2=A0May,=C2=A02023 =E2=82=AC=
-650.000,00 bei den
-monatlichen Euro Millions/Google Promo-Gewinnspielen gewonnen.
+On Fri, 2023-05-26 at 08:38 -0700, Haiyang Zhang wrote:
+> The apc->eth_stats.rx_cqes is one per NIC (vport), and it's on the
+> frequent and parallel code path of all queues. So, r/w into this
+> single shared variable by many threads on different CPUs creates a
+> lot caching and memory overhead, hence perf regression. And, it's
+> not accurate due to the high volume concurrent r/w.
+>=20
+> For example, a workload is iperf with 128 threads, and with RPS
+> enabled. We saw perf regression of 25% with the previous patch
+> adding the counters. And this patch eliminates the regression.
+>=20
+> Since the error path of mana_poll_rx_cq() already has warnings, so
+> keeping the counter and convert it to a per-queue variable is not
+> necessary. So, just remove this counter from this high frequency
+> code path.
+>=20
+> Also, remove the tx_cqes counter for the same reason. We have
+> warnings & other counters for errors on that path, and don't need
+> to count every normal cqe processing.
 
-Bitte geben Sie die folgenden Informationen ein, damit Ihr
-Gewinnbetrag an Sie =C3=BCberwiesen werden kann.
-1.) Vollst=C3=A4ndiger Name:
-2.) Telefon- und Mobilfunknummern:
-3.) Postanschrift:
-4.) Beruf:
-5.) Geburtsdatum:
-6.) Geschlecht:
+FTR, if in future you will need the above counters again, you could re-
+add them using per-cpu variables to avoid re-introducing the regression
+addressed here.
 
+Cheers,
 
-Herr Anthony Deiderich
-Online-Koordinator
+Paolo
+
