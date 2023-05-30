@@ -2,88 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F58716B36
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 19:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF47716B3A
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 19:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231630AbjE3RhK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 13:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33920 "EHLO
+        id S232131AbjE3Rhg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 13:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230234AbjE3RhK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 13:37:10 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B6AB2;
-        Tue, 30 May 2023 10:37:08 -0700 (PDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34UHQGdc032423;
-        Tue, 30 May 2023 17:36:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=MTOGZ1p9JAjBEqJLoc8Qo7BmBr6wNxBkGhsoviMFLzs=;
- b=o+tLJQjvV+dTl+nV4vzuBmkPcRsnrBfvvatpK3lieZwD5jsJk3vs8bcsvcZgH4zQgvzD
- /K5lwKzUh+9KOI6wheryuuNak82gw4IfPvPGwcfJ7Wad1trLd9PCqs8A4PVsvAtxsylr
- 9rOwf2ZEpn9DXdFgo6vpY+rSb96+reoXFE7MtkewPzIQGl8Ciba1cxu0MBXKniZBmiUx
- Qajsvwkj0oECpmzSvonE+ayWcV/g5SdiLmqtwT5a53Sqtcf0EUfQ8+bRrzKsOHuJAnYo
- /nxI4CiwjceWXH4myLCzPczKw09k24GqLf09lwaCbjmgWIOJg/oma5fv21MF2e8cuhZI KQ== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwnhwg7hs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 17:36:58 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-        by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34UDsIRc009908;
-        Tue, 30 May 2023 17:36:57 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
-        by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3qu9g5qvh8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 17:36:57 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-        by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34UHauAI787192
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 May 2023 17:36:56 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2C21E58055;
-        Tue, 30 May 2023 17:36:56 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6C02358062;
-        Tue, 30 May 2023 17:36:55 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 30 May 2023 17:36:55 +0000 (GMT)
-Message-ID: <9c498e15-9de1-ce52-61a8-414a4cf7195f@linux.ibm.com>
-Date:   Tue, 30 May 2023 13:36:54 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH RFC v2] tpm: tpm_vtpm_proxy: do not reference kernel
- memory as user memory
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org
-Cc:     Jason Gunthorpe <jgg@nvidia.com>,
-        Alejandro Cabrera <alejandro.cabreraaldaya@tuni.fi>,
-        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
-        stable@vger.kernel.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org
-References: <20230530020133.235765-1-jarkko@kernel.org>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230530020133.235765-1-jarkko@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kT3Zjf72aQ8yNBskKSlH6QnO1D5IcIBX
-X-Proofpoint-ORIG-GUID: kT3Zjf72aQ8yNBskKSlH6QnO1D5IcIBX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-30_13,2023-05-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 impostorscore=0 mlxscore=0 clxscore=1011 spamscore=0
- suspectscore=0 adultscore=0 phishscore=0 bulkscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305300140
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        with ESMTP id S232408AbjE3Rhe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 13:37:34 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BE798
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 10:37:32 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-babb53e6952so9191243276.0
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 10:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1685468252; x=1688060252;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OcR9cOf4iNxvcptr0XhjKDmCn9YVouEV8X1B4pLhZos=;
+        b=2owOn5ofEJH8z5xQXF3wRlLfqsfnpAbD5656tieTF+k6aazPFTGqzXWX1Ncw9pSWgm
+         6Uu41j315BtDBiMeWlumYZxrhS8WCCRhp5X9R/qvzzYrU7cOt+rb1JL+mxaNnbaE78gT
+         +7DT07mObBuGXuFs3NhAYXxpD3qXK2w8XajhKwAwzzLOlYSzkglQYnqQvJ1HuNlCCavK
+         NhGN98NvCRLgRj32sjfZDdlklM8FhLeyOKaCMHppgqfjbngTlLf/U2XhbzdXt2bVAtf7
+         Lb6sYyk0Sj0ESb3zLwRDTN6ox5HCp2LnSy7c254529yo2FaYwLBtNeylQWfqfEYrM5kY
+         DjEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685468252; x=1688060252;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OcR9cOf4iNxvcptr0XhjKDmCn9YVouEV8X1B4pLhZos=;
+        b=DLFvarFG86axxtLfYLeTPnjKlbfoMGET7QczgZJhMddXdco+RNsXOM3Ua0ctcg9cCy
+         kOmAYdvf25IOkjB4wqmthQnkCH+8C9mhpA8Y/wjAzV32qiKOufdX9HGSpNoOIMFmmLjV
+         rRaW/ZTxdUEUYh1cw5D1QydDW74VmrzppLjNLAxJNExtGnPCzr4Fw5yC3IN48Oy78RDi
+         H8lMGBavdgziiSO1+YLHv40EbJw8JVDWVSusAHGMYa15gXMynmmzPD2UkL9dGZ8yp4SA
+         B7R3mCuMhsTaAizYmdWvHH7SiV8gUwmmLE0ob4tGwQFdUNZMwmEYmj1oo9gw+X/lrTBO
+         YM3Q==
+X-Gm-Message-State: AC+VfDwIxt+OsPYVazx59qk+gay2yyvOoTxGi5P22qMNMpyJjWMH8yhI
+        u1s3Ezd84ttg8vbNYjrGg2Jb3xZKqgY=
+X-Google-Smtp-Source: ACHHUZ6omR/+/JpyHNAJjPOrIi/nvTDl7T8hNgfgqut+pVpe10qa7llxGDnkDcyui6PYSWMEIkjFkAJuWXY=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:4ea:b0:ba8:337a:d8a3 with SMTP id
+ w10-20020a05690204ea00b00ba8337ad8a3mr1790878ybs.11.1685468251848; Tue, 30
+ May 2023 10:37:31 -0700 (PDT)
+Date:   Tue, 30 May 2023 10:37:30 -0700
+In-Reply-To: <CADpTngWiXNh1wAFM_EYGm-Coa8nv61Tu=3TG+Z2dVCojp2K1yg@mail.gmail.com>
+Mime-Version: 1.0
+References: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
+ <ZHNMsmpo2LWjnw1A@debian.me> <CADpTngWiXNh1wAFM_EYGm-Coa8nv61Tu=3TG+Z2dVCojp2K1yg@mail.gmail.com>
+Message-ID: <ZHY0WkNlui91Mxoj@google.com>
+Subject: Re: WARNING trace at kvm_nx_huge_page_recovery_worker on 6.3.4
+From:   Sean Christopherson <seanjc@google.com>
+To:     Fabio Coatti <fabio.coatti@gmail.com>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, kvm@vger.kernel.org,
+        Junaid Shahid <junaids@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -91,310 +69,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 5/29/23 22:01, Jarkko Sakkinen wrote:
-> From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+On Tue, May 30, 2023, Fabio Coatti wrote:
+> Il giorno dom 28 mag 2023 alle ore 14:44 Bagas Sanjaya
+> <bagasdotme@gmail.com> ha scritto:
+> > #regzbot ^introduced: v6.3.1..v6.3.2
+> > #regzbot title: WARNING trace at kvm_nx_huge_page_recovery_worker when opening a new tab in Chrome
 > 
-> The driver has two issues (in priority order) in the locality change:
+> Out of curiosity, I recompiled 6.3.4 after reverting the following
+> commit mentioned in 6.3.2 changelog:
 > 
-> 1. The driver uses __user pointer and copy_to_user() and
->     copy_from_user() with a kernel address during the locality change.
-
-This can lead to ... bad things ?
-
-> 2. For invalid locality change request from user space, the driver
->     sets errno to EFAULT, while for invalid input data EINVAL should
->     be used.
+> commit 2ec1fe292d6edb3bd112f900692d9ef292b1fa8b
+> Author: Sean Christopherson <seanjc@google.com>
+> Date:   Wed Apr 26 15:03:23 2023 -0700
+> KVM: x86: Preserve TDP MMU roots until they are explicitly invalidated
+> commit edbdb43fc96b11b3bfa531be306a1993d9fe89ec upstream.
 > 
-> Address this by:
+> And the WARN message no longer appears on my host kernel logs, at
+> least so far :)
+
+Hmm, more than likely an NX shadow page is outliving a memslot update.  I'll take
+another look at those flows to see if I can spot a race or leak.
+
+> > Fabio, can you also check the mainline (on guest)?
 > 
-> 1. Introduce __vtpm_proxy_read_unlocked(),  __vtpm_proxy_write_unlocked()
->     and __vtpm_proxy_read_write_locked().
-> 2. Make locality change atomic by calling __vtpm_proxy_read_write_locked(),
->     instead of tpm_transmit_cmd().
+> Not sure to understand, you mean 6.4-rcX? I can do that, sure, but why
+> on guest?
 
-2. sounds like it should be addressable by changing -EFAULT to -EINVAL but there's more to it?
-
-
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: be4c9acfe297 ("tpm: vtpm_proxy: Implement request_locality function.")
-> Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
-> ---
-> v2:
-> * Acquiring and releasing mutex in-between should not be an issue
->    because they are executed with the chip locked.
-> ---
->   drivers/char/tpm/tpm_vtpm_proxy.c | 162 ++++++++++++++----------------
->   1 file changed, 73 insertions(+), 89 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
-> index 30e953988cab..8f43a82e5590 100644
-> --- a/drivers/char/tpm/tpm_vtpm_proxy.c
-> +++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-> @@ -38,7 +38,6 @@ struct proxy_dev {
->   #define STATE_OPENED_FLAG        BIT(0)
->   #define STATE_WAIT_RESPONSE_FLAG BIT(1)  /* waiting for emulator response */
->   #define STATE_REGISTERED_FLAG	 BIT(2)
-> -#define STATE_DRIVER_COMMAND     BIT(3)  /* sending a driver specific command */
->   
->   	size_t req_len;              /* length of queued TPM request */
->   	size_t resp_len;             /* length of queued TPM response */
-> @@ -58,106 +57,112 @@ static void vtpm_proxy_delete_device(struct proxy_dev *proxy_dev);
->    * Functions related to 'server side'
->    */
->   
-> -/**
-> - * vtpm_proxy_fops_read - Read TPM commands on 'server side'
-> - *
-> - * @filp: file pointer
-> - * @buf: read buffer
-> - * @count: number of bytes to read
-> - * @off: offset
-> - *
-> - * Return:
-> - *	Number of bytes read or negative error code
-> - */
-> -static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
-> -				    size_t count, loff_t *off)
-> +static ssize_t __vtpm_proxy_read_unlocked(struct proxy_dev *proxy_dev, char __user *buf,
-> +					  size_t count)
->   {
-> -	struct proxy_dev *proxy_dev = filp->private_data;
->   	size_t len;
-> -	int sig, rc;
-> -
-> -	sig = wait_event_interruptible(proxy_dev->wq,
-> -		proxy_dev->req_len != 0 ||
-> -		!(proxy_dev->state & STATE_OPENED_FLAG));
-> -	if (sig)
-> -		return -EINTR;
-> -
-> -	mutex_lock(&proxy_dev->buf_lock);
-> +	int rc;
->   
-> -	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
-> -		mutex_unlock(&proxy_dev->buf_lock);
-> +	if (!(proxy_dev->state & STATE_OPENED_FLAG))
->   		return -EPIPE;
-> -	}
->   
->   	len = proxy_dev->req_len;
->   
->   	if (count < len || len > sizeof(proxy_dev->buffer)) {
-> -		mutex_unlock(&proxy_dev->buf_lock);
->   		pr_debug("Invalid size in recv: count=%zd, req_len=%zd\n",
->   			 count, len);
->   		return -EIO;
->   	}
->   
-> -	rc = copy_to_user(buf, proxy_dev->buffer, len);
-> +	if (buf)
-> +		rc = copy_to_user(buf, proxy_dev->buffer, len);
-> +
->   	memset(proxy_dev->buffer, 0, len);
->   	proxy_dev->req_len = 0;
->   
->   	if (!rc)
->   		proxy_dev->state |= STATE_WAIT_RESPONSE_FLAG;
->   
-> -	mutex_unlock(&proxy_dev->buf_lock);
-> -
->   	if (rc)
->   		return -EFAULT;
->   
->   	return len;
->   }
->   
-> -/**
-> - * vtpm_proxy_fops_write - Write TPM responses on 'server side'
-> - *
-> - * @filp: file pointer
-> - * @buf: write buffer
-> - * @count: number of bytes to write
-> - * @off: offset
-> - *
-> - * Return:
-> - *	Number of bytes read or negative error value
-> - */
-> -static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
-> -				     size_t count, loff_t *off)
-> +static ssize_t __vtpm_proxy_write_unlocked(struct proxy_dev *proxy_dev, const char __user *buf,
-> +					   size_t count)
->   {
-> -	struct proxy_dev *proxy_dev = filp->private_data;
-> -
-> -	mutex_lock(&proxy_dev->buf_lock);
-> -
-> -	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
-> -		mutex_unlock(&proxy_dev->buf_lock);
-> +	if (!(proxy_dev->state & STATE_OPENED_FLAG))
->   		return -EPIPE;
-> -	}
->   
->   	if (count > sizeof(proxy_dev->buffer) ||
-> -	    !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG)) {
-> -		mutex_unlock(&proxy_dev->buf_lock);
-> +	    !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG))
->   		return -EIO;
-> -	}
->   
->   	proxy_dev->state &= ~STATE_WAIT_RESPONSE_FLAG;
->   
->   	proxy_dev->req_len = 0;
->   
-> -	if (copy_from_user(proxy_dev->buffer, buf, count)) {
-> -		mutex_unlock(&proxy_dev->buf_lock);
-> +	if (buf && copy_from_user(proxy_dev->buffer, buf, count))
->   		return -EFAULT;
-> -	}
->   
->   	proxy_dev->resp_len = count;
-> +	return count;
-> +}
->   
-> +static ssize_t __vtpm_proxy_read_write_unlocked(struct proxy_dev *proxy_dev, char __user *buf,
-> +						size_t count)
-> +{
-> +	ssize_t rc;
-> +
-> +	do {
-> +		rc = __vtpm_proxy_write_unlocked(proxy_dev, buf, count);
-> +		if (rc < 0)
-> +			break;
-> +		rc = __vtpm_proxy_read_unlocked(proxy_dev, buf, rc);
-> +	} while (0);
-> +
-> +	return rc;
-> +}
-> +
-> +/*
-> + * See struct file_operations.
-> + */
-> +static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
-> +				    size_t count, loff_t *off)
-> +{
-> +	struct proxy_dev *proxy_dev = filp->private_data;
-> +	ssize_t rc;
-> +	int sig;
-> +
-> +	sig = wait_event_interruptible(proxy_dev->wq,
-> +		proxy_dev->req_len != 0 ||
-> +		!(proxy_dev->state & STATE_OPENED_FLAG));
-> +	if (sig)
-> +		return -EINTR;
-> +
-> +	mutex_lock(&proxy_dev->buf_lock);
-> +	rc = __vtpm_proxy_read_unlocked(proxy_dev, buf, count);
->   	mutex_unlock(&proxy_dev->buf_lock);
->   
-> +	return rc;
-> +}
-> +
-> +/*
-> + * See struct file_operations.
-> + */
-> +static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
-> +				     size_t count, loff_t *off)
-> +{
-> +	struct proxy_dev *proxy_dev = filp->private_data;
-> +	int rc;
-
-ssize_t rc;
-
-> +
-> +	mutex_lock(&proxy_dev->buf_lock);
-> +	rc = __vtpm_proxy_write_unlocked(proxy_dev, buf, count);
-> +	mutex_unlock(&proxy_dev->buf_lock);
->   	wake_up_interruptible(&proxy_dev->wq);
->   
-> -	return count;
-> +	return rc;
->   }
->   
->   /*
-> @@ -295,28 +300,6 @@ static int vtpm_proxy_tpm_op_recv(struct tpm_chip *chip, u8 *buf, size_t count)
->   	return len;
->   }
->   
-> -static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
-> -					u8 *buf, size_t count)
-> -{
-> -	struct tpm_header *hdr = (struct tpm_header *)buf;
-> -
-> -	if (count < sizeof(struct tpm_header))
-> -		return 0;
-> -
-> -	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> -		switch (be32_to_cpu(hdr->ordinal)) {
-> -		case TPM2_CC_SET_LOCALITY:
-> -			return 1;
-> -		}
-> -	} else {
-> -		switch (be32_to_cpu(hdr->ordinal)) {
-> -		case TPM_ORD_SET_LOCALITY:
-> -			return 1;
-> -		}
-> -	}
-> -	return 0;
-> -}
-> -
->   /*
->    * Called when core TPM driver forwards TPM requests to 'server side'.
->    *
-> @@ -330,6 +313,7 @@ static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
->   static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
->   {
->   	struct proxy_dev *proxy_dev = dev_get_drvdata(&chip->dev);
-> +	unsigned int ord = ((struct tpm_header *)buf)->ordinal;
-
-'u32 ordinal' like in tpm_try_transmit ?
-
-you need this here in some form: be32_to_cpu(hdr->ordinal)
-
->   
->   	if (count > sizeof(proxy_dev->buffer)) {
->   		dev_err(&chip->dev,(chip->flags & TPM_CHIP_FLAG_TPM2)
-> @@ -338,9 +322,11 @@ static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
->   		return -EIO;
->   	}
->   
-> -	if (!(proxy_dev->state & STATE_DRIVER_COMMAND) &&
-> -	    vtpm_proxy_is_driver_command(chip, buf, count))
-> -		return -EFAULT;
-> +	if ((chip->flags & TPM_CHIP_FLAG_TPM2) && ord == TPM2_CC_SET_LOCALITY)
-> +		return -EINVAL;
-> +
-> +	if (ord == TPM_ORD_SET_LOCALITY)
-> +		return -EINVAL;
-if ((chip->flags & TPM_CHIP_FLAG_TPM2)) {
-     if (ord == )
-        return -EINVAL;
-} else if (ord == ) {
-     return -EINVAL;
-}
-
->   
->   	mutex_lock(&proxy_dev->buf_lock);
->   
-> @@ -409,12 +395,10 @@ static int vtpm_proxy_request_locality(struct tpm_chip *chip, int locality)
->   		return rc;
->   	tpm_buf_append_u8(&buf, locality);
->   
-> -	proxy_dev->state |= STATE_DRIVER_COMMAND;
-> -
-> -	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting to set locality");
-> -
-> -	proxy_dev->state &= ~STATE_DRIVER_COMMAND;
-> -
-> +	mutex_lock(&proxy_dev->buf_lock);
-> +	memcpy(proxy_dev->buffer, buf.data, tpm_buf_length(&buf));
-> +	rc = __vtpm_proxy_read_write_unlocked(proxy_dev, NULL, tpm_buf_length(&buf));
-> +	mutex_unlock(&proxy_dev->buf_lock);
->   	if (rc < 0) {
->   		locality = rc;
->   		goto out;
-
-
-    Stefan
+Misunderstanding probably?  Please do test with 6.4-rcX on the host.  I expect
+the WARN to reproduce there as well, but if it doesn't then we'll have a very
+useful datapoint.
