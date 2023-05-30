@@ -2,314 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 646C5715C7D
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 13:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4844715C8C
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 13:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231699AbjE3LCV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 07:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
+        id S231750AbjE3LFZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 07:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231386AbjE3LCQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 07:02:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 915A8A0
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 04:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1685444488;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=sSe7wQC4FFM6pm9bSUf5yLMt1V9EvixguZuRRlpEqF8=;
-        b=DmGYmTyjOOxDftQRvfRhu7DQHYLmbTlSh8MdG+zNf+T92tPvS7kbDqvbfj9AAQmgfzl3EX
-        NoNeitvAMuFisQKmmYRQ0ct+bqOLNaJ8NHW9bZmT6hl85os48Zc0fUtwNQRPV6L4/CaRq/
-        bAwB2Yo1esrGyv2W0CXN9dks0c9P5YA=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-571-P9GPIvZEPVCE5vXnNRJkvw-1; Tue, 30 May 2023 07:01:27 -0400
-X-MC-Unique: P9GPIvZEPVCE5vXnNRJkvw-1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1b0371a51cfso14458635ad.0
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 04:01:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685444485; x=1688036485;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sSe7wQC4FFM6pm9bSUf5yLMt1V9EvixguZuRRlpEqF8=;
-        b=f0pwqYmA3a5yaszwerDG7ZgYt1RcfuB9QmgTaRYc0x/b9oavBvNPGBUz0X3JSfobXs
-         rpw8lNApNGZc8yoL+lBCsoQzyTYe2n3d6RwPXjOAYzHx63gKhZMc4SDWPdlC8GicipjW
-         3iROrLFWJlRiGsorjcNGCdaKl9CF1sd21Pdgt8DBZPAUhP1gzZ0SlSm92y3UA0wlhdg5
-         d0IMz0eNFEe9MbGo+A+rJw+I0bUV84lyP0AHkJhhvu7ocglUtLnO6R0GiNFBiJy52kBC
-         aP/pSgTxUj46suDJCgr53hjeXkMX+ZtkB/Jk9fJ+Q7Q1vygLeUlYoRMokayxs/vq75nb
-         JlOA==
-X-Gm-Message-State: AC+VfDzKurXcYfz+qHEyzCWurnMc2LB7YN2avZ1jiz8vHYMu1cgLN3UG
-        pWr2xdvto2l3PqPFJhwV8drjQouZ6uliHZi1Di9lTERPqgApsnhmE73mg63dTvZIU42L7Ujtbzk
-        etTz67Q7QwMBL48uSRqCkvSveSpDFNZX57kQm4kvAJ50=
-X-Received: by 2002:a17:902:cec7:b0:1b0:4591:283c with SMTP id d7-20020a170902cec700b001b04591283cmr2341349plg.62.1685444485213;
-        Tue, 30 May 2023 04:01:25 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7bxwCkSLTRBEaco04wihEXJtiOGjj6s//7AEN1+4rEx1XzYCevlaRas9EoG20ptRn7VkOv4H0fuqoSZByRvvY=
-X-Received: by 2002:a17:902:cec7:b0:1b0:4591:283c with SMTP id
- d7-20020a170902cec700b001b04591283cmr2341320plg.62.1685444484813; Tue, 30 May
- 2023 04:01:24 -0700 (PDT)
+        with ESMTP id S231486AbjE3LFY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 07:05:24 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20628.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e8a::628])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BEBA93
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 04:05:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jtuwZ6gu3cQ3nt1O1FN+UHJEQGnA6Yj97UUHXamMD0iGtEr8JTIYZjpZiYCEPZqwxGhr10deUMPSC36eLp+uNHH82Gu1M6+FZk46/c6tJpHqSrfbKIWoP+VmGSotq3DJ3QzaO+kkVS4SN6hU5SKULBbUPnranIRh7vx+1UCATEJINNB1HpupQVlJEEEIxJ428FBsMs6buFC7/ghGaZWHrDhPAfH5qxoPteVAozInf0LcKR0A5yXGk3sO+zRXpzuP+4Gg2n7bJtY9DWWHqSdkhgPMfrLHDefT0wxK4HyQjSvZVHR3ougGSD9MyJdgxAh5KpAXNZdsobUfMBOo/NZf9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZqM/v0lPwspVemr5u0SDl42S9EbPYcO9Jm0yTAC1YEQ=;
+ b=OGLOTNNMk/s8boZqCHpJZP75o19i6XCwmYIxaT7i7Kj6TRzmhxTFyCdejvR2OJbLz87GSoFeHe9krg3IlN0Z/Ewab2TxYU+mGbOoUwZRnNjZOgepIoEm2RczbLgkCXUdTesuQjFZIfyKKtGxvCQHlRcmQQbe8UBqMKKkBRL1w2YjcNdic2J9SVqWN008JiVHTxLOK7ezdOKNW/LWdUzUgo8Zg2Gk2PVNKXlb2SY+ksuQTHL0xFzjnvm4YUOVFUq0TqpmHjykHOo6V5qhptpiHUU5gVWwAXpVAyMJA3wnh4R1auFLGVDjhdrryuveUR8ffkaILrwThWPNp9TzVrcZGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZqM/v0lPwspVemr5u0SDl42S9EbPYcO9Jm0yTAC1YEQ=;
+ b=SgnG267axD2ZyGGvVEzAqGFEFNRkPQoYLE/Mh4I6mcXgFwB0EVASW8WU7PT80Bi2QpgRgriganJYlKXRv84/xpW2VnUk0G53faVitcx0Z2Y01Axid0QiQOB+VuxXSielv3HmEe9PJP8TxYvGnkJV+qVcG8Zmdlokb0aGOZ9Hbpo=
+Received: from BN0PR03CA0022.namprd03.prod.outlook.com (2603:10b6:408:e6::27)
+ by DM6PR12MB4895.namprd12.prod.outlook.com (2603:10b6:5:1bc::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.22; Tue, 30 May
+ 2023 11:05:19 +0000
+Received: from BN8NAM11FT004.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:e6:cafe::bc) by BN0PR03CA0022.outlook.office365.com
+ (2603:10b6:408:e6::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23 via Frontend
+ Transport; Tue, 30 May 2023 11:05:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT004.mail.protection.outlook.com (10.13.176.164) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6455.22 via Frontend Transport; Tue, 30 May 2023 11:05:19 +0000
+Received: from beas.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 30 May
+ 2023 06:05:16 -0500
+From:   Wyes Karny <wyes.karny@amd.com>
+To:     <stable@vger.kernel.org>
+CC:     "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+        Wyes Karny <wyes.karny@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1.y] cpufreq: amd-pstate: Add ->fast_switch() callback
+Date:   Tue, 30 May 2023 11:05:00 +0000
+Message-ID: <20230530110500.3412-1-wyes.karny@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023052858-overgrown-profile-8066@gregkh>
+References: <2023052858-overgrown-profile-8066@gregkh>
 MIME-Version: 1.0
-References: <20230524160204.1042858-1-aahringo@redhat.com> <CAHc6FU7vaQmbwzL7Memu9YpsqXM9Ay4Mj52pDpkG6UdXw6hKVg@mail.gmail.com>
- <CAK-6q+gvSO-MRMUPrGVzkO+ki48itzTjnaUC6t_4a+jUs2xV7w@mail.gmail.com>
-In-Reply-To: <CAK-6q+gvSO-MRMUPrGVzkO+ki48itzTjnaUC6t_4a+jUs2xV7w@mail.gmail.com>
-From:   Andreas Gruenbacher <agruenba@redhat.com>
-Date:   Tue, 30 May 2023 13:01:12 +0200
-Message-ID: <CAHc6FU4BCSFk+St-cndUr24Gb1g1K1DEAiKkMy-Z-SxLjhPM=w@mail.gmail.com>
-Subject: Re: [PATCHv2 dlm/next] fs: dlm: avoid F_SETLKW plock op lookup collisions
-To:     Alexander Aring <aahringo@redhat.com>
-Cc:     teigland@redhat.com, cluster-devel@redhat.com,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT004:EE_|DM6PR12MB4895:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b2b6e70-ea18-484a-68eb-08db60fdc163
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pTi68W2NbW01aox3onvOq28xdaUWYbRRrBzaFgZn0t0k1ETGogB11G6QTAC7JlCc9pIYwAKvcDJKS9F4b1F82kEKCzLRR0sUpGXVt2pBQT1MiTBTZ+6sdfgihgGqZkmibAe6dO0SZBrKLpklJED/CC71ZiNeTVkMFRJOZIoTVIWEkdQ5ETqsQdSiuHnoF3XD9yuAb5jks81eaMf5o+2HGZt+tQ6+YfMrV/rJsv484LvcVviofqz3bvjfkufTPguktwSCN3ahdcdxTdT9UMC8pUsT1Ohp8hbUPf1UpdqlRXhKW7O8sAKLqCtZyWq8PPt/wl5nSrFIwMFwFGQthWnyj79IqS/PEhIeW2lKvaU6VQD4Nk09yFw5CwNicKFdOhaerFF2ChySt/cNlCjEZ6MGoykdg5A6GpIaplCj3Csw/bRrIOdU7Bk62Pn9weTQtCldfY2PDXgVHgAPQBeRqxBAzyv+niIp2ntZQ1TsY3OSrMgrRDfh7LrIAqF6jSPeUVlCRvaOtatEgQkEBy7JvAcdNDSC1fO+ysnkcFTuwmziIxhQKm+VMooZ9DiXtF2HLjGowCl7J8KV7kTXMMraY/gsHuM0nyxhttAkjd/JOOjS610cdFXK9+D3LvTOuxmQnmhs0VbuoYg2MB4rJhWnrhP9/TKNs9cFN4ziRqUxbw3ibqWn8SLlqx0a8wjSABJJXxzRB7T6grVaPf2qhPbqQcCaveRhrbNXJfsI6Aqs+vnClCQtqQw6gfjTL3I+nsECDRQiFzxmq+Psrzk+pS5FPDD0hg==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(376002)(136003)(39860400002)(451199021)(40470700004)(46966006)(36840700001)(54906003)(478600001)(40460700003)(4326008)(8676002)(44832011)(5660300002)(8936002)(36756003)(2906002)(86362001)(82310400005)(82740400003)(70586007)(70206006)(6916009)(316002)(356005)(81166007)(40480700001)(41300700001)(186003)(36860700001)(16526019)(26005)(336012)(1076003)(47076005)(7696005)(6666004)(426003)(83380400001)(2616005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 11:05:19.0098
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b2b6e70-ea18-484a-68eb-08db60fdc163
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT004.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4895
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023 at 12:19=E2=80=AFAM Alexander Aring <aahringo@redhat.c=
-om> wrote:
-> Hi,
->
-> On Thu, May 25, 2023 at 11:02=E2=80=AFAM Andreas Gruenbacher
-> <agruenba@redhat.com> wrote:
-> >
-> > On Wed, May 24, 2023 at 6:02=E2=80=AFPM Alexander Aring <aahringo@redha=
-t.com> wrote:
-> > > This patch fixes a possible plock op collisions when using F_SETLKW l=
-ock
-> > > requests and fsid, number and owner are not enough to identify a resu=
-lt
-> > > for a pending request. The ltp testcases [0] and [1] are examples whe=
-n
-> > > this is not enough in case of using classic posix locks with threads =
-and
-> > > open filedescriptor posix locks.
-> > >
-> > > The idea to fix the issue here is to place all lock request in order.=
- In
-> > > case of non F_SETLKW lock request (indicated if wait is set or not) t=
-he
-> > > lock requests are ordered inside the recv_list. If a result comes bac=
-k
-> > > the right plock op can be found by the first plock_op in recv_list wh=
-ich
-> > > has not info.wait set. This can be done only by non F_SETLKW plock op=
-s as
-> > > dlm_controld always reads a specific plock op (list_move_tail() from
-> > > send_list to recv_mlist) and write the result immediately back.
-> > >
-> > > This behaviour is for F_SETLKW not possible as multiple waiters can b=
-e
-> > > get a result back in an random order. To avoid a collisions in cases
-> > > like [0] or [1] this patch adds more fields to compare the plock
-> > > operations as the lock request is the same. This is also being made i=
-n
-> > > NFS to find an result for an asynchronous F_SETLKW lock request [2][3=
-]. We
-> > > still can't find the exact lock request for a specific result if the
-> > > lock request is the same, but if this is the case we don't care the
-> > > order how the identical lock requests get their result back to grant =
-the
-> > > lock.
-> >
-> > When the recv_list contains multiple indistinguishable requests, this
-> > can only be because they originated from multiple threads of the same
-> > process. In that case, I agree that it doesn't matter which of those
-> > requests we "complete" in dev_write() as long as we only complete one
-> > request. We do need to compare the additional request fields in
-> > dev_write() to find a suitable request, so that makes sense as well.
-> > We need to compare all of the fields that identify a request (optype,
-> > ex, wait, pid, nodeid, fsid, number, start, end, owner) to find the
-> > "right" request (or in case there is more than one identical request,
-> > a "suitable" request).
-> >
->
-> In my "definition" why this works is as you said the "identical
-> request". There is a more deeper definition of "when is a request
-> identical" and in my opinion it is here as: "A request A is identical
-> to request B when they get granted under the same 'time'" which is all
-> the fields you mentioned.
->
-> Even with cancellation (F_SETLKW only) it does not matter which
-> "identical request" you cancel because the kernel and user
-> (dlm_controld) makes no relation between a lock request instance. You
-> need to have at least the same amount of "results" coming back from
-> user space as the amount you are waiting for a result for the same
-> "identical request".
+From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
 
-That's not incorrect per se, but cancellations create an additional
-difficulty: they can either succeed or fail. To indicate that a
-cancellation has succeeded, a new type of message can be introduced
-(say, "CANCELLED"), and it's obvious that a CANCELLED message can only
-belong to a locking request that is being cancelled. When cancelling a
-locking request fails, the kernel will see a "locking request granted"
-message though, and when multiple identical locking requests are
-queued and only some of them have been cancelled, it won't be obvious
-which locking request a "locking request granted" message should be
-assigned to anymore. You really don't want to mix things up in that
-case.
+[ Upstream commit 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54 ]
 
-This complication makes it a whole lot more difficult to reason about
-the correctness of the code. All that complexity is avoidable by
-sticking with a fixed mapping of requests and replies (i.e., a unique
-request identifier).
+Schedutil normally calls the adjust_perf callback for drivers with
+adjust_perf callback available and fast_switch_possible flag set.
+However, when frequency invariance is disabled and schedutil tries to
+invoke fast_switch. So, there is a chance of kernel crash if this
+function pointer is not set. To protect against this scenario add
+fast_switch callback to amd_pstate driver.
 
-To put it differently, you can shoot yourself in the foot and still
-hop along on the other leg, but it may not be the best of all possible
-ideas.
+Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+(cherry picked from commit 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54)
+---
+ drivers/cpufreq/amd-pstate.c | 37 +++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
-> > The above patch description doesn't match the code anymore, and the
-> > code doesn't fully revert the recv_list splitting of the previous
-> > version.
-> >
->
-> This isn't a revert. Is it a new patch version, I did drop the
-> recv_setlkw_list here, dropping in means of removing the
-> recv_setlkw_list and handling everything in the recv_list. Although
-> there might be a performance impact by splitting the requests in two
-> lists as we don't need to jump over all F_SETLKW requests.
->
-> > > [0] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testcase/t=
-estcases/kernel/syscalls/fcntl/fcntl40.c
-> > > [1] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testcase/t=
-estcases/kernel/syscalls/fcntl/fcntl41.c
-> > > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t/tree/include/linux/lockd/lockd.h?h=3Dv6.4-rc1#n373
-> > > [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t/tree/fs/lockd/svclock.c?h=3Dv6.4-rc1#n731
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> > > ---
-> > > change since v2:
-> > >  - don't split recv_list into recv_setlkw_list
-> > >
-> > >  fs/dlm/plock.c | 43 ++++++++++++++++++++++++++++++-------------
-> > >  1 file changed, 30 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-> > > index 31bc601ee3d8..53d17dbbb716 100644
-> > > --- a/fs/dlm/plock.c
-> > > +++ b/fs/dlm/plock.c
-> > > @@ -391,7 +391,7 @@ static ssize_t dev_read(struct file *file, char _=
-_user *u, size_t count,
-> > >                 if (op->info.flags & DLM_PLOCK_FL_CLOSE)
-> > >                         list_del(&op->list);
-> > >                 else
-> > > -                       list_move(&op->list, &recv_list);
-> > > +                       list_move_tail(&op->list, &recv_list);
-> >
-> > ^ This should be obsolete, but it won't hurt, either.
-> >
->
-> No it is necessary, I tested it and looked deeper into the reason.
-> dlm_controld handles the lock requests in an ordered way over a
-> select() mechanism, but it will not always write a result back when
-> it's read the request out. This is the case for F_SETLKW but also for
-> all other plock op requests, such as F_GETLK. Instead of writing the
-> result back it will send it to corosync and the corosync select()
-> mechanism will write the result back. Corosync will keep the order to
-> write the result back. Due the fact that it's going through corosync
-> multiple non F_SETLKW can be queued up in recv_list and need to be
-> appended on the tail to later find the first entry which is non
-> F_SETLKW to find the result.
->
-> This ordered lock request read and write the result back (for non
-> F_SETLKW ops) is not part of UAPI of dlm plock and dlm_controld did it
-> always this way.
-
-This sounds pretty confused. Let's look at
-
-> > >                 memcpy(&info, &op->info, sizeof(info));
-> > >         }
-> > >         spin_unlock(&ops_lock);
-> > > @@ -430,19 +430,36 @@ static ssize_t dev_write(struct file *file, con=
-st char __user *u, size_t count,
-> > >                 return -EINVAL;
-> > >
-> > >         spin_lock(&ops_lock);
-> > > -       list_for_each_entry(iter, &recv_list, list) {
-> > > -               if (iter->info.fsid =3D=3D info.fsid &&
-> > > -                   iter->info.number =3D=3D info.number &&
-> > > -                   iter->info.owner =3D=3D info.owner) {
-> > > -                       list_del_init(&iter->list);
-> > > -                       memcpy(&iter->info, &info, sizeof(info));
-> > > -                       if (iter->data)
-> > > -                               do_callback =3D 1;
-> > > -                       else
-> > > -                               iter->done =3D 1;
-> > > -                       op =3D iter;
-> > > -                       break;
-> > > +       if (info.wait) {
-> >
-.> > We should be able to use the same list_for_each_entry() loop for
-> > F_SETLKW requests (which have info.wait set) as for all other requests
-> > as far as I can see.
-> >
->
-> We can't match non F_SETLKW operations on all fields because F_GETLK
-> will change some fields when it's handled in user space. This is the
-> whole reason why the ordered handling is done here.
-
-I know that F_GETLK uses the l_type field to indicate the outcome of
-the operation. But that happens in dlm_posix_get() when processing the
-reply from dlm_controld; it doesn't affect info.optype or any other
-fields in struct dlm_plock_info. So we actually can compare all of the
-key fields in struct dlm_plock_info.
-
-> However there can be matched more fields but because F_GETLK we
-> require that this mechanism works in the above mentioned ordered way.
-> Those fields are checked by WARN_ON() that we get aware about changes
-> and "things" doesn't work anymore as they should.
->
-> > > +               list_for_each_entry(iter, &recv_list, list) {
-> > > +                       if (iter->info.fsid =3D=3D info.fsid &&
-> > > +                           iter->info.number =3D=3D info.number &&
-> > > +                           iter->info.owner =3D=3D info.owner &&
-> > > +                           iter->info.pid =3D=3D info.pid &&
-> > > +                           iter->info.start =3D=3D info.start &&
-> > > +                           iter->info.end =3D=3D info.end &&
-> > > +                           iter->info.ex =3D=3D info.ex &&
-> > > +                           iter->info.wait) {
-> > > +                               op =3D iter;
-> > > +                               break;
-> > > +                       }
-> > >                 }
-> > > +       } else {
-> > > +               list_for_each_entry(iter, &recv_list, list) {
-> > > +                       if (!iter->info.wait) {
-> > > +                               op =3D iter;
-> > > +                               break;
-> > > +                       }
-> > > +               }
-> > > +       }
-> > > +
-> > > +       if (op) {
-> > > +               list_del_init(&op->list);
-> > > +               memcpy(&op->info, &info, sizeof(info));
-> > > +               if (op->data)
-> > > +                       do_callback =3D 1;
-> > > +               else
-> > > +                       op->done =3D 1;
-> > >         }
-> >
-> > Can't this code just remain in the list_for_each_entry() loop?
-> >
->
-> It can, but we need two of them then in each loop because two loops
-> are necessary (see above).
-
-Well yes, my comment was based on the fact that there actually
-shouldn't be two loops.
-
-Andreas
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index c17bd845f5fc..446edc0fd192 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -249,9 +249,8 @@ static int amd_pstate_verify(struct cpufreq_policy_data *policy)
+ 	return 0;
+ }
+ 
+-static int amd_pstate_target(struct cpufreq_policy *policy,
+-			     unsigned int target_freq,
+-			     unsigned int relation)
++static int amd_pstate_update_freq(struct cpufreq_policy *policy,
++				  unsigned int target_freq, bool fast_switch)
+ {
+ 	struct cpufreq_freqs freqs;
+ 	struct amd_cpudata *cpudata = policy->driver_data;
+@@ -270,14 +269,36 @@ static int amd_pstate_target(struct cpufreq_policy *policy,
+ 	des_perf = DIV_ROUND_CLOSEST(target_freq * cap_perf,
+ 				     cpudata->max_freq);
+ 
+-	cpufreq_freq_transition_begin(policy, &freqs);
+-	amd_pstate_update(cpudata, min_perf, des_perf,
+-			  max_perf, false);
+-	cpufreq_freq_transition_end(policy, &freqs, false);
++	WARN_ON(fast_switch && !policy->fast_switch_enabled);
++	/*
++	 * If fast_switch is desired, then there aren't any registered
++	 * transition notifiers. See comment for
++	 * cpufreq_enable_fast_switch().
++	 */
++	if (!fast_switch)
++		cpufreq_freq_transition_begin(policy, &freqs);
++
++	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, fast_switch);
++
++	if (!fast_switch)
++		cpufreq_freq_transition_end(policy, &freqs, false);
+ 
+ 	return 0;
+ }
+ 
++static int amd_pstate_target(struct cpufreq_policy *policy,
++			     unsigned int target_freq,
++			     unsigned int relation)
++{
++	return amd_pstate_update_freq(policy, target_freq, false);
++}
++
++static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
++				  unsigned int target_freq)
++{
++	return amd_pstate_update_freq(policy, target_freq, true);
++}
++
+ static void amd_pstate_adjust_perf(unsigned int cpu,
+ 				   unsigned long _min_perf,
+ 				   unsigned long target_perf,
+@@ -517,6 +538,7 @@ static int amd_pstate_cpu_exit(struct cpufreq_policy *policy)
+ 
+ 	freq_qos_remove_request(&cpudata->req[1]);
+ 	freq_qos_remove_request(&cpudata->req[0]);
++	policy->fast_switch_possible = false;
+ 	kfree(cpudata);
+ 
+ 	return 0;
+@@ -608,6 +630,7 @@ static struct cpufreq_driver amd_pstate_driver = {
+ 	.flags		= CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
+ 	.verify		= amd_pstate_verify,
+ 	.target		= amd_pstate_target,
++	.fast_switch    = amd_pstate_fast_switch,
+ 	.init		= amd_pstate_cpu_init,
+ 	.exit		= amd_pstate_cpu_exit,
+ 	.suspend	= amd_pstate_cpu_suspend,
+-- 
+2.34.1
 
