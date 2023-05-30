@@ -2,66 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF47716B3A
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 19:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D751716B57
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 19:41:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232131AbjE3Rhg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 13:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34258 "EHLO
+        id S231256AbjE3RlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 13:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232408AbjE3Rhe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 13:37:34 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BE798
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 10:37:32 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-babb53e6952so9191243276.0
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 10:37:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685468252; x=1688060252;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OcR9cOf4iNxvcptr0XhjKDmCn9YVouEV8X1B4pLhZos=;
-        b=2owOn5ofEJH8z5xQXF3wRlLfqsfnpAbD5656tieTF+k6aazPFTGqzXWX1Ncw9pSWgm
-         6Uu41j315BtDBiMeWlumYZxrhS8WCCRhp5X9R/qvzzYrU7cOt+rb1JL+mxaNnbaE78gT
-         +7DT07mObBuGXuFs3NhAYXxpD3qXK2w8XajhKwAwzzLOlYSzkglQYnqQvJ1HuNlCCavK
-         NhGN98NvCRLgRj32sjfZDdlklM8FhLeyOKaCMHppgqfjbngTlLf/U2XhbzdXt2bVAtf7
-         Lb6sYyk0Sj0ESb3zLwRDTN6ox5HCp2LnSy7c254529yo2FaYwLBtNeylQWfqfEYrM5kY
-         DjEw==
+        with ESMTP id S230327AbjE3RlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 13:41:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0777298
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 10:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685468428;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ucVScV4sdyNVCqyw1+3t1xIZfOFojPzX1vWAJ5zfJSY=;
+        b=RmcexB6JWkZ2iqd/ij8w9d/hPBdo+X25odJR9DuDBBCdRdH1gQTcmqCKbRQZ678Ad6/Yhi
+        QEijeFQAS6jt6sj+fHils9KMdpJpV6kHc5fp7LoO3oXIyOFRYREQPNL3iENlfqqDBEfbn7
+        NV4iy2RmToypwf7eS6cORpyHa4S9gF4=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-nCM3kEiJPC6ko6JfoNRi8w-1; Tue, 30 May 2023 13:40:26 -0400
+X-MC-Unique: nCM3kEiJPC6ko6JfoNRi8w-1
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1b03f9dfd52so15756545ad.3
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 10:40:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685468252; x=1688060252;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OcR9cOf4iNxvcptr0XhjKDmCn9YVouEV8X1B4pLhZos=;
-        b=DLFvarFG86axxtLfYLeTPnjKlbfoMGET7QczgZJhMddXdco+RNsXOM3Ua0ctcg9cCy
-         kOmAYdvf25IOkjB4wqmthQnkCH+8C9mhpA8Y/wjAzV32qiKOufdX9HGSpNoOIMFmmLjV
-         rRaW/ZTxdUEUYh1cw5D1QydDW74VmrzppLjNLAxJNExtGnPCzr4Fw5yC3IN48Oy78RDi
-         H8lMGBavdgziiSO1+YLHv40EbJw8JVDWVSusAHGMYa15gXMynmmzPD2UkL9dGZ8yp4SA
-         B7R3mCuMhsTaAizYmdWvHH7SiV8gUwmmLE0ob4tGwQFdUNZMwmEYmj1oo9gw+X/lrTBO
-         YM3Q==
-X-Gm-Message-State: AC+VfDwIxt+OsPYVazx59qk+gay2yyvOoTxGi5P22qMNMpyJjWMH8yhI
-        u1s3Ezd84ttg8vbNYjrGg2Jb3xZKqgY=
-X-Google-Smtp-Source: ACHHUZ6omR/+/JpyHNAJjPOrIi/nvTDl7T8hNgfgqut+pVpe10qa7llxGDnkDcyui6PYSWMEIkjFkAJuWXY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:4ea:b0:ba8:337a:d8a3 with SMTP id
- w10-20020a05690204ea00b00ba8337ad8a3mr1790878ybs.11.1685468251848; Tue, 30
- May 2023 10:37:31 -0700 (PDT)
-Date:   Tue, 30 May 2023 10:37:30 -0700
-In-Reply-To: <CADpTngWiXNh1wAFM_EYGm-Coa8nv61Tu=3TG+Z2dVCojp2K1yg@mail.gmail.com>
-Mime-Version: 1.0
-References: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
- <ZHNMsmpo2LWjnw1A@debian.me> <CADpTngWiXNh1wAFM_EYGm-Coa8nv61Tu=3TG+Z2dVCojp2K1yg@mail.gmail.com>
-Message-ID: <ZHY0WkNlui91Mxoj@google.com>
-Subject: Re: WARNING trace at kvm_nx_huge_page_recovery_worker on 6.3.4
-From:   Sean Christopherson <seanjc@google.com>
-To:     Fabio Coatti <fabio.coatti@gmail.com>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, kvm@vger.kernel.org,
-        Junaid Shahid <junaids@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        d=1e100.net; s=20221208; t=1685468426; x=1688060426;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ucVScV4sdyNVCqyw1+3t1xIZfOFojPzX1vWAJ5zfJSY=;
+        b=YS0YCxr+zxidd9U2RoqWYH4DK3mF2jQdqYveVs2+4/8KYsBPwydT0qQECeHMBJE6ZI
+         22HzjRVBWSLsST8yOdud1aktyPSG+VbGccwJCq67EFUddPz6eh2EIMR1sOA+zVpuw8rJ
+         j0cuYP7pkOwP0L+PeVwJ9qNIp24pNKVCvIwdMlBONkdn1AgeIw5lbllIt6JsOxmwR0SC
+         3OSlzrP6bgLG2vGOI2wYmGNuLX9AdAb0IY/0ZV9i0305aMmS9xJs3R4ENEpFYbgQAaqZ
+         kR3KtcIGgpCqgAxSFPMFJ7C2sFAF3B+RaQXXp2KA5uvqwgZO6wE1NZf2+d5hbDJYbb3c
+         qUog==
+X-Gm-Message-State: AC+VfDy6zLyO3EtCQX9hi/RJmkBNtall3Xb4zLGnHSiMMyhqBukLN55C
+        XnhhC/TWs3MHZvgCNJUMHmXMgQvBrgEi42c9eJsturpW/fVrqm8qCpvvOV1RCERYHgAeWe0BxLr
+        lX21ffj9MzBhMBnoycfiyZT/YMKkAhlpV
+X-Received: by 2002:a17:902:cecb:b0:1b0:6480:1788 with SMTP id d11-20020a170902cecb00b001b064801788mr2477593plg.61.1685468425632;
+        Tue, 30 May 2023 10:40:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4SWNXUogOo8XIdh10noG7U63oer7uEE1TSY24j83/mVyeiy3S/zM9QvSMe4mZwAPw4xFXQ7HG+YgmDLo39m90=
+X-Received: by 2002:a17:902:cecb:b0:1b0:6480:1788 with SMTP id
+ d11-20020a170902cecb00b001b064801788mr2477571plg.61.1685468425139; Tue, 30
+ May 2023 10:40:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230524160204.1042858-1-aahringo@redhat.com> <CAHc6FU7vaQmbwzL7Memu9YpsqXM9Ay4Mj52pDpkG6UdXw6hKVg@mail.gmail.com>
+ <CAK-6q+gvSO-MRMUPrGVzkO+ki48itzTjnaUC6t_4a+jUs2xV7w@mail.gmail.com>
+ <CAHc6FU4BCSFk+St-cndUr24Gb1g1K1DEAiKkMy-Z-SxLjhPM=w@mail.gmail.com> <CAK-6q+i8z6WEf5fEGgbcbMi6ffB12UnegPXxjAVJ7-Gxe4S=Bw@mail.gmail.com>
+In-Reply-To: <CAK-6q+i8z6WEf5fEGgbcbMi6ffB12UnegPXxjAVJ7-Gxe4S=Bw@mail.gmail.com>
+From:   Andreas Gruenbacher <agruenba@redhat.com>
+Date:   Tue, 30 May 2023 19:40:13 +0200
+Message-ID: <CAHc6FU4Y18NUL_D0mtLpY41pNXqdqK6ykPJSTGhg5ou=wQij2w@mail.gmail.com>
+Subject: Re: [PATCHv2 dlm/next] fs: dlm: avoid F_SETLKW plock op lookup collisions
+To:     Alexander Aring <aahringo@redhat.com>
+Cc:     teigland@redhat.com, cluster-devel@redhat.com,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,32 +76,242 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023, Fabio Coatti wrote:
-> Il giorno dom 28 mag 2023 alle ore 14:44 Bagas Sanjaya
-> <bagasdotme@gmail.com> ha scritto:
-> > #regzbot ^introduced: v6.3.1..v6.3.2
-> > #regzbot title: WARNING trace at kvm_nx_huge_page_recovery_worker when opening a new tab in Chrome
-> 
-> Out of curiosity, I recompiled 6.3.4 after reverting the following
-> commit mentioned in 6.3.2 changelog:
-> 
-> commit 2ec1fe292d6edb3bd112f900692d9ef292b1fa8b
-> Author: Sean Christopherson <seanjc@google.com>
-> Date:   Wed Apr 26 15:03:23 2023 -0700
-> KVM: x86: Preserve TDP MMU roots until they are explicitly invalidated
-> commit edbdb43fc96b11b3bfa531be306a1993d9fe89ec upstream.
-> 
-> And the WARN message no longer appears on my host kernel logs, at
-> least so far :)
+On Tue, May 30, 2023 at 4:08=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
+> Hi,
+>
+> On Tue, May 30, 2023 at 7:01=E2=80=AFAM Andreas Gruenbacher <agruenba@red=
+hat.com> wrote:
+> >
+> > On Tue, May 30, 2023 at 12:19=E2=80=AFAM Alexander Aring <aahringo@redh=
+at.com> wrote:
+> > > Hi,
+> > >
+> > > On Thu, May 25, 2023 at 11:02=E2=80=AFAM Andreas Gruenbacher
+> > > <agruenba@redhat.com> wrote:
+> > > >
+> > > > On Wed, May 24, 2023 at 6:02=E2=80=AFPM Alexander Aring <aahringo@r=
+edhat.com> wrote:
+> > > > > This patch fixes a possible plock op collisions when using F_SETL=
+KW lock
+> > > > > requests and fsid, number and owner are not enough to identify a =
+result
+> > > > > for a pending request. The ltp testcases [0] and [1] are examples=
+ when
+> > > > > this is not enough in case of using classic posix locks with thre=
+ads and
+> > > > > open filedescriptor posix locks.
+> > > > >
+> > > > > The idea to fix the issue here is to place all lock request in or=
+der. In
+> > > > > case of non F_SETLKW lock request (indicated if wait is set or no=
+t) the
+> > > > > lock requests are ordered inside the recv_list. If a result comes=
+ back
+> > > > > the right plock op can be found by the first plock_op in recv_lis=
+t which
+> > > > > has not info.wait set. This can be done only by non F_SETLKW ploc=
+k ops as
+> > > > > dlm_controld always reads a specific plock op (list_move_tail() f=
+rom
+> > > > > send_list to recv_mlist) and write the result immediately back.
+> > > > >
+> > > > > This behaviour is for F_SETLKW not possible as multiple waiters c=
+an be
+> > > > > get a result back in an random order. To avoid a collisions in ca=
+ses
+> > > > > like [0] or [1] this patch adds more fields to compare the plock
+> > > > > operations as the lock request is the same. This is also being ma=
+de in
+> > > > > NFS to find an result for an asynchronous F_SETLKW lock request [=
+2][3]. We
+> > > > > still can't find the exact lock request for a specific result if =
+the
+> > > > > lock request is the same, but if this is the case we don't care t=
+he
+> > > > > order how the identical lock requests get their result back to gr=
+ant the
+> > > > > lock.
+> > > >
+> > > > When the recv_list contains multiple indistinguishable requests, th=
+is
+> > > > can only be because they originated from multiple threads of the sa=
+me
+> > > > process. In that case, I agree that it doesn't matter which of thos=
+e
+> > > > requests we "complete" in dev_write() as long as we only complete o=
+ne
+> > > > request. We do need to compare the additional request fields in
+> > > > dev_write() to find a suitable request, so that makes sense as well=
+.
+> > > > We need to compare all of the fields that identify a request (optyp=
+e,
+> > > > ex, wait, pid, nodeid, fsid, number, start, end, owner) to find the
+> > > > "right" request (or in case there is more than one identical reques=
+t,
+> > > > a "suitable" request).
+> > > >
+> > >
+> > > In my "definition" why this works is as you said the "identical
+> > > request". There is a more deeper definition of "when is a request
+> > > identical" and in my opinion it is here as: "A request A is identical
+> > > to request B when they get granted under the same 'time'" which is al=
+l
+> > > the fields you mentioned.
+> > >
+> > > Even with cancellation (F_SETLKW only) it does not matter which
+> > > "identical request" you cancel because the kernel and user
+> > > (dlm_controld) makes no relation between a lock request instance. You
+> > > need to have at least the same amount of "results" coming back from
+> > > user space as the amount you are waiting for a result for the same
+> > > "identical request".
+> >
+> > That's not incorrect per se, but cancellations create an additional
+> > difficulty: they can either succeed or fail. To indicate that a
+> > cancellation has succeeded, a new type of message can be introduced
+> > (say, "CANCELLED"), and it's obvious that a CANCELLED message can only
+> > belong to a locking request that is being cancelled. When cancelling a
+> > locking request fails, the kernel will see a "locking request granted"
+> > message though, and when multiple identical locking requests are
+> > queued and only some of them have been cancelled, it won't be obvious
+> > which locking request a "locking request granted" message should be
+> > assigned to anymore. You really don't want to mix things up in that
+> > case.
+> >
+> > This complication makes it a whole lot more difficult to reason about
+> > the correctness of the code. All that complexity is avoidable by
+> > sticking with a fixed mapping of requests and replies (i.e., a unique
+> > request identifier).
+> >
+> > To put it differently, you can shoot yourself in the foot and still
+> > hop along on the other leg, but it may not be the best of all possible
+> > ideas.
+> >
+>
+> It makes things more complicated, I agree and the reason why this
+> works now is because there are a lot of "dependencies". I would love
+> to have an unique identifier to make it possible that we can follow an
+> instance handle of the original lock request.
+>
+> * an unique identifier which also works with the async lock request of
+> lockd case.
 
-Hmm, more than likely an NX shadow page is outliving a memslot update.  I'll take
-another look at those flows to see if I can spot a race or leak.
+What's the lockd case you're referring to here, and why is it relevant
+for the problem at hand?
 
-> > Fabio, can you also check the mainline (on guest)?
-> 
-> Not sure to understand, you mean 6.4-rcX? I can do that, sure, but why
-> on guest?
+> > > > The above patch description doesn't match the code anymore, and the
+> > > > code doesn't fully revert the recv_list splitting of the previous
+> > > > version.
+> > > >
+> > >
+> > > This isn't a revert. Is it a new patch version, I did drop the
+> > > recv_setlkw_list here, dropping in means of removing the
+> > > recv_setlkw_list and handling everything in the recv_list. Although
+> > > there might be a performance impact by splitting the requests in two
+> > > lists as we don't need to jump over all F_SETLKW requests.
+> > >
+> > > > > [0] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testca=
+se/testcases/kernel/syscalls/fcntl/fcntl40.c
+> > > > > [1] https://gitlab.com/netcoder/ltp/-/blob/dlm_fcntl_owner_testca=
+se/testcases/kernel/syscalls/fcntl/fcntl41.c
+> > > > > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linu=
+x.git/tree/include/linux/lockd/lockd.h?h=3Dv6.4-rc1#n373
+> > > > > [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linu=
+x.git/tree/fs/lockd/svclock.c?h=3Dv6.4-rc1#n731
+> > > > >
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> > > > > ---
+> > > > > change since v2:
+> > > > >  - don't split recv_list into recv_setlkw_list
+> > > > >
+> > > > >  fs/dlm/plock.c | 43 ++++++++++++++++++++++++++++++-------------
+> > > > >  1 file changed, 30 insertions(+), 13 deletions(-)
+> > > > >
+> > > > > diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+> > > > > index 31bc601ee3d8..53d17dbbb716 100644
+> > > > > --- a/fs/dlm/plock.c
+> > > > > +++ b/fs/dlm/plock.c
+> > > > > @@ -391,7 +391,7 @@ static ssize_t dev_read(struct file *file, ch=
+ar __user *u, size_t count,
+> > > > >                 if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+> > > > >                         list_del(&op->list);
+> > > > >                 else
+> > > > > -                       list_move(&op->list, &recv_list);
+> > > > > +                       list_move_tail(&op->list, &recv_list);
+> > > >
+> > > > ^ This should be obsolete, but it won't hurt, either.
+> > > >
+> > >
+> > > No it is necessary, I tested it and looked deeper into the reason.
+> > > dlm_controld handles the lock requests in an ordered way over a
+> > > select() mechanism, but it will not always write a result back when
+> > > it's read the request out. This is the case for F_SETLKW but also for
+> > > all other plock op requests, such as F_GETLK. Instead of writing the
+> > > result back it will send it to corosync and the corosync select()
+> > > mechanism will write the result back. Corosync will keep the order to
+> > > write the result back. Due the fact that it's going through corosync
+> > > multiple non F_SETLKW can be queued up in recv_list and need to be
+> > > appended on the tail to later find the first entry which is non
+> > > F_SETLKW to find the result.
+> > >
+> > > This ordered lock request read and write the result back (for non
+> > > F_SETLKW ops) is not part of UAPI of dlm plock and dlm_controld did i=
+t
+> > > always this way.
+> >
+> > This sounds pretty confused. Let's look at
+> >
+>
+> As I said, yes it is a lot of specific handling of user space why this
+> is actually working.
+>
+> > > > >                 memcpy(&info, &op->info, sizeof(info));
+> > > > >         }
+> > > > >         spin_unlock(&ops_lock);
+> > > > > @@ -430,19 +430,36 @@ static ssize_t dev_write(struct file *file,=
+ const char __user *u, size_t count,
+> > > > >                 return -EINVAL;
+> > > > >
+> > > > >         spin_lock(&ops_lock);
+> > > > > -       list_for_each_entry(iter, &recv_list, list) {
+> > > > > -               if (iter->info.fsid =3D=3D info.fsid &&
+> > > > > -                   iter->info.number =3D=3D info.number &&
+> > > > > -                   iter->info.owner =3D=3D info.owner) {
+> > > > > -                       list_del_init(&iter->list);
+> > > > > -                       memcpy(&iter->info, &info, sizeof(info));
+> > > > > -                       if (iter->data)
+> > > > > -                               do_callback =3D 1;
+> > > > > -                       else
+> > > > > -                               iter->done =3D 1;
+> > > > > -                       op =3D iter;
+> > > > > -                       break;
+> > > > > +       if (info.wait) {
+> > > >
+> > .> > We should be able to use the same list_for_each_entry() loop for
+> > > > F_SETLKW requests (which have info.wait set) as for all other reque=
+sts
+> > > > as far as I can see.
+> > > >
+> > >
+> > > We can't match non F_SETLKW operations on all fields because F_GETLK
+> > > will change some fields when it's handled in user space. This is the
+> > > whole reason why the ordered handling is done here.
+> >
+> > I know that F_GETLK uses the l_type field to indicate the outcome of
+> > the operation. But that happens in dlm_posix_get() when processing the
+> > reply from dlm_controld; it doesn't affect info.optype or any other
+> > fields in struct dlm_plock_info. So we actually can compare all of the
+> > key fields in struct dlm_plock_info.
+> >
+>
+> F_GETLK also uses start, end, etc. to tell the caller about the region
+> which is in conflict. The region which is in conflict is returned into
+> the result info struct. See [0] [1].
+> Is this more clear now that other fields are affected?
 
-Misunderstanding probably?  Please do test with 6.4-rcX on the host.  I expect
-the WARN to reproduce there as well, but if it doesn't then we'll have a very
-useful datapoint.
+Ah, that sucks.
+
+Thanks,
+Andreas
+
