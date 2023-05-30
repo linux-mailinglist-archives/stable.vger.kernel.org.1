@@ -2,207 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50AC6715F40
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 14:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A2C715F82
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 14:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbjE3M1x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 08:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54662 "EHLO
+        id S231294AbjE3Mb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 08:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbjE3M1w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 08:27:52 -0400
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E806618F;
-        Tue, 30 May 2023 05:27:23 -0700 (PDT)
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-        by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34U6i4hE028450;
-        Tue, 30 May 2023 12:26:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references :
- content-transfer-encoding : content-type : mime-version; s=PPS06212021;
- bh=Sqzwowbop0wapqOookzFR+jCdN68cDsEDQ9yQyn69Wc=;
- b=BDHOUOUhBwD764liTWqk0e8lI6iHeeJ3nlIXSXmYxlioyr9FGkavs9YcTSEyZN488ySi
- /IN2GUiw5VDafJOLCuhXJKlcWPtLdWj/8KhMLzTf5odISpPiNQ2trM6FP8tDhC7y77R2
- Pq8CjG3c2n4+3uJzObJx/CIICr2J1mnAXcpy93Yx96qnupo0w+pmHJbxR1hv+w29v1DH
- 4QV/y7JaR3Q+5AOcbHLog98aJ4qWX2Dzrc/PGo1iw8iBggcZkvP1yq1F7YaIlI+DOF6g
- /5X6SKuK2g6pQ5+W/70iyoY6wz1QVAyjs3K2aiFiZ9W6C9fdv9OdLdQNoD0Rr8RKqg4H 5w== 
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
-        by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3qu730tkm5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 12:26:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HbrK5fn5Ogid6X/V6mOkFm8uQi+WUGwn3FpoNa1GHsRSVai0FdBaFS7YVXItNj/+5LXTXE1nDlnx8FDe3JULQBRZ01zKKX9t+ulnY5HBJZ1JPdocZhUAsKpocDn7zPkqXHIfixJIby3TGuleXkIBJHI7rtA2MIJSDyJ5h/+Wu3qrLTQKGOIPVNsdX7lVm31nkwqJ+yQ4RAgHz0TgdcSK9Wm476bE55kckAeSVjWsvh0Nlr7RKbhF2vAbw4SgON0abY4K/8Tjh7zPyvg56i35ypPvsfjECvXnDuoWc2jBxk+nCNT0u6Pc2CLUUIhd2Tieq2Z2qblExWObvmHckYEIEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sqzwowbop0wapqOookzFR+jCdN68cDsEDQ9yQyn69Wc=;
- b=aDcyEClF5SUqplsfGjXUEdIl6lWbXhaMpuAWwyOu1T/n+pFP3rjR/T/eH/LUTitprbP6/Bv1XmjGmTpRlVtyLzVK8Ccf7Z5OuqSOSPmQPwfE+KhjXkAcPpObLPiPiA31sT7pJNdFMVbYgRX6Ec5KSCU6WnYWpeKU5ed+BBlHwUf/Aue7So7e3pa6uG4zcy+GBRQrVibx41MkhQF/GO9UXtlly8ldZT8vIeFwXTMz8oZ02PPXqUWt5D0wHAboLAZD+Gp8+kZkQjYxInGhZ0tacI8cBocm1zW5tOib84UrxNm+vlkbbfvJ+M50uLJmjnKUTZFOvhimiXQT29kzDU24yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from PH0PR11MB4952.namprd11.prod.outlook.com (2603:10b6:510:40::15)
- by IA1PR11MB7756.namprd11.prod.outlook.com (2603:10b6:208:420::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
- 2023 12:26:48 +0000
-Received: from PH0PR11MB4952.namprd11.prod.outlook.com
- ([fe80::5693:5120:1f58:9efa]) by PH0PR11MB4952.namprd11.prod.outlook.com
- ([fe80::5693:5120:1f58:9efa%3]) with mapi id 15.20.6433.022; Tue, 30 May 2023
- 12:26:48 +0000
-From:   Dragos-Marian Panait <dragos.panait@windriver.com>
-To:     stable@vger.kernel.org
-Cc:     Ruihan Li <lrh2000@pku.edu.cn>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1 1/1] bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
-Date:   Tue, 30 May 2023 15:26:29 +0300
-Message-Id: <20230530122629.231821-2-dragos.panait@windriver.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230530122629.231821-1-dragos.panait@windriver.com>
-References: <20230530122629.231821-1-dragos.panait@windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR08CA0129.eurprd08.prod.outlook.com
- (2603:10a6:800:d4::31) To PH0PR11MB4952.namprd11.prod.outlook.com
- (2603:10b6:510:40::15)
+        with ESMTP id S231244AbjE3MbX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 08:31:23 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550B8138
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 05:30:56 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4f3b9c88af8so5026469e87.2
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 05:30:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685449839; x=1688041839;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mM7Jz0mpFc9F7VQ75gYzJLA8egHJEnLGa+xgLus3Meg=;
+        b=L3UCcbWRjZdIUk9bofbPj8741KWX1qPMmsh4N+RNqapeZhyQhrvAqob+OvEYC8htWk
+         fOtkD/0wVbSQhfjOFKkuD7oCOsL4FQYNgLyxv4776ef4HVfNYCC8KBR+DcKNhQVQZd7h
+         86LHNfVSbdqr/RHXyeJjchxg5/nvSo6+UdStm/4K/0RbtggooqZKaujJFW8c/YctrjZ8
+         BrA/82xDWCAhxAmwgGfaWnbtR3wTXuuyGbZF4s0XzKjPponge+bJoPuzksu2ocTCjgtO
+         edElyHQOz3ly33eQiKGs0A/LGaRXejKyN0exmcou6yg39CbsAWm4JOI6fjcFFzKd8OSC
+         4Gug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685449839; x=1688041839;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mM7Jz0mpFc9F7VQ75gYzJLA8egHJEnLGa+xgLus3Meg=;
+        b=F9kcOnSyzqaSAcc0OPXUvPwBtXhZkiysQSUi1YsesAHrAZ+GVRRdeMOaR1S/SP3xfx
+         aw1OcMNkAywJiBdWplBnJW9fI3UMYQN+a6GBf5+r++Q3NLw7OPHDiNSWHa0kxxqi967v
+         u5QDBP18VfYgoV/72zDvJZsfSO+TnOR5+L1UukwTlRxD3BlsNR85Ev6hdrLKHxGQ8YK7
+         gZ4Yd2XiPNPIKYfhmy0YZPibOf2ibmWTUJuNSzy1F7m9x/Ys3Oab6H1tPsiiMM+AHJJd
+         6XJY7MTuZEudVSe/wzokIQ7U+dVFTRM0V96/4VAPEgswrc6Wv82DJ+f5yjOxUvCVSYRq
+         ApKg==
+X-Gm-Message-State: AC+VfDwaqXDM2HCNCpXOiBfuP/j40TZZbK1sys47jI8p1+iUIpFfdB+o
+        8N6Li8RPoSdnsE2upQYL2K99QA==
+X-Google-Smtp-Source: ACHHUZ4enNxJ4AIlPJiaCYu/JLIxdKbrPKtGJVCnoov4LMJ4lyrtWg+NVVGjyGb9kbb/WmVk/SNvkg==
+X-Received: by 2002:a2e:8302:0:b0:2a8:bc82:5f8f with SMTP id a2-20020a2e8302000000b002a8bc825f8fmr795140ljh.9.1685449838777;
+        Tue, 30 May 2023 05:30:38 -0700 (PDT)
+Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
+        by smtp.gmail.com with ESMTPSA id u18-20020a2e91d2000000b002a8b8baf542sm2854814ljg.126.2023.05.30.05.30.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 05:30:38 -0700 (PDT)
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: [PATCH v4 00/17] Venus QoL / maintainability fixes
+Date:   Tue, 30 May 2023 14:30:34 +0200
+Message-Id: <20230228-topic-venus-v4-0-feebb2f6e9b8@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB4952:EE_|IA1PR11MB7756:EE_
-X-MS-Office365-Filtering-Correlation-Id: e093f779-f432-4eed-0de5-08db610923b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0+g4n5kj91GmBk2Pmmbhu3vJprW1+LSO2a2fGTtcCKrXmPeomqtXSAqRSg+nlBb4AzrHVLVZHZ3YC8hV8qG8V375A4OH1fnyYzzljto1WmFLvwBlsZKqnJi2HyY+bHn/LWwESOgA4imYxmAaAa536wnklALCzcpEyfaA+9vUpaXRwtJ89cfwd8Pd7kcMVzDNa2c3qPn5yDAIjGmi3B6DEGUVGqT1jRKGZ+0HvdNzwlvldzuxw1IzaP48VnE0y2zpNWHbANofYLb+iyYG0IE2+bVyoU7yFdQ2K8x/SNSmgb+Hy5Z/wLdibn9ZCUOdmdYRahGVSizxZlmisANDa3Wq5aZ2TPRVC3OjXKKG407FekuVecErUDcllzyN3IldKBxOHYT/ycfk2ZhO3KfcBOHAsvr4BQfelrnie53136Ce1kCosaYhoI+IqEzgoPzmDD2pmcd5alfAbuuZh/iEo3SVJWnu9PuYggzRMuDNEMvbZryDXSYn4hSE6WgGQ3BNhjz/5ppUJEnE0zTGQGYQ5x41GUpBa/eLarxEtfbfbDpPfqcTIN5BPK690Vzele99v4pULAPsL2LE/l7wydV2p4448FsuQBXWz9S8Fu3J6R/wgEL3wpDBcRZaaCkUd3tWJSDf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB4952.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(346002)(376002)(39850400004)(366004)(396003)(451199021)(186003)(1076003)(26005)(6512007)(6486002)(316002)(6506007)(52116002)(6666004)(2906002)(5660300002)(41300700001)(36756003)(7416002)(8676002)(8936002)(478600001)(38350700002)(38100700002)(54906003)(6916009)(4326008)(86362001)(66946007)(2616005)(83380400001)(66476007)(66556008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+/fZ4lIOx1iqdG7u6EHv3ybulX6pnrymp3s3pBurNvHNQW/RnlEywOWRxxh/?=
- =?us-ascii?Q?1bobApBtJqoNxxLTEQxUaZA9nInLCZfiCAKbVfBs4RtWLLUyjRoMKD+iuD0d?=
- =?us-ascii?Q?QFqVvjGrAVNwuZTGk/04st9aDQKrezSqarLs5lxFTHY8KGNAqIC3q6s2Pq1U?=
- =?us-ascii?Q?J0W4rNsSY7254VtE7byLtk54TkksU5uMeoI2zlkKlJSCoJSPqtX+/TIvNEJG?=
- =?us-ascii?Q?ZKL1LeCNQiaLLOaBc696jc2Qn5VPnjoZ6+LQc/e166bZYK6pqDd1pfwJ7FcD?=
- =?us-ascii?Q?q1ER8dUJU2bAgSIoo8KlzRjAI6fTw4GixhnPXIJhD04tmtL+4SgavmOPIst3?=
- =?us-ascii?Q?6CoErgdQ0BLCq1OQV7pEk7jTw664ksiMoFfqEYCQGKKllgKBix/sti2LyUBc?=
- =?us-ascii?Q?ePBxvkV8Q6i/geQ4zbvzxikvXaAJC5m4cz7h2dmg1UaA0Y/wLoDlLg68LkaQ?=
- =?us-ascii?Q?hHE4bVzKYd8FDyZp1v/R7nL0A5SdAv5BCU95AYVtKjLCG3OFgtY8fQMFti+T?=
- =?us-ascii?Q?3ejD8s1fKfB2f5VlUiGO0pYPuaifsm5OjG6nDOlEVrwbcMqaz5ywJVci1Mbr?=
- =?us-ascii?Q?OP9Y6Z72AMIRgfaJNLggvWRF0+joPrNbzvLj4DLf4V86MX6BpBDbY5icr6vr?=
- =?us-ascii?Q?dbiJqkc2KnvL+cIxnsg+1j+eDto7dtCHDBvpP+TkskWdzJkohT34LxvUhqZ4?=
- =?us-ascii?Q?ydeH142zwYv2bjnwjMtyPLZEUcIg7QZnst9d+4n1QXCY9TCESzbQGVYq8qOI?=
- =?us-ascii?Q?/fR86zzzW5Xy929e1YczmKfDCvLmlcHahMIOz8AdVl1JdlugaOUHYpatI0lz?=
- =?us-ascii?Q?d2aq1r189dZL94/aSquCkCt/W1oPg4Pgcl/i+FKu7jy/aewW6882sWTs6V1g?=
- =?us-ascii?Q?cQscE4FG51jljHQzbpSSQqUThFsL2+3REWxWp2QwMiOCjVCcc6fPMnClfKab?=
- =?us-ascii?Q?z2RdTnFbZiNCMYa4jKDz2YvZpitHCPRTh034YZ6WE8scxneXTYRwKCTx0DNA?=
- =?us-ascii?Q?ztAZPQKLfRBQacGAy4X5d9pCnO+s6C141/iie2fJX5qn7FLqPkZTZn7Srgwj?=
- =?us-ascii?Q?foX3spMCueUYoHNUdgT52rBlOL+/8ZeKhviO2EXpndgZTcxGMWItgJvcOdRU?=
- =?us-ascii?Q?3klBMdrBnlqzeOWWuAUDZIGEajBncAXUPfsEoAd8O3SeAgImASrrrzmSoerA?=
- =?us-ascii?Q?0G5Bzq3XmqoGz2EumgdzqI34AR4NPsYeLa+P/Dea/4DnA5RFUw1Mnpvcva4W?=
- =?us-ascii?Q?eYJcQ6CUMlsS9LgDHP4sLJjtMb1+XbPWQyRIV5IhJlIhQu4I/P0fAiMcEzNT?=
- =?us-ascii?Q?B4dtrQ5e2dhiuj1Jlej2W9vA25Avzg21PTqIOv2NTxl3KHCQn0x1v3Hl6n7F?=
- =?us-ascii?Q?SqZlMH/Js04sIJCnklgzODGm4PN77N4d0px8J69o6WHYMRzMJCSH5w6Hfoz8?=
- =?us-ascii?Q?HBWT2b/H+ltaNY+uT7mTf6UlB2MDT42C67B44o3PF0Wh9QdtJg+g52foZVHQ?=
- =?us-ascii?Q?kO2OZ1bimiAUJnDFFO66FnzErZIbZRh+oXXdfz5FJmLLSH+T3E0FQ7IGo2B+?=
- =?us-ascii?Q?kLvydrDAUuGPUNIdydAGo+NpnkH08U16UzyA3bfcolGWjsymjCFMUPsU2Zx+?=
- =?us-ascii?Q?EQ=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e093f779-f432-4eed-0de5-08db610923b6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4952.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 12:26:48.7526
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c90AuOsBCeCH+OK+tPr9iqGEMPssgQZ6iBinOTNO58cnKkXGrQgtzq06oxB/T3El8yfmzagaLExZQZToYa/OF3iDRzufTQyKWnToCdb1oAw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7756
-X-Proofpoint-GUID: K20rgS3qDoN3YtIwh8AwOKzFnBh5ek7b
-X-Proofpoint-ORIG-GUID: K20rgS3qDoN3YtIwh8AwOKzFnBh5ek7b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-30_08,2023-05-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 spamscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305300103
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGvsdWQC/33NQQ6DIBQE0KsY1qVBQIWueo+mC8CvkhgwoKSN8
+ e5Fd00blzPJm1lRhGAholuxogDJRutdDvxSIDMo1wO2bc6IEsoIpQLPfrIGJ3BLxA0BxbRp6lo
+ IlIVWEbAOypkhG7eMYy6nAJ19HRePZ86DjbMP7+MxlXv7fzyVmOBKGGqEYIKDvI/WqeCvPvRoH
+ 0r0BNOMW1m1JZdcmuYXsxPMMq6JpAo405XovvC2bR+lHTgVNgEAAA==
+To:     Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Vikash Garodia <quic_vgarodia@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Dikshita Agarwal <dikshita@qti.qualcomm.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Mansur Alisha Shaik <mansur@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Dikshita Agarwal <quic_dikshita@quicinc.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vikash Garodia <quic_vgarodia@quicinc.com>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1685449837; l=4983;
+ i=konrad.dybcio@linaro.org; s=20230215; h=from:subject:message-id;
+ bh=GzggsN2nMZHk+5zCOLvOhBzcYDD9jMl6Z663enA8WEM=;
+ b=UkyLQExaf4jwinZAu16ll2AhBFr7wHxO6zrPSHRlhHHYYE/Yt/9lBejb8Jdec++j0UYAwf6i/
+ YRCKsypzbLsDN7b1fEbRgWZJ9fN+SfYBGvd25c5x6tJERJzypkWtfbj
+X-Developer-Key: i=konrad.dybcio@linaro.org; a=ed25519;
+ pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+v3 -> v4:
+- Rebase on Stanimir's venus-for-next-v6.5
+- Collapse 2 identical if-statements in "Sanitize venus_boot_core()
+  per-VPU-version"
+- Reword "Assign registers based on VPU version"
+- Check for IS_IRIS2_1() instead of wrongly checking for core->use_tz,
+  update commit msg in "media: venus: firmware: Correct IS_V6() checks"
+- Access correct struct fields in "Use newly-introduced
+  hfi_buffer_requirements accessors", drop Bryan's r-b
 
-commit 000c2fa2c144c499c881a101819cf1936a1f7cf2 upstream.
+v3: https://lore.kernel.org/r/20230228-topic-venus-v3-0-6092ae43b58f@linaro.org
 
-Previously, channel open messages were always sent to monitors on the first
-ioctl() call for unbound HCI sockets, even if the command and arguments
-were completely invalid. This can leave an exploitable hole with the abuse
-of invalid ioctl calls.
+v2 -> v3:
+- Rephrase "Write to VIDC_CTRL_INIT after unmasking interrupts" commit msg
+- Drop "Remap bufreq fields on HFI6XX"
+- Rephrase "Introduce VPU version distinction" commit msg
+- Better explain "Leave a clue for homegrown porters"
+- Drop incorrect fixes tags/rephrase version check alternations
+- Drop AR50L/IRIS1 from if-conditions, they'll be introduced separately
+- pick up tags
+- rebase on next-20230517 (no effective changes)
 
-This commit hardens the ioctl processing logic by first checking if the
-command is valid, and immediately returning with an ENOIOCTLCMD error code
-if it is not. This ensures that ioctl calls with invalid commands are free
-of side effects, and increases the difficulty of further exploitation by
-forcing exploitation to find a way to pass a valid command first.
+v2: https://lore.kernel.org/r/20230228-topic-venus-v2-0-d95d14949c79@linaro.org
 
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Co-developed-by: Marcel Holtmann <marcel@holtmann.org>
-Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Dragos-Marian Panait <dragos.panait@windriver.com>
+v1 -> v2:
+- Move "Write to VIDC_CTRL_INIT after unmasking interrupts" up and add
+  a Fixes tag & Cc stable
+- Reword the comment in "Correct IS_V6() checks"
+- Move up "media: venus: Remap bufreq fields on HFI6XX", add Fixes and
+  Cc stable
+- Use better English in "Use newly-introduced hfi_buffer_requirements
+  accessors" commit message
+- Mention "Restrict writing SCIACMDARG3 to Venus V1/V2" doesn't seem to
+  regress SM8250 in the commit message
+- Pick up tags (note: I capitalized the R in Dikshita's 'reviewed-by'
+  and removed one occurrence of random '**' to make sure review tools
+  like b4 don't go crazy)
+- Handle AR50_LITE in "Assign registers based on VPU version"
+- Drop /* VPUn */ comments, they're invalid as explained by Vikash
+- Take a different approach to the sys_idle problem in patch 1
+
+v1: https://lore.kernel.org/r/20230228-topic-venus-v1-0-58c2c88384e9@linaro.org
+
+Currently upstream assumes all (well, almost all - see 7280 or CrOS
+specific checks) Venus implementations using the same version of the
+Hardware Firmware Interface can be treated the same way. This is
+however not the case.
+
+This series tries to introduce the groundwork to start differentiating
+them based on the VPU (Video Processing Unit) hardware type, fixes a
+couple of issues that were an effect of that generalized assumption
+and lays the foundation for supporting 8150 (IRIS1) and SM6115/QCM2290
+(AR50 Lite), which will hopefully come soon.
+
+Tested on 8250, but pretty please test it on your boards too!
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 ---
- net/bluetooth/hci_sock.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Konrad Dybcio (17):
+      media: venus: hfi_venus: Only consider sys_idle_indicator on V1
+      media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
+      media: venus: Introduce VPU version distinction
+      media: venus: Add vpu_version to most SoCs
+      media: venus: firmware: Leave a clue about obtaining CP VARs
+      media: venus: hfi_venus: Sanitize venus_boot_core() per-VPU-version
+      media: venus: core: Assign registers based on VPU version
+      media: venus: hfi_venus: Sanitize venus_halt_axi() per-VPU-version
+      media: venus: hfi_venus: Sanitize venus_isr() per-VPU-version
+      media: venus: hfi_venus: Sanitize venus_cpu_and_video_core_idle() per-VPU-version
+      media: venus: hfi_venus: Sanitize venus_cpu_idle_and_pc_ready() per-VPU-version
+      media: venus: firmware: Sanitize per-VPU-version
+      media: venus: hfi_platform: Check vpu_version instead of device compatible
+      media: venus: vdec: Sanitize vdec_set_work_route() per-VPU-version
+      media: venus: Introduce accessors for remapped hfi_buffer_reqs members
+      media: venus: Use newly-introduced hfi_buffer_requirements accessors
+      media: venus: hfi_venus: Restrict writing SCIACMDARG3 to Venus V1/V2
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index f597fe0db9f8..1d249d839819 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -987,6 +987,34 @@ static int hci_sock_ioctl(struct socket *sock, unsigned int cmd,
- 
- 	BT_DBG("cmd %x arg %lx", cmd, arg);
- 
-+	/* Make sure the cmd is valid before doing anything */
-+	switch (cmd) {
-+	case HCIGETDEVLIST:
-+	case HCIGETDEVINFO:
-+	case HCIGETCONNLIST:
-+	case HCIDEVUP:
-+	case HCIDEVDOWN:
-+	case HCIDEVRESET:
-+	case HCIDEVRESTAT:
-+	case HCISETSCAN:
-+	case HCISETAUTH:
-+	case HCISETENCRYPT:
-+	case HCISETPTYPE:
-+	case HCISETLINKPOL:
-+	case HCISETLINKMODE:
-+	case HCISETACLMTU:
-+	case HCISETSCOMTU:
-+	case HCIINQUIRY:
-+	case HCISETRAW:
-+	case HCIGETCONNINFO:
-+	case HCIGETAUTHINFO:
-+	case HCIBLOCKADDR:
-+	case HCIUNBLOCKADDR:
-+		break;
-+	default:
-+		return -ENOIOCTLCMD;
-+	}
-+
- 	lock_sock(sk);
- 
- 	if (hci_pi(sk)->channel != HCI_CHANNEL_RAW) {
+ drivers/media/platform/qcom/venus/core.c           |  7 ++-
+ drivers/media/platform/qcom/venus/core.h           | 15 ++++++
+ drivers/media/platform/qcom/venus/firmware.c       | 18 +++++--
+ drivers/media/platform/qcom/venus/helpers.c        |  7 +--
+ drivers/media/platform/qcom/venus/hfi_helper.h     | 61 +++++++++++++++++++---
+ drivers/media/platform/qcom/venus/hfi_msgs.c       |  2 +-
+ .../media/platform/qcom/venus/hfi_plat_bufs_v6.c   | 22 ++++----
+ drivers/media/platform/qcom/venus/hfi_platform.c   |  2 +-
+ drivers/media/platform/qcom/venus/hfi_venus.c      | 42 +++++++--------
+ drivers/media/platform/qcom/venus/vdec.c           | 10 ++--
+ drivers/media/platform/qcom/venus/vdec_ctrls.c     |  2 +-
+ drivers/media/platform/qcom/venus/venc.c           |  4 +-
+ drivers/media/platform/qcom/venus/venc_ctrls.c     |  2 +-
+ 13 files changed, 133 insertions(+), 61 deletions(-)
+---
+base-commit: 9f9f8ca6f012d25428f8605cb36369a449db8508
+change-id: 20230228-topic-venus-70ea3bc76688
+
+Best regards,
 -- 
-2.40.1
+Konrad Dybcio <konrad.dybcio@linaro.org>
 
