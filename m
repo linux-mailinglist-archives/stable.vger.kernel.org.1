@@ -2,57 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A4D716DC0
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 21:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C31E2716DD5
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 21:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbjE3TkW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 15:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
+        id S232752AbjE3Tn7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 15:43:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbjE3TkV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 15:40:21 -0400
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E692C9
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 12:40:20 -0700 (PDT)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-53f460cd829so2482774a12.1
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 12:40:20 -0700 (PDT)
+        with ESMTP id S233313AbjE3Tn5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 15:43:57 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E92D510C
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 12:43:52 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-babb7aaa605so9381894276.3
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 12:43:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685475619; x=1688067619;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=31LmgMj0i/ryER6BqsnfnbOKZjYT+fTIJ/AmWQEZtpA=;
-        b=lyVAlCRYWdrf+9r6kfPdDeR+gZDab2Gc+PapBlBpK8hlXBdBO+xDA3K5ZMYbgSK3s5
-         hZPIiugR7LFV68dmgUARtLskcb7ao9yf6HlWQlkhAwy7Nqs0zXO+LT0nv0Mhek7ZtEVG
-         987zWXB1qBp9nvdJ1wK8pAmLuY3uvnKUeWzatQTOdkU6ArMoGhMCYFX+EtBhXoLhlsdo
-         fbzzlQwhx+Hp1KKBRJEhGT0oDMs+lLng2DIpfvBOEAdwWt3uAWrhQo7YtOO1hvcOsw+h
-         g++YaqjMRaSEjKtJSAUM/4kB9GZArh9qY+6hwN0TR/yS8JamXBsIl/4Gy5bvCHHuY9dU
-         816Q==
+        d=google.com; s=20221208; t=1685475832; x=1688067832;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VIJHplIkSf+8Uwt1Z+zCMO0CzIP+O6cuBCFakvSESBs=;
+        b=Mx7+ejtNsE83MnPxzEkNGfKCrIXRYoEl2KS42nMEumpJ5Eyu1N+AOb4HFA+Sq7KbkZ
+         Zt3XcGybXfoB3Mf2Cdiy+y7LCfeSRYvdbllsPlFNgpGxy2BAXYRd2+dd5oN8ujfg+FiJ
+         oNIPwO4VZCKns8RoTubgMGUs5UFPq9lo5kVJESGx97khHZBQUHdG6Z4vvuvP5KY96Zrw
+         qdiSGJyNqBUTIK9W6NGHMwxI+jyt1vTUUmkO9X6VcGIM/9r/UFHslcIKvbAjyE78JwIY
+         6idCt/8GYdr/1M3ic6N8UKEi5Zxy2+C9hCxLY7EymC9/N3n3iuiM81Qtn1ZmBRTX3Vq0
+         NOTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685475619; x=1688067619;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=31LmgMj0i/ryER6BqsnfnbOKZjYT+fTIJ/AmWQEZtpA=;
-        b=CDa7Oc+RLb7nGQmF7t3yHkJ3D2B+HyTh3u5yhawBK3xADB0dg3uLy6fpgSYyHjdgju
-         L32ENw817AVJex6PVYnijC1FE+uOqvdXeyevo+TBkAxy+vzL7q1ibH3JkfjqyF/NBV1b
-         vAYocDUwneLRjDnYkP0Z8UEOXNB3zxQqyGh4cxGc3B7+ZpCkqIcMcotH4SAkdG8t7Tkl
-         YI4G5fDxlRdqz+PO3YDQYT9lN7iEKymSYPSAYHPhY05lAaC6JSbrftHTlLjSxMhJdRrm
-         VDjgUj0m5qDiAhniWP8SXh29a5JSd5hsKxyogNGDbeb37PSAVmevow8DSV3oIO9kEaxw
-         KWWw==
-X-Gm-Message-State: AC+VfDzTW71AJ6Ft5407iITbLwlzfgVsqNXyLx8LVmNlP3BGyiEAPK5e
-        O9lhJHUQ26nQOiWD/N8NqvHnjxbBcSDzlF6MuzOacI5hjG7Rbsyxd5Z2uBM1nT8grRWJ0Wt73yo
-        22Jzz0BbGAr7z8f0uoanhwNEHznp32fMsBZGWx8ju/6xmNKVAATLVSUxuUGFJwwYtvrA=
-X-Google-Smtp-Source: ACHHUZ7Sc+x3LXj7YElW68eKRUtedDinf5sFBKQ3hCZ1u0LVq5eTxsRoe78ZaoVjPiogZF2ugeARIfNV0w4OwA==
+        d=1e100.net; s=20221208; t=1685475832; x=1688067832;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VIJHplIkSf+8Uwt1Z+zCMO0CzIP+O6cuBCFakvSESBs=;
+        b=UgmQdeIKhYJQWRt7vBfTanI62/DPdVHuzhgK9fhNANG67BeGa+E3uBfykELUJOvF1M
+         K8QiaSLLt58lGneNzldd+FsCHjxQQx0H6edHpF/6Jf2tb1BOu8zcjNCkitPl3UfrPXAr
+         v6no4NbRIUXFrtjB+EVjkKp3Kj0aS6SNcMRFDZwx7miIXUnIj0ieF3in26XwaUreDJ7W
+         2c+LbPRHixqiGg7xc0Y58cNuXHgESzZEs9QABeXDvWkpI6UDDRiMdAq1X//k1uIWe9Hj
+         sd9SHCHDQ1fZqPRrjq0UKrS8h/WBJZHir4+niBSDQSy3xI7XYTDYL0D5ghpXoFh0LwEC
+         595w==
+X-Gm-Message-State: AC+VfDwVcvcnMa16hnFmZmUqRJB9ed4LtNGSfoCdlNKZvWZ3lLcmBx7u
+        QjSMffK+RHwoAeAcfFrh5pAV5qgQ+rUqNauvgstFAtI6ufx0ypwC5iuPAO1xStr3ThmyxzM7Pa2
+        pzl7+St36s3nfEKE7TPuHF20RmfsgDnkLDZIvkVTt9+nVNBGLK5kMUjwpYD9SUv3tZq4=
+X-Google-Smtp-Source: ACHHUZ6X6laLvmZU7TPJurOBnZTb5Y9+6HyiKm0OiWoDKtVifekWVPug+QDowabKezS8jJZL1gmOrgsdWyjJgA==
 X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a65:6850:0:b0:534:7596:7791 with SMTP id
- q16-20020a656850000000b0053475967791mr629176pgt.1.1685475619458; Tue, 30 May
- 2023 12:40:19 -0700 (PDT)
-Date:   Tue, 30 May 2023 19:40:14 +0000
-In-Reply-To: <2023052806-sprite-program-51a5@gregkh>
+ (user=cmllamas job=sendgmr) by 2002:a25:84c8:0:b0:bad:99d:f089 with SMTP id
+ x8-20020a2584c8000000b00bad099df089mr1976938ybm.8.1685475832053; Tue, 30 May
+ 2023 12:43:52 -0700 (PDT)
+Date:   Tue, 30 May 2023 19:43:34 +0000
 Mime-Version: 1.0
-References: <2023052806-sprite-program-51a5@gregkh>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230530194014.1682324-1-cmllamas@google.com>
-Subject: [PATCH 5.10.y] binder: fix UAF caused by faulty buffer cleanup
+Message-ID: <20230530194338.1683009-1-cmllamas@google.com>
+Subject: [PATCH 5.15.y 1/5] binder: fix UAF caused by faulty buffer cleanup
 From:   Carlos Llamas <cmllamas@google.com>
 To:     stable@vger.kernel.org
 Cc:     Carlos Llamas <cmllamas@google.com>,
@@ -153,10 +151,10 @@ Signed-off-by: Carlos Llamas <cmllamas@google.com>
  1 file changed, 20 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index b403c7f063b0..dbae98f09658 100644
+index c8d33c5dbe29..a4749b6c3d73 100644
 --- a/drivers/android/binder.c
 +++ b/drivers/android/binder.c
-@@ -2267,24 +2267,23 @@ static void binder_deferred_fd_close(int fd)
+@@ -1903,24 +1903,23 @@ static void binder_deferred_fd_close(int fd)
  static void binder_transaction_buffer_release(struct binder_proc *proc,
  					      struct binder_thread *thread,
  					      struct binder_buffer *buffer,
@@ -185,7 +183,7 @@ index b403c7f063b0..dbae98f09658 100644
  	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
  	     buffer_offset += sizeof(binder_size_t)) {
  		struct binder_object_header *hdr;
-@@ -2444,6 +2443,21 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+@@ -2080,6 +2079,21 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
  	}
  }
  
@@ -207,7 +205,7 @@ index b403c7f063b0..dbae98f09658 100644
  static int binder_translate_binder(struct flat_binder_object *fp,
  				   struct binder_transaction *t,
  				   struct binder_thread *thread)
-@@ -3926,7 +3940,7 @@ binder_free_buf(struct binder_proc *proc,
+@@ -3578,7 +3592,7 @@ binder_free_buf(struct binder_proc *proc,
  		binder_node_inner_unlock(buf_node);
  	}
  	trace_binder_transaction_buffer_release(buffer);
