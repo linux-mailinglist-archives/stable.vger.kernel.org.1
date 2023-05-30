@@ -2,65 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7073F716E7B
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 22:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1BD716E8C
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 22:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231346AbjE3UPF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 16:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49460 "EHLO
+        id S233387AbjE3UUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 16:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbjE3UPC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 16:15:02 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87866124
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:14:31 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-64d426e63baso5514970b3a.0
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:14:31 -0700 (PDT)
+        with ESMTP id S231434AbjE3UUJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 16:20:09 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BFD129
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:20:05 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-53fa4576853so1510790a12.0
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:20:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1685477671; x=1688069671;
+        d=broadcom.com; s=google; t=1685478005; x=1688070005;
         h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=DuVZl2Op0/i41AYnGEmAB7Jnp2fkQRw49FexXYjlOzY=;
-        b=ZK8RAitw9LKkP8FSO2YbKRlJZr4rvyTdnRD9QgTJot79vsw9WbHCPqEK62Wn0Pq7e/
-         U0U5F/rEOdSyi6SGEPm2xmgHREeSgboE48pvFhWTnfzb8Q1idId8t425WsY5AlNZNqej
-         kHQw/UQ3MdQ1VcpI98aDFRMg57MwvKXompnTM=
+        bh=5og04DPgi/8pHD/t8Z70vBiVisHfMu6LfRil7fga4vo=;
+        b=NPuq5TDFq6enRbipcNU1iboroXMB/lYqtQD7kVlit0/0zUIqkkjAfjKpu+CHHC06ok
+         RWor70liNGWd4Ohci/VMAZZpktowJa+t/3iKbjVXLxJz1UIHyEM6YZRE/s7semFJ+Qv4
+         K/dPsVadyt1DzacZxhuIbxLJnSudywNw8eYiM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685477671; x=1688069671;
+        d=1e100.net; s=20221208; t=1685478005; x=1688070005;
         h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DuVZl2Op0/i41AYnGEmAB7Jnp2fkQRw49FexXYjlOzY=;
-        b=Y63SbYJMogxDZkhgY+FJplX2cO2A7z1SmuO43V6d7wD/oN5EIDa0+pHU55ybbsjRNN
-         B12Klo7ivQxDT4ky6rbHpCbFnDC5ptXcuLxep87LXleM2MSczTbeflzQIpBuhdDG89So
-         H6/hzt06u9Ak1RPS0w4hboqpIWQnCF32yUtub9WiM/OuQMG7xOq8Oi+BP/HeUZi3fezQ
-         97NtJoO1JdFFaWe2l7bgc+uQaf5Kbvv8gkMtN9h4J7I2k/7q/0qKWVSMSi5bnH+QH1J9
-         e9yMmw50S3QtAa1o0iD44yptH84Ot/me/Iu1fOo8rQOAM1GhPZUv1i4vuwdcR2MwDV7n
-         Oyyg==
-X-Gm-Message-State: AC+VfDyV0dp711Mx9Hv3qsEpkmYjdqkPQchO1KSDNlolmKWQwTTDhP6c
-        /quJfVIrDHmJQMPbwwHKpzvO51xfzC0H2syJxsRZlMpDXjRVEE9gANH6/s+TCJtdhWEKHNPiNZU
-        EzS9IqjlI0l4FkJrBVh85gAsF4A8xAZxbAFC8bieTtKTVoRm6My+2cwLXwakm2uUADke89yilLy
-        UYrXeluqtCIw==
-X-Google-Smtp-Source: ACHHUZ7Nd4oTrcOndp9Xe8igSTFyib+u+XfhdddVukpmPf3M7Hu0wFrywb4pGL9E8mX5SkhcCOKwpw==
-X-Received: by 2002:a05:6a00:80e:b0:64d:2e8a:4cc1 with SMTP id m14-20020a056a00080e00b0064d2e8a4cc1mr4446651pfk.27.1685477670582;
-        Tue, 30 May 2023 13:14:30 -0700 (PDT)
+        bh=5og04DPgi/8pHD/t8Z70vBiVisHfMu6LfRil7fga4vo=;
+        b=P2u/QRusOwwb+eaiOOROca+jqBL0aczVp4sHB5fOFS7o7OEQXDh+N7x7NyRR3zcSuB
+         vAU734ubfVK8mCRpp4F+V6qeZYbaJdMT4G0RQk8+2FhogMBxVJIQXez+EioG5PYjCGXf
+         QBb1Pw0uNcPx/TnfSGG9CmZW1fpQLtFl978nW1lp39Csrb1adm3xYdBr21liP80eKuqq
+         2vuaxdLiS6aI0af57jSupjlPWla5Xq+OJusscyrmIJNAuVxbmGRKWq/srty2VgIlowtJ
+         LGvYtBGw6GutD7lLJYjb9abvRryIiY4xMg+idc5g8+ZqNoGtT04z3q4BsoCwdOMmk/lB
+         qm7w==
+X-Gm-Message-State: AC+VfDwH8W3wz0Nb2tBpLDoMtATaW6vcxawM6M3ZvYw0lPSyxmiwlysv
+        L6BwjhD6sigVjd1LmixgIIfMPSBUsfr7vp6uwxDj+hr4YSNAfTjzE89eRq1baSlvTfwe2M1Ss5e
+        zoTm1tA0/B5G3QQ+mVof+ajXT9K9mf3ZdDp2loYe2vLyNIGdn0l2s7y2XconAGuaYpL1Xobt8x6
+        pJ0JDCEr2RfA==
+X-Google-Smtp-Source: ACHHUZ7iWzKHyNH3hMW5pGI1gPAfCZE+Faj99LIga8aRhEOx3I9rqA0nup9bcQD5gRWxUHV98jzLag==
+X-Received: by 2002:a17:902:aa86:b0:1b0:2d08:eb51 with SMTP id d6-20020a170902aa8600b001b02d08eb51mr3426185plr.12.1685478004778;
+        Tue, 30 May 2023 13:20:04 -0700 (PDT)
 Received: from stbirv-lnx-3.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id x4-20020aa79184000000b0064d3881e687sm2051547pfa.35.2023.05.30.13.14.28
+        by smtp.gmail.com with ESMTPSA id u9-20020a17090341c900b001ac7af58b66sm10676712ple.224.2023.05.30.13.20.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 13:14:29 -0700 (PDT)
+        Tue, 30 May 2023 13:20:04 -0700 (PDT)
 From:   Florian Fainelli <florian.fainelli@broadcom.com>
 To:     stable@vger.kernel.org
 Cc:     Pierre Gondois <pierre.gondois@arm.com>,
         Conor Dooley <conor.dooley@microchip.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         linux-kernel@vger.kernel.org (open list:GENERIC ARCHITECTURE TOPOLOGY)
-Subject: [PATCH stable 6.3] arch_topology: Remove early cacheinfo error message if -ENOENT
-Date:   Tue, 30 May 2023 13:14:20 -0700
-Message-Id: <20230530201421.847792-1-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 6.3 v2] arch_topology: Remove early cacheinfo error message if -ENOENT
+Date:   Tue, 30 May 2023 13:19:55 -0700
+Message-Id: <20230530201955.848176-1-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000dc555005fceed955"
+        boundary="000000000000c8e8f805fceeed9e"
 X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
@@ -71,10 +72,12 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---000000000000dc555005fceed955
+--000000000000c8e8f805fceeed9e
 Content-Transfer-Encoding: 8bit
 
 From: Pierre Gondois <pierre.gondois@arm.com>
+
+commit 3522340199cc060b70f0094e3039bdb43c3f6ee1 upstream
 
 fetch_cache_info() tries to get the number of cache leaves/levels
 for each CPU in order to pre-allocate memory for cacheinfo struct.
@@ -95,7 +98,13 @@ Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 Link: https://lore.kernel.org/r/20230414081453.244787-4-pierre.gondois@arm.com
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
+Changes in v2:
+
+- Added missing upstream commit reference
+- Added missing S-o-b
+
  drivers/base/arch_topology.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
@@ -122,7 +131,7 @@ index 147fb7d4af96..b741b5ba82bd 100644
 2.25.1
 
 
---000000000000dc555005fceed955
+--000000000000c8e8f805fceeed9e
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -193,14 +202,14 @@ kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
 NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
 AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
 LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIFqhldXvPsIZi8qx
-AhplnRlURK/shwmAaAH+KPH0UjS1MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTIzMDUzMDIwMTQzMVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIHRm0Y2WUcobU25N
+Gk41eUER4eE+pQhAUACDQ5pCJ3PvMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDUzMDIwMjAwNVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
 AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAjyHUMHxj8lVvujZN7se+xvLan22Cqt3U8
-xrBE7GbHovSJjF485n98wL7AurLPvMGYr/Ig0I4tpwOhqOv9D66MytbMTblCBTYITEYfUcnYL3er
-4CL6evchX8Z33WNmEsQhQAbHqQrXmHDfpjLyIDyXqW4K664QCRiFF0sPeDddS7C6tGp4CLsS97rA
-F/wencLMKb45nMRq5zQcQGBF0Dp8ra2R64UrtfFTBiQxIWEE2YSlH74k7JsSgZT5vf5BMl2DN05Z
-HCVrmT5LB5NBTIZtmsUEsHcSahoacRFWAfCEpliKKc+pvOfqWHtsAL3ZaQRRgcArcL3frYHdIeuF
-h6ef
---000000000000dc555005fceed955--
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBoA0YMHDjQIx2BG/Viu+CwXkVeBBgelWat
+2DhuDzzy9Ry/CVBEMXkHxzBXB9gd3xgfAF7nBhBU1Jm+AmQlHoxsdOAvW2Unbezg4L4N5tfwKh6N
+eC+PgdsrWWEL2SO3qhAsOXYDPz+g8FaQpiYiIOr0o1Qj5DMkKi/1t159SeLC8lIuY9LHbVM+r89J
+PIvRbyjjaTRrBO4aukEjooiD4sNZ8E815N8neNQWUNhbOAYynK7r2aOc+l90fvk5y7uX8Vx8P1y0
+4gVRU6whTBV7H0Sm8hp+g3rn0WHc3mTDUQY6fEF/PvEWMT3EvEw2ZSa/cW6eE6nmbR4QAcRR1iFH
+x1Qt
+--000000000000c8e8f805fceeed9e--
