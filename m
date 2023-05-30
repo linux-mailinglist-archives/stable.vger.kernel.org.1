@@ -2,56 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9557154DE
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 07:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB24B71551E
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 07:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjE3FUY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 01:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S230377AbjE3FnN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 01:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjE3FUX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 01:20:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E108FAD;
-        Mon, 29 May 2023 22:20:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74863620FE;
-        Tue, 30 May 2023 05:20:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C2835C433D2;
-        Tue, 30 May 2023 05:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685424019;
-        bh=wZZq4xCSbnEzSxxDzNSdM/f6gmgE/fPraERIcsOOXSY=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=KPdzcVFcU1Dj/iaZ6ZXL7f7Y77v6LV9i2v6bsRwu7tfn6E9qvSTUrN0ngTBezl5Z1
-         iZopWniLKkd1Bz4DdXk3p+TeiOxJVgqCkYIA037TAXLnZbGfAhZBCC/2wgO7dfdR/x
-         RXf8rhJw9CVe9qTjzDZb5x/MrkmmnOyghBYODzsFJuoDHqUfx3C3sdMwASvK6G1uE2
-         pw1YnrBMvMjfb8FRRhjfeAtjObVyrw71UTthasvqlKjWt7RwCUy/M+jlC/wtskFbJJ
-         npLPR3O/G3votTZ1nIcY8/VXnAqUqVBLi8GG0Vz0n+POshW3jB1di7pz8I7eg+0WKj
-         1wU6EoXTCPwkQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9EA69E52BF7;
-        Tue, 30 May 2023 05:20:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230186AbjE3Fmu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 01:42:50 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58054AB
+        for <stable@vger.kernel.org>; Mon, 29 May 2023 22:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685425310; x=1716961310;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GPj4Z7sd1o1bKz89No0hETgI2Zw/3nGYeLlMfAEwpKs=;
+  b=TmMMe843njamdtmfJ0//3Xvj4t4RjAa90FbYn9wSOTpNLNJ2kfzpjqQN
+   Ce69V6zYTJrc1p2qNiW17RyUB93Rlu0b+kjr4dxZ0xFIY8UxGOMjXHC7u
+   r3URMHnso2KTI3nrpr0w0sv9KFDRFoiafp+QGr91AsCKLygDw9aHNiPAE
+   5qJC+xY+5C8KafGDLtlB/+L9/l/k4j6Vn0+VSsSQ/e6IINpEbOiU4R4CA
+   NWeJpDNc2lMkyRudSWbzv9k83CqdPysgDGSjb7+qzd2dyJB+gnryz3v9r
+   Gs3L7vb840IZxZLCeeai2X84Aty1vW0ampsyvOehTDDp4VcqqD9W/Z0xA
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="352322955"
+X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; 
+   d="scan'208";a="352322955"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2023 22:41:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="700478394"
+X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; 
+   d="scan'208";a="700478394"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 29 May 2023 22:41:21 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id C3F904BA; Tue, 30 May 2023 08:41:26 +0300 (EEST)
+Date:   Tue, 30 May 2023 08:41:26 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     beld zhang <beldzhang@gmail.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: 6.1.30: thunderbolt: Clear registers properly when auto clear
+ isn't in use cause call trace after resume
+Message-ID: <20230530054126.GA45886@black.fi.intel.com>
+References: <CAG7aomXv2KV9es2RiGwguesRnUTda-XzmeE42m0=GdpJ2qMOcg@mail.gmail.com>
+ <ZHKW5NeabmfhgLbY@debian.me>
+ <261a70b7-a425-faed-8cd5-7fbf807bdef7@amd.com>
+ <20230529113813.GZ45886@black.fi.intel.com>
+ <CAG7aomVpsyOktPFNAURYF9o32CnZST=49BPBRDRH2w7raLbQ7g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168542401964.30709.17776180857500968814.git-patchwork-notify@kernel.org>
-Date:   Tue, 30 May 2023 05:20:19 +0000
-References: <20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm>
-In-Reply-To: <20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm>
-To:     Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc:     bjorn@mork.no, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, angus@akkea.ca,
-        bob.ham@puri.sm, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@puri.sm,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAG7aomVpsyOktPFNAURYF9o32CnZST=49BPBRDRH2w7raLbQ7g@mail.gmail.com>
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,30 +66,22 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 26 May 2023 16:38:11 +0200 you wrote:
-> BM818 is based on Qualcomm MDM9607 chipset.
+On Mon, May 29, 2023 at 02:40:26PM -0400, beld zhang wrote:
+> both
+> # rmmod thunderbolt
+> # modprobe thunderbolt
+> makes many crash logs on my hardware.
 > 
-> Fixes: 9a07406b00cd ("net: usb: qmi_wwan: Add the BroadMobi BM818 card")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-> ---
->  drivers/net/usb/qmi_wwan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> [...]
+> try to patch this to 6.1.30 and 6.4-rc4 but are all failed.
 
-Here is the summary with links:
-  - net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
-    https://git.kernel.org/netdev/net/c/36936a56e181
+You mean patching fails or the patch does not solve the issue at hand?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I managed to boot my test system today and with the patch I don't see
+the issue anymore.
 
+> how about continue this on the kernel bugzilla, and post a patch here
+> after it is resolved as Greg said ?
 
+Sure works for me.
