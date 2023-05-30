@@ -2,158 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F90716EC2
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 22:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C07C716F08
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 22:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231500AbjE3UcE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 16:32:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54970 "EHLO
+        id S231243AbjE3UqN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 16:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233504AbjE3UcC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 16:32:02 -0400
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D8A18B;
-        Tue, 30 May 2023 13:31:53 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.west.internal (Postfix) with ESMTP id CC58F3200907;
-        Tue, 30 May 2023 16:31:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Tue, 30 May 2023 16:31:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1685478711; x=1685565111; bh=+cZsXk5aGi
-        IWIF6vp9UgbBTuPJSW9vQMqM9Fi3GWErs=; b=b1X2ZZBno2R9/Fq0Y4byMWClkM
-        yztjlEXBXhErAHMyu5pxVYfR1cLCApT4g/uUiO8kteIoPOYfwcM0QS5x9QWviai0
-        +l213muvhmIojTILm+7p2eZtNtybubHmo4N4zNfbU1BjaH8lPNaOphi2xkYZuv4e
-        h9L6gqPCJK3eOF1vIMloUMmjbsguyKqi2f1W5Tt/wuZ0+GYvxCApjlVAavetYN/A
-        7tGd5rz/o5D0PfB0ZRMW60nhh19bpt9llkSd4Y6Kat2KL+JrOgTCciUHA3vZPkBb
-        IVcmnbvx3CmJqx5G5vutH15atOF/5DmD2t9dwwAa4lNLI929ZeF3n8ClPHNw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1685478711; x=
-        1685565111; bh=+cZsXk5aGiIWIF6vp9UgbBTuPJSW9vQMqM9Fi3GWErs=; b=U
-        P15hdGQ/gq4QBXzqjvd7c1poQOzI9V99fFI4wL2BV4l6rOOg1UHF/IH0Rvn8DD2t
-        8inNtSYO4AkLeCdh5u8DSWVX/Y3zi6mmFEbSB6KWnmKzE/gaGSfbS0/UhxzMo5IL
-        2kibkVKxrhJBYHcxY0e9g8+oJElSF3YfB39B1l6n3IKWdY+LTIfj2T0Ioc7C6O44
-        lgjwvbG10GpFJ0/Ji6FLUTiSnJaiSTElzXZUfNjXE4ABmx+5vaVNfCETg0Sz7mcl
-        +DhnaD34G3OifmWX9w/p4yj414+40b2No5vBXQ/3zcAauZ+scwTIQY4dPuM5DQKT
-        JWusrvBDFegrRj+Ts3bOw==
-X-ME-Sender: <xms:N112ZEkhJpIZ7sLxFuxFFSwbSmLhk75Rnsa-ScNsVUmuvj8FVpJtZA>
-    <xme:N112ZD3eZcFAVDADdKfjGL7hNa5Hcl_AmD1vrCoS3wziIIqaageEay8l6FlPFORfH
-    Ky8LRm1oDRdNq8>
-X-ME-Received: <xmr:N112ZCrGppu6Q7U999Ru6xZ8dvBvBdlKGA_a67mCNAqJcyLUqBe4Tn9Tbh1ALocpktA-UwH8SxU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekjedgudeglecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffvghm
-    ihcuofgrrhhivgcuqfgsvghnohhurhcuoeguvghmihesihhnvhhishhisghlvghthhhinh
-    hgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeejffejgffgueegudevvdejkefg
-    hefghffhffejteekleeufeffteffhfdtudehteenucevlhhushhtvghrufhiiigvpedune
-    curfgrrhgrmhepmhgrihhlfhhrohhmpeguvghmihesihhnvhhishhisghlvghthhhinhhg
-    shhlrggsrdgtohhm
-X-ME-Proxy: <xmx:N112ZAmIp3tGSyM63XF_iXHtC5OoUY3xfa3aSgMOpNWLJu57t7p0uw>
-    <xmx:N112ZC3GHJ0_WhL1IkAhFBNahfeTS_YrY6vMkb918mL-qpm2nE-7eA>
-    <xmx:N112ZHtrr_ccteqCN72Ytr8N4S4W1zp2eWJbXm3c0ikWA6uzYDIlyg>
-    <xmx:N112ZDKNm5Vd0MyFHjWUee7VcjpX3kbLQNgUdSlw4MDRL5cW7QQH6Q>
-Feedback-ID: iac594737:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 May 2023 16:31:50 -0400 (EDT)
-From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     Jens Axboe <axboe@kernel.dk>,
-        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com
-Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2 06/16] device-mapper: Avoid double-fetch of version
-Date:   Tue, 30 May 2023 16:31:06 -0400
-Message-Id: <20230530203116.2008-7-demi@invisiblethingslab.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230530203116.2008-1-demi@invisiblethingslab.com>
-References: <20230530203116.2008-1-demi@invisiblethingslab.com>
+        with ESMTP id S230194AbjE3UqM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 16:46:12 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C42A08E
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:46:10 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-3f6c6320d4eso14241cf.1
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 13:46:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1685479570; x=1688071570;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pr06SdwCclh2zvxEhUJpXnyPxEiUxaGZRfUn2lWDHfU=;
+        b=wgszgCOPzKS/eLro6ja1PmQxsYOjUp8PXM+Swi1b3geif0q8T060pvy1gMVwZtfWOb
+         FL9Tyf7b94KpPgOcaGyP5nDYKVAdBX0Re8BzliJbAyEnFwK4+on/hFIxNzGVI9sNMlZs
+         MJSXy3b/lOvM5bWZINlP/C4SXsd3dicw63NsJOgHjejKWFPeqv5yMrNe19Rwk9Ii+D7+
+         8d6HpD7AbKBen6lc9A+Y2h1hljftzsr8SEcPBnTph3dwlNHc+XDVuR7fm6hrxDsgQYQ+
+         GJ0vud2oNQjSJEmbKTgRkKejRzquMcW1dBRk6kQUmZgDudEZ879dggOnwPfpjOD6F5y4
+         oZJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685479570; x=1688071570;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pr06SdwCclh2zvxEhUJpXnyPxEiUxaGZRfUn2lWDHfU=;
+        b=YMrR8DU1008q3RMROrQk4DANXDRvAih83XHU8lXgPKkaamjyBT256RRsecRAOgJKde
+         1GhngNSOjTfuhOfbMstuJyTSdbmfgTbYvYOiQ0KsJIU1dwTEb4hDN+y1kt5goTX+qhOg
+         TfEbGybnnaV4jIXHKXGIqdgoDHgrbBiAWM8kxZUOPS4SrRrorxxDLgd194ldjBx0QSz/
+         /U4Mz6ZAyS5q6aoRv7W1GGhYj7tPdphCJvkkfLfkSmjpUdsfMkFgzvT3/RcEaXJLKv/D
+         6R7MONT4rCwLhztQPZ6K+/5ZO6c23exFlAm9/eGBk9tkhbP+6XT0LmHWc+HHc+pr6p03
+         XktA==
+X-Gm-Message-State: AC+VfDyYE4c95oi/7zF+81IOYPqa0E7Qqk5VlUCQjw5Uys7xSwK1lsW8
+        lhhlu7gV0FOhAqYfdhogvAT0WyQODRy7gv3WdqEhnA==
+X-Google-Smtp-Source: ACHHUZ4jJZKLPPo4/StebD/Mknpi3tNY4VHMroMJx9drsU138Agu7XkXbVs4RIR2E01Thou8y3+90/FSSZVQUAlewLU=
+X-Received: by 2002:ac8:7e8c:0:b0:3e8:684b:195d with SMTP id
+ w12-20020ac87e8c000000b003e8684b195dmr20043qtj.10.1685479569818; Tue, 30 May
+ 2023 13:46:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230530193213.1663411-1-oliver.upton@linux.dev>
+In-Reply-To: <20230530193213.1663411-1-oliver.upton@linux.dev>
+From:   Yu Zhao <yuzhao@google.com>
+Date:   Tue, 30 May 2023 14:45:33 -0600
+Message-ID: <CAOUHufbUNhnYKqHAffcM82hyJp0vgfFWmFkhzyrx_W4rkGbgkg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: arm64: Drop last page ref in kvm_pgtable_stage2_free_removed()
+To:     Oliver Upton <oliver.upton@linux.dev>
+Cc:     kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Fuad Tabba <tabba@google.com>, Will Deacon <will@kernel.org>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The version is fetched once in check_version(), which then does some
-validation and then overwrites the version in userspace with the API
-version supported by the kernel.  copy_params() then fetches the version
-from userspace *again*, and this time no validation is done.  The result
-is that the kernel's version number is completely controllable by
-userspace, provided that userspace can win a race condition.
+On Tue, May 30, 2023 at 1:32=E2=80=AFPM Oliver Upton <oliver.upton@linux.de=
+v> wrote:
+>
+> The reference count on page table allocations is increased for every
+> 'counted' PTE (valid or donated) in the table in addition to the initial
+> reference from ->zalloc_page(). kvm_pgtable_stage2_free_removed() fails
+> to drop the last reference on the root of the table walk, meaning we
+> leak memory.
+>
+> Fix it by dropping the last reference after the free walker returns,
+> at which point all references for 'counted' PTEs have been released.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 5c359cca1faf ("KVM: arm64: Tear down unlinked stage-2 subtree afte=
+r break-before-make")
+> Reported-by: Yu Zhao <yuzhao@google.com>
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 
-Fix this flaw by not copying the version back to the kernel the second
-time.  This is not exploitable as the version is not further used in the
-kernel.  However, it could become a problem if future patches start
-relying on the version field.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
----
- drivers/md/dm-ioctl.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-index 491ef55b9e8662c3b02a2162b8c93ee086c078a1..20f452b6c61c1c4d20259fd0fc5443977e4454a0 100644
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1873,12 +1873,13 @@ static ioctl_fn lookup_ioctl(unsigned int cmd, int *ioctl_flags)
-  * As well as checking the version compatibility this always
-  * copies the kernel interface version out.
-  */
--static int check_version(unsigned int cmd, struct dm_ioctl __user *user)
-+static int check_version(unsigned int cmd, struct dm_ioctl __user *user,
-+			 struct dm_ioctl *kernel_params)
- {
--	uint32_t version[3];
- 	int r = 0;
-+	uint32_t *version = kernel_params->version;
- 
--	if (copy_from_user(version, user->version, sizeof(version)))
-+	if (copy_from_user(version, user->version, sizeof(user->version)))
- 		return -EFAULT;
- 
- 	if ((version[0] != DM_VERSION_MAJOR) ||
-@@ -1922,7 +1923,10 @@ static int copy_params(struct dm_ioctl __user *user, struct dm_ioctl *param_kern
- 	const size_t minimum_data_size = offsetof(struct dm_ioctl, data);
- 	unsigned int noio_flag;
- 
--	if (copy_from_user(param_kernel, user, minimum_data_size))
-+	/* Version has been copied from userspace already, avoid TOCTOU */
-+	if (copy_from_user((char *)param_kernel + sizeof(param_kernel->version),
-+			   (char __user *)user + sizeof(param_kernel->version),
-+			   minimum_data_size - sizeof(param_kernel->version)))
- 		return -EFAULT;
- 
- 	if (param_kernel->data_size < minimum_data_size) {
-@@ -2034,7 +2038,7 @@ static int ctl_ioctl(struct file *file, uint command, struct dm_ioctl __user *us
- 	 * Check the interface version passed in.  This also
- 	 * writes out the kernel's interface version.
- 	 */
--	r = check_version(cmd, user);
-+	r = check_version(cmd, user, &param_kernel);
- 	if (r)
- 		return r;
- 
--- 
-Sincerely,
-Demi Marie Obenour (she/her/hers)
-Invisible Things Lab
-
+Tested-by: Yu Zhao <yuzhao@google.com>
