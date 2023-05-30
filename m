@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86621717109
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 00:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9757D717103
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 00:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233468AbjE3Wws (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 18:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59686 "EHLO
+        id S233147AbjE3Wwu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 18:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232209AbjE3Wwq (ORCPT
+        with ESMTP id S233309AbjE3Wwq (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 18:52:46 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089A6121
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:39 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1b010338d82so33936385ad.0
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:39 -0700 (PDT)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0FB1107
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:40 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b0424c5137so23805355ad.1
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1685487158; x=1688079158;
+        d=broadcom.com; s=google; t=1685487160; x=1688079160;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SEtoCYjB78VJuszehNr3GEDAKMnEg6IGR4w2aibyWAY=;
-        b=AzqVreEG6lapK1oC0ZSDrAFJLxxUfY8E0IjgVAN+41WrX1YBedqtcSNhZwoV5MoUZ0
-         bV37hOdXI8sugOkUbefL6mRC2xmSOMIvDApvUShb3oLvKvwJDbIr5BRCk7qHjMJZIxhm
-         +wP6SpP0HAPgs4Ksah5QnvqXjjN3sKQPRFsb8=
+        bh=liWWbNJi2+7iB84NlMEezGj/xtFRGQ0If+ZoOjYVcBU=;
+        b=VFPhph8Vt8IiX32X1TbPu3bbBI6fUh/fo7+E7IqbLAi949cN3qMpAhF6RIFVa0za9i
+         ngNk93HojZ7oOJIlaswKxit9KnoOnD9n0pMUt98pCRNteRk3o/2kHGjCkcLCbCz0/H+T
+         vY8WlwnRO1cd3acMQbOZrKwvZi3gzKZ3+hk78=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685487158; x=1688079158;
+        d=1e100.net; s=20221208; t=1685487160; x=1688079160;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SEtoCYjB78VJuszehNr3GEDAKMnEg6IGR4w2aibyWAY=;
-        b=CryhOyQva/1kAhI/fWSPdUZfp2kSuR+gAXpepjnBYSvQBNYFDfxe8pMeWSMCV2UAcb
-         MVaONmTfm6DeGAB2lnBNpjOXi8Vm/qLSqaJ2dotchpG7b1L+IxJpyzqcMwrPiMA/ITZV
-         fUPUWTqp2ZpMZfkcoHseszSCZ8iQTFfy2SV/ccJlV0hpGNVZ6ZsFAtHhyGE9GX6/SABP
-         lmmfr9LnirZp2dUR3kFVpx9wR43r07L2qtzdJ1No8UGb0Ahw8Hzo824/7p+bht10hK5H
-         64CJ4rl3XagZogWNBjSXto9TZxu4LWwx6aOQWrUEzaWfMEHfrgnNGS4Nh98C6a2mVX8t
-         +qSg==
-X-Gm-Message-State: AC+VfDwOMh/8ibj0zdpMJiUiQRcE0BTD0U5qxz0cDg14XOxjxXIrtu/t
-        JLHbiq8fua7ENhulKGUVhsjR8sXCyd2Yk0k1sXHmHrSa2bCblXI0z9Ag0V7MEK2+2Ia+/klnZFT
-        MSBvHE7tM+qo74qHMveZCJCr+O52xISLh+Xvwmw+K6ZqY+CoISM9uOM0XNsYmX5x1VjrkS2qe/G
-        hAepZPaKGKlQ==
-X-Google-Smtp-Source: ACHHUZ7p0z/7plvKaPmSEwuXlrMuKxmrxEyHJQcQ2QyrDBRLq8oOOkvnsaHlJ7Ttqk8YcW3JKL29ow==
-X-Received: by 2002:a17:903:24d:b0:1af:c599:6a88 with SMTP id j13-20020a170903024d00b001afc5996a88mr4362450plh.49.1685487157968;
-        Tue, 30 May 2023 15:52:37 -0700 (PDT)
+        bh=liWWbNJi2+7iB84NlMEezGj/xtFRGQ0If+ZoOjYVcBU=;
+        b=KmVulZK3iA6NwGpWsOnsbIMS4Un7LEa7q6yk26rqXi49HQlKyI9aphcmEhn9/GfVt4
+         WqD9+oDxKT+lPqTCH20Ui4rmcwbAuRYBWm3ISjqX/gXQaTinWJatdcgBp/ms+/ucOZX1
+         /Q99cKPq4bfv9I+R/byh0m8gpilZnYpgoXT7ZrdfPvaZx5VRCCy55DDaPr1Eb/+wD0vY
+         pXmOU9canx500XszolKcoF3iy2PKSFSLoT7H1iTgS7HKnx6a8BxICp6H66pevuDwE2I+
+         viP1xenWDBWGuZnFgr43Rv2iKecKGjcQ5dBYwhXfaEwI0TK/oIi1w5/lrcZlORhg4DQy
+         e/Bg==
+X-Gm-Message-State: AC+VfDx5JKt0zKlcUpSX/FHPgcVWHASibO/vHEpKDcp2c9Rv+okz93NX
+        XBPYBDm3YFtcgoB4JuF5fCXJaQ+BWYGj0JX3qTf3iHIMiMULNxnuPr2EIkNcY5Wuvqq/u06PZyE
+        jjCC5NjOVlCTDXRJfkzwAfqrG0chhY5Ls8K71EFPiVfgrcRb1Vrp4DGuvstQtiqZHYIyHMXIXfI
+        /1F95tk0rf3w==
+X-Google-Smtp-Source: ACHHUZ7yJRuL9xFFKSz/yN+4OYBaYez0aEkoWfkN6me4233VKKMjoRkyoStMmPoTORo0ffgK3lzitg==
+X-Received: by 2002:a17:902:e80b:b0:1b0:3cda:635b with SMTP id u11-20020a170902e80b00b001b03cda635bmr4407603plg.0.1685487159780;
+        Tue, 30 May 2023 15:52:39 -0700 (PDT)
 Received: from stbirv-lnx-3.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id s3-20020a170902b18300b001a1b66af22fsm10805011plr.62.2023.05.30.15.52.36
+        by smtp.gmail.com with ESMTPSA id s3-20020a170902b18300b001a1b66af22fsm10805011plr.62.2023.05.30.15.52.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 15:52:37 -0700 (PDT)
+        Tue, 30 May 2023 15:52:39 -0700 (PDT)
 From:   Florian Fainelli <florian.fainelli@broadcom.com>
 To:     stable@vger.kernel.org
 Cc:     Radu Rendec <rrendec@redhat.com>,
@@ -62,15 +62,15 @@ Cc:     Radu Rendec <rrendec@redhat.com>,
         Jeremy Linton <jeremy.linton@arm.com>,
         linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
         (AARCH64 ARCHITECTURE)), linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 6.3 2/4] cacheinfo: Add arch specific early level initializer
-Date:   Tue, 30 May 2023 15:49:12 -0700
-Message-Id: <20230530224914.1251409-3-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 6.3 3/4] cacheinfo: Add arm64 early level initializer implementation
+Date:   Tue, 30 May 2023 15:49:13 -0700
+Message-Id: <20230530224914.1251409-4-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230530224914.1251409-1-florian.fainelli@broadcom.com>
 References: <20230530224914.1251409-1-florian.fainelli@broadcom.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000005a490d05fcf10fb4"
+        boundary="000000000000746f9905fcf10f77"
 X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -81,16 +81,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---0000000000005a490d05fcf10fb4
+--000000000000746f9905fcf10f77
 Content-Transfer-Encoding: 8bit
 
 From: Radu Rendec <rrendec@redhat.com>
 
-commit 6539cffa94957241c096099a57d05fa4d8c7db8a upstream
+commit c931680cfa958c8fe9ace31a1dbeefff75597d54 upstream
 
-This patch gives architecture specific code the ability to initialize
-the cache level and allocate cacheinfo memory early, when cache level
-initialization runs on the primary CPU for all possible CPUs.
+This patch adds an architecture specific early cache level detection
+handler for arm64. This is basically the CLIDR_EL1 based detection that
+was previously done (only) in init_cache_level().
 
 This is part of a patch series that attempts to further the work in
 commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU").
@@ -100,176 +100,80 @@ happen in non-preemptible context during early CPU initialization and
 trigger a "BUG: sleeping function called from invalid context" splat on
 an RT kernel.
 
-More specifically, this patch adds the early_cache_level() function,
-which is called by fetch_cache_info() as a fallback when the number of
-cache leaves cannot be extracted from DT/ACPI. In the default generic
-(weak) implementation, this new function returns -ENOENT, which
-preserves the original behavior for architectures that do not implement
-the function.
+This patch does not solve the problem completely for RT kernels. It
+relies on the assumption that on most systems, the CPUs are symmetrical
+and therefore have the same number of cache leaves. The cacheinfo memory
+is allocated early (on the primary CPU), relying on the new handler. If
+later (when CLIDR_EL1 based detection runs again on the secondary CPU)
+the initial assumption proves to be wrong and the CPU has in fact more
+leaves, the cacheinfo memory is reallocated, and that still triggers a
+splat on an RT kernel.
 
-Since early detection can get the number of cache leaves wrong in some
-cases*, additional logic is added to still call init_cache_level() later
-on the secondary CPU, therefore giving the architecture specific code an
-opportunity to go back and fix the initial guess. Again, the original
-behavior is preserved for architectures that do not implement the new
-function.
-
-* For example, on arm64, CLIDR_EL1 detection works only when it runs on
-  the current CPU. In other words, a CPU cannot detect the cache depth
-  for any other CPU than itself.
+In other words, asymmetrical CPU systems *must* still provide cacheinfo
+data in DT/ACPI to avoid the splat on RT kernels (unless secondary CPUs
+happen to have less leaves than the primary CPU). But symmetrical CPU
+systems (the majority) can now get away without the additional DT/ACPI
+data and rely on CLIDR_EL1 based detection.
 
 Signed-off-by: Radu Rendec <rrendec@redhat.com>
 Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://lore.kernel.org/r/20230412185759.755408-2-rrendec@redhat.com
+Link: https://lore.kernel.org/r/20230412185759.755408-3-rrendec@redhat.com
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/base/cacheinfo.c  | 75 +++++++++++++++++++++++++++------------
- include/linux/cacheinfo.h |  2 ++
- 2 files changed, 55 insertions(+), 22 deletions(-)
+ arch/arm64/kernel/cacheinfo.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index 8120ac1ddbe4..14aa62c3f10f 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -437,6 +437,11 @@ static void free_cache_attributes(unsigned int cpu)
- 	cache_shared_cpu_map_remove(cpu);
+diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
+index c307f69e9b55..d9c9218fa1fd 100644
+--- a/arch/arm64/kernel/cacheinfo.c
++++ b/arch/arm64/kernel/cacheinfo.c
+@@ -38,11 +38,9 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
+ 	this_leaf->type = type;
  }
  
-+int __weak early_cache_level(unsigned int cpu)
-+{
-+	return -ENOENT;
-+}
-+
- int __weak init_cache_level(unsigned int cpu)
+-int init_cache_level(unsigned int cpu)
++static void detect_cache_level(unsigned int *level_p, unsigned int *leaves_p)
  {
- 	return -ENOENT;
-@@ -462,56 +467,82 @@ int allocate_cache_info(int cpu)
+ 	unsigned int ctype, level, leaves;
+-	int fw_level, ret;
+-	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
  
- int fetch_cache_info(unsigned int cpu)
- {
--	struct cpu_cacheinfo *this_cpu_ci;
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
- 	unsigned int levels = 0, split_levels = 0;
- 	int ret;
- 
- 	if (acpi_disabled) {
- 		ret = init_of_cache_level(cpu);
--		if (ret < 0)
--			return ret;
- 	} else {
- 		ret = acpi_get_cache_info(cpu, &levels, &split_levels);
--		if (ret < 0)
-+		if (!ret) {
-+			this_cpu_ci->num_levels = levels;
-+			/*
-+			 * This assumes that:
-+			 * - there cannot be any split caches (data/instruction)
-+			 *   above a unified cache
-+			 * - data/instruction caches come by pair
-+			 */
-+			this_cpu_ci->num_leaves = levels + split_levels;
-+		}
-+	}
-+
-+	if (ret || !cache_leaves(cpu)) {
-+		ret = early_cache_level(cpu);
-+		if (ret)
- 			return ret;
- 
--		this_cpu_ci = get_cpu_cacheinfo(cpu);
--		this_cpu_ci->num_levels = levels;
--		/*
--		 * This assumes that:
--		 * - there cannot be any split caches (data/instruction)
--		 *   above a unified cache
--		 * - data/instruction caches come by pair
--		 */
--		this_cpu_ci->num_leaves = levels + split_levels;
-+		if (!cache_leaves(cpu))
-+			return -ENOENT;
-+
-+		this_cpu_ci->early_ci_levels = true;
+ 	for (level = 1, leaves = 0; level <= MAX_CACHE_LEVEL; level++) {
+ 		ctype = get_cache_type(level);
+@@ -54,6 +52,27 @@ int init_cache_level(unsigned int cpu)
+ 		leaves += (ctype == CACHE_TYPE_SEPARATE) ? 2 : 1;
  	}
--	if (!cache_leaves(cpu))
--		return -ENOENT;
  
- 	return allocate_cache_info(cpu);
- }
- 
--int detect_cache_attributes(unsigned int cpu)
-+static inline int init_level_allocate_ci(unsigned int cpu)
- {
--	int ret;
-+	unsigned int early_leaves = cache_leaves(cpu);
- 
- 	/* Since early initialization/allocation of the cacheinfo is allowed
- 	 * via fetch_cache_info() and this also gets called as CPU hotplug
- 	 * callbacks via cacheinfo_cpu_online, the init/alloc can be skipped
- 	 * as it will happen only once (the cacheinfo memory is never freed).
--	 * Just populate the cacheinfo.
-+	 * Just populate the cacheinfo. However, if the cacheinfo has been
-+	 * allocated early through the arch-specific early_cache_level() call,
-+	 * there is a chance the info is wrong (this can happen on arm64). In
-+	 * that case, call init_cache_level() anyway to give the arch-specific
-+	 * code a chance to make things right.
- 	 */
--	if (per_cpu_cacheinfo(cpu))
--		goto populate_leaves;
-+	if (per_cpu_cacheinfo(cpu) && !ci_cacheinfo(cpu)->early_ci_levels)
-+		return 0;
- 
- 	if (init_cache_level(cpu) || !cache_leaves(cpu))
- 		return -ENOENT;
- 
--	ret = allocate_cache_info(cpu);
-+	/*
-+	 * Now that we have properly initialized the cache level info, make
-+	 * sure we don't try to do that again the next time we are called
-+	 * (e.g. as CPU hotplug callbacks).
-+	 */
-+	ci_cacheinfo(cpu)->early_ci_levels = false;
-+
-+	if (cache_leaves(cpu) <= early_leaves)
-+		return 0;
-+
-+	kfree(per_cpu_cacheinfo(cpu));
-+	return allocate_cache_info(cpu);
++	*level_p = level;
++	*leaves_p = leaves;
 +}
 +
-+int detect_cache_attributes(unsigned int cpu)
++int early_cache_level(unsigned int cpu)
 +{
-+	int ret;
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
 +
-+	ret = init_level_allocate_ci(cpu);
- 	if (ret)
- 		return ret;
- 
--populate_leaves:
- 	/*
- 	 * If LLC is valid the cache leaves were already populated so just go to
- 	 * update the cpu map.
-diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
-index b91cc9991c7c..a5cfd44fab45 100644
---- a/include/linux/cacheinfo.h
-+++ b/include/linux/cacheinfo.h
-@@ -76,9 +76,11 @@ struct cpu_cacheinfo {
- 	unsigned int num_levels;
- 	unsigned int num_leaves;
- 	bool cpu_map_populated;
-+	bool early_ci_levels;
- };
- 
- struct cpu_cacheinfo *get_cpu_cacheinfo(unsigned int cpu);
-+int early_cache_level(unsigned int cpu);
- int init_cache_level(unsigned int cpu);
- int init_of_cache_level(unsigned int cpu);
- int populate_cache_leaves(unsigned int cpu);
++	detect_cache_level(&this_cpu_ci->num_levels, &this_cpu_ci->num_leaves);
++
++	return 0;
++}
++
++int init_cache_level(unsigned int cpu)
++{
++	unsigned int level, leaves;
++	int fw_level, ret;
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++
++	detect_cache_level(&level, &leaves);
++
+ 	if (acpi_disabled) {
+ 		fw_level = of_find_last_cache_level(cpu);
+ 	} else {
 -- 
 2.25.1
 
 
---0000000000005a490d05fcf10fb4
+--000000000000746f9905fcf10f77
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -340,14 +244,14 @@ kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
 NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
 AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
 LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIJyXtgaHchUUCMV+
-X5iE7LBMh5AzAs7zJ2KkMyWwRgjgMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTIzMDUzMDIyNTIzOFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIA45pLgcIT2vQic2
+09MgXM6i6ijwrXftctJ/UQqDtGBmMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDUzMDIyNTI0MFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
 AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBYtyoOccUGdUqfS9Y63Uvh8PWm2vGjCGf6
-mWihdvpf33cU8M4Afkd3JHjNsgFl/fjWdD0fE0MyghUiMwRqHF4jDq1HhRrdGmp8uz2qg0/7QLwp
-/lSSbWNiB6p4pKqLjnV7IaJ5/EtwUWvl5K2l34dt6DbgTHrunM2YT4gwIc7PqK6ioksBS8KU5K5g
-0MxmMnaOc+9xFP5WUe0rl8T4ofrCPECNbm9ZzJUpGbbK6X7kmXoO5eGZcHgSbZxQhgRV982uSmkM
-6cbjfZhcJZx0SC4X9XEwL454orKLAVIPPGI/av8A7paKBmrmsQmdud4c5bHBLJWkr2XCcf/N8Uy2
-dxrD
---0000000000005a490d05fcf10fb4--
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQC77jquEdSPBMcKqKhPERF8KVMWENMT+Sxm
+3mBFHFfNdPOEUrdI+HxIHd78kYlXDSdt1BqxvTDAa1OIpnY5hAkJI9vYgZziTsGAFTU6hQ6qUBQ6
+mcEztuAXhp5/DFFsu1kB1oupXndPDsfN3gVpJIaSwmbXVngP51Q4ya68lHi3nsg/T+e4ydPHYEEG
+OETUdfRawxGq6DmFst25k1NP8eQABjYVi1YTZjworc/tJsyTjaZilPNleQSc6m7Eb9SX2FGd3uMh
+An30utklonIEVe31aD+uSqtiHCf+rrGmWgdqwDpC6qzTHlC3uI+UsrTG85FFz/t6jew5S+7Fzexy
+wvm+
+--000000000000746f9905fcf10f77--
