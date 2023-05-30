@@ -2,67 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B93E71584E
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 10:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9A2715889
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 10:31:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230283AbjE3IWi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 04:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38196 "EHLO
+        id S229715AbjE3IbE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 04:31:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjE3IWW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 04:22:22 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52081187
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 01:22:17 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f6094cb2d2so43213005e9.2
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 01:22:17 -0700 (PDT)
+        with ESMTP id S229884AbjE3IbD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 04:31:03 -0400
+Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9981AA8;
+        Tue, 30 May 2023 01:31:00 -0700 (PDT)
+Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-456d534f403so2710102e0c.2;
+        Tue, 30 May 2023 01:31:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685434935; x=1688026935;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=C2bdH5RxHWWWiPn0bvQ3AF7KrvtHQTTjAV/94K4dTh4=;
-        b=qYNx+fcrpJp4mUihhZT3OJ1tJtnFCEO2XeJK37he25P0MLWUVdguppwafo4wT9mPdW
-         ihhKRiMJp1K3SJtvqRzcQWwtkU0VCYMcGRPQCBMH0MRFv2rssoypAJ1Y0BUT+S/UM/aJ
-         Ds9RBYTgrGD8ORXJTAG/0/Iy4K4KZM4jlrUbUiH2BS12sdun3WcLIWfKfNnrNEGljF+2
-         8uQHqYg4ZmXuqOx3qddLVQPVqyo6csr3J1jRmMm4JiGsSmUZSs29fohF9qtt6N9FQcwM
-         9UxGBizLTg1O59hw0qgNoBHZCXrR3BY/hhj/ZUYyJkGOZEBgy5Q1kg2oWxNWzcbkgrO0
-         SSXQ==
+        d=gmail.com; s=20221208; t=1685435459; x=1688027459;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vAlYUMVoTgINlE2ocSHP8Vr62dJ4pHluRJc9g9INcEU=;
+        b=D47tqMBFjsl7TeJNaoYnAx0DNSZPSt4iFNajnB+Qh43GFOewu5Lr8jW30kJreXspQK
+         xOQb7Y0Y8e/Cpg7RTKEbv4zppgP0XUxK4a2zO7ybOOXO2VuycuYtYhmGhE+U8hCINRLa
+         extr6N2yXJdI7IzPgUotVJ/f879fBC9Y6PkMlmSkMI3jUaaMori4u3jo//QpMD0yE4qm
+         nzPnskNMm/RRtjkmaDdvBT2GomzMdZHsWE9q9is5kqcVV6dPcI+9PHHefEZj6qeClcog
+         uxq2MZfHdU5i4vK5t5E+W/LsZVvvV1aAyI9QFqlYv8DRisy2D2s1GH2lhtvL79p3kDnf
+         USHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685434935; x=1688026935;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C2bdH5RxHWWWiPn0bvQ3AF7KrvtHQTTjAV/94K4dTh4=;
-        b=eXm/xFZ2oBfY2wx1804gpbaUUVbFo6LHlppi7mO2YcN5RceEYj+DXniMaC4few4FKi
-         Zl292LEQfZDDlKZcMgagUDdQLOWLYwSEMkmaxNg8bOs1N7gWBUBOXE5ZI1zNkI/5Ap6J
-         R8Awhc5kxqrtzxwsornFnC+A9qQXO6yk9enNMJessU/9Vo1SWan4HOXhQsoaOzC9fpqH
-         L0cR+6IfEMvkhyLRnO5uS7Q4dRdloe2XH/NpsdCjvKEz5OMipogC8PbAgRFHW9e7y5u/
-         2DpNWGVGWmBgzstzlohpQm/IawnnTPVkJYjZ2j5KAWQbni0/G5tk7NkkMvN4p754hGo7
-         Ew7Q==
-X-Gm-Message-State: AC+VfDxN3sb62PCLgCVonMWnuH8nEtWWz7bgTTVeHCW7aQXaMcviKZhD
-        FXo5ejlgShCNwJ8+YqX01yyo9FaSBO4l2N2nYqs=
-X-Google-Smtp-Source: ACHHUZ4wMSaHbPkjhQZtINzB8Lyxl+aXj4YgUr6kPVilCVoVH0N7w+3jsDHV/vqdydjwbxFAfouIgQ==
-X-Received: by 2002:a05:600c:2304:b0:3f5:6e5:1688 with SMTP id 4-20020a05600c230400b003f506e51688mr964840wmo.2.1685434934868;
-        Tue, 30 May 2023 01:22:14 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id h8-20020a1ccc08000000b003f709a7e46bsm2617309wmb.46.2023.05.30.01.22.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 01:22:13 -0700 (PDT)
-Date:   Tue, 30 May 2023 11:22:09 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: randconfig fixes for 5.10.y
-Message-ID: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
+        d=1e100.net; s=20221208; t=1685435459; x=1688027459;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vAlYUMVoTgINlE2ocSHP8Vr62dJ4pHluRJc9g9INcEU=;
+        b=VbH8k16zAlAf5VovPLRCr7AM+JJx61gWZyC2nR8bbixNKImHUoWjIt+8nj1ZoLJkro
+         Ox2MGmHZmTxvYgoUjY3yCFSrTIDXnnmWNmVNNgXe1nWcjhYBm4V1JoLUfXUpwrX5oM1F
+         958uS/Cp0NjR94yjF78x5w6nKAraA+YF4yE8vTzJ2puiB8y3AKXRnVFM78v9fQOL7tTk
+         M2Qh5xgC+Y93jY6eMTH+kH4G+X7zaKzcchWUfM2q0cTR2fVfHCXCfHtw7AqdgEWzCLBz
+         PnWkebP55R8Pspq4jvD1k2HBVYmb+Dk4KVZozA1wvPG6AlD5U3TXtHi9kTvgARpJuVeR
+         WxTA==
+X-Gm-Message-State: AC+VfDwtANECLu6WifuYuuqN8vM2EUSXt3WLJLGCKlgKBhjuL5rwftaS
+        u08MTsBMOqh5Jvcpn6wcNyoH1e9079lk5wJeeWg=
+X-Google-Smtp-Source: ACHHUZ7U5uvuaRU2XQx3fWPq48tXSMo+4gvRAtJWWGsNOucGTPfPvzlMCOGgwinW52VweuMJvCobK+Kc5tdm+cWSWa4=
+X-Received: by 2002:a67:ff08:0:b0:439:4284:3f74 with SMTP id
+ v8-20020a67ff08000000b0043942843f74mr460985vsp.16.1685435459529; Tue, 30 May
+ 2023 01:30:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20230530022917.18574-1-listdansp@mail.ru> <20230530022917.18574-2-listdansp@mail.ru>
+In-Reply-To: <20230530022917.18574-2-listdansp@mail.ru>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Tue, 30 May 2023 11:30:48 +0300
+Message-ID: <CAOQ4uxgCizoAT1fWLKy6hytdhBiCwV0nSwkqzyVckozx5EACPA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 1/1] ovl: fail on invalid uid/gid mapping at copy up
+To:     Danila Chernetsov <listdansp@mail.ru>
+Cc:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Seth Forshee <sforshee@kernel.org>,
+        Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,17 +73,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I did some randconfig testing on 5.10.y and the following patches are
-required.
+On Tue, May 30, 2023 at 5:44=E2=80=AFAM Danila Chernetsov <listdansp@mail.r=
+u> wrote:
+>
+> From: Miklos Szeredi <mszeredi@redhat.com>
+>
+> commit  4f11ada10d0ad3fd53e2bd67806351de63a4f9c3 upstream.
+>
+> If st_uid/st_gid doesn't have a mapping in the mounter's user_ns, then
+> copy-up should fail, just like it would fail if the mounter task was doin=
+g
+> the copy using "cp -a".
+>
+> There's a corner case where the "cp -a" would succeed but copy up fail: i=
+f
+> there's a mapping of the invalid uid/gid (65534 by default) in the user
+> namespace.  This is because stat(2) will return this value if the mapping
+> doesn't exist in the current user_ns and "cp -a" will in turn be able to
+> create a file with this uid/gid.
+>
+> This behavior would be inconsistent with POSIX ACL's, which return -1 for
+> invalid uid/gid which result in a failed copy.
+>
+> For consistency and simplicity fail the copy of the st_uid/st_gid are
+> invalid.
+>
+> Fixes: 459c7c565ac3 ("ovl: unprivieged mounts")
+> Cc: <stable@vger.kernel.org> # v5.11
+> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+> Reviewed-by: Christian Brauner <brauner@kernel.org>
+> Reviewed-by: Seth Forshee <sforshee@kernel.org>
+> Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+> ---
+>  fs/overlayfs/copy_up.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+> index e466c58f9ec4..fd33abc0edc0 100644
+> --- a/fs/overlayfs/copy_up.c
+> +++ b/fs/overlayfs/copy_up.c
+> @@ -882,6 +882,10 @@ static int ovl_copy_up_one(struct dentry *parent, st=
+ruct dentry *dentry,
+>         if (err)
+>                 return err;
+>
+> +       if (!kuid_has_mapping(current_user_ns(), ctx.stat.uid) ||
+> +           !kgid_has_mapping(current_user_ns(), ctx.stat.gid))
+> +               return -EOVERFLOW;
+> +
+>         ctx.metacopy =3D ovl_need_meta_copy_up(dentry, ctx.stat.mode, fla=
+gs);
+>
+>         if (parent) {
+> --
+> 2.25.1
+>
 
-d7a7d721064c5 ("media: ti-vpe: cal: avoid FIELD_GET assertion")
-42d95d1b3a9c6 ("drm/rcar: stop using 'imply' for dependencies")
+You are requesting to backport to kernel 5.10.y a fix to a bug that is tagg=
+ed as
+introduced in 5.11 with overlayfs unprivileged mounts.
 
-The first patch is only required on 5.10.y.
-The second "drm/rcar" commit is required in 5.15.y as well.
+IOW, in kernel 5.10, current_user_ns() would always be init_user_ns.
 
-I'm going to be doing regular randconfig testing on stable so let me
-know if you have any advice.
+Am I missing something?
 
-regards,
-dan carpenter
+Thanks,
+Amir.
