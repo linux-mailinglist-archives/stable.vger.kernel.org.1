@@ -2,109 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A7B715C17
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 12:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2960715C2F
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 12:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230074AbjE3Kos (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 06:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38428 "EHLO
+        id S231728AbjE3KrR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 06:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231133AbjE3Koh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 06:44:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF5510D;
-        Tue, 30 May 2023 03:44:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11D9462D03;
-        Tue, 30 May 2023 10:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F18C433D2;
-        Tue, 30 May 2023 10:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685443475;
-        bh=gTvX8Mmtm4CsDHwRlEdlXZul8ul7kbGdtit5jNAUN8U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MQe2Pl+7Velxgwa4YQOvNaHwxy9i7j+Bw5G7/F/vK6pHqfhxVDfpCnTRt88jmtq5O
-         dfiYeOgKaGLP0zmMrSNmmPvEZ1gjj1aO+uEbqTHcY2IxDpzsgWH+OqWQ3S6a5VdAJz
-         bm2WTrwBEZphOvwh8atQ8ZcfF2HFkq0f0ogbjRIRfY4uOSWmCgPVv1f51ca0XwuQYT
-         8TnqGbNPLyeTsg9XPGR1z2D0STDUS44M+QKJjAPJ4wXePpLIP85jfMYvb/X+v5qEKV
-         2ArH46II4DVmYMNzII86F9CzNAd2imLSZddT9IcWrEQWCspj+IQubXUnAlw0FghHWV
-         Exr5bPWrDvVvA==
-Date:   Tue, 30 May 2023 16:14:21 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Qiang Yu <quic_qianyu@quicinc.com>
-Cc:     quic_jhugo@quicinc.com, mhi@lists.linux.dev,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_cang@quicinc.com, quic_mrana@quicinc.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4] bus: mhi: host: Skip MHI reset if device is in RDDM
-Message-ID: <20230530104421.GG6379@thinkpad>
-References: <1684390959-17836-1-git-send-email-quic_qianyu@quicinc.com>
+        with ESMTP id S229823AbjE3Kqx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 06:46:53 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A25110;
+        Tue, 30 May 2023 03:46:51 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 8290B1C0D20; Tue, 30 May 2023 12:46:50 +0200 (CEST)
+Date:   Tue, 30 May 2023 12:46:49 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        l.sanfilippo@kunbus.com, jarkko@kernel.org
+Subject: Wrong/strange TPM patches was Re: [PATCH 6.1 000/119] 6.1.31-rc1
+ review
+Message-ID: <ZHXUGdFMIcB5HL8s@duo.ucw.cz>
+References: <20230528190835.386670951@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="r+EjDeRDCk4IF0FL"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1684390959-17836-1-git-send-email-quic_qianyu@quicinc.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230528190835.386670951@linuxfoundation.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 18, 2023 at 02:22:39PM +0800, Qiang Yu wrote:
-> In RDDM EE, device can not process MHI reset issued by host. In case of MHI
-> power off, host is issuing MHI reset and polls for it to get cleared until
-> it times out. Since this timeout can not be avoided in case of RDDM, skip
-> the MHI reset in this scenarios.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
-> Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
 
-Applied to mhi-next!
+--r+EjDeRDCk4IF0FL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Mani
+Hi!
 
-> Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-> ---
-> v1->v2: use ~75 columns in commit text, add Fixes tag
-> v2->v3: update Fixes tag
-> v3->v4: add review tag and CC stable
-> 
->  drivers/bus/mhi/host/pm.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
-> index 0834590..8a4362d 100644
-> --- a/drivers/bus/mhi/host/pm.c
-> +++ b/drivers/bus/mhi/host/pm.c
-> @@ -470,6 +470,10 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl)
->  
->  	/* Trigger MHI RESET so that the device will not access host memory */
->  	if (!MHI_PM_IN_FATAL_STATE(mhi_cntrl->pm_state)) {
-> +		/* Skip MHI RESET if in RDDM state */
-> +		if (mhi_cntrl->rddm_image && mhi_get_exec_env(mhi_cntrl) == MHI_EE_RDDM)
-> +			goto skip_mhi_reset;
-> +
->  		dev_dbg(dev, "Triggering MHI Reset in device\n");
->  		mhi_set_mhi_state(mhi_cntrl, MHI_STATE_RESET);
->  
-> @@ -495,6 +499,7 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl)
->  		}
->  	}
->  
-> +skip_mhi_reset:
->  	dev_dbg(dev,
->  		 "Waiting for all pending event ring processing to complete\n");
->  	mhi_event = mhi_cntrl->mhi_event;
-> -- 
-> 2.7.4
-> 
+> This is the start of the stable review cycle for the 6.1.31 release.
+> There are 119 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
--- 
-மணிவண்ணன் சதாசிவம்
+> Lino Sanfilippo <l.sanfilippo@kunbus.com>
+>     tpm, tpm_tis: Avoid cache incoherency in test for interrupts
+
+Description on this one is wrong/confused. There's no cache problem in
+the code. Plus test_bit and friend already use bit number, so
+
+-       bool itpm =3D priv->flags & TPM_TIS_ITPM_WORKAROUND;
++       bool itpm =3D test_bit(TPM_TIS_ITPM_WORKAROUND, &priv->flags);
+
+@@ -87,6 +87,7 @@ enum tpm_tis_flags {
+        TPM_TIS_ITPM_WORKAROUND         =3D BIT(0),
+        TPM_TIS_INVALID_STATUS          =3D BIT(1),
+        TPM_TIS_DEFAULT_CANCELLATION    =3D BIT(2),
++       TPM_TIS_IRQ_TESTED              =3D BIT(3),
+ };
+
+this enum needs to go from BIT() to raw numbers.
+
+You can just do return tpm_pm_resume();
+
+> Jarkko Sakkinen <jarkko@kernel.org>
+>     tpm: Prevent hwrng from activating during resume
+
+@@ -429,6 +431,14 @@ int tpm_pm_resume(struct device *dev)
+        if (chip =3D=3D NULL)
+                return -ENODEV;
+=20
++       chip->flags &=3D ~TPM_CHIP_FLAG_SUSPENDED;
++
++       /*
++        * Guarantee that SUSPENDED is written last, so that hwrng does not
++        * activate before the chip has been fully resumed.
++        */
++       wmb();
++
+        return 0;
+ }
+ EXPORT_SYMBOL_GPL(tpm_pm_resume);
+
+This code is confused. First, either you don't need memory barriers
+here, or you need real locking. Second, if you want to guarantee flags
+are written last, you need to put the barrier before the
+assignment. (But ... get rid of that confusion, first).
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--r+EjDeRDCk4IF0FL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZHXUGQAKCRAw5/Bqldv6
+8vR3AJ4nYbfXozM6RjMtZmKWdj4QU5PQEwCfY+5LyyJ/Ps5vEN0Kd3dHPkF55gM=
+=wiN5
+-----END PGP SIGNATURE-----
+
+--r+EjDeRDCk4IF0FL--
