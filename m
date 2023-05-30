@@ -2,136 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 968D97170E2
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 00:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEC0717106
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 00:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229945AbjE3Wm7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 18:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54486 "EHLO
+        id S233067AbjE3Wwk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 18:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbjE3Wm6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 18:42:58 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F6093
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:42:56 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b0218c979cso28510285ad.3
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:42:56 -0700 (PDT)
+        with ESMTP id S231537AbjE3Wwk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 18:52:40 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1F711B
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:35 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b021cddb74so26943395ad.0
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 15:52:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1685486576; x=1688078576;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6D/fBb0V+Zwok8J/eeLNMQe8RdDIF5ZxlIBNjoOZxR4=;
-        b=PTrH5l/TVEkZU9BzFpQdFGOs96dTSedeTym+GQzZSoyNB2t+u7OF1OqKjGUgeMVn8r
-         gguYV8UUKOj/gMbP3lPNhRnNizqJ9ESfk0nPCdn+Tb/Mnfa1Kc8QdtG3hf8vfvAMxrDN
-         UczVVexpjDdjMa0aM1nKiQObKNiGVW9RdSypY=
+        d=broadcom.com; s=google; t=1685487154; x=1688079154;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wwhR6R+ZvyWDho/DUhcS5CoHfho/7fC9nt1HBX9Uvtg=;
+        b=TwrE5UYsAFyOELlK302UOkpyc6dIVDtHK7N2W3OpTjUcQLg6YEMcAw6bydeeCjZ99x
+         eDQxbLohdk4uYphgNV8VQs3kUFRh5slR93nbx3JKqhqTQJzZqupcQ5yyzGEMohhRy1LX
+         CDTLfVxvngIAMw0kSm/DSNGry0RQWK1fs1mUY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685486576; x=1688078576;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6D/fBb0V+Zwok8J/eeLNMQe8RdDIF5ZxlIBNjoOZxR4=;
-        b=UCGgzcnWN8DNy9yweb9THAjfF4vp0rMeaKbPRbMB0Wx+o80oS9ECsmDzxIeT/2ao7e
-         5b1TRNi28Creekcvr/fjO0Moe8+npDaYOPQdqAIRVDVxJt/FklBDtaHE45wRrn5pkw4w
-         vtqd1QwiU4g0vl8Yu4TTaZzGWBtMV9cY7vynULSoy/6nEUVnOSMO0C3OOVP8oM3Gs4FD
-         8JtP9ztMs/H0E9jC2LoNcPNIlTM6ajCDv9QRI6XNmMCVdg3W0fghJuJS01tqvfrTCIOJ
-         Ukay/7POsKG/Z9d0C02aglShtrfCXQdYUhCyzMyvaU37wFtnbTCgckQlQoRMC2fJ3ONJ
-         5NrA==
-X-Gm-Message-State: AC+VfDwnyjc08L8LB2T9pnRr3D3cPuihLETSoGJw6w0+CU+YFUOJAEmp
-        KsfHjN0aiUqNtDRjd5AFHvP7aw==
-X-Google-Smtp-Source: ACHHUZ5MzNBWnlKBEmKqy62YPLWaf2NHq7PwsGIEnqQNgkfur+mqHO4QX84SymDztb6kn+e4vfDJXA==
-X-Received: by 2002:a17:902:904b:b0:1a2:8c7e:f310 with SMTP id w11-20020a170902904b00b001a28c7ef310mr3515686plz.35.1685486576177;
-        Tue, 30 May 2023 15:42:56 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id x1-20020a170902820100b001ac5896e96esm10753496pln.207.2023.05.30.15.42.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 May 2023 15:42:54 -0700 (PDT)
-Message-ID: <72d84100-55cf-566d-8301-7147ce14b1e9@broadcom.com>
-Date:   Tue, 30 May 2023 15:42:45 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH stable 6.3 v2] arch_topology: Remove early cacheinfo error
- message if -ENOENT
-To:     Conor Dooley <conor@kernel.org>
-Cc:     stable@vger.kernel.org, Pierre Gondois <pierre.gondois@arm.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
+        d=1e100.net; s=20221208; t=1685487154; x=1688079154;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wwhR6R+ZvyWDho/DUhcS5CoHfho/7fC9nt1HBX9Uvtg=;
+        b=aPaZOhG7tpEU57Zv5cFnj0o5PfWhtmZWxgAiertkWDVxkcwDrCtDPrpsp6Jx5SfnLE
+         wspHAqbUE2lnbvMe3RyQQKcy5B83uQm63Xl33EqrZrriUaGRyTuh3or56jBU1I6VSDV3
+         kGRISOKeUPu+fr32xPDjlZFH0DdQ6qL069ppH+d7Pi9ctO5rxoovg5/CaoS5FeqRhxlQ
+         W1WURlJGYguSSvoRyR/stEsps/noxAugLenHYso3FhhP0tXZRgw/UdKTEv40BGIybp3W
+         oSRvbwSxr5JzKdHrqnljiRJxdNMCJYW7i+QcP4qCZ4N3iK6GLIfwTp84wJX4YIT8CD/Q
+         U7Yw==
+X-Gm-Message-State: AC+VfDwg4D+TjohT3JJl5BuX2EMF9+kQR3Lmi8ghzz3+OyQ6Ln6TD2Sr
+        SaOVLT/p85bR+ckcNGCJLvKJx4/XsN0eSdoOKgh/NBEf+FxD3svUr25okoWKTB/1K4Ulfnp+ZEh
+        5DRp7xKknrXoLpip3z+nwU5fOYVkFidNtQyGPVrggMTpdmKIDnZAAQ5bnO2sjDm6U9uK2wt/lk+
+        olTSxVgtY6Qw==
+X-Google-Smtp-Source: ACHHUZ5v9FJSB4q3cFFTbyb4++ww0LabKVA61RxerkbfqA0+wnoEX8UdsS2ycrxWQ9k2MXDDJukiqg==
+X-Received: by 2002:a17:902:c948:b0:1ac:750e:33f4 with SMTP id i8-20020a170902c94800b001ac750e33f4mr4379222pla.32.1685487154312;
+        Tue, 30 May 2023 15:52:34 -0700 (PDT)
+Received: from stbirv-lnx-3.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id s3-20020a170902b18300b001a1b66af22fsm10805011plr.62.2023.05.30.15.52.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 15:52:33 -0700 (PDT)
+From:   Florian Fainelli <florian.fainelli@broadcom.com>
+To:     stable@vger.kernel.org
+Cc:     Florian Fainelli <florian.fainelli@broadcom.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        "open list:GENERIC ARCHITECTURE TOPOLOGY" 
-        <linux-kernel@vger.kernel.org>
-References: <20230530201955.848176-1-florian.fainelli@broadcom.com>
- <20230530-basically-wildly-84415a94171d@spud>
-From:   Florian Fainelli <florian.fainelli@broadcom.com>
-In-Reply-To: <20230530-basically-wildly-84415a94171d@spud>
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Akihiko Odaki <akihiko.odaki@daynix.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Gavin Shan <gshan@redhat.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT
+        (AARCH64 ARCHITECTURE)), linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH stable 6.3 0/4] Missing cacheinfo backports
+Date:   Tue, 30 May 2023 15:49:10 -0700
+Message-Id: <20230530224914.1251409-1-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000ab705105fcf0ece6"
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        boundary="00000000000022249705fcf10f4f"
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---000000000000ab705105fcf0ece6
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--00000000000022249705fcf10f4f
+Content-Transfer-Encoding: 8bit
 
-Hi Conor,
+These patches resolve the following errors seen with linux-6.3.y on our
+ARCH_BRCMSTB platforms which contain cache information in the Device
+Tree:
 
-On 5/30/23 14:39, Conor Dooley wrote:
-> Yo Florian,
-> 
-> On Tue, May 30, 2023 at 01:19:55PM -0700, Florian Fainelli wrote:
->> From: Pierre Gondois <pierre.gondois@arm.com>
->>
->> commit 3522340199cc060b70f0094e3039bdb43c3f6ee1 upstream
->>
->> fetch_cache_info() tries to get the number of cache leaves/levels
->> for each CPU in order to pre-allocate memory for cacheinfo struct.
->> Allocating this memory later triggers a:
->>    'BUG: sleeping function called from invalid context'
->> in PREEMPT_RT kernels.
->>
->> If there is no cache related information available in DT or ACPI,
->> fetch_cache_info() fails and an error message is printed:
->>    'Early cacheinfo failed, ret = ...'
->>
->> Not having cache information should be a valid configuration.
->> Remove the error message if fetch_cache_info() fails with -ENOENT.
->>
->> Suggested-by: Conor Dooley <conor.dooley@microchip.com>
->> Link: https://lore.kernel.org/all/20230404-hatred-swimmer-6fecdf33b57a@spud/
->> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
->> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
->> Link: https://lore.kernel.org/r/20230414081453.244787-4-pierre.gondois@arm.com
->> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
->> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> 
-> How come this now needs a backport? Did the rest of the series get
-> backported, but not this one since it has no fixes tag?
+[    0.002072] Early cacheinfo failed, ret = -22
 
-Humm, indeed, this has been present in v6.3.2 since I requested it to be 
-included. The error that I saw this morning was not -ENOENT, but -EINVAL.
+Pierre Gondois (1):
+  cacheinfo: Add use_arch[|_cache]_info field/function
 
-With those patches applied, no more -EINVAL:
+Radu Rendec (3):
+  cacheinfo: Add arch specific early level initializer
+  cacheinfo: Add arm64 early level initializer implementation
+  cacheinfo: Allow early level detection when DT/ACPI info is
+    missing/broken
 
-cacheinfo: Allow early level detection when DT/ACPI info is missing/broken
-cacheinfo: Add arm64 early level initializer implementation
-cacheinfo: Add arch specific early level initializer
-cacheinfo: Add use_arch[|_cache]_info field/function
+ arch/arm64/kernel/cacheinfo.c | 25 ++++++++--
+ drivers/base/arch_topology.c  |  4 +-
+ drivers/base/cacheinfo.c      | 87 +++++++++++++++++++++++++----------
+ include/linux/cacheinfo.h     |  8 ++++
+ 4 files changed, 95 insertions(+), 29 deletions(-)
 
-I will submit those shortly unless we think they better not be in 6.3, 
-in which case it would be nice to silence those -EINVAL errors.
 -- 
-Florian
+2.25.1
 
 
---000000000000ab705105fcf0ece6
+--00000000000022249705fcf10f4f
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -202,14 +177,14 @@ kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
 NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
 AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
 LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIAlKCzC9LJ9n+LIn
-PLcLZFNRvuuVTFKn4B339pBbbX2lMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTIzMDUzMDIyNDI1NlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGsygsqAPjaZCow5
+NCB2wXPLJWFc7Lw/C994cMWJ/0MfMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDUzMDIyNTIzNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
 AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCKZZgk+P79w/H4+meE5Qo8bu2Uo8s9ZKOa
-zTEDky18Net8SUUN/6u3mABTxM7jysvOSa1clEImjoIR4FZfTKv299GXDn9qZJNS6jnV7g98EZT5
-it2r5TTjy0VcbiIHDoKWOLeZPegSLEWFYZLHi9t526MB2OtaegGB3q1V/yKhELVixqmBzE7fnnRz
-SKzx6gCEj4/HiMew1e3qjsXRaTi8aRvexsLDY8un+xLQgMx1dAJUCTphFHpO1ApsF1wbJmVJM8Jr
-ZWHOy4jDZW9lg3LLg/XIJXXLC5UhWecqjl6/phj3DgnahrDQVfBmW+bQDG2pWuVoPnpi/qoeWe3k
-Z5TY
---000000000000ab705105fcf0ece6--
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDFOovXsB9kjXYHTgyokDBCc0CHFhnAcvvx
+OeCpu9ltI/tYtUki0L1qBgN7LtyddgejsZZHpJLOXPvmQeQdah5jHj8rAemQJ0Id9IScI2y5cHyX
+SB5PVAKhpEIFRlWCvzNS/zuwMOXcla73Z0R6O0wkXcUpOHeCqrx9gvqR4oz04GtxHwJqdGrbav+P
+G0ImZMnB0eLBn6jTG+QCMTZiqAcRe59aiaiyvblwZ4t+LmUMbcecQzRLyGRLBHVlhqQzpw7GYTgO
+4W0iIPcf7DnCJvbt+jZoGaRL0I2kfJLZSxzlq61qcBRvjX89UlwOup/xISXfcgyX1JZkf8v6Hx4t
+eD93
+--00000000000022249705fcf10f4f--
