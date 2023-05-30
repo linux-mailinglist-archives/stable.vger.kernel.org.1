@@ -2,136 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE03716FCE
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 23:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1537716FD9
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 23:39:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbjE3Vfp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 17:35:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
+        id S233538AbjE3VjK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 17:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjE3Vfo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 17:35:44 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC520C7
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 14:35:43 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-53fbb3a013dso972858a12.1
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 14:35:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1685482543; x=1688074543;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8BwVZEz7eeoiRq8NCkuTyvuokkbIRjwcbdyFSyrkvm8=;
-        b=iLrqB9SKHCpJBJ0PszlfHiDomjiJFLqqqfLA9gdhSNxD30TTEC7CdLYcvTYcjpVNML
-         jg13C5GgmzvH6CT3jJXjku+NzQUD7hICoVwe2fDFr9xQjHJBJyioNjrGwYC5IHwGNnQh
-         5hD8b/jcMEOtfJvuQ/QXLLU9854LkvbuHjsav2TBq4+GXFf+WBTH9GEMClalgkksETPb
-         2wcmD+LdAbOagnfmzRgY5eeks2eJQMYVVY+5xa27CjUh8ASgEdn52Vxohx62JZ31KdGB
-         rIMSyX7S2PlNRrtdzB957qhHGh/0SVfZS5a5fgwhRM893T07Q+W5T4hxObXHzsdsmUC3
-         foiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685482543; x=1688074543;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8BwVZEz7eeoiRq8NCkuTyvuokkbIRjwcbdyFSyrkvm8=;
-        b=lsCxUtPPI6QDy4CbuNPKnHw8zzto/U76Ui6FIQ7Epg/6jJ52MsbtTBZJKFff58GxVE
-         QmhQXhOAZf4eJ6EW0hvpJUv5uw1xGghZtoedaGNihzbbg46Gr7ns3vXp9TM7HEJ6bOc/
-         kpOjHMMRWto9d29nHFSaCV06r75kkKuJPqJwagJ7OXSRbyWUTPuESGxWIgfq2EWt5weW
-         NwHWmOk6DuIQ/7PuEb5brFxLjgCOR8AR196WysQCtRwZ6e6e1YNN6f3uirQDyY/HUdrT
-         UO8m6IAXBAZTJJSFNrUYpq4vE1aIVC0ECFZWcCgpEMFVFQ53rsd34vrDQg1W34jVarJw
-         O4iQ==
-X-Gm-Message-State: AC+VfDx/Vb64tnZ9G6xf7M9nrWm6HfOYoMSmWL+VTYqOH+lrQhDfZg0A
-        lcABpZXMzkfKJ6bgPs7X3DHkl6EVvP3lBP2iUIHRVA==
-X-Google-Smtp-Source: ACHHUZ4ek54Sofvc3pUbUB46f6qdsP0op3os8clpwaCPyRriNUeyEQi106IVERxTyq5Ep4lI9z1Cwg==
-X-Received: by 2002:a17:902:ce91:b0:1b0:2b0e:d3ef with SMTP id f17-20020a170902ce9100b001b02b0ed3efmr4146316plg.55.1685482542944;
-        Tue, 30 May 2023 14:35:42 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id w4-20020a1709029a8400b001b05e97ee09sm2060115plp.283.2023.05.30.14.35.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 14:35:42 -0700 (PDT)
-Message-ID: <64766c2e.170a0220.3c338.45c2@mx.google.com>
-Date:   Tue, 30 May 2023 14:35:42 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230399AbjE3VjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 17:39:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF5BC7;
+        Tue, 30 May 2023 14:39:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9ECDD633DB;
+        Tue, 30 May 2023 21:39:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504F1C4339B;
+        Tue, 30 May 2023 21:39:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685482745;
+        bh=K8tnh3E6cz2urAtYiHrxzL4PLY6sjrXzK1nJAzkm1l8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iIfcx+aLwdykV7AH9GpWQV3R0vRhMc95o68dX/6k/c+0KdjCVsjZyH01qTdmABgzU
+         CmfvK/Of1GJVPgdKi+JX667/jEJ919uBVvwZIuLiCFT8jIDlw2gjNnpiC7SUasAuyw
+         JaN0rsll7ad3dKGrvjRQQXv+xjfFNpmIEcM1Ih3+8hVEt6Dfu7WHkzTunfbYEpakC8
+         40T3uMyekZvqL4gwh+xgRuo3Ou0FNUDmwBXkownXDZqWzyVO7JqJTPEY8iBgcWaH9Q
+         51+S/QLLuw1n7AS3CbewwpLaMk0TOc6G+JdRAO5fasbIKk39G5J/8S4no25/aC9n8/
+         5u/2ImEVWfLoA==
+Date:   Tue, 30 May 2023 22:39:00 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Florian Fainelli <florian.fainelli@broadcom.com>
+Cc:     stable@vger.kernel.org, Pierre Gondois <pierre.gondois@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "open list:GENERIC ARCHITECTURE TOPOLOGY" 
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH stable 6.3 v2] arch_topology: Remove early cacheinfo
+ error message if -ENOENT
+Message-ID: <20230530-basically-wildly-84415a94171d@spud>
+References: <20230530201955.848176-1-florian.fainelli@broadcom.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.3.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v6.3.5
-X-Kernelci-Report-Type: test
-Subject: stable-rc/linux-6.3.y baseline: 168 runs, 1 regressions (v6.3.5)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230530201955.848176-1-florian.fainelli@broadcom.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.3.y baseline: 168 runs, 1 regressions (v6.3.5)
+Yo Florian,
 
-Regressions Summary
--------------------
+On Tue, May 30, 2023 at 01:19:55PM -0700, Florian Fainelli wrote:
+> From: Pierre Gondois <pierre.gondois@arm.com>
+>=20
+> commit 3522340199cc060b70f0094e3039bdb43c3f6ee1 upstream
+>=20
+> fetch_cache_info() tries to get the number of cache leaves/levels
+> for each CPU in order to pre-allocate memory for cacheinfo struct.
+> Allocating this memory later triggers a:
+>   'BUG: sleeping function called from invalid context'
+> in PREEMPT_RT kernels.
+>=20
+> If there is no cache related information available in DT or ACPI,
+> fetch_cache_info() fails and an error message is printed:
+>   'Early cacheinfo failed, ret =3D ...'
+>=20
+> Not having cache information should be a valid configuration.
+> Remove the error message if fetch_cache_info() fails with -ENOENT.
+>=20
+> Suggested-by: Conor Dooley <conor.dooley@microchip.com>
+> Link: https://lore.kernel.org/all/20230404-hatred-swimmer-6fecdf33b57a@sp=
+ud/
+> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Link: https://lore.kernel.org/r/20230414081453.244787-4-pierre.gondois@ar=
+m.com
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
-+arm64-chromebook | 1          =
+How come this now needs a backport? Did the rest of the series get
+backported, but not this one since it has no fixes tag?
 
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
-el/v6.3.5/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-6.3.y
-  Describe: v6.3.5
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      c297019eca71ec5236ffe916eb37091de041bf23 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
-+arm64-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/647638f94c0aaefb1a2e860f
-
-  Results:     164 PASS, 8 FAIL, 0 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5/a=
-rm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui-=
-jacuzzi-juniper-sku16.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5/a=
-rm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui-=
-jacuzzi-juniper-sku16.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230527.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.mt6577-auxadc-probed: https://kernelci.org/test/case/id=
-/647638f94c0aaefb1a2e862c
-        new failure (last pass: v6.3.3-492-g1cd506b5ec44)
-
-    2023-05-30T17:56:52.917550  /lava-10528814/1/../bin/lava-test-case
-   =
-
- =20
+Cheers,
+Conor.
