@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6A2C715F82
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 14:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A140715F9A
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 14:31:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbjE3Mb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 08:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57798 "EHLO
+        id S231570AbjE3Mbe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 08:31:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231244AbjE3MbX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 08:31:23 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550B8138
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 05:30:56 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4f3b9c88af8so5026469e87.2
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 05:30:56 -0700 (PDT)
+        with ESMTP id S231552AbjE3MbZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 08:31:25 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E568194
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 05:30:59 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2af2db78b38so47154291fa.3
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 05:30:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685449839; x=1688041839;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mM7Jz0mpFc9F7VQ75gYzJLA8egHJEnLGa+xgLus3Meg=;
-        b=L3UCcbWRjZdIUk9bofbPj8741KWX1qPMmsh4N+RNqapeZhyQhrvAqob+OvEYC8htWk
-         fOtkD/0wVbSQhfjOFKkuD7oCOsL4FQYNgLyxv4776ef4HVfNYCC8KBR+DcKNhQVQZd7h
-         86LHNfVSbdqr/RHXyeJjchxg5/nvSo6+UdStm/4K/0RbtggooqZKaujJFW8c/YctrjZ8
-         BrA/82xDWCAhxAmwgGfaWnbtR3wTXuuyGbZF4s0XzKjPponge+bJoPuzksu2ocTCjgtO
-         edElyHQOz3ly33eQiKGs0A/LGaRXejKyN0exmcou6yg39CbsAWm4JOI6fjcFFzKd8OSC
-         4Gug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685449839; x=1688041839;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1685449842; x=1688041842;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mM7Jz0mpFc9F7VQ75gYzJLA8egHJEnLGa+xgLus3Meg=;
-        b=F9kcOnSyzqaSAcc0OPXUvPwBtXhZkiysQSUi1YsesAHrAZ+GVRRdeMOaR1S/SP3xfx
-         aw1OcMNkAywJiBdWplBnJW9fI3UMYQN+a6GBf5+r++Q3NLw7OPHDiNSWHa0kxxqi967v
-         u5QDBP18VfYgoV/72zDvJZsfSO+TnOR5+L1UukwTlRxD3BlsNR85Ev6hdrLKHxGQ8YK7
-         gZ4Yd2XiPNPIKYfhmy0YZPibOf2ibmWTUJuNSzy1F7m9x/Ys3Oab6H1tPsiiMM+AHJJd
-         6XJY7MTuZEudVSe/wzokIQ7U+dVFTRM0V96/4VAPEgswrc6Wv82DJ+f5yjOxUvCVSYRq
-         ApKg==
-X-Gm-Message-State: AC+VfDwaqXDM2HCNCpXOiBfuP/j40TZZbK1sys47jI8p1+iUIpFfdB+o
-        8N6Li8RPoSdnsE2upQYL2K99QA==
-X-Google-Smtp-Source: ACHHUZ4enNxJ4AIlPJiaCYu/JLIxdKbrPKtGJVCnoov4LMJ4lyrtWg+NVVGjyGb9kbb/WmVk/SNvkg==
-X-Received: by 2002:a2e:8302:0:b0:2a8:bc82:5f8f with SMTP id a2-20020a2e8302000000b002a8bc825f8fmr795140ljh.9.1685449838777;
-        Tue, 30 May 2023 05:30:38 -0700 (PDT)
+        bh=sbfKhEi6AP8oogWxHIUjADOArHuCuwJja0KhM7U85+Y=;
+        b=vRUpZqjHX8gIg96+0FXtOpJ2hZUbOQ3/nAAEOW3FU2s1Q6TOPRx8r50flnJZYZrNX2
+         JVGKmM3YdFqHYHziwTHBrMk44DKqeWdhgsrPm4zPqVZaGl1FCX3icDyphQhKTUtIOjBv
+         Rlk9TLhcEPzHkmVbtpPWzQvhDwvysNQHDWY8LqHkDBwX6lWA08/73Sl0mDuWhdxYouxR
+         Gza9y3rf9IzmJObxzJ1FxbKTHvekPhgJ17SnZ2lkk+6RB1f410MbbO+hAyy2PoprH9Dd
+         s/RiKpT2CLs4gKVr7fX0eKyz/ofuzJ+hLzQdFh43Z1Eiz48/gTkWZdpZNVWYwrXzHjMw
+         Rczw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685449842; x=1688041842;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sbfKhEi6AP8oogWxHIUjADOArHuCuwJja0KhM7U85+Y=;
+        b=cvPMI3VhX3xF2eHvV1Hy5pq7qiAt1O0NrU87yEtS173uFgHoVzh7DgGoDqr5rMxTox
+         9G/5LQCqTTm/JWlYBZzrl8RMdF/COedEWVdQrvSaThBGpJSvCtJHQc4HmcQiudUQZ5TI
+         QUXtp6hFPd85zZaEnKas0RyYkbN7ANJXxmgP6t9u2x37YwUx9igWcX4iK87vYNRyknX8
+         pwhwLFnAUAJ0ie7lclq8gBl3gp5ZIjiALoRZ9ZFZBzaZfpqioJO1DM7/JByKwr4gTYrC
+         fKCcRPBF50jDZFHe//Ez1Jy8F4l4ZW9VUw/Rm+nRCeZqXkxeaV8Kp3fny5JSyGYW6IVl
+         92aw==
+X-Gm-Message-State: AC+VfDzMYwtoPC4CyPaa0AKV32kwNWWbJh65bP2uxwnmFeGcoCY7gLHG
+        Xym3+0K+0AvMsSQ/ltY1m2SDgw==
+X-Google-Smtp-Source: ACHHUZ4fiaEB6l9xrvcHu6Ng1NM7TGxQ2cCfXI+eAVIk9J9KIJH3jnMej9GKtK0hJb/x9YP4CZlVsw==
+X-Received: by 2002:a2e:2e16:0:b0:2af:22a0:81fd with SMTP id u22-20020a2e2e16000000b002af22a081fdmr689378lju.11.1685449841843;
+        Tue, 30 May 2023 05:30:41 -0700 (PDT)
 Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
-        by smtp.gmail.com with ESMTPSA id u18-20020a2e91d2000000b002a8b8baf542sm2854814ljg.126.2023.05.30.05.30.37
+        by smtp.gmail.com with ESMTPSA id u18-20020a2e91d2000000b002a8b8baf542sm2854814ljg.126.2023.05.30.05.30.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 05:30:38 -0700 (PDT)
+        Tue, 30 May 2023 05:30:41 -0700 (PDT)
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: [PATCH v4 00/17] Venus QoL / maintainability fixes
-Date:   Tue, 30 May 2023 14:30:34 +0200
-Message-Id: <20230228-topic-venus-v4-0-feebb2f6e9b8@linaro.org>
+Date:   Tue, 30 May 2023 14:30:36 +0200
+Subject: [PATCH v4 02/17] media: venus: hfi_venus: Write to VIDC_CTRL_INIT
+ after unmasking interrupts
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGvsdWQC/33NQQ6DIBQE0KsY1qVBQIWueo+mC8CvkhgwoKSN8
- e5Fd00blzPJm1lRhGAholuxogDJRutdDvxSIDMo1wO2bc6IEsoIpQLPfrIGJ3BLxA0BxbRp6lo
- IlIVWEbAOypkhG7eMYy6nAJ19HRePZ86DjbMP7+MxlXv7fzyVmOBKGGqEYIKDvI/WqeCvPvRoH
- 0r0BNOMW1m1JZdcmuYXsxPMMq6JpAo405XovvC2bR+lHTgVNgEAAA==
+Message-Id: <20230228-topic-venus-v4-2-feebb2f6e9b8@linaro.org>
+References: <20230228-topic-venus-v4-0-feebb2f6e9b8@linaro.org>
+In-Reply-To: <20230228-topic-venus-v4-0-feebb2f6e9b8@linaro.org>
 To:     Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
         Vikash Garodia <quic_vgarodia@quicinc.com>,
         Andy Gross <agross@kernel.org>,
@@ -79,11 +79,11 @@ Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Vikash Garodia <quic_vgarodia@quicinc.com>,
         stable@vger.kernel.org
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1685449837; l=4983;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1685449837; l=1518;
  i=konrad.dybcio@linaro.org; s=20230215; h=from:subject:message-id;
- bh=GzggsN2nMZHk+5zCOLvOhBzcYDD9jMl6Z663enA8WEM=;
- b=UkyLQExaf4jwinZAu16ll2AhBFr7wHxO6zrPSHRlhHHYYE/Yt/9lBejb8Jdec++j0UYAwf6i/
- YRCKsypzbLsDN7b1fEbRgWZJ9fN+SfYBGvd25c5x6tJERJzypkWtfbj
+ bh=6Tn8t8czcTnx35lpk52WIN8IiuX0IKqs1GzlBMeyKQk=;
+ b=YkKhxl3/ihamy1BEEQDPatQ+JPwks7Lxn+y7kclMML3j/mWQMghtFGtL7R0Jo7xbdfhZcO5oh
+ rBHg1+d4v0KCCYNwh4lBl8mllhLQJSFw+dUDchB/5jOADrNxIwG7Yzj
 X-Developer-Key: i=konrad.dybcio@linaro.org; a=ed25519;
  pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -96,102 +96,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-v3 -> v4:
-- Rebase on Stanimir's venus-for-next-v6.5
-- Collapse 2 identical if-statements in "Sanitize venus_boot_core()
-  per-VPU-version"
-- Reword "Assign registers based on VPU version"
-- Check for IS_IRIS2_1() instead of wrongly checking for core->use_tz,
-  update commit msg in "media: venus: firmware: Correct IS_V6() checks"
-- Access correct struct fields in "Use newly-introduced
-  hfi_buffer_requirements accessors", drop Bryan's r-b
+The startup procedure shouldn't be started with interrupts masked, as that
+may entail silent failures.
 
-v3: https://lore.kernel.org/r/20230228-topic-venus-v3-0-6092ae43b58f@linaro.org
+Kick off initialization only after the interrupts are unmasked.
 
-v2 -> v3:
-- Rephrase "Write to VIDC_CTRL_INIT after unmasking interrupts" commit msg
-- Drop "Remap bufreq fields on HFI6XX"
-- Rephrase "Introduce VPU version distinction" commit msg
-- Better explain "Leave a clue for homegrown porters"
-- Drop incorrect fixes tags/rephrase version check alternations
-- Drop AR50L/IRIS1 from if-conditions, they'll be introduced separately
-- pick up tags
-- rebase on next-20230517 (no effective changes)
-
-v2: https://lore.kernel.org/r/20230228-topic-venus-v2-0-d95d14949c79@linaro.org
-
-v1 -> v2:
-- Move "Write to VIDC_CTRL_INIT after unmasking interrupts" up and add
-  a Fixes tag & Cc stable
-- Reword the comment in "Correct IS_V6() checks"
-- Move up "media: venus: Remap bufreq fields on HFI6XX", add Fixes and
-  Cc stable
-- Use better English in "Use newly-introduced hfi_buffer_requirements
-  accessors" commit message
-- Mention "Restrict writing SCIACMDARG3 to Venus V1/V2" doesn't seem to
-  regress SM8250 in the commit message
-- Pick up tags (note: I capitalized the R in Dikshita's 'reviewed-by'
-  and removed one occurrence of random '**' to make sure review tools
-  like b4 don't go crazy)
-- Handle AR50_LITE in "Assign registers based on VPU version"
-- Drop /* VPUn */ comments, they're invalid as explained by Vikash
-- Take a different approach to the sys_idle problem in patch 1
-
-v1: https://lore.kernel.org/r/20230228-topic-venus-v1-0-58c2c88384e9@linaro.org
-
-Currently upstream assumes all (well, almost all - see 7280 or CrOS
-specific checks) Venus implementations using the same version of the
-Hardware Firmware Interface can be treated the same way. This is
-however not the case.
-
-This series tries to introduce the groundwork to start differentiating
-them based on the VPU (Video Processing Unit) hardware type, fixes a
-couple of issues that were an effect of that generalized assumption
-and lays the foundation for supporting 8150 (IRIS1) and SM6115/QCM2290
-(AR50 Lite), which will hopefully come soon.
-
-Tested on 8250, but pretty please test it on your boards too!
-
+Cc: stable@vger.kernel.org # v4.12+
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 ---
-Konrad Dybcio (17):
-      media: venus: hfi_venus: Only consider sys_idle_indicator on V1
-      media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
-      media: venus: Introduce VPU version distinction
-      media: venus: Add vpu_version to most SoCs
-      media: venus: firmware: Leave a clue about obtaining CP VARs
-      media: venus: hfi_venus: Sanitize venus_boot_core() per-VPU-version
-      media: venus: core: Assign registers based on VPU version
-      media: venus: hfi_venus: Sanitize venus_halt_axi() per-VPU-version
-      media: venus: hfi_venus: Sanitize venus_isr() per-VPU-version
-      media: venus: hfi_venus: Sanitize venus_cpu_and_video_core_idle() per-VPU-version
-      media: venus: hfi_venus: Sanitize venus_cpu_idle_and_pc_ready() per-VPU-version
-      media: venus: firmware: Sanitize per-VPU-version
-      media: venus: hfi_platform: Check vpu_version instead of device compatible
-      media: venus: vdec: Sanitize vdec_set_work_route() per-VPU-version
-      media: venus: Introduce accessors for remapped hfi_buffer_reqs members
-      media: venus: Use newly-introduced hfi_buffer_requirements accessors
-      media: venus: hfi_venus: Restrict writing SCIACMDARG3 to Venus V1/V2
+ drivers/media/platform/qcom/venus/hfi_venus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/media/platform/qcom/venus/core.c           |  7 ++-
- drivers/media/platform/qcom/venus/core.h           | 15 ++++++
- drivers/media/platform/qcom/venus/firmware.c       | 18 +++++--
- drivers/media/platform/qcom/venus/helpers.c        |  7 +--
- drivers/media/platform/qcom/venus/hfi_helper.h     | 61 +++++++++++++++++++---
- drivers/media/platform/qcom/venus/hfi_msgs.c       |  2 +-
- .../media/platform/qcom/venus/hfi_plat_bufs_v6.c   | 22 ++++----
- drivers/media/platform/qcom/venus/hfi_platform.c   |  2 +-
- drivers/media/platform/qcom/venus/hfi_venus.c      | 42 +++++++--------
- drivers/media/platform/qcom/venus/vdec.c           | 10 ++--
- drivers/media/platform/qcom/venus/vdec_ctrls.c     |  2 +-
- drivers/media/platform/qcom/venus/venc.c           |  4 +-
- drivers/media/platform/qcom/venus/venc_ctrls.c     |  2 +-
- 13 files changed, 133 insertions(+), 61 deletions(-)
----
-base-commit: 9f9f8ca6f012d25428f8605cb36369a449db8508
-change-id: 20230228-topic-venus-70ea3bc76688
+diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+index 918a283bd890..5506a0d196ef 100644
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+ 	void __iomem *wrapper_base = hdev->core->wrapper_base;
+ 	int ret = 0;
+ 
+-	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	if (IS_V6(hdev->core)) {
+ 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
+ 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
+@@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+ 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+ 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
+ 
++	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	while (!ctrl_status && count < max_tries) {
+ 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
+ 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
 
-Best regards,
 -- 
-Konrad Dybcio <konrad.dybcio@linaro.org>
+2.40.1
 
