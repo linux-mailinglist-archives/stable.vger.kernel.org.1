@@ -2,95 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1E4715B22
-	for <lists+stable@lfdr.de>; Tue, 30 May 2023 12:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6EE5715BBC
+	for <lists+stable@lfdr.de>; Tue, 30 May 2023 12:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231377AbjE3KLF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 06:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
+        id S231599AbjE3K2c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 06:28:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbjE3KKk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 06:10:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE5EE6C;
-        Tue, 30 May 2023 03:10:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C43A62D0C;
-        Tue, 30 May 2023 10:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80E8BC4339B;
-        Tue, 30 May 2023 10:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685441420;
-        bh=HJNcXaAUyXKvgisDwudLEOOftSXDXFSDtCqGxjZ80Fw=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=UsJQCpZzgiF+nqG1IPA7V9srR3gSXtZeZUuxAAluyJnglUVgyCPyTqCpeU5F3ErEs
-         UktXJbO3vHnMmc5baD2LNmZDZuTDUXlhd/ifVfnXaWQf+QzcIL+xFcdRKefq60guLJ
-         /xRwyIbb+wDIQ9DQdNuYDFtD9pqYEt9iqzhmaV60grW9pVYmjMWbWj0/BE5vs3XywA
-         zEbjrt2p9IdSSy+PFrNbyTI9mVIvkYgO8bGmxoSoMtRZzU+EiW7yyogGmCft262rAE
-         JttxKisLiFBsFIWQ8eFOCRcMn914B34W2tlWbiLVIfQwAH3VQ9xDMlAaRixk8j/iDH
-         lM1s6TvyoLzZA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 65394E52C02;
-        Tue, 30 May 2023 10:10:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230079AbjE3K1z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 06:27:55 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2394FC;
+        Tue, 30 May 2023 03:26:40 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id A70BB1C0D20; Tue, 30 May 2023 12:26:38 +0200 (CEST)
+Date:   Tue, 30 May 2023 12:26:37 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        kch@nvidia.com, avolmat@me.com, arnd@arndb.de, vi@endrift.com
+Subject: Re: [PATCH 4.14 00/86] 4.14.316-rc1 review
+Message-ID: <ZHXPXaPPWuslRI6A@duo.ucw.cz>
+References: <20230528190828.564682883@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V3,net] net: mana: Fix perf regression: remove rx_cqes,
- tx_cqes counters
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168544142040.13918.458960316651183871.git-patchwork-notify@kernel.org>
-Date:   Tue, 30 May 2023 10:10:20 +0000
-References: <1685115537-31675-1-git-send-email-haiyangz@microsoft.com>
-In-Reply-To: <1685115537-31675-1-git-send-email-haiyangz@microsoft.com>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        decui@microsoft.com, kys@microsoft.com, paulros@microsoft.com,
-        olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net,
-        wei.liu@kernel.org, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, leon@kernel.org, longli@microsoft.com,
-        ssengar@linux.microsoft.com, linux-rdma@vger.kernel.org,
-        daniel@iogearbox.net, john.fastabend@gmail.com,
-        bpf@vger.kernel.org, ast@kernel.org, sharmaajay@microsoft.com,
-        hawk@kernel.org, tglx@linutronix.de,
-        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="HoT0r7ZN4EsSbGiN"
+Content-Disposition: inline
+In-Reply-To: <20230528190828.564682883@linuxfoundation.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+--HoT0r7ZN4EsSbGiN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 26 May 2023 08:38:57 -0700 you wrote:
-> The apc->eth_stats.rx_cqes is one per NIC (vport), and it's on the
-> frequent and parallel code path of all queues. So, r/w into this
-> single shared variable by many threads on different CPUs creates a
-> lot caching and memory overhead, hence perf regression. And, it's
-> not accurate due to the high volume concurrent r/w.
-> 
-> For example, a workload is iperf with 128 threads, and with RPS
-> enabled. We saw perf regression of 25% with the previous patch
-> adding the counters. And this patch eliminates the regression.
-> 
-> [...]
+Hi!
 
-Here is the summary with links:
-  - [V3,net] net: mana: Fix perf regression: remove rx_cqes, tx_cqes counters
-    https://git.kernel.org/netdev/net/c/1919b39fc6ea
+> This is the start of the stable review cycle for the 4.14.316 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Chaitanya Kulkarni <kch@nvidia.com>
+>     null_blk: Always check queue mode setting from configfs
 
+This one is in 4.14 and 5.10, but not in 4.19.
 
+> Alain Volmat <avolmat@me.com>
+>     phy: st: miphy28lp: use _poll_timeout functions for waits
+
+This is just a cleanup, we don't really need it in stable.
+
+> Arnd Bergmann <arnd@arndb.de>
+>     clk: tegra20: fix gcc-7 constant overflow warning
+
+Something went wrong here:
+
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
+
+First, we don't really need u after hex constants. Second, we normally
+use upperspace U for this. Third, u should not really be appended to
+the constant name.
+
+> Vicki Pfau <vi@endrift.com>
+>     Input: xpad - add constants for GIP interface numbers
+
+This is just a cleanup, we don't really need it in stable.
+
+Best regards,
+								Pavel
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--HoT0r7ZN4EsSbGiN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZHXPXQAKCRAw5/Bqldv6
+8qj3AKCDLbIXFtCX4xd31flyfX4Chme4ngCfapt3x8fLAKlpwUMRFeGiFCeTepI=
+=P7xE
+-----END PGP SIGNATURE-----
+
+--HoT0r7ZN4EsSbGiN--
