@@ -2,64 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B1B71778A
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 09:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36433717873
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 09:41:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232169AbjEaHIC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 03:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56502 "EHLO
+        id S232464AbjEaHl3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 03:41:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231963AbjEaHIB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 03:08:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F102EE
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 00:08:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F2C76145F
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 07:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F330EC433D2;
-        Wed, 31 May 2023 07:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685516880;
-        bh=t8zPr94u10649fhILBA5TlwSf5Khh+PaylXzXjpH1RE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jUydpLMfzA+EhDeG1n7tMTKVU1KDnGDjTOd8GKURH0SHFLBQEBsP3QbaH0ixl4YWZ
-         IFMC/yrc/lQs46wxlM3iRAq7Tka9A3ZRqpHfkj3yerQCqxO6hTnBv8Z0zgSe3mlx5Q
-         ACfWMP2+Be2LrhM0ieIBPZJULO2oSGE9lewUkhSMbfANktiHK/VOveOUyq9YkEhqQD
-         YglT5x3ZKTaMbzZxZyi+xzhm+Z4/bTY6/TyZe74qcvhDQXkMhP1/ILeA+wEf0BvmDm
-         dNlz18vjDihUuT8QduW8pPxnjQsEPnfYITiCxdkHayFH6+ynHwSnT6sgfavdLJ3lQ8
-         rTQQSfwPgXNDg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <maz@kernel.org>)
-        id 1q4Fw5-001XWS-PK;
-        Wed, 31 May 2023 08:07:57 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev
-Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>, Yu Zhao <yuzhao@google.com>,
-        Fuad Tabba <tabba@google.com>,
-        James Morse <james.morse@arm.com>,
-        Will Deacon <will@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Drop last page ref in kvm_pgtable_stage2_free_removed()
-Date:   Wed, 31 May 2023 08:07:54 +0100
-Message-Id: <168551686716.427043.12115690146514888299.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230530193213.1663411-1-oliver.upton@linux.dev>
-References: <20230530193213.1663411-1-oliver.upton@linux.dev>
+        with ESMTP id S232077AbjEaHl2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 03:41:28 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B274C0
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 00:41:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685518886; x=1717054886;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=01VuOJHSKrzhPjUg5FY6DIIXJezQ9jha7JZRnVaHrcI=;
+  b=BnC2W1fspqFVBsWRcF/boY/1DT4tj7XFq4/hna7Dv17xg01RWgS0+aMP
+   vIP/+niZlCqqkFyIrhCKLZzoN97vYd1GY/2eQd+NRsffqd8cD1L5clURP
+   RXKfCgLlS0b2QGeBH6dqJQmMOAnyxAYKPBwsc9U6JBGn1YfnhDBMN8K1e
+   e/OQ0SoGv94kz/8jAW62WG9I6YJK158ZB3zVaBfYffQz3qvLMPRuuxhVE
+   1dYBxRqijxksonShTWBxUhuttCwmeydbMREK0NSwkP0hPNuAa5hLLkCw+
+   ZDeT9ZuvfCfF8+wTP1dU8M37xxHMB83bui7ec1Uuq+DJoxt5dGmU2b62Q
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="420929959"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; 
+   d="scan'208";a="420929959"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2023 00:41:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="771900738"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; 
+   d="scan'208";a="771900738"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga008.fm.intel.com with ESMTP; 31 May 2023 00:41:07 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 4ACBD589; Wed, 31 May 2023 10:41:13 +0300 (EEST)
+Date:   Wed, 31 May 2023 10:41:13 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     beld zhang <beldzhang@gmail.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: 6.1.30: thunderbolt: Clear registers properly when auto clear
+ isn't in use cause call trace after resume
+Message-ID: <20230531074113.GI45886@black.fi.intel.com>
+References: <CAG7aomXv2KV9es2RiGwguesRnUTda-XzmeE42m0=GdpJ2qMOcg@mail.gmail.com>
+ <ZHKW5NeabmfhgLbY@debian.me>
+ <261a70b7-a425-faed-8cd5-7fbf807bdef7@amd.com>
+ <20230529113813.GZ45886@black.fi.intel.com>
+ <e37b2f7f-d204-4204-ce72-e108975c2fe0@amd.com>
+ <20230530080328.GD45886@black.fi.intel.com>
+ <CAG7aomWBf2k6NzJ85Qrz4LN_N=K8O0fbd0p9VSP+jm4FsRaNkg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, yuzhao@google.com, tabba@google.com, james.morse@arm.com, will@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <CAG7aomWBf2k6NzJ85Qrz4LN_N=K8O0fbd0p9VSP+jm4FsRaNkg@mail.gmail.com>
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,25 +69,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 30 May 2023 19:32:13 +0000, Oliver Upton wrote:
-> The reference count on page table allocations is increased for every
-> 'counted' PTE (valid or donated) in the table in addition to the initial
-> reference from ->zalloc_page(). kvm_pgtable_stage2_free_removed() fails
-> to drop the last reference on the root of the table walk, meaning we
-> leak memory.
+On Tue, May 30, 2023 at 10:38:01AM -0400, beld zhang wrote:
+> On Tue, May 30, 2023 at 4:03 AM Mika Westerberg wrote:
+> >
+> > On Mon, May 29, 2023 at 11:12:45PM -0500, Mario Limonciello wrote:
+> >
+> > Thanks, submitted formal patch now here:
+> >
+> > https://lore.kernel.org/linux-usb/20230530075555.35239-1-mika.westerberg@linux.intel.com/
+> >
+> > beld zhang, can you try it and see if it works on your system? It should
+> > apply on top of thunderbolt.git/fixes [1]. Thanks!
+> >
+> > [1] git://git.kernel.org/pub/scm/linux/kernel/git/westeri/thunderbolt.git
 > 
-> Fix it by dropping the last reference after the free walker returns,
-> at which point all references for 'counted' PTEs have been released.
+> tested fixes branch, applied patch:
+>     1) boot with mouse..............: good
+>     2) remove mouse then put on.....: good
+>     3) rmmod / modprobe thunderbolt.: good
+>     4) suspend / resume.............: good
 
-Applied to fixes, thanks!
-
-[1/1] KVM: arm64: Drop last page ref in kvm_pgtable_stage2_free_removed()
-      commit: f6a27d6dc51b288106adaf053cff9c9b9cc12c4e
-
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
-
-
+Thanks for testing! I took the liberty to add your tested-by to the
+patch. Let me know if that's not OK.
