@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB486717946
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 09:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FAE671795F
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 10:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235070AbjEaH67 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 03:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59438 "EHLO
+        id S234930AbjEaIBK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 04:01:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234932AbjEaH6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 03:58:34 -0400
+        with ESMTP id S235453AbjEaIAo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 04:00:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11949E6A;
-        Wed, 31 May 2023 00:58:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6810EE77;
+        Wed, 31 May 2023 01:00:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 709A8636A0;
-        Wed, 31 May 2023 07:53:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0046AC4339E;
-        Wed, 31 May 2023 07:53:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F00E1637C4;
+        Wed, 31 May 2023 08:00:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5705CC433EF;
+        Wed, 31 May 2023 08:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685519586;
-        bh=S0GisPmsqjyz7HCMTOJiz8ZWWhleMBu7VOEDA1PRQAQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HNGpOMbqUyPbLn9cRXfHlKeQs9E2d3KUWh3P7F+bE3jatKI89Ph1ubaXGVb1Npi3g
-         1j/q4Rk6j2pLRdZ2gtoGMyaSD72BnTuQ35sm4PEfw1QNhdgjENObxBQC8ABwYokQ1p
-         0LTZiUGeuhzIKEgYG3+kV2kfaM/xyfy3tSf5lkiZfltOaLZ0Yf1a9SlZI+pasM9oTw
-         O8+vqBAL9M3AwuT2PLokyn5H/6l5dNYBgalhf97LukxvciFG5dBeGG+uTuFGmZZzQJ
-         zlfXOjRsSXRKunDt46Q7hF3dTt5RlWVThiAhMTnCeyapq2RYrwN/i2IScdxrBbTISQ
-         IRRre9952mazA==
-Date:   Wed, 31 May 2023 09:53:01 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Benjamin Segall <bsegall@google.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH RESEND] epoll: ep_autoremove_wake_function should use
- list_del_init_careful
-Message-ID: <20230531-zupacken-laute-22564cd952f7@brauner>
-References: <xm26pm6hvfer.fsf@google.com>
- <20230531015748.GB1648@quark.localdomain>
+        s=k20201202; t=1685520017;
+        bh=c6Duq3c+yZHkdCZ4H7pQzdV4qKMi9g8iw8iuvGIfvk0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FiW9J8LHcud0gneuOakQNXig/Xsx+xPjtCWFvOaZcHDQTWYbvnnteZgvxwbvqw+Xz
+         QrZc3kTX9J4JiSvhiEvjNF9D077T38NMgxOPLQsZ14OKsHmirvs4CWUu+k6fn67jMp
+         /sk8SEhiIIYhLEh7FGhTlulJoJHmdHd3Uznxo7Tvt+cDEQvS3vo/FAiqmjP7GyTCRT
+         4dUeUppARvJQl6F67wOoCSnkjZgYYt6M3iVgoGrS3EMdyx9YfF95Q7O3B4mUA55zua
+         +DzTZ3EA3mC7GuREpicd28R07bgEuKZUTDF7HmSxntqitc+OygLOsKeA6zfZUaDuYU
+         VXpCNH0Pa6aKQ==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1q4Gkm-0000CD-LB; Wed, 31 May 2023 10:00:20 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH] drm/msm/a6xx: fix uninitialised lock in init error path
+Date:   Wed, 31 May 2023 09:58:54 +0200
+Message-Id: <20230531075854.703-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230531015748.GB1648@quark.localdomain>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,36 +61,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023 at 06:57:48PM -0700, Eric Biggers wrote:
-> On Tue, May 30, 2023 at 11:32:28AM -0700, Benjamin Segall wrote:
-> > autoremove_wake_function uses list_del_init_careful, so should epoll's
-> > more aggressive variant. It only doesn't because it was copied from an
-> > older wait.c rather than the most recent.
-> > 
-> > Fixes: a16ceb139610 ("epoll: autoremove wakers even more aggressively")
-> > Signed-off-by: Ben Segall <bsegall@google.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  fs/eventpoll.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-> > index 52954d4637b5..081df056398a 100644
-> > --- a/fs/eventpoll.c
-> > +++ b/fs/eventpoll.c
-> > @@ -1756,11 +1756,11 @@ static struct timespec64 *ep_timeout_to_timespec(struct timespec64 *to, long ms)
-> >  static int ep_autoremove_wake_function(struct wait_queue_entry *wq_entry,
-> >  				       unsigned int mode, int sync, void *key)
-> >  {
-> >  	int ret = default_wake_function(wq_entry, mode, sync, key);
-> >  
-> > -	list_del_init(&wq_entry->entry);
-> > +	list_del_init_careful(&wq_entry->entry);
-> >  	return ret;
-> >  }
-> 
-> Can you please provide a more detailed explanation about why
-> list_del_init_careful() is needed here?
+A recent commit started taking the GMU lock in the GPU destroy path,
+which on GPU initialisation failure is called before the GMU and its
+lock have been initialised.
 
-Yeah, this needs more explanation... Next time someone looks at this
-code and there's a *_careful() added they'll want to know why.
+Make sure that the GMU has been initialised before taking the lock in
+a6xx_destroy() and drop the now redundant check from a6xx_gmu_remove().
+
+Fixes: 4cd15a3e8b36 ("drm/msm/a6xx: Make GPU destroy a bit safer")
+Cc: stable@vger.kernel.org      # 6.3
+Cc: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 3 ---
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 9 ++++++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index e16b4b3f8535..105ccf17041f 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1472,9 +1472,6 @@ void a6xx_gmu_remove(struct a6xx_gpu *a6xx_gpu)
+ 	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
+ 	struct platform_device *pdev = to_platform_device(gmu->dev);
+ 
+-	if (!gmu->initialized)
+-		return;
+-
+ 	pm_runtime_force_suspend(gmu->dev);
+ 
+ 	/*
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 9fb214f150dd..ee47b95a0205 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1684,6 +1684,7 @@ static void a6xx_destroy(struct msm_gpu *gpu)
+ {
+ 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+ 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
++	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
+ 
+ 	if (a6xx_gpu->sqe_bo) {
+ 		msm_gem_unpin_iova(a6xx_gpu->sqe_bo, gpu->aspace);
+@@ -1697,9 +1698,11 @@ static void a6xx_destroy(struct msm_gpu *gpu)
+ 
+ 	a6xx_llc_slices_destroy(a6xx_gpu);
+ 
+-	mutex_lock(&a6xx_gpu->gmu.lock);
+-	a6xx_gmu_remove(a6xx_gpu);
+-	mutex_unlock(&a6xx_gpu->gmu.lock);
++	if (gmu->initialized) {
++		mutex_lock(&gmu->lock);
++		a6xx_gmu_remove(a6xx_gpu);
++		mutex_unlock(&gmu->lock);
++	}
+ 
+ 	adreno_gpu_cleanup(adreno_gpu);
+ 
+-- 
+2.39.3
+
