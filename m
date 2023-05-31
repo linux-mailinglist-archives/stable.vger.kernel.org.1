@@ -2,88 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A1071736F
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 03:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AACD71737A
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 04:04:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233821AbjEaB56 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 21:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48312 "EHLO
+        id S233942AbjEaCEY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 30 May 2023 22:04:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbjEaB55 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 21:57:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3688F137;
-        Tue, 30 May 2023 18:57:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8ACDB635F6;
-        Wed, 31 May 2023 01:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62353C433EF;
-        Wed, 31 May 2023 01:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685498270;
-        bh=dzF+yG3jjN1BucIulDWBDlfSuDTCMG7xQb67qJZLTDM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=d7wFwU95uWOzsqIW+g8zVCScS0tL5zf39iZGpoU2AVeC9UT/dId/D8o9L/yGjE+io
-         l/d5qOXnmrwNcOCQPA4Qv58cKlzRWWiimerpmofl3kr3/8k/JqU/S1cGBCkVj4f19r
-         l+3XrKO1aReEwqqcr5PGuXXU/O6k6PrzKQCATkTeAY5Ncu2/j/5orXrzZ4oSTh1xw2
-         uesA7fhVAg+OgYVFxyEXjEXBcwpu7My3wc+r5NB48H4F6PACipyZXzXTHoxJeAZDq7
-         9UUEtSYA5TsONp18ynEIL7K9lf7WwWGAYHDas00CejgwPzuwEXvjZm0ued+Zep68ao
-         2pRomtWZ3FfwQ==
-Date:   Tue, 30 May 2023 18:57:48 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Benjamin Segall <bsegall@google.com>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH RESEND] epoll: ep_autoremove_wake_function should use
- list_del_init_careful
-Message-ID: <20230531015748.GB1648@quark.localdomain>
-References: <xm26pm6hvfer.fsf@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xm26pm6hvfer.fsf@google.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231968AbjEaCEY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 22:04:24 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A866A10E
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 19:04:22 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-bad0f5d6a7dso10172388276.0
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 19:04:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1685498662; x=1688090662;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPl0xAXqZdbO8EtlrXhUJMISF8AeYDK8P/cmISui4pg=;
+        b=JvvW5QCObtQiz9h/evP/xIfXhzSlfwKhz08eNhiNC4h0IAQUECdkWGa9y1FBwjVk1G
+         nr1CqaC+qfbXFOS9OdQUOdJIwB+nsSySKCjJLrvGvg9s34ZfdnxBl0SGp0eudgdnz0RT
+         rJXHsSWH/Br6TTUaLSbYa5WoAS02LrJ47eik/kNaQDQ7X1rhLl36n2utUU5ABG9tnkrF
+         R0BVFaastWzrnVkID9KBBw2hVvGlG1p2rtouCemYaT+NtFhyiamUe8nmaIsEZE1oz+rs
+         QOBiJ/5D6IBprILDtd52Og6AfUCGfHLB85l56sGvc0j1raYQiOy4MSnM6K3TPm73lb7m
+         0uHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685498662; x=1688090662;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPl0xAXqZdbO8EtlrXhUJMISF8AeYDK8P/cmISui4pg=;
+        b=Bjk7cQ6WmPRGCYJgd8PVVqKRZlj9TSy7D9JLOZZLatPyU5wfQG72qwMZZgyzhuAHbC
+         bWyQvE6Os9Z1Wbi1y94B16d3yCprZUn2gJRCuGHtRFjTzUSCnFq8upu3lSmCfLxWcrr4
+         UPy1aXVqMbu4vyv6DuPCZmtJSEVjOa+2gX6LsgPXOjHNuoCcMiBG2MyZGqkZX++HLzAC
+         Q2oCF0AkGkAYy/PnA0a8VjDmnl6vnTW7uWle/JPtFkCuIOXMQb8X4FvpJwvWBXvlv09o
+         /qz+LgdiwheOtbXx2VR7TWqHsVhvZjGfThm1qwT8+2PqclBGm90ZRCdLZ92U7r6c+eRp
+         YYCA==
+X-Gm-Message-State: AC+VfDzRwr3OduKRJD3QftgG6xyumppecc+OeQ6OdPg0M+wpNa91j/Q0
+        Fbq2qqr2F9FRNiEgnvd/NiChQ+Ln4hw=
+X-Google-Smtp-Source: ACHHUZ7xMW17agGZrMwJlLjH/cZpm7MCbX6aTZYwGgZHZTC+cOEziKmXRj6cKcqzRhqQhXrbPH2PtlQ7I9Y=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:543:b0:bab:cc56:76c2 with SMTP id
+ z3-20020a056902054300b00babcc5676c2mr2508734ybs.8.1685498661884; Tue, 30 May
+ 2023 19:04:21 -0700 (PDT)
+Date:   Tue, 30 May 2023 19:04:20 -0700
+In-Reply-To: <ZHaikcUjbkq7yVbi@google.com>
+Mime-Version: 1.0
+References: <CADpTngX9LESCdHVu_2mQkNGena_Ng2CphWNwsRGSMxzDsTjU2A@mail.gmail.com>
+ <ZHNMsmpo2LWjnw1A@debian.me> <CADpTngWiXNh1wAFM_EYGm-Coa8nv61Tu=3TG+Z2dVCojp2K1yg@mail.gmail.com>
+ <ZHY0WkNlui91Mxoj@google.com> <ZHaikcUjbkq7yVbi@google.com>
+Message-ID: <ZHarJCvD1KEkLVM+@google.com>
+Subject: Re: WARNING trace at kvm_nx_huge_page_recovery_worker on 6.3.4
+From:   Sean Christopherson <seanjc@google.com>
+To:     Fabio Coatti <fabio.coatti@gmail.com>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, kvm@vger.kernel.org,
+        Junaid Shahid <junaids@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023 at 11:32:28AM -0700, Benjamin Segall wrote:
-> autoremove_wake_function uses list_del_init_careful, so should epoll's
-> more aggressive variant. It only doesn't because it was copied from an
-> older wait.c rather than the most recent.
+On Tue, May 30, 2023, Sean Christopherson wrote:
+> On Tue, May 30, 2023, Sean Christopherson wrote:
+> > On Tue, May 30, 2023, Fabio Coatti wrote:
+> > > Il giorno dom 28 mag 2023 alle ore 14:44 Bagas Sanjaya
+> > > <bagasdotme@gmail.com> ha scritto:
+> > > > #regzbot ^introduced: v6.3.1..v6.3.2
+> > > > #regzbot title: WARNING trace at kvm_nx_huge_page_recovery_worker when opening a new tab in Chrome
+> > > 
+> > > Out of curiosity, I recompiled 6.3.4 after reverting the following
+> > > commit mentioned in 6.3.2 changelog:
+> > > 
+> > > commit 2ec1fe292d6edb3bd112f900692d9ef292b1fa8b
+> > > Author: Sean Christopherson <seanjc@google.com>
+> > > Date:   Wed Apr 26 15:03:23 2023 -0700
+> > > KVM: x86: Preserve TDP MMU roots until they are explicitly invalidated
+> > > commit edbdb43fc96b11b3bfa531be306a1993d9fe89ec upstream.
+> > > 
+> > > And the WARN message no longer appears on my host kernel logs, at
+> > > least so far :)
+> > 
+> > Hmm, more than likely an NX shadow page is outliving a memslot update.  I'll take
+> > another look at those flows to see if I can spot a race or leak.
 > 
-> Fixes: a16ceb139610 ("epoll: autoremove wakers even more aggressively")
-> Signed-off-by: Ben Segall <bsegall@google.com>
-> Cc: stable@vger.kernel.org
-> ---
->  fs/eventpoll.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-> index 52954d4637b5..081df056398a 100644
-> --- a/fs/eventpoll.c
-> +++ b/fs/eventpoll.c
-> @@ -1756,11 +1756,11 @@ static struct timespec64 *ep_timeout_to_timespec(struct timespec64 *to, long ms)
->  static int ep_autoremove_wake_function(struct wait_queue_entry *wq_entry,
->  				       unsigned int mode, int sync, void *key)
->  {
->  	int ret = default_wake_function(wq_entry, mode, sync, key);
->  
-> -	list_del_init(&wq_entry->entry);
-> +	list_del_init_careful(&wq_entry->entry);
->  	return ret;
->  }
+> I didn't spot anything, and I couldn't reproduce the WARN even when dropping the
+> dirty logging requirement and hacking KVM to periodically delete memslots.
 
-Can you please provide a more detailed explanation about why
-list_del_init_careful() is needed here?
+Aha!  Apparently my brain was just waiting until I sat down for dinner to have
+its lightbulb moment.
 
-- Eric
+The memslot lookup isn't factoring in whether the shadow page is for non-SMM versus
+SMM.  QEMU configures SMM to have memslots that do not exist in the non-SMM world,
+so if kvm_recover_nx_huge_pages() encounters an SMM shadow page, the memslot lookup
+can fail to find a memslot because it looks only in the set of non-SMM memslots.
+
+Before commit 2ec1fe292d6e ("KVM: x86: Preserve TDP MMU roots until they are
+explicitly invalidated"), KVM would zap all SMM TDP MMU roots and thus all SMM TDP
+MMU shadow pages once all vCPUs exited SMM.  That made the window where this bug
+could be encountered quite tiny, as the NX recovery thread would have to kick in
+while at least one vCPU was in SMM.  QEMU VMs typically only use SMM during boot,
+and so the "bad" shadow pages were gone by the time the NX recovery thread ran.
+
+Now that KVM preserves TDP MMU roots until they are explicity invalidated (by a
+memslot deletion), the window to encounter the bug is effectively never closed
+because QEMU doesn't delete memslots after boot (except for a handful of special
+scenarios.
+
+Assuming I'm correct, this should fix the issue:
+
+---
+ arch/x86/kvm/mmu/mmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index d3812de54b02..d5c03f14cdc7 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7011,7 +7011,10 @@ static void kvm_recover_nx_huge_pages(struct kvm *kvm)
+ 		 */
+ 		slot = NULL;
+ 		if (atomic_read(&kvm->nr_memslots_dirty_logging)) {
+-			slot = gfn_to_memslot(kvm, sp->gfn);
++			struct kvm_memslots *slots;
++
++			slots = kvm_memslots_for_spte_role(kvm, sp->role);
++			slot = __gfn_to_memslot(slots, sp->gfn);
+ 			WARN_ON_ONCE(!slot);
+ 		}
+ 
+
+base-commit: 17f2d782f18c9a49943ea723d7628da1837c9204
+-- 
