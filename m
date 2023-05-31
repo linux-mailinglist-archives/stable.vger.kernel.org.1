@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85635718336
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 15:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B46887182F3
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 15:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236991AbjEaNsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 09:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32934 "EHLO
+        id S236642AbjEaNq2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 09:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236793AbjEaNsR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 09:48:17 -0400
+        with ESMTP id S236640AbjEaNpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 09:45:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6BF2134;
-        Wed, 31 May 2023 06:44:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77814E65;
+        Wed, 31 May 2023 06:43:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E6B263B00;
-        Wed, 31 May 2023 13:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86D3C433EF;
-        Wed, 31 May 2023 13:43:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5062563B22;
+        Wed, 31 May 2023 13:43:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD9AC433D2;
+        Wed, 31 May 2023 13:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685540595;
-        bh=SbhS7xWumawf0IXidumAoQr5bvCJ0c1u2Ym7dhm+aq8=;
+        s=k20201202; t=1685540596;
+        bh=g5Mcy1Hoazu8j6kQL47nV2n6axlctLe1SX0rEi+qut0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rzs7fTUfrfsAAwlBUEGp0unEIo05m2g36AGgCtcm73aW2Z1A/+09dn1QrBD4xPDD+
-         vZnvVnPL83QTjWPS+Vl2OEBfK6duUSw/fJvn7X1xnBT0OakJ/KKuvWE0ndxHqEmDTl
-         cdxipccmLEmU4vU/oaqmFETTCIODYLq5XLkf70yoz8qQYVB9Q3VpyRwI+fi1oVTZah
-         fPtaTp6Rg4A0K7/GrndUiIqr8+KIRZcHC5bOEUHc6vhATWkrzliKA2+0X3pVLYdQ79
-         3aHqsVs+EsZ7JCJEsOPvWdaQHQ2gi8mDJndt77ZXn9IUN2ti57a+kSarzKgmhblGLZ
-         DC7IUpkzFFoXg==
+        b=LiBGOCEGKk1O0uzDJ8IadYbR4fSz26b4sQbiJ+v3ZOqW1qg3RJBNlE27+OO9iJeMn
+         ef6e8v8zRSsLrgFr3+azFg1xTF+LDUgG2XxHrgHo1fdgJ69YTcBvMuUmt7ojtg2YHZ
+         qr7lJMdlT6OsoYM/E3pP/P6DCQLDciJUsFX13Bf2f+GlVpPCrs27VwokkMUzyVyByC
+         IbwRO/URlJUEVHG7wKg1tJA5k0/LawFwT4MiA6uRqfYCCV6nVbDyCcSA5s+DFEhrzZ
+         Zzb8D4ZgNkNHR60acJ8OuGSqMiVfFivCPYbKynkN4nGNbn8SRimo9/fIICZ3Mc534j
+         tkq3bTjMvlHUw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sukrut Bellary <sukrut.bellary@linux.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>, christian.koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        Hawking.Zhang@amd.com, Jack.Gui@amd.com,
-        Arunpravin.PaneerSelvam@amd.com, Victor.Zhao@amd.com,
-        le.ma@amd.com, mario.limonciello@amd.com, Likun.Gao@amd.com,
-        Jiadong.Zhu@amd.com, jesse.zhang@amd.com, candice.li@amd.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 31/33] drm:amd:amdgpu: Fix missing buffer object unlock in failure path
-Date:   Wed, 31 May 2023 09:41:57 -0400
-Message-Id: <20230531134159.3383703-31-sashal@kernel.org>
+Cc:     Wenwen Chen <wenwen.chen@samsung.com>,
+        Kanchan Joshi <joshi.k@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
+        io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 32/33] io_uring: unlock sqd->lock before sq thread release CPU
+Date:   Wed, 31 May 2023 09:41:58 -0400
+Message-Id: <20230531134159.3383703-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230531134159.3383703-1-sashal@kernel.org>
 References: <20230531134159.3383703-1-sashal@kernel.org>
@@ -62,57 +57,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sukrut Bellary <sukrut.bellary@linux.com>
+From: Wenwen Chen <wenwen.chen@samsung.com>
 
-[ Upstream commit 60ecaaf54886b0642d5c4744f7fbf1ff0d6b3e42 ]
+[ Upstream commit 533ab73f5b5c95dcb4152b52d5482abcc824c690 ]
 
-smatch warning -
-1) drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c:3615 gfx_v9_0_kiq_resume()
-warn: inconsistent returns 'ring->mqd_obj->tbo.base.resv'.
+The sq thread actively releases CPU resources by calling the
+cond_resched() and schedule() interfaces when it is idle. Therefore,
+more resources are available for other threads to run.
 
-2) drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c:6901 gfx_v10_0_kiq_resume()
-warn: inconsistent returns 'ring->mqd_obj->tbo.base.resv'.
+There exists a problem in sq thread: it does not unlock sqd->lock before
+releasing CPU resources every time. This makes other threads pending on
+sqd->lock for a long time. For example, the following interfaces all
+require sqd->lock: io_sq_offload_create(), io_register_iowq_max_workers()
+and io_ring_exit_work().
 
-Signed-off-by: Sukrut Bellary <sukrut.bellary@linux.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Before the sq thread releases CPU resources, unlocking sqd->lock will
+provide the user a better experience because it can respond quickly to
+user requests.
+
+Signed-off-by: Kanchan Joshi<joshi.k@samsung.com>
+Signed-off-by: Wenwen Chen<wenwen.chen@samsung.com>
+Link: https://lore.kernel.org/r/20230525082626.577862-1-wenwen.chen@samsung.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 4 +++-
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ io_uring/sqpoll.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 2127aab74a68f..84a36b50ddd87 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6969,8 +6969,10 @@ static int gfx_v10_0_kiq_resume(struct amdgpu_device *adev)
- 		return r;
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 559652380672c..6ffa5cf1bbb86 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -256,9 +256,13 @@ static int io_sq_thread(void *data)
+ 			sqt_spin = true;
  
- 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
--	if (unlikely(r != 0))
-+	if (unlikely(r != 0)) {
-+		amdgpu_bo_unreserve(ring->mqd_obj);
- 		return r;
-+	}
+ 		if (sqt_spin || !time_after(jiffies, timeout)) {
+-			cond_resched();
+ 			if (sqt_spin)
+ 				timeout = jiffies + sqd->sq_thread_idle;
++			if (unlikely(need_resched())) {
++				mutex_unlock(&sqd->lock);
++				cond_resched();
++				mutex_lock(&sqd->lock);
++			}
+ 			continue;
+ 		}
  
- 	gfx_v10_0_kiq_init_queue(ring);
- 	amdgpu_bo_kunmap(ring->mqd_obj);
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 1f3fdf6cb903e..fe371022e5104 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -3650,8 +3650,10 @@ static int gfx_v9_0_kiq_resume(struct amdgpu_device *adev)
- 		return r;
- 
- 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
--	if (unlikely(r != 0))
-+	if (unlikely(r != 0)) {
-+		amdgpu_bo_unreserve(ring->mqd_obj);
- 		return r;
-+	}
- 
- 	gfx_v9_0_kiq_init_queue(ring);
- 	amdgpu_bo_kunmap(ring->mqd_obj);
 -- 
 2.39.2
 
