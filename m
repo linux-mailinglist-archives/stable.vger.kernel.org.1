@@ -2,133 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8AA71879C
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 18:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748B87187B8
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 18:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjEaQiL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 12:38:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60710 "EHLO
+        id S229937AbjEaQpe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 12:45:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjEaQiL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 12:38:11 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13600E4D
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 09:37:39 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-6260e8a1424so28316506d6.2
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 09:37:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685551058; x=1688143058;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tjg7ATpl7VoZqUHF1Mhzj4Gq7ctPuYHs7vKRTJDLnJg=;
-        b=evZ3sCt2GuNl8d4ckGo4cB+AFEOqA53JM74vQUFyBUkY91nHpch3Sf+0slxb9s456T
-         g+wA9AHPb8kXFzgvTmKZEkkTSeWEm5zxzg+MBjXCRDXSaKNn12Bm3pAkOrPbpAJ393zn
-         oM/m1gsXGl1sVIGgJUsOR8J0FaACoUjz3KPR2WNyt00DNn3EJZKt1JtLDCBWCeVZcacc
-         g43Otdiv0636E0hkUzfTh8q30a7SH9STtK8SOqjGjpCxZ8vkCq518RN3sS3w2u2rvr9g
-         4AXSRfdy+6I2gFZKpctTvdn8iHGorGTMlBxaCJquAkwMpoVlUG5fuXgk3csBYg8bjYjW
-         hN1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685551058; x=1688143058;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tjg7ATpl7VoZqUHF1Mhzj4Gq7ctPuYHs7vKRTJDLnJg=;
-        b=TDXdrf8bfqzq5BjJL6nx6z0E+33QsmK5YPyPhvVSmLtJ1aeCEa1IKVAicLqYKZYSBP
-         5+JOPyul2MfRH2CbZ70ufBlOBa2/V7vBD2G2AmDKU/htllb9fcqqFgFp9AxPYnhzkuLR
-         o6PdGly/1LM3k1XQJ+SaU1glT/PYF9ONgEjFwCqHfNYgrpn48uEuvU49O8PKoR2iTB5f
-         SYSFvbcVBy25EIEM5f0dHI3hJFC8gdncy6mxrceQP1sY74TBf6ftocEZeGpFkB9y/1A+
-         B9I/23IM8d5a+dObssTe36flPZ0Ee9XfoPXS/SeUWKhKa61ud4XW3IerW2Y2AtMfI666
-         yH6g==
-X-Gm-Message-State: AC+VfDwr4NMFkuSF5YiLIwaSu4Dx7dmH+Ss1qGnfGpLqCIfjCk95dY9u
-        gu/5xxkuyf+oZk3E0dd2O3xFXC3jndbp/HRevGp4Pw==
-X-Google-Smtp-Source: ACHHUZ7OQYcBLESi3+AWNMJzseVA3TTXzpYCG2G1qkVeeINEY3MFtLGW9X+2Vp06MV/k/5fL/w0a+jBSxDeRAUIQxqk=
-X-Received: by 2002:ad4:4eae:0:b0:625:aa49:19f3 with SMTP id
- ed14-20020ad44eae000000b00625aa4919f3mr7178487qvb.64.1685551057971; Wed, 31
- May 2023 09:37:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
- <4716f9fd-0e09-4e69-a802-09ddecff2733@app.fastmail.com> <6b1a0ee6-c78b-4873-bfd5-89798fce9899@kili.mountain>
- <2fce7746-6d63-4853-9b20-8fa0b24d6f32@app.fastmail.com> <41c61895-59f4-449c-9e2e-d127d7f95be5@app.fastmail.com>
- <33173e7b-0ec0-4a1e-9533-0d3b6eb4c8ce@app.fastmail.com>
-In-Reply-To: <33173e7b-0ec0-4a1e-9533-0d3b6eb4c8ce@app.fastmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 31 May 2023 09:37:26 -0700
-Message-ID: <CAKwvOd=ATzs8JruqK=LbszDamasmyaYQJ=4feMB_ZJJ3if=GaA@mail.gmail.com>
-Subject: Re: randconfig fixes for 5.10.y
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org,
-        "laurent.pinchart" <laurent.pinchart@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        with ESMTP id S229936AbjEaQp3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 12:45:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08AB012C;
+        Wed, 31 May 2023 09:45:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 838FC63851;
+        Wed, 31 May 2023 16:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9F9C433EF;
+        Wed, 31 May 2023 16:45:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685551525;
+        bh=Hy1IR3hg3CQ4YA2fKy592V6UhvERAjkIBBjrjPHOw9A=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=RZwbXF8xPVqOrus3y4kNwajSUfeUEnrIywPVwmXzPBdINBWuSMGWBO2cLQgp82Ymp
+         ut0k4U0BGSgcikiUHkn3ybDEJW+WCz4GMYsC0h/yHTN9VQqrDO7ovcti8GfgC8UNIZ
+         hoLBvwa2AM056Zma7m/xGbxkiEjzfwl8+7prSKVYICybxfKYEg2R5vqL5rtc3PawQ1
+         vV87wl17DaAY0QWDIh1vi1QQW3l1IKk31oAU3gwcny0oi/4KdbydOYUuYXpVqFbQrO
+         kIqOanRrHgSt0/am3IyBSkJvQ/7DOZPacGK3tRfVQw1koC51CpQQWGx7zMV1tNRmQo
+         Gp8+gdGh3Xn2A==
+Message-ID: <f07c0d348ec293dee1f8fe25583ee30ea21971f0.camel@kernel.org>
+Subject: Re: [PATCH] tpm: factor out the user space mm from
+ tpm_vtpm_set_locality()
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Stefan Berger <stefanb@linux.ibm.com>,
+        linux-integrity@vger.kernel.org
+Cc:     Jason Gunthorpe <jgg@nvidia.com>,
+        Alejandro Cabrera <alejandro.cabreraaldaya@tuni.fi>,
+        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
+        stable@vger.kernel.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
         linux-kernel@vger.kernel.org
+Date:   Wed, 31 May 2023 19:45:22 +0300
+In-Reply-To: <324df0fa5ad1f0508c5f62c25dd1f8d297d78813.camel@kernel.org>
+References: <20230530205001.1302975-1-jarkko@kernel.org>
+         <8f15feb5-7c6e-5a16-d9b4-008b7b45b01a@linux.ibm.com>
+         <324df0fa5ad1f0508c5f62c25dd1f8d297d78813.camel@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.48.1-0ubuntu1 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 31, 2023 at 3:12=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Tue, May 30, 2023, at 21:20, Arnd Bergmann wrote:
-> > On Tue, May 30, 2023, at 21:02, Arnd Bergmann wrote:
-> >>
-> >> CONFIG_COMPILE_TEST=3Dy forces a number of options to be
-> >> hidden from build tests, which is generally super useful.
-> >> The one that ended up hiding the stack growth above is
-> >> CONFIG_GCOV_PROFILE_ALL. I'll try enabling it for a few
-> >> builds to see what else shows up with it.
-> >
-> > Update: you already pointed to UBSAN_SANITIZE_ALL causing
-> > this, I can confirm that this is also the case. With your
-> > config, the combination of CONFIG_GCOV_PROFILE_ALL and
-> > CONFIG_UBSAN_SANITIZE_ALL causes the compiler to completely
-> > mess up register allocation in this code, disabling either
-> > of the two gets it below the boundary.
->
-> After a night of randconfig builds with both UBSAN_SANITIZE_ALL
-> and GCOV_PROFILE_ALL force-enabled, these are the ones I found,
-> listing only the worst size for each function (using gcc-13.1).
+On Wed, 2023-05-31 at 19:32 +0300, Jarkko Sakkinen wrote:
+> On Wed, 2023-05-31 at 11:20 -0400, Stefan Berger wrote:
+> >=20
+> > On 5/30/23 16:50, Jarkko Sakkinen wrote:
+> > > From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+> > >=20
+> > > vtpm_proxy_fops_set_locality() causes kernel buffers to be passed to
+> > > copy_from_user() and copy_to_user().
+> >=20
+> > And what is the problem with that? Is it not working?
+>=20
+> It is API contract and also clearly documented in the kernel documentatio=
+n.
+>=20
+> This should be obvious even if you have've consulted that documentation b=
+ecause
+> both functions have 'user' suffix, and also the pointer is __user tagged.
+>=20
+> To make things worse it is architecture specific. I'm worried that it wil=
+l
+> break in one of the 23 microarchitectures. Have you actually ever checked=
+ it
+> does not?
+>=20
+> I'm not also an expert of how all the possible CPUs in the world empower
+> Linux to further restrict the move between different memory spaces. I'm
+> quite sure that this does conflict neither with SMAP or SMEP on x86
+> (because I know x86 pretty well), but who knows what they add in the
+> future to the microarchitecture.
+>=20
+> > > Factor out the crippled code away with help of an internal API for
+> > > managing struct proxy_dev instances.
+> >=20
+> > What is crippled code?
+>=20
+> Code that behaves badly, i.e. does not meat the expectations. Illegit use=
+ of
+> in-kernel functions easily fits to the definition of crippled code.
+>=20
+> Bad API behavior put aside, it is very inefficient implementation because=
+ it
+> unnecessarily recurses tpm_transmit(), which makes extending the driver t=
+o
+> any direction so much involved process, but we don't really need this as =
+a
+> rationale.
+>=20
+> This needs to be fixed in a way or another. That is dictated by the API
+> cotract so for that I do not really even need feedback because it is
+> force majeure. I'm cool with alternatives or suggestions to the current
+> fact, so please focus on that instead of asking question that kernel
+> documentation provides you already all the answers.
 
-In LLVM, a recent change we made was when the sanitizers are enabled,
-the GCOV instrumentation is not checked by the sanitizers as that
-results in excessive code growth.
-https://reviews.llvm.org/D150460
+I have to add that it has not been too critical because afaik tpm_vtpm_prox=
+y
+is for the most part for development use, and less of so production. This i=
+s
+just to say that overally we've been happy with the driver in its use cases
+but any snippet of code always has an expiration date.
 
-> None of these show up without GCOV though:
->
-> crypto/twofish_common.c:683:1: error: the frame size of 2040 bytes is lar=
-ger than 1024 bytes [-Werror=3Dframe-larger-than=3D]
-> crypto/twofish_common.c:683:1: error: the frame size of 2336 bytes is lar=
-ger than 2048 bytes [-Werror=3Dframe-larger-than=3D]
-> drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c:1589:1:=
- error: the frame size of 1696 bytes is larger than 1400 bytes [-Werror=3Df=
-rame-larger-than=3D]
-> drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c:754:1: error: the =
-frame size of 1260 bytes is larger than 1024 bytes [-Werror=3Dframe-larger-=
-than=3D]
-> drivers/staging/media/ipu3/ipu3-css-params.c:1206:1: error: the frame siz=
-e of 1080 bytes is larger than 1024 bytes [-Werror=3Dframe-larger-than=3D]
-> drivers/staging/media/rkvdec/rkvdec-vp9.c:1042:1: error: the frame size o=
-f 1660 bytes is larger than 1024 bytes [-Werror=3Dframe-larger-than=3D]
-> drivers/staging/media/rkvdec/rkvdec-vp9.c:1042:1: error: the frame size o=
-f 2176 bytes is larger than 2048 bytes [-Werror=3Dframe-larger-than=3D]
-> drivers/staging/media/rkvdec/rkvdec-vp9.c:995:1: error: the frame size of=
- 1656 bytes is larger than 1024 bytes [-Werror=3Dframe-larger-than=3D]
->
->       Arnd
-
-
-
---=20
-Thanks,
-~Nick Desaulniers
+BR, Jarkko
