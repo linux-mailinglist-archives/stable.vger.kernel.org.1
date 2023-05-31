@@ -2,135 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D478B718871
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 19:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17729718878
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 19:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbjEaR1O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 13:27:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59518 "EHLO
+        id S230195AbjEaR3P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 13:29:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbjEaR1N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 13:27:13 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2067.outbound.protection.outlook.com [40.107.237.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42569184
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 10:27:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gOBWivdZbz4QoLNfrKBXrLp7XU/EmjOWd4/ynQ4OiPUJ5XiqqSNf/cuXZcvFZyUprkSASqEu7wQ7kLDpuTOqYT0HDGMxnalK4gFu/HS81ISrASPnzgPrCFLXTLuq+EsTr0WDWPzyRc0VBlgXnBOO6+te5gMevED9N6nFlTnnQS09w0lmtWrTbIZdGAhF3SgnhiYf5QwYfU752rJFtYb7kjl1dWU+4IcFAO0j61bFgt+2KGXCwmf4HNCETExVgqRzGTATw2MOLXYKMewe/WKBjoy08hd9ftS+BnrHaGh1bCH5EX1NnTeA27c8zy8P8AL3mKGQ5crQczCTioZI8KJLAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gDChmQZmVSeXCopVuEmLgMrVWEABsZn7xG8KPMi89xg=;
- b=d2IKulPsIqfK2l4FYrrZ2bZcOc2ZMHOFws0lNIUzgye6LvsN8kNJuKFYLY8/C7YCfHnoM2vyi+Nh/EcFDb9rfiISPOElplfpj6+Bq/xtrKfHR+2xcyxCo91Jza4PWW8E4eK+9ciHTcwDgw6KMDjVYJsC54FvF6smy+43QGfFYiFXyHMiXCL+2whExsIEiEKpjhPEeZyrEmUHCytENhwX0LSS49NN3o9Vg5PdWQmsVVYJaxieJlspN1u+yZe+1zgy5HweNuy9paSTuERaDHJgf55T7zXtjAlBg8kuan3gIu4O1dYpiR4owQylroWGZ86yQf69NAdiLP28JNgKvgLbCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gDChmQZmVSeXCopVuEmLgMrVWEABsZn7xG8KPMi89xg=;
- b=tzkg0EMfwJfLZamVRZjYX4xnLWv2ocbul7vQf48PJAlzJiTgkEJA0ElDaVjrFQlb8ZSMGH3bj82Z4SHayB2oikYICsucI7w1FzR0YfNwP2H/W+4nIuUQcbDzP6/Sqpuv8UOpBSZslYhnHOm60CxiPMMiuYBo7NfrWPPiQm5Esoo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by LV3PR12MB9096.namprd12.prod.outlook.com (2603:10b6:408:198::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Wed, 31 May
- 2023 17:27:06 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a65c:3aa0:b759:8527]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::a65c:3aa0:b759:8527%5]) with mapi id 15.20.6433.022; Wed, 31 May 2023
- 17:27:06 +0000
-Message-ID: <14df2f2b-21cf-5204-9826-698be6ccab90@amd.com>
-Date:   Wed, 31 May 2023 12:27:03 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Content-Language: en-US
-To:     stable@vger.kernel.org
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: S0ix guard rails for amdgpu in 6.1
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0141.namprd11.prod.outlook.com
- (2603:10b6:806:131::26) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S229629AbjEaR3N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 13:29:13 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 6D31FBE
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 10:29:11 -0700 (PDT)
+Received: (qmail 444662 invoked by uid 1000); 31 May 2023 13:29:10 -0400
+Date:   Wed, 31 May 2023 13:29:10 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Badhri Jagan Sridharan <badhri@google.com>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, francesco@dolcini.it,
+        alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
+        luca@z3ntu.xyz, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] usb: gadget: udc: core: Offload
+ usb_udc_vbus_handler processing
+Message-ID: <65dd300b-b967-41ab-b174-a7dc13ec2e19@rowland.harvard.edu>
+References: <20230531040203.19295-1-badhri@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|LV3PR12MB9096:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8cebcad-4099-46b6-8bd5-08db61fc4137
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Lgj5Zy7x8s2fmv2N6z7JqCn6qyDjwkUNEPyHGt09v2rYb276KCw1L9Kv/a+tWZPsmtYY00uYT5e1J7VAe3TO1vP+VDvg61zzJ5rLXRFR1UhIC+xEGMzwMgK0eckrYL2C7tqw7U4uzq/fmBB+r43Bq6S1ZE/zHUbF/lo+9Oy0fciUeTP32YlXLX7rZoG+G73fNprVHioYcycydNUDCYLK3JxICDfP3UP5WrEGGF1AqRP+K/qVXlWEF4EZuf8w0iyi4Bm9kFAWqzP/Z8baHShxXThjs+BhItm4MS4eLWWgsPBf1UaWXU5ObBKy3Q6XdTCKztIyRlN6ZfLIl5Lv31qNecQ2X3u4VNhfnuUEP9wi8rLcyFZWSmlRddW4gQAHlncLMvFx1DgZJ5M9Twi1di3rti29e67Vog3jLfYn/EClQgdGCqsKeOk1+Zj4/X/k8XbNf2/VfEVitulRS1CbcDRANruw4E324rHNPhkWVBZMVcpHv3GfWZFz8HAERn55kkApmTg6GcFi0g5cpQf3OOUxqn9FnA6VxDv1IostK5bN8sEbvDp+1r1heX3rrK4yHTOJU0FTHezzdXJmd4U05sNme7T5Cb+mW/eghZZKgcFBl8wcbaqXi9386u+vXZXOTC6u30hhQYmJ6I1ckgmbE2e/wZoT2pQQpheyL0h6rjfIYaM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(346002)(39860400002)(396003)(366004)(376002)(451199021)(6486002)(6916009)(86362001)(66556008)(5660300002)(66946007)(66476007)(478600001)(41300700001)(31686004)(8676002)(8936002)(31696002)(6666004)(316002)(6512007)(6506007)(26005)(186003)(83380400001)(4744005)(2906002)(2616005)(36756003)(38100700002)(32563001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cmhHbVNuYjVta0ZPRThJMGs0bXYvSDJMcWluckE5UVpwMGlybXdNS0JQTW5T?=
- =?utf-8?B?WDBUcEpUSFdUcGlDN3E1TUQxZm82aHNPeDJUVVl5NG1FQkRTMHRnSFQ4NllQ?=
- =?utf-8?B?NENaQ05GNC9PaFFmZXlva0U0Y1dJR3N2UlNZNXJnM3ZndU9NYk9xUW5Kc1dV?=
- =?utf-8?B?YmZvMUFVMVdKMUgzVzA2OEtKNWc5dDl3emRFTVhLVzFscHoxc3VzZTFlR3dq?=
- =?utf-8?B?SlMzck13aE1IS3htVWpUT05BN1czV1k4MFhVNU1zMmxsdzlXYzZJWEhja3Jt?=
- =?utf-8?B?RDQ3QUgxUTMxS3diNFFYa0lseUdIaGNJdHFPUFhQK09aaVMzS0tFa1NuMkkz?=
- =?utf-8?B?RVFETU5uS2ZhV1VpWkl4U1RXMUNXZG9YUXNTWS9GelFEWWVlbE5kcjI0SkRW?=
- =?utf-8?B?T3FGdGlJWHlVaHhJQlNhSjZLYklPNVo2bTc2SzhHbnM3MDZ1RHhVdVRHOGhD?=
- =?utf-8?B?SkRkQVBKNzZZMzBUazducFF4dmEzaVJIU2U3aHBONmNCaXcwdWY4TGt3djE5?=
- =?utf-8?B?YmpVWjZpQnhXSXhQSWJpVnJuVjc3KzN0U1RXREljUEdLb0hCOFlTek94QjZJ?=
- =?utf-8?B?NDIyOFpacVJjQ24rbFlwRHBiaUhPWWVEeElQeDFBamdZdjhxRTF1cUlDaURh?=
- =?utf-8?B?NjFmNEtvWXR2eHNIVWM1WnRCNDhCR25nNHdiRmVFeUlzeXc4VnFUbXorM0I2?=
- =?utf-8?B?RjVGVEZkaHRuTGJiVjRtTEdkQWRPanVtMEl0a0NtdVhQU3ZubU9TRFZQRW1J?=
- =?utf-8?B?ZVNIVVVuUU9YbDdjbTN5b1dmaTQ3S1NmeXRzSkRtVVdzV25nOHBLbFkxc2k4?=
- =?utf-8?B?QlpQOTBPaFFlWTN1bjFpMzY4dm84Y0VYcUV6MU5mdHRWNXBDQ29VMkRjYjBO?=
- =?utf-8?B?SnZITml3b0c2MWN0eC9pZlUvVHRCSzMxL29lK01WYStIb1pweTRGeHJWNEM3?=
- =?utf-8?B?UWZWbk05VlNHZzlIS0lKSCt6ZmJvQ0V4Q21lT0g2ZzA2K2M4d3NJREFVS1dN?=
- =?utf-8?B?NGhaS0RuU2JOR0VOZW1mMzBZaVRtOXJOVGdvb0FBNnhqek12V3ROQkFmem03?=
- =?utf-8?B?bCtWQ2lyd3V1VU5oejIyQXdUNStUcFQ2QUxRY2t4N3JEVjRTL3BQUEhCOWVI?=
- =?utf-8?B?OHQzTlhzekcrd2pjQUpJaDh3cWFmTU5OZTdpdUZrb2J4RUVhdmNXdGdKVW4y?=
- =?utf-8?B?cHQvTWFOSThlTTczZDVhWGltZC9QTVlIWEMxRkoyRWdrTVRydysrejRvOU1z?=
- =?utf-8?B?WmsyN3grQythRnJOTlJWSUs4a3FMMklNdERoSGFXRlE4WDh6c05uRnlxYjNF?=
- =?utf-8?B?U0p0dzJnZVdyNlJwMFFNVm1HamhYVzVEaEVGRWdnaHVvemp2WEdsNDRHWWlJ?=
- =?utf-8?B?OUJxLzhCWWRrbFIxeVlEZjdtQWtLQ1VPZ3dMc1pMRm8rV3VxeDJCZnJSZlI2?=
- =?utf-8?B?ditzYUd2c1VaTFVuTi9rVFR5MDMxWVZZNGhGRi9wWW4wakhhdDBXQjJ3dDdo?=
- =?utf-8?B?b2Q5OTk0bCs5RGRlRTBoT3pSQnVqdnIwSE1wOStkb21KVDdleE54M0pQNk5z?=
- =?utf-8?B?MUdPNnQyMEhmMkxEdlpmTEdONmxNOGhYV3FPdmgvb25EbkhNNFp6dmFXTHc1?=
- =?utf-8?B?QmNQSDNwTERjcThkemxTeklleE03ZlRSaldOeHE5SHdZZTRBUjMxZkFIaU5G?=
- =?utf-8?B?MXMwam1WRkVDQzFObHl2d3ZuTkcrQzdrUHZaVzgya1ZOMnE2QWpXeE1TTUkz?=
- =?utf-8?B?SlFrS2JveWE4TlN5czNMZUg2WlpqQTF2b1VEcnZEK3JwUmkyZ1NvNlVrY1hy?=
- =?utf-8?B?WnFiNDhaTlBXbHRVbU5UclR0VWswc3FYc1FYdHU3TjdOWUVlUXFFcmVkZG9I?=
- =?utf-8?B?SldnS1Bwb2dIcDRtTitWWjlGV0hXV0RlK3NvZ2R4dSsvK3d4ZEJKdXJ6eVZv?=
- =?utf-8?B?bkJmVDVNNDBoVGF1N3J4RHRKc21wc0h5NmR5SmFQNHVSS0YxaEZSUXh6ZERT?=
- =?utf-8?B?UXB0MkVuaFZGcmVSY0hSYUR1bElhM0tDYW1GUTRybkV2T1JQemNaRFBDeGNh?=
- =?utf-8?B?YU5QU3pMT0xhejB6K3JidXdmQmVJcExCekVrUWxhODl5R1BDYWxNQmFvSUI5?=
- =?utf-8?Q?ngtDa+iqYYlWzQKMsgO7V6BOe?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8cebcad-4099-46b6-8bd5-08db61fc4137
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2023 17:27:05.9715
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SCBcQCjuj3un3eR5DsX1/Pz2nPD64MccCqd+wFIwSMA0XbgqdF6SN9vEBIl3UGBOhUnNydLgcMYlO01XtTH9Jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9096
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230531040203.19295-1-badhri@google.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Wed, May 31, 2023 at 04:02:01AM +0000, Badhri Jagan Sridharan wrote:
+> usb_udc_vbus_handler() can be invoked from interrupt context by irq
+> handlers of the gadget drivers, however, usb_udc_connect_control() has
+> to run in non-atomic context due to the following:
+> a. Some of the gadget driver implementations expect the ->pullup
+>    callback to be invoked in non-atomic context.
+> b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
+> 
+> Hence offload invocation of usb_udc_connect_control()
+> to workqueue.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1016fc0c096c ("USB: gadget: Fix obscure lockdep violation for udc_mutex")
+> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> ---
+> Changes since v1:
+> - Address Alan Stern's comment on usb_udc_vbus_handler invocation from
+>   atomic context:
+> * vbus_events_lock is now a spinlock and allocations in
+> * usb_udc_vbus_handler are atomic now.
+> 
+> Changes since v2:
+> - Addressing Alan Stern's comments:
+> ** connect_lock is now held by callers of
+> * usb_gadget_pullup_update_locked() and gadget_(un)bind_driver() does
+> * notdirectly hold the lock.
+> 
+> ** Both usb_gadget_(dis)connect() and usb_udc_vbus_handler() would
+> * set/clear udc->vbus and invoke usb_gadget_pullup_update_locked.
+> 
+> ** Add "unbinding" to prevent new connections after the gadget is being
+> * unbound.
+> 
+> Changes since v3:
+> ** Made a minor cleanup which I missed to do in v3 in
+> * usb_udc_vbus_handler().
+> 
+> Changes since v4:
+> - Addressing Alan Stern's comments:
+> ** usb_udc_vbus_handler() now offloads invocation of usb_udc_connect_control()
+> * from workqueue.
+> 
+> ** Dropped vbus_events list as this was redundant. Updating to the
+> * latest value is suffice
+> ---
+>  drivers/usb/gadget/udc/core.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+> index 52e6d2e84e35..44a9f32679b5 100644
+> --- a/drivers/usb/gadget/udc/core.c
+> +++ b/drivers/usb/gadget/udc/core.c
+> @@ -48,6 +48,7 @@ struct usb_udc {
+>  	struct list_head		list;
+>  	bool				vbus;
+>  	bool				started;
+> +	struct work_struct		vbus_work;
+>  };
+>  
+>  static struct class *udc_class;
+> @@ -1086,6 +1087,13 @@ static void usb_udc_connect_control(struct usb_udc *udc)
+>  		usb_gadget_disconnect(udc->gadget);
+>  }
+>  
+> +static void vbus_event_work(struct work_struct *work)
+> +{
+> +	struct usb_udc *udc = container_of(work, struct usb_udc, vbus_work);
+> +
+> +	usb_udc_connect_control(udc);
+> +}
+> +
+>  /**
+>   * usb_udc_vbus_handler - updates the udc core vbus status, and try to
+>   * connect or disconnect gadget
+> @@ -1094,6 +1102,13 @@ static void usb_udc_connect_control(struct usb_udc *udc)
+>   *
+>   * The udc driver calls it when it wants to connect or disconnect gadget
+>   * according to vbus status.
+> + *
+> + * This function can be invoked from interrupt context by irq handlers of the gadget drivers,
+> + * however, usb_udc_connect_control() has to run in non-atomic context due to the following:
+> + * a. Some of the gadget driver implementations expect the ->pullup callback to be invoked in
+> + * non-atomic context.
+> + * b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
+> + * Hence offload invocation of usb_udc_connect_control() to workqueue.
 
-There is a commit in 6.3 that adds some guard rails to ensure amdgpu 
-doesn’t run s2idle flows unless the hardware really supports it.  Can 
-you please take this into 6.1.y?
+Comments should be wrapped after about 76 columns (unless there is some 
+very good reason not to).
 
-ca4751866397 ("drm/amd: Don't allow s0ix on APUs older than Raven")
+>   */
+>  void usb_udc_vbus_handler(struct usb_gadget *gadget, bool status)
+>  {
+> @@ -1101,7 +1116,7 @@ void usb_udc_vbus_handler(struct usb_gadget *gadget, bool status)
+>  
+>  	if (udc) {
+>  		udc->vbus = status;
+> -		usb_udc_connect_control(udc);
+> +		schedule_work(&udc->vbus_work);
+>  	}
+>  }
+>  EXPORT_SYMBOL_GPL(usb_udc_vbus_handler);
+> @@ -1328,6 +1343,7 @@ int usb_add_gadget(struct usb_gadget *gadget)
+>  	mutex_lock(&udc_lock);
+>  	list_add_tail(&udc->list, &udc_list);
+>  	mutex_unlock(&udc_lock);
+> +	INIT_WORK(&udc->vbus_work, vbus_event_work);
+>  
+>  	ret = device_add(&udc->dev);
+>  	if (ret)
+> @@ -1558,6 +1574,7 @@ static void gadget_unbind_driver(struct device *dev)
+>  
+>  	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+>  
+> +	cancel_work_sync(&udc->vbus_work);
+>  	usb_gadget_disconnect(gadget);
+>  	usb_gadget_disable_async_callbacks(udc);
+>  	if (gadget->irq)
 
-It is not necessary to take the commit it marks “a fix” in it’s commit 
-message, as a problem was found in that commit and it will be reverted 
-in the near future.
+I'm not in love with this, because there's nothing here to prevent the 
+work item from being queued again right after it is cancelled.  Patch 
+3/3 in the series will fix this, but in the meantime this window will 
+exist.
 
-Thanks,
+Maybe it would be better to merge the 3/3 patch with this one.  They are 
+very closely related, after all, since the other patch addresses the 
+matter of not allowing the work item to do anything bad at the wrong 
+time.
 
+Alan Stern
