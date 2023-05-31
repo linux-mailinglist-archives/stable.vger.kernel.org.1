@@ -2,49 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8954718692
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 17:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31AE37186C7
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 17:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbjEaPnp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 11:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60312 "EHLO
+        id S231997AbjEaPyC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 11:54:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjEaPno (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 11:43:44 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C38238E;
-        Wed, 31 May 2023 08:43:42 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D70CA1042;
-        Wed, 31 May 2023 08:44:27 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D52D3F663;
-        Wed, 31 May 2023 08:43:41 -0700 (PDT)
-Date:   Wed, 31 May 2023 16:43:38 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Florian Fainelli <florian.fainelli@broadcom.com>
-Cc:     Conor Dooley <conor@kernel.org>, stable@vger.kernel.org,
-        Pierre Gondois <pierre.gondois@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "open list:GENERIC ARCHITECTURE TOPOLOGY" 
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH stable 6.3 v2] arch_topology: Remove early cacheinfo
- error message if -ENOENT
-Message-ID: <20230531154338.x7rivfpxj2wtjpq6@bogus>
-References: <20230530201955.848176-1-florian.fainelli@broadcom.com>
- <20230530-basically-wildly-84415a94171d@spud>
- <72d84100-55cf-566d-8301-7147ce14b1e9@broadcom.com>
- <20230531085356.ru4fmtawyxo5cq5s@bogus>
- <7eae52f6-ca7e-5017-629e-43761d4eb5d7@broadcom.com>
+        with ESMTP id S231640AbjEaPyB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 11:54:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7994A97
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 08:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685548396;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=KZrnDzqF0kg5SP8WPls5NoRBsrNhlVAy/UWdXhsE2RQ=;
+        b=AWx7ECTzgroVamJ8aWysM2gBqNP/ghZ33dwBPmzm2xgbowV7mI9s9ZhqG4pD9Q5VqPpIlW
+        iX53eUOrk/juPdKPh9W85sIT6spTrNxw0ePB8xY2tKGaSbJBazJ8eXMwrF4A3jFAHInjGZ
+        +ldXG0bP35Cwy0OePjJLsGNwkbEJkQ0=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-zSJv9FZTNCOG0JerDgw5Ow-1; Wed, 31 May 2023 11:53:14 -0400
+X-MC-Unique: zSJv9FZTNCOG0JerDgw5Ow-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6262e6c3b44so22915226d6.0
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 08:53:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685548394; x=1688140394;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KZrnDzqF0kg5SP8WPls5NoRBsrNhlVAy/UWdXhsE2RQ=;
+        b=IX3DSa7Tm3fbXRPqVBxRJldwJjGP7jE8WSgKztNJ8BYYR27YXpplG2QlYB+Qi209sM
+         +vGkR/4VGdgwvyi+DRiqvAEp9/LYjT4G7fy686F29w0PPUN0h0WUFD5LX84/CHpJtwBB
+         EzdLqm+xQGRezr7om6Hbhe0jo3nwuPCiMiEqAh/c6VRHgXrmu8lWC9eToD8cQBZJyH+n
+         n04h7Ks5nXPQBB3JW5ebbv/z/ykQPe50DMHkNZGsmymiKGZobMoNy4pfuJDo+U+cpFt0
+         nh3Cy1Bgmpgtlzm978hS6Z2jTcOOQUSZ3XEW0MU413USfLwATBEjuvvRidLYJR36fmA7
+         YZKg==
+X-Gm-Message-State: AC+VfDx7nS+6CCMRGyla5xfOsuT4ETghDkAhxJThNspjkTcvk9IHe6WR
+        4o8UIPPqbRdsdk1GytQis2axeIx6pDl6+lBAyxNJFlsxvVh/I4knlES8aiUSPubp+CqhSIQVoXj
+        XoTpJTo8oGwh7ZIZI
+X-Received: by 2002:a05:6214:1ccd:b0:625:76bb:b25e with SMTP id g13-20020a0562141ccd00b0062576bbb25emr5341611qvd.20.1685548393956;
+        Wed, 31 May 2023 08:53:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7aoOqC2dkwYyoJ3XEwUOD6orXo6CiPy4lWsJGyYNNNFmUB5gFOMpCW+frTdvf16+TbQT5VWg==
+X-Received: by 2002:a05:6214:1ccd:b0:625:76bb:b25e with SMTP id g13-20020a0562141ccd00b0062576bbb25emr5341593qvd.20.1685548393599;
+        Wed, 31 May 2023 08:53:13 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id jy11-20020a0562142b4b00b00626267cad1esm2867990qvb.93.2023.05.31.08.53.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 May 2023 08:53:13 -0700 (PDT)
+Date:   Wed, 31 May 2023 08:53:11 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-integrity@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+        Alejandro Cabrera <alejandro.cabreraaldaya@tuni.fi>,
+        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
+        stable@vger.kernel.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tpm: factor out the user space mm from
+ tpm_vtpm_set_locality()
+Message-ID: <4wa3nb6h6ns3msp4o6wojhxwn37t5sxlgexacm7ga7rfcrnsfl@chr5qhednjdl>
+References: <20230530205001.1302975-1-jarkko@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7eae52f6-ca7e-5017-629e-43761d4eb5d7@broadcom.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230530205001.1302975-1-jarkko@kernel.org>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,77 +80,280 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 31, 2023 at 08:28:26AM -0700, Florian Fainelli wrote:
+On Tue, May 30, 2023 at 11:50:01PM +0300, Jarkko Sakkinen wrote:
+> From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
 > 
+> vtpm_proxy_fops_set_locality() causes kernel buffers to be passed to
+> copy_from_user() and copy_to_user().
 > 
-> On 5/31/2023 1:53 AM, Sudeep Holla wrote:
-> > On Tue, May 30, 2023 at 03:42:45PM -0700, Florian Fainelli wrote:
-> > > Hi Conor,
-> > > 
-> > > On 5/30/23 14:39, Conor Dooley wrote:
-> > > > Yo Florian,
-> > > > 
-> > > > On Tue, May 30, 2023 at 01:19:55PM -0700, Florian Fainelli wrote:
-> > > > > From: Pierre Gondois <pierre.gondois@arm.com>
-> > > > > 
-> > > > > commit 3522340199cc060b70f0094e3039bdb43c3f6ee1 upstream
-> > > > > 
-> > > > > fetch_cache_info() tries to get the number of cache leaves/levels
-> > > > > for each CPU in order to pre-allocate memory for cacheinfo struct.
-> > > > > Allocating this memory later triggers a:
-> > > > >     'BUG: sleeping function called from invalid context'
-> > > > > in PREEMPT_RT kernels.
-> > > > > 
-> > > > > If there is no cache related information available in DT or ACPI,
-> > > > > fetch_cache_info() fails and an error message is printed:
-> > > > >     'Early cacheinfo failed, ret = ...'
-> > > > > 
-> > > > > Not having cache information should be a valid configuration.
-> > > > > Remove the error message if fetch_cache_info() fails with -ENOENT.
-> > > > > 
-> > > > > Suggested-by: Conor Dooley <conor.dooley@microchip.com>
-> > > > > Link: https://lore.kernel.org/all/20230404-hatred-swimmer-6fecdf33b57a@spud/
-> > > > > Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-> > > > > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> > > > > Link: https://lore.kernel.org/r/20230414081453.244787-4-pierre.gondois@arm.com
-> > > > > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> > > > > Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> > > > 
-> > > > How come this now needs a backport? Did the rest of the series get
-> > > > backported, but not this one since it has no fixes tag?
-> > > 
-> > > Humm, indeed, this has been present in v6.3.2 since I requested it to be
-> > > included. The error that I saw this morning was not -ENOENT, but -EINVAL.
-> > > 
-> > > With those patches applied, no more -EINVAL:
-> > > 
-> > > cacheinfo: Allow early level detection when DT/ACPI info is missing/broken
-> > > cacheinfo: Add arm64 early level initializer implementation
-> > > cacheinfo: Add arch specific early level initializer
-> > > cacheinfo: Add use_arch[|_cache]_info field/function
-> > > 
-> > > I will submit those shortly unless we think they better not be in 6.3, in
-> > > which case it would be nice to silence those -EINVAL errors.
-> > 
-> > I prefer this option instead of back porting all the above 4 as there are
-> > some pending fixes for the issues found in those patches. I am fine if Greg
-> > is happy with the backport, so no strong rejection from my side :).
+> Factor out the crippled code away with help of an internal API for
+> managing struct proxy_dev instances.
 > 
-> OK, so are you suggesting that we specific check for -EINVAL and -ENOENT
-> rather than take all of the 4 above patches,
+> Link: https://lore.kernel.org/all/20230530020133.235765-1-jarkko@kernel.org/
+> Cc: stable@vger.kernel.org # v4.14+
+> Fixes: be4c9acfe297 ("tpm: vtpm_proxy: Implement request_locality function.")
+> Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+> ---
+> I've tested this on RISC-V QEMU and have not noticed issues so far, and
+> thus dropped the RFC tag. I've been looking into the code a lot lately
+> as I'm building a boot time support for it, which will allow to e.g.
+> test IMA without a physical TPM.	
+>  drivers/char/tpm/tpm_vtpm_proxy.c | 168 ++++++++++++++++--------------
+>  1 file changed, 87 insertions(+), 81 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
+> index 30e953988cab..83496742cc19 100644
+> --- a/drivers/char/tpm/tpm_vtpm_proxy.c
+> +++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+> @@ -38,7 +38,6 @@ struct proxy_dev {
+>  #define STATE_OPENED_FLAG        BIT(0)
+>  #define STATE_WAIT_RESPONSE_FLAG BIT(1)  /* waiting for emulator response */
+>  #define STATE_REGISTERED_FLAG	 BIT(2)
+> -#define STATE_DRIVER_COMMAND     BIT(3)  /* sending a driver specific command */
+>  
+>  	size_t req_len;              /* length of queued TPM request */
+>  	size_t resp_len;             /* length of queued TPM response */
+> @@ -58,6 +57,53 @@ static void vtpm_proxy_delete_device(struct proxy_dev *proxy_dev);
+>   * Functions related to 'server side'
+>   */
+>  
+> +static ssize_t __vtpm_proxy_copy_from(struct proxy_dev *proxy_dev, u8 *buf, size_t count)
+> +{
+> +	size_t len = proxy_dev->req_len;
+> +
+> +	if (!(proxy_dev->state & STATE_OPENED_FLAG))
+> +		return -EPIPE;
+> +
+> +	if (count < len || len > sizeof(proxy_dev->buffer)) {
+> +		pr_debug("Invalid size in recv: count=%zd, req_len=%zd\n", count, len);
+> +		return -EIO;
+> +	}
+> +
+> +	memcpy(buf, proxy_dev->buffer, len);
+> +	memset(proxy_dev->buffer, 0, len);
+> +	proxy_dev->req_len = 0;
+> +	proxy_dev->state |= STATE_WAIT_RESPONSE_FLAG;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t __vtpm_proxy_copy_to(struct proxy_dev *proxy_dev, const u8 *buf, size_t count)
+> +{
+> +	if (!(proxy_dev->state & STATE_OPENED_FLAG))
+> +		return -EPIPE;
+> +
+> +	if (count > sizeof(proxy_dev->buffer) || !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG))
+> +		return -EIO;
+> +
+> +	proxy_dev->state &= ~STATE_WAIT_RESPONSE_FLAG;
+> +	proxy_dev->req_len = 0;
+> +	proxy_dev->resp_len = count;
+> +	memcpy(proxy_dev->buffer, buf, count);
+> +
+> +	return count;
+> +}
+> +
+> +static int vtpm_proxy_wait_for(struct proxy_dev *proxy_dev)
+> +{
+> +	if (wait_event_interruptible(
+> +		proxy_dev->wq,
+> +		proxy_dev->req_len != 0 || !(proxy_dev->state & STATE_OPENED_FLAG)))
+> +		return -EINTR;
+> +
+> +	return 0;
+> +}
+> +
+> +
+>  /**
+>   * vtpm_proxy_fops_read - Read TPM commands on 'server side'
+>   *
+> @@ -73,44 +119,26 @@ static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
+>  				    size_t count, loff_t *off)
+>  {
+>  	struct proxy_dev *proxy_dev = filp->private_data;
+> -	size_t len;
+> -	int sig, rc;
+> +	u8 *kernel_buf;
+> +	ssize_t rc;
+>  
+> -	sig = wait_event_interruptible(proxy_dev->wq,
+> -		proxy_dev->req_len != 0 ||
+> -		!(proxy_dev->state & STATE_OPENED_FLAG));
+> -	if (sig)
+> -		return -EINTR;
+> -
+> -	mutex_lock(&proxy_dev->buf_lock);
+> -
+> -	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
+> -		mutex_unlock(&proxy_dev->buf_lock);
+> -		return -EPIPE;
+> -	}
+> -
+> -	len = proxy_dev->req_len;
+> -
+> -	if (count < len || len > sizeof(proxy_dev->buffer)) {
+> -		mutex_unlock(&proxy_dev->buf_lock);
+> -		pr_debug("Invalid size in recv: count=%zd, req_len=%zd\n",
+> -			 count, len);
+> -		return -EIO;
+> -	}
+> -
+> -	rc = copy_to_user(buf, proxy_dev->buffer, len);
+> -	memset(proxy_dev->buffer, 0, len);
+> -	proxy_dev->req_len = 0;
+> +	rc = vtpm_proxy_wait_for(proxy_dev);
+> +	if (rc)
+> +		return rc;
+>  
+> -	if (!rc)
+> -		proxy_dev->state |= STATE_WAIT_RESPONSE_FLAG;
+> +	kernel_buf = kzalloc(sizeof(proxy_dev->buffer), GFP_KERNEL);
+> +	if (!kernel_buf)
+> +		return -ENOMEM;
+>  
+> +	mutex_lock(&proxy_dev->buf_lock);
+> +	rc = __vtpm_proxy_copy_from(proxy_dev, buf, count);
 
-Yes that is my preference ATM or if possible to wait until all the fixes
-are sorted for the bugs associated with above 4 commits [1] and [2].
-I have queued [1] but waiting for response/patch on [2] and hence not yet
-bothered Greg.
+Is this meant to be kernel_buf instead of buf here? To me it reads
+like it copies to buf from proxy_dev->buffer, and then below it copies
+over buf with the kzalloc'd kernel_buf.
 
-> if so, any preference on how to do it given the state of 6.3 stable?
+>  	mutex_unlock(&proxy_dev->buf_lock);
+>  
+> -	if (rc)
+> -		return -EFAULT;
+> +	if (!rc && copy_to_user(buf, kernel_buf, count))
+> +		rc = -EFAULT;
+>  
+> -	return len;
+> +	kfree(kernel_buf);
+> +	return rc;
+>  }
+>  
+>  /**
+> @@ -128,36 +156,26 @@ static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
+>  				     size_t count, loff_t *off)
+>  {
+>  	struct proxy_dev *proxy_dev = filp->private_data;
+> +	u8 *kernel_buf;
+> +	int rc;
+>  
+> -	mutex_lock(&proxy_dev->buf_lock);
+> -
+> -	if (!(proxy_dev->state & STATE_OPENED_FLAG)) {
+> -		mutex_unlock(&proxy_dev->buf_lock);
+> -		return -EPIPE;
+> -	}
+> -
+> -	if (count > sizeof(proxy_dev->buffer) ||
+> -	    !(proxy_dev->state & STATE_WAIT_RESPONSE_FLAG)) {
+> -		mutex_unlock(&proxy_dev->buf_lock);
+> -		return -EIO;
+> -	}
+> -
+> -	proxy_dev->state &= ~STATE_WAIT_RESPONSE_FLAG;
+> -
+> -	proxy_dev->req_len = 0;
+> +	kernel_buf = kzalloc(sizeof(proxy_dev->buffer), GFP_KERNEL);
+> +	if (!kernel_buf)
+> +		return -ENOMEM;
+>  
+> -	if (copy_from_user(proxy_dev->buffer, buf, count)) {
+> -		mutex_unlock(&proxy_dev->buf_lock);
+> +	if (copy_from_user(kernel_buf, buf, count)) {
+> +		kfree(kernel_buf);
+>  		return -EFAULT;
+>  	}
+>  
+> -	proxy_dev->resp_len = count;
+> -
+> +	mutex_lock(&proxy_dev->buf_lock);
+> +	rc = __vtpm_proxy_copy_to(proxy_dev, kernel_buf, count);
+>  	mutex_unlock(&proxy_dev->buf_lock);
+>  
+>  	wake_up_interruptible(&proxy_dev->wq);
+> +	kfree(kernel_buf);
+>  
+> -	return count;
+> +	return rc;
+>  }
+>  
+>  /*
+> @@ -295,28 +313,6 @@ static int vtpm_proxy_tpm_op_recv(struct tpm_chip *chip, u8 *buf, size_t count)
+>  	return len;
+>  }
+>  
+> -static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
+> -					u8 *buf, size_t count)
+> -{
+> -	struct tpm_header *hdr = (struct tpm_header *)buf;
+> -
+> -	if (count < sizeof(struct tpm_header))
+> -		return 0;
+> -
+> -	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+> -		switch (be32_to_cpu(hdr->ordinal)) {
+> -		case TPM2_CC_SET_LOCALITY:
+> -			return 1;
+> -		}
+> -	} else {
+> -		switch (be32_to_cpu(hdr->ordinal)) {
+> -		case TPM_ORD_SET_LOCALITY:
+> -			return 1;
+> -		}
+> -	}
+> -	return 0;
+> -}
+> -
+>  /*
+>   * Called when core TPM driver forwards TPM requests to 'server side'.
+>   *
+> @@ -330,6 +326,7 @@ static int vtpm_proxy_is_driver_command(struct tpm_chip *chip,
+>  static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
+>  {
+>  	struct proxy_dev *proxy_dev = dev_get_drvdata(&chip->dev);
+> +	unsigned int ord = ((struct tpm_header *)buf)->ordinal;
+>  
+>  	if (count > sizeof(proxy_dev->buffer)) {
+>  		dev_err(&chip->dev,
+> @@ -338,8 +335,10 @@ static int vtpm_proxy_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t count)
+>  		return -EIO;
+>  	}
+>  
+> -	if (!(proxy_dev->state & STATE_DRIVER_COMMAND) &&
+> -	    vtpm_proxy_is_driver_command(chip, buf, count))
+> +	if ((chip->flags & TPM_CHIP_FLAG_TPM2) && ord == TPM2_CC_SET_LOCALITY)
+> +		return -EFAULT;
+> +
+> +	if (ord == TPM_ORD_SET_LOCALITY)
+>  		return -EFAULT;
+>  
+>  	mutex_lock(&proxy_dev->buf_lock);
+> @@ -407,13 +406,20 @@ static int vtpm_proxy_request_locality(struct tpm_chip *chip, int locality)
+>  				  TPM_ORD_SET_LOCALITY);
+>  	if (rc)
+>  		return rc;
+> +
+>  	tpm_buf_append_u8(&buf, locality);
+>  
+> -	proxy_dev->state |= STATE_DRIVER_COMMAND;
+> +	mutex_lock(&proxy_dev->buf_lock);
+> +	rc = __vtpm_proxy_copy_to(proxy_dev, buf.data, tpm_buf_length(&buf));
+> +	mutex_unlock(&proxy_dev->buf_lock);
+>  
+> -	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting to set locality");
+> +	rc = vtpm_proxy_wait_for(proxy_dev);
+> +	if (rc)
+> +		return rc;
+>  
+> -	proxy_dev->state &= ~STATE_DRIVER_COMMAND;
+> +	mutex_lock(&proxy_dev->buf_lock);
+> +	rc = __vtpm_proxy_copy_from(proxy_dev, buf.data, tpm_buf_length(&buf));
+> +	mutex_unlock(&proxy_dev->buf_lock);
+>  
+>  	if (rc < 0) {
+>  		locality = rc;
+> -- 
+> 2.39.2
+> 
 
-I don't understand what exactly do you mean ?
-
---
-Regards,
-Sudeep
-
-[1] https://lore.kernel.org/all/20230508084115.1157-1-kprateek.nayak@amd.com
-[2] https://lore.kernel.org/all/20230518012703.GA19967@ranerica-svr.sc.intel.com
