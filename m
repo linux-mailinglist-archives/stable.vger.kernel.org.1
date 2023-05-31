@@ -2,82 +2,190 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FBE7174FF
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 06:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D847174D2
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 06:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231305AbjEaERg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 00:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60118 "EHLO
+        id S234294AbjEaEI2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 00:08:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230401AbjEaERf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 00:17:35 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F56C9
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 21:17:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685506654; x=1717042654;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=qUabQjz9II247iFOOabpXWHtBRce/lkLHc/UWIqTl2w=;
-  b=bNM9m6YcnEuQ1AUGBorRK6Y++n6rXQPPL9a4RSJo2Ne1dgcVfX8L+MWt
-   F6ZpdAqULPUQ0GNGWCawhR5afhhyUfCkNng3TdeSNYCjcQC/6cNrUdVJI
-   IgtMhwUZ2joEFm6fN+O4ZGCBwjAX3ZTMWO2xd7LcN5x0526vxBQTFD2sL
-   eiE6iaGbV9272cf+DTkTG3xpLSS5R3ECbpZH2pUk0qPEQEtZEGJJSAP+y
-   IAkELUJYVSvNF1asTZZOEX8nqEKsebmn+IKjCTS8vixOaWs53hxJk8/o7
-   ieDmpiJYWVhN/XU6BTZraV7gi8Vw46efVuuhjX5pWjTJCPr9B3nxavRZj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="339724547"
-X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; 
-   d="scan'208";a="339724547"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2023 21:05:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="831062117"
-X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; 
-   d="scan'208";a="831062117"
-Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 30 May 2023 21:05:58 -0700
-Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q4D5x-00014N-2T;
-        Wed, 31 May 2023 04:05:57 +0000
-Date:   Wed, 31 May 2023 12:05:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v5 3/3] usb: gadget: udc: core: Prevent UDC from starting
- when unbound
-Message-ID: <ZHbHpMlIxKO7zwfZ@b4b7677a4534>
+        with ESMTP id S234295AbjEaEIF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 00:08:05 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633A610CA
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 21:07:20 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-256931ec244so2220567a91.3
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 21:07:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1685506033; x=1688098033;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=7LhzAVS6961y7CSvcvL2y7opPlrYVbBGb10CSEnAJyM=;
+        b=o1ogV+SuWUTongazzZfmPVaFJ3Tz6LF34PeEtxwUjnC0Q1qzoL2kI3FFwn3bmpfQar
+         NiMEKHh5Rh20gYHOmZAN7OWqRBJr7mxWF1P9BrFO5KOZpbrEw0TZ/7NAJyERT+wYxQMV
+         cDcxUQnJJmC4aR4oMyzLe9DvdDgoRccd5lv8T3z4cLtHP78oJo2sjlFLZ1KeC68OeG4d
+         XuZlUgjzizkjKvRAKXRzTHMcRlPyXGPYAsuDlq0O/iy84bXglOyMnDoO+BHWLo1VwKNl
+         bDfKxuN4wtB+7aeRJaCeTtotZiqcm3oaaAOWTjjP9AQg7zet6YgtG7++gX864mRR2Dc/
+         G5vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685506033; x=1688098033;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7LhzAVS6961y7CSvcvL2y7opPlrYVbBGb10CSEnAJyM=;
+        b=biXyNNXOWJk3DqKTyca7kpRc6O0jqblsXJbLKaTQU8uHPARAgNUCubKjuXRuvSLzHM
+         ehO/S4fG8cfO3572WegEKmy0wtPXzRdj6HKo8g9yaoLd0xhMEqHP8jXKujW9P2b5cG9P
+         3Px1G4N/qzkKuJklM6tyPfl9kauV8acL4FsjhE8hKSaChxGXuC8Sa2fK5zFlMqagNLsB
+         9piigrTnbT21kgjlNYDzpqWBTAZshXw1lcps4IMZqt70k6y2jNi7Wj1beb4Fka4BrVNS
+         rakxTB4K8bMf0Mp7git6dP7wy3krIcGtl27L3IDU09u4IJKFRfTY8OCGrAaI7+7ZWYLM
+         Ktcg==
+X-Gm-Message-State: AC+VfDxxwwYuvMAxLF3LUjkNsqYoPQe2w1DoKEgFVmoiQneepd+6ZwFg
+        S+XTMtmJ/MkBoOPVwJMdtMjlJ4CGAbBh5g59lkeZAQ==
+X-Google-Smtp-Source: ACHHUZ7jGdO+qXE8DOpsD3jRRrERFRJeKpyqH6ZmFT+e1Q1Yg/A3vZfIcepe4RKIlk3e7+qw64H++w==
+X-Received: by 2002:a17:90a:a392:b0:256:257e:cba9 with SMTP id x18-20020a17090aa39200b00256257ecba9mr4333749pjp.13.1685506033643;
+        Tue, 30 May 2023 21:07:13 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id s13-20020a17090aad8d00b00252a7b73486sm193502pjq.29.2023.05.30.21.07.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 21:07:13 -0700 (PDT)
+Message-ID: <6476c7f1.170a0220.5a2f6.0738@mx.google.com>
+Date:   Tue, 30 May 2023 21:07:13 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230531040203.19295-3-badhri@google.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.3
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.3.5-41-gb9f6b865c55f2
+X-Kernelci-Report-Type: test
+Subject: stable-rc/queue/6.3 baseline: 166 runs,
+ 2 regressions (v6.3.5-41-gb9f6b865c55f2)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+stable-rc/queue/6.3 baseline: 166 runs, 2 regressions (v6.3.5-41-gb9f6b865c=
+55f2)
 
-Thanks for your patch.
+Regressions Summary
+-------------------
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+platform                     | arch   | lab          | compiler | defconfig=
+        | regressions
+-----------------------------+--------+--------------+----------+----------=
+--------+------------
+qemu_x86_64-uefi-mixed       | x86_64 | lab-baylibre | gcc-10   | x86_64_de=
+fconfig | 1          =
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH v5 3/3] usb: gadget: udc: core: Prevent UDC from starting when unbound
-Link: https://lore.kernel.org/stable/20230531040203.19295-3-badhri%40google.com
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre | gcc-10   | sunxi_def=
+config  | 1          =
 
 
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.3/kern=
+el/v6.3.5-41-gb9f6b865c55f2/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/6.3
+  Describe: v6.3.5-41-gb9f6b865c55f2
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      b9f6b865c55f21c95739fdf14f92d5e07552d651 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch   | lab          | compiler | defconfig=
+        | regressions
+-----------------------------+--------+--------------+----------+----------=
+--------+------------
+qemu_x86_64-uefi-mixed       | x86_64 | lab-baylibre | gcc-10   | x86_64_de=
+fconfig | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64769148c5356a519b2e85e6
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.3/v6.3.5-41-=
+gb9f6b865c55f2/x86_64/x86_64_defconfig/gcc-10/lab-baylibre/baseline-qemu_x8=
+6_64-uefi-mixed.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.3/v6.3.5-41-=
+gb9f6b865c55f2/x86_64/x86_64_defconfig/gcc-10/lab-baylibre/baseline-qemu_x8=
+6_64-uefi-mixed.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64769148c5356a519b2e8=
+5e7
+        new failure (last pass: v6.3.5-41-gb4d8aea953f2) =
+
+ =
+
+
+
+platform                     | arch   | lab          | compiler | defconfig=
+        | regressions
+-----------------------------+--------+--------------+----------+----------=
+--------+------------
+sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre | gcc-10   | sunxi_def=
+config  | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/647691c1604835634b2e85e6
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: sunxi_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.3/v6.3.5-41-=
+gb9f6b865c55f2/arm/sunxi_defconfig/gcc-10/lab-baylibre/baseline-sun8i-h3-li=
+bretech-all-h3-cc.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.3/v6.3.5-41-=
+gb9f6b865c55f2/arm/sunxi_defconfig/gcc-10/lab-baylibre/baseline-sun8i-h3-li=
+bretech-all-h3-cc.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/647691c1604835634b2e85eb
+        failing since 0 day (last pass: v6.3.3-491-gda6d197f2db4, first fai=
+l: v6.3.5-41-g8b53689a0fb0)
+
+    2023-05-31T00:15:36.831652  + set +x
+    2023-05-31T00:15:36.833716  <8>[    9.721063] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 3632787_1.5.2.4.1>
+    2023-05-31T00:15:36.939274  / # #
+    2023-05-31T00:15:37.041066  export SHELL=3D/bin/sh
+    2023-05-31T00:15:37.041448  #
+    2023-05-31T00:15:37.142796  / # export SHELL=3D/bin/sh. /lava-3632787/e=
+nvironment
+    2023-05-31T00:15:37.143187  =
+
+    2023-05-31T00:15:37.244540  / # . /lava-3632787/environment/lava-363278=
+7/bin/lava-test-runner /lava-3632787/1
+    2023-05-31T00:15:37.245215  =
+
+    2023-05-31T00:15:37.264417  / # /lava-3632787/bin/lava-test-runner /lav=
+a-3632787/1 =
+
+    ... (12 line(s) more)  =
+
+ =20
