@@ -2,57 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5725717ADC
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 10:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE98717BD5
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 11:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234916AbjEaI6l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 04:58:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
+        id S235358AbjEaJ0W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 05:26:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231397AbjEaI6k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 04:58:40 -0400
+        with ESMTP id S231397AbjEaJ0V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 05:26:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D7210B;
-        Wed, 31 May 2023 01:58:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26538BE;
+        Wed, 31 May 2023 02:26:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA6196311E;
-        Wed, 31 May 2023 08:58:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F257C4339B;
-        Wed, 31 May 2023 08:58:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE1AF62CF3;
+        Wed, 31 May 2023 09:26:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524B6C433EF;
+        Wed, 31 May 2023 09:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685523518;
-        bh=HaYbQJNi6y881NqAy/tkhEXGqgb8cgiQ7a1/RH6TbrI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sKwl+ueYa9OKC0VTzsZZm6QE+TtD+wHKIUCr/INiDLgF9vK6gK8Vasyu9RcSI3gQZ
-         LdtJqjpTS1zuKkZpNXCRo9G8VN8UXcQr4mlVr2eUKYaoou5OrMPDYpAZEjbtdUmKVt
-         2zCOrSE25apXdIFqkxTGpx9DkmYCTp4hGmKQoUOmp7ZCbtcOpzG/HsgrkpQiHtQADx
-         Ow8qtQehHdWoom1OUMwbf28DlkfGWVPmv7xWFRrUeHJMef7gyixk4v6mjUfoh9KdVx
-         XBzNsuWeNTO9es6qJEjFKLBfcxPS8Zh5He0Z4ObGWuO8wBS6+4Ja09/edT+95W6qYv
-         B4BwUqWcWuDtw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1q4HfF-0000jn-Oe; Wed, 31 May 2023 10:58:41 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
-        stable@vger.kernel.org
-Subject: [PATCH RESEND 2/2] Bluetooth: hci_qca: fix debugfs registration
-Date:   Wed, 31 May 2023 10:57:59 +0200
-Message-Id: <20230531085759.2803-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230531085759.2803-1-johan+linaro@kernel.org>
-References: <20230531085759.2803-1-johan+linaro@kernel.org>
+        s=k20201202; t=1685525179;
+        bh=kCngoFLY3lyAAH4tsRcdWI7tJBxXdBmSNlRrvULPxEo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cN57/V1H77acTm/qT6l3T6VdkNRu0nkljtAkksa/ldX/AzR4pvcJmVYON5karjEuv
+         +OEPWvftye3sDhNO47XR2IpW8C2rIqyBYJuLmJVD1x7EWTTacoTRZtSPKtDWNmSeL5
+         ID/4jLdzuFb/q4pDcmWRvmf0OzJ761lDkB/2t7r0ndHmkDO6cNFYUvTQdMEKkKFIbu
+         1A8kjIWEIeW4nvfOCSaszPVUn9Ey5B5W5Oi18ZqwVvAdeynzZk5QnTQBxsi2/jSW8H
+         tCKkXMbShumUPNSa4KkssEOxcdr1CZbNRXqV3gza5xN4q0owe8BUmF5F+e6o9kksrR
+         NPWQ4uuPVvQ4A==
+Date:   Wed, 31 May 2023 10:26:14 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Florian Fainelli <florian.fainelli@broadcom.com>,
+        stable@vger.kernel.org, Pierre Gondois <pierre.gondois@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "open list:GENERIC ARCHITECTURE TOPOLOGY" 
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH stable 6.3 v2] arch_topology: Remove early cacheinfo
+ error message if -ENOENT
+Message-ID: <20230531-anatomy-rectified-6ed3555c5f16@spud>
+References: <20230530201955.848176-1-florian.fainelli@broadcom.com>
+ <20230530-basically-wildly-84415a94171d@spud>
+ <72d84100-55cf-566d-8301-7147ce14b1e9@broadcom.com>
+ <20230531085356.ru4fmtawyxo5cq5s@bogus>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Qnb73kesuk0hpnPs"
+Content-Disposition: inline
+In-Reply-To: <20230531085356.ru4fmtawyxo5cq5s@bogus>
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -63,49 +63,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Since commit 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support
-during hci down for wcn3990"), the setup callback which registers the
-debugfs interface can be called multiple times.
 
-This specifically leads to the following error when powering on the
-controller:
+--Qnb73kesuk0hpnPs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-	debugfs: Directory 'ibs' with parent 'hci0' already present!
+On Wed, May 31, 2023 at 09:53:56AM +0100, Sudeep Holla wrote:
+> On Tue, May 30, 2023 at 03:42:45PM -0700, Florian Fainelli wrote:
+> > Hi Conor,
+> >=20
+> > On 5/30/23 14:39, Conor Dooley wrote:
+> > > Yo Florian,
+> > >=20
+> > > On Tue, May 30, 2023 at 01:19:55PM -0700, Florian Fainelli wrote:
+> > > > From: Pierre Gondois <pierre.gondois@arm.com>
+> > > >=20
+> > > > commit 3522340199cc060b70f0094e3039bdb43c3f6ee1 upstream
+> > > >=20
+> > > > fetch_cache_info() tries to get the number of cache leaves/levels
+> > > > for each CPU in order to pre-allocate memory for cacheinfo struct.
+> > > > Allocating this memory later triggers a:
+> > > >    'BUG: sleeping function called from invalid context'
+> > > > in PREEMPT_RT kernels.
+> > > >=20
+> > > > If there is no cache related information available in DT or ACPI,
+> > > > fetch_cache_info() fails and an error message is printed:
+> > > >    'Early cacheinfo failed, ret =3D ...'
+> > > >=20
+> > > > Not having cache information should be a valid configuration.
+> > > > Remove the error message if fetch_cache_info() fails with -ENOENT.
+> > > >=20
+> > > > Suggested-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > Link: https://lore.kernel.org/all/20230404-hatred-swimmer-6fecdf33b=
+57a@spud/
+> > > > Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+> > > > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > Link: https://lore.kernel.org/r/20230414081453.244787-4-pierre.gond=
+ois@arm.com
+> > > > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > > > Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> > >=20
+> > > How come this now needs a backport? Did the rest of the series get
+> > > backported, but not this one since it has no fixes tag?
+> >=20
+> > Humm, indeed, this has been present in v6.3.2 since I requested it to be
+> > included. The error that I saw this morning was not -ENOENT, but -EINVA=
+L.
+> >=20
+> > With those patches applied, no more -EINVAL:
+> >=20
+> > cacheinfo: Allow early level detection when DT/ACPI info is missing/bro=
+ken
+> > cacheinfo: Add arm64 early level initializer implementation
+> > cacheinfo: Add arch specific early level initializer
+> > cacheinfo: Add use_arch[|_cache]_info field/function
+> >=20
+> > I will submit those shortly unless we think they better not be in 6.3, =
+in
+> > which case it would be nice to silence those -EINVAL errors.
+>=20
+> I prefer this option instead of back porting all the above 4 as there are
+> some pending fixes for the issues found in those patches. I am fine if Gr=
+eg
+> is happy with the backport, so no strong rejection from my side :).
 
-Add a driver flag to avoid trying to register the debugfs interface more
-than once.
+Just to be clear, I was not objecting, just curious!
 
-Fixes: 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support during hci down for wcn3990")
-Cc: stable@vger.kernel.org	# 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/bluetooth/hci_qca.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+--Qnb73kesuk0hpnPs
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 1b064504b388..e30c979535b1 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -78,7 +78,8 @@ enum qca_flags {
- 	QCA_HW_ERROR_EVENT,
- 	QCA_SSR_TRIGGERED,
- 	QCA_BT_OFF,
--	QCA_ROM_FW
-+	QCA_ROM_FW,
-+	QCA_DEBUGFS_CREATED,
- };
- 
- enum qca_capabilities {
-@@ -635,6 +636,9 @@ static void qca_debugfs_init(struct hci_dev *hdev)
- 	if (!hdev->debugfs)
- 		return;
- 
-+	if (test_and_set_bit(QCA_DEBUGFS_CREATED, &qca->flags))
-+		return;
-+
- 	ibs_dir = debugfs_create_dir("ibs", hdev->debugfs);
- 
- 	/* read only */
--- 
-2.39.3
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHcStgAKCRB4tDGHoIJi
+0vIEAQDdpFgU4o/G3Uwvv77EtTUObcme8oZvNeuRkgayXb63kAEAgdawFvzSpDJL
+Um0VmT9jcTispriQLw1RK4h2YSIliQo=
+=l1hc
+-----END PGP SIGNATURE-----
+
+--Qnb73kesuk0hpnPs--
