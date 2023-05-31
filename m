@@ -2,124 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41709717CEA
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 12:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EC0C717DB6
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 13:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235838AbjEaKNC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 06:13:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33718 "EHLO
+        id S235271AbjEaLKO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 07:10:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235839AbjEaKNB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 06:13:01 -0400
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5A110B;
-        Wed, 31 May 2023 03:12:54 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id B76AA32009A1;
-        Wed, 31 May 2023 06:12:51 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 31 May 2023 06:12:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1685527971; x=1685614371; bh=gL
-        q2gHiJM+KP1+NdSFVehsgQGj4GYd9hBZy1RUFLs0Y=; b=DEcPru7BTgdHj70sAp
-        LGx4H6mvsBm+vApV8FhA2+5LYsNWA7mVHokhzH/l0mhX0NjpJKnxEXQuelTZqzs5
-        57qLlYMpiHW2gp7E7l7iekXWtCjz6RyWJo+9k7Av/va/c+3OQETPxekb+UDZTHaW
-        S226KvUwFti06hkzjW5rHLzxYwJVj1WGE08Zy6L3QA3BvhiP6/CV5kjUreQJisf8
-        HrXkrcrcmgsCfrRd2bYg6X3XCQMVuaOieWbNV9FgRlYUKfyVrKGDtLCN5oMixvmu
-        PD1qcCfFH5bopnUWA7yIc+0YBNocxDf2W9iU4VQXz3NCFQqw+zLZOZRjSONM/1de
-        KKnw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1685527971; x=1685614371; bh=gLq2gHiJM+KP1
-        +NdSFVehsgQGj4GYd9hBZy1RUFLs0Y=; b=XpHnguzyG8jh82OblR0wPOi0HW7yq
-        guz08WJU38YmvDPHVurY+G2eCezGVN+im9dV4n3bFqWWQfDbhPASvEIj6aMCiwCN
-        GSWvS4XVdwCJsehHG/5rfhjtNApBS/n2LQQKc4EqvhwboYsFOiFpKy0iEgbcUyv0
-        jSTG2oETo6GQoez4hG5QXfeMxk65T1IXZSUh2miiUJYijI5aQSWmU8V4XtwJiaHE
-        LjAMdpx3jjPfjsu8tI7CXuplA+YzZ9mv0dqjZddEwuUlEqxNXneXk0q0qb0PQ8yv
-        ljMgUQKdSTdFy16029xzDC6wLHGFIUR+ck4vpDTCXKhAhp9TAQXQX6DNQ==
-X-ME-Sender: <xms:oh13ZLte04EM-c0kF10tTrSyzw54xFGD46A1Oi-hIC--KbC6RPcFNw>
-    <xme:oh13ZMdzdfSWFa4u-FxthIT5t-v_WhHbpiBYkp3Q8t1VqQrzKELic7MQQApv-JrVU
-    1iEP7ZQnrekEKBDY18>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekledgvdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:oh13ZOxt2-ByGSiubGPgnUaXf8hx57qalEDB2nWzqWdVrauzDGyjSw>
-    <xmx:oh13ZKNBoyT6NknJNcfoLX4_24o-Jyu9ylpvPzgzKoVA9PGoIre9mw>
-    <xmx:oh13ZL8oA1_gswiqmbZKOBZ5eJ9bprlL9iKBdflJNHPZuZREnvTpBA>
-    <xmx:ox13ZGlx06UPoFHl0ZHzIJx3KLKPK0bWnoV8CUNPfHXjbcWtXWbfnw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id CA3DBB60086; Wed, 31 May 2023 06:12:50 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-447-ge2460e13b3-fm-20230525.001-ge2460e13
-Mime-Version: 1.0
-Message-Id: <33173e7b-0ec0-4a1e-9533-0d3b6eb4c8ce@app.fastmail.com>
-In-Reply-To: <41c61895-59f4-449c-9e2e-d127d7f95be5@app.fastmail.com>
-References: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
- <4716f9fd-0e09-4e69-a802-09ddecff2733@app.fastmail.com>
- <6b1a0ee6-c78b-4873-bfd5-89798fce9899@kili.mountain>
- <2fce7746-6d63-4853-9b20-8fa0b24d6f32@app.fastmail.com>
- <41c61895-59f4-449c-9e2e-d127d7f95be5@app.fastmail.com>
-Date:   Wed, 31 May 2023 12:12:30 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Dan Carpenter" <dan.carpenter@linaro.org>
-Cc:     stable@vger.kernel.org,
-        "laurent.pinchart" <laurent.pinchart@ideasonboard.com>,
-        "Hans Verkuil" <hverkuil-cisco@xs4all.nl>,
-        "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org,
-        "Nick Desaulniers" <ndesaulniers@google.com>
-Subject: Re: randconfig fixes for 5.10.y
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,
-        T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232263AbjEaLKM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 07:10:12 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF848E;
+        Wed, 31 May 2023 04:10:11 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9707313e32eso1045061666b.2;
+        Wed, 31 May 2023 04:10:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685531409; x=1688123409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sIvNVQs4ofAz17cCAArRP+RXzewXOY2O28nwlAxGqNc=;
+        b=aLo7ylkRaX4yT5BI+8yPoXCuvp9GpFaT9jlVS5PzM/NCPHYBWj+3JA6hKKqHzJKoPi
+         9jD81/0lp2UQbqVGxlXX3lp4D1ykJovedeIB3LLBpWhr84hy3Vzx6h2RwLEObFGvnA65
+         2Shg7J0T20txrrBfE5wF6y1QEp6/KiSsQmN+kDivEeX+01+XA32SdizB88AkMP3fqUTO
+         oeS7ajn5bKA2xbQDN7fNNUop+R1WgomxxVuzMb3bJlFNLKicl3xx+OFryVuifA0ufQAk
+         ZI2Owpsj/loN2z6gzO+gJzCV60p4K/T44iopC/2FAEAhblMdY2Es/ihhpWKtlEh2+eHS
+         LdfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685531409; x=1688123409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sIvNVQs4ofAz17cCAArRP+RXzewXOY2O28nwlAxGqNc=;
+        b=WN6eDtjLVOEAlbBXErYN6kLAORWBZFnBffIlxl8LQPtHAjXnTEQ752Hf1mIxuIua6J
+         Bih7veZJ6jQ3kVegBgijpl+aqwgpTzQsXm9A223ABFmLneIWn+0kfBx3ixtAuGO5fX/n
+         Vn0UbSTr7ag67v8mig1oNTkAWiOc9i/LCMgI7498o6IIUKmByAbGN9xFcJ/EQiXrduE4
+         ZqKeMv7OKB9RxsJ/kNtnrnTAelYoHTHUUyg+24vqbmsk38v1GgZY8tJEizKb//T9etZj
+         47k4n1yNjAWlRowhwcb2DUNSMUoLwmorMC/zUUtJdmeTGid31bjaWRlSakP6x2+Pr7kT
+         NVVw==
+X-Gm-Message-State: AC+VfDxyVGdhb2gN/NlQM3hsOgkGzCh4Yd/5uaiUXjBt6dtV125xY0fZ
+        +a1jgRSquAl28Sx7i0x7yyIhYOogi/yLHQTmI6y0PN1wcxA=
+X-Google-Smtp-Source: ACHHUZ7dzEhstXrYIOH0VyCOofnTnSScpVIBYAGgTghnmI2+SrQIILg47vf+NAAnAN7cArJZGCke6ikqnLpBdM5G5hw=
+X-Received: by 2002:a17:907:7f8d:b0:96b:6fb:38d6 with SMTP id
+ qk13-20020a1709077f8d00b0096b06fb38d6mr5427167ejc.65.1685531409281; Wed, 31
+ May 2023 04:10:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230525024438.507082-1-xiubli@redhat.com>
+In-Reply-To: <20230525024438.507082-1-xiubli@redhat.com>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Wed, 31 May 2023 13:09:56 +0200
+Message-ID: <CAOi1vP8aR=fnbUnpOSJ1yA6Je5c4tS3Ks4xMb10dymYv+y2EgQ@mail.gmail.com>
+Subject: Re: [PATCH] ceph: fix use-after-free bug for inodes when flushing capsnaps
+To:     xiubli@redhat.com
+Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 30, 2023, at 21:20, Arnd Bergmann wrote:
-> On Tue, May 30, 2023, at 21:02, Arnd Bergmann wrote:
->>
->> CONFIG_COMPILE_TEST=y forces a number of options to be
->> hidden from build tests, which is generally super useful.
->> The one that ended up hiding the stack growth above is
->> CONFIG_GCOV_PROFILE_ALL. I'll try enabling it for a few
->> builds to see what else shows up with it.
+On Thu, May 25, 2023 at 4:45=E2=80=AFAM <xiubli@redhat.com> wrote:
 >
-> Update: you already pointed to UBSAN_SANITIZE_ALL causing
-> this, I can confirm that this is also the case. With your
-> config, the combination of CONFIG_GCOV_PROFILE_ALL and
-> CONFIG_UBSAN_SANITIZE_ALL causes the compiler to completely
-> mess up register allocation in this code, disabling either
-> of the two gets it below the boundary.
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> There is racy between capsnaps flush and removing the inode from
+> 'mdsc->snap_flush_list' list:
+>
+>    Thread A                            Thread B
+> ceph_queue_cap_snap()
+>  -> allocate 'capsnapA'
+>  ->ihold('&ci->vfs_inode')
+>  ->add 'capsnapA' to 'ci->i_cap_snaps'
+>  ->add 'ci' to 'mdsc->snap_flush_list'
+>     ...
+> ceph_flush_snaps()
+>  ->__ceph_flush_snaps()
+>   ->__send_flush_snap()
+>                                 handle_cap_flushsnap_ack()
+>                                  ->iput('&ci->vfs_inode')
+>                                    this also will release 'ci'
+>                                     ...
+>                                 ceph_handle_snap()
+>                                  ->flush_snaps()
+>                                   ->iterate 'mdsc->snap_flush_list'
+>                                    ->get the stale 'ci'
+>  ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
+>    'mdsc->snap_flush_list'           will WARNING
+>
+> To fix this we will remove the 'ci' from 'mdsc->snap_flush_list'
+> list just before '__send_flush_snaps()' to make sure the flushsnap
+> 'ack' will always after removing the 'ci' from 'snap_flush_list'.
 
-After a night of randconfig builds with both UBSAN_SANITIZE_ALL
-and GCOV_PROFILE_ALL force-enabled, these are the ones I found,
-listing only the worst size for each function (using gcc-13.1).
-None of these show up without GCOV though:
+Hi Xiubo,
 
-crypto/twofish_common.c:683:1: error: the frame size of 2040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-crypto/twofish_common.c:683:1: error: the frame size of 2336 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]
-drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c:1589:1: error: the frame size of 1696 bytes is larger than 1400 bytes [-Werror=frame-larger-than=]
-drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c:754:1: error: the frame size of 1260 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-drivers/staging/media/ipu3/ipu3-css-params.c:1206:1: error: the frame size of 1080 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-drivers/staging/media/rkvdec/rkvdec-vp9.c:1042:1: error: the frame size of 1660 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-drivers/staging/media/rkvdec/rkvdec-vp9.c:1042:1: error: the frame size of 2176 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]
-drivers/staging/media/rkvdec/rkvdec-vp9.c:995:1: error: the frame size of 1656 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+I'm not sure I'm following the logic here.  If the issue is that the
+inode can be released by handle_cap_flushsnap_ack(), meaning that ci is
+unsafe to dereference after the ack is received, what makes e.g. the
+following snippet in __ceph_flush_snaps() work:
 
-      Arnd
+    ret =3D __send_flush_snap(inode, session, capsnap, cap->mseq,
+                            oldest_flush_tid);
+    if (ret < 0) {
+            pr_err("__flush_snaps: error sending cap flushsnap, "
+                   "ino (%llx.%llx) tid %llu follows %llu\n",
+                    ceph_vinop(inode), cf->tid, capsnap->follows);
+    }
+
+    ceph_put_cap_snap(capsnap);
+    spin_lock(&ci->i_ceph_lock);
+
+If the ack is handled after capsnap is put but before ci->i_ceph_lock
+is reacquired, could use-after-free occur inside spin_lock()?
+
+Thanks,
+
+                Ilya
+
+>
+> Cc: stable@vger.kernel.org
+> URL: https://bugzilla.redhat.com/show_bug.cgi?id=3D2209299
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>  fs/ceph/caps.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+> index feabf4cc0c4f..a8f890b3bb9a 100644
+> --- a/fs/ceph/caps.c
+> +++ b/fs/ceph/caps.c
+> @@ -1595,6 +1595,11 @@ static void __ceph_flush_snaps(struct ceph_inode_i=
+nfo *ci,
+>
+>         dout("__flush_snaps %p session %p\n", inode, session);
+>
+> +       /* we will flush them all; remove this inode from the queue */
+> +       spin_lock(&mdsc->snap_flush_lock);
+> +       list_del_init(&ci->i_snap_flush_item);
+> +       spin_unlock(&mdsc->snap_flush_lock);
+> +
+>         list_for_each_entry(capsnap, &ci->i_cap_snaps, ci_item) {
+>                 /*
+>                  * we need to wait for sync writes to complete and for di=
+rty
+> @@ -1726,10 +1731,6 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
+>                 *psession =3D session;
+>         else
+>                 ceph_put_mds_session(session);
+> -       /* we flushed them all; remove this inode from the queue */
+> -       spin_lock(&mdsc->snap_flush_lock);
+> -       list_del_init(&ci->i_snap_flush_item);
+> -       spin_unlock(&mdsc->snap_flush_lock);
+>  }
+>
+>  /*
+> --
+> 2.40.1
+>
